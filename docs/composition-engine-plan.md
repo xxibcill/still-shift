@@ -369,7 +369,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
-| CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        | Codex                  | `codex/composition-ce8`             | `[~]`  | [evidence](./composition-ce8-results.json)                                         |
+| CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        | Codex                  | `codex/composition-ce8`             | `[x]`  | [evidence](./composition-ce8-results.json)                                         |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
@@ -3575,23 +3575,23 @@ and attached, based on CE5; CE6 begins on a new branch. [Evidence](./composition
 **Outcome:** One camera model serves every composition, replacing the separate story
 and cinematic cameras.
 
-- [ ] 3D layer flag: position z, orientation, X/Y/Z rotation, scale z, depth sorting by
+- [x] 3D layer flag: position z, orientation, X/Y/Z rotation, scale z, depth sorting by
       camera-space z with a stable tie-breaker (layer order), 2D layers composited in
       stacking order between 3D groups as AE does.
-- [ ] Camera layer: one-node or two-node (point of interest), zoom/focal length with
+- [x] Camera layer: one-node or two-node (point of interest), zoom/focal length with
       film size, depth of field (focus distance, aperture, blur level) using CE6 lens
       blur, auto-orient toward POI.
-- [ ] Perspective projection of image, solid, text and shape layers. Draw as projective
+- [x] Perspective projection of image, solid, text and shape layers. Draw as projective
       quads on WebGL2; Canvas 2D reference supports affine-only camera moves and reports
       `comp-feature-backend` for true perspective.
-- [ ] Camera shake as a behaviour (CE9) and the existing story jolts mapped to it.
-- [ ] Generalise cinematic coverage checks: warn/fail when any frame exposes the
+- [x] Camera shake as a behaviour (CE9) and the existing story jolts mapped to it.
+- [x] Generalise cinematic coverage checks: warn/fail when any frame exposes the
       composition background through the camera frustum on a layer marked
       `coverage: "required"`.
-- [ ] Optional lights (point, spot, ambient) are **not** in this milestone; record them
+- [x] Optional lights (point, spot, ambient) are **not** in this milestone; record them
       as a follow-up if needed.
 
-- [ ] Complete CE11's camera-frustum inspector overlay using real evaluated cameras.
+- [x] Complete CE11's camera-frustum inspector overlay using real evaluated cameras.
 
 **Acceptance:** Native-composition test scenes demonstrate correct perspective and
 parallax from z depth, depth sorting, depth of field, camera shake and affine 2D
@@ -3728,7 +3728,32 @@ allocation. Pinned isolated calibration now passes at 1.227×; 146 focused units
 and build pass. Timing varies, so the complete committed-code gate must repeat;
 no policy relaxation or manually resumed pass is claimed.
 
-**Completion record:** _to be filled in._
+**Completion record (2026-10-06):** Complete on `codex/composition-ce8`, final code `16262ec`, from CE6 `2f1a99c`.
+Scoped one/two-node cameras, XYZ parenting and orientation, stable depth runs,
+projective image/solid/text/shape planes, clipping, camera-facing geometry,
+bounded focus blur, actual alpha coverage and inspector frusta are delivered.
+Canvas remains an affine camera reference; true perspective requires WebGL2.
+Precomps remain flattened and geometric constraints retain their 2D scope.
+
+Complete pinned local `pnpm check` passes 1,841 unit, 46 runtime, 139 integration,
+14 depth tests, every required browser group and all 176 frozen baselines /
+36,061 frames without regeneration. All full Canvas family matrices pass unchanged
+pixel/timing policy. Native acceptance retains 384 forward, 384 reverse frames /
+108 seeks, exact stored hashes and independent affine/ray references, expected
+coverage/backend failures, real inspector edits, repeated/independent exports and
+actual hardware comparisons. Serial final-code 1080p costs are refreshed separately
+with cold/two-warmup/five-measure rows and verified exposure sample counts;
+these are bounded-feature costs, with CE6-P performance targets still separate.
+Initial correctness/hardware/fixture failures and both incomplete full gates remain
+in the evidence. Compiled spatial/reference inventories and root binding IDs keep
+ordinary scopes cheap without changing pixels or acceptance policy.
+
+Evaluator E45, Canvas 1.40.0, WebGL2 0.55.0 and composition export 0.6.2 identify
+the new capability. Native Canvas references and affine bitmap coverage use pinned
+CPU raster preparation. CE11's real camera-frustum follow-through is complete;
+audio waveform follow-through remains CE13. Cinematic family camera parity follows
+in CE4c. Publish/attach the CE8 PR against CE6, then begin CE8-L on a new branch.
+[Evidence](./composition-ce8-results.json).
 
 ---
 

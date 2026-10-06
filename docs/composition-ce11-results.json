@@ -411,7 +411,7 @@
     }
   ],
   "conditionalFollowThrough": {
-    "CE8": "Real 3D camera-frustum inspector overlay when camera layers are implemented.",
+    "CE8": "Complete in CE8 on 16262ec: real evaluated camera frusta, XZ/XY planes and focus overlays; inspector edits, undo/redo and source save pass. See composition-ce8-results.json.",
     "CE13": "Real source-backed audio waveform when audio layers are implemented."
   },
   "pending": [],
@@ -441,7 +441,7 @@
     "environment": "Clean tracked snapshot preserves unrelated owner edits; reused warmed isolated Python environment, primary environment untouched; Vite optimizer/config caches are local to the verification checkout."
   },
   "followUps": {
-    "CE8": "Add real camera-frustum overlay when native cameras exist.",
+    "CE8": "Complete in CE8 on 16262ec; native camera inspector acceptance and full local gate pass. See composition-ce8-results.json.",
     "CE13": "Add real waveform lane when native audio layers exist.",
     "CE9-F1": "Inspector uses evaluateProperty for resolved native bindings without runtime lowering; preserve legacy numerical parity and keep lowering as its tracked follow-up."
   },

@@ -43,39 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE8 in progress (2026-10-06):** `codex/composition-ce8` from CE6
-  `2f1a99c` / [PR #42](https://github.com/xxibcill/still-shift/pull/42).
-  XYZ sampling/expression state, camera optics/world geometry, stable depth runs,
-  actual projective rendering, camera-facing orientation, focus overscan,
-  required alpha coverage and projected inspector/quality geometry are authored.
-  Projected group masks now retain local expansion/feather support and combine
-  coverage after projection; POI tangent editing is authored.
-  CE6-P released its quiet window at 01:24 UTC. Pinned isolated toolchain,
-  schema, build, lint, boundaries and focused native verification now pass. Previous Git auto packing was
-  reported; no process remained at 00:57 UTC, and further Git calls use gc.auto=0.
-  Ten native scenes and independent ray/affine references, hardware/export/alpha
-  acceptance and serial cost code are authored; no new baseline is generated.
-  Camera builder defaults/xyz setters, a native camera example, reference source
-  guidance and the real inspector edit/frustum/save flow are now authored.
-  Schema/reference/skill generation is complete.
-  Derived optics now include primary-control/film expression dependencies and
-  implicit cycle validation; author-order/driver regressions pass.
-  Native focused verification passes 384 frames, exact independent oracle
-  pixels, eight expected failures and real inspector edit/save checks.
-  All 1,840 units pass. First native all-frame/seek/export checks passed, then
-  hardware Canvas affine PSNR failed. Pinned native raster preparation repairs
-  all 36 hardware comparisons to delta at most one. Committed-source native
-  correctness/export/inspector/hardware checks and repaired serial profile now
-  pass together on `5effcf3`. New CE8-only hashes/PNGs are exact; all six 1080p
-  costs are recorded (12.3–2,556.3 ms medians), without a real-time claim.
-  The first final gate stopped at the stale nine-example integration inventory:
-  1,840 unit / 46 runtime / 138 other integration tests passed. All ten examples
-  now compile and validate pinned assets. The second full gate passed all
-  preceding checks, then calibration-pan timing failed at 1.285× (pixels pass).
-  Compiled spatial/reference inventories and root binding fast paths are repaired;
-  pinned focused calibration passes at 1.227× and 146 focused units/build pass.
-  The full repeat and milestone PR remain pending; no owner decision is pending.
-  [Evidence](./composition-ce8-results.json).
+- **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
+  final code `16262ec`. Scoped cameras, XYZ transforms, projective planes,
+  stable depth, focus blur, actual coverage and real inspector frusta are delivered.
+  Full pinned `pnpm check` passes 1,841 unit / 46 runtime / 139 integration /
+  14 depth tests, all required browser groups and 176 frozen baselines / 36,061
+  frames. Full Canvas family matrices pass unchanged pixel/timing policy.
+  Final-code native correctness, exports, seeking and hardware checks pass;
+  serial 1080p costs are refreshed. Earlier failures remain in the evidence.
+  CE8 PR publication and CE8-L follow; CE6-P targets remain separate.
+  No owner decision is pending. [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
   CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
@@ -119,7 +96,7 @@ still hold before relying on them.
   Full `pnpm check` passes: 1,510 unit, 46 runtime, 139 integration and 14 depth
   tests, all browser suites and 176 frozen baselines / 36,061 frames. Initial failures
   and repairs are retained. [PR #37](https://github.com/xxibcill/still-shift/pull/37) is open and attached; begin CE5 on a new branch. Native camera
-  frusta and audio waveforms follow CE8/CE13. [Evidence](./composition-ce11-results.json).
+  frusta are complete in CE8; audio waveforms follow CE13. [Evidence](./composition-ce11-results.json).
 
 - **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
   runtime `e501fed`. Typed authoring, CLI/watch, presets, eight examples and generated
@@ -228,6 +205,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 camera milestone complete
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, final code `16262ec`.
+- **Done:** native camera/XYZ/plane/coverage/inspector capability; compiled ordinary
+  scope fast paths retain implicit-reference writers and exposure preflight.
+- **Results:** complete gate passes 1,841 units, 46 runtime, 139 integration,
+  14 depth tests, every browser group and 176 frozen baselines / 36,061 frames.
+  Full Canvas matrices, native oracles/hashes/seeks/exports/hardware pass unchanged
+  policies; final-code serial 1080p costs refreshed without competing workloads.
+- **Limits:** Canvas affine-only; flat precomps and 2D constraints; CPU raster
+  boundaries and non-real-time high-plane costs documented. CE6-P remains separate.
+- **Next:** publish/attach CE8 PR; CE8-L and remaining approved milestones follow.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 ordinary-scope hot-path checkpoint
 
