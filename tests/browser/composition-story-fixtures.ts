@@ -117,12 +117,12 @@ try {
           profile,
           backend,
         }) => {
-          const scene = JSON.parse(sceneJson) as ReturnType<
-            typeof Render.compileStoryScene
-          >;
           const composition = JSON.parse(compositionJson) as Composition;
           const moduleUrl = "/packages/renderer-core/src/index.ts";
           const m = (await import(moduleUrl)) as typeof Render;
+          // Recompile source JSON: serializing compiled Float64Arrays loses their length,
+          // corrupting the legacy flow interpolation at fractional shutter times.
+          const scene = m.compileStoryScene(JSON.parse(sceneJson));
           const legacyCanvas = document.createElement("canvas"),
             canvas = document.createElement("canvas");
           const legacy = m.createIllustratedPreview(
@@ -228,7 +228,7 @@ try {
           };
         },
         {
-          sceneJson: JSON.stringify(scene),
+          sceneJson: JSON.stringify(input),
           compositionJson: JSON.stringify(composition),
           urls,
           tier: entry.tier,
@@ -247,6 +247,7 @@ try {
         !acceptance.skipExports &&
         (only < 0 || process.argv.includes("--exports")) &&
         [
+          "story/continuous-access-constraint/motion-blur",
           "component/story-leader/spatial-morph",
           "component/story-state/appearance-uniform",
           "component/story-state/primitive-blur-stack",
@@ -273,6 +274,7 @@ try {
   console.log(
     `CE4 story/component parity: ${totalItems} items, ${totalFrames} frames`,
   );
+  assert.ok(totalItems > 0, "No story cases matched the variant filter");
   acceptance.finish();
 } finally {
   await browser.close();

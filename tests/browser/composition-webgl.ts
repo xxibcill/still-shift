@@ -9,6 +9,7 @@ import type * as Sampling from "../helpers/composition-webgl-sampling.ts";
 import type * as Png from "../helpers/composition-webgl-png.ts";
 import type * as Blur from "../helpers/composition-webgl-blur.ts";
 import type * as Performance from "../helpers/composition-webgl-performance.ts";
+import type * as StoryImages from "../helpers/composition-webgl-story-images.ts";
 const server = await createServer({
   root: resolve(import.meta.dirname, "../.."),
   configFile: false,
@@ -62,6 +63,13 @@ try {
     return ((await import(url)) as typeof Png).checkWebglPngImages();
   });
   console.log("WebGL PNG sprite sampling:", png);
+  const storyImages = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-story-images.ts";
+    return (
+      (await import(url)) as typeof StoryImages
+    ).checkWebglStoryImageRounding();
+  });
+  console.log("WebGL story image rounding:", storyImages);
   const reuse = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-reference.ts";
     return ((await import(url)) as typeof Checks).checkWebglFrameReuse();

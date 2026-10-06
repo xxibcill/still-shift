@@ -33,6 +33,9 @@
       ],
       "@still-shift/execution-runtime/browser": [
         "./packages/execution-runtime/src/browser.ts"
+      ],
+      "@still-shift/renderer-core/passage-compositions": [
+        "./packages/renderer-core/src/passage-compositions.ts"
       ]
     },
     "resolveJsonModule": true,

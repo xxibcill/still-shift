@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./passage-compositions": "./src/passage-compositions.ts",
     "./soundtrack": "./src/soundtrack-edits.ts"
   },
   "dependencies": {

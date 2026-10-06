@@ -23,16 +23,17 @@ type Geometry = z.infer<typeof StoryPathGeometrySchema>;
 export function compileStoryPathGeometry(
   scene: StoryRenderScene,
   node: PreparedPath,
+  times: readonly number[] = Array.from(
+    { length: scene.frameCount },
+    (_, frame) => frame,
+  ),
 ): Geometry | undefined {
   const binding = scene.connectors.find((c) => c.path === node.id);
   if (!binding) return undefined;
-  const endpoints: Geometry["endpoints"] = Array.from(
-    { length: scene.frameCount },
-    (_, frame) => [
-      storyAnchorPosition(scene, binding.from.node, binding.from.point, frame),
-      storyAnchorPosition(scene, binding.to.node, binding.to.point, frame),
-    ],
-  );
+  const endpoints: Geometry["endpoints"] = times.map((frame) => [
+    storyAnchorPosition(scene, binding.from.node, binding.from.point, frame),
+    storyAnchorPosition(scene, binding.to.node, binding.to.point, frame),
+  ]);
   const last = JSON.stringify(endpoints.at(-1));
   while (endpoints.length > 1 && JSON.stringify(endpoints.at(-2)) === last)
     endpoints.pop();

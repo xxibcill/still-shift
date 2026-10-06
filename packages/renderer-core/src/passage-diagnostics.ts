@@ -9,11 +9,15 @@ export type PassageDiagnostic = {
   event?: string;
   frame?: number;
   path?: string;
+  /** Source file containing the field addressed by path. */
+  sourcePath?: string;
 };
 export class PassageError extends Error {
-  constructor(readonly diagnostics: PassageDiagnostic[]) {
+  readonly diagnostics: PassageDiagnostic[];
+  constructor(diagnostics: PassageDiagnostic[]) {
     super(diagnostics.map((d) => d.message).join("\n"));
     this.name = "PassageError";
+    this.diagnostics = diagnostics;
   }
 }
 export function passageError(
@@ -23,11 +27,23 @@ export function passageError(
 ): never {
   throw new PassageError([{ code, severity: "error", message, ...location }]);
 }
+
+function isPassageError(error: unknown): error is PassageError {
+  // Vite's bundled config and external packages may load separate class identities.
+  return (
+    error instanceof PassageError ||
+    (error instanceof Error &&
+      error.name === "PassageError" &&
+      "diagnostics" in error &&
+      Array.isArray(error.diagnostics))
+  );
+}
+
 export function passageDiagnostics(
   error: unknown,
   beat?: string,
 ): PassageDiagnostic[] {
-  if (error instanceof PassageError)
+  if (isPassageError(error))
     return error.diagnostics.map((d) => ({ ...(beat ? { beat } : {}), ...d }));
   if (error instanceof ZodError)
     return error.issues.map((issue) => ({

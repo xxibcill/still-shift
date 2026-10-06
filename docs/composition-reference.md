@@ -28,7 +28,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-20`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-23`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -1470,6 +1470,72 @@ Where a family adapter is unavailable (CE4a coverage, CE4c/CE4d), the report rec
 pixel-only coverage and the reason. It never treats unsupported state rules as passed.
 The acceptance command measures the existing v013 review MP4 and a fresh continuous
 prototype export; other craft findings remain in its report.
+
+### Story exposure and passage compilation (CE4a continuation)
+
+The story adapter compiles `motion-blur` to the shared composition shutter and a
+bounded `sampleTimes` clock on every layer. Transform, paint and connector values
+sample fractional source time. Flow providers retain the authored source frame
+count and source time, independently of their sample-table index. More than 2,000
+reachable samples returns `comp-adapter-limit`; samples are never truncated.
+This is CE4a's required CE7 exposure slice, not completion of all CE7 controls.
+
+`renderStoryPassage` accepts `renderer: "composition"` and an optional `backend`
+(`"canvas2d"` by default, or `"webgl2"`). It compiles each resolved story beat to
+`composition-1`; passage handoffs and audio assembly remain in the passage engine.
+Renderer, evaluator, adapter and backend identities separate cached beat clips.
+Changing the renderer or backend requires a fresh render request/output directory.
+The cache retains each compiled `.composition.json` beside its encoded beat.
+Native picture beats also write `scenes/<beat>.composition.json` on every render,
+including cache reuse, so it names that run's asset files after relocation; the
+cache copy records the entry's first render.
+
+### Native passage picture files (CE4a/Q2)
+
+`PassageCompositionReferencesSchema` validates a companion JSON object mapping up to
+400 beat IDs (1–200 characters) to composition file paths (1–1,024 characters).
+`loadPassageCompositions(mapPath, passage)` resolves each path relative to that map,
+validates the composition and its assets, and returns normalized compositions with
+absolute asset paths. `validatePassageCompositions` is the shared pure validator.
+Its optional third argument accepts a saved soundtrack's clips and checks their
+event anchors against native markers alongside legacy passage sounds. Known beat
+event mappings may be authored before the soundtrack is attached. Export checks
+the saved project before preparing pictures; Lab checks before audio rendering,
+attachment and playback, including after passage edits.
+
+Supply this object as `renderStoryPassage(..., { renderer: "composition",
+compositions })`. Overrides replace the beat's picture; its template remains the
+narrative/cue/evidence authority. Native dimensions, fps and final source frame count
+must match exactly, including outgoing transition tail frames. Native boundary
+transforms must be authored explicitly; implicit camera/subject carry is rejected.
+Native composition motion is inspected and linted as composition data; the surrogate
+template's story motion report does not measure that native picture.
+
+Diagnostics: `comp-passage-reference` (invalid map/file), `comp-passage-limit`
+(over 400 overrides), `comp-passage-beat` (unknown ID), `comp-passage-timing`
+(dimensions/fps/duration mismatch), `comp-passage-handoff` (implicit carry) and
+`comp-passage-renderer` (native pictures require the composition path). Native
+composition schema diagnostics retain every code and JSON field path, and gain the
+beat ID and a separate `sourcePath` for the picture file. Lab displays both the
+source and field location.
+The API checks map, picture and asset paths against the Lab workspace boundary.
+
+Native pictures declare `metadata.passage` with three explicit maps:
+`cueMarkers` maps each narrative cue ID to a root marker at its cue frame;
+`eventMarkers` maps each narration-linked event ID, and every event anchoring a
+passage sound on that beat, to a root marker with its exact start and duration; `subjectLayers` maps focal subjects and any evidence node to a
+native layer ID or precomp instance path (for example `story-content/house-a`).
+Missing targets, unknown narrative IDs and mismatched timing return
+`comp-passage-binding`. A mapped evidence qualification must be native text matching
+the passage's qualification. Every evidence text state and whole-layer correction
+must retain the same qualification; span corrections are unsupported on mapped
+evidence layers. Legacy action/pose/prop tracks and implicit carry are unsupported
+at native boundaries and fail explicitly; author that motion in the
+composition. The fixture `ce4a/native-beat.json` embeds an adapted story as a precomp
+with a native difference-blend overlay and preserves its assets and cue mappings.
+
+`@still-shift/renderer-core/passage-compositions` is the narrow public entrypoint for
+passage picture validation and diagnostics; it does not import renderer backends.
 
 ## CE16 soundtrack project
 

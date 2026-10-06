@@ -234,6 +234,19 @@ describe("passage render recovery", () => {
       ),
     );
     const key = passageBeatKey(scene, "runtime-one");
+    expect(passageBeatKey(scene, "runtime-one", "legacy", "canvas2d")).toBe(
+      key,
+    );
+    const canvasKey = passageBeatKey(
+      scene,
+      "runtime-one",
+      "composition",
+      "canvas2d",
+    );
+    expect(canvasKey).not.toBe(key);
+    expect(
+      passageBeatKey(scene, "runtime-one", "composition", "webgl2"),
+    ).not.toBe(canvasKey);
     scene.episodeStartFrame = 2000;
     scene.assets[0]!.path = "/another/location.svg";
     expect(passageBeatKey(scene, "runtime-one")).toBe(key);

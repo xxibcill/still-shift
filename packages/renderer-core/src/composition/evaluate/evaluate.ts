@@ -325,18 +325,26 @@ function baseState(
 
 class Evaluation {
   readonly root: Context;
+  readonly compiled: CompiledComposition;
+  readonly time: number;
+  readonly options: EvaluationOptions;
+  private readonly session: Session;
   private count = 0;
   private readonly cameras = new Map<number, ReturnType<typeof cameraMatrix>>();
   constructor(
-    readonly compiled: CompiledComposition,
-    readonly time: number,
-    readonly options: EvaluationOptions,
-    private readonly session: Session = {
+    compiled: CompiledComposition,
+    time: number,
+    options: EvaluationOptions,
+    session: Session = {
       history: new Map(),
       signals: new Map(),
       steps: 0,
     },
   ) {
+    this.compiled = compiled;
+    this.time = time;
+    this.options = options;
+    this.session = session;
     this.root = context(compiled, compiled.comp, time, compiled.comp.fps);
   }
 

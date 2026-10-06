@@ -34,6 +34,12 @@ export { importNarrationFile } from "./narration-import.ts";
 
 export { lintCompositionFile } from "./composition-lint.ts";
 
+export {
+  loadPassageCompositions,
+  validatePassageCompositions,
+  type PassageCompositions,
+} from "./passage-compositions.ts";
+
 export * from "./soundtrack-project-io.ts";
 
 export * from "./soundtrack-render.ts";

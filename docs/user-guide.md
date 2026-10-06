@@ -659,6 +659,67 @@ For contributors: when a user-visible feature changes, update this guide with
 its entry point, required inputs, availability and limits. Keep detailed contracts
 in the linked implementation references; check catalog counts against source.
 
+### Render and inspect passages through compositions
+
+Use `pnpm story:passage --plan <plan.json> --output-dir <fresh-directory> --silent
+--renderer composition` to compile each story beat to `composition-1` before export.
+Add `--backend webgl2` for the WebGL2 backend; Canvas 2D is the default. Narration,
+sound cues, frame ranges, cancellation/resume and passage handoffs use the existing
+passage pipeline. Choose a fresh output directory when changing renderer/backend.
+
+For the matching Lab preview, open `passage.html?renderer=composition` (or add
+`&backend=webgl2`). Beat seeking and editing retain their existing controls. The
+compiled beat composition is retained in the passage cache for inspection.
+WebGL passage preview shares two renderers across the beats, retaining separate
+picture canvases for transitions. Long passages and edits do not allocate one GPU
+context per beat; replaced previews release their contexts.
+
+### Use a native composition as a passage beat's picture
+
+Create a companion JSON map, for example `{ "reset": "native-beat.json" }`, then
+add `--composition-beats <map.json>` to `story:passage --renderer composition`.
+Paths are relative to the map. The map and its pictures are validated before any
+output is written, including with `--prepare-only`. The picture file must match the resolved beat's size,
+frame rate and final source duration. Write native camera/subject continuity into
+that file; implicit story carry at a native boundary is rejected. The story template
+continues to hold narrative and cue metadata, while the native file owns its visuals.
+Retain the companion map, picture files and their assets alongside the story workspace;
+the existing workspace packager exports the story plan/templates separately.
+
+For matching passage preview, use
+`passage.html?renderer=composition&composition-beats=<workspace-map-path>`.
+Native layers appear in the state inspector; edit their motion in the composition
+file or composition inspector. Saved Lab workspaces retain the loaded native data.
+The acceptance example is `benchmarks/fixtures/composition/ce4a/native-beats.json`.
+
+Map narrative authority explicitly in the native picture:
+
+```json
+{
+  "metadata": {
+    "passage": {
+      "cueMarkers": { "strain": "strain" },
+      "eventMarkers": { "shared-strain": "shared-strain" },
+      "subjectLayers": {
+        "house-a": "story-content/house-a",
+        "house-b": "story-content/house-b"
+      }
+    }
+  }
+}
+```
+
+Root markers must match the narration cue frames and linked event windows. A sound
+anchored to a beat event also needs that event in `eventMarkers`; native pictures
+never inherit template event timing for sound effects. Layer
+paths may point into an adapted story precomp; share its assets with the containing
+composition. The native beat fixture demonstrates this with a new blend overlay.
+Map focal and evidence nodes, every incoming handoff target and every outgoing
+handoff source. Native entering subjects must be invisible at frame zero; exiting
+subjects must be invisible at the outgoing beat's last passage frame, before its
+transition tail. These checks include precomp instance clocks and host visibility.
+Missing mappings and unsupported legacy acting tracks return a diagnostic.
+
 ## Saved soundtrack layers
 
 CE16's optional [soundtrack guide](./soundtrack-project.md) adds named tracks,

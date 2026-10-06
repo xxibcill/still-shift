@@ -1,4 +1,9 @@
 import {
+  evaluateComp,
+  validatePassageCompositions,
+  type PassageCompositions,
+} from "../../../packages/renderer-core/src/index.ts";
+import {
   drawStoryTransition,
   isStoryTransition,
 } from "../../../packages/renderer-core/src/story-transition.ts";
@@ -29,6 +34,7 @@ import {
 } from "../../../packages/renderer-core/src/story-vertical.ts";
 import {
   passageDiagnostics,
+  PassageError,
   type PassageDiagnostic,
 } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
 import { evaluatePreparedNode } from "../../../packages/renderer-core/src/prepared-scene.ts";
@@ -55,6 +61,7 @@ const beatSelect = el<HTMLSelectElement>("beat"),
   nodeSelect = el<HTMLSelectElement>("node");
 let editor: ReturnType<typeof createPassageEditor> | undefined;
 let templates = new Map<string, PassageTemplate>();
+let compositions: PassageCompositions = {};
 let verticalDiagnostics: PassageDiagnostic[] = [];
 let previews: ReadyBeat[] = [],
   frame = 0,
@@ -70,7 +77,10 @@ const errors = (error: unknown, failedEdit?: FailedEdit) => {
   host.replaceChildren();
   for (const diagnostic of passageDiagnostics(error)) {
     const label = [
+      diagnostic.code,
       diagnostic.beat,
+      diagnostic.sourcePath,
+      diagnostic.path,
       diagnostic.node,
       diagnostic.event,
       diagnostic.message,
@@ -110,9 +120,9 @@ function installPreviews(ready: ReadyBeat[]) {
     formatSelect.value = first.height > first.width ? "vertical" : "landscape";
   slider.max = String(editor!.passage.frameCount - 1);
   frame = Math.min(frame, editor!.passage.frameCount - 1);
+  const selectedNode = nodeSelect.value;
   renderControls();
-  renderVerticalOverrideEditor();
-  renderMotionInspector();
+  renderInspector(selectedNode);
   show(frame);
   el("status").textContent =
     `${editor!.passage.plan.title} · ${editor!.passage.beats.length} beats · ${editor!.passage.frameCount} frames · ${editor!.passage.plan.fps} fps`;
@@ -135,7 +145,7 @@ function apply(change: (draft: PassagePlan) => void) {
         format: editor.format,
       });
       await audio.prepare(candidate);
-      const ready = await preparePreviews(candidate);
+      const ready = await preparePreviews(candidate, compositions);
       if (ticket !== generation) {
         ready.forEach((p) => p.preview.dispose());
         return;
@@ -293,25 +303,39 @@ function show(next: number) {
     renderInspector();
   }
   const node = ready.scene.nodes.find((n) => n.id === nodeSelect.value);
-  el("node-state").textContent = node
+  el("node-state").textContent = ready.nativeComposition
     ? JSON.stringify(
-        {
-          id: node.id,
-          frame: at.frame,
-          ...evaluatePreparedNode(ready.scene, node, at.frame),
-        },
+        evaluateComp(ready.nativeComposition, at.frame).layers.find(
+          (layer) => layer.id === nodeSelect.value,
+        ),
         null,
         2,
       )
-    : "Choose a node";
-  drawOverlays(overlay, ready.scene, at.frame, {
-    showSafe: el<HTMLInputElement>("show-safe").checked,
-    showBounds: el<HTMLInputElement>("show-bounds").checked,
-    showDiagnostics: el<HTMLInputElement>("show-diagnostics").checked,
-    selectedNode: nodeSelect.value,
-    selectedBeat: editor.passage.beats[Number(beatSelect.value)]!.id,
-    diagnostics: editor.passage.diagnostics,
-  });
+    : node
+      ? JSON.stringify(
+          {
+            id: node.id,
+            frame: at.frame,
+            ...evaluatePreparedNode(ready.scene, node, at.frame),
+          },
+          null,
+          2,
+        )
+      : "Choose a node";
+  drawOverlays(
+    overlay,
+    ready.scene,
+    at.frame,
+    {
+      showSafe: el<HTMLInputElement>("show-safe").checked,
+      showBounds: el<HTMLInputElement>("show-bounds").checked,
+      showDiagnostics: el<HTMLInputElement>("show-diagnostics").checked,
+      selectedNode: nodeSelect.value,
+      selectedBeat: editor.passage.beats[Number(beatSelect.value)]!.id,
+      diagnostics: editor.passage.diagnostics,
+    },
+    ready.nativeComposition,
+  );
   for (const mark of document.querySelectorAll<HTMLElement>(".track-mark"))
     mark.classList.toggle(
       "active",
@@ -379,8 +403,20 @@ function renderControls() {
   refreshVerticalDiagnostics();
   controls.renderControls(editor!, templates, verticalDiagnostics);
 }
-function renderInspector() {
+function renderInspector(selectedNode = nodeSelect.value) {
   controls.renderInspector(editor!, templates);
+  const native = previews[Number(beatSelect.value)]?.nativeComposition;
+  if (native)
+    nodeSelect.replaceChildren(
+      ...native.layers.map((layer) => {
+        const option = document.createElement("option");
+        option.value = layer.id;
+        option.textContent = `${layer.id} (${layer.type})`;
+        return option;
+      }),
+    );
+  if ([...nodeSelect.options].some((option) => option.value === selectedNode))
+    nodeSelect.value = selectedNode;
   renderVerticalOverrideEditor();
   renderMotionInspector();
 }
@@ -433,7 +469,7 @@ function updateTemplates(replacements: ReadonlyMap<string, PassageTemplate>) {
         { format: owner.format },
       );
       await audio.prepare(candidate);
-      const ready = await preparePreviews(candidate);
+      const ready = await preparePreviews(candidate, compositions);
       if (ticket !== generation || editor !== owner) {
         ready.forEach((preview) => preview.preview.dispose());
         return false;
@@ -509,7 +545,7 @@ function renderMotionInspector() {
   const index = Number(beatSelect.value),
     ready = previews[index],
     beat = editor?.passage.beats[index];
-  if (!ready || !beat) return;
+  if (!ready || !beat || ready.nativeComposition) return;
   const tools = createMotionTools(
     beat.scene,
     (local) => {
@@ -524,6 +560,7 @@ async function loadPacket(
   packet: {
     plan: unknown;
     templates: Record<string, unknown>;
+    compositions?: PassageCompositions;
   },
   request: number,
 ) {
@@ -541,13 +578,18 @@ async function loadPacket(
     nextTemplates,
     { format: "landscape" },
   );
+  const native = validatePassageCompositions(
+    nextEditor.passage,
+    packet.compositions,
+  );
   await audio.prepare(nextEditor.passage);
-  const ready = await preparePreviews(nextEditor.passage);
+  const ready = await preparePreviews(nextEditor.passage, native);
   if (ticket !== generation || request !== loadRequest) {
     ready.forEach((p) => p.preview.dispose());
     return;
   }
   templates = nextTemplates;
+  compositions = native;
   editor = nextEditor;
   frame = 0;
   beatSelect.value = "0";
@@ -563,16 +605,17 @@ async function loadPath() {
   try {
     const response = await fetch(
       "/passage-api/load?path=" +
-        encodeURIComponent(el<HTMLInputElement>("plan-path").value),
+        encodeURIComponent(el<HTMLInputElement>("plan-path").value) +
+        (new URLSearchParams(location.search).get("composition-beats")
+          ? "&compositionBeats=" +
+            encodeURIComponent(
+              new URLSearchParams(location.search).get("composition-beats")!,
+            )
+          : ""),
     );
     const packet = await response.json();
     if (request !== loadRequest) return;
-    if (!response.ok)
-      throw new Error(
-        packet.diagnostics
-          .map((d: { message: string }) => d.message)
-          .join("\n"),
-      );
+    if (!response.ok) throw new PassageError(packet.diagnostics);
     await loadPacket(packet, request);
   } catch (error) {
     if (request !== loadRequest) return;
@@ -644,12 +687,7 @@ openWorkspace.onchange = async () => {
       });
       const prepared = await response.json();
       if (request !== loadRequest) return;
-      if (!response.ok)
-        throw new Error(
-          prepared.diagnostics
-            .map((d: { message: string }) => d.message)
-            .join("\n"),
-        );
+      if (!response.ok) throw new PassageError(prepared.diagnostics);
       await loadPacket(prepared, request);
     }
   } catch (error) {
@@ -670,6 +708,7 @@ el("save-workspace").onclick = async () => {
       schemaVersion: "story-workspace-1",
       plan: owner.passage.plan,
       templates: Object.fromEntries(templates),
+      ...(Object.keys(compositions).length ? { compositions } : {}),
     });
 };
 for (const name of ["undo", "redo"] as const)
@@ -682,7 +721,7 @@ for (const name of ["undo", "redo"] as const)
       try {
         editor[name]();
         await audio.prepare(editor.passage);
-        const ready = await preparePreviews(editor.passage);
+        const ready = await preparePreviews(editor.passage, compositions);
         if (ticket === generation) installPreviews(ready);
         else ready.forEach((p) => p.preview.dispose());
       } catch (error) {
@@ -721,7 +760,7 @@ formatSelect.onchange = () => {
         format: requested,
       });
       await audio.prepare(candidate);
-      const ready = await preparePreviews(candidate);
+      const ready = await preparePreviews(candidate, compositions);
       if (ticket !== generation) {
         ready.forEach((p) => p.preview.dispose());
         return;
@@ -814,6 +853,7 @@ el("play").onclick = async () => {
         editor.passage,
         frame,
         el<HTMLInputElement>("sound-effects-enabled").checked,
+        compositions,
       ))
     )
       return;
@@ -885,6 +925,7 @@ el("soundtrack-load").onclick = async () => {
     );
     const packet = await loaded.json();
     if (!loaded.ok) throw new Error(packet.error?.message);
+    validatePassageCompositions(owner.passage, compositions, packet.project);
     const rendering = await fetch("/soundtrack-api/render", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -909,6 +950,7 @@ el("soundtrack-load").onclick = async () => {
       bytes,
       result.manifest.files.master.sha256,
       owner.passage,
+      compositions,
     );
     if (!attached || editor !== owner || request !== soundtrackRequest) return;
     el("soundtrack-status").textContent =

@@ -36,6 +36,7 @@ export {
 } from "./story-template.ts";
 export {
   PassageError,
+  passageError,
   passageDiagnostics,
   type PassageDiagnostic,
 } from "./passage-diagnostics.ts";
@@ -123,5 +124,10 @@ export {
   type MotionLintCode,
 } from "./story-quality.ts";
 export { analyzeRenderedCompositionQuality } from "./composition/quality-render.ts";
+
+export {
+  validatePassageCompositions,
+  type PassageCompositions,
+} from "./passage-compositions.ts";
 
 export * from "./soundtrack-edits.ts";

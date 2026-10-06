@@ -19,6 +19,10 @@ import type { PassagePlan } from "../../packages/scene-contract/src/story-author
 import type { StoryScene } from "../../packages/scene-contract/src/story.ts";
 
 const run = promisify(execFile);
+const renderer = process.argv.includes("--composition")
+  ? "composition"
+  : "legacy";
+const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
 const output = await mkdtemp(join(tmpdir(), "still-shift-authoring-"));
 console.log("Authoring verification artifacts: " + output);
 const planPath = resolve(
@@ -31,11 +35,14 @@ const render = async (name: string, prepared = passage, narration?: string) => {
   await writePreparedPassage(directory, prepared);
   const report = await renderStoryPassage(directory, prepared, narration, {
     cacheDirectory,
+    renderer,
+    backend,
   });
   return { directory, report };
 };
 const baseline = await render("baseline");
 assert.equal(baseline.report.frameCount, 576);
+assert.equal(baseline.report.renderer, renderer);
 assert.equal(baseline.report.cache.filter((c) => c.reused).length, 0);
 const cached = await render("cached");
 assert.equal(cached.report.cache.filter((c) => c.reused).length, 3);
@@ -73,6 +80,8 @@ const previewDirectory = join(output, "range");
 await writePreparedPassage(previewDirectory, passage);
 const range = await renderStoryPassage(previewDirectory, passage, undefined, {
   cacheDirectory,
+  renderer,
+  backend,
   range: { start: 180, end: 204 },
 });
 assert.equal(range.frameCount, 24);
@@ -84,6 +93,8 @@ const controller = new AbortController();
 await assert.rejects(
   renderStoryPassage(cancelledDirectory, passage, undefined, {
     cacheDirectory,
+    renderer,
+    backend,
     signal: controller.signal,
     onProgress: (progress) => {
       if (progress.stage === "reused") controller.abort();
@@ -100,7 +111,7 @@ const resumed = await renderStoryPassage(
   cancelledDirectory,
   passage,
   undefined,
-  { cacheDirectory, resume: true },
+  { cacheDirectory, renderer, backend, resume: true },
 );
 assert.ok(resumed.cache.every((c) => c.reused));
 const narration = join(output, "narration.wav");
@@ -142,6 +153,8 @@ const portableReport = await renderStoryPassage(
   join(relocatedDirectory, workspace.narration!),
   {
     cacheDirectory: join(output, "portable-cache"),
+    renderer,
+    backend,
   },
 );
 assert.ok(portableReport.cache.every((c) => !c.reused));
@@ -209,7 +222,9 @@ try {
     base + "passage-api/load?path=" + encodeURIComponent("/etc/passwd"),
   );
   assert.equal(forbidden.status(), 400);
-  await page.goto(base + "passage.html");
+  await page.goto(
+    base + `passage.html?renderer=${renderer}&backend=${backend}`,
+  );
   await page.waitForFunction(() =>
     document.querySelector("#status")?.textContent?.includes("576 frames"),
   );

@@ -7,10 +7,15 @@ import {
   type StoryScene,
 } from "@still-shift/scene-contract";
 import { compileStoryScene, type StoryRenderScene } from "../../story-scene.ts";
-import { evaluatePreparedNode } from "../../prepared-scene.ts";
+import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import { compileStoryPathGeometry } from "./story-path.ts";
-import { params, preparedBaseLayer, preparedNodeLayer } from "./prepared.ts";
+import {
+  params,
+  preparedBaseLayer,
+  preparedNodeLayer,
+  type Samples,
+} from "./prepared.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { loadPreparedFonts } from "../../prepared-fonts.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
@@ -34,6 +39,7 @@ import { compileAppearance } from "./appearance.ts";
 import { componentTextLayer } from "./component-text.ts";
 import { compileAttachedPathGeometry } from "./commerce-path.ts";
 import { compileFamilyEffects } from "./effects.ts";
+import { compileFamilyExposure } from "./exposure.ts";
 
 function cameraLayer(
   scene: StoryRenderScene,
@@ -53,47 +59,14 @@ export type StoryCompositionOptions = {
   textLayout?: CompositionTextLayout;
 };
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.9.2";
+export const STORY_ADAPTER_VERSION = "story-composition-0.10.0";
 function checkSupported(scene: StoryScene) {
-  const unsupported = (path: string, feature: string): never =>
-    passageError(
-      "comp-adapter-unsupported",
-      `${feature} is not supported by the first CE4a adapter slice`,
-      { path },
-    );
   if (scene.frameCount > COMPOSITION_LIMITS.maxKeys)
     passageError(
       "comp-adapter-limit",
       `The first story adapter bakes at most ${COMPOSITION_LIMITS.maxKeys} frames`,
       { path: "frameCount" },
     );
-  if (scene.effects?.some((effect) => effect.type === "motion-blur"))
-    unsupported("effects", "Motion blur");
-  scene.nodes.forEach((node, i) => {
-    const path = `nodes[${i}]`;
-    if (
-      node.parent &&
-      scene.nodes.find((n) => n.id === node.parent)?.type !== "group"
-    )
-      unsupported(`${path}.parent`, "Parenting to drawable nodes");
-    if (node.type === "text" && !scene.typography) {
-      for (const field of [
-        "style",
-        "spans",
-        "decorations",
-        "transition",
-        "transitions",
-        "locale",
-        "anchor",
-        "wrap",
-        "orphanFraction",
-        "feather",
-        "lineOverlap",
-      ] as const)
-        if (node[field] !== undefined)
-          unsupported(`${path}.${field}`, `Text ${field}`);
-    }
-  });
 }
 
 /** Compile a story recipe to data. Rendering never invokes the family scene evaluator. */
@@ -119,16 +92,21 @@ export function storyToComposition(
   validateComponentAnnotations(scene);
   const components = componentCapabilities(scene.componentData);
   const layers: CompositionLayer[] = [];
+  const exposure = compileFamilyExposure(scene);
+  const times =
+    exposure?.times ??
+    Array.from({ length: scene.frameCount }, (_, frame) => frame);
   const ids = new Set(scene.nodes.map((n) => n.id));
   const visit = (parent: string | undefined) => {
     for (const node of scene.nodes.filter((n) => n.parent === parent)) {
-      const samples = Array.from({ length: scene.frameCount }, (_, frame) =>
-        evaluatePreparedNode(scene, node, frame),
+      const samples: Samples = times.map((time) =>
+        evaluatePreparedNodeAtTime(scene, node, time),
       );
+      if (exposure) samples.times = times;
       const appearance = compileAppearance(scene, node, samples);
       const componentGeometry =
         node.type === "path"
-          ? compileAttachedPathGeometry(scene, node)
+          ? compileAttachedPathGeometry(scene, node, exposure?.times)
           : undefined;
       let layer: CompositionLayer = {
         ...(node.type === "text" && scene.typography
@@ -140,7 +118,7 @@ export function storyToComposition(
                 : {}),
               geometry:
                 node.type === "path"
-                  ? compileStoryPathGeometry(scene, node)
+                  ? compileStoryPathGeometry(scene, node, exposure?.times)
                   : undefined,
             })),
         ...cameraLayer(scene, node),
@@ -200,7 +178,11 @@ export function storyToComposition(
             ...preparedBaseLayer(scene, node, samples),
             ...cameraLayer(scene, node),
           };
-          const geometry = compileStoryPathGeometry(scene, node);
+          const geometry = compileStoryPathGeometry(
+            scene,
+            node,
+            exposure?.times,
+          );
           layers.push(
             withMotionPath(scene, node, {
               ...base,
@@ -280,7 +262,12 @@ export function storyToComposition(
       mode: mask.invert ? "alpha-inverted" : "alpha",
     };
   }
-  compileFamilyEffects(scene, layers, roots);
+  compileFamilyEffects(scene, layers, roots, exposure?.times);
+  if (exposure)
+    for (const layer of layers) {
+      layer.sampleTimes = times;
+      layer.motionBlur = true;
+    }
   const { markers, cueIds } = compileAdapterMarkers([
     ...scene.motionEvents.map((event) => event.window),
     ...(scene.typography
@@ -307,6 +294,7 @@ export function storyToComposition(
       ...(scene.fonts ?? []).map((a) => ({ ...a, type: "font" as const })),
     ],
     layers: layers.reverse(),
+    ...(exposure ? { motionBlur: exposure.motionBlur } : {}),
     ...(scene.typography
       ? {
           ...(scene.textStyles ? { textStyles: scene.textStyles } : {}),

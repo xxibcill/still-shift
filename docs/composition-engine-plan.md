@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-10-05
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a and CE6 feature work incomplete. WebGL performance acceptance is deferred to a future version (CE6-P, user approved 2026-10-03). Q1 and Q3 decided
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE6 feature work incomplete. WebGL performance acceptance is deferred to a future version (CE6-P, user approved 2026-10-03). Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -364,7 +364,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE1   | `composition-1` contract and property paths     | A      | CE0                  | xxibcill (Claude Code) | `codex/composition-ce1`             | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
 | CE2   | Pure composition evaluator                      | A      | CE1                  | Codex                  | `codex/composition-ce2`             | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
 | CE3   | Render graph and Canvas 2D reference backend    | A      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce3`             | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
-| CE4a  | Story adapter with visual parity                | A      | CE3                  | Codex                  | `codex/composition-ce4`             | `[~]`  | [CE4a start record](#ce4a-start-record-2026-10-02)                                 |
+| CE4a  | Story adapter with visual parity                | A      | CE3                  | Codex                  | `codex/composition-ce4a-completion` | `[x]`  | [Completion](#ce4a-completion-record-2026-10-05)                                   |
 | CE4b  | Commerce and reusable-component adapter         | A      | CE3, CE6 slices      | Codex                  | `codex/composition-ce4b`            | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
 | CE4c  | Cinematic adapter                               | A      | CE3, CE8             |                        |                                     | `[ ]`  |                                                                                    |
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
@@ -1280,22 +1280,62 @@ General rules for all adapters:
 
 - [x] Add content providers to the contract as a layer type with a versioned provider
       id, with schema, reference and diagnostics as in CE1.
-- [ ] Decide how a family scene uses a composition-only feature (Q2 freezes the
-      family's visual vocabulary): a passage beat that is a `composition-1` file, a
-      story scene that references a `composition-1` precomp, or both. Decide with the
-      first real case and record it in the decision log.
-- [ ] Map roots, groups (to `group` layers with `clip`), images with states and state blends,
+- [x] Decide how a family scene uses a composition-only feature: a passage beat
+      references a native `composition-1` file. Mix adapted story content inside
+      that composition using native precomps. Decision made 2026-10-05 under owner
+      delegation; see [composition beat authoring](#composition-beat-authoring-decision).
+- [x] Implement native composition beat authoring and mixed story/composition passage
+      acceptance as specified below. The decision above does not mark delivery complete.
+- [x] Map roots, groups (to `group` layers with `clip`), images with states and state blends,
       paths (ink/brush line styles as content providers until CE5), text and text
       containers, flows, props attached to hand anchors, poses and actions.
-- [ ] Map the story camera to a camera or null-layer parent (2D until CE8), including
+- [x] Map the story camera to a camera or null-layer parent (2D until CE8), including
       jolts, start/end tangents and ease flags.
-- [ ] Map motion-craft layers, signals, drivers, constraints, intent presets and text
+- [x] Map motion-craft layers, signals, drivers, constraints, intent presets and text
       animators to property-path form.
-- [ ] Preserve cue markers and qualification metadata as markers/layer metadata.
-- [ ] Passage rendering compiles each beat to a composition; handoffs remain in the
+- [x] Preserve cue markers and qualification metadata as markers/layer metadata.
+- [x] Passage rendering compiles each beat to a composition; handoffs remain in the
       passage engine for now.
-- [ ] Parity for all story fixtures in the CE0 set; `story-continuous-quality.ts`
+- [x] Parity for all story fixtures in the CE0 set; `story-continuous-quality.ts`
       measurements unchanged.
+
+#### Composition beat authoring decision
+
+**Decided 2026-10-05 by Codex under explicit owner delegation:** a passage may mix
+existing story/template beats with beats sourced from a `composition-1` file.
+The passage owns sequence timing, narration, cues, evidence/qualification and
+handoffs; the composition owns the beat's visual layers and motion.
+
+For an existing story that needs new visual features, compile it with the story
+adapter and include the result as a native precomp in a containing composition.
+Add shapes, effects, depth-image layers or other implemented composition features
+there. The containing composition becomes the passage beat. This uses one native
+nesting model and preserves Q2's freeze on family visual vocabulary; do not add
+a composition/precomp node type to the legacy story scene schema in CE4a.
+
+**Implementation and acceptance in CE4a:**
+
+- [x] Add an explicit, versioned or backward-compatible beat-source discriminator
+      for story/template versus composition input. Preserve existing passage files;
+      resolve referenced composition/assets relative to their source, verify hashes
+      and include all source dependencies and renderer versions in cache identity.
+- [x] Validate beat duration, fps and output dimensions against the composition;
+      require explicit adaptation or return structured diagnostics for mismatches.
+      Preserve cue/evidence metadata and provide explicit mappings to composition
+      markers/layers for handoffs and narration-linked timing. Unsupported legacy
+      actions or missing targets fail with diagnostics instead of being ignored.
+- [x] Compile both input kinds to the shared composition preview/export path while
+      retaining the passage's audio and handoff orchestration. Reference resolution
+      and story adaptation happen before frame evaluation; rendering consumes only
+      validated composition data and prepared assets.
+- [x] Verify a mixed story/composition passage and a composition beat containing an
+      adapted story precomp plus a native overlay/effect. Cover cue/handoff mapping,
+      narration sync, deterministic seeks, preview/export agreement, repeated export,
+      cache invalidation and missing/incompatible input diagnostics. Existing story
+      passages retain their established parity requirements.
+- [x] Document the supported authoring path in the reference/user guide and CLI
+      examples; expose it through CE10's builder/CLI and CE11's inspector as those
+      milestones land. Native composition beats remain a CE4a completion gate.
 
 ### CE4b — Commerce and reusable components
 
@@ -1370,6 +1410,49 @@ and results that applied when they were written.
 
 **Verification:** Family browser tests re-run on the composition path; baseline
 comparisons; the full `pnpm check`.
+
+### CE4a completion record (2026-10-05)
+
+- **Owner / branch:** Codex on `codex/composition-ce4a-completion`, from CE12 `0987396`.
+- **Delivered:** story shutter exposure uses shared bounded fractional clocks;
+  passage export and Lab compile adapted or native picture beats with explicit
+  cue/event/subject bindings. Companion maps preserve frozen family vocabulary,
+  narration, handoffs, cache recovery and relative source assets. Native pictures
+  match beat duration/fps/dimensions; unsupported acting and implicit carry fail.
+- **Correctness repair:** WebGL `0.36.3` preserves Canvas integer rounding for direct
+  vector image drawing and clipped coverage, while retaining bitmap blending for
+  ordinary rasterized images. The broader all-image experiment was rejected.
+- **Verification:** immutable `876814f` passes full `pnpm check` (1,464 unit, 46 runtime,
+  116 integration, 14 depth tests and all browser gates), including 176 frozen
+  items / 36,061 frames. Both Canvas and WebGL story matrices cover 69 cases /
+  14,086 frames; Canvas timing passes and WebGL correctness passes. Fourteen selected
+  WebGL cases export byte-identical MP4s twice. Mixed native passages pass 576 frames
+  on each backend, narration, cache/relocation, diagnostics and Lab pixel/seek checks.
+  Fourteen continuous-story quality reports match CE12 exactly.
+- **Performance:** the unchanged strict WebGL matrix exits nonzero for 51 timing
+  overruns; these remain deferred to CE6-P. No pixel tiers, baselines or assertions
+  changed. Canvas worst historical ratio is 1.1908×.
+- **PR:** [#35](https://github.com/xxibcill/still-shift/pull/35), stacked on CE12.
+- **Next:** CE10 begins on its own branch after the milestone PR. Broader CE7 time
+  controls remain at their approved sequence position; its prerequisite slice is
+  recorded below. Native builder/inspector exposure follows in CE10/CE11.
+- **Evidence:** [completion results](./composition-ce4a-completion-results.json).
+
+### CE4a PR #35 conflict integration (2026-10-06)
+
+Integrate the current CE12 remote base into CE4a head `91f9c54` without rewriting
+shared history. Native beat maps/bindings, fractional story exposure, renderer
+selection and cached composition copies remain intact alongside CE16 saved
+soundtracks and the newer CE12/CE9 lint/expression/bake repairs. Public narrow
+entrypoints, all pnpm commands/test groups and both documentation histories are
+retained. Both native-passage backends now verify that saved soundtrack assembly
+adds audio, reuses picture clips and preserves decoded native picture frames.
+
+[Conflict-resolution evidence](./pr-35-conflict-resolution-results.json) records
+focused local verification and frozen baseline checks. Full `pnpm check`, deferred
+CE6-P timing matrices and human listening/audiovisual QA were not rerun. No pixel
+thresholds, timing assertions or baseline files are changed. Owner review and merge
+remain pending; GitHub Actions remains disabled.
 
 ### CE4a start record (2026-10-02)
 
@@ -3189,6 +3272,16 @@ correctly.
 **Verification:** Analytic tests (blur extent vs velocity × shutter), subframe
 determinism, performance budget recorded per sample count.
 
+### CE4a prerequisite slice (2026-10-05)
+
+Story adapters now share the bounded family shutter clock, bake fractional
+transforms/appearances/connectors and preserve authored flow sample time. The
+192-frame access-constraint exposure case passes pixel/seek/repeated-export checks
+on both backends. The native and full local gates pass; WebGL timing remains CE6-P.
+This delivers the CE4a prerequisite only. Adaptive samples and the remaining time
+controls above stay open until the CE7 milestone branch.
+[Evidence](./composition-ce4a-completion-results.json).
+
 **Completion record:** _to be filled in._
 
 ---
@@ -3708,8 +3801,8 @@ recorded.
   describe policy, diagnostic fields, command and timeline flow. No output or
   baseline changes; renderer versions unchanged. CE6-P and CE9-F1 remain deferred.
 
-**Completion record:** CE12 is complete; CE10 still needs CE4a's remaining story
-feature and parity acceptance. No push or PR was requested.
+**Completion record:** CE12 and CE4a are complete; CE10's prerequisites are delivered.
+See the CE12 and CE4a completion records above for verification evidence.
 
 ---
 

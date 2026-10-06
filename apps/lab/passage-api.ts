@@ -2,6 +2,10 @@ import { readFile, realpath } from "node:fs/promises";
 import { resolve, relative, extname, dirname } from "node:path";
 import type { Plugin } from "vite";
 
+import {
+  loadPassageCompositions,
+  type PassageCompositions,
+} from "../../packages/animation-engine/src/passage-compositions.ts";
 import { prepareStoryPassageInput } from "../../packages/animation-engine/src/story-passage-io.ts";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { readJsonBody } from "./json-body.ts";
@@ -15,7 +19,10 @@ async function workspaceFile(path: string) {
     throw new Error("Passage files must be inside this workspace");
   return actual;
 }
-function packet(passage: Awaited<ReturnType<typeof prepareStoryPassageInput>>) {
+function packet(
+  passage: Awaited<ReturnType<typeof prepareStoryPassageInput>>,
+  compositions: PassageCompositions = {},
+) {
   const file = passage.inputs.plan.path;
   for (const beat of passage.plan.beats)
     beat.template = resolve(dirname(file), beat.template);
@@ -25,7 +32,12 @@ function packet(passage: Awaited<ReturnType<typeof prepareStoryPassageInput>>) {
       value,
     ]),
   );
-  return { plan: passage.plan, templates, diagnostics: passage.diagnostics };
+  return {
+    plan: passage.plan,
+    templates,
+    compositions,
+    diagnostics: passage.diagnostics,
+  };
 }
 export const passageApi = (): Plugin => ({
   name: "still-shift-passage-authoring",
@@ -94,7 +106,15 @@ export const passageApi = (): Plugin => ({
           workspaceFile,
         );
         response.setHeader("Content-Type", "application/json");
-        response.end(JSON.stringify(packet(passage)));
+        const map = url.searchParams.get("compositionBeats");
+        const compositions = map
+          ? await loadPassageCompositions(
+              await workspaceFile(map),
+              passage,
+              workspaceFile,
+            )
+          : {};
+        response.end(JSON.stringify(packet(passage, compositions)));
       } catch (error) {
         response.statusCode = 400;
         response.setHeader("Content-Type", "application/json");

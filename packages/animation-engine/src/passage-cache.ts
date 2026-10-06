@@ -20,8 +20,16 @@ import {
 } from "node:fs/promises";
 import { constants } from "node:fs";
 import { join, resolve, dirname } from "node:path";
+import type { Composition } from "@still-shift/scene-contract";
+import { validateComposition } from "@still-shift/scene-contract";
 import type { StoryScene } from "../../scene-contract/src/story.ts";
 import { AnimationEngineError } from "../../scene-contract/src/errors.ts";
+import {
+  STORY_ADAPTER_VERSION,
+  COMPOSITION_EVALUATOR_VERSION,
+  compositionRendererVersion,
+  type CompositionBackend,
+} from "@still-shift/renderer-core";
 import { compileStoryScene } from "../../renderer-core/src/story-scene.ts";
 
 const CACHE_LOCK_WAIT_MS = 30 * 60_000;
@@ -43,7 +51,12 @@ export function stableJson(value: unknown): string {
     );
   return JSON.stringify(value);
 }
-export function passageBeatKey(scene: StoryScene, runtime: string) {
+export function passageBeatKey(
+  scene: StoryScene,
+  runtime: string,
+  renderer: "legacy" | "composition" = "legacy",
+  backend: CompositionBackend = "canvas2d",
+) {
   const normalized = structuredClone(scene);
   delete normalized.episodeStartFrame;
   if (normalized.format === "landscape") delete normalized.format;
@@ -53,7 +66,36 @@ export function passageBeatKey(scene: StoryScene, runtime: string) {
     stableJson({
       version: "passage-cache-1",
       scene: normalized,
-      renderer: compileStoryScene(scene).rendererVersion,
+      renderer:
+        renderer === "composition"
+          ? {
+              adapter: STORY_ADAPTER_VERSION,
+              evaluator: COMPOSITION_EVALUATOR_VERSION,
+              backend: compositionRendererVersion(backend),
+            }
+          : compileStoryScene(scene).rendererVersion,
+      runtime,
+      encoder: "libx264:veryfast:crf18:yuv420p:png_pipe",
+    }),
+  );
+}
+
+/** Native picture identity is portable across asset relocation and separate from family clips. */
+export function passageCompositionKey(
+  composition: Composition,
+  runtime: string,
+  backend: CompositionBackend = "canvas2d",
+) {
+  const result = validateComposition(composition);
+  if (!result.ok) throw new Error("Invalid native passage composition");
+  const normalized = structuredClone(result.composition);
+  for (const asset of normalized.assets) asset.path = asset.sha256;
+  return passageHash(
+    stableJson({
+      version: "composition-passage-cache-1",
+      composition: normalized,
+      renderer: compositionRendererVersion(backend),
+      evaluator: COMPOSITION_EVALUATOR_VERSION,
       runtime,
       encoder: "libx264:veryfast:crf18:yuv420p:png_pipe",
     }),
@@ -109,6 +151,9 @@ export async function passageRenderRuntime(
     await visit(directory);
   files.push(
     "packages/animation-engine/src/prepared-animation-engine.ts",
+    "packages/animation-engine/src/composition-compile.ts",
+    "packages/animation-engine/src/composition-render.ts",
+    "packages/animation-engine/src/composition-source.ts",
     "toolchain.json",
     "pnpm-lock.yaml",
   );

@@ -1,0 +1,1577 @@
+{
+  "milestone": "CE4a",
+  "status": "complete",
+  "date": "2026-10-05",
+  "branch": "codex/composition-ce4a-completion",
+  "base": "0987396",
+  "scope": "Complete CE4a before CE10 in the owner-approved execution sequence",
+  "audit": {
+    "parenting": "Story validation already requires group parents; no new family vocabulary is needed.",
+    "text": "Typography fields require type-1 through schema semantic validation; native shaped text is already delivered by CE4b.",
+    "delivered": "Images/states, clipped groups, path/flow providers, motion craft baking, native typography, camera, markers, effects and reusable component beat compilation exist."
+  },
+  "slices": [
+    {
+      "name": "Story shutter exposure prerequisite from CE7",
+      "changes": "Share bounded family exposure compilation; bake fractional transform, appearance and connector samples; retain authored flow source time; mark complete layer stacks for exposure.",
+      "verification": [
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-story-adapter.test.ts tests/unit/composition-story-content.test.ts tests/unit/composition-story-effects.test.ts tests/unit/composition-commerce-adapter.test.ts tests/unit/composition-exposure.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 71
+        },
+        {
+          "command": "pnpm test:browser:composition-story-fixtures --only continuous-access-constraint --variant motion-blur --exports",
+          "status": "passed",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "ratio": 0.8897388004450808,
+          "repeatExports": "byte-identical"
+        },
+        {
+          "command": "pnpm test:browser:composition-story-fixtures --only continuous-access-constraint --variant motion-blur --webgl --exports",
+          "status": "failed-deferred-timing",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "ratio": 1.3902522054054811,
+          "exports": "Not reached on this strict run; repeat with --keep-going."
+        },
+        {
+          "command": "pnpm test:browser:composition-story-fixtures --only continuous-access-constraint --variant motion-blur --webgl --exports --keep-going",
+          "status": "failed-deferred-timing",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "ratio": 1.3326573090601932,
+          "repeatExports": "byte-identical",
+          "seeks": "passed"
+        }
+      ],
+      "limits": "At most 2,000 distinct exposure samples; compiler reports comp-adapter-limit rather than truncating. CE7 remains incomplete.",
+      "referenceCorrection": "Compile source in the browser instead of JSON serializing compiled Float64Arrays: their lost length corrupted fractional flow interpolation in the old test reference. Original integer-frame baselines remain unchanged."
+    },
+    {
+      "name": "Composition passage export and preview",
+      "changes": "Optional composition renderer/backend for passage CLI and Lab; each beat compiles to composition-1; handoffs stay in the passage engine. Cache and resume identity include renderer/backend. Cached compositions remain inspectable beside encoded beat clips.",
+      "verification": [
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec vitest run tests/runtime/passage-cache.test.ts tests/runtime/passage-publication.test.ts tests/unit/passage-runtime-identity.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 18,
+          "sandboxRetry": "Initial sandbox blocked process identity ps; authorized local retry passes."
+        },
+        {
+          "command": "pnpm test:browser:passage:authoring --composition",
+          "status": "passed",
+          "frameCount": 576,
+          "comparisons": 9,
+          "assertions": [
+            "cache reuse",
+            "isolated edit",
+            "range export",
+            "cancellation/resume",
+            "narration",
+            "workspace relocation",
+            "Lab preview/export frame agreement",
+            "browser editing/recovery/playback/phone layout"
+          ],
+          "artifacts": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-authoring-Y227ZZ"
+        }
+      ]
+    },
+    {
+      "name": "Native picture beat companion map (CE4a/Q2)",
+      "changes": "CLI --composition-beats <map.json>, public load/validate APIs, renderer-core pure validation, native picture cache/provenance and matching Lab companion-map loading. Retains frozen family schemas and existing narrative plan.",
+      "verification": [
+        {
+          "command": "pnpm test:browser:composition-native-passage",
+          "status": "passed",
+          "frames": 192,
+          "checks": [
+            "cached native encoded clip equals standalone composition export",
+            "repeated assembled decoded frames agree",
+            "cache reuse",
+            "relocated map",
+            "Lab difference blend exact pixels",
+            "backward seeks"
+          ]
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/passage-compositions.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 9
+        },
+        {
+          "command": "pnpm build && pnpm check:boundaries && pnpm schema:check",
+          "status": "passed"
+        }
+      ],
+      "limits": [
+        "Native picture must match final dimensions/fps/source frame count, including any outgoing handoff tail.",
+        "Native boundary transforms are authored in the picture: reject implicit camera/subject carry.",
+        "Narrative template remains the authority for cue/evidence metadata; its visual edits and story quality report describe that template, not the native file. Native files use composition lint and inspector.",
+        "A companion map and its composition/assets are separately portable inputs; the existing story workspace packager does not absorb them."
+      ],
+      "rejectedTest": "Assembled decoded frames cannot equal the original clip exactly because passage assembly re-encodes using its existing libx264 fast path. Verify exact encoded native beat identity and independently deterministic assemblies instead."
+    },
+    {
+      "name": "Native narrative bindings and mixed passage acceptance",
+      "changes": "Explicit metadata.passage cueMarkers/eventMarkers/subjectLayers; validate exact narration-linked windows and resolved precomp-instance targets. Reject unsupported legacy acting and bad references/assets with structured diagnostics. Native picture fixture contains a baked adapted-story precomp and native difference-blend overlay.",
+      "verification": [
+        {
+          "command": "pnpm test:browser:composition-native-passage",
+          "status": "passed",
+          "frames": 576,
+          "checks": [
+            "mixed story/native passage",
+            "adapted story precomp plus native overlay",
+            "native cached clip byte-identical to standalone export",
+            "repeated decoded assembly identity",
+            "narration stream with unchanged picture cache",
+            "cue and event mappings",
+            "isolated picture edit invalidates only its clip",
+            "relocated composition/assets reuse cache",
+            "missing file, incompatible fps and asset checksum diagnostics",
+            "Lab native pixels and forward/backward seeks"
+          ]
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/passage-compositions.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 11
+        },
+        {
+          "command": "pnpm build; pnpm check:boundaries; targeted eslint",
+          "status": "passed"
+        }
+      ],
+      "rejectedTests": [
+        "An assertion initially matched a diagnostic code against the human Error.message. Corrected to assert PassageError.diagnostics[0].code; the loader already returned the expected structured diagnostic."
+      ],
+      "log": "benchmarks/results/ce4a-native-mixed-passage-retry.log"
+    },
+    {
+      "name": "Lab native source import repair",
+      "changes": "Separate readCompositionSource file/asset validation from loadComposition renderer preparation. Native loader uses narrow relative modules; runtime cache identity includes source loader. Public renderer-core/passage-compositions subpath keeps the new import across packages public; PassageError uses an explicit field for Node strip-only loading.",
+      "verification": [
+        {
+          "command": "pnpm exec vitest run tests/integration/narration-import-lab.test.ts tests/integration/passage-audio-lab.test.ts tests/integration/passage-lab.test.ts tests/integration/sfx-lab.test.ts tests/integration/story-acting-lab.test.ts --maxWorkers=2 --no-file-parallelism",
+          "status": "passed",
+          "suites": 5,
+          "tests": 25
+        },
+        {
+          "command": "pnpm build; targeted eslint",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec vitest run tests/integration/passage-lab.test.ts tests/unit/passage-compositions.test.ts --maxWorkers=2 --no-file-parallelism",
+          "status": "passed",
+          "tests": 25
+        }
+      ],
+      "log": "/private/tmp/ce4a-lab-loader-repair.log"
+    },
+    {
+      "name": "Companion-map dictionary key regression",
+      "changes": "Check raw companion-map beat IDs before schema parsing and use a null-prototype picture map. Unknown __proto__ input now returns comp-passage-beat instead of being discarded by the schema.",
+      "verification": [
+        {
+          "command": "targeted loadPassageCompositions unknown __proto__ key regression",
+          "status": "failed-first-fix",
+          "sandboxRetry": "Local passage font validation needs a localhost browser; default sandbox denied its listen and the authorized retry passes.",
+          "reason": "The null-prototype destination alone was insufficient: Zod had already discarded __proto__. The initial checkpoint recorded the result prematurely; this record corrects it."
+        },
+        {
+          "command": "pnpm build; targeted eslint and formatting",
+          "status": "passed"
+        },
+        {
+          "command": "targeted loadPassageCompositions raw unknown __proto__ key regression",
+          "status": "passed",
+          "result": "Unknown __proto__ beat rejects with comp-passage-beat"
+        }
+      ],
+      "integration": "The overlaid run imported the old loader before mutation and failed. A fresh immutable 8153549 run passes the regression inside the complete pnpm check."
+    },
+    {
+      "name": "Mixed native passage both-backend verification",
+      "changes": "Add --webgl to the mixed passage browser suite and the aggregate local gate; rendering, narration, standalone export and Lab use the selected backend. Runtime implementation remains at verified 8153549.",
+      "verification": [
+        {
+          "command": "pnpm build; targeted eslint and prettier",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm test:browser:composition-native-passage:webgl",
+          "status": "passed",
+          "commit": "894d313",
+          "backend": "webgl2",
+          "frames": 576,
+          "checks": [
+            "standalone encoded clip identity",
+            "deterministic assembled frames",
+            "narration with picture cache reuse",
+            "isolated cache edit",
+            "asset relocation",
+            "input diagnostics including raw __proto__ key",
+            "Lab exact native pixels and forward/backward seeks"
+          ],
+          "log": "benchmarks/results/ce4a-native-passage-webgl.log"
+        }
+      ],
+      "status": "passed"
+    }
+  ],
+  "pending": [],
+  "githubActionsEnabled": false,
+  "familyAcceptance": {
+    "command": "pnpm test:browser:composition-story-fixtures --keep-going",
+    "status": "passed",
+    "cases": 69,
+    "frames": 14086,
+    "pixelFailures": 0,
+    "stateFailures": 0,
+    "seekFailures": 0,
+    "timingFailures": 0,
+    "maxRatio": 1.190755684741614,
+    "log": "benchmarks/results/ce4a-story-canvas-matrix.log",
+    "worstTimingCase": "story/calibration-pan",
+    "maxChannelDelta": 2
+  },
+  "verificationAttempts": [
+    {
+      "command": "pnpm check (clean snapshot c4be533)",
+      "status": "failed-format",
+      "reason": "Own CE4a tracker row spacing; repaired in c64d3a8."
+    },
+    {
+      "command": "pnpm check (format-corrected snapshot)",
+      "status": "interrupted",
+      "reason": "Current plan requires mixed story-precomp/native acceptance and explicit bindings; stopped before completing tests to implement that coverage."
+    },
+    {
+      "command": "pnpm check (clean snapshot bd6a09d)",
+      "status": "failed-integration",
+      "passed": {
+        "unit": 1464,
+        "runtime": 46,
+        "integration": 91
+      },
+      "skippedIntegration": 25,
+      "reason": "Five Lab suites hit Node strip-only parameter-property syntax when the new native loader pulled the renderer public entrypoint into Vite configuration loading."
+    },
+    {
+      "command": "pnpm check (clean snapshot 5009097)",
+      "status": "interrupted",
+      "passed": {
+        "unit": 1464,
+        "runtime": 46,
+        "integration": 116,
+        "depth": 14
+      },
+      "browserPassed": ["depth", "vertical-image", "export", "golden"],
+      "reason": "Narrow loader repair used new private cross-package imports; replaced with a public renderer-core/passage-compositions export to honor plan boundaries before final closeout."
+    },
+    {
+      "command": "pnpm check (overlaid snapshot 08f9088)",
+      "status": "failed-native-map-regression",
+      "reason": "The repair overlay occurred after the child imported the old loader. The immutable fresh 8153549 run below verifies the raw-key repair; no mixed-snapshot result is accepted."
+    },
+    {
+      "command": "pnpm check (immutable tracked snapshot 8153549)",
+      "status": "passed",
+      "commit": "8153549",
+      "unit": 1464,
+      "runtime": 46,
+      "integration": 116,
+      "depth": 14,
+      "frozenBaselines": {
+        "items": 176,
+        "frames": 36061,
+        "status": "passed"
+      },
+      "log": "/private/tmp/ce4a-check-8153549.log"
+    },
+    {
+      "command": "pnpm check (immutable tracked snapshot876814f)",
+      "status": "passed",
+      "commit": "876814f",
+      "unit": 1464,
+      "runtime": 46,
+      "integration": 116,
+      "depth": 14,
+      "frozenBaselines": {
+        "items": 176,
+        "frames": 36061,
+        "status": "passed"
+      },
+      "includes": [
+        "Updated WebGL story image regression suite",
+        "576-frame mixed native-passage Canvas and WebGL suites",
+        "69-case Canvas story matrix and all legacy frozen baselines"
+      ],
+      "log": "/private/tmp/ce4a-full-876814f.log"
+    }
+  ],
+  "continuousQuality": {
+    "status": "passed",
+    "baseline": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ce12-port-check-547_96sa",
+    "method": "Exact analyzeStoryQuality continuous-policy results compared against the verified CE12 source snapshot; original fixtures and quality thresholds retained",
+    "cases": 14,
+    "records": [
+      {
+        "id": "story/continuous-unequal-margins",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 44,
+          "maxTextVelocity": 18.50597614752071,
+          "maxPanPixelsPerFrame": 0.6214895239665936,
+          "maxZoomPerFrame": 0.00022587133023699302,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "782a822b3eafc750a1ed29e97683da15f2f92662371da2920c1901877ecc38c0"
+      },
+      {
+        "id": "story/continuous-access-constraint",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 36,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0.4464226124653546,
+          "maxZoomPerFrame": 0.0001513830759396484,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "ffc8d67c8ec1b98bbf343802ab27cd20b59a8285686614c5bc125b0019ea12ae"
+      },
+      {
+        "id": "story/continuous-relationship-build",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 36,
+          "maxTextVelocity": 4.459569999488638,
+          "maxPanPixelsPerFrame": 0.6244249832977166,
+          "maxZoomPerFrame": 0.0002610391056663275,
+          "diagnostics": []
+        },
+        "diagnostics": 5,
+        "sha256": "754da914d44467a3ebeb10b443c27b1d1b6fd707c959996bcdb51e0d66162ef6"
+      },
+      {
+        "id": "story/continuous-evidence-boundary",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 22,
+          "maxTextVelocity": 10.84282916607269,
+          "maxPanPixelsPerFrame": 1.350433978145873,
+          "maxZoomPerFrame": 0.0006496786932903564,
+          "diagnostics": []
+        },
+        "diagnostics": 11,
+        "sha256": "b922170b3d1e8f3716df857fc8df3610769f275e91ae28e32953d9f1e514758b"
+      },
+      {
+        "id": "story/continuous-dated-system-break",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 30,
+          "maxTextVelocity": 9.57748713866746,
+          "maxPanPixelsPerFrame": 0.9086538832200936,
+          "maxZoomPerFrame": 0.00044642857142851433,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "f0bb81d2bdbf01585e05ae3f647e06d17a06d593ef708da68a8790f4ad63b22d"
+      },
+      {
+        "id": "story/continuous-category-swap",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 36,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0.6190661148757356,
+          "maxZoomPerFrame": 0.000263937655066826,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "5e93b5946c3b4570a52b4ef93aa7ce1b64d10b608ee9cc402c61981847f0384d"
+      },
+      {
+        "id": "story/continuous-motif-resolve",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 29,
+          "maxTextVelocity": 11.109266659164055,
+          "maxPanPixelsPerFrame": 0.5459314956658913,
+          "maxZoomPerFrame": 0.0002741465816979982,
+          "diagnostics": []
+        },
+        "diagnostics": 5,
+        "sha256": "ad46b76b3b109543a650ffd30cb8d3d580cb91407c97aabeadcd305095bbb729"
+      },
+      {
+        "id": "story/v013-unequal-margins",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 71,
+          "longestSemanticGap": 104,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0,
+          "maxZoomPerFrame": 0,
+          "diagnostics": [
+            {
+              "code": "frozen-run",
+              "nodes": [],
+              "frames": [121, 191],
+              "measured": 71,
+              "message": "71 frames have no compiled motion; the hard limit is 6."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [0, 104],
+              "measured": 104,
+              "message": "104 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [120, 191],
+              "measured": 71,
+              "message": "71 frames between action/response ends; the hard limit is 48."
+            }
+          ]
+        },
+        "diagnostics": 6,
+        "sha256": "b5687dd683ee508fddad673e0c4510f114dbef9fb0bb16a04184b195585392e0"
+      },
+      {
+        "id": "story/v013-access-constraint",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 77,
+          "longestSemanticGap": 77,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0,
+          "maxZoomPerFrame": 0,
+          "diagnostics": [
+            {
+              "code": "frozen-run",
+              "nodes": [],
+              "frames": [115, 191],
+              "measured": 77,
+              "message": "77 frames have no compiled motion; the hard limit is 6."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [40, 114],
+              "measured": 74,
+              "message": "74 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [114, 191],
+              "measured": 77,
+              "message": "77 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "label-in-motion-envelope",
+              "nodes": ["aperture-label", "side-b"],
+              "frames": [0, 0],
+              "measured": 1,
+              "message": "aperture-label intersects the full motion envelope of side-b; review optical clearance."
+            }
+          ]
+        },
+        "diagnostics": 7,
+        "sha256": "ec97f5b18771598ac9c3026702fb9e25397b6d73c90b47f65ef1e081b5757c46"
+      },
+      {
+        "id": "story/buffer-press-unequal-margins",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 28,
+          "maxTextVelocity": 11.565754448051266,
+          "maxPanPixelsPerFrame": 0.4594447972901102,
+          "maxZoomPerFrame": 5.765374331567763e-5,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "0980e16d1b762a2bb30c19c5da722d90302f154a1e6b168d4f17724370cf48b7"
+      },
+      {
+        "id": "story/v2-unequal-margins",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 44,
+          "maxTextVelocity": 18.50597614752071,
+          "maxPanPixelsPerFrame": 0.6214895239665936,
+          "maxZoomPerFrame": 0.00022587133023699302,
+          "diagnostics": []
+        },
+        "diagnostics": 3,
+        "sha256": "782a822b3eafc750a1ed29e97683da15f2f92662371da2920c1901877ecc38c0"
+      },
+      {
+        "id": "story/calibration-pan",
+        "frameCount": 192,
+        "continuous": {
+          "longestFrozenRun": 0,
+          "longestSemanticGap": 190,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0,
+          "maxZoomPerFrame": 0,
+          "diagnostics": [
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [0, 190],
+              "measured": 190,
+              "message": "190 frames between action/response ends; the hard limit is 48."
+            }
+          ]
+        },
+        "diagnostics": 1,
+        "sha256": "d1885b17ddc1048b51396134492ad1ab131c07f64af83c2f76283d22c44a1793"
+      },
+      {
+        "id": "story/template-resource-network",
+        "frameCount": 648,
+        "continuous": {
+          "longestFrozenRun": 163,
+          "longestSemanticGap": 187,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0,
+          "maxZoomPerFrame": 0,
+          "diagnostics": [
+            {
+              "code": "frozen-run",
+              "nodes": [],
+              "frames": [99, 261],
+              "measured": 163,
+              "message": "163 frames have no compiled motion; the hard limit is 6."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [0, 92],
+              "measured": 92,
+              "message": "92 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [98, 285],
+              "measured": 187,
+              "message": "187 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [285, 401],
+              "measured": 116,
+              "message": "116 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [517, 581],
+              "measured": 64,
+              "message": "64 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [587, 647],
+              "measured": 60,
+              "message": "60 frames between action/response ends; the hard limit is 48."
+            }
+          ]
+        },
+        "diagnostics": 13,
+        "sha256": "3141269df540e4f69d7d294e71363e9c9ed2dba0af49c6704f7a2e33c12f0c62"
+      },
+      {
+        "id": "story/template-unequal-access",
+        "frameCount": 312,
+        "continuous": {
+          "longestFrozenRun": 166,
+          "longestSemanticGap": 166,
+          "maxTextVelocity": 0,
+          "maxPanPixelsPerFrame": 0,
+          "maxZoomPerFrame": 0,
+          "diagnostics": [
+            {
+              "code": "frozen-run",
+              "nodes": [],
+              "frames": [146, 311],
+              "measured": 166,
+              "message": "166 frames have no compiled motion; the hard limit is 6."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [40, 145],
+              "measured": 105,
+              "message": "105 frames between action/response ends; the hard limit is 48."
+            },
+            {
+              "code": "semantic-gap",
+              "nodes": [],
+              "frames": [145, 311],
+              "measured": 166,
+              "message": "166 frames between action/response ends; the hard limit is 48."
+            }
+          ]
+        },
+        "diagnostics": 6,
+        "sha256": "9cf4d5f8afbc6917a5724d05ae7ee83acd1f24582b01e07f8d122786e7132f9f"
+      }
+    ]
+  },
+  "webglImageRoundingRepair": {
+    "status": "passed",
+    "rendererVersion": "composition-webgl2-0.36.3",
+    "problem": "Bounded image uploads used fixed-function WebGL source-over rather than the Canvas-compatible integer blend path. Overlapping SVG antialiased edges accumulated a three-byte difference.",
+    "change": "Reuse WebglPaint integer compositing for direct vector drawing and clipped image coverage. Keep the existing bitmap blend path for un-clipped natural-size images; share the paint instance with vector rendering.",
+    "initialMatrix": {
+      "command": "pnpm test:browser:composition-story-fixtures --webgl --keep-going",
+      "status": "failed-pixels-and-deferred-timing",
+      "items": 69,
+      "frames": 14086,
+      "pixelFailures": [
+        {
+          "id": "story/continuous-evidence-boundary",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 82.59206382744034,
+          "failures": [
+            {
+              "frame": 112,
+              "delta": 3,
+              "psnr": 87.89361230218292
+            },
+            {
+              "frame": 119,
+              "delta": 3,
+              "psnr": 87.68077509040816
+            },
+            {
+              "frame": 138,
+              "delta": 3,
+              "psnr": 86.60965896200503
+            },
+            {
+              "frame": 144,
+              "delta": 3,
+              "psnr": 83.74438733425086
+            }
+          ],
+          "ratio": 4.431508677755161
+        },
+        {
+          "id": "story/v013-unequal-margins",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 56.31054745377511,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            }
+          ],
+          "ratio": 0.4111454237028081
+        },
+        {
+          "id": "story/v013-access-constraint",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 57.14408488136613,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 57.39072720518014
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 57.39072720518014
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 57.39072720518014
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 57.39072720518014
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 57.39072720518014
+            }
+          ],
+          "ratio": 0.34874641619414953
+        },
+        {
+          "id": "story/template-unequal-access",
+          "frames": 312,
+          "maxDelta": 3,
+          "minPsnr": 56.34382201368609,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.407383882789844
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.407491859311904
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.4079754392785
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.407900316527765
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.40787214583124
+            }
+          ],
+          "ratio": 0.24982849325138595
+        },
+        {
+          "id": "passage/comparison-access/unequal-margins",
+          "frames": 334,
+          "maxDelta": 3,
+          "minPsnr": 56.310754056145875,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            }
+          ],
+          "ratio": 0.45249429942072705
+        },
+        {
+          "id": "passage/comparison-access/unequal-access",
+          "frames": 312,
+          "maxDelta": 3,
+          "minPsnr": 56.34382201368609,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.407383882789844
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.407491859311904
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.4079754392785
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.407900316527765
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.40787214583124
+            }
+          ],
+          "ratio": 0.25182204722886375
+        },
+        {
+          "id": "passage/linked-comparison/compare",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 56.31054745377511,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            }
+          ],
+          "ratio": 0.41327563340511075
+        },
+        {
+          "id": "passage/linked-comparison/continue",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 56.31054745377511,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            }
+          ],
+          "ratio": 0.4132196462975729
+        },
+        {
+          "id": "passage/linked-comparison/reset",
+          "frames": 192,
+          "maxDelta": 3,
+          "minPsnr": 56.31054745377511,
+          "failures": [
+            {
+              "frame": 0,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 1,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 2,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 3,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            },
+            {
+              "frame": 4,
+              "delta": 3,
+              "psnr": 56.310754056145875
+            }
+          ],
+          "ratio": 0.40722690310320386
+        }
+      ],
+      "timingFailures": 51,
+      "log": "benchmarks/results/ce4a-story-webgl-matrix.log"
+    },
+    "focusedVerification": [
+      {
+        "command": "pnpm test:browser:composition-webgl (existing checks before adding the new regression)",
+        "status": "passed"
+      },
+      {
+        "command": "New checkWebglStoryImageRounding browser helper",
+        "status": "passed",
+        "frames": 16,
+        "maxChannelDelta": 2,
+        "includesBackwardSeeks": true
+      },
+      {
+        "command": "pnpm build and targeted eslint",
+        "status": "passed"
+      }
+    ],
+    "pending": [],
+    "rejectedExperiment": "Applying integer rounding to every image reduced natural-size image precision. Stopped the partial matrix after three cases; narrowed the rule, preserving exact frame 0 and a one-byte maximum at frame 112 in continuous Unequal Margins."
+  },
+  "implementationCommit": "876814f",
+  "webglFamilyAcceptance": {
+    "command": "pnpm test:browser:composition-story-fixtures --webgl --keep-going",
+    "commit": "876814f",
+    "status": "correctness-passed-timing-deferred",
+    "strictExitCode": 1,
+    "cases": 69,
+    "frames": 14086,
+    "pixelFailures": 0,
+    "stateFailures": 0,
+    "seekFailures": 0,
+    "repeatExportCases": 14,
+    "repeatExports": "byte-identical",
+    "timingFailures": 51,
+    "maxRatio": 18.070810396580267,
+    "timingPolicy": "Existing strict1.25 assertions stay unchanged; these timing failures are deferred to CE6-P under the approved current-version policy.",
+    "log": "benchmarks/results/ce4a-story-webgl-final-matrix.log",
+    "casesMeasured": [
+      {
+        "id": "story/continuous-unequal-margins",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 91.69176036957683,
+        "failures": [],
+        "ratio": 3.037540896552499
+      },
+      {
+        "id": "story/continuous-access-constraint",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 69.30800229018695,
+        "failures": [],
+        "ratio": 2.9494865044337795
+      },
+      {
+        "id": "story/continuous-access-constraint/motion-blur",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 69.31184908973826,
+        "failures": [],
+        "ratio": 1.3363949483125408
+      },
+      {
+        "id": "story/continuous-relationship-build",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 104.60798564099834,
+        "failures": [],
+        "ratio": 1.8360951414252908
+      },
+      {
+        "id": "story/continuous-evidence-boundary",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 61.40907645776441,
+        "failures": [],
+        "ratio": 4.709600002468236
+      },
+      {
+        "id": "story/continuous-dated-system-break",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 80.96381589571459,
+        "failures": [],
+        "ratio": 4.186621159986425
+      },
+      {
+        "id": "story/continuous-category-swap",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 107.61828559763815,
+        "failures": [],
+        "ratio": 2.264620688149022
+      },
+      {
+        "id": "story/continuous-motif-resolve",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 98.36074588135928,
+        "failures": [],
+        "ratio": 1.9614258651396654
+      },
+      {
+        "id": "story/v013-unequal-margins",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 70.48986522224735,
+        "failures": [],
+        "ratio": 0.5542791494625673
+      },
+      {
+        "id": "story/v013-access-constraint",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 66.3190860214519,
+        "failures": [],
+        "ratio": 0.4085799922003083
+      },
+      {
+        "id": "story/buffer-press-unequal-margins",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 100.75447682735816,
+        "failures": [],
+        "ratio": 3.871981973049707
+      },
+      {
+        "id": "story/v2-unequal-margins",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 91.69176036957683,
+        "failures": [],
+        "ratio": 2.97847174796626
+      },
+      {
+        "id": "story/calibration-pan",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 82.7247284862714,
+        "failures": [],
+        "ratio": 18.070810396580267
+      },
+      {
+        "id": "story/template-resource-network",
+        "frames": 648,
+        "maxDelta": 2,
+        "minPsnr": 62.357959079560885,
+        "failures": [],
+        "ratio": 0.18769190671539637
+      },
+      {
+        "id": "story/template-unequal-access",
+        "frames": 312,
+        "maxDelta": 2,
+        "minPsnr": 68.6786083202101,
+        "failures": [],
+        "ratio": 0.2850751277239056
+      },
+      {
+        "id": "passage/comparison-access/unequal-margins",
+        "frames": 334,
+        "maxDelta": 2,
+        "minPsnr": 70.4951565108245,
+        "failures": [],
+        "ratio": 0.6629964034833851
+      },
+      {
+        "id": "passage/comparison-access/unequal-access",
+        "frames": 312,
+        "maxDelta": 2,
+        "minPsnr": 68.6786083202101,
+        "failures": [],
+        "ratio": 0.2809227143410909
+      },
+      {
+        "id": "passage/linked-comparison/compare",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 70.50443180665363,
+        "failures": [],
+        "ratio": 0.6131404169995313
+      },
+      {
+        "id": "passage/linked-comparison/continue",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 70.50358777889487,
+        "failures": [],
+        "ratio": 0.5553941908420703
+      },
+      {
+        "id": "passage/linked-comparison/reset",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 70.49467521810843,
+        "failures": [],
+        "ratio": 0.5568718710804468
+      },
+      {
+        "id": "passage/linked-network-vertical/network",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 103.51654094674765,
+        "failures": [],
+        "ratio": 0.4166998013305312
+      },
+      {
+        "id": "component/story-bracket",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 105.65533914619847,
+        "failures": [],
+        "ratio": 3.0884237580153733
+      },
+      {
+        "id": "component/story-detail-sequence",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.80587322388227,
+        "failures": [],
+        "ratio": 2.919599390305655
+      },
+      {
+        "id": "component/story-instances",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 5.1679454307943224
+      },
+      {
+        "id": "component/story-layout",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 5.092654429569221
+      },
+      {
+        "id": "component/story-leader",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 106.52684090338747,
+        "failures": [],
+        "ratio": 2.572716578000174
+      },
+      {
+        "id": "component/story-leader/flow",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 110.0486660845011,
+        "failures": [],
+        "ratio": 3.3200325674633677
+      },
+      {
+        "id": "component/story-leader/flow-target-matte",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 2.7268194234600074
+      },
+      {
+        "id": "component/story-leader/flow-target-inverted",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 3.374484994172609
+      },
+      {
+        "id": "component/story-leader/spatial",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 87.23833241202382,
+        "failures": [],
+        "ratio": 4.824738908535517
+      },
+      {
+        "id": "component/story-leader/morph",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 88.62633616655395,
+        "failures": [],
+        "ratio": 4.144678633192624
+      },
+      {
+        "id": "component/story-leader/spatial-morph",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 93.61413931963922,
+        "failures": [],
+        "ratio": 3.233035099298559
+      },
+      {
+        "id": "component/story-leader/appearance-uniform",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 100.0486660845011,
+        "failures": [],
+        "ratio": 3.2320248709755246
+      },
+      {
+        "id": "component/story-leader/effects-flow",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 97.43603739657615,
+        "failures": [],
+        "ratio": 0.21945804242393874
+      },
+      {
+        "id": "component/story-leader/effects-flow-target-matte",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 98.43498606215135,
+        "failures": [],
+        "ratio": 0.30209699675027823
+      },
+      {
+        "id": "component/story-leader/effects-flow-target-inverted",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 103.76477678399797,
+        "failures": [],
+        "ratio": 0.30529496505104525
+      },
+      {
+        "id": "component/story-mask",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.55476601805196,
+        "failures": [],
+        "ratio": 2.4795403921775945
+      },
+      {
+        "id": "component/story-outline",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 103.51654094674765,
+        "failures": [],
+        "ratio": 3.178956453602339
+      },
+      {
+        "id": "component/story-pin",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.27143003161262,
+        "failures": [],
+        "ratio": 3.8665650023667553
+      },
+      {
+        "id": "component/story-sequence",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 98.43498606215135,
+        "failures": [],
+        "ratio": 3.5794776175574454
+      },
+      {
+        "id": "component/story-stagger",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 5.600662789969877
+      },
+      {
+        "id": "component/story-state",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 89.55648585779927,
+        "failures": [],
+        "ratio": 4.214608429756135
+      },
+      {
+        "id": "component/story-state/blended-container",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 66.00045715675462,
+        "failures": [],
+        "ratio": 4.645478370911036
+      },
+      {
+        "id": "component/story-state/appearance-uniform",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 89.35753757062989,
+        "failures": [],
+        "ratio": 4.118213056674485
+      },
+      {
+        "id": "component/story-state/effects-group-grain",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 89.71442852963159,
+        "failures": [],
+        "ratio": 1.3879825116936726
+      },
+      {
+        "id": "component/story-state/effects-image-sweep",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 84.75307935428945,
+        "failures": [],
+        "ratio": 0.36847380643167016
+      },
+      {
+        "id": "component/story-state/effects-text-sweep",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 80.69233405410682,
+        "failures": [],
+        "ratio": 0.7390958855424729
+      },
+      {
+        "id": "component/story-state/primitive-blur",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 83.09822949628816,
+        "failures": [],
+        "ratio": 0.8422819167444182
+      },
+      {
+        "id": "component/story-state/primitive-blur-matte",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 81.86145980229506,
+        "failures": [],
+        "ratio": 0.9718836757522898
+      },
+      {
+        "id": "component/story-state/primitive-blur-stack",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 82.2042763422742,
+        "failures": [],
+        "ratio": 1.1497599261935771
+      },
+      {
+        "id": "component/story-supply-sequence",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.80587322388227,
+        "failures": [],
+        "ratio": 2.9443055532367577
+      },
+      {
+        "id": "component/story-supply",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 83.57483638335489,
+        "failures": [],
+        "ratio": 4.355122562244652
+      },
+      {
+        "id": "component/story-text-fit",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.14749842382204,
+        "failures": [],
+        "ratio": 3.755805767823983
+      },
+      {
+        "id": "component/story-tour",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 83.57483638335489,
+        "failures": [],
+        "ratio": 4.385426076993751
+      },
+      {
+        "id": "component/story-transform",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 91.4753411201884,
+        "failures": [],
+        "ratio": 4.002637650955285
+      },
+      {
+        "id": "component/story-travel",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 96.77507674063779,
+        "failures": [],
+        "ratio": 4.324192342161192
+      },
+      {
+        "id": "component/story-underline",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 104.60798564099834,
+        "failures": [],
+        "ratio": 2.725320123979572
+      },
+      {
+        "id": "component/story-value",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 3.8964374426829367
+      },
+      {
+        "id": "component/story-visibility",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 98.90923256143273,
+        "failures": [],
+        "ratio": 3.0386343209425157
+      },
+      {
+        "id": "component/passage-components/instances",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 5.184100412302203
+      },
+      {
+        "id": "component/passage-components/leader",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 106.52684090338747,
+        "failures": [],
+        "ratio": 2.7481884030051877
+      },
+      {
+        "id": "component/passage-components/value",
+        "frames": 192,
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 3.731793971105356
+      },
+      {
+        "id": "component/passage-behaviors/transform",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 91.4753411201884,
+        "failures": [],
+        "ratio": 4.161535536217849
+      },
+      {
+        "id": "component/passage-behaviors/state",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 89.55648585779927,
+        "failures": [],
+        "ratio": 4.310867749865043
+      },
+      {
+        "id": "component/passage-behaviors/travel",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 96.77507674063779,
+        "failures": [],
+        "ratio": 4.440425527267944
+      },
+      {
+        "id": "component/passage-behaviors/supply",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 83.57483638335489,
+        "failures": [],
+        "ratio": 4.468739083162349
+      },
+      {
+        "id": "component/passage-timing/visibility",
+        "frames": 192,
+        "maxDelta": 1,
+        "minPsnr": 98.90923256143273,
+        "failures": [],
+        "ratio": 3.070994866385572
+      },
+      {
+        "id": "component/passage-timing/text-fit",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.14749842382204,
+        "failures": [],
+        "ratio": 3.874898459359817
+      },
+      {
+        "id": "component/passage-timing/supply-sequence",
+        "frames": 192,
+        "maxDelta": 2,
+        "minPsnr": 90.80587322388227,
+        "failures": [],
+        "ratio": 2.8962432919750523
+      }
+    ],
+    "exports": [
+      "CE4b webgl2 story/continuous-access-constraint/motion-blur export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-leader/flow-target-inverted export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-leader/spatial-morph export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-leader/effects-flow-target-inverted export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-mask export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-state/blended-container export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-state/appearance-uniform export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-state/effects-text-sweep export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-state/primitive-blur-stack export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-text-fit export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/story-value export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/passage-components/instances export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/passage-behaviors/transform export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass",
+      "CE4b webgl2 component/passage-timing/visibility export: 192 frames, two byte-identical MP4s; relocated assets and overwrite protection pass"
+    ]
+  },
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/35"
+}

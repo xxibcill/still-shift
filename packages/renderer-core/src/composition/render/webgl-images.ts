@@ -1,6 +1,7 @@
 import type { Matrix } from "../../node-transform.ts";
 import type { Canvas2dBackend } from "./canvas2d.ts";
 import type { ClipRect, ImageContent } from "./graph.ts";
+import type { WebglPaint } from "./webgl-paint.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 
 type Raster = {
@@ -19,6 +20,7 @@ export class WebglImages {
   constructor(
     private readonly device: WebglDevice,
     private readonly raster: Canvas2dBackend,
+    private readonly paint: WebglPaint,
   ) {}
 
   private forget(sources: ImageContent["sources"]) {
@@ -114,24 +116,14 @@ export class WebglImages {
     this.cached.delete(content.sources);
     this.cached.set(content.sources, entry);
     const { surface, left, top, right, bottom } = entry;
-    const gl = this.device.gl;
-    gl.enable(gl.BLEND);
-    gl.blendEquation(gl.FUNC_ADD);
-    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-    try {
-      this.device.pass(
-        `uniform vec2 origin; void main() {
-        pixel=texelFetch(source,ivec2(gl_FragCoord.xy-origin),0);
-      }`,
-        dst,
-        [surface],
-        { origin: [left, top] },
-        true,
-        { left, top, right, bottom },
-      );
-    } finally {
-      gl.disable(gl.BLEND);
-    }
+    // Direct vector drawing and antialiased clips use Canvas primitive rounding.
+    // Already-rasterized images retain bitmap source-over blending.
+    this.paint.draw(
+      surface,
+      dst,
+      { left, top, right, bottom },
+      content.rasterize === "draw" || clips.length > 0,
+    );
     return true;
   }
 }
