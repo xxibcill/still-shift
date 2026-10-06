@@ -9,11 +9,13 @@ import {
 import { evaluateComp } from "./evaluate.ts";
 import {
   layerContentCut,
+  layerContentTime,
   loopedPrecompTime,
   scopeTimeOverride,
 } from "./time-controls.ts";
 import { adaptiveExposureSamples } from "./adaptive.ts";
 import { scalar } from "./sample.ts";
+import { compositionSampleIndex } from "./sample-clock.ts";
 import type { EvaluatedLayerTree, EvaluationOptions } from "./types.ts";
 
 type ExposureCut = { time: number; inclusive: "before" | "after" };
@@ -74,18 +76,31 @@ function cutsFor(
             if (key.value === state.keys[index - 1]!.value) continue;
             // Indexed clocks hold index zero before their first table sample.
             if (layer.sampleTimes && key.frame <= 0) continue;
+            const time = layer.sampleTimes
+              ? layer.sampleTimes[key.frame]
+              : key.frame;
+            if (time === undefined) continue;
+            const cut = global(time);
+            const fps = scope.fps ?? comp.fps;
+            const sourceTime =
+              layer.posterizeFps === undefined
+                ? undefined
+                : layerContentTime(layer, cut, fps);
+            const keyTime =
+              sourceTime === undefined
+                ? key.frame
+                : layer.sampleTimes
+                  ? compositionSampleIndex(layer.sampleTimes, sourceTime)
+                  : sourceTime;
             // Resetting an invisible outgoing state does not interrupt a fade.
             // Keep cuts conservatively when a procedural modifier can reveal it.
             if (
               channel === "stateFrom" &&
               !cache.drivenMixes.has(route + layer.id) &&
-              scalar(layer.stateMix, key.frame, scope.fps ?? comp.fps, 1) >= 1
+              scalar(layer.stateMix, keyTime, fps, 1) >= 1
             )
               continue;
-            const time = layer.sampleTimes
-              ? layer.sampleTimes[key.frame]
-              : key.frame;
-            if (time !== undefined) layerCuts.add(global(time));
+            layerCuts.add(cut);
           }
       }
     for (const effect of layer.effects ?? []) {

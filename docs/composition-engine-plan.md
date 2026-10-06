@@ -3324,12 +3324,17 @@ and attached, based on CE5; CE6 begins on a new branch. [Evidence](./composition
 
 ### PR #40 review corrections (2026-10-06)
 
-The first correction aligns posterized state/effect cuts with the actual floored
-content clock, including reversed start/stretch transforms, while preserving strict
-negative/pre-boundary flooring. Three new root/nested regressions failed before the
-repair; 48 focused tests, build, changed-file lint and boundaries pass. The second
-outgoing-state visibility correction and final verification are pending.
-[Review-fix evidence](./pr-40-fix-results.json).
+Boundary correction `4c7266a` aligns posterized state/effect cuts with the actual
+floored content clock on both sides of floating-point inversion, including reversed
+start/stretch transforms. The separate outgoing-state correction checks visibility
+at the reachable posterized frame or baked index before suppressing a cut.
+Three boundary and two outgoing-state regressions failed before their repairs;
+50 focused tests, build, changed-file lint and independent review pass.
+Full local `pnpm check` passes 1,605 unit, 46 runtime, 139 integration, 14 depth,
+all required browser suites and 176 unchanged frozen baselines / 36,061 frames.
+Final-code CE7 native pixels, seeks, stored hashes, 12 hardware comparisons and
+both backend exports pass. The initial cold-import protocol timeouts and complete
+successful retry are retained in [review-fix evidence](./pr-40-fix-results.json).
 
 ---
 

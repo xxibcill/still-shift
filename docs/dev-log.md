@@ -43,12 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #40 fixes in progress (2026-10-06):** `codex/composition-ce7` from
-  `817cc9f`. Posterized cut mapping now verifies the reachable content grid,
-  including reversed clocks and start/stretch rounding; strict flooring is preserved.
-  Forty-eight focused tests, build, changed-file lint and package boundaries pass.
-  The outgoing-state visibility fix and final verification/push remain pending.
-  No owner decision is pending. [Evidence](./pr-40-fix-results.json).
+- **PR #40 review fixes complete (2026-10-06):** `codex/composition-ce7` from
+  `817cc9f`, with one commit per finding. Boundary correction `4c7266a` aligns
+  cuts with the actual floored clock; outgoing-state visibility uses the reachable
+  frame or baked index. All 50 focused tests and independent review pass.
+  Full local `pnpm check` passes 1,605 unit, 46 runtime, 139 integration, 14 depth,
+  every required browser suite and 176 unchanged frozen baselines / 36,061 frames.
+  Both findings are inline comments on [PR #40](https://github.com/xxibcill/still-shift/pull/40).
+  Owner review/merge remain; no implementation blocker or owner decision is pending.
+  [Evidence](./pr-40-fix-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -126,7 +129,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
+_Last updated 2026-10-06 by Codex for PR #40 review fixes; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -184,6 +187,21 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #40 reachable outgoing-state visibility correction
+
+- **Agent / branch:** Codex on `codex/composition-ce7`, after `4c7266a`.
+- **Done:** outgoing-state suppression samples the reachable posterized clock or
+  baked index. Both findings have separate fixes and published inline PR comments.
+- **Results:** all five new regressions failed before repair; 50 focused tests and
+  independent review pass. Full `pnpm check` passes 1,605 unit, 46 runtime,
+  139 integration, 14 depth, every required browser suite and 176 frozen baselines
+  / 36,061 frames. Final-code native hashes, hardware and repeated exports pass.
+- **Rejected / do not repeat:** cold Python worker imports caused three protocol
+  timeouts on the first gate; warmed imports fixed the environment. The complete
+  retry passed with unchanged default timeouts, thresholds and baselines.
+- **Open / next:** owner review/merge. GitHub Actions remain disabled.
+- **Records:** [fix evidence](./pr-40-fix-results.json).
 
 ### 2026-10-06 — PR #40 posterized cut boundary correction
 

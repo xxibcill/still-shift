@@ -129,6 +129,68 @@ describe("time-control exposure cuts", () => {
       ),
     ).toBe(true);
   });
+  it("cuts visible outgoing-state resets at their reachable posterized clock", () => {
+    for (const reverse of [false, true]) {
+      const doc = fixture();
+      const layer = doc.layers[0] as ReturnType<typeof text>;
+      Object.assign(layer, {
+        posterizeFps: 12,
+        state: 2,
+        states: ["A", "B", "C"],
+        ...(reverse ? { startFrame: 25, stretch: -1 } : {}),
+      });
+      layer.stateFrom = {
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 11, value: 1 },
+        ],
+      };
+      layer.stateMix = {
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 11, value: 1, interpolation: "linear" },
+          { frame: 12, value: 0, interpolation: "linear" },
+        ],
+      };
+      for (const frame of [12.4, 12.5, 12.6]) {
+        const base = evaluateComp(doc, frame).layers[0]!;
+        expect(
+          [...evaluateCompositionExposure(doc, frame)].map(
+            (tree) => tree.layers[0]!.stateFrom,
+          ),
+        ).toEqual(Array(4).fill(base.stateFrom));
+      }
+    }
+  });
+  it("checks outgoing-state visibility at the reachable baked sample index", () => {
+    const doc = fixture();
+    const layer = doc.layers[0] as ReturnType<typeof text>;
+    Object.assign(layer, {
+      posterizeFps: 12,
+      sampleTimes: [0, 11, 12.5],
+      state: 2,
+      states: ["A", "B", "C"],
+    });
+    layer.stateFrom = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 1, value: 1 },
+      ],
+    };
+    layer.stateMix = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 1, value: 1, interpolation: "linear" },
+        { frame: 2, value: 0, interpolation: "linear" },
+      ],
+    };
+    expect(evaluateComp(doc, 12.5).layers[0]!.stateMix).toBe(0);
+    expect(
+      [...evaluateCompositionExposure(doc, 12.5)].map(
+        (tree) => tree.layers[0]!.stateFrom,
+      ),
+    ).toEqual([1, 1, 1, 1]);
+  });
   it("preserves inclusive-before behavior for a reversed posterized clock", () => {
     const doc = fixture();
     Object.assign(doc.layers[0]!, {
