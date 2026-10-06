@@ -93,7 +93,29 @@
         "reason": "Coordinated CE6-P quiet window remains active",
         "analyticCases": "Authored xyz component writes, copied expression results, camera POI/primary optical writes and secondary optic refresh"
       },
-      "pending": "Scope camera projection, native availability/validation, graph/backend integration and verification"
+      "pending": "Scope camera projection, native availability/validation, graph/backend integration and verification",
+      "implementation": "50ac556"
+    },
+    {
+      "name": "Scope camera selection and genuine projection hooks",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Resolve optics after parent world state, using the highest active scoped camera",
+        "Native one-node orientation or parent-space two-node POI; solo does not suppress optics",
+        "Scope-local defaults and legacy story curves/jolts feed the same camera geometry",
+        "Genuine plane homographies, camera-depth/focus blur and expanded projected bounds",
+        "Actual world-space frustum corners for the upcoming inspector integration"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored camera switch boundaries, solo optics, one-node orientation, parent-space POI, nested default camera, cubic story jolt, receiver focus and world frustum points"
+      },
+      "sourceReviewRepairs": [
+        "Do not spread the always-populated sampled POI into a one-node camera geometry call",
+        "Reuse the scope layer map for active-camera parent checks rather than allocating one per candidate"
+      ],
+      "pending": "Native availability/validation, billboard orientation, stable 3D-run ordering, graph/backend/quality/inspector integration and verification"
     }
   ],
   "pending": [

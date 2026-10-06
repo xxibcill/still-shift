@@ -55,6 +55,7 @@ export type EvaluatedLayer = {
   screenMatrix: Matrix;
   /** True spatial placement; consumers must use this instead of the 2D screen matrix. */
   projection?: ProjectedPlane;
+  cameraDepth?: number;
   focusBlur?: number;
   camera?: SampledCameraControls;
   /** Includes ancestor group opacity; ordinary parent opacity never inherits. */

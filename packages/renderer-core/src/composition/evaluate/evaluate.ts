@@ -62,6 +62,7 @@ import { applyConstraints } from "./constraints.ts";
 import { cameraMatrix, sampleCamera } from "./camera.ts";
 import { sampleSpatialTransform, sampleCameraControls, refreshCameraControls } from "./spatial-state.ts";
 import { layerMatrix3d, affineMatrix4, multiplyWorldMatrices } from "./spatial-geometry.ts";
+import { projectSpatialScope } from "./spatial-scope.ts";
 import { compositionSampleIndex } from "./sample-clock.ts";
 import {
   layerContentTime,
@@ -1411,7 +1412,7 @@ class Evaluation {
       )
         state.precomp = this.tree(this.run(this.child(ctx, state.layer)));
     }
-    return {
+    const tree: EvaluatedLayerTree = {
       id: ctx.scope.id,
       time: ctx.time,
       width: ctx.scope.width,
@@ -1424,6 +1425,9 @@ class Evaluation {
       layers,
       diagnostics,
     };
+    if(this.compiled.spatialScopes.has(ctx.scope))
+      projectSpatialScope(this.compiled.comp,ctx.scope,tree,this.options,ctx.route,this.time);
+    return tree;
   }
 }
 

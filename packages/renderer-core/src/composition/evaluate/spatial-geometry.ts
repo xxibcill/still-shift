@@ -38,6 +38,7 @@ export type CameraGeometry = {
   blurLevel: number;
 };
 export type ProjectedPlane = {
+  localBounds: Bounds;
   homography: Homography;
   inverse: Homography | null;
   /** Camera depth is `depth[0]*localX + depth[1]*localY + depth[2]`. */
@@ -154,6 +155,19 @@ export function projectWorldPoint(camera: CameraGeometry, world: Point3): Point 
   if (z<camera.nearClip || z>camera.farClip) return null;
   return [camera.width/2+camera.zoom*x/z,camera.height/2+camera.zoom*y/z];
 }
+export function cameraDepth(camera: CameraGeometry, world: Point3): number {
+  return cameraPoint(camera,world)[2];
+}
+/** Four world-space corners at a positive camera-space distance, clockwise in screen space. */
+export function cameraFrustum(camera: CameraGeometry, distance: number): Point3[] {
+  if (!Number.isFinite(distance)||distance<camera.nearClip||distance>camera.farClip)
+    throw Error("Frustum distance must lie between the camera clip planes");
+  return [[0,0],[camera.width,0],[camera.width,camera.height],[0,camera.height]].map(([x,y])=>{
+    const horizontal=(x!-camera.width/2)*distance/camera.zoom;
+    const vertical=(y!-camera.height/2)*distance/camera.zoom;
+    return [0,1,2].map(axis=>camera.position[axis]!+camera.forward[axis]!*distance+camera.right[axis]!*horizontal+camera.down[axis]!*vertical) as Point3;
+  });
+}
 function inverse3(matrix: Homography): Homography | null {
   const [a,b,c,d,e,f,g,h,i]=matrix;
   const A=e*i-f*h, B=f*g-d*i, C=d*h-e*g;
@@ -201,7 +215,7 @@ export function projectPlane(world: Matrix4, camera: CameraGeometry, bounds: Bou
     right:Math.max(...polygon.map(point=>point[0])),bottom:Math.max(...polygon.map(point=>point[1])),
   } : null;
   const affineMatrix: Matrix | null=inverse&&depth[0]===0&&depth[1]===0&&depth[2]>=camera.nearClip&&depth[2]<=camera.farClip ? [homography[0]/depth[2],homography[3]/depth[2],homography[1]/depth[2],homography[4]/depth[2],homography[2]/depth[2],homography[5]/depth[2]] : null;
-  return {homography,inverse,depth,polygon,localPolygon,bounds:projectedBounds,affineMatrix,nearClip:camera.nearClip,farClip:camera.farClip};
+  return {localBounds:{...bounds},homography,inverse,depth,polygon,localPolygon,bounds:projectedBounds,affineMatrix,nearClip:camera.nearClip,farClip:camera.farClip};
 }
 export function projectLocalPoint(plane: ProjectedPlane, point: Point): Point | null {
   const depth=plane.depth[0]*point[0]+plane.depth[1]*point[1]+plane.depth[2];

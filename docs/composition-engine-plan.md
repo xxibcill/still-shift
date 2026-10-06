@@ -3627,6 +3627,10 @@ Evaluated xyz/camera property state, sealed stage copies, optical refresh and
 spatial parent world matrices are authored in evaluator source version 45; native
 availability, scope projection, backend integration and verification remain open.
 
+Scoped camera selection after world transforms, native POI/orientation and legacy
+story-jolt input, true projection/bounds/depth/focus state and actual world frustum
+corners are authored; independent scope/switch/focus cases remain unexecuted.
+
 **Completion record:** _to be filled in._
 
 ---

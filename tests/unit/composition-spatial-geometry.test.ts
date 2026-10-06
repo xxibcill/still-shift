@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   cameraGeometry,
+  cameraFrustum,
   circleOfConfusion,
   layerMatrix3d,
   projectLocalPoint,
@@ -42,6 +43,12 @@ describe("native camera analytic geometry", () => {
     close(projectWorldPoint(camera(), [75, 50, 100])!, [62.5, 50]);
     close(projectWorldPoint(camera(60), [75, 50, 0])!, [65, 50]);
     close(projectWorldPoint(camera(60), [75, 50, 100])!, [57.5, 50]);
+  });
+  it("retains actual world-space frustum corners for inspection",()=>{
+    const corners=cameraFrustum(camera(),200);
+    close(corners[0]!,[-50,-50,100]);
+    close(corners[2]!,[150,150,100]);
+    expect(()=>cameraFrustum(camera(),0)).toThrow(/clip planes/);
   });
 
   it("composes parent rotation, xyz translation, scale and anchor in world space", () => {

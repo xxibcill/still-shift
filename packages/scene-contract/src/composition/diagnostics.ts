@@ -102,6 +102,7 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-camera-key-range": "A `camera2d` key lies at or after `frameCount`.",
   "comp-camera-settings": "Native camera optical controls, model or clip planes are invalid after sampling.",
   "comp-3d-transform": "Spatial transform sampling or parent composition produces non-finite world geometry.",
+  "comp-camera-geometry": "Camera world basis or point of interest is degenerate after parent evaluation.",
   "comp-marker-missing": "A `cue` names no marker in the same composition.",
   "comp-signal-missing": "A reference names no signal.",
   "comp-constraint-target":

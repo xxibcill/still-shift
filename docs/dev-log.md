@@ -51,7 +51,8 @@ still hold before relying on them.
   sampling, xyz own-key loops/roving and camera/spatial paths with unchanged
   2D arithmetic; shared spatial/camera sampling and optical rules are authored.
   Evaluated xyz/camera state, stage copies and spatial parent matrices are authored
-  in evaluator source version 45. Tests, formatting and builds have not run:
+  in evaluator source version 45; scoped camera/projection/focus/frustum hooks
+  are authored. Tests, formatting and builds have not run:
   the coordinated CE6-P quiet window is active. Runtime camera/3D availability
   remains gated until evaluation/render integration is implemented and verified.
   No owner decision is pending. Next: focused verification after release, xyz
@@ -209,6 +210,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 scoped camera/projection checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after evaluated state `50ac556`.
+- **Authored:** active scoped camera selection after world transforms, native
+  orientation/parent-space POI, local defaults and legacy story-jolt camera input;
+  actual homography/bounds/depth/focus state and world-space frustum corners.
+- **Review:** one-node geometry must omit the default POI; camera selection reuses
+  the scope map. Independent switch/solo/parent/scope/jolt/focus cases are authored.
+- **Verification:** no test, formatter, build, browser matrix or export has run;
+  the CE6-P quiet window remains active. Native availability is still gated.
+- **Next:** billboard orientation, ordered projective graph/backend, real camera
+  inspection and coverage; focused verification after release before acceptance.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 evaluated spatial state checkpoint
 
