@@ -75,8 +75,10 @@ still hold before relying on them.
   wrapper timelines pass 2,070 exact forward/reverse frames; six mixed graphs and
   resource/real inspector diagnostics pass after a spatial preflight repair.
   WebGL2 is now 0.61.0. Actual depth Lab checks and 31 focused regressions pass.
-  All-family candidate stopped at supply-ramps frame 36 (delta 13); its repair,
-  remaining parity, exports/hardware/costs, defaults and full gate are pending.
+  Supply-ramps frame 36 is repaired by distinct-state Canvas matrix transfer
+  (Canvas 1.44.0); all five motion-craft/698 frames are exact and eight typography/
+  1,309 frames plus ink/container probes pass near tier. 60 focused checks pass.
+  Full all-176 parity, exports/hardware/costs, defaults and full gate remain pending.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
@@ -274,6 +276,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d repairs distinct-state image crossfade parity
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** shared Canvas drawing preserves the active matrix transfer for distinct
+  image crossfades (Canvas 1.44.0). Supply-ramps now matches exactly in all 192
+  forward/reverse frames. Acceptance failures name the item; subset reports use
+  distinct filenames.
+- **Results:** 60 focused tests/build/lint pass; all five motion-craft fixtures
+  (698 frames) match exactly, and eight typography fixtures (1,309 frames) plus
+  every text-node ink/container probe pass the unchanged near tier (delta <=2).
+- **Rejected:** transferring all image states changed settled frame 2 (delta 14);
+  restrict transfer to distinct-state crossfades. Original fixtures stay frozen.
+- **Open / next:** full all-176 candidate parity, depth export/hardware/cost
+  acceptance, actual defaults, final gate and CE4d PR; scheduled milestone loop
+  continues afterward.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d depth parity and integration repair checkpoint
 

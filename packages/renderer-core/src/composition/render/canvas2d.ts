@@ -348,6 +348,14 @@ export function createCanvas2dBackend(
           transforms,
           paintBlur,
         );
+        // Preserve the matrix transfer of an isolated crossfade at its held
+        // boundary; settled sources retain the direct drawing path.
+        if (
+          content.stateFrom !== undefined &&
+          content.stateMix !== undefined &&
+          content.stateFrom !== content.state
+        )
+          ctx.setTransform(ctx.getTransform());
         drawSource(
           ctx,
           content,
@@ -364,6 +372,8 @@ export function createCanvas2dBackend(
       const tmp = backend.createSurface(dst.width, dst.height, dst.rasterMode);
       const ctx = tmp.ctx;
       transform(ctx, matrix, transforms);
+      // Crossfades transfer the active Canvas matrix to their isolated surface.
+      ctx.setTransform(ctx.getTransform());
       ctx.globalAlpha = 1 - content.stateMix;
       drawSource(ctx, content, content.stateFrom, dst.rasterMode);
       ctx.globalCompositeOperation = "lighter";

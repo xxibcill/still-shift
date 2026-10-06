@@ -109,7 +109,7 @@ try {
           assertPinnedRenderEnvironment(environment);
         }
         const report = await page.evaluate(
-          async ({ sceneJson, urls, expected, tier, candidate, smoke }) => {
+          async ({ id, sceneJson, urls, expected, tier, candidate, smoke }) => {
             const renderUrl = "/packages/renderer-core/src/index.ts";
             const adapterUrl =
               "/packages/renderer-core/src/composition/adapters/illustrated-preview.ts";
@@ -175,7 +175,7 @@ try {
                   .getImageData(0, 0, oldCanvas.width, oldCanvas.height).data;
                 if ((await hash(old)).slice(0, 16) !== expected[frame])
                   throw Error(
-                    `Independent old oracle changed frozen CE0 frame ${frame}`,
+                    `${id}: independent old oracle changed frozen CE0 frame ${frame}`,
                   );
                 preview.renderFrame(frame);
                 const actual = pixels();
@@ -187,7 +187,7 @@ try {
                 );
                 if (!render.meetsTier(comparison, tier))
                   throw Error(
-                    `Native family frame ${frame}: delta ${comparison.maxChannelDelta}, PSNR ${comparison.psnr}`,
+                    `${id}: native family frame ${frame}: delta ${comparison.maxChannelDelta}, PSNR ${comparison.psnr}`,
                   );
                 maxDelta = Math.max(maxDelta, comparison.maxChannelDelta);
                 minPsnr = Math.min(minPsnr, comparison.psnr);
@@ -212,6 +212,7 @@ try {
             }
           },
           {
+            id: item.id,
             sceneJson: JSON.stringify(item.scene),
             urls,
             expected: reference.frames.split(" "),
@@ -252,7 +253,7 @@ try {
   await writeFile(
     resolve(
       directory,
-      `${candidate ? "candidate" : "defaults"}${smoke ? "-smoke" : ""}.json`,
+      `${candidate ? "candidate" : "defaults"}${smoke ? "-smoke" : ""}${only >= 0 ? `-${process.argv[only + 1]!.replaceAll(/[^a-zA-Z0-9_-]/g, "-")}` : ""}.json`,
     ),
     JSON.stringify(
       {

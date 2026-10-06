@@ -2830,13 +2830,58 @@
         "Full depth independent/repeat/raw exports, hardware and serial costs",
         "Actual renderer defaults and full milestone gate"
       ]
+    },
+    {
+      "name": "Canvas distinct-state image crossfade parity repair",
+      "status": "implemented-focused-verification",
+      "rendererVersion": "composition-canvas-1.44.0",
+      "checks": {
+        "focusedUnit": {
+          "tests": 60,
+          "files": 4,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass"
+      },
+      "motionCraftSubset": {
+        "items": 5,
+        "frames": 698,
+        "reverseFrames": 698,
+        "maximumChannelDelta": 0,
+        "frozenOracle": "unchanged",
+        "log": "/private/tmp/ce4d-family-motion-craft-repair.log"
+      },
+      "typographySubset": {
+        "items": 8,
+        "frames": 1309,
+        "reverseFrames": 1309,
+        "maximumChannelDelta": 2,
+        "allTextNodeInkContainerProbes": "pass",
+        "frozenOracle": "unchanged",
+        "log": "/private/tmp/ce4d-family-typography-candidate.log"
+      },
+      "repairedCase": {
+        "item": "motion-craft/supply-ramps",
+        "frames": 192,
+        "reverseFrames": 192,
+        "maximumChannelDelta": 0,
+        "originalFailure": "frame36 delta13; distinct-state crossfade matrix transfer differed"
+      },
+      "rejected": [
+        "Unconditional image state matrix transfer altered settled supply-ramps frame2 (delta14); restricted to distinct-state crossfades"
+      ],
+      "scope": [
+        "Shared Canvas image boundary/crossfade transfer, retaining settled direct draws",
+        "Family acceptance errors identify the actual item; diagnostic subset report names no longer collide"
+      ],
+      "productionDefaults": "unchanged; full all-176 parity and depth export/hardware/cost acceptance pending"
     }
   ],
   "pending": [
-    "Native depth pixel parity and integration acceptance",
-    "Native depth-image contract/evaluation/shared WebGL backend",
-    "Legacy adapter and family default consolidation",
-    "Native parity, exports, inspector, costs and complete local gate",
-    "PR delivery"
+    "Remaining family parity and default consolidation",
+    "Depth native independent/repeat/raw exports, hardware and serial costs",
+    "Actual family/depth defaults and final full local gate",
+    "CE4d PR delivery"
   ]
 }
