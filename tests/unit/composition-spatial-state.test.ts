@@ -19,6 +19,7 @@ it("samples native camera defaults in an identity z=0 optical setup", () => {
   expect(sampleCameraControls(layer, 0, 24, [100, 80])).toEqual({
     model: "one-node",
     pointOfInterest: [50, 40, 0],
+    viewOffset: [0, 0],
     opticalMode: "zoom",
     zoom: 100,
     focalLength: 36,

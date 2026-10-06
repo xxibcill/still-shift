@@ -453,6 +453,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `type`                | yes      | `camera`                                                                                                                                                                                              |
 | `model`               | no       | `one-node`, `two-node`                                                                                                                                                                                |
 | `pointOfInterest`     | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
+| `viewOffset`          | no       | [number, number] or object                                                                                                                                                                            |
 | `zoom`                | no       | number or object                                                                                                                                                                                      |
 | `focalLength`         | no       | number or object                                                                                                                                                                                      |
 | `filmSize`            | no       | number or object                                                                                                                                                                                      |
@@ -2018,6 +2019,13 @@ Author either `zoom` (pixels, 0.001–1,000,000) or `focalLength` (millimetres,
 36 mm. The two primary controls cannot both be authored or driven. Default near
 and far clips are 0.01 and 10,000,000 world pixels. Clip order must remain valid.
 Two-node POI and numeric optics accept native keyed/driver/expression clocks.
+
+`viewOffset` shifts the principal point in screen pixels, with a default of
+`[0,0]` and bounded xy values within ±1,000,000. It accepts grouped xy keys or
+separated x/y keys and driver/expression writes. The shift applies after camera
+projection, independent of parent transforms, to point and plane geometry and
+the inverse frustum shown by the inspector. It changes framing without changing
+camera-space depth, clipping or illumination.
 
 Enable `depthOfField`, with focus distance in world pixels, aperture diameter in
 millimetres (default 0) and blur level (default 1). The declared screen radius is

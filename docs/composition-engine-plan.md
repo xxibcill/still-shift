@@ -1388,6 +1388,11 @@ a composition/precomp node type to the legacy story scene schema in CE4a.
 
 ### CE4c — Cinematic
 
+**Status:** `[~]` in progress on `codex/composition-ce4c` from CE8-L
+`e1bd4bc` / PR #44. Native screen-space camera offset is delivered with focused
+checks; cinematic adaptation and full acceptance remain pending.
+[Implementation evidence](./composition-ce4c-results.json).
+
 - [ ] Map depth planes to 3D layers and the cinematic camera (including dolly zoom,
       curved approach and focus handoff) to the CE8 camera.
 - [ ] Keep coverage, source-resolution and framing validations, now evaluated on the

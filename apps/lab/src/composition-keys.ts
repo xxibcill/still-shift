@@ -152,35 +152,39 @@ export function compositionTracks(document: Composition): KeyTrack[] {
         );
     }
     if (layer.type === "camera") {
-      const raw = layer.pointOfInterest;
-      if (
-        raw &&
-        typeof raw === "object" &&
-        !Array.isArray(raw) &&
-        !isKeyed(raw)
-      ) {
-        for (const axis of ["x", "y", "z"])
+      for (const name of ["pointOfInterest", "viewOffset"] as const) {
+        const raw = layer[name];
+        if (
+          raw &&
+          typeof raw === "object" &&
+          !Array.isArray(raw) &&
+          !isKeyed(raw)
+        ) {
+          for (const axis of name === "viewOffset"
+            ? ["x", "y"]
+            : ["x", "y", "z"])
+            add(
+              (raw as Record<string, unknown>)[axis],
+              [...path, name, axis],
+              `${name}.${axis}`,
+              "scalar",
+              scope,
+              layer.id,
+              fps,
+            );
+        } else
           add(
-            (raw as Record<string, unknown>)[axis],
-            [...path, "pointOfInterest", axis],
-            `pointOfInterest.${axis}`,
-            "scalar",
+            raw,
+            [...path, name],
+            name,
+            "vector",
             scope,
             layer.id,
             fps,
+            false,
+            name === "pointOfInterest" ? 3 : undefined,
           );
-      } else
-        add(
-          raw,
-          [...path, "pointOfInterest"],
-          "pointOfInterest",
-          "vector",
-          scope,
-          layer.id,
-          fps,
-          false,
-          3,
-        );
+      }
       for (const name of [
         "zoom",
         "focalLength",

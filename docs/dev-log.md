@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE4c in progress (2026-10-06):** `codex/composition-ce4c` from CE8-L
+  `e1bd4bc` / [PR #44](https://github.com/xxibcill/still-shift/pull/44).
+  Native camera screen-space `viewOffset` is implemented across contract, pure
+  geometry/property clocks and inspector tracks. Focused 91 tests / 11 files and
+  build pass. Cinematic adaptation, camera validations, focus/pixel parity and
+  complete native/full acceptance remain pending. No owner decision is pending.
+  [Evidence](./composition-ce4c-results.json).
+
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
   `9d8f33a`; final code `d72ba2c`, verified checkpoint `3820c1c`. Bounded ambient,
   point and spot lighting, scoped pure evaluation, linear GPU shading, cache/Canvas
@@ -223,6 +231,17 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c native framing checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, from CE8-L `e1bd4bc`.
+- **Done:** bounded xy camera offset, shared point/plane/frustum geometry,
+  local-clock property/expression evaluation and inspector key discovery.
+- **Results:** 91 focused tests / 11 files and build pass; schema/reference generated.
+  Strict xy rejection and the corrected timing fixture are recorded in evidence.
+- **Open / next:** cinematic adapter, focus/coverage/framing and all-frame parity,
+  native acceptance and full local gate; no completion or PR claimed yet.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE8-L complete local gate
 

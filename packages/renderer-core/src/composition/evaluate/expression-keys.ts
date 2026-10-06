@@ -93,6 +93,11 @@ export function ownCurve(
         fallbackZ = next!.name === "scale" ? 1 : 0;
       }
       break;
+    case "viewOffset":
+      raw = layer.type === "camera" ? layer.viewOffset : undefined;
+      kind = "vector";
+      axis = next?.name;
+      break;
     case "pointOfInterest":
       raw = layer.type === "camera" ? layer.pointOfInterest : undefined;
       kind = "vector";

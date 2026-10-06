@@ -1,0 +1,50 @@
+{
+  "milestone": "CE4c",
+  "status": "in-progress",
+  "started": "2026-10-06",
+  "branch": "codex/composition-ce4c",
+  "base": "e1bd4bc",
+  "basePr": "https://github.com/xxibcill/still-shift/pull/44",
+  "slices": [
+    {
+      "name": "native camera view offset",
+      "status": "implemented-focused-pass",
+      "contract": "strict bounded xy grouped/separated keys, no authored defaults; screen-space principal point, independent of parent transforms",
+      "integration": [
+        "world point/plane projection",
+        "inverse frusta and inspector overlay",
+        "keyed local camera clock",
+        "driver/expression property paths and owned staged state",
+        "inspector key discovery",
+        "generated schema/reference"
+      ],
+      "checks": {
+        "focusedUnit": {
+          "files": 11,
+          "tests": 91,
+          "status": "pass"
+        },
+        "build": "pass",
+        "schemaGeneration": "pass"
+      },
+      "failedAttempts": [
+        "Expected red tests established missing schema/path/projection support",
+        "First implementation used general xyz vector schema; strict xy schema added after ignored-z rejection failed",
+        "Clock regression used invalid start field; corrected fixture to contract startFrame and focused suite/build passed"
+      ]
+    }
+  ],
+  "pending": [
+    "cinematic adapter and all-frame state parity",
+    "coverage/source/framing checks on adapted native camera",
+    "Gaussian focus compatibility and renderer parity",
+    "all fifteen cinematic fixtures, reverse seeks, repeat exports and hardware",
+    "final complete pinned pnpm check",
+    "milestone PR creation and attachment"
+  ],
+  "unchangedPolicies": [
+    "frozen CE0 baselines",
+    "Canvas pixel/timing assertions",
+    "GitHub Actions prohibited and disabled"
+  ]
+}

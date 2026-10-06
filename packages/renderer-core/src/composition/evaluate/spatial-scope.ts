@@ -88,6 +88,7 @@ export function projectSpatialScope(
           height,
           world: active.worldMatrix3d ?? affineMatrix4(active.worldMatrix),
           zoom: controls.zoom,
+          viewOffset: controls.viewOffset,
           filmSize: controls.filmSize,
           nearClip: controls.nearClip,
           farClip: controls.farClip,

@@ -186,6 +186,16 @@ export const animatableVector = (
   ]);
 };
 
+/** Strict xy controls cannot silently retain an ignored z component. */
+export const animatableVector2 = (component: z.ZodNumber) => {
+  const value = z.tuple([component, component]);
+  return z.union([
+    value,
+    keyed(value, { dimensions: 2 }),
+    separated(component).omit({ z: true }),
+  ]);
+};
+
 /**
  * Discrete properties (image and text state) hold each key's value until the next
  * key. They carry no curve fields.

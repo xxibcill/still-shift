@@ -3,13 +3,14 @@ import {
   type CompositionLayer,
 } from "@still-shift/scene-contract";
 import type { Point } from "../../node-transform.ts";
-import { scalar, unit, vector3 } from "./sample.ts";
+import { scalar, unit, vector, vector3 } from "./sample.ts";
 import type { Point3, SpatialTransform } from "./spatial-geometry.ts";
 
 type CameraLayer = Extract<CompositionLayer, { type: "camera" }>;
 export type SampledCameraControls = {
   model: "one-node" | "two-node";
   pointOfInterest: Point3;
+  viewOffset: Point;
   /** Determines which optical control is primary; the other value is derived. */
   opticalMode: "zoom" | "focal-length";
   zoom: number;
@@ -93,6 +94,7 @@ export function sampleCameraControls(
       0,
     ]),
     opticalMode,
+    viewOffset: vector(layer.viewOffset, time, fps, [0, 0]),
     zoom,
     focalLength:
       opticalMode === "zoom" ? (zoom * filmSize) / viewport[0] : focalLength,
@@ -110,6 +112,15 @@ export function sampleCameraControls(
 
 /** Runtime overshoot and expression writes obey the same bounded optical domain. */
 export function validateCameraControls(controls: SampledCameraControls) {
+  if (
+    controls.viewOffset.length !== 2 ||
+    !controls.viewOffset.every(
+      (value) => Number.isFinite(value) && Math.abs(value) <= 1_000_000,
+    )
+  )
+    throw Error(
+      "Camera view offset must contain two finite values within ±1000000",
+    );
   const ranges = {
     zoom: [0.001, 1_000_000],
     focalLength: [0.001, 10_000],

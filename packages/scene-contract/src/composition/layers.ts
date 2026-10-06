@@ -10,6 +10,7 @@ import {
   AnimatablePathSchema,
   animatableScalar,
   animatableVector,
+  animatableVector2,
 } from "./keys.ts";
 import {
   bounded,
@@ -366,6 +367,8 @@ export const CameraLayerSchema = z
     model: z.enum(["one-node", "two-node"]).optional(),
     /** Parent-space target of a two-node camera; the default is the scope centre. */
     pointOfInterest: animatableVector(bounded, { spatial: true }).optional(),
+    /** Screen-space principal-point shift in pixels; independent of camera parenting. */
+    viewOffset: animatableVector2(bounded).optional(),
     /** Horizontal zoom in pixels; mutually exclusive with authored focalLength. */
     zoom: animatableScalar(finite.min(0.001).max(1_000_000)).optional(),
     /** Focal length and horizontal film size are millimetres. */

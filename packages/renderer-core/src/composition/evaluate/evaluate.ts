@@ -105,7 +105,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-46";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-47";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -1638,6 +1638,7 @@ function sealStage(
       ? {
           camera: {
             ...state.camera,
+            viewOffset: [...state.camera.viewOffset] as [number, number],
             pointOfInterest: [...state.camera.pointOfInterest] as [
               number,
               number,

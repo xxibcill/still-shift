@@ -32,6 +32,9 @@ it.each([
   ["camera.transform.orientation.z", "scalar"],
   ["camera.pointOfInterest", "vec3"],
   ["camera.pointOfInterest.z", "scalar"],
+  ["camera.viewOffset", "vec2"],
+  ["camera.viewOffset.x", "scalar"],
+  ["camera.viewOffset.y", "scalar"],
   ["camera.zoom", "scalar"],
   ["camera.focalLength", "scalar"],
   ["camera.filmSize", "scalar"],
@@ -51,6 +54,8 @@ it.each([
   "plane.pointOfInterest",
   "camera.zoom.x",
   "camera.pointOfInterest.w",
+  "camera.viewOffset.z",
+  "plane.viewOffset",
   "overlay.transform.position.z",
 ])("rejects incompatible spatial path %s", (path) => {
   expect(resolvePropertyPath(document, path)).toMatchObject({

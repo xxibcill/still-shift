@@ -56,6 +56,33 @@ describe("native camera analytic geometry", () => {
     expect(() => cameraFrustum(camera(), 0)).toThrow(/clip planes/);
   });
 
+  it("uses one screen offset for world points, tilted planes and inverse frusta", () => {
+    const shifted = cameraGeometry({
+      ...camera(),
+      world: layerMatrix3d(transform({ position: [50, 50, -100] })),
+      viewOffset: [12, -7],
+    });
+    close(projectWorldPoint(shifted, [75, 50, 0])!, [87, 43]);
+    const matrix = layerMatrix3d(transform({ rotationY: 30 }));
+    const ordinary = projectPlane(matrix, camera(), rectangle);
+    const plane = projectPlane(matrix, shifted, rectangle);
+    const unshifted = projectLocalPoint(ordinary, [20, 25])!;
+    close(projectLocalPoint(plane, [20, 25])!, [
+      unshifted[0] + 12,
+      unshifted[1] - 7,
+    ]);
+    const corners = cameraFrustum(shifted, 200);
+    close(corners[0]!, [-74, -36, 100]);
+    for (const [index, expected] of [
+      [0, [0, 0]],
+      [2, [100, 100]],
+    ] as const)
+      close(projectWorldPoint(shifted, corners[index]!)!, expected);
+    expect(() =>
+      cameraGeometry({ ...shifted, world: matrix, viewOffset: [Infinity, 0] }),
+    ).toThrow(/offset/i);
+  });
+
   it("composes parent rotation, xyz translation, scale and anchor in world space", () => {
     const parent = layerMatrix3d(
       transform({ position: [10, 20, 30], rotation: 90 }),

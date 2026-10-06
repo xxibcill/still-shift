@@ -54,12 +54,29 @@ it.each([
   { blurLevel: 101 },
   { focusDistance: 0 },
   { pointOfInterest: [0, 0, Infinity] },
+  { viewOffset: [0, Infinity] },
+  { viewOffset: [0, 0, 1] },
+  { viewOffset: [1_000_001, 0] },
   { model: "orbit" },
 ])("bounds camera optics and targets: %j", (fields) => {
   expect(
     CameraLayerSchema.safeParse({ id: "camera", type: "camera", ...fields })
       .success,
   ).toBe(false);
+});
+
+it("retains bounded screen-space camera offset keys without injecting defaults", () => {
+  const camera = {
+    id: "camera",
+    type: "camera",
+    viewOffset: {
+      keys: [
+        { frame: 0, value: [0, 0] },
+        { frame: 20, value: [10, -5] },
+      ],
+    },
+  };
+  expect(CameraLayerSchema.parse(camera)).toEqual(camera);
 });
 
 it("declares required coverage without changing unauthored layer JSON", () => {
