@@ -2545,6 +2545,28 @@
       },
       "browserAcceptance": "Added existing upstream regressions to required composition-camera group; final CE4d gate pending",
       "integration": "Source/tests only; upstream owner documents, historical versions and unrelated worktrees untouched"
+    },
+    {
+      "name": "extended depth references and schema vocabulary freeze",
+      "status": "implemented-focused-verification",
+      "scope": [
+        "Preserved test-only independent Three depth oracle before default migration",
+        "Six additional references: all three landscape auto choices, vertical subject framing, transparent-source compatibility, half-resolution prepared depth",
+        "Original 17 depth reference rows/files remain untouched",
+        "Q2 schema comments and contributor format rules; README/UserGuide native/legacy/depth authoring guidance"
+      ],
+      "checks": {
+        "focusedUnit": {
+          "tests": 18,
+          "files": 2,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass",
+        "schemaCheck": "pass"
+      },
+      "extendedReferenceCapture": "pending quiet window; capture separate darwin-arm64-extended.json without replacing original manifest",
+      "productionDefaults": "not switched; full acceptance pending"
     }
   ],
   "pending": [

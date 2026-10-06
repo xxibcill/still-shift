@@ -8,14 +8,32 @@ import {
   launchRenderBrowser,
   probeRenderEnvironment,
 } from "@still-shift/execution-runtime";
-import { depthReferenceFixtures } from "../helpers/composition-depth-fixtures.ts";
-import type * as Depth from "../../packages/renderer-core/src/webgl-renderer.ts";
+import {
+  depthReferenceFixtures,
+  extendedDepthReferenceFixtures,
+} from "../helpers/composition-depth-fixtures.ts";
+import type * as Depth from "../helpers/legacy-depth-oracle.ts";
 import type * as Scene from "../../packages/renderer-core/src/scene.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const destination = resolve(root, "tests/visual/composition-depth-reference");
 const capture = process.argv.includes("--capture");
-const fixtures = depthReferenceFixtures();
+const extended = process.argv.includes("--extended");
+const normalizedSourceHash =
+  "sha256:" +
+  createHash("sha256")
+    .update(
+      await readFile(
+        resolve(root, "benchmarks/fixtures/composition/ce4d/source.svg"),
+      ),
+    )
+    .digest("hex");
+const fixtures = extended
+  ? extendedDepthReferenceFixtures(normalizedSourceHash)
+  : depthReferenceFixtures();
+const referenceName = extended
+  ? "darwin-arm64-extended.json"
+  : "darwin-arm64.json";
 const server = await createServer({
   root,
   configFile: false,
@@ -42,7 +60,7 @@ try {
           .digest("hex")
       : null;
     const output = await page.evaluate(async (fixture) => {
-      const rendererUrl = "/packages/renderer-core/src/webgl-renderer.ts";
+      const rendererUrl = "/tests/helpers/legacy-depth-oracle.ts";
       const renderer: typeof Depth = await import(rendererUrl);
       const sceneUrl = "/packages/renderer-core/src/scene.ts";
       const sampling: typeof Scene = await import(sceneUrl);
@@ -157,12 +175,12 @@ try {
   const manifest = { version: "ce4d-depth-reference-1", environment, rows };
   if (capture)
     await writeFile(
-      resolve(destination, "darwin-arm64.json"),
+      resolve(destination, referenceName),
       JSON.stringify(manifest, null, 2) + "\n",
     );
   else {
     const stored = JSON.parse(
-      await readFile(resolve(destination, "darwin-arm64.json"), "utf8"),
+      await readFile(resolve(destination, referenceName), "utf8"),
     );
     assert.deepEqual(
       JSON.parse(JSON.stringify(rows)),

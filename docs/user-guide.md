@@ -38,6 +38,14 @@ with an AI model, cut out products, or invent missing illustration layers.
 
 ## Evaluate and render programmable compositions
 
+Choose `composition-1` JSON or the TypeScript builder for custom layers, effects,
+constraints and cameras. Story and commerce formats remain useful for recipe and
+component authoring; cinematic inputs retain their camera recipes. These family
+formats have a frozen visual vocabulary, and `illustrated-scene-1` is frozen
+entirely. New visual features belong in `composition-1`; story recipes, actions,
+presets and passages may grow when they compile to existing composition features.
+See the [contribution rules](./composition-contributing.md).
+
 The `composition-1` format supports pure frame and property evaluation in Node
 and browsers through `evaluateComp` and `evaluateProperty` from
 `@still-shift/renderer-core`. Use it to inspect animated transforms, visibility,
@@ -156,6 +164,38 @@ and animated blur, stroke and trim. See the [commerce adapter reference](./compo
 for provider details and input limits. CE4b is complete under the approved milestone
 split; CE6-P retains the unchanged 1.25× render/readback timing target, deferred
 to a future version.
+
+### Legacy illustrated compatibility
+
+The six legacy illustrated presets also compile to composition JSON. Their
+millisecond motion is sampled at integer frames, and travelling tokens use native
+follow-path constraints with editable progress signals:
+
+```bash
+pnpm --silent still-shift comp export-json --scene benchmarks/fixtures/history-offstage-v2/resource-flow.json --output resource.composition.json
+pnpm --silent still-shift comp render --input resource.composition.json --output resource.mp4
+```
+
+### Prepared depth-image layers
+
+A native `depth-image` layer references a verified source image and a prepared
+`r8-unorm` depth asset with explicit dimensions. Its bounded local `motion.scale`,
+`motion.strength`, `motion.offset` and `motion.roll` can use keys, expressions or
+drivers. Add graphic/text layers above it, or use the existing masks, effects,
+parenting, precomps and cameras. Depth preparation and inference happen before
+rendering. The layer defaults to unlit; explicitly 3D receiving layers can opt
+into flat-surface lighting.
+
+```bash
+pnpm --silent still-shift comp render --input benchmarks/fixtures/composition/ce4d/native-depth.json --output depth-layer.mp4 --backend webgl2
+```
+
+Use WebGL2 for depth displacement and linear-light flat preset compatibility.
+An unsupported backend reports `comp-feature-backend`. Native authored depth
+layers preserve source alpha when composited; prepared legacy preset compatibility
+uses its explicit opaque policy. Source and depth hashes, resolved settings and
+renderer versions participate in cache identity. The TypeScript builder's
+`depthImage(id, sourceAsset, depthAsset, options)` registers both prepared assets.
 
 ### Native vector shapes
 

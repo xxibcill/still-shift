@@ -234,6 +234,7 @@ export type PreparedCommerceAssets = {
   font: z.infer<typeof PreparedFontSchema>;
   backdrop?: CommerceScene["assets"][number];
 };
+/** Frozen visual vocabulary (Q2): new recipes may compile to existing composition-1 features only. */
 export const CommerceSceneSchema = shape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   const { nodes } = validatePreparedGraph(scene, fail);

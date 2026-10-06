@@ -10,7 +10,11 @@ import {
   CompositionSchema,
   type CompositionAsset,
 } from "@still-shift/scene-contract";
-import { depthReferenceFixtures } from "../helpers/composition-depth-fixtures.ts";
+import { createHash } from "node:crypto";
+import {
+  depthReferenceFixtures,
+  extendedDepthReferenceFixtures,
+} from "../helpers/composition-depth-fixtures.ts";
 import { compositionTracks } from "../../apps/lab/src/composition-keys.ts";
 import { ownCurve } from "../../packages/renderer-core/src/composition/evaluate/expression-keys.ts";
 import { requireSpatialCapabilities } from "../../packages/renderer-core/src/composition/render/spatial-capabilities.ts";
@@ -29,6 +33,58 @@ const source = assets[0]!,
   depth = assets[1]!;
 
 describe("prepared depth/flat preset adaptation", () => {
+  it("compiles all additional auto/framing/alpha/depth-resolution reference cases", () => {
+    const fixtures = extendedDepthReferenceFixtures(source.sha256);
+    expect(fixtures).toHaveLength(6);
+    for (const fixture of fixtures) {
+      const asset = (
+        id: string,
+        path: string,
+        width: number,
+        height: number,
+      ) => ({
+        id,
+        type: "image" as const,
+        path,
+        width,
+        height,
+        sha256:
+          "sha256:" +
+          createHash("sha256")
+            .update(
+              readFileSync(`benchmarks/fixtures/composition/ce4d/${path}`),
+            )
+            .digest("hex"),
+      });
+      const doc = depthToComposition(fixture.scene, {
+        requestedPreset: fixture.requestedPreset,
+        source: asset("source", fixture.source, 1600, 900),
+        depth: asset(
+          "depth",
+          fixture.depth!,
+          fixture.depthWidth ?? 1600,
+          fixture.depthHeight ?? 900,
+        ),
+      });
+      expect(doc.layers[0]).toMatchObject({
+        type: "depth-image",
+        alphaMode: "opaque",
+        depth: {
+          width: fixture.depthWidth ?? 1600,
+          height: fixture.depthHeight ?? 900,
+        },
+      });
+      for (let frame = 0; frame < doc.frameCount; frame++) {
+        const expected = evaluateFrame(fixture.scene, frame);
+        expect(evaluateComp(doc, frame).layers[0]!.depthMotion).toEqual({
+          scale: expected.scale,
+          strength: expected.depthStrength,
+          offset: [expected.translationX, expected.translationY],
+          roll: expected.rollDegrees,
+        });
+      }
+    }
+  });
   it("rejects unsupported image-plane combinations and Canvas before drawing", () => {
     const scene = depthReferenceFixtures().find(
       (fixture) => fixture.scene.motion.preset === "panel_reveal",

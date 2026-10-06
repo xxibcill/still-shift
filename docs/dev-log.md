@@ -55,6 +55,8 @@ still hold before relying on them.
   the all-176 native migration/default acceptance suite is implemented but unrun.
   PR43 inherited-blur/ancestor-coverage/XY-tangent fixes are integrated with 43
   focused regressions/build/lint passing; browser regressions join the final gate.
+  Six additional depth cases pass 18 focused state checks; reference capture is
+  pending. Q2 vocabulary comments/contributor guidance and format docs are updated.
   PR42 is running its timed gate; defer new timed browser acceptance until it ends.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
@@ -253,6 +255,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d extended depth and vocabulary checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** preserved the old Three renderer as an independent test-only oracle.
+  Added six reference cases for all auto choices, protected vertical framing,
+  transparent input and prepared depth at half source resolution. Original 17
+  reference rows/files remain unchanged. Q2 schema comments and contributor/format
+  guidance freeze family visual vocabulary and the entire legacy illustrated schema.
+- **Results:** 18 focused depth state tests, build, scoped lint and schema check pass.
+  Additional reference capture, GPU pixels, integration/export/default migration
+  and complete gate are pending; competing timed PR42 verification remains active.
+- **Open / next:** capture separate extended references when quiet, finish shared
+  graph/inspector/export acceptance and switch defaults after parity passes.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d reconciles spatial review fixes
 

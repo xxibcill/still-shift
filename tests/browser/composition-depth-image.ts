@@ -10,9 +10,12 @@ import {
 import { type Composition } from "@still-shift/scene-contract";
 import { depthToComposition } from "@still-shift/renderer-core";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
-import type * as Legacy from "../../packages/renderer-core/src/webgl-renderer.ts";
+import type * as Legacy from "../helpers/legacy-depth-oracle.ts";
 import type * as Metrics from "../../packages/renderer-core/src/frame-tolerance.ts";
-import { depthReferenceFixtures } from "../helpers/composition-depth-fixtures.ts";
+import {
+  depthReferenceFixtures,
+  extendedDepthReferenceFixtures,
+} from "../helpers/composition-depth-fixtures.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const manifest = JSON.parse(
@@ -28,6 +31,18 @@ const manifest = JSON.parse(
     hashes: string[];
   }[];
 };
+const extended = process.argv.includes("--extended");
+const extendedManifest = extended
+  ? (JSON.parse(
+      await readFile(
+        resolve(
+          root,
+          "tests/visual/composition-depth-reference/darwin-arm64-extended.json",
+        ),
+        "utf8",
+      ),
+    ) as typeof manifest)
+  : undefined;
 const server = await createServer({
   root,
   configFile: false,
@@ -38,10 +53,18 @@ await server.listen();
 const browser = await launchRenderBrowser();
 const reports = [];
 try {
-  const fixtures = depthReferenceFixtures();
-  assert.equal(fixtures.length, 17);
+  const fixtures = extended
+    ? extendedDepthReferenceFixtures(
+        "sha256:" +
+          manifest.rows.find((row) => row.id === "landscape-slow_push")!
+            .sourceHash,
+      )
+    : depthReferenceFixtures();
+  assert.equal(fixtures.length, extended ? 6 : 17);
   for (const fixture of fixtures) {
-    const reference = manifest.rows.find((row) => row.id === fixture.id)!;
+    const reference = (extendedManifest ?? manifest).rows.find(
+      (row) => row.id === fixture.id,
+    )!;
     const doc = depthToComposition(
       {
         ...fixture.scene,
@@ -49,6 +72,7 @@ try {
       },
       {
         id: fixture.id,
+        requestedPreset: fixture.requestedPreset,
         source: {
           id: "source",
           type: "image",
@@ -64,8 +88,8 @@ try {
                 type: "image" as const,
                 path: fixture.depth!,
                 sha256: "sha256:" + reference.depthHash,
-                width: 1600,
-                height: 900,
+                width: fixture.depthWidth ?? 1600,
+                height: fixture.depthHeight ?? 900,
               },
             }
           : {}),
@@ -80,7 +104,7 @@ try {
         async ({ fixture, documentJson, reference }) => {
           const doc = JSON.parse(documentJson) as Composition;
           const renderUrl = "/packages/renderer-core/src/index.ts",
-            legacyUrl = "/packages/renderer-core/src/webgl-renderer.ts",
+            legacyUrl = "/tests/helpers/legacy-depth-oracle.ts",
             metricsUrl = "/packages/renderer-core/src/frame-tolerance.ts";
           const renderer: typeof Render = await import(renderUrl),
             legacy: typeof Legacy = await import(legacyUrl),
@@ -201,11 +225,17 @@ try {
   }
   await writeFile(
     process.env.STILL_SHIFT_DEPTH_NATIVE_REPORT ??
-      resolve(root, "benchmarks/results/composition-ce4d-depth-native.json"),
+      resolve(
+        root,
+        extended
+          ? "benchmarks/results/composition-ce4d-depth-native-extended.json"
+          : "benchmarks/results/composition-ce4d-depth-native.json",
+      ),
     JSON.stringify(
       {
-        scope:
-          "all 17 prepared depth/flat/fallback adapter timelines; default consolidation/exports/hardware remain pending",
+        scope: extended
+          ? "six additional auto/framing/alpha/depth-resolution timelines; default consolidation/exports/hardware remain pending"
+          : "all 17 prepared depth/flat/fallback adapter timelines; default consolidation/exports/hardware remain pending",
         reports,
       },
       null,

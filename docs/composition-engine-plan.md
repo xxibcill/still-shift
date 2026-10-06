@@ -1414,7 +1414,7 @@ existing deferral. All tracked visual references are unchanged.
 - [ ] Remove per-family branches from `illustrated-renderer.ts` and
       `evaluatePreparedNodeAtTime`, leaving family modules as adapters. Target: zero
       `schemaVersion` comparisons in the render path.
-- [ ] Freeze the visual vocabulary of the four family schemas (Q2, option C): add a
+- [x] Freeze the visual vocabulary of the four family schemas (Q2, option C): add a
       schema comment and a contributor note that rendering features land only in
       `composition-1`, while story-level additions (recipes, actions, presets, passage
       features) remain allowed if they compile to existing composition features.

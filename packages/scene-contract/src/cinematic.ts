@@ -122,6 +122,7 @@ const cinematicShape = PreparedSceneFieldsSchema.extend({
 }).strict();
 
 export type CinematicScene = z.infer<typeof cinematicShape>;
+/** Frozen visual vocabulary (Q2): new camera recipes must compile to existing composition-1 features. */
 export const CinematicSceneSchema = cinematicShape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   validatePreparedFormat(scene, fail);

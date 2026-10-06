@@ -1,6 +1,7 @@
 import {
   fallback2DScene,
   resolvePreviewScene,
+  resolveDepthPreviewPreset,
   type PreviewPreset,
   type PreviewScene,
 } from "@still-shift/renderer-core";
@@ -13,6 +14,8 @@ export type DepthReferenceFixture = {
   width: number;
   height: number;
   requestedPreset: PreviewPreset | "auto";
+  depthWidth?: number;
+  depthHeight?: number;
 };
 
 /** Dedicated Q7 references; the 176 frozen CE0 family references are independent. */
@@ -65,5 +68,83 @@ export function depthReferenceFixtures(): DepthReferenceFixture[] {
       depth: reason === "DEPTH_RANGE_FLAT" ? "flat-depth.svg" : null,
     });
   result.push({ ...base, id: "discontinuous-depth", depth: "edge-depth.svg" });
+  return result;
+}
+
+/** Additional pre-migration references preserve the original 17-case manifest. */
+export function extendedDepthReferenceFixtures(
+  normalizedSourceHash: string,
+): DepthReferenceFixture[] {
+  const base = depthReferenceFixtures()[0]!;
+  const choices = new Map<PreviewPreset, number>();
+  for (let seed = 0; seed < 64; seed++) {
+    const preset = resolveDepthPreviewPreset(
+      "auto",
+      seed,
+      1920,
+      1080,
+      normalizedSourceHash,
+    );
+    if (!choices.has(preset)) choices.set(preset, seed);
+  }
+  const result: DepthReferenceFixture[] = [...choices].map(
+    ([preset, seed]) => ({
+      ...base,
+      id: `auto-landscape-${preset}`,
+      requestedPreset: "auto",
+      scene: resolvePreviewScene({
+        sourceWidth: 1600,
+        sourceHeight: 900,
+        depthWidth: 1600,
+        depthHeight: 900,
+        canvasWidth: 1920,
+        canvasHeight: 1080,
+        durationMs: 3000,
+        fps: 30,
+        preset,
+        intensity: "standard",
+        seed,
+      }),
+    }),
+  );
+  result.push({
+    ...base,
+    id: "auto-vertical-protected-focus",
+    width: 360,
+    height: 640,
+    requestedPreset: "auto",
+    scene: resolvePreviewScene({
+      sourceWidth: 1600,
+      sourceHeight: 900,
+      depthWidth: 1600,
+      depthHeight: 900,
+      canvasWidth: 1080,
+      canvasHeight: 1920,
+      durationMs: 3000,
+      fps: 30,
+      preset: resolveDepthPreviewPreset(
+        "auto",
+        37,
+        1080,
+        1920,
+        normalizedSourceHash,
+      ),
+      intensity: "standard",
+      seed: 37,
+      focus: [0.16, 0.48],
+    }),
+  });
+  result.push({
+    ...base,
+    id: "transparent-source-opaque-compatibility",
+    source: "source-transparent.svg",
+  });
+  result.push({
+    ...base,
+    id: "prepared-depth-half-resolution",
+    depth: "depth-half.svg",
+    depthWidth: 800,
+    depthHeight: 450,
+  });
   return result;
 }

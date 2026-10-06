@@ -310,6 +310,7 @@ const shape = PreparedSceneFieldsSchema.omit({ durationMs: true })
   .strict();
 export type StoryScene = z.infer<typeof shape>;
 
+/** Frozen visual vocabulary (Q2): story additions must compile to existing composition-1 features. */
 export const StorySceneSchema = shape.superRefine((scene, ctx) => {
   const fail = (message: string) => ctx.addIssue({ code: "custom", message });
   validatePreparedFormat(scene, fail);
