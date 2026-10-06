@@ -800,7 +800,7 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-format-size`                 | `format` disagrees with `width` and `height`.                                                         |
 | `comp-metadata-size`               | Metadata serialises to more than 64 KiB.                                                              |
 | `comp-json-size`                   | An opaque JSON payload serialises to more than 64 KiB.                                                |
-| `comp-json-depth`                  | An opaque JSON payload nests more than 64 container levels below its root.                            |
+| `comp-json-depth`                  | A JSON payload exceeds its payload-specific container-depth bound below its root.                     |
 | `comp-metadata-depth`              | Metadata nests more than 64 container levels below its root.                                          |
 | `comp-driver-source`               | A driver has none or several of `signal`, `source` and `sum`.                                         |
 | `comp-motion-cycle`                | Driver, constraint or parent dependencies form a cycle.                                               |
@@ -1571,7 +1571,10 @@ components cannot both have one (`comp-expression-overlap`). Composition propert
 (`comp.camera.*`) are read-only.
 
 `ast` is optional on input. When present it must equal the AST parsed from `source`
-(`comp-expression-mismatch`). `pnpm still-shift comp normalize` and
+(`comp-expression-mismatch`). Serialized ASTs retain a 64 KiB byte bound and allow
+up to 998 JSON container levels, derived from the 500-node expression bound;
+operator argument arrays count as containers. Generic opaque payloads and metadata
+retain their separate 64-level depth bounds. `pnpm still-shift comp normalize` and
 `comp export-json --normalized true` write the canonical AST next to the source,
 for example `wiggle(2, 6, 7)` →
 `{ "call": "wiggle", "args": [{ "num": 2 }, { "num": 6 }, { "num": 7 }] }`. Other AST
@@ -1617,6 +1620,9 @@ property's type (`comp-expression-type`); there is no implicit conversion.
   property's **expression-stage value**: keys, motion craft and expressions, without
   constraints or parent transforms, as AE property reads are layer-space values.
   Drivers still read full layer state.
+  An unauthored `constraintReference` inherits the expression-stage anchor on each
+  unwritten axis. Reads resolve those anchor expressions first, and the inherited
+  dependency participates in cycle validation.
 - **Dependencies.** Every path an expression reads is a dependency edge, joined to the
   driver, constraint and parent graph. Cycles are rejected before rendering
   (`comp-expression-cycle`), including self references and reads at earlier times:
@@ -1652,6 +1658,13 @@ property's type (`comp-expression-type`); there is no implicit conversion.
 | `rove()`                                                                                                                                                          | This property's 2D keyed path at constant speed between its first and last keys (roving keys).                                                                                                                                                     |
 | `heading(path)`                                                                                                                                                   | Clockwise direction of travel of a 2D property: the ±1 frame chord, else the last direction within 64 frames, else the first within the next 64.                                                                                                   |
 | `squash(velocity, amount, limit, aligned = false)`                                                                                                                | Area-preserving scale `[sx, sy]`: stretch `s = 1 + min(limit − 1, amount·speed)` along the travel direction and `1/s` across it (axis-weighted unless `aligned`).                                                                                  |
+
+`rove()` and `constant-speed` support joint position keys and separated `x`/`y`
+keys. Separate dimensions follow their independently eased trajectory over the
+union of axis key times; a fixed dimension stays fixed. Spring trajectories use
+sampling density based on their frequency and scope frame rate. Resolving a
+separated path is limited to 512,001 points; a path needing more fails with
+`comp-expression-value` instead of returning an undersampled trajectory.
 
 Own-key built-ins (`loopIn`, `loopOut`, `inertia`, `anticipate`, `rove`) read the
 property's authored keys in layer time and never re-enter its expression.
@@ -1690,13 +1703,26 @@ every integer frame; `bakeExpressions` is the library form, and
 `evaluateStageProperty(comp, path, time)` returns the expression-stage value and
 layer time that bake and expression reads use.
 
-| Code                    | Severity | Meaning                                                                                                                                             |
-| ----------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `comp-bake-time`        | error    | A property's layer time at an integer frame is not an integer (stretch other than ±1, fractional remap), or a held layer time has different values. |
-| `comp-bake-limit`       | error    | A property would need more than 2,000 keys.                                                                                                         |
-| `comp-bake-quantized`   | warning  | Colour keys were rounded to 8-bit channels.                                                                                                         |
-| `comp-bake-history`     | warning  | A remaining delayed or lagged driver reads a baked property; values before frame 0 hold the first key.                                              |
-| `comp-bake-auto-orient` | error    | Retained path auto-orientation differs after baking because its position history cannot be preserved.                                               |
+Bake also samples the historical clocks used by `time.echo`, including nested
+scope clocks that retain the current root time. Compatible samples become keys;
+if one layer frame needs different values, or an echo sample needs a fractional
+layer frame, bake refuses the result with `comp-bake-time`.
+Historical samples cover the echoed content and its property dependencies,
+including primitive blur inherited from groups, selected by each effect’s active
+window at the historical layer clock, and `sourceRevision` when
+`skipUnchanged` is active. Unrelated siblings and current-clock echo parameters
+do not need historical keys. Active periodic writers of `constraintReference`
+replace inherited anchor dependencies only on the axes read at that root clock.
+Delayed, lagged and temporal expression reads retain those anchor dependencies,
+because their sampled root times can leave the writer’s active window.
+
+| Code                    | Severity | Meaning                                                                                                                                                 |
+| ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `comp-bake-time`        | error    | A property's layer time is not an integer (stretch other than ±1, fractional remap or echo sample), or a held/repeated layer time has different values. |
+| `comp-bake-limit`       | error    | A property would need more than 2,000 keys.                                                                                                             |
+| `comp-bake-quantized`   | warning  | Colour keys were rounded to 8-bit channels.                                                                                                             |
+| `comp-bake-history`     | warning  | A remaining delayed or lagged driver reads a baked property; values before frame 0 hold the first key.                                                  |
+| `comp-bake-auto-orient` | error    | Retained path auto-orientation differs after baking because its position history cannot be preserved.                                                   |
 
 Auto-orient (`transform.autoOrient`) is a transform switch, not an expression, and
 remains in baked output. Position expressions on these layers also sample the 64
@@ -1783,34 +1809,36 @@ Features that are in the contract but not yet implemented fail with
 
 ## Limits
 
-| Limit                                                     | Value                              |
-| --------------------------------------------------------- | ---------------------------------- |
-| Width, height                                             | 16–8,192                           |
-| `frameCount`                                              | 1–108,000                          |
-| Key frames                                                | ±216,000 (layer time)              |
-| Motion windows, periods, delays and imported curve frames | 0–216,000                          |
-| Noise and text-selector seeds                             | 0–2,147,483,647                    |
-| Keys per property                                         | 2,000                              |
-| Layers (root and all precomps)                            | 2,000                              |
-| Precomps / nesting depth                                  | 200 / 8                            |
-| Parent chain depth                                        | 32                                 |
-| Assets, markers                                           | 500 each                           |
-| Masks, effects per layer                                  | 32 each                            |
-| Path vertices                                             | 1,024                              |
-| Image sources, text states                                | 32, 12                             |
-| Text length                                               | 4,000 characters                   |
-| Signals, drivers, constraints, periodic, text animators   | 200, 500, 200, 200, 200            |
-| Expressions (authored plus compiled behaviours) / length  | 2,000 / 2,000 characters           |
-| Expression AST nodes / nesting levels                     | 500 / 64                           |
-| Behaviours                                                | 200                                |
-| Property path length                                      | 512 characters                     |
-| Metadata                                                  | 64 KiB per object                  |
-| Metadata nesting depth                                    | 64 container levels below its root |
-| Expression AST, effect parameters or shape contents       | 64 KiB per payload                 |
-| Opaque JSON nesting depth                                 | 64 container levels below its root |
-| Other numbers                                             | ±1,000,000                         |
+| Limit                                                     | Value                               |
+| --------------------------------------------------------- | ----------------------------------- |
+| Width, height                                             | 16–8,192                            |
+| `frameCount`                                              | 1–108,000                           |
+| Key frames                                                | ±216,000 (layer time)               |
+| Motion windows, periods, delays and imported curve frames | 0–216,000                           |
+| Noise and text-selector seeds                             | 0–2,147,483,647                     |
+| Keys per property                                         | 2,000                               |
+| Layers (root and all precomps)                            | 2,000                               |
+| Precomps / nesting depth                                  | 200 / 8                             |
+| Parent chain depth                                        | 32                                  |
+| Assets, markers                                           | 500 each                            |
+| Masks, effects per layer                                  | 32 each                             |
+| Path vertices                                             | 1,024                               |
+| Image sources, text states                                | 32, 12                              |
+| Text length                                               | 4,000 characters                    |
+| Signals, drivers, constraints, periodic, text animators   | 200, 500, 200, 200, 200             |
+| Expressions (authored plus compiled behaviours) / length  | 2,000 / 2,000 characters            |
+| Expression AST nodes / nesting levels                     | 500 / 64                            |
+| Behaviours                                                | 200                                 |
+| Property path length                                      | 512 characters                      |
+| Metadata                                                  | 64 KiB per object                   |
+| Metadata nesting depth                                    | 64 container levels below its root  |
+| Expression AST, effect parameters or shape contents       | 64 KiB per payload                  |
+| Expression AST JSON depth                                 | 998 container levels below its root |
+| Effect/shape opaque JSON nesting depth                    | 64 container levels below its root  |
+| Other numbers                                             | ±1,000,000                          |
 
-The same values are exported as `COMPOSITION_LIMITS`.
+The same values are exported as `COMPOSITION_LIMITS`; expression AST node, syntax
+nesting and JSON-depth bounds are exported as `EXPRESSION_LIMITS`.
 
 Composition-specific bounds also cover reused motion and typography fields: signal
 values, generator amplitudes, driver maps, temporal speeds, bezier handles, constraint
@@ -1818,7 +1846,8 @@ offsets, text animation and font axes, and camera coordinates, zoom, tangents an
 These use the general numeric limit unless their field has a tighter range. Imported
 curves retain their existing 2–100 key limit and nonnegative frame convention. Metadata
 remains free-form JSON subject to its byte and nesting-depth limits. Expression ASTs,
-effect parameter objects and shape contents have the same byte and depth limits,
+effect parameter objects and shape contents share a byte limit; ASTs use their
+expression-specific JSON-depth bound and effects/shapes retain depth 64. Bounds are
 checked before recursive parsing even while those features are unavailable. Cyclic values
 are rejected as invalid JSON. Legacy story and commerce contracts
 retain their original bounds.
@@ -2212,7 +2241,8 @@ The rules are `frozen-run`, `frozen-pixels`, `velocity-discontinuity`,
 six-frame frozen-run allowance (unchanged adjacent comparisons). Reading uses
 consecutive revealed, opaque, settled text frames, with separate word budgets for
 heading, label, qualification and body. Off-canvas/safe-area checks use conservative
-screen bounds. Geometry coverage checks designated `coverageLayers` or adapter
+screen bounds after group and precomp clipping; content clipped away entirely is not
+framed. Geometry coverage checks designated `coverageLayers` or adapter
 `metadata.storyCameraCover`; image transparency still needs asset coverage validation.
 
 Cuts reset stillness/reading windows and suppress pop/join findings. Declare them
@@ -2245,8 +2275,13 @@ text framing is incomplete. Custom content providers require rendered inspection
 The analyser samples visible instances, inherited transforms/opacity, camera,
 matte dependencies, masks, effects and known provider content. It excludes clock
 bookkeeping and invisible unrelated motion. Join checks include fractional
-stretched/reversed key joins and reuse one-sided velocity sampling. A bounded
-2,000,000 layer-frame budget prevents unbounded inspection; exceeding it fails
+stretched/reversed key joins and reuse one-sided velocity sampling. Each side is
+sampled a step away from the join, so per-frame held keys (as baked by adapters) are
+frame samples, not velocity jumps; the report lists held motion as unmeasured, and
+held scale/opacity steps remain subject to pop checks. Fractional join searches
+share each clock's evaluations across the layers that use it. A bounded
+2,000,000 layer-frame budget, which includes those searches, prevents unbounded
+inspection; exceeding it fails
 instead of returning a partial pass. Split unusually large projects into smaller
 compositions before linting.
 
@@ -2329,3 +2364,19 @@ with a native difference-blend overlay and preserves its assets and cue mappings
 
 `@still-shift/renderer-core/passage-compositions` is the narrow public entrypoint for
 passage picture validation and diagnostics; it does not import renderer backends.
+
+## CE16 soundtrack project
+
+Soundtracks use a separate opt-in `soundtrack-project-1` authority; they do not
+introduce CE13 composition audio layers early. The
+[contract/worker reference](./soundtrack-project.md#contract-and-audio-semantics)
+explains integer sample intervals, clip-relative linear/hold automation, clip pan,
+linear/equal-power fades,
+`tracks[].processors`, bus/master routing, stem taps, normalization and tail rules.
+[Duck settings](./soundtrack-project.md#ducking) persist the narration detector,
+BGM targets, threshold/reduction, window, attack/release/hold and lookahead.
+[Shared operations/diagnostics](./soundtrack-project.md#shared-edits-and-recovery)
+cover atomic revision saves, undo/redo, bounds, routing, asset and runtime failures.
+Cue/event references remain attached to resolved sample positions; explicit retiming
+recomputes them without changing source intervals. No arbitrary plugin/expression
+execution or composition media-schema migration is added.

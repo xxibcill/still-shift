@@ -10,6 +10,7 @@ import {
 } from "../../benchmarks/fixtures/composition/ce12/fixtures.ts";
 import {
   collapsedMotionComposition,
+  nestedCoverageComposition,
   providerReadingComposition,
   qualityCapacityComposition,
 } from "../helpers/composition-quality-fixtures.ts";
@@ -18,6 +19,25 @@ const directories: string[] = [];
 afterEach(async () => {
   await Promise.all(
     directories.splice(0).map((p) => rm(p, { recursive: true })),
+  );
+});
+
+it("returns a coverage error when a nested host disappears", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "ce12-coverage-policy-"));
+  directories.push(dir);
+  const policy = join(dir, "policy.json");
+  await writeFile(policy, JSON.stringify({ coverageLayers: ["host/bg"] }));
+  const result = await invoke(nestedCoverageComposition(0, 15), [
+    "--policy",
+    policy,
+  ]);
+  expect(result.exit).toBe(1);
+  expect(JSON.parse(result.stdout).diagnostics).toContainEqual(
+    expect.objectContaining({
+      code: "coverage",
+      frames: [15, 29],
+      node: "host/bg",
+    }),
   );
 });
 async function invoke(input: unknown, extra: string[] = []) {

@@ -241,9 +241,6 @@ async function load(path: string) {
     );
     const frame = Math.min(retainedFrame, result.composition.frameCount - 1);
     candidate.renderFrame(frame);
-    const report = analyzeCompositionQuality(result.composition, {
-      evaluation: { textBounds: candidate.textBounds },
-    });
     if (run !== generation) return;
     const previous = preview;
     canvas.replaceWith(nextCanvas);
@@ -263,9 +260,28 @@ async function load(path: string) {
     );
     el("command").textContent =
       `pnpm --silent still-shift comp render --input ${program ? JSON.stringify(program.input) : `benchmarks/fixtures/composition/${path}`} --output ${comp.id}.mp4 --backend ${backend}`;
-    showLint(report);
+    // Lint is advisory: a lint failure must not stop the composition previewing.
+    let linted = false;
+    try {
+      showLint(
+        analyzeCompositionQuality(comp, {
+          evaluation: { textBounds: preview.textBounds },
+        }),
+      );
+      linted = true;
+    } catch (cause) {
+      lintFindings = [];
+      el("lint-timeline").replaceChildren();
+      el("lint-findings").replaceChildren();
+      const diagnostics = passageDiagnostics(cause);
+      el("lint-summary").textContent = `Motion checks unavailable: ${
+        diagnostics.length
+          ? diagnostics.map((d) => `${d.code}: ${d.message}`).join("; ")
+          : String(cause instanceof Error ? cause.message : cause)
+      }`;
+    }
     show(frame);
-    lintButton.disabled = false;
+    lintButton.disabled = !linted;
     play.disabled = false;
     slider.disabled = false;
     status.textContent = `Ready: ${comp.name ?? comp.id} · ${comp.width} × ${comp.height} · ${comp.fps} fps${program?.source === "builder" ? " · edit the source to change motion" : ""}`;

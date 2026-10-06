@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "ce16-backend-proof-1",
+  "sampleRate": 48000,
+  "durationSamples": 2880000,
+  "clips": [
+    {
+      "id": "narration",
+      "path": "/Users/jjae/Documents/obsidian/ai-business/history-offstage/06 Episodes/S01E02 - Rent Day/sound/mix-v001/stems/narration-derived48k.flac",
+      "sha256": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+      "sourceStartSample": 0,
+      "sourceEndSample": 2880000,
+      "startSample": 0,
+      "gainDb": 0,
+      "fadeInSamples": 0,
+      "fadeOutSamples": 0,
+      "automation": [],
+      "dsp": "none"
+    },
+    {
+      "id": "bgm",
+      "path": "/Users/jjae/Documents/obsidian/ai-business/history-offstage/06 Episodes/S01E02 - Rent Day/sound/assets-v001/ES-M01-FULL.wav",
+      "sha256": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+      "sourceStartSample": 192000,
+      "sourceEndSample": 956640,
+      "startSample": 24000,
+      "gainDb": -18.843005891738272,
+      "fadeInSamples": 57600,
+      "fadeOutSamples": 96000,
+      "automation": [
+        [288000, 1],
+        [300000, 0.5],
+        [372000, 0.5],
+        [384000, 1]
+      ],
+      "dsp": "highpass-lowpass"
+    },
+    {
+      "id": "sfx-pouch",
+      "path": "/Users/jjae/Documents/obsidian/ai-business/history-offstage/06 Episodes/S01E02 - Rent Day/sound/assets-v001/ES-F07-FULL.wav",
+      "sha256": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+      "sourceStartSample": 9600,
+      "sourceEndSample": 33600,
+      "startSample": 42240,
+      "gainDb": -15.122200631740892,
+      "fadeInSamples": 240,
+      "fadeOutSamples": 2880,
+      "automation": [],
+      "dsp": "highpass-lowpass"
+    },
+    {
+      "id": "sfx-roots",
+      "path": "/Users/jjae/Documents/obsidian/ai-business/history-offstage/06 Episodes/S01E02 - Rent Day/sound/assets-v001/ES-F05-FULL.wav",
+      "sha256": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484",
+      "sourceStartSample": 14400,
+      "sourceEndSample": 38400,
+      "startSample": 565760,
+      "gainDb": -8.137125789171519,
+      "fadeInSamples": 240,
+      "fadeOutSamples": 2880,
+      "automation": [],
+      "dsp": "highpass-lowpass"
+    }
+  ],
+  "notes": [
+    "Isolated diagnostic fixture; no episode replacement.",
+    "Source intervals end-exclusive after deterministic FFmpeg 48 kHz decode.",
+    "Narration unchanged at natural speed; no source padding.",
+    "Automation positions relative to the clip."
+  ]
+}

@@ -105,3 +105,82 @@ export function qualityCapacityComposition(): Composition {
     { frameCount: 1_001 },
   );
 }
+
+export function groupEffectMotionComposition(): Composition {
+  return composition(
+    Array.from({ length: 4 }, (_, i) => [
+      {
+        id: `group-${i}`,
+        type: "group" as const,
+        size: [640, 360] as [number, number],
+        transform: { anchor: [0, 0] as [number, number] },
+        effects: [
+          {
+            id: "blur",
+            effect: "blur.gaussian",
+            params: {
+              radius: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 20, value: 8, interpolation: "linear" as const },
+                  { frame: 40, value: 24, interpolation: "linear" as const },
+                ],
+              },
+            },
+          },
+        ],
+      },
+      solid(`child-${i}`, {
+        parent: `group-${i}`,
+        size: [220, 160],
+        transform: { anchor: [0, 0], position: [200, 100] },
+      }),
+    ]).flat(),
+    { frameCount: 41 },
+  );
+}
+
+export function nestedCoverageComposition(
+  inPoint = 0,
+  outPoint = 30,
+): Composition {
+  return composition(
+    [
+      {
+        id: "host",
+        type: "precomp",
+        comp: "source",
+        inPoint,
+        outPoint,
+        transform: { anchor: [0, 0] },
+      },
+      solid("moving", {
+        transform: {
+          position: {
+            keys: [
+              { frame: 0, value: [100, 100] },
+              { frame: 29, value: [200, 100], interpolation: "linear" },
+            ],
+          },
+        },
+      }),
+    ],
+    {
+      frameCount: 30,
+      precomps: [
+        {
+          id: "source",
+          width: 640,
+          height: 360,
+          frameCount: 30,
+          layers: [
+            solid("bg", {
+              size: [640, 360],
+              transform: { anchor: [0, 0], position: [0, 0] },
+            }),
+          ],
+        },
+      ],
+    },
+  );
+}

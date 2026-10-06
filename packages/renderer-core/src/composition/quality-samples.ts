@@ -25,11 +25,14 @@ export type CompositionQualitySample = {
   effects: EvaluatedLayer["effects"];
   matrix: Matrix;
   bounds: Bounds | null;
+  /** Bounds after group and precomp clipping; the viewport is not applied. */
   clippedBounds: Bounds | null;
   opacity: number;
   reveal: number;
   visible: boolean;
   onScreen: boolean;
+  /** Includes group modifiers that affect an on-screen descendant. */
+  contributesPaint: boolean;
   text?: string;
   role?: "heading" | "label" | "qualification" | "body";
   signature: string;
@@ -104,6 +107,11 @@ function unionBounds(bounds: readonly (Bounds | null)[]): Bounds | null {
 export const hasArea = (bounds: Bounds) =>
   bounds.right > bounds.left && bounds.bottom > bounds.top;
 
+function inheritScaleSigns(signs: [number, number], scale: readonly number[]) {
+  signs[0] *= Math.sign(scale[0]!);
+  signs[1] *= Math.sign(scale[1]!);
+}
+
 /** Pure samples exclude clock bookkeeping and invisible dependency motion. Pixels remain separate evidence. */
 export function compositionQualityFrame(
   comp: Composition,
@@ -142,9 +150,14 @@ export function compositionQualityFrame(
       const bounds = state.bounds ? projectBounds(state.bounds, base) : null;
       let clipping = clip;
       const ancestors = [...scopeAncestors];
+      const scaleSigns: [number, number] = [1, 1];
+      inheritScaleSigns(scaleSigns, state.transform.scale);
+      const host = layers.get(scopeAncestors[0] ?? "");
+      if (host) inheritScaleSigns(scaleSigns, host.scale);
       let parent = layer.parent ? byId.get(layer.parent) : undefined;
       while (parent) {
         ancestors.push(route + parent.id);
+        inheritScaleSigns(scaleSigns, parent.transform.scale);
         if (parent.layer.type === "group" && parent.layer.clip && parent.bounds)
           clipping = intersectBounds(
             clipping,
@@ -168,7 +181,9 @@ export function compositionQualityFrame(
         opacity > 1e-8 &&
         Math.abs(determinant) > 1e-12 &&
         (state.reveal ?? 1) > 0;
-      const onScreen = visible && (!clippedBounds || hasArea(clippedBounds));
+      const onScreen =
+        visible &&
+        (!clippedBounds || hasArea(intersectBounds(clippedBounds, viewport)));
       const text =
         layer.type === "text"
           ? {
@@ -214,9 +229,10 @@ export function compositionQualityFrame(
         reveal: text?.reveal ?? state.reveal ?? 1,
         visible,
         onScreen,
+        contributesPaint: onScreen,
         scale: [
-          Math.hypot(matrix[0], matrix[1]),
-          Math.hypot(matrix[2], matrix[3]),
+          Math.hypot(matrix[0], matrix[1]) * scaleSigns[0],
+          Math.hypot(matrix[2], matrix[3]) * scaleSigns[1],
         ],
         ...(text?.text ? { text: text.text } : {}),
         ...(text?.role ? { role: text.role } : {}),
@@ -271,6 +287,7 @@ export function compositionQualityFrame(
           const onScreenChildren = children.filter((child) => child.onScreen);
           sample.visible = visible && visibleChildren.length > 0;
           sample.onScreen = visible && onScreenChildren.length > 0;
+          sample.contributesPaint = sample.onScreen;
           sample.bounds = unionBounds(
             visibleChildren.map((child) => child.bounds),
           );
@@ -281,7 +298,15 @@ export function compositionQualityFrame(
       }
     });
   };
-  visit(tree, "", identity(), 1, viewport, "", [], true);
+  // Clipping tracks groups and precomps only; the viewport applies to onScreen,
+  // so framing can still see where clipped content sits relative to the canvas.
+  const unclipped = {
+    left: -Infinity,
+    top: -Infinity,
+    right: Infinity,
+    bottom: Infinity,
+  };
+  visit(tree, "", identity(), 1, unclipped, "", [], true);
   for (const sample of layers.values()) {
     const route = sample.id.slice(0, sample.id.lastIndexOf("/") + 1);
     const group = sample.ancestors.find(
@@ -291,6 +316,12 @@ export function compositionQualityFrame(
     );
     const container = group ?? (route ? route.slice(0, -1) : undefined);
     if (container) layers.get(container)?.children.push(sample.id);
+    if (sample.onScreen)
+      for (const id of sample.ancestors) {
+        const ancestor = layers.get(id);
+        if (ancestor?.state.layer.type === "group")
+          ancestor.contributesPaint = true;
+      }
   }
   const paintsContent = (sample: CompositionQualitySample) =>
     sample.state.drawable ||
@@ -339,7 +370,9 @@ export function compositionQualityFrame(
     diagnostics,
     signature: JSON.stringify([
       backgrounds,
-      [...layers.values()].filter((s) => s.onScreen).map((s) => s.signature),
+      [...layers.values()]
+        .filter((s) => s.contributesPaint)
+        .map((s) => s.signature),
     ]),
   };
 }
@@ -362,7 +395,7 @@ export function qualityTrackContributes(
   path: string,
   matteSource = false,
 ) {
-  if (!sample.onScreen && !matteSource)
+  if (!sample.contributesPaint && !matteSource)
     return (
       path.startsWith("transform.") &&
       (path !== "transform.opacity" || sample.state.layer.type === "group")
@@ -416,6 +449,18 @@ export type QualityTrack = {
   keys: Record<string, unknown>[];
   layer: CompositionLayer;
 };
+/** Read the final evaluated property, including expressions and constraints. */
+export function qualityTrackSignature(
+  sample: CompositionQualitySample,
+  path: string,
+) {
+  let value: unknown = sample.state;
+  for (const segment of path.split(".")) {
+    if (!value || typeof value !== "object") return undefined;
+    value = (value as Record<string, unknown>)[segment];
+  }
+  return value === undefined ? undefined : JSON.stringify(value);
+}
 export function layerQualityTracks(layer: CompositionLayer): QualityTrack[] {
   const tracks: QualityTrack[] = [];
   const visit = (value: unknown, path: string) => {

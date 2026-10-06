@@ -7,6 +7,7 @@ import { join, resolve } from "node:path";
 import { promisify } from "node:util";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
 import { createProgramPreview } from "../../tools/still-shift-cli/src/composition/preview.ts";
+import { qualityCapacityComposition } from "../helpers/composition-quality-fixtures.ts";
 const run = promisify(execFile),
   root = await mkdtemp(join(tmpdir(), "composition-program-browser-"));
 const helper = join(root, "helper.ts"),
@@ -95,6 +96,33 @@ try {
     () => document.getElementById("status")?.dataset.backend === "webgl2",
   );
   assert.equal(await page.locator("#frame").inputValue(), "7");
+  await page.route("**/composition/program", async (route) => {
+    const response = await route.fetch();
+    const payload = await response.json();
+    payload.snapshot.composition = qualityCapacityComposition();
+    payload.snapshot.assets = {};
+    await route.fulfill({ response, json: payload });
+  });
+  await page.locator("#backend").selectOption("canvas2d");
+  await page.waitForFunction(() =>
+    document
+      .getElementById("lint-summary")
+      ?.textContent?.startsWith("Motion checks unavailable: comp-lint-limit"),
+  );
+  assert.equal(await page.locator("#frame").inputValue(), "7");
+  assert.equal(await page.locator("#play").isEnabled(), true);
+  assert.equal(await page.locator("#lint").isDisabled(), true);
+  assert.equal(await page.locator("#lint-timeline").innerText(), "");
+  assert.equal(await page.locator("#lint-findings").innerText(), "");
+  assert.equal(await page.locator("#error").innerText(), "");
+  assert.equal(
+    await page.locator("html").getAttribute("data-readonly"),
+    "true",
+  );
+  assert.equal(
+    await page.locator("#status").getAttribute("data-backend"),
+    "canvas2d",
+  );
   await browser.close();
   browser = undefined;
   await session.close();
@@ -147,6 +175,7 @@ try {
         backendSwitch: true,
         fullReload: false,
         readonlyBuilder: true,
+        advisoryLintKeepsPreviewAndFrame: true,
       },
       render: {
         sources: ["typescript", "json"],

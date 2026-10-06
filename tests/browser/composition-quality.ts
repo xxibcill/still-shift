@@ -22,6 +22,8 @@ import type {
 
 import {
   collapsedMotionComposition,
+  groupEffectMotionComposition,
+  nestedCoverageComposition,
   providerReadingComposition,
   qualityCapacityComposition,
 } from "../helpers/composition-quality-fixtures.ts";
@@ -59,6 +61,123 @@ try {
   );
   console.log(
     "Lab timeline markers seek correctly; rendered pixel findings displayed.",
+  );
+
+  const oversized = "ce12/oversized-lint.json";
+  await page.route("**/composition/fixtures", async (route) => {
+    const response = await route.fetch();
+    await route.fulfill({
+      response,
+      json: [
+        ...((await response.json()) as unknown[]),
+        { path: oversized, id: "oversized", name: "oversized" },
+      ],
+    });
+  });
+  await page.route(
+    `**/composition/scene?scene=${encodeURIComponent(oversized)}`,
+    (route) => route.fulfill({ json: qualityCapacityComposition() }),
+  );
+  await page.goto(base + `composition.html?scene=${oversized}`);
+  await page.waitForFunction(
+    (path) => document.getElementById("status")?.dataset.ready === path,
+    oversized,
+  );
+  assert.equal(await page.locator("#error").innerText(), "");
+  assert.match(
+    await page.locator("#lint-summary").innerText(),
+    /^Motion checks unavailable: comp-lint-limit/,
+  );
+  assert.equal(await page.locator("#play").isDisabled(), false);
+  assert.equal(await page.locator("#lint").isDisabled(), true);
+  await page.unrouteAll();
+  console.log("Lab previews compositions whose motion lint cannot run.");
+
+  const groupMotion = groupEffectMotionComposition();
+  const groupNodeReport = analyzeCompositionQuality(groupMotion);
+  const groupReports = await page.evaluate(
+    async ({ json, moduleUrl }) => {
+      const renderer = (await import(moduleUrl)) as typeof Renderer;
+      const comp = JSON.parse(json) as Composition;
+      const preview = renderer.createCompositionPreview(
+        document.createElement("canvas"),
+        comp,
+        await renderer.loadCompositionResources(comp, () => {
+          throw new Error("No assets expected");
+        }),
+      );
+      try {
+        return {
+          state: renderer.analyzeCompositionQuality(comp),
+          rendered: await renderer.analyzeRenderedCompositionQuality(
+            comp,
+            preview,
+          ),
+        };
+      } finally {
+        preview.dispose();
+      }
+    },
+    {
+      json: JSON.stringify(groupMotion),
+      moduleUrl: `/@fs/${root}/packages/renderer-core/src/index.ts`,
+    },
+  );
+  assert.deepEqual(groupReports.state, groupNodeReport);
+  for (const report of [groupReports.state, groupReports.rendered]) {
+    assert.ok(!report.diagnostics.some((d) => d.code === "frozen-run"));
+    assert.ok(
+      report.diagnostics.some((d) => d.code === "velocity-discontinuity"),
+    );
+  }
+  assert.ok(
+    !groupReports.rendered.diagnostics.some((d) => d.code === "frozen-pixels"),
+  );
+
+  const nestedCoverage = nestedCoverageComposition(0, 15);
+  const coverageReport = await page.evaluate(
+    async ({ json, moduleUrl }) => {
+      const renderer = (await import(moduleUrl)) as typeof Renderer;
+      const comp = JSON.parse(json) as Composition;
+      const preview = renderer.createCompositionPreview(
+        document.createElement("canvas"),
+        comp,
+        await renderer.loadCompositionResources(comp, () => {
+          throw new Error("No assets expected");
+        }),
+      );
+      try {
+        preview.renderFrame(0);
+        const covered = [...preview.readPixels().slice(0, 3)];
+        preview.renderFrame(15);
+        const uncovered = [...preview.readPixels().slice(0, 3)];
+        return {
+          covered,
+          uncovered,
+          report: renderer.analyzeCompositionQuality(comp, {
+            coverageLayers: ["host/bg"],
+          }),
+        };
+      } finally {
+        preview.dispose();
+      }
+    },
+    {
+      json: JSON.stringify(nestedCoverage),
+      moduleUrl: `/@fs/${root}/packages/renderer-core/src/index.ts`,
+    },
+  );
+  assert.deepEqual(
+    coverageReport.report,
+    analyzeCompositionQuality(nestedCoverage, { coverageLayers: ["host/bg"] }),
+  );
+  assert.deepEqual(coverageReport.covered, [239, 173, 85]);
+  assert.deepEqual(coverageReport.uncovered, [0, 0, 0]);
+  assert.deepEqual(
+    coverageReport.report.diagnostics
+      .filter((d) => d.code === "coverage")
+      .map((d) => d.frames),
+    [[15, 29]],
   );
 
   for (const [name, pair] of Object.entries(fixtures)) {
