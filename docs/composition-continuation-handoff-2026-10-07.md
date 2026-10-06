@@ -57,7 +57,10 @@ CE13 has integrated merged CE16 source on `codex/composition-ce13` from `adf6cea
 PR33 is attached. Fresh pinned focused checks pass 88 soundtrack / 46 runtime /
 40 passage-CLI tests and real browser decoding/full-range mux; the failed alias
 and temporary lock-format attempts remain in [CE13 results](./composition-ce13-results.json).
-Native CE13 media, CE15 and CE14 are still in flight; no final CE13 gate has run.
+CE13 contract/source-clock/graph/builder checks now pass all 2,060 unit tests /
+204 files plus static checks. Actual decoder/color/cache, continuous native PCM,
+waveform and production acceptance remain pending; no final CE13 gate has run.
+CE15 and CE14 remain in flight.
 Private notes contain exact source
 seams and primary references: `/private/tmp/ce13-authority-map-2026-10-07.md`,
 `ce13-design-decision-candidates-2026-10-07.md`,

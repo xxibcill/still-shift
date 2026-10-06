@@ -80,6 +80,7 @@ import {
 import { projectSpatialScope } from "./spatial-scope.ts";
 import { sampleLight, validateLight } from "./lighting.ts";
 import { compositionSampleIndex } from "./sample-clock.ts";
+import { naturalMediaSeconds, sampledCompositionMedia } from "./media.ts";
 import {
   layerContentTime,
   loopedPrecompTime,
@@ -111,7 +112,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-50";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-51";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -382,6 +383,21 @@ function baseState(
       layer.timeRemap !== undefined
         ? scalar(layer.timeRemap, time, fps)
         : (state.time * (nested.fps ?? comp.fps)) / fps;
+  }
+  if (
+    layer.type === "video" ||
+    layer.type === "sequence" ||
+    layer.type === "audio"
+  ) {
+    const asset = comp.assets.find((a) => a.id === layer.asset)!;
+    state.timeRemap =
+      layer.timeRemap === undefined
+        ? naturalMediaSeconds(layer, asset, state.time, fps)
+        : scalar(layer.timeRemap, time, fps);
+    if (layer.type === "audio") {
+      state.gainDb = scalar(layer.gainDb, time, fps);
+      state.pan = scalar(layer.pan, time, fps);
+    }
   }
   return state;
 }
@@ -697,6 +713,10 @@ class Evaluation {
   /** Clamp written values and keep an unauthored constraint reference on the anchor. */
   private normalize(ctx: Context, state: EvaluatedLayer) {
     state.transform.opacity = unit(state.transform.opacity);
+    if (state.gainDb !== undefined)
+      state.gainDb = Math.max(-120, Math.min(12, state.gainDb));
+    if (state.pan !== undefined)
+      state.pan = Math.max(-1, Math.min(1, state.pan));
     if (state.depthMotion)
       validateDepthMotion(state.depthMotion, state.id, this.time);
     if (state.imagePlane)
@@ -1380,6 +1400,18 @@ class Evaluation {
         if (!binding.clock) yield* this.applied(ctx, layer, binding);
     if (layer.type === "precomp")
       state.timeRemap = yield* this.clock(ctx, layer);
+    if (
+      layer.type === "video" ||
+      layer.type === "sequence" ||
+      layer.type === "audio"
+    )
+      state.media = sampledCompositionMedia(
+        layer,
+        this.compiled.comp.assets.find((a) => a.id === layer.asset)!,
+        state.timeRemap!,
+        state.time,
+        ctx.fps,
+      );
     if (state.contents)
       state.shapes = compileShapes(
         state.contents,
@@ -1522,7 +1554,7 @@ class Evaluation {
     state.visible &&= groupVisible;
     state.drawable =
       state.visible &&
-      !["null", "group", "camera", "light"].includes(layer.type) &&
+      !["null", "group", "camera", "light", "audio"].includes(layer.type) &&
       !ctx.matteLayers.has(layer.id);
     ctx.active.delete(layer.id);
     ctx.states.set(layer.id, state);

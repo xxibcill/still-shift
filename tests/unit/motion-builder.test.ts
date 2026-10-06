@@ -222,10 +222,10 @@ describe("composition builder", () => {
       comp(options, (c) => {
         c.add(audio("future", "future-audio"));
       });
-      expect.fail("audio is unavailable before CE13");
+      expect.fail("audio requires a pinned source");
     } catch (error) {
       expect(error).toBeInstanceOf(BuilderError);
-      expect((error as BuilderError).code).toBe("comp-feature-unavailable");
+      expect((error as BuilderError).code).toBe("comp-asset-missing");
       expect((error as BuilderError).location.file).toContain(
         "motion-builder.test.ts",
       );

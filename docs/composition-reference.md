@@ -49,6 +49,7 @@ pnpm still-shift comp render --input program.ts --output clip.mp4
 | `fps`           | yes      | `24` or `25` or `30` or `50` or `60` |
 | `format`        | no       | `landscape`, `vertical`              |
 | `colorSpace`    | no       | `srgb`, `linear-srgb`                |
+| `mediaLimits`   | no       | object                               |
 | `motionBlur`    | no       | object                               |
 | `assets`        | yes      | array                                |
 | `precomps`      | no       | array                                |
@@ -597,6 +598,10 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `type`                | yes      | `video`                                                                                                                                                                                               |
 | `asset`               | yes      | string                                                                                                                                                                                                |
 | `timeRemap`           | no       | number or object                                                                                                                                                                                      |
+| `size`                | no       | [number, number]                                                                                                                                                                                      |
+| `fit`                 | no       | `contain`, `cover`, `stretch`                                                                                                                                                                         |
+| `sourceInFrame`       | no       | integer                                                                                                                                                                                               |
+| `sourceOutFrame`      | no       | integer                                                                                                                                                                                               |
 | `frameBlending`       | no       | `hold`, `linear`                                                                                                                                                                                      |
 
 ### `sequence` contract
@@ -634,6 +639,10 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `type`                | yes      | `sequence`                                                                                                                                                                                            |
 | `asset`               | yes      | string                                                                                                                                                                                                |
 | `timeRemap`           | no       | number or object                                                                                                                                                                                      |
+| `size`                | no       | [number, number]                                                                                                                                                                                      |
+| `fit`                 | no       | `contain`, `cover`, `stretch`                                                                                                                                                                         |
+| `sourceInFrame`       | no       | integer                                                                                                                                                                                               |
+| `sourceOutFrame`      | no       | integer                                                                                                                                                                                               |
 | `frameBlending`       | no       | `hold`, `linear`                                                                                                                                                                                      |
 
 ### `audio` contract
@@ -671,6 +680,15 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `type`                | yes      | `audio`                                                                                                                                                                                               |
 | `asset`               | yes      | string                                                                                                                                                                                                |
 | `timeRemap`           | no       | number or object                                                                                                                                                                                      |
+| `role`                | no       | `narration`, `bgm`, `sfx`                                                                                                                                                                             |
+| `gainDb`              | no       | number or object                                                                                                                                                                                      |
+| `pan`                 | no       | number or object                                                                                                                                                                                      |
+| `sourceStartSample`   | no       | integer                                                                                                                                                                                               |
+| `sourceEndSample`     | no       | integer                                                                                                                                                                                               |
+| `fadeInSamples`       | no       | integer                                                                                                                                                                                               |
+| `fadeOutSamples`      | no       | integer                                                                                                                                                                                               |
+| `fadeInCurve`         | no       | `linear`, `equal-power`                                                                                                                                                                               |
+| `fadeOutCurve`        | no       | `linear`, `equal-power`                                                                                                                                                                               |
 
 ## Generated property aliases
 
@@ -1077,6 +1095,14 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 
 | Code                               | Meaning                                                                                                  |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `comp-media-rate`                  | A source rate is not reduced or exceeds 240 fps.                                                         |
+| `comp-media-color`                 | Source color metadata is unsupported or inconsistent.                                                    |
+| `comp-media-limit`                 | Media exceeds a configured source or decoded-resource limit.                                             |
+| `comp-media-sequence`              | A numbered sequence pattern or manifest is invalid.                                                      |
+| `comp-media-trim`                  | A source trim or fade lies outside the pinned source interval.                                           |
+| `comp-media-audio-property`        | A visual-only property is authored on an audio layer.                                                    |
+| `comp-media-narration-clock`       | Narration has a nonidentity local or inherited source clock.                                             |
+| `comp-media-narration-range`       | The complete authorized voice interval does not fit its picture windows.                                 |
 | `comp-schema-version`              | `schemaVersion` is not `composition-1`.                                                                  |
 | `comp-schema-type`                 | A value has the wrong JSON type.                                                                         |
 | `comp-schema-unknown-key`          | An object has a field the contract does not define.                                                      |

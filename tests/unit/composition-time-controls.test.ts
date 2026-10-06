@@ -228,7 +228,7 @@ describe("native content clocks", () => {
 });
 
 describe("CE13 frame-blending handoff", () => {
-  it("declares visual media blending while native decoding remains explicitly unavailable", () => {
+  it("declares visual media blending and requires a matching pinned source", () => {
     for (const schema of [VideoLayerSchema, SequenceLayerSchema])
       expect(
         schema.safeParse({
@@ -252,8 +252,7 @@ describe("CE13 frame-blending handoff", () => {
     ];
     expect(
       validateComposition(doc).diagnostics.some(
-        (d) =>
-          d.code === "comp-feature-unavailable" && d.message.includes("CE13"),
+        (d) => d.code === "comp-asset-missing",
       ),
     ).toBe(true);
   });

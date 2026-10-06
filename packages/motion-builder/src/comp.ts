@@ -128,6 +128,23 @@ export class CompositionBuilder {
         if (node.pendingAnchor) node.anchor(node.pendingAnchor);
       }
     }
+    if (draft.type === "video" || draft.type === "sequence") {
+      const asset = this.composition.assets.find(
+        (a) => a.id === draft.asset || a.path === draft.asset,
+      );
+      if (!asset || asset.type !== draft.type)
+        throw new BuilderError(
+          "comp-builder-asset",
+          `Register ${draft.type} ${draft.asset} before adding ${node.id}`,
+          node.location,
+        );
+      draft.asset = asset.id;
+      if (node.inferMediaSize) {
+        draft.size = [asset.width, asset.height];
+        node.inferMediaSize = false;
+      }
+      if (node.pendingAnchor) node.anchor(node.pendingAnchor);
+    }
     if (node.nested) this.define(node.nested);
     this.nodes.push(node);
     this.sites.set(`layer:${node.id}`, node.location);

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SoundtrackFadeCurveSchema } from "../soundtrack-project.ts";
 import { PoseAnchorSchema } from "../character-actions.ts";
 import { TextContainerSchema } from "../story-acting.ts";
 import { PoseRegistrationSchema } from "../story-acting.ts";
@@ -432,13 +433,30 @@ const mediaLayer = <T extends string>(type: T) =>
     })
     .strict();
 const visualFrameBlending = z.enum(["hold", "linear"]).optional();
-export const VideoLayerSchema = mediaLayer("video").extend({
+const visualMediaFields = {
+  size: size2.optional(),
+  fit: z.enum(["contain", "cover", "stretch"]).optional(),
+  sourceInFrame: finite.int().min(0).max(864_000).optional(),
+  sourceOutFrame: finite.int().min(1).max(864_000).optional(),
   frameBlending: visualFrameBlending,
+};
+export const VideoLayerSchema = mediaLayer("video").extend({
+  ...visualMediaFields,
 });
 export const SequenceLayerSchema = mediaLayer("sequence").extend({
-  frameBlending: visualFrameBlending,
+  ...visualMediaFields,
 });
-export const AudioLayerSchema = mediaLayer("audio");
+export const AudioLayerSchema = mediaLayer("audio").extend({
+  role: z.enum(["narration", "bgm", "sfx"]).optional(),
+  gainDb: animatableScalar(finite.min(-120).max(12)).optional(),
+  pan: animatableScalar(finite.min(-1).max(1)).optional(),
+  sourceStartSample: finite.int().min(0).max(172_800_000).optional(),
+  sourceEndSample: finite.int().min(1).max(172_800_000).optional(),
+  fadeInSamples: finite.int().min(0).max(172_800_000).optional(),
+  fadeOutSamples: finite.int().min(0).max(172_800_000).optional(),
+  fadeInCurve: SoundtrackFadeCurveSchema.optional(),
+  fadeOutCurve: SoundtrackFadeCurveSchema.optional(),
+});
 
 export const CompositionLayerSchema = z.discriminatedUnion("type", [
   SolidLayerSchema,
@@ -468,16 +486,14 @@ export type TrackMatte = z.infer<typeof TrackMatteSchema>;
 /** Layer types that are part of the contract but not yet implemented. */
 export const UNAVAILABLE_LAYER_TYPES: Partial<
   Record<CompositionLayerType, string>
-> = {
-  video: "CE13",
-  sequence: "CE13",
-  audio: "CE13",
-};
+> = {};
 
 /** Layer types with a size, whose anchor defaults to their centre. */
 export const SIZED_LAYER_TYPES = new Set<CompositionLayerType>([
   "solid",
   "image",
+  "video",
+  "sequence",
   "depth-image",
   "group",
   "precomp",

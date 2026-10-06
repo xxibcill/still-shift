@@ -223,6 +223,11 @@ function resolveSegments(
       if (!["precomp", "video", "sequence", "audio"].includes(layer.type))
         return missing(text, `a property of a ${layer.type} layer`);
       return component("scalar", [], segments.slice(1));
+    case "gainDb":
+    case "pan":
+      return layer.type === "audio"
+        ? component("scalar", [], segments.slice(1))
+        : missing(text, "an audio control");
     case "masks": {
       const mask = layer.masks?.find((m) => m.id === head.index);
       if (!mask) return missing(text, "a mask on this layer");

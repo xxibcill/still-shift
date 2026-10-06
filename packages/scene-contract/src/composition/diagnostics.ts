@@ -7,6 +7,19 @@ import { compositionWarnings } from "./validate.ts";
  * ones, never rename. docs/composition-reference.md documents each one.
  */
 export const COMPOSITION_DIAGNOSTICS = {
+  "comp-media-rate": "A source rate is not reduced or exceeds 240 fps.",
+  "comp-media-color": "Source color metadata is unsupported or inconsistent.",
+  "comp-media-limit":
+    "Media exceeds a configured source or decoded-resource limit.",
+  "comp-media-sequence": "A numbered sequence pattern or manifest is invalid.",
+  "comp-media-trim":
+    "A source trim or fade lies outside the pinned source interval.",
+  "comp-media-audio-property":
+    "A visual-only property is authored on an audio layer.",
+  "comp-media-narration-clock":
+    "Narration has a nonidentity local or inherited source clock.",
+  "comp-media-narration-range":
+    "The complete authorized voice interval does not fit its picture windows.",
   // Structure (mapped from schema issues)
   "comp-schema-version": "`schemaVersion` is not `composition-1`.",
   "comp-schema-type": "A value has the wrong JSON type.",

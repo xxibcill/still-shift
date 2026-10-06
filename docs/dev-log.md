@@ -49,9 +49,11 @@ still hold before relying on them.
   adapter, CLI and timeline retain the current native renderer and beat interfaces.
   Focused checks pass 88 soundtrack / 46 runtime / 40 passage-CLI tests; real browser
   playback decodes all 384,000 stereo samples/channel exactly and full/range mux
-  matches independent renders. Historical CE16 reports remain references, not CE13 proof. Native video,
-  sequence, audio clocks, decoded waveforms and final full acceptance remain in
-  flight. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
+  matches independent renders. Integration `3fd8584` is pushed. Native media
+  descriptors, post-expression source clocks, picture graph and builders pass all
+  2,060 unit tests / 204 files plus static checks. Actual FFmpeg/color/cache preparation,
+  continuous nested PCM clocks, waveforms and production/full acceptance remain in
+  flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
   [Evidence](./composition-ce13-results.json).
 
 - **CE4d complete (2026-10-07):**
@@ -266,6 +268,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 native media contract and evaluated source clocks
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed integration `3fd8584`.
+- **Scope:** pinned rational video/sequence/audio descriptors, trims, clocks and builders.
+- **Done:** source-second media remap is derived after drivers/expressions; Q32 frame
+  pairs enter picture identity. Audio gain/pan and Q16 positions are sampled, audio
+  has no picture geometry, and complete narration rejects changed clocks/cropped windows.
+- **Results:** schema/boundaries/build/lint/format and all 2,060 unit tests / 204 files
+  pass. Initial optional-default build failure and stale builder expectation remain recorded.
+- **Open / next:** actual FFmpeg/color/cache preparation, continuous nested PCM clocks,
+  browser readiness and waveform/export/passage acceptance; full milestone gate pending.
+- **Records:** [media contract](./composition-media.md), [CE13 evidence](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 begins with merged CE16 audit and shared integration
 

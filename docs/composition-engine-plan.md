@@ -4729,6 +4729,15 @@ integration. Fresh checks pass 88 soundtrack / 46 runtime / 40 passage-CLI tests
 real browser playback/full-range mux. Native media implementation and final full
 acceptance remain pending. Historical CE16 reports are references only. [Current evidence](./composition-ce13-results.json).
 
+### CE13 contract and source-clock checkpoint (2026-10-07)
+
+Native pinned descriptors, rational source rates, sequence manifests, bounded trims,
+source-second remap after drivers/expressions, frame-pair graph identity, audio controls,
+whole-project protected narration and typed builders are implemented. Static checks
+and all 2,060 unit tests / 204 files pass. Actual decoding/color conversion, bounded
+browser resources, continuous native PCM/waveforms and complete acceptance remain
+pending. [Contract](./composition-media.md), [evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

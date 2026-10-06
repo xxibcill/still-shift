@@ -4,7 +4,11 @@ import type {
   SampledDepthMotion,
   SampledImagePlane,
 } from "../evaluate/depth-image.ts";
-import { compositionEffectDefinition } from "@still-shift/scene-contract";
+import {
+  compositionEffectDefinition,
+  compositionMediaFrameId,
+} from "@still-shift/scene-contract";
+import type { SampledCompositionMedia } from "../evaluate/media.ts";
 import {
   primitiveBlurEffect,
   type EvaluatedEffect,
@@ -104,6 +108,7 @@ export type ImageContent = {
   state: number;
   stateFrom?: number;
   stateMix?: number;
+  media?: Pick<SampledCompositionMedia, "asset" | "sourceHash" | "pair">;
   plane?: {
     shaderVersion: string;
     owner: string;
@@ -900,6 +905,31 @@ class GraphBuilder {
             ? { stateFrom: state.stateFrom, stateMix: state.stateMix }
             : {}),
         };
+      case "video":
+      case "sequence": {
+        const asset = this.comp.assets.find((a) => a.id === layer.asset)!;
+        if (asset.type !== "video" && asset.type !== "sequence")
+          passageError("comp-asset-type", "Visual media source type differs", {
+            node: layer.id,
+            path: "asset",
+          });
+        const pair = state.media!.pair!;
+        return {
+          type: "image",
+          width: layer.size?.[0] ?? asset.width,
+          height: layer.size?.[1] ?? asset.height,
+          fit: layer.fit ?? "contain",
+          rasterize: "draw",
+          sources: [
+            { asset: compositionMediaFrameId(asset.id, pair.first) },
+            { asset: compositionMediaFrameId(asset.id, pair.second) },
+          ],
+          state: pair.first === pair.second ? 0 : 1,
+          stateFrom: 0,
+          stateMix: pair.mix,
+          media: { asset: asset.id, sourceHash: asset.sha256, pair },
+        };
+      }
       case "depth-image":
         return {
           shaderVersion: DEPTH_IMAGE_SHADER_VERSION,
