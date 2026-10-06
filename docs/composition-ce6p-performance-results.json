@@ -1,6 +1,6 @@
 {
   "milestone": "CE6-P",
-  "status": "coordinated quiet window open; remaining performance verification in flight; acceptance remains open",
+  "status": "measured candidate selected; coordinated strict family audits next; acceptance remains open",
   "startedDate": "2026-10-05",
   "updatedDate": "2026-10-06",
   "branch": "codex/composition-ce6p-compatible",
@@ -736,11 +736,10 @@
     }
   },
   "pending": [
-    "Valid bounded versus fusion-only pinned and hardware brackets; fusion-only pinned bracket complete",
-    "Required selected-candidate family timing audits",
-    "Complete performance validation and select measured candidates before marking draft PR ready"
+    "Unchanged strict WebGL commerce/component/typography audits with required exports",
+    "Finalize evidence and mark reviewable PR ready with remaining targets"
   ],
-  "workloadCoordination": "User-authorized coordination succeeded. Main complete gate passed 176 frozen baselines / 36,061 frames and is terminal; main is holding builds, formatters, tests, matrices and exports. Remaining bounded pinned/hardware brackets will run, then strict WebGL family matrices. No runtime change or duplicate full gate.",
+  "workloadCoordination": "Coordinated window is available and held. Remaining-only job 30995 and hardware confirmation 41653 terminal exit 0; all four complete timing brackets valid, six invalid attempts retained. No renderer change; unchanged strict WebGL family commands are next serially.",
   "repositoryActionsVerified": {
     "enabled": false,
     "command": "gh api repos/xxibcill/still-shift/actions/permissions",
@@ -756,7 +755,7 @@
     {
       "id": "bounded-exposure-snapshot-sum",
       "renderer": "composition-webgl2-0.40.0",
-      "status": "correctness/review passed; valid performance bracket pending"
+      "status": "retained for measured pinned sparse exposure benefit (2.676x-3.962x over fusion); no broad hardware speedup claim; correctness/review/full gate pass"
     }
   ],
   "rejectedDrafts": [
@@ -1348,8 +1347,8 @@
     }
   },
   "queuedAb": {
-    "status": "terminal exit 1; baseline valid but bounded candidate invalidated by main unit verification; hardware not started; no retry queued",
-    "session": 9449,
+    "status": "latest coordinated remaining-only session 30995 terminal exit 0; pinned/hardware complete; additional hardware confirmation 41653 terminal exit 0",
+    "session": 30995,
     "launcher": "/private/tmp/ce6p-ab-remaining.mjs",
     "outputs": [
       "benchmarks/results/composition-ce6p/bounded-ref-ab.json",
@@ -1367,7 +1366,8 @@
       "session": 3547,
       "exitCode": 1,
       "result": "valid fusion bracket saved; first bounded baseline overlapped main stylize unit tests; hardware not started"
-    }
+    },
+    "hardwareConfirmationSession": 41653
   },
   "pullRequest": {
     "number": 41,
@@ -1380,7 +1380,12 @@
   },
   "validTimingEvidence": {
     "file": "docs/composition-ce6p-exposure-brackets.json",
-    "brackets": ["fusion"],
+    "brackets": [
+      "fusion",
+      "boundedPinned",
+      "boundedHardware",
+      "boundedHardwareConfirmation"
+    ],
     "order": ["baseline", "candidate", "candidate", "baseline"],
     "allSessionsValid": true,
     "twoSampleExportMeanOfMediansMs": {
@@ -1388,7 +1393,10 @@
       "candidate": 14.250000029802322
     },
     "twoSampleExportSpeedup": 1.112280699009894,
-    "limitations": "Higher-count changes comparable to session variability; no broad preview or target-completion claim; bounded/hardware and strict family audit pending"
+    "limitations": "Both valid Apple M5 Pro brackets retained. Original two-sample candidate medians 6.4/2.9 ms; confirmation 2.8/3.3 ms. All-session baseline/candidate mean median ratio 0.987x there. Other-count changes are also comparable to variability; no broad hardware export or preview/presentation speedup is claimed. RAF interval diagnostics remain about 8.3 ms. Count-one path gives no established improvement and remains below native 2x Canvas/WebGL target on both profiles. Counts 2-64 of this exposure fixture exceed 2x on both profiles, but cannot close the broader native or 1.25x family acceptance. Original 117 cases remain individually tracked; strict WebGL family audits next.",
+    "sourceHashesConsistentAcrossBoundedProfiles": true,
+    "boundedPinnedExportSpeedupRange": [2.6761904727844965, 3.9616485407616966],
+    "hardwareConfirmationReason": "Investigate a slow two-sample candidate session; both valid hardware brackets retained with no session discarded"
   },
   "blockingAudit": {
     "date": "2026-10-06",

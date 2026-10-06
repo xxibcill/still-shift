@@ -201,3 +201,26 @@ The main gate finished successfully and explicitly announced the quiet window
 available. It holds further verification until CE6-P releases the machine.
 Run the remaining comparisons and strict matrices serially; the isolated renderer
 is unchanged, so its already-passed full gate is not duplicated.
+
+## Measured candidate selection (2026-10-06)
+
+The coordinated window produces complete valid bounded pinned and hardware
+brackets. Pinned export mean session medians improve **2.676–3.962×** at 2–64
+samples against fusion alone on the moving 400×300 solid at 1920×1080. Baseline
+bookend drift is at most 3.1% for these counts, with Canvas controls changing
+−2.7% to +5.0%. Preview RAF intervals improve 5.267×/5.522× at 32/64 samples;
+low-count intervals stay about 8.3 ms. These are RAF diagnostics, not GPU timers.
+
+Hardware's original two-sample candidate session is variable (6.4/2.9 ms). One
+unchanged confirmation bracket gives 2.8/3.3 ms; retain both complete records,
+including the slow session. The combined baseline/candidate mean median ratio is
+0.987× there, and other differences overlap variability. No broad hardware speedup
+is established; RAF intervals remain about 8.3 ms. Retain the candidate for its
+pinned benefits and existing exactness, rather than claiming all workloads improve.
+
+All four valid raw brackets and descriptive analyses are committed in
+[exposure evidence](./composition-ce6p-exposure-brackets.json). Count one remains
+below the native 2× target on both profiles; this exposure fixture's counts 2–64
+exceed 2×, without proving the broader native target. Strict family audits still
+follow unchanged. Renderer/runtime remains fixed at `7a797a9`; its passing full
+gate and independent reviews are retained.

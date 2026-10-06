@@ -51,7 +51,9 @@ still hold before relying on them.
   regression/export suites and the complete local gate pass. Serial timings
   now include a valid pinned fusion-only bracket: two-sample export 1.112×;
   higher-count and preview gains remain unproven. Bounded/hardware comparisons
-  and strict WebGL family audits are next in the reserved quiet window.
+  now have completed comparisons: bounded pinned export improves 2.676–3.962×
+  at 2–64 samples over fusion alone; hardware gains remain unproven.
+  Strict WebGL family audits are next in the reserved quiet window.
   Owner-approved coordination succeeded: main gate passed and is terminal;
   main holds further verification until CE6-P release. Renderer is unchanged.
   [Draft PR #41](https://github.com/xxibcill/still-shift/pull/41) is published and
@@ -194,6 +196,20 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE6-P measured candidate retained
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `702bcf4`.
+- **Results:** four complete valid brackets retained. Bounded pinned export improves
+  2.676–3.962× at 2–64 samples over fusion alone; high-count RAF diagnostics improve.
+  Hardware confirmation retains the original outlier and establishes no broad gain.
+- **Selection:** retain exact compatible candidate for pinned benefits; renderer
+  stays `7a797a9`, with existing reviews/focused/full-gate proof unchanged.
+- **Next:** unchanged strict WebGL family audits with exports in the reserved window,
+  then final PR evidence and machine release. All six invalid attempts remain;
+  original 117 cases and native/family acceptance targets stay open.
+- **Records:** [raw brackets/analysis](./composition-ce6p-exposure-brackets.json),
+  [evidence](./composition-ce6p-performance-results.json), [plan](./composition-ce6p-plan.md).
 
 ### 2026-10-06 — CE6-P quiet-window coordination authorized
 
