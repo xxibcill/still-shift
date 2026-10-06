@@ -44,49 +44,28 @@ still hold before relying on them.
 ## Current state
 
 - **CE4d in progress (2026-10-06):** `codex/composition-ce4d` from CE4c
-  `17666eb`. All 17 old-depth references pass 1,530 forward/reverse frames and
-  independent repeat. Native depth contract/evaluation/shared WebGL checkpoint
-  passes 158 focused unit checks, build and lint. All 17 depth/flat/fallback cases
-  match exactly across 1,530 forward/reverse frames including the final budget/cache
-  checkpoint recheck. Six legacy preset adapters and native followers pass 15 focused
-  all-frame state tests and build; legacy pixels/exports, family default consolidation
-  and remaining milestone acceptance are pending. Prepared family compilation and
-  independent test-only legacy oracle pass 85 focused checks/build/lint/boundaries;
-  the all-176 native migration/default acceptance suite is implemented but unrun.
-  PR43 inherited-blur/ancestor-coverage/XY-tangent fixes are integrated with 43
-  focused regressions/build/lint passing; browser regressions join the final gate.
-  Six additional depth cases pass 18 focused state checks; reference capture is
-  pending. Q2 vocabulary comments/contributor guidance and format docs are updated.
-  Mixed depth graph/reference and real inspector acceptance are implemented;
-  the focused graph state test, build and lint pass. GPU/inspector runs are held
-  for the CE6-P quiet timing window.
-  Family state sampling now belongs to adapters, with 132 focused regressions
-  passing. Full 23-timeline depth and six mixed-graph export/hardware acceptance,
-  alpha/resource diagnostics and verified-byte preview preparation are implemented.
-  Typography diagnostic probes are supported by shared text/providers and
-  independently compared; asset loading belongs to preparation. These changes
-  pass 62 focused checks/build/lint/boundaries. Required CE4d groups join pnpm test.
-  Zipper QA WebGL lint/lighting-signature fixes are integrated from 9b1b41a:
-  74 unit regressions and the new CLI option check pass, plus build/lint/schema.
-  Preview wrappers and actual-depth-default reference assertions are prepared.
-  Native depth export preparation/manifest data, inspector rejection/history
-  assertions and serial depth costs pass 41 focused checks/build/lint/schema and
-  package boundaries. CE6-P released its timing hold. All 23 prepared depth
-  wrapper timelines pass 2,070 exact forward/reverse frames; six mixed graphs and
-  resource/real inspector diagnostics pass after a spatial preflight repair.
-  WebGL2 is now 0.61.0. Actual depth Lab checks and 31 focused regressions pass.
-  Supply-ramps frame 36 is repaired by distinct-state Canvas matrix transfer
-  (Canvas 1.44.0); all five motion-craft/698 frames are exact and eight typography/
-  1,309 frames plus ink/container probes pass near tier. 60 focused checks pass.
-  Full all-176 candidate parity passes on `a843cf9`: 36,061 forward/reverse
-  frames meet assigned tiers with unchanged CE0 hashes. Depth delivery completed 17
-  timelines/51 production-repeat-raw exports, then hit an export startup timeout;
-  acceptance is incomplete and its cause is unconfirmed. Prepared preview
-  provenance and export-worker 0.6.6 private-cache/startup diagnostics are staged
-  but unformatted/unverified. CE6-P's second timing hold prevents new verification;
-  all root verification has finished. Startup failure/retry regression and
-  separate serial-cost evidence are implemented but unrun. Defaults and full gate
-  remain pending.
+  `17666eb`; latest checkpoint `2b05a6a` is pushed. Legacy/depth adapters, native
+  depth schema/evaluation/shared GPU pass, mixed graph/inspector support, family
+  preparation and Q2 freeze guidance are implemented. PR43 and zipper QA source
+  repairs are integrated; focused regressions/build/lint/schema/boundaries pass
+  on their recorded checkpoints. Canvas is 1.44.0 and WebGL2 is 0.61.0.
+  All 23 prepared depth timelines match exactly in 2,070 forward/reverse frames;
+  six mixed graphs, asset rejection and actual inspector history/save/reload pass
+  diagnostic checks. Six extended old-depth references are captured and repeated.
+  Complete native family candidate on `a843cf9` passes all 176 items / 36,061
+  forward frames and reverse seeks at assigned tiers, with unchanged CE0 hashes
+  and typography ink/container probes. The full report is retained in evidence.
+  Depth delivery completed 23 serial cost brackets and 17 timelines / 51
+  production-repeat-raw exports plus 17 independent encodes, then failed at browser
+  initialization. Acceptance is incomplete; numeric costs were not saved and the
+  cause is unconfirmed. Export-worker 0.6.6 private cache/startup diagnostics,
+  prepared provenance and startup failure/retry regression are unverified.
+  **CE6-P's second owner-authorized timing hold remains active:** no new pnpm,
+  Node tests/scripts, Vitest, browser or export work. No root verification remains
+  active. A private default-migration patch is prepared but unapplied. After
+  release: verify startup cleanup, finish depth/legacy delivery and timing, switch
+  defaults, run actual-route acceptance and the final complete local gate, then
+  create/attach the CE4d PR. Continue CE13 → CE15 → CE14 on separate branches.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
