@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE4d in progress (2026-10-06):** `codex/composition-ce4d` from CE4c
+- **CE4d in progress (2026-10-07):** `codex/composition-ce4d` from CE4c
   `17666eb`; formatted code checkpoint `f01a35b` is pushed. Legacy/depth adapters, native
   depth schema/evaluation/shared GPU pass, mixed graph/inspector support, family
   preparation and Q2 freeze guidance are implemented. PR43 and zipper QA source
@@ -55,15 +55,20 @@ still hold before relying on them.
   Complete native family candidate on `a843cf9` passes all 176 items / 36,061
   forward frames and reverse seeks at assigned tiers, with unchanged CE0 hashes
   and typography ink/container probes. The full report is retained in evidence.
-  Depth delivery completed 23 serial cost brackets and 17 timelines / 51
-  production-repeat-raw exports plus 17 independent encodes, then failed at browser
-  initialization. Acceptance is incomplete; numeric costs were not saved and the
-  cause is unconfirmed. Export-worker 0.6.6 private cache/startup diagnostics and
-  provenance pass build/lint/toolchain, 25 unit and 11 integration checks. All 23
-  prepared wrappers re-pass 2,070 exact forward/reverse frames on `f01a35b`.
+  Second depth delivery on `f01a35b` completed and saved all 23 serial cost brackets,
+  29 timelines / 87 production-repeat-raw exports and 29 independent encodes with
+  byte identity. Startup succeeded; the prior failure's cause remains unconfirmed.
+  Hardware acceptance failed repeated-precomp frame 0 (PSNR 38.9066, SSIM 0.988316).
+  CPU source rasterization, explicit bilinear filtering and derivative correction
+  did not improve it. Full triangle reconstruction improves hardware but fails
+  frozen software near parity; rounding and centroid alternatives are rejected.
+  Testing hardware-only explicit interpolation while preserving the pinned pass.
+  No production shader change yet; final acceptance remains incomplete.
+  Export-worker startup/provenance passes build/lint/toolchain, 25 unit and 11
+  integration tests; all 23 prepared wrappers re-pass 2,070 exact frames.
   **CE6-P's second timing hold is released:** scoped formatting is complete,
   and focused startup/cancellation/provenance verification passes. A private
-  default-migration patch is prepared but unapplied. Next: verify startup cleanup,
+  default-migration patch is prepared but unapplied. Next: repair hardware interpolation,
   finish depth/legacy delivery and timing, switch
   defaults, run actual-route acceptance and the final complete local gate, then
   create/attach the CE4d PR. Continue CE13 → CE15 → CE14 on separate branches.
@@ -264,6 +269,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d complete depth delivery reaches hardware failure
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, verified code `f01a35b`.
+- **Results:** All 23 serial cost brackets are saved; 29 independent encodes and
+  87 production/repeat/raw exports agree byte-for-byte. Hardware repeated-precomp
+  frame 0 fails the unchanged perceptual policy; final acceptance is incomplete.
+- **Rejected:** Source rasterization/filter/derivative alternatives do not fix it.
+  Full triangle reconstruction, rounded reconstruction and centroid interpolation
+  fail frozen software parity. No production shader change retained.
+- **Next:** Verify hardware-only interpolation, then finish migration and full gate.
+- **Records:** [Full costs, failure and diagnostics](./composition-ce4d-results.json).
+
 
 ### 2026-10-06 — CE4d startup and provenance focused acceptance passes
 
