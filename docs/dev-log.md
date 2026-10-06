@@ -50,8 +50,8 @@ still hold before relying on them.
   required alpha coverage and projected inspector/quality geometry are authored.
   Projected group masks now retain local expansion/feather support and combine
   coverage after projection; POI tangent editing is authored.
-  All CE8 code remains unverified: the CE6-P quiet window holds formatters,
-  builds, tests, browser matrices and exports. Previous Git auto packing was
+  All CE8 code remains unverified. CE6-P explicitly released its quiet window
+  at 01:24 UTC; pinned isolated focused verification can now resume. Previous Git auto packing was
   reported; no process remained at 00:57 UTC, and further Git calls use gc.auto=0.
   Ten native scenes and independent ray/affine references, hardware/export/alpha
   acceptance and serial cost code are authored; no new baseline is generated.
@@ -75,10 +75,10 @@ still hold before relying on them.
   CE6-P targets remain separate; no owner decision is pending.
   [Evidence](./composition-ce6-completion-results.json).
 
-- **Verification quiet window (2026-10-06):** the CE6 gate has exited; hold
-  builds, formatters, tests, browser matrices and exports for the coordinated
-  CE6-P lane until its release message. Light source/prose review and CE6
-  publication can continue; neither checkout, policy nor baseline is changed.
+- **Verification quiet window released (2026-10-06):** CE6-P's timed brackets,
+  unchanged strict family audits, required exports and CE7 byte comparisons are
+  terminal. Explicit release at 01:24 UTC permits planned CE8 verification.
+  No checkout, policy or frozen baseline is changed by this coordination.
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -214,6 +214,17 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 camera basis checkpoint and verification release
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `6e28b42`.
+- **Repair:** singular camera world transforms fail before POI fallback;
+  scale/roll analytic cases and basis semantics are authored.
+- **Coordination:** CE6-P explicitly released the reserved quiet window at
+  01:24 UTC after its timing/audit/export/provenance workload became terminal.
+- **Verification:** no CE8 check run yet; pinned isolated focused checks start now.
+- **Next:** repair focused findings, native acceptance, full gate and milestone PR.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 derived optics source review checkpoint
 

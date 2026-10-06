@@ -116,5 +116,13 @@ describe("native camera analytic geometry", () => {
     expect(() => cameraGeometry({ width:100,height:100,world,zoom:0 })).toThrow(/zoom/i);
     expect(() => cameraGeometry({ width:100,height:100,world,zoom:100,nearClip:2,farClip:1 })).toThrow(/clip/i);
     expect(() => cameraGeometry({ width:100,height:100,zoom:100,world:layerMatrix3d(transform({scale:[0,0,0]})) })).toThrow(/basis/i);
+    expect(() => cameraGeometry({ width:100,height:100,zoom:100,world:layerMatrix3d(transform({scale:[0,1,1]})) })).toThrow(/basis/i);
+    expect(() => cameraGeometry({ width:100,height:100,zoom:100,pointOfInterest:[0,0,10],world:layerMatrix3d(transform({scale:[1,0,1]})) })).toThrow(/basis/i);
+  });
+  it("normalizes camera scale magnitudes while retaining authored forward/down orientation",()=>{
+    const scaled=cameraGeometry({width:100,height:100,zoom:100,world:layerMatrix3d(transform({position:[50,50,-100],scale:[2,3,4]}))});
+    close(projectWorldPoint(scaled,[75,50,0])!,[75,50]);
+    const rolled=cameraGeometry({width:100,height:100,zoom:100,world:layerMatrix3d(transform({position:[50,50,-100],rotation:90,scale:[2,3,4]}))});
+    close(projectWorldPoint(rolled,[75,50,0])!,[50,25]);
   });
 });

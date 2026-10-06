@@ -862,6 +862,9 @@ a scope containing 3D artwork gets a default camera: position
 camera uses its orientation; a two-node camera aims at parent-space
 `pointOfInterest`. Authored POI implies two-node unless a model is explicit.
 Coincident POI, singular camera bases and camera-facing parent feedback fail.
+Camera basis vectors are orthonormal: transformed positive z selects the one-node
+forward direction, transformed positive y supplies down/roll, and their cross
+product supplies right. Scale magnitudes do not change optical zoom.
 
 Author either `zoom` (pixels, 0.001–1,000,000) or `focalLength` (millimetres,
 0.001–10,000). `zoom = focalLength * width / filmSize`; film size defaults to

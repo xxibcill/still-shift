@@ -137,6 +137,11 @@ export function cameraGeometry(options: {
   if (![aperture,blurLevel].every(value => Number.isFinite(value)&&value>=0))
     throw new Error("Camera aperture and blur level must be finite and nonnegative");
   if (!world.every(Number.isFinite)) throw new Error("Camera world basis must be finite");
+  const worldRight=normalized([world[0],world[1],world[2]],"right transform basis"),
+    worldDown=normalized([world[4],world[5],world[6]],"down transform basis"),
+    worldForward=normalized([world[8],world[9],world[10]],"forward transform basis");
+  if(Math.abs(dot(worldRight,cross(worldDown,worldForward)))<=Number.EPSILON*16)
+    throw Error("Camera world basis must be nonsingular");
   const position: Point3=[world[12],world[13],world[14]];
   const forward=normalized(options.pointOfInterest ? subtract(options.pointOfInterest,position) : [world[8],world[9],world[10]], options.pointOfInterest ? "point of interest" : "forward basis");
   let downHint: Point3=[world[4],world[5],world[6]];

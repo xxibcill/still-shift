@@ -315,7 +315,26 @@
         "reason": "CE6-P quiet window remains active",
         "cases": "Reverse author order, both secondary optics, driven focal/film and implicit cycle cases authored"
       },
-      "pending": "Focused checks and complete native/full acceptance after release"
+      "pending": "Focused checks and complete native/full acceptance after release",
+      "implementation": "6e28b42"
+    },
+    {
+      "name": "Camera basis review and verification release",
+      "status": "authored-awaiting-focused-verification",
+      "features": [
+        "Reject singular camera world transforms even when POI fallback could construct a viewing basis",
+        "Declare camera forward/down orthonormalization and scale-independent optics"
+      ],
+      "verification": {
+        "status": "not run yet",
+        "cases": "Zero-axis camera and scaled/rolled camera analytic regressions authored"
+      },
+      "coordination": {
+        "quietWindow": "released",
+        "at": "2026-10-06 01:24 UTC",
+        "authority": "Explicit CE6-P release after all reserved timing/audit/export/provenance workloads terminal"
+      },
+      "pending": "Pinned isolated schema/type/lint/unit/native acceptance and full gate"
     }
   ],
   "pending": [

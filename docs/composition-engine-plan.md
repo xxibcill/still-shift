@@ -3674,6 +3674,10 @@ validation, declares primary focal expressions before film writes, and authors
 reverse-order/driver regressions. Surface callback optional typing and camera
 switch field names are repaired; all checks remain deferred until release.
 
+Final camera-basis source review rejects singular transforms before POI fallback
+and adds normalized scale/roll cases. CE6-P explicitly released its quiet window
+at 01:24 UTC; isolated focused checks begin with no CE8 acceptance claimed yet.
+
 **Completion record:** _to be filled in._
 
 ---
