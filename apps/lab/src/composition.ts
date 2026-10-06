@@ -1,3 +1,8 @@
+import { analyzeRenderedCompositionQuality } from "../../../packages/renderer-core/src/composition/quality-render.ts";
+import {
+  analyzeCompositionQuality,
+  type MotionLintDiagnostic,
+} from "../../../packages/renderer-core/src/story-quality.ts";
 import {
   validateComposition,
   type Composition,
@@ -49,6 +54,48 @@ function describeRenderer(backend: CompositionBackend) {
   if (probe !== canvas) gl?.getExtension("WEBGL_lose_context")?.loseContext();
 }
 
+const lintButton = el<HTMLButtonElement>("lint");
+let lintFindings: MotionLintDiagnostic[] = [];
+let lintAbort: AbortController | undefined;
+function showLint(report: ReturnType<typeof analyzeCompositionQuality>) {
+  lintFindings = report.diagnostics;
+  const errors = lintFindings.filter((d) => d.severity === "error").length;
+  el("lint-summary").textContent =
+    `${errors} errors · ${lintFindings.length - errors} warnings · ${report.measured.pixels ? "pixels and state checked" : "state checked; pixels pending"}`;
+  const jump = (frame: number) => {
+    stop();
+    show(frame);
+  };
+  el("lint-findings").replaceChildren(
+    ...lintFindings.map((finding) => {
+      const button = document.createElement("button");
+      button.textContent = `${finding.severity} · ${finding.code} · frames ${finding.frames.join("–")}: ${finding.message}`;
+      button.onclick = () => jump(finding.frames[0]);
+      const item = document.createElement("li");
+      item.append(button);
+      return item;
+    }),
+  );
+  el("lint-timeline").replaceChildren(
+    ...lintFindings.map((finding) => {
+      const button = document.createElement("button");
+      button.title = `${finding.code}: ${finding.message}`;
+      button.setAttribute(
+        "aria-label",
+        `${finding.severity}, ${finding.code}, frames ${finding.frames.join(" to ")}`,
+      );
+      button.dataset.severity = finding.severity;
+      button.dataset.start = String(finding.frames[0]);
+      button.dataset.end = String(finding.frames[1]);
+      button.style.left = `${(100 * finding.frames[0]) / report.frameCount}%`;
+      button.style.width = `${(100 * (finding.frames[1] - finding.frames[0] + 1)) / report.frameCount}%`;
+      button.style.top = finding.severity === "error" ? "2px" : "28px";
+      button.onclick = () => jump(finding.frames[0]);
+      return button;
+    }),
+  );
+}
+
 let comp: Composition | undefined;
 let preview: CompositionPreview | undefined;
 let warnings: string[] = [];
@@ -67,6 +114,13 @@ const listDiagnostics = (lines: string[]) =>
 function show(frame: number) {
   if (!comp || !preview) return;
   const report = preview.renderFrame(frame);
+  for (const marker of el("lint-timeline").querySelectorAll<HTMLButtonElement>(
+    "button",
+  ))
+    marker.dataset.active = String(
+      frame >= Number(marker.dataset.start) &&
+        frame <= Number(marker.dataset.end),
+    );
   slider.value = String(frame);
   el("time").textContent =
     `${(frame / comp.fps).toFixed(2)} s · ${frame + 1} / ${comp.frameCount}`;
@@ -112,10 +166,15 @@ async function load(path: string) {
   const run = ++generation;
   const backend = backendSelect.value as CompositionBackend;
   stop();
+  lintAbort?.abort();
+  lintButton.disabled = true;
+  el("lint-timeline").replaceChildren();
+  el("lint-findings").replaceChildren();
   preview?.dispose();
   preview = undefined;
   comp = undefined;
   play.disabled = true;
+  slider.disabled = false;
   error.textContent = "";
   status.textContent = `Loading ${path}…`;
   delete status.dataset.ready;
@@ -149,7 +208,26 @@ async function load(path: string) {
     slider.max = String(comp.frameCount - 1);
     el("command").textContent =
       `pnpm --silent still-shift comp render --input benchmarks/fixtures/composition/${path} --output ${comp.id}.mp4 --backend ${backend}`;
+    // Lint is advisory: a lint failure must not stop the composition previewing.
+    let linted = false;
+    try {
+      showLint(
+        analyzeCompositionQuality(comp, {
+          evaluation: { textBounds: preview.textBounds },
+        }),
+      );
+      linted = true;
+    } catch (cause) {
+      lintFindings = [];
+      const diagnostics = passageDiagnostics(cause);
+      el("lint-summary").textContent = `Motion checks unavailable: ${
+        diagnostics.length
+          ? diagnostics.map((d) => `${d.code}: ${d.message}`).join("; ")
+          : String(cause instanceof Error ? cause.message : cause)
+      }`;
+    }
     show(0);
+    lintButton.disabled = !linted;
     play.disabled = false;
     status.textContent = `Ready: ${comp.name ?? comp.id} · ${comp.width} × ${comp.height} · ${comp.fps} fps`;
     status.dataset.ready = path;
@@ -164,6 +242,42 @@ async function load(path: string) {
     status.dataset.ready = "error";
   }
 }
+
+lintButton.onclick = async () => {
+  if (!comp || !preview) return;
+  const run = generation,
+    at = Number(slider.value);
+  stop();
+  play.disabled = true;
+  slider.disabled = true;
+  lintButton.disabled = true;
+  lintAbort = new AbortController();
+  try {
+    const report = await analyzeRenderedCompositionQuality(
+      comp,
+      preview,
+      {},
+      {
+        signal: lintAbort.signal,
+        onFrame: (frame) => {
+          el("lint-summary").textContent =
+            `Checking rendered frame ${frame + 1} / ${comp!.frameCount}…`;
+        },
+      },
+    );
+    if (run === generation) showLint(report);
+  } catch (cause) {
+    if (run === generation)
+      el("lint-summary").textContent = `Motion check failed: ${String(cause)}`;
+  } finally {
+    if (run === generation) {
+      show(at);
+      play.disabled = false;
+      slider.disabled = false;
+      lintButton.disabled = false;
+    }
+  }
+};
 
 const fixtures = (await (
   await fetch("/composition/fixtures")

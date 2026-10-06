@@ -10,18 +10,8 @@ export type EnergyOptions = {
   minimumChangedPixels?: number;
 };
 
-export function measureFrameEnergy(
-  before: Uint8Array,
-  after: Uint8Array,
-  threshold: number,
-) {
-  if (before.length !== after.length)
-    throw new Error("Decoded frame sizes differ");
-  let changed = 0;
-  for (let i = 0; i < before.length; i++)
-    if (Math.abs(after[i]! - before[i]!) > threshold) changed++;
-  return changed;
-}
+export { measureFrameEnergy } from "../../packages/renderer-core/src/story-continuous-quality.ts";
+import { measureFrameEnergy } from "../../packages/renderer-core/src/story-continuous-quality.ts";
 
 export function summarizeMotionEnergy(
   changedPixels: number[],

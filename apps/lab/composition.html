@@ -114,6 +114,37 @@
         line-height: 1.5;
         padding-left: 20px;
       }
+      #lint-timeline {
+        position: relative;
+        height: 52px;
+        background: #33352b;
+        border-radius: 4px;
+      }
+      #lint-timeline button {
+        position: absolute;
+        height: 22px;
+        padding: 0;
+        min-width: 3px;
+        border: 0;
+        background: #dd9b59;
+      }
+      #lint-timeline button[data-severity="error"] {
+        background: #dc785f;
+      }
+      #lint-timeline button[data-active="true"] {
+        outline: 2px solid #fff;
+        z-index: 1;
+      }
+      #lint-findings {
+        max-height: 280px;
+        overflow: auto;
+        padding-left: 20px;
+      }
+      #lint-findings button {
+        margin: 3px 0;
+        padding: 6px 10px;
+        text-align: left;
+      }
       details {
         margin-top: 30px;
         color: #c7c1b1;
@@ -165,6 +196,16 @@
       <p id="status" role="status">Loading compositions…</p>
       <p id="error" role="alert"></p>
       <ul id="diagnostics" aria-label="Warnings and frame diagnostics"></ul>
+      <section aria-label="Motion lint findings">
+        <div class="controls">
+          <button id="lint" disabled>Check rendered motion</button
+          ><output id="lint-summary" role="status"
+            >Motion checks pending.</output
+          >
+        </div>
+        <div id="lint-timeline" aria-label="Motion findings by frame"></div>
+        <ul id="lint-findings" aria-label="Motion findings"></ul>
+      </section>
       <details>
         <summary>Render this composition</summary>
         <p>

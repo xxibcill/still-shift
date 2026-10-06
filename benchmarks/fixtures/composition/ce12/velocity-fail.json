@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce12-velocity-fail",
+  "width": 640,
+  "height": 360,
+  "fps": 30,
+  "frameCount": 90,
+  "assets": [],
+  "layers": [
+    {
+      "id": "subject",
+      "type": "solid",
+      "size": [40, 40],
+      "color": "#efad55",
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [80, 80]
+            },
+            {
+              "frame": 20,
+              "value": [100, 80],
+              "interpolation": "linear"
+            },
+            {
+              "frame": 40,
+              "value": [300, 80],
+              "interpolation": "linear"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

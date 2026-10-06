@@ -18,6 +18,7 @@ import {
 } from "@still-shift/scene-contract";
 import { compileCommerceScene } from "@still-shift/renderer-core";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
+import type * as PairedTiming from "../helpers/paired-render-timing.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
 import { commerceTextVariants } from "../helpers/composition-commerce-text.ts";
 import type * as CommerceTextTests from "../helpers/composition-commerce-text.ts";
@@ -328,47 +329,22 @@ try {
               evaluationMs += evaluated - at;
               graphMs += performance.now() - evaluated;
             }
-          // Pixel comparison allocates full-frame buffers and analysis data. Measure
-          // render + readback separately once every frame is warm. Pair the same
-          // frame and alternate which backend runs first, including across passes,
-          // rather than charging a whole timeline's runtime pauses to one backend.
-          const benchmark = (
-            render: (frame: number) => unknown,
-            read: () => unknown,
-            frame: number,
-          ) => {
-            const start = performance.now();
-            render(frame);
-            read();
-            return performance.now() - start;
-          };
-          const readLegacy = () =>
-            oldCtx.getImageData(0, 0, canvas.width, canvas.height);
-          const timings = Array.from({ length: 3 }, (_, pass) => {
-            let legacyMs = 0,
-              compositionMs = 0;
-            for (let frame = 0; frame < composition.frameCount; frame++) {
-              if ((frame + pass) % 2 === 0) {
-                legacyMs += benchmark(legacy.renderFrame, readLegacy, frame);
-                compositionMs += benchmark(
-                  preview.renderFrame,
-                  preview.readPixels,
-                  frame,
-                );
-              } else {
-                compositionMs += benchmark(
-                  preview.renderFrame,
-                  preview.readPixels,
-                  frame,
-                );
-                legacyMs += benchmark(legacy.renderFrame, readLegacy, frame);
-              }
-            }
-            return { legacyMs, compositionMs, ratio: compositionMs / legacyMs };
-          });
-          const ratio = timings
-            .map((timing) => timing.ratio)
-            .sort((a, b) => a - b)[1]!;
+          // Keep the existing limit and paired ordering, but collect enough render +
+          // readback time to avoid deciding acceptance from a sub-200 ms sample.
+          const timingUrl = "/tests/helpers/paired-render-timing.ts";
+          const timing = (await import(timingUrl)) as typeof PairedTiming;
+          const { ratio, timings } = timing.measurePairedRenderTimings(
+            composition.frameCount,
+            {
+              renderFrame: legacy.renderFrame,
+              readPixels: () =>
+                oldCtx.getImageData(0, 0, canvas.width, canvas.height),
+            },
+            {
+              renderFrame: preview.renderFrame,
+              readPixels: preview.readPixels,
+            },
+          );
           preview.dispose();
           legacy.dispose();
           return {

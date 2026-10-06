@@ -25,9 +25,11 @@ import {
   SfxGenerationError,
   importNarrationFile,
   renderComposition,
+  lintCompositionFile,
   compileCommerceComposition,
   compileStoryComposition,
 } from "@still-shift/animation-engine";
+import { CompositionQualityPolicySchema } from "@still-shift/renderer-core";
 import { bakeExpressions } from "../../../packages/renderer-core/src/composition/bake.ts";
 import {
   AnimationEngineError,
@@ -79,6 +81,7 @@ Usage:
   pnpm --silent still-shift comp export-json --scene <story-or-commerce.json> [--output <composition.json>] [--normalized true]
   pnpm --silent still-shift comp normalize --input <composition.json> [--output <composition.json>]
   pnpm --silent still-shift comp bake --input <composition.json> [--output <composition.json>]
+  pnpm --silent still-shift comp lint --input <composition.json> [--policy <policy.json>] [--pixels true|false]
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
@@ -405,6 +408,36 @@ export const runCli = async (
       return status === "passed" ? 0 : 1;
     } catch (error) {
       if (error instanceof AnimationEngineError) return writeFailure(error, io);
+      io.stderr(
+        `${JSON.stringify({ status: "failed", diagnostics: passageDiagnostics(error) })}\n`,
+      );
+      return 1;
+    }
+  }
+  if (args[0] === "comp" && args[1] === "lint") {
+    try {
+      const values = parseNamedArguments(args.slice(2), [
+        "input",
+        "policy",
+        "pixels",
+      ]);
+      const pixels = values.get("pixels") ?? "false";
+      if (!["true", "false"].includes(pixels))
+        throw new Error("--pixels must be true or false");
+      const policyPath = values.get("policy");
+      const policy = policyPath
+        ? CompositionQualityPolicySchema.parse(
+            JSON.parse(await readFile(resolve(policyPath), "utf8")),
+          )
+        : {};
+      const report = await lintCompositionFile(
+        resolve(requireArgument(values, "input")),
+        policy,
+        { pixels: pixels === "true" },
+      );
+      io.stdout(`${JSON.stringify(report)}\n`);
+      return report.status === "failed" ? 1 : 0;
+    } catch (error) {
       io.stderr(
         `${JSON.stringify({ status: "failed", diagnostics: passageDiagnostics(error) })}\n`,
       );

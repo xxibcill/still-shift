@@ -1385,6 +1385,92 @@ actual executed samples (`0` for reuse). Pixel readback caches one frame only wh
 it fits within 64 MiB and returns independent arrays. The Canvas default retains
 its existing execution behavior.
 
+## Motion linting (CE12)
+
+`analyzeCompositionQuality(composition, policy?)` extends the story, continuous-motion
+and typography quality analysers to `composition-1`. It is advisory: lint never
+changes evaluation or rendered output. Supply a validated composition.
+
+```ts
+import { analyzeCompositionQuality } from "@still-shift/renderer-core";
+const report = analyzeCompositionQuality(composition, {
+  maxFrozenFrames: 6,
+  intentionalCuts: [48],
+  reading: { qualification: { wordsPerSecond: 2.5, minimumSeconds: 2 } },
+});
+// report.status: passed | failed; errors fail, warnings remain advisory.
+// diagnostics: code, severity, message, path, nodes, frames [inclusive start, end], measured, shot.
+```
+
+The rules are `frozen-run`, `frozen-pixels`, `velocity-discontinuity`,
+`easing-monotony`, `co-start`, `reading-time`, `off-canvas`, `outside-safe-area`,
+`coverage`, `scale-pop` and `opacity-pop`. Defaults retain the continuous-motion
+six-frame frozen-run allowance (unchanged adjacent comparisons). Reading uses
+consecutive revealed, opaque, settled text frames, with separate word budgets for
+heading, label, qualification and body. Off-canvas/safe-area checks use conservative
+screen bounds after group and precomp clipping; content clipped away entirely is not
+framed. Geometry coverage checks designated `coverageLayers` or adapter
+`metadata.storyCameraCover`; image transparency still needs asset coverage validation.
+
+Cuts reset stillness/reading windows and suppress pop/join findings. Declare them
+through `intentionalCuts`, `motionBlur.cuts`, or markers labelled `cut` (also `cut`
+and `cut-*` ids). Generic markers and hold keys do not waive findings. Optional
+`shots: [{ id, start, end }]` partition the complete timeline with exclusive ends.
+`severities` may set an individual rule to `error` or `warning` without hiding it.
+
+```sh
+pnpm --silent still-shift comp lint --input composition.json
+pnpm --silent still-shift comp lint --input composition.json --policy lint-policy.json --pixels true
+```
+
+The CLI emits one JSON report and exits **1** on errors, invalid input/policy or
+failed measurement; warnings alone exit **0**. State-only lint verifies pinned
+assets but does not launch a browser. `--pixels true` uses pinned export Chromium,
+measures text bounds, and samples every rendered frame at full resolution. Its
+shared grayscale-energy defaults are a channel delta **> 4** and **≥ 200** changed
+pixels, configurable via `pixelChannelThreshold` and `pixelMinimumChanges`.
+`analyzeRenderedCompositionQuality(comp, preview, policy?, { signal, onFrame })`
+provides the same browser measurement and supports cancellation.
+
+For already rendered evidence, pass `pixelChangedCounts` (one integer per frame,
+first entry 0), or `pixelHashes` (one nonempty hash per frame). Hashes detect exact
+frozen pixels; they cannot establish the meaningful-motion 200-pixel floor. The
+report identifies its pixel method and unmeasured limitations. Without pixels it
+must not be treated as proof of visible motion; without measured text bounds,
+text framing is incomplete. Custom content providers require rendered inspection.
+
+The analyser samples visible instances, inherited transforms/opacity, camera,
+matte dependencies, masks, effects and known provider content. It excludes clock
+bookkeeping and invisible unrelated motion. Join checks include fractional
+stretched/reversed key joins and reuse one-sided velocity sampling. Each side is
+sampled a step away from the join, so per-frame held keys (as baked by adapters) are
+frame samples, not velocity jumps; the report lists held motion as unmeasured, and
+held scale/opacity steps remain subject to pop checks. Fractional join searches
+share each clock's evaluations across the layers that use it. A bounded
+2,000,000 layer-frame budget, which includes those searches, prevents unbounded
+inspection; exceeding it fails
+instead of returning a partial pass. Split unusually large projects into smaller
+compositions before linting.
+
+The Lab composition page displays state findings immediately, with severity lanes
+and clickable frame ranges. **Check rendered motion** adds measured pixel findings;
+selecting another composition cancels measurement.
+
+Local verification commands:
+
+```sh
+pnpm test:browser:composition-quality
+pnpm composition:lint-acceptance --output new-stillness-report.json
+pnpm composition:lint-corpus --output new-corpus-report.json
+```
+
+The corpus report covers every CE0 render item with retained frame hashes; check
+those hashes against fresh renders with `pnpm test:browser:composition-baselines`.
+Where a family adapter is unavailable (CE4a coverage, CE4c/CE4d), the report records
+pixel-only coverage and the reason. It never treats unsupported state rules as passed.
+The acceptance command measures the existing v013 review MP4 and a fresh continuous
+prototype export; other craft findings remain in its report.
+
 ## CE16 soundtrack project
 
 Soundtracks use a separate opt-in `soundtrack-project-1` authority; they do not

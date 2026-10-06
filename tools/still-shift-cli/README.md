@@ -164,3 +164,18 @@ The batch keeps going after an individual item fails. Exit code 0 means every ma
 The WebGL path uses the lossless in-memory PNG frame pipe by default. `STILL_SHIFT_FRAME_TRANSPORT=jpeg_pipe` selects the faster 95%-quality JPEG evaluation path. The transport is recorded in the scene manifest and result metrics; transport, depth adapter, and requested depth device are included in batch checkpoint identity. `batch-runs.jsonl` preserves each run summary so a fast retry does not replace the full-render wall-time measurement.
 
 `pnpm test:browser:batch` verifies mixed success/failure, bounded execution, retry identity, and artifact tamper detection.
+
+## Composition motion lint
+
+```sh
+pnpm --silent still-shift comp lint --input composition.json
+pnpm --silent still-shift comp lint --input composition.json --policy policy.json --pixels true
+```
+
+Returns structured JSON diagnostics with inclusive frame ranges, severity and
+property paths. Errors or failed input/measurement exit 1; warnings alone exit 0.
+State checks run without a browser. `--pixels true` measures all frames using pinned
+export Chromium and the continuous-motion grayscale-energy gate; it also measures
+text bounds. The report distinguishes unmeasured pixels and incomplete text framing.
+Use the [composition reference](../../docs/composition-reference.md#motion-linting-ce12)
+for configurable thresholds, reading roles, cuts, shot partitions and severity overrides.

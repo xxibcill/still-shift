@@ -1,3 +1,7 @@
+import type {
+  ResolvedCompositionQualityPolicy,
+  MotionLintDiagnostic,
+} from "./composition/quality-policy.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { StoryQualityDiagnostic } from "./story-quality.ts";
 import { evaluatePreparedNode } from "./prepared-scene.ts";
@@ -636,4 +640,75 @@ export function requireMotionCraft(
       ),
       { code: "motion-craft-gate", diagnostics: failed },
     );
+}
+
+export type FrozenRun = { frames: [number, number]; measured: number };
+/** Runs count unchanged adjacent comparisons, matching the continuous-story six-frame gate. */
+export function frozenFrameRuns(
+  signatures: readonly string[],
+  start = 0,
+  end = signatures.length,
+  cuts: ReadonlySet<number> = new Set(),
+): FrozenRun[] {
+  const runs: FrozenRun[] = [];
+  let first = -1;
+  const finish = (last: number) => {
+    if (first >= 0)
+      runs.push({ frames: [first, last], measured: last - first + 1 });
+    first = -1;
+  };
+  for (let frame = start + 1; frame < end; frame++) {
+    if (!cuts.has(frame) && signatures[frame] === signatures[frame - 1]) {
+      if (first < 0) first = frame;
+    } else finish(frame - 1);
+  }
+  finish(end - 1);
+  return runs;
+}
+
+export function analyzeCompositionStillness(
+  signatures: readonly string[],
+  policy: ResolvedCompositionQualityPolicy,
+) {
+  const findings: MotionLintDiagnostic[] = [];
+  for (const shot of policy.shots)
+    for (const [code, evidence] of [
+      ["frozen-run", signatures],
+      ["frozen-pixels", policy.pixelHashes],
+    ] as const) {
+      if (!evidence?.length) continue;
+      for (const run of frozenFrameRuns(
+        evidence,
+        shot.start,
+        shot.end,
+        policy.cuts,
+      ))
+        if (run.measured > policy.maxFrozenFrames)
+          findings.push({
+            ...run,
+            code,
+            severity: policy.severities?.[code] ?? "error",
+            nodes: [],
+            shot: shot.id,
+            path: "layers",
+            message: `${run.measured} unchanged ${code === "frozen-pixels" ? "pixel" : "evaluated-state"} comparisons exceed the ${policy.maxFrozenFrames}-frame limit.`,
+          });
+    }
+  return findings;
+}
+
+/** Shared full-resolution grayscale comparison used by render and decoded-video lint. */
+export function measureFrameEnergy(
+  before: Uint8Array,
+  after: Uint8Array,
+  threshold: number,
+) {
+  if (before.length !== after.length)
+    throw new Error("Decoded frame sizes differ");
+  if (!Number.isFinite(threshold) || threshold < 0 || threshold > 255)
+    throw new Error("Invalid pixel threshold");
+  let changed = 0;
+  for (let i = 0; i < before.length; i++)
+    if (Math.abs(after[i]! - before[i]!) > threshold) changed++;
+  return changed;
 }

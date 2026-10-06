@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce12-framing-pass",
+  "width": 640,
+  "height": 360,
+  "fps": 30,
+  "frameCount": 90,
+  "assets": [],
+  "layers": [
+    {
+      "id": "subject",
+      "type": "solid",
+      "size": [40, 40],
+      "color": "#efad55",
+      "transform": {
+        "position": [80, 80]
+      }
+    }
+  ]
+}
