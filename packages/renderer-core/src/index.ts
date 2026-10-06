@@ -154,3 +154,5 @@ export {
   DEPTH_ADAPTER_VERSION,
   type DepthCompositionOptions,
 } from "./composition/adapters/depth.ts";
+
+export * from "./soundtrack-edits.ts";

@@ -3,6 +3,10 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
+      "@still-shift/renderer-core/soundtrack": new URL(
+        "./packages/renderer-core/src/soundtrack-edits.ts",
+        import.meta.url,
+      ).pathname,
       "@still-shift/motion/node": new URL(
         "./packages/motion-builder/src/node.ts",
         import.meta.url,

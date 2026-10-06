@@ -17,7 +17,7 @@ attempts, is in [CE4d results](./composition-ce4d-results.json).
   commands, 2,005 unit / 46 runtime / 143 integration / 14 Python tests, all browser
   gates, all 176 actual defaults and 176 frozen items / 36,061 frames. Four Canvas
   family matrices pass strict 1.25× timing; 141 prior visual files remain exact.
-- Full gate session51023 is closed. No verification job remains active. Private
+- Full gate session51023 is closed. The CE4d job is terminal. Private
   immutable source `/private/tmp/still-shift-ce8-check-ae2e1f0`, log
   `/private/tmp/ce4d-full-check-ae2e1f0.log`; collected report is embedded in results.
 - Canvas 1.44.0, WebGL2 0.65.0, image-plane shader 0.4.0, depth adapter 0.1.0,
@@ -53,7 +53,12 @@ The owner Q7 depth planning section and Q5/Q6/Q9 decisions are separate dirty wo
 
 ## Read-only future preparation
 
-No CE13/CE15/CE14 source is implemented yet. Private notes contain exact source
+CE13 has integrated merged CE16 source on `codex/composition-ce13` from `adf6cea`.
+PR33 is attached. Fresh pinned focused checks pass 88 soundtrack / 46 runtime /
+40 passage-CLI tests and real browser decoding/full-range mux; the failed alias
+and temporary lock-format attempts remain in [CE13 results](./composition-ce13-results.json).
+Native CE13 media, CE15 and CE14 are still in flight; no final CE13 gate has run.
+Private notes contain exact source
 seams and primary references: `/private/tmp/ce13-authority-map-2026-10-07.md`,
 `ce13-design-decision-candidates-2026-10-07.md`,
 `composition-remaining-preimplementation-notes.md`,

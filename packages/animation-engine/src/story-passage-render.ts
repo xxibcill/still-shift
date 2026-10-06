@@ -1,3 +1,11 @@
+import { soundtrackFail } from "@still-shift/scene-contract";
+import { renderPassageSoundtrack } from "./soundtrack-passage.ts";
+import {
+  readSoundtrackProject,
+  verifySoundtrackSources,
+  soundtrackChecksum,
+} from "./soundtrack-project-io.ts";
+import { soundtrackPython } from "./soundtrack-render.ts";
 import {
   renderPassageAudio,
   verifyPassageAudioAssets,
@@ -120,6 +128,7 @@ async function assembleStoryPassage(
   narration: string | undefined,
   options: PassageRenderOptions & {
     cacheDirectory: string;
+    soundtrackRevision?: number;
     runtime: string;
     renderEnvironment: RenderEnvironment;
     sceneDirectory: string;
@@ -272,16 +281,24 @@ async function assembleStoryPassage(
     ":end_frame=" +
     (renderStart + frameCount) +
     ",setpts=PTS-STARTPTS[v]";
-  const mixedAudio = await renderPassageAudio(
-    join(output, "mix.wav"),
-    passage,
-    narration,
-    {
-      range,
-      soundEffects: options.soundEffects,
-      signal: options.signal,
-    },
-  );
+  const mixedAudio = options.soundtrackProject
+    ? await renderPassageSoundtrack(
+        join(output, "mix.wav"),
+        passage,
+        options.soundtrackProject,
+        {
+          range,
+          signal: options.signal,
+          ...(options.soundtrackRevision !== undefined
+            ? { expectedRevision: options.soundtrackRevision }
+            : {}),
+        },
+      )
+    : await renderPassageAudio(join(output, "mix.wav"), passage, narration, {
+        range,
+        soundEffects: options.soundEffects,
+        signal: options.signal,
+      });
   const hasAudio = Boolean(mixedAudio);
   const audio = mixedAudio ? `;[${assemblyInputs.length}:a:0]anull[a]` : "";
   await run("ffmpeg", [
@@ -467,6 +484,8 @@ export type PassageRenderOptions = {
   compositions?: PassageCompositions;
   renderer?: "legacy" | "composition";
   backend?: CompositionBackend;
+
+  soundtrackProject?: string;
   soundEffects?: boolean;
   cacheDirectory?: string;
   resume?: boolean;
@@ -498,6 +517,15 @@ export async function renderStoryPassage(
       { path: "renderer" },
     );
   options = { ...options, compositions };
+
+  if (
+    options.soundtrackProject &&
+    (narration || options.soundEffects === false)
+  )
+    soundtrackFail(
+      "soundtrack-mode",
+      "Choose a saved soundtrack or legacy narration/effect controls",
+    );
   const first = passage.beats[0]?.scene;
   if (!first)
     passageError("empty-passage", "A passage needs at least one beat");
@@ -537,6 +565,30 @@ export async function renderStoryPassage(
     options.signal,
   );
   const jobRuntime = await passageJobRuntimeIdentity(runtime, options.signal);
+  const soundtrack = options.soundtrackProject
+    ? await readSoundtrackProject(options.soundtrackProject)
+    : undefined;
+  if (soundtrack)
+    await verifySoundtrackSources(soundtrack, options.soundtrackProject!);
+  const soundtrackIdentity = soundtrack
+    ? {
+        project: soundtrack,
+        worker: await soundtrackChecksum(
+          new URL("./soundtrack-worker.py", import.meta.url).pathname,
+        ),
+        python: soundtrackPython(),
+        packages: (
+          await runProcess(
+            soundtrackPython(),
+            [
+              "-c",
+              "import json,platform; from importlib.metadata import version; print(json.dumps([platform.python_version(),*[version(x) for x in ['dawdreamer','numpy','scipy']]]))",
+            ],
+            { signal: options.signal },
+          )
+        ).stdout.trim(),
+      }
+    : undefined;
   const job = await acquirePassageJob(
     output,
     {
@@ -553,6 +605,8 @@ export async function renderStoryPassage(
       ...(options.renderer === "composition"
         ? { backend: options.backend ?? "canvas2d" }
         : {}),
+
+      ...(soundtrackIdentity ? { soundtrack: soundtrackIdentity } : {}),
       range,
       runtime: jobRuntime,
     },
@@ -564,6 +618,7 @@ export async function renderStoryPassage(
     await mkdir(join(assembly, "delivery"));
     const report = await assembleStoryPassage(assembly, passage, narration, {
       ...options,
+      ...(soundtrack ? { soundtrackRevision: soundtrack.revision } : {}),
       range,
       cacheDirectory: resolve(
         options.cacheDirectory ?? "benchmarks/results/passage-cache",

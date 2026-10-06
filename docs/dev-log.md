@@ -43,6 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE13 in progress (2026-10-07):** `codex/composition-ce13` from completed CE4d
+  `adf6cea`. Audited merged/attached [CE16 PR #33](https://github.com/xxibcill/still-shift/pull/33)
+  at `65f2ebe4`; its shared contract, saved-project IO, opt-in worker, passage
+  adapter, CLI and timeline retain the current native renderer and beat interfaces.
+  Focused checks pass 88 soundtrack / 46 runtime / 40 passage-CLI tests; real browser
+  playback decodes all 384,000 stereo samples/channel exactly and full/range mux
+  matches independent renders. Historical CE16 reports remain references, not CE13 proof. Native video,
+  sequence, audio clocks, decoded waveforms and final full acceptance remain in
+  flight. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
+  [Evidence](./composition-ce13-results.json).
+
 - **CE4d complete (2026-10-07):**
   `codex/composition-ce4d` from CE4c `17666eb`. Native production defaults and old
   painter retirement are complete. Canvas 1.44 / WebGL2 0.65 / image-plane shader
@@ -255,6 +266,20 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 begins with merged CE16 audit and shared integration
+
+- **Agent / branch:** Codex on `codex/composition-ce13` from CE4d `adf6cea`.
+- **Scope:** reuse CE16's merged soundtrack authority before implementing native media.
+- **Done:** imported `65f2ebe4` soundtrack modules and reconciled six shared interfaces;
+  retained native passage composition/backend options and retired production Three.
+- **Results:** pinned startup/build/schema/lint/format, 88 soundtrack / 46 runtime /
+  40 passage-CLI tests and real browser/full-range mux pass. CE13 native acceptance
+  and full gate remain pending. Missing test alias and temporary lock formatting
+  failures are retained in the evidence.
+- **Open / next:** commit/push this integrated slice, then implement deterministic native video, sequences, protected audio and real waveforms.
+- **Records:** [CE13](./composition-engine-plan.md#ce13--video-image-sequence-and-audio-layers),
+  [evidence](./composition-ce13-results.json), [CE16 PR #33](https://github.com/xxibcill/still-shift/pull/33).
 
 ### 2026-10-07 — CE4d complete local gate and native-default closeout
 

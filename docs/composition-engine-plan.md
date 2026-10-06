@@ -376,7 +376,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE10  | TypeScript builder API and CLI                 | C      | CE3, CE4a, CE9, CE12       | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
 | CE11  | Lab composition inspector and graph editor     | C      | CE3, CE10                  | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
 | CE12  | Motion linting                                 | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
-| CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   |                        |                                     | `[ ]`  |                                                                                    |
+| CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   |                        |                                     | `[~]`  |                                                                                    |
 | CE14  | Mesh warp and puppet pins                      | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
 | CE15  | Output formats, caching and parallel rendering | D      | CE3                        |                        |                                     | `[ ]`  |                                                                                    |
 
@@ -4721,6 +4721,13 @@ matching audio.
 
 **Verification:** Frame-accurate tests on a synthetic video with burnt-in frame numbers,
 variable-frame-rate rejection or conversion tests, cache reuse tests, audio sync test.
+
+**In progress (2026-10-07):** Codex on `codex/composition-ce13` from CE4d
+`adf6cea`. Merged CE16 PR #33 / `65f2ebe4` is audited and attached; its soundtrack
+contract, IO, worker, passage, CLI and optional timeline are reused through scoped
+integration. Fresh checks pass 88 soundtrack / 46 runtime / 40 passage-CLI tests and
+real browser playback/full-range mux. Native media implementation and final full
+acceptance remain pending. Historical CE16 reports are references only. [Current evidence](./composition-ce13-results.json).
 
 **Completion record:** _to be filled in._
 
