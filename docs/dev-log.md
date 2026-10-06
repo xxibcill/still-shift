@@ -44,10 +44,10 @@ still hold before relying on them.
 ## Current state
 
 - **CE4d alpha repair checkpoint (2026-10-07):** preserved-alpha linear filtering
-  is implemented with edge conservation assertions for both GPU profiles; browser
-  verification is pending. WebGL2 is 0.63.0 / image-plane shader 0.4.0. This
+  passes edge conservation and repeat assertions on SwiftShader and Apple M5 Pro;
+  all 128 filtered pixels conserve R+G exactly. WebGL2 is 0.63.0 / image-plane shader 0.4.0. This
   supersedes the earlier unrepaired-alpha note. Opaque compatibility sampling and
-  frozen references are unchanged. Build and scoped ESLint pass. Legacy delivery,
+  frozen references are unchanged. Toolchain, build, scoped ESLint and 20 unit tests pass. Legacy delivery,
   default consolidation and the final full gate remain pending.
   [Evidence](./composition-ce4d-results.json).
 
@@ -296,8 +296,9 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 - **Scope:** repair the confirmed authored depth-image alpha fringe from the fresh-chat handoff.
 - **Done:** both GPU fragments filter preserved-alpha linear texels in premultiplied form;
   opaque compatibility sampling remains unchanged. Version identities are advanced.
-- **Results:** build and scoped ESLint pass; new actual-pixel assertions cover conservation,
-  intermediate coverage and repeat rendering. Browser proof is pending on the immutable checkpoint.
+- **Results:** checkpoint `4b99cad` passes toolchain, build, scoped ESLint and 20 unit tests.
+  SwiftShader and Apple M5 Pro each pass all 128 filtered edge pixels with exact R+G conservation
+  and repeat identity; the fringe pixel improves from RGB111,112,0 to143,112,0. Full delivery is running.
 - **Open / next:** focused alpha proof, affected native delivery and legacy delivery, default migration,
   actual-route acceptance, final local gate and CE4d PR; then CE13 → CE15 → CE14.
 - **Records:** [results](./composition-ce4d-results.json), [handoff](./composition-continuation-handoff-2026-10-07.md).
