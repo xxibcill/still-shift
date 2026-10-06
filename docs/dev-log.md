@@ -43,6 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #38 follow-path review fix complete (2026-10-06):** isolated
+  `codex/pr38-follow-path-fix` from `eb17b1f`. The P2 finding is posted inline;
+  cubic contours now transform into world coordinates before flattening, fixing
+  14.64-pixel drift under source-layer or ancestor scaling. Two regressions cover
+  all quadrants, tangent orientation, reverse seeks and input immutability.
+  Fast checks pass 1,871 unit tests; native shape hashes, independent exports,
+  inspector and 18 exact hardware comparisons pass. Node/browser evaluator
+  parity passes. Fixtures, frozen baselines and tolerances are unchanged.
+  Delivery uses one finding commit and one final normal push to the existing PR.
+  Owner review/merge remain; no blocker or pending owner decision. No full
+  `pnpm check` or CE0 rerun; Actions remain disabled.
+  [Evidence](./pr-38-follow-path-fix-results.json).
+
 - **PR #38 main conflicts resolved (2026-10-06):** isolated
   `codex/pr38-main-conflicts` combines CE5 `3d0da6a` with main `bdf8f6a`.
   Native shape review fixes, main expression/lint/inspector fixes and soundtrack
@@ -476,7 +489,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-06 by Codex for PR #38 main integration; both histories retained._
+_Last updated 2026-10-06 by Codex for the PR #38 follow-path review fix; both histories retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -534,6 +547,21 @@ _Last updated 2026-10-06 by Codex for PR #38 main integration; both histories re
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — Repair PR #38 scaled follow-path contours
+
+- **Agent / branch:** Codex on isolated `codex/pr38-follow-path-fix`, from `eb17b1f`.
+- **Done:** post the sole P2 finding inline; transform cubics before world-arc-length
+  flattening using shared geometry budgets; advance evaluator and renderer identities.
+- **Results:** both layer/ancestor-scale regressions fail before repair and pass after.
+  Final fast checks pass 1,871 unit tests; native hashes/seeks, independent MP4/raw/PNG
+  exports, inspector and 18 exact hardware comparisons pass. Evaluator Node/browser
+  parity passes five fixtures × nine frames with numeric error below 6e-14.
+- **Next:** one finding commit and one final normal push to PR #38; owner review/merge
+  remain. No full gate/CE0 rerun, baseline regeneration or tolerance change. No blocker.
+  Owner checkout changes are preserved; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-38-follow-path-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/38#discussion_r4193023747).
 
 ### 2026-10-06 — Resolve PR #38 against main
 
