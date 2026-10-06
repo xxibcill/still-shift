@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE4d complete; PR delivery pending (2026-10-07):**
+- **CE4d complete (2026-10-07):**
   `codex/composition-ce4d` from CE4c `17666eb`. Native production defaults and old
   painter retirement are complete. Canvas 1.44 / WebGL2 0.65 / image-plane shader
   0.4 / depth adapter 0.1 / pipeline 0.13 are current. Immutable `ae2e1f0` passes
@@ -54,7 +54,8 @@ still hold before relying on them.
   remain exact. Independent/repeated/raw exports, depth/legacy delivery, hardware,
   Lab pending seeks, cache relocation and fresh zipper QA pass. Both prior failed
   gates and rejected diagnostics remain in the [evidence](./composition-ce4d-results.json).
-  Publish/attach the CE4d PR, then CE13 → CE15 → CE14 with CE16 audit/reuse.
+  [PR #47](https://github.com/xxibcill/still-shift/pull/47) is open and attached against CE4c.
+  Continue CE13 → CE15 → CE14 with CE16 audit/reuse.
   CE5-X/Q9 remains pending; CE6-P retains WebGL timing work. No verification job
   remains active and no owner decision blocks the approved order.
   [Continuation](./composition-continuation-handoff-2026-10-07.md).
@@ -71,7 +72,7 @@ still hold before relying on them.
   visual references remain unchanged. Earlier failures and diagnostics remain in
   the [evidence](./composition-ce4c-results.json). WebGL speed targets remain CE6-P.
   [PR #45](https://github.com/xxibcill/still-shift/pull/45) is open and attached against CE8-L.
-  CE4d is complete; PR delivery follows.
+  CE4d is complete in open/attached PR #47; CE13 follows.
   Separate cross-chat coordination authorization remains pending.
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
@@ -265,7 +266,8 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   four strict Canvas matrices. All 141 prior visual files remain exact.
 - **Rejected / do not repeat:** both earlier failed full gates remain recorded;
   never claim focused checks replace the full gate or reapply superseded drafts.
-- **Open / next:** publish/attach CE4d PR; CE13 → CE15 → CE14 with CE16 reuse.
+- **Delivery / next:** [PR #47](https://github.com/xxibcill/still-shift/pull/47) is open and attached;
+  CE13 → CE15 → CE14 with CE16 reuse.
   WebGL speed remains CE6-P; CE5-X/Q9 pending. Actions remain disabled.
 - **Records:** [results](./composition-ce4d-results.json),
   [plan](./composition-engine-plan.md#ce4d-completion-record-2026-10-07).

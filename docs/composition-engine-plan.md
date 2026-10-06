@@ -1468,8 +1468,9 @@ comparisons; the full `pnpm check`.
 - **Policy:** WebGL timing overruns remain CE6-P under the existing approved split;
   no correctness threshold, Canvas target or frozen reference changed. Both failed
   full gates and rejected diagnostics remain recorded. GitHub Actions stay disabled.
-- **Delivery / next:** PR publication pending; then CE13 → CE15 → CE14, auditing and
-  reusing existing CE16 during CE13. CE5-X/Q9 remains pending.
+- **PR / next:** [#47](https://github.com/xxibcill/still-shift/pull/47), open and attached against CE4c.
+  Continue CE13 → CE15 → CE14, auditing and reusing existing CE16 during CE13.
+  CE5-X/Q9 remains pending.
 - **Evidence:** [complete results](./composition-ce4d-results.json).
 
 ### CE4a completion record (2026-10-05)

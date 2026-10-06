@@ -1,6 +1,6 @@
 {
   "milestone": "CE4d",
-  "status": "verified; PR delivery pending",
+  "status": "complete",
   "started": "2026-10-06",
   "branch": "codex/composition-ce4d",
   "base": "17666eb",
@@ -18982,11 +18982,17 @@
       "status": "complete",
       "checkpoint": "ae2e1f0",
       "fullGate": "fullGates[2]",
-      "delivery": "PR pending",
+      "delivery": {
+        "pullRequest": "https://github.com/xxibcill/still-shift/pull/47",
+        "base": "codex/composition-ce4c",
+        "attached": true,
+        "merged": false,
+        "evidenceCheckpoint": "9f60447"
+      },
       "policy": "All original gates retained; Canvas strict timing and frozen bytes unchanged. WebGL timings remain CE6-P."
     }
   ],
-  "pending": ["CE4d PR delivery"],
+  "pending": [],
   "fullGates": [
     {
       "checkpoint": "8ce662a",
@@ -39127,5 +39133,6 @@
     }
   ],
   "completed": "2026-10-07",
-  "verifiedCheckpoint": "ae2e1f0"
+  "verifiedCheckpoint": "ae2e1f0",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/47"
 }

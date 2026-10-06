@@ -8,7 +8,9 @@ alpha, shadow, cache, Lab or golden patches. Complete evidence, including failed
 attempts, is in [CE4d results](./composition-ce4d-results.json).
 
 - Workspace `/Users/jjae/Documents/playground/still-shift`.
-- Branch `codex/composition-ce4d`, base CE4c `17666eb` / PR45.
+- CE4d branch `codex/composition-ce4d`, base CE4c `17666eb` / PR45; completion
+  evidence checkpoint `9f60447` pushed. [PR #47](https://github.com/xxibcill/still-shift/pull/47)
+  is open and attached against CE4c. No PR was merged.
 - Verified source `ae2e1f0`; final source behavior includes production defaults
   `db0a4ca`, cache `75c0828`, Lab `69469a8`, waits `e8a70d9`, golden `3747d16`.
 - Complete pinned local `pnpm check` passed in 11705.18 seconds: all 61 test
@@ -25,8 +27,8 @@ attempts, is in [CE4d results](./composition-ce4d-results.json).
 
 ## Mission
 
-Publish the CE4d PR against `codex/composition-ce4c`, attach it, then **continue
-CE13 → CE15 → CE14** on new milestone branches. Commit and push frequent scoped
+CE4d PR #47 is published and attached. **Continue CE13 → CE15 → CE14** on new
+milestone branches. Commit and push frequent scoped
 checkpoints; create and attach each complete milestone PR. Do not merge PRs.
 Audit/reuse existing CE16 PR33 (merged, head `65f2ebe4`) during CE13; attach that existing PR when continuing
 its implementation. Historical CE16 evidence is not integrated CE13 proof.
