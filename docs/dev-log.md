@@ -43,13 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #36 current-head fixes in progress (2026-10-06):** isolated
-  `codex/pr36-current-review-fixes` from `8be5fc7`; three findings are posted inline.
-  Exact text-style source matching passes 50 builder tests. Asset reads survive
-  later failures and recover through image/font edits (33 asset/program/watch tests).
-  Build, boundaries and targeted lint pass; explicit-anchor precedence remains.
-  Delivery will use one commit per finding and one push after the final fix;
-  owner review/merge remain pending. No blocker; Actions remain disabled.
+- **PR #36 current-head fixes verified (2026-10-06):** isolated
+  `codex/pr36-current-review-fixes` from `8be5fc7`; three findings posted inline.
+  Exact style source paths (`1e97b29`), asset-read recovery (`e374d05`) and explicit
+  anchor precedence are fixed one per commit. All 69 builder unit and 52 affected
+  integration tests pass, with build, schema/guidance, boundaries, lint and formatting.
+  Canvas/WebGL retain exact 192-frame parity, backward seeks and identical exports;
+  browser watch retains pixels/frames and repairs edits without reloading.
+  Delivery uses one final push. Full gate and unrelated baseline matrices were not
+  rerun; owner review/merge remain pending. Actions remain disabled. No blocker.
   [Evidence](./pr-36-current-head-fix-results.json).
 
 - **PR #36 conflict resolution verified (2026-10-06):** isolated CE10 worktree
@@ -398,18 +400,18 @@ _Last updated 2026-10-06 by Codex for PR #35 conflict resolution; both histories
 ### 2026-10-06 — Repair PR #36 current-head review findings
 
 - **Agent / branch:** Codex on isolated `codex/pr36-current-review-fixes`, from `8be5fc7`.
-- **Done:** post all three findings inline; match exact text-style JSON paths so
-  similarly named styles report their own authoring calls (`1e97b29`). Trace successful
-  image/font reads independently of compilation success, retaining failed-edit recovery.
-- **Results:** the intended source-location regressions fail before the fix;
-  50 builder and 33 asset/program/watch tests, TypeScript build, package boundaries,
-  targeted lint and formatting pass afterward. Four watch/dependency regressions fail
-  before their fix and pass afterward.
-- **Rejected:** dot/quote style IDs are invalid under the existing schema; remove
-  those test assumptions rather than widening the contract.
-- **Open / next:** explicit-anchor precedence remains pending. One finding per commit; one final push; owner review/merge remain.
+- **Done:** post three inline findings; fix exact style call sites (`1e97b29`),
+  successful image/font read recovery (`e374d05`) and explicit-anchor precedence.
+- **Results:** regressions fail before their fixes; 69 builder unit and 52 affected
+  integration tests pass, with build, generated schema/guidance, boundaries and lint.
+  All 192 frames match exactly on Canvas/WebGL, including backward seeks; program/JSON
+  exports are identical. Real watch retention, frame clamps and repairs pass.
+- **Rejected / harness:** invalid style-ID assumptions and mixed generic test types
+  are corrected. Watch verification uses unchanged assertions with an available port.
+- **Open / next:** three finding commits, one final push; review/merge remain owner
+  decisions. Full gate and unrelated baseline matrices not rerun; Actions disabled.
 - **Records:** [fix evidence](./pr-36-current-head-fix-results.json),
-  [PR #36](https://github.com/xxibcill/still-shift/pull/36). Full gate not rerun.
+  [PR #36](https://github.com/xxibcill/still-shift/pull/36).
 
 ### 2026-10-06 — Resolve PR #36 against the refreshed CE4a base
 

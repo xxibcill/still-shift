@@ -103,6 +103,7 @@ export class Layer<K extends Kind = Kind> {
     return this;
   }
   transform(value: CompositionTransform): this {
+    if (value.anchor !== undefined) this.pendingAnchor = undefined;
     Object.assign(this.draft.transform!, structuredClone(value));
     return this;
   }
@@ -112,6 +113,7 @@ export class Layer<K extends Kind = Kind> {
   }
   with(options: Partial<Omit<Native<K>, "id" | "type">>): this {
     if ("size" in options) this.inferImageSize = false;
+    if (options.transform?.anchor !== undefined) this.pendingAnchor = undefined;
     Object.assign(this.draft, structuredClone(options));
     return this;
   }
