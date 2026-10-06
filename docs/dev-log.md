@@ -55,8 +55,11 @@ still hold before relying on them.
   reported; no process remained at 00:57 UTC, and further Git calls use gc.auto=0.
   Ten native scenes and independent ray/affine references, hardware/export/alpha
   acceptance and serial cost code are authored; no new baseline is generated.
-  No owner decision is pending. Next: focused repair and real inspector flow,
-  native acceptance and the complete gate after release. [Evidence](./composition-ce8-results.json).
+  Camera builder defaults/xyz setters, a native camera example, reference source
+  guidance and the real inspector edit/frustum/save flow are now authored.
+  Schema/reference/skill generation remains pending during the quiet window.
+  No owner decision is pending. Next: focused repair, native acceptance and the
+  complete gate after release. [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
   CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
@@ -209,6 +212,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 builder and inspector source checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `a2c302e`.
+- **Repair:** camera constructors retain the scope-based default rather than the
+  2D origin. XYZ static setters and z tracks preserve ordinary 2D tuples.
+- **Authored:** native camera example, guidance source/notes and real inspector
+  checks for POI edits, world frustum corners, undo/redo and source saving.
+- **Verification:** unexecuted during CE6-P quiet window; schema/reference/skill
+  generation remains pending. Lighting availability remains CE8-L.
+- **Next:** focused repair, native acceptance and complete local gate after release.
+- **Records:** [CE8 evidence](./composition-ce8-results.json),
+  [camera example](../examples/composition/10-native-camera.ts).
 
 ### 2026-10-06 — CE8 native acceptance source checkpoint
 

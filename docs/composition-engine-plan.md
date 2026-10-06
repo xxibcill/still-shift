@@ -3664,6 +3664,11 @@ authored, with seek/hash/hardware/export checks, alpha failure cases and serial
 1080p cost measurement. The native camera browser group joins the local gate.
 No check has run and no baseline is generated; acceptance remains pending.
 
+Camera builder constructors preserve scoped optical defaults; xyz static setters
+and z tracks, a native example and real inspector edit/frustum/save checks are
+authored. Authoring reference/guidance source is updated; generated outputs and
+all source/native/full checks remain pending until the quiet window is released.
+
 **Completion record:** _to be filled in._
 
 ---

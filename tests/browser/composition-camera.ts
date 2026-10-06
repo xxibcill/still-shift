@@ -14,6 +14,7 @@ import { cameraPreview } from "./camera-preview.ts";
 import { cameraHardwarePreview,type CameraFixture } from "./camera-hardware.ts";
 import { cameraFailureAcceptance } from "./camera-failures.ts";
 import { cameraSampleCosts } from "./camera-cost.ts";
+import { cameraInspectorAcceptance } from "./camera-inspector.ts";
 
 const root=resolve(import.meta.dirname,"../.."),cache=await mkdtemp(join(tmpdir(),"ce8-camera-vite-")),
   output=await mkdtemp(join(tmpdir(),"ce8-camera-export-")),proof=join(root,"benchmarks/results/composition-ce8-verification"),
@@ -59,10 +60,10 @@ try {
     }
     items[name]={source:digest(JSON.stringify(doc)),hashes};console.log("Native CE8 fixture:",name);
   }
-  const failures=await cameraFailureAcceptance(page,root),hardware=await cameraHardwarePreview(server.resolvedUrls!.local[0]!,fixtures);
+  const failures=await cameraFailureAcceptance(page,root),hardware=await cameraHardwarePreview(server.resolvedUrls!.local[0]!,fixtures),inspector=await cameraInspectorAcceptance(browser);
   if(writing) await writeFile(baselinePath,JSON.stringify({version:"composition-camera-baseline-1",environment,items},null,2)+"\n");
   else {const stored=JSON.parse(await readFile(baselinePath,"utf8"));assert.equal(stored.environment.rasterFingerprint,environment.rasterFingerprint);assert.deepEqual(stored.items,items,"CE8 all-frame hashes");}
   if(process.argv.includes("--profile")) await writeFile(join(proof,"sample-cost.json"),JSON.stringify({environment,timings:await cameraSampleCosts(page)},null,2)+"\n");
-  await writeFile(join(proof,"native-acceptance.json"),JSON.stringify({environment,reports,failures,hardware,baseline:writing ? "created new CE8 baseline" : "exact"},null,2)+"\n");
-  console.log("Native CE8 acceptance:",JSON.stringify({reports,failures,hardware,baseline:writing ? "created CE8" : "exact"}));
+  await writeFile(join(proof,"native-acceptance.json"),JSON.stringify({environment,reports,failures,hardware,inspector,baseline:writing ? "created new CE8 baseline" : "exact"},null,2)+"\n");
+  console.log("Native CE8 acceptance:",JSON.stringify({reports,failures,hardware,inspector,baseline:writing ? "created CE8" : "exact"}));
 } finally {await browser.close();await server.close();await rm(cache,{recursive:true,force:true});await rm(output,{recursive:true,force:true});}

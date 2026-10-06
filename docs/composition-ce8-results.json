@@ -276,7 +276,25 @@
         "reason": "CE6-P quiet window remains active",
         "baselines": "No hashes, PNG baselines, metrics or exports have been generated"
       },
-      "pending": "Focused diagnostics/repair, real inspector flow, native acceptance and complete local gate after release"
+      "pending": "Focused diagnostics/repair, real inspector flow, native acceptance and complete local gate after release",
+      "implementation": "a2c302e"
+    },
+    {
+      "name": "Native camera builder and inspector authoring",
+      "status": "authored-verification-deferred",
+      "sourceReviewRepair": "Camera constructors no longer inject the 2D origin over the scope-based camera default",
+      "features": [
+        "Optional xyz static position/scale setters and z animation property preserve ordinary 2D tuples",
+        "Native camera example and generated-guidance source/reference notes updated",
+        "Real CLI preview inspector acceptance for POI tangents, evaluated frustum world corners, undo/redo and source save",
+        "Existing future-availability test now targets lighting, which follows CE8-L"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "CE6-P quiet window remains active",
+        "generatedDocs": "Schema/reference/skill generation is pending until release; only their source guidance was edited"
+      },
+      "pending": "Focused type/schema/lint/unit and native acceptance repair, then complete gate"
     }
   ],
   "pending": [
