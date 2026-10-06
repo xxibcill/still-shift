@@ -4,7 +4,7 @@ import type { CanvasImageResources } from "./canvas2d.ts";
 import type { DepthImageContent, ImageContent } from "./graph.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 
-export const DEPTH_IMAGE_SHADER_VERSION = "composition-image-plane-0.3.0";
+export const DEPTH_IMAGE_SHADER_VERSION = "composition-image-plane-0.4.0";
 const IMAGE_PLANE_BYTE_LIMIT = 128 * 1024 * 1024;
 
 export function validateImagePlaneSurface(
@@ -59,14 +59,35 @@ void main() {
   // Retain source winding and MSAA sample orientation until the exact row flip.
   gl_Position=vec4(p,0.0,1.0);
 }`;
+// sRGB texels decode to linear before filtering. Filter authored alpha in
+// premultiplied form so transparent texels cannot darken the visible edge.
+const PRESERVED_ALPHA_SAMPLE = `
+vec4 sampleSource(vec2 coordinate) {
+  if (opaqueAlpha>0.5) return texture(source,coordinate);
+  ivec2 dimensions=textureSize(source,0);
+  vec2 position=coordinate*vec2(dimensions)-vec2(0.5);
+  ivec2 low=ivec2(floor(position));
+  vec2 fraction=fract(position);
+  ivec2 maximum=dimensions-ivec2(1);
+  vec4 a=texelFetch(source,clamp(low,ivec2(0),maximum),0);
+  vec4 b=texelFetch(source,clamp(low+ivec2(1,0),ivec2(0),maximum),0);
+  vec4 c=texelFetch(source,clamp(low+ivec2(0,1),ivec2(0),maximum),0);
+  vec4 d=texelFetch(source,clamp(low+ivec2(1,1),ivec2(0),maximum),0);
+  a.rgb*=a.a; b.rgb*=b.a; c.rgb*=c.a; d.rgb*=d.a;
+  vec4 value=mix(mix(a,b,fraction.x),mix(c,d,fraction.x),fraction.y);
+  value.rgb=value.a>0.0 ? value.rgb/value.a : vec3(0.0);
+  return value;
+}`;
+
 const FRAGMENT = `#version 300 es
 precision highp float;
 in vec2 uv;
 uniform sampler2D source;
 uniform float revealMode, revealProgress, opaqueAlpha;
 out vec4 pixel;
+${PRESERVED_ALPHA_SAMPLE}
 void main() {
-  vec4 value=texture(source,uv);
+  vec4 value=sampleSource(uv);
   if (opaqueAlpha>0.5) value.a=1.0;
   if (revealMode>0.5 && revealProgress<1.0) {
     vec3 backdrop=texture(source,vec2(0.01,0.99)).rgb;
@@ -79,7 +100,8 @@ void main() {
   pixel=vec4(encoded*value.a,value.a);
 }`;
 
-// Keep the pinned software shader unchanged. Hardware smooth interpolation uses
+// Keep opaque compatibility sampling and the pinned software mesh unchanged.
+// Hardware smooth interpolation uses
 // different subpixel precision, which is visible when a depth mesh is downscaled.
 // Reconstruct hardware UVs from 1/16-pixel vertices to match the pinned legacy
 // precision, without changing triangle coverage or the export algorithm.
@@ -134,6 +156,7 @@ uniform vec2 rasterSize;
 uniform sampler2D source;
 uniform float revealMode, revealProgress, opaqueAlpha;
 out vec4 pixel;
+${PRESERVED_ALPHA_SAMPLE}
 void main() {
   vec2 center=floor(gl_FragCoord.xy)+vec2(0.5);
   vec2 ab=screenB-screenA, ac=screenC-screenA, relative=center-screenA;
@@ -146,7 +169,7 @@ void main() {
     float c=(ab.x*relative.y-ab.y*relative.x)/determinant;
     uv=uvA+(uvB-uvA)*b+(uvC-uvA)*c;
   }
-  vec4 value=texture(source,uv);
+  vec4 value=sampleSource(uv);
   if (opaqueAlpha>0.5) value.a=1.0;
   if (revealMode>0.5 && revealProgress<1.0) {
     vec3 backdrop=texture(source,vec2(0.01,0.99)).rgb;

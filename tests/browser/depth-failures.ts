@@ -2,6 +2,115 @@ import type { Page } from "playwright";
 import type { Composition } from "@still-shift/scene-contract";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 
+/** Actual hash-checked pixels must conserve red coverage over a green background. */
+export async function depthAlphaEdgeAcceptance(page: Page) {
+  return page.evaluate(async () => {
+    const url = "/packages/renderer-core/src/index.ts",
+      renderer: typeof Render = await import(url);
+    const assets = [];
+    for (const id of ["source", "depth"]) {
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = 2;
+      const context = canvas.getContext("2d")!;
+      context.fillStyle = id === "source" ? "#ff0000" : "#808080";
+      context.fillRect(0, 0, id === "source" ? 1 : 2, 2);
+      const path = canvas.toDataURL("image/png"),
+        bytes = await (await fetch(path)).arrayBuffer(),
+        sha256 =
+          "sha256:" +
+          Array.from(
+            new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+            (value) => value.toString(16).padStart(2, "0"),
+          ).join("");
+      assets.push({
+        id,
+        type: "image" as const,
+        path,
+        sha256,
+        width: 2,
+        height: 2,
+      });
+    }
+    const doc: Composition = {
+      schemaVersion: "composition-1",
+      id: "depth-preserved-alpha-edge",
+      width: 16,
+      height: 16,
+      fps: 30,
+      frameCount: 1,
+      background: "#00ff00",
+      assets,
+      layers: [
+        {
+          id: "photo",
+          type: "depth-image",
+          size: [16, 16],
+          sourceAsset: "source",
+          depth: { asset: "depth", encoding: "r8-unorm", width: 2, height: 2 },
+          alphaMode: "preserve",
+          overscan: 0,
+          motion: { scale: 1, strength: 0, offset: [0, 0], roll: 0 },
+          transform: { anchor: [0, 0], position: [0, 0] },
+        },
+      ],
+    };
+    const assetUrls = Object.fromEntries(
+        assets.map((asset) => [asset.id, asset.path]),
+      ),
+      resources = await renderer.loadCompositionResources(
+        doc,
+        (id) => assetUrls[id]!,
+      ),
+      preview = renderer.createCompositionPreview(
+        document.createElement("canvas"),
+        doc,
+        resources,
+        { backend: "webgl2" },
+      );
+    try {
+      preview.renderFrame(0);
+      const pixels = preview.readPixels();
+      let intermediatePixels = 0,
+        maxConservationError = 0;
+      for (let offset = 0; offset < pixels.length; offset += 4) {
+        const [red, green, blue, alpha] = pixels.subarray(offset, offset + 4),
+          error = Math.abs(red! + green! - 255);
+        maxConservationError = Math.max(maxConservationError, error);
+        if (error > 1 || blue !== 0 || alpha !== 255)
+          throw Error(
+            `Preserved alpha darkened red coverage at ${offset / 4}: ${pixels.subarray(offset, offset + 4)}`,
+          );
+        if (red! > 0 && red! < 255) intermediatePixels++;
+      }
+      if (!intermediatePixels || pixels[0] !== 255 || pixels[60] !== 0)
+        throw Error(
+          "Alpha edge fixture must include red, green and filtered intermediate coverage",
+        );
+      preview.renderFrame(0);
+      if (preview.readPixels().some((value, index) => value !== pixels[index]))
+        throw Error("Repeated alpha edge rendering changed pixels");
+      return {
+        fixture: {
+          name: doc.id,
+          doc,
+          assetUrls,
+          backends: ["webgl2" as const],
+          frames: [0],
+        },
+        report: {
+          intermediatePixels,
+          maxConservationError,
+          row: Array.from({ length: 16 }, (_, x) =>
+            Array.from(pixels.subarray((7 * 16 + x) * 4, (7 * 16 + x + 1) * 4)),
+          ),
+        },
+      };
+    } finally {
+      preview.dispose();
+    }
+  });
+}
+
 /** Decode and provenance failures occur during resource loading, before painting. */
 export async function depthFailureAcceptance(
   page: Page,

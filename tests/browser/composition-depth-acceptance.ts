@@ -39,6 +39,7 @@ import {
 } from "./depth-failures.ts";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 import { depthRenderCosts } from "./depth-cost.ts";
+import { depthAlphaProfileAcceptance } from "./depth-alpha.ts";
 
 const root = resolve(import.meta.dirname, "../.."),
   directory = await mkdtemp(join(tmpdir(), "ce4d-depth-acceptance-")),
@@ -332,6 +333,10 @@ try {
       [4, 4],
     ],
     status: "opaque red coverage preserved",
+  });
+  reports.push({
+    id: "depth-preserved-alpha-edge",
+    checks: await depthAlphaProfileAcceptance(server.resolvedUrls!.local[0]!),
   });
   const inspector = await depthInspectorAcceptance(
       browser,

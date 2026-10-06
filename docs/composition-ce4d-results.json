@@ -11252,6 +11252,26 @@
         ]
       },
       "limits": "No verification job remains active. Authored preserved-alpha edge defect is confirmed separately and not covered/repaired by this delivery gate. Final milestone/default/full pnpm check acceptance remains pending."
+    },
+    {
+      "name": "authored preserved-alpha linear filtering repair",
+      "date": "2026-10-07",
+      "status": "implemented; browser acceptance pending",
+      "rendererVersion": "composition-webgl2-0.63.0",
+      "shaderVersion": "composition-image-plane-0.4.0",
+      "scope": [
+        "Premultiply linear texels before bilinear filtering for preserve only; opaque compatibility texture sampling unchanged",
+        "Hash-checked 2x2 red/transparent source over green on valid 16x16 canvas asserts conservation, intermediate coverage and repeated pixels on pinned and actual hardware profiles",
+        "Alpha edge assertion is part of complete native depth delivery acceptance"
+      ],
+      "checks": {
+        "build": "pass",
+        "scopedEslint": "pass"
+      },
+      "pending": [
+        "focused alpha edge browser proof",
+        "native/opaque frozen parity and affected delivery proof"
+      ]
     }
   ],
   "pending": [

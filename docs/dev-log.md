@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE4d alpha repair checkpoint (2026-10-07):** preserved-alpha linear filtering
+  is implemented with edge conservation assertions for both GPU profiles; browser
+  verification is pending. WebGL2 is 0.63.0 / image-plane shader 0.4.0. This
+  supersedes the earlier unrepaired-alpha note. Opaque compatibility sampling and
+  frozen references are unchanged. Build and scoped ESLint pass. Legacy delivery,
+  default consolidation and the final full gate remain pending.
+  [Evidence](./composition-ce4d-results.json).
+
 - **CE4d in progress (2026-10-07):** `codex/composition-ce4d` from CE4c
   `17666eb`; formatted code checkpoint `f01a35b` is pushed. Legacy/depth adapters, native
   depth schema/evaluation/shared GPU pass, mixed graph/inspector support, family
@@ -281,6 +289,18 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d preserved-alpha filtering checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` from `d72bab0`.
+- **Scope:** repair the confirmed authored depth-image alpha fringe from the fresh-chat handoff.
+- **Done:** both GPU fragments filter preserved-alpha linear texels in premultiplied form;
+  opaque compatibility sampling remains unchanged. Version identities are advanced.
+- **Results:** build and scoped ESLint pass; new actual-pixel assertions cover conservation,
+  intermediate coverage and repeat rendering. Browser proof is pending on the immutable checkpoint.
+- **Open / next:** focused alpha proof, affected native delivery and legacy delivery, default migration,
+  actual-route acceptance, final local gate and CE4d PR; then CE13 → CE15 → CE14.
+- **Records:** [results](./composition-ce4d-results.json), [handoff](./composition-continuation-handoff-2026-10-07.md).
 
 ### 2026-10-07 — Composition work handed to a fresh chat
 
