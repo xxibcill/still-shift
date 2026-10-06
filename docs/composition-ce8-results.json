@@ -195,7 +195,30 @@
         "Camera constraint-reference dimensionality agrees with sampling and property paths",
         "Exclude camera/light/null/adjustment/audio layers from image-input and coverage semantics"
       ],
-      "pending": "Projective quality/inspector geometry, focused verification after release, native pixels/seeks/hardware/MP4/cost and full gate"
+      "pending": "Projective quality/inspector geometry, focused verification after release, native pixels/seeks/hardware/MP4/cost and full gate",
+      "implementation": "93b92b2"
+    },
+    {
+      "name": "Actual projective inspection, quality sampling and focus overscan",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Inspector anchors/flattened paths/spatial tangents/nested flat-precomp geometry use actual homographies",
+        "Camera inset uses evaluated world-space near/focus frustum corners and camera position",
+        "Quality bounds, tangent scale, velocity and visible signatures follow true projected geometry",
+        "Native required coverage uses owning scope dimensions and evaluates actual shutter samples",
+        "Bounded screen-space focus overscan preserves offscreen artwork before lens blur and crop/matte"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "cases": "Authored actual world frustum/vertical inset/outer projection, homographic tangents/horizons/z signatures, native key tracks and padded focus allocation"
+      },
+      "sourceReviewRepairs": [
+        "Do not transform cubic controls affinely for perspective paths",
+        "Keep scope-local required coverage semantics for nested precomps",
+        "Preflight padded focus dimensions and preserve source depth while shifting screen placement"
+      ],
+      "pending": "Focused checks after CE6-P release; independent native pixel/seek/hash/hardware/MP4/1080p acceptance and the full local gate"
     }
   ],
   "pending": [

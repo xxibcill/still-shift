@@ -1,6 +1,6 @@
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
-import type { ProjectivePlacement } from "./projective-placement.ts";
+import { offsetPlacement,type ProjectivePlacement } from "./projective-placement.ts";
 import type { RenderEffect } from "./graph.ts";
 import type {
   CompositionBlendMode,
@@ -290,15 +290,20 @@ export function executeGraph<S extends Surface>(
         return;
       }
       case "project": {
-        const local=surface(op.surface);
+        const local=surface(op.surface),padding=op.focusPadding??0;
         try {
-          const projected=backend.createSurface(dst.width,dst.height);
+          const projected=backend.createSurface(dst.width+padding*2,dst.height+padding*2);
           try {
-          if(backend.project) backend.project(local,projected,op.placement);
-          else backend.composite(local,projected,"normal",1,op.placement.affineMatrix!,[]);
-          if(op.effects.length) effectStack(projected,op.effects);
-          mask(projected,[],op.matte);
-          backend.composite(projected,dst,op.blend,op.opacity,IDENTITY,op.clips);
+            const placement=padding ? offsetPlacement(op.placement,padding,padding) : op.placement;
+            if(backend.project) backend.project(local,projected,placement);
+            else backend.composite(local,projected,"normal",1,placement.affineMatrix!,[]);
+            if(op.effects.length) effectStack(projected,op.effects);
+            const cropped=padding ? backend.createSurface(dst.width,dst.height) : projected;
+            try {
+              if(padding) backend.composite(projected,cropped,"normal",1,[1,0,0,1,-padding,-padding],[]);
+              mask(cropped,[],op.matte);
+              backend.composite(cropped,dst,op.blend,op.opacity,IDENTITY,op.clips);
+            } finally {if(padding) backend.releaseSurface(cropped);}
           } finally {backend.releaseSurface(projected);}
         } finally {backend.releaseSurface(local);}
         return;

@@ -21,8 +21,16 @@ it("accepts affine camera projection on Canvas and validates device allocations 
   expect(()=>requireSpatialCapabilities({...root,ops:[affine]},{projective:false})).not.toThrow();
   const validateSurface=vi.fn();requireSpatialCapabilities(root,{projective:true,validateSurface});
   expect(validateSurface).toHaveBeenCalledWith(10,10,"plane");
+  expect(validateSurface).toHaveBeenCalledWith(100,100,"plane");
 });
 it("rejects projection coefficients outside finite GPU precision",()=>{
   const huge={...project,placement:{...project.placement,inverse:[1e100,0,0,0,1,0,0,0,1] as [number,number,number,number,number,number,number,number,number]}};
   expect(()=>requireSpatialCapabilities({...root,ops:[huge]},{projective:true})).toThrow("precision");
+});
+
+it("checks padded focus surfaces before any backend allocation",()=>{
+  const validateSurface=vi.fn();
+  requireSpatialCapabilities({...root,ops:[{...project,focusPadding:27}]},{projective:true,validateSurface});
+  expect(validateSurface).toHaveBeenCalledWith(154,154,"plane");
+  expect(()=>requireSpatialCapabilities({...root,width:8192,ops:[{...project,focusPadding:27}]},{projective:true})).toThrow("surface exceeds");
 });

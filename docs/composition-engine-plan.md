@@ -3644,6 +3644,11 @@ limits, z-aware path orientation, isolated all-frame required-layer alpha checks
 and xyz/POI/optical track editing are authored but unverified. Canvas source
 version 1.40.0 and export worker 0.6.2 identify the new spatial behavior.
 
+Actual projective inspection and quality geometry, real world-space camera
+frustum insets and bounded focus overscan are authored. Required-layer alpha
+checks now include actual shutter samples. Analytic/track/footprint cases remain
+unexecuted during CE6-P's quiet window; native acceptance and full verification follow.
+
 **Completion record:** _to be filled in._
 
 ---

@@ -27,3 +27,12 @@ export function localSurfaceBounds(bounds:Bounds,node:string) {
     passageError("comp-3d-surface-budget","A local 3D artwork surface exceeds 8192 pixels per axis or 128 MiB",{node});
   return {origin:[left,top] as [number,number],width,height};
 }
+
+/** Screen-space overscan keeps out-of-viewport artwork available to focus kernels. */
+export function offsetPlacement(placement:ProjectivePlacement,x:number,y:number):ProjectivePlacement {
+  const homography=multiplyHomographies([1,0,x,0,1,y,0,0,1],placement.homography);
+  const inverse=multiplyHomographies(placement.inverse,[1,0,-x,0,1,-y,0,0,1]);
+  const affineMatrix=placement.affineMatrix ? [...placement.affineMatrix] as Matrix : null;
+  if(affineMatrix) {affineMatrix[4]+=x;affineMatrix[5]+=y;}
+  return {...placement,homography,inverse,affineMatrix,bounds:placement.bounds ? {left:placement.bounds.left+x,top:placement.bounds.top+y,right:placement.bounds.right+x,bottom:placement.bounds.bottom+y} : null};
+}

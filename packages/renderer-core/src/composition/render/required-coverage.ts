@@ -1,6 +1,6 @@
 import type { Composition,CompositionScope } from "@still-shift/scene-contract";
 import { passageError,type PassageDiagnostic } from "../../passage-diagnostics.ts";
-import { evaluateComp } from "../evaluate/evaluate.ts";
+import { evaluateCompositionExposure } from "../evaluate/exposure.ts";
 import type { EvaluatedLayerTree,EvaluationOptions } from "../evaluate/types.ts";
 import { buildLayerRenderGraph } from "./graph.ts";
 import { executeGraph,type RenderBackend,type Surface } from "./backend.ts";
@@ -35,7 +35,7 @@ export function validateRequiredCompositionCoverage<S extends Surface>(comp:Comp
       if(state.precomp&&state.visible&&state.opacity>0) visit(state.precomp,definitions.get(state.precomp.id)!,node+"/",frame);
     }
   };
-  try {for(let frame=0;frame<comp.frameCount;frame++) visit(evaluateComp(comp,frame,options),comp,"",frame);}
+  try {for(let frame=0;frame<comp.frameCount;frame++) {for(const tree of evaluateCompositionExposure(comp,frame,options)) visit(tree,comp,"",frame);}}
   finally {backend.endFrame?.(false);}
   return diagnostics;
 }

@@ -195,6 +195,7 @@ export type ProjectOp = {
   layer: string;
   surface: SurfaceNode;
   placement: ProjectivePlacement;
+  focusPadding?: number;
   effects: RenderEffect[];
   matte: MatteOp | null;
   opacity: number;
@@ -925,7 +926,7 @@ class GraphBuilder {
     const localOps:RenderOp[]=effects.length||masks.length ? [{kind:"isolate",layer:key,ops:[draw],effects,masks,matte:null,opacity:1,blend:"normal",clips:[]}] : [draw];
     const focus:RenderEffect[]=state.focusBlur ? [{id:"camera-focus",effect:"blur.lens",version:compositionEffectDefinition("blur.lens")!.version,enabled:true,params:{radius:state.focusBlur,samples:32}}] : [];
     this.spatial=true;
-    return [{kind:"project",layer:key,surface:{id:key+":local",width:raster.width,height:raster.height,background:null,...(this.comp.colorSpace ? {colorSpace:this.comp.colorSpace} : {}),ops:localOps},placement,effects:focus,matte:options.raw ? null : this.matte(scope,state,frame,seen),opacity,blend,clips:this.groupClips(scope,state,frame)}];
+    return [{kind:"project",layer:key,surface:{id:key+":local",width:raster.width,height:raster.height,background:null,...(this.comp.colorSpace ? {colorSpace:this.comp.colorSpace} : {}),ops:localOps},placement,...(state.focusBlur ? {focusPadding:Math.ceil(state.focusBlur)+2} : {}),effects:focus,matte:options.raw ? null : this.matte(scope,state,frame,seen),opacity,blend,clips:this.groupClips(scope,state,frame)}];
   }
 
   layerOps(

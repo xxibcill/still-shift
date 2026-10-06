@@ -58,7 +58,8 @@ still hold before relying on them.
   is enabled in authored source with writer/cycle/2D-constraint checks; actual
   all-frame required-layer alpha and spatial track editing are authored. These
   changes remain unverified. No owner decision is pending. Next: real projective
-  inspector/quality geometry, focused checks after release and native acceptance.
+  inspector/quality geometry and bounded focus overscan are now authored.
+  Next: focused checks after release, independent native acceptance and full gate.
   [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
@@ -212,6 +213,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 projected inspection and focus overscan checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after native activation `93b92b2`.
+- **Authored:** actual homographic anchors/paths/tangents and nested inspection;
+  camera inset from evaluated world-space near/focus corners; projected quality
+  bounds, scale, velocity and signatures, with owning-scope coverage semantics.
+- **Review repair:** focus uses bounded screen overscan before lens blur and crop,
+  preserving offscreen artwork; required coverage checks actual shutter samples.
+- **Verification:** analytic/track/allocation cases are authored but unexecuted.
+  The CE6-P quiet window still holds builds, formatters, tests, matrices and exports.
+- **Next:** focused checks after release, then independent native acceptance/full gate.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 native activation and coverage checkpoint
 

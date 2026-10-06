@@ -213,3 +213,13 @@ it("does not interpret provider parameters as native key properties", () => {
   );
   expect(history.document.layers[1]).toEqual(document.layers[1]);
 });
+
+it("discovers and samples native xyz/POI/optical tracks without truncating z",()=>{
+  const doc:Composition={schemaVersion:"composition-1",id:"main",width:100,height:100,fps:24,frameCount:24,assets:[],layers:[{id:"camera",type:"camera",model:"two-node",pointOfInterest:{keys:[{frame:0,value:[50,50,0]},{frame:20,value:[50,50,100],interpolation:"linear"}]},zoom:{keys:[{frame:0,value:100},{frame:20,value:200,interpolation:"linear"}]},transform:{position:{z:{keys:[{frame:0,value:-100},{frame:20,value:-200,interpolation:"linear"}]}},orientation:{keys:[{frame:0,value:[0,0,0]},{frame:20,value:[10,20,30],interpolation:"linear"}]}}}]};
+  const tracks=compositionTracks(doc);
+  expect(tracks.map(track=>track.property)).toEqual(["transform.position.z","transform.orientation","pointOfInterest","zoom"]);
+  expect(sampleTrack(tracks.find(track=>track.property==="pointOfInterest")!,10)).toEqual([50,50,50]);
+  const orientation=tracks.find(track=>track.property==="transform.orientation")!;
+  expect(sampleTrack(orientation,10)).toEqual([5,10,15]);
+  expect(()=>editSpatialTangent(doc,orientation,0,"spatialOut",[1,2])).toThrow("3 tangent components");
+});

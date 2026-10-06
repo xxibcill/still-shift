@@ -1,5 +1,5 @@
 import { expect,it } from "vitest";
-import { localSurfaceBounds,planePlacement } from "../../packages/renderer-core/src/composition/render/projective-placement.ts";
+import { localSurfaceBounds,planePlacement,offsetPlacement } from "../../packages/renderer-core/src/composition/render/projective-placement.ts";
 import { cameraGeometry,layerMatrix3d,projectPlane,type SpatialTransform } from "../../packages/renderer-core/src/composition/evaluate/spatial-geometry.ts";
 const transform:SpatialTransform={anchor:[0,0,0],position:[0,0,0],scale:[1,1,1],orientation:[0,0,0],rotation:0,rotationX:0,rotationY:0,skewX:0,skewY:0};
 const camera=cameraGeometry({width:100,height:100,zoom:100,world:layerMatrix3d({...transform,position:[50,50,-100]})});
@@ -28,4 +28,14 @@ it("returns no placement for clipped or zero-area geometry",()=>{
 it("bounds allocations independently of zoom and rejects oversized artwork",()=>{
   expect(localSurfaceBounds({left:0,top:0,right:8192,bottom:1},"wide").width).toBe(8192);
   for(const bounds of [{left:0,top:0,right:8193,bottom:1},{left:0,top:0,right:8192,bottom:8192},{left:NaN,top:0,right:1,bottom:1}]) expect(()=>localSurfaceBounds(bounds,"wide")).toThrow("surface exceeds");
+});
+
+it("preserves source depth while adding screen overscan for focus blur",()=>{
+  const plane=projectPlane(layerMatrix3d({...transform,position:[40,40,0],rotationY:30}),camera,{left:0,top:0,right:10,bottom:10});
+  const placement=planePlacement(plane,[1,0,0,1,0,0],[0,0])!,shifted=offsetPlacement(placement,27,27);
+  expect(shifted.depth).toEqual(placement.depth);
+  const h=shifted.homography,w=h[8];
+  expect(h[2]/w).toBe(67);expect(h[5]/w).toBe(67);
+  const inverse=shifted.inverse,d=inverse[6]*67+inverse[7]*67+inverse[8];
+  expect((inverse[0]*67+inverse[1]*67+inverse[2])/d).toBeCloseTo(0,10);
 });

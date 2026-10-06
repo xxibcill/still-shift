@@ -11,6 +11,8 @@ import type {
   EvaluatedLayerTree,
   EvaluationOptions,
 } from "./evaluate/types.ts";
+import { affineHomography,inverseHomography,multiplyHomographies,type Homography } from "./evaluate/spatial-geometry.ts";
+import { homographicBounds,homographicScale,homographicVelocityPoints,normalizedHomography } from "./projective-quality.ts";
 import { typographyClock } from "./render/text-clock.ts";
 
 export type CompositionQualitySample = {
@@ -28,6 +30,9 @@ export type CompositionQualitySample = {
   signature: string;
   textClock?: number;
   scale: [number, number];
+  homography?: Homography;
+  velocityPoints?: number[];
+  ownerViewport?: {width:number;height:number};
 };
 export type CompositionQualityFrame = {
   signature: string;
@@ -98,20 +103,22 @@ export function compositionQualityFrame(
     parentOpacity: number,
     clip: Bounds,
     sourcePath: string,
+    baseHomography?: Homography,
   ) => {
     const byId = new Map(scope.layers.map((s) => [s.id, s]));
     scope.layers.forEach((state, index) => {
       const id = route + state.id,
         layer = state.layer;
       const matrix = multiplyMatrix(base, state.screenMatrix);
-      const bounds = state.bounds ? projectBounds(state.bounds, base) : null;
+      const homography=state.projection||baseHomography ? multiplyHomographies(baseHomography??affineHomography(base),state.projection?.homography??affineHomography(state.screenMatrix)) : undefined;
+      const bounds=state.bounds ? baseHomography ? homographicBounds(state.bounds,baseHomography,viewport) : projectBounds(state.bounds,base) : null;
       let clipping = clip;
       let parent = layer.parent ? byId.get(layer.parent) : undefined;
       while (parent) {
         if (parent.layer.type === "group" && parent.layer.clip && parent.bounds)
           clipping = intersectBounds(
             clipping,
-            projectBounds(parent.bounds, base),
+            baseHomography ? homographicBounds(parent.bounds,baseHomography,viewport) : projectBounds(parent.bounds, base),
           );
         parent = parent.layer.parent
           ? byId.get(parent.layer.parent)
@@ -123,7 +130,7 @@ export function compositionQualityFrame(
       const visible =
         state.drawable &&
         opacity > 1e-8 &&
-        Math.abs(determinant) > 1e-12 &&
+        (homography ? !!inverseHomography(homography)&&(!state.projection||!!state.projection.bounds) : Math.abs(determinant) > 1e-12) &&
         (state.reveal ?? 1) > 0;
       const onScreen = visible && (!clippedBounds || hasArea(clippedBounds));
       const text =
@@ -160,10 +167,9 @@ export function compositionQualityFrame(
         opacity,
         visible,
         onScreen,
-        scale: [
-          Math.hypot(matrix[0], matrix[1]),
-          Math.hypot(matrix[2], matrix[3]),
-        ],
+        scale: homography ? homographicScale(homography,[state.transform.anchor[0],state.transform.anchor[1]]) : [Math.hypot(matrix[0],matrix[1]),Math.hypot(matrix[2],matrix[3])],
+        ...(homography ? {homography,velocityPoints:homographicVelocityPoints(homography,[state.transform.anchor[0],state.transform.anchor[1]])} : {}),
+        ...(state.layer.coverage==="required" ? {ownerViewport:{width:scope.width,height:scope.height}} : {}),
         ...(text?.text ? { text: text.text } : {}),
         ...(text?.role ? { role: text.role } : {}),
         ...(clock === undefined ? {} : { textClock: clock }),
@@ -181,6 +187,7 @@ export function compositionQualityFrame(
           state.effects,
           content,
           clock,
+          ...(homography ? [normalizedHomography(homography),state.focusBlur??0] : []),
         ]),
       };
       layers.set(id, sample);
@@ -196,6 +203,7 @@ export function compositionQualityFrame(
           opacity,
           clippedBounds ?? clipping,
           `precomps.${childIndex}`,
+          homography,
         );
       }
     });
