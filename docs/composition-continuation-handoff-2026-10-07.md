@@ -32,36 +32,27 @@ authorized by the user or applicable instructions.
   only so far; attach when actually continuing/auditing/integrating it. Do not
   create a duplicate CE16 PR or merge it unasked.
 
-## First action: safely receive the running verification
+## Verification handoff: completed, no running jobs
 
-**Do not launch new verification until this inherited job has settled.** The old
-chat will stop implementation after dispatching this new chat; no new gate is
-being started during wrap-up.
+The inherited job finished during wrap-up with **exit0**. **No verification job
+remains active**, so the fresh chat may resume focused work normally. Historical
+PTY65922/PID79519 is closed; do not poll/kill it or assume the PID remains ours.
 
-- Old PTY session **65922**, Node PID **79519** (PPID88610 at handoff).
-- Immutable source snapshot **`/private/tmp/still-shift-ce8-check-1ec5d04`**.
-- Command: pinned Node `node --import tsx tests/browser/composition-depth-acceptance.ts`.
-- Live log **`/private/tmp/ce4d-depth-delivery-1ec5d04.log`**.
-- Proof directory:
-  `/private/tmp/still-shift-ce8-check-1ec5d04/benchmarks/results/composition-ce4d-depth-verification`.
-- Final success writes **`native-acceptance.json`** with reports, costs, inspector
-  and hardware data. Existing **`serial-costs.json`** is phase-only and explicitly
-  not full acceptance. Absence of the final report is not a pass.
-- At handoff all23 serial cost brackets were saved; correctness/export phase had
-  passed the fourteen landscape/vertical timelines and was processing fallbacks.
-  Consult the live log rather than assuming this partial progress is current.
-- If old PTY IDs are inaccessible in a fresh chat, inspect this exact PID/cwd with
-  read-only process tools and inspect the log/report. Avoid PID-reuse assumptions.
-  Success requires complete final proof; a stopped process with no final report
-  and an error log is a failure. Do not kill unrelated browser/export processes.
-- The job covers all23 base/extended timelines, six mixed graphs, 29 independent
-  encodes/87 production-repeat-raw exports, seeks/CLI relocation, resource/alpha
-  corner checks, actual inspector history/save/reload and **90 hardware comparisons**
-  (original87 plus three tiny-raster cases). The alpha-edge probe below is not yet
-  part of it. Preserve this job's exact source identity in any evidence record.
+- Verified immutable source: `/private/tmp/still-shift-ce8-check-1ec5d04`.
+- Log: `/private/tmp/ce4d-depth-delivery-1ec5d04.log`.
+- Final report:
+  `/private/tmp/still-shift-ce8-check-1ec5d04/benchmarks/results/composition-ce4d-depth-verification/native-acceptance.json`.
+- **Pass:** all23 base/extended and six mixed timelines, 29 independent encodes and
+  87 production-repeat-raw exports with byte identity, seeks/CLI relocation,
+  resource rejection/alpha corner checks, actual inspector edit/rejection/history/
+  save/reload, all23 saved serial cost brackets and **90 hardware comparisons**.
+  Minimum hardware PSNR54.952243/SSIM0.999609946. Full report is embedded in
+  `docs/composition-ce4d-results.json`.
+- **Limit:** the separately confirmed alpha-edge defect below is not repaired or
+  covered by this gate. Defaults and final milestone/full-check acceptance remain
+  pending; new code needs relevant re-verification.
 - CE6-P's second quiet timing hold was explicitly **released**. No further owner
-  timing job was scheduled at release. Do not follow stale hold instructions in
-  older `/private/tmp` notes.
+  timing job was scheduled at release. Older hold lines are stale.
 
 ## CE4d implemented and focused-verified
 
@@ -148,12 +139,12 @@ as a hardware repair, so adopt only the proven alpha-specific behavior. Do not
 claim this is already implemented or verified. Add a real edge-conservation acceptance
 assertion (pure red over green R+G=255 ±1, B0,A255 and intermediate coverage) alongside
 corner checks; verify both GPU profiles. Bump shader/renderer versions and reverify
-all affected software/native/hardware/export evidence. The running1ec5d04 report
+all affected software/native/hardware/export evidence. The completed1ec5d04 report
 will not cover new code or this alpha edge.
 
 ## Remaining CE4d completion work
 
-1. Receive and record running1ec5d04 final result truthfully; preserve earlier failures.
+1. Read the saved completed1ec5d04 delivery proof; preserve earlier failures.
 2. Fix/test authored preserved-alpha edge; checkpoint/push own code and update log.
 3. Full legacy adapter **`tests/browser/composition-legacy-adapter.ts`** without
    subset/smoke: all7 cases ×Canvas/WebGL pixels/seeks, independent/repeat/raw exports,
