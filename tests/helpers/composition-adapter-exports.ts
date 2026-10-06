@@ -17,6 +17,7 @@ export async function assertAdapterExport(
   sourceDirectory: string,
   id: string,
   backend: CompositionBackend = "canvas2d",
+  previewChecksum?: string,
 ) {
   const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-export-"));
   try {
@@ -66,11 +67,43 @@ export async function assertAdapterExport(
     });
     assert.equal(first.frameCount, frameCount);
     assert.equal(first.checksums.output, second.checksums.output);
+    if (previewChecksum) {
+      assert.equal(
+        first.checksums.output.replace(/^sha256:/, ""),
+        previewChecksum,
+        `${id}/${backend} independent preview MP4`,
+      );
+      const raw = await renderComposition({
+        compositionPath,
+        backend,
+        outputPath: join(directory, "raw.mp4"),
+        transport: "raw_rgba",
+      });
+      assert.equal(
+        first.checksums.output,
+        raw.checksums.output,
+        `${id}/${backend} raw/PNG transport`,
+      );
+    }
     assert.deepEqual(first.systemFontLayers, []);
     assert.equal(await runCli(args, { stdout: () => {}, stderr: () => {} }), 1);
     console.log(
       `Adapter ${backend} ${id} export: ${frameCount} frames, two byte-identical MP4s; relocated assets and overwrite protection pass`,
     );
+    return {
+      id,
+      backend,
+      frames: frameCount,
+      repeatedMp4: "byte-identical",
+      ...(previewChecksum
+        ? {
+            independentPreviewMp4: "byte-identical",
+            rawPngTransport: "byte-identical",
+          }
+        : {}),
+      relocatedAssets: "pass",
+      overwriteProtection: "pass",
+    };
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

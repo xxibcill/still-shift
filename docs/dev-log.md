@@ -45,11 +45,12 @@ still hold before relying on them.
 
 - **CE4c in progress (2026-10-06):** `codex/composition-ce4c` from CE8-L
   `e1bd4bc` / [PR #44](https://github.com/xxibcill/still-shift/pull/44).
-  Native framing checkpoint `c5a3816` is pushed. Cinematic 3D plane/camera adaptation,
-  Gaussian capped focus, native safety validation and CLI JSON export are authored.
-  All 15 fixtures / 2,160 frames pass state parity; 132 focused unit tests, seven
-  CLI integrations and build pass. Browser pixels/timing, exports, hardware and
-  full local gate remain pending. No owner decision is pending.
+  Framing `c5a3816` and adapter `48c9a70` are pushed. All 15 fixtures / 2,160
+  frames pass native state parity. The first rendered smoke exposed double
+  resampling (delta88); direct affine source drawing repairs it. Sampled fixture
+  pixels/seeks and final focus cleanup pass; 58 focused tests, build/lint pass.
+  Full pixels/timing, independent/repeated/raw exports, hardware and the complete
+  local gate remain pending. No owner decision is pending.
   [Evidence](./composition-ce4c-results.json).
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
@@ -232,6 +233,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c affine raster and acceptance checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, adapter `48c9a70`.
+- **Done:** direct affine natural-size images with preserved spatial preflight,
+  matte/focus semantics and bounded Gaussian overscan; full native acceptance harness.
+- **Results:** 58 focused tests, build/lint pass. Initial all-fixture sampled smoke
+  is exact (150 frames); final focus cleanup stays near (10 frames, delta1).
+  The first double-resampling pixel failure (delta88) remains recorded.
+- **Open / next:** full forward/reverse pixels, unchanged Canvas timing, streamed
+  independent/repeated/raw exports, hardware and complete local gate; no PR yet.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c camera/plane adapter checkpoint
 

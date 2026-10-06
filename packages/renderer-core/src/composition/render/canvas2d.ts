@@ -731,9 +731,11 @@ export function createCanvas2dBackend(
     const crop = variant.crop ?? [0, 0, size[0], size[1]];
     const p = imagePlacement(content, crop, variant.registration?.anchor);
     ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, 0, content.width, content.height);
-    ctx.clip();
+    if (content.clip !== false) {
+      ctx.beginPath();
+      ctx.rect(0, 0, content.width, content.height);
+      ctx.clip();
+    }
     ctx.drawImage(
       source(variant.asset, content.rasterize),
       p.sx,

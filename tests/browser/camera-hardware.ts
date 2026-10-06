@@ -16,6 +16,7 @@ export type CameraFixture = {
   doc: Composition;
   assetUrls: Record<string, string>;
   backends: readonly ("canvas2d" | "webgl2")[];
+  frames?: readonly number[];
 };
 export async function cameraHardwarePreview(
   url: string,
@@ -46,7 +47,7 @@ export async function cameraHardwarePreview(
     const reports = [];
     for (const fixture of fixtures)
       for (const backend of fixture.backends)
-        for (const frame of [0, 16, 31]) {
+        for (const frame of fixture.frames ?? [0, 16, 31]) {
           const bytes = [];
           for (const { page } of sessions) {
             const result = await cameraPreview(

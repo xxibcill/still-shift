@@ -81,6 +81,7 @@ export type ImageContent = {
   height: number;
   fit: "contain" | "cover" | "stretch";
   rasterize: "draw" | "natural-size";
+  clip?: boolean;
   sources: ImageLayer["sources"];
   state: number;
   stateFrom?: number;
@@ -132,6 +133,8 @@ export type DrawOp = {
   blend: CompositionBlendMode;
   clips: ClipRect[];
   paintBlur?: number;
+  /** Retain finite/backend preflight when an affine plane draws without an intermediate surface. */
+  projection?: ProjectivePlacement;
 };
 /** Render `ops` into a scope-sized surface, apply masks and matte, then composite. */
 export type IsolateOp = {
@@ -1055,6 +1058,62 @@ class GraphBuilder {
       );
     const content = this.content(scope, state, frame);
     if (!content) return [];
+    const camera = this.exposureScope(scope, state).tree.camera;
+    const focus = state.focusBlur ?? 0;
+    if (
+      content.type === "image" &&
+      content.rasterize === "natural-size" &&
+      plane.affineMatrix &&
+      (options.raw ||
+        (!state.masks.length &&
+          !state.effects.some(
+            (effect) => effect.enabled && effect.effect !== "blur.primitive",
+          ))) &&
+      !(
+        layer.receivesLight &&
+        this.exposureScope(scope, state).tree.lights?.length
+      ) &&
+      (!focus ||
+        (camera?.blurModel === "gaussian" &&
+          content.fit === "stretch" &&
+          !content.sources.some((source) => source.registration))) &&
+      (!focus || !paintBlur)
+    ) {
+      const placement = planePlacement(plane, frame.matrix, [0, 0]);
+      if (!placement?.affineMatrix) return [];
+      const clips = this.groupClips(scope, state, frame);
+      const matte = options.raw
+        ? null
+        : this.matte(scope, state, frame, options.seen ?? new Set([layer.id]));
+      const draw: DrawOp = {
+        kind: "draw",
+        layer: key,
+        content: focus ? { ...content, clip: false } : content,
+        projection: placement,
+        matrix: placement.affineMatrix,
+        transforms: [...frame.transforms, plane.affineMatrix],
+        opacity: matte ? 1 : opacity,
+        blend: matte ? "normal" : blend,
+        clips: matte ? [] : clips,
+        ...(focus || paintBlur ? { paintBlur: focus || paintBlur } : {}),
+      };
+      this.spatial = true;
+      return matte
+        ? [
+            {
+              kind: "isolate",
+              layer: key,
+              ops: [draw],
+              effects: [],
+              masks: [],
+              matte,
+              opacity,
+              blend,
+              clips,
+            },
+          ]
+        : [draw];
+    }
     const raster = localSurfaceBounds(plane.localBounds, key);
     const placement = planePlacement(plane, frame.matrix, raster.origin);
     if (!placement) return [];
@@ -1166,7 +1225,7 @@ class GraphBuilder {
     const gaussianFocus =
       this.exposureScope(scope, state).tree.camera?.blurModel === "gaussian";
     const focusKind = gaussianFocus ? "blur.gaussian" : "blur.lens";
-    const focus: RenderEffect[] = state.focusBlur
+    const focusEffects: RenderEffect[] = state.focusBlur
       ? [
           {
             id: "camera-focus",
@@ -1194,9 +1253,12 @@ class GraphBuilder {
         },
         placement,
         ...(state.focusBlur
-          ? { focusPadding: Math.ceil(state.focusBlur) + 2 }
+          ? {
+              focusPadding:
+                Math.ceil(state.focusBlur * (gaussianFocus ? 3 : 1)) + 2,
+            }
           : {}),
-        effects: focus,
+        effects: focusEffects,
         matte: options.raw ? null : this.matte(scope, state, frame, seen),
         opacity,
         blend,

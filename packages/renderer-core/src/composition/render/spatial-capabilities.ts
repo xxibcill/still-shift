@@ -48,10 +48,16 @@ export function requireSpatialCapabilities(
           op.layer,
         );
         const padding = op.focusPadding ?? 0;
-        if (!Number.isInteger(padding) || padding < 0 || padding > 130)
+        const limit = op.effects.some(
+          (effect) =>
+            effect.id === "camera-focus" && effect.effect === "blur.gaussian",
+        )
+          ? 386
+          : 130;
+        if (!Number.isInteger(padding) || padding < 0 || padding > limit)
           passageError(
             "comp-3d-surface-budget",
-            "Focus padding must be an integer within 0..130",
+            `Focus padding must be an integer within 0..${limit}`,
             { node: op.layer },
           );
         const screen = localSurfaceBounds(
@@ -66,6 +72,7 @@ export function requireSpatialCapabilities(
         capabilities.validateSurface?.(screen.width, screen.height, op.layer);
         visit(op.surface.ops, op.surface.width, op.surface.height);
       } else if (op.kind === "draw") {
+        if (op.projection) check(op.projection, op.layer);
         if (op.content.type === "surface")
           visit(
             op.content.surface.ops,

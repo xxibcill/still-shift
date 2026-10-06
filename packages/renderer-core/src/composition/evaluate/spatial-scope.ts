@@ -278,13 +278,15 @@ export function projectSpatialScope(
     // Unbounded generators operate within this flat layer's declared artwork domain.
     const plane = projectPlane(state.worldMatrix3d, camera, expanded ?? bounds);
     state.projection = plane;
+    const focusPadding =
+      state.focusBlur * (camera.blurModel === "gaussian" ? 3 : 1) + 1;
     state.bounds =
       plane.bounds && state.focusBlur
         ? {
-            left: plane.bounds.left - state.focusBlur - 1,
-            top: plane.bounds.top - state.focusBlur - 1,
-            right: plane.bounds.right + state.focusBlur + 1,
-            bottom: plane.bounds.bottom + state.focusBlur + 1,
+            left: plane.bounds.left - focusPadding,
+            top: plane.bounds.top - focusPadding,
+            right: plane.bounds.right + focusPadding,
+            bottom: plane.bounds.bottom + focusPadding,
           }
         : plane.bounds;
     if (plane.affineMatrix) state.screenMatrix = plane.affineMatrix;

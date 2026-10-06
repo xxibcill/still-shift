@@ -1,8 +1,13 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { readFile, mkdtemp, rm, mkdir, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { dirname, resolve, join } from "node:path";
 import { createServer } from "vite";
-import { launchRenderBrowser } from "@still-shift/execution-runtime";
+import {
+  launchRenderBrowser,
+  probeRenderEnvironment,
+  assertPinnedRenderEnvironment,
+} from "@still-shift/execution-runtime";
 import {
   CinematicSceneSchema,
   type Composition,
@@ -14,6 +19,11 @@ import {
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as Timing from "../helpers/paired-render-timing.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
+import { cinematicPreviewEncoder } from "../helpers/cinematic-preview-export.ts";
+import {
+  cameraHardwarePreview,
+  type CameraFixture,
+} from "./camera-hardware.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const inventory = JSON.parse(
@@ -51,6 +61,11 @@ const server = await createServer({
 });
 await server.listen();
 const browser = await launchRenderBrowser();
+const directory = await mkdtemp(join(tmpdir(), "ce4c-preview-"));
+const reports: unknown[] = [],
+  exports: unknown[] = [],
+  hardwareFixtures: CameraFixture[] = [];
+let environment: Awaited<ReturnType<typeof probeRenderEnvironment>> | undefined;
 let totalFrames = 0;
 try {
   for (const entry of fixtures) {
@@ -66,11 +81,37 @@ try {
         `/@fs${resolve(dirname(path), asset.path)}`,
       ]),
     );
+    if (!smoke)
+      hardwareFixtures.push({
+        name: entry.id,
+        doc: composition,
+        assetUrls: urls,
+        backends: backends as Render.CompositionBackend[],
+        frames: [
+          0,
+          Math.floor(composition.frameCount / 2),
+          composition.frameCount - 1,
+        ],
+      });
     for (const backend of backends) {
       const page = await browser.newPage();
+      const encoder = smoke
+        ? undefined
+        : cinematicPreviewEncoder(
+            scene,
+            join(directory, `${hardwareFixtures.length}-${backend}.mp4`),
+          );
       try {
         await page.addInitScript("window.__name = (fn) => fn;");
         await page.goto(server.resolvedUrls!.local[0]!);
+        if (!environment) {
+          environment = await probeRenderEnvironment(page);
+          assertPinnedRenderEnvironment(environment);
+        }
+        if (encoder) {
+          await page.exposeFunction("captureCinematicFrame", encoder.write);
+          await page.exposeFunction("finishCinematicCapture", encoder.finish);
+        }
         const report = await page.evaluate(
           async ({
             sceneJson,
@@ -154,6 +195,14 @@ try {
                     psnr: comparison.psnr,
                   });
                 hashes.set(frame, await hash(pixels));
+                if (!smoke)
+                  await (
+                    window as unknown as {
+                      captureCinematicFrame: (png: string) => Promise<void>;
+                    }
+                  ).captureCinematicFrame(
+                    canvas.toDataURL("image/png").split(",")[1]!,
+                  );
               }
               for (const frame of [...frames].reverse()) {
                 native.renderFrame(frame);
@@ -162,6 +211,13 @@ try {
                   `Reverse seek changed frame ${frame}`,
                 );
               }
+              const previewChecksum = smoke
+                ? undefined
+                : await (
+                    window as unknown as {
+                      finishCinematicCapture: () => Promise<string>;
+                    }
+                  ).finishCinematicCapture();
               let timing;
               if (!smoke) {
                 const timingUrl = "/tests/helpers/paired-render-timing.ts";
@@ -186,6 +242,7 @@ try {
                 minPsnr,
                 failures,
                 errors,
+                previewChecksum,
                 ...timing,
               };
             } finally {
@@ -220,25 +277,67 @@ try {
             `CE6-P deferred WebGL timing only: ${entry.id} ${report.ratio}`,
           );
         totalFrames += report.frames;
+        reports.push({ id: entry.id, backend, ...report });
+        if (!smoke)
+          exports.push(
+            await assertAdapterExport(
+              source,
+              dirname(path),
+              entry.id,
+              backend as Render.CompositionBackend,
+              report.previewChecksum,
+            ),
+          );
       } finally {
-        await page.close();
+        try {
+          await encoder?.close();
+        } finally {
+          await page.close();
+        }
       }
-      if (!smoke)
-        await assertAdapterExport(
-          source,
-          dirname(path),
-          entry.id,
-          backend as Render.CompositionBackend,
-        );
     }
   }
   console.log(
     `CE4c ${smoke ? "diagnostic smoke" : "cinematic parity"}: ${fixtures.length} fixtures, ${totalFrames} frames`,
   );
+  if (!smoke) {
+    const hardware = await cameraHardwarePreview(
+      server.resolvedUrls!.local[0]!,
+      hardwareFixtures,
+    );
+    const proof = resolve(
+      root,
+      "benchmarks/results/composition-ce4c-verification",
+    );
+    await mkdir(proof, { recursive: true });
+    await writeFile(
+      join(proof, "native-acceptance.json"),
+      JSON.stringify(
+        {
+          environment,
+          reports,
+          exports,
+          hardware,
+          policy: {
+            pixels: "unchanged CE0 near tiers",
+            state: "0.001 pixel, unit all-frame",
+            canvasTiming: 1.25,
+            webglTiming: "CE6-P deferred; measured unchanged method",
+          },
+        },
+        null,
+        2,
+      ) + "\n",
+    );
+  }
 } finally {
   try {
     await browser.close();
   } finally {
-    await server.close();
+    try {
+      await server.close();
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
   }
 }

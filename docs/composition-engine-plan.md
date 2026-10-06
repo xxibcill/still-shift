@@ -1391,7 +1391,8 @@ a composition/precomp node type to the legacy story scene schema in CE4a.
 **Status:** `[~]` in progress on `codex/composition-ce4c` from CE8-L
 `e1bd4bc` / PR #44. Native screen-space camera offset is delivered with focused
 checks; cinematic plane/camera adaptation and native safety/focus controls now pass
-all 15 fixtures / 2,160 state frames. Render acceptance and full verification remain pending.
+all 15 fixtures / 2,160 state frames. Affine image raster repair and sampled pixel/seek
+checks pass. Full render/export/hardware acceptance and complete verification remain pending.
 [Implementation evidence](./composition-ce4c-results.json).
 
 - [ ] Map depth planes to 3D layers and the cinematic camera (including dolly zoom,

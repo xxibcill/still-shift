@@ -894,6 +894,14 @@ clipping and lighting retain actual world depth. Without this override, focus
 continues to use evaluated camera depth. These controls preserve cinematic
 inverse-depth focus handoffs and remain available to native compositions.
 
+Eligible affine image planes with explicit `rasterize: "natural-size"` draw
+directly from the prepared source, avoiding an additional local-surface resize.
+Projection still participates in finite/backend preflight. Local masks, nonprimitive
+effects, active receiving lights and lens focus retain their local-surface path;
+mattes preserve shared isolation. Direct Gaussian focus applies only to stretch
+images without pose registration and permits the filter to extend beyond the
+image rectangle. Other content keeps the shared postprojection Gaussian pass.
+
 WebGL2 uses actual plane homographies and near/far clipping. True perspective
 uses four quarter-pixel coverage samples and RGBA8 premultiplied bilinear weights
 quantized to 1/16, with a 1e-4 quantizer-unit tie bias to bound float32 boundary
