@@ -270,6 +270,8 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 - **Repair:** explicit updating/readiness state, latest seek at commit, first-frame staging
   before active replacement, stale-load error protection and truthful native Lab version.
   A real delayed-decode regression seeks during preparation; no threshold changes.
+  Its first focused run passes motion/pending seeks, then finds the same stale-read
+  assumption in comparison/hold tests; those now wait for committed readiness.
 - **Open / next:** focused Depth Lab/Lab sessions, then a complete local gate rerun and
   milestone PR/attachment. The approved CE13 → CE15 → CE14 order remains unchanged.
 - **Records:** [results](./composition-ce4d-results.json).

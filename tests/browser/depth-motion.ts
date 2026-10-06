@@ -244,6 +244,7 @@ try {
   );
 
   await page.locator("#preset").selectOption("comparison_step");
+  await ready(page);
   await page.evaluate(() => {
     const slider = document.querySelector<HTMLInputElement>("#frame")!;
     slider.value = "0";
@@ -267,6 +268,7 @@ try {
   );
 
   await page.locator("#preset").selectOption("locked_hold");
+  await ready(page);
   const holdLast = await measureMarkers(page);
   await page.evaluate(() => {
     const slider = document.querySelector<HTMLInputElement>("#frame")!;

@@ -18881,7 +18881,15 @@
       "pending": [
         "focused real depth Lab regression and Lab sessions",
         "complete rerun of local pnpm check"
-      ]
+      ],
+      "focusedAttempt": {
+        "checkpoint": "69469a8",
+        "status": "failed; original comparison visibility assertion read pending preset refresh",
+        "passedBeforeFailure": "real delayed-decode seek survives commit; original far/near/horizontal drift/flat fallback/panel assertions pass",
+        "log": "/private/tmp/ce4d-lab-depth-motion-69469a8.log",
+        "logSha256": "sha256:a97ac1fa61ab61f3db4ea02799cb3b36fb4b43d98d69ae5fcf11cc174f64af4d",
+        "repair": "Wait for the public committed-readiness state before comparison-step and locked-hold pixel reads; no pixel/motion threshold change"
+      }
     }
   ],
   "pending": [
