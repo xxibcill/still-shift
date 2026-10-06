@@ -44,9 +44,9 @@ still hold before relying on them.
 ## Current state
 
 - **PR #34 fixes in progress (2026-10-06):** three P2 findings on `f870fce`
-  are posted inline. Separated vector timing is repaired with 108 focused tests
-  passing; shared velocity-budget accounting and evaluated stagger starts remain
-  pending. Work runs in an isolated managed worktree; one commit per finding
+  are posted inline. Separated vector timing (`ea08b39`) and shared velocity-budget
+  accounting are repaired with focused regressions passing; evaluated stagger
+  starts and final verification remain pending. Work runs in an isolated managed worktree; one commit per finding
   and one final push are requested. No owner decision is pending.
   [Evidence](./pr-34-20261006-fix-results.json).
 
@@ -316,10 +316,10 @@ _Last updated 2026-10-05 by Codex for PR #34 conflict resolution; both histories
 
 - **Agent / branch:** Codex on `codex/pr34-lint-review-fixes` from `f870fce`.
 - **Scope:** separated vector timing, velocity probe capacity and evaluated co-start.
-- **Done:** all three findings posted inline; separated component reads and property votes repaired.
-- **Results:** 108 focused tests pass; final verification and the remaining two repairs are pending.
+- **Done:** all findings posted inline; separated timing (`ea08b39`) and shared probe budget repaired.
+- **Results:** 108 separated-timing and 96 budget/core lint tests pass; final verification and stagger repair remain pending.
 - **Rejected / do not repeat:** off-canvas anchor test control corrected before red/green evidence.
-- **Open / next:** complete the other two fixes, verify locally, then push all three commits once. Owner review/merge remains pending.
+- **Open / next:** repair evaluated stagger starts, verify locally, then push all three commits once. Owner review/merge remains pending.
 - **Records:** [Evidence](./pr-34-20261006-fix-results.json), [PR #34](https://github.com/xxibcill/still-shift/pull/34).
 
 ### 2026-10-05 — Resolve PR #34 against main

@@ -18,11 +18,20 @@
         "command": "pnpm exec vitest run tests/unit/composition-quality-timing.test.ts tests/unit/composition-quality.test.ts tests/unit/composition-quality-paint.test.ts --maxWorkers=2",
         "result": "108 passed"
       },
-      "setupCorrection": "Initial anchor control was outside the viewport; place all controls on screen before asserting timing."
+      "setupCorrection": "Initial anchor control was outside the viewport; place all controls on screen before asserting timing.",
+      "commit": "ea08b39"
     },
     {
       "finding": "Velocity probes bypass the shared lint budget",
-      "status": "pending"
+      "status": "implemented",
+      "implementation": "One budgeted sample callback charges retained integer frames, shared fractional searches, fractional middle samples and all velocity probes to the unchanged 2,000,000 limit.",
+      "regressions": "Probe-only exhaustion, below-limit combined sampling, fractional search-plus-probe exhaustion and unchanged shared-clock evaluation count.",
+      "red": {
+        "result": "2 expected failures, 2 passes"
+      },
+      "green": {
+        "result": "96 passed (budget/velocity and core lint)"
+      }
     },
     {
       "finding": "Staggered motion gets a false co-start warning",
@@ -31,9 +40,9 @@
   ],
   "toolchain": "Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1 / Chromium 1234 (151.0.7922.34), FFmpeg 8.0.1 verified in isolated managed worktree.",
   "verification": {
-    "focusedUnit": "108 passed",
-    "typeCheck": "passed",
-    "lintAndBoundaries": "passed",
+    "focusedUnit": "108 passed for separated timing; 96 passed for shared capacity",
+    "typeCheck": "passed after fixes 1 and 2",
+    "lintAndBoundaries": "focused lint passed after fixes 1 and 2; boundaries passed",
     "finalChecks": "pending",
     "fullPnpmCheck": "not rerun"
   },
