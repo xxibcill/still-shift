@@ -287,6 +287,29 @@
         "Inspector fixture requested spatial tangents unsupported by strict xy viewOffset contract. A temporary UI exposure also failed schema validation and was removed. The fixture now edits supported temporal handles and passes. No spatial contract expansion retained."
       ],
       "verificationLimits": "Sampled 220 frames and real editor checks do not replace full timelines, timing, production exports, hardware matrix or the complete local gate."
+    },
+    {
+      "name": "native framing/focus fixture coverage",
+      "status": "implemented-unit-pass",
+      "checks": {
+        "contractUnit": {
+          "files": 1,
+          "tests": 132,
+          "status": "pass"
+        },
+        "fullUnit": {
+          "files": 195,
+          "tests": 1935,
+          "status": "pass"
+        },
+        "build": "pass",
+        "focusedLint": "pass"
+      },
+      "failedAttempts": [
+        "Pinned non-browser preflight at 44588fe stopped after unit coverage assertion: every-field inventory lacked viewOffset, blurModel and maxBlur; 1934 tests passed, one failed. Runtime/depth were not reached."
+      ],
+      "repair": "Share the previously tested native inspector document as a new CE4c framing-focus fixture and include it in field coverage. CE1 fixture and frozen baselines are unchanged.",
+      "verificationLimits": "Full pinned gate and native timing/export/hardware matrix remain pending."
     }
   ],
   "pending": [

@@ -55,7 +55,9 @@ still hold before relying on them.
   and the complete local gate remain pending. Persisted native alpha safety and
   seven effect variants pass 26 focused tests/build/lint. Final sampled pixels/seeks
   pass 44 cases / 220 frames (delta1); real temporal editing/save/reload passes.
-  Paint-order and adjustment-exposure failures are repaired and retained. Independent
+  Paint-order and adjustment-exposure failures are repaired and retained. Field
+  coverage now includes the shared native inspector fixture; 1,935 unit tests,
+  build and focused lint pass after one coverage failure. Independent
   review gates are active; native timing is queued. Coordination authorization is pending.
   [Evidence](./composition-ce4c-results.json).
 
@@ -239,6 +241,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c native control fixture checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, order `44588fe`.
+- **Done:** share the native inspector framing/focus example with contract coverage.
+- **Results:** 132 contract tests and all 1,935 unit tests / 195 files pass;
+  build and focused lint pass. Frozen CE1 and CE0 fixtures remain unchanged.
+- **Rejected:** full preflight stopped at one field-inventory assertion after
+  1,934 passing tests; runtime/depth were not reached. New controls now have a
+  dedicated CE4c fixture instead of modifying the old every-field document.
+- **Open / next:** full native acceptance and pinned local gate; browser timing
+  remains queued behind active independent suites and coordination permission.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c effect ordering and exposure checkpoint
 

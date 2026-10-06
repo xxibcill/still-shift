@@ -10,42 +10,15 @@ import { createProgramPreview } from "../../tools/still-shift-cli/src/compositio
 export async function cinematicInspectorAcceptance(browser: Browser) {
   const directory = await mkdtemp(join(tmpdir(), "ce4c-inspector-"));
   const input = join(directory, "camera.json");
-  const doc: Composition = {
-    schemaVersion: "composition-1",
-    id: "cinematic-inspector",
-    width: 128,
-    height: 96,
-    fps: 24,
-    frameCount: 32,
-    assets: [],
-    layers: [
-      {
-        id: "camera",
-        type: "camera",
-        model: "one-node",
-        viewOffset: {
-          keys: [
-            { frame: 0, value: [0, 0] },
-            { frame: 31, value: [16, 4], interpolation: "linear" },
-          ],
-        },
-        depthOfField: true,
-        focusDistance: 128,
-        aperture: 2,
-        blurModel: "gaussian",
-        maxBlur: 4,
-      },
-      {
-        id: "plane",
-        type: "solid",
-        threeD: true,
-        size: [48, 40],
-        color: "#ffffff",
-        focusDepth: 120,
-        transform: { position: [40, 40, 0] },
-      },
-    ],
-  };
+  const doc = JSON.parse(
+    await readFile(
+      join(
+        import.meta.dirname,
+        "../../benchmarks/fixtures/composition/ce4c/framing-focus.json",
+      ),
+      "utf8",
+    ),
+  ) as Composition;
   let app: Awaited<ReturnType<typeof createProgramPreview>> | undefined;
   const page = await browser.newPage({
     viewport: { width: 1280, height: 900 },
