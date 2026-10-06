@@ -18926,21 +18926,58 @@
     {
       "name": "golden baseline and native renderer identity separation",
       "date": "2026-10-07",
-      "status": "implemented; focused regression pending",
+      "status": "focused golden parity passes; full gate rerun pending",
       "scope": [
         "Preserve frozen baseline metadata and every stored sample",
         "Verify every actual Lab scene reports native WebGL version",
         "Keep all original pixel, motion and export transport assertions"
       ],
-      "checks": {},
-      "pending": [
-        "focused golden parity",
-        "complete full local gate from repaired checkpoint"
-      ]
+      "checks": {
+        "goldenParity": {
+          "status": "pass",
+          "checkpoint": "3747d16",
+          "report": {
+            "sceneCount": 5,
+            "sampleCount": 15,
+            "parityComparisons": 30,
+            "modes": {
+              "portrait": "depth",
+              "environment": "depth",
+              "architecture": "depth",
+              "illustration": "depth",
+              "difficult-edges": "depth"
+            },
+            "maximumMaE": 0.01519210693536674,
+            "maximumEdgeError": 0.0076529162389593515,
+            "maximumColorError": 0.016113494008714598,
+            "browserVersion": "151.0.7922.34",
+            "gpuRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rendererVersion": "composition-webgl2-0.65.0",
+            "shaderVersion": "depth-plane-0.5.0",
+            "ffmpegVersion": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+            "wroteBaseline": false
+          },
+          "log": {
+            "path": "/private/tmp/ce4d-golden-identity-3747d16.log",
+            "sha256": "sha256:31b204aaf984cc18f330ce1a1e1b0cca7ecaf9f6837c10570a3f026a585280bd"
+          },
+          "limits": "Reported depth-plane shader identifies the frozen oracle. Production depth-image shader remains composition-image-plane-0.4.0; no baseline bytes or tolerance changed."
+        },
+        "startup": {
+          "status": "pass",
+          "log": {
+            "path": "/private/tmp/ce4d-golden-startup-3747d16.log",
+            "sha256": "sha256:d7115bf1205234b584b0907ebd3503b550bc9e0e4c42eca184408e7dde6e9c4e"
+          },
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba"
+        },
+        "build": "pass",
+        "scopedLint": "pass"
+      },
+      "pending": ["complete full local gate from repaired checkpoint"]
     }
   ],
   "pending": [
-    "Focused golden identity regression",
     "Complete full local pnpm check from repaired checkpoint",
     "CE4d PR delivery"
   ],

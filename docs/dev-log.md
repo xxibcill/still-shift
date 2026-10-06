@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE4d golden identity repair pending (2026-10-07):** `codex/composition-ce4d` from
+- **CE4d final full gate pending (2026-10-07):** `codex/composition-ce4d` from
   CE4c `17666eb`. Runtime `69469a8` stages native Depth Lab refreshes, preserves
   pending seeks and publishes truthful readiness/version; harness `e8a70d9` passes
   the complete affected depth and Lab session suites. CLI cache repair `75c0828`
@@ -59,8 +59,10 @@ still hold before relying on them.
   delayed-decode seek regression passes. The second full gate passes those suites,
   then fails the final golden renderer identity assertion after pixel/motion parity
   passes (332.26 seconds). Native and frozen-reference identities are now checked
-  separately without changing baseline bytes or tolerances. Focused proof and a
-  complete full gate rerun remain, then
+  separately without changing baseline bytes or tolerances. Focused golden proof
+  passes all five scenes / 15 samples / 30 transport comparisons on `3747d16`,
+  with pinned startup, format, lint and build passing. A complete full gate
+  rerun remains, then
   CE4d PR and CE13 → CE15 → CE14 with CE16 audit/reuse. CE5-X/Q9 remains pending;
   CE6-P retains WebGL speed work. No owner decision blocks the approved order.
   Failed/rejected diagnostics and measured proof are in
@@ -262,6 +264,17 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d native golden identity and parity pass
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, repair `3747d16`.
+- **Results:** focused golden parity passes all five scenes / 15 frozen samples /
+  30 PNG/JPEG transport comparisons and original motion checks. Every actual Lab scene
+  reports the native renderer; frozen reference identity remains unchanged. Pinned
+  startup/fingerprint, Python imports, format, scoped lint and build pass.
+- **Next:** complete `pnpm check` from the beginning on the new isolated checkpoint;
+  preserve both prior failed gates. Then CE4d PR and approved milestone continuation.
+- **Records:** [results](./composition-ce4d-results.json).
 
 ### 2026-10-07 — CE4d golden renderer metadata migration repair
 
