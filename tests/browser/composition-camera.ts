@@ -28,7 +28,10 @@ import {
 import { cameraFailureAcceptance } from "./camera-failures.ts";
 import { cameraGroupBlurAcceptance } from "./camera-group-blur.ts";
 import { cameraSampleCosts } from "./camera-cost.ts";
-import { cameraInspectorAcceptance } from "./camera-inspector.ts";
+import {
+  cameraInspectorAcceptance,
+  cameraXyInspectorAcceptance,
+} from "./camera-inspector.ts";
 
 const root = resolve(import.meta.dirname, "../.."),
   cache = await mkdtemp(join(tmpdir(), "ce8-camera-vite-")),
@@ -207,7 +210,8 @@ try {
       server.resolvedUrls!.local[0]!,
       fixtures,
     ),
-    inspector = await cameraInspectorAcceptance(browser);
+    inspector = await cameraInspectorAcceptance(browser),
+    xyInspector = await cameraXyInspectorAcceptance(browser);
   if (writing)
     await writeFile(
       baselinePath,
@@ -244,6 +248,7 @@ try {
         hardware,
         groupBlur,
         inspector,
+        xyInspector,
         baseline: writing ? "created new CE8 baseline" : "exact",
       },
       null,
@@ -258,6 +263,7 @@ try {
       hardware,
       groupBlur,
       inspector,
+      xyInspector,
       baseline: writing ? "created CE8" : "exact",
     }),
   );

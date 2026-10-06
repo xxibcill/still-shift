@@ -282,3 +282,61 @@ it("discovers and samples native xyz/POI/optical tracks without truncating z", (
     editSpatialTangent(doc, orientation, 0, "spatialOut", [1, 2]),
   ).toThrow("3 tangent components");
 });
+
+it.each(["camera-position", "camera-poi", "spatial-position"] as const)(
+  "edits authored XY tangents without promoting %s keys",
+  (mode) => {
+    const doc = source(),
+      position = {
+        keys: [
+          {
+            frame: 0,
+            value: [32, 32] as [number, number],
+            spatialOut: [1, 2] as [number, number],
+          },
+          { frame: 23, value: [40, 36] as [number, number] },
+        ],
+      };
+    doc.layers =
+      mode === "camera-poi"
+        ? [{ id: "camera", type: "camera", pointOfInterest: position }]
+        : mode === "camera-position"
+          ? [{ id: "camera", type: "camera", transform: { position } }]
+          : [
+              {
+                id: "plane",
+                type: "solid",
+                threeD: true,
+                size: [8, 8],
+                color: "#ffffff",
+                transform: { position },
+              },
+            ];
+    const history = new CompositionDocument(doc),
+      track = compositionTracks(history.document)[0]!;
+    expect(track.dimensions ?? 2).toBe(2);
+    history.commit(
+      history.propose("XY tangent", (draft) =>
+        editSpatialTangent(draft, track, 0, "spatialOut", [10, 3]),
+      )!,
+    );
+    const edited = compositionTracks(history.document)[0]!;
+    expect(edited.keys[0]!.spatialOut).toEqual([10, 3]);
+    expect(edited.keys[0]!.value).toEqual([32, 32]);
+    expect(sampleTrack(edited, 10)).toHaveLength(2);
+    expect(() =>
+      history.propose("Wrong XYZ tangent", (draft) =>
+        editSpatialTangent(draft, edited, 0, "spatialOut", [10, 3, 0]),
+      ),
+    ).toThrow("2 tangent components");
+    history.commit(history.undo()!);
+    expect(compositionTracks(history.document)[0]!.keys[0]!.spatialOut).toEqual(
+      [1, 2],
+    );
+    history.commit(history.redo()!);
+    expect(
+      compositionTracks(JSON.parse(JSON.stringify(history.document)))[0]!
+        .keys[0]!.spatialOut,
+    ).toEqual([10, 3]);
+  },
+);

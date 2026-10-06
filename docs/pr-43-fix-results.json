@@ -4,7 +4,7 @@
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/43",
   "reviewHead": "9d8f33a31cc4d096b8235fbe679c5ef7e20202cf",
   "delivery": "One commit per finding; push only after final commit.",
-  "status": "Finding 1 verified; findings 2 and 3 pending.",
+  "status": "Findings 1 and 2 verified; finding 3 pending.",
   "environment": {
     "profile": "chromium-software-2",
     "browserVersion": "151.0.7922.34",
@@ -368,6 +368,43 @@
         "canvas": "composition-canvas-1.40.1",
         "webgl2": "composition-webgl2-0.55.1",
         "export": "chromium-ffmpeg-0.6.3"
+      },
+      "commit": "e16d962"
+    },
+    {
+      "finding": 2,
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759928",
+      "summary": "Derive spatial tangent dimensionality from authored key values; preserve valid XY camera position, POI and spatial artwork paths without promoting keys.",
+      "redProof": "All three XY proposal regressions fail with dimensions=3 on the preceding checkpoint.",
+      "checks": {
+        "focusedUnits": {
+          "status": "passed",
+          "tests": 14
+        },
+        "realInspector": [
+          {
+            "mode": "camera-position",
+            "status": "passed",
+            "dimensions": 2,
+            "checks": ["XY tangent edit", "undo/redo", "lossless save"]
+          },
+          {
+            "mode": "camera-poi",
+            "status": "passed",
+            "dimensions": 2,
+            "checks": ["XY tangent edit", "undo/redo", "lossless save"]
+          },
+          {
+            "mode": "spatial-position",
+            "status": "passed",
+            "dimensions": 2,
+            "checks": ["XY tangent edit", "undo/redo", "lossless save"]
+          }
+        ],
+        "build": "passed",
+        "changedFileLint": "passed",
+        "diffCheck": "passed"
       }
     }
   ],

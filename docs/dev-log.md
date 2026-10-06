@@ -45,10 +45,10 @@ still hold before relying on them.
 
 - **PR #43 review fixes in flight (2026-10-06):** `codex/pr43-fixes` from CE8
   `9d8f33a`. Three findings are posted inline. Inherited projected primitive blur
-  is repaired with 20 focused units and 24 exact browser comparisons on both
-  backends, including zero/override and collapsed-precomp inheritance. XY tangent
-  editing and ancestor-group required coverage remain. Final verification and the
-  single final push are pending; previous CE8 gate evidence is historical.
+  is repaired in `e16d962`; XY tangent editing is verified with 14 focused units
+  and real camera-position/POI/artwork edit, undo/redo and save flows.
+  Ancestor-group required coverage remains. Final verification and the single
+  final push are pending; previous CE8 gate evidence is historical.
   No owner decision is pending. [Fix evidence](./pr-43-fix-results.json).
 
 - **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
@@ -214,6 +214,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #43 XY spatial tangent fix
+
+- **Agent / branch:** Codex on `codex/pr43-fixes`, after blur fix `e16d962`.
+- **Done:** authored XY keys retain two-component tangents on cameras and 3D
+  artwork; valid XYZ editing stays three-dimensional.
+- **Results:** 14 focused units and all three real XY inspector edit/undo/redo/save
+  flows pass; build and changed-file lint pass. Original key values stay XY.
+- **Open / next:** ancestor-group required coverage, final local verification and
+  one push remain. GitHub Actions stay disabled.
+- **Records:** [Fix evidence](./pr-43-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759928).
 
 ### 2026-10-06 — PR #43 inherited projected blur fix
 
