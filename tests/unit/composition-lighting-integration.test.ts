@@ -300,3 +300,54 @@ it("rejects float32 coefficient overflow before GPU drawing and packs only activ
     "finite WebGL2",
   );
 });
+
+it("keeps illumination in its own precomp scope and isolates parent shading", () => {
+  const d = doc([
+    lamp("parent"),
+    {
+      id: "instance",
+      type: "precomp",
+      comp: "inner",
+      threeD: true,
+      receivesLight: true,
+    },
+  ]);
+  d.precomps = [
+    {
+      id: "inner",
+      width: 100,
+      height: 100,
+      frameCount: 24,
+      layers: [lamp("child"), plane()],
+    },
+  ];
+  const tree = evaluateComp(d, 5),
+    inner = tree.layers.find((l) => l.id === "instance")!.precomp!;
+  expect(tree.lights!.map((l) => l.id)).toEqual(["parent"]);
+  expect(inner.lights!.map((l) => l.id)).toEqual(["child"]);
+  (d.layers[0] as Extract<CompositionLayer, { type: "light" }>).intensity = 12;
+  expect(
+    evaluateComp(structuredClone(d), 5).layers.find((l) => l.id === "instance")!
+      .precomp,
+  ).toEqual(inner);
+  d.layers[0]!.enabled = false;
+  expect(evaluateComp(structuredClone(d), 5).lights).toEqual([]);
+  expect(
+    evaluateComp(structuredClone(d), 5).layers.find((l) => l.id === "instance")!
+      .precomp!.lights,
+  ).toEqual(inner.lights);
+});
+it("does not feed camera movement into the flat-light shading model", () => {
+  const d = doc([lamp(), { id: "camera", type: "camera" }, plane()]),
+    before = local(d).lighting;
+  d.layers[1]!.transform = {
+    position: [35, 20, -240],
+    orientation: [15, 10, 5],
+  };
+  const moved = structuredClone(d);
+  expect(local(moved).lighting).toEqual(before);
+  expect(evaluateComp(moved, 5).camera).not.toEqual(
+    evaluateComp(doc([lamp(), { id: "camera", type: "camera" }, plane()]), 5)
+      .camera,
+  );
+});

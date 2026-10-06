@@ -38,19 +38,36 @@
         },
         "build": "pass",
         "focusedUnit": "34 pass including 13 asset-pinned lighting scenes; generated contract/reference inventory 132 pass",
-        "integrationAttempt": "139 cases: 38 pass, 51 fail and 50 skip under restricted sandbox (local listen/browser process EPERM); isolated permitted rerun pending"
+        "integrationAttempt": "139 cases: 38 pass, 51 fail and 50 skip under restricted sandbox (local listen/browser process EPERM); isolated permitted rerun pending",
+        "integrationRerun": {
+          "checkpoint": "07165bc",
+          "command": "pnpm test:integration in isolated permitted snapshot",
+          "files": 39,
+          "tests": 139,
+          "status": "pass",
+          "log": "/private/tmp/ce8l-integration-07165bc.log"
+        }
       },
       "rejected": [
         "Draft builder tests incorrectly called toJSON and supplied transform in options; corrected to the established native composition return and .transform API. Reference/diagnostic inventory was stale until generation."
       ],
-      "pending": "All-frame native oracles/alpha/hashes, export, hardware, inspector execution, serial costs and complete local gate"
+      "pending": "All-frame native oracles/alpha/hashes, export, hardware, inspector execution, serial costs and complete local gate",
+      "implementation": "07165bc"
+    },
+    {
+      "scope": "Independent opaque-preview oracle corrected to existing black flattening; all-frame transparent offscreen alpha checks and implicit-unlit story adapter identity; scope/camera regressions",
+      "checks": {
+        "focusedUnit": "15 lighting integration tests pass",
+        "build": "pass"
+      },
+      "rejected": [
+        "First native acceptance on 07165bc failed ambient frame 0 (max delta 46, PSNR 19.2397). The test oracle expected final transparent pixels, but CE3 previews intentionally flatten on black. Pinned debug showed expected premultiplied shader RGB [12,8,46], final alpha255. Corrected oracle only; shading production unchanged. Added direct offscreen RGBA checks for alpha128 and all-fixture alpha identity."
+      ],
+      "pending": "New helper execution, independent export/hardware/inspector acceptance, serial costs and full gate"
     }
   ],
   "pending": [
-    "WebGL shading/graph/cache/backend preflight",
-    "Full evaluation and property-writer regressions",
-    "Authoring/inspector/reference/native fixtures",
-    "Independent pixel/export/hardware acceptance and serial costs",
+    "Independent pixel/alpha/export/hardware/inspector acceptance and serial costs",
     "Complete local pnpm check/frozen baselines",
     "Milestone PR and remaining sequence"
   ]

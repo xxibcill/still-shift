@@ -52,7 +52,11 @@ still hold before relying on them.
   Thirteen native scenes, independent pixels, authoring/inspector controls and
   required verification are authored. Pinned three-type GPU smoke passes on
   `8e9b0e3`; 34 focused tests and the 132-test contract inventory pass.
-  Integration hit sandbox listen/browser EPERM; an isolated permitted rerun follows.
+  The isolated permitted integration rerun passes all 139 tests / 39 files.
+  Native acceptance first rejected a test oracle that expected transparency from
+  the intentionally opaque preview. The oracle now compares premultiplied RGB
+  over black; direct offscreen RGBA tests cover alpha separately. Fifteen lighting
+  integration tests pass, including scope isolation and camera independence.
   Native acceptance and the complete gate remain pending.
   No owner decision is pending. [Evidence](./composition-ce8-lighting-results.json).
 
@@ -219,6 +223,22 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8-L alpha and oracle checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`.
+- **Done:** corrected the independent preview oracle's opaque output assumption;
+  added all-frame transparent-target alpha checks, implicit-unlit adapter identity,
+  and precomp-scope/camera-independence regressions.
+- **Results:** permitted integration rerun on `07165bc` passes 139 tests / 39 files;
+  15 focused lighting integration tests and build pass.
+- **Rejected:** first native ambient comparison failed (delta46); test oracle
+  expected transparent final pixels despite CE3's black flattening. Shader was
+  confirmed correct with pinned debug pixels. No baseline or tolerance changed.
+- **Open / next:** execute new RGBA/helper checks, complete native acceptance and
+  serial costs, then run the complete local gate before the milestone PR.
+- **Records:** [Lighting evidence](./composition-ce8-lighting-results.json).
+
 
 ### 2026-10-06 — CE8-L authoring and native acceptance checkpoint
 

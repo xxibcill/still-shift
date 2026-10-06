@@ -28,6 +28,8 @@ import {
 import { lightingFailureAcceptance } from "./lighting-failures.ts";
 import { lightingFixtureReference } from "../helpers/composition-lighting-reference.ts";
 import { lightingSampleCosts } from "./lighting-cost.ts";
+import { lightingAlphaAcceptance } from "./lighting-alpha.ts";
+import { lightingLegacyAcceptance } from "./lighting-legacy.ts";
 import { lightingInspectorAcceptance } from "./lighting-inspector.ts";
 
 const root = resolve(import.meta.dirname, "../.."),
@@ -100,6 +102,14 @@ try {
       frames = [...forward, ...[...forward].reverse(), ...seeks],
       results = [];
     fixtures.push({ name, doc, assetUrls, backends });
+    const rgba = await lightingAlphaAcceptance(
+      page,
+      doc,
+      assetUrls,
+      forward,
+      name,
+    );
+    reports.push({ fixture: name, transparentRgba: rgba });
     const hashes: Record<string, unknown> = {};
     for (const backend of backends) {
       const result = await cameraPreview(page, doc, assetUrls, backend, frames);
@@ -256,7 +266,8 @@ try {
     items[name] = { source: digest(JSON.stringify(doc)), hashes };
     console.log("Native CE8-L fixture:", name);
   }
-  const failures = await lightingFailureAcceptance(page),
+  const legacy = await lightingLegacyAcceptance(page, root),
+    failures = await lightingFailureAcceptance(page),
     hardware = await cameraHardwarePreview(
       server.resolvedUrls!.local[0]!,
       fixtures,
@@ -295,6 +306,7 @@ try {
         environment,
         reports,
         failures,
+        legacy,
         hardware,
         inspector,
         baseline: writing ? "created new CE8-L baseline" : "exact",
@@ -308,6 +320,7 @@ try {
     JSON.stringify({
       reports,
       failures,
+      legacy,
       hardware,
       inspector,
       baseline: writing ? "created CE8-L" : "exact",

@@ -72,9 +72,9 @@ export function lightingFixtureReference(
           Math.min(1, decode(encoded[c]!) * decode(colour[c]!) * weight),
         );
         const premultiplied = Math.round(encode(linear) * alpha);
-        result[at + c] = Math.round((premultiplied * 255) / alpha);
+        result[at + c] = premultiplied;
       }
-      result[at + 3] = alpha;
+      result[at + 3] = 255;
     }
   return result;
 }
