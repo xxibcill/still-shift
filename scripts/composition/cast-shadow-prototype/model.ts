@@ -6,6 +6,7 @@ export const LIMITS = {
   coordinate: 1_000_000,
   bias: 0.001,
   angularEpsilon: 1e-6,
+  basisConditionEpsilon: 1e-6,
 } as const;
 export type Vec3 = [number, number, number];
 export type Alpha = { width: number; height: number; pixels: number[] };
@@ -129,6 +130,25 @@ export function validateExperiment(scene: Experiment): void {
       dot(p.v, p.v) === 0
     )
       fail("degenerate plane");
+    // Match float32 Gram arithmetic with margin for differing GPU dot reductions.
+    const floatDot = (a: Vec3, b: Vec3) =>
+      a.reduce(
+        (sum, value, index) =>
+          Math.fround(
+            sum + Math.fround(Math.fround(value) * Math.fround(b[index]!)),
+          ),
+        0,
+      );
+    const uu = floatDot(p.u, p.u),
+      uv = floatDot(p.u, p.v),
+      vv = floatDot(p.v, p.v);
+    const gramScale = Math.fround(uu * vv);
+    const determinant = Math.fround(gramScale - Math.fround(uv * uv));
+    if (
+      !Number.isFinite(determinant) ||
+      determinant <= LIMITS.basisConditionEpsilon * gramScale
+    )
+      fail("ill-conditioned plane");
     const { width, height, pixels } = p.alpha;
     if (
       ![width, height].every(

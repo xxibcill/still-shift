@@ -71,7 +71,10 @@ is U×V. Parent transforms, mirrored scale, nonuniform scale and shear belong in
 these vectors; use the inverse Gram matrix to recover UV, rather than assuming
 unit or orthogonal bases. Singular/nearly collinear bases produce a diagnostic;
 animated degeneracy must yield a deterministic empty caster/receiver with a
-diagnostic, never NaN. The prototype rejects degenerate input at preflight.
+diagnostic, never NaN. The prototype rejects geometrically degenerate input and
+float32-ill-conditioned bases at preflight: its float32 Gram determinant must
+exceed `1e-6 * (U·U) * (V·V)`. Shader input construction runs the same validation
+before any draw; rejected bases report `shadow-prototype-input: ill-conditioned plane`.
 
 The candidate ±1e6 coordinate bound does not prove ≤0.001-pixel GPU precision.
 Production needs receiver-relative rebasing and conditioning tests, or a tighter

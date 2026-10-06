@@ -45,16 +45,18 @@ still hold before relying on them.
 
 - **CE8-L-F preparation (2026-10-06):** isolated branch
   `codex/composition-ce8lf-prototype` from CE7 `0e48388`. Candidate flat-alpha
-  shadow specification, CPU/geometry oracle and isolated shader pass 11 analytic
+  shadow specification, CPU/geometry oracle and isolated shader pass 12 analytic
   tests, 96 frozen poses, independent repeats and 12 hardware cases exactly.
-  PR #39's review fix allows a receiver self entry during preflight while retaining
-  duplicate-caster rejection. Toolchain/static checks pass;
+  PR #39's review fixes allow a receiver self entry while retaining duplicate-caster
+  rejection, and reject float32-ill-conditioned bases before CPU/GPU rendering.
+  Toolchain/static checks pass;
   [PR #39](https://github.com/xxibcill/still-shift/pull/39) is open and attached.
   Preparation is complete; CE8/CE8-L and owner policy/budget decisions precede
   production integration; advanced surface shading remains deferred.
   [Specification](./composition-ce8lf-cast-shadow-spec.md),
   [preparation evidence](./composition-ce8lf-results.json),
-  [review-fix evidence](./pr-39-self-entry-fix-results.json).
+  [self-entry fix evidence](./pr-39-self-entry-fix-results.json),
+  [Gram conditioning fix evidence](./pr-39-gram-fix-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -132,7 +134,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-06 by Codex for PR #39 review correction; prior work retained._
+_Last updated 2026-10-06 by Codex for PR #39 Gram conditioning fix; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -190,6 +192,22 @@ _Last updated 2026-10-06 by Codex for PR #39 review correction; prior work retai
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #39 float32 Gram conditioning fix
+
+- **Agent / checkout:** Codex on `codex/pr39-gram-fix` from PR head `a521818`.
+- **Finding:** [P2 shader UV division](https://github.com/xxibcill/still-shift/pull/39#discussion_r4192154579)
+  reproduced 253-byte software / 255-byte hardware errors on a small-coordinate plane.
+- **Done:** reject float32-ill-conditioned bases in shared preflight and guard shader
+  input construction. Regression reproduced before the fix; one focused fix commit.
+- **Results:** all 12 analytic tests, pinned toolchain and focused static checks pass.
+  All 96 frozen poses, 288 seek draws, 96 independent repeats, 12 hardware probes
+  and maximum-input checks remain byte exact; frozen references are unchanged.
+- **Rejected:** cross-product UV solve still differed by 127 bytes at thin-plane
+  boundaries; reverted it rather than changing the oracle or frozen references.
+- **Open / next:** full repository/native/real-export acceptance was not run;
+  CE8/CE8-L integration and owner policy/budget decisions remain pending.
+- **Records:** [fix evidence](./pr-39-gram-fix-results.json).
 
 ### 2026-10-06 — PR #39 receiver self-entry preflight fix
 

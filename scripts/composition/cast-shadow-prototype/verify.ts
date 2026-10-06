@@ -12,7 +12,7 @@ import {
 import { SIDE, referenceCases, referencePixels } from "./reference.ts";
 import { SHADOW_MODEL } from "./model.ts";
 import { drawVisibility, shaderInput } from "./shader.ts";
-import { maximumInputFixture } from "./fixtures.ts";
+import { maximumInputFixture, nearCollinearFixture } from "./fixtures.ts";
 
 const hash = (pixels: number[] | Buffer) =>
   createHash("sha256").update(Buffer.from(pixels)).digest("hex");
@@ -64,6 +64,12 @@ assert.equal(new Set(orders.random).size, cases.length);
 const pinnedHashes = new Map<string, { rgba: string; png: string }>();
 const maximumScene = maximumInputFixture();
 const maximumReference = referencePixels(maximumScene);
+const nearCollinearScene = nearCollinearFixture();
+assert.throws(
+  () => shaderInput(nearCollinearScene, SIDE),
+  /shadow-prototype-input: ill-conditioned plane/,
+  "near-collinear input must fail before any GPU draw",
+);
 
 async function probe(profile: RenderBrowserProfile, repeat: boolean) {
   const browser = await launchRenderBrowser({ profile });
@@ -215,6 +221,11 @@ const report = {
   sourceHashes: sources,
   inputHash: hash(Buffer.from(JSON.stringify(cases))),
   maximumInputHash: hash(Buffer.from(JSON.stringify(maximumScene))),
+  rejectedNearCollinearInput: {
+    hash: hash(Buffer.from(JSON.stringify(nearCollinearScene))),
+    diagnostic: "shadow-prototype-input: ill-conditioned plane",
+    result: "pass",
+  },
   referenceCount: references.length,
   toleranceBytes: 1,
   pinned,

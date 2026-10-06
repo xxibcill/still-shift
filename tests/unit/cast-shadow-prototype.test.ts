@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { shaderInput } from "../../scripts/composition/cast-shadow-prototype/shader.ts";
 import {
   alphaAt,
   directVisibility,
@@ -9,6 +10,7 @@ import {
 } from "../../scripts/composition/cast-shadow-prototype/model.ts";
 import {
   experiment,
+  nearCollinearFixture,
   plane,
 } from "../../scripts/composition/cast-shadow-prototype/fixtures.ts";
 
@@ -77,6 +79,17 @@ describe("isolated cast-shadow candidate", () => {
     scene.light.position = [100, 0, 0];
     scene.casters[0] = { ...plane("outside-camera", 10), origin: [46, -4, 10] };
     expect(directVisibility(scene, [0, 0, 20])).toBe(0);
+  });
+
+  it("rejects float32-ill-conditioned bases before CPU or GPU rendering", () => {
+    const scene = nearCollinearFixture();
+    for (const render of [validateExperiment, referencePixels, shaderInput])
+      expect(() => render(scene, 8)).toThrow("ill-conditioned plane");
+    // A less parallel shear remains supported; an exactly collinear basis does not.
+    scene.casters[0]!.v = [8, 0.08, 0];
+    expect(() => shaderInput(scene, 8)).not.toThrow();
+    scene.casters[0]!.v = [8, 0, 0];
+    expect(() => shaderInput(scene, 8)).toThrow("degenerate plane");
   });
 
   it("isolates instance scopes and rejects self, flags and disabled shadow changes", () => {

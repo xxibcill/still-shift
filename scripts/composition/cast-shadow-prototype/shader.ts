@@ -1,4 +1,9 @@
-import { LIMITS, SAMPLE_OFFSETS, type Experiment } from "./model.ts";
+import {
+  LIMITS,
+  SAMPLE_OFFSETS,
+  validateExperiment,
+  type Experiment,
+} from "./model.ts";
 
 /** Independent GPU ray/Gram implementation. Output is direct visibility, not art. */
 export const VERTEX = `#version 300 es
@@ -59,6 +64,7 @@ void main() {
 }`;
 
 export function shaderInput(scene: Experiment, side: number) {
+  validateExperiment(scene);
   const casters =
     !scene.light.enabled || !scene.receiver.receivesShadow
       ? []

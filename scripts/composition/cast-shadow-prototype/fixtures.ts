@@ -119,3 +119,15 @@ export function maximumInputFixture(): Experiment {
   }));
   return scene;
 }
+
+/** Small coordinates whose Gram determinant cancels to zero in float32. */
+export function nearCollinearFixture(): Experiment {
+  const scene = experiment();
+  scene.receiver.origin = [-8, -0.0008, 20];
+  scene.receiver.u = [16, 0, 0];
+  scene.receiver.v = [0, 0.0016, 0];
+  scene.casters[0]!.origin = [-8, -0.0004, 10];
+  scene.casters[0]!.u = [8, 0, 0];
+  scene.casters[0]!.v = [8, 0.0008, 0];
+  return scene;
+}
