@@ -78,7 +78,12 @@ still hold before relying on them.
   Supply-ramps frame 36 is repaired by distinct-state Canvas matrix transfer
   (Canvas 1.44.0); all five motion-craft/698 frames are exact and eight typography/
   1,309 frames plus ink/container probes pass near tier. 60 focused checks pass.
-  Full all-176 parity, exports/hardware/costs, defaults and full gate remain pending.
+  Full all-176 parity is running on `a843cf9`. Depth delivery completed 17
+  timelines/51 production-repeat-raw exports, then hit an export startup timeout;
+  acceptance is incomplete and its cause is unconfirmed. Prepared preview
+  provenance and export-worker 0.6.6 private-cache/startup diagnostics are staged
+  but unformatted/unverified. CE6-P's second timing hold prevents new verification;
+  the already-running family job continues. Defaults and full gate remain pending.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
@@ -276,6 +281,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d stages startup diagnostics during a second timing hold
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` (from `a843cf9`).
+- **Done:** staged export-worker 0.6.6 private Vite cache cleanup/startup error
+  reporting and inspectable prepared depth request/asset provenance. These changes
+  are **unformatted and unverified** during CE6-P's next owner-authorized hold.
+- **Results:** existing depth delivery job completed 23 serial cost brackets and
+  17 timelines / 51 production-repeat-raw exports plus 17 independent encodes,
+  then hit a 30-second export-browser startup timeout. No final report was written;
+  the cause is unconfirmed. This is an incomplete acceptance attempt.
+- **Open / next:** valid all-176 family candidate continues on `a843cf9`; no new
+  pnpm/Node/test/browser/export work starts during the hold. After release, verify
+  staged changes and retry affected delivery work, then finish defaults/full gate/PR.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d repairs distinct-state image crossfade parity
 

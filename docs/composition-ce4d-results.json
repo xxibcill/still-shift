@@ -2518,7 +2518,11 @@
     {
       "name": "PR43 spatial correctness fixes reconciled",
       "status": "integrated-focused-verification",
-      "sourceCommits": ["e16d962", "c36c686", "c0c8f5d"],
+      "sourceCommits": [
+        "e16d962",
+        "c36c686",
+        "c0c8f5d"
+      ],
       "scope": [
         "Projected children and collapsed precomps retain inherited primitive blur bounds",
         "Required coverage includes ancestor group masks/mattes/effects/visibility",
@@ -2663,7 +2667,10 @@
       "zipperInput": "/Users/jjae/Documents/obsidian/ai-business/YouTube Workflow Experiments/2026-10-06-zipper-final/composition-v004.json",
       "zipperPolicy": {
         "maxFrozenFrames": 60,
-        "intentionalCuts": [270, 510]
+        "intentionalCuts": [
+          270,
+          510
+        ]
       },
       "productionDefaults": "unchanged; switch after independent parity"
     },
@@ -2877,6 +2884,31 @@
         "All 23 depth render/readback cost brackets execute serially before the acceptance export/correctness phase"
       ],
       "productionDefaults": "unchanged; full all-176 parity and depth export/hardware/cost acceptance pending"
+    },
+    {
+      "name": "second quiet-window startup/provenance checkpoint",
+      "status": "implemented-unverified",
+      "scope": [
+        "Prepared depth previews expose their native document and accept request/asset provenance",
+        "Prepared-wrapper acceptance checks auto resolution and actual source/depth hashes",
+        "Export worker 0.6.6 uses a private Vite optimizer cache and reports captured browser startup errors without increasing timeouts"
+      ],
+      "checks": "not run; formatting and pnpm/Node/test/browser/export verification held for the next owner-authorized CE6-P timing window",
+      "runningVerifiedSnapshot": "a843cf9",
+      "depthDeliveryAttempt": {
+        "complete": false,
+        "serialCostBracketsCompleted": 23,
+        "numericCostReport": "not saved: runner failed before final report write",
+        "completedTimelines": 17,
+        "completedProductionRepeatRawExports": 51,
+        "completedIndependentPreviewEncodes": 17,
+        "failedPhase": "next timeline production export initialization",
+        "error": "page.waitForFunction window.runStillShiftExport timed out after 30000ms",
+        "cause": "unconfirmed; startup diagnostics and private cache staged",
+        "log": "/private/tmp/ce4d-depth-delivery-a843cf9.log"
+      },
+      "familyCandidate": "already-running valid all-176 job continues on a843cf9; no new verification starts during hold",
+      "productionDefaults": "unchanged; full acceptance remains required"
     }
   ],
   "pending": [

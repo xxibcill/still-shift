@@ -166,6 +166,7 @@ try {
                   },
                   source!,
                   depth,
+                  { requestedPreset: fixture.requestedPreset },
                 )
               : renderer.createCompositionPreview(canvas, doc, resources, {
                   backend: "webgl2",
@@ -178,6 +179,18 @@ try {
             throw Error(
               "Actual depth default must use the shared composition WebGL backend",
             );
+          if (preparedPath) {
+            if (!("composition" in nativePreview))
+              throw Error("Prepared depth preview must expose its native document");
+            const preparedDoc = nativePreview.composition as Composition;
+            if (
+              preparedDoc.metadata?.requestedPreset !== fixture.requestedPreset ||
+              preparedDoc.metadata?.resolvedPreset !== fixture.scene.motion.preset ||
+              preparedDoc.metadata?.sourceHash !== doc.assets[0]!.sha256 ||
+              preparedDoc.metadata?.depthHash !== (doc.assets[1]?.sha256 ?? null)
+            )
+              throw Error("Prepared depth preview lost verified request/asset provenance");
+          }
           const native = nativePreview as Render.CompositionPreview;
           const original = legacy.createWebGLPreview(
             old,

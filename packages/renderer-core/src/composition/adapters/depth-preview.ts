@@ -7,6 +7,11 @@ import {
 } from "../render/renderer.ts";
 import { depthToComposition, type DepthCompositionOptions } from "./depth.ts";
 
+type DepthPreviewProvenance = Pick<
+  DepthCompositionOptions,
+  "id" | "requestedPreset" | "requestedIntensity" | "originalSourceHash"
+>;
+
 type PreparedImageBytes = {
   url: string;
   bytes: ArrayBuffer;
@@ -49,10 +54,7 @@ export async function prepareDepthComposition(
   scene: PreviewScene,
   source: HTMLImageElement,
   depth: HTMLImageElement | null,
-  options: Pick<
-    DepthCompositionOptions,
-    "id" | "requestedPreset" | "requestedIntensity" | "originalSourceHash"
-  > = {},
+  options: DepthPreviewProvenance = {},
 ) {
   if (!depth && scene.motion.mode === "depth")
     throw Error("Depth image is required for depth motion");
@@ -107,12 +109,16 @@ export async function createPreparedDepthPreview(
   scene: PreviewScene,
   source: HTMLImageElement,
   depth: HTMLImageElement | null,
+  options: DepthPreviewProvenance = {},
 ) {
-  const prepared = await prepareDepthComposition(scene, source, depth);
-  return createCompositionPreview(
-    canvas,
-    prepared.composition,
-    prepared.resources,
-    { backend: "webgl2" },
-  );
+  const prepared = await prepareDepthComposition(scene, source, depth, options);
+  return {
+    ...createCompositionPreview(
+      canvas,
+      prepared.composition,
+      prepared.resources,
+      { backend: "webgl2" },
+    ),
+    composition: prepared.composition,
+  };
 }
