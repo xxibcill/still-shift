@@ -31,10 +31,12 @@ type Key = {
   spatialIn?: [number, number];
   spatialOut?: [number, number];
 };
+/** The top-level composition has no precomp ID. */
+export type CompositionScope = string | null;
 export type KeyTrack = {
   id: string;
   label: string;
-  scope: string;
+  scope: CompositionScope;
   owner: string;
   path: JsonPath;
   property?: string;
@@ -54,7 +56,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
     path: JsonPath,
     property: string | undefined,
     kind: KeyTrack["kind"],
-    scope: string,
+    scope: CompositionScope,
     owner: string,
     fps: number,
     array = false,
@@ -89,7 +91,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
     const id = JSON.stringify(path);
     tracks.push({
       id,
-      label: `${scope} / ${owner} · ${property ?? path.at(-1)}`,
+      label: `${scope === null ? "root" : `precomp ${scope}`} / ${owner} · ${property ?? path.at(-1)}`,
       scope,
       owner,
       path,
@@ -105,7 +107,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
   function layerTracks(
     layer: CompositionLayer,
     path: JsonPath,
-    scope: string,
+    scope: CompositionScope,
     fps: number,
   ) {
     const value = layer as unknown as Record<string, unknown>;
@@ -190,7 +192,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
       );
   }
   const scopes = [
-    { scope: "root", value: document, path: [] as JsonPath },
+    { scope: null, value: document, path: [] as JsonPath },
     ...(document.precomps ?? []).map((value, i) => ({
       scope: value.id,
       value,
@@ -254,7 +256,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
       ["signals", i, "keys"],
       undefined,
       "scalar",
-      "root",
+      null,
       `signal ${signal.id} (before additions)`,
       document.fps,
       true,
@@ -266,7 +268,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
       ["camera2d"],
       undefined,
       "camera",
-      "root",
+      null,
       "Camera 2D (source controls)",
       document.fps,
     );
@@ -402,7 +404,7 @@ export function resolvedTrackRoutes(
   let visited = 0;
   const definitions = new Map((document.precomps ?? []).map((p) => [p.id, p]));
   function visit(
-    scope: string,
+    scope: CompositionScope,
     layers: CompositionLayer[],
     route: string[],
     fps: number,
@@ -425,6 +427,6 @@ export function resolvedTrackRoutes(
           );
       }
   }
-  visit("root", document.layers, [], document.fps);
+  visit(null, document.layers, [], document.fps);
   return routes;
 }

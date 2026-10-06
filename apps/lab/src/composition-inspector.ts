@@ -17,6 +17,7 @@ import {
   editTemporalHandle,
   trackGraph,
   type KeyTrack,
+  type CompositionScope,
 } from "./composition-keys.ts";
 import { curveGraph, resolvedGraph } from "./composition-graph.ts";
 import {
@@ -40,7 +41,7 @@ const button = (text: string, action: () => void) => {
   return node;
 };
 export type InspectorSelection = {
-  scope: string;
+  scope: CompositionScope;
   layer: string;
   path: JsonPath;
 };
@@ -138,7 +139,7 @@ export function createCompositionInspector(options: {
     if (!history) return;
     const document = history.document;
     for (const entry of [
-      { scope: "root", value: document, path: [] as JsonPath },
+      { scope: null, value: document, path: [] as JsonPath },
       ...(document.precomps ?? []).map((value, index) => ({
         scope: value.id,
         value,
@@ -147,7 +148,7 @@ export function createCompositionInspector(options: {
     ]) {
       const title = documentNode(
         "p",
-        `${entry.scope} · ${entry.value.fps ?? document.fps} fps${entry.scope === "root" ? "" : " · shared definition; instance fps shown in graph"}`,
+        `${entry.scope === null ? "root" : `precomp ${entry.scope}`} · ${entry.value.fps ?? document.fps} fps${entry.scope === null ? "" : " · shared definition; instance fps shown in graph"}`,
       );
       title.className = "scope-label";
       stack.append(title);
@@ -238,16 +239,16 @@ export function createCompositionInspector(options: {
   function keyLanes() {
     lane.replaceChildren();
     if (!history) return;
-    const scope = selected?.scope ?? "root",
+    const scope = selected?.scope ?? null,
       owner = selected?.layer;
     const scopeDocument =
-      scope === "root"
+      scope === null
         ? history.document
         : history.document.precomps?.find((p) => p.id === scope);
     for (const marker of scopeDocument?.markers ?? [])
       lane.append(
         button(`Marker ${marker.id} · ${marker.frame}`, () => {
-          if (scope === "root") options.seek(marker.frame);
+          if (scope === null) options.seek(marker.frame);
           else
             message.textContent =
               "Nested marker uses its composition clock; choose an instance to seek root time.";
@@ -284,7 +285,7 @@ export function createCompositionInspector(options: {
       row.append(strip);
       lane.append(row);
     }
-    if (history.document.camera2d && scope === "root")
+    if (history.document.camera2d && scope === null)
       lane.append(
         documentNode(
           "p",

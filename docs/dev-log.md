@@ -43,13 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #37 inspector repairs in progress (2026-10-06):** isolated
+- **PR #37 inspector repairs complete (2026-10-06):** isolated
   `codex/pr37-inspector-fixes` from reviewed `12bfc1d`; all three findings are
   posted inline. R13 numeric Apply focus (`6f992bc`) and R14 asynchronous handle
-  focus are fixed; browser regressions, build and affected lint pass. R15 scope
-  identity remains, followed by affected final verification and one normal push.
-  No blocker or owner decision is needed for these authorized repairs; owner
-  review/merge remain separate. Actions stay disabled.
+  focus (`22308f5`) and R15 distinct top-level/precomp scope identity are fixed.
+  Fast checks pass 1,805 unit tests; 31 affected integration, 46 runtime and four
+  browser groups pass, including desktop/phone edits, captured MP4 parity and the
+  new focus/scope regressions. Independent standards/spec review found no new issues.
+  A missing isolated CLI dependency link and new regression fixture/parser
+  assumptions were repaired; production thresholds and baselines stay unchanged.
+  Three separate finding commits are delivered with one normal final push.
+  No implementation blocker; owner review/merge remain separate. Full gate/depth/
+  frozen baselines were not rerun or regenerated. Actions stay disabled.
   [Evidence](./pr-37-inspector-fix-results.json).
 
 - **PR #37 main conflicts resolved (2026-10-06):** isolated managed worktree
@@ -484,6 +489,21 @@ _Last updated 2026-10-06 by Codex for PR #35 main integration; both histories re
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #37 R15: Separate top-level and precomp scope identity
+
+- **Agent / branch:** Codex on isolated `codex/pr37-inspector-fixes`, after R14 `22308f5`.
+- **Done:** distinguish top-level scope from every authored precomp ID in keys,
+  selection, markers, instance routes and overlays; preserve the unselected source
+  layer when a nested root-named definition is edited and saved.
+- **Results:** validated regression fails on `12bfc1d` and passes after repair;
+  fast checks: 1,805 unit, 31 affected integration, 46 runtime and four browser
+  groups pass. Inspector phone/desktop, captured MP4 parity and new focus/scope checks pass.
+- **Repairs:** correct new fixture fps/snippet parsing and restore missing isolated
+  CLI dependency links. Independent standards/spec review found no new issues.
+- **Next:** one normal final push delivers all three finding commits. Owner
+  review/merge remain; full gate/depth/baselines were not rerun. No Actions.
+- **Records:** [Repair evidence](./pr-37-inspector-fix-results.json).
 
 ### 2026-10-06 — PR #37 R14: Respect focus moved during Bezier edits
 
