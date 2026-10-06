@@ -2909,6 +2909,16 @@
       },
       "familyCandidate": "already-running valid all-176 job continues on a843cf9; no new verification starts during hold",
       "productionDefaults": "unchanged; full acceptance remains required"
+    },
+    {
+      "name": "depth delivery failure diagnostics checkpoint",
+      "status": "implemented-unverified",
+      "scope": [
+        "Integration regression injects an export browser module error and requires diagnostic, rollback, closed browser and successful retry",
+        "Depth acceptance logs each transport before export and saves completed serial cost evidence separately from incomplete delivery acceptance"
+      ],
+      "checks": "Not run during owner-authorized CE6-P timing hold; git diff --check passed",
+      "productionDefaults": "unchanged; full family candidate still running on a843cf9"
     }
   ],
   "pending": [

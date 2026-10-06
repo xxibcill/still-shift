@@ -83,7 +83,9 @@ still hold before relying on them.
   acceptance is incomplete and its cause is unconfirmed. Prepared preview
   provenance and export-worker 0.6.6 private-cache/startup diagnostics are staged
   but unformatted/unverified. CE6-P's second timing hold prevents new verification;
-  the already-running family job continues. Defaults and full gate remain pending.
+  the already-running family job continues. Startup failure/retry regression and
+  separate serial-cost evidence are implemented but unrun. Defaults and full gate
+  remain pending.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
@@ -281,6 +283,18 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d retains delivery failure evidence
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` (from `e39f99b`).
+- **Done:** added an injected browser-module failure regression requiring captured
+  diagnostics, artifact rollback, closed browser and successful retry. Depth
+  acceptance now saves serial costs before delivery and logs the export transport.
+- **Results:** `git diff --check` passes. New tests and formatting are unrun during
+  CE6-P's owner-authorized timing hold; the existing all-176 candidate continues.
+- **Open / next:** after release, verify startup cleanup and complete depth delivery,
+  family defaults and the full local gate before the CE4d PR.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d stages startup diagnostics during a second timing hold
 

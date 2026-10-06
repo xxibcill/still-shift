@@ -129,6 +129,7 @@ try {
       ["repeat", "png_pipe"],
       ["raw", "raw_rgba"],
     ] as const) {
+      console.log(`Depth ${doc.id}: ${label}/${transport} export starts`);
       const result = await renderComposition({
         compositionPath: portable,
         backend: "webgl2",
@@ -195,6 +196,19 @@ try {
   }
   console.log(
     "All 23 serial depth cost brackets completed; correctness/export phase starts",
+  );
+  const proof = join(
+    root,
+    "benchmarks/results/composition-ce4d-depth-verification",
+  );
+  await mkdir(proof, { recursive: true });
+  await writeFile(
+    join(proof, "serial-costs.json"),
+    JSON.stringify(
+      { phase: "serial-costs", acceptanceComplete: false, environment, costs },
+      null,
+      2,
+    ) + "\n",
   );
   let localBase: Composition | undefined;
   let localScene: (typeof fixtures)[number]["scene"] | undefined;
@@ -316,11 +330,6 @@ try {
       server.resolvedUrls!.local[0]!,
       hardwareFixtures,
     );
-  const proof = join(
-    root,
-    "benchmarks/results/composition-ce4d-depth-verification",
-  );
-  await mkdir(proof, { recursive: true });
   await writeFile(
     join(proof, "native-acceptance.json"),
     JSON.stringify(
