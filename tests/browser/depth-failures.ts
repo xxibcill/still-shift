@@ -69,7 +69,7 @@ export async function depthAlphaEdgeAcceptance(page: Page) {
       );
     try {
       preview.renderFrame(0);
-      const pixels = preview.readPixels();
+      const pixels = new Uint8ClampedArray(preview.readPixels());
       let intermediatePixels = 0,
         maxConservationError = 0;
       for (let offset = 0; offset < pixels.length; offset += 4) {

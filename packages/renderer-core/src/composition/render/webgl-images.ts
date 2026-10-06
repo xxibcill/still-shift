@@ -21,6 +21,7 @@ export class WebglImages {
     private readonly device: WebglDevice,
     private readonly raster: Canvas2dBackend,
     private readonly paint: WebglPaint,
+    private readonly pngImages?: ReadonlySet<string>,
   ) {}
 
   private forget(sources: ImageContent["sources"]) {
@@ -116,13 +117,17 @@ export class WebglImages {
     this.cached.delete(content.sources);
     this.cached.set(content.sources, entry);
     const { surface, left, top, right, bottom } = entry;
-    // Direct vector drawing and antialiased clips use Canvas primitive rounding.
-    // Already-rasterized images retain bitmap source-over blending.
+    // PNG bytes identify bitmap sampling even when the image is cropped/clipped.
+    // Primitive floor rounding compounds at overlapping translucent bitmap edges.
+    // Vector sources retain the existing primitive coverage rounding.
+    const bitmap = content.sources.every((source) =>
+      this.pngImages?.has(source.asset),
+    );
     this.paint.draw(
       surface,
       dst,
       { left, top, right, bottom },
-      content.rasterize === "draw" || clips.length > 0,
+      !bitmap && (content.rasterize === "draw" || clips.length > 0),
     );
     return true;
   }

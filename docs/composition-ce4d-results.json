@@ -11347,6 +11347,357 @@
         "opaque frozen parity and refreshed full depth delivery"
       ],
       "checkpoint": "4b99cad"
+    },
+    {
+      "name": "verified PNG bitmap source-over parity repair",
+      "date": "2026-10-07",
+      "status": "implemented; focused/full parity pending",
+      "rendererVersion": "composition-webgl2-0.64.0",
+      "failure": {
+        "snapshot": "4b99cad",
+        "exitCode": 1,
+        "command": "node --import tsx tests/browser/composition-legacy-adapter.ts",
+        "log": "/private/tmp/ce4d-legacy-delivery-4b99cad.log",
+        "logSha256": "682a485789155db96d187209bba4c7e48e465967a857fb422af8640b092e0a72",
+        "reports": [
+          {
+            "backend": "canvas2d",
+            "fixture": "legacy/chronicle-reveal",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "e7d7a87238b95a6fe9d56a50e671be9bc0299769c24fd047c63dfe4954bc6084",
+            "ratio": 1.0563576283308058,
+            "timings": [
+              {
+                "legacyMs": 574.8999997377396,
+                "compositionMs": 607.3000002503395,
+                "ratio": 1.0563576283308058,
+                "cycles": 1,
+                "frames": 168
+              },
+              {
+                "legacyMs": 575.1999998092651,
+                "compositionMs": 576.7000002264977,
+                "ratio": 1.0026077893215055,
+                "cycles": 1,
+                "frames": 168
+              },
+              {
+                "legacyMs": 583.2000002861023,
+                "compositionMs": 628.5999997258186,
+                "ratio": 1.0778463638845066,
+                "cycles": 1,
+                "frames": 168
+              }
+            ]
+          },
+          {
+            "backend": "webgl2",
+            "fixture": "legacy/chronicle-reveal",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 2,
+            "minPsnr": 62.944826531275,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "dde75c16c6b28dc230d588c2935f988ca68edac48c8992147b460bb634d7d464",
+            "ratio": 0.49768732617417333,
+            "timings": [
+              {
+                "legacyMs": 1164.8000001311302,
+                "compositionMs": 576.7999998927116,
+                "ratio": 0.49519230754445137,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 1173.5000000596046,
+                "compositionMs": 596.9999999403954,
+                "ratio": 0.5087345546741137,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 1189.100000321865,
+                "compositionMs": 591.7999997138977,
+                "ratio": 0.49768732617417333,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          },
+          {
+            "backend": "canvas2d",
+            "fixture": "legacy/resource-flow",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "e8068d04a4962b2472fcbf93f2673e07722a79009ad23be896fcbd3d414f18e2",
+            "ratio": 1.1417176276566778,
+            "timings": [
+              {
+                "legacyMs": 752.200000166893,
+                "compositionMs": 858.7999997138977,
+                "ratio": 1.1417176276566778,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 762.3999999761581,
+                "compositionMs": 889.4000002145767,
+                "ratio": 1.1665792238226522,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 535.8999997973442,
+                "compositionMs": 584.8000001907349,
+                "ratio": 1.091248368001274,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          },
+          {
+            "backend": "webgl2",
+            "fixture": "legacy/resource-flow",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 2,
+            "minPsnr": 62.908115136159644,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "c3b79c8b557a6a6cc47119730e9da0a0f7214389504845d467ea7c3a0a5ca44c",
+            "ratio": 1.0509181967743266,
+            "timings": [
+              {
+                "legacyMs": 701.3999991416931,
+                "compositionMs": 717.4000007510185,
+                "ratio": 1.02281152213987,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 737.1999997496605,
+                "compositionMs": 783.3000001311302,
+                "ratio": 1.0625339126385303,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 718.8000000715256,
+                "compositionMs": 755.3999999165535,
+                "ratio": 1.0509181967743266,
+                "cycles": 3,
+                "frames": 504
+              }
+            ]
+          },
+          {
+            "backend": "canvas2d",
+            "fixture": "legacy/access-pressure",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "51fd1da8f290ec989f6fe3e3e0f5a4376351da31fa03a21c592e4b78824e2304",
+            "ratio": 1.1294636882439584,
+            "timings": [
+              {
+                "legacyMs": 747.7000001072884,
+                "compositionMs": 844.4999998211861,
+                "ratio": 1.1294636882439584,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 519.4999998807907,
+                "compositionMs": 547.8000001311302,
+                "ratio": 1.054475457664742,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 508.4999998807907,
+                "compositionMs": 599.1000001430511,
+                "ratio": 1.17817109200295,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          },
+          {
+            "backend": "webgl2",
+            "fixture": "legacy/access-pressure",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 2,
+            "minPsnr": 64.70193352675915,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "35fa45aa4dd21e8a6d69231ceba585ba850deb9b195660ad99ceac4af41c9d0b",
+            "ratio": 0.9712240946508557,
+            "timings": [
+              {
+                "legacyMs": 684.4999993443489,
+                "compositionMs": 625.3000005483627,
+                "ratio": 0.9135135151896404,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 670.6999998688698,
+                "compositionMs": 651.4000001549721,
+                "ratio": 0.9712240946508557,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 500.6999996304512,
+                "compositionMs": 534.4000004529953,
+                "ratio": 1.0673057736117773,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          },
+          {
+            "backend": "canvas2d",
+            "fixture": "legacy/comparison-build",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 2,
+            "minPsnr": 84.66104419668761,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "16e3bd5b4284c7b4cc977671cbc598473f5a52944fd9de7fb281bc722a1fc5a8",
+            "ratio": 1.1280599751208298,
+            "timings": [
+              {
+                "legacyMs": 651.3999999165535,
+                "compositionMs": 738.2000000476837,
+                "ratio": 1.1332514586156732,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 653.6000000834465,
+                "compositionMs": 737.299999833107,
+                "ratio": 1.1280599751208298,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 739.8000003695488,
+                "compositionMs": 787.3999996185303,
+                "ratio": 1.064341712929446,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          },
+          {
+            "backend": "webgl2",
+            "fixture": "legacy/comparison-build",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 3,
+            "minPsnr": 58.31485825506096,
+            "failures": [
+              {
+                "frame": 30,
+                "delta": 3,
+                "psnr": 59.5406649002123
+              },
+              {
+                "frame": 31,
+                "delta": 3,
+                "psnr": 58.93542753347026
+              },
+              {
+                "frame": 32,
+                "delta": 3,
+                "psnr": 58.52125854835708
+              },
+              {
+                "frame": 33,
+                "delta": 3,
+                "psnr": 58.81961323026074
+              },
+              {
+                "frame": 34,
+                "delta": 3,
+                "psnr": 59.79595570082627
+              }
+            ],
+            "errors": [],
+            "previewChecksum": "2fa3566a199d13470b7c1c869acd5f44f1b2421078eab10b815ba17485bf084f",
+            "ratio": 1.121554769866065,
+            "timings": [
+              {
+                "legacyMs": 692.0000000596046,
+                "compositionMs": 834.1999998092651,
+                "ratio": 1.2054913291003067,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 707.5000001788139,
+                "compositionMs": 793.4999998807907,
+                "ratio": 1.121554769866065,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 714.2999998927116,
+                "compositionMs": 777.3000000715256,
+                "ratio": 1.0881982362988611,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          }
+        ],
+        "reason": "legacy/comparison-build WebGL frames30-34 exceed unchanged near maxdelta2 with delta3; later required legacy/depth delivery phases did not run"
+      },
+      "diagnosis": {
+        "frame32": {
+          "before": {
+            "maxChannelDelta": 3,
+            "pixelsAbove2": 396
+          },
+          "bitmapCandidate": {
+            "maxChannelDelta": 1,
+            "pixelsAbove2": 0
+          }
+        },
+        "source": "/private/tmp/ce4d-legacy-diagnostic.log",
+        "candidate": "/private/tmp/ce4d-legacy-bitmap-diagnostic.log"
+      },
+      "scope": [
+        "Only hash-verified PNG sources use bitmap source-over in the bounded image raster cache, including cropped/clipped sources; vectors retain primitive rounding",
+        "Smoke diagnostics now include the five actual failing Comparison Build frames; complete all-frame acceptance remains unchanged",
+        "Repeat alpha assertion copies readback bytes before the second render"
+      ],
+      "checks": {
+        "build": "pass",
+        "scopedEslint": "pass"
+      },
+      "pending": [
+        "focused actual failing frames",
+        "complete legacy delivery/timing",
+        "refreshed native depth delivery",
+        "default migration and final full gate"
+      ]
     }
   ],
   "pending": [

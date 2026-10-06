@@ -120,6 +120,7 @@ try {
             async ({
               sceneJson,
               compositionJson,
+              itemId,
               urls,
               backend,
               smoke,
@@ -168,6 +169,10 @@ try {
                       Math.floor(composition.frameCount / 2),
                       Math.floor((3 * composition.frameCount) / 4),
                       composition.frameCount - 1,
+                      // Panel overlap exposed accumulated PNG primitive rounding.
+                      ...(itemId === "legacy/comparison-build"
+                        ? [30, 31, 32, 33, 34]
+                        : []),
                     ]),
                   ]
                 : Array.from(
@@ -265,6 +270,7 @@ try {
             {
               sceneJson: JSON.stringify(scene),
               compositionJson: JSON.stringify(composition),
+              itemId: item.id,
               urls,
               backend,
               smoke,
