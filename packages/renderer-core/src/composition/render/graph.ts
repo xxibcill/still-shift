@@ -1,6 +1,9 @@
 import type { CompiledShapes } from "../shapes/types.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
-import type { EvaluatedEffect } from "../evaluate/effects.ts";
+import {
+  primitiveBlurEffect,
+  type EvaluatedEffect,
+} from "../evaluate/effects.ts";
 import { evaluateComp } from "../evaluate/evaluate.ts";
 import type {
   BezierPath,
@@ -837,21 +840,8 @@ class GraphBuilder {
   /** A positive paint blur overrides inherited group blur; zero retains it. */
   private paintBlur(scope: Scope, state: EvaluatedLayer, frame: Frame): number {
     scope = this.exposureScope(scope, state);
-    for (
-      let current: EvaluatedLayer | undefined = state;
-      current;
-      current = current.layer.parent
-        ? scope.byId.get(current.layer.parent)
-        : undefined
-    ) {
-      if (current !== state && current.layer.type !== "group") continue;
-      const blur = current.effects.find(
-        (effect) => effect.enabled && effect.effect === "blur.primitive",
-      );
-      if (blur && (blur.params.radius as number) > 0)
-        return blur.params.radius as number;
-    }
-    return frame.paintBlur ?? 0;
+    const blur = primitiveBlurEffect(state, scope.byId);
+    return blur ? (blur.params.radius as number) : (frame.paintBlur ?? 0);
   }
 
   /** Historical input is painted before current input and this frame's pixel stack/matte. */
@@ -1028,9 +1018,27 @@ class GraphBuilder {
     blend: CompositionBlendMode,
     paintBlur: number,
   ): RenderOp[] {
-    const plane = state.projection!,
-      key = frame.prefix + state.id,
+    const key = frame.prefix + state.id,
       layer = state.layer;
+    let plane = state.projection!;
+    if (
+      paintBlur &&
+      !primitiveBlurEffect(state, this.exposureScope(scope, state).byId)
+    ) {
+      // Collapsed precomps can inherit paint from a different composition scope.
+      const margin = paintBlur * 3 + 2,
+        bounds = plane.localBounds;
+      plane = projectPlane(
+        state.worldMatrix3d!,
+        this.exposureScope(scope, state).tree.camera!,
+        {
+          left: bounds.left - margin,
+          top: bounds.top - margin,
+          right: bounds.right + margin,
+          bottom: bounds.bottom + margin,
+        },
+      );
+    }
     if (!plane.inverse || !plane.bounds) return [];
     const inverse = plane.inverse;
     if (layer.type === "precomp" && layer.collapseTransforms)

@@ -1,0 +1,379 @@
+{
+  "version": "pr-43-fix-results-1",
+  "date": "2026-10-06",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/43",
+  "reviewHead": "9d8f33a31cc4d096b8235fbe679c5ef7e20202cf",
+  "delivery": "One commit per finding; push only after final commit.",
+  "status": "Finding 1 verified; findings 2 and 3 pending.",
+  "environment": {
+    "profile": "chromium-software-2",
+    "browserVersion": "151.0.7922.34",
+    "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+    "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "preflight": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "toolchain": "passed",
+    "pythonImports": "passed from isolated worktree .venv and depth-worker source",
+    "cacheIsolation": "Private node_modules Vite caches and temporary per-browser cacheDir; package dependencies linked read-only. Python environment copied with independent files.",
+    "setupRepairs": [
+      "Copied Python editable path referenced an old checkout; pointed only the isolated .venv at this worktree source.",
+      "Initial regression assumed group isolation; primitive-only groups flatten, so assertion now inspects the actual projected draw."
+    ]
+  },
+  "fixes": [
+    {
+      "finding": 1,
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759920",
+      "summary": "Retain inherited primitive blur in evaluated/projected bounds, including zero inheritance, local override and collapsed affine precomp scope inheritance.",
+      "redProof": "On review head, absent/zero child radius allocates 10 pixels rather than required 44; positive local radius already passes.",
+      "checks": {
+        "focusedUnits": {
+          "status": "passed",
+          "tests": 20
+        },
+        "pixelComparisons": {
+          "status": "passed",
+          "cases": 24,
+          "maximumChannelDelta": 0,
+          "casesDetail": [
+            {
+              "backend": "canvas2d",
+              "childRadius": "inherited",
+              "left": 40,
+              "collapsed": false,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": "inherited",
+              "left": 40,
+              "collapsed": true,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": "inherited",
+              "left": 102,
+              "collapsed": false,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": "inherited",
+              "left": 102,
+              "collapsed": true,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 0,
+              "left": 40,
+              "collapsed": false,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 0,
+              "left": 40,
+              "collapsed": true,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 0,
+              "left": 102,
+              "collapsed": false,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 0,
+              "left": 102,
+              "collapsed": true,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 2,
+              "left": 40,
+              "collapsed": false,
+              "halo": 105,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 2,
+              "left": 40,
+              "collapsed": true,
+              "halo": 105,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 2,
+              "left": 102,
+              "collapsed": false,
+              "halo": 32,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 2,
+              "left": 102,
+              "collapsed": true,
+              "halo": 32,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": "inherited",
+              "left": 40,
+              "collapsed": false,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": "inherited",
+              "left": 40,
+              "collapsed": true,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": "inherited",
+              "left": 102,
+              "collapsed": false,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": "inherited",
+              "left": 102,
+              "collapsed": true,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 0,
+              "left": 40,
+              "collapsed": false,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 0,
+              "left": 40,
+              "collapsed": true,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 0,
+              "left": 102,
+              "collapsed": false,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 0,
+              "left": 102,
+              "collapsed": true,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 2,
+              "left": 40,
+              "collapsed": false,
+              "halo": 105,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 2,
+              "left": 40,
+              "collapsed": true,
+              "halo": 105,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 2,
+              "left": 102,
+              "collapsed": false,
+              "halo": 32,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 2,
+              "left": 102,
+              "collapsed": true,
+              "halo": 32,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            }
+          ]
+        },
+        "build": "passed",
+        "changedFileLint": "passed",
+        "diffCheck": "passed"
+      },
+      "runtimeIdentity": {
+        "evaluator": "composition-evaluator-46",
+        "canvas": "composition-canvas-1.40.1",
+        "webgl2": "composition-webgl2-0.55.1",
+        "export": "chromium-ffmpeg-0.6.3"
+      }
+    }
+  ],
+  "finalVerification": {
+    "status": "pending",
+    "fullPnpmCheck": "not run on fixes yet",
+    "baselines": "No baseline regenerated."
+  }
+}

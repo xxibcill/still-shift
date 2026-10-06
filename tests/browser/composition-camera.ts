@@ -26,6 +26,7 @@ import {
   type CameraFixture,
 } from "./camera-hardware.ts";
 import { cameraFailureAcceptance } from "./camera-failures.ts";
+import { cameraGroupBlurAcceptance } from "./camera-group-blur.ts";
 import { cameraSampleCosts } from "./camera-cost.ts";
 import { cameraInspectorAcceptance } from "./camera-inspector.ts";
 
@@ -200,7 +201,8 @@ try {
     items[name] = { source: digest(JSON.stringify(doc)), hashes };
     console.log("Native CE8 fixture:", name);
   }
-  const failures = await cameraFailureAcceptance(page, root),
+  const groupBlur = await cameraGroupBlurAcceptance(page),
+    failures = await cameraFailureAcceptance(page, root),
     hardware = await cameraHardwarePreview(
       server.resolvedUrls!.local[0]!,
       fixtures,
@@ -240,6 +242,7 @@ try {
         reports,
         failures,
         hardware,
+        groupBlur,
         inspector,
         baseline: writing ? "created new CE8 baseline" : "exact",
       },
@@ -253,6 +256,7 @@ try {
       reports,
       failures,
       hardware,
+      groupBlur,
       inspector,
       baseline: writing ? "created CE8" : "exact",
     }),
