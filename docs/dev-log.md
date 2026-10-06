@@ -357,7 +357,6 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 - **Records:** [Saved handoff](./composition-continuation-handoff-2026-10-07.md),
   [measured evidence](./composition-ce4d-results.json). Owner edits are preserved.
 
-
 ### 2026-10-07 — CE4d hardware depth interpolation checkpoint
 
 - **Agent / branch:** Codex on `codex/composition-ce4d` after `bcc1c8b`.
@@ -370,7 +369,6 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   complete milestone gate. Earlier failed/rejected diagnostics remain recorded.
 - **Records:** [Full measured evidence](./composition-ce4d-results.json).
 
-
 ### 2026-10-07 — CE4d complete depth delivery reaches hardware failure
 
 - **Agent / branch:** Codex on `codex/composition-ce4d`, verified code `f01a35b`.
@@ -382,7 +380,6 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   fail frozen software parity. No production shader change retained.
 - **Next:** Verify hardware-only interpolation, then finish migration and full gate.
 - **Records:** [Full costs, failure and diagnostics](./composition-ce4d-results.json).
-
 
 ### 2026-10-06 — CE4d startup and provenance focused acceptance passes
 
