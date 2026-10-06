@@ -48,7 +48,8 @@ still hold before relying on them.
   First authored slice defines camera optics/coverage fields and pure 4x4 world,
   camera-basis, clipped projective-plane and bounded focus-blur geometry, with
   independent analytic test cases, plus opt-in xyz keyed/separated/spatial
-  sampling with unchanged 2D arithmetic. Tests, formatting and builds have not run:
+  sampling, xyz own-key loops/roving and camera/spatial paths with unchanged
+  2D arithmetic. Tests, formatting and builds have not run:
   the coordinated CE6-P quiet window is active. Runtime camera/3D availability
   remains gated until evaluation/render integration is implemented and verified.
   No owner decision is pending. Next: focused verification after release, xyz
@@ -206,6 +207,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 spatial expression/path checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after sampler `0f83ff2`.
+- **Authored:** xyz own-key curves/loop offsets/full-distance roving; implicit-z
+  scale defaults; typed camera optics/POI and spatial transform/reference paths.
+  Existing 2D expression roving arithmetic is unchanged.
+- **Verification:** independent interpolation/loop/roving/path cases are authored
+  but unexecuted; the CE6-P quiet window still holds all verification workloads.
+- **Next:** connect evaluated spatial/camera values, parent world matrices and
+  scope camera selection; verify authored slices after the release message.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 xyz sampling checkpoint
 

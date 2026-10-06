@@ -3617,6 +3617,9 @@ Opt-in xyz keyed/separated/spatial sampling is now authored with full 3D arc
 lengths and fallback-sensitive cache keys; its fractional/reverse/shared-cache
 tests remain unexecuted during the same quiet window.
 
+XYZ expression own-key sampling/loops/roving and typed camera/spatial authoring
+paths are also authored, with independent cases pending execution after release.
+
 **Completion record:** _to be filled in._
 
 ---

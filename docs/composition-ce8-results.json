@@ -36,7 +36,24 @@
         "status": "not run",
         "reason": "Coordinated CE6-P quiet window remains active",
         "analyticCases": "Authored constant/grouped/separated/fractional, pure-z spatial motion, reverse/random sampling, shared keyed position/scale defaults and unchanged xy checks"
-      }
+      },
+      "implementation": "0f83ff2"
+    },
+    {
+      "name": "Spatial expression own keys and authoring paths",
+      "status": "authored-verification-deferred",
+      "features": [
+        "XYZ own-key curves, loop offsets and full-distance roving with implicit z defaults",
+        "Camera orientation and point-of-interest keyed reads",
+        "Typed camera optics/POI paths and spatial transform/reference components",
+        "Established 2D expression roving table is unchanged"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored independent XYZ interpolation, loop offset, pure-z roving, implicit-scale z and camera path typing/rejections"
+      },
+      "pending": "Connect evaluated xyz/camera values and live render availability before native scene verification"
     }
   ],
   "pending": [
