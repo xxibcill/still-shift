@@ -33,13 +33,13 @@
     "test:browser:dolly": "node --import tsx tests/browser/cinematic.ts --preset dolly_zoom_tension",
     "threshold:render": "node --import tsx scripts/render-cinematic-demos.ts --preset threshold_push",
     "lab": "vite --config apps/lab/vite.config.ts",
-    "format": "prettier --write \"{apps,benchmarks,docs,packages,scripts,services,tests,tools}/**/*.{css,html,json,md,mts,ts}\" \"*.{json,mts,yaml,yml}\" README.md ROADMAP.md && uv run ruff format services/depth-worker packages/execution-runtime/src/artifact-lock-helper.py",
-    "format:check": "prettier --check \"{apps,benchmarks,docs,packages,scripts,services,tests,tools}/**/*.{css,html,json,md,mts,ts}\" \"*.{json,mts,yaml,yml}\" README.md ROADMAP.md && uv run ruff format --check services/depth-worker packages/execution-runtime/src/artifact-lock-helper.py",
+    "format": "prettier --write \"{apps,benchmarks,docs,examples,packages,scripts,services,skills,tests,tools}/**/*.{css,html,json,md,mts,ts}\" \"*.{json,mts,yaml,yml}\" README.md ROADMAP.md && uv run ruff format services/depth-worker packages/execution-runtime/src/artifact-lock-helper.py",
+    "format:check": "prettier --check \"{apps,benchmarks,docs,examples,packages,scripts,services,skills,tests,tools}/**/*.{css,html,json,md,mts,ts}\" \"*.{json,mts,yaml,yml}\" README.md ROADMAP.md && uv run ruff format --check services/depth-worker packages/execution-runtime/src/artifact-lock-helper.py",
     "lint": "eslint . && uv run ruff check services/depth-worker packages/execution-runtime/src/artifact-lock-helper.py",
     "schema:check": "node --import tsx scripts/generate-corpus-schema.ts --check",
     "schema:generate": "node --import tsx scripts/generate-corpus-schema.ts",
     "still-shift": "tsx tools/still-shift-cli/src/cli.ts",
-    "test": "pnpm test:unit && pnpm test:runtime && pnpm test:integration && pnpm test:depth && pnpm test:browser:soundtrack && pnpm test:browser:depth && pnpm test:browser:vertical-image && pnpm test:browser:export && pnpm test:golden && pnpm test:browser:cli && pnpm test:browser:batch && pnpm test:browser:illustrated && pnpm test:browser:illustrated:vertical && pnpm test:browser:cinematic && pnpm test:browser:cinematic:vertical && pnpm test:browser:threshold && pnpm test:browser:dolly && pnpm test:browser:lateral && pnpm test:browser:reveal && pnpm test:browser:story && pnpm test:browser:story:activity && pnpm test:browser:story:continuous && pnpm test:browser:passage:authoring && pnpm test:browser:lab-session && pnpm test:browser:commerce && pnpm test:browser:commerce-components && pnpm test:browser:commerce-effects && pnpm test:browser:commerce-spatial && pnpm test:browser:reusable-components && pnpm test:browser:reusable-package && pnpm test:browser:reusable-behavior-package && pnpm test:browser:reusable-timing-package && pnpm test:browser:typography && pnpm test:browser:typography:fixtures && pnpm test:browser:composition-evaluator && pnpm test:browser:composition-expressions && pnpm test:browser:composition-quality && pnpm test:browser:composition && pnpm test:browser:composition-webgl && pnpm test:browser:composition-webgl-export && pnpm test:browser:composition-exposure && pnpm test:browser:composition-effects && pnpm test:browser:composition-story-adapter && pnpm test:browser:composition-native-passage && pnpm test:browser:composition-native-passage:webgl && pnpm test:browser:composition-passage && pnpm test:browser:composition-story-fixtures && pnpm test:browser:composition-commerce-adapter && pnpm test:browser:composition-typography-adapter && pnpm test:browser:composition-provider-typography && pnpm test:browser:composition-baselines",
+    "test": "pnpm test:unit && pnpm test:runtime && pnpm test:integration && pnpm test:depth && pnpm test:browser:soundtrack && pnpm test:browser:depth && pnpm test:browser:vertical-image && pnpm test:browser:export && pnpm test:golden && pnpm test:browser:cli && pnpm test:browser:batch && pnpm test:browser:illustrated && pnpm test:browser:illustrated:vertical && pnpm test:browser:cinematic && pnpm test:browser:cinematic:vertical && pnpm test:browser:threshold && pnpm test:browser:dolly && pnpm test:browser:lateral && pnpm test:browser:reveal && pnpm test:browser:story && pnpm test:browser:story:activity && pnpm test:browser:story:continuous && pnpm test:browser:passage:authoring && pnpm test:browser:lab-session && pnpm test:browser:commerce && pnpm test:browser:commerce-components && pnpm test:browser:commerce-effects && pnpm test:browser:commerce-spatial && pnpm test:browser:reusable-components && pnpm test:browser:reusable-package && pnpm test:browser:reusable-behavior-package && pnpm test:browser:reusable-timing-package && pnpm test:browser:typography && pnpm test:browser:typography:fixtures && pnpm test:browser:composition-evaluator && pnpm test:browser:composition-expressions && pnpm test:browser:composition-quality && pnpm test:browser:composition && pnpm test:browser:composition-webgl && pnpm test:browser:composition-webgl-export && pnpm test:browser:composition-exposure && pnpm test:browser:composition-effects && pnpm test:browser:composition-story-adapter && pnpm test:browser:composition-native-passage && pnpm test:browser:composition-native-passage:webgl && pnpm test:browser:composition-passage && pnpm test:browser:composition-story-fixtures && pnpm test:browser:composition-commerce-adapter && pnpm test:browser:composition-typography-adapter && pnpm test:browser:composition-provider-typography && pnpm test:browser:composition-program && pnpm test:browser:composition-builder && pnpm test:browser:composition-baselines",
     "test:browser:illustrated": "node --import tsx tests/browser/illustrated.ts",
     "test:browser:batch": "tsx tests/browser/batch-cli.ts",
     "test:browser:depth": "tsx tests/browser/depth-motion.ts",
@@ -86,7 +86,7 @@
     "test:runtime": "vitest run tests/runtime --maxWorkers=2 --no-file-parallelism",
     "test:browser:smoke": "pnpm test:browser:lab-session && node --import tsx tests/browser/reusable-components.ts --smoke-only --ui-export --timing-only",
     "check:boundaries": "node --import tsx scripts/check-package-boundaries.ts",
-    "format:check:ts": "prettier --check \"{apps,benchmarks,docs,packages,scripts,services,tests,tools}/**/*.{css,html,json,md,mts,ts}\" \"*.{json,mts,yaml,yml}\" README.md ROADMAP.md",
+    "format:check:ts": "prettier --check \"{apps,benchmarks,docs,examples,packages,scripts,services,skills,tests,tools}/**/*.{css,html,json,md,mts,ts}\" \"*.{json,mts,yaml,yml}\" README.md ROADMAP.md",
     "lint:ts": "eslint .",
     "check:fast": "pnpm schema:check && pnpm check:boundaries && pnpm format:check:ts && pnpm lint:ts && pnpm build && pnpm test:fast",
     "check:runtime": "pnpm toolchain:check && pnpm test:runtime && pnpm test:integration && pnpm test:depth && pnpm test:browser:smoke",
@@ -119,6 +119,8 @@
     "test:browser:composition-passage": "node --import tsx tests/browser/passage-authoring.ts --composition",
     "test:browser:composition-native-passage": "node --import tsx tests/browser/composition-native-passage.ts",
     "test:browser:composition-native-passage:webgl": "node --import tsx tests/browser/composition-native-passage.ts --webgl",
+    "test:browser:composition-program": "node --import tsx tests/browser/composition-program.ts",
+    "test:browser:composition-builder": "node --import tsx tests/browser/composition-builder-proof.ts",
     "soundtrack:proof": "node scripts/soundtrack/proof.mjs",
     "soundtrack:setup": "node scripts/soundtrack/setup.mjs",
     "test:soundtrack": "vitest run tests/unit/soundtrack-project.test.ts tests/unit/soundtrack-preview.test.ts tests/integration/soundtrack.test.ts tests/integration/soundtrack-api.test.ts tests/integration/soundtrack-api-concurrency.test.ts tests/integration/passage-audio.test.ts --no-file-parallelism",
@@ -141,6 +143,7 @@
     "vite": "7.3.6",
     "vitest": "3.2.4",
     "zod": "4.1.5",
-    "@still-shift/execution-runtime": "workspace:*"
+    "@still-shift/execution-runtime": "workspace:*",
+    "@still-shift/motion": "workspace:*"
   }
 }

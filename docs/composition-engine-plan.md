@@ -374,7 +374,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE7   | Motion blur and time controls                   | B      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
-| CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 |                        |                                     | `[ ]`  |                                                                                    |
+| CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            |                        |                                     | `[ ]`  |                                                                                    |
 | CE12  | Motion linting                                  | C      | CE2                  | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7             |                        |                                     | `[ ]`  |                                                                                    |
@@ -3634,30 +3634,30 @@ export default comp({ width: 1920, height: 1080, fps: 30, seconds: 8 }, (c) => {
 
 ### Checklist
 
-- [ ] New package `packages/motion-builder` (`@still-shift/motion`), browser- and
+- [x] New package `packages/motion-builder` (`@still-shift/motion`), browser- and
       Node-safe, depending only on `@still-shift/scene-contract`.
-- [ ] Constructors for every layer type, fluent transforms, property animation
+- [x] Constructors for every layer type, fluent transforms, property animation
       (`to`, `from`, `by`, `keys`), easing helpers mirroring `CurveEasingSchema`.
-- [ ] Timeline algebra: `seq`, `par`, `stagger`, `delay`, `after(ref, frames)`,
+- [x] Timeline algebra: `seq`, `par`, `stagger`, `delay`, `after(ref, frames)`,
       `at(markerOrCue)`, relative durations in frames or seconds (rounded by the
       documented rule), with conflict detection on the same property.
-- [ ] Asset registration computes SHA-256 and dimensions at build time (Node) or
+- [x] Asset registration computes SHA-256 and dimensions at build time (Node) or
       accepts precomputed hashes (browser).
-- [ ] Presets as plain functions (for example `presets.drawOn(path)`); port the story
+- [x] Presets as plain functions (for example `presets.drawOn(path)`); port the story
       intent presets.
-- [ ] Expose CE1's instance-specific property paths through builder helpers for
+- [x] Expose CE1's instance-specific property paths through builder helpers for
       reused precomps, including explicit cross-instance driver sources and targets.
-- [ ] Source maps: every emitted node records the builder call site; diagnostics show
+- [x] Source maps: every emitted node records the builder call site; diagnostics show
       `file:line`.
-- [ ] CLI: `still-shift comp` subcommands `validate`, `render`, `preview --watch`,
+- [x] CLI: `still-shift comp` subcommands `validate`, `render`, `preview --watch`,
       `lint`, `bake` and `export-json`, accepting `.json` or `.ts` sources.
-- [ ] AI reference: generated `docs/composition-reference.md` (schema, property paths,
+- [x] AI reference: generated `docs/composition-reference.md` (schema, property paths,
       diagnostics, built-ins, expression grammar) plus a compact
       `skills/compose-with-still-shift/SKILL.md` with examples; keep both generated from
       the schema and the built-in registry where possible.
-- [ ] Builder helpers for expressions (an `expr` tagged template such as `` expr`wiggle(2, 6, 7)` `` and `ref(path)`) that
+- [x] Builder helpers for expressions (an `expr` tagged template such as `` expr`wiggle(2, 6, 7)` `` and `ref(path)`) that
       emit the text syntax and validate it at build time with source locations.
-- [ ] Examples directory with at least eight small programs covering the milestones
+- [x] Examples directory with at least eight small programs covering the milestones
       delivered so far.
 
 **Acceptance:** The Unequal Margins continuous prototype is re-authored as a builder
@@ -3668,7 +3668,40 @@ new brief without schema errors (record the trial).
 **Verification:** Type tests (`tsd` or `expectTypeOf`), emitted-JSON snapshot tests,
 timeline-algebra unit tests, CLI integration tests.
 
-**Completion record:** _to be filled in._
+### CE10 completion record (2026-10-05)
+
+- **Owner / branch:** Codex on `codex/composition-ce10`, from CE4a `869a793` /
+  [PR #35](https://github.com/xxibcill/still-shift/pull/35). Frequent checkpoint commits
+  deliver the builder, selectors/source sites, CLI, watch preview, examples, presets,
+  generated authoring guidance and CLI exit-code/asset-path compatibility repairs; runtime checkpoint `e501fed`.
+- **Delivered:** browser/Node typed native composition authoring, timeline algebra,
+  native key/effect/mask selectors, pinned asset helpers, compact call-site metadata,
+  seven motion and eight text recipes. Fresh child-process compilation supports all
+  composition CLI commands and dependency/asset watch recovery without page reloads.
+- **Builder acceptance:** eight examples validate. The 197-line Unequal Margins
+  program agrees with CE4a at 42,256 numeric samples (maximum delta 5.7e-14) and
+  all 192 frames on Canvas/WebGL (zero channel delta), including backward seeks.
+  TypeScript/JSON MP4 exports are byte-identical.
+- **Skill acceptance:** retain the unsuccessful initial skill-only trial and its eleven
+  source versions. Repair timing/clock and stacking guidance, then a fresh isolated
+  agent validates a new brief on its first completed validator execution: zero schema
+  errors and no source repairs. Its unchanged source renders 96 frames at 24 fps,
+  with pinned text and inspected arrival/read/exit frames. Deliberate reading holds
+  retain the default lint findings; this is schema/authoring acceptance, not a claim
+  of production craft acceptance. [Trial record](./composition-ce10-skill-trials.json).
+- **Local verification:** complete `pnpm check` passes on pinned Node 22.23.1 /
+  pnpm 10.29.3 in a clean tracked snapshot at `e501fed`, preserving unrelated owner
+  local edits. It includes 1,499 unit, 46 runtime, 134 integration and 14 depth tests,
+  all browser groups (including watch, source/JSON exports and builder proof), then
+  all 176 CE0 baselines / 36,061 frames without regeneration. Earlier full runs
+  exposed render exit-code, aliased asset-path and missing-parent identity failures; their
+  repairs and the complete passing rerun are recorded in [verification evidence](./composition-ce10-results.json).
+- **Limits:** richer native shapes remain CE5, 3D remains CE8 and media remains CE13.
+  Interim drawOn uses story.path providers. WebGL performance remains deferred to
+  CE6-P; no renderer output changed. GitHub Actions remain disabled.
+- **PR / next:** [PR #36](https://github.com/xxibcill/still-shift/pull/36) is open and
+  attached, stacked on CE4a. Begin CE11 on its own branch; owner review and merges
+  remain pending.
 
 ---
 

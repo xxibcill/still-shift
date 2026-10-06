@@ -37,6 +37,7 @@ export function providerReadingComposition(
         type: "provider",
         provider: "story.text@1.0.0",
         usesSystemFonts: true,
+        source: { family: "story", id: "words" },
         params,
         bounds: [0, 0, 550, 35],
         transform: { anchor: [0, 0], position: [40, 40] },

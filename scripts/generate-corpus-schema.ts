@@ -1,3 +1,4 @@
+import { generateCompositionReference } from "./generate-composition-reference.ts";
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -66,3 +67,8 @@ if (stale.length)
   throw new Error(
     `JSON Schema is stale: ${stale.join(", ")}. Run pnpm schema:generate and commit the result.`,
   );
+
+await generateCompositionReference(
+  repositoryRoot,
+  process.argv.includes("--check"),
+);

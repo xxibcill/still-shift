@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 import { runSoundtrackCli } from "./soundtrack-cli.ts";
-import { readFile, writeFile } from "node:fs/promises";
-import { dirname, resolve, relative } from "node:path";
-import { CommerceSceneSchema } from "@still-shift/scene-contract";
+import { readFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
 import { prepareCommerceFile } from "../../../packages/animation-engine/src/commerce-preparation.ts";
 import { pathToFileURL } from "node:url";
 import { readStoryPassage } from "../../../packages/animation-engine/src/story-passage-io.ts";
@@ -24,18 +23,10 @@ import {
   generateSfx,
   SfxGenerationError,
   importNarrationFile,
-  renderComposition,
-  lintCompositionFile,
-  compileCommerceComposition,
-  compileStoryComposition,
 } from "@still-shift/animation-engine";
-import { CompositionQualityPolicySchema } from "@still-shift/renderer-core";
-import { bakeExpressions } from "../../../packages/renderer-core/src/composition/bake.ts";
 import {
   AnimationEngineError,
   AnimationIntensitySchema,
-  normalizeExpressions,
-  validateComposition,
   AnimationPresetSchema,
   ENGINE_VERSION,
   formatSize,
@@ -45,6 +36,8 @@ import {
   type AnimationFailure,
 } from "@still-shift/scene-contract";
 
+import { parseNamedArguments, requireArgument } from "./named-options.ts";
+import { runCompositionCommand } from "./composition/commands.ts";
 import { runBatch } from "./batch.ts";
 import { parseOutputFormat } from "./format-option.ts";
 import {
@@ -77,11 +70,14 @@ Usage:
   pnpm still-shift passage import-narration --plan <plan.json> --narration <audio.wav|mp3> --timing <words.json|captions.srt> --mode match|add --output <new-plan.json>
   pnpm still-shift sfx generate --provider elevenlabs --id <slug> --prompt <text> --duration <seconds> --output-dir <new-directory> [--prompt-influence 0.3] [--loop true|false]
   pnpm still-shift prepare-commerce --brief <brief.json> --output <prepared.json>
-  pnpm --silent still-shift comp render --input <composition.json> --output <path.mp4> [--backend canvas2d|webgl2]
-  pnpm --silent still-shift comp export-json --scene <story-or-commerce.json> [--output <composition.json>] [--normalized true]
-  pnpm --silent still-shift comp normalize --input <composition.json> [--output <composition.json>]
-  pnpm --silent still-shift comp bake --input <composition.json> [--output <composition.json>]
-  pnpm --silent still-shift comp lint --input <composition.json> [--policy <policy.json>] [--pixels true|false]
+  pnpm --silent still-shift comp preview --input <composition.json|program.ts> [--watch] [--port 4173]
+  pnpm --silent still-shift comp validate --input <composition.json|program.ts>
+  pnpm --silent still-shift comp export-json --input <composition.json|program.ts> [--output <composition.json>]
+  pnpm --silent still-shift comp render --input <composition.json|program.ts> --output <path.mp4> [--backend canvas2d|webgl2]
+  pnpm --silent still-shift comp export-json --scene <story-or-commerce.json> [--output <composition.json|program.ts>] [--normalized true]
+  pnpm --silent still-shift comp normalize --input <composition.json|program.ts> [--output <composition.json|program.ts>]
+  pnpm --silent still-shift comp bake --input <composition.json|program.ts> [--output <composition.json|program.ts>]
+  pnpm --silent still-shift comp lint --input <composition.json|program.ts> [--policy <policy.json>] [--pixels true|false]
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
@@ -105,58 +101,6 @@ SFX generation uses ELEVENLABS_API_KEY from the server environment and consumes 
 SFX duration: 0.5–30 seconds. Prompt influence: 0–1. Loop defaults to false.
 Each SFX request needs a fresh output directory; paid requests are never automatically retried.
 `;
-
-const parseNamedArguments = (
-  argumentsToParse: string[],
-  names: string[] = [
-    "input",
-    "output",
-    "duration",
-    "fps",
-    "preset",
-    "intensity",
-    "seed",
-    "adapter",
-    "format",
-    "focus",
-  ],
-): Map<string, string> => {
-  const values = new Map<string, string>();
-  const allowed = new Set(names);
-
-  for (let index = 0; index < argumentsToParse.length; index += 2) {
-    const key = argumentsToParse[index];
-    const value = argumentsToParse[index + 1];
-    if (key === undefined || !key.startsWith("--") || value === undefined) {
-      throw new AnimationEngineError(
-        "SCENE_INVALID",
-        `Invalid CLI option near: ${key ?? "end of command"}`,
-      );
-    }
-    const name = key.slice(2);
-    if (!allowed.has(name) || values.has(name)) {
-      throw new AnimationEngineError(
-        "SCENE_INVALID",
-        `Unknown or duplicate CLI option: --${name}`,
-      );
-    }
-    values.set(name, value);
-  }
-
-  return values;
-};
-
-const requireArgument = (values: Map<string, string>, name: string): string => {
-  const value = values.get(name);
-  if (value === undefined) {
-    throw new AnimationEngineError(
-      "SCENE_INVALID",
-      `Missing required CLI option: --${name}`,
-      { option: name },
-    );
-  }
-  return value;
-};
 
 const parseFiniteNumber = (value: string, name: string): number => {
   const parsed = Number(value);
@@ -414,168 +358,8 @@ export const runCli = async (
       return 1;
     }
   }
-  if (args[0] === "comp" && args[1] === "lint") {
-    try {
-      const values = parseNamedArguments(args.slice(2), [
-        "input",
-        "policy",
-        "pixels",
-      ]);
-      const pixels = values.get("pixels") ?? "false";
-      if (!["true", "false"].includes(pixels))
-        throw new Error("--pixels must be true or false");
-      const policyPath = values.get("policy");
-      const policy = policyPath
-        ? CompositionQualityPolicySchema.parse(
-            JSON.parse(await readFile(resolve(policyPath), "utf8")),
-          )
-        : {};
-      const report = await lintCompositionFile(
-        resolve(requireArgument(values, "input")),
-        policy,
-        { pixels: pixels === "true" },
-      );
-      io.stdout(`${JSON.stringify(report)}\n`);
-      return report.status === "failed" ? 1 : 0;
-    } catch (error) {
-      io.stderr(
-        `${JSON.stringify({ status: "failed", diagnostics: passageDiagnostics(error) })}\n`,
-      );
-      return 1;
-    }
-  }
-  if (args[0] === "comp" && (args[1] === "bake" || args[1] === "normalize")) {
-    try {
-      const values = parseNamedArguments(args.slice(2), ["input", "output"]);
-      const input: unknown = JSON.parse(
-        await readFile(resolve(requireArgument(values, "input")), "utf8"),
-      );
-      const result =
-        args[1] === "bake"
-          ? bakeExpressions(input)
-          : (() => {
-              const validation = validateComposition(input);
-              return validation.ok
-                ? {
-                    ...validation,
-                    composition: normalizeExpressions(validation.composition),
-                    baked: undefined,
-                  }
-                : validation;
-            })();
-      if (!result.ok) {
-        io.stderr(
-          `${JSON.stringify({ status: "failed", diagnostics: result.diagnostics })}\n`,
-        );
-        return 1;
-      }
-      const text = `${JSON.stringify(result.composition, null, 2)}\n`;
-      const output = values.get("output");
-      if (!output) io.stdout(text);
-      else {
-        const outputPath = resolve(output);
-        await writeFile(outputPath, text, { flag: "wx" });
-        io.stdout(
-          `${JSON.stringify({
-            status: args[1] === "bake" ? "baked" : "normalized",
-            outputPath,
-            ...(result.baked ? { baked: result.baked } : {}),
-            diagnostics: result.diagnostics,
-          })}\n`,
-        );
-      }
-      return 0;
-    } catch (error) {
-      io.stderr(
-        `${JSON.stringify({ status: "failed", diagnostics: passageDiagnostics(error) })}\n`,
-      );
-      return 1;
-    }
-  }
-  if (args[0] === "comp" && args[1] === "export-json") {
-    try {
-      const values = parseNamedArguments(args.slice(2), [
-        "scene",
-        "output",
-        "normalized",
-      ]);
-      const scenePath = resolve(requireArgument(values, "scene"));
-      const scene: unknown = JSON.parse(await readFile(scenePath, "utf8"));
-      const composition =
-        scene &&
-        typeof scene === "object" &&
-        "schemaVersion" in scene &&
-        scene.schemaVersion === "commerce-scene-1"
-          ? await compileCommerceComposition(
-              CommerceSceneSchema.parse(scene),
-              dirname(scenePath),
-            )
-          : await compileStoryComposition(
-              StorySceneSchema.parse(scene),
-              dirname(scenePath),
-            );
-      const normalized = values.get("normalized");
-      if (
-        normalized !== undefined &&
-        normalized !== "true" &&
-        normalized !== "false"
-      )
-        throw new AnimationEngineError(
-          "SCENE_INVALID",
-          "--normalized must be true or false",
-        );
-      if (normalized === "true")
-        Object.assign(composition, normalizeExpressions(composition));
-      const output = values.get("output");
-      if (!output) io.stdout(`${JSON.stringify(composition, null, 2)}\n`);
-      else {
-        const outputPath = resolve(output);
-        composition.assets = composition.assets.map((asset) => ({
-          ...asset,
-          path: relative(
-            dirname(outputPath),
-            resolve(dirname(scenePath), asset.path),
-          ),
-        }));
-        await writeFile(
-          outputPath,
-          `${JSON.stringify(composition, null, 2)}\n`,
-          { flag: "wx" },
-        );
-        io.stdout(`${JSON.stringify({ status: "compiled", outputPath })}\n`);
-      }
-      return 0;
-    } catch (error) {
-      io.stderr(
-        `${JSON.stringify({ status: "failed", diagnostics: passageDiagnostics(error) })}\n`,
-      );
-      return 1;
-    }
-  }
-  if (args[0] === "comp" && args[1] === "render") {
-    try {
-      const values = parseNamedArguments(args.slice(2), [
-        "input",
-        "output",
-        "backend",
-      ]);
-      const backend = values.get("backend") ?? "canvas2d";
-      if (backend !== "canvas2d" && backend !== "webgl2")
-        throw new AnimationEngineError(
-          "SCENE_INVALID",
-          "Composition backend must be canvas2d or webgl2",
-        );
-      const result = await renderComposition({
-        compositionPath: requireArgument(values, "input"),
-        outputPath: requireArgument(values, "output"),
-        backend,
-      });
-      io.stdout(`${JSON.stringify(result)}\n`);
-      return 0;
-    } catch (error) {
-      return writeFailure(error, io);
-    }
-  }
+  if (args[0] === "comp")
+    return runCompositionCommand(args.slice(1), io, writeFailure);
   if (args[0] === "prepare-commerce") {
     try {
       const values = parseNamedArguments(args.slice(1), ["brief", "output"]);

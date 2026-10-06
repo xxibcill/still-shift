@@ -59,7 +59,9 @@ function defineEffect(
   };
 }
 
-const definitions: Readonly<Record<string, CompositionEffectDefinition>> = {
+export const COMPOSITION_EFFECTS: Readonly<
+  Record<string, CompositionEffectDefinition>
+> = {
   "blur.primitive": defineEffect({ radius: { default: 0, min: 0, max: 1000 } }),
   "time.echo": defineEffect(
     {
@@ -136,5 +138,7 @@ const definitions: Readonly<Record<string, CompositionEffectDefinition>> = {
 };
 
 export function compositionEffectDefinition(id: string) {
-  return Object.hasOwn(definitions, id) ? definitions[id] : undefined;
+  return Object.hasOwn(COMPOSITION_EFFECTS, id)
+    ? COMPOSITION_EFFECTS[id]
+    : undefined;
 }

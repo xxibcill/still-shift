@@ -1,0 +1,112 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`composition builder > emits native JSON, deterministic IDs and typed constructors 1`] = `
+{
+  "assets": [
+    {
+      "id": "font",
+      "path": "pinned.ttf",
+      "sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "type": "font",
+      "weight": "400",
+    },
+  ],
+  "fps": 24,
+  "frameCount": 120,
+  "height": 64,
+  "id": "composition",
+  "layers": [
+    {
+      "color": "#000000",
+      "fontAsset": "font",
+      "fontSize": 48,
+      "id": "text",
+      "text": "first",
+      "transform": {
+        "anchor": [
+          0,
+          0,
+        ],
+        "opacity": 1,
+        "position": [
+          0,
+          0,
+        ],
+        "rotation": 0,
+        "scale": [
+          1,
+          1,
+        ],
+      },
+      "type": "text",
+    },
+    {
+      "color": "#000000",
+      "fontAsset": "font",
+      "fontSize": 48,
+      "id": "text-2",
+      "text": "second",
+      "transform": {
+        "anchor": [
+          0,
+          0,
+        ],
+        "opacity": 1,
+        "position": [
+          0,
+          0,
+        ],
+        "rotation": 0,
+        "scale": [
+          1,
+          1,
+        ],
+      },
+      "type": "text",
+    },
+    {
+      "color": "#223344",
+      "id": "box",
+      "size": [
+        10,
+        10,
+      ],
+      "transform": {
+        "anchor": [
+          5,
+          5,
+        ],
+        "opacity": 1,
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 4,
+              },
+              {
+                "easing": "out-cubic",
+                "frame": 12,
+                "value": 14,
+              },
+              {
+                "frame": 24,
+                "value": 20,
+              },
+            ],
+          },
+          "y": 8,
+        },
+        "rotation": 0,
+        "scale": [
+          1,
+          1,
+        ],
+      },
+      "type": "solid",
+    },
+  ],
+  "schemaVersion": "composition-1",
+  "width": 64,
+}
+`;

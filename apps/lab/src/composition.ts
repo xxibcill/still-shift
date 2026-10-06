@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import { analyzeRenderedCompositionQuality } from "../../../packages/renderer-core/src/composition/quality-render.ts";
 import {
   analyzeCompositionQuality,
@@ -14,6 +15,18 @@ import {
   type CompositionPreview,
 } from "../../../packages/renderer-core/src/composition/render/index.ts";
 import { passageDiagnostics } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
+
+const programMode = new URLSearchParams(location.search).has("program");
+type ProgramResponse = {
+  snapshot?: {
+    revision: number;
+    composition: Composition;
+    source: "json" | "builder";
+    input: string;
+    assets: Record<string, string>;
+  };
+  diagnostics: { code: string; path: string; message: string }[];
+};
 
 type Fixture = { path: string; id: string; name: string };
 const el = <T extends HTMLElement>(id: string) =>
@@ -162,28 +175,50 @@ slider.oninput = () => {
   show(Number(slider.value));
 };
 
+function showLoadError(message: string) {
+  error.textContent = message;
+  if (preview) {
+    status.textContent = "Rebuild failed. Showing the last valid composition.";
+    play.disabled = false;
+    lintButton.disabled = false;
+    slider.disabled = false;
+  } else {
+    status.textContent = "Could not load the composition.";
+    status.dataset.ready = "error";
+  }
+}
 async function load(path: string) {
   const run = ++generation;
   const backend = backendSelect.value as CompositionBackend;
+  const retainedFrame = programMode ? Number(slider.value) : 0;
   stop();
   lintAbort?.abort();
-  lintButton.disabled = true;
-  el("lint-timeline").replaceChildren();
-  el("lint-findings").replaceChildren();
-  preview?.dispose();
-  preview = undefined;
-  comp = undefined;
-  play.disabled = true;
-  slider.disabled = false;
   error.textContent = "";
   status.textContent = `Loading ${path}…`;
-  delete status.dataset.ready;
-  delete status.dataset.backend;
+  let candidate: CompositionPreview | undefined;
   try {
     const query = `scene=${encodeURIComponent(path)}`;
-    const response = await fetch(`/composition/scene?${query}`);
-    if (!response.ok) throw new Error(`Cannot load ${path}`);
-    const result = validateComposition(await response.json());
+    const response = await fetch(
+      programMode ? "/composition/program" : `/composition/scene?${query}`,
+    );
+    let value: unknown;
+    let program: ProgramResponse["snapshot"];
+    if (programMode) {
+      const payload = (await response.json()) as ProgramResponse;
+      if (payload.diagnostics.length)
+        throw new Error(
+          payload.diagnostics
+            .map((d) => `${d.code} ${d.path}: ${d.message}`)
+            .join("\n"),
+        );
+      program = payload.snapshot;
+      if (!program) throw new Error("No valid composition is available yet.");
+      value = program.composition;
+    } else {
+      if (!response.ok) throw new Error(`Cannot load ${path}`);
+      value = await response.json();
+    }
+    const result = validateComposition(value);
     if (!result.ok)
       throw new Error(
         result.diagnostics
@@ -192,22 +227,39 @@ async function load(path: string) {
       );
     const resources = await loadCompositionResources(
       result.composition,
-      (id) => `/composition/asset?${query}&id=${encodeURIComponent(id)}`,
+      (id) =>
+        program?.assets[id] ??
+        `/composition/asset?${query}&id=${encodeURIComponent(id)}`,
     );
     if (run !== generation) return;
+    const nextCanvas = canvas.cloneNode(false) as HTMLCanvasElement;
+    candidate = createCompositionPreview(
+      nextCanvas,
+      result.composition,
+      resources,
+      { backend },
+    );
+    const frame = Math.min(retainedFrame, result.composition.frameCount - 1);
+    candidate.renderFrame(frame);
+    if (run !== generation) return;
+    const previous = preview;
+    canvas.replaceWith(nextCanvas);
+    canvas = nextCanvas;
+    preview = candidate;
+    candidate = undefined;
     comp = result.composition;
     warnings = result.diagnostics.map(
       (d) => `${d.code} ${d.path}: ${d.message}`,
     );
-    // A canvas cannot change between 2D and WebGL contexts after creation.
-    const nextCanvas = canvas.cloneNode(false) as HTMLCanvasElement;
-    canvas.replaceWith(nextCanvas);
-    canvas = nextCanvas;
-    preview = createCompositionPreview(canvas, comp, resources, { backend });
+    previous?.dispose();
     describeRenderer(backend);
     slider.max = String(comp.frameCount - 1);
+    document.documentElement.dataset.sourceKind = program?.source ?? "json";
+    document.documentElement.dataset.readonly = String(
+      program?.source === "builder",
+    );
     el("command").textContent =
-      `pnpm --silent still-shift comp render --input benchmarks/fixtures/composition/${path} --output ${comp.id}.mp4 --backend ${backend}`;
+      `pnpm --silent still-shift comp render --input ${program ? JSON.stringify(program.input) : `benchmarks/fixtures/composition/${path}`} --output ${comp.id}.mp4 --backend ${backend}`;
     // Lint is advisory: a lint failure must not stop the composition previewing.
     let linted = false;
     try {
@@ -219,6 +271,8 @@ async function load(path: string) {
       linted = true;
     } catch (cause) {
       lintFindings = [];
+      el("lint-timeline").replaceChildren();
+      el("lint-findings").replaceChildren();
       const diagnostics = passageDiagnostics(cause);
       el("lint-summary").textContent = `Motion checks unavailable: ${
         diagnostics.length
@@ -226,20 +280,23 @@ async function load(path: string) {
           : String(cause instanceof Error ? cause.message : cause)
       }`;
     }
-    show(0);
+    show(frame);
     lintButton.disabled = !linted;
     play.disabled = false;
-    status.textContent = `Ready: ${comp.name ?? comp.id} · ${comp.width} × ${comp.height} · ${comp.fps} fps`;
+    slider.disabled = false;
+    status.textContent = `Ready: ${comp.name ?? comp.id} · ${comp.width} × ${comp.height} · ${comp.fps} fps${program?.source === "builder" ? " · edit the source to change motion" : ""}`;
     status.dataset.ready = path;
     status.dataset.backend = backend;
+    if (program) status.dataset.revision = String(program.revision);
   } catch (cause) {
     if (run !== generation) return;
-    const diagnostics = passageDiagnostics(cause);
-    error.textContent = diagnostics.length
-      ? diagnostics.map((d) => `${d.code}: ${d.message}`).join("\n")
-      : String(cause instanceof Error ? cause.message : cause);
-    status.textContent = "Could not load the composition.";
-    status.dataset.ready = "error";
+    showLoadError(
+      passageDiagnostics(cause)
+        .map((d) => `${d.code}: ${d.message}`)
+        .join("\n"),
+    );
+  } finally {
+    candidate?.dispose();
   }
 }
 
@@ -279,29 +336,61 @@ lintButton.onclick = async () => {
   }
 };
 
-const fixtures = (await (
-  await fetch("/composition/fixtures")
-).json()) as Fixture[];
-select.replaceChildren(
-  ...fixtures.map((f) =>
-    Object.assign(document.createElement("option"), {
-      value: f.path,
-      textContent: `${f.name} · ${f.path}`,
-    }),
-  ),
-);
 const query = new URLSearchParams(location.search);
-const requested = query.get("scene");
 backendSelect.value = query.get("backend") === "webgl2" ? "webgl2" : "canvas2d";
-select.value =
-  fixtures.find((f) => f.path === requested)?.path ?? fixtures[0]?.path ?? "";
-select.onchange = backendSelect.onchange = () => {
-  const query = new URLSearchParams({
-    scene: select.value,
-    backend: backendSelect.value,
+if (programMode) {
+  select.replaceChildren(
+    Object.assign(document.createElement("option"), {
+      value: "program",
+      textContent: "Authored composition",
+    }),
+  );
+  select.disabled = true;
+  backendSelect.onchange = () => {
+    void load("program");
+  };
+  import.meta.hot?.on("composition-program:update", () => {
+    void load("program");
   });
-  history.replaceState(null, "", `?${query}`);
-  void load(select.value);
-};
-if (select.value) void load(select.value);
-else status.textContent = "No compositions found.";
+  import.meta.hot?.on(
+    "composition-program:error",
+    (payload: {
+      diagnostics: { code: string; path: string; message: string }[];
+    }) => {
+      ++generation;
+      stop();
+      lintAbort?.abort();
+      showLoadError(
+        payload.diagnostics
+          .map((d) => `${d.code} ${d.path}: ${d.message}`)
+          .join("\n"),
+      );
+    },
+  );
+  void load("program");
+} else {
+  const fixtures = (await (
+    await fetch("/composition/fixtures")
+  ).json()) as Fixture[];
+  select.replaceChildren(
+    ...fixtures.map((f) =>
+      Object.assign(document.createElement("option"), {
+        value: f.path,
+        textContent: `${f.name} · ${f.path}`,
+      }),
+    ),
+  );
+  const requested = query.get("scene");
+  select.value =
+    fixtures.find((f) => f.path === requested)?.path ?? fixtures[0]?.path ?? "";
+  select.onchange = backendSelect.onchange = () => {
+    const query = new URLSearchParams({
+      scene: select.value,
+      backend: backendSelect.value,
+    });
+    history.replaceState(null, "", `?${query}`);
+    void load(select.value);
+  };
+  if (select.value) void load(select.value);
+  else status.textContent = "No compositions found.";
+}

@@ -43,36 +43,28 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #35 native saved soundtrack bindings verified (2026-10-06):** isolated
-  `codex/pr35-native-soundtrack-fix` from `099fe4b`. Saved soundtrack event anchors
-  require exact native markers before export and Lab rendering/attachment/playback;
-  known event mappings can be authored before attaching a mix. Fast checks pass
-  1,694 unit tests, all 46 runtime checks and 22 focused integration tests pass,
-  and both 576-frame native passage backends preserve picture frames while exporting
-  an audible mapped event sound. One finding commit and one final push deliver the
-  fix. Full `pnpm check` and unrelated baseline/timing matrices were not rerun.
-  Owner review/merge remains pending.
-  [Evidence](./pr-35-native-soundtrack-fix-results.json).
+- **PR #36 current-head fixes verified (2026-10-06):** isolated
+  `codex/pr36-current-review-fixes` from `8be5fc7`; three findings posted inline.
+  Exact style source paths (`1e97b29`), asset-read recovery (`e374d05`) and explicit
+  anchor precedence are fixed one per commit. All 69 builder unit and 52 affected
+  integration tests pass, with build, schema/guidance, boundaries, lint and formatting.
+  Canvas/WebGL retain exact 192-frame parity, backward seeks and identical exports;
+  browser watch retains pixels/frames and repairs edits without reloading.
+  Delivery uses one final push. Full gate and unrelated baseline matrices were not
+  rerun; owner review/merge remain pending. Actions remain disabled. No blocker.
+  [Evidence](./pr-36-current-head-fix-results.json).
 
-- **PR #35 main integration verified (2026-10-06):** `main` at `af08fa3`
-  is integrated into CE4a head `ddaf9d2` after PR #34 merged. The sole conflict
-  was in this log; both histories and all main motion-lint fixes are retained.
-  Fast checks pass 1,692 unit tests, plus 46 runtime and 16 motion-lint CLI
-  tests. Browser quality and the 576-frame Canvas native-passage regression pass.
-  Fresh-checkout soundtrack setup failures are retained; installing the pinned
-  separate runtime resolves them without source or policy changes. Full
-  `pnpm check` was not rerun. Owner review/merge remains pending.
-  [Evidence](./pr-35-main-conflict-resolution-results.json).
-
-- **PR #35 conflict resolution (2026-10-06):** CE12's current remote base is
-  integrated into CE4a head `91f9c54`, retaining native passage pictures/bindings,
-  saved soundtrack rendering, expression/bake/lint repairs and both histories.
-  Fast checks pass 1,680 unit tests, alongside 46 runtime and 14 depth tests.
-  All 176 frozen baselines / 36,061 frames and affected browser checks pass;
-  initial startup timeouts/import failures are retained with serial reruns.
-  Full `pnpm check` and deferred timing matrices were not rerun. Owner review
-  and merge remain pending; GitHub Actions stays disabled.
-  [Evidence](./pr-35-conflict-resolution-results.json).
+- **PR #36 conflict resolution verified (2026-10-06):** isolated CE10 worktree
+  from `6e0d108`; initial merge `f39813f` integrates `91f9c54`, then refreshed
+  base `ddaf9d2` adds current CE12/main expression, lint and soundtrack changes.
+  Both histories, authoring/soundtrack APIs and test groups are retained. Watch
+  previews keep valid pixels/frames and advisory lint; generated guidance and
+  provider-fixture provenance remain current. Fast checks pass 1,740 unit tests,
+  with 46 runtime, all 208 integration and 14 depth tests. Affected browser and
+  hardware checks and all 176 baselines / 36,061 frames pass without regeneration.
+  Full `pnpm check` was not rerun; occupied-port harness and earlier failures are
+  recorded. Owner review/merge remain; Actions remain disabled. No blocker.
+  [Evidence](./pr-36-conflict-resolution-results.json).
 
 - **PR #35 current-head fixes verified (2026-10-06):** three inline findings on
   `282b112` are fixed one per commit: native event-anchored sounds require mapped
@@ -106,12 +98,41 @@ still hold before relying on them.
   finding and one push after the final commit; owner review and merge remain pending.
   [Evidence](./pr-35-fix-results.json).
 
+- **PR #36 re-review fixes complete (2026-10-05):** isolated
+  `codex/pr36-rereview-fixes` from `f68f135`; three findings posted inline.
+  Delayed explicit `from` segments preserve preceding static state; merged outgoing
+  key fields retain their authoring calls through nested reuse; asset-schema failures
+  retain dependencies and recover through watch. Fast checks pass (1,524 unit),
+  46 runtime and 31 affected integration tests pass, with exact 192-frame Canvas/WebGL
+  parity, backward seeks and byte-identical exports. Three finding commits, one final
+  push; review/merge remain owner decisions. No implementation blocker.
+  [Evidence](./pr-36-rereview-fix-results.json).
+
+- **PR #36 review fixes complete (2026-10-05):** `codex/composition-ce10`
+  from `afb4045`; all six findings posted inline and repaired in six separate
+  finding commits, delivered at `f68f135`. Fast checks pass: 1,515 unit;
+  46 runtime, 146 integration and 14 depth tests also pass. Affected watch,
+  Canvas/WebGL builder parity, export and typography browser checks pass.
+  The native Node error-class failure was repaired in the first finding commit;
+  full unrelated browser/baseline suites were not rerun. Owner review/merge
+  remains; no implementation blocker. [Evidence](./pr-36-fix-results.json).
+
+- **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
+  runtime `e501fed`. Typed authoring, CLI/watch, presets, eight examples and generated
+  guidance pass the full local check: 1,499 unit, 46 runtime, 134 integration and
+  14 depth tests, all browser suites and 176 frozen baselines / 36,061 frames.
+  The 197-line builder has exact 192-frame Canvas/WebGL parity and identical exports;
+  a fresh skill-only source validates without repairs and renders correctly. Initial
+  trial/gate failures are retained. [PR #36](https://github.com/xxibcill/still-shift/pull/36)
+  is open and attached; owner review/merge remain. CE11 is next on a new branch.
+  [Evidence](./composition-ce10-results.json).
+
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
   `876814f` from CE12 `0987396`. Adapted/native picture passages, story fractional
   shutter clocks and explicit narrative bindings are delivered. Full local checks,
   176 baselines / 36,061 frames, both 69-case family matrices / 14,086 frames and
   mixed 576-frame passages pass correctness. WebGL's 51 strict timing overruns stay
-  deferred to CE6-P. CE10 is next after the milestone PR; broader CE7 stays open.
+  deferred to CE6-P. CE10 is complete; broader CE7 stays open.
   [Evidence](./composition-ce4a-completion-results.json).
 
 - **PR #34 lint fixes verified (2026-10-06):** three P2 findings on `f870fce`
@@ -192,7 +213,7 @@ still hold before relying on them.
   acceptance is 79 frozen comparisons in v013 versus zero in the fresh continuous
   prototype. Corpus lint covers 153 state reports and 23 pixel-only items with
   explicit limits and no unexpected failures; existing craft errors remain visible.
-  Prior local work retained; CE6-P and CE9-F1 remain deferred. CE10 still needs CE4a.
+  Prior local work retained; CE6-P and CE9-F1 remain deferred. CE4a and CE10 are complete.
   [Completion record](./composition-engine-plan.md#ce12-completion-record-2026-10-05).
   [PR #34](https://github.com/xxibcill/still-shift/pull/34) now targets `main`;
   dependency PR #32 merged at `b32dcfa` and is integrated here. Owner review and merge remain pending.
@@ -387,36 +408,57 @@ _Last updated 2026-10-06 by Codex for PR #35 main integration; both histories re
 
 ## Entries
 
-### 2026-10-06 — Bind PR #35 saved soundtrack events to native pictures
+### 2026-10-06 — Repair PR #36 current-head review findings
 
-- **Agent / branch:** Codex in managed `pr35-soundtrack-bindings`, on `codex/pr35-native-soundtrack-fix` from `099fe4b`.
-- **Scope:** one P2 inline finding: saved soundtrack clips could inherit replaced template event timing.
-- **Done:** share native marker checks across legacy sounds and saved clips; check export early and Lab before rendering, attachment and playback; retain preauthored mappings for known beat events.
-- **Results:** pinned preflight, fast checks (1,694 unit), 46 runtime, 22 focused integration and both 576-frame native passage backends pass. Valid mapped event audio reaches export; native picture frames, seeks, cache relocation and repeated exports remain correct.
-- **Rejected / do not repeat:** synthetic timing needs a beat start; Lab's optional soundtrack details must be opened before testing its controls. Plain Node strip-only import probes hit an existing cinematic parameter property; use the repository's `tsx` loader for these imports.
-- **Open / next:** one finding commit with evidence, then one final non-force push to PR #35; owner review/merge remains pending. Full `pnpm check` and unrelated baseline/timing matrices were not rerun.
-- **Records:** [Inline finding](https://github.com/xxibcill/still-shift/pull/35#discussion_r4191993557), [evidence](./pr-35-native-soundtrack-fix-results.json).
+- **Agent / branch:** Codex on isolated `codex/pr36-current-review-fixes`, from `8be5fc7`.
+- **Done:** post three inline findings; fix exact style call sites (`1e97b29`),
+  successful image/font read recovery (`e374d05`) and explicit-anchor precedence.
+- **Results:** regressions fail before their fixes; 69 builder unit and 52 affected
+  integration tests pass, with build, generated schema/guidance, boundaries and lint.
+  All 192 frames match exactly on Canvas/WebGL, including backward seeks; program/JSON
+  exports are identical. Real watch retention, frame clamps and repairs pass.
+- **Rejected / harness:** invalid style-ID assumptions and mixed generic test types
+  are corrected. Watch verification uses unchanged assertions with an available port.
+- **Open / next:** three finding commits, one final push; review/merge remain owner
+  decisions. Full gate and unrelated baseline matrices not rerun; Actions disabled.
+- **Records:** [fix evidence](./pr-36-current-head-fix-results.json),
+  [PR #36](https://github.com/xxibcill/still-shift/pull/36).
 
-### 2026-10-06 — Resolve PR #35 against merged main
+### 2026-10-06 — Resolve PR #36 against the refreshed CE4a base
 
-- **Agent / branch:** Codex in managed `pr35-conflict`, from PR head `ddaf9d2`.
-- **Scope:** integrate `main` at `af08fa3` after PR #34 merged.
-- **Done:** retained both log histories; imported separated-vector timing, velocity capacity and evaluated co-start fixes exactly from main.
-- **Results:** fast checks (1,692 unit), 46 runtime, 16 lint CLI, browser quality and the 576-frame Canvas native-passage regression pass on the merge.
-- **Rejected / do not repeat:** the fresh checkout lacked its separate soundtrack runtime; offline setup lacked cached packages. Hash-pinned setup and an unchanged-source rerun pass.
-- **Open / next:** one merge commit and final push to the existing PR head; owner review/merge remains pending. Full `pnpm check` and unrelated browser matrices were not rerun.
-- **Records:** [Evidence](./pr-35-main-conflict-resolution-results.json), [PR #35](https://github.com/xxibcill/still-shift/pull/35).
+- **Agent / branch:** Codex in isolated `pr36-ce10-conflicts`, for `codex/composition-ce10`.
+- **Done:** after verified merge `f39813f`, integrate refreshed base `ddaf9d2`.
+  Retain authoring and soundtrack APIs/commands/tests, all log entries and maintained
+  generator guidance. Combine transactional watch previews with advisory lint,
+  clearing stale findings; a browser regression retains playback, frame and read-only state.
+- **Results:** fast checks (1,740 unit), 46 runtime, all 208 integration, 14 depth,
+  soundtrack Python and affected browser checks pass. Builder has exact 192-frame
+  Canvas/WebGL parity and identical exports; both 576-frame native passages cover
+  saved-audio mux/cache reuse. Hardware typography and all 176 frozen items /
+  36,061 frames pass without regeneration. Final remote base still `ddaf9d2`.
+- **Limits / next:** full `pnpm check`, standalone soundtrack-editor UI and deferred
+  performance matrices were not rerun. Watch-browser assertions use an identical
+  temporary copy with an available port; earlier failed attempts remain recorded.
+  Normal push targets only the existing PR head; owner review/merge remain pending.
+  GitHub Actions remain disabled; owner's checkout and other heads are untouched.
+- **Records:** [resolution evidence](./pr-36-conflict-resolution-results.json),
+  [PR #36](https://github.com/xxibcill/still-shift/pull/36).
 
-### 2026-10-06 — PR #34 lint review repairs
+### 2026-10-06 — Verify PR #36 initial CE4a base merge
 
-- **Agent / branch:** Codex on `codex/pr34-lint-review-fixes` from `f870fce`.
-- **Scope:** separated vector timing, velocity capacity and evaluated co-start.
-- **Done:** three findings posted inline; separated timing (`ea08b39`), shared probe budget (`342115f`) and stagger/cut onset repaired in separate commits.
-- **Results:** fast checks (1,663 unit), 46 runtime, 16 CLI, native browser quality and four targeted Node/Chromium cases pass. Both final review axes are clear.
-- **Corpus:** 176 items / 36,061 frames, zero unexpected failures; one false co-start removed. All other reports and baseline checksum unchanged.
-- **Rejected / do not repeat:** off-canvas anchor and zero-offset stagger test controls corrected; re-review cut-boundary defect repaired and affected checks refreshed.
-- **Open / next:** one final push delivers the three commits. Owner review/merge remains pending; full `pnpm check` and unrelated render/export matrices were not rerun.
-- **Records:** [Evidence](./pr-34-20261006-fix-results.json), [PR #34](https://github.com/xxibcill/still-shift/pull/34).
+- **Agent / branch:** Codex in isolated `pr36-ce10-conflicts`, CE10 head `6e0d108`.
+- **Done:** merge CE4a `91f9c54`; retain both log histories, maintain base guidance
+  in CE10's generator source, and mark the provider lint fixture as adapter output.
+  A new CLI test retains rejection of authored unpinned providers.
+- **Results:** fast checks (1,598 unit), 46 runtime and 14 depth pass. Initial
+  integration passes 161 cases; all 29 affected final cases pass after repair and
+  unchanged watch timeout reruns. Builder and native passages retain both backend
+  parity, backward seeks and identical exports; all 176 baselines / 36,061 frames pass.
+- **Limits:** normal watch-browser startup hits occupied 5173; an identical temporary
+  copy with an explicit available port passes. Full `pnpm check` was not rerun.
+- **Next:** final fetch found base `ddaf9d2`; integrate it and rerun affected checks
+  before pushing. Owner review/merge remain pending; Actions remain disabled.
+- **Records:** [resolution evidence](./pr-36-conflict-resolution-results.json).
 
 ### 2026-10-06 — Resolve PR #35 against current CE12
 
@@ -545,6 +587,253 @@ _Last updated 2026-10-06 by Codex for PR #35 main integration; both histories re
 - **Open / next:** evidence text-state validation and bounded WebGL previews;
   commit each finding separately, then push all three together. Owner merge remains.
 - **Records:** [fix evidence](./pr-35-fix-results.json).
+
+### 2026-10-05 — PR #36 re-review fix 3: recover watched invalid assets
+
+- **Agent / branch:** Codex on `codex/pr36-rereview-fixes`; prior fixes `9314879`, `63b6add`.
+- **Done:** Asset-schema failures retain the image/font path; initially invalid SVGs
+  rebuild automatically after repair. One finding per commit, one final push.
+- **Results:** Three tests fail before repair; 29 focused tests and build pass.
+  Fast checks pass (1,524 unit), 46 runtime and 31 affected integration tests pass.
+  Browser watch retains pixels/frame state; all 192 Canvas/WebGL frames match the
+  reference exactly, including backward seeks, with byte-identical exports.
+- **Limits:** Watch harness uses an available port because 5173 is occupied. Full
+  unrelated integration/browser, depth and frozen-baseline suites were not rerun.
+- **Open / next:** Three findings fixed and verified; owner review/merge remain.
+  GitHub Actions remain disabled; original checkout and local work retained.
+- **Records:** [Evidence](./pr-36-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933402).
+
+### 2026-10-05 — PR #36 re-review fix 2: attribute joined outgoing key fields
+
+- **Agent / branch:** Codex on `codex/pr36-rereview-fixes`; prior fix `9314879`.
+- **Done:** Add optional field attribution to compact source tracks for merged `out`
+  and `spatialOut`; preserve incoming/key-value ownership and nested inheritance.
+- **Results:** Four regressions fail before repair; 46 focused tests and build pass.
+  Existing six-field metadata and bounded root-layer coverage remain valid.
+- **Open / next:** Repair asset-schema watch recovery, then verify and push once.
+  GitHub Actions remain disabled; review and merge remain owner decisions.
+- **Records:** [Evidence](./pr-36-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933400).
+
+### 2026-10-05 — PR #36 re-review fix 1: retain static state before delayed from
+
+- **Agent / branch:** Codex on `codex/pr36-rereview-fixes`, from `f68f135`.
+- **Done:** Preserve the static value until the first delayed segment changes to its
+  explicit `from` value. Scalar/vector, `by`, fade-in and backward sampling covered.
+- **Results:** Three regressions fail before repair; 41 focused tests and build pass.
+- **Rejected:** Unconditional frame-zero keys changed equivalent emitted tracks;
+  retain a hold only when the authored static value differs from the segment start.
+- **Open / next:** Fix joined-key field attribution and invalid-asset watch recovery
+  in separate commits, then run final checks and push once. Actions remain disabled.
+- **Records:** [Evidence](./pr-36-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933394).
+
+### 2026-10-05 — PR #36 fix 6: trace CommonJS program dependencies
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Synchronous hooks trace CommonJS helpers, transitive JSON and missing
+  absolute/relative imports. Focused regressions fail before repair and pass afterward.
+- **Results:** Fast checks pass (1,515 unit); 46 runtime, 146 integration and 14 depth
+  tests pass. Watch preserves valid pixels and frame state; the 192-frame builder
+  matches Canvas/WebGL exactly and exports are byte-identical. Typography passes.
+- **Rejected / repaired:** Native Node rejects constructor parameter properties;
+  repaired the first finding commit and added a native-load regression. The temporary
+  watch harness requires `.mts` outside the module package and a free port because
+  another local session uses 5173. Full unrelated browser/baseline suites were not rerun.
+- **Open / next:** Six findings fixed in six commits, followed by one final push.
+  Owner review/merge remains pending; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180673).
+
+### 2026-10-05 — PR #36 fix 5: watch missing TypeScript import candidates
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Watch missing typescript import candidates; focused regressions fail before repair and pass afterward.
+- **Open / next:** 5/6 findings fixed; remaining repairs and final checks precede one final push. Owner review/merge remains pending.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180672).
+
+### 2026-10-05 — PR #36 fix 4: resolve symbolic precomp anchors
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Resolve symbolic precomp anchors; focused regressions fail before repair and pass afterward.
+- **Open / next:** 4/6 findings fixed; remaining repairs and final checks precede one final push. Owner review/merge remains pending.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180668).
+
+### 2026-10-05 — PR #36 fix 3: reject repeated auto-ID layer objects
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Reject repeated auto-id layer objects; focused regressions fail before repair and pass afterward.
+- **Open / next:** 3/6 findings fixed; remaining repairs and final checks precede one final push. Owner review/merge remains pending.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180666).
+
+### 2026-10-05 — PR #36 fix 2: preserve joined animation handles
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Preserve joined animation handles; focused regressions fail before repair and pass afterward.
+- **Open / next:** 2/6 findings fixed; remaining repairs and final checks precede one final push. Owner review/merge remains pending.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180658).
+
+### 2026-10-05 — PR #36 fix 1: attribute text preset failures to the correct source
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Attribute text preset failures to the correct source; focused regressions fail before repair and pass afterward.
+- **Open / next:** 1/6 findings fixed; remaining repairs and final checks precede one final push. Owner review/merge remains pending.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180652).
+
+### 2026-10-05 — Complete CE10 typed authoring and CLI
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from CE4a `869a793`.
+- **Done:** typed layers/properties/timelines, pinned assets, native story/text presets,
+  fresh TypeScript CLI/watch preview and generated reference/skill. Frequent implementation
+  and guidance checkpoints preserve the authored source and runtime contracts.
+- **Results:** complete local `pnpm check` passes on the clean runtime checkpoint
+  `e501fed`: 1,499 unit, 46 runtime, 134 integration and 14 depth tests, all browser
+  groups and 176 frozen baselines / 36,061 frames. No baselines regenerated.
+- **Acceptance:** the 197-line builder matches 192 CE4a frames exactly on both
+  backends; source/JSON exports are identical. Fresh skill-only authoring has zero
+  schema errors, no source repairs and a verified 96-frame render.
+- **Retained failures:** full checks exposed render exit-code, aliased asset-path and
+  missing-parent identity regressions; focused repairs and the full rerun pass. Initial skill guidance failures
+  stay recorded. Owner local changes preserved; Actions remain disabled.
+- **PR / next:** [PR #36](https://github.com/xxibcill/still-shift/pull/36) is open and
+  attached, stacked on CE4a. Start CE11 on its own branch; no PRs were merged.
+- **Evidence:** [CE10 results](./composition-ce10-results.json),
+  [skill trials](./composition-ce10-skill-trials.json).
+
+### 2026-10-05 — Preserve CE10 missing-asset watch identity
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, after `acac044`.
+- **Failure:** the full path-repair check passed unit/runtime gates, then found an
+  existing missing-asset assertion requiring its parent directory's canonical identity.
+- **Done:** resolve the logical asset path first; canonicalize its existing parent
+  when the file is absent. This keeps missing-file watch recovery stable without
+  changing the logical-directory repair for existing files.
+- **Results:** all 134 integration tests, build and changed-file lint pass.
+  Complete local verification remains before the milestone PR.
+- **Records:** [CE10 evidence](./composition-ce10-results.json).
+
+### 2026-10-05 — Repair CE10 logical asset directories
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Failure:** the second full local check passed 1,499 unit, 46 runtime, 131
+  integration and 14 depth tests, all preceding browser groups and the 127-case
+  commerce matrix. Its final CLI assertion exposed early path canonicalization:
+  `/var`-relative font paths became `/private/private/tmp` and failed with ENOENT.
+- **Done:** resolve JSON/legacy assets against the requested directory before
+  canonicalizing each file; retain that directory in watch preview and portable
+  output. Directory-symlink regressions cover validation, export, watch and bad fonts.
+- **Results:** ten focused CLI/preview tests, build, changed-file lint and package
+  boundaries pass. The full repair-checkpoint check remains; do not mark CE10 done.
+- **Records:** [CE10 evidence](./composition-ce10-results.json).
+
+### 2026-10-05 — Inspect the unchanged fresh CE10 skill trial
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Done:** render the first-valid Room to Move source without repairs; FFprobe
+  verifies 96 frames at 24 fps and 640 × 360. Pinned text uses no system fonts.
+- **Inspection:** frame 0 fully covers the square, frame 60 shows the separated gates
+  and readable heading, and frame 94 confirms the title faded before the end.
+- **Next:** the clean repair checkpoint `c44032b` is running the full local check;
+  publish CE10's PR when it passes, then create the CE11 branch.
+- **Evidence:** [trial record](./composition-ce10-skill-trials.json),
+  [milestone results](./composition-ce10-results.json).
+
+### 2026-10-05 — Restore CE10 render failure exit codes
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Found:** the full local check passed build/lint and 1,499 unit, 46 runtime,
+  130 integration and 14 depth tests, then stopped in the existing WebGL export
+  gate because an invalid backend returned exit 1 instead of the required exit 2.
+- **Fixed:** preserve render usage/scene exit 2 and file/loader runtime exit 1;
+  four focused CLI tests pass. Update the user guide for TypeScript authoring.
+- **Next:** repeat the complete local check on the repair checkpoint, inspect the
+  fresh skill trial render, then publish the milestone PR before CE11.
+- **Evidence:** [CE10 results](./composition-ce10-results.json). Failed trial sources
+  stay as ignored `.ts.txt` artifacts so the repository compiler excludes them.
+
+### 2026-10-05 — Verify CE10 skill-only authoring and repair guidance
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Done:** two isolated agents followed only the compact skill for a new Room to Move
+  brief. The initial trial exposed missing timing/clock and stacking guidance; retain
+  its eleven source versions and failed first validation. Update those instructions.
+- **Results:** a fresh independent trial passes its first completed validation with
+  zero schema errors and no source repairs; its JSON export also validates. Both
+  initial CLI launches hit sandbox IPC before reaching validation, then ran unchanged.
+- **Limits:** deliberate reading holds retain the default frozen-run lint findings.
+  Full local checks run on the clean tracked runtime checkpoint; final guidance changes
+  are verified separately. Fresh render inspection follows the browser gates.
+- **Records:** [trial evidence](./composition-ce10-skill-trials.json),
+  [CE10 evidence](./composition-ce10-results.json).
+
+### 2026-10-05 — Generate CE10 authoring reference and skill
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Done:** generated root/layer contracts, aliases, diagnostics, native built-ins,
+  expression grammar, effects/intent registries and limits, plus a compact authoring
+  skill. Preserve explanatory reference prose as the generator's maintained input.
+  Existing schema generate/check commands now include both authoring artifacts.
+- **Results:** build, schema drift check, lint, skill validation and an independent
+  write/check/drift regression pass. Generated checks do not overwrite stale files.
+- **Open / next:** isolated skill trial is running in a temporary directory; complete
+  full local milestone gates and create the CE10 PR before starting CE11.
+- **Records:** [CE10 evidence](./composition-ce10-results.json),
+  [authoring skill](../skills/compose-with-still-shift/SKILL.md).
+
+### 2026-10-05 — Port CE10 native intent presets
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Done:** all seven motion and eight text recipes as plain timeline functions;
+  share pure intent/text definitions with the existing story renderer. Native signals,
+  staged drivers, carriers, decorations, correction/retype/count and qualifier motion
+  retain story semantics. Repeated finish is stable and driver call sites are distinct.
+- **Results:** all 1,498 unit tests and eight example programs pass; build, lint and
+  boundaries pass. The pinned native text preset example renders through the real CLI.
+- **Rejected / repaired:** the legacy text bridge's 16 px minimum wrongly rejected
+  native 12 px text; use the native size contract. Zod refined objects require safeExtend.
+- **Open / next:** generated reference/skill, isolated agent trial, full local gates/PR.
+- **Records:** [CE10 evidence](./composition-ce10-results.json).
+
+### 2026-10-05 — Prove CE10 builder examples and Unequal Margins parity
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Done:** eight typed programs with pinned assets; native 197-line Unequal Margins
+  choreography, static illustration helpers and shared pure easing implementation.
+- **Results:** 111 focused tests, build, lint and boundaries pass. All 192 frames on
+  Canvas and WebGL have zero pixel difference from CE4a; seven backward seeks per
+  backend match; TypeScript and JSON produce byte-identical 192-frame MP4s.
+- **Rejected / repaired:** the first proof read a Canvas context on WebGL; switched
+  to the renderer's public readPixels method. No tier was relaxed.
+- **Open / next:** story presets, generated reference/skill, isolated authoring trial,
+  full local gates and milestone PR.
+- **Records:** [CE10 evidence](./composition-ce10-results.json).
+
+### 2026-10-05 — Deliver CE10 watch preview checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce10`.
+- **Done:** immutable asset snapshots, imported-module/asset watching and recovery,
+  cancellable fresh builds, transactional Lab preview swaps and nested source sites.
+- **Results:** all 128 integration tests pass. Browser verification retains frame 17
+  and pixels on an invalid rebuild, updates without page reload, clamps to frame 7,
+  switches backend and exports byte-identical TypeScript/JSON MP4s (8 frames / 24 fps).
+- **Open / next:** presets, generated references/skill, eight examples, Unequal Margins
+  pixel/export acceptance, isolated skill trial and full milestone gates/PR.
+- **Records:** [CE10 evidence](./composition-ce10-results.json),
+  [plan](./composition-engine-plan.md#ce10--typescript-builder-api-and-cli).
+
+### 2026-10-05 — Start CE10 typed authoring API
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from CE4a `869a793` and PR #35.
+- **Done:** promote the native JSON builder, typed layers/properties, timeline algebra,
+  expression/instance helpers, bounded source metadata and Node asset registration.
+  Native mask/effect/path keys and nested key call sites pass 27 focused tests.
+  Fresh-process CLI loading handles helpers/assets and portable exports; 1,491 unit
+  tests and 26 CLI regressions pass. Canonical filesystem aliases fix portable paths.
+- **Results:** focused builder tests, TypeScript build, lint and package boundaries
+  are recorded in [CE10 evidence](./composition-ce10-results.json).
+- **Open / next:** remaining source metadata and timeline error locations, presets,
+  watch preview, generated reference/examples and milestone acceptance.
+- **Records:** [CE10](./composition-engine-plan.md#ce10--typescript-builder-api-and-cli).
 
 ### 2026-10-05 — Complete CE4a story and native passage integration
 

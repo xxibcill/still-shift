@@ -1,0 +1,554 @@
+{
+  "milestone": "CE10",
+  "status": "complete",
+  "date": "2026-10-05",
+  "branch": "codex/composition-ce10",
+  "base": "869a793",
+  "slices": [
+    {
+      "name": "Typed builder core and asset registration",
+      "status": "checkpoint",
+      "verification": [
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/motion-builder.test.ts tests/unit/motion-builder-assets.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 18
+        },
+        {
+          "command": "pnpm exec eslint packages/motion-builder tests/unit/motion-builder*.test.ts",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm check:boundaries",
+          "status": "passed"
+        }
+      ],
+      "repairs": [
+        "Promoted tests initially widened fps to number and supplied an invalid camera descriptor; corrected test types and descriptor without relaxing the contract.",
+        "Timeline cycle regression initially called the fluent static opacity setter as an animation property; corrected to the alpha property."
+      ]
+    },
+    {
+      "name": "Native property selectors and key source sites",
+      "status": "checkpoint",
+      "changes": [
+        "Canonical alias resolution and named mask/effect selectors with native defaults",
+        "Path morph keys and temporal/spatial key fields",
+        "Compact key-range source maps inherited through reused/nested precomps",
+        "Native behaviour cue gating and strict provider system-font enforcement"
+      ],
+      "verification": [
+        {
+          "command": "pnpm exec vitest run tests/unit/motion-builder*.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 27
+        },
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec eslint packages/motion-builder tests/unit/motion-builder*.test.ts",
+          "status": "passed"
+        }
+      ],
+      "limits": [
+        "Whole-color keyframes are supported; color-component keys report a located diagnostic and require expressions/drivers.",
+        "Whole-vector and component animation tracks cannot be mixed; errors preserve authored intent instead of approximating it."
+      ]
+    },
+    {
+      "name": "TypeScript source loading and CLI commands",
+      "status": "checkpoint",
+      "changes": [
+        "Fresh Node process with awaited default exports, typed dependency tracing and local builder aliases",
+        "Bounded timeout/console output, located program failures and failed dependency traces",
+        "JSON/TypeScript validate, render, lint, bake, normalize and export-json; retain --scene adapters",
+        "Portable asset paths with canonical filesystem aliases and non-overwriting output writes",
+        "Shared authored-font enforcement and public composition source loader"
+      ],
+      "verification": [
+        {
+          "command": "pnpm test:unit",
+          "status": "passed",
+          "tests": 1491
+        },
+        {
+          "command": "pnpm exec vitest run tests/integration/composition-program*.test.ts tests/integration/composition-lint-cli.test.ts tests/unit/composition-bake.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 26
+        },
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec eslint tools/still-shift-cli/src packages/motion-builder/src packages/animation-engine/src/index.ts tests/integration/composition-program*.test.ts",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm check:boundaries",
+          "status": "passed"
+        }
+      ],
+      "repairs": [
+        "Portable export initially treated macOS /var and /private/var aliases as different directories; canonicalized source and destination folders.",
+        "The first compiler trial expected the wrong native fps diagnostic code; retained comp-schema-union."
+      ],
+      "pendingAtCheckpoint": [
+        "Watch preview and TypeScript render browser acceptance",
+        "Abort/cleanup and asset dependency recovery coverage"
+      ]
+    },
+    {
+      "name": "Watch preview and complete call-site coverage",
+      "status": "checkpoint",
+      "changes": [
+        "Fixed-input preview server exposes only validated asset-ID snapshots and retains two immutable revisions",
+        "Fresh builds watch imported modules/data and asset files, recover missing imports/images, and cancel older children",
+        "Lab prepares previews on detached canvases and retains the last valid scene, controls and frame on error; valid shorter scenes clamp the frame",
+        "Builder previews expose read-only provenance for CE11; backend switches retain the current frame",
+        "Nested markers/constraints/text animators and invalid animation durations retain source sites",
+        "The browser watch/export gate is included in the existing local pnpm test chain"
+      ],
+      "verification": [
+        {
+          "command": "pnpm test:integration",
+          "status": "passed",
+          "tests": 128,
+          "log": "/private/tmp/ce10-integration-watch.log"
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/motion-builder*.test.ts tests/integration/composition-program*.test.ts tests/integration/composition-preview.test.ts --maxWorkers=2",
+          "status": "passed",
+          "tests": 39,
+          "note": "Before adding missing-image and cancellation regressions; both passed in the full integration run."
+        },
+        {
+          "command": "node --import tsx tests/browser/composition-program.ts",
+          "status": "passed",
+          "log": "/private/tmp/ce10-program-browser.log",
+          "watch": {
+            "invalidRetainsPixels": true,
+            "retainedFrame": 17,
+            "shorterClampedFrame": 7,
+            "noPageReload": true,
+            "backendSwitch": true,
+            "readonlyBuilder": true
+          },
+          "exports": {
+            "sources": ["typescript", "json"],
+            "frames": 8,
+            "fps": 24,
+            "byteIdentical": true
+          }
+        },
+        {
+          "command": "pnpm build",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec eslint [changed CLI, Lab, builder and tests]",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm check:boundaries",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "name": "Eight examples and Unequal Margins native builder proof",
+      "status": "checkpoint",
+      "verification": [
+        {
+          "command": "pnpm exec vitest run [examples, evaluator, typography events, motion craft curves]",
+          "status": "passed",
+          "tests": 111
+        },
+        {
+          "command": "pnpm build / eslint changed files / pnpm check:boundaries",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm test:browser:composition-builder",
+          "status": "passed",
+          "report": {
+            "status": "passed",
+            "lines": 197,
+            "frames": 192,
+            "numericValues": 42256,
+            "maxNumericDelta": 5.684341886080802e-14,
+            "pixels": [
+              {
+                "backend": "canvas2d",
+                "frames": 192,
+                "maxChannelDelta": 0,
+                "minimumPsnr": "Infinity",
+                "backwardSeeks": 7
+              },
+              {
+                "backend": "webgl2",
+                "frames": 192,
+                "maxChannelDelta": 0,
+                "minimumPsnr": "Infinity",
+                "backwardSeeks": 7
+              }
+            ],
+            "exports": {
+              "typescriptJsonByteIdentical": true,
+              "sha256": "5ebd5dca399ea9f149611e60edea3ad01710aa56d0999abf7a227710b3395b38"
+            }
+          },
+          "log": "/private/tmp/ce10-builder-proof.log"
+        }
+      ],
+      "repairs": [
+        "Readback initially used Canvas getContext on the WebGL backend; used public preview.readPixels instead.",
+        "Native evaluator camera is projected into transforms rather than exposed as tree.camera; camera descriptors are now compared explicitly."
+      ],
+      "limits": [
+        "The main authored choreography is 197 formatted lines. Shared helpers contain only static geometry, resource registration and the shared public easing sampler; no adapter output is an authoring input."
+      ]
+    },
+    {
+      "name": "Native story intent presets",
+      "status": "checkpoint",
+      "motionRecipes": [
+        "settle",
+        "press",
+        "recoil",
+        "handoff",
+        "breathe",
+        "draw-on",
+        "land"
+      ],
+      "textRecipes": [
+        "reveal",
+        "emphasize",
+        "correct",
+        "qualify",
+        "retype",
+        "count",
+        "redact",
+        "release"
+      ],
+      "changes": [
+        "Shared pure story intent/text compilation definitions in scene-contract; renderer imports retain public API",
+        "Timeline recipes lower to staged native signals, drivers and periodic motion; interim drawOn preserves provider channels",
+        "Native text animators/decorations/corrections/transitions retain claim hierarchy, release weights and count validation",
+        "Repeated finish emits fresh equivalent compositions; driver and behaviour source sites preserved"
+      ],
+      "verification": [
+        {
+          "command": "pnpm test:unit",
+          "status": "passed",
+          "tests": 1498,
+          "log": "/private/tmp/ce10-presets-unit.log"
+        },
+        {
+          "command": "pnpm exec vitest run [builder, typography-events, motion-craft]",
+          "status": "passed",
+          "tests": 82
+        },
+        {
+          "command": "pnpm exec vitest run tests/integration/composition-examples.test.ts",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm build / eslint changed files / pnpm check:boundaries",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm still-shift comp render --input examples/composition/05-pinned-text.ts --output [temporary MP4]",
+          "status": "passed",
+          "frames": 72,
+          "fps": 24
+        }
+      ],
+      "repairs": [
+        "Used native font-size bounds rather than the legacy 16 px minimum.",
+        "Zod refined object bridge uses safeExtend; all native builder tests remain passing."
+      ],
+      "limits": [
+        "drawOn currently targets story.path providers; native shape operators remain CE5.",
+        "Text presets require static text content; authored transform keys and staged motion remain supported."
+      ]
+    },
+    {
+      "name": "Generated reference and compact authoring skill",
+      "status": "checkpoint",
+      "changes": [
+        "Zod-generated root and layer field tables, aliases, limits and stable diagnostic registry",
+        "Built-in overloads, shared expression grammar, public effect properties and intent registries",
+        "Maintained implementation notes become generator input; existing schema commands check both generated outputs",
+        "Compact skill with a typed timeline example, native constraints, pinned assets, paths and CLI verification workflow",
+        "Located rejection of unsupported SVG intrinsic declarations that disagree with the pinned renderer metadata reader"
+      ],
+      "verification": [
+        {
+          "command": "pnpm schema:generate / pnpm schema:check",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm build / eslint generator and changed contracts",
+          "status": "passed"
+        },
+        {
+          "command": "skill-creator/scripts/quick_validate.py skills/compose-with-still-shift",
+          "status": "passed"
+        },
+        {
+          "command": "pnpm exec vitest run tests/integration/composition-reference-generation.test.ts",
+          "status": "passed",
+          "tests": 1,
+          "checks": [
+            "Fresh generation and repository skill equality",
+            "Stale skill detected without check writes",
+            "Changed maintained prose detected without check writes",
+            "Regeneration restores both artifacts"
+          ]
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/motion-builder-assets.test.ts tests/integration/composition-reference-generation.test.ts",
+          "status": "passed",
+          "tests": 7
+        }
+      ],
+      "limits": [
+        "SVG assets require px, in, cm, mm or pt dimensions (or viewBox inference); unsupported relative units, CSS picas and comma viewBoxes fail early rather than emitting inconsistent metadata."
+      ],
+      "pendingAtCheckpoint": [
+        "Isolated fresh-brief agent trial",
+        "Full local milestone verification"
+      ]
+    },
+    {
+      "name": "Independent skill-only authoring trial and guidance repair",
+      "status": "checkpoint",
+      "initialTrial": {
+        "accepted": false,
+        "firstCompletedValidation": "schema-errors",
+        "sourceVersions": 11,
+        "eventualRender": "passed",
+        "note": "Retained the failed initial trial and all repairs; it is not claimed as a first-validation pass."
+      },
+      "freshTrial": {
+        "accepted": true,
+        "firstCompletedValidation": "passed",
+        "schemaErrors": 0,
+        "sourceVersions": 1,
+        "repairs": 0,
+        "exportedJsonValidation": "passed",
+        "guidanceSha256": "4e487173eadfbb443e139bba5063a6ee44a3ce3f919242fdac4c5a0c8e4c839b",
+        "renderedVerification": "passed",
+        "frames": 96,
+        "fps": 24,
+        "outputSha256": "511e988d7d5cd1c4dc4075c938372bc13480fd24894e8c875f3eff92830719f6"
+      },
+      "record": "docs/composition-ce10-skill-trials.json",
+      "limits": [
+        "Both first CLI launches encountered sandbox tsx IPC EPERM before schema validation; unchanged source was retried with the permitted local command escalation.",
+        "Deliberate reading holds trigger the default frozen-run lint policy; these craft findings remain visible and were not suppressed."
+      ],
+      "pendingAtCheckpoint": ["Full local milestone gates"]
+    },
+    {
+      "name": "Restore render CLI failure exit-code compatibility",
+      "status": "checkpoint",
+      "changes": [
+        "Render usage/invalid-scene diagnostics retain exit 2; unreadable files and loader/runtime failures remain exit 1.",
+        "User guide now covers TypeScript authoring, watch recovery, assets, clocks and CLI exit codes."
+      ],
+      "initialFullCheck": {
+        "command": "pnpm check",
+        "runtimeHead": "4ce68c4",
+        "snapshot": "/private/tmp/still-shift-ce10-check-4ce68c4",
+        "status": "failed",
+        "log": "/private/tmp/ce10-full-4ce68c4.log",
+        "passingTests": {
+          "unit": 1499,
+          "runtime": 46,
+          "integration": 130,
+          "depth": 14
+        },
+        "failedGate": "test:browser:composition-webgl-export",
+        "failure": "Invalid --backend returned 1 rather than the existing required exit 2. Earlier browser groups through composition-webgl passed."
+      },
+      "verification": [
+        {
+          "command": "pnpm exec vitest run tests/integration/composition-program-cli.test.ts --maxWorkers=1",
+          "status": "passed",
+          "tests": 4,
+          "checks": [
+            "Invalid render backend fails before loading nonexistent source",
+            "Invalid JSON and native scene return 2",
+            "Unreadable file and missing TypeScript import return 1"
+          ],
+          "log": "/private/tmp/ce10-render-exit-test.log"
+        }
+      ],
+      "pendingAtCheckpoint": [
+        "Repeat full pnpm check on repair checkpoint",
+        "Fresh skill trial render inspection"
+      ]
+    },
+    {
+      "name": "Resolve relative assets before following directory aliases",
+      "status": "checkpoint",
+      "changes": [
+        "Native JSON and legacy scene assets resolve against the requested logical directory, then canonicalize individual files.",
+        "Watch preview preserves the requested input directory while watching canonical dependencies.",
+        "Portable exports rebase relative asset paths against their requested output directory."
+      ],
+      "secondFullCheck": {
+        "command": "pnpm check",
+        "runtimeHead": "c44032b",
+        "snapshot": "/private/tmp/still-shift-ce10-check-c44032b",
+        "status": "failed",
+        "log": "/private/tmp/ce10-full-c44032b.log",
+        "passingTests": {
+          "unit": 1499,
+          "runtime": 46,
+          "integration": 131,
+          "depth": 14
+        },
+        "passingBrowserGroups": "All groups through composition-story-fixtures; commerce matrix passed 127 cases / 28200 frames before final CLI diagnostic assertions.",
+        "failedGate": "test:browser:composition-commerce-adapter",
+        "failure": "Premature canonicalization changed /var-relative pinned font paths to /private/private/tmp; ENOENT replaced the expected font-checksum diagnostic."
+      },
+      "verification": [
+        {
+          "command": "pnpm exec vitest run tests/integration/composition-program-cli.test.ts tests/integration/composition-preview.test.ts --maxWorkers=1",
+          "status": "passed",
+          "tests": 10,
+          "log": "/private/tmp/ce10-logical-assets-test.log",
+          "checks": [
+            "Aliased native JSON validation, dependency identities and stdout/file export round-trip",
+            "Aliased legacy bad font produces checksum diagnostic without output",
+            "Aliased JSON watch preview serves pinned bytes and rebuilds canonical source changes"
+          ]
+        },
+        {
+          "command": "pnpm build / changed-file eslint / pnpm check:boundaries",
+          "status": "passed"
+        }
+      ],
+      "retainedTestAdjustments": [
+        "The first focused run exposed portable export using the physical directory; corrected it to the requested directory.",
+        "Existing export assertions now compare resolved file identities instead of a spelling that only works without directory aliases."
+      ],
+      "pendingAtCheckpoint": [
+        "Complete full pnpm check on the path repair checkpoint"
+      ]
+    },
+    {
+      "name": "Preserve canonical parent identity for missing JSON assets",
+      "status": "checkpoint",
+      "changes": [
+        "Resolve the requested JSON asset path first; if the file is missing, canonicalize its existing parent directory so watch recovery retains a stable absolute identity."
+      ],
+      "thirdFullCheck": {
+        "command": "pnpm check",
+        "runtimeHead": "acac044",
+        "snapshot": "/private/tmp/still-shift-ce10-check-acac044",
+        "status": "failed",
+        "log": "/private/tmp/ce10-full-acac044.log",
+        "passingTests": {
+          "unit": 1499,
+          "runtime": 46,
+          "integration": 133
+        },
+        "failedGate": "test:integration",
+        "failure": "The existing missing-asset loader assertion expected the canonical existing parent directory. Missing-file fallback retained its /var spelling."
+      },
+      "verification": [
+        {
+          "command": "pnpm test:integration",
+          "status": "passed",
+          "tests": 134,
+          "log": "/private/tmp/ce10-logical-assets-integration.log"
+        },
+        {
+          "command": "pnpm build / changed-file eslint",
+          "status": "passed"
+        }
+      ],
+      "pendingAtCheckpoint": [
+        "Complete full pnpm check on the final path repair checkpoint"
+      ]
+    }
+  ],
+  "pending": ["Owner PR review and merge"],
+  "runtimeHead": "e501fed",
+  "verification": {
+    "command": "pnpm check",
+    "status": "passed",
+    "runtimeHead": "e501fed",
+    "snapshot": "/private/tmp/still-shift-ce10-check-e501fed",
+    "log": "/private/tmp/ce10-full-e501fed.log",
+    "toolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3"
+    },
+    "tests": {
+      "unit": 1499,
+      "runtime": 46,
+      "integration": 134,
+      "depth": 14
+    },
+    "browserGroups": "Every group in pnpm test passed, including composition-program and composition-builder.",
+    "frozenBaselines": {
+      "items": 176,
+      "frames": 36061,
+      "seconds": 273.56,
+      "regenerated": false
+    },
+    "builderProof": {
+      "status": "passed",
+      "lines": 197,
+      "frames": 192,
+      "numericValues": 42256,
+      "maxNumericDelta": 5.684341886080802e-14,
+      "pixels": [
+        {
+          "backend": "canvas2d",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "minimumPsnr": "Infinity",
+          "backwardSeeks": 7
+        },
+        {
+          "backend": "webgl2",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "minimumPsnr": "Infinity",
+          "backwardSeeks": 7
+        }
+      ],
+      "exports": {
+        "typescriptJsonByteIdentical": true,
+        "sha256": "5ebd5dca399ea9f149611e60edea3ad01710aa56d0999abf7a227710b3395b38"
+      }
+    },
+    "retainedFailures": [
+      "The first full run at 4ce68c4 failed on render backend usage exit-code compatibility, repaired at c44032b.",
+      "The second full run at c44032b reached the commerce matrix but failed its final CLI diagnostic after directory canonicalization changed asset paths.",
+      "The third full run at acac044 exposed the missing-file canonical-parent compatibility assertion. All repairs are covered by the passing full run at e501fed."
+    ],
+    "actionsEnabled": false
+  },
+  "pullRequest": {
+    "number": 36,
+    "url": "https://github.com/xxibcill/still-shift/pull/36",
+    "state": "OPEN",
+    "base": "codex/composition-ce4a-completion",
+    "head": "codex/composition-ce10",
+    "attached": true
+  },
+  "nextMilestone": "CE11"
+}

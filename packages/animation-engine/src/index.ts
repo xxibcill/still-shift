@@ -40,6 +40,10 @@ export {
   type PassageCompositions,
 } from "./passage-compositions.ts";
 
+export {
+  readCompositionSource,
+  type CompositionSource,
+} from "./composition-source.ts";
 export * from "./soundtrack-project-io.ts";
 
 export * from "./soundtrack-render.ts";

@@ -44,4 +44,29 @@ export * from "./typography.ts";
 
 export * from "./composition/index.ts";
 
+export {
+  easeMotion,
+  cubicBezierProgress,
+  springProgress,
+} from "./easing-sampler.ts";
+
+export {
+  STORY_MOTION_PRESETS,
+  TEXT_INTENT_PRESETS,
+  expandMotionIntents,
+} from "./intent-presets.ts";
+export {
+  ROLE_LEADING,
+  opticalTracking,
+  resolvedTextStyle,
+  type TextNode,
+} from "./typography-style.ts";
+export {
+  resolveNarrationWord,
+  resolveTextEvents,
+  compileTextEvents,
+  TextEventError,
+  type TextEventScene,
+  type ResolvedTextEvent,
+} from "./typography-events.ts";
 export * from "./soundtrack-project.ts";

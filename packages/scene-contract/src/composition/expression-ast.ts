@@ -41,6 +41,22 @@ export const EXPRESSION_BINARY_OPERATORS = [
   "&&",
   "||",
 ] as const;
+/** Grammar summary shared with generated authoring references. */
+export const EXPRESSION_GRAMMAR = `expression  ::= conditional
+conditional ::= logicalOr ["?" expression ":" expression]
+logicalOr   ::= logicalAnd {"||" logicalAnd}
+logicalAnd  ::= equality {"&&" equality}
+equality    ::= comparison {("==" | "!=") comparison}
+comparison  ::= sum {("<" | "<=" | ">" | ">=") sum}
+sum         ::= product {("+" | "-") product}
+product     ::= unary {("*" | "/" | "%") unary}
+unary       ::= ("-" | "!") unary | postfix
+postfix     ::= primary {"." component}
+primary     ::= number | boolean | colour | pathString | identifier
+              | "[" expression "," expression ["," expression] "]"
+              | builtIn "(" [expression {"," expression}] ")"
+              | "(" expression ")"`;
+
 export type ExpressionBinaryOperator =
   (typeof EXPRESSION_BINARY_OPERATORS)[number];
 export type ExpressionOperator = ExpressionBinaryOperator | "neg" | "!" | "?:";

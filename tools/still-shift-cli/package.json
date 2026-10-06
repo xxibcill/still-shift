@@ -7,6 +7,9 @@
     "@still-shift/animation-engine": "workspace:*",
     "@still-shift/renderer-core": "workspace:*",
     "@still-shift/scene-contract": "workspace:*",
-    "@still-shift/execution-runtime": "workspace:*"
+    "@still-shift/execution-runtime": "workspace:*",
+    "@still-shift/motion": "workspace:*",
+    "tsx": "4.20.5",
+    "vite": "7.3.6"
   }
 }

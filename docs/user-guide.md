@@ -54,8 +54,9 @@ Asset paths are relative to the composition file and every asset's SHA-256 is
 checked. The command prints a result with the renderer and evaluator versions, the
 output checksum and timing metrics, and writes `out.mp4.scene.json` and
 `out.mp4.result.json` beside the video. Precomps, blend modes, track mattes, masks,
-adjustment layers and typography text render today; effects, shapes, motion blur and
-3D layers arrive in later milestones. Transparent backgrounds show black in MP4.
+adjustment layers and typography text render today, along with the delivered native
+effect catalogue and shutter motion blur. Richer shapes and 3D layers arrive in later
+milestones. Transparent backgrounds show black in MP4.
 
 To try the CE4a story adapter, compile
 the Access Constraint fixture and render the resulting composition:
@@ -73,7 +74,7 @@ from the recipe. Reusable story components also support measured and numeric tex
 text containers and state ramps, annotations, travel, pins, visibility and alpha masks.
 Each resolved component passage beat can compile through the same adapter. Unsupported features produce `comp-adapter-unsupported`; see
 [content providers](./composition-reference.md#content-providers-ce4a) for limits.
-CE4a remains in progress; existing story workflows keep their current renderer.
+CE4a is complete; existing story workflows keep their current renderer.
 
 The CE4b commerce adapter uses the same commands:
 
@@ -142,12 +143,46 @@ For the Lab preview, run `pnpm lab` and open
 [`/composition.html`](http://127.0.0.1:4173/composition.html): play or scrub the
 fixtures in `benchmarks/fixtures/composition/` and read their warnings. On a normal
 browser with a graphics card the preview is labelled approximate; the exported MP4 is
-always exact. A text layer without a `fontAsset` triggers a `comp-text-system-font`
-warning because its font depends on the computer.
+always exact. The fixture browser reports `comp-text-system-font` for unpinned text;
+authored JSON and TypeScript CLI inputs require a real pinned font asset.
 
 See the [composition reference](./composition-reference.md#rendering-a-composition)
-for the rendering rules. The full Lab composition inspector and `comp` CLI follow in
-CE11 and CE10; existing scene workflows remain available for producing videos.
+for the rendering rules. The full Lab composition inspector follows in CE11;
+existing scene workflows remain available for producing videos.
+
+### Author a composition in TypeScript
+
+Import typed layers, properties and timelines from `@still-shift/motion`, and export
+the composition as the program's default export. The CLI accepts `.ts`, `.mts`,
+`.cts` and native `.json` inputs. Start with the eight small programs in
+[`examples/composition`](../examples/composition), or the
+[197-line Unequal Margins program](../examples/composition/unequal-margins/program.ts).
+
+```sh
+pnpm --silent still-shift comp validate --input examples/composition/01-timeline.ts
+pnpm --silent still-shift comp preview --input examples/composition/01-timeline.ts --watch
+pnpm --silent still-shift comp export-json --input examples/composition/01-timeline.ts --output timeline.json
+pnpm --silent still-shift comp render --input timeline.json --output timeline.mp4
+```
+
+Open the URL printed by `preview`. Changes to imported helpers, data and image/font
+files rebuild without a page reload. A failed rebuild retains the last valid picture
+and scrub position, with located diagnostics; a shorter valid composition clamps the
+current frame. Builder previews show their provenance and are read-only.
+
+Node asset helpers in `@still-shift/motion/node` compute hashes and intrinsic sizes
+from real files. Use `relativeTo: import.meta.url` for paths relative to the program,
+and `fontAsset` for pinned text. The first added layer paints in front. Layer timing
+uses native `inPoint`/`outPoint` visibility gates and a `startFrame`/`stretch` local
+clock; timeline durations are frames, or `seconds()` rounded with `Math.round` at the
+composition fps. Conflicting writes to a property produce located errors.
+
+`lint`, `bake` and `normalize` accept the same program inputs. JSON export rebases
+asset paths and refuses to overwrite an existing output. Render usage/invalid-scene
+errors exit 2; input-reading or execution failures exit 1. See the
+[generated authoring reference](./composition-reference.md) and the compact
+[composition authoring skill](../skills/compose-with-still-shift/SKILL.md) for API
+examples, property selectors, motion/text presets and current feature limits.
 
 ### Check composition motion before delivery
 

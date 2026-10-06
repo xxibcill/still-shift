@@ -201,6 +201,21 @@ it("returns nonzero for undeclared one-frame scale and opacity pulses", async ()
     );
 });
 
+it("rejects unpinned provider text without adapter provenance", async () => {
+  const input = providerReadingComposition();
+  delete input.layers[0]!.source;
+  const result = await invoke(input);
+  expect(result.exit).toBe(1);
+  expect(result.stdout).toBe("");
+  expect(JSON.parse(result.stderr).diagnostics).toContainEqual(
+    expect.objectContaining({
+      code: "comp-text-system-font",
+      severity: "error",
+      path: "layers[0].usesSystemFonts",
+    }),
+  );
+});
+
 it("fails CLI lint when provider text is revealed too briefly", async () => {
   const result = await invoke(providerReadingComposition());
   expect(result.exit).toBe(1);

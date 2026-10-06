@@ -1,0 +1,437 @@
+{
+  "nodes": [
+    {
+      "id": "paper",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "paper-cover"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "ground",
+      "x": -160,
+      "y": 720,
+      "width": 2240,
+      "height": 360,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "image",
+      "states": [
+        {
+          "asset": "ground"
+        }
+      ],
+      "fit": "stretch"
+    },
+    {
+      "id": "reference",
+      "x": 112,
+      "y": 96,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "The same season.",
+      "fontSize": 112,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "display",
+      "align": "left"
+    },
+    {
+      "id": "question",
+      "x": 116,
+      "y": 246,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Different room to absorb strain.",
+      "revealMode": "words",
+      "fontSize": 64,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "common-ground",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [140, 830],
+        [1780, 830]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 3,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "margin-a",
+      "x": 220,
+      "y": 830,
+      "width": 570,
+      "height": 1,
+      "opacity": 0.55,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [570, 0]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 34,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "margin-b",
+      "x": 1110,
+      "y": 830,
+      "width": 570,
+      "height": 1,
+      "opacity": 0.55,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [570, 0]
+      ],
+      "stroke": "#59664D",
+      "lineWidth": 34,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "house-a",
+      "x": 220,
+      "y": 402,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "house-a-shadow",
+      "parent": "house-a",
+      "x": 0,
+      "y": 0,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "image",
+      "states": [
+        {
+          "asset": "house-shadow"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "house-a-art",
+      "parent": "house-a",
+      "x": 0,
+      "y": 0,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "image",
+      "states": [
+        {
+          "asset": "house-body"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "house-b",
+      "x": 1110,
+      "y": 402,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "group",
+      "clip": false
+    },
+    {
+      "id": "house-b-shadow",
+      "parent": "house-b",
+      "x": 0,
+      "y": 0,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "image",
+      "states": [
+        {
+          "asset": "house-shadow"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "house-b-art",
+      "parent": "house-b",
+      "x": 0,
+      "y": 0,
+      "width": 570,
+      "height": 418,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 1],
+      "type": "image",
+      "states": [
+        {
+          "asset": "house-body"
+        }
+      ],
+      "fit": "contain"
+    },
+    {
+      "id": "pressure-a",
+      "x": 118,
+      "y": 490,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [0, 0],
+        [0, 280],
+        [58, 280]
+      ],
+      "stroke": "#B47A2A",
+      "lineWidth": 24,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "pressure-b",
+      "x": 1744,
+      "y": 490,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [58, 0],
+        [58, 280],
+        [0, 280]
+      ],
+      "stroke": "#8B3F36",
+      "lineWidth": 24,
+      "lineStyle": "brush",
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    },
+    {
+      "id": "room",
+      "x": 505,
+      "y": 854,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "More room",
+      "fontSize": 56,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "center"
+    },
+    {
+      "id": "strained",
+      "x": 1395,
+      "y": 854,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "Less room",
+      "fontSize": 56,
+      "color": "#8B3F36",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "center"
+    },
+    {
+      "id": "qualifier",
+      "x": 112,
+      "y": 968,
+      "width": 0,
+      "height": 0,
+      "opacity": 1,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "text",
+      "text": "A qualitative comparison",
+      "fontSize": 52,
+      "color": "#211F1B",
+      "weight": "normal",
+      "font": "sans-serif",
+      "fontAsset": "label",
+      "align": "left"
+    },
+    {
+      "id": "strain-path",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "opacity": 0,
+      "rotation": 0,
+      "origin": [0.5, 0.5],
+      "type": "path",
+      "points": [
+        [-100, 360],
+        [2020, 360]
+      ],
+      "stroke": "#4B5F70",
+      "lineWidth": 1,
+      "gapAt": 0.6,
+      "gapSize": 0.1
+    }
+  ],
+  "images": [
+    {
+      "id": "house",
+      "file": "house.svg"
+    },
+    {
+      "id": "store",
+      "file": "store.svg"
+    },
+    {
+      "id": "land",
+      "file": "land.svg"
+    },
+    {
+      "id": "access",
+      "file": "access.svg"
+    },
+    {
+      "id": "pressure",
+      "file": "pressure.svg"
+    },
+    {
+      "id": "access-crisis",
+      "file": "access-crisis.svg"
+    },
+    {
+      "id": "category-a",
+      "file": "category-a.svg"
+    },
+    {
+      "id": "category-b",
+      "file": "category-b.svg"
+    },
+    {
+      "id": "ground",
+      "file": "ground.svg"
+    },
+    {
+      "id": "paper",
+      "file": "paper.svg"
+    },
+    {
+      "id": "paper-cover",
+      "file": "paper-cover.svg"
+    },
+    {
+      "id": "house-body",
+      "file": "house-body.svg"
+    },
+    {
+      "id": "house-shadow",
+      "file": "house-shadow.svg"
+    },
+    {
+      "id": "store-body",
+      "file": "store-body.svg"
+    },
+    {
+      "id": "store-shadow",
+      "file": "store-shadow.svg"
+    },
+    {
+      "id": "land-body",
+      "file": "land-body.svg"
+    },
+    {
+      "id": "land-shadow",
+      "file": "land-shadow.svg"
+    }
+  ],
+  "fonts": [
+    {
+      "id": "display",
+      "file": "source-serif-4-semibold.otf",
+      "weight": "600"
+    },
+    {
+      "id": "label",
+      "file": "plex-sans-medium.ttf",
+      "weight": "500"
+    },
+    {
+      "id": "label-strong",
+      "file": "plex-sans-semibold.ttf",
+      "weight": "600"
+    },
+    {
+      "id": "source",
+      "file": "plex-mono-medium.ttf",
+      "weight": "500"
+    }
+  ]
+}
