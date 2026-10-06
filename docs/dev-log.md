@@ -43,23 +43,23 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE4d in progress (2026-10-07):** `codex/composition-ce4d` from CE4c `17666eb`.
-  Shared production defaults replace duplicate family/Three painters. Canvas 1.44,
-  WebGL2 0.65, image-plane shader 0.4 and depth adapter 0.1 remain current. Complete
-  repaired prerequisite delivery passes 7 legacy fixtures / both backends / 66 hardware
-  checks and 29 native timelines / 87 exports / 90 hardware checks. The unchanged
-  Canvas timing policy passes; CE6-P retains WebGL speed work. Explicit public-depth
-  defaults pass all 23 timelines / 2,070 forward/reverse frames exactly. Actual vertical
-  Node export, Lab sessions, public export worker, 42 units and 11 integration tests pass;
-  fresh 690-frame zipper QA passes unchanged policy with warnings retained. The 176-item
-  actual-default family check is running. Strict CLI cache relocation exposed absolute
-  native asset paths; content-based document references and separate verified bindings
-  repair portability, with pipeline 0.13 identity. Eight focused tests/build/lint pass;
-  fresh affected CLI/export and complete local `pnpm check` remain. Then create/attach
-  CE4d PR and continue CE13 → CE15 → CE14, auditing/reusing CE16. CE5-X/Q9 is pending.
-  No owner decision blocks the approved order. Failed/rejected experiments and proof
-  remain in [results](./composition-ce4d-results.json); continuation rules are in the
-  [handoff](./composition-continuation-handoff-2026-10-07.md).
+- **CE4d final gate pending (2026-10-07):** `codex/composition-ce4d` from CE4c
+  `17666eb`; final runtime repair is pushed `75c0828`. Shared production defaults
+  replace duplicate family/Three painters. Canvas 1.44, WebGL2 0.65, image-plane
+  shader 0.4, depth adapter 0.1 and pipeline 0.13 are current. All 176 public family
+  defaults pass 36,061 forward/reverse frames, assigned tiers, text probes and every
+  unchanged CE0 hash. Explicit public-depth defaults pass all 23 timelines / 2,070
+  forward/reverse frames exactly. Strict CLI cache relocation/checksum/repeat,
+  actual vertical export, Lab sessions, export worker, focused units/integration
+  and fresh unchanged 690-frame zipper QA pass. All 141 preexisting visual files
+  remain exact. Complete serial migration delivery passes legacy/native independent
+  and repeat/raw exports, hardware, inspector/resources/alpha and native cost checks;
+  unchanged Canvas timing passes, while CE6-P retains WebGL speed work. Static
+  preflight passes on an isolated snapshot. One complete local `pnpm check` remains,
+  then CE4d PR and CE13 → CE15 → CE14 with CE16 audit/reuse. CE5-X/Q9 remains pending;
+  no owner decision blocks this approved order. Failed/rejected diagnostics and
+  measured proof are in [results](./composition-ce4d-results.json); continuation
+  rules are in the [handoff](./composition-continuation-handoff-2026-10-07.md).
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
   CE8-L `e1bd4bc`; final runtime `37cc07a`, verified snapshot `e1fb3e3`.
@@ -256,6 +256,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d complete public-default focused acceptance passes
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, runtime `75c0828`.
+- **Results:** all 176 actual family defaults pass 36,061 forward and reverse frames,
+  assigned pixel tiers, text probes and every unchanged CE0 hash. Explicit public depth
+  defaults pass all 23 timelines / 2,070 frames exactly. Strict CLI cache relocation,
+  checksums/repeat exports and actual vertical export pass after the portability repair.
+  Pinned toolchain, schema, boundaries, format, lint and build pass. All 141 prior visual
+  files remain exact; no threshold or frozen reference changed.
+- **Next:** one complete local `pnpm check` on the final isolated checkpoint, completion
+  PR/attachment, then CE13 → CE15 → CE14 with CE16 audit/reuse. CE5-X/Q9 remains pending.
+- **Records:** [results](./composition-ce4d-results.json).
 
 ### 2026-10-07 — CE4d public defaults pass and cache manifest portability is repaired
 
