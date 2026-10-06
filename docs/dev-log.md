@@ -45,14 +45,16 @@ still hold before relying on them.
 
 - **CE8-L-F preparation (2026-10-06):** isolated branch
   `codex/composition-ce8lf-prototype` from CE7 `0e48388`. Candidate flat-alpha
-  shadow specification, CPU/geometry oracle and isolated shader pass 9 analytic
+  shadow specification, CPU/geometry oracle and isolated shader pass 11 analytic
   tests, 96 frozen poses, independent repeats and 12 hardware cases exactly.
-  Toolchain/static checks pass; [draft PR #39](https://github.com/xxibcill/still-shift/pull/39)
-  is open and attached. Preparation is complete; CE8/CE8-L
-  and owner policy/budget decisions precede production integration; advanced
-  surface shading remains deferred. Primary checkout is untouched.
+  PR #39's review fix allows a receiver self entry during preflight while retaining
+  duplicate-caster rejection. Toolchain/static checks pass;
+  [PR #39](https://github.com/xxibcill/still-shift/pull/39) is open and attached.
+  Preparation is complete; CE8/CE8-L and owner policy/budget decisions precede
+  production integration; advanced surface shading remains deferred.
   [Specification](./composition-ce8lf-cast-shadow-spec.md),
-  [evidence](./composition-ce8lf-results.json).
+  [preparation evidence](./composition-ce8lf-results.json),
+  [review-fix evidence](./pr-39-self-entry-fix-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -130,7 +132,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
+_Last updated 2026-10-06 by Codex for PR #39 review correction; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -188,6 +190,22 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #39 receiver self-entry preflight fix
+
+- **Agent / checkout:** Codex in an isolated PR #39 worktree from `344cb8e`.
+- **Finding:** posted the P2 preflight mismatch as an
+  [inline review comment](https://github.com/xxibcill/still-shift/pull/39#discussion_r4191535608).
+- **Done:** allow one caster with the receiver's scoped identity; keep input
+  validation and duplicate-caster rejection. Regression covers shared/copied self
+  entries, other caster visibility and duplicate self entries through preflight.
+- **Results:** regression reproduced first; all 11 analytic tests and focused
+  toolchain/static gates pass. All 96 frozen poses, 288 seek draws, 96 independent
+  repeats, 12 hardware probes and maximum-input checks remain byte exact.
+- **Limits:** full repository/native/real-export gate not run for this isolated
+  prototype correction; production integration remains pending. Actions stay disabled.
+- **Delivery:** one focused fix commit for PR #39; no merge.
+- **Records:** [review-fix evidence](./pr-39-self-entry-fix-results.json).
 
 ### 2026-10-06 — CE8-L-F bounded cast-shadow preparation
 

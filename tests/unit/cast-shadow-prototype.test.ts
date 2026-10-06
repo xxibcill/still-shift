@@ -97,6 +97,27 @@ describe("isolated cast-shadow candidate", () => {
     expect(directVisibility(scene, [0, 0, 20])).toBe(1);
   });
 
+  it("ignores a validated receiver self entry alongside other casters", () => {
+    const scene = experiment();
+    const expected = referencePixels(scene, 8);
+    for (const self of [scene.receiver, structuredClone(scene.receiver)]) {
+      scene.casters = [self, plane("caster", 10)];
+      expect(referencePixels(scene, 8)).toEqual(expected);
+      scene.casters = [self];
+      expect(referencePixels(scene, 1)).toEqual([255, 255, 255, 255]);
+    }
+  });
+
+  it("rejects duplicate caster identities even when they match the receiver", () => {
+    const scene = experiment();
+    for (const caster of [scene.casters[0]!, scene.receiver]) {
+      scene.casters = [caster, structuredClone(caster)];
+      expect(() => referencePixels(scene, 1)).toThrow(
+        "invalid/duplicate identity",
+      );
+    }
+  });
+
   it("preserves receiver alpha and ambient with premultiplied linear RGB", () => {
     expect(shadeLinear([0.2, 0.1, 0.05, 0.5], 0.25, 0.75, 0)).toEqual([
       0.05, 0.025, 0.0125, 0.5,

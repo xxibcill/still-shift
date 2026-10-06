@@ -100,19 +100,18 @@ export function validateExperiment(scene: Experiment): void {
   )
     fail("invalid light/version");
   if (scene.casters.length > LIMITS.casters) fail("caster limit exceeded");
-  const ids = new Set<string>();
+  const casterIds = new Set(scene.casters.map((p) => `${p.scope}/${p.id}`));
+  if (casterIds.size !== scene.casters.length)
+    fail("invalid/duplicate identity");
   const identifier = (id: string) =>
     /^[a-zA-Z][\w-]*$/.test(id) && id.length <= 128;
   for (const p of [scene.receiver, ...scene.casters]) {
-    const key = `${p.scope}/${p.id}`;
     if (
       !identifier(p.id) ||
       !p.scope.split("/").every(identifier) ||
-      p.scope.length > 1024 ||
-      ids.has(key)
+      p.scope.length > 1024
     )
       fail("invalid/duplicate identity");
-    ids.add(key);
     if (
       ![p.origin, p.u, p.v].every(vector) ||
       !bounded(p.opacity, 0, 1) ||
