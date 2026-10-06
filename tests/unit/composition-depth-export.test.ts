@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { copyFile, mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import { expect, it } from "vitest";
 import { prepareDepthExportComposition } from "../../packages/animation-engine/src/composition-depth.ts";
 import {
@@ -89,6 +90,33 @@ it("checks prepared hashes and uses actual depth-map dimensions before export", 
       { sourcePath, depthPath },
     ),
   ).rejects.toThrow("actual normalized prepared source dimensions");
+});
+
+it("keeps the native document identical across relocated prepared caches", async () => {
+  const temporary = await mkdtemp(join(tmpdir(), "ce4d-depth-relocation-"));
+  try {
+    const scene = depthReferenceFixtures()[0]!.scene;
+    const first = await prepareDepthExportComposition(scene, {
+      sourcePath,
+      depthPath,
+    });
+    const relocated = join(temporary, "another-cache");
+    await mkdir(relocated);
+    const source = join(relocated, "renamed-source.svg"),
+      depth = join(relocated, "renamed-depth.svg");
+    await copyFile(sourcePath, source);
+    await copyFile(depthPath, depth);
+    const second = await prepareDepthExportComposition(scene, {
+      sourcePath: source,
+      depthPath: depth,
+    });
+    expect(second.composition).toEqual(first.composition);
+    expect(second.scene).toEqual(first.scene);
+    expect(first.assetPaths).toEqual({ source: sourcePath, depth: depthPath });
+    expect(second.assetPaths).toEqual({ source, depth });
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
+  }
 });
 
 it("retains auto selection, transparent compatibility and half-resolution depth provenance", async () => {

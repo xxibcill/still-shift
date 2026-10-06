@@ -54,7 +54,7 @@ import { prepareDepthExportComposition } from "./composition-depth.ts";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
-const PIPELINE_VERSION = "animation-pipeline-0.12.0";
+const PIPELINE_VERSION = "animation-pipeline-0.13.0";
 export const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
   const value = process.env.STILL_SHIFT_FRAME_TRANSPORT ?? "png_pipe";
   if (value !== "png_pipe" && value !== "jpeg_pipe")

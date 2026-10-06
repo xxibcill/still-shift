@@ -166,6 +166,10 @@ try {
     frameTransport: "png_pipe",
   });
   assert.ok(scene.renderScene);
+  assert.ok(scene.composition);
+  assert.match(scene.rendererVersion, /^composition-webgl2-/);
+  assert.equal(scene.rendererVersion, first.metrics.versions.renderer);
+  assert.equal(scene.composition.frameCount, first.frameCount);
   assert.equal(scene.model?.adapter, "fake");
   assert.deepEqual(scene.model, first.metrics.versions.model);
   assert.match(scene.model.weightsChecksum, /^sha256:[a-f0-9]{64}$/);

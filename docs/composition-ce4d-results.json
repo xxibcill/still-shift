@@ -16661,15 +16661,253 @@
           "tests": 11,
           "files": 3,
           "log": "/private/tmp/ce4d-default-integration-db0a4ca.log"
+        },
+        "freshFocusedUnits": {
+          "status": "pass",
+          "snapshot": "6d974d9",
+          "tests": 42,
+          "files": 6,
+          "log": {
+            "path": "/private/tmp/ce4d-default-focused-6d974d9.log",
+            "sha256": "sha256:1fcf491d46e31183f8a7511f737ad143912581caafe82406049e4982994ab2d4"
+          }
+        },
+        "freshIntegration": {
+          "status": "pass",
+          "snapshot": "6d974d9",
+          "tests": 11,
+          "files": 3,
+          "log": {
+            "path": "/private/tmp/ce4d-default-integration-6d974d9.log",
+            "sha256": "sha256:99beec24fd9a597b837308bc5722af8e79e6313f6be11d2f1ba3b8c18202d019"
+          }
+        },
+        "actualPublicDepthDefaults": {
+          "status": "pass",
+          "snapshot": "6d974d9",
+          "timelines": 23,
+          "forwardFrames": 2070,
+          "reverseFrames": 2070,
+          "maxChannelDelta": 0,
+          "reports": [
+            {
+              "id": "landscape-slow_push",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "landscape-horizontal_drift",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "landscape-cinematic_float",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "landscape-locked_hold",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "landscape-story_settle",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "landscape-panel_reveal",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "landscape-comparison_step",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "vertical-slow_push",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "vertical-horizontal_drift",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "vertical-cinematic_float",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "vertical-locked_hold",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "vertical-story_settle",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "vertical-panel_reveal",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "vertical-comparison_step",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "fallback-depth_range_flat",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "fallback-depth_preparation_failed",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "discontinuous-depth",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "auto-landscape-cinematic_float",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "auto-landscape-horizontal_drift",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "auto-landscape-slow_push",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "auto-vertical-protected-focus",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "transparent-source-opaque-compatibility",
+              "frames": 90,
+              "maxChannelDelta": 0
+            },
+            {
+              "id": "prepared-depth-half-resolution",
+              "frames": 90,
+              "maxChannelDelta": 0
+            }
+          ],
+          "logs": [
+            {
+              "path": "/private/tmp/ce4d-public-depth-base-6d974d9.log",
+              "sha256": "sha256:fee9833af6c871b25010f1014ec1b97640f7c12069189499274789cd6d366ec5"
+            },
+            {
+              "path": "/private/tmp/ce4d-public-depth-extended-6d974d9.log",
+              "sha256": "sha256:96db39d497e64ddd03fdb838581c3e06e23d91401e2a800aafeb23d886a905c2"
+            }
+          ],
+          "evidenceCorrection": "Earlier ce4d-default-depth logs/report files actually covered direct native-layer tests; public default was verified separately with explicit --default flags."
+        },
+        "actualVerticalNodeExport": {
+          "status": "pass",
+          "snapshot": "6d974d9",
+          "width": 1080,
+          "height": 1920,
+          "frames": 90,
+          "nativeCompositionAndProvenance": true,
+          "log": {
+            "path": "/private/tmp/ce4d-default-vertical-6d974d9.log",
+            "sha256": "sha256:eaad3024c5dd8eafc11ddefb33273a48a204ed3f6dd6e11972eeee284390f928"
+          }
+        },
+        "labSessions": {
+          "status": "pass",
+          "snapshot": "6d974d9",
+          "scope": [
+            "Commerce and component stale loads, failed edit preservation, export snapshots, retry and playback",
+            "Depth Lab vertical format, native scene-sized canvas and guide overlay",
+            "Composition staged failures, retained previous frame, stale candidates, shorter timeline clamps and export lock"
+          ],
+          "logs": [
+            {
+              "path": "/private/tmp/ce4d-default-lab-session-6d974d9.log",
+              "sha256": "sha256:0722bf6b5305c6b503a5dfd0c9393aaa6e5b12a62cb58a1360d66b08195c894e"
+            },
+            {
+              "path": "/private/tmp/ce4d-default-composition-session-6d974d9.log",
+              "sha256": "sha256:1ea8cc271bba76b871d6443ae867eb2563fee843bc837dbbd383ba8bf376257e"
+            }
+          ]
+        },
+        "publicExportWorker": {
+          "status": "pass",
+          "snapshot": "6d974d9",
+          "scope": "150 frames at1080p,90-frame transport checks,fallback,repeat and failed-output cleanup",
+          "log": {
+            "path": "/private/tmp/ce4d-default-export-worker-6d974d9.log",
+            "sha256": "sha256:8823eb0119ebb2c32b41a7aad544ba5a3dad82122cf18cf2b4cd37ea63f2a0da"
+          }
+        },
+        "freshZipper": {
+          "status": "pass",
+          "snapshot": "6d974d9",
+          "frames": 690,
+          "fps": 30,
+          "backend": "webgl2",
+          "rendererVersion": "composition-webgl2-0.65.0",
+          "measured": {
+            "evaluatedState": true,
+            "pixels": true,
+            "pixelMethod": "grayscale-energy",
+            "textBounds": true
+          },
+          "validationDiagnostics": 0,
+          "severities": {
+            "warning": 2172
+          },
+          "warnings": {
+            "co-start": 30,
+            "easing-monotony": 1,
+            "outside-safe-area": 23,
+            "velocity-discontinuity": 2115,
+            "off-canvas": 3
+          },
+          "limitations": [
+            "Coverage lint measures geometry; image alpha and arbitrary mask coverage require the renderer's asset coverage validation."
+          ],
+          "input": {
+            "path": "/Users/jjae/Documents/obsidian/ai-business/YouTube Workflow Experiments/2026-10-06-zipper-final/composition-v004.json",
+            "sha256": "sha256:34cb1842c471bb723ecc94b879384b9153f842dfa7ebc6e49a21050af7e80b15"
+          },
+          "policy": {
+            "path": "/Users/jjae/Documents/obsidian/ai-business/YouTube Workflow Experiments/2026-10-06-zipper-final/lint-policy.json",
+            "sha256": "sha256:45064a1b9d6dee63f02fe20e06be0248e71b5e921f060bbc43c0daa38c4e8071"
+          },
+          "report": {
+            "path": "/private/tmp/ce4d-final-zipper-6d974d9.json",
+            "sha256": "sha256:cd931a048045c567ddf1d5b3c2de25aa34620799f8178bdce873210d46dc3d9d"
+          },
+          "unchangedPolicy": {
+            "maxFrozenFrames": 60,
+            "cutFrames": [270, 510]
+          }
         }
       },
       "pending": [
-        "focused units/integration and actual default wrappers",
-        "all23 actual-default depth timelines",
-        "all176 actual-default family items and required Lab/export matrices",
-        "fresh zipper CLI QA",
-        "complete local pnpm check",
-        "CE4d completion PR and continuation CE13 \u2192 CE15 \u2192 CE14"
+        "all176 actual-default family acceptance running",
+        "cache-location scene identity CLI repair verification",
+        "final full local pnpm check",
+        "completion PR and continuation CE13 \u2192 CE15 \u2192 CE14"
       ],
       "browserSetupFailure": {
         "snapshot": "db0a4ca",
@@ -16678,14 +16916,51 @@
         "log": "/private/tmp/ce4d-default-depth-base-db0a4ca.log",
         "logSha256": "sha256:53b7a16918b68d8b1dde2945af38b6f2dc690bb4098d0ea7a13071de2de652cd",
         "repair": "Three0.186.0 and types0.186.0 move from renderer production package to explicit root development dependencies; lock package/snapshot/version/integrity maps are unchanged",
-        "verification": "build passes; default browser acceptance rerun pending"
+        "verification": "Resolved: explicit public-default23 timelines and actual vertical Node export pass on6d974d9."
       }
+    },
+    {
+      "name": "cache-location independent native depth manifests",
+      "date": "2026-10-07",
+      "status": "implemented; focused pass; CLI regression rerun pending",
+      "pipelineVersion": "animation-pipeline-0.13.0",
+      "failure": {
+        "snapshot": "6d974d9",
+        "command": "node --import tsx tests/browser/real-cli.ts",
+        "assertion": "Alternate cache scene and checksum must equal original; embedded native asset paths differed across cache directories",
+        "log": {
+          "path": "/private/tmp/ce4d-default-real-cli-6d974d9.log",
+          "sha256": "sha256:d353f97b6fbd123ac2de562b565da1214ffdbf9db4ed3520d93c6320dc1db2f9"
+        }
+      },
+      "scope": [
+        "Native depth documents capture content-based prepared asset references; verified physical paths remain separate export asset bindings",
+        "Pipeline0.13 invalidates old batch/result identities after manifest semantics changed",
+        "Regression preserves complete scene equality across directory and file renames; original strict CLI cache relocation and checksum assertions are retained",
+        "Real CLI explicitly asserts native renderer/composition and frame-count provenance"
+      ],
+      "checks": {
+        "focusedUnit": {
+          "status": "pass",
+          "tests": 8,
+          "files": 2,
+          "log": {
+            "path": "/private/tmp/ce4d-cache-relocation-focused.log",
+            "sha256": "sha256:586e294552bdfedac1cecae64bfe185ed4eec10d14dc1fd897c5741e46533fda"
+          }
+        },
+        "scopedFormatLintBuild": "pass"
+      },
+      "pending": [
+        "fresh immutable-snapshot real CLI and affected export checks",
+        "complete local milestone gate"
+      ]
     }
   ],
   "pending": [
-    "Remaining family parity and default consolidation",
-    "Depth native independent/repeat/raw exports, hardware and serial costs",
-    "Actual family/depth defaults and final full local gate",
+    "Complete actual-default family acceptance",
+    "Verify cache relocation repair on public CLI and affected exports",
+    "Complete final local pnpm check",
     "CE4d PR delivery"
   ]
 }

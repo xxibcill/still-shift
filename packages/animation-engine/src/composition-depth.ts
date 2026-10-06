@@ -28,6 +28,7 @@ export async function prepareDepthExportComposition(
   scene: PreviewScene,
   options: DepthExportOptions,
 ) {
+  const assetPaths: Record<string, string> = {};
   const readAsset = async (
     id: string,
     input: string,
@@ -63,10 +64,13 @@ export async function prepareDepthExportComposition(
         { cause },
       );
     }
+    assetPaths[id] = path;
     return {
       id,
       type: "image",
-      path,
+      // The captured document identifies bytes independently of cache location.
+      // The export binding below owns their verified physical paths.
+      path: `prepared/${id}/${sha256.slice("sha256:".length)}`,
       sha256,
       width: dimensions.width,
       height: dimensions.height,
@@ -98,8 +102,6 @@ export async function prepareDepthExportComposition(
   return {
     composition,
     scene: compositionScene(composition, "webgl2"),
-    assetPaths: Object.fromEntries(
-      composition.assets.map((asset) => [asset.id, asset.path]),
-    ),
+    assetPaths,
   };
 }

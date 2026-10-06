@@ -44,23 +44,21 @@ still hold before relying on them.
 ## Current state
 
 - **CE4d in progress (2026-10-07):** `codex/composition-ce4d` from CE4c `17666eb`.
-  Canvas is 1.44.0, WebGL2 is 0.65.0, image-plane shader is 0.4.0 and depth adapter
-  is 0.1.0. Complete repaired delivery on pushed `5bcba60` passes all 7 legacy
-  fixtures on both backends (2,352 forward/reverse frames, 14 independent encodes,
-  42 production/repeat/raw exports, 66 hardware checks, worst Canvas ratio 1.1822)
-  and native depth (29 timelines, 29 independent encodes, 87 exports, 23 cost
-  brackets, inspector/resources and 90 hardware checks). All 23 prepared depth
-  timelines match frozen references exactly; both GPU alpha edges conserve coverage.
-  Public family/depth factories now use the prepared shared composition backends;
-  duplicate frame painters are removed. Node manifests/exports carry native
-  composition and truthful provenance; pipeline 0.12 and native versions enter cache
-  identity. Build/scoped ESLint, 42 focused units and 11 integration tests pass. Frozen
-  test oracles now declare pinned Three explicitly at the test root, after initial
-  browser module resolution failed before pixel checks. Actual-default depth/family/Lab/export acceptance,
-  fresh zipper QA and complete local `pnpm check` remain pending, then CE4d PR →
-  CE13 → CE15 → CE14 (audit/reuse CE16). No owner decision blocks this approved
-  order; CE5-X/Q9 remains pending. Failed/rejected experiments and full proof remain
-  in [results](./composition-ce4d-results.json); continuation rules are in the
+  Shared production defaults replace duplicate family/Three painters. Canvas 1.44,
+  WebGL2 0.65, image-plane shader 0.4 and depth adapter 0.1 remain current. Complete
+  repaired prerequisite delivery passes 7 legacy fixtures / both backends / 66 hardware
+  checks and 29 native timelines / 87 exports / 90 hardware checks. The unchanged
+  Canvas timing policy passes; CE6-P retains WebGL speed work. Explicit public-depth
+  defaults pass all 23 timelines / 2,070 forward/reverse frames exactly. Actual vertical
+  Node export, Lab sessions, public export worker, 42 units and 11 integration tests pass;
+  fresh 690-frame zipper QA passes unchanged policy with warnings retained. The 176-item
+  actual-default family check is running. Strict CLI cache relocation exposed absolute
+  native asset paths; content-based document references and separate verified bindings
+  repair portability, with pipeline 0.13 identity. Eight focused tests/build/lint pass;
+  fresh affected CLI/export and complete local `pnpm check` remain. Then create/attach
+  CE4d PR and continue CE13 → CE15 → CE14, auditing/reusing CE16. CE5-X/Q9 is pending.
+  No owner decision blocks the approved order. Failed/rejected experiments and proof
+  remain in [results](./composition-ce4d-results.json); continuation rules are in the
   [handoff](./composition-continuation-handoff-2026-10-07.md).
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
@@ -258,6 +256,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d public defaults pass and cache manifest portability is repaired
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` after `0de5294`.
+- **Results:** explicit public-depth defaults pass all 23 timelines / 2,070 forward and reverse
+  frames exactly. Actual vertical Node export, both Lab session checks, public export worker,
+  42 units and 11 integration tests pass. Fresh 690-frame zipper pixel QA passes the unchanged
+  policy; 2,172 authored warnings remain, with no validation or frozen-motion errors.
+- **Correction:** earlier depth logs described as defaults actually covered direct native layers;
+  explicit `--default` proof is recorded separately.
+- **Repair:** strict CLI alternate-cache equality exposed absolute native asset paths. Content-based
+  document references now bind separately to verified physical files; pipeline 0.13 invalidates
+  prior cache identity. Eight focused tests, scoped format/lint and build pass.
+- **Open / next:** relocated-cache CLI/export rerun, remaining 176-item family acceptance and full
+  local gate; CE4d PR, then CE13 → CE15 → CE14 with CE16 audit/reuse.
+- **Records:** [results](./composition-ce4d-results.json).
 
 ### 2026-10-07 — CE4d frozen-oracle dependency is made explicit
 

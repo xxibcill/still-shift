@@ -197,6 +197,10 @@ uses its explicit opaque policy. Source and depth hashes, resolved settings and
 renderer versions participate in cache identity. The TypeScript builder's
 `depthImage(id, sourceAsset, depthAsset, options)` registers both prepared assets.
 
+Single-image CLI manifests capture content-based prepared asset references, so
+moving the depth cache preserves scene identity. The result's `assetPaths` locates
+the normalized source and depth files used for that execution.
+
 ### Native vector shapes
 
 Use `shape.native(id, { contents })` for cubic paths, rectangles, ellipses and
