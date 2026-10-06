@@ -51,7 +51,8 @@ still hold before relying on them.
   frames. Full Canvas family matrices pass unchanged pixel/timing policy.
   Final-code native correctness, exports, seeking and hardware checks pass;
   serial 1080p costs are refreshed. Earlier failures remain in the evidence.
-  CE8 PR publication and CE8-L follow; CE6-P targets remain separate.
+  [PR #43](https://github.com/xxibcill/still-shift/pull/43) is open and attached against CE6; CE8-L follows.
+  CE6-P targets remain separate.
   No owner decision is pending. [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
@@ -217,7 +218,7 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   policies; final-code serial 1080p costs refreshed without competing workloads.
 - **Limits:** Canvas affine-only; flat precomps and 2D constraints; CPU raster
   boundaries and non-real-time high-plane costs documented. CE6-P remains separate.
-- **Next:** publish/attach CE8 PR; CE8-L and remaining approved milestones follow.
+- **Next:** [PR #43](https://github.com/xxibcill/still-shift/pull/43) is open and attached; CE8-L and remaining approved milestones follow.
 - **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 ordinary-scope hot-path checkpoint

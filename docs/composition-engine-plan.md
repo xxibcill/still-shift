@@ -3752,7 +3752,7 @@ Evaluator E45, Canvas 1.40.0, WebGL2 0.55.0 and composition export 0.6.2 identif
 the new capability. Native Canvas references and affine bitmap coverage use pinned
 CPU raster preparation. CE11's real camera-frustum follow-through is complete;
 audio waveform follow-through remains CE13. Cinematic family camera parity follows
-in CE4c. Publish/attach the CE8 PR against CE6, then begin CE8-L on a new branch.
+in CE4c. [PR #43](https://github.com/xxibcill/still-shift/pull/43) is open and attached against CE6; begin CE8-L on a new branch.
 [Evidence](./composition-ce8-results.json).
 
 ---
