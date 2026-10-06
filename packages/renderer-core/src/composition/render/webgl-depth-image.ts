@@ -23,8 +23,8 @@ void main() {
   vec2 p=(vertex.xy*cover+framing)*(1.0+overscan)*scale*parallax;
   float cosine=cos(roll), sine=sin(roll);
   p=vec2(p.x*cosine-p.y*sine,p.x*sine+p.y*cosine)+offset;
-  // Composition textures store their top row at framebuffer row zero.
-  gl_Position=vec4(p.x,-p.y,0.0,1.0);
+  // Retain source winding and MSAA sample orientation until the exact row flip.
+  gl_Position=vec4(p,0.0,1.0);
 }`;
 const FRAGMENT = `#version 300 es
 precision highp float;
@@ -250,6 +250,7 @@ export class WebglDepthImages {
   draw(content: DepthImageContent): WebglSurface {
     const gl = this.device.gl;
     const output = this.device.surface(content.width, content.height);
+    let resolved: WebglSurface | undefined;
     const old = {
       vao: gl.getParameter(gl.VERTEX_ARRAY_BINDING),
       program: gl.getParameter(gl.CURRENT_PROGRAM),
@@ -344,12 +345,14 @@ export class WebglDepthImages {
       for (const [flag] of flags) gl.disable(flag);
       gl.enable(gl.CULL_FACE);
       gl.cullFace(gl.BACK);
-      gl.frontFace(gl.CW);
+      gl.frontFace(gl.CCW);
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_SHORT, 0);
       gl.bindFramebuffer(gl.READ_FRAMEBUFFER, target.framebuffer);
-      gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, output.framebuffer);
+      resolved = this.device.surface(content.width, content.height);
+      gl.bindFramebuffer(gl.READ_FRAMEBUFFER, target.framebuffer);
+      gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, resolved.framebuffer);
       gl.blitFramebuffer(
         0,
         0,
@@ -363,6 +366,13 @@ export class WebglDepthImages {
         gl.NEAREST,
       );
       this.device.passes += 2;
+      gl.disable(gl.CULL_FACE);
+      this.device.pass(
+        "uniform float height; void main(){pixel=texelFetch(source,ivec2(int(gl_FragCoord.x),int(height)-1-int(gl_FragCoord.y)),0);}",
+        output,
+        [resolved],
+        { height: content.height },
+      );
       completed = true;
       return output;
     } finally {
@@ -392,6 +402,7 @@ export class WebglDepthImages {
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, old.flip);
       gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, old.premultiply);
       gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, old.colorspace);
+      if (resolved) this.device.release(resolved);
       if (!completed) this.device.release(output);
     }
   }
