@@ -329,3 +329,37 @@ describe("composition builder", () => {
     expect(() => ease.bezier(-1, 0, 1, 1)).toThrow(/comp-builder-easing/);
   });
 });
+
+describe("symbolic precomp anchors", () => {
+  const child = comp({ ...options, id: "child", width: 64, height: 48 }, (c) =>
+    c.add(box()),
+  );
+  for (const [anchor, expected] of [
+    ["center", [32, 24]],
+    ["top", [32, 0]],
+    ["bottom", [32, 48]],
+    ["left", [0, 24]],
+    ["right", [64, 24]],
+  ] as const) {
+    it(`uses inline precomp dimensions for ${anchor}`, () => {
+      const result = comp(options, (c) =>
+        c.add(precomp("host", child).anchor(anchor).at(128, 128)),
+      );
+      expect(result.layers[0]!.transform!.anchor).toEqual(expected);
+    });
+    it(`resolves a later named definition for ${anchor}`, () => {
+      const result = comp(options, (c) => {
+        c.add(precomp("host", "child").anchor(anchor));
+        c.define(child);
+      });
+      expect(result.layers[0]!.transform!.anchor).toEqual(expected);
+    });
+  }
+  it("allows numeric anchors to override a pending symbolic anchor", () => {
+    const result = comp(options, (c) => {
+      c.add(precomp("host", "child").anchor("center").anchor(7, 9));
+      c.define(child);
+    });
+    expect(result.layers[0]!.transform!.anchor).toEqual([7, 9]);
+  });
+});

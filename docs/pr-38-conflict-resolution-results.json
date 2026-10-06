@@ -3,8 +3,8 @@
   "date": "2026-10-06",
   "headBefore": "edb958a2ff3f8a9c5cf46ae9e3278786c6ac5c0d",
   "baseBranch": "codex/composition-ce11",
-  "status": "First merge verified; updated base integration pending",
-  "resolution": "Retain both CE5 completion and CE11 review records; native shape track discovery and CE11 curve sampling, smoothing, focus, source-save and export ownership fixes coexist.",
+  "status": "Updated current base integrated and locally verified",
+  "resolution": "Retain both CE5 completion and CE11/CE10 review histories. Preserve native shape tracks, path alignment, and lowering alongside CE11 editing/save/export ownership and CE10 authoring/watch fixes. Resolve the equivalent lock import in favor of the existing public execution-runtime/locks entrypoint, retaining the narrow relative diagnostics import.",
   "environment": {
     "worktree": "/Users/jjae/.codex/worktrees/pr38-ce5-conflicts/still-shift",
     "node": "22.23.1",
@@ -13,9 +13,112 @@
     "dependencies": "Offline frozen installs; own node_modules, Vite/config caches and Python environment",
     "actionsEnabled": false
   },
-  "verification": [],
+  "verification": [
+    {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-fast.log",
+      "logSha256": "c87d3479de88332b516ef68a9d0b19c677742fae5ce88d0c3e9095a2c22afc6e",
+      "unitTests": 1618,
+      "files": 142
+    },
+    {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-runtime.log",
+      "logSha256": "79b3bf2d73a1d26b4e5877922e8fc11c04ef7f1f680249688301b58d50f7679b",
+      "tests": 46
+    },
+    {
+      "command": "pnpm exec vitest run tests/integration/composition-*.test.ts --maxWorkers=2 --no-file-parallelism",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-integration.log",
+      "logSha256": "e22353a1c9bddbc4850fb6de1d8cca8ded7ca64322b2220fd3ec4cb544668b1f",
+      "tests": 47,
+      "files": 10
+    },
+    {
+      "command": "pnpm test:depth",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-depth.log",
+      "logSha256": "3c699fcb4db745e19f799e650b9713e702fc716de802df1379e2d81dc6582ea1",
+      "tests": 14
+    },
+    {
+      "command": "pnpm test:browser:composition-inspector",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-inspector.log",
+      "logSha256": "f7dc0c8d577065b29c636ef68292bed920605936acc4ed77a8af90cf868c0b9c"
+    },
+    {
+      "command": "pnpm test:browser:composition-shapes",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-shapes.log",
+      "logSha256": "7d3c71060e27f1459ad6f979e2c46407bc757bee4387957e3e733b458ea039f1",
+      "nativeBaseline": "exact",
+      "hardwareComparisons": 18,
+      "hardwareTier": "exact",
+      "legacyConnectorFrames": 144,
+      "mp4AndTransport": "byte-identical on both backends"
+    },
+    {
+      "command": "pnpm test:browser:composition-session",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-composition-session.log",
+      "logSha256": "786a43f7fcf7afe840c494efc25941d4b742944c56643d0017bfb5e4b1057749"
+    },
+    {
+      "command": "pnpm test:browser:lab-session",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-lab-session.log",
+      "logSha256": "bdc624bc95fcb22cce070d2ea8fcc36e89c7e63cac34ff4d6c715abc8995ec0c"
+    },
+    {
+      "command": "pnpm test:browser:composition-program",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-program.log",
+      "logSha256": "42731f685f65ccf4b92e7c06b641c7c71d361f345258e838dc1cc0b1a974518c"
+    },
+    {
+      "command": "pnpm test:browser:composition-builder",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-builder.log",
+      "logSha256": "7690269fc618b4d2d3f85167b19a5063993f4aac566002dc7c67db7e400b591e",
+      "frames": 192,
+      "canvasAndWebglPixels": "exact",
+      "typescriptJsonExports": "byte-identical"
+    },
+    {
+      "command": "pnpm test:browser:composition-evaluator",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-evaluator.log",
+      "logSha256": "909e2be05773667d9d2b8b971dbc4d58052708c6283537b4539a4f9c8dd199bf"
+    },
+    {
+      "command": "pnpm test:browser:typography",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-typography.log",
+      "logSha256": "3b7b70f9c36984fab49432e2630bcaf8021499ef42680e8a3494cb853319c314"
+    },
+    {
+      "command": "pnpm test:browser:typography:fixtures",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-typography-fixtures.log",
+      "logSha256": "86768d658e83cc85dbac14803581f2503b30bc42c845b4453301b086655ef908"
+    },
+    {
+      "command": "pnpm test:browser:composition-baselines",
+      "status": "passed",
+      "log": "/private/tmp/pr38-updated-baselines.log",
+      "logSha256": "d7e1dfa21a83290c6ab52bac8141cf3daa2147d5f511fc7ab28d130b42798b7b",
+      "items": 176,
+      "frames": 36061,
+      "regenerated": false
+    }
+  ],
   "limitations": [
-    "Full pnpm check not rerun for this conflict-resolution slice; prior milestone acceptance evidence is retained, with relevant merged-code checks rerun locally."
+    "Full pnpm check aggregate was not rerun for this conflict-resolution slice. Full 144-test integration passed at the first verified merge; all 47 composition integration tests and affected browser acceptance were rerun after the base advanced. Neither earlier milestone gates nor focused runs are represented as a final merged-code full check.",
+    "No assertions, timing thresholds, renderer versions or frozen baselines were changed. WebGL performance acceptance remains deferred under the existing CE6-P policy."
   ],
   "initialFailure": {
     "command": "pnpm test:integration",
@@ -123,5 +226,17 @@
       ]
     }
   ],
-  "baseAdvance": "00d5fba4fc9ae42dd10aa56d479be6aac4d64d35"
+  "baseAdvance": "00d5fba4fc9ae42dd10aa56d479be6aac4d64d35",
+  "trackedSnapshotSha256ExcludingThisRecordAndDevLog": "5b4328070d7fcb1f255f85accb15c385aefea846540e8e8163ad1589ec1b929d",
+  "baseIntegrated": "00d5fba4fc9ae42dd10aa56d479be6aac4d64d35",
+  "checkpointCommit": "f615017",
+  "rejectedProbe": "A temporary explicit-field rewrite of an inherited SFX error only exposed another unrelated parameter property. Reverted that probe; the final repair preserves the narrow Vite import boundary without modifying those classes.",
+  "delivery": {
+    "strategy": "Normal push of the two merge commits to HEAD:refs/heads/codex/composition-ce5; no shared-history rewrite",
+    "baseRecheckedBeforeCommit": "00d5fba4fc9ae42dd10aa56d479be6aac4d64d35",
+    "remoteHeadRecheckedBeforeCommit": "edb958a2ff3f8a9c5cf46ae9e3278786c6ac5c0d",
+    "postPushVerification": "Re-fetch current base and confirm GitHub mergeability before finishing.",
+    "prMergeOrClose": false,
+    "ownerReviewAndMerge": "pending"
+  }
 }

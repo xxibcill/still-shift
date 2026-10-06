@@ -181,6 +181,7 @@ function parseAsset<T extends CompositionAsset>(
         .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
         .join("; "),
       site,
+      [value.path],
     );
   return recordSource(result.data as T, site);
 }

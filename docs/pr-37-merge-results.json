@@ -1,0 +1,306 @@
+{
+  "date": "2026-10-06",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/37",
+  "headBranch": "codex/composition-ce11",
+  "baseBranch": "codex/composition-ce10",
+  "originalHead": "4946e9dbb66fb46095868b5abdd281d028b9fa8a",
+  "integratedBase": "6e0d1087893a0635245f697d6c98f293681c4939",
+  "strategy": "Merge the current remote base without rewriting shared history; push only HEAD to the existing PR head.",
+  "worktree": "/Users/jjae/.codex/worktrees/pr37-conflict-resolution/still-shift",
+  "reviewedEvidence": [
+    "docs/composition-engine-plan.md#ce10--typescript-builder-api-and-cli",
+    "docs/composition-engine-plan.md#ce11--lab-composition-inspector-and-graph-editor",
+    "docs/composition-ce10-results.json",
+    "docs/composition-ce11-results.json",
+    "docs/pr-36-fix-results.json",
+    "docs/pr-36-rereview-fix-results.json",
+    "docs/pr-37-fix-results.json",
+    "docs/pr-37-followup-fix-results.json"
+  ],
+  "resolution": {
+    "conflicts": ["docs/dev-log.md: Current state and Entries"],
+    "manualResolution": "Preserve both CE10 review/follow-up records and CE11 milestone/review/follow-up records.",
+    "automaticMerge": "CE10 builder, anchors, source provenance, dependency tracing, typography diagnostics and regressions merged without code conflicts. Imported files match the base exactly. CE11 inspector, graph, save/export ownership and preview implementations retained.",
+    "additionalRepair": "Import PassageError and passageDiagnostics from their narrow module in composition/save.ts. The broad renderer-core index introduced by the CE11 diagnostic review fix makes native Vite config loading fail on unrelated TypeScript parameter properties."
+  },
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "toolchainCheck": "passed including Chromium launch",
+    "nodeDependencies": "Fresh worktree-local pnpm install --frozen-lockfile --offline. No node_modules or Vite cache symlinks to another checkout.",
+    "pythonEnvironment": "Fresh worktree-local uv sync --frozen; UV_CACHE_DIR=/private/tmp/pr37-uv-cache. numpy, cv2, PIL, torch, torchvision, transformers and still_shift_depth imports verified before the final integration run."
+  },
+  "initialAttempts": [
+    {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitTests": 1559,
+      "log": "/private/tmp/pr37-merge-fast.log"
+    },
+    {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "tests": 46,
+      "log": "/private/tmp/pr37-merge-runtime.log"
+    },
+    {
+      "command": "pnpm test:integration",
+      "status": "failed",
+      "testFilesFailed": 5,
+      "passedTests": 130,
+      "failedTests": 4,
+      "skippedTests": 23,
+      "reason": "Four Lab suite setup failures from broad renderer import, plus four cold Python depth-worker startup timeouts. The import was narrowed, Python imports warmed, and the full integration group rerun without changing test budgets.",
+      "log": "/private/tmp/pr37-merge-integration.log"
+    },
+    {
+      "command": "Vite loadConfigFromFile with pinned native Node",
+      "status": "failed-before-repair / passed-after-repair",
+      "logs": [
+        "/private/tmp/pr37-config-load.log",
+        "/private/tmp/pr37-config-load-fixed.log"
+      ]
+    }
+  ],
+  "finalVerification": {
+    "status": "Focused gates and all selected browser acceptance passed; integration aggregate retained as failed with a successful affected-file rerun.",
+    "summary": {
+      "unitTests": 1559,
+      "runtimeTests": 46,
+      "depthTests": 14,
+      "integrationAggregate": "156 passed / 1 timeout; aggregate not passed",
+      "integrationRetry": "all 13 preview tests passed independently without changed budgets",
+      "browserGroupsPassed": 7,
+      "fullPnpmCheck": "not rerun"
+    },
+    "checks": [
+      {
+        "name": "fast",
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "seconds": 46.18,
+        "log": "/private/tmp/pr37-final-fast.log",
+        "status": "passed",
+        "logSha256": "ba9522d718fd1c082dc615502e48d310855af44ff7bbd34cddaed6030496092f",
+        "unitTests": 1559,
+        "testFiles": 136
+      },
+      {
+        "name": "integration",
+        "command": "pnpm test:integration",
+        "exitCode": 1,
+        "seconds": 221.72,
+        "log": "/private/tmp/pr37-final-integration.log",
+        "status": "failed",
+        "logSha256": "118d6cd6fe2eb4b54e466bc8898da3621b686688a29ade62dbf65a8ac76be2ca",
+        "passedTests": 156,
+        "failedTests": 1,
+        "testFilesPassed": 39,
+        "testFilesFailed": 1,
+        "reason": "The initially missing imported module recovery test timed out at its unchanged 5000ms test limit. Full aggregate remains failed; all 13 tests in the affected file subsequently passed on a standalone rerun. No test budget or assertion changed."
+      },
+      {
+        "name": "preview-retry",
+        "command": "pnpm exec vitest run tests/integration/composition-preview.test.ts --maxWorkers=1 --no-file-parallelism",
+        "exitCode": 0,
+        "seconds": 21.02,
+        "log": "/private/tmp/pr37-final-preview-retry.log",
+        "status": "passed",
+        "logSha256": "7e2c3b65496d60b56451936047315e34673562de9d8a2786b0d1ff2dbf091d8f",
+        "tests": 13,
+        "testFiles": 1
+      },
+      {
+        "name": "runtime",
+        "command": "pnpm test:runtime",
+        "exitCode": 0,
+        "seconds": 14.51,
+        "log": "/private/tmp/pr37-final-runtime.log",
+        "status": "passed",
+        "logSha256": "74a229af0c635e5fa4469be677825697613a19a70f177bc8f0566c4373be1b87",
+        "tests": 46,
+        "testFiles": 9
+      },
+      {
+        "name": "depth",
+        "command": "pnpm test:depth",
+        "exitCode": 0,
+        "seconds": 1.06,
+        "log": "/private/tmp/pr37-final-depth.log",
+        "status": "passed",
+        "logSha256": "b10a97467482e7ea21ea5e32d3441c72f15fa1171f98b3c1e96a8fb2471e28b9",
+        "tests": 14
+      },
+      {
+        "name": "python-format",
+        "command": "uv run ruff format --check services/depth-worker packages/execution-runtime/src/artifact-lock-helper.py",
+        "exitCode": 0,
+        "seconds": 0.82,
+        "log": "/private/tmp/pr37-final-python-format.log",
+        "status": "passed",
+        "logSha256": "2ce9758b9f8abd876ec3e76c589e099e8b05377b1e7ea2331e81ee80f07bdff8"
+      },
+      {
+        "name": "python-lint",
+        "command": "uv run ruff check services/depth-worker packages/execution-runtime/src/artifact-lock-helper.py",
+        "exitCode": 0,
+        "seconds": 0.03,
+        "log": "/private/tmp/pr37-final-python-lint.log",
+        "status": "passed",
+        "logSha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+      },
+      {
+        "name": "inspector",
+        "command": "pnpm test:browser:composition-inspector",
+        "exitCode": 0,
+        "seconds": 9.95,
+        "log": "/private/tmp/pr37-final-inspector.log",
+        "status": "passed",
+        "logSha256": "ae7cd1ad894efdbe5a30de70ebd6181c84dc4148ae0cb451cfd057a56d0b5cab",
+        "acceptance": {
+          "status": "passed",
+          "checks": [
+            "desktop edit",
+            "undo/redo",
+            "invalid-edit rollback",
+            "transient visibility",
+            "visibility retained across curve edits and undo/redo",
+            "overlays",
+            "keyboard Bezier graph handles",
+            "key and resolved-instance selector focus",
+            "lossless source save",
+            "backend draft/frame retention",
+            "MP4 native byte identity",
+            "decoded preview parity",
+            "external conflict/reload",
+            "phone layout",
+            "save applies view visibility",
+            "builder edited-key copy/read-only source/hot reload"
+          ],
+          "root": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-inspector-yYYFMf"
+        }
+      },
+      {
+        "name": "composition-session",
+        "command": "pnpm test:browser:composition-session",
+        "exitCode": 0,
+        "seconds": 1.91,
+        "log": "/private/tmp/pr37-final-composition-session.log",
+        "status": "passed",
+        "logSha256": "17bf266a5502880f361f28f5e1eb5b6c8107cd6390561dc895eb117a70bb78d7"
+      },
+      {
+        "name": "lab-session",
+        "command": "pnpm test:browser:lab-session",
+        "exitCode": 0,
+        "seconds": 6.42,
+        "log": "/private/tmp/pr37-final-lab-session.log",
+        "status": "passed",
+        "logSha256": "820602c89ff7689a1c73e274292c5ad05cf56e8223d27f0c79634c9ceafbd989"
+      },
+      {
+        "name": "program",
+        "command": "pnpm test:browser:composition-program",
+        "exitCode": 0,
+        "seconds": 12.88,
+        "log": "/private/tmp/pr37-final-program.log",
+        "status": "passed",
+        "logSha256": "72e4edf41e3f2eda560d108ebedcb6979163c96b0d5249fa2bacb57ff369616e",
+        "acceptance": {
+          "status": "passed",
+          "watch": {
+            "helperReload": true,
+            "invalidKeepsPixels": true,
+            "frameRetained": 17,
+            "shorterClamped": 7,
+            "backendSwitch": true,
+            "fullReload": false,
+            "readonlyBuilder": true
+          },
+          "render": {
+            "sources": ["typescript", "json"],
+            "frames": 8,
+            "fps": 24,
+            "byteIdentical": true
+          }
+        }
+      },
+      {
+        "name": "builder",
+        "command": "pnpm test:browser:composition-builder",
+        "exitCode": 0,
+        "seconds": 27.37,
+        "log": "/private/tmp/pr37-final-builder.log",
+        "status": "passed",
+        "logSha256": "e170f452046982efabde9039b33f4de4822aa2ca249eb2a29b576163177190f0",
+        "acceptance": {
+          "status": "passed",
+          "lines": 197,
+          "frames": 192,
+          "numericValues": 42256,
+          "maxNumericDelta": 5.684341886080802e-14,
+          "pixels": [
+            {
+              "backend": "canvas2d",
+              "frames": 192,
+              "maxChannelDelta": 0,
+              "minimumPsnr": "Infinity",
+              "backwardSeeks": 7
+            },
+            {
+              "backend": "webgl2",
+              "frames": 192,
+              "maxChannelDelta": 0,
+              "minimumPsnr": "Infinity",
+              "backwardSeeks": 7
+            }
+          ],
+          "exports": {
+            "typescriptJsonByteIdentical": true,
+            "sha256": "5ebd5dca399ea9f149611e60edea3ad01710aa56d0999abf7a227710b3395b38"
+          }
+        }
+      },
+      {
+        "name": "typography",
+        "command": "pnpm test:browser:typography",
+        "exitCode": 0,
+        "seconds": 2.39,
+        "log": "/private/tmp/pr37-final-typography.log",
+        "status": "passed",
+        "logSha256": "befa5e82f6521cf4e8e2de0383228671a0a29404825bd35aaa7d85b33f8926f0"
+      },
+      {
+        "name": "typography-fixtures",
+        "command": "pnpm test:browser:typography:fixtures",
+        "exitCode": 0,
+        "seconds": 9.66,
+        "log": "/private/tmp/pr37-final-typography-fixtures.log",
+        "status": "passed",
+        "logSha256": "147cb370d1f79fe6f3b58a9ca714d052a09a703c0a125550cbb7391a99a95eb7"
+      }
+    ],
+    "trackedSnapshotSha256ExcludingThisRecordAndDevLog": "a00fc9ff5755903c75b3b899dc439a03cc26bdf2dd0fc384c2e7627b0eda4fed",
+    "staticNote": "Schema, package boundaries, TypeScript formatting, ESLint and build passed with the import repair. Final evidence/log formatting and git diff --check are checked before commit."
+  },
+  "limitations": [
+    "Full pnpm check aggregate, unrelated render suites, frozen baseline matrix and timing benchmarks are not rerun for this focused stacked-PR repair. Prior milestone results remain historical evidence, not a claimed final merged-code full gate. No assertions, time budgets or frozen baselines are changed.",
+    "The corrected full integration aggregate recorded one watch-recovery timeout. Its unchanged 13-test file passes on standalone retry; the aggregate is not represented as passing."
+  ],
+  "githubActions": {
+    "enabled": false,
+    "workflowFilesAdded": false
+  },
+  "delivery": {
+    "strategy": "One normal push of the merge commit to HEAD:refs/heads/codex/composition-ce11; no shared-history rewrite.",
+    "baseRecheckedBeforeCommit": "6e0d1087893a0635245f697d6c98f293681c4939",
+    "remoteHeadRecheckedBeforeCommit": "4946e9dbb66fb46095868b5abdd281d028b9fa8a",
+    "publishVerification": "Fetch and recheck the base immediately before push, then confirm GitHub mergeability against the same current base.",
+    "ownerDecision": "PR review and merge remain pending.",
+    "mergeOrClosePR": false
+  }
+}
