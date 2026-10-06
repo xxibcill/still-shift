@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-06",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/36",
+  "reviewedHead": "8be5fc7c867c36b9b3b835d4ea9c264b74225475",
+  "branch": "codex/pr36-current-review-fixes",
+  "policy": "One finding per commit; one push after the final fix commit. GitHub Actions remain disabled.",
+  "status": "first-finding-fixed-two-pending",
+  "findings": [
+    {
+      "number": 1,
+      "finding": "match exact text-style keys for source attribution",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4192032535",
+      "status": "fixed",
+      "commitSubject": "fix(motion): match exact text-style source paths",
+      "verification": {
+        "red": "Three valid-ID regressions failed at the wrong source line before the fix.",
+        "green": {
+          "tests": 50,
+          "log": "/private/tmp/pr36-current-fix1-green.log"
+        },
+        "coverage": [
+          "hyphenated and numeric suffix collisions",
+          "style ID matching a property name",
+          "reverse-prefix compatibility"
+        ],
+        "staticChecks": [
+          "pnpm build",
+          "targeted ESLint",
+          "changed-file Prettier"
+        ],
+        "rejectedHarness": "Dot and quote style IDs are prohibited by the existing schema; removed those two test assumptions without changing the schema. Initial failure log: /private/tmp/pr36-current-fix1-red.log."
+      }
+    },
+    {
+      "number": 2,
+      "finding": "retain successful asset reads through later compilation failures",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4192032538",
+      "status": "pending"
+    },
+    {
+      "number": 3,
+      "finding": "let explicit transforms override deferred symbolic anchors",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4192032543",
+      "status": "pending"
+    }
+  ],
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "fullGateRerun": false
+  },
+  "delivery": { "pushes": 0, "ownerReviewAndMerge": "pending" }
+}

@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #36 current-head fixes in progress (2026-10-06):** isolated
+  `codex/pr36-current-review-fixes` from `8be5fc7`; three findings are posted inline.
+  Exact text-style source matching passes 50 builder tests, build and targeted lint.
+  Successful asset-read recovery and explicit deferred-anchor precedence remain.
+  Delivery will use one commit per finding and one push after the final fix;
+  owner review/merge remain pending. No blocker; Actions remain disabled.
+  [Evidence](./pr-36-current-head-fix-results.json).
+
 - **PR #36 conflict resolution verified (2026-10-06):** isolated CE10 worktree
   from `6e0d108`; initial merge `f39813f` integrates `91f9c54`, then refreshed
   base `ddaf9d2` adds current CE12/main expression, lint and soundtrack changes.
@@ -385,6 +393,20 @@ _Last updated 2026-10-06 by Codex for PR #35 conflict resolution; both histories
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — Repair PR #36 current-head review findings
+
+- **Agent / branch:** Codex on isolated `codex/pr36-current-review-fixes`, from `8be5fc7`.
+- **Done:** post all three findings inline; match exact text-style JSON paths so
+  similarly named styles report their own authoring calls.
+- **Results:** the intended source-location regressions fail before the fix;
+  50 builder tests, TypeScript build, targeted lint and formatting pass afterward.
+- **Rejected:** dot/quote style IDs are invalid under the existing schema; remove
+  those test assumptions rather than widening the contract.
+- **Open / next:** asset-read watch recovery and explicit-anchor precedence are
+  pending. One finding per commit; one final push; owner review/merge remain.
+- **Records:** [fix evidence](./pr-36-current-head-fix-results.json),
+  [PR #36](https://github.com/xxibcill/still-shift/pull/36). Full gate not rerun.
 
 ### 2026-10-06 — Resolve PR #36 against the refreshed CE4a base
 
