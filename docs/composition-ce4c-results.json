@@ -1715,5 +1715,59 @@
   "coordination": {
     "status": "native timings queued while independent review checks are active",
     "approval": "Handoff message rejected by automatic approval review for missing explicit follow-up authorization; user question pending. No message sent."
-  }
+  },
+  "verificationAttempts": [
+    {
+      "snapshot": "9c2a97d",
+      "command": "pinned non-browser preflight through integration",
+      "status": "failed",
+      "passed": [
+        "toolchain",
+        "schema",
+        "boundaries",
+        "format",
+        "lint",
+        "build",
+        "1935 unit / 195 files",
+        "46 runtime / 9 files"
+      ],
+      "integration": {
+        "files": 39,
+        "passedTests": 138,
+        "failedTests": 2,
+        "totalTests": 140
+      },
+      "failures": [
+        "Stale camera-first CLI assertion following native paint-order fix; repaired at 640c8c5 and all seven CLI tests pass",
+        "Unchanged preview-watch recovery test exceeded 5000ms; all four tests pass in isolation at 640c8c5 without timeout or source changes"
+      ],
+      "notReached": ["depth", "browser groups"]
+    },
+    {
+      "snapshot": "640c8c5",
+      "command": "focused preview-watch / depth / native camera / native lighting",
+      "status": "pass",
+      "previewWatch": {
+        "files": 1,
+        "tests": 4,
+        "unchangedTimeoutMs": 5000
+      },
+      "depth": {
+        "tests": 14
+      },
+      "nativeCamera": {
+        "storedHashes": "exact",
+        "hardwareComparisons": 36,
+        "inspector": "pass",
+        "exports": "pass"
+      },
+      "nativeLighting": {
+        "storedHashes": "exact",
+        "hardwareComparisons": 45,
+        "inspector": "pass",
+        "exports": "pass"
+      },
+      "verificationLimits": "Focused regression commands finished with exit 0. The complete pinned pnpm check and required cinematic timing/native matrix remain pending."
+    }
+  ]
 }

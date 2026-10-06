@@ -45,24 +45,18 @@ still hold before relying on them.
 
 - **CE4c in progress (2026-10-06):** `codex/composition-ce4c` from CE8-L
   `e1bd4bc` / [PR #44](https://github.com/xxibcill/still-shift/pull/44).
-  Framing `c5a3816` and adapter `48c9a70` are pushed. All 15 fixtures / 2,160
-  frames pass native state parity. The first rendered smoke exposed double
-  resampling (delta88); direct affine source drawing repairs it. Sampled fixture
-  pixels/seeks and final focus cleanup pass; 58 focused tests, build/lint pass.
-  The full focus run passes 192 software frames/seeks and all export comparisons,
-  but fails hardware blur (SSIM0.98918). CPU source raster consistency repairs it;
-  all six hardware samples, 11 focused tests and build pass. Full native acceptance
-  and the complete local gate remain pending. Persisted native alpha safety and
-  seven effect variants pass 26 focused tests/build/lint. Final sampled pixels/seeks
-  pass 44 cases / 220 frames (delta1); real temporal editing/save/reload passes.
-  Paint-order and adjustment-exposure failures are repaired and retained. Field
-  coverage now includes the shared native inspector fixture; 1,935 unit tests,
-  build and focused lint pass after one coverage failure. All 132 actual Metal
-  comparisons and the real inspector pass. CLI camera-order assertions are repaired;
-  seven focused CLI tests/build/lint pass. Integration has a preview-watch timeout
-  awaiting an unchanged isolated rerun. Independent
-  review gates are active; native timing is queued. Coordination authorization is pending.
-  [Evidence](./composition-ce4c-results.json).
+  Native framing, camera/plane adaptation, Gaussian focus, alpha safety and shared
+  effect ordering/exposure are delivered; latest checkpoint `640c8c5` is pushed.
+  All 15 fixtures / 2,160 state frames, 44 sampled cases / 220 frames, 132 actual
+  Metal comparisons and real inspector edits/save/reload pass. Pinned unit/runtime
+  and depth checks pass (1,935 / 46 / 14). Native camera and lighting regression
+  commands pass exact stored hashes, exports, inspectors and 36 / 45 hardware
+  comparisons. Full integration failed a stale CLI assertion (repaired; seven
+  focused tests pass) and a 5000ms preview-watch timeout (four unchanged isolated
+  tests pass). Full cinematic timelines/exports are being checked untimed;
+  timing is queued behind independent suites. Complete `pnpm check` and PR remain
+  pending. Coordination authorization is pending; failures remain in the
+  [evidence](./composition-ce4c-results.json).
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
   `9d8f33a`; final code `d72ba2c`, verified checkpoint `3820c1c`. Bounded ambient,
@@ -244,6 +238,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c camera and lighting regression checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, CLI `640c8c5`.
+- **Results:** native camera and lighting commands finish with exit 0: stored
+  hashes, exports and inspectors pass, with 36 / 45 hardware comparisons. The
+  four preview-watch tests pass with their unchanged 5000ms timeout; 14 depth tests
+  pass. Earlier integration ended at 138 / 140 passing tests, with the CLI repair
+  and isolated watch verification now complete.
+- **Open / next:** full native timelines/exports are running as an untimed
+  diagnostic; required performance acceptance and complete pinned gate remain.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c hardware and CLI checkpoint
 
