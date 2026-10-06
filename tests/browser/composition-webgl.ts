@@ -40,6 +40,13 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const providerShadows = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-vector-paints.ts";
+    return (
+      (await import(url)) as typeof VectorPaints
+    ).checkProviderShadowPaints();
+  });
+  console.log("WebGL provider shadow paints:", JSON.stringify(providerShadows));
   const largeBlur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-large-blur-reference.ts";
     return (

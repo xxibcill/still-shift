@@ -40,6 +40,11 @@ assert.equal(all.length, 7, "All CE0 legacy fixtures are required");
 const only = process.argv.indexOf("--only"),
   requested = process.argv.indexOf("--backend");
 const smoke = process.argv.includes("--smoke");
+// Keep delivery failures covered by sampled smoke and hardware checks.
+const regressionFrames: Record<string, number[]> = {
+  "legacy/comparison-build": [30, 31, 32, 33, 34],
+  "legacy/crisis-fracture": [41, 42, 43, 44, 45, 77, 86],
+};
 const fixtures = all.filter(
   (fixture) => only < 0 || fixture.id.includes(process.argv[only + 1]!),
 );
@@ -93,6 +98,7 @@ try {
           backends: backends as Render.CompositionBackend[],
           frames: [
             0,
+            ...(regressionFrames[item.id] ?? []),
             Math.floor(composition.frameCount / 2),
             composition.frameCount - 1,
           ],
@@ -120,7 +126,7 @@ try {
             async ({
               sceneJson,
               compositionJson,
-              itemId,
+              regressionFrames,
               urls,
               backend,
               smoke,
@@ -169,10 +175,7 @@ try {
                       Math.floor(composition.frameCount / 2),
                       Math.floor((3 * composition.frameCount) / 4),
                       composition.frameCount - 1,
-                      // Panel overlap exposed accumulated PNG primitive rounding.
-                      ...(itemId === "legacy/comparison-build"
-                        ? [30, 31, 32, 33, 34]
-                        : []),
+                      ...regressionFrames,
                     ]),
                   ]
                 : Array.from(
@@ -270,7 +273,7 @@ try {
             {
               sceneJson: JSON.stringify(scene),
               compositionJson: JSON.stringify(composition),
-              itemId: item.id,
+              regressionFrames: regressionFrames[item.id] ?? [],
               urls,
               backend,
               smoke,

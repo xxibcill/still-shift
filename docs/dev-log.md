@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE4d shadow repair checkpoint (2026-10-07):** WebGL2 is0.65.0. The retained
+  separate shadow/source paints pass all7 legacy correctness sweeps (2,352 forward
+  and2,352 reverse frames across both backends),39 unit tests and12 unchanged-policy
+  hardware regression comparisons. Build/scoped ESLint pass. Complete serial
+  delivery, native depth refresh, defaults and final local gate remain pending.
+  Rejected bitmap/software alternatives are recorded in [results](./composition-ce4d-results.json).
+
 - **CE4d alpha repair checkpoint (2026-10-07):** preserved-alpha linear filtering
   passes edge conservation and repeat assertions on SwiftShader and Apple M5 Pro;
   all 128 filtered pixels conserve R+G exactly. WebGL2 is 0.64.0 / image-plane shader 0.4.0. This
@@ -51,7 +58,8 @@ still hold before relying on them.
   default consolidation and the final full gate remain pending. Legacy delivery found
   a separate PNG rounding defect (delta3 at frames30–34); the repair is implemented
   with 39 unit tests, both-profile alpha and all7 WebGL smoke fixtures /40 forward
-  and40 reverse frames passing. Complete serial delivery proof is running.
+  and40 reverse frames passing. Complete serial delivery stopped at Crisis Fracture frame41 (delta3); a separate
+  shadow/source repair now passes focused all-frame correctness; full delivery remains pending.
   [Evidence](./composition-ce4d-results.json).
 
 - **CE4d in progress (2026-10-07):** `codex/composition-ce4d` from CE4c
@@ -292,6 +300,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d separate shadow/source paint repair checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` from `93845ba`.
+- **Scope:** serial legacy delivery reached Crisis Fracture frame41 with delta3 at one shadow/stroke pixel.
+- **Done:** known unfiltered/unclipped Canvas shadows and source coverage reach the shared GPU
+  backdrop as separate paints. Unbounded source extents and absolute/reset transforms are retained.
+  WebGL2 is 0.65.0. Critical smoke/hardware frames and a pinned direct-Canvas regression are added.
+- **Results:** build/scoped ESLint and39 unit tests pass. All7 legacy fixtures pass2,352 forward
+  and2,352 reverse frames on both backends, unchanged delta2 maximum. All12 hardware regression
+  comparisons pass the unchanged perceptual policy (minPSNR45.7339/SSIM0.998534).
+- **Rejected:** flattened bitmap blending fixes frame41 but breaks six other frames; software
+  vector preparation does not fix frame41. A pinned near assertion was too strict for a hardware
+  diagnostic; hardware policy remains unchanged. Complete delivery is still pending.
+- **Open / next:** serial legacy/native delivery, default consolidation and final local gate; then PR/CE13.
+- **Records:** [results](./composition-ce4d-results.json).
 
 ### 2026-10-07 — CE4d overlapping PNG rounding repair checkpoint
 

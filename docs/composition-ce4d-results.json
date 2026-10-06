@@ -11351,7 +11351,7 @@
     {
       "name": "verified PNG bitmap source-over parity repair",
       "date": "2026-10-07",
-      "status": "focused acceptance passes; complete serial delivery running",
+      "status": "PNG all-frame parity and exports pass in serial delivery; later Crisis Fracture vector shadow fails",
       "rendererVersion": "composition-webgl2-0.64.0",
       "failure": {
         "snapshot": "4b99cad",
@@ -11852,6 +11852,854 @@
         "default migration and final full gate"
       ],
       "checkpoint": "fe5b8a6"
+    },
+    {
+      "name": "separate native Canvas shadow/source paints in shared WebGL compositor",
+      "date": "2026-10-07",
+      "status": "focused acceptance passes; complete delivery pending",
+      "rendererVersion": "composition-webgl2-0.65.0",
+      "failure": {
+        "snapshot": "fe5b8a6",
+        "exitCode": 1,
+        "reason": "legacy/crisis-fracture WebGL frame41 exceeds unchanged maxdelta2 with delta3; subsequent native depth delivery did not run",
+        "reports": [
+          {
+            "backend": "canvas2d",
+            "fixture": "legacy/chronicle-reveal",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "e7d7a87238b95a6fe9d56a50e671be9bc0299769c24fd047c63dfe4954bc6084",
+            "ratio": 1.072164948542975,
+            "timings": [
+              {
+                "legacyMs": 543.1999999880791,
+                "compositionMs": 582.4000000357628,
+                "ratio": 1.072164948542975,
+                "cycles": 1,
+                "frames": 168
+              },
+              {
+                "legacyMs": 547.1999999880791,
+                "compositionMs": 598.1999999284744,
+                "ratio": 1.0932017542790686,
+                "cycles": 1,
+                "frames": 168
+              },
+              {
+                "legacyMs": 568.7999999523163,
+                "compositionMs": 601.3000000119209,
+                "ratio": 1.0571378341461484,
+                "cycles": 1,
+                "frames": 168
+              }
+            ]
+          },
+          {
+            "backend": "webgl2",
+            "fixture": "legacy/chronicle-reveal",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 1,
+            "minPsnr": 104.60798564099834,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "d2048dfe6482867a66579e4254223249108556727937ce818c6f4c6f072f0961",
+            "ratio": 0.4148682446702268,
+            "timings": [
+              {
+                "legacyMs": 1771.2000001072884,
+                "compositionMs": 720.3999999761581,
+                "ratio": 0.40672990059424163,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 1719.1000003814697,
+                "compositionMs": 713.1999995708466,
+                "ratio": 0.4148682446702268,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 1212.3000000715256,
+                "compositionMs": 559.2000000476837,
+                "ratio": 0.4612719623976664,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          },
+          {
+            "backend": "canvas2d",
+            "fixture": "legacy/resource-flow",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "e8068d04a4962b2472fcbf93f2673e07722a79009ad23be896fcbd3d414f18e2",
+            "ratio": 1.046249782504866,
+            "timings": [
+              {
+                "legacyMs": 709.2000004649162,
+                "compositionMs": 871.8999995589256,
+                "ratio": 1.2294134221479855,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 603.0000001788139,
+                "compositionMs": 578.299999833107,
+                "ratio": 0.9590381420590673,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 577.3000002503395,
+                "compositionMs": 603.9999997019768,
+                "ratio": 1.046249782504866,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          },
+          {
+            "backend": "webgl2",
+            "fixture": "legacy/resource-flow",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 1,
+            "minPsnr": 103.51654094674765,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "1702e89c7cba5d34536025c02635c2565c63adb8f6ce687c63540357b7594dfc",
+            "ratio": 0.9907751604071328,
+            "timings": [
+              {
+                "legacyMs": 726.3000005483627,
+                "compositionMs": 719.5999995470047,
+                "ratio": 0.9907751604071328,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 696.9000002741814,
+                "compositionMs": 692.5999998450279,
+                "ratio": 0.9938298171510092,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 703.0999997258186,
+                "compositionMs": 675.2000000476837,
+                "ratio": 0.9603185895476962,
+                "cycles": 3,
+                "frames": 504
+              }
+            ]
+          },
+          {
+            "backend": "canvas2d",
+            "fixture": "legacy/access-pressure",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "51fd1da8f290ec989f6fe3e3e0f5a4376351da31fa03a21c592e4b78824e2304",
+            "ratio": 1.1400195830897804,
+            "timings": [
+              {
+                "legacyMs": 714.9000000953674,
+                "compositionMs": 815.0000000596046,
+                "ratio": 1.1400195830897804,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 507.90000027418137,
+                "compositionMs": 554.3999999165535,
+                "ratio": 1.091553454651053,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 518.9999997019768,
+                "compositionMs": 619.6000002622604,
+                "ratio": 1.1938342979153194,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          },
+          {
+            "backend": "webgl2",
+            "fixture": "legacy/access-pressure",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 1,
+            "minPsnr": 85.8367414014436,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "a6b00e37e3e6709691391fb67a04d05aa1d1932ae98e92142fdb749da8fe7f2c",
+            "ratio": 0.8811923970308205,
+            "timings": [
+              {
+                "legacyMs": 704.8000002503395,
+                "compositionMs": 639.5999997854233,
+                "ratio": 0.9074914863198671,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 694.3999996781349,
+                "compositionMs": 611.9000002145767,
+                "ratio": 0.8811923970308205,
+                "cycles": 3,
+                "frames": 504
+              },
+              {
+                "legacyMs": 683.9999998807907,
+                "compositionMs": 601.3000000715256,
+                "ratio": 0.8790935675092423,
+                "cycles": 3,
+                "frames": 504
+              }
+            ]
+          },
+          {
+            "backend": "canvas2d",
+            "fixture": "legacy/comparison-build",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 2,
+            "minPsnr": 84.66104419668761,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "16e3bd5b4284c7b4cc977671cbc598473f5a52944fd9de7fb281bc722a1fc5a8",
+            "ratio": 1.0528257351144956,
+            "timings": [
+              {
+                "legacyMs": 677.6999996304512,
+                "compositionMs": 713.5000002980232,
+                "ratio": 1.0528257351144956,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 667.5999998450279,
+                "compositionMs": 710.6000002622604,
+                "ratio": 1.064409826883185,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 652.6999998688698,
+                "compositionMs": 678.4000001549721,
+                "ratio": 1.039374904690157,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          },
+          {
+            "backend": "webgl2",
+            "fixture": "legacy/comparison-build",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 2,
+            "minPsnr": 82.7752872041703,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "768b02795ff035749f141e130d05e5d8db34fcb0b6a8835385d0924181bbfed6",
+            "ratio": 1.0602218706844484,
+            "timings": [
+              {
+                "legacyMs": 718.4999998211861,
+                "compositionMs": 767.400000333786,
+                "ratio": 1.068058455845191,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 708.5000001192093,
+                "compositionMs": 736.0999999642372,
+                "ratio": 1.038955539647684,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 694.0999997854233,
+                "compositionMs": 735.9000002145767,
+                "ratio": 1.0602218706844484,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          },
+          {
+            "backend": "canvas2d",
+            "fixture": "legacy/pose-prop-change",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "7a69b6a54b65b327c05bc28c3a8b4104949b94932c650518d934360da10a9cb1",
+            "ratio": 1.0918432863000485,
+            "timings": [
+              {
+                "legacyMs": 536.4999998211861,
+                "compositionMs": 569.5000001192093,
+                "ratio": 1.061509786223713,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 525.400001168251,
+                "compositionMs": 576.299998819828,
+                "ratio": 1.0968785640243595,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 778.5000007152557,
+                "compositionMs": 849.999999165535,
+                "ratio": 1.0918432863000485,
+                "cycles": 3,
+                "frames": 504
+              }
+            ]
+          },
+          {
+            "backend": "webgl2",
+            "fixture": "legacy/pose-prop-change",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "7a69b6a54b65b327c05bc28c3a8b4104949b94932c650518d934360da10a9cb1",
+            "ratio": 0.4872467444157309,
+            "timings": [
+              {
+                "legacyMs": 1057.200000166893,
+                "compositionMs": 512.2999998927116,
+                "ratio": 0.4845819143131274,
+                "cycles": 4,
+                "frames": 672
+              },
+              {
+                "legacyMs": 1085.8999994397163,
+                "compositionMs": 534.6000005602837,
+                "ratio": 0.4923105266010841,
+                "cycles": 4,
+                "frames": 672
+              },
+              {
+                "legacyMs": 1105.5999995470047,
+                "compositionMs": 538.7000004053116,
+                "ratio": 0.4872467444157309,
+                "cycles": 4,
+                "frames": 672
+              }
+            ]
+          },
+          {
+            "backend": "canvas2d",
+            "fixture": "legacy/crisis-fracture",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "0c6919a7500848ac86b8560106312d3096aca8850a76a6caa84fa1e91a7c1291",
+            "ratio": 1.1187815441111624,
+            "timings": [
+              {
+                "legacyMs": 554.7999996542931,
+                "compositionMs": 620.7000002861023,
+                "ratio": 1.1187815441111624,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 614.7000001072884,
+                "compositionMs": 655.4999997615814,
+                "ratio": 1.0663738403240148,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 670.1999999880791,
+                "compositionMs": 769.8000000119209,
+                "ratio": 1.1486123545592561,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          },
+          {
+            "backend": "webgl2",
+            "fixture": "legacy/crisis-fracture",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 3,
+            "minPsnr": 82.74892322750554,
+            "failures": [
+              {
+                "frame": 41,
+                "delta": 3,
+                "psnr": 85.5193073824893
+              }
+            ],
+            "errors": [],
+            "previewChecksum": "69ac6ae66118579a3f6321d8cfeeff2fd0e53e2e8b8e02bf80a86d6e47eb724b",
+            "ratio": 1.4523266028852375,
+            "timings": [
+              {
+                "legacyMs": 572.4000002145767,
+                "compositionMs": 813.1999998092651,
+                "ratio": 1.420684834913381,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 573.100000679493,
+                "compositionMs": 837.399999320507,
+                "ratio": 1.4611760571063483,
+                "cycles": 2,
+                "frames": 336
+              },
+              {
+                "legacyMs": 569.4999998211861,
+                "compositionMs": 827.1000000834465,
+                "ratio": 1.4523266028852375,
+                "cycles": 2,
+                "frames": 336
+              }
+            ]
+          }
+        ],
+        "log": "/private/tmp/ce4d-legacy-delivery-fe5b8a6.log",
+        "logSha256": "52f79c69a33c7bb21b51e1a5bfc25723f823884dfc38c3f85df5059cb3e05a99",
+        "pixel": {
+          "x": 719,
+          "y": 577,
+          "old": [162, 104, 88, 255],
+          "gpu": [165, 105, 90, 255],
+          "canvas": [162, 104, 88, 255]
+        }
+      },
+      "scope": [
+        "Record known unfiltered, unclipped native Canvas shadows as separate shadow/source GPU paints in original order",
+        "Move source coverage beyond its full unbounded right edge during native shadow-only raster preparation; compensate shadow offset and absolute/reset transforms",
+        "Keep original raster fallback for clipped or unknown-bound shadows, filters and unsupported operations",
+        "Extend smoke and hardware coverage with Comparison Build frames30-34 and Crisis Fracture frames41-45,77,86",
+        "Add pinned direct-Canvas oracle regression for fractional path shadows, transform/reset state and source geometry extending far beyond the canvas"
+      ],
+      "rejected": [
+        {
+          "candidate": "Treat combined shadow/source raster as bitmap",
+          "result": "Fixes frame41 but all-frame sweep fails frames42-45,77,86 with delta3",
+          "log": "/private/tmp/ce4d-crisis-shadow-all-frame-sweep.log",
+          "logSha256": "8f7f15dc3e0b3286273247497007f9f9b6edcef858c3d3de519e7ecad1711a4a"
+        },
+        {
+          "candidate": "Software vector raster preparation",
+          "result": "Original frame41 delta3 remains",
+          "log": "/private/tmp/ce4d-crisis-software-diagnostic.log",
+          "logSha256": "e3eff73b2d47db0edb3816bbace53c7c6640df65d6107f458b0aedc84fb8573d"
+        },
+        {
+          "candidate": "Apply pinned near pixel assertion to same-profile hardware Canvas reference",
+          "result": "Synthetic strict assertion fails max77; hardware acceptance uses unchanged perceptual comparison against pinned composition. No software shadow-mask change retained.",
+          "log": "/private/tmp/ce4d-vector-shadow-software-mask-focused.log",
+          "logSha256": "75e31a7b3a56cb5ce22844199f7430029ee3ae1ac1c50d44ebcc1f96dd6c2896"
+        }
+      ],
+      "checks": {
+        "build": "pass",
+        "scopedEslint": "pass",
+        "unit": {
+          "tests": 39,
+          "files": 6,
+          "status": "pass",
+          "log": "/private/tmp/ce4d-shadow-unit-focused.log",
+          "logSha256": "41157edf1dd48af33f0e532ca69caf2ae5bb3b955bb3e0610003abd5f2194849"
+        },
+        "vectorFocused": {
+          "status": "pass",
+          "proof": {
+            "profile": "pinned",
+            "environment": {
+              "profile": "chromium-software-2",
+              "browserVersion": "151.0.7922.34",
+              "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+              "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+              "platform": "darwin",
+              "arch": "arm64"
+            },
+            "proof": {
+              "shadow": {
+                "frames": 5,
+                "maxDelta": 2
+              },
+              "replay": {
+                "groups": 4,
+                "mutableSources": 3,
+                "fallbacks": 1,
+                "curvedBounds": 2,
+                "singleBounds": 1,
+                "empty": 1
+              },
+              "deferred": {
+                "cases": 11,
+                "maxDelta": 0
+              },
+              "batches": {
+                "providers": 3,
+                "paints": 105,
+                "frames": 5,
+                "maxDelta": 0
+              },
+              "single": {
+                "frames": 5,
+                "maxDelta": 0
+              },
+              "stable": {
+                "frames": 5,
+                "maxDelta": 0
+              },
+              "bounded": {
+                "maxDelta": 0,
+                "dimensions": [256, 256],
+                "frames": 3
+              },
+              "custom": {
+                "maxDelta": 0,
+                "dimensions": [640, 480],
+                "frames": 3
+              }
+            }
+          },
+          "log": "/private/tmp/ce4d-vector-shadow-retained-focused.log",
+          "logSha256": "eb8d0f6a84a8e754b8abe76e9c6892128a0152822cc9cd968330416d8341cb20"
+        },
+        "legacyAllFrameSweep": {
+          "status": "pass",
+          "fixtures": 7,
+          "forwardFrames": 2352,
+          "reverseFrames": 2352,
+          "reports": [
+            {
+              "backend": "canvas2d",
+              "fixture": "legacy/chronicle-reveal",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/chronicle-reveal",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 1,
+              "minPsnr": 104.60798564099834,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "canvas2d",
+              "fixture": "legacy/resource-flow",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/resource-flow",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 1,
+              "minPsnr": 103.51654094674765,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "canvas2d",
+              "fixture": "legacy/access-pressure",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/access-pressure",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 1,
+              "minPsnr": 85.8367414014436,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "canvas2d",
+              "fixture": "legacy/comparison-build",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 2,
+              "minPsnr": 84.66104419668761,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/comparison-build",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 2,
+              "minPsnr": 82.7752872041703,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "canvas2d",
+              "fixture": "legacy/pose-prop-change",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/pose-prop-change",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "canvas2d",
+              "fixture": "legacy/crisis-fracture",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/crisis-fracture",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 2,
+              "minPsnr": 87.78911535554096,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "canvas2d",
+              "fixture": "legacy/vertical-chronicle-reveal",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": []
+            },
+            {
+              "backend": "webgl2",
+              "fixture": "legacy/vertical-chronicle-reveal",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 1,
+              "minPsnr": 92.7247284862714,
+              "failures": [],
+              "errors": []
+            }
+          ],
+          "limit": "Correctness-only private copy; complete delivery/timing/hardware acceptance still required",
+          "log": "/private/tmp/ce4d-vector-shadow-production-all-frame-sweep.log",
+          "logSha256": "3f76f1f771d40b22e18ed887187bed0a5afd2047b8cf6e91d462bddc72f3953d"
+        },
+        "hardwareRegressions": {
+          "status": "pass",
+          "proof": {
+            "environments": [
+              {
+                "profile": "chromium-software-2",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                "platform": "darwin",
+                "arch": "arm64"
+              },
+              {
+                "profile": "hardware",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                "platform": "darwin",
+                "arch": "arm64"
+              }
+            ],
+            "policy": "unchanged perceptual hardware policy",
+            "reports": [
+              {
+                "fixture": "crisis-fracture",
+                "backend": "webgl2",
+                "frame": 41,
+                "tier": "perceptual",
+                "maxChannelDelta": 100,
+                "differingChannels": 476578,
+                "psnr": 45.946200443983784,
+                "ssim": 0.998537643998877
+              },
+              {
+                "fixture": "crisis-fracture",
+                "backend": "webgl2",
+                "frame": 42,
+                "tier": "perceptual",
+                "maxChannelDelta": 100,
+                "differingChannels": 476332,
+                "psnr": 45.962300216480486,
+                "ssim": 0.9985357404763545
+              },
+              {
+                "fixture": "crisis-fracture",
+                "backend": "webgl2",
+                "frame": 43,
+                "tier": "perceptual",
+                "maxChannelDelta": 100,
+                "differingChannels": 476010,
+                "psnr": 45.98186880113712,
+                "ssim": 0.9985343864278042
+              },
+              {
+                "fixture": "crisis-fracture",
+                "backend": "webgl2",
+                "frame": 44,
+                "tier": "perceptual",
+                "maxChannelDelta": 100,
+                "differingChannels": 475396,
+                "psnr": 46.05649828578403,
+                "ssim": 0.9985487044758963
+              },
+              {
+                "fixture": "crisis-fracture",
+                "backend": "webgl2",
+                "frame": 45,
+                "tier": "perceptual",
+                "maxChannelDelta": 100,
+                "differingChannels": 475052,
+                "psnr": 46.01558248332398,
+                "ssim": 0.9985408450318596
+              },
+              {
+                "fixture": "crisis-fracture",
+                "backend": "webgl2",
+                "frame": 77,
+                "tier": "perceptual",
+                "maxChannelDelta": 101,
+                "differingChannels": 483873,
+                "psnr": 46.11102023894827,
+                "ssim": 0.9985688729392204
+              },
+              {
+                "fixture": "crisis-fracture",
+                "backend": "webgl2",
+                "frame": 86,
+                "tier": "perceptual",
+                "maxChannelDelta": 96,
+                "differingChannels": 488779,
+                "psnr": 45.73391791698352,
+                "ssim": 0.9986252980411353
+              },
+              {
+                "fixture": "comparison-build",
+                "backend": "webgl2",
+                "frame": 30,
+                "tier": "perceptual",
+                "maxChannelDelta": 54,
+                "differingChannels": 755833,
+                "psnr": 51.00411285133355,
+                "ssim": 0.9992749721185615
+              },
+              {
+                "fixture": "comparison-build",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "perceptual",
+                "maxChannelDelta": 65,
+                "differingChannels": 870828,
+                "psnr": 49.737609428865845,
+                "ssim": 0.9991167647923804
+              },
+              {
+                "fixture": "comparison-build",
+                "backend": "webgl2",
+                "frame": 32,
+                "tier": "perceptual",
+                "maxChannelDelta": 47,
+                "differingChannels": 517334,
+                "psnr": 51.960862928700784,
+                "ssim": 0.9993136697748808
+              },
+              {
+                "fixture": "comparison-build",
+                "backend": "webgl2",
+                "frame": 33,
+                "tier": "perceptual",
+                "maxChannelDelta": 42,
+                "differingChannels": 1156803,
+                "psnr": 49.642182901383265,
+                "ssim": 0.9991294316017189
+              },
+              {
+                "fixture": "comparison-build",
+                "backend": "webgl2",
+                "frame": 34,
+                "tier": "perceptual",
+                "maxChannelDelta": 51,
+                "differingChannels": 557401,
+                "psnr": 52.036989772811204,
+                "ssim": 0.9991812066344253
+              }
+            ]
+          },
+          "log": "/private/tmp/ce4d-vector-shadow-hardware-legacy.log",
+          "logSha256": "ea167f70b8b3a669be85a2c71246b55603b63226035bcd20bbca1c3f37e797bc"
+        }
+      },
+      "pending": [
+        "complete serial legacy delivery/timing/hardware",
+        "refreshed native depth delivery",
+        "default migration, actual-default acceptance and final full gate"
+      ]
     }
   ],
   "pending": [

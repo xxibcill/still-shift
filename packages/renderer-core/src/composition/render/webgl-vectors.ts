@@ -230,7 +230,11 @@ export class WebglVectors {
         );
       else
         for (const [index, group] of groups.entries()) {
-          if (index === 0 && recording?.firstGroupOnly()) {
+          if (
+            index === 0 &&
+            group.shadow === undefined &&
+            recording?.firstGroupOnly()
+          ) {
             upload(pixels.canvas, group.bounds, group.primitive);
             continue;
           }
