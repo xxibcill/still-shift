@@ -45,9 +45,10 @@ still hold before relying on them.
 
 - **CE8-L in progress (2026-10-06):** `codex/composition-ce8-lighting` from CE8
   `9d8f33a` / [PR #43](https://github.com/xxibcill/still-shift/pull/43).
-  Bounded ambient/point/spot controls, implicit XYZ paths, pure scoped world state
-  and the versioned linear diffuse CPU oracle are authored. Build and focused
-  model/property tests pass; lighting remains gated until the backend is ready.
+  Bounded ambient/point/spot controls, implicit XYZ paths and pure world state
+  are authored. WebGL shading before effects, receiver-relative uniforms, cache
+  identity and complete Canvas preflight are implemented. Build and 55 focused
+  tests pass; pinned GPU pixels and full milestone acceptance remain pending.
   Native rendering/authoring/acceptance and the complete gate remain pending.
   No owner decision is pending. [Evidence](./composition-ce8-lighting-results.json).
 
@@ -214,6 +215,16 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8-L GPU graph and backend checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`.
+- **Done:** receiver-relative WebGL shading before local effects/masks; light-aware
+  cache identity; all-graph and shutter preflight rejects required Canvas lighting.
+- **Results:** build and 55 focused tests pass. New fixture-draft contract errors
+  were repaired before acceptance; pinned GPU pixel/export checks remain pending.
+- **Next:** native fixtures, independent pixel references, authoring and inspector.
+- **Records:** [CE8-L evidence](./composition-ce8-lighting-results.json).
 
 ### 2026-10-06 — CE8-L contract and pure model checkpoint
 

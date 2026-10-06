@@ -12,7 +12,19 @@
         "build": "pass",
         "focusedUnit": "24 pass after correcting an analytic float identity assertion (0.7500000000000001 versus 0.75); unlit empty-light identity stays exact"
       },
-      "availability": "Light remains gated until WebGL lighting and Canvas preflight are implemented"
+      "availability": "Light remains gated until WebGL lighting and Canvas preflight are implemented",
+      "implementation": "5aaf70a"
+    },
+    {
+      "scope": "Receiver-relative fixed-slot WebGL shading before local effects; exact unlit path, light-aware cache identity, all-graph/shutter Canvas preflight; E46/C1.41/W0.56/export0.6.3",
+      "checks": {
+        "focusedUnit": "55 pass across five files",
+        "build": "pass"
+      },
+      "rejected": [
+        "New integration test drafts used string expressions, omitted group size and shutterPhase; corrected to the existing contract before acceptance. No production policy changed."
+      ],
+      "pending": "Pinned GPU pixels, exports/hardware/native fixtures and complete gate"
     }
   ],
   "pending": [

@@ -80,6 +80,7 @@ export function renderCompositionExposure<S extends Surface>(
     for (const candidate of graphs())
       if (candidate.graph.spatial)
         requireSpatialCapabilities(candidate.graph.root, {
+          lighting: !!backend.applyLighting,
           projective: !!backend.project && !!backend.applyProjectiveClips,
           validateSurface: backend.validateSpatialSurface,
         });

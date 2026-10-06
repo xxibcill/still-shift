@@ -445,7 +445,6 @@ export type TrackMatte = z.infer<typeof TrackMatteSchema>;
 export const UNAVAILABLE_LAYER_TYPES: Partial<
   Record<CompositionLayerType, string>
 > = {
-  light: "CE8-L",
   video: "CE13",
   sequence: "CE13",
   audio: "CE13",

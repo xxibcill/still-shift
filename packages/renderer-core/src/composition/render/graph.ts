@@ -35,6 +35,7 @@ import {
   type Homography,
 } from "../evaluate/spatial-geometry.ts";
 import { spatialStackOrder } from "./spatial-order.ts";
+import { prepareFlatLighting, type FlatLighting } from "./flat-lighting.ts";
 
 export type RenderEffect = EvaluatedEffect & {
   placement?: { matrix: Matrix; transforms: Matrix[] };
@@ -135,6 +136,8 @@ export type DrawOp = {
 /** Render `ops` into a scope-sized surface, apply masks and matte, then composite. */
 export type IsolateOp = {
   kind: "isolate";
+  /** Scoped illumination precedes local effects and masks. */
+  lighting?: FlatLighting;
   layer: string;
   ops: RenderOp[];
   effects: RenderEffect[];
@@ -1119,6 +1122,19 @@ class GraphBuilder {
         };
       });
     const masks = options.raw ? [] : this.masks(state, matrix, transforms);
+    const lights = this.exposureScope(scope, state).tree.lights;
+    const lighting =
+      layer.receivesLight && lights?.length
+        ? prepareFlatLighting(state.worldMatrix3d!, raster.origin, lights)
+        : undefined;
+    if (lighting && paintBlur && !options.raw)
+      effects.unshift({
+        id: "lit-primitive-blur",
+        effect: "blur.gaussian",
+        version: compositionEffectDefinition("blur.gaussian")!.version,
+        enabled: true,
+        params: { radius: paintBlur },
+      });
     const draw: DrawOp = {
       kind: "draw",
       layer: key,
@@ -1128,13 +1144,14 @@ class GraphBuilder {
       opacity: 1,
       blend: "normal",
       clips: [],
-      ...(paintBlur ? { paintBlur } : {}),
+      ...(paintBlur && !lighting ? { paintBlur } : {}),
     };
     const localOps: RenderOp[] =
-      effects.length || masks.length
+      effects.length || masks.length || lighting
         ? [
             {
               kind: "isolate",
+              ...(lighting ? { lighting } : {}),
               layer: key,
               ops: [draw],
               effects,

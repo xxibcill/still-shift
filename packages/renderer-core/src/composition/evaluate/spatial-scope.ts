@@ -217,7 +217,8 @@ export function projectSpatialScope(
   }
   if (tree.layers.some((state) => state.light)) {
     tree.lights = [];
-    for (const state of tree.layers) {
+    for (const authored of scope.layers) {
+      const state = byId.get(authored.id)!;
       if (!state.light) continue;
       try {
         // Validate all authored light relations, including inactive dependency states.
