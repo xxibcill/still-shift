@@ -68,7 +68,7 @@ geometry work has explicit path/vertex/coordinate caps. Nib segment lookups also
 consume work so complex marks cannot create unbounded sampling. These native
 choices do not claim pixel parity with unpublished AE deformation formulas.
 
-Shape bounds include cubic extrema and conservative stroke/miter coverage. Attach,
+Shape bounds include cubic extrema and conservative stroke, square-cap and miter coverage. Attach,
 contact and safe-area constraints use them. `follow-path` reads the first compiled
 contour in world arc length; an empty contour reports `comp-shape-follow-empty`.
 Work/coordinate failures report a stable diagnostic with layer and frame; export
@@ -95,7 +95,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-28`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-29`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.

@@ -186,6 +186,36 @@ describe("native sampled shape state", () => {
 });
 
 describe("native shape paint compilation", () => {
+  it.each(["stroke", "gradient-stroke"] as const)(
+    "includes diagonal square-cap corners in %s bounds for every join",
+    (type) => {
+      const paint =
+        type === "stroke"
+          ? { id: "paint", type, color: "#ff0000" }
+          : { ...gradient, id: "paint", type };
+      for (const join of ["round", "bevel", "miter"] as const) {
+        const compiled = compile([
+          {
+            id: "path",
+            type: "path",
+            path: {
+              closed: false,
+              vertices: [
+                [0, 0],
+                [10, 10],
+              ],
+            },
+          },
+          { ...paint, width: 10, cap: "square", join, miterLimit: 1 },
+        ]);
+        const extension = Math.sqrt(50);
+        expect(compiled.bounds!.left).toBeLessThanOrEqual(-extension);
+        expect(compiled.bounds!.top).toBeLessThanOrEqual(-extension);
+        expect(compiled.bounds!.right).toBeGreaterThanOrEqual(10 + extension);
+        expect(compiled.bounds!.bottom).toBeGreaterThanOrEqual(10 + extension);
+      }
+    },
+  );
   it("paints only preceding paths, executes paints bottom-to-top and applies later operators", () => {
     const compiled = compile([
       fill,

@@ -383,7 +383,8 @@ export function compileShapes(
           const padding =
             (draw.paint.width / 2) *
             Math.max(
-              1,
+              // Square caps combine tangent and normal half-widths on each axis.
+              draw.paint.cap === "square" ? Math.SQRT2 : 1,
               draw.paint.join === "miter" || !draw.paint.join
                 ? (draw.paint.miterLimit ?? 4)
                 : 1,

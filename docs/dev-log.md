@@ -43,16 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #38 review fixes in progress (2026-10-06):** isolated
+- **PR #38 review fixes complete (2026-10-06):** isolated
   `codex/pr38-shape-review-fixes` from `2b1c6e5`. Both P2 findings are posted
-  inline. Smooth zig-zag sampling is repaired with geometry regressions and
-  versioned output identity. Fast checks pass 1,620 unit tests; all 62 focused shape tests and native acceptance,
-  independent exports, inspector and 18 exact hardware comparisons pass.
-  The reference-sheet migration changes only cell 13; source fixtures,
-  animation/core and frozen CE0 baselines remain unchanged. Square-cap bounds
-  are the second pending finding. Delivery will be two finding commits and one
-  final normal push; no owner decision or implementation blocker. Actions remain
-  disabled. [Fix evidence](./pr-38-fix-results.json).
+  inline and repaired in separate commits. Smooth zig-zag retains cubic handles;
+  square caps receive conservative bounds for culling and raster preparation.
+  Fast checks pass 1,623 unit tests; all 65 focused shape tests and 300 exact
+  direct-Canvas pixel comparisons pass. Native hashes/seeks, independent exports,
+  inspector and 18 exact hardware comparisons pass. Independent standards/spec
+  review finds no new defects. Only reference cell 13 changes for smooth zig-zag;
+  fixture sources, animation/core and frozen CE0 baselines stay unchanged.
+  Delivery uses two finding commits and one final normal push to the existing PR.
+  Owner review/merge remain; no blocker. Full `pnpm check` was not rerun and
+  GitHub Actions remain disabled. [Fix evidence](./pr-38-fix-results.json).
 
 - **PR #38 base integration verified (2026-10-06):** CE11 `00d5fba` is merged
   into CE5 in an isolated managed worktree without rewriting shared history.
@@ -182,7 +184,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-06 by Codex for PR #38 base integration; prior work retained._
+_Last updated 2026-10-06 by Codex for PR #38 review fixes; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -240,6 +242,24 @@ _Last updated 2026-10-06 by Codex for PR #38 base integration; prior work retain
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — Repair PR #38 square-cap bounds and close both findings
+
+- **Agent / branch:** Codex on isolated `codex/pr38-shape-review-fixes`.
+- **Done:** retain square-cap tangent/normal coverage alongside miter coverage;
+  add solid/gradient bounds, edge-culling and independent pixel regressions.
+  Prior finding commit `335ff23` repairs smooth zig-zag; this is the second finding commit.
+- **Results:** fast checks pass 1,623 unit tests; 65 focused shape tests and 300
+  exact direct-Canvas comparisons cover both backends, all viewport edges, joins,
+  color changes and reverse seeks. Final native hashes, exports, inspector and 18
+  exact hardware comparisons pass. Independent standards/spec review is clear.
+- **Retained failures:** pre-fix tests reproduce clipping/culling; initial browser
+  oracles needed actual gradient paint and normal miter-limit coverage. Corrected
+  test assumptions preserve exact pixels and low-limit geometry coverage.
+- **Next:** deliver both finding commits with one normal push to PR #38; owner
+  review/merge remain. No full `pnpm check` rerun or additional baseline regeneration.
+  Primary checkout changes are untouched; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-38-fix-results.json), [inline review](https://github.com/xxibcill/still-shift/pull/38#pullrequestreview-5424533811).
 
 ### 2026-10-06 — Repair PR #38 smooth zig-zag sampling
 

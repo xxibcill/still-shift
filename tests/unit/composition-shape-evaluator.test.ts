@@ -45,6 +45,33 @@ function failed(run: () => unknown) {
 }
 
 describe("native shape evaluation and property integration", () => {
+  it("keeps square-cap coverage visible when the centerline is offscreen", () => {
+    const doc = comp([
+      {
+        id: "path",
+        type: "path",
+        path: {
+          closed: false,
+          vertices: [
+            [75, 25],
+            [100, 50],
+          ],
+        },
+      },
+      {
+        id: "stroke",
+        type: "stroke",
+        width: 20,
+        color: "#ff0000",
+        cap: "square",
+        join: "round",
+      },
+    ]);
+    doc.width = 64;
+    const graph = buildRenderGraph(doc, evaluateComp(doc, 0));
+    expect(graph.culled).toEqual([]);
+    expect(graph.root.ops).toHaveLength(1);
+  });
   it("accepts empty shapes and samples cubic bounds, culling and immutable source", () => {
     expect(validateComposition(comp([])).ok).toBe(true);
     const doc = comp([rect, fill]);
