@@ -20,6 +20,7 @@ import type {
 } from "../evaluate/types.ts";
 import { cameraMatrix } from "../evaluate/camera.ts";
 import { projectBounds } from "../evaluate/geometry.ts";
+import { spatialStackOrder } from "./spatial-order.ts";
 
 export type RenderEffect = EvaluatedEffect & {
   placement?: { matrix: Matrix; transforms: Matrix[] };
@@ -433,15 +434,21 @@ class GraphBuilder {
   }
   private scopeLayers(scope: Scope, frame: Frame, owner?: string): RenderOp[] {
     const ops: RenderOp[] = [];
+    const layers=scope.tree.camera ? spatialStackOrder(scope.tree.layers.filter(state=>
+      scope.owners.get(state.id)===owner && (
+        (frame.sourceGroup ? this.sourceVisible(scope,state,frame.sourceGroup)&&!["null","group","camera","light"].includes(state.layer.type)&&!scope.matteSources.has(state.id) : state.drawable) ||
+        ((frame.sourceGroup ? this.sourceVisible(scope,state,frame.sourceGroup) : state.visible)&&scope.containers.has(state.id)&&!scope.matteSources.has(state.id))
+      )
+    )) : scope.tree.layers;
     // layers[0] is the top layer, so paint from the end of the list.
-    for (let i = scope.tree.layers.length - 1; i >= 0; i--) {
+    for (let i = layers.length - 1; i >= 0; i--) {
       if (this.reachedHistoryTarget) break;
-      const state = scope.tree.layers[i]!;
+      const state = layers[i]!;
       if (scope.owners.get(state.id) !== owner) continue;
       if (
         (frame.sourceGroup
           ? this.sourceVisible(scope, state, frame.sourceGroup) &&
-            !["null", "group"].includes(state.layer.type) &&
+            !["null", "group", "camera", "light"].includes(state.layer.type) &&
             !scope.matteSources.has(state.id)
           : state.drawable) ||
         ((frame.sourceGroup

@@ -52,7 +52,7 @@ still hold before relying on them.
   2D arithmetic; shared spatial/camera sampling and optical rules are authored.
   Evaluated xyz/camera state, stage copies and spatial parent matrices are authored
   in evaluator source version 45; scoped camera/projection/focus/frustum hooks
-  are authored. Tests, formatting and builds have not run:
+  and stable 3D-run ordering are authored. Tests, formatting and builds have not run:
   the coordinated CE6-P quiet window is active. Runtime camera/3D availability
   remains gated until evaluation/render integration is implemented and verified.
   No owner decision is pending. Next: focused verification after release, xyz
@@ -210,6 +210,16 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 stable 3D order checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after scoped camera `62c04fa`.
+- **Authored:** stable camera-depth ordering within drawable 3D runs, retaining
+  authored ties, 2D barriers and group ownership; anchor depth survives empty bounds.
+- **Verification:** ordering regressions are authored but unexecuted. No formatter,
+  build, test, browser matrix or export ran during the active CE6-P quiet window.
+- **Next:** billboard orientation and projective rendering, coverage and inspection.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 scoped camera/projection checkpoint
 

@@ -3631,6 +3631,9 @@ Scoped camera selection after world transforms, native POI/orientation and legac
 story-jolt input, true projection/bounds/depth/focus state and actual world frustum
 corners are authored; independent scope/switch/focus cases remain unexecuted.
 
+Stable camera-depth ordering within drawable 3D runs preserves 2D barriers,
+authored ties and group ownership; regression cases remain unexecuted.
+
 **Completion record:** _to be filled in._
 
 ---

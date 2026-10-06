@@ -49,15 +49,15 @@ export function projectSpatialScope(comp: Composition,scope: CompositionScope,tr
   const camera=tree.camera!;
   for(const state of tree.layers) {
     if(!state.layer.threeD||!state.worldMatrix3d) continue;
+    const anchor=state.transform.anchor;
+    state.cameraDepth=cameraDepth(camera,worldPoint(state.worldMatrix3d,[anchor[0],anchor[1],anchor[2]??0] as Point3));
+    state.focusBlur=circleOfConfusion(camera,state.cameraDepth);
     const bounds=localBounds(comp,scope,state,options);
     if(!bounds) continue;
     const path=[...route,state.id].join("/");
     const expanded=effectBounds(bounds,state.effects,{node:state.id,path,frame:rootFrame});
     const plane=projectPlane(state.worldMatrix3d,camera,expanded);
     state.projection=plane;
-    const anchor=state.transform.anchor;
-    state.cameraDepth=cameraDepth(camera,worldPoint(state.worldMatrix3d,[anchor[0],anchor[1],anchor[2]??0] as Point3));
-    state.focusBlur=circleOfConfusion(camera,state.cameraDepth);
     state.bounds=plane.bounds;
     if(plane.affineMatrix) state.screenMatrix=plane.affineMatrix;
   }

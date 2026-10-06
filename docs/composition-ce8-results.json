@@ -115,7 +115,23 @@
         "Do not spread the always-populated sampled POI into a one-node camera geometry call",
         "Reuse the scope layer map for active-camera parent checks rather than allocating one per candidate"
       ],
-      "pending": "Native availability/validation, billboard orientation, stable 3D-run ordering, graph/backend/quality/inspector integration and verification"
+      "pending": "Native availability/validation, billboard orientation, stable 3D-run ordering, graph/backend/quality/inspector integration and verification",
+      "implementation": "62c04fa"
+    },
+    {
+      "name": "Stable scope-local 3D painter order",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Sort each contiguous drawable 3D run by camera-space depth",
+        "Preserve 2D barriers, authored depth ties and group ownership",
+        "Assign finite anchor depth before empty-bound filtering"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored near/far painter order, 2D barriers, depth ties/source immutability and invalid-depth rejection"
+      },
+      "pending": "Billboard orientation, native projective graph/backend/quality/inspector integration and verification"
     }
   ],
   "pending": [
