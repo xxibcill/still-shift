@@ -3272,6 +3272,56 @@ tests, backend parity suite, repeated-export determinism test.
   acceptance; native count-one 2× and family 1.25× targets stay open. The reserved
   quiet window is released. [Family proof](./composition-ce6p-family-audit.json),
   [raw timing brackets](./composition-ce6p-exposure-brackets.json).
+- **Research before further trials (2026-10-06):** primary-source/source-path
+  investigation produced a [resolution plan](./composition-ce6p-resolution-plan.md)
+  and [research record](./composition-ce6p-resolution-research.md), with no new
+  workloads or runtime change. Start with count-one feasibility and representative
+  cost attribution; require an eligible mechanism, sufficient removable cost and
+  byte proof before implementation. The inherited echo correction needs an
+  explicit exception to preserving those known failing CE7 bytes. All targets
+  remain unchanged and open.
+- **Resolution execution progress (2026-10-06):** local uncommitted WebGL 0.41.0
+  packs disjoint particle neighborhoods for one instanced exact paint. Selected
+  frames reduce 48–50 paint passes to three. Base/stacked/reversed particle
+  timelines preserve 720 frames plus 780 seeks per profile against 0.40.0; unit,
+  WebGL correctness and repeated stacked export checks pass. Hardware drift is
+  inherited and twelve samples meet the existing perceptual policy. No elapsed
+  timing or failure closure is claimed; authorized quiet-window coordination,
+  count-one cost attribution, strict audits and the final full gate remain.
+  [Execution record](./composition-ce6p-resolution-plan.md#execution-record-2026-10-06),
+  [evidence](./composition-ce6p-disjoint-paints-results.json).
+- **Echo cause and routing (2026-10-06):** a scoped proposal corrects accumulated
+  bitmap/primitive rounding drift in the four inherited echo cases. Their pinned
+  timelines/seeks meet the unchanged near tier; byte-preserved controls and 12
+  perceptual hardware samples pass. Production echo correction still awaits the
+  explicit compatibility decision. All 119 timing misses retain selected-frame
+  graph mappings, including all original 117; costs and closure remain unmeasured.
+  Reviewed native/particle runners pass untimed preflight. Concurrent workloads
+  and pending permission to coordinate other chats still prevent elapsed work.
+  [Echo proposal and evidence](./composition-ce6p-echo-diagnosis-results.json),
+  [routing](./composition-ce6p-route-map-results.json).
+- **Active completion goal and GPU trace (2026-10-06):** the owner requested
+  continuing until unchanged CE6-P acceptance is met. The goal is now blocked
+  after three turns of unanswered compatibility scope and host contention.
+  All 119 failures / 117 originals now have actual untimed GPU operations at
+  476 selected frames, repeated with exact counts and owned pixel hashes.
+  Known-clear copies occur in 100 cases (311 of 1,956 calls); native count-one
+  also has an eligible known-clear copy. This is a concrete hypothesis for the
+  pending cost gate, without an elapsed saving or closure claim. Source/input/
+  asset fingerprints, failed attempts and cleanup retention are reviewed.
+  Quiet-host timing and echo compatibility approval remain pending.
+  [Goal and trace record](./composition-ce6p-resolution-plan.md#active-completion-goal-and-gpu-operation-coverage),
+  [operation evidence](./composition-ce6p-route-map-results.json).
+- **Owner-authorized resumption (2026-10-06):** renderer 0.42.0 retains the tested
+  echo correction and particle candidate. Targeted frames/seeks, four identical
+  MP4 pairs, selected profile agreement and focused local checks pass. Eight
+  uncontended particle sessions show selected gains, but all pinned ratios remain
+  above 1.25×. Native owned-read cost exceeds the diagnostic Canvas half-budget
+  even after optimistically removing render/barrier costs; paint/copy removal
+  alone is rejected as closure. The quiet timing slice is finished. Strict
+  audits, native 2× and the final full local gate remain open.
+  [Resumption record](./composition-ce6p-resolution-plan.md#owner-authorized-resumption--2026-10-06),
+  [cost evidence](./composition-ce6p-cost-results.json).
 - **Verification while deferred:** run local correctness and feature checks.
   Existing strict WebGL family audits remain available with `--webgl
 --keep-going`; they retain and report timing failures. A timing-only nonzero
@@ -4311,3 +4361,16 @@ baked to one key per integer frame in CE4d; no fractional key frames. Note 3: `c
 with `cameraDepth`. Note 4: no contract change; CE2 accepts fractional evaluation times.
 Note 5: image `rasterize: "natural-size"`. Note 6: no contract change. Note 7: adapter
 rule above, plus a CE2 follow-up. See the [decision log](#decision-log).
+
+#### CE6-P retained 0.42.0 gate and rejected owned-output candidate (2026-10-06)
+
+The full local gate passes all browser groups and 176 frozen baselines / 36,061
+frames on retained renderer 0.42.0. Two uncontended fixed-native diagnostics
+preserve all candidate bytes/ownership but reject fresh-owned-read plus known-clear
+paint: 1.7875 / 1.8125 ms against matched half-Canvas 0.39375 / 0.375 ms. Complete
+allocate+fill alone costs 0.850 / 0.925 ms. No production change follows that
+experiment, and the quiet slice is released. The existing strict failure ledger
+and native 2× remain open; 0.42.0 has not received a repeated full strict audit.
+No compatible closure mechanism is selected, and changing the readback contract
+or acceptance requires an explicit owner decision.
+[Decision/evidence](./composition-ce6p-resolution-plan.md#native-owned-output-decision--2026-10-06).

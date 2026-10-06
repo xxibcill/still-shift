@@ -3,7 +3,22 @@
 - Date: 2026-10-05
 - Branch: `codex/composition-ce6p-compatible`
 - Starting commit: `0e4838852855f6dc8cf91bba763a402dfd716f88` (CE7)
-- Status: verified measured slice delivered for review; coordinated window released; CE6-P milestone acceptance remains open.
+- Status: owner resumed unchanged CE6-P completion work and explicitly approved the scoped echo correction plus quiet-window coordination. Renderer 0.42.0 retains the correction and reviewed particle candidate; targeted correctness and cost measurements are retained. Native paint/copy removal alone fails its budget gate; selected particle gains do not close the pinned strict misses. All 119 timing misses and native 2× acceptance remain open. The full local gate passes retained 0.42.0; the fresh-owned-read/known-clear cost gate rejects that candidate on both profiles. No compatible closure mechanism is selected.
+
+The owner requested research before further trial and error on 2026-10-06.
+Continue from the [resolution plan](./composition-ce6p-resolution-plan.md) and
+[cited research](./composition-ce6p-resolution-research.md), which set budget,
+eligibility and stop conditions before another implementation. The subsequent
+[execution record](./composition-ce6p-resolution-plan.md#execution-record-2026-10-06)
+reports particle work reduction, byte proof, the scoped echo correction proposal
+and routing of all 119 timing misses. Elapsed timing and explicit echo compatibility
+approval remain pending. The earlier records below remain history.
+
+The [active goal and GPU trace record](./composition-ce6p-resolution-plan.md#active-completion-goal-and-gpu-operation-coverage)
+retains 476 selected frames across all 119 failures, with exact repeated operation
+counts and owned pixel hashes. Known-clear copies occur in 100 cases; their elapsed
+cost and the native budget gate remain unmeasured. Structural coverage is not
+milestone completion.
 
 The owner resumed CE6-P using the current WebGL renderer in this isolated
 worktree. Do not modify the primary checkout or main feature chat. No CPU/GPU
@@ -263,3 +278,15 @@ already-passed full gate is not duplicated. The owner-authorized quiet window wa
 released to the main chat at 2026-10-06 01:24:27 UTC after all workloads became
 terminal. PR #41 delivers this measured compatible slice for review; broader
 native/family performance targets and inherited echo tier gaps remain open.
+
+## Resumed cost gate (2026-10-06)
+
+Renderer 0.42.0 passes the targeted echo frames, seeks, repeated exports and
+selected profile agreement. Eight uncontended particle sessions establish a
+1.355× pinned base reduction and 1.776–2.170× hardware reductions; pinned
+environment bookend drift limits those comparisons. The native diagnostic
+rejects paint/copy removal alone: owned reads remain above the observed Canvas
+half-budget on both profiles. No original strict pinned timing closure is claimed.
+The final full local gate and unchanged strict audits remain required.
+[Decisions and controls](./composition-ce6p-cost-results.json),
+[execution record](./composition-ce6p-resolution-plan.md#quiet-window-cost-decisions--2026-10-06).

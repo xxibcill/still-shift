@@ -61,6 +61,8 @@ export type ImageContent = {
   height: number;
   fit: "contain" | "cover" | "stretch";
   rasterize: "draw" | "natural-size";
+  /** Echo history stacking uses bitmap source-over on transparent targets. */
+  bitmapRounding?: true;
   sources: ImageLayer["sources"];
   state: number;
   stateFrom?: number;
@@ -200,6 +202,28 @@ function boundsMiss(bounds: Bounds, matrix: Matrix, frame: Frame) {
     projected.left >= frame.viewport.width ||
     projected.top >= frame.viewport.height
   );
+}
+
+/** Tag echo content only; matte images retain their own composition semantics. */
+function echoImageOps(ops: RenderOp[]): RenderOp[] {
+  return ops.map((op) => {
+    if (op.kind === "isolate") return { ...op, ops: echoImageOps(op.ops) };
+    if (op.kind !== "draw") return op;
+    if (op.content.type === "image")
+      return { ...op, content: { ...op.content, bitmapRounding: true } };
+    if (op.content.type === "surface")
+      return {
+        ...op,
+        content: {
+          ...op.content,
+          surface: {
+            ...op.content.surface,
+            ops: echoImageOps(op.content.surface.ops),
+          },
+        },
+      };
+    return op;
+  });
 }
 
 class GraphBuilder {
@@ -653,7 +677,7 @@ class GraphBuilder {
         {
           kind: "isolate",
           layer: key,
-          ops: [
+          ops: echoImageOps([
             ...this.echoOps(scope, state, frame, echo),
             ...this.layerOps(scope, state, frame, {
               ...options,
@@ -661,7 +685,7 @@ class GraphBuilder {
               blend: "normal",
               cull: false,
             }),
-          ],
+          ]),
           effects,
           masks,
           matte,

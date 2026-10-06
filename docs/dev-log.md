@@ -43,6 +43,25 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE6-P resumed by owner (2026-10-06):** renderer 0.42.0 retains the approved
+  echo correction and reviewed particle candidate. Targeted pinned frames/seeks,
+  four identical MP4 pairs, selected profile agreement and focused checks pass.
+  Eight uncontended particle sessions show a 1.355× pinned base improvement and
+  1.776–2.170× hardware contrasts; pinned environment drift limits those gains.
+  All pinned candidate ratios still exceed 1.25×. Native paint/copy removal alone
+  fails its budget gate. The fixed native fresh-owned-read/known-clear overlay
+  preserves bytes but regresses: 1.7875/1.8125 ms versus matched budgets
+  0.39375/0.375 ms. Complete allocate+fill alone costs 0.850/0.925 ms.
+  Reject that candidate; no compatible closure mechanism is selected.
+  The first quiet timing slice was released; PR42 was archived before release
+  delivery. The second quiet slice is released to main. This branch’s full local gate passes all browser
+  groups and 176 frozen baselines / 36,061 frames. All 119 timing misses /
+  original 117, native 2× and strict audits remain open. The goal tool retains its prior blocked
+  status; the owner explicitly resumed the unchanged objective.
+  [Execution record](./composition-ce6p-resolution-plan.md#quiet-window-cost-decisions--2026-10-06),
+  [echo proof](./composition-ce6p-echo-diagnosis-results.json),
+  [cost evidence](./composition-ce6p-cost-results.json).
+
 - **CE6-P measured slice delivered (2026-10-06):** isolated
   `codex/composition-ce6p-compatible` from CE7 `0e48388`; renderer stays `7a797a9`
   / 0.40.0. All 852 exactness cases per GPU profile, focused regressions and the
@@ -133,7 +152,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
+_Last updated 2026-10-07 by Codex for CE6-P; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -192,6 +211,109 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE6-P 0.42.0 reviewed delivery
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `633138b`.
+- **Done:** retained the approved echo bitmap-rounding correction, disjoint-particle GPU paint
+  and renderer version 0.42.0 for [PR #41](https://github.com/xxibcill/still-shift/pull/41).
+- **Validation:** the complete local gate passes; both review axes are clear after evidence fixes.
+  Targeted echo timelines, seeks, exports and sampled hardware agreement pass.
+- **Rejected:** the fixed-native owned-output experiment preserves bytes but regresses;
+  its complete allocation control alone exceeds the unchanged native budget.
+- **Open / next:** CE6-P is incomplete. Original 117 timing misses, no new misses, native 2×,
+  and the complete strict 195-case WebGL audit on 0.42.0 remain open. Both timing holds ended.
+  No compatible closure mechanism is selected; architecture/acceptance changes need an owner decision.
+- **Records:** [execution and decision](./composition-ce6p-resolution-plan.md#native-owned-output-decision--2026-10-06),
+  [cost evidence](./composition-ce6p-cost-results.json), [echo proof](./composition-ce6p-echo-diagnosis-results.json).
+
+### 2026-10-06 — CE6-P resumed; echo correction and measured cost gate
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `633138b`.
+- **Scope:** approved versioned echo fix and messages to both named chats.
+- **Done:** renderer 0.42.0 targeted frames/seeks, four identical MP4 pairs and profile samples pass.
+- **Results:** full local `pnpm check` passes 1,600 units, 46 runtime, 139 integration, 14 depth,
+  all browser groups and 176 frozen baselines / 36,061 frames; references remain unchanged.
+- **Costs:** eight quiet particle sessions show selected gains; all pinned ratios still exceed 1.25×.
+- **Rejected:** combined fresh-read/known-clear candidate regresses on both profiles; full allocate+fill
+  alone exceeds the native budget. No broader proof or direct-solid timing follows.
+- **Open / next:** native 2×, original 117/all strict family misses; no compatible closure mechanism
+  selected. Both quiet slices released. Contract or acceptance changes require an owner decision.
+  Source research resolves CPU Skia / possible Graphite; prepared bytes remain unverified.
+- **Records:** [costs](./composition-ce6p-cost-results.json), [echo](./composition-ce6p-echo-diagnosis-results.json),
+  [execution](./composition-ce6p-resolution-plan.md#quiet-window-cost-decisions--2026-10-06),
+  [source research](./composition-ce6p-owned-output-research.md).
+
+### 2026-10-06 — CE6-P goal activated; all failure GPU operations traced
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible` from `633138b`.
+- **Done:** active unchanged completion goal; baseline GPU traces cover all 119
+  failures / 117 originals at 476 frames, with exact repeated counts and pixels.
+- **Results:** known-clear copies in 100 cases (311/1,956 calls; 44.33M/117.37M
+  pixels). Twenty-five copies in eight cases require scope beyond single paint,
+  including all four typography failures. No elapsed saving or closure claim.
+  Fingerprints, failed attempts and cleanup are retained; formatting/diff checks
+  pass. The competing check advanced from cinematic to typography; its live
+  replacement worker is verified. Native guard refuses contention before launch.
+- **Open / next:** quiet-host native costs, particle brackets, echo compatibility
+  decision, original strict audits and final local `pnpm check`. The goal is
+  blocked after the same conditions persist for three turns; acceptance stays open.
+  Owner requested detail; current host contention was revalidated. No approval
+  or goal-resume instruction was received during that explanation.
+- **Records:** [execution record](./composition-ce6p-resolution-plan.md#active-completion-goal-and-gpu-operation-coverage),
+  [operation evidence](./composition-ce6p-route-map-results.json).
+
+### 2026-10-06 — CE6-P echo cause isolated; acceptance work remains blocked
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible` from `633138b`.
+- **Done:** diagnosed cumulative primitive rounding in transparent echo image
+  history; prepared a scoped correction patch without retaining production changes.
+  Four failing cases pass 960 frames / 1,040 seeks in the isolated pinned proposal;
+  controls pass and preserve unrelated bytes. Type check and 12 perceptual hardware
+  samples pass. All 119 timing misses have actual selected-frame graph mappings.
+- **Verification:** reviewed particle/native runners pass untimed preflight;
+  failed-attempt retention is exercised. Sampling/harness review errors are repaired
+  and retained. No elapsed timing, new full gate or milestone closure is claimed.
+- **Open / next:** explicit echo compatibility and cross-chat messaging approvals
+  remain pending; automatic approval review rejected coordination again. Other
+  workloads continue. Complete native attribution and particle A/B, then unchanged
+  strict audits and full local gate if the budget evidence supports proceeding.
+- **Records:** [execution plan](./composition-ce6p-resolution-plan.md#echo-diagnosis-and-concrete-proposal),
+  [echo evidence](./composition-ce6p-echo-diagnosis-results.json),
+  [routing evidence](./composition-ce6p-route-map-results.json).
+
+### 2026-10-06 — CE6-P disjoint particle candidate verified for correctness
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `633138b`.
+- **Scope:** follow the resolution plan to significant bounded progress.
+- **Done:** pack disjoint particle neighborhoods and draw one exact instanced
+  paint; add capability/resource fallbacks and focused byte/fault oracles.
+- **Results:** selected paint passes 48–50 → 3; 720 frames plus 780 seeks per GPU
+  profile match immutable 0.40.0; 1,600 unit tests, full WebGL correctness and
+  repeated 240-frame stacked MP4 export pass. No elapsed speedup measured.
+- **Repairs:** both review findings fixed; ignored historical `.ts` diagnostic
+  moved to `.mts` after type-check failure. Hardware/pinned byte drift is inherited;
+  twelve samples pass the existing perceptual tier.
+- **Open / next:** quiet-window messaging approval, count-one attribution, valid
+  A/B and strict/full gates; 119 timing misses/four echo gaps remain unclosed.
+- **Records:** [execution plan](./composition-ce6p-resolution-plan.md#execution-record-2026-10-06),
+  [raw progress evidence](./composition-ce6p-disjoint-paints-results.json).
+
+### 2026-10-06 — CE6-P research before further experiments
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `633138b`.
+- **Scope:** research solutions and define a bounded resolution plan before more trials.
+- **Done:** primary-source research, source-path review, retained timing budget
+  calculations and independent plan review; runtime and acceptance remain unchanged.
+- **Results:** 89 of 119 timing misses need more than 37.5% lower total cost;
+  native count-one needs about 72% pinned / 78% hardware on retained summaries.
+  A possible image-cache conflict is not established for story-instances.
+- **Rejected / do not repeat:** existing PBO/FBO/scratch/upload experiments remain
+  rejected; generic cache/batching advice lacks a demonstrated route to closure.
+- **Open / next:** one bounded feasibility/attribution stage before implementation;
+  explicit compatibility scope before an echo-byte correction. No workloads ran.
+- **Records:** [research](./composition-ce6p-resolution-research.md),
+  [resolution plan](./composition-ce6p-resolution-plan.md).
 
 ### 2026-10-06 — CE6-P strict audit and preserved-renderer proof
 

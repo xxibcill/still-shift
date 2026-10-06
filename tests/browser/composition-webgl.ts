@@ -11,6 +11,7 @@ import type * as Png from "../helpers/composition-webgl-png.ts";
 import type * as Blur from "../helpers/composition-webgl-blur.ts";
 import type * as Performance from "../helpers/composition-webgl-performance.ts";
 import type * as StoryImages from "../helpers/composition-webgl-story-images.ts";
+import type * as DisjointPaints from "../helpers/composition-webgl-disjoint-paints.ts";
 const server = await createServer({
   root: resolve(import.meta.dirname, "../.."),
   configFile: false,
@@ -23,6 +24,13 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const disjoint = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-disjoint-paints.ts";
+    return (
+      (await import(url)) as typeof DisjointPaints
+    ).checkWebglDisjointPaints();
+  });
+  console.log("WebGL disjoint paint exactness:", disjoint);
   const exposure = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-exposure.ts";
     const checks = (await import(url)) as typeof Exposure;
