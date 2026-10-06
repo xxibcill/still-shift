@@ -6,6 +6,7 @@ import { afterAll, beforeAll, describe, test } from "vitest";
 import { createServer, type ViteDevServer } from "vite";
 import { readStoryPassage } from "../../packages/animation-engine/src/story-passage-io.ts";
 import { writeStoryWorkspace } from "../../packages/animation-engine/src/story-workspace.ts";
+import { passageEventSoundtrack } from "../helpers/passage-event-soundtrack.ts";
 
 describe("passage Lab file actions", () => {
   let server: ViteDevServer;
@@ -26,6 +27,54 @@ describe("passage Lab file actions", () => {
     await browser?.close();
     await server?.close();
   });
+
+  test("rejects unmapped saved soundtrack events before requesting a Lab audio render", async () => {
+    const passage = await readStoryPassage(
+      "benchmarks/fixtures/story-authoring/linked-comparison.json",
+    );
+    const project = passageEventSoundtrack(passage, "reset", "more-room");
+    const page = await browser.newPage();
+    let renders = 0;
+    try {
+      await page.route("**/soundtrack-api/project?**", (route) =>
+        route.fulfill({ json: { project } }),
+      );
+      await page.route("**/soundtrack-api/render", (route) => {
+        renders++;
+        return route.fulfill({
+          status: 400,
+          json: { error: { message: "Unexpected audio render" } },
+        });
+      });
+      await page.goto(
+        base +
+          "passage.html?" +
+          new URLSearchParams({
+            renderer: "composition",
+            "composition-beats":
+              "benchmarks/fixtures/composition/ce4a/native-beats.json",
+          }),
+      );
+      await page.waitForFunction(() =>
+        document.querySelector("#status")?.textContent?.includes("576 frames"),
+      );
+      await page
+        .getByText("Saved soundtrack (optional)", { exact: true })
+        .click();
+      await page.locator("#soundtrack-project").fill("saved-mix.json");
+      await page.locator("#soundtrack-load").click();
+      await page.waitForFunction(
+        () => !!document.querySelector("#errors")?.textContent,
+      );
+      assert.match(
+        (await page.locator("#errors").textContent())!,
+        /comp-passage-binding.*reset.*more-room/,
+      );
+      assert.equal(renders, 0);
+    } finally {
+      await page.close();
+    }
+  }, 30_000);
 
   test("native load errors retain schema locations through the bundled API and Lab", async () => {
     const directory = await mkdtemp(

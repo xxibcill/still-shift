@@ -43,6 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #35 native saved soundtrack bindings verified (2026-10-06):** isolated
+  `codex/pr35-native-soundtrack-fix` from `099fe4b`. Saved soundtrack event anchors
+  require exact native markers before export and Lab rendering/attachment/playback;
+  known event mappings can be authored before attaching a mix. Fast checks pass
+  1,694 unit tests, all 46 runtime checks and 22 focused integration tests pass,
+  and both 576-frame native passage backends preserve picture frames while exporting
+  an audible mapped event sound. One finding commit and one final push deliver the
+  fix. Full `pnpm check` and unrelated baseline/timing matrices were not rerun.
+  Owner review/merge remains pending.
+  [Evidence](./pr-35-native-soundtrack-fix-results.json).
+
 - **PR #35 main integration verified (2026-10-06):** `main` at `af08fa3`
   is integrated into CE4a head `ddaf9d2` after PR #34 merged. The sole conflict
   was in this log; both histories and all main motion-lint fixes are retained.
@@ -375,6 +386,16 @@ _Last updated 2026-10-06 by Codex for PR #35 main integration; both histories re
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — Bind PR #35 saved soundtrack events to native pictures
+
+- **Agent / branch:** Codex in managed `pr35-soundtrack-bindings`, on `codex/pr35-native-soundtrack-fix` from `099fe4b`.
+- **Scope:** one P2 inline finding: saved soundtrack clips could inherit replaced template event timing.
+- **Done:** share native marker checks across legacy sounds and saved clips; check export early and Lab before rendering, attachment and playback; retain preauthored mappings for known beat events.
+- **Results:** pinned preflight, fast checks (1,694 unit), 46 runtime, 22 focused integration and both 576-frame native passage backends pass. Valid mapped event audio reaches export; native picture frames, seeks, cache relocation and repeated exports remain correct.
+- **Rejected / do not repeat:** synthetic timing needs a beat start; Lab's optional soundtrack details must be opened before testing its controls. Plain Node strip-only import probes hit an existing cinematic parameter property; use the repository's `tsx` loader for these imports.
+- **Open / next:** one finding commit with evidence, then one final non-force push to PR #35; owner review/merge remains pending. Full `pnpm check` and unrelated baseline/timing matrices were not rerun.
+- **Records:** [Inline finding](https://github.com/xxibcill/still-shift/pull/35#discussion_r4191993557), [evidence](./pr-35-native-soundtrack-fix-results.json).
 
 ### 2026-10-06 — Resolve PR #35 against merged main
 

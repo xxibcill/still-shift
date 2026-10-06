@@ -7,6 +7,10 @@ import type { SoundtrackProject } from "../../../packages/scene-contract/src/sou
 import type { CompiledStoryPassage } from "../../../packages/renderer-core/src/story-passage.ts";
 import { schedulePassageAudio } from "../../../packages/renderer-core/src/passage-audio-playback.ts";
 import { sha256Hex } from "../../../packages/renderer-core/src/browser-checksum.ts";
+import {
+  validatePassageCompositions,
+  type PassageCompositions,
+} from "../../../packages/renderer-core/src/passage-compositions.ts";
 
 export class PassageAudioPlayer {
   private context?: AudioContext;
@@ -22,6 +26,7 @@ export class PassageAudioPlayer {
     bytes: ArrayBuffer,
     sha256: string,
     passage: CompiledStoryPassage,
+    compositions: PassageCompositions = {},
   ) {
     this.stop();
     const ticket = this.generation;
@@ -29,6 +34,7 @@ export class PassageAudioPlayer {
       ...passage,
       fps: passage.plan.fps,
     });
+    validatePassageCompositions(passage, compositions, snapshot);
     validateSoundtrackNarration(snapshot, {
       fps: passage.plan.fps,
       sourceStartFrame: passage.plan.sourceStartFrame,
@@ -131,6 +137,7 @@ export class PassageAudioPlayer {
     passage: CompiledStoryPassage,
     frame: number,
     soundEffects: boolean,
+    compositions: PassageCompositions = {},
   ) {
     if (!Number.isInteger(frame) || frame < 0 || frame >= passage.frameCount)
       throw new Error("Playback must start at a frame inside the passage");
@@ -149,6 +156,11 @@ export class PassageAudioPlayer {
       ]),
     );
     if (this.soundtrack) {
+      validatePassageCompositions(
+        passage,
+        compositions,
+        this.soundtrack.project,
+      );
       resolveSoundtrackAnchors(this.soundtrack.project, {
         ...passage,
         fps: passage.plan.fps,

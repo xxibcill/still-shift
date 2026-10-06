@@ -8,6 +8,46 @@ import {
   readStoryPassage,
   type PreparedPassage,
 } from "../../packages/animation-engine/src/story-passage-io.ts";
+import { renderStoryPassage } from "../../packages/animation-engine/src/story-passage-render.ts";
+import { passageEventSoundtrack } from "../helpers/passage-event-soundtrack.ts";
+
+it("rejects unmapped saved soundtrack events before preparing native passage renders", async () => {
+  const passage = await readStoryPassage(
+    "benchmarks/fixtures/story-authoring/linked-comparison.json",
+  );
+  const compositions = await loadPassageCompositions(
+    "benchmarks/fixtures/composition/ce4a/native-beats.json",
+    passage,
+  );
+  const directory = await mkdtemp(
+    join(tmpdir(), "native-soundtrack-bindings-"),
+  );
+  try {
+    const projectPath = join(directory, "soundtrack.json");
+    await writeFile(
+      projectPath,
+      JSON.stringify(passageEventSoundtrack(passage, "reset", "more-room")),
+    );
+    await expect(
+      renderStoryPassage(directory, passage, undefined, {
+        renderer: "composition",
+        compositions,
+        soundtrackProject: projectPath,
+      }),
+    ).rejects.toMatchObject({
+      name: "PassageError",
+      diagnostics: [
+        expect.objectContaining({
+          code: "comp-passage-binding",
+          beat: "reset",
+          event: "more-room",
+        }),
+      ],
+    });
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
 
 it("retains every native schema diagnostic with field, beat and source context", async () => {
   const directory = await mkdtemp(
