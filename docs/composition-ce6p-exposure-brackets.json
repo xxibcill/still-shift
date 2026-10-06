@@ -1,7 +1,7 @@
 {
   "milestone": "CE6-P",
   "date": "2026-10-06",
-  "status": "Four complete valid brackets retained; selected final candidate; strict family validation pending",
+  "status": "Four complete valid brackets retained; selected candidate verified; family and native acceptance targets remain open",
   "acceptanceChanged": false,
   "brackets": {
     "fusion": {
@@ -11446,7 +11446,7 @@
   },
   "interpretation": {
     "fusion": "Two-sample export means of session medians improve 15.85 ms to 14.25 ms (1.112x), both candidates below both baselines; baseline bookend drift is 1.058x and Canvas control 1.012x. Higher-count improvements of 1.007x-1.037x overlap session variability. No general preview/frame-presentation gain is established. Count-one path is unchanged and provides a noisy control.",
-    "remaining": "Count-one path gives no established improvement and remains below native 2x Canvas/WebGL target on both profiles. Counts 2-64 of this exposure fixture exceed 2x on both profiles, but cannot close the broader native or 1.25x family acceptance. Original 117 cases remain individually tracked; strict WebGL family audits next.",
+    "remaining": "Count-one path gives no established improvement and remains below native 2x Canvas/WebGL target on both profiles. Counts 2-64 of this exposure fixture exceed 2x on both profiles, but cannot close the broader native or 1.25x family acceptance. Original 117 cases remain individually tracked; strict family audits complete: all original 117 still fail, two additional timing misses and four inherited echo tier gaps retained. See composition-ce6p-family-audit.json.",
     "boundedPinned": "Selected moving 400x300 solid on opaque 1920x1080: export mean session medians improve 2.676x-3.962x for counts 2-64 against fusion alone. Baseline drift <=3.1% for those counts and Canvas control changes -2.7% to +5.0%. RAF interval diagnostics improve 5.267x and 5.522x at 32/64 samples; low-count intervals remain about 8.3 ms. No GPU-completion or presentation guarantee.",
     "hardware": "Both valid Apple M5 Pro brackets retained. Original two-sample candidate medians 6.4/2.9 ms; confirmation 2.8/3.3 ms. All-session baseline/candidate mean median ratio 0.987x there. Other-count changes are also comparable to variability; no broad hardware export or preview/presentation speedup is claimed. RAF interval diagnostics remain about 8.3 ms."
   },

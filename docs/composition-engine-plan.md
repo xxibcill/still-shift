@@ -3236,7 +3236,10 @@ tests, backend parity suite, repeated-export determinism test.
 
 - **Status:** `[~]`, owner resumed 2026-10-05 on the current WebGL approach in
   isolated branch `codex/composition-ce6p-compatible`, starting at `0e48388`.
-  The main feature lane remains independent. [Slice plan](./composition-ce6p-plan.md).
+  A measured compatibility-preserving exposure slice is delivered for review in
+  [PR #41](https://github.com/xxibcill/still-shift/pull/41); milestone acceptance
+  remains incomplete. The main feature lane remains independent.
+  [Slice plan](./composition-ce6p-plan.md).
 - **Prior deferral:** user approved 2026-10-03. This superseded the earlier
   CE4b-to-CE6 timing ownership decision and the performance slices' requests for
   an immediate rendering-path decision. Optimization and architecture experiments
@@ -3252,12 +3255,23 @@ tests, backend parity suite, repeated-export determinism test.
   variation; none of the original 117 failures is claimed resolved.
   [Performance results](./composition-ce6-performance-results.json) and the
   dated slice records above remain the measured evidence.
-- **Latest implementation:** `ecf9bc6` retains bounded radial light and identity
+- **Prior implementation:** `ecf9bc6` retains bounded radial light and identity
   composites as renderer `composition-webgl2-0.36.0`. Its focused checks are
   recorded in the [development log](./dev-log.md), but its full family audit is
   still pending at this decision. Record any already-started correctness audit
   results without requiring timing closure or starting further tuning. Deferral
   does not establish correctness for unverified changes.
+- **Measured slice (2026-10-06):** reviewed `7a797a9` / renderer 0.40.0 fuses and
+  bounds exposure accumulation. All 852 exactness cases per GPU profile, focused
+  checks and full local gate pass. Four valid brackets show pinned sparse exposure
+  export gains of 2.676–3.962× over fusion alone; broad hardware gains are unproven.
+  Unchanged strict audits complete 195 cases / 40,783 frames and 53 identical
+  repeated MP4 pairs, with 119 timing failures (all original 117 still fail).
+  Four echo tier gaps are inherited from CE7: 2,500 direct byte comparisons are
+  exact and reproduce the original gaps. These gaps still block correctness
+  acceptance; native count-one 2× and family 1.25× targets stay open. The reserved
+  quiet window is released. [Family proof](./composition-ce6p-family-audit.json),
+  [raw timing brackets](./composition-ce6p-exposure-brackets.json).
 - **Verification while deferred:** run local correctness and feature checks.
   Existing strict WebGL family audits remain available with `--webgl
 --keep-going`; they retain and report timing failures. A timing-only nonzero

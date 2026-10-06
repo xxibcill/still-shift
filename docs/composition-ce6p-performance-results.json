@@ -1,6 +1,6 @@
 {
   "milestone": "CE6-P",
-  "status": "measured candidate selected; coordinated strict family audits next; acceptance remains open",
+  "status": "Verified compatibility-preserving measured slice delivered for review; CE6-P milestone acceptance remains open",
   "startedDate": "2026-10-05",
   "updatedDate": "2026-10-06",
   "branch": "codex/composition-ce6p-compatible",
@@ -704,6 +704,16 @@
       "status": "passed",
       "record": "fullGate",
       "baselineRegenerated": false
+    },
+    {
+      "command": "Three unchanged strict WebGL family commands with --keep-going and required exports",
+      "status": "complete audit; each command exits 1 for preserved acceptance failures",
+      "record": "strictFamilyAudit"
+    },
+    {
+      "command": "Direct preserved-CE7/candidate byte comparison of every failing pixel case plus zero-decay control",
+      "status": "passed; 2500 frame/read comparisons exact",
+      "record": "preservedByteProof"
     }
   ],
   "review": {
@@ -736,14 +746,15 @@
     }
   },
   "pending": [
-    "Unchanged strict WebGL commerce/component/typography audits with required exports",
-    "Finalize evidence and mark reviewable PR ready with remaining targets"
+    "Owner review and merge of PR #41",
+    "CE6-P milestone: all original 117 timing failures remain above 1.25x, two additional timing misses observed, and native count-one 2x target unachieved",
+    "CE6-P correctness acceptance: four inherited CE7 echo legacy-tier gaps remain; candidate preserves original bytes"
   ],
-  "workloadCoordination": "Coordinated window is available and held. Remaining-only job 30995 and hardware confirmation 41653 terminal exit 0; all four complete timing brackets valid, six invalid attempts retained. No renderer change; unchanged strict WebGL family commands are next serially.",
+  "workloadCoordination": "Owner-authorized quiet window completed. All timed brackets, strict matrices, required exports and direct byte comparisons are terminal; release sent to main at 2026-10-06 01:24:27 UTC. Remaining work is review delivery metadata.",
   "repositoryActionsVerified": {
     "enabled": false,
-    "command": "gh api repos/xxibcill/still-shift/actions/permissions",
-    "date": "2026-10-06"
+    "checkedDate": "2026-10-06",
+    "method": "gh api repos/xxibcill/still-shift/actions/permissions"
   },
   "candidates": [
     {
@@ -755,7 +766,7 @@
     {
       "id": "bounded-exposure-snapshot-sum",
       "renderer": "composition-webgl2-0.40.0",
-      "status": "retained for measured pinned sparse exposure benefit (2.676x-3.962x over fusion); no broad hardware speedup claim; correctness/review/full gate pass"
+      "status": "Retained for measured pinned sparse exposure benefit (2.676x-3.962x over fusion); no broad hardware speedup claim. Exactness/review/full gate pass; four inherited echo tier gaps are byte-exact with CE7 and remain acceptance failures."
     }
   ],
   "rejectedDrafts": [
@@ -1372,11 +1383,12 @@
   "pullRequest": {
     "number": 41,
     "url": "https://github.com/xxibcill/still-shift/pull/41",
-    "status": "draft; published and attached",
+    "status": "published and attached; verified measured slice available for review",
     "base": "codex/composition-ce7",
     "baseHead": "817cc9f982f9459cc641af864a8f160bfedc668e",
-    "publishedHead": "905feff",
-    "remaining": "Valid serial A/B measurements and strict WebGL family audits; no performance claims yet"
+    "remaining": "Owner review/merge; milestone acceptance targets remain open",
+    "evidenceHead": "Runtime 7a797a9; final evidence includes complete family audit and preserved-renderer byte proof",
+    "priorEvidenceHead": "febbf60"
   },
   "validTimingEvidence": {
     "file": "docs/composition-ce6p-exposure-brackets.json",
@@ -1393,7 +1405,7 @@
       "candidate": 14.250000029802322
     },
     "twoSampleExportSpeedup": 1.112280699009894,
-    "limitations": "Both valid Apple M5 Pro brackets retained. Original two-sample candidate medians 6.4/2.9 ms; confirmation 2.8/3.3 ms. All-session baseline/candidate mean median ratio 0.987x there. Other-count changes are also comparable to variability; no broad hardware export or preview/presentation speedup is claimed. RAF interval diagnostics remain about 8.3 ms. Count-one path gives no established improvement and remains below native 2x Canvas/WebGL target on both profiles. Counts 2-64 of this exposure fixture exceed 2x on both profiles, but cannot close the broader native or 1.25x family acceptance. Original 117 cases remain individually tracked; strict WebGL family audits next.",
+    "limitations": "Both valid Apple M5 Pro brackets retained. Original two-sample candidate medians 6.4/2.9 ms; confirmation 2.8/3.3 ms. All-session baseline/candidate mean median ratio 0.987x there. Other-count changes are also comparable to variability; no broad hardware export or preview/presentation speedup is claimed. RAF interval diagnostics remain about 8.3 ms. Count-one path gives no established improvement and remains below native 2x Canvas/WebGL target on both profiles. Counts 2-64 of this exposure fixture exceed 2x on both profiles, but cannot close the broader native or 1.25x family acceptance. Original 117 cases remain individually tracked; strict WebGL family audits are complete with 119 timing failures, including all original 117; no family gain is claimed.",
     "sourceHashesConsistentAcrossBoundedProfiles": true,
     "boundedPinnedExportSpeedupRange": [2.6761904727844965, 3.9616485407616966],
     "hardwareConfirmationReason": "Investigate a slow two-sample candidate session; both valid hardware brackets retained with no session discarded"
@@ -1417,8 +1429,55 @@
     "mainThreadId": "01a10861-3560-7b60-842f-c22dc4b77953",
     "request": "Let existing main gate finish normally, then hold builds/formatters/tests/browser matrices/exports until CE6-P release",
     "acknowledged": true,
-    "state": "Main announced gate terminal and quiet window available; holding verification until CE6-P release",
+    "state": "Reserved window released to main after all verification workloads became terminal",
     "release": "Send release message once CE6-P verification workload is terminal",
-    "windowAvailable": true
+    "windowAvailable": false,
+    "releaseSentUtc": "2026-10-06 01:24:27 UTC"
+  },
+  "strictFamilyAudit": {
+    "record": "docs/composition-ce6p-family-audit.json",
+    "controllerSession": 25376,
+    "controllerExitCode": 0,
+    "childExitCodes": [1, 1, 1],
+    "strictCommandsPassed": false,
+    "completeTraversal": true,
+    "cases": 195,
+    "frames": 40783,
+    "timingFailures": 119,
+    "originalFailuresRechecked": 117,
+    "originalFailuresStillFailing": 117,
+    "originalFailuresMissing": 0,
+    "additionalTimingMisses": [
+      "commerce/atom-rotate",
+      "typography/editorial/numeric"
+    ],
+    "pixelFailureCases": 4,
+    "requiredRepeatedMp4PairsPassed": 53,
+    "negativeFontFitDiagnosticsPassed": true,
+    "observedOverlap": false,
+    "method": "Unchanged commands, tiers, timing assertions, state/seek checks and required exports; best-effort overlap polling in owner-coordinated quiet window. Controller completion does not mean strict acceptance passed."
+  },
+  "preservedByteProof": {
+    "record": "docs/composition-ce6p-family-audit.json#preservedEchoByteProof",
+    "session": 50161,
+    "exitCode": 0,
+    "baseline": "composition-webgl2-0.38.1 at 0e48388",
+    "candidate": "composition-webgl2-0.40.0; sources match measured brackets",
+    "cases": 5,
+    "frameReadComparisons": 2500,
+    "orders": [
+      "all forward",
+      "all reverse",
+      "17 deterministic random per case",
+      "3 repeated middle per case"
+    ],
+    "maxCandidateDelta": 0,
+    "differingChannels": 0,
+    "legacyTierFailuresReproduced": 4,
+    "legacyMaxDelta": [5, 4, 5, 4],
+    "legacyPsnrAndFailingFramesMatchStrictAudit": true,
+    "control": "zero-decay; max legacy delta 0",
+    "diagnosticSourceRetained": true,
+    "interpretation": "Four echo-related pixel-tier gaps are inherited from CE7. Exact candidate compatibility does not close those gaps or relax fixture tiers."
   }
 }

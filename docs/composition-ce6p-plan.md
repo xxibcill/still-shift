@@ -3,7 +3,7 @@
 - Date: 2026-10-05
 - Branch: `codex/composition-ce6p-compatible`
 - Starting commit: `0e4838852855f6dc8cf91bba763a402dfd716f88` (CE7)
-- Status: coordinated quiet window open; remaining verification in flight; CE6-P acceptance remains open.
+- Status: verified measured slice delivered for review; coordinated window released; CE6-P milestone acceptance remains open.
 
 The owner resumed CE6-P using the current WebGL renderer in this isolated
 worktree. Do not modify the primary checkout or main feature chat. No CPU/GPU
@@ -119,7 +119,7 @@ Current Canvas matrices retain their pixel/timing assertions: story/component
 69 cases / 14,086 frames, commerce 127 / 28,200 and typography 20 / 3,367.
 Renderer/runtime stayed fixed at the reviewed `7a797a9`; the diagnostic provenance
 repair has its separate passing formatting/lint/build checks and both reviews.
-Strict WebGL family audits and valid serial performance brackets remain pending.
+Subsequent strict WebGL audits and valid serial brackets are recorded below.
 
 The first corrected bracket also detected an overlapping main-chat build and was
 retained as invalid. Its source selection is repaired; contention is its sole
@@ -224,3 +224,42 @@ below the native 2× target on both profiles; this exposure fixture's counts 2�
 exceed 2×, without proving the broader native target. Strict family audits still
 follow unchanged. Renderer/runtime remains fixed at `7a797a9`; its passing full
 gate and independent reviews are retained.
+
+## Complete strict family audit and byte provenance (2026-10-06)
+
+Controller `25376` completes all three unchanged strict WebGL commands serially
+with state/seek checks and required exports. Each child retains its failing exit 1;
+controller exit 0 means collection completed, not acceptance passed. The unique
+attempt is `benchmarks/results/composition-ce6p/family-audit-1791245579263580000`.
+No competing workload was observed by the best-effort guard.
+
+| Family           | Cases | Forward frames | Pixel-tier failures | Timing failures | Repeated MP4 pairs |
+| ---------------- | ----: | -------------: | ------------------: | --------------: | -----------------: |
+| Commerce         |   127 |         28,200 |                   4 |              75 |                 30 |
+| Story components |    48 |          9,216 |                   0 |              40 |                 13 |
+| Typography       |    20 |          3,367 |                   0 |               4 |                 10 |
+
+Every original case is present: all 74 commerce, 40 story/component and 3 typography
+timing failures still exceed the unchanged 1.25× gate. Two additional misses are
+`commerce/atom-rotate` and `typography/editorial/numeric`. No family gain or closure
+is claimed. All 53 required repeated MP4 pairs are byte-identical; relocation,
+overwrite protection and negative font/fit diagnostics pass.
+
+Four echo-related commerce cases exceed their pixel tier (maximum deltas 5, 4,
+5 and 4). Diagnostic session `50161` loads renderer/bounds consistently from CE7
+`0e48388` (0.38.1) beside the current 0.40.0 candidate. Each failing case and the
+zero-decay control gets all 240 forward and reverse frames, 17 deterministic random
+seeks and three repeated middle-frame reads: **2,500 exact byte comparisons**, with
+zero differing channels. The original renderer reproduces identical legacy maximum
+deltas, minimum PSNR values and failing frames. This includes the multi-sample
+overlap/echo/matte case; the control has zero legacy delta. Candidate source hashes
+match the measured brackets. These four gaps are inherited; fixture tiers and
+CE6-P correctness acceptance remain unchanged and unachieved.
+
+[Family evidence](./composition-ce6p-family-audit.json) retains every case, timing,
+failure, original-case disposition, export record, workload observation, source
+hash and the executed diagnostic source. Runtime stays at reviewed `7a797a9`; the
+already-passed full gate is not duplicated. The owner-authorized quiet window was
+released to the main chat at 2026-10-06 01:24:27 UTC after all workloads became
+terminal. PR #41 delivers this measured compatible slice for review; broader
+native/family performance targets and inherited echo tier gaps remain open.

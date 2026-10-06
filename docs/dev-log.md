@@ -43,23 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE6-P resumed (2026-10-05):** owner authorized a parallel compatibility-preserving
-  WebGL optimization lane on `codex/composition-ce6p-compatible` from `0e48388`.
-  Candidates: final shutter sum/average fusion and bounded GPU exposure snapshots/
-  sums, subject to exact regressions and independent serial A/B measurements.
-  Candidates build and pass 852 exactness cases on each GPU profile. Focused
-  regression/export suites and the complete local gate pass. Serial timings
-  now include a valid pinned fusion-only bracket: two-sample export 1.112×;
-  higher-count and preview gains remain unproven. Bounded/hardware comparisons
-  now have completed comparisons: bounded pinned export improves 2.676–3.962×
-  at 2–64 samples over fusion alone; hardware gains remain unproven.
-  Strict WebGL family audits are next in the reserved quiet window.
-  Owner-approved coordination succeeded: main gate passed and is terminal;
-  main holds further verification until CE6-P release. Renderer is unchanged.
-  [Draft PR #41](https://github.com/xxibcill/still-shift/pull/41) is published and
-  attached with performance validation pending. The main checkout/chat is untouched.
-  All 117 original failures, 1.25× family and 2× native targets remain open.
-  [Plan](./composition-ce6p-plan.md).
+- **CE6-P measured slice delivered (2026-10-06):** isolated
+  `codex/composition-ce6p-compatible` from CE7 `0e48388`; renderer stays `7a797a9`
+  / 0.40.0. All 852 exactness cases per GPU profile, focused regressions and the
+  full local gate pass. Four valid brackets establish pinned sparse exposure
+  export gains of 2.676–3.962× over fusion alone; broad hardware gains are unproven.
+  Strict audits complete 195 cases / 40,783 frames and 53 identical MP4 pairs,
+  retaining failing exits: all original 117 timing failures plus two more remain.
+  Four inherited echo pixel-tier gaps reproduce on CE7; 2,500 candidate/baseline
+  byte comparisons are exact. Native count-one 2× and family 1.25× targets remain
+  open; acceptance is unchanged. The coordinated window is released to main.
+  [PR #41](https://github.com/xxibcill/still-shift/pull/41) delivers the verified
+  slice for review; owner review/merge and milestone acceptance remain.
+  [Plan](./composition-ce6p-plan.md), [family proof](./composition-ce6p-family-audit.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -197,6 +193,21 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 
 ## Entries
 
+### 2026-10-06 — CE6-P strict audit and preserved-renderer proof
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`; runtime `7a797a9`.
+- **Done:** unchanged strict matrices traverse 195 cases / 40,783 frames; all 53
+  repeated MP4 pairs, relocation, overwrite protection and negative fit/font checks pass.
+- **Failures:** all original 117 timing failures remain, plus atom-rotate and
+  editorial/numeric. Four echo cases exceed their existing tier; all failing exits retained.
+- **Provenance:** CE7 reproduces the four gaps. All 2,500 forward/reverse/random/
+  repeated-read comparisons are byte-identical, including multi-sample echo/matte.
+- **Delivery:** measured candidate retained; existing full gate/reviews remain valid.
+  Main quiet window released at 01:24:27 UTC; Actions verified disabled.
+  PR #41 is available for review; original performance targets and inherited gaps remain open.
+- **Records:** [family audit and diagnostic source](./composition-ce6p-family-audit.json),
+  [brackets](./composition-ce6p-exposure-brackets.json), [plan](./composition-ce6p-plan.md).
+
 ### 2026-10-06 — CE6-P measured candidate retained
 
 - **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `702bcf4`.
@@ -206,7 +217,8 @@ _Last updated 2026-10-06 by Codex for CE6-P; prior work retained._
 - **Selection:** retain exact compatible candidate for pinned benefits; renderer
   stays `7a797a9`, with existing reviews/focused/full-gate proof unchanged.
 - **Next:** unchanged strict WebGL family audits with exports in the reserved window,
-  then final PR evidence and machine release. All six invalid attempts remain;
+  then preserved-CE7 comparison of four echo-related pixel failures, final PR
+  evidence and machine release. Provenance is pending. All six invalid attempts remain;
   original 117 cases and native/family acceptance targets stay open.
 - **Records:** [raw brackets/analysis](./composition-ce6p-exposure-brackets.json),
   [evidence](./composition-ce6p-performance-results.json), [plan](./composition-ce6p-plan.md).
