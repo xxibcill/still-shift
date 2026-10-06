@@ -10,7 +10,7 @@ import type { CommerceRenderScene } from "../../commerce-scene.ts";
 import { evaluateAttachedPath } from "../../commerce-geometry.ts";
 import { evaluateComponentAnnotation } from "../../component-annotations.ts";
 import { componentVisible } from "../../component-visibility.ts";
-import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./family-state.ts";
 
 export const CommercePathGeometrySchema = z
   .object({

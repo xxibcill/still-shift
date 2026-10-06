@@ -3,7 +3,7 @@ import type { StoryRenderScene } from "./story-scene.ts";
 import { storyCameraTransform } from "./story-camera.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type { CommerceGeometry } from "../../scene-contract/src/commerce-spatial.ts";
-import { evaluatePreparedNodeAtTime } from "./prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./composition/adapters/family-state.ts";
 import {
   nodeMatrix,
   multiplyMatrix,

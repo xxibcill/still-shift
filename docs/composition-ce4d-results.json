@@ -2585,6 +2585,28 @@
         "90 sources exceeded the unchanged 32-source cap; reference design repaired without modifying production contract"
       ],
       "browser": "implemented but unrun; hold during CE6-P quiet timing window"
+    },
+    {
+      "name": "adapter-owned family state and depth delivery acceptance",
+      "status": "implemented-focused-verification",
+      "checks": {
+        "focusedUnit": {
+          "tests": 132,
+          "files": 9,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass",
+        "boundaries": "pass"
+      },
+      "scope": [
+        "Unchanged family state sampling moved to adapter preparation; public observer delegates",
+        "Verified-byte depth preview preparation before native drawing",
+        "23 prepared timelines plus six mixed graph independent/repeat/raw exports, CLI relocation and hardware acceptance",
+        "Authored-preserve/legacy-opaque alpha and hash/dimension/missing/decode resource acceptance"
+      ],
+      "browser": "implemented but unrun during CE6-P quiet timing window",
+      "productionDefaults": "unchanged; migrate after required parity"
     }
   ],
   "pending": [

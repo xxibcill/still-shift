@@ -7,7 +7,7 @@ import type { CinematicRenderScene } from "../../cinematic-scene.ts";
 import type { CommerceRenderScene } from "../../commerce-scene.ts";
 import { sourceExposureTimeline } from "../../commerce-exposure.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
-import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./family-state.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 
 /** Compile every reachable shutter/history time once; rendering uses only native data. */

@@ -31,7 +31,7 @@ import { componentTextLayer } from "./component-text.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
 import { validateAttachedPaths } from "../../commerce-geometry.ts";
 import { validateComponentAnnotations } from "../../component-annotations.ts";
-import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./family-state.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import { params, preparedNodeLayer, type Samples } from "./prepared.ts";
 import { compileAttachedPathGeometry } from "./commerce-path.ts";

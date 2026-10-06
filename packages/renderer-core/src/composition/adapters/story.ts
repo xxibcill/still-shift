@@ -7,7 +7,7 @@ import {
   type StoryScene,
 } from "@still-shift/scene-contract";
 import { compileStoryScene, type StoryRenderScene } from "../../story-scene.ts";
-import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./family-state.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import { compileStoryPathGeometry } from "./story-path.ts";
 import {

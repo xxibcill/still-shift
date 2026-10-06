@@ -60,7 +60,10 @@ still hold before relying on them.
   Mixed depth graph/reference and real inspector acceptance are implemented;
   the focused graph state test, build and lint pass. GPU/inspector runs are held
   for the CE6-P quiet timing window.
-  PR42 is running its timed gate; defer new timed browser acceptance until it ends.
+  Family state sampling now belongs to adapters, with 132 focused regressions
+  passing. Full 23-timeline depth and six mixed-graph export/hardware acceptance,
+  alpha/resource diagnostics and verified-byte preview preparation are implemented.
+  Browser runs remain pending during CE6-P's requested quiet timing window.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
@@ -258,6 +261,20 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d adapter-owned sampling and depth delivery checks
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** moved unchanged family state sampling to adapter preparation; public
+  observer delegates without family dispatch. Added a full depth acceptance runner
+  for independent/repeat/raw exports, CLI relocation, hardware, alpha policy,
+  actual resource failures and inspector edits. Verified-byte preview preparation
+  hashes source assets and decodes the exact hashed bytes before rendering.
+- **Results:** 132 focused recipe/adapter regressions, build, lint and dependency
+  boundaries pass. Production defaults remain unchanged; acceptance runners are
+  implemented but unrun while the CE6-P quiet timing window is active.
+- **Open / next:** complete parity verification, migrate defaults, run the full
+  local gate and deliver CE4d. [Evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d mixed depth and inspector checkpoint
 

@@ -1,5 +1,6 @@
 import type { StoryRenderScene } from "./story-scene.ts";
-import { evaluatePreparedNodeAtTime, type Property } from "./prepared-scene.ts";
+import { type Property } from "./prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./composition/adapters/family-state.ts";
 import {
   sampleLayer,
   isLayerActive,

@@ -11,7 +11,7 @@ import {
   transformPoint,
   type Point,
 } from "./node-transform.ts";
-import { evaluatePreparedNodeAtTime } from "./prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./composition/adapters/family-state.ts";
 
 type Scene = CommerceRenderScene | StoryRenderScene;
 
