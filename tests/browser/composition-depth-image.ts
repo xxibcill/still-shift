@@ -12,6 +12,7 @@ import { depthToComposition } from "@still-shift/renderer-core";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as Legacy from "../helpers/legacy-depth-oracle.ts";
 import type * as Metrics from "../../packages/renderer-core/src/frame-tolerance.ts";
+import type * as Prepared from "../../packages/renderer-core/src/composition/adapters/depth-preview.ts";
 import {
   depthReferenceFixtures,
   extendedDepthReferenceFixtures,
@@ -32,6 +33,8 @@ const manifest = JSON.parse(
   }[];
 };
 const extended = process.argv.includes("--extended");
+const defaultPath = process.argv.includes("--default");
+const preparedPath = process.argv.includes("--prepared");
 const extendedManifest = extended
   ? (JSON.parse(
       await readFile(
@@ -101,7 +104,13 @@ try {
       await page.goto(server.resolvedUrls!.local[0]!);
       assertPinnedRenderEnvironment(await probeRenderEnvironment(page));
       const result = await page.evaluate(
-        async ({ fixture, documentJson, reference }) => {
+        async ({
+          fixture,
+          documentJson,
+          reference,
+          defaultPath,
+          preparedPath,
+        }) => {
           const doc = JSON.parse(documentJson) as Composition;
           const renderUrl = "/packages/renderer-core/src/index.ts",
             legacyUrl = "/tests/helpers/legacy-depth-oracle.ts",
@@ -120,12 +129,56 @@ try {
           const old = document.createElement("canvas");
           old.width = doc.width;
           old.height = doc.height;
-          const native = renderer.createCompositionPreview(
-            canvas,
-            doc,
-            resources,
-            { backend: "webgl2" },
-          );
+          const preparedUrl =
+            "/packages/renderer-core/src/composition/adapters/depth-preview.ts";
+          const prepared: typeof Prepared = await import(preparedUrl);
+          const load = async (path: string) => {
+            const image = new Image();
+            image.src = `/benchmarks/fixtures/composition/ce4d/${path}`;
+            await image.decode();
+            return image;
+          };
+          const source =
+            defaultPath || preparedPath
+              ? await load(fixture.source)
+              : undefined;
+          const depth =
+            (defaultPath || preparedPath) &&
+            fixture.scene.motion.mode === "depth"
+              ? await load(fixture.depth!)
+              : null;
+          const nativePreview = defaultPath
+            ? await renderer.createWebGLPreview(
+                canvas,
+                {
+                  ...fixture.scene,
+                  canvas: { width: doc.width, height: doc.height },
+                },
+                source!,
+                depth,
+              )
+            : preparedPath
+              ? await prepared.createPreparedDepthPreview(
+                  canvas,
+                  {
+                    ...fixture.scene,
+                    canvas: { width: doc.width, height: doc.height },
+                  },
+                  source!,
+                  depth,
+                )
+              : renderer.createCompositionPreview(canvas, doc, resources, {
+                  backend: "webgl2",
+                });
+          if (
+            defaultPath &&
+            (!("backend" in nativePreview) ||
+              nativePreview.backend !== "webgl2")
+          )
+            throw Error(
+              "Actual depth default must use the shared composition WebGL backend",
+            );
+          const native = nativePreview as Render.CompositionPreview;
           const original = legacy.createWebGLPreview(
             old,
             fixture.scene,
@@ -213,7 +266,13 @@ try {
             original.dispose();
           }
         },
-        { fixture, documentJson: JSON.stringify(doc), reference },
+        {
+          fixture,
+          documentJson: JSON.stringify(doc),
+          reference,
+          defaultPath,
+          preparedPath,
+        },
       );
       reports.push({ id: fixture.id, ...result });
       console.log(
@@ -227,12 +286,19 @@ try {
     process.env.STILL_SHIFT_DEPTH_NATIVE_REPORT ??
       resolve(
         root,
-        extended
-          ? "benchmarks/results/composition-ce4d-depth-native-extended.json"
-          : "benchmarks/results/composition-ce4d-depth-native.json",
+        defaultPath || preparedPath
+          ? `benchmarks/results/composition-ce4d-depth-${defaultPath ? "default" : "prepared"}${extended ? "-extended" : ""}.json`
+          : extended
+            ? "benchmarks/results/composition-ce4d-depth-native-extended.json"
+            : "benchmarks/results/composition-ce4d-depth-native.json",
       ),
     JSON.stringify(
       {
+        path: defaultPath
+          ? "actual-default"
+          : preparedPath
+            ? "prepared-candidate"
+            : "native-layer",
         scope: extended
           ? "six additional auto/framing/alpha/depth-resolution timelines; default consolidation/exports/hardware remain pending"
           : "all 17 prepared depth/flat/fallback adapter timelines; default consolidation/exports/hardware remain pending",

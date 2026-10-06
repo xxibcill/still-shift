@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ambient-intensity-only",
+  "width": 320,
+  "height": 180,
+  "frameCount": 24,
+  "background": "#13242d",
+  "layers": [
+    {
+      "id": "ambient",
+      "transform": {},
+      "type": "light",
+      "lightType": "ambient",
+      "intensity": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.05
+          },
+          {
+            "frame": 23,
+            "value": 0.9
+          }
+        ]
+      }
+    },
+    {
+      "id": "key",
+      "transform": {
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 80
+              },
+              {
+                "frame": 23,
+                "value": 240
+              }
+            ]
+          },
+          "y": 90,
+          "z": -240
+        }
+      },
+      "type": "light",
+      "lightType": "point",
+      "intensity": 1.4,
+      "range": 700,
+      "enabled": false
+    },
+    {
+      "id": "plate",
+      "threeD": true,
+      "receivesLight": true,
+      "transform": {
+        "anchor": [90, 55],
+        "position": [160, 90, 0],
+        "scale": [1, 1],
+        "rotation": 0,
+        "opacity": 1
+      },
+      "type": "solid",
+      "size": [180, 110],
+      "color": "#ffffff"
+    }
+  ],
+  "fps": 24,
+  "assets": []
+}

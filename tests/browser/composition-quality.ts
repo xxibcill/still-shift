@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { createServer } from "vite";
-import { resolve } from "node:path";
+import { join, resolve } from "node:path";
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
 import {
   fixtures,
@@ -13,7 +16,9 @@ import type * as Renderer from "@still-shift/renderer-core";
 import type { Composition } from "@still-shift/scene-contract";
 
 const root = resolve(import.meta.dirname, "../..");
+const cache = await mkdtemp(join(tmpdir(), "composition-quality-vite-"));
 const server = await createServer({
+  cacheDir: cache,
   configFile: resolve(root, "apps/lab/vite.config.ts"),
   logLevel: "silent",
   server: { host: "127.0.0.1", port: 0, strictPort: false },
@@ -151,11 +156,85 @@ try {
     { pixels: true },
   );
   assert.equal(cliPixels.measured.pixels, true);
+  assert.ok("backend" in cliPixels);
+  assert.equal(cliPixels.backend, "canvas2d");
+  assert.match(cliPixels.rendererVersion, /^composition-canvas-/);
   assert.ok(cliPixels.diagnostics.some((d) => d.code === "frozen-pixels"));
+  const lint = async (name: string, backend?: string, pixels = true) => {
+    let stdout = "",
+      stderr = "";
+    const code = await runCli(
+      [
+        "comp",
+        "lint",
+        "--input",
+        resolve(root, `benchmarks/fixtures/composition/zipper-qa/${name}.json`),
+        "--pixels",
+        String(pixels),
+        ...(backend ? ["--backend", backend] : []),
+      ],
+      {
+        stdout: (text) => {
+          stdout += text;
+        },
+        stderr: (text) => {
+          stderr += text;
+        },
+      },
+    );
+    return { code, stdout, stderr };
+  };
+  for (const name of [
+    "ambient-intensity-only",
+    "lit-plane",
+    "perspective-plane",
+    "moving-plane-control",
+  ]) {
+    const result = await lint(name, "webgl2");
+    assert.equal(result.stderr, "", name);
+    const report = JSON.parse(result.stdout);
+    assert.equal(report.measured.pixels, true, name);
+    assert.equal(report.backend, "webgl2", name);
+    assert.match(report.rendererVersion, /^composition-webgl2-/, name);
+    assert.equal(
+      report.diagnostics.some((d: { code: string }) => d.code === "frozen-run"),
+      false,
+      name,
+    );
+    assert.equal(result.code, report.status === "failed" ? 1 : 0, name);
+    if (name === "lit-plane")
+      assert.equal(
+        report.diagnostics.some(
+          (d: { code: string }) => d.code === "frozen-pixels",
+        ),
+        true,
+        "Sub-threshold light motion must still fail the independent pixel rule",
+      );
+    if (name === "ambient-intensity-only" || name === "moving-plane-control") {
+      assert.equal(result.code, 0, name);
+      assert.deepEqual(report.diagnostics, [], name);
+    }
+  }
+  for (const backend of [undefined, "canvas2d"]) {
+    for (const name of ["ambient-intensity-only", "perspective-plane"]) {
+      const result = await lint(name, backend);
+      assert.equal(result.code, 1, `${name}/${backend}`);
+      assert.equal(result.stdout, "");
+      assert.match(result.stderr, /requires.*WebGL2|WebGL2.*required/i);
+    }
+  }
+  const stateOnly = await lint("ambient-intensity-only", "webgl2", false);
+  assert.equal(stateOnly.code, 0);
+  assert.equal(JSON.parse(stateOnly.stdout).measured.pixels, false);
+  assert.equal(JSON.parse(stateOnly.stdout).rendererVersion, undefined);
+  console.log(
+    "Zipper regressions: explicit WebGL2 lighting/perspective lint, default/explicit Canvas rejection and state-only checks pass.",
+  );
   console.log(
     "14 fixtures have Node/browser parity; independent meaningful pixel motion checks pass on Canvas2D and WebGL2; file lint uses pinned browser.",
   );
 } finally {
   await browser.close();
   await server.close();
+  await rm(cache, { recursive: true, force: true });
 }

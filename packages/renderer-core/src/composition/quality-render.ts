@@ -39,9 +39,13 @@ export async function analyzeRenderedCompositionQuality(
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
   }
   options.signal?.throwIfAborted();
-  return analyzeCompositionQuality(comp, {
-    ...policy,
-    pixelChangedCounts: counts,
-    evaluation: { ...policy.evaluation, textBounds: preview.textBounds },
-  });
+  return {
+    ...analyzeCompositionQuality(comp, {
+      ...policy,
+      pixelChangedCounts: counts,
+      evaluation: { ...policy.evaluation, textBounds: preview.textBounds },
+    }),
+    backend: preview.backend,
+    rendererVersion: preview.rendererVersion,
+  };
 }

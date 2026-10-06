@@ -66,6 +66,9 @@ still hold before relying on them.
   Typography diagnostic probes are supported by shared text/providers and
   independently compared; asset loading belongs to preparation. These changes
   pass 62 focused checks/build/lint/boundaries. Required CE4d groups join pnpm test.
+  Zipper QA WebGL lint/lighting-signature fixes are integrated from 9b1b41a:
+  74 unit regressions and the new CLI option check pass, plus build/lint/schema.
+  Preview wrappers and actual-depth-default reference assertions are prepared.
   Browser runs remain pending during CE6-P's requested quiet timing window.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
@@ -264,6 +267,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d integrates zipper QA and prepares default wrappers
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** integrated source/tests/reference notes from zipper QA `9b1b41a`,
+  retaining newer CE4d records. Pixel lint accepts an explicit backend and reports
+  the renderer; visible receiver signatures include scoped effective lighting.
+  Added thin prepared family/depth wrappers and actual-depth-default checks.
+- **Results:** 74 focused quality/lighting unit checks and the new CLI backend
+  option regression pass; build, lint, schema and boundaries pass. A broader CLI
+  file attempt passed seven tests but the existing font-alias browser setup hit
+  sandbox `listen EPERM`; the complete file remains for the final full gate.
+- **Open / next:** hold heavy runs for CE6-P; then verify parity, production zipper
+  WebGL pixel lint, default migration and full gate. Historical QA proof is bound
+  to its original versions, not the integrated branch.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d diagnostic preparation and mandatory gate coverage
 

@@ -70,7 +70,7 @@ Usage:
   pnpm --silent still-shift comp export-json --scene <family-scene.json> [--output <composition.json|program.ts>] [--normalized true]
   pnpm --silent still-shift comp normalize --input <composition.json|program.ts> [--output <composition.json|program.ts>]
   pnpm --silent still-shift comp bake --input <composition.json|program.ts> [--output <composition.json|program.ts>]
-  pnpm --silent still-shift comp lint --input <composition.json|program.ts> [--policy <policy.json>] [--pixels true|false]
+  pnpm --silent still-shift comp lint --input <composition.json|program.ts> [--policy <policy.json>] [--pixels true|false] [--backend canvas2d|webgl2]
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.

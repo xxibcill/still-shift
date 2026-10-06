@@ -2,14 +2,17 @@ import {
   AnimationEngineError,
   type Composition,
 } from "@still-shift/scene-contract";
-import { readFile } from "node:fs/promises";
-import { createServer } from "vite";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { createServer, type ViteDevServer } from "vite";
 import type { Browser } from "playwright";
 import {
   analyzeCompositionQuality,
   PassageError,
   type PassageDiagnostic,
   type CompositionQualityPolicy,
+  type CompositionBackend,
 } from "@still-shift/renderer-core";
 import type * as Renderer from "@still-shift/renderer-core";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
@@ -23,18 +26,24 @@ import { loadComposition } from "./composition-render.ts";
 export async function lintCompositionFile(
   input: string,
   policy: CompositionQualityPolicy = {},
-  options: BrowserRuntimeOptions & { pixels?: boolean } = {},
+  options: BrowserRuntimeOptions & {
+    pixels?: boolean;
+    backend?: CompositionBackend;
+  } = {},
 ) {
-  const loaded = await loadComposition(input).catch((error: unknown) => {
-    if (
-      error instanceof AnimationEngineError &&
-      typeof error.context?.diagnosticsJson === "string"
-    )
-      throw new PassageError(
-        JSON.parse(error.context.diagnosticsJson) as PassageDiagnostic[],
-      );
-    throw error;
-  });
+  const backend = options.backend ?? "canvas2d";
+  const loaded = await loadComposition(input, backend).catch(
+    (error: unknown) => {
+      if (
+        error instanceof AnimationEngineError &&
+        typeof error.context?.diagnosticsJson === "string"
+      )
+        throw new PassageError(
+          JSON.parse(error.context.diagnosticsJson) as PassageDiagnostic[],
+        );
+      throw error;
+    },
+  );
   if (!options.pixels)
     return {
       ...analyzeCompositionQuality(loaded.composition, policy),
@@ -49,18 +58,21 @@ export async function lintCompositionFile(
     ),
   );
   const root = options.projectRoot ?? defaultBrowserProjectRoot;
-  const server = await createServer({
-    root,
-    configFile: false,
-    logLevel: "silent",
-    server: {
-      host: "127.0.0.1",
-      port: 0,
-      fs: { allow: [root, defaultBrowserProjectRoot] },
-    },
-  });
+  const cacheDir = await mkdtemp(join(tmpdir(), "composition-lint-vite-"));
+  let server: ViteDevServer | undefined;
   let browser: Browser | undefined;
   try {
+    server = await createServer({
+      root,
+      cacheDir,
+      configFile: false,
+      logLevel: "silent",
+      server: {
+        host: "127.0.0.1",
+        port: 0,
+        fs: { allow: [root, defaultBrowserProjectRoot] },
+      },
+    });
     await server.listen();
     browser = await launchRenderBrowser();
     const page = await browser.newPage();
@@ -68,7 +80,7 @@ export async function lintCompositionFile(
       runtimeBrowserUrl(server.resolvedUrls!.local[0]!, "composition-compile"),
     );
     const report = await page.evaluate(
-      async ({ json, urls, policyJson }) => {
+      async ({ json, urls, policyJson, backend }) => {
         const comp = JSON.parse(json) as Composition;
         const policy = JSON.parse(policyJson) as CompositionQualityPolicy;
         const moduleUrl = "/packages/renderer-core/src/index.ts";
@@ -81,6 +93,7 @@ export async function lintCompositionFile(
           document.createElement("canvas"),
           comp,
           resources,
+          { backend },
         );
         try {
           return await renderer.analyzeRenderedCompositionQuality(
@@ -96,6 +109,7 @@ export async function lintCompositionFile(
         json: JSON.stringify(loaded.composition),
         urls,
         policyJson: JSON.stringify(policy),
+        backend,
       },
     );
     return { ...report, validationDiagnostics: loaded.warnings };
@@ -103,7 +117,11 @@ export async function lintCompositionFile(
     try {
       await browser?.close();
     } finally {
-      await server.close();
+      try {
+        await server?.close();
+      } finally {
+        await rm(cacheDir, { recursive: true, force: true });
+      }
     }
   }
 }

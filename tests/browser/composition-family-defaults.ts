@@ -17,7 +17,7 @@ import {
   type IllustratedScene,
 } from "@still-shift/renderer-core";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
-import type * as Adapter from "../../packages/renderer-core/src/composition/adapters/illustrated.ts";
+import type * as Adapter from "../../packages/renderer-core/src/composition/adapters/illustrated-preview.ts";
 import type * as Oracle from "../helpers/legacy-illustrated-oracle.ts";
 import type { ToleranceTier } from "../../packages/renderer-core/src/frame-tolerance.ts";
 import { familyTextProbeAcceptance } from "./family-text-probes.ts";
@@ -109,7 +109,7 @@ try {
           async ({ sceneJson, urls, expected, tier, candidate, smoke }) => {
             const renderUrl = "/packages/renderer-core/src/index.ts";
             const adapterUrl =
-              "/packages/renderer-core/src/composition/adapters/illustrated.ts";
+              "/packages/renderer-core/src/composition/adapters/illustrated-preview.ts";
             const oracleUrl = "/tests/helpers/legacy-illustrated-oracle.ts";
             const render = (await import(renderUrl)) as typeof Render;
             const adapter = (await import(adapterUrl)) as typeof Adapter;
@@ -126,19 +126,8 @@ try {
               scene,
               await oracle.loadIllustratedImages(scene, (id) => urls[id]!),
             );
-            const prepared = candidate
-              ? adapter.prepareIllustratedComposition(
-                  scene,
-                  images,
-                  document.createElement("canvas").getContext("2d")!,
-                )
-              : undefined;
-            const preview = prepared
-              ? render.createCompositionPreview(
-                  canvas,
-                  prepared.composition,
-                  prepared.resources,
-                )
+            const preview = candidate
+              ? adapter.createPreparedIllustratedPreview(canvas, scene, images)
               : render.createIllustratedPreview(canvas, scene, images);
             if (
               !candidate &&

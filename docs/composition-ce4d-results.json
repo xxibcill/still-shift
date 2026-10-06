@@ -2629,6 +2629,43 @@
       ],
       "browser": "implemented but unrun during CE6-P quiet timing window",
       "productionDefaults": "unchanged; migrate after parity"
+    },
+    {
+      "name": "zipper QA source integration and prepared default wrappers",
+      "status": "integrated-focused-verification",
+      "sourceCommit": "9b1b41acedeaef8035c149e6a0b93cc233aed001",
+      "checks": {
+        "focusedUnit": {
+          "tests": 74,
+          "files": 4,
+          "status": "pass"
+        },
+        "newCliBackendRegression": {
+          "tests": 1,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass",
+        "schemaCheck": "pass",
+        "boundaries": "pass"
+      },
+      "scope": [
+        "WebGL pixel lint options and actual backend/version reporting",
+        "Scoped effective lighting in visible receiver quality signatures",
+        "Isolated temporary Vite caches in pixel lint and quality browser tests",
+        "Prepared family/depth preview wrappers with actual-depth-default reference assertions"
+      ],
+      "failedAttempts": [
+        "Broader CLI file: 7/8 passed; existing font-alias browser setup hit sandbox localhost listen EPERM. Complete file remains pending final gate."
+      ],
+      "historicalEvidence": "9b1b41a:docs/zipper-feedback-qa-results.json belongs to original evaluator49/WebGL0.59; not integrated acceptance",
+      "browser": "Quality suite, actual 690-frame zipper CLI pixels, depth/default wrappers pending quiet-window release",
+      "zipperInput": "/Users/jjae/Documents/obsidian/ai-business/YouTube Workflow Experiments/2026-10-06-zipper-final/composition-v004.json",
+      "zipperPolicy": {
+        "maxFrozenFrames": 60,
+        "intentionalCuts": [270, 510]
+      },
+      "productionDefaults": "unchanged; switch after independent parity"
     }
   ],
   "pending": [

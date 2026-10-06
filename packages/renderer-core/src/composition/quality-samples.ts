@@ -23,6 +23,7 @@ import {
   homographicVelocityPoints,
   normalizedHomography,
 } from "./projective-quality.ts";
+import { receiverLightingState } from "./quality-lighting.ts";
 import { typographyClock } from "./render/text-clock.ts";
 
 export type CompositionQualitySample = {
@@ -231,6 +232,7 @@ export function compositionQualityFrame(
           state.effects,
           content,
           clock,
+          ...(layer.receivesLight ? [receiverLightingState(state, scope)] : []),
           ...(homography
             ? [normalizedHomography(homography), state.focusBlur ?? 0]
             : []),

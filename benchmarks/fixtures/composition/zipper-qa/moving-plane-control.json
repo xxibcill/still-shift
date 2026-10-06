@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "moving-plane-control",
+  "width": 320,
+  "height": 180,
+  "frameCount": 24,
+  "background": "#13242d",
+  "layers": [
+    {
+      "id": "ambient",
+      "transform": {},
+      "type": "light",
+      "lightType": "ambient",
+      "intensity": 0.25
+    },
+    {
+      "id": "key",
+      "transform": {
+        "position": [160, 90, -240]
+      },
+      "type": "light",
+      "lightType": "point",
+      "intensity": 1.4,
+      "range": 700
+    },
+    {
+      "id": "plate",
+      "threeD": true,
+      "receivesLight": true,
+      "transform": {
+        "anchor": [90, 55],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 125
+              },
+              {
+                "frame": 23,
+                "value": 195
+              }
+            ]
+          },
+          "y": 90,
+          "z": 0
+        },
+        "scale": [1, 1],
+        "rotation": 0,
+        "opacity": 1
+      },
+      "type": "solid",
+      "size": [180, 110],
+      "color": "#d69455"
+    }
+  ],
+  "fps": 24,
+  "assets": []
+}

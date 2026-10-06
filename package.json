@@ -127,7 +127,7 @@
     "test:browser:composition-lighting": "node --import tsx tests/browser/composition-lighting.ts",
     "test:browser:composition-camera": "node --import tsx tests/browser/composition-camera.ts",
     "test:browser:composition-cinematic-adapter": "node --import tsx tests/browser/composition-cinematic-adapter.ts",
-    "test:browser:composition-depth": "node --import tsx tests/browser/composition-depth-reference.ts && node --import tsx tests/browser/composition-depth-reference.ts --extended && node --import tsx tests/browser/composition-depth-image.ts && node --import tsx tests/browser/composition-depth-image.ts --extended && node --import tsx tests/browser/composition-depth-acceptance.ts",
+    "test:browser:composition-depth": "node --import tsx tests/browser/composition-depth-reference.ts && node --import tsx tests/browser/composition-depth-reference.ts --extended && node --import tsx tests/browser/composition-depth-image.ts && node --import tsx tests/browser/composition-depth-image.ts --extended && node --import tsx tests/browser/composition-depth-image.ts --default && node --import tsx tests/browser/composition-depth-image.ts --extended --default && node --import tsx tests/browser/composition-depth-acceptance.ts",
     "test:browser:composition-legacy-adapter": "node --import tsx tests/browser/composition-legacy-adapter.ts",
     "test:browser:composition-family-defaults": "node --import tsx tests/browser/composition-family-defaults.ts"
   },

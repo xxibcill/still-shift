@@ -1,7 +1,10 @@
 import type { CompositionAsset } from "@still-shift/scene-contract";
 import { sha256Hex } from "../../browser-checksum.ts";
 import type { PreviewScene } from "../../scene.ts";
-import { loadCompositionResources } from "../render/renderer.ts";
+import {
+  loadCompositionResources,
+  createCompositionPreview,
+} from "../render/renderer.ts";
 import { depthToComposition, type DepthCompositionOptions } from "./depth.ts";
 
 type PreparedImageBytes = {
@@ -96,4 +99,20 @@ export async function prepareDepthComposition(
   } finally {
     for (const url of temporaryUrls) URL.revokeObjectURL(url);
   }
+}
+
+/** Verified preparation completes before the shared GPU frame renderer is created. */
+export async function createPreparedDepthPreview(
+  canvas: HTMLCanvasElement,
+  scene: PreviewScene,
+  source: HTMLImageElement,
+  depth: HTMLImageElement | null,
+) {
+  const prepared = await prepareDepthComposition(scene, source, depth);
+  return createCompositionPreview(
+    canvas,
+    prepared.composition,
+    prepared.resources,
+    { backend: "webgl2" },
+  );
 }
