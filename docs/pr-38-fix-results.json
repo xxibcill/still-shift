@@ -5,7 +5,7 @@
   "review": "https://github.com/xxibcill/still-shift/pull/38#pullrequestreview-5424533811",
   "branch": "codex/pr38-shape-review-fixes",
   "strategy": "One finding per commit; one normal push after the final finding commit",
-  "status": "Smooth zig-zag fixed; square-cap bounds in progress",
+  "status": "Both findings fixed and locally verified",
   "environment": {
     "runtimeSnapshot": "/private/tmp/still-shift-pr38-review",
     "node": "22.23.1",
@@ -310,13 +310,286 @@
         "baseline": "created CE5"
       },
       "log": "/private/tmp/pr38-fix1-shapes.log",
-      "logSha256": "254c77125472aea283efffd22018dde4a634c42b0b7642db1afc56f5ceaf90f9"
+      "logSha256": "254c77125472aea283efffd22018dde4a634c42b0b7642db1afc56f5ceaf90f9",
+      "commit": "335ff23",
+      "comment": "https://github.com/xxibcill/still-shift/pull/38#discussion_r4192156337"
     },
     {
       "id": "R2",
       "priority": "P2",
       "title": "Include square caps in conservative stroke bounds",
-      "status": "pending"
+      "status": "fixed",
+      "comment": "https://github.com/xxibcill/still-shift/pull/38#discussion_r4192156344",
+      "change": "Conservative stroke padding includes square-cap tangent plus normal coverage, retaining larger miter coverage. Bump evaluator and both renderer versions.",
+      "regressions": {
+        "before": "Two stroke-bound regressions and viewport culling failed; the direct Canvas oracle reproduced WebGL clipping",
+        "after": "65 focused shape tests pass; 300 pixel comparisons are byte-exact against direct Canvas for 30 cases, two backends, solid/gradient strokes, three joins, all four viewport edges, color changes and reverse seeks"
+      },
+      "capPixelAcceptance": {
+        "cases": 30,
+        "backendRuns": 60,
+        "frames": 300,
+        "pixelTier": "exact against independent direct Canvas",
+        "locations": [
+          "bottom-edge",
+          "left-edge",
+          "onscreen",
+          "right-edge",
+          "top-edge"
+        ]
+      },
+      "nativeAcceptance": {
+        "shapeAcceptance": [
+          {
+            "fixture": "reference-sheet",
+            "frames": 48,
+            "reverseFrames": 48,
+            "maxDelta": 2,
+            "minPsnr": 66.690249204446
+          },
+          {
+            "fixture": "animation",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 1,
+            "minPsnr": 74.95529650432465
+          },
+          {
+            "backend": "canvas2d",
+            "exportedFrames": 96,
+            "independentMp4": "byte-identical",
+            "transport": "byte-identical"
+          },
+          {
+            "backend": "webgl2",
+            "exportedFrames": 96,
+            "independentMp4": "byte-identical",
+            "transport": "byte-identical"
+          },
+          {
+            "fixture": "core",
+            "frames": 48,
+            "reverseFrames": 48,
+            "maxDelta": 0,
+            "minPsnr": 999
+          },
+          {
+            "legacyConnectors": [
+              {
+                "style": "plain",
+                "frames": 48,
+                "maxDelta": 0
+              },
+              {
+                "style": "ink",
+                "frames": 48,
+                "maxDelta": 0
+              },
+              {
+                "style": "brush",
+                "frames": 48,
+                "maxDelta": 0
+              }
+            ]
+          },
+          {
+            "hardwarePreview": {
+              "environments": [
+                {
+                  "profile": "chromium-software-2",
+                  "browserVersion": "151.0.7922.34",
+                  "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                  "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                  "platform": "darwin",
+                  "arch": "arm64"
+                },
+                {
+                  "profile": "hardware",
+                  "browserVersion": "151.0.7922.34",
+                  "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                  "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                  "platform": "darwin",
+                  "arch": "arm64"
+                }
+              ],
+              "tier": "unchanged perceptual hardware policy",
+              "comparisons": 18,
+              "reports": [
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "canvas2d",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "canvas2d",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "webgl2",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "webgl2",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "canvas2d",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "canvas2d",
+                  "frame": 95,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "webgl2",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "webgl2",
+                  "frame": 95,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "canvas2d",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "canvas2d",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "webgl2",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "webgl2",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                }
+              ]
+            }
+          },
+          {
+            "geometryOverflow": "both exports reject with comp-shape-work-limit; no output published"
+          }
+        ],
+        "inspector": "passed",
+        "baseline": "exact"
+      },
+      "log": "/private/tmp/pr38-fix2-shapes-verified.log",
+      "logSha256": "3c88cb4e6c26d3e9aafc33541dd80e589c0e9049ecbb502f0194608c5d709525",
+      "baselineChanges": "None for this finding; corrected R1 native baselines pass unchanged"
     }
   ],
   "verification": [
@@ -328,6 +601,23 @@
       "files": 142,
       "log": "/private/tmp/pr38-fix1-fast-final.log",
       "logSha256": "b94f86a674d94724c64e8c1f65472b75ad2811e4e00e36fc453a485211b3fa91"
+    },
+    {
+      "checkpoint": "R2",
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "log": "/private/tmp/pr38-fix2-fast.log",
+      "logSha256": "bf8158ab4a706a2783b79a1220f349250feaa92bf5f3952aa50ac723e4e3eab9",
+      "unitTests": 1623,
+      "files": 142,
+      "note": "Passed after final production edits; subsequent browser-oracle-only repairs were checked with final build/lint/acceptance"
+    },
+    {
+      "checkpoint": "R2 final browser oracle",
+      "command": "pnpm build and focused eslint/prettier",
+      "status": "passed",
+      "log": "/private/tmp/pr38-fix2-build-final.log",
+      "logSha256": "9dd62ea528993b0376e3131e28ae36c800e839ed97fdae4fd4b2c1d98c438f37"
     }
   ],
   "retainedFailures": [
@@ -335,6 +625,25 @@
       "command": "pnpm check:fast",
       "log": "/private/tmp/pr38-fix1-fast.log",
       "cause": "A temporary review probe inside the disposable snapshot violated no-explicit-any. Moved review probes outside the snapshot; tracked source was unaffected."
+    },
+    {
+      "command": "New square-cap unit regressions before fix",
+      "log": "/private/tmp/pr38-fix2-red.log",
+      "cause": "Two bounds assertions and offscreen culling failed as expected"
+    },
+    {
+      "command": "New square-cap browser oracle before fix",
+      "log": "/private/tmp/pr38-fix2-browser-red.log",
+      "cause": "Onscreen WebGL square caps differed from direct Canvas as expected"
+    },
+    {
+      "command": "Initial repaired square-cap browser acceptance",
+      "logs": [
+        "/private/tmp/pr38-fix2-shapes.log",
+        "/private/tmp/pr38-fix2-shapes-final.log",
+        "/private/tmp/pr38-fix2-oracle-probe.log"
+      ],
+      "cause": "The first oracle compared gradient strokes with solid strokes; the second assumed visible cap coverage for an edge case with miter limit 1. Corrected the oracle to draw actual gradients and use the normal miter limit 4. Low-limit conservative geometry remains covered by unit tests; exact pixel policy is unchanged."
     }
   ],
   "limits": [
@@ -342,7 +651,20 @@
     "Only native reference-sheet baselines change for the expected smooth zig-zag correction; frozen CE0 baselines are untouched."
   ],
   "delivery": {
-    "push": "pending",
+    "strategy": "One normal push of both finding commits after the final commit; no force push",
+    "destination": "HEAD:refs/heads/codex/composition-ce5",
+    "remoteHeadRecheckedBeforeCommit": "2b1c6e58ccd3454b8dc33c66ebdb0d01c65db037",
+    "verification": "Compare remote PR head with local final head after delivery",
     "mergeOrClose": false
-  }
+  },
+  "implementationReview": {
+    "standards": "No actionable findings",
+    "spec": "No new findings; both fixes complete within CE5 scope"
+  },
+  "versions": {
+    "evaluator": "composition-evaluator-29",
+    "canvas": "composition-canvas-1.23.5",
+    "webgl": "composition-webgl2-0.37.5"
+  },
+  "verifiedTrackedSnapshotSha256ExcludingDevLogAndThisRecord": "105fa204b80df627ab3f67840be850550782a0c39382cbf477d8be92cfe9f2de"
 }

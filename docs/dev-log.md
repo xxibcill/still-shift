@@ -239,6 +239,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 
 ## Entries
 
+### 2026-10-06 — Repair PR #38 square-cap bounds and close both findings
+
+- **Agent / branch:** Codex on isolated `codex/pr38-shape-review-fixes`.
+- **Done:** retain square-cap tangent/normal coverage alongside miter coverage;
+  add solid/gradient bounds, edge-culling and independent pixel regressions.
+  Prior finding commit `335ff23` repairs smooth zig-zag; this is the second finding commit.
+- **Results:** fast checks pass 1,623 unit tests; 65 focused shape tests and 300
+  exact direct-Canvas comparisons cover both backends, all viewport edges, joins,
+  color changes and reverse seeks. Final native hashes, exports, inspector and 18
+  exact hardware comparisons pass. Independent standards/spec review is clear.
+- **Retained failures:** pre-fix tests reproduce clipping/culling; initial browser
+  oracles needed actual gradient paint and normal miter-limit coverage. Corrected
+  test assumptions preserve exact pixels and low-limit geometry coverage.
+- **Next:** deliver both finding commits with one normal push to PR #38; owner
+  review/merge remain. No full `pnpm check` rerun or additional baseline regeneration.
+  Primary checkout changes are untouched; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-38-fix-results.json), [inline review](https://github.com/xxibcill/still-shift/pull/38#pullrequestreview-5424533811).
+
 ### 2026-10-06 — Repair PR #38 smooth zig-zag sampling
 
 - **Agent / branch:** Codex on isolated `codex/pr38-shape-review-fixes`, from `2b1c6e5`.
