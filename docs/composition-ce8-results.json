@@ -53,7 +53,24 @@
         "reason": "Coordinated CE6-P quiet window remains active",
         "analyticCases": "Authored independent XYZ interpolation, loop offset, pure-z roving, implicit-scale z and camera path typing/rejections"
       },
-      "pending": "Connect evaluated xyz/camera values and live render availability before native scene verification"
+      "pending": "Connect evaluated xyz/camera values and live render availability before native scene verification",
+      "implementation": "e7221a4"
+    },
+    {
+      "name": "Shared native spatial/camera sampling state",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Shared xyz transforms and layer-space reference sampling in the supplied keyed clock",
+        "Camera position/anchor/orientation/scale defaults with z=0 identity setup",
+        "One/two-node selection, parent-space POI and horizontal film/focal conversion",
+        "Declared optical controls and runtime range/clip-order checks",
+        "Reject ambiguous zoom/focal controls and ignored one-node POI"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored exact camera defaults, fractional xyz motion, implicit scale z, keyed focus, focal conversion and runtime settings failures"
+      }
     }
   ],
   "pending": [

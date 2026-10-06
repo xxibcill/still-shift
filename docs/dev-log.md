@@ -49,7 +49,8 @@ still hold before relying on them.
   camera-basis, clipped projective-plane and bounded focus-blur geometry, with
   independent analytic test cases, plus opt-in xyz keyed/separated/spatial
   sampling, xyz own-key loops/roving and camera/spatial paths with unchanged
-  2D arithmetic. Tests, formatting and builds have not run:
+  2D arithmetic; shared spatial/camera sampling and optical rules are authored.
+  Tests, formatting and builds have not run:
   the coordinated CE6-P quiet window is active. Runtime camera/3D availability
   remains gated until evaluation/render integration is implemented and verified.
   No owner decision is pending. Next: focused verification after release, xyz
@@ -207,6 +208,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 shared camera sampling checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after expression/path `e7221a4`.
+- **Authored:** shared xyz/camera defaults and keyed sampling, one/two-node/POI
+  selection, focal/film conversion, optical range/clip-order checks and explicit
+  ambiguous-control rejection. Camera sampling uses the supplied layer clock.
+- **Verification:** exact-default/fractional/optics cases are authored but unrun;
+  builds, formatters, tests, browser matrices and exports remain held for CE6-P.
+- **Next:** evaluated state/parent matrices/scope cameras, then shared projective
+  rendering; verify all authored slices when the release arrives.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 spatial expression/path checkpoint
 
