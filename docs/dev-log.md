@@ -57,7 +57,10 @@ still hold before relying on them.
   pass 44 cases / 220 frames (delta1); real temporal editing/save/reload passes.
   Paint-order and adjustment-exposure failures are repaired and retained. Field
   coverage now includes the shared native inspector fixture; 1,935 unit tests,
-  build and focused lint pass after one coverage failure. Independent
+  build and focused lint pass after one coverage failure. All 132 actual Metal
+  comparisons and the real inspector pass. CLI camera-order assertions are repaired;
+  seven focused CLI tests/build/lint pass. Integration has a preview-watch timeout
+  awaiting an unchanged isolated rerun. Independent
   review gates are active; native timing is queued. Coordination authorization is pending.
   [Evidence](./composition-ce4c-results.json).
 
@@ -241,6 +244,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c hardware and CLI checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, fixture `9c2a97d`.
+- **Done:** CLI assertions locate the unique camera independently of paint order.
+- **Results:** all seven CLI integration tests/build/lint pass; 132 actual Metal
+  comparisons pass (67 exact, minimum PSNR48.11/SSIM0.99806) and real inspector
+  edits/history/save/reload/backend switches pass. Pinned unit/runtime pass.
+- **Rejected:** stale CLI array-position assertion and a localhost-restricted
+  invocation. The broader preview-watch test timed out at its unchanged 5000ms;
+  an isolated rerun and complete gate remain pending.
+- **Open / next:** full native software/export/timing acceptance, complete gate and
+  preview-watch verification. Concurrent independent suites remain active.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c native control fixture checkpoint
 

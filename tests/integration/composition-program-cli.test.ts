@@ -13,6 +13,7 @@ import { afterEach, expect, it } from "vitest";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 import { loadProgram } from "../../tools/still-shift-cli/src/composition/program.ts";
 import { comp, image } from "@still-shift/motion";
+import type { Composition } from "@still-shift/scene-contract";
 import { imageAsset } from "@still-shift/motion/node";
 const directories: string[] = [];
 async function directory() {
@@ -57,23 +58,23 @@ it("exports cinematic recipes as inspectable native camera/plane JSON with reloc
   ]);
   expect(result.code).toBe(0);
   expect(result.stderr).toBe("");
-  const doc = JSON.parse(await readFile(output, "utf8"));
-  expect(doc.layers[0]).toMatchObject({
+  const doc = JSON.parse(await readFile(output, "utf8")) as Composition;
+  const cameras = doc.layers.filter((layer) => layer.type === "camera");
+  expect(cameras).toHaveLength(1);
+  expect(cameras[0]).toMatchObject({
     type: "camera",
     zoom: { keys: expect.any(Array) },
   });
-  expect(
-    doc.layers
-      .slice(1)
-      .every(
-        (layer: { type: string; threeD: boolean }) =>
-          layer.type === "image" && layer.threeD,
-      ),
-  ).toBe(true);
-  expect(doc.metadata.nativeCameraValidation.checkedFrames).toBe(
-    doc.frameCount,
+  const artwork = doc.layers.filter((layer) => layer.type !== "camera");
+  expect(artwork).toHaveLength(source.nodes.length);
+  expect(artwork.every((layer) => layer.type === "image" && layer.threeD)).toBe(
+    true,
   );
-  expect(resolve(root, doc.assets[0].path)).toBe(
+  expect(
+    (doc.metadata!.nativeCameraValidation as { checkedFrames: number })
+      .checkedFrames,
+  ).toBe(doc.frameCount);
+  expect(resolve(root, doc.assets[0]!.path)).toBe(
     await realpath(resolve(dirname(fixture), source.assets[0].path)),
   );
 });

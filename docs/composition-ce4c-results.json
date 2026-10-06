@@ -310,6 +310,1396 @@
       ],
       "repair": "Share the previously tested native inspector document as a new CE4c framing-focus fixture and include it in field coverage. CE1 fixture and frozen baselines are unchanged.",
       "verificationLimits": "Full pinned gate and native timing/export/hardware matrix remain pending."
+    },
+    {
+      "name": "cinematic CLI semantics and complete hardware diagnostic",
+      "status": "implemented-focused-pass-full-pending",
+      "checks": {
+        "cliIntegration": {
+          "files": 1,
+          "tests": 7,
+          "status": "pass"
+        },
+        "build": "pass",
+        "focusedLint": "pass",
+        "hardwareDiagnostic": {
+          "snapshot": "9c2a97d",
+          "sourceFixtures": 15,
+          "effectVariants": 7,
+          "comparisons": 132,
+          "exact": 67,
+          "maxDelta": 18,
+          "minPsnr": 48.1110537251407,
+          "minSsim": 0.9980632658906406,
+          "status": "pass",
+          "details": {
+            "snapshot": "9c2a97d",
+            "status": "pass",
+            "diagnostic": true,
+            "verificationLimits": "No complete software timelines, production exports or timing acceptance in this diagnostic.",
+            "hardware": {
+              "environments": [
+                {
+                  "profile": "chromium-software-2",
+                  "browserVersion": "151.0.7922.34",
+                  "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                  "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                  "platform": "darwin",
+                  "arch": "arm64"
+                },
+                {
+                  "profile": "hardware",
+                  "browserVersion": "151.0.7922.34",
+                  "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                  "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                  "platform": "darwin",
+                  "arch": "arm64"
+                }
+              ],
+              "policy": "unchanged perceptual hardware policy",
+              "reports": [
+                {
+                  "fixture": "cinematic/threshold-push",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push",
+                  "backend": "canvas2d",
+                  "frame": 84,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push",
+                  "backend": "canvas2d",
+                  "frame": 167,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3349156,
+                  "psnr": 48.83817598584902,
+                  "ssim": 0.998594060358485
+                },
+                {
+                  "fixture": "cinematic/threshold-push",
+                  "backend": "webgl2",
+                  "frame": 84,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3302156,
+                  "psnr": 48.9258015606723,
+                  "ssim": 0.9984502146019618
+                },
+                {
+                  "fixture": "cinematic/threshold-push",
+                  "backend": "webgl2",
+                  "frame": 167,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3269454,
+                  "psnr": 49.09713216325678,
+                  "ssim": 0.9983825677065263
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-grain",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-grain",
+                  "backend": "canvas2d",
+                  "frame": 36,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-grain",
+                  "backend": "canvas2d",
+                  "frame": 71,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-grain",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3301203,
+                  "psnr": 48.92684462333569,
+                  "ssim": 0.9986829279579671
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-grain",
+                  "backend": "webgl2",
+                  "frame": 36,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3256956,
+                  "psnr": 48.96975703789263,
+                  "ssim": 0.9985561792786674
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-grain",
+                  "backend": "webgl2",
+                  "frame": 71,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3222031,
+                  "psnr": 49.182814125044125,
+                  "ssim": 0.9984906264016697
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-glow",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-glow",
+                  "backend": "canvas2d",
+                  "frame": 36,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-glow",
+                  "backend": "canvas2d",
+                  "frame": 71,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-glow",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3355077,
+                  "psnr": 48.63317131228022,
+                  "ssim": 0.9984835558992121
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-glow",
+                  "backend": "webgl2",
+                  "frame": 36,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3295495,
+                  "psnr": 48.659545096232065,
+                  "ssim": 0.9983314812694551
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-glow",
+                  "backend": "webgl2",
+                  "frame": 71,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3255394,
+                  "psnr": 48.84855074221308,
+                  "ssim": 0.9982532870810185
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-directional",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-directional",
+                  "backend": "canvas2d",
+                  "frame": 36,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-directional",
+                  "backend": "canvas2d",
+                  "frame": 71,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-directional",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3279836,
+                  "psnr": 49.12418711256841,
+                  "ssim": 0.9986415763782671
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-directional",
+                  "backend": "webgl2",
+                  "frame": 36,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3205527,
+                  "psnr": 49.25641120905654,
+                  "ssim": 0.9985353256537067
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-directional",
+                  "backend": "webgl2",
+                  "frame": 71,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3164927,
+                  "psnr": 49.50326612659182,
+                  "ssim": 0.9984721069308171
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-focus",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-focus",
+                  "backend": "canvas2d",
+                  "frame": 36,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-focus",
+                  "backend": "canvas2d",
+                  "frame": 71,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-focus",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3278561,
+                  "psnr": 49.200552853289814,
+                  "ssim": 0.9986008128845862
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-focus",
+                  "backend": "webgl2",
+                  "frame": 36,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3169948,
+                  "psnr": 49.479468046882204,
+                  "ssim": 0.9982426133647069
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-focus",
+                  "backend": "webgl2",
+                  "frame": 71,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3120975,
+                  "psnr": 49.80487782945958,
+                  "ssim": 0.9980632658906406
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-sweep",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-sweep",
+                  "backend": "canvas2d",
+                  "frame": 36,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-sweep",
+                  "backend": "canvas2d",
+                  "frame": 71,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-sweep",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3349156,
+                  "psnr": 48.83817598584902,
+                  "ssim": 0.998594060358485
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-sweep",
+                  "backend": "webgl2",
+                  "frame": 36,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3189753,
+                  "psnr": 49.03383489829071,
+                  "ssim": 0.9983693256480018
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-sweep",
+                  "backend": "webgl2",
+                  "frame": 71,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3269454,
+                  "psnr": 49.09713216325678,
+                  "ssim": 0.9983825677065263
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-shutter",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-shutter",
+                  "backend": "canvas2d",
+                  "frame": 36,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-shutter",
+                  "backend": "canvas2d",
+                  "frame": 71,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-shutter",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3349156,
+                  "psnr": 48.83817598584902,
+                  "ssim": 0.998594060358485
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-shutter",
+                  "backend": "webgl2",
+                  "frame": 36,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 9,
+                  "differingChannels": 3226760,
+                  "psnr": 49.86850537825888,
+                  "ssim": 0.9986243245362996
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-shutter",
+                  "backend": "webgl2",
+                  "frame": 71,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3269454,
+                  "psnr": 49.09713216325678,
+                  "ssim": 0.9983825677065263
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-active-stack",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-active-stack",
+                  "backend": "canvas2d",
+                  "frame": 36,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-active-stack",
+                  "backend": "canvas2d",
+                  "frame": 71,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-active-stack",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3301203,
+                  "psnr": 48.92684462333569,
+                  "ssim": 0.9986829279579671
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-active-stack",
+                  "backend": "webgl2",
+                  "frame": 36,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 11,
+                  "differingChannels": 3181857,
+                  "psnr": 49.74827925724164,
+                  "ssim": 0.9986702956043239
+                },
+                {
+                  "fixture": "cinematic/threshold-push/effects-active-stack",
+                  "backend": "webgl2",
+                  "frame": 71,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3221988,
+                  "psnr": 49.18393235291354,
+                  "ssim": 0.9984371685910459
+                },
+                {
+                  "fixture": "cinematic/threshold-push-alternate",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push-alternate",
+                  "backend": "canvas2d",
+                  "frame": 84,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push-alternate",
+                  "backend": "canvas2d",
+                  "frame": 167,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/threshold-push-alternate",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3369545,
+                  "psnr": 48.710751003859656,
+                  "ssim": 0.9985942404133007
+                },
+                {
+                  "fixture": "cinematic/threshold-push-alternate",
+                  "backend": "webgl2",
+                  "frame": 84,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 18,
+                  "differingChannels": 3323005,
+                  "psnr": 48.71724654152723,
+                  "ssim": 0.9984628938751818
+                },
+                {
+                  "fixture": "cinematic/threshold-push-alternate",
+                  "backend": "webgl2",
+                  "frame": 167,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 17,
+                  "differingChannels": 3299172,
+                  "psnr": 48.910202315643915,
+                  "ssim": 0.9984217073487052
+                },
+                {
+                  "fixture": "cinematic/lateral-track",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/lateral-track",
+                  "backend": "canvas2d",
+                  "frame": 84,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/lateral-track",
+                  "backend": "canvas2d",
+                  "frame": 167,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/lateral-track",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 17,
+                  "differingChannels": 3256534,
+                  "psnr": 49.307850319988674,
+                  "ssim": 0.9984484658077778
+                },
+                {
+                  "fixture": "cinematic/lateral-track",
+                  "backend": "webgl2",
+                  "frame": 84,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 17,
+                  "differingChannels": 3293438,
+                  "psnr": 49.088560815647114,
+                  "ssim": 0.9984173896965102
+                },
+                {
+                  "fixture": "cinematic/lateral-track",
+                  "backend": "webgl2",
+                  "frame": 167,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3262390,
+                  "psnr": 49.35721903795808,
+                  "ssim": 0.998402355852983
+                },
+                {
+                  "fixture": "cinematic/lateral-track-alternate",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/lateral-track-alternate",
+                  "backend": "canvas2d",
+                  "frame": 84,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/lateral-track-alternate",
+                  "backend": "canvas2d",
+                  "frame": 167,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/lateral-track-alternate",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 16,
+                  "differingChannels": 3244938,
+                  "psnr": 49.42379295696426,
+                  "ssim": 0.9983395862566083
+                },
+                {
+                  "fixture": "cinematic/lateral-track-alternate",
+                  "backend": "webgl2",
+                  "frame": 84,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 12,
+                  "differingChannels": 3211795,
+                  "psnr": 49.705618880119324,
+                  "ssim": 0.9982891089932945
+                },
+                {
+                  "fixture": "cinematic/lateral-track-alternate",
+                  "backend": "webgl2",
+                  "frame": 167,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3257559,
+                  "psnr": 49.389955324558784,
+                  "ssim": 0.9983608711465614
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal",
+                  "backend": "canvas2d",
+                  "frame": 84,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal",
+                  "backend": "canvas2d",
+                  "frame": 167,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3327510,
+                  "psnr": 48.948960405801586,
+                  "ssim": 0.9984273110676429
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal",
+                  "backend": "webgl2",
+                  "frame": 84,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3285086,
+                  "psnr": 49.1265264377573,
+                  "ssim": 0.9984288871861325
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal",
+                  "backend": "webgl2",
+                  "frame": 167,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3285086,
+                  "psnr": 49.1265264377573,
+                  "ssim": 0.9984288871861325
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal-alternate",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal-alternate",
+                  "backend": "canvas2d",
+                  "frame": 84,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal-alternate",
+                  "backend": "canvas2d",
+                  "frame": 167,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal-alternate",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3342072,
+                  "psnr": 48.78786202113563,
+                  "ssim": 0.9983757527705831
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal-alternate",
+                  "backend": "webgl2",
+                  "frame": 84,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3296447,
+                  "psnr": 48.98169442854111,
+                  "ssim": 0.9983812517306238
+                },
+                {
+                  "fixture": "cinematic/foreground-reveal-alternate",
+                  "backend": "webgl2",
+                  "frame": 167,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3296447,
+                  "psnr": 48.98169442854111,
+                  "ssim": 0.9983812517306238
+                },
+                {
+                  "fixture": "cinematic/rising-vista",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/rising-vista",
+                  "backend": "canvas2d",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/rising-vista",
+                  "backend": "canvas2d",
+                  "frame": 95,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/rising-vista",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 11,
+                  "differingChannels": 3092455,
+                  "psnr": 48.99980211762185,
+                  "ssim": 0.998125029475649
+                },
+                {
+                  "fixture": "cinematic/rising-vista",
+                  "backend": "webgl2",
+                  "frame": 48,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 12,
+                  "differingChannels": 3090178,
+                  "psnr": 49.03450793168693,
+                  "ssim": 0.9981116905888059
+                },
+                {
+                  "fixture": "cinematic/rising-vista",
+                  "backend": "webgl2",
+                  "frame": 95,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 12,
+                  "differingChannels": 3048992,
+                  "psnr": 49.30664664756377,
+                  "ssim": 0.9981524886392154
+                },
+                {
+                  "fixture": "cinematic/detail-to-world",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/detail-to-world",
+                  "backend": "canvas2d",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/detail-to-world",
+                  "backend": "canvas2d",
+                  "frame": 95,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/detail-to-world",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3174585,
+                  "psnr": 50.020484064775246,
+                  "ssim": 0.9982334064303342
+                },
+                {
+                  "fixture": "cinematic/detail-to-world",
+                  "backend": "webgl2",
+                  "frame": 48,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3183108,
+                  "psnr": 50.071133696185626,
+                  "ssim": 0.9983284940320936
+                },
+                {
+                  "fixture": "cinematic/detail-to-world",
+                  "backend": "webgl2",
+                  "frame": 95,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3232540,
+                  "psnr": 49.55638891814863,
+                  "ssim": 0.9984215964802113
+                },
+                {
+                  "fixture": "cinematic/curved-approach",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/curved-approach",
+                  "backend": "canvas2d",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/curved-approach",
+                  "backend": "canvas2d",
+                  "frame": 95,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/curved-approach",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3337633,
+                  "psnr": 48.762704331222096,
+                  "ssim": 0.9985119258604117
+                },
+                {
+                  "fixture": "cinematic/curved-approach",
+                  "backend": "webgl2",
+                  "frame": 48,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3322293,
+                  "psnr": 48.76875005219641,
+                  "ssim": 0.9984416834427019
+                },
+                {
+                  "fixture": "cinematic/curved-approach",
+                  "backend": "webgl2",
+                  "frame": 95,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 15,
+                  "differingChannels": 3314141,
+                  "psnr": 48.83663159955843,
+                  "ssim": 0.9984255874143552
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension",
+                  "backend": "canvas2d",
+                  "frame": 84,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension",
+                  "backend": "canvas2d",
+                  "frame": 167,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3274000,
+                  "psnr": 48.73794283009417,
+                  "ssim": 0.9983891575711847
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension",
+                  "backend": "webgl2",
+                  "frame": 84,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3267901,
+                  "psnr": 48.73628198380595,
+                  "ssim": 0.9984028889610607
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension",
+                  "backend": "webgl2",
+                  "frame": 167,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3275496,
+                  "psnr": 48.74077311008193,
+                  "ssim": 0.9983984980048832
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension-alternate",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension-alternate",
+                  "backend": "canvas2d",
+                  "frame": 84,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension-alternate",
+                  "backend": "canvas2d",
+                  "frame": 167,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension-alternate",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3305045,
+                  "psnr": 48.270414203033695,
+                  "ssim": 0.9984619768593705
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension-alternate",
+                  "backend": "webgl2",
+                  "frame": 84,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 12,
+                  "differingChannels": 3306723,
+                  "psnr": 48.24458848910542,
+                  "ssim": 0.9984784073626459
+                },
+                {
+                  "fixture": "cinematic/dolly-zoom-tension-alternate",
+                  "backend": "webgl2",
+                  "frame": 167,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 12,
+                  "differingChannels": 3301322,
+                  "psnr": 48.25394100498164,
+                  "ssim": 0.9984877883003704
+                },
+                {
+                  "fixture": "cinematic/layered-parallax",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/layered-parallax",
+                  "backend": "canvas2d",
+                  "frame": 84,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/layered-parallax",
+                  "backend": "canvas2d",
+                  "frame": 167,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/layered-parallax",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3274000,
+                  "psnr": 48.73794283009417,
+                  "ssim": 0.9983891575711847
+                },
+                {
+                  "fixture": "cinematic/layered-parallax",
+                  "backend": "webgl2",
+                  "frame": 84,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3307213,
+                  "psnr": 48.25090906020133,
+                  "ssim": 0.998446513722369
+                },
+                {
+                  "fixture": "cinematic/layered-parallax",
+                  "backend": "webgl2",
+                  "frame": 167,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3316782,
+                  "psnr": 48.1110537251407,
+                  "ssim": 0.9984689700932927
+                },
+                {
+                  "fixture": "cinematic/layered-parallax-alternate",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/layered-parallax-alternate",
+                  "backend": "canvas2d",
+                  "frame": 84,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/layered-parallax-alternate",
+                  "backend": "canvas2d",
+                  "frame": 167,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/layered-parallax-alternate",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3305045,
+                  "psnr": 48.270414203033695,
+                  "ssim": 0.9984619768593705
+                },
+                {
+                  "fixture": "cinematic/layered-parallax-alternate",
+                  "backend": "webgl2",
+                  "frame": 84,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 12,
+                  "differingChannels": 3280210,
+                  "psnr": 48.62679709092207,
+                  "ssim": 0.9983794583463265
+                },
+                {
+                  "fixture": "cinematic/layered-parallax-alternate",
+                  "backend": "webgl2",
+                  "frame": 167,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 11,
+                  "differingChannels": 3262501,
+                  "psnr": 48.76911312791988,
+                  "ssim": 0.9983760148300102
+                },
+                {
+                  "fixture": "cinematic/focus-handoff",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/focus-handoff",
+                  "backend": "canvas2d",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/focus-handoff",
+                  "backend": "canvas2d",
+                  "frame": 95,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/focus-handoff",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 10,
+                  "differingChannels": 869327,
+                  "psnr": 55.349305131432445,
+                  "ssim": 0.9995614190402443
+                },
+                {
+                  "fixture": "cinematic/focus-handoff",
+                  "backend": "webgl2",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/focus-handoff",
+                  "backend": "webgl2",
+                  "frame": 95,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 11,
+                  "differingChannels": 126728,
+                  "psnr": 62.14963467748235,
+                  "ssim": 0.9999346040668486
+                },
+                {
+                  "fixture": "cinematic/vertical-rising-vista",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/vertical-rising-vista",
+                  "backend": "canvas2d",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/vertical-rising-vista",
+                  "backend": "canvas2d",
+                  "frame": 95,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "cinematic/vertical-rising-vista",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 95554,
+                  "psnr": 62.339833140101184,
+                  "ssim": 0.9998731873303003
+                },
+                {
+                  "fixture": "cinematic/vertical-rising-vista",
+                  "backend": "webgl2",
+                  "frame": 48,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 98529,
+                  "psnr": 61.85765418268093,
+                  "ssim": 0.9998554315697051
+                },
+                {
+                  "fixture": "cinematic/vertical-rising-vista",
+                  "backend": "webgl2",
+                  "frame": 95,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 95435,
+                  "psnr": 62.446062617359075,
+                  "ssim": 0.9998703694989967
+                }
+              ]
+            },
+            "inspector": {
+              "status": "passed",
+              "checks": [
+                "xy framing temporal-handle edit",
+                "actual camera frustum",
+                "undo/redo pixels",
+                "native Gaussian controls preserved",
+                "JSON save/reload pixels",
+                "both backends"
+              ]
+            }
+          }
+        }
+      },
+      "failedAttempts": [
+        "Broader integration on 9c2a97d found one stale CLI first-layer assumption following the required native paint-order reversal; repaired by asserting a unique camera and all source artwork by semantic type.",
+        "Initial focused invocation without localhost access passed cinematic export but failed the old checksum test with listen EPERM, and another test reached its unchanged 5000ms timeout. The isolated invocation with localhost access passes all seven tests.",
+        "Broader integration preview-watch recovery reached its unchanged 5000ms timeout under concurrent workloads; standalone unchanged-case verification and complete rerun remain pending."
+      ],
+      "verificationLimits": "132 actual Apple Metal comparisons and real inspector pass; this diagnostic does not replace complete software timelines, production exports, timing or full pnpm check."
     }
   ],
   "pending": [
