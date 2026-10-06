@@ -1179,5 +1179,66 @@
     "boundaries": "pass",
     "format": "pass on d72ba2c",
     "fullGate": "pending"
+  },
+  "fullGateAttempts": [
+    {
+      "checkpoint": "3820c1c",
+      "command": "pnpm check",
+      "exitCode": 1,
+      "log": "/private/tmp/ce8l-full-3820c1c.log",
+      "unitTests": 1889,
+      "runtimeTests": 46,
+      "integrationTests": 139,
+      "depthTests": 14,
+      "nativeLighting": "passed with exact committed baselines",
+      "completedStoryCases": 60,
+      "completedStoryFrames": 12358,
+      "failure": {
+        "case": "component/passage-components/instances",
+        "ratio": 1.3120195661014282,
+        "limit": 1.25,
+        "maxDelta": 0,
+        "pixelFailures": []
+      },
+      "diagnosis": "Serial focused profiles on the previous CE8 and current lighting checkpoints both pass unchanged assertions. Spatial projection and light enumeration are not invoked for this nonspatial scope; observed paired totals are dominated by readback. Timing variation is the current evidence, not a demonstrated lighting regression. No code, baselines or policy changed."
+    }
+  ],
+  "timingDiagnosis": {
+    "ce8": {
+      "checkpoint": "16262ec",
+      "log": "/private/tmp/ce8-base-passage-profile.log",
+      "command": "pnpm test:browser:composition-story-fixtures --only component/passage-components --variant instances --profile --exports",
+      "exitCode": 0,
+      "report": {
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 1.217357002332265,
+        "legacyMs": 253.50000023841858,
+        "compositionMs": 308.6000003814697,
+        "legacyRenderMs": 18.50000011920929,
+        "compositionRenderMs": 81.69999986886978,
+        "evaluationMs": 6.300000011920929,
+        "graphMs": 2.099999964237213
+      }
+    },
+    "lighting": {
+      "checkpoint": "3820c1c",
+      "log": "/private/tmp/ce8l-current-passage-profile.log",
+      "command": "pnpm test:browser:composition-story-fixtures --only component/passage-components --variant instances --profile --exports",
+      "exitCode": 0,
+      "report": {
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 1.1535580557349567,
+        "legacyMs": 213.59999936819077,
+        "compositionMs": 246.39999997615814,
+        "legacyRenderMs": 11.399999558925629,
+        "compositionRenderMs": 56.10000020265579,
+        "evaluationMs": 6.799999952316284,
+        "graphMs": 1.4000000357627869
+      }
+    }
   }
 }

@@ -55,8 +55,11 @@ still hold before relying on them.
   Hardware: 43 exact / two near under unchanged policy. All 95 existing visual
   files remain exact; 46 new lighting files are separate. Serial 1080p costs for
   four receivers / 1,4,8 lights are recorded for one/four actual exposure samples.
-  Complete local gate and milestone PR remain pending. Earlier oracle/inspector
-  test assumptions are recorded; production and tolerance stayed unchanged.
+  Full gate `3820c1c` stopped at the passage-components instances timing assertion
+  (1.312 against 1.25); all 60 completed story pixel checks pass. Serial focused
+  profiles pass on CE8 (1.217) and CE8-L (1.154), with exact pixels. A full rerun
+  from the start is pending; production, baselines and policy stayed unchanged.
+  Earlier oracle/inspector test assumptions remain recorded.
   No owner decision is pending. [Evidence](./composition-ce8-lighting-results.json).
 
 - **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
@@ -222,6 +225,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8-L full-gate timing diagnosis
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`, checkpoint `3820c1c`.
+- **Results:** full gate passed unit/runtime/integration/depth, native lighting and
+  preceding browser groups, then stopped at passage-components instances: timing
+  1.312 exceeds 1.25. All 60 completed story cases pass pixel assertions.
+- **Diagnosis:** serial focused CE8/CE8-L profiles pass at 1.217/1.154, exact pixels;
+  paired readback totals vary. No lighting work enters this nonspatial scope.
+- **Rejected:** do not relax timing, regenerate baselines, skip suites or report the
+  failed full gate as passed. No production change is justified by these profiles.
+- **Open / next:** rerun the complete gate from the start; PR remains pending.
+- **Records:** [Failed attempt and profiles](./composition-ce8-lighting-results.json).
 
 ### 2026-10-06 — CE8-L native acceptance and serial-cost checkpoint
 
