@@ -82,3 +82,10 @@ export function validateCameraControls(controls: SampledCameraControls) {
   if(!controls.pointOfInterest.every(value=>Number.isFinite(value)&&Math.abs(value)<=1_000_000))
     throw Error("Camera point of interest must be finite and within ±1000000");
 }
+
+/** Recompute the secondary optical value after motion/expression writes. */
+export function refreshCameraControls(controls: SampledCameraControls, width: number) {
+  if (controls.opticalMode === "zoom") controls.focalLength = controls.zoom * controls.filmSize / width;
+  else controls.zoom = controls.focalLength * width / controls.filmSize;
+  validateCameraControls(controls);
+}

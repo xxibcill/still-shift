@@ -50,7 +50,8 @@ still hold before relying on them.
   independent analytic test cases, plus opt-in xyz keyed/separated/spatial
   sampling, xyz own-key loops/roving and camera/spatial paths with unchanged
   2D arithmetic; shared spatial/camera sampling and optical rules are authored.
-  Tests, formatting and builds have not run:
+  Evaluated xyz/camera state, stage copies and spatial parent matrices are authored
+  in evaluator source version 45. Tests, formatting and builds have not run:
   the coordinated CE6-P quiet window is active. Runtime camera/3D availability
   remains gated until evaluation/render integration is implemented and verified.
   No owner decision is pending. Next: focused verification after release, xyz
@@ -208,6 +209,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 evaluated spatial state checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after sampling `179d903`.
+- **Authored:** actual xyz values/property writes, sealed camera/POI/orientation
+  copies, primary optic refresh, spatial-scope parent world matrices and structured
+  optical/world diagnostics; evaluator source version 45. Ordinary 2D scopes
+  retain their affine path; native camera/3D availability remains gated.
+- **Verification:** component/copy/optical refresh cases are authored but unrun;
+  the CE6-P reservation still holds builds, formatters, tests, matrices and exports.
+- **Next:** scope camera projection and shared graph/backend integration, followed
+  by focused checks after release before claiming any slice verified.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 shared camera sampling checkpoint
 

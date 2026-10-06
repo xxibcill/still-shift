@@ -7,6 +7,8 @@ import type {
 } from "@still-shift/scene-contract";
 import type { Matrix, Point } from "../../node-transform.ts";
 import type { PassageDiagnostic } from "../../passage-diagnostics.ts";
+import type { Point3, Matrix4, ProjectedPlane, CameraGeometry } from "./spatial-geometry.ts";
+import type { SampledCameraControls } from "./spatial-state.ts";
 
 export type Rgba = [number, number, number, number];
 export type Bounds = {
@@ -15,15 +17,18 @@ export type Bounds = {
   right: number;
   bottom: number;
 };
-export type PropertyValue = number | Point | Rgba | BezierPath | Point[];
+export type PropertyValue = number | Point | Point3 | Rgba | BezierPath | Point[];
 export type EvaluatedTransform = {
-  anchor: Point;
-  position: Point;
-  scale: Point;
+  anchor: Point | Point3;
+  position: Point | Point3;
+  scale: Point | Point3;
   rotation: number;
   skewX: number;
   skewY: number;
   opacity: number;
+  rotationX?: number;
+  rotationY?: number;
+  orientation?: Point3;
 };
 export type EvaluatedMask = Omit<
   CompositionMask,
@@ -40,10 +45,18 @@ export type EvaluatedLayer = {
   /** Content visibility also excludes nulls, groups and matte sources. */
   drawable: boolean;
   transform: EvaluatedTransform;
-  constraintReference: Point;
+  constraintReference: Point | Point3;
   localMatrix: Matrix;
   worldMatrix: Matrix;
+  /** Spatial scopes retain complete world geometry, including non-drawing parents. */
+  worldMatrix3d?: Matrix4;
+  /** The world chain contains authored spatial transforms rather than only affine lifts. */
+  spatialWorld?: true;
   screenMatrix: Matrix;
+  /** True spatial placement; consumers must use this instead of the 2D screen matrix. */
+  projection?: ProjectedPlane;
+  focusBlur?: number;
+  camera?: SampledCameraControls;
   /** Includes ancestor group opacity; ordinary parent opacity never inherits. */
   opacity: number;
   bounds: Bounds | null;
@@ -73,6 +86,7 @@ export type EvaluatedLayerTree = {
   /** All layer states in painter order, including invisible dependency layers. */
   layers: EvaluatedLayer[];
   diagnostics: PassageDiagnostic[];
+  camera?: CameraGeometry & { id: string | null; source: "native" | "default" | "legacy2d" };
 };
 
 export type EvaluationOptions = {

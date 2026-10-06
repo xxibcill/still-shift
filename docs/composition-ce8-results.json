@@ -70,7 +70,30 @@
         "status": "not run",
         "reason": "Coordinated CE6-P quiet window remains active",
         "analyticCases": "Authored exact camera defaults, fractional xyz motion, implicit scale z, keyed focus, focal conversion and runtime settings failures"
-      }
+      },
+      "implementation": "179d903"
+    },
+    {
+      "name": "Evaluated spatial values and parent world integration",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Actual xyz evaluated transforms/reference values with typed 3D state",
+        "Camera state property reads/writes and primary optical control refresh",
+        "Deep-copy camera POI/orientation in sealed expression stages",
+        "Spatial-scope flags and complete parent world matrices without 4x4 allocation in ordinary 2D scopes",
+        "Structured sampled optical/non-finite world diagnostics with owning node/frame",
+        "Camera/light layers remain non-drawing dependencies"
+      ],
+      "versions": {
+        "evaluator": "composition-evaluator-45",
+        "status": "source checkpoint unverified"
+      },
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored xyz component writes, copied expression results, camera POI/primary optical writes and secondary optic refresh"
+      },
+      "pending": "Scope camera projection, native availability/validation, graph/backend integration and verification"
     }
   ],
   "pending": [

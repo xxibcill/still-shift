@@ -60,6 +60,8 @@ import {
 } from "./expression-keys.ts";
 import { applyConstraints } from "./constraints.ts";
 import { cameraMatrix, sampleCamera } from "./camera.ts";
+import { sampleSpatialTransform, sampleCameraControls, refreshCameraControls } from "./spatial-state.ts";
+import { layerMatrix3d, affineMatrix4, multiplyWorldMatrices } from "./spatial-geometry.ts";
 import { compositionSampleIndex } from "./sample-clock.ts";
 import {
   layerContentTime,
@@ -92,7 +94,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-44";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-45";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -291,6 +293,15 @@ function baseState(
       opacity: unit(scalar(m.opacity, time, fps, 1)),
     })),
   };
+  if (layer.threeD || layer.type === "camera") {
+    const spatial=sampleSpatialTransform(layer,time,fps,[ctx.scope.width,ctx.scope.height],size);
+    state.transform=spatial.transform;
+    state.constraintReference=spatial.constraintReference;
+  }
+  if (layer.type === "camera") {
+    try { state.camera=sampleCameraControls(layer,time,fps,[ctx.scope.width,ctx.scope.height]); }
+    catch(error) { passageError("comp-camera-settings",error instanceof Error ? error.message : String(error),{node:layer.id,path:layerKey(ctx.route,layer.id),frame:budget.location.frame ?? ctx.time}); }
+  }
   if (layer.type === "shape")
     state.contents = sampleShapes(layer.contents, time, fps, budget);
   if (layer.type === "solid" || layer.type === "text")
@@ -610,12 +621,13 @@ class Evaluation {
   /** Whether drivers, active periodic motion or expressions write constraintReference.axis. */
   private writesReference(ctx: Context, state: EvaluatedLayer) {
     const key = this.bindings(ctx, state.id);
-    const written = [false, false];
+    const written = state.constraintReference.length === 3 ? [false,false,false] : [false,false];
     const mark = ({ path }: { path: PropertyPath }) => {
       if (path.segments[0]!.name !== "constraintReference") return;
       const axis = path.segments[1]?.name;
-      if (axis !== "y") written[0] = true;
-      if (axis !== "x") written[1] = true;
+      if (axis === undefined) written.fill(true);
+      else if (COMPONENT[axis] !== undefined && COMPONENT[axis]! < written.length)
+        written[COMPONENT[axis]!] = true;
     };
     this.compiled.drivers.get(key)?.forEach(mark);
     this.compiled.periodic
@@ -633,6 +645,10 @@ class Evaluation {
   /** Clamp written values and keep an unauthored constraint reference on the anchor. */
   private normalize(ctx: Context, state: EvaluatedLayer) {
     state.transform.opacity = unit(state.transform.opacity);
+    if (state.camera) {
+      try { refreshCameraControls(state.camera,ctx.scope.width); }
+      catch(error) { passageError("comp-camera-settings",error instanceof Error ? error.message : String(error),{node:state.id,path:this.bindings(ctx,state.id),frame:this.time}); }
+    }
     clampEffects(state.effects);
     if (state.contents)
       clampShapes(state.contents, this.shapeBudget(ctx, state.layer));
@@ -645,7 +661,7 @@ class Evaluation {
     }
     if (state.layer.constraintReference === undefined) {
       const written = this.writesReference(ctx, state);
-      for (const axis of [0, 1])
+      for (let axis=0;axis<state.constraintReference.length;axis++)
         if (!written[axis])
           state.constraintReference[axis] = state.transform.anchor[axis]!;
     }
@@ -1279,6 +1295,27 @@ class Evaluation {
     });
     state.localMatrix = transformMatrix(state.transform);
     state.worldMatrix = multiplyMatrix(parentMatrix, state.localMatrix);
+    if (this.compiled.spatialScopes.has(ctx.scope)) {
+      try {
+      const spatial=state.transform.position.length===3;
+      const local=spatial ? layerMatrix3d({
+        ...state.transform,
+        anchor:state.transform.anchor as [number,number,number],
+        position:state.transform.position as [number,number,number],
+        scale:state.transform.scale as [number,number,number],
+        orientation:state.transform.orientation ?? [0,0,0],
+        rotationX:state.transform.rotationX ?? 0,
+        rotationY:state.transform.rotationY ?? 0,
+      }) : affineMatrix4(state.localMatrix);
+      state.worldMatrix3d=parent?.worldMatrix3d ? multiplyWorldMatrices(parent.worldMatrix3d,local) : local;
+      if (spatial || parent?.spatialWorld) {
+        state.spatialWorld=true;
+        state.worldMatrix=[state.worldMatrix3d[0],state.worldMatrix3d[1],state.worldMatrix3d[4],state.worldMatrix3d[5],state.worldMatrix3d[12],state.worldMatrix3d[13]];
+      }
+      } catch(error) {
+        passageError("comp-3d-transform",error instanceof Error ? error.message : String(error),{node:state.id,path:this.bindings(ctx,state.id)+".transform",frame:this.time});
+      }
+    }
     const inherited = parent
       ? (ctx.groupOpacity.get(parent.id) ?? 1) *
         (parent.layer.type === "group" ? parent.transform.opacity : 1)
@@ -1321,7 +1358,7 @@ class Evaluation {
     state.visible &&= groupVisible;
     state.drawable =
       state.visible &&
-      !["null", "group"].includes(layer.type) &&
+      !["null", "group", "camera", "light"].includes(layer.type) &&
       !ctx.matteLayers.has(layer.id);
     ctx.active.delete(layer.id);
     ctx.states.set(layer.id, state);
@@ -1419,11 +1456,13 @@ function sealStage(
     ...state,
     transform: {
       ...state.transform,
-      anchor: [...state.transform.anchor],
-      position: [...state.transform.position],
-      scale: [...state.transform.scale],
+      anchor: [...state.transform.anchor] as typeof state.transform.anchor,
+      position: [...state.transform.position] as typeof state.transform.position,
+      scale: [...state.transform.scale] as typeof state.transform.scale,
+      ...(state.transform.orientation ? {orientation:[...state.transform.orientation] as [number,number,number]} : {}),
     },
-    constraintReference: [...state.constraintReference],
+    constraintReference: [...state.constraintReference] as typeof state.constraintReference,
+    ...(state.camera ? {camera:{...state.camera,pointOfInterest:[...state.camera.pointOfInterest] as [number,number,number]}} : {}),
     ...(state.color ? { color: [...state.color] as typeof state.color } : {}),
     ...(state.contents
       ? { contents: cloneShapes(state.contents, budget) }

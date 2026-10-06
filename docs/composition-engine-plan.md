@@ -3623,6 +3623,10 @@ paths are also authored, with independent cases pending execution after release.
 Shared xyz/camera sampling, explicit optical defaults and runtime control checks
 are authored; their analytic default/clock/optics cases remain unexecuted.
 
+Evaluated xyz/camera property state, sealed stage copies, optical refresh and
+spatial parent world matrices are authored in evaluator source version 45; native
+availability, scope projection, backend integration and verification remain open.
+
 **Completion record:** _to be filled in._
 
 ---

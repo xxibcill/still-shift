@@ -53,6 +53,14 @@ export type ProjectedPlane = {
 
 const radians = (angle: number) => angle * Math.PI / 180;
 const identity4 = (): Matrix4 => [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1];
+export function affineMatrix4(matrix: Matrix): Matrix4 {
+  return [matrix[0],matrix[1],0,0,matrix[2],matrix[3],0,0,0,0,1,0,matrix[4],matrix[5],0,1];
+}
+export function multiplyWorldMatrices(parent: Matrix4, local: Matrix4): Matrix4 {
+  const matrix=multiply4(parent,local);
+  if (!matrix.every(Number.isFinite)) throw new Error("Non-finite 3D parent world transform");
+  return matrix;
+}
 const dot = (a: Point3, b: Point3) => a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
 const cross = (a: Point3, b: Point3): Point3 => [
   a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0],

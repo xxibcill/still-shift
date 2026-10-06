@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { sampleCameraControls, sampleSpatialTransform, validateCameraControls } from "../../packages/renderer-core/src/composition/evaluate/spatial-state.ts";
+import { sampleCameraControls, sampleSpatialTransform, validateCameraControls, refreshCameraControls } from "../../packages/renderer-core/src/composition/evaluate/spatial-state.ts";
 
 it("samples native camera defaults in an identity z=0 optical setup", () => {
   const layer={id:"camera",type:"camera" as const};
@@ -24,4 +24,14 @@ it("rejects ambiguous optics, ignored POI and invalid runtime optical values", (
   const controls=sampleCameraControls({id:"camera",type:"camera"},0,24,[100,80]);
   expect(()=>validateCameraControls({...controls,nearClip:100,farClip:10})).toThrow(/ordered/);
   expect(()=>validateCameraControls({...controls,zoom:Infinity})).toThrow(/zoom/);
+});
+
+it("derives the secondary optic after a keyed or expression-stage film change", () => {
+  const controls=sampleCameraControls({id:"camera",type:"camera",focalLength:72,filmSize:36},0,24,[100,80]);
+  controls.filmSize=18;
+  refreshCameraControls(controls,100);
+  expect(controls.zoom).toBe(400);
+  controls.opticalMode="zoom";controls.zoom=100;
+  refreshCameraControls(controls,100);
+  expect(controls.focalLength).toBe(18);
 });
