@@ -11,6 +11,7 @@ import {
   readStoryPassage,
   renderComposition,
   renderStoryPassage,
+  soundtrackFromPassage,
   writePreparedPassage,
 } from "@still-shift/animation-engine";
 import { PassageError } from "@still-shift/renderer-core";
@@ -37,13 +38,18 @@ try {
     compositions.reset!.markers![0]!.frame,
   );
   assert.equal(compositions.reset!.layers.at(-1)!.type, "precomp");
-  const render = async (name: string, pictures = compositions) => {
+  const render = async (
+    name: string,
+    pictures = compositions,
+    soundtrackProject?: string,
+  ) => {
     const output = join(root, name);
     await writePreparedPassage(output, passage);
     return renderStoryPassage(output, passage, undefined, {
       renderer: "composition",
       backend,
       compositions: pictures,
+      ...(soundtrackProject ? { soundtrackProject } : {}),
       cacheDirectory,
     });
   };
@@ -81,6 +87,29 @@ try {
   assert.equal(
     await decodedHash(first.video.path),
     await decodedHash(second.video.path),
+  );
+  // CE4a native pictures and CE16 saved audio share the passage assembly path.
+  const soundtrackProject = join(root, "soundtrack.json");
+  await writeFile(
+    soundtrackProject,
+    JSON.stringify(soundtrackFromPassage(passage)),
+  );
+  const withSoundtrack = await render(
+    "saved-soundtrack",
+    compositions,
+    soundtrackProject,
+  );
+  assert.equal(withSoundtrack.frameCount, first.frameCount);
+  assert.ok(withSoundtrack.cache.every((clip) => clip.reused));
+  assert.ok(
+    withSoundtrack.video.streams.some(
+      (stream) => stream.codec_type === "audio",
+    ),
+  );
+  assert.equal(
+    await decodedHash(withSoundtrack.video.path),
+    await decodedHash(first.video.path),
+    "Saved soundtrack assembly must preserve native composition picture frames",
   );
   const relocated = JSON.parse(await readFile(picture, "utf8"));
   await mkdir(join(root, "assets"));

@@ -208,13 +208,26 @@ async function load(path: string) {
     slider.max = String(comp.frameCount - 1);
     el("command").textContent =
       `pnpm --silent still-shift comp render --input benchmarks/fixtures/composition/${path} --output ${comp.id}.mp4 --backend ${backend}`;
-    showLint(
-      analyzeCompositionQuality(comp, {
-        evaluation: { textBounds: preview.textBounds },
-      }),
-    );
+    // Lint is advisory: a lint failure must not stop the composition previewing.
+    let linted = false;
+    try {
+      showLint(
+        analyzeCompositionQuality(comp, {
+          evaluation: { textBounds: preview.textBounds },
+        }),
+      );
+      linted = true;
+    } catch (cause) {
+      lintFindings = [];
+      const diagnostics = passageDiagnostics(cause);
+      el("lint-summary").textContent = `Motion checks unavailable: ${
+        diagnostics.length
+          ? diagnostics.map((d) => `${d.code}: ${d.message}`).join("; ")
+          : String(cause instanceof Error ? cause.message : cause)
+      }`;
+    }
     show(0);
-    lintButton.disabled = false;
+    lintButton.disabled = !linted;
     play.disabled = false;
     status.textContent = `Ready: ${comp.name ?? comp.id} · ${comp.width} × ${comp.height} · ${comp.fps} fps`;
     status.dataset.ready = path;

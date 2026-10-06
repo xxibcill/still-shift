@@ -39,3 +39,9 @@ export {
   validatePassageCompositions,
   type PassageCompositions,
 } from "./passage-compositions.ts";
+
+export * from "./soundtrack-project-io.ts";
+
+export * from "./soundtrack-render.ts";
+
+export * from "./soundtrack-passage.ts";

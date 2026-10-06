@@ -129,3 +129,5 @@ export {
   validatePassageCompositions,
   type PassageCompositions,
 } from "./passage-compositions.ts";
+
+export * from "./soundtrack-edits.ts";

@@ -1200,3 +1200,128 @@ it("rejects a valid composition whose root sampling alone exceeds lint capacity"
   expect(validateComposition(input).ok).toBe(true);
   expect(() => analyzeCompositionQuality(input)).toThrow(PassageError);
 });
+
+describe("frame-sampled velocity joins", () => {
+  const moving = (
+    keys: {
+      frame: number;
+      value: [number, number];
+      interpolation?: "hold" | "linear";
+    }[],
+    stretch = 1,
+  ) =>
+    composition(
+      [
+        solid("subject", {
+          stretch,
+          ...(stretch < 0 ? { startFrame: 61 } : {}),
+          transform: { position: { keys } },
+        }),
+      ],
+      { frameCount: 60 },
+    );
+  const held = Array.from({ length: 60 }, (_, frame) => ({
+    frame,
+    value: [80 + 4 * frame, 180] as [number, number],
+    interpolation: "hold" as const,
+  }));
+
+  it.each([1, 1.025, -1.025])(
+    "does not report per-frame held samples as velocity joins at stretch %s",
+    (stretch) => {
+      expect(codes(moving(held, stretch))).not.toContain(
+        "velocity-discontinuity",
+      );
+    },
+  );
+
+  it("keeps authored speed joins while reporting held samples as unmeasured", () => {
+    const keys = held.map((key) => ({
+      ...key,
+      value: [
+        80 + 4 * Math.min(key.frame, 30) + 12 * Math.max(0, key.frame - 30),
+        180,
+      ] as [number, number],
+    }));
+    const report = analyzeCompositionQuality(moving(keys));
+    expect(report.diagnostics.map((d) => d.code)).not.toContain(
+      "velocity-discontinuity",
+    );
+    expect(report.limitations).toContain(
+      "Held keyframe steps are frame samples; velocity changes inside held motion are not measured.",
+    );
+    expect(
+      codes(
+        moving([
+          { frame: 0, value: [80, 180] },
+          { frame: 30, value: [200, 180], interpolation: "linear" },
+          { frame: 59, value: [548, 180], interpolation: "linear" },
+        ]),
+      ),
+    ).toContain("velocity-discontinuity");
+  });
+});
+
+describe("framing of clipped content", () => {
+  const framing = (input: Parameters<typeof analyzeCompositionQuality>[0]) =>
+    analyzeCompositionQuality(input)
+      .diagnostics.filter((d) =>
+        ["off-canvas", "outside-safe-area"].includes(d.code),
+      )
+      .map((d) => [d.code, d.node]);
+  const card = (position: [number, number], photo: [number, number]) =>
+    composition([
+      {
+        id: "card",
+        type: "group",
+        size: [200, 120],
+        clip: true,
+        transform: { position },
+      },
+      solid("photo", {
+        parent: "card",
+        size: [640, 360],
+        transform: { position: photo },
+      }),
+    ]);
+
+  it("measures group-clipped content by its painted region", () => {
+    expect(framing(card([320, 180], [100, 60]))).toEqual([]);
+  });
+
+  it("ignores content clipped away entirely", () => {
+    expect(framing(card([320, 180], [2000, 60]))).toEqual([]);
+  });
+
+  it("still reports clipped content outside the safe area or canvas", () => {
+    expect(framing(card([40, 180], [100, 60]))).toContainEqual([
+      "outside-safe-area",
+      "photo",
+    ]);
+    expect(framing(card([-400, 180], [100, 60]))).toContainEqual([
+      "off-canvas",
+      "photo",
+    ]);
+  });
+
+  it("measures ordinary precomp children by the source rectangle", () => {
+    const input = composition([
+      {
+        id: "host",
+        type: "precomp",
+        comp: "inner",
+        transform: { position: [320, 180] },
+      },
+    ]);
+    input.precomps = [
+      {
+        id: "inner",
+        width: 200,
+        height: 120,
+        frameCount: input.frameCount,
+        layers: [solid("photo", { size: [640, 360] })],
+      },
+    ];
+    expect(framing(input)).toEqual([]);
+  });
+});

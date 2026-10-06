@@ -719,3 +719,18 @@ handoff source. Native entering subjects must be invisible at frame zero; exitin
 subjects must be invisible at the outgoing beat's last passage frame, before its
 transition tail. These checks include precomp instance clocks and host visibility.
 Missing mappings and unsupported legacy acting tracks return a diagnostic.
+
+## Saved soundtrack layers
+
+CE16's optional [soundtrack guide](./soundtrack-project.md) adds named tracks,
+BGM ducking, filtering, automation and command-only save/render/relocation.
+Run `pnpm soundtrack:setup`, then use `pnpm still-shift soundtrack` commands.
+In the Lab, **Soundtrack layers** opens the shared saved project, numerical clip
+edits, fade shapes, cue placement and rendered waveforms. Edits write the project file with revision checks.
+**Render this revision** enables mix preview/download. In the passage workbench,
+**Saved soundtrack (optional)** attaches that checked full mix to picture;
+**Use passage audio** restores linked passage sounds. The CLI exports with
+`pnpm story:passage --plan <plan> --soundtrack <project> --output-dir <fresh-dir>`.
+Existing audio workflows stay available. Source media and narration remain
+unchanged; no provider call is required. Technical tests pass independently of
+listening, audiovisual QA and visual inspection, which remain unperformed.
