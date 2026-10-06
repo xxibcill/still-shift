@@ -183,8 +183,8 @@ it("computes normals from mirrored/nonuniform/sheared plane axes and handles deg
 it("uses linear tint and preserves alpha, with unclamped light sums before source multiplication", () => {
   const source: [number, number, number, number] = [0.25, 0.5, 0.75, 0.125];
   expect(shadeFlatColor(source, [0, 0, 0], [0, 0, 1], [])).toEqual(source);
-  shadeFlatColor(source, [0, 0, 0], [0, 0, 1], [light()]).forEach((value, axis) =>
-    expect(value).toBeCloseTo(source[axis]!, 14),
+  shadeFlatColor(source, [0, 0, 0], [0, 0, 1], [light()]).forEach(
+    (value, axis) => expect(value).toBeCloseTo(source[axis]!, 14),
   );
   expect(
     shadeFlatColor(source, [0, 0, 0], [0, 0, 1], [light({ intensity: 0 })]),

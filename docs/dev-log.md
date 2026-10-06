@@ -57,7 +57,11 @@ still hold before relying on them.
   the intentionally opaque preview. The oracle now compares premultiplied RGB
   over black; direct offscreen RGBA tests cover alpha separately. Fifteen lighting
   integration tests pass, including scope isolation and camera independence.
-  Native acceptance and the complete gate remain pending.
+  All 1,889 unit tests and TypeScript lint pass. The native runner completed
+  every fixture, adapter identity, Canvas failures and hardware comparisons, then
+  rejected an inspector test waiting for source revision3 during a draft edit.
+  Corrected to observe edited key history; the focused real inspector passes.
+  Native acceptance rerun and the complete gate remain pending.
   No owner decision is pending. [Evidence](./composition-ce8-lighting-results.json).
 
 - **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
@@ -224,6 +228,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 
 ## Entries
 
+### 2026-10-06 — CE8-L inspector acceptance correction
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`.
+- **Done:** observe edited key values through undo/redo instead of waiting for a
+  source-file revision during local draft edits; document the lighting workflow.
+- **Results:** all 1,889 unit tests / 192 files and TypeScript lint pass on `1d89a2f`.
+  Focused real inspector edit, undo, redo and save passes without page errors.
+- **Rejected:** the native group's inspector wait timed out after all 13 fixture,
+  legacy identity, Canvas failure and hardware checks completed. It waited for
+  revision3, but source revision changes only on saving. Production was unchanged.
+- **Open / next:** rerun the complete lighting group, record serial costs and then
+  run the complete local gate. No legacy baseline or tolerance is changed.
+- **Records:** [Lighting evidence](./composition-ce8-lighting-results.json).
+
 ### 2026-10-06 — CE8-L alpha and oracle checkpoint
 
 - **Agent / branch:** Codex on `codex/composition-ce8-lighting`.
@@ -238,7 +256,6 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
 - **Open / next:** execute new RGBA/helper checks, complete native acceptance and
   serial costs, then run the complete local gate before the milestone PR.
 - **Records:** [Lighting evidence](./composition-ce8-lighting-results.json).
-
 
 ### 2026-10-06 — CE8-L authoring and native acceptance checkpoint
 

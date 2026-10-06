@@ -370,7 +370,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        | Codex                  | `codex/composition-ce8`             | `[x]`  | [evidence](./composition-ce8-results.json)                                         |
-| CE8-L | Bounded lighting for 2.5D layers | B | CE8 | Codex | `codex/composition-ce8-lighting` | `[~]` | [Lighting scope](#ce8-l--bounded-lighting-for-25d-layers) |
+| CE8-L | Bounded lighting for 2.5D layers                | B      | CE8                  | Codex                  | `codex/composition-ce8-lighting`    | `[~]`  | [Lighting scope](#ce8-l--bounded-lighting-for-25d-layers)                          |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
@@ -481,7 +481,6 @@ Planning this sequence does not start milestones or mark acceptance gates passed
 | 12    | **CE13 — Video, image-sequence and audio layers**           | Enable mixed-media production using CE7's time controls. Video precedes mesh deformation under Q5.                                                               |
 | 13    | **CE15 — Output formats, caching and parallel rendering**   | Improve delivery and throughput against the expanded rendering workload. Its technical prerequisite remains CE3.                                                 |
 | 14    | **CE14 — Mesh warp and puppet pins**                        | Add character and artwork deformation after the broader authoring and media production path. Its technical prerequisite remains CE6.                             |
-
 
 ---
 
@@ -3885,7 +3884,6 @@ record commands, versions, per-fixture results and limitations before marking `[
 - **Resume gate:** an explicit owner request selects the future scope, asset inputs,
   quality/performance budgets and acceptance fixtures before implementation. The
   deferred work is not a prerequisite for current-version milestones.
-
 
 ---
 

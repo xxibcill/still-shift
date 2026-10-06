@@ -103,11 +103,24 @@ export async function lightingInspectorAcceptance(browser: Browser) {
     await page
       .getByRole("button", { name: "Apply light key value", exact: true })
       .click();
-    await page.waitForFunction(
-      () => document.getElementById("status")?.dataset.revision === "3",
+    await page.waitForFunction(() =>
+      (
+        document.getElementById("edited-keys") as HTMLTextAreaElement
+      )?.value.includes('"value": 0.75'),
     );
     await page.locator("#undo").click();
+    await page.waitForFunction(
+      () =>
+        !(
+          document.getElementById("edited-keys") as HTMLTextAreaElement
+        )?.value.includes('"value": 0.75'),
+    );
     await page.locator("#redo").click();
+    await page.waitForFunction(() =>
+      (
+        document.getElementById("edited-keys") as HTMLTextAreaElement
+      )?.value.includes('"value": 0.75'),
+    );
     await page.locator("#save-document").click();
     await page.waitForFunction(
       () =>

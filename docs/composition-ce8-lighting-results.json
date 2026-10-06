@@ -63,7 +63,20 @@
       "rejected": [
         "First native acceptance on 07165bc failed ambient frame 0 (max delta 46, PSNR 19.2397). The test oracle expected final transparent pixels, but CE3 previews intentionally flatten on black. Pinned debug showed expected premultiplied shader RGB [12,8,46], final alpha255. Corrected oracle only; shading production unchanged. Added direct offscreen RGBA checks for alpha128 and all-fixture alpha identity."
       ],
-      "pending": "New helper execution, independent export/hardware/inspector acceptance, serial costs and full gate"
+      "pending": "New helper execution, independent export/hardware/inspector acceptance, serial costs and full gate",
+      "implementation": "1d89a2f"
+    },
+    {
+      "scope": "Observe actual inspector draft history rather than source revision, and document user-facing lighting workflow",
+      "checks": {
+        "unit": "1889 pass / 192 files on 1d89a2f",
+        "lint": "pass",
+        "focusedInspector": "real light value .75 / undo / redo / save pass, no page errors"
+      },
+      "rejected": [
+        "Native group reached all 13 completed fixtures, implicit-unlit adapter identity, four Canvas diagnostic cases and 45 hardware comparisons, then timed out on the inspector test expectation revision3. Source revision changes on save, not local draft edits. The test now observes edited keys; production editor was correct. Full group rerun remains required."
+      ],
+      "pending": "Complete rerun, serial costs, full gate"
     }
   ],
   "pending": [
