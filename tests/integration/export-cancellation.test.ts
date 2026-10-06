@@ -65,10 +65,13 @@ describe("export verification cancellation", () => {
       vi.spyOn(browser, "newPage").mockImplementationOnce(async (options) => {
         const page = await newPage(options);
         page.setDefaultTimeout(1_000);
-        await page.route("**/export-page.ts", (route) => route.fulfill({
-          contentType: "application/javascript",
-          body: `throw new Error(${JSON.stringify(failure)});`,
-        }));
+        page.setDefaultNavigationTimeout(30_000);
+        await page.route("**/export-page.ts", (route) =>
+          route.fulfill({
+            contentType: "application/javascript",
+            body: `throw new Error(${JSON.stringify(failure)});`,
+          }),
+        );
         return page;
       });
       return browser;

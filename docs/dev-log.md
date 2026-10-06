@@ -78,12 +78,13 @@ still hold before relying on them.
   Supply-ramps frame 36 is repaired by distinct-state Canvas matrix transfer
   (Canvas 1.44.0); all five motion-craft/698 frames are exact and eight typography/
   1,309 frames plus ink/container probes pass near tier. 60 focused checks pass.
-  Full all-176 parity is running on `a843cf9`. Depth delivery completed 17
+  Full all-176 candidate parity passes on `a843cf9`: 36,061 forward/reverse
+  frames meet assigned tiers with unchanged CE0 hashes. Depth delivery completed 17
   timelines/51 production-repeat-raw exports, then hit an export startup timeout;
   acceptance is incomplete and its cause is unconfirmed. Prepared preview
   provenance and export-worker 0.6.6 private-cache/startup diagnostics are staged
   but unformatted/unverified. CE6-P's second timing hold prevents new verification;
-  the already-running family job continues. Startup failure/retry regression and
+  all root verification has finished. Startup failure/retry regression and
   separate serial-cost evidence are implemented but unrun. Defaults and full gate
   remain pending.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
@@ -283,6 +284,18 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d complete family candidate parity passes
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`; verified snapshot `a843cf9`.
+- **Results:** the existing all-176 candidate exited zero: 36,061 forward frames
+  and 36,061 reverse seeks pass assigned tiers, with every old CE0 hash unchanged.
+  Maximum channel delta is 2; typography ink/container probes pass.
+- **Done:** retained the complete report in milestone evidence; the startup failure
+  regression preserves normal navigation timing while shortening its injected wait.
+- **Open / next:** no root verification remains active. CE6-P timing hold continues;
+  startup/depth delivery, actual defaults, timing/export matrices and full gate remain.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d retains delivery failure evidence
 
