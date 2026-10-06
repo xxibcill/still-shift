@@ -1,6 +1,6 @@
 {
   "milestone": "CE4c",
-  "status": "in-progress",
+  "status": "complete-pr-pending",
   "started": "2026-10-06",
   "branch": "codex/composition-ce4c",
   "base": "e1bd4bc",
@@ -8,7 +8,7 @@
   "slices": [
     {
       "name": "native camera view offset",
-      "status": "implemented-focused-pass",
+      "status": "implemented-verified",
       "contract": "strict bounded xy grouped/separated keys, no authored defaults; screen-space principal point, independent of parent transforms",
       "integration": [
         "world point/plane projection",
@@ -32,11 +32,12 @@
         "First implementation used general xyz vector schema; strict xy schema added after ignored-z rejection failed",
         "Clock regression used invalid start field; corrected fixture to contract startFrame and focused suite/build passed"
       ],
-      "checkpoint": "c5a3816"
+      "checkpoint": "c5a3816",
+      "finalAcceptanceSnapshot": "e1fb3e3"
     },
     {
       "name": "cinematic adapter and native safety/focus controls",
-      "status": "implemented-focused-pass-render-acceptance-pending",
+      "status": "implemented-verified",
       "mapping": "depth-weighted world xyz image planes; keyed camera position/zoom/screen offset; native Gaussian capped inverse-depth focus",
       "stateMatrix": {
         "fixtures": 15,
@@ -63,11 +64,12 @@
         "Echo regression used an effect excluded by cinematic effects-1; corrected the test to supported grain without relaxing contract",
         "Browser harness initial TypeScript imports/deep serialized argument failed build; changed to dynamic module variables and serialized scene payloads"
       ],
-      "checkpoint": "48c9a70"
+      "checkpoint": "48c9a70",
+      "finalAcceptanceSnapshot": "e1fb3e3"
     },
     {
       "name": "affine image sampling and rendered acceptance harness",
-      "status": "implemented-focused-pass-full-native-pending",
+      "status": "implemented-verified",
       "checks": {
         "focusedUnit": {
           "files": 5,
@@ -109,11 +111,12 @@
         "Bounded streaming independent preview MP4, repeat/PNG/raw exports, relocated assets and overwrite checks",
         "Actual hardware at first/middle/last frames under existing perceptual policy",
         "Added required full-check cinematic browser suite"
-      ]
+      ],
+      "finalAcceptanceSnapshot": "e1fb3e3"
     },
     {
       "name": "software source raster consistency",
-      "status": "implemented-focused-pass",
+      "status": "implemented-verified",
       "checks": {
         "focusedUnit": {
           "files": 2,
@@ -222,11 +225,12 @@
           "ssim": 0.9891798188852439
         }
       },
-      "repair": "Natural-size source cache follows the destination software raster mode, with separate CPU/default cache entries. The middle frame becomes exact on both backends; hardware tolerances are unchanged. Final full acceptance still pending."
+      "repair": "Natural-size source cache follows the destination software raster mode, with separate CPU/default cache entries. The middle frame becomes exact on both backends; hardware tolerances are unchanged. Final full acceptance still pending.",
+      "finalAcceptanceSnapshot": "e1fb3e3"
     },
     {
       "name": "persisted cinematic alpha safety and complete effect/inspector acceptance",
-      "status": "implemented-focused-pass-browser-pending",
+      "status": "implemented-verified",
       "checks": {
         "focusedUnit": {
           "files": 2,
@@ -247,11 +251,12 @@
       "failedAttempts": [
         "Initial build did not narrow layers/matrices through an implicitly typed never-returning callback; explicitly typed the fail callback and build passed"
       ],
-      "browserAcceptance": "Pending; no render result claimed for this slice"
+      "browserAcceptance": "Pending; no render result claimed for this slice",
+      "finalAcceptanceSnapshot": "e1fb3e3"
     },
     {
       "name": "cinematic paint order and adjustment exposure",
-      "status": "implemented-focused-pass-full-pending",
+      "status": "implemented-verified",
       "checks": {
         "focusedUnit": {
           "files": 2,
@@ -286,11 +291,12 @@
         "After order fix, multi-sample grain stack failed maxDelta4/PSNR43.79: adjustment was excluded from shutter sampling; all adapted layers now sample exposure, matching existing story/commerce behavior",
         "Inspector fixture requested spatial tangents unsupported by strict xy viewOffset contract. A temporary UI exposure also failed schema validation and was removed. The fixture now edits supported temporal handles and passes. No spatial contract expansion retained."
       ],
-      "verificationLimits": "Sampled 220 frames and real editor checks do not replace full timelines, timing, production exports, hardware matrix or the complete local gate."
+      "verificationLimits": "Sampled 220 frames and real editor checks do not replace full timelines, timing, production exports, hardware matrix or the complete local gate.",
+      "finalAcceptanceSnapshot": "e1fb3e3"
     },
     {
       "name": "native framing/focus fixture coverage",
-      "status": "implemented-unit-pass",
+      "status": "implemented-verified",
       "checks": {
         "contractUnit": {
           "files": 1,
@@ -309,11 +315,12 @@
         "Pinned non-browser preflight at 44588fe stopped after unit coverage assertion: every-field inventory lacked viewOffset, blurModel and maxBlur; 1934 tests passed, one failed. Runtime/depth were not reached."
       ],
       "repair": "Share the previously tested native inspector document as a new CE4c framing-focus fixture and include it in field coverage. CE1 fixture and frozen baselines are unchanged.",
-      "verificationLimits": "Full pinned gate and native timing/export/hardware matrix remain pending."
+      "verificationLimits": "Full pinned gate and native timing/export/hardware matrix remain pending.",
+      "finalAcceptanceSnapshot": "e1fb3e3"
     },
     {
       "name": "cinematic CLI semantics and complete hardware diagnostic",
-      "status": "implemented-focused-pass-full-pending",
+      "status": "implemented-verified",
       "checks": {
         "cliIntegration": {
           "files": 1,
@@ -1699,11 +1706,12 @@
         "Initial focused invocation without localhost access passed cinematic export but failed the old checksum test with listen EPERM, and another test reached its unchanged 5000ms timeout. The isolated invocation with localhost access passes all seven tests.",
         "Broader integration preview-watch recovery reached its unchanged 5000ms timeout under concurrent workloads; standalone unchanged-case verification and complete rerun remain pending."
       ],
-      "verificationLimits": "132 actual Apple Metal comparisons and real inspector pass; this diagnostic does not replace complete software timelines, production exports, timing or full pnpm check."
+      "verificationLimits": "132 actual Apple Metal comparisons and real inspector pass; this diagnostic does not replace complete software timelines, production exports, timing or full pnpm check.",
+      "finalAcceptanceSnapshot": "e1fb3e3"
     },
     {
       "name": "bounded close-plane focus compatibility",
-      "status": "implemented-focused-pass-pixel-acceptance-pending",
+      "status": "implemented-verified",
       "adapterVersion": "cinematic-composition-0.1.1",
       "failedAttempts": [
         "Three valid focus scenes with foreground depths 3.99, 3.999999 and 4-1e-12 passed the existing recipe compiler but failed native validation: required aperture exceeded 1000. The previous 18 adapter tests passed; all three new cases failed."
@@ -1724,13 +1732,11 @@
         "focusedLint": "pass"
       },
       "acceptanceExpansion": "Required full cinematic acceptance now adds one valid close-gap variant: 15 bases, seven shared-effect variants and one focus edge case; 46 backend cases / 5520 forward and reverse frames, 46 independent preview encodes / 138 production exports / 138 hardware comparisons. None are claimed passed by this focused checkpoint.",
-      "verificationLimits": "The ongoing 640c8c5 untimed correctness run covers the previous 44-case standard matrix; it does not verify this new close-gap implementation or replace final-code full acceptance."
+      "verificationLimits": "The ongoing 640c8c5 untimed correctness run covers the previous 44-case standard matrix; it does not verify this new close-gap implementation or replace final-code full acceptance.",
+      "finalAcceptanceSnapshot": "e1fb3e3"
     }
   ],
-  "pending": [
-    "Full pinned pnpm check with frozen baselines unchanged",
-    "Milestone PR creation and attachment"
-  ],
+  "pending": ["Milestone PR creation and attachment"],
   "unchangedPolicies": [
     "frozen CE0 baselines",
     "Canvas pixel/timing assertions",
@@ -4397,8 +4403,8 @@
       "snapshot": "e1fb3e3",
       "runtimeCheckpoint": "37cc07a",
       "command": "pnpm check",
-      "status": "in-progress",
-      "terminalExit": null,
+      "status": "pass",
+      "terminalExit": 0,
       "isolatedTrackedFileHashesVerified": 1857,
       "preflight": "pass",
       "unitTests": 1938,
@@ -4408,9 +4414,9 @@
       "integrationTests": 140,
       "integrationFiles": 39,
       "depthTests": 14,
-      "browserStatus": "running",
+      "browserStatus": "passed",
       "log": "/private/tmp/ce4c-full-e1fb3e3.log",
-      "limits": "Non-browser stages have completed; the full gate has not. Required timed matrices, native cinematic acceptance and frozen-baseline closure remain pending.",
+      "limits": "Complete pinned gate; all required commands and unchanged frozen references passed. WebGL timing retains the existing CE6-P deferral.",
       "completedCanvasMatrices": {
         "story": {
           "cases": 69,
@@ -4429,7 +4435,115 @@
           "policy": "unchanged Canvas near pixels and 1.25 timing limit"
         }
       },
-      "nativeCinematicStatus": "pass"
+      "nativeCinematicStatus": "pass",
+      "proof": {
+        "checkpoint": "e1fb3e3",
+        "attempt": 1,
+        "runtimeCheckpoint": "37cc07a",
+        "command": "pnpm check",
+        "status": "passed",
+        "exitCode": 0,
+        "snapshot": "/private/tmp/still-shift-ce8-check-e1fb3e3",
+        "log": "/private/tmp/ce4c-full-e1fb3e3.log",
+        "unitTests": 1938,
+        "runtimeTests": 46,
+        "integrationTests": 140,
+        "depthTests": 14,
+        "requiredTestScripts": [
+          "test:unit",
+          "test:runtime",
+          "test:integration",
+          "test:depth",
+          "test:browser:depth",
+          "test:browser:vertical-image",
+          "test:browser:export",
+          "test:golden",
+          "test:browser:cli",
+          "test:browser:batch",
+          "test:browser:illustrated",
+          "test:browser:illustrated:vertical",
+          "test:browser:cinematic",
+          "test:browser:cinematic:vertical",
+          "test:browser:threshold",
+          "test:browser:dolly",
+          "test:browser:lateral",
+          "test:browser:reveal",
+          "test:browser:story",
+          "test:browser:story:activity",
+          "test:browser:story:continuous",
+          "test:browser:passage:authoring",
+          "test:browser:lab-session",
+          "test:browser:composition-session",
+          "test:browser:commerce",
+          "test:browser:commerce-components",
+          "test:browser:commerce-effects",
+          "test:browser:commerce-spatial",
+          "test:browser:reusable-components",
+          "test:browser:reusable-package",
+          "test:browser:reusable-behavior-package",
+          "test:browser:reusable-timing-package",
+          "test:browser:typography",
+          "test:browser:typography:fixtures",
+          "test:browser:composition-evaluator",
+          "test:browser:composition-expressions",
+          "test:browser:composition-quality",
+          "test:browser:composition",
+          "test:browser:composition-webgl",
+          "test:browser:composition-camera",
+          "test:browser:composition-lighting",
+          "test:browser:composition-shapes",
+          "test:browser:composition-webgl-export",
+          "test:browser:composition-exposure",
+          "test:browser:composition-effects",
+          "test:browser:composition-story-adapter",
+          "test:browser:composition-native-passage",
+          "test:browser:composition-native-passage:webgl",
+          "test:browser:composition-passage",
+          "test:browser:composition-story-fixtures",
+          "test:browser:composition-commerce-adapter",
+          "test:browser:composition-cinematic-adapter",
+          "test:browser:composition-typography-adapter",
+          "test:browser:composition-provider-typography",
+          "test:browser:composition-program",
+          "test:browser:composition-inspector",
+          "test:browser:composition-builder",
+          "test:browser:composition-baselines"
+        ],
+        "frozenBaselines": 176,
+        "frozenFrames": 36061,
+        "regeneratedFrozenBaselines": false,
+        "unchangedVisualFiles": 141,
+        "canvasMatrices": {
+          "story": {
+            "cases": 69,
+            "frames": 14086,
+            "maxRatio": 1.174965101854858,
+            "maxDelta": 2,
+            "policy": "existing Canvas near pixels and 1.25 timing ratio"
+          },
+          "commerce": {
+            "cases": 127,
+            "frames": 28200,
+            "maxRatio": 1.1900276971919619,
+            "maxDelta": 1,
+            "policy": "existing Canvas near pixels and 1.25 timing ratio"
+          },
+          "typography": {
+            "cases": 20,
+            "frames": 3367,
+            "maxRatio": 1.1381781022684072,
+            "maxDelta": 2,
+            "policy": "existing Canvas near pixels and 1.25 timing ratio"
+          },
+          "cinematic": {
+            "cases": 23,
+            "frames": 2760,
+            "maxRatio": 1.0870219178325402,
+            "maxDelta": 1,
+            "policy": "existing Canvas near pixels and 1.25 timing ratio"
+          }
+        }
+      }
     }
   ],
   "nativeAcceptance": {
@@ -7951,5 +8065,13 @@
         "webglTiming": "CE6-P deferred; measured unchanged method"
       }
     }
+  },
+  "completion": {
+    "runtimeCheckpoint": "37cc07a",
+    "verifiedSnapshot": "e1fb3e3",
+    "fullGate": "pass",
+    "frozenReferences": "unchanged",
+    "webglPerformance": "existing CE6-P deferral; measured in native acceptance",
+    "pr": "pending"
   }
 }

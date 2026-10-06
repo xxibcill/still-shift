@@ -43,21 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE4c in progress (2026-10-06):** `codex/composition-ce4c` from CE8-L
-  `e1bd4bc` / [PR #44](https://github.com/xxibcill/still-shift/pull/44).
-  Final runtime `37cc07a`, full snapshot `e1fb3e3`. Complete native acceptance
-  passes all 46 backend cases / 5,520 forward and reverse frames, delta2,
+- **CE4c complete, PR pending (2026-10-06):** `codex/composition-ce4c` from
+  CE8-L `e1bd4bc`; final runtime `37cc07a`, verified snapshot `e1fb3e3`.
+  Native camera framing, depth planes, Gaussian focus, decoded-alpha safety and
+  shared effects pass all 46 backend cases / 5,520 forward and reverse frames,
   46 independent preview encodes, 138 production exports, 138 actual hardware
-  comparisons and real inspector edits/undo/reload. Full Canvas cinematic timing
-  passes at max ratio 1.087; WebGL timing retains the existing CE6-P deferral.
-  Hardware minima: PSNR 48.111 / SSIM 0.998063 under unchanged policy.
-  The complete pinned `pnpm check` is still running: preflight and 1,938 unit /
-  46 runtime / 140 integration / 14 depth tests pass. Story Canvas (69 / 14,086)
-  and Commerce Canvas (127 / 28,200) pass unchanged pixels and timing, max ratios
-  1.175 / 1.190. Typography and frozen-baseline closure remain pending.
-  No source, threshold or reference changed during this gate. Earlier failures and
-  diagnostics remain in the [evidence](./composition-ce4c-results.json).
-  Milestone PR and coordination authorization remain pending.
+  comparisons and real inspector edits/undo/reload. Complete pinned `pnpm check`
+  passes 1,938 unit / 46 runtime / 140 integration / 14 depth tests, all required
+  browser groups and all 176 frozen CE0 items / 36,061 frames. The four Canvas
+  family matrices pass the unchanged pixel and 1.25 timing policies; all tracked
+  visual references remain unchanged. Earlier failures and diagnostics remain in
+  the [evidence](./composition-ce4c-results.json). WebGL speed targets remain CE6-P.
+  Create and attach the stacked PR, then start CE4d on a new branch.
+  Separate cross-chat coordination authorization remains pending.
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
   `9d8f33a`; final code `d72ba2c`, verified checkpoint `3820c1c`. Bounded ambient,
@@ -72,7 +70,7 @@ still hold before relying on them.
   in the evidence. Serial profiles passed; the complete gate was rerun from the
   start under unchanged assertions. No source output or tolerance was changed.
   [PR #44](https://github.com/xxibcill/still-shift/pull/44) is open and attached against CE8.
-  CE4c starts next on its own branch. CE6-P/CE8-L-F
+  CE6-P/CE8-L-F
   remain separate future work. No owner decision is pending.
   [Evidence](./composition-ce8-lighting-results.json).
 
@@ -181,7 +179,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
+_Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -239,6 +237,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c complete verification checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, runtime `37cc07a`.
+- **Results:** complete pinned `pnpm check` on `e1fb3e3` exits 0: 1,938 unit,
+  46 runtime, 140 integration and 14 depth tests; all required browser groups;
+  176 frozen items / 36,061 frames with unchanged references. Final cinematic
+  acceptance passes 46 cases / 5,520 forward/reverse frames, 46 independent encodes,
+  138 production exports, 138 hardware comparisons and the real inspector.
+  All four full Canvas matrices retain the existing 1.25 timing limit.
+- **Open / next:** create and attach the stacked CE4c PR, then CE4d on its own
+  branch. Deferred WebGL speed work remains CE6-P. No source or thresholds changed
+  during the final gate. Earlier failed attempts remain recorded.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c complete native acceptance checkpoint
 
