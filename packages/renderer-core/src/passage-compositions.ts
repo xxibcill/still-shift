@@ -4,6 +4,7 @@ import {
   resolvePropertyPath,
   isResolvedProperty,
   type Composition,
+  type SoundtrackProject,
 } from "@still-shift/scene-contract";
 import { passageError, PassageError } from "./passage-diagnostics.ts";
 export { passageError, PassageError } from "./passage-diagnostics.ts";
@@ -18,12 +19,27 @@ export function validatePassageCompositions(
   passage: Pick<CompiledStoryPassage, "beats"> &
     Partial<Pick<CompiledStoryPassage, "audio">>,
   compositions: PassageCompositions = {},
+  soundtrack?: Pick<SoundtrackProject, "clips">,
 ): Record<string, Composition> {
   if (Object.keys(compositions).length > 400)
     passageError("comp-passage-limit", "At most 400 native beat compositions", {
       path: "compositions",
     });
   const resolved: Record<string, Composition> = Object.create(null);
+  const sounds = [
+    ...(passage.audio?.sounds ?? []),
+    ...(soundtrack?.clips.flatMap((clip) =>
+      clip.anchor
+        ? [
+            {
+              id: clip.id,
+              beat: clip.anchor.beat,
+              anchor: clip.anchor.reference,
+            },
+          ]
+        : [],
+    ) ?? []),
+  ];
   for (const [id, input] of Object.entries(compositions)) {
     const beat = passage.beats.find((beat) => beat.id === id);
     if (!beat)
@@ -66,7 +82,7 @@ export function validatePassageCompositions(
       beat,
       composition,
       passage.beats[index + 1],
-      passage.audio?.sounds.filter((sound) => sound.beat === id) ?? [],
+      sounds.filter((sound) => sound.beat === id),
     );
     resolved[id] = composition;
   }
@@ -77,7 +93,10 @@ function validateNarrativeBindings(
   beat: CompiledStoryPassage["beats"][number],
   composition: Composition,
   nextBeat: CompiledStoryPassage["beats"][number] | undefined,
-  sounds: NonNullable<CompiledStoryPassage["audio"]>["sounds"],
+  sounds: Pick<
+    NonNullable<CompiledStoryPassage["audio"]>["sounds"][number],
+    "id" | "anchor"
+  >[],
 ) {
   const fail = (message: string) =>
     passageError("comp-passage-binding", message, {
@@ -179,13 +198,13 @@ function validateNarrativeBindings(
     if (!beat.cues?.some((cue) => cue.id === key))
       fail(`Unknown narrative cue ${key}`);
   const events = new Set([
+    ...(beat.events?.map((event) => event.id) ?? []),
     ...(beat.cues?.flatMap((cue) => cue.windows.map((event) => event.cue)) ??
       []),
     ...soundEvents,
   ]);
   for (const key of Object.keys(bindings.eventMarkers))
-    if (!events.has(key))
-      fail(`Unknown narration-linked or sound-anchored event ${key}`);
+    if (!events.has(key)) fail(`Unknown narrative event ${key}`);
   for (const key of Object.keys(bindings.subjectLayers))
     if (!subjects.has(key)) fail(`Unknown narrative subject ${key}`);
   validateNativeBoundaries(

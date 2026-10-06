@@ -1,0 +1,145 @@
+{
+  "date": "2026-10-06",
+  "pr": "https://github.com/xxibcill/still-shift/pull/34",
+  "reviewedHead": "f870fcec5d4a39dcd9c0c75f6d6422404a0bee70",
+  "inlineReviewId": 5423809200,
+  "delivery": "One finding per commit; one final push to codex/composition-ce12.",
+  "fixes": [
+    {
+      "finding": "Separated vector tracks lose timing findings",
+      "status": "verified",
+      "implementation": "Reuse evaluator component reads; combine separated axes into one moving property.",
+      "regressions": "Joint/separated position, anchor and scale have identical evaluated paint and timing findings; vector components do not double the property count; expression overrides remain excluded.",
+      "red": {
+        "command": "pnpm exec vitest run tests/unit/composition-quality-timing.test.ts --maxWorkers=2",
+        "result": "3 expected failures, 7 passes"
+      },
+      "green": {
+        "command": "pnpm exec vitest run tests/unit/composition-quality-timing.test.ts tests/unit/composition-quality.test.ts tests/unit/composition-quality-paint.test.ts --maxWorkers=2",
+        "result": "108 passed"
+      },
+      "setupCorrection": "Initial anchor control was outside the viewport; place all controls on screen before asserting timing.",
+      "commit": "ea08b39"
+    },
+    {
+      "finding": "Velocity probes bypass the shared lint budget",
+      "status": "verified",
+      "implementation": "One budgeted sample callback charges retained integer frames, shared fractional searches, fractional middle samples and all velocity probes to the unchanged 2,000,000 limit.",
+      "regressions": "Probe-only exhaustion, below-limit combined sampling, fractional search-plus-probe exhaustion and unchanged shared-clock evaluation count.",
+      "red": {
+        "result": "2 expected failures, 2 passes"
+      },
+      "green": {
+        "result": "96 passed (budget/velocity and core lint)"
+      },
+      "commit": "342115f"
+    },
+    {
+      "finding": "Staggered motion gets a false co-start warning",
+      "status": "verified",
+      "implementation": "Derive onset from the first changed final property sample; use the previous adjacent frame only when it does not cross a declared cut. Visibility gaps start at the current sample.",
+      "regressions": "Forward stagger excludes false co-start, zero-stagger controls retain genuine starts, delayed expressions find the correct onset, visible lifetime starts stay correct, and shot/explicit-cut onset stays in the new shot.",
+      "red": {
+        "result": "2 expected failures and 11 passes on valid stagger controls before repair; 2 expected boundary failures and 13 passes during final review"
+      },
+      "green": {
+        "result": "All 1,663 unit tests and 16 CLI tests pass on final source."
+      },
+      "setupCorrection": "A zero-offset stagger is invalid; synchronized control omits the stagger behaviour.",
+      "reviewRepair": "Spec re-review found onset backdating across a cut; added explicit-cut and shot tests and repaired it before the third commit."
+    }
+  ],
+  "toolchain": "Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1 / Chromium 1234 (151.0.7922.34), FFmpeg 8.0.1 verified in isolated managed worktree.",
+  "verification": {
+    "fastGate": {
+      "command": "pnpm check:fast",
+      "result": "passed; schema, package boundaries, formatting, lint, TypeScript and 1,663 unit tests"
+    },
+    "runtime": {
+      "command": "pnpm test:runtime",
+      "result": "46 passed; source changes after this run affect only timing lint and do not enter runtime tests"
+    },
+    "cli": {
+      "command": "pnpm exec vitest run tests/integration/composition-lint-cli.test.ts --maxWorkers=2 --no-file-parallelism",
+      "result": "16 passed on final source"
+    },
+    "browser": {
+      "command": "pnpm test:browser:composition-quality",
+      "result": "passed; 14 fixture Node/Chromium comparisons, Canvas2D/WebGL2 independent pixel motion, Lab markers/seek/rendered lint and structured browser transport"
+    },
+    "targetedBrowserParity": {
+      "command": "node --import tsx /private/tmp/pr34-fix-browser-parity.mts",
+      "result": "four passing Node/Chromium comparisons: separated x timing, evaluated stagger, shot-boundary onset and explicit-cut onset"
+    },
+    "review": {
+      "Standards": "no remaining actionable findings",
+      "Spec": "no remaining actionable findings after cut-boundary repair; reversed stagger and visibility gap probes also pass"
+    },
+    "fullPnpmCheck": "not rerun; unrelated browser/export matrices and frozen CE0 fresh-render gate were not rerun"
+  },
+  "unchanged": [
+    "renderer output and versions",
+    "frozen baseline files",
+    "GitHub Actions disabled"
+  ],
+  "inlineComments": [
+    {
+      "id": 4191548777,
+      "url": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4191548777"
+    },
+    {
+      "id": 4191548781,
+      "url": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4191548781"
+    },
+    {
+      "id": 4191548789,
+      "url": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4191548789"
+    }
+  ],
+  "corpus": {
+    "command": "pnpm composition:lint-corpus --output /private/tmp/pr34-fix-final-corpus-after-shot.json",
+    "comparisonHead": "f870fcec5d4a39dcd9c0c75f6d6422404a0bee70",
+    "total": 176,
+    "frames": 36061,
+    "compositionStateAndPixels": 153,
+    "pixelOnly": 23,
+    "unexpectedFailures": 0,
+    "baselineChecksum": "25c2465f27c57121ef1623ee48477d9ee52757a06b0e7b20a8458b3e206b4a79",
+    "baselineChecksumUnchanged": true,
+    "allOtherReportsUnchanged": true,
+    "changes": [
+      {
+        "id": "acting/parcel-actions/handover",
+        "removedDiagnostics": [
+          {
+            "code": "co-start",
+            "severity": "warning",
+            "nodes": ["nora", "neighbor", "right-door"],
+            "path": "layers.2.state",
+            "frames": [0, 0],
+            "measured": 3,
+            "shot": "story-adapter",
+            "message": "3 layers begin on the same frame with identical easing; consider overlap."
+          }
+        ],
+        "addedDiagnostics": []
+      }
+    ],
+    "freshReportSha256": "b716b6dcb76e5c2501c4e2a7794683c1d399b3dd57b350a919b611bcb59a5907"
+  },
+  "verifiedSourceSha256": {
+    "packages/renderer-core/src/composition/quality-rules.ts": "f77b960a21110a327d3d5e357a486008669d029a7378dfdc49147ff8bda871c5",
+    "packages/renderer-core/src/composition/quality-samples.ts": "49c0fcc69b54e9b20cb1348f2f2240cfb72dd705ceef406b605f8218ecd4c8fc",
+    "tests/unit/composition-quality-timing.test.ts": "8f62d649a3080b86ee0b7a175886d10452947608f195ad7aa84d0403ffd518bc",
+    "tests/unit/composition-quality-joins.test.ts": "d7789b2c3c5dee97c6682eeea3b33157c338f8a1a8c5ec65ae80d6b82e517878",
+    "package.json": "bda73b62a956c3d6ba1b429d0b5624944ca01f80f388ea92773676d718b60445",
+    "pnpm-lock.yaml": "a5f4f28d7471949e1a6468989af4b711202eb85a497389c487c5440ee5ce1d38",
+    "toolchain.json": "4329ec000367b7c96c18900dffd57aee4651136ff8f3f8008f508ec43b77aaf5"
+  },
+  "verificationAttempts": [
+    "Initial red vector run used an off-canvas anchor fixture; corrected on-screen control gives 3 expected failures/7 passes before repair.",
+    "Initial stagger controls used disallowed offsetFrames=0; synchronized control omits the behaviour. Valid regressions fail 2/pass 11 before repair.",
+    "First fast gate passed 1,661 unit tests before final Spec review. Cut-boundary repair invalidated its timing evidence; final fast gate rerun passes 1,663.",
+    "Initial fresh corpus compared with older stored completion report; exact f870fce snapshot was subsequently rerun. Final repaired source was rerun after cut correction; only one co-start diagnostic is removed."
+  ]
+}

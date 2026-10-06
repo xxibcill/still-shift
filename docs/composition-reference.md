@@ -2330,6 +2330,11 @@ cache copy records the entry's first render.
 `loadPassageCompositions(mapPath, passage)` resolves each path relative to that map,
 validates the composition and its assets, and returns normalized compositions with
 absolute asset paths. `validatePassageCompositions` is the shared pure validator.
+Its optional third argument accepts a saved soundtrack's clips and checks their
+event anchors against native markers alongside legacy passage sounds. Known beat
+event mappings may be authored before the soundtrack is attached. Export checks
+the saved project before preparing pictures; Lab checks before audio rendering,
+attachment and playback, including after passage edits.
 
 Supply this object as `renderStoryPassage(..., { renderer: "composition",
 compositions })`. Overrides replace the beat's picture; its template remains the

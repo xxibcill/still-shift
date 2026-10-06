@@ -525,9 +525,21 @@ export async function renderStoryPassage(
   options: PassageRenderOptions = {},
 ) {
   options.signal?.throwIfAborted();
+  if (
+    options.soundtrackProject &&
+    (narration || options.soundEffects === false)
+  )
+    soundtrackFail(
+      "soundtrack-mode",
+      "Choose a saved soundtrack or legacy narration/effect controls",
+    );
+  const soundtrack = options.soundtrackProject
+    ? await readSoundtrackProject(options.soundtrackProject)
+    : undefined;
   const compositions = validatePassageCompositions(
     passage,
     options.compositions,
+    soundtrack,
   );
   if (Object.keys(compositions).length && options.renderer !== "composition")
     passageError(
@@ -537,14 +549,6 @@ export async function renderStoryPassage(
     );
   options = { ...options, compositions };
 
-  if (
-    options.soundtrackProject &&
-    (narration || options.soundEffects === false)
-  )
-    soundtrackFail(
-      "soundtrack-mode",
-      "Choose a saved soundtrack or legacy narration/effect controls",
-    );
   const first = passage.beats[0]?.scene;
   if (!first)
     passageError("empty-passage", "A passage needs at least one beat");
@@ -584,9 +588,6 @@ export async function renderStoryPassage(
     options.signal,
   );
   const jobRuntime = await passageJobRuntimeIdentity(runtime, options.signal);
-  const soundtrack = options.soundtrackProject
-    ? await readSoundtrackProject(options.soundtrackProject)
-    : undefined;
   if (soundtrack)
     await verifySoundtrackSources(soundtrack, options.soundtrackProject!);
   const soundtrackIdentity = soundtrack

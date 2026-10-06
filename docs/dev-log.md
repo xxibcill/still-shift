@@ -135,6 +135,17 @@ still hold before relying on them.
   deferred to CE6-P. CE10 is complete; broader CE7 stays open.
   [Evidence](./composition-ce4a-completion-results.json).
 
+- **PR #34 lint fixes verified (2026-10-06):** three P2 findings on `f870fce`
+  are posted inline and repaired one per commit: separated vector timing
+  (`ea08b39`), shared velocity-budget accounting (`342115f`) and evaluated
+  stagger onset including shot/cut boundaries. Fast checks pass 1,663 unit
+  tests; 46 runtime, 16 CLI, browser quality and four targeted Node/Chromium
+  comparisons pass. Corpus lint covers 176 items / 36,061 frames with zero
+  unexpected failures; one false co-start warning is removed, with all other
+  reports and baseline checksums unchanged. Delivery uses one final push;
+  owner review/merge remains pending. Full `pnpm check` was not rerun.
+  [Evidence](./pr-34-20261006-fix-results.json).
+
 - **PR #34 conflict resolution (2026-10-05):** integrates `main` at `3581855`
   into CE12 head `afa9be0`. Retains motion linting, soundtrack exports/commands,
   newer expression/bake repairs and both development histories. Five conflicts
@@ -338,7 +349,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-06 by Codex for PR #35 conflict resolution; both histories retained._
+_Last updated 2026-10-06 by Codex for PR #35 main integration; both histories retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and

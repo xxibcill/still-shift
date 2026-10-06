@@ -11,12 +11,12 @@ import {
   readStoryPassage,
   renderComposition,
   renderStoryPassage,
-  soundtrackFromPassage,
   writePreparedPassage,
 } from "@still-shift/animation-engine";
 import { PassageError } from "@still-shift/renderer-core";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
 import { assertBoundedPassagePreviews } from "../helpers/passage-composition-previews.ts";
+import { passageEventSoundtrack } from "../helpers/passage-event-soundtrack.ts";
 
 const root = await mkdtemp(join(tmpdir(), "still-shift-native-beat-"));
 const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
@@ -90,10 +90,31 @@ try {
   );
   // CE4a native pictures and CE16 saved audio share the passage assembly path.
   const soundtrackProject = join(root, "soundtrack.json");
-  await writeFile(
-    soundtrackProject,
-    JSON.stringify(soundtrackFromPassage(passage)),
+  const hit = join(root, "hit.wav");
+  await runProcess("ffmpeg", [
+    "-v",
+    "error",
+    "-y",
+    "-f",
+    "lavfi",
+    "-i",
+    "sine=frequency=880:sample_rate=48000:duration=0.25",
+    "-c:a",
+    "pcm_s16le",
+    hit,
+  ]);
+  const savedSoundtrack = passageEventSoundtrack(
+    passage,
+    "reset",
+    "shared-strain",
   );
+  savedSoundtrack.assets[0]!.path = hit;
+  savedSoundtrack.assets[0]!.sha256 =
+    "sha256:" +
+    createHash("sha256")
+      .update(await readFile(hit))
+      .digest("hex");
+  await writeFile(soundtrackProject, JSON.stringify(savedSoundtrack));
   const withSoundtrack = await render(
     "saved-soundtrack",
     compositions,
@@ -105,6 +126,24 @@ try {
     withSoundtrack.video.streams.some(
       (stream) => stream.codec_type === "audio",
     ),
+  );
+  const level = await runProcess("ffmpeg", [
+    "-v",
+    "info",
+    "-i",
+    withSoundtrack.video.path,
+    "-map",
+    "0:a",
+    "-af",
+    "volumedetect",
+    "-f",
+    "null",
+    "-",
+  ]);
+  const peak = Number(level.stderr.match(/max_volume: (-?[\d.]+) dB/)?.[1]);
+  assert.ok(
+    Number.isFinite(peak) && peak > -60,
+    "Mapped saved event sound must reach the assembled soundtrack",
   );
   assert.equal(
     await decodedHash(withSoundtrack.video.path),

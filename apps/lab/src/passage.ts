@@ -853,6 +853,7 @@ el("play").onclick = async () => {
         editor.passage,
         frame,
         el<HTMLInputElement>("sound-effects-enabled").checked,
+        compositions,
       ))
     )
       return;
@@ -924,6 +925,7 @@ el("soundtrack-load").onclick = async () => {
     );
     const packet = await loaded.json();
     if (!loaded.ok) throw new Error(packet.error?.message);
+    validatePassageCompositions(owner.passage, compositions, packet.project);
     const rendering = await fetch("/soundtrack-api/render", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -948,6 +950,7 @@ el("soundtrack-load").onclick = async () => {
       bytes,
       result.manifest.files.master.sha256,
       owner.passage,
+      compositions,
     );
     if (!attached || editor !== owner || request !== soundtrackRequest) return;
     el("soundtrack-status").textContent =

@@ -1,0 +1,133 @@
+{
+  "date": "2026-10-06",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/35",
+  "reviewHead": "099fe4be1896e358cc3f7d5689144d0bda26ab45",
+  "reviewBase": "af08fa3b84d55fc07a33009e923fd67df7a8da5a",
+  "branch": "codex/pr35-native-soundtrack-fix",
+  "finding": {
+    "severity": "P2",
+    "comment": "https://github.com/xxibcill/still-shift/pull/35#discussion_r4191993557",
+    "status": "fixed and verified",
+    "problem": "Saved soundtrack clips bypassed native event-marker validation and could use replaced template timing. The reset/more-room fixture accepted passage frame 470 (sample 940000) without a mapped native marker, in export and Lab attachment."
+  },
+  "changes": [
+    "The shared native validator includes saved soundtrack clip event anchors alongside legacy passage sounds.",
+    "Native pictures may retain mappings for known beat events before a saved soundtrack is attached; unknown event IDs still fail.",
+    "Passage export reads the saved project and validates native bindings before picture preparation.",
+    "Lab validates before requesting audio rendering, before attachment and before playback against the current native compositions.",
+    "The native passage export regression uses an audible saved clip on mapped reset/shared-strain and checks preserved decoded picture frames on both backends."
+  ],
+  "regressions": [
+    "Missing and mismatched saved-event markers fail with comp-passage-binding before Lab audio decode.",
+    "Matching markers attach/play correctly; changed native marker timing rejects playback without scheduling a source.",
+    "CLI render rejects unmapped saved events before reading prepared scenes.",
+    "Actual Lab controls report beat/event diagnostics and issue no audio-render request for an unmapped saved event."
+  ],
+  "beforeFixFailures": [
+    "With complete synthetic timing, Lab setSoundtrack resolved true for an unmapped event instead of rejecting.",
+    "A known event mapping authored before soundtrack attachment was incorrectly rejected as unknown.",
+    "CLI render reached missing prepared-scene files instead of rejecting the saved native event binding."
+  ],
+  "harnessCorrections": [
+    "Initial synthetic beat omitted its start frame; corrected before relying on regression evidence.",
+    "The first Lab attempt timed out because optional soundtrack details were collapsed; opening them exercises the actual control.",
+    "Initial module probes used wrong lint paths; corrected path plus the repository tsx loader passes. Plain Node strip-only imports encounter an existing cinematic parameter property."
+  ],
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1"
+  },
+  "isolation": "Managed worktree with its own frozen-lockfile node_modules and Vite optimizer/config caches. Separate Python preflight environment and hash-pinned soundtrack runtime (DawDreamer 0.9.0, NumPy 2.3.3, SciPy 1.16.2); imports pass. Owner checkout untouched.",
+  "checks": [
+    {
+      "command": "pnpm toolchain:check",
+      "exitCode": 0,
+      "note": "Isolated Python 3.12.11 environment with UV_NO_SYNC=1; pinned Node/pnpm/FFmpeg and Chromium startup verified."
+    },
+    {
+      "command": "node --import tsx module import preflight",
+      "exitCode": 0,
+      "modules": [
+        "packages/renderer-core/src/story-quality.ts",
+        "packages/animation-engine/src/composition-lint.ts",
+        "apps/lab/vite.config.ts"
+      ]
+    },
+    {
+      "command": "pnpm check:fast",
+      "exitCode": 0,
+      "unitTests": 1694,
+      "testFiles": 140,
+      "log": "benchmarks/results/pr35-native-soundtrack-fix/fast.log",
+      "logSha256": "7102fa6a11a6f8a500c11ba030a44e1ef7b389a08267f47431a6c5e5f16a89a5"
+    },
+    {
+      "command": "pnpm test:runtime",
+      "exitCode": 0,
+      "tests": 46,
+      "testFiles": 9,
+      "log": "benchmarks/results/pr35-native-soundtrack-fix/runtime.log",
+      "logSha256": "6008114836afab659969852af4d64d70f771a38e829bcb66916a8b9be4574c5b"
+    },
+    {
+      "command": "pnpm exec vitest run tests/unit/passage-compositions.test.ts tests/unit/soundtrack-preview.test.ts tests/unit/soundtrack-project.test.ts tests/unit/passage-diagnostics.test.ts tests/runtime/passage-cache.test.ts tests/integration/passage-compositions.test.ts tests/integration/passage-cli-native.test.ts tests/integration/passage-lab.test.ts --maxWorkers=2 --no-file-parallelism",
+      "exitCode": 0,
+      "tests": 98,
+      "testFiles": 8,
+      "focusedIntegrationTests": 22
+    },
+    {
+      "command": "pnpm test:browser:composition-native-passage",
+      "exitCode": 0,
+      "frames": 576,
+      "backend": "canvas2d",
+      "mappedSavedEventAudio": "Non-silent assembled audio; finite peak above -60 dB",
+      "log": "benchmarks/results/pr35-native-soundtrack-fix/native-canvas.log",
+      "logSha256": "b1cf1803a8936d4ee04d380c9a71cc5368af9814dd138e85e9bf647d67b3f53e"
+    },
+    {
+      "command": "pnpm test:browser:composition-native-passage:webgl",
+      "exitCode": 0,
+      "frames": 576,
+      "backend": "webgl2",
+      "mappedSavedEventAudio": "Non-silent assembled audio; finite peak above -60 dB",
+      "boundedPreviewContexts": {
+        "beats": 20,
+        "edits": 8,
+        "peakActive": 4,
+        "remaining": 0
+      },
+      "log": "benchmarks/results/pr35-native-soundtrack-fix/native-webgl.log",
+      "logSha256": "ec7e3dc61ab13d6e5ff13a4c1e92cb8ef76b2780f1b9b83d1cbcaec7aa9f0a16"
+    }
+  ],
+  "codeSha256": {
+    "apps/lab/src/passage-audio-player.ts": "1cc6ddbbe769c167b1a39f7c7a4b73d2828c90e69b8f02ac09467750fce2ece0",
+    "apps/lab/src/passage.ts": "e3b8e701942fcf890bb9fe429e98ee2b7e8a8cd5f7dae165504578013d566348",
+    "packages/animation-engine/src/story-passage-render.ts": "40019a2e513f5a5effb9567457cd8deb44b6f2a93723b7e0e989b9806530c67a",
+    "packages/renderer-core/src/passage-compositions.ts": "408824d1c3e7824d5e30306e982c00874b19a1798265d6e3a59f8a6ee4bfbd4c",
+    "tests/browser/composition-native-passage.ts": "6dd8dc419b6f024ad6ac2014b7a83e7c3de0cc2e849cd128d6f68162c5a8e5f8",
+    "tests/helpers/passage-event-soundtrack.ts": "fb206ad4534623ea669e640dc1ed6366fa3469c740966b638736b7ec9e4b61a3",
+    "tests/integration/passage-compositions.test.ts": "075842d0bedd134f7a6bc4e95726dd88a395e75e531fd59e2f5db0e1b318dbaf",
+    "tests/integration/passage-lab.test.ts": "e4c698868431f7dbc0d7a57ce446deea09eda2052d9b40667f77a6336e3731b0",
+    "tests/unit/soundtrack-preview.test.ts": "16ab50016d61beef84433a7a9e2955be6b18858416359a942f992e4f14534c59"
+  },
+  "notRun": [
+    "Full pnpm check",
+    "Unrelated browser suites and frozen family/baseline matrices",
+    "Deferred CE6-P strict timing matrices"
+  ],
+  "verificationScope": "Focused single-finding repair. Pixel/timing thresholds, frozen baseline files, renderer versions and GitHub Actions settings are unchanged.",
+  "deliveryPolicy": {
+    "commits": "One finding commit including code, regressions, evidence and development log",
+    "push": "One final non-force push",
+    "targetBranch": "codex/composition-ce4a-completion"
+  },
+  "githubActionsEnabled": false,
+  "workflowChanges": []
+}
