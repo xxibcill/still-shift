@@ -1793,6 +1793,282 @@
         "exports": "pass"
       },
       "verificationLimits": "Focused regression commands finished with exit 0. The complete pinned pnpm check and required cinematic timing/native matrix remain pending."
+    },
+    {
+      "snapshot": "37cc07a",
+      "command": "isolated temporary untimed focus diagnostic, --only focus-handoff",
+      "status": "pass",
+      "terminalExit": 0,
+      "sources": [
+        "cinematic/focus-handoff",
+        "cinematic/focus-handoff/close-gap"
+      ],
+      "backendCases": 4,
+      "forwardFrames": 384,
+      "reverseFrames": 384,
+      "independentPreviewEncodes": 4,
+      "productionExports": 12,
+      "hardwareComparisons": 12,
+      "maxSoftwareDelta": 1,
+      "details": {
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "reports": [
+          {
+            "id": "cinematic/focus-handoff",
+            "backend": "canvas2d",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 1,
+            "minPsnr": 113.0589660411409,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "a0a3641e4f810523977281f1f4bd26f22833e1a2b91b18aa4ae5f682bd823f30"
+          },
+          {
+            "id": "cinematic/focus-handoff",
+            "backend": "webgl2",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 1,
+            "minPsnr": 113.0589660411409,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "a0a3641e4f810523977281f1f4bd26f22833e1a2b91b18aa4ae5f682bd823f30"
+          },
+          {
+            "id": "cinematic/focus-handoff/close-gap",
+            "backend": "canvas2d",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 1,
+            "minPsnr": 116.06926599778072,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "fe7345e7dd5c523f3b031e56065861ba49091f5a270133279ae3c914a2b0ea58"
+          },
+          {
+            "id": "cinematic/focus-handoff/close-gap",
+            "backend": "webgl2",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 1,
+            "minPsnr": 116.06926599778072,
+            "failures": [],
+            "errors": [],
+            "previewChecksum": "fe7345e7dd5c523f3b031e56065861ba49091f5a270133279ae3c914a2b0ea58"
+          }
+        ],
+        "exports": [
+          {
+            "id": "cinematic/focus-handoff",
+            "backend": "canvas2d",
+            "frames": 96,
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "relocatedAssets": "pass",
+            "overwriteProtection": "pass"
+          },
+          {
+            "id": "cinematic/focus-handoff",
+            "backend": "webgl2",
+            "frames": 96,
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "relocatedAssets": "pass",
+            "overwriteProtection": "pass"
+          },
+          {
+            "id": "cinematic/focus-handoff/close-gap",
+            "backend": "canvas2d",
+            "frames": 96,
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "relocatedAssets": "pass",
+            "overwriteProtection": "pass"
+          },
+          {
+            "id": "cinematic/focus-handoff/close-gap",
+            "backend": "webgl2",
+            "frames": 96,
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "relocatedAssets": "pass",
+            "overwriteProtection": "pass"
+          }
+        ],
+        "hardware": {
+          "environments": [
+            {
+              "profile": "chromium-software-2",
+              "browserVersion": "151.0.7922.34",
+              "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+              "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+              "platform": "darwin",
+              "arch": "arm64"
+            },
+            {
+              "profile": "hardware",
+              "browserVersion": "151.0.7922.34",
+              "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+              "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+              "platform": "darwin",
+              "arch": "arm64"
+            }
+          ],
+          "policy": "unchanged perceptual hardware policy",
+          "reports": [
+            {
+              "fixture": "cinematic/focus-handoff",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "cinematic/focus-handoff",
+              "backend": "canvas2d",
+              "frame": 48,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "cinematic/focus-handoff",
+              "backend": "canvas2d",
+              "frame": 95,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "cinematic/focus-handoff",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 10,
+              "differingChannels": 869327,
+              "psnr": 55.349305131432445,
+              "ssim": 0.9995614190402443
+            },
+            {
+              "fixture": "cinematic/focus-handoff",
+              "backend": "webgl2",
+              "frame": 48,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "cinematic/focus-handoff",
+              "backend": "webgl2",
+              "frame": 95,
+              "tier": "perceptual",
+              "maxChannelDelta": 11,
+              "differingChannels": 126728,
+              "psnr": 62.14963467748235,
+              "ssim": 0.9999346040668486
+            },
+            {
+              "fixture": "cinematic/focus-handoff/close-gap",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "cinematic/focus-handoff/close-gap",
+              "backend": "canvas2d",
+              "frame": 48,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "cinematic/focus-handoff/close-gap",
+              "backend": "canvas2d",
+              "frame": 95,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "cinematic/focus-handoff/close-gap",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 10,
+              "differingChannels": 869327,
+              "psnr": 55.349305131432445,
+              "ssim": 0.9995614190402443
+            },
+            {
+              "fixture": "cinematic/focus-handoff/close-gap",
+              "backend": "webgl2",
+              "frame": 48,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "cinematic/focus-handoff/close-gap",
+              "backend": "webgl2",
+              "frame": 95,
+              "tier": "perceptual",
+              "maxChannelDelta": 12,
+              "differingChannels": 126677,
+              "psnr": 62.16341187519622,
+              "ssim": 0.9999303106964479
+            }
+          ]
+        },
+        "inspector": {
+          "status": "passed",
+          "checks": [
+            "xy framing temporal-handle edit",
+            "actual camera frustum",
+            "undo/redo pixels",
+            "native Gaussian controls preserved",
+            "JSON save/reload pixels",
+            "both backends"
+          ]
+        },
+        "policy": {
+          "pixels": "unchanged CE0 near tiers",
+          "state": "0.001 pixel, unit all-frame",
+          "canvasTiming": "NOT RUN in correctness diagnostic; unchanged gate pending",
+          "webglTiming": "NOT RUN in correctness diagnostic"
+        }
+      },
+      "verificationLimits": "Final-code ordinary/normalized focus correctness, independent/repeated/raw exports, actual hardware and real inspector pass. Timing was explicitly omitted and the remaining final-code 46-case matrix plus full pnpm check are still pending."
     }
   ]
 }

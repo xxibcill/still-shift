@@ -49,6 +49,9 @@ still hold before relying on them.
   effect ordering/exposure are delivered; regression checkpoint `5335756` is pushed.
   Valid close focus gaps now use bounded artistic inverse-depth coordinates;
   37 focused tests/build/schema/lint pass after three aperture-limit failures.
+  Final code `37cc07a` also passes both full focus variants: 384 forward/reverse
+  frames, 12 production exports, four independent encodes, 12 hardware checks and
+  real inspector. These are untimed diagnostics; complete acceptance remains.
   All 15 fixtures / 2,160 state frames, 44 sampled cases / 220 frames, 132 actual
   Metal comparisons and real inspector edits/save/reload pass on prior code. Pinned unit/runtime
   and depth checks pass (1,935 / 46 / 14). Native camera and lighting regression
@@ -241,6 +244,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c complete focus correctness checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, focus code `37cc07a`.
+- **Results:** ordinary and close-gap focus pass both backends: 384 complete
+  forward/reverse frames, delta1, four independent encodes / 12 production exports,
+  repeat/PNG/raw identity, 12 actual hardware comparisons and the real inspector.
+  Hardware minimum PSNR55.35 / SSIM0.99956; eight comparisons are exact.
+- **Open / next:** all 46 final-code cases with unchanged timing assertions and
+  complete pinned `pnpm check`. Timing was omitted from this diagnostic while
+  independent exports/measurements remain active; no milestone completion claim.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c bounded close-focus compatibility checkpoint
 
