@@ -26,5 +26,7 @@ alpha checked separately and exactly. No legacy threshold changes.
 
 `--profile` records serial 1080p cold/two-warm/five-measure costs for 1/4/8 lights,
 four receivers and 1/4 actual exposure samples. `--write-ce8l-baseline` writes
-only the new lighting directory. Acceptance remains pending until the committed
-code completes these checks and the complete local gate.
+only the new lighting directory. Native acceptance on `d72ba2c` passes
+all cases, exports, hardware and inspector checks. Offscreen transparent RGBA
+checks preserve alpha exactly across all 416 frames, including alpha128 source
+pixels. The complete local gate remains pending.

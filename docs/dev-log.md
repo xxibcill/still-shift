@@ -45,23 +45,18 @@ still hold before relying on them.
 
 - **CE8-L in progress (2026-10-06):** `codex/composition-ce8-lighting` from CE8
   `9d8f33a` / [PR #43](https://github.com/xxibcill/still-shift/pull/43).
-  Bounded ambient/point/spot controls, implicit XYZ paths and pure world state
-  are authored. WebGL shading before effects, receiver-relative uniforms, cache
-  identity and complete Canvas preflight are implemented. Build and 55 focused
-  tests pass; pinned GPU pixels and full milestone acceptance remain pending.
-  Thirteen native scenes, independent pixels, authoring/inspector controls and
-  required verification are authored. Pinned three-type GPU smoke passes on
-  `8e9b0e3`; 34 focused tests and the 132-test contract inventory pass.
-  The isolated permitted integration rerun passes all 139 tests / 39 files.
-  Native acceptance first rejected a test oracle that expected transparency from
-  the intentionally opaque preview. The oracle now compares premultiplied RGB
-  over black; direct offscreen RGBA tests cover alpha separately. Fifteen lighting
-  integration tests pass, including scope isolation and camera independence.
-  All 1,889 unit tests and TypeScript lint pass. The native runner completed
-  every fixture, adapter identity, Canvas failures and hardware comparisons, then
-  rejected an inspector test waiting for source revision3 during a draft edit.
-  Corrected to observe edited key history; the focused real inspector passes.
-  Native acceptance rerun and the complete gate remain pending.
+  Bounded ambient/point/spot lighting, XYZ keys, scoped pure evaluation, GPU shading,
+  receiver/cache/preflight integration, builder and inspector controls are authored.
+  All 1,889 unit tests, permitted 139-test integration rerun, build, lint, pinned
+  preflight, schema, boundaries and formatting pass. Final code `d72ba2c` passes
+  native acceptance: 480 forward / 480 reverse frames, 135 seeks, 416 transparent
+  frames with exact alpha, 45 production and 15 independent preview exports,
+  four Canvas failure-retention cases, legacy unlit identity and real inspector.
+  Hardware: 43 exact / two near under unchanged policy. All 95 existing visual
+  files remain exact; 46 new lighting files are separate. Serial 1080p costs for
+  four receivers / 1,4,8 lights are recorded for one/four actual exposure samples.
+  Complete local gate and milestone PR remain pending. Earlier oracle/inspector
+  test assumptions are recorded; production and tolerance stayed unchanged.
   No owner decision is pending. [Evidence](./composition-ce8-lighting-results.json).
 
 - **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
@@ -227,6 +222,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8-L native acceptance and serial-cost checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`, final code `d72ba2c`.
+- **Done:** all native pixels/alpha/seeks, repeated/independent exports, hardware,
+  Canvas failure retention, legacy identity and actual inspector acceptance pass.
+  Commit only the new lighting baselines; all 95 existing visual files remain exact.
+- **Results:** 480 forward / 480 reverse / 135 seek frames; 416 transparent frames
+  with zero alpha delta; 45 production / 15 independent exports; hardware 43 exact
+  and two near. Serial 1080p medians for 1,4,8 lights / four receivers are
+  49.5/51.4/52.0 ms at one sample and 224.4/215.2/242.1 ms at four samples.
+- **Open / next:** complete local `pnpm check`, then create and attach the milestone
+  PR and continue CE4c on a new branch. No baseline/timing policy is relaxed.
+- **Records:** [Lighting evidence](./composition-ce8-lighting-results.json).
 
 ### 2026-10-06 — CE8-L inspector acceptance correction
 

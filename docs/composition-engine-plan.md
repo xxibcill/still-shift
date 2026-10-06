@@ -3868,7 +3868,14 @@ precomp scope, transparent edges, animated lights during motion blur and DOF
 interaction regressions. Run local pnpm verification and frozen legacy baselines;
 record commands, versions, per-fixture results and limitations before marking `[x]`.
 
-**Completion record:** _to be filled in; planning only._
+**Verification checkpoint (2026-10-06):** `d72ba2c` passes native lighting,
+transparent RGBA alpha, deterministic seeks, repeat/independent exports, four
+Canvas retention failures, implicit-unlit story-adapter identity and actual
+inspector edits. Hardware comparisons are 43 exact and two near under the
+unchanged policy. New-only lighting baselines and serial 1080p costs are recorded
+in [lighting evidence](./composition-ce8-lighting-results.json). All 1,889 unit
+and 139 integration tests, build/lint and pinned preflight checks pass. The complete
+local gate and milestone PR remain pending; no legacy baseline is regenerated.
 
 ### CE8-L-F — Deferred advanced lighting
 
