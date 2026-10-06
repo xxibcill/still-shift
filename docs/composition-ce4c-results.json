@@ -4393,6 +4393,25 @@
       "status": "pass",
       "terminalExit": 0,
       "limits": "Preflight only. Final timed 46-case cinematic acceptance and complete pnpm check remain pending."
+    },
+    {
+      "snapshot": "e1fb3e3",
+      "runtimeCheckpoint": "37cc07a",
+      "command": "pnpm check",
+      "status": "in-progress",
+      "terminalExit": null,
+      "isolatedTrackedFileHashesVerified": 1857,
+      "preflight": "pass",
+      "unitTests": 1938,
+      "unitFiles": 195,
+      "runtimeTests": 46,
+      "runtimeFiles": 9,
+      "integrationTests": 140,
+      "integrationFiles": 39,
+      "depthTests": 14,
+      "browserStatus": "running",
+      "log": "/private/tmp/ce4c-full-e1fb3e3.log",
+      "limits": "Non-browser stages have completed; the full gate has not. Required timed matrices, native cinematic acceptance and frozen-baseline closure remain pending."
     }
   ]
 }

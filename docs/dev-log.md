@@ -57,9 +57,11 @@ still hold before relying on them.
   preflight. Prior unit/runtime/depth checks pass (1,935 / 46 / 14); camera/lighting
   stored-hash, export and inspector regressions pass. Earlier integration failures
   and their focused repairs remain in the [evidence](./composition-ce4c-results.json).
-  Complete `pnpm check` (including 46 final-code cinematic cases / 5,520 frames) is
-  queued behind independent verification. Milestone PR and coordination
-  authorization remain pending.
+  Complete `pnpm check` is running on isolated checkpoint `e1fb3e3`, including
+  46 final-code cinematic cases / 5,520 frames. Final preflight and non-browser
+  checks pass: 1,938 unit / 46 runtime / 140 integration / 14 depth tests.
+  Browser acceptance is in progress; the complete gate is not terminal.
+  Milestone PR and coordination authorization remain pending.
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
   `9d8f33a`; final code `d72ba2c`, verified checkpoint `3820c1c`. Bounded ambient,
@@ -241,6 +243,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c final gate non-browser checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, full snapshot `e1fb3e3`.
+- **Results:** pinned preflight, 1,938 unit / 46 runtime / 140 integration / 14
+  depth tests pass. All 1,857 tracked snapshot files match the committed tree.
+  The unchanged preview-watch recovery test and repaired cinematic CLI assertion
+  pass in the complete integration group.
+- **Open / next:** the full browser chain remains in flight; timed matrices,
+  final native cinematic acceptance and frozen-baseline closure are still pending.
+  No source, threshold or reference was changed during this gate.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c full correctness diagnostic checkpoint
 
