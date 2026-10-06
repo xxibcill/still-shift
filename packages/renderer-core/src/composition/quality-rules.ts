@@ -394,21 +394,24 @@ export function compositionTimingFindings(
           visible[0]!.sample!,
           track.path,
         );
-        if (
-          firstValue === undefined ||
-          visible.every(
-            ({ sample: s }) =>
-              qualityTrackSignature(s!, track.path) === firstValue,
-          )
-        )
-          continue;
+        if (firstValue === undefined) continue;
+        const firstMovement = visible.findIndex(
+          ({ sample: s }) =>
+            qualityTrackSignature(s!, track.path) !== firstValue,
+        );
+        if (firstMovement < 1) continue;
+        const before = visible[firstMovement - 1]!,
+          current = visible[firstMovement]!;
         segments.push({
           id: sample.id,
-          start: visible[0]!.at,
+          start:
+            before.at + 1 === current.at && !policy.cuts.has(current.at)
+              ? before.at
+              : current.at,
           end: visible.at(-1)!.at,
           easing: easingSignature(a, b),
           path: `${sample.path}.${track.path}`,
-          property: `${sample.id}:${track.path}`,
+          property: `${sample.id}:${track.path.replace(/\.[xy]$/, "")}`,
         });
       }
     }
@@ -459,31 +462,23 @@ export function compositionTimingFindings(
 }
 
 function joinFrames(
-  comp: Composition,
   frames: readonly CompositionQualityFrame[],
-  policy: ResolvedCompositionQualityPolicy,
+  sampleFrame: (frame: number) => CompositionQualityFrame,
 ) {
   const joins = new Set<number>(
     Array.from({ length: Math.max(0, frames.length - 2) }, (_, i) => i + 1),
   );
   const keyTimes = new Map<string, number[]>();
-  // Searches charge the shared lint budget. Within each frame interval, one
+  // Within each frame interval, one
   // evaluation records every layer's clock, so layers sharing a clock reuse
   // the same bisection steps instead of repeating them per layer.
-  let inspected = frames.reduce((total, f) => total + f.layers.size, 0);
   let previous = contributingMotionLayers(frames[0]!);
   for (let frame = 1; frame < frames.length; frame++) {
     const clocks = new Map<number, Map<string, number>>();
     const clockAt = (time: number) => {
       let sampled = clocks.get(time);
       if (!sampled) {
-        const evaluated = compositionQualityFrame(
-          comp,
-          time,
-          policy.evaluation,
-        );
-        inspected += evaluated.layers.size;
-        assertCompositionQualityCapacity(inspected);
+        const evaluated = sampleFrame(time);
         sampled = new Map(
           [...evaluated.layers].map(([id, s]) => [id, s.state.time]),
         );
@@ -552,28 +547,26 @@ export function compositionVelocityFindings(
 ) {
   const { diagnostics, add } = findingsCollector(policy);
   const step = 0.0001;
-  for (const at of joinFrames(comp, frames, policy)) {
+  let inspected = frames.reduce((total, frame) => total + frame.layers.size, 0);
+  assertCompositionQualityCapacity(inspected);
+  const sampleFrame = (at: number) => {
+    const sample = compositionQualityFrame(comp, at, policy.evaluation);
+    inspected += sample.layers.size;
+    assertCompositionQualityCapacity(inspected);
+    return sample;
+  };
+  for (const at of joinFrames(frames, sampleFrame)) {
     const nearest = Math.round(at);
     if (
       (policy.cuts.has(nearest) && Math.abs(nearest - at) < step) ||
       policy.cuts.has(Math.ceil(at + step))
     )
       continue;
-    const middle = Number.isInteger(at)
-      ? frames[at]!
-      : compositionQualityFrame(comp, at, policy.evaluation);
-    const outer = compositionQualityFrame(
-      comp,
-      at - 2 * step,
-      policy.evaluation,
-    );
-    const left = compositionQualityFrame(comp, at - step, policy.evaluation);
-    const right = compositionQualityFrame(comp, at + step, policy.evaluation);
-    const outerRight = compositionQualityFrame(
-      comp,
-      at + 2 * step,
-      policy.evaluation,
-    );
+    const middle = Number.isInteger(at) ? frames[at]! : sampleFrame(at);
+    const outer = sampleFrame(at - 2 * step);
+    const left = sampleFrame(at - step);
+    const right = sampleFrame(at + step);
+    const outerRight = sampleFrame(at + 2 * step);
     for (const current of middle.layers.values()) {
       const probes = [
         [outer, outer.layers.get(current.id)],

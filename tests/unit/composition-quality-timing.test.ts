@@ -1,6 +1,7 @@
 import { expect, it } from "vitest";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
 import { compositionQualityFrame } from "../../packages/renderer-core/src/composition/quality-samples.ts";
+import { validateComposition } from "../../packages/scene-contract/src/index.ts";
 import {
   composition,
   solid,
@@ -181,3 +182,232 @@ it("retains timing findings for an evaluated moving vector component", () => {
       expect.objectContaining({ code, measured: code === "co-start" ? 4 : 1 }),
     );
 });
+
+it.each(["position", "anchor", "scale"] as const)(
+  "matches joint %s timing when its components are separated",
+  (property) => {
+    const start = property === "scale" ? 1 : 80;
+    const end = property === "scale" ? 1.1 : 120;
+    const joint = composition(
+      Array.from({ length: 4 }, (_, i) =>
+        solid(`layer-${i}`, {
+          transform: {
+            anchor: [0, 0],
+            position: [200, 200],
+            [property]: {
+              keys: [
+                { frame: 0, value: [start, start] },
+                { frame: 11, value: [end, end], interpolation: "linear" },
+              ],
+            },
+          },
+        }),
+      ),
+      { frameCount: 12 },
+    );
+    const separated = structuredClone(joint);
+    for (const layer of separated.layers) {
+      layer.transform![property] = {
+        x: {
+          keys: [
+            { frame: 0, value: start },
+            { frame: 11, value: end, interpolation: "linear" },
+          ],
+        },
+        y: {
+          keys: [
+            { frame: 0, value: start },
+            { frame: 11, value: end, interpolation: "linear" },
+          ],
+        },
+      };
+    }
+    expect(validateComposition(separated).ok).toBe(true);
+    for (let frame = 0; frame < joint.frameCount; frame++)
+      expect(compositionQualityFrame(separated, frame).signature).toBe(
+        compositionQualityFrame(joint, frame).signature,
+      );
+    for (const input of [joint, separated]) {
+      const report = analyzeCompositionQuality(input);
+      for (const code of ["co-start", "easing-monotony"])
+        expect(report.diagnostics).toContainEqual(
+          expect.objectContaining({
+            code,
+            measured: code === "co-start" ? 4 : 1,
+          }),
+        );
+      expect(
+        analyzeCompositionQuality(input, {
+          minimumMovingProperties: 5,
+        }).diagnostics.filter((d) => d.code === "easing-monotony"),
+      ).toEqual([]);
+    }
+  },
+);
+
+it("ignores a separated component overridden by an expression", () => {
+  const input = composition(
+    Array.from({ length: 4 }, (_, i) =>
+      solid(`layer-${i}`, {
+        transform: {
+          position: {
+            x: {
+              keys: [
+                { frame: 0, value: 80 },
+                { frame: 11, value: 120, interpolation: "linear" },
+              ],
+            },
+            y: 80,
+          },
+        },
+      }),
+    ),
+    {
+      frameCount: 12,
+      expressions: Object.fromEntries(
+        Array.from({ length: 4 }, (_, i) => [
+          `layer-${i}.transform.position.x`,
+          { source: "80" },
+        ]),
+      ),
+    },
+  );
+  expect(validateComposition(input).ok).toBe(true);
+  expect(
+    analyzeCompositionQuality(input).diagnostics.filter((d) =>
+      ["co-start", "easing-monotony"].includes(d.code),
+    ),
+  ).toEqual([]);
+});
+
+function staggeredMotion(offsetFrames: number) {
+  const layers = Array.from({ length: 4 }, (_, i) =>
+    solid(`layer-${i}`, {
+      transform: {
+        position: {
+          keys: [
+            { frame: 0, value: [80, 80] },
+            { frame: 50, value: [200, 80], easing: "smoothstep" },
+          ],
+        },
+      },
+    }),
+  );
+  return composition(layers, {
+    frameCount: 70,
+    behaviours: offsetFrames
+      ? [
+          {
+            type: "stagger",
+            layers: layers.map((layer) => layer.id),
+            properties: ["transform.position"],
+            offsetFrames,
+          },
+        ]
+      : undefined,
+  });
+}
+
+it("recognizes evaluated stagger delays despite identical authored key starts", () => {
+  const input = staggeredMotion(5);
+  expect(validateComposition(input).ok).toBe(true);
+  const firstChanges = input.layers.map((layer) => {
+    const initial = compositionQualityFrame(input, 0).layers.get(
+      layer.id,
+    )!.matrix;
+    return Array.from({ length: input.frameCount - 1 }, (_, i) => i + 1).find(
+      (frame) =>
+        JSON.stringify(
+          compositionQualityFrame(input, frame).layers.get(layer.id)!.matrix,
+        ) !== JSON.stringify(initial),
+    );
+  });
+  expect(firstChanges).toEqual([1, 6, 11, 16]);
+  expect(
+    analyzeCompositionQuality(input).diagnostics.filter(
+      (d) => d.code === "co-start",
+    ),
+  ).toEqual([]);
+  expect(
+    analyzeCompositionQuality(staggeredMotion(0)).diagnostics,
+  ).toContainEqual(
+    expect.objectContaining({ code: "co-start", measured: 4, frames: [0, 0] }),
+  );
+});
+
+it("places a genuine delayed co-start at the evaluated motion onset", () => {
+  const input = staggeredMotion(0);
+  input.expressions = Object.fromEntries(
+    input.layers.map((layer) => [
+      `${layer.id}.transform.position`,
+      { source: "[80 + max(0, frame - 10), 80]" },
+    ]),
+  );
+  delete input.behaviours;
+  expect(validateComposition(input).ok).toBe(true);
+  const policy = {
+    shots: [
+      { id: "intro", start: 0, end: 10 },
+      { id: "motion", start: 10, end: 70 },
+    ],
+  };
+  expect(
+    analyzeCompositionQuality(input, policy).diagnostics.filter(
+      (d) => d.code === "co-start",
+    ),
+  ).toEqual([
+    expect.objectContaining({
+      code: "co-start",
+      measured: 4,
+      frames: [10, 10],
+      shot: "motion",
+    }),
+  ]);
+});
+
+it("keeps visible onset for motion revealed after its authored start", () => {
+  const input = staggeredMotion(0);
+  for (const layer of input.layers) layer.inPoint = 20;
+  expect(analyzeCompositionQuality(input).diagnostics).toContainEqual(
+    expect.objectContaining({
+      code: "co-start",
+      measured: 4,
+      frames: [20, 20],
+    }),
+  );
+});
+
+it.each(["shot", "cut"] as const)(
+  "keeps a co-start on its declared %s boundary",
+  (boundary) => {
+    const input = staggeredMotion(0);
+    input.expressions = Object.fromEntries(
+      input.layers.map((layer) => [
+        `${layer.id}.transform.position`,
+        { source: "[80 + (frame < 10 ? 0 : 100 + frame - 10), 80]" },
+      ]),
+    );
+    expect(validateComposition(input).ok).toBe(true);
+    const policy =
+      boundary === "shot"
+        ? {
+            shots: [
+              { id: "intro", start: 0, end: 10 },
+              { id: "motion", start: 10, end: 70 },
+            ],
+          }
+        : { intentionalCuts: [10] };
+    expect(
+      analyzeCompositionQuality(input, policy).diagnostics.filter(
+        (d) => d.code === "co-start",
+      ),
+    ).toEqual([
+      expect.objectContaining({
+        code: "co-start",
+        measured: 4,
+        frames: [10, 10],
+        shot: boundary === "shot" ? "motion" : input.id,
+      }),
+    ]);
+  },
+);

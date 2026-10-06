@@ -3865,6 +3865,23 @@ unrelated browser matrices, corpus lint and frozen CE0 were not rerun. One merge
 push resolves the conflicts; owner review/merge remains pending. GitHub Actions
 remains disabled. [Conflict evidence](./pr-34-conflict-resolution-results.json).
 
+### CE12 PR #34 lint review repairs (2026-10-06)
+
+Three P2 findings on `f870fce` are posted inline and repaired one per commit.
+Separated vector tracks reuse evaluated component reads and retain one vote per
+property. Integer samples, fractional searches and velocity probes share the
+unchanged 2,000,000 layer-frame budget. Co-start uses evaluated motion onset,
+respects visibility gaps and keeps shot/cut boundary starts in the correct shot.
+
+Final fast checks pass 1,663 unit tests; 46 runtime, 16 CLI, browser quality and
+four targeted Node/Chromium comparisons pass. Standards and Spec re-review are
+clear. Corpus lint covers all 176 items / 36,061 frames with zero unexpected
+failures. Against the exact reviewed head, one false co-start warning is removed
+from `acting/parcel-actions/handover`; all other reports and baseline checksums
+are unchanged. Full `pnpm check`, unrelated browser/export matrices and fresh
+frozen CE0 renders were not rerun. Delivery uses one final push; owner review/merge
+remains pending. [Evidence](./pr-34-20261006-fix-results.json).
+
 ## CE13 — Video, image-sequence and audio layers
 
 **Outcome:** Compositions mix supplied video clips (including AI-generated ones),

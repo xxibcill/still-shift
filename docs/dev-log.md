@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #35 main integration verified (2026-10-06):** `main` at `af08fa3`
+  is integrated into CE4a head `ddaf9d2` after PR #34 merged. The sole conflict
+  was in this log; both histories and all main motion-lint fixes are retained.
+  Fast checks pass 1,692 unit tests, plus 46 runtime and 16 motion-lint CLI
+  tests. Browser quality and the 576-frame Canvas native-passage regression pass.
+  Fresh-checkout soundtrack setup failures are retained; installing the pinned
+  separate runtime resolves them without source or policy changes. Full
+  `pnpm check` was not rerun. Owner review/merge remains pending.
+  [Evidence](./pr-35-main-conflict-resolution-results.json).
+
 - **PR #35 conflict resolution (2026-10-06):** CE12's current remote base is
   integrated into CE4a head `91f9c54`, retaining native passage pictures/bindings,
   saved soundtrack rendering, expression/bake/lint repairs and both histories.
@@ -92,6 +102,17 @@ still hold before relying on them.
   mixed 576-frame passages pass correctness. WebGL's 51 strict timing overruns stay
   deferred to CE6-P. CE10 is next after the milestone PR; broader CE7 stays open.
   [Evidence](./composition-ce4a-completion-results.json).
+
+- **PR #34 lint fixes verified (2026-10-06):** three P2 findings on `f870fce`
+  are posted inline and repaired one per commit: separated vector timing
+  (`ea08b39`), shared velocity-budget accounting (`342115f`) and evaluated
+  stagger onset including shot/cut boundaries. Fast checks pass 1,663 unit
+  tests; 46 runtime, 16 CLI, browser quality and four targeted Node/Chromium
+  comparisons pass. Corpus lint covers 176 items / 36,061 frames with zero
+  unexpected failures; one false co-start warning is removed, with all other
+  reports and baseline checksums unchanged. Delivery uses one final push;
+  owner review/merge remains pending. Full `pnpm check` was not rerun.
+  [Evidence](./pr-34-20261006-fix-results.json).
 
 - **PR #34 conflict resolution (2026-10-05):** integrates `main` at `3581855`
   into CE12 head `afa9be0`. Retains motion linting, soundtrack exports/commands,
@@ -296,7 +317,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-06 by Codex for PR #35 conflict resolution; both histories retained._
+_Last updated 2026-10-06 by Codex for PR #35 main integration; both histories retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -354,6 +375,27 @@ _Last updated 2026-10-06 by Codex for PR #35 conflict resolution; both histories
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — Resolve PR #35 against merged main
+
+- **Agent / branch:** Codex in managed `pr35-conflict`, from PR head `ddaf9d2`.
+- **Scope:** integrate `main` at `af08fa3` after PR #34 merged.
+- **Done:** retained both log histories; imported separated-vector timing, velocity capacity and evaluated co-start fixes exactly from main.
+- **Results:** fast checks (1,692 unit), 46 runtime, 16 lint CLI, browser quality and the 576-frame Canvas native-passage regression pass on the merge.
+- **Rejected / do not repeat:** the fresh checkout lacked its separate soundtrack runtime; offline setup lacked cached packages. Hash-pinned setup and an unchanged-source rerun pass.
+- **Open / next:** one merge commit and final push to the existing PR head; owner review/merge remains pending. Full `pnpm check` and unrelated browser matrices were not rerun.
+- **Records:** [Evidence](./pr-35-main-conflict-resolution-results.json), [PR #35](https://github.com/xxibcill/still-shift/pull/35).
+
+### 2026-10-06 — PR #34 lint review repairs
+
+- **Agent / branch:** Codex on `codex/pr34-lint-review-fixes` from `f870fce`.
+- **Scope:** separated vector timing, velocity capacity and evaluated co-start.
+- **Done:** three findings posted inline; separated timing (`ea08b39`), shared probe budget (`342115f`) and stagger/cut onset repaired in separate commits.
+- **Results:** fast checks (1,663 unit), 46 runtime, 16 CLI, native browser quality and four targeted Node/Chromium cases pass. Both final review axes are clear.
+- **Corpus:** 176 items / 36,061 frames, zero unexpected failures; one false co-start removed. All other reports and baseline checksum unchanged.
+- **Rejected / do not repeat:** off-canvas anchor and zero-offset stagger test controls corrected; re-review cut-boundary defect repaired and affected checks refreshed.
+- **Open / next:** one final push delivers the three commits. Owner review/merge remains pending; full `pnpm check` and unrelated render/export matrices were not rerun.
+- **Records:** [Evidence](./pr-34-20261006-fix-results.json), [PR #34](https://github.com/xxibcill/still-shift/pull/34).
 
 ### 2026-10-06 — Resolve PR #35 against current CE12
 
