@@ -55,7 +55,8 @@ still hold before relying on them.
   Serial 1080p costs are recorded. Earlier oracle/inspector failures and the first full-gate timing failure remain
   in the evidence. Serial profiles passed; the complete gate was rerun from the
   start under unchanged assertions. No source output or tolerance was changed.
-  Milestone PR delivery follows; CE4c starts next on its own branch. CE6-P/CE8-L-F
+  [PR #44](https://github.com/xxibcill/still-shift/pull/44) is open and attached against CE8.
+  CE4c starts next on its own branch. CE6-P/CE8-L-F
   remain separate future work. No owner decision is pending.
   [Evidence](./composition-ce8-lighting-results.json).
 

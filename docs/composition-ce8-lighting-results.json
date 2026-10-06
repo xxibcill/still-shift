@@ -80,9 +80,7 @@
       "implementation": "d72ba2c"
     }
   ],
-  "pending": [
-    "Create and attach milestone PR, then continue CE4c on a new branch"
-  ],
+  "pending": [],
   "nativeAcceptance": {
     "checkpoint": "d72ba2c",
     "command": "pnpm test:browser:composition-lighting --write-ce8l-baseline",
@@ -2318,8 +2316,10 @@
     "baseline": "exact"
   },
   "delivery": {
-    "status": "pr-pending",
-    "baseBranch": "codex/composition-ce8"
+    "status": "open-attached",
+    "pr": "https://github.com/xxibcill/still-shift/pull/44",
+    "baseBranch": "codex/composition-ce8",
+    "headBranch": "codex/composition-ce8-lighting"
   },
   "limitations": [
     "flat-lighting-1 shades one two-sided world plane normal and preserves RGBA8 alpha; no inferred surface detail, materials or cast shadows",

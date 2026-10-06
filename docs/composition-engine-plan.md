@@ -3885,7 +3885,7 @@ are recorded with their corrections and serial timing diagnosis. The full gate
 was rerun from the start under unchanged assertions. No source rendering or tolerance
 was changed to repair those tests. [Detailed evidence](./composition-ce8-lighting-results.json).
 
-The milestone PR follows this completed verification; CE4c starts on its own branch.
+[PR #44](https://github.com/xxibcill/still-shift/pull/44) is open and attached against CE8. CE4c starts next on its own branch.
 
 ### CE8-L-F — Deferred advanced lighting
 
