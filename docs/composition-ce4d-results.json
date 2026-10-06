@@ -2444,6 +2444,39 @@
       "failedAttempts": [
         "Unit reload comparison initially included immutable source keys carrying -0, serialized as 0; compare sampled native controls instead.",
         "Scoped lint found a stale unused import in the rewritten browser harness; removed."
+      ],
+      "finalCheckpointRecheck": {
+        "checkpoint": "bd565b2",
+        "exitCode": 0,
+        "cases": 17,
+        "forwardFrames": 1530,
+        "reverseFrames": 1530,
+        "maxChannelDelta": 0,
+        "reportPath": "/private/tmp/still-shift-ce8-check-bd565b2/benchmarks/results/composition-ce4d-depth-native.json",
+        "log": "/private/tmp/ce4d-native-final-flat-bd565b2.log"
+      }
+    },
+    {
+      "name": "six legacy preset adapters",
+      "status": "implemented-focused-verification",
+      "scope": [
+        "All six illustrated-scene-1 recipes and the vertical fixture",
+        "Native follow-path constraints with inspectable progress signals",
+        "Integer-frame millisecond recipe bake, native image/group/solid and shared local primitive providers",
+        "CLI comp export-json accepts legacy source scenes"
+      ],
+      "checks": {
+        "focusedUnit": {
+          "tests": 15,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass"
+      },
+      "browserPixelsExportsHardware": "pending",
+      "failedAttempts": [
+        "Initial uncompressed progress signals exceeded existing 100-key limit; remove consecutive unchanged hold values without changing sampled frames.",
+        "Two initial test assumptions were invalid: evaluated image state field is state, and legacy validation requires path/follower to share a parent. Assertions corrected without changing schema."
       ]
     }
   ],

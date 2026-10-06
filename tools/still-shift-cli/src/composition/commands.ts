@@ -11,12 +11,14 @@ import {
 import {
   bakeExpressions,
   cinematicToComposition,
+  legacyToComposition,
   CompositionQualityPolicySchema,
   passageDiagnostics,
 } from "@still-shift/renderer-core";
 import {
   CommerceSceneSchema,
   CinematicSceneSchema,
+  PreparedSceneSchema,
   StorySceneSchema,
   normalizeExpressions,
   type CompositionDiagnostic,
@@ -142,6 +144,13 @@ export async function runCompositionCommand(
           composition = cinematicToComposition(
             CinematicSceneSchema.parse(value),
           );
+        else if (
+          value &&
+          typeof value === "object" &&
+          "schemaVersion" in value &&
+          value.schemaVersion === "illustrated-scene-1"
+        )
+          composition = legacyToComposition(PreparedSceneSchema.parse(value));
         else
           composition =
             value &&

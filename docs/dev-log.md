@@ -47,9 +47,10 @@ still hold before relying on them.
   `17666eb`. All 17 old-depth references pass 1,530 forward/reverse frames and
   independent repeat. Native depth contract/evaluation/shared WebGL checkpoint
   passes 158 focused unit checks, build and lint. All 17 depth/flat/fallback cases
-  match exactly across 1,530 forward/reverse frames; final budget/cache checkpoint
-  recheck follows. Legacy preset adaptation,
-  family default consolidation and all milestone acceptance remain pending.
+  match exactly across 1,530 forward/reverse frames including the final budget/cache
+  checkpoint recheck. Six legacy preset adapters and native followers pass 15 focused
+  all-frame state tests and build; legacy pixels/exports, family default consolidation
+  and remaining milestone acceptance are pending.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
@@ -247,6 +248,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d legacy adapter checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** all six legacy presets compile to native layers and local primitive
+  providers; followers use native constraints and inspectable progress signals.
+  CLI composition export accepts the frozen legacy format.
+- **Results:** 15 focused unit tests and build pass, including every fixture frame,
+  provider state, inherited transforms/opacity, supported fps/duration extremes
+  and follower anchor/parent compatibility. Final depth checkpoint recheck passes
+  all 17 cases / 1,530 forward/reverse frames with zero pixel delta.
+- **Rejected:** uncompressed progress exceeded the existing signal key limit;
+  remove only unchanged hold values. Legacy rejects mismatched follower parents.
+- **Open / next:** legacy pixel/export/hardware acceptance, then default migration
+  and remaining depth integration acceptance before the complete gate and PR.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d flat/depth adapter checkpoint
 
