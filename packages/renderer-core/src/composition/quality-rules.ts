@@ -408,7 +408,7 @@ export function compositionTimingFindings(
           end: visible.at(-1)!.at,
           easing: easingSignature(a, b),
           path: `${sample.path}.${track.path}`,
-          property: `${sample.id}:${track.path}`,
+          property: `${sample.id}:${track.path.replace(/\.[xy]$/, "")}`,
         });
       }
     }

@@ -1,6 +1,7 @@
 import { expect, it } from "vitest";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
 import { compositionQualityFrame } from "../../packages/renderer-core/src/composition/quality-samples.ts";
+import { validateComposition } from "../../packages/scene-contract/src/index.ts";
 import {
   composition,
   solid,
@@ -180,4 +181,101 @@ it("retains timing findings for an evaluated moving vector component", () => {
     expect(report.diagnostics).toContainEqual(
       expect.objectContaining({ code, measured: code === "co-start" ? 4 : 1 }),
     );
+});
+
+it.each(["position", "anchor", "scale"] as const)(
+  "matches joint %s timing when its components are separated",
+  (property) => {
+    const start = property === "scale" ? 1 : 80;
+    const end = property === "scale" ? 1.1 : 120;
+    const joint = composition(
+      Array.from({ length: 4 }, (_, i) =>
+        solid(`layer-${i}`, {
+          transform: {
+            anchor: [0, 0],
+            position: [200, 200],
+            [property]: {
+              keys: [
+                { frame: 0, value: [start, start] },
+                { frame: 11, value: [end, end], interpolation: "linear" },
+              ],
+            },
+          },
+        }),
+      ),
+      { frameCount: 12 },
+    );
+    const separated = structuredClone(joint);
+    for (const layer of separated.layers) {
+      layer.transform![property] = {
+        x: {
+          keys: [
+            { frame: 0, value: start },
+            { frame: 11, value: end, interpolation: "linear" },
+          ],
+        },
+        y: {
+          keys: [
+            { frame: 0, value: start },
+            { frame: 11, value: end, interpolation: "linear" },
+          ],
+        },
+      };
+    }
+    expect(validateComposition(separated).ok).toBe(true);
+    for (let frame = 0; frame < joint.frameCount; frame++)
+      expect(compositionQualityFrame(separated, frame).signature).toBe(
+        compositionQualityFrame(joint, frame).signature,
+      );
+    for (const input of [joint, separated]) {
+      const report = analyzeCompositionQuality(input);
+      for (const code of ["co-start", "easing-monotony"])
+        expect(report.diagnostics).toContainEqual(
+          expect.objectContaining({
+            code,
+            measured: code === "co-start" ? 4 : 1,
+          }),
+        );
+      expect(
+        analyzeCompositionQuality(input, {
+          minimumMovingProperties: 5,
+        }).diagnostics.filter((d) => d.code === "easing-monotony"),
+      ).toEqual([]);
+    }
+  },
+);
+
+it("ignores a separated component overridden by an expression", () => {
+  const input = composition(
+    Array.from({ length: 4 }, (_, i) =>
+      solid(`layer-${i}`, {
+        transform: {
+          position: {
+            x: {
+              keys: [
+                { frame: 0, value: 80 },
+                { frame: 11, value: 120, interpolation: "linear" },
+              ],
+            },
+            y: 80,
+          },
+        },
+      }),
+    ),
+    {
+      frameCount: 12,
+      expressions: Object.fromEntries(
+        Array.from({ length: 4 }, (_, i) => [
+          `layer-${i}.transform.position.x`,
+          { source: "80" },
+        ]),
+      ),
+    },
+  );
+  expect(validateComposition(input).ok).toBe(true);
+  expect(
+    analyzeCompositionQuality(input).diagnostics.filter((d) =>
+      ["co-start", "easing-monotony"].includes(d.code),
+    ),
+  ).toEqual([]);
 });

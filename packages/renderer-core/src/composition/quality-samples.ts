@@ -4,6 +4,7 @@ import type {
 } from "@still-shift/scene-contract";
 import { multiplyMatrix, type Matrix } from "../node-transform.ts";
 import { evaluateComp } from "./evaluate/index.ts";
+import { readProperty } from "./evaluate/properties.ts";
 import { identity, projectBounds } from "./evaluate/geometry.ts";
 import type {
   Bounds,
@@ -454,6 +455,17 @@ export function qualityTrackSignature(
   sample: CompositionQualitySample,
   path: string,
 ) {
+  if (
+    /^(?:transform\.(?:anchor|position|scale)|constraintReference)\.[xy]$/.test(
+      path,
+    )
+  )
+    return JSON.stringify(
+      readProperty(
+        sample.state,
+        path.split(".").map((name) => ({ name })),
+      ),
+    );
   let value: unknown = sample.state;
   for (const segment of path.split(".")) {
     if (!value || typeof value !== "object") return undefined;

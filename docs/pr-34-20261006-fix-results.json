@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-06",
+  "pr": "https://github.com/xxibcill/still-shift/pull/34",
+  "reviewedHead": "f870fcec5d4a39dcd9c0c75f6d6422404a0bee70",
+  "inlineReviewId": 5423809200,
+  "delivery": "One finding per commit; one final push to codex/composition-ce12.",
+  "fixes": [
+    {
+      "finding": "Separated vector tracks lose timing findings",
+      "status": "implemented",
+      "implementation": "Reuse evaluator component reads; combine separated axes into one moving property.",
+      "regressions": "Joint/separated position, anchor and scale have identical evaluated paint and timing findings; vector components do not double the property count; expression overrides remain excluded.",
+      "red": {
+        "command": "pnpm exec vitest run tests/unit/composition-quality-timing.test.ts --maxWorkers=2",
+        "result": "3 expected failures, 7 passes"
+      },
+      "green": {
+        "command": "pnpm exec vitest run tests/unit/composition-quality-timing.test.ts tests/unit/composition-quality.test.ts tests/unit/composition-quality-paint.test.ts --maxWorkers=2",
+        "result": "108 passed"
+      },
+      "setupCorrection": "Initial anchor control was outside the viewport; place all controls on screen before asserting timing."
+    },
+    {
+      "finding": "Velocity probes bypass the shared lint budget",
+      "status": "pending"
+    },
+    {
+      "finding": "Staggered motion gets a false co-start warning",
+      "status": "pending"
+    }
+  ],
+  "toolchain": "Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1 / Chromium 1234 (151.0.7922.34), FFmpeg 8.0.1 verified in isolated managed worktree.",
+  "verification": {
+    "focusedUnit": "108 passed",
+    "typeCheck": "passed",
+    "lintAndBoundaries": "passed",
+    "finalChecks": "pending",
+    "fullPnpmCheck": "not rerun"
+  },
+  "unchanged": [
+    "renderer output and versions",
+    "frozen baseline files",
+    "GitHub Actions disabled"
+  ]
+}
