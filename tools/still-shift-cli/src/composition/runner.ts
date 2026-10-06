@@ -1,8 +1,14 @@
 import { registerHooks } from "node:module";
+import { subscribe } from "node:diagnostics_channel";
+import { appendFileSync } from "node:fs";
 import { initialize, resolve } from "./trace.ts";
 import { writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 const [input, output, trace] = process.argv.slice(2);
+subscribe("still-shift.motion.asset-read", (path) => {
+  if (typeof path === "string")
+    appendFileSync(trace!, JSON.stringify(path) + "\n");
+});
 initialize({
   trace: trace!,
   motion: new URL("../../../../packages/motion-builder/src/", import.meta.url)

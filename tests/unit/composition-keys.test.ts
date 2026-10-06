@@ -193,6 +193,52 @@ it("selects native instance routes with inherited fps and separates resolved roo
     'c.timeline(layer.property("transform.position").keys(',
   );
 });
+it.each(["root", "null"])(
+  "keeps top-level keys distinct from a precomp named %s",
+  (id) => {
+    const document = source(),
+      original = structuredClone(document.layers[0]!);
+    document.precomps = [
+      {
+        id,
+        width: 64,
+        height: 64,
+        fps: 50,
+        frameCount: 24,
+        layers: [structuredClone(original)],
+      },
+    ];
+    document.layers.push({ id: "nested", type: "precomp", comp: id });
+    const tracks = compositionTracks(document),
+      top = tracks.find(
+        (track) =>
+          track.scope === null && track.property === "transform.position",
+      )!,
+      nested = tracks.find(
+        (track) =>
+          track.scope === id && track.property === "transform.position",
+      )!;
+    expect(top.path).toEqual(["layers", 0, "transform", "position"]);
+    expect(nested.path).toEqual([
+      "precomps",
+      0,
+      "layers",
+      0,
+      "transform",
+      "position",
+    ]);
+    expect(resolvedTrackRoutes(document, top)).toEqual([
+      { path: "box.transform.position", fps: 24 },
+    ]);
+    expect(resolvedTrackRoutes(document, nested)).toEqual([
+      { path: "nested/box.transform.position", fps: 50 },
+    ]);
+    editTemporalHandle(document, nested, 0, "out", 0.8, [4, 5]);
+    expect(document.layers[0]).toEqual(original);
+    expect(document.precomps[0]!.layers[0]).not.toEqual(original);
+    expect(new CompositionDocument(document).document).toEqual(document);
+  },
+);
 
 it("does not interpret provider parameters as native key properties", () => {
   const document = source();

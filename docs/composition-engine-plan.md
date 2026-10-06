@@ -34,6 +34,7 @@ the owner's requirement that every second moves with meaning (see the
 - A typed TypeScript builder API, a CLI, a Lab composition inspector with a graph
   editor, AI-facing reference material and motion linting.
 - Alpha and higher-quality export formats, per-layer caching and parallel rendering.
+- Programmable soundtrack projects for narration, cues, SFX, ambience and BGM (CE16).
 
 **Out of scope**
 
@@ -177,7 +178,9 @@ These apply to every milestone. A change that breaks one needs a decision-log en
 
 1. **Integer frames are authoritative.** Keys, in/out points and cues are integer
    frames. Subframe sampling exists only for motion blur and time remapping, and is
-   deterministic.
+   deterministic. CE16 audio placement and automation use integer samples at an
+   explicit sample rate; picture cues/events retain integer frames through a
+   deterministic conversion.
 2. **Evaluation is pure.** `evaluateComp(comp, time)` depends only on its inputs, never
    on previous frames. Seeking backwards must equal playing forwards.
 3. **Determinism.** The same composition, assets, fonts, renderer version and toolchain
@@ -377,6 +380,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7             |                        |                                     | `[ ]`  |                                                                                    |
 | CE14  | Mesh warp and puppet pins                       | D      | CE6                  |                        |                                     | `[ ]`  |                                                                                    |
 | CE15  | Output formats, caching and parallel rendering  | D      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE16  | Programmable soundtrack project and timeline    | D      | CE3; CE16-A          | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
 
 ### Phases and parallel work
 
@@ -1433,6 +1437,22 @@ comparisons; the full `pnpm check`.
   controls remain at their approved sequence position; its prerequisite slice is
   recorded below. Native builder/inspector exposure follows in CE10/CE11.
 - **Evidence:** [completion results](./composition-ce4a-completion-results.json).
+
+### CE4a PR #35 conflict integration (2026-10-06)
+
+Integrate the current CE12 remote base into CE4a head `91f9c54` without rewriting
+shared history. Native beat maps/bindings, fractional story exposure, renderer
+selection and cached composition copies remain intact alongside CE16 saved
+soundtracks and the newer CE12/CE9 lint/expression/bake repairs. Public narrow
+entrypoints, all pnpm commands/test groups and both documentation histories are
+retained. Both native-passage backends now verify that saved soundtrack assembly
+adds audio, reuses picture clips and preserves decoded native picture frames.
+
+[Conflict-resolution evidence](./pr-35-conflict-resolution-results.json) records
+focused local verification and frozen baseline checks. Full `pnpm check`, deferred
+CE6-P timing matrices and human listening/audiovisual QA were not rerun. No pixel
+thresholds, timing assertions or baseline files are changed. Owner review and merge
+remain pending; GitHub Actions remains disabled.
 
 ### CE4a start record (2026-10-02)
 
@@ -3573,6 +3593,23 @@ arbitrary input either parses to a valid AST or returns a diagnostic, never thro
   separate CE6 work; the 1.25× WebGL gate and 2× speed target remain **deferred
   performance**, with no claim that their recorded failures are resolved.
 
+**PR #32 second follow-up fixes (2026-10-05).** Four P2 findings from current-head
+review are posted [inline](https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5411412767).
+Timed primitive-blur selection now respects historical scope/layer clocks and effect
+windows; four regressions and all 34 bake tests pass. Normalized AST JSON bounds
+now accept parser-valid output (nine regressions), retaining byte and metadata limits.
+The affected normalization/bounds/syntax/expression group passes 174 tests. Periodic
+reference dependencies now respect root-clock windows and the exact axes read,
+retain anchor dependencies for shifted reads, and preserve unrelated components
+when historical samples precede ordinary samples. Separate-axis constant speed
+passes 51 expression tests, including spring sampling at three frame rates and
+an explicit 512,001-point work bound; evaluator version is `25`. Combined local
+verification passes fast checks (1,487 unit tests), runtime (46), integration
+(111), both expression browser backends and repeated/baked exports, evaluator
+parity, and all 176 frozen items / 36,061 frames without regeneration. Delivery
+uses four finding commits and one final push to PR #32; owner review/merge remains
+pending. [Evidence](./pr-32-second-followup-fix-results.json).
+
 ---
 
 ## CE10 — TypeScript builder API and CLI
@@ -3733,6 +3770,22 @@ result, saves, and the exported MP4 matches the Lab preview.
 **Verification:** Browser tests for editing, undo/redo, save/reload, hot reload and
 preview/export parity.
 
+### CE11 PR #37 main conflict integration (2026-10-06)
+
+Merge main `54782d7` into reviewed CE11 `7fac583` without rewriting shared history.
+Retain inspector edits, transactional preview/document history and captured assets;
+keep main's motion lint advisory inside the shared ready callback. Preserve both
+pnpm test aggregates and development histories, and keep saved soundtrack guidance
+in the reference generator source. The existing lint-capacity regression explicitly
+reloads source because renderer switches now preserve the accepted draft.
+
+[Conflict evidence](./pr-37-main-conflict-resolution-results.json) records 1,803 unit,
+46 runtime, 60 affected integration and six browser groups, plus final affected
+static checks. Builder pixels/exports, retained-asset MP4 and exact soundtrack PCM
+pass. Initial reference drift and missing soundtrack-runtime failure are retained.
+Full `pnpm check` and frozen baselines were not rerun or regenerated; no pixel,
+timing or budget policy changed. Owner review/merge remain; Actions remain disabled.
+
 ### CE11 completion record (2026-10-05)
 
 - **Owner / branch:** Codex on `codex/composition-ce11`, from CE10 `afb4045` /
@@ -3876,6 +3929,82 @@ See the CE12 and CE4a completion records above for verification evidence.
 
 ---
 
+### CE12 PR #34 follow-up repairs (2026-10-05)
+
+Three further findings on `a41f687` are posted inline and repaired one per commit.
+Provider reading time uses sampled reveal; brief and partial reveals fail, while
+sufficient consecutive reveal passes in state and rendered lint. Collapsed precomps
+traverse paint outside source bounds and derive framing from descendants; hidden,
+clipped, nested and empty-content cases are covered. Capacity failures use stable
+`comp-lint-limit` diagnostics with the `layers` path. A root-layer lower bound
+rejects oversized timelines before sampling or rendering; nested accounting retains
+the unchanged 2,000,000 layer-frame limit.
+
+Fast checks (1,509 unit tests), 46 runtime tests, 15 CLI tests and the expanded native
+browser suite pass. CE0 lint covers 176 items / 36,061 frames with zero unexpected
+failures. It now detects two additional reading-time errors in one existing fixture;
+all other diagnostics and frozen-pixel findings match the prior report. Baseline
+hashes, renderer output and versions are unchanged. Full render/export checks were
+not rerun. Delivery uses one final push after the third finding commit; owner
+review/merge remains pending. [Follow-up evidence](./pr-34-followup-fix-results.json).
+
+### CE12 PR #34 additional lint repairs (2026-10-05)
+
+Five inline findings on `7525540` are repaired one per commit: contributing group
+paint modifiers, inherited signed scale, property-weighted easing shares, final
+evaluated track motion and unavailable declared nested coverage. Regressions cover
+hidden/offscreen groups, reflections canceled across rotated axes, dense redundant
+keys, expression overrides, precomp lifetime gaps and shot boundaries. Final
+Standards/Spec review found no remaining actionable findings.
+
+Fast checks (1,544 unit), 46 runtime, 16 CLI and the expanded browser quality suite
+pass. Corpus lint covers all 176 items / 36,061 frames with zero unexpected failures.
+Group paint corrects state freezes in `commerce/atom-matte` and
+`component/isolated-mask`; frozen-pixel results and the baseline checksum remain
+unchanged. The sandboxed runtime attempt and concurrent corpus/browser startup
+timeout are recorded; successful final runs use the required local capabilities
+and isolated corpus execution. Full `pnpm check` render/export groups were not
+rerun. Delivery uses one final push after the fifth finding commit; owner
+review/merge remains pending; the base-branch conflict is resolved in the record
+below. [Additional repair evidence](./pr-34-additional-fix-results.json).
+
+### CE12 PR #34 main integration (2026-10-05)
+
+Merged `main` at `3581855` into CE12 head `afa9be0` to resolve five conflicted
+files. Both lint and soundtrack exports, all pnpm commands/test groups, both
+reference sections and development histories are retained. Main's later expression
+and bake repairs and soundtrack implementation merge automatically; no manual
+algorithm, threshold or baseline changes are introduced.
+
+Local fast checks pass with 1,651 unit tests, along with 46 runtime,
+169 integration tests on the initial suite and the repaired fallback on a focused
+rerun (1 test), 14 depth tests, soundtrack Python lint and the affected
+composition quality/expression browser checks (including repeated/baked exports).
+The initial integration failure was a stale shared Python launcher; this checkout
+now owns its launcher and imports local depth source. Shared environment unchanged.
+The toolchain, local workspace imports and required test-group retention are
+verified. This is focused conflict-integration evidence; a full `pnpm check`,
+unrelated browser matrices, corpus lint and frozen CE0 were not rerun. One merge
+push resolves the conflicts; owner review/merge remains pending. GitHub Actions
+remains disabled. [Conflict evidence](./pr-34-conflict-resolution-results.json).
+
+### CE12 PR #34 lint review repairs (2026-10-06)
+
+Three P2 findings on `f870fce` are posted inline and repaired one per commit.
+Separated vector tracks reuse evaluated component reads and retain one vote per
+property. Integer samples, fractional searches and velocity probes share the
+unchanged 2,000,000 layer-frame budget. Co-start uses evaluated motion onset,
+respects visibility gaps and keeps shot/cut boundary starts in the correct shot.
+
+Final fast checks pass 1,663 unit tests; 46 runtime, 16 CLI, browser quality and
+four targeted Node/Chromium comparisons pass. Standards and Spec re-review are
+clear. Corpus lint covers all 176 items / 36,061 frames with zero unexpected
+failures. Against the exact reviewed head, one false co-start warning is removed
+from `acting/parcel-actions/handover`; all other reports and baseline checksums
+are unchanged. Full `pnpm check`, unrelated browser/export matrices and fresh
+frozen CE0 renders were not rerun. Delivery uses one final push; owner review/merge
+remains pending. [Evidence](./pr-34-20261006-fix-results.json).
+
 ## CE13 — Video, image-sequence and audio layers
 
 **Outcome:** Compositions mix supplied video clips (including AI-generated ones),
@@ -3960,6 +4089,263 @@ decode-back pixel check.
 (frames on both sides of a boundary), cancellation during parallel export.
 
 **Completion record:** _to be filled in._
+
+---
+
+## CE16 — Programmable soundtrack project and timeline
+
+**Outcome:** An AI agent or human coder can prepare, edit, save, recover, render and
+verify narration, sound cues, SFX, ambience and BGM through CLIs, APIs, libraries and
+files. An optional embedded timeline lets the owner inspect and edit the same saved
+project. Automated production works without opening the editor.
+
+**Status:** `[x]` technically complete (2026-10-05), Codex on isolated
+`codex/composition-ce16` from `dee9e7b`. CE16-A lifecycle and CE16-B integration
+passed, including full local `pnpm check`, real browser audio/editor/export checks
+and 176 frozen baseline items / 36,061 frames without regeneration. The owner
+allowed automated headless-browser verification for this completion pass only.
+Production remains command/API/file-based. Original checkout/CE12 work preserved.
+The [completion audit](./composition-ce16-completion-audit.md) records exact scope,
+unperformed creative review and the earlier browser-policy breach.
+
+**Research handoff:** [CLI and Embedded Audio Engines for Still Shift](</Users/jjae/Documents/obsidian/ai-business/history-offstage/04 Research/Completed Studies/2026-10-03 - CLI and Embedded Audio Engines for Still Shift.md>)
+(2026-10-03, documentary research only). Proposed roles:
+
+- **DawDreamer:** Python offline processing, routing, parameter automation and stem
+  capture. The handoff reports GPLv3 and a 0.9.0 Apple Silicon/Python 3.11 wheel;
+  these are research leads, not a verified local dependency set.
+- **Waveform Playlist:** TypeScript timeline model and optional embedded waveform
+  components. The handoff reports MIT and engine source version 13.6.0. Its headless
+  model does not render audio; Web Components are experimental. Verify the exact
+  published engine/component/adapter versions and APIs before selection.
+- **FFmpeg/ffprobe:** retain delivery encoding, normalization and technical
+  measurements. Record versions and normalization settings; never silently change
+  the legacy mix's levels.
+
+**Existing implementation to preserve:** the strict
+[`passage-audio-1` contract](../packages/scene-contract/src/passage-audio.ts),
+[cue/event compiler](../packages/renderer-core/src/passage-audio.ts),
+[Web Audio scheduler](../packages/renderer-core/src/passage-audio-playback.ts),
+[FFmpeg renderer](../packages/animation-engine/src/passage-audio.ts) and
+[Lab controls](../apps/lab/src/passage-audio-controls.ts). They already provide
+hash-checked assets, frame-based trims/offsets, gains, linear fades, cue/event links,
+shared-clock preview and 48 kHz stereo export. Tracks/buses, general automation,
+DSP chains and automatic ducking are new work; see [audio guide](./passage-audio.md).
+
+### Non-negotiable constraints
+
+- **ZERO Computer Use** throughout setup, editing, recovery, saving and exporting.
+  **Owner exception (2026-10-04):** automated headless-browser verification is
+  authorized for this CE16 completion pass only. It is not a production workflow
+  dependency. The earlier unapproved indirect headless-browser use stays recorded.
+  Outside this verification exception, no desktop/browser driving, GUI scripting,
+  activation-dialog
+  workaround or routine dialog handoff to the owner. Use command, API, library and
+  file interfaces, including for testing the optional editor's model and persistence.
+- Read `AGENTS.md`, the development log and current audio implementation before
+  starting. Preserve unrelated work. Verification is local through pnpm commands;
+  GitHub Actions remain prohibited and disabled.
+- Use existing raw assets without changing their bytes. No provider generation,
+  purchases, active episode replacement or automatic migration of existing episodes.
+- Never pad, slow or time-stretch narration to fit picture or sound. Silence in a
+  full-length mix/stem container is permitted outside the unchanged narration clip;
+  it must not rewrite or extend the narration source interval.
+- Candidates remain provisional until exact dependencies, licenses and runtime
+  lifecycle are verified. Record distribution implications of GPLv3 and transitive
+  licenses before integration; do not infer that subprocess use settles licensing.
+- A lifecycle failure is a failure: record the exact command, stage, versions,
+  exit status, stderr and retained artifacts. Do not substitute a GUI or mark it
+  passed. Raise only a concrete missing decision if progress actually depends on it.
+
+### CE16-A — Prove the backend before integration
+
+- [x] Create an isolated **60-second** fixture with existing narration, **one BGM
+      interval and two SFX cues**, using new project/output paths. Record source
+      hashes, trims and cue positions. Do not invent a longer narration take to fill
+      the container; use existing speech within its natural duration.
+- [x] Resolve and pin DawDreamer and all Python dependencies in a command-created
+      isolated environment. Record Python, OS/architecture, FFmpeg/ffprobe and
+      installed package versions/licenses. Install and run exclusively by commands;
+      start with built-in processors and avoid plugins requiring activation dialogs.
+- [x] Demonstrate source trimming, integer-sample placement, explicit gain
+      envelopes/interpolation, at least one built-in DSP chain, named track/bus
+      routing, and aligned **48 kHz stereo mix and stems**. All outputs span exactly
+      2,880,000 samples per channel; report whether stems are pre/post processing
+      and how master processing affects reconstruction of the mix.
+- [x] Account for processor latency and effect tails: use an impulse/alignment
+      probe, declare the render block size, measure path delays and document any
+      compensation. DawDreamer does not automatically compensate external-plugin
+      latency. Reject unsupported latency rather than allowing silent cue drift.
+- [x] Save a readable versioned project, reload in a **new process**, re-render and
+      compare decoded PCM against the first output. Engine snapshots may be caches;
+      the saved project must reconstruct the graph without an in-memory session.
+- [x] Move one SFX cue and change its gain using commands, save/reload and render.
+      Verify the intended edit and decoded equality of unaffected layer stems and
+      source hashes. Record expected master/bus changes separately.
+- [x] Measure wall time and peak memory for setup, initial render, fresh-process
+      reload/render and edit/render, with host, block size, output sizes and commands.
+      Record measurement method; do not claim a speed advantage without comparison.
+- [x] Save lifecycle results and decoded comparisons, including maximum sample
+      error, differing-sample count, channel/rate/length and sample-position checks.
+      Require exact decoded repeat/reload equality on the pinned local runtime;
+      diagnose any mismatch before calling the gate passed.
+
+**Gate:** Every CE16-A item must pass with recorded evidence before adopting the
+backend or beginning integration. On success, continue into CE16-B within the
+authorized implementation scope without generic approval. On failure, retain the
+isolated fixture and precise failure evidence; integration stays unstarted until
+the lifecycle is resolved. No substitute candidate is silently called a DawDreamer
+pass.
+
+### CE16-B — Shared project, worker, CLI and optional timeline
+
+- [x] Introduce one bounded, explicitly versioned audio-project contract (proposed
+      `soundtrack-project-1`) carrying asset paths/SHA-256 hashes, named tracks and
+      roles, source intervals, integer sample positions, cue/event anchors and
+      sample offsets, gains, fades, automation points/interpolation, routing and
+      processing settings. Define sample-rate conversion and end-exclusive intervals.
+- [x] Preserve `passage-audio-1` plans and behavior through a compatible adapter or
+      an explicitly versioned opt-in schema. Keep original anchors alongside resolved
+      sample positions; reject missing/conflicting references. Retiming picture
+      cues/events recomputes positions deterministically while source trims and
+      authored durations remain fixed. No migration on load or export.
+- [x] Define a structured Node/TypeScript → Python worker protocol with JSON
+      requests/results, stable diagnostics, asset/clip/processor context, nonzero
+      failures and actionable remedies. Separate stdout JSON from stderr logs;
+      bound resources and support cancellation, missing-runtime errors and recovery.
+- [x] Provide CLI validation, project inspection, editing, mix render and named stem
+      render. Implement shared edit operations for gains, mute/solo, trims, moves,
+      automation and undo/redo where supported; CLI and visible edits write the same
+      saved project through the same validation/persistence API. Use atomic saves
+      and revision checks so stale edits cannot overwrite newer work.
+- [x] Retain FFmpeg/ffprobe delivery and measurement. Declare channel conversion,
+      normalization, stem tap points, bus/master processing, latency compensation and
+      tail/range rules in project/results. Cache identity includes the project,
+      source hashes, backend/DSP versions, toolchain and render settings.
+- [x] Implement **narration-aware BGM ducking** with explicit detector/source,
+      threshold, attenuation/ratio, attack, release, hold and lookahead parameters
+      as applicable. Persist defaults and the resulting automation or deterministic
+      derivation. Test speech, pauses and boundaries; leave narration samples and
+      timing unchanged. Do not silently duck SFX/ambience or legacy projects.
+- [x] Evaluate pinned Waveform Playlist packages against the vanilla TypeScript Lab.
+      Add an optional embedded layer timeline with clips, waveforms, overlaps and
+      automation; mute/solo, gain, trimming, movement and undo/redo where supported.
+      Document unsupported component controls and implement needed shared operations
+      directly. The component model is an adapter, not a second project authority.
+- [x] Preview and export consume the same saved project/revision. Prove timing and
+      decoded-audio agreement for any native/browser DSP path; use **rendered-stem
+      preview** when that DSP cannot match. Seeking/range preview must preserve
+      envelopes, ducking and effect state, with no provider call or GUI prerequisite.
+- [x] Connect the project to passage preview/export and later CE13/CE11 media/inspector
+      interfaces without making the backend wait for those milestones. Preserve
+      existing narration-only, sound-only, silent, range and portable-package behavior.
+- [x] Document command-only environment setup, edit/save/reload, inspect/validate,
+      render, cancellation/recovery and relocation, plus optional owner-facing
+      editor usage and licensing/packaging choices.
+
+**Implemented command surface:**
+
+```sh
+pnpm still-shift soundtrack validate --project <project.json>
+pnpm still-shift soundtrack inspect --project <project.json> --json
+pnpm still-shift soundtrack edit --project <project.json> --revision <number> --operations <edits.json>
+pnpm still-shift soundtrack render --project <project.json> --output-dir <fresh-dir> --stems
+```
+
+### Acceptance, verification and delivery evidence
+
+**Acceptance:** Deliver working reproducible commands, a saved editable example
+project, optional layer view, aligned mix/stems and measured lifecycle results.
+A fresh process can load, edit and export without opening the editor. CLI and
+component/API edits round-trip through one saved project; cue/event retiming preserves
+relationships and unaffected layers. Legacy plans retain their output behavior.
+Technical acceptance does not imply listening or audiovisual creative acceptance.
+
+**Verification:** Add meaningful local pnpm test commands covering schema/routing
+errors and cycles, checksum tampering, bounds, trims/placements, envelopes/DSP,
+latency, ducking, fresh-process reload, unchanged stems, save/revision conflicts,
+undo/redo, anchor retiming, preview/export agreement, seek/range behavior, cancellation,
+recovery, portable relocation and existing audio regressions. Exercise timeline and
+persistence through library/DOM harnesses and APIs/files without driving a GUI.
+Compare decoded PCM rather than encoded-file bytes; keep fixtures independent of
+provider services. Register required groups in existing local verification tiers.
+
+**Records:** Keep the saved fixture under `benchmarks/fixtures/composition/ce16/`,
+generated mixes/stems and measurements under an isolated ignored results directory,
+and tracked evidence in `docs/composition-ce16-verification-results.json` when work
+runs. Record exact commands, resolved dependencies/licenses, hashes, timing/memory,
+PCM comparisons, limitations and failures. Update the audio guide, composition
+reference/user guide and development log with links. Report **technical checks**,
+**actual listening** and **audiovisual QA** separately; mark listening/watching
+unperformed unless they actually occurred, and never claim them from ffprobe/PCM tests.
+
+### CE16 isolated backend proof record (2026-10-04)
+
+- **Owner / branch:** Codex on `codex/composition-ce16`, isolated managed worktree
+  `/Users/jjae/.codex/worktrees/composition-ce16/still-shift`, from `dee9e7b`.
+  Primary checkout and concurrent CE12 work remain untouched.
+- **Technical lifecycle:** passed for the scoped prototype: existing narration,
+  one BGM interval, two SFX cues; 60 seconds at 48 kHz stereo / 2,880,000 samples.
+  Seven mix/track/bus files per run; all reload outputs have zero differing decoded
+  samples. The edited cue moves 4,800 samples and changes gain by -3 dB; narration,
+  BGM, second SFX and music bus remain exact. Narration matches its decoded source.
+- **DSP / alignment:** built-in high-pass / low-pass chain, explicit linear gain
+  envelopes, named music/SFX buses, unity master and post-processing track stems.
+  Impulse onset delay 0 samples; peak response at +2 samples; tail and truncation
+  policy recorded. No external plugin latency support is claimed.
+- **Runtime:** Python 3.12.11, DawDreamer 0.9.0, NumPy 2.3.3, SciPy 1.16.2;
+  hash-pinned lockfile and isolated install. Exact timings, memory methods,
+  dependencies and license records are in the [evidence](./composition-ce16-verification-results.json).
+- **Commands:** `pnpm soundtrack:proof --verify-only` checks retained decoded outputs.
+  `pnpm soundtrack:proof` performs three renders in a fresh results location;
+  existing results are protected. See [prototype guide](./composition-ce16-backend-proof.md).
+- **Historical status:** CE16 was `[~]` at this isolated backend proof, before
+  CE16-B integration; see the subsequent implementation
+  record below. Distribution packaging remains pending. Dependencies are
+  not bundled or adopted into the production runtime. No listening or audiovisual
+  QA performed; command-only backend proof. Later integration verification policy
+  correction is documented in the completion audit.
+
+### CE16 shared project implementation and closure record (2026-10-05)
+
+- **Owner / branch:** Codex on the same isolated `codex/composition-ce16` worktree.
+- **Implemented:** bounded `soundtrack-project-1`, shared validated edits with
+  atomic revision saves and persisted undo/redo, structured cancellable Python
+  protocol, CLI inspect/validate/edit/retime/render/package, calibrated causal
+  filters and explicit narration-aware BGM ducking. Backend/DSP version is
+  `soundtrack-dsp-1`; old passage-audio output behavior is preserved.
+- **Integration:** optional vanilla TypeScript layer view with overlaps, rendered
+  waveforms, automation and shared edit API; exact rendered-mix preview and explicit
+  passage export adapter. Waveform Playlist's published versions were evaluated;
+  its collision/history rules were not adopted as a second authority.
+- **Lifecycle:** seven 60-second 48 kHz stereo outputs, all 2,880,000 samples/channel;
+  fresh-process reload and portable relocation exact; moved/lowered cue preserves
+  four unrelated stems; narration unchanged and unity buses reconstruct exactly.
+  Measured commands, worker memory and comparisons are in
+  [evidence](./composition-ce16-verification-results.json).
+- **Verification:** full local `pnpm check` passes on implementation `974dfdf`:
+  1,436 unit, 46 runtime, 125 integration, 14 depth tests and 42 browser groups.
+  All 176 frozen baseline items / 36,061 frames pass without regeneration.
+  Focused audio group: 35 tests. Corrected command-only tier: three audio integration
+  suites / 19 tests. Real browser decoding has zero differing float32 samples;
+  playback/seek/clear, editor persistence and 192-frame full / 24-frame range picture
+  exports pass. Delivery decodes match independently encoded canonical renders.
+  Final source-hash/reload/relocation/stem/narration recheck passes.
+  Commands, log hashes and earlier failures/remedies are retained in evidence.
+  No listening, human audiovisual QA or visible GUI inspection performed.
+  Earlier unapproved indirect browser work remains recorded in the
+  [completion audit](./composition-ce16-completion-audit.md); later browser checks
+  used the owner's one-time authorization. Deferred CE6-P performance work stays
+  deferred. GPL/transitive distribution decision remains pending; runtime is local
+  opt-in and no backend binaries are bundled.
+- **Guide:** [setup, contract, commands, recovery, preview and licensing](./soundtrack-project.md).
+
+**Completion record:** _CE16-A and CE16-B technical acceptance and all repository
+Definition-of-done gates passed on the isolated branch. Tracker `[x]`;
+[completion audit](./composition-ce16-completion-audit.md) and
+[verification results](./composition-ce16-verification-results.json) retain commands,
+versions, source hashes, measurements, failures and limitations. Production requires
+no editor; creative listening/audiovisual acceptance remains unperformed._
 
 ---
 

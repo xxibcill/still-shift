@@ -1,4 +1,5 @@
 import { createServer as createPortProbe } from "node:net";
+import { createHash } from "node:crypto";
 import {
   mkdtemp,
   mkdir,
@@ -91,6 +92,66 @@ it("serves immutable asset snapshots, keeps the last valid rebuild and watches h
       .status,
   ).toBe(404);
 });
+it("recovers an initially failed build after editing a successfully read image", async () => {
+  const root = await directory(),
+    input = join(root, "program.ts"),
+    art = join(root, "art.svg");
+  await writeFile(art, '<svg width="8" height="12"/>');
+  await writeFile(
+    input,
+    `import{comp,solid}from'@still-shift/motion';import{imageAsset}from'@still-shift/motion/node';const art=await imageAsset('art',${JSON.stringify(art)});export default comp({width:64,height:64,fps:24,frames:24},c=>c.add(solid('box',{size:[art.width-8,8],color:'#223344'})));`,
+  );
+  const session = await createProgramPreview(input, {
+    watch: true,
+    port: await freePort(),
+  });
+  sessions.push(session);
+  expect(session.snapshot()).toBeUndefined();
+  const base = new URL(session.url).origin;
+  expect(
+    (await (await fetch(base + "/composition/program")).json()).diagnostics,
+  ).toEqual([expect.objectContaining({ code: "comp-schema-range" })]);
+  await writeFile(art, '<svg width="9" height="12"/>');
+  await expect
+    .poll(() => session.snapshot()?.composition.layers[0], { timeout: 6000 })
+    .toMatchObject({ type: "solid", size: [1, 8] });
+}, 10000);
+
+it("recovers a failed edit after repairing a newly read font", async () => {
+  const root = await directory(),
+    input = join(root, "program.ts"),
+    font = join(root, "font.ttf");
+  await writeFile(
+    input,
+    `import{comp}from'@still-shift/motion';export default comp({width:64,height:64,fps:24,frames:24},()=>{});`,
+  );
+  const session = await createProgramPreview(input, {
+    watch: true,
+    port: await freePort(),
+  });
+  sessions.push(session);
+  const first = session.snapshot()!;
+  await writeFile(font, "initial font bytes");
+  await writeFile(
+    input,
+    `import{comp}from'@still-shift/motion';import{fontAsset}from'@still-shift/motion/node';const font=await fontAsset('font',${JSON.stringify(font)});export default comp({width:64,height:64,fps:24,frames:font.sha256===${JSON.stringify(`sha256:${createHash("sha256").update("initial font bytes").digest("hex")}`)}?0:24},()=>{});`,
+  );
+  const base = new URL(session.url).origin;
+  await expect
+    .poll(
+      async () =>
+        (await (await fetch(base + "/composition/program")).json()).diagnostics,
+      { timeout: 6000 },
+    )
+    .toEqual([expect.objectContaining({ code: "comp-schema-range" })]);
+  expect(session.snapshot()!.revision).toBe(first.revision);
+  await writeFile(font, "repaired font bytes");
+  await expect
+    .poll(() => session.snapshot()?.revision, { timeout: 6000 })
+    .toBeGreaterThan(first.revision);
+  expect(session.snapshot()!.composition.frameCount).toBe(24);
+}, 10000);
+
 it("recovers when an initially missing imported module is created", async () => {
   const root = await directory(),
     input = join(root, "program.ts"),

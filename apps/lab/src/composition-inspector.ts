@@ -17,6 +17,7 @@ import {
   editTemporalHandle,
   trackGraph,
   type KeyTrack,
+  type CompositionScope,
 } from "./composition-keys.ts";
 import { curveGraph, resolvedGraph } from "./composition-graph.ts";
 import {
@@ -40,7 +41,7 @@ const button = (text: string, action: () => void) => {
   return node;
 };
 export type InspectorSelection = {
-  scope: string;
+  scope: CompositionScope;
   layer: string;
   path: JsonPath;
 };
@@ -69,6 +70,7 @@ export function createCompositionInspector(options: {
     label: string,
     change: (document: Composition) => void,
   ) {
+    const restoreFocus = restoreGraphButtonFocus();
     try {
       const proposal = history?.propose(label, change);
       if (!proposal) return true;
@@ -81,7 +83,46 @@ export function createCompositionInspector(options: {
     } catch (error) {
       report(error);
       return false;
+    } finally {
+      restoreFocus();
     }
+  }
+  function restoreControlFocus(
+    control: Element,
+    replacement: () => HTMLElement | SVGElement | undefined,
+  ) {
+    const focused = document.activeElement === control,
+      owner = history;
+    return () => {
+      if (
+        !focused ||
+        history !== owner ||
+        (document.activeElement !== document.body &&
+          document.activeElement !== control)
+      )
+        return;
+      replacement()?.focus();
+    };
+  }
+  function restoreLayerFocus(control: HTMLButtonElement) {
+    const identity = control.dataset.layerControl;
+    return restoreControlFocus(control, () =>
+      Array.from(
+        element("layer-stack").querySelectorAll<HTMLButtonElement>("button"),
+      ).find((candidate) => candidate.dataset.layerControl === identity),
+    );
+  }
+  function restoreGraphButtonFocus() {
+    const control = document.activeElement,
+      area = element("curve-controls");
+    if (!(control instanceof HTMLButtonElement) || !area.contains(control))
+      return () => {};
+    const name = control.textContent;
+    return restoreControlFocus(control, () =>
+      Array.from(area.querySelectorAll<HTMLButtonElement>("button")).find(
+        (candidate) => candidate.textContent === name,
+      ),
+    );
   }
   function viewDocument(document = history!.document) {
     const draft = structuredClone(document);
@@ -98,7 +139,7 @@ export function createCompositionInspector(options: {
     if (!history) return;
     const document = history.document;
     for (const entry of [
-      { scope: "root", value: document, path: [] as JsonPath },
+      { scope: null, value: document, path: [] as JsonPath },
       ...(document.precomps ?? []).map((value, index) => ({
         scope: value.id,
         value,
@@ -107,7 +148,7 @@ export function createCompositionInspector(options: {
     ]) {
       const title = documentNode(
         "p",
-        `${entry.scope} · ${entry.value.fps ?? document.fps} fps${entry.scope === "root" ? "" : " · shared definition; instance fps shown in graph"}`,
+        `${entry.scope === null ? "root" : `precomp ${entry.scope}`} · ${entry.value.fps ?? document.fps} fps${entry.scope === null ? "" : " · shared definition; instance fps shown in graph"}`,
       );
       title.className = "scope-label";
       stack.append(title);
@@ -119,13 +160,16 @@ export function createCompositionInspector(options: {
         row.className = "layer-row";
         row.dataset.layer = layer.id;
         const pick = button(layer.name ?? layer.id, () => {
+          const restoreFocus = restoreLayerFocus(pick);
           selected = { scope: entry.scope, layer: layer.id, path };
           track = tracks.find(
             (t) => t.scope === entry.scope && t.owner === layer.id,
           );
           options.selected(selected);
           refresh(history!);
+          restoreFocus();
         });
+        pick.dataset.layerControl = JSON.stringify([path, "select"]);
         pick.setAttribute(
           "aria-pressed",
           String(
@@ -164,7 +208,8 @@ export function createCompositionInspector(options: {
                 ? "Unsolo"
                 : "Solo",
             () => {
-              const previous = visibility.get(key);
+              const restoreFocus = restoreLayerFocus(toggle),
+                previous = visibility.get(key);
               visibility.set(key, { ...visibility.get(key), [mode]: !state });
               void options.view(viewDocument()).then((ok) => {
                 if (ok) {
@@ -176,9 +221,11 @@ export function createCompositionInspector(options: {
                   else visibility.delete(key);
                   layerRows();
                 }
+                restoreFocus();
               });
             },
           );
+          toggle.dataset.layerControl = JSON.stringify([path, mode]);
           toggle.setAttribute(
             "aria-pressed",
             String(mode === "solo" ? state : !state),
@@ -192,16 +239,16 @@ export function createCompositionInspector(options: {
   function keyLanes() {
     lane.replaceChildren();
     if (!history) return;
-    const scope = selected?.scope ?? "root",
+    const scope = selected?.scope ?? null,
       owner = selected?.layer;
     const scopeDocument =
-      scope === "root"
+      scope === null
         ? history.document
         : history.document.precomps?.find((p) => p.id === scope);
     for (const marker of scopeDocument?.markers ?? [])
       lane.append(
         button(`Marker ${marker.id} · ${marker.frame}`, () => {
-          if (scope === "root") options.seek(marker.frame);
+          if (scope === null) options.seek(marker.frame);
           else
             message.textContent =
               "Nested marker uses its composition clock; choose an instance to seek root time.";
@@ -238,7 +285,7 @@ export function createCompositionInspector(options: {
       row.append(strip);
       lane.append(row);
     }
-    if (history.document.camera2d && scope === "root")
+    if (history.document.camera2d && scope === null)
       lane.append(
         documentNode(
           "p",
@@ -493,15 +540,20 @@ export function createCompositionInspector(options: {
             .join(",");
         }
         async function apply(focusedHandle?: number) {
+          const restoreFocus =
+            focusedHandle === undefined
+              ? () => {}
+              : restoreControlFocus(
+                  handles[focusedHandle]!,
+                  () =>
+                    area.querySelector<SVGElement>(
+                      `[data-bezier-handle="${focusedHandle}"]`,
+                    ) ?? undefined,
+                );
           const accepted = await submit("Drag segment Bézier handle", (d) =>
             editSegmentBezier(d, current, index, values),
           );
-          if (accepted && focusedHandle !== undefined)
-            area
-              .querySelector<SVGElement>(
-                `[data-bezier-handle="${focusedHandle}"]`,
-              )
-              ?.focus();
+          if (accepted) restoreFocus();
         }
         handles.forEach((handle, i) => {
           let dragging = false;

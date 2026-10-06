@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
+import { channel } from "node:diagnostics_channel";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -13,6 +14,7 @@ import {
   type SourceLocation,
 } from "./source.ts";
 export type ImageAsset = Extract<CompositionAsset, { type: "image" }>;
+const assetReads = channel("still-shift.motion.asset-read");
 const dimensions = (width: number, height: number): [number, number] => [
   Math.round(width),
   Math.round(height),
@@ -158,6 +160,7 @@ function assetPath(path: string, relativeTo?: string | URL): string {
   return resolve(base, path);
 }
 async function readAsset(path: string, site: SourceLocation) {
+  assetReads.publish(path);
   try {
     return await readFile(path);
   } catch (error) {

@@ -1,4 +1,4 @@
-import type { Composition } from "@still-shift/scene-contract";
+import { formatJsonPath, type Composition } from "@still-shift/scene-contract";
 import type { SourceLocation } from "./source.ts";
 type KeySourceField = "out" | "spatialOut";
 export type SourceTrack = {
@@ -173,7 +173,14 @@ export function builderSource(
     id = value.nodes[node[1] as "assets"]?.[Number(node[2])] ?? id;
   else if (path.startsWith("textStyles")) {
     const keys = Object.keys(comp.textStyles ?? {});
-    const found = keys.findIndex((key) => path.includes(key));
+    const found = keys.findIndex((key) => {
+      const prefix = formatJsonPath(["textStyles", key]);
+      return (
+        path === prefix ||
+        path.startsWith(`${prefix}.`) ||
+        path.startsWith(`${prefix}[`)
+      );
+    });
     if (found >= 0) id = value.nodes.textStyles?.[found] ?? id;
   } else if (path.startsWith("expressions")) {
     const keys = Object.keys(comp.expressions ?? {});

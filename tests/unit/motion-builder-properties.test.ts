@@ -11,6 +11,7 @@ import {
   type AnimationKey,
 } from "@still-shift/motion";
 import { evaluateComp, evaluateProperty } from "@still-shift/renderer-core";
+import { sourceLocation } from "../../packages/motion-builder/src/source.ts";
 const options = { width: 64, height: 64, fps: 24 as const, frames: 24 };
 const box = () => solid("box", { size: [10, 10], color: "#223344" });
 const path = {
@@ -21,6 +22,29 @@ const path = {
     [10, 10],
   ] as [number, number][],
 };
+it.each([
+  ["body", "body-title"],
+  ["caption", "caption2"],
+  ["size", "body"],
+  ["body-title", "body"],
+])("locates invalid style %s/%s at its own call", (first, invalid) => {
+  let expectedCall;
+  try {
+    comp(options, (c) => {
+      c.textStyle(first, { size: 48 });
+      expectedCall = sourceLocation();
+      c.textStyle(invalid, { size: 0 });
+    });
+    expect.fail("invalid style must fail");
+  } catch (error) {
+    expect(error).toBeInstanceOf(BuilderError);
+    expect((error as BuilderError).code).toBe("comp-schema-range");
+    expect((error as BuilderError).location).toMatchObject({
+      file: expectedCall!.file,
+      line: expectedCall!.line + 1,
+    });
+  }
+});
 it("preserves static scalar state before a delayed explicit from segment", () => {
   const result = comp({ ...options, frames: 48 }, (c) => {
     const n = c.add(box().at(5, 0));

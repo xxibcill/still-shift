@@ -2,7 +2,14 @@ import { createHash } from "node:crypto";
 import { readFile, realpath } from "node:fs/promises";
 import { createServer as createSocketServer } from "node:net";
 import { extname, resolve } from "node:path";
-import { createServer, type Plugin, type ViteDevServer } from "vite";
+import {
+  createServer,
+  type Plugin,
+  type ViteDevServer,
+  type WebSocketClient,
+} from "vite";
+import { ProgramSnapshots, type SnapshotBytes } from "./preview-snapshots.ts";
+import { passageDiagnostics } from "../../../../packages/renderer-core/src/passage-diagnostics.ts";
 import { readCompositionSource } from "@still-shift/animation-engine";
 import type {
   Composition,
@@ -28,10 +35,6 @@ export type ProgramSnapshot = {
   input: string;
   assets: Record<string, string>;
   diagnostics: CompositionDiagnostic[];
-};
-type SnapshotBytes = {
-  snapshot: ProgramSnapshot;
-  bytes: Map<string, { bytes: Buffer; type: string }>;
 };
 const types: Record<string, string> = {
   ".svg": "image/svg+xml",
@@ -72,7 +75,7 @@ export async function createProgramPreview(
     input = await realpath(sourceInput).catch(() => sourceInput);
   const root = resolve(import.meta.dirname, "../../../../");
   const watched = new Set<string>([input]),
-    snapshots = new Map<number, SnapshotBytes>();
+    snapshots = new ProgramSnapshots();
   let current: SnapshotBytes | undefined,
     revision = 0,
     pending = false,
@@ -152,9 +155,7 @@ export async function createProgramPreview(
         ),
       };
       current = { snapshot, bytes };
-      snapshots.set(revision, current);
-      while (snapshots.size > 2)
-        snapshots.delete(snapshots.keys().next().value!);
+      snapshots.add(current);
       failure = [];
       server.ws.send({
         type: "custom",
@@ -225,6 +226,52 @@ export async function createProgramPreview(
     name: "still-shift-composition-program",
     configureServer(value) {
       server = value;
+      const owners = new WeakSet<WebSocketClient>();
+      server.ws.on(
+        "composition-program:retain",
+        (data: { request?: unknown; revision?: unknown }, client) => {
+          if (
+            client.socket.readyState !== 1 ||
+            !data ||
+            typeof data.request !== "string" ||
+            data.request.length > 64
+          )
+            return;
+          try {
+            if (
+              !Number.isSafeInteger(data.revision) ||
+              (data.revision as number) < 1
+            )
+              throw new CompositionSaveError(
+                400,
+                "comp-edit-revision",
+                "Use a positive source revision",
+              );
+            const lease = snapshots.retain(data.revision as number, client);
+            if (!owners.has(client)) {
+              owners.add(client);
+              client.socket.once("close", () => snapshots.releaseOwner(client));
+            }
+            client.send("composition-program:retained", {
+              request: data.request,
+              lease,
+              diagnostics: [],
+            });
+          } catch (error) {
+            client.send("composition-program:retained", {
+              request: data.request,
+              diagnostics: passageDiagnostics(error),
+            });
+          }
+        },
+      );
+      server.ws.on(
+        "composition-program:release",
+        (data: { lease?: unknown }, client) => {
+          if (data && typeof data.lease === "string" && data.lease.length <= 64)
+            snapshots.release(data.lease, client);
+        },
+      );
       server.middlewares.use((request, response, next) => {
         const url = new URL(request.url ?? "/", "http://localhost");
         if (
@@ -244,11 +291,13 @@ export async function createProgramPreview(
                 revision?: number;
                 document?: unknown;
                 backend?: unknown;
+                lease?: string;
               };
               if (
                 !body ||
                 Object.keys(body).some(
-                  (key) => !["revision", "document", "backend"].includes(key),
+                  (key) =>
+                    !["revision", "document", "backend", "lease"].includes(key),
                 )
               )
                 throw new CompositionSaveError(
@@ -256,7 +305,7 @@ export async function createProgramPreview(
                   "comp-edit-request",
                   "Use revision, document and backend",
                 );
-              const captured = snapshots.get(body.revision ?? -1);
+              const captured = snapshots.get(body.revision ?? -1, body.lease);
               if (!captured)
                 throw new CompositionSaveError(
                   409,
@@ -375,7 +424,10 @@ export async function createProgramPreview(
           return;
         }
         const asset = snapshots
-          .get(Number(url.searchParams.get("revision")))
+          .get(
+            Number(url.searchParams.get("revision")),
+            url.searchParams.get("lease") ?? undefined,
+          )
           ?.bytes.get(url.searchParams.get("id") ?? "");
         if (!asset) {
           response.statusCode = 404;

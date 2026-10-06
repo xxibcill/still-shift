@@ -1,0 +1,137 @@
+{
+  "date": "2026-10-05",
+  "pr": "https://github.com/xxibcill/still-shift/pull/34",
+  "reviewedHead": "09873968ecce3a62c78cf7fdf1437619857f3bc6",
+  "delivery": "One finding per commit; one final push to codex/composition-ce12.",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3"
+  },
+  "findings": [
+    {
+      "id": "structured-policy-errors",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4179012932",
+      "status": "fixed",
+      "change": "Cut, shot and pixel-evidence semantic failures use PassageError with stable comp-lint codes and JSON paths.",
+      "regressions": {
+        "before": {
+          "failed": 9,
+          "passed": 31
+        },
+        "after": {
+          "failed": 0,
+          "passed": 40
+        }
+      },
+      "checks": [
+        "40 focused unit/integration tests passed",
+        "pnpm build passed",
+        "ESLint for changed TypeScript passed"
+      ],
+      "commit": "b91eb24"
+    },
+    {
+      "id": "inactive-effect-motion",
+      "status": "fixed",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4179012934",
+      "change": "Motion signatures and velocity evidence use only enabled effects within their active timeline window; evaluated state and rendering remain unchanged.",
+      "regressions": {
+        "before": {
+          "failed": 4,
+          "passed": 29
+        },
+        "after": {
+          "failed": 0,
+          "passed": 44
+        }
+      },
+      "checks": [
+        "44 focused unit/integration tests passed",
+        "pnpm build passed",
+        "ESLint for changed TypeScript passed",
+        "pnpm test:browser:composition-quality passed, including the new rendered inactive-effect regression"
+      ],
+      "commit": "9eba6a2"
+    },
+    {
+      "id": "parent-driven-timing",
+      "status": "fixed",
+      "comment": "https://github.com/xxibcill/still-shift/pull/34#discussion_r4179012936",
+      "change": "Timing analysis collects contributing ancestors of on-screen instances, counts shared tracks once with instance identity, respects group-only inherited opacity, and samples fractional inherited joins in forward/reverse clocks.",
+      "regressions": {
+        "before": {
+          "failed": 6,
+          "passed": 37
+        },
+        "after": {
+          "failed": 0,
+          "passed": 43
+        }
+      },
+      "checks": [
+        "43 quality unit tests passed",
+        "pnpm check:fast passed, including 1468 unit tests",
+        "11 focused CLI integration tests passed",
+        "pnpm test:browser:composition-quality passed, including null/group timing parity and inactive-effect rendered regression"
+      ]
+    }
+  ],
+  "pending": ["Owner review and merge of PR #34"],
+  "preservation": "Original checkout and unrelated local edits remain untouched. GitHub Actions are prohibited.",
+  "finalVerification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "fastChecks": {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitTests": 1468,
+      "includes": [
+        "schema",
+        "package boundaries",
+        "format",
+        "ESLint",
+        "TypeScript build",
+        "all unit tests"
+      ]
+    },
+    "cliIntegration": {
+      "status": "passed",
+      "tests": 11
+    },
+    "browserQuality": {
+      "status": "passed",
+      "checks": [
+        "14 fixture Node/Chromium comparisons",
+        "null/group inherited timing parity",
+        "Lab markers and seek",
+        "Canvas2D/WebGL2 pixel motion",
+        "rendered inactive-effect stillness",
+        "pinned pixel CLI"
+      ]
+    },
+    "corpus": {
+      "total": 176,
+      "frames": 36061,
+      "compositionStateAndPixels": 153,
+      "pixelOnly": 23,
+      "unexpectedFailures": 0,
+      "sourceChecksum": "25c2465f27c57121ef1623ee48477d9ee52757a06b0e7b20a8458b3e206b4a79"
+    },
+    "corpusReportsUnchanged": true,
+    "rendererOutputAndVersionChanged": false,
+    "baselineRegeneration": false,
+    "fullCheckRerun": false,
+    "scope": "Lint rules and their CLI/browser tests; full pnpm check remains covered by prior CE12 evidence, rather than rerun for this lint-only patch."
+  },
+  "setupFailures": [
+    "A CLI-only test retry could not write Vite temporary config under the sandbox; reran with managed-worktree write permission and all 11 tests passed."
+  ],
+  "verifiedSourceChecksums": {
+    "packages/renderer-core/src/composition/quality-policy.ts": "c3bcb0e5c07c1389142d71e0a4ba275cdfacf44a6ca52efb602647132a329cae",
+    "packages/renderer-core/src/composition/quality-samples.ts": "6f8e6fc24919bf9333e348e81366e56a8f65fdde3436571936d6d5319ff872fe",
+    "packages/renderer-core/src/composition/quality-rules.ts": "d9140ce95d5a37145e82219136020153020c4ffb23b17000e5ab93d28dc32b0e",
+    "tests/unit/composition-quality.test.ts": "c349fe736a356daec7b625c8a91479c30e77dc9b3809f425db297b77b388d4a1",
+    "tests/integration/composition-lint-cli.test.ts": "68c988df621884a5ab9040500fce4ef30a8d62e2c3c9b9130a2a91bd8d47b2cb",
+    "tests/browser/composition-quality.ts": "2a3f6fee71cdfab5f2892cf7ac3111929bde06d700531907747719905a15021b"
+  }
+}
