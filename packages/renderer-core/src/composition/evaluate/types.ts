@@ -14,6 +14,7 @@ import type {
   CameraGeometry,
 } from "./spatial-geometry.ts";
 import type { SampledCameraControls } from "./spatial-state.ts";
+import type { SampledLight, WorldLight } from "./lighting.ts";
 
 export type Rgba = [number, number, number, number];
 export type Bounds = {
@@ -69,6 +70,7 @@ export type EvaluatedLayer = {
   cameraDepth?: number;
   focusBlur?: number;
   camera?: SampledCameraControls;
+  light?: SampledLight;
   /** Includes ancestor group opacity; ordinary parent opacity never inherits. */
   opacity: number;
   bounds: Bounds | null;
@@ -98,6 +100,8 @@ export type EvaluatedLayerTree = {
   /** All layer states in painter order, including invisible dependency layers. */
   layers: EvaluatedLayer[];
   diagnostics: PassageDiagnostic[];
+  /** Active lights in authored order; scoped independently of drawable solo. */
+  lights?: WorldLight[];
   camera?: CameraGeometry & {
     id: string | null;
     source: "native" | "default" | "legacy2d";

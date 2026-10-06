@@ -12,7 +12,8 @@ export function spatialLayer(layer: CompositionLayer, scope: CompositionScope) {
     current = scope.layers.find((candidate) => candidate.id === current!.parent)
   ) {
     seen.add(current.id);
-    if (current.threeD || current.type === "camera") return true;
+    if (current.threeD || current.type === "camera" || current.type === "light")
+      return true;
   }
   return false;
 }
@@ -23,6 +24,51 @@ export function checkSpatialLayer(
   fail: IssueReporter,
 ) {
   const spatial = spatialLayer(layer, scope);
+  if (
+    layer.receivesLight !== undefined &&
+    (!layer.threeD ||
+      !["image", "solid", "text", "shape", "precomp"].includes(layer.type))
+  )
+    fail(
+      "comp-light-receiver",
+      [...path, "receivesLight"],
+      "receivesLight requires explicitly 3D image, solid, text, shape or flat precomp artwork",
+    );
+  if (layer.type === "light") {
+    const unsupported =
+      layer.lightType === "ambient"
+        ? (["range", "falloffStart", "innerCone", "outerCone"] as const)
+        : layer.lightType === "point"
+          ? (["innerCone", "outerCone"] as const)
+          : [];
+    for (const name of unsupported)
+      if (layer[name] !== undefined)
+        fail(
+          "comp-light-settings",
+          [...path, name],
+          `${name} is not a property of an ${layer.lightType} light`,
+        );
+    if (
+      typeof layer.range === "number" &&
+      typeof layer.falloffStart === "number" &&
+      layer.falloffStart >= layer.range
+    )
+      fail(
+        "comp-light-settings",
+        path,
+        "Light falloffStart must be less than range",
+      );
+    if (
+      typeof layer.innerCone === "number" &&
+      typeof layer.outerCone === "number" &&
+      layer.innerCone > layer.outerCone
+    )
+      fail(
+        "comp-light-settings",
+        path,
+        "Spot innerCone must not exceed outerCone",
+      );
+  }
   if (layer.type === "camera") {
     if (layer.zoom !== undefined && layer.focalLength !== undefined)
       fail(

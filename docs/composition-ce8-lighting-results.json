@@ -1,0 +1,26 @@
+{
+  "milestone": "CE8-L",
+  "status": "in-progress",
+  "branch": "codex/composition-ce8-lighting",
+  "base": "9d8f33a",
+  "started": "2026-10-06",
+  "model": "flat-lighting-1",
+  "slices": [
+    {
+      "scope": "Bounded contract, implicit XYZ property paths, sampled light state, scoped world transforms and linear CPU shading oracle",
+      "checks": {
+        "build": "pass",
+        "focusedUnit": "24 pass after correcting an analytic float identity assertion (0.7500000000000001 versus 0.75); unlit empty-light identity stays exact"
+      },
+      "availability": "Light remains gated until WebGL lighting and Canvas preflight are implemented"
+    }
+  ],
+  "pending": [
+    "WebGL shading/graph/cache/backend preflight",
+    "Full evaluation and property-writer regressions",
+    "Authoring/inspector/reference/native fixtures",
+    "Independent pixel/export/hardware acceptance and serial costs",
+    "Complete local pnpm check/frozen baselines",
+    "Milestone PR and remaining sequence"
+  ]
+}

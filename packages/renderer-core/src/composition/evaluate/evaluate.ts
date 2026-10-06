@@ -72,6 +72,7 @@ import {
   multiplyWorldMatrices,
 } from "./spatial-geometry.ts";
 import { projectSpatialScope } from "./spatial-scope.ts";
+import { sampleLight, validateLight } from "./lighting.ts";
 import { compositionSampleIndex } from "./sample-clock.ts";
 import {
   layerContentTime,
@@ -303,7 +304,7 @@ function baseState(
       opacity: unit(scalar(m.opacity, time, fps, 1)),
     })),
   };
-  if (layer.threeD || layer.type === "camera") {
+  if (layer.threeD || layer.type === "camera" || layer.type === "light") {
     const spatial = sampleSpatialTransform(
       layer,
       time,
@@ -334,6 +335,11 @@ function baseState(
   }
   if (layer.type === "shape")
     state.contents = sampleShapes(layer.contents, time, fps, budget);
+  if (layer.type === "light") {
+    const sampled = sampleLight(layer, time, fps);
+    state.light = sampled.controls;
+    state.color = sampled.color;
+  }
   if (layer.type === "solid" || layer.type === "text")
     state.color = color(layer.color, time, fps);
   if (
@@ -681,6 +687,21 @@ class Evaluation {
   /** Clamp written values and keep an unauthored constraint reference on the anchor. */
   private normalize(ctx: Context, state: EvaluatedLayer) {
     state.transform.opacity = unit(state.transform.opacity);
+    if (state.light) {
+      try {
+        validateLight(state.light, false);
+      } catch (error) {
+        passageError(
+          "comp-light-settings",
+          error instanceof Error ? error.message : String(error),
+          {
+            node: state.id,
+            path: this.bindings(ctx, state.id),
+            frame: this.time,
+          },
+        );
+      }
+    }
     if (state.camera) {
       try {
         refreshCameraControls(state.camera, ctx.scope.width);
@@ -1367,7 +1388,7 @@ class Evaluation {
         layer: layer.id,
         segments: AUTO_ORIENT_POSITION,
       };
-      if (layer.threeD) {
+      if (layer.threeD || layer.type === "light") {
         const [rotation, rotationY] = yield* this.spatialHeading(path);
         state.transform.rotation += rotation;
         state.transform.rotationY =
@@ -1626,6 +1647,7 @@ function sealStage(
         }
       : {}),
     ...(state.color ? { color: [...state.color] as typeof state.color } : {}),
+    ...(state.light ? { light: { ...state.light } } : {}),
     ...(state.contents
       ? { contents: cloneShapes(state.contents, budget) }
       : {}),

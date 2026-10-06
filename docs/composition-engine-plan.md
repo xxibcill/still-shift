@@ -370,6 +370,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        | Codex                  | `codex/composition-ce8`             | `[x]`  | [evidence](./composition-ce8-results.json)                                         |
+| CE8-L | Bounded lighting for 2.5D layers | B | CE8 | Codex | `codex/composition-ce8-lighting` | `[~]` | [Lighting scope](#ce8-l--bounded-lighting-for-25d-layers) |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
@@ -3754,6 +3755,108 @@ CPU raster preparation. CE11's real camera-frustum follow-through is complete;
 audio waveform follow-through remains CE13. Cinematic family camera parity follows
 in CE4c. [PR #43](https://github.com/xxibcill/still-shift/pull/43) is open and attached against CE6; begin CE8-L on a new branch.
 [Evidence](./composition-ce8-results.json).
+
+---
+
+## CE8-L — Bounded lighting for 2.5D layers
+
+**Outcome:** Authors can animate ambient, point and spot lights to illuminate flat
+artwork in composition space, using CE8's existing 3D transforms and projection.
+
+**Status:** `[~]` in progress on `codex/composition-ce8-lighting`, from CE8
+`9d8f33a` / PR #43. Owner approved 2026-10-05 (Q6). Depends on CE8, which
+already requires CE6 and CE9. Implement immediately after CE8 in the recommended
+sequence. This is a separate feature milestone; neither CE8 nor CE4c acceptance
+waits for it. No implementation or lighting verification is claimed by this entry.
+
+### Scope and limits
+
+- Exactly three light types: ambient, point and spot. Support at most **8 light
+  layers per composition scope**, including disabled lights, with explicit schema
+  bounds for every numeric field and diagnostics for invalid combinations.
+- Animate colour and intensity; animate position for point/spot lights, orientation
+  and inner/outer cone angles for spots, and finite distance falloff for point/spot
+  lights. Reuse CE8 transforms, parenting and CE9 property paths/expressions.
+- Receive light only on opted-in CE8 3D image, solid, text and shape surfaces, or a
+  flattened precomp quad. Each surface has one geometric plane normal derived from
+  its transform. A photograph's depicted face, clothing or objects acquire no
+  inferred geometry; lighting already painted into source art remains present.
+- Use ambient plus simple diffuse illumination. No material library, specular
+  highlights, metallic/roughness controls, reflections, normal/depth-map relighting,
+  cast shadows, self-shadowing, ambient occlusion or volumetric lighting.
+- Keep lights scoped to their composition. A precomp renders its internal lights
+  internally; a parent light can shade an opted-in flattened precomp as one plane.
+  No light propagation across precomp boundaries or per-child relighting through
+  flattened precomps. Groups, cameras, lights and adjustment layers are not receivers.
+- Default `receivesLight` to false, including adapter output. Ordinary 2D layers
+  remain unlit. Disabled lighting or a scope with no enabled lights uses the
+  existing render path; adding this capability must preserve unlit output exactly.
+
+### Implementation checklist
+
+- [ ] Enable the reserved `light` layer contract with validated light-type fields,
+      bounded animation/property paths and stable diagnostics. Validate spot cone
+      ordering and falloff ranges; test the 8-light limit and unsupported receivers.
+- [ ] Extend pure evaluation with world-space light state and transformed unit
+      plane normals. Define front/back-face behaviour, mirrored/non-uniform scale,
+      parenting and degenerate transforms explicitly; do not derive lighting from
+      the camera's position or previously rendered frames.
+- [ ] Specify one versioned shading model: ambient contribution, diffuse angular
+      response, finite falloff and spot-cone interpolation. Define zero-distance,
+      zero-intensity, cone-edge and range-edge behaviour; avoid singularities and
+      preserve a fixed summation order for overlapping lights.
+- [ ] Implement WebGL2 shading on the flat layer before its layer effects and
+      matte/opacity/blend composition. Calculate illumination in linear colour,
+      explicitly convert at the shading boundary to the selected composition
+      space, and preserve alpha and premultiplication. This does not change the
+      default compositing colour space or turn on global linear compositing.
+- [ ] Sample lights and receiver transforms at the same evaluation time, including
+      CE7 exposure samples. Specify ordering with CE8 depth of field; ordinary
+      depth sorting and alpha compositing continue without shadow/occlusion passes.
+- [ ] Provide a small CPU shading oracle for analytic/reference tests. Canvas 2D
+      reports `comp-feature-backend` for a composition that requires this lighting;
+      it must not silently omit shading. Existing unlit Canvas support remains.
+- [ ] Expose light state, receiving-layer controls and diagnostics through existing
+      authoring/inspection APIs, including CE10/CE11 where available. Update the
+      composition reference with units, limits, scope rules and flat-art limitations.
+- [ ] Include light parameters, transforms, receiving flags and shading version in
+      render/cache identity. Record local 1080p render cost for 1, 4 and 8 lights,
+      with receiver counts, renderer profile and exposure settings. These are
+      bounded-feature measurements; CE6-P's speed targets remain deferred.
+
+**Acceptance:** Native fixtures demonstrate ambient tint, a moving point light,
+an animated spotlight with a soft cone boundary, and overlapping lights on rotated
+and parented planes. Cover image alpha edges, solids, text, shapes, an opted-in
+flattened precomp, an unlit overlay and an unlit legacy-adapter composition. With
+receiving disabled or all lights disabled, output is byte-identical to the unlit
+path. Enabled lighting preserves alpha, deterministic seeking, and repeated export.
+No shadow, inferred surface detail or material realism is required for acceptance.
+
+**Verification:** Analytic lighting/transform tests against hand-computed samples;
+schema/diagnostic and property-animation tests; CPU-oracle versus pinned SwiftShader
+pixel comparisons with recorded tolerances; hardware-preview/export comparisons
+under the existing GPU policy; reverse/random seeks and repeated-export checks;
+precomp scope, transparent edges, animated lights during motion blur and DOF
+interaction regressions. Run local pnpm verification and frozen legacy baselines;
+record commands, versions, per-fixture results and limitations before marking `[x]`.
+
+**Completion record:** _to be filled in; planning only._
+
+### CE8-L-F — Deferred advanced lighting
+
+- **Status:** `[d]`, owner approved 2026-10-05. Cast shadows and realistic surface
+  shading are deferred to an unscheduled future version, with no completion deadline.
+- **Deferred scope:** inter-layer cast shadows and soft-shadow quality; normal maps
+  or additional geometry for depicted-surface relighting; specular/PBR materials,
+  reflections, self-shadowing, ambient occlusion and volumetric lighting. These are
+  candidates to scope on resumption, not a promise to implement all in one release.
+- **Preserved distinction:** CE6's 2D drop/inner/height-shadow effects remain in their
+  existing scope. They do not constitute scene lights casting shadows onto other
+  surfaces, and this deferral neither removes nor expands those effect requirements.
+- **Resume gate:** an explicit owner request selects the future scope, asset inputs,
+  quality/performance budgets and acceptance fixtures before implementation. The
+  deferred work is not a prerequisite for current-version milestones.
+
 
 ---
 

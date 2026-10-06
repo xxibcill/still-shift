@@ -293,7 +293,7 @@ export function camera(
 }
 export function light(
   id: string,
-  options: Options<"light"> = {},
+  options: Options<"light"> = { lightType: "ambient" },
 ): Layer<"light"> {
   return new Layer({ ...options, type: "light", id });
 }

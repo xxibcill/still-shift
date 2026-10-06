@@ -20,6 +20,7 @@ import {
 } from "./spatial-geometry.ts";
 import { cameraFacingWorld } from "./spatial-orient.ts";
 import { sampleSpatialTransform } from "./spatial-state.ts";
+import { worldLight } from "./lighting.ts";
 import type {
   EvaluatedLayer,
   EvaluatedLayerTree,
@@ -159,7 +160,7 @@ export function projectSpatialScope(
       const t = state.transform;
       try {
         const local =
-          state.layer.threeD || state.camera
+          state.layer.threeD || state.camera || state.light
             ? layerMatrix3d({
                 anchor: [t.anchor[0], t.anchor[1], t.anchor[2] ?? 0],
                 position: [t.position[0], t.position[1], t.position[2] ?? 0],
@@ -213,6 +214,33 @@ export function projectSpatialScope(
       }
     };
     tree.layers.forEach(orient);
+  }
+  if (tree.layers.some((state) => state.light)) {
+    tree.lights = [];
+    for (const state of tree.layers) {
+      if (!state.light) continue;
+      try {
+        // Validate all authored light relations, including inactive dependency states.
+        const light = worldLight(
+          state.id,
+          state.light,
+          state.color!,
+          state.worldMatrix3d!,
+        );
+        if (cameraActive(state, scope, tree, options, byId))
+          tree.lights.push(light);
+      } catch (error) {
+        passageError(
+          "comp-light-settings",
+          error instanceof Error ? error.message : String(error),
+          {
+            ...location,
+            node: state.id,
+            path: [...route, state.id].join("/"),
+          },
+        );
+      }
+    }
   }
   for (const state of tree.layers) {
     if (

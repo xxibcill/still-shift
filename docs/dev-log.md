@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE8-L in progress (2026-10-06):** `codex/composition-ce8-lighting` from CE8
+  `9d8f33a` / [PR #43](https://github.com/xxibcill/still-shift/pull/43).
+  Bounded ambient/point/spot controls, implicit XYZ paths, pure scoped world state
+  and the versioned linear diffuse CPU oracle are authored. Build and focused
+  model/property tests pass; lighting remains gated until the backend is ready.
+  Native rendering/authoring/acceptance and the complete gate remain pending.
+  No owner decision is pending. [Evidence](./composition-ce8-lighting-results.json).
+
 - **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
   final code `16262ec`. Scoped cameras, XYZ transforms, projective planes,
   stable depth, focus blur, actual coverage and real inspector frusta are delivered.
@@ -206,6 +214,17 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8-L contract and pure model checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`, from CE8 `9d8f33a`.
+- **Done:** bounded light controls and receiver validation, XYZ property paths,
+  scoped light state and two-sided linear diffuse reference model.
+- **Results:** build passes; 24 focused model/property/optical tests pass after
+  correcting a floating-point oracle assertion. Empty-light identity stays exact.
+- **Next:** WebGL shading before effects, cache identity and Canvas preflight;
+  native acceptance, full local verification and the milestone PR follow.
+- **Records:** [CE8-L evidence](./composition-ce8-lighting-results.json).
 
 ### 2026-10-06 — CE8 camera milestone complete
 

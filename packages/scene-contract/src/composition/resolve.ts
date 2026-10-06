@@ -90,7 +90,7 @@ function resolveSegments(
 
   switch (head.name) {
     case "constraintReference":
-      return layer.threeD || layer.type === "camera"
+      return layer.threeD || layer.type === "camera" || layer.type === "light"
         ? component("vec3", COMPONENTS.vec3, segments.slice(1))
         : component("vec2", COMPONENTS.vec2, segments.slice(1));
     case "transform": {
@@ -98,11 +98,14 @@ function resolveSegments(
       if (TRANSFORM_SCALARS.has(next.name))
         return component("scalar", [], rest);
       if (TRANSFORM_VECTORS.has(next.name)) {
-        const type = layer.threeD || layer.type === "camera" ? "vec3" : "vec2";
+        const type =
+          layer.threeD || layer.type === "camera" || layer.type === "light"
+            ? "vec3"
+            : "vec2";
         return component(type, COMPONENTS[type], rest);
       }
       if (["rotationX", "rotationY", "orientation"].includes(next.name)) {
-        if (!layer.threeD && layer.type !== "camera")
+        if (!layer.threeD && layer.type !== "camera" && layer.type !== "light")
           return unavailable(text, "CE8");
         return next.name === "orientation"
           ? component("vec3", COMPONENTS.vec3, rest)
@@ -124,9 +127,26 @@ function resolveSegments(
         ? component("scalar", [], segments.slice(1))
         : missing(text, "a camera property");
     case "color":
-      if (layer.type !== "solid" && layer.type !== "text")
+      if (
+        layer.type !== "solid" &&
+        layer.type !== "text" &&
+        layer.type !== "light"
+      )
         return missing(text, `a property of a ${layer.type} layer`);
       return component("color", COLOR_COMPONENTS, segments.slice(1));
+    case "intensity":
+    case "range":
+    case "falloffStart":
+    case "innerCone":
+    case "outerCone":
+      if (
+        layer.type !== "light" ||
+        (head.name !== "intensity" && layer.lightType === "ambient") ||
+        (["innerCone", "outerCone"].includes(head.name) &&
+          layer.lightType !== "spot")
+      )
+        return missing(text, "a property of this light type");
+      return component("scalar", [], segments.slice(1));
     case "state":
       if (
         layer.type !== "image" &&
