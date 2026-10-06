@@ -560,7 +560,9 @@ export const exportScene = async (
   const memoryMonitor = setInterval(() => void sampleMemory(), 500);
   void sampleMemory();
   try {
-    viteCacheDirectory = await mkdtemp(join(tmpdir(), "still-shift-export-vite-"));
+    viteCacheDirectory = await mkdtemp(
+      join(tmpdir(), "still-shift-export-vite-"),
+    );
     server = await createServer({
       root: projectRoot,
       configFile: false,

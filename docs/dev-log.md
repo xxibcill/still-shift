@@ -60,10 +60,10 @@ still hold before relying on them.
   initialization. Acceptance is incomplete; numeric costs were not saved and the
   cause is unconfirmed. Export-worker 0.6.6 private cache/startup diagnostics,
   prepared provenance and startup failure/retry regression are unverified.
-  **CE6-P's second owner-authorized timing hold remains active:** no new pnpm,
-  Node tests/scripts, Vitest, browser or export work. No root verification remains
-  active. A private default-migration patch is prepared but unapplied. After
-  release: verify startup cleanup, finish depth/legacy delivery and timing, switch
+  **CE6-P's second timing hold is released:** scoped formatting is complete,
+  and focused startup/cancellation/provenance verification is starting. A private
+  default-migration patch is prepared but unapplied. Next: verify startup cleanup,
+  finish depth/legacy delivery and timing, switch
   defaults, run actual-route acceptance and the final complete local gate, then
   create/attach the CE4d PR. Continue CE13 → CE15 → CE14 on separate branches.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
@@ -263,6 +263,18 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d resumes after timing release
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` (from `7883d19`).
+- **Done:** CE6-P explicitly released its second timing hold. Scoped formatting
+  completed for startup diagnostics, native provenance and delivery regressions.
+- **Results:** complete candidate family evidence remains passed on `a843cf9`.
+  New focused startup/cancellation/provenance verification is starting; the old
+  failed depth delivery attempt remains incomplete and its cause unconfirmed.
+- **Open / next:** verify focused changes, retry depth/legacy delivery and timing,
+  apply default migration, then complete actual routes/full gate and milestone PR.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d covers HTTP startup failures
 

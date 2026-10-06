@@ -52,54 +52,62 @@ afterEach(() => {
 });
 
 describe("export verification cancellation", () => {
-  it.each(["module", "http"] as const)("reports %s startup failure, cleans up, and permits retry", async (mode) => {
-    const directory = await mkdtemp(
-      join(tmpdir(), "still-shift-startup-failure-"),
-    );
-    const launch = chromium.launch.bind(chromium);
-    let browser: Browser | undefined;
-    const failure = "Injected export module initialization failure";
-    vi.spyOn(chromium, "launch").mockImplementationOnce(async (options) => {
-      browser = await launch(options);
-      const newPage = browser.newPage.bind(browser);
-      vi.spyOn(browser, "newPage").mockImplementationOnce(async (options) => {
-        const page = await newPage(options);
-        page.setDefaultTimeout(1_000);
-        page.setDefaultNavigationTimeout(30_000);
-        await page.route("**/export-page.ts", (route) =>
-          route.fulfill({
-            status: mode === "http" ? 503 : 200,
-            contentType: "application/javascript",
-            body: `throw new Error(${JSON.stringify(failure)});`,
-          }),
-        );
-        return page;
+  it.each(["module", "http"] as const)(
+    "reports %s startup failure, cleans up, and permits retry",
+    async (mode) => {
+      const directory = await mkdtemp(
+        join(tmpdir(), "still-shift-startup-failure-"),
+      );
+      const launch = chromium.launch.bind(chromium);
+      let browser: Browser | undefined;
+      const failure = "Injected export module initialization failure";
+      vi.spyOn(chromium, "launch").mockImplementationOnce(async (options) => {
+        browser = await launch(options);
+        const newPage = browser.newPage.bind(browser);
+        vi.spyOn(browser, "newPage").mockImplementationOnce(async (options) => {
+          const page = await newPage(options);
+          page.setDefaultTimeout(1_000);
+          page.setDefaultNavigationTimeout(30_000);
+          await page.route("**/export-page.ts", (route) =>
+            route.fulfill({
+              status: mode === "http" ? 503 : 200,
+              contentType: "application/javascript",
+              body: `throw new Error(${JSON.stringify(failure)});`,
+            }),
+          );
+          return page;
+        });
+        return browser;
       });
-      return browser;
-    });
-    try {
-      const scenePath = await writeExportScene(directory);
-      const prepared = await loadPreparedScene(scenePath);
-      const request = {
-        ...prepared,
-        sourcePath: scenePath,
-        depthPath: null,
-        outputPath: join(directory, "output.mp4"),
-      };
-      const pending = exportScene(request);
-      await expect(pending).rejects.toThrow("Export browser did not initialize");
-      await expect(pending).rejects.toThrow(mode === "http" ? "503 " : failure);
-      expect(browser?.isConnected()).toBe(false);
-      expect((await readdir(directory)).sort()).toEqual([
-        "scene.json",
-        "source.svg",
-      ]);
-      expect((await exportScene(request)).frameCount).toBe(3);
-    } finally {
-      await browser?.close();
-      await rm(directory, { recursive: true, force: true });
-    }
-  }, 30_000);
+      try {
+        const scenePath = await writeExportScene(directory);
+        const prepared = await loadPreparedScene(scenePath);
+        const request = {
+          ...prepared,
+          sourcePath: scenePath,
+          depthPath: null,
+          outputPath: join(directory, "output.mp4"),
+        };
+        const pending = exportScene(request);
+        await expect(pending).rejects.toThrow(
+          "Export browser did not initialize",
+        );
+        await expect(pending).rejects.toThrow(
+          mode === "http" ? "503 " : failure,
+        );
+        expect(browser?.isConnected()).toBe(false);
+        expect((await readdir(directory)).sort()).toEqual([
+          "scene.json",
+          "source.svg",
+        ]);
+        expect((await exportScene(request)).frameCount).toBe(3);
+      } finally {
+        await browser?.close();
+        await rm(directory, { recursive: true, force: true });
+      }
+    },
+    30_000,
+  );
 
   it("cancels an active frame upload, closes the browser, and permits retry", async () => {
     const directory = await mkdtemp(

@@ -2518,11 +2518,7 @@
     {
       "name": "PR43 spatial correctness fixes reconciled",
       "status": "integrated-focused-verification",
-      "sourceCommits": [
-        "e16d962",
-        "c36c686",
-        "c0c8f5d"
-      ],
+      "sourceCommits": ["e16d962", "c36c686", "c0c8f5d"],
       "scope": [
         "Projected children and collapsed precomps retain inherited primitive blur bounds",
         "Required coverage includes ancestor group masks/mattes/effects/visibility",
@@ -2667,10 +2663,7 @@
       "zipperInput": "/Users/jjae/Documents/obsidian/ai-business/YouTube Workflow Experiments/2026-10-06-zipper-final/composition-v004.json",
       "zipperPolicy": {
         "maxFrozenFrames": 60,
-        "intentionalCuts": [
-          270,
-          510
-        ]
+        "intentionalCuts": [270, 510]
       },
       "productionDefaults": "unchanged; switch after independent parity"
     },
@@ -3260,41 +3253,25 @@
               {
                 "node": "headline",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "headline",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "rag",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "rag",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               }
             ]
@@ -3311,21 +3288,13 @@
               {
                 "node": "glyphs",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "glyphs",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               }
             ]
@@ -3342,41 +3311,25 @@
               {
                 "node": "headline",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "headline",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "tracking",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "tracking",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               }
             ]
@@ -3393,61 +3346,37 @@
               {
                 "node": "claim",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               },
               {
                 "node": "claim",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               },
               {
                 "node": "margin",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               },
               {
                 "node": "margin",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               },
               {
                 "node": "qualifier",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               },
               {
                 "node": "qualifier",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               }
             ]
@@ -3464,81 +3393,49 @@
               {
                 "node": "crossfade",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "crossfade",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "roll",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "roll",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "retype",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "retype",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "count",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "count",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               }
             ]
@@ -3555,21 +3452,13 @@
               {
                 "node": "thai",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               },
               {
                 "node": "thai",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  75,
-                  150
-                ],
+                "frames": [0, 75, 150],
                 "maxChannelDelta": 0
               }
             ]
@@ -3586,61 +3475,37 @@
               {
                 "node": "claim",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               },
               {
                 "node": "claim",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               },
               {
                 "node": "margin",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               },
               {
                 "node": "margin",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               },
               {
                 "node": "qualifier",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               },
               {
                 "node": "qualifier",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  90,
-                  180
-                ],
+                "frames": [0, 90, 180],
                 "maxChannelDelta": 0
               }
             ]
@@ -3657,61 +3522,37 @@
               {
                 "node": "product-name",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  96,
-                  191
-                ],
+                "frames": [0, 96, 191],
                 "maxChannelDelta": 0
               },
               {
                 "node": "product-name",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  96,
-                  191
-                ],
+                "frames": [0, 96, 191],
                 "maxChannelDelta": 0
               },
               {
                 "node": "headline-0",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  96,
-                  191
-                ],
+                "frames": [0, 96, 191],
                 "maxChannelDelta": 0
               },
               {
                 "node": "headline-0",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  96,
-                  191
-                ],
+                "frames": [0, 96, 191],
                 "maxChannelDelta": 0
               },
               {
                 "node": "cta",
                 "mode": "ink-only",
-                "frames": [
-                  0,
-                  96,
-                  191
-                ],
+                "frames": [0, 96, 191],
                 "maxChannelDelta": 0
               },
               {
                 "node": "cta",
                 "mode": "container-only",
-                "frames": [
-                  0,
-                  96,
-                  191
-                ],
+                "frames": [0, 96, 191],
                 "maxChannelDelta": 0
               }
             ]
