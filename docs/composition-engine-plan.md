@@ -3719,6 +3719,15 @@ focused test compiles/validates all ten programs and pinned assets. Runtime and
 native correctness/hardware/cost fingerprints are unchanged. The complete gate
 will repeat on the committed test repair; no later suite was skipped or claimed.
 
+The second complete gate on `3b277d5` is failed/incomplete: all unit/runtime/
+integration/depth checks and preceding browser groups passed, then calibration-pan
+passed pixels (delta one) but measured 1.285× above the unchanged 1.25 timing limit.
+The remaining matrices and frozen-baseline stages did not run. Compiled spatial
+and reference-writer inventories avoid per-frame scans; root binding IDs avoid
+allocation. Pinned isolated calibration now passes at 1.227×; 146 focused units
+and build pass. Timing varies, so the complete committed-code gate must repeat;
+no policy relaxation or manually resumed pass is claimed.
+
 **Completion record:** _to be filled in._
 
 ---

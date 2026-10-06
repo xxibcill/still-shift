@@ -1677,7 +1677,41 @@
         "log": "/private/tmp/ce8-examples-repair.log",
         "runtimeChange": "none; native correctness/hardware/cost fingerprints remain valid"
       },
-      "pending": "Repeat complete pnpm check on committed final test repair"
+      "pending": "Repeat complete pnpm check on committed final test repair",
+      "implementation": "3b277d5"
+    },
+    {
+      "name": "Ordinary-scope binding and spatial preflight inventories",
+      "status": "focused-pass-full-gate-pending",
+      "features": [
+        "Reuse compiled spatial scopes instead of scanning every layer on every exposure",
+        "Return root layer IDs without allocating and joining scope arrays",
+        "Compile whether reference writers exist; preserve all existing per-axis/window checks when present"
+      ],
+      "verification": {
+        "pinnedBefore": {
+          "ratio": 1.267322673937132,
+          "evaluationMs": 32.69999998807907,
+          "log": "/private/tmp/ce8-calibration-pan-profile-pinned-3b277d5.log"
+        },
+        "pinnedIsolatedAfter": {
+          "ratio": 1.2270138315289159,
+          "evaluationMs": 30.19999998807907,
+          "maxDelta": 1,
+          "log": "/private/tmp/ce8-calibration-pan-reference-inventory-trial.log"
+        },
+        "focused": "146 unit tests across six files; root/nested 2D/3D implicit anchors, driver/expression/periodic reference writers and inactive windows, exposure and spatial capability regressions",
+        "failedTestDrafts": [
+          "Signal fixture needed two keys",
+          "Periodic oracle originally used root time instead of time minus start; corrected sample to start+quarter-period"
+        ],
+        "limitations": [
+          "Timing varies; no claimed causal reduction from a single measurement",
+          "One root-binding diagnostic accidentally ran in primary checkout; repeated isolated and excluded from acceptance",
+          "Initial exploratory profile used Node 24; excluded from acceptance"
+        ]
+      },
+      "pending": "Full final-code pnpm check repeat; preserve unchanged limits and frozen baselines"
     }
   ],
   "pending": [
@@ -1703,6 +1737,28 @@
       },
       "failure": "composition-examples.test.ts expected nine examples after native CE8 added a tenth; 1 failed / 138 passed integration, no later suites executed",
       "repair": "Inventory now requires ten; focused integration compiles all ten and validates pinned assets (pass)"
+    },
+    {
+      "checkpoint": "3b277d5",
+      "command": "pnpm check",
+      "snapshot": "/private/tmp/still-shift-ce8-check-3b277d5",
+      "log": "/private/tmp/ce8-full-3b277d5.log",
+      "status": "failed-incomplete",
+      "passed": {
+        "unit": 1840,
+        "runtime": 46,
+        "integration": 139,
+        "depth": 14,
+        "browser": "All preceding groups through native passage and authoring, including native camera acceptance"
+      },
+      "failure": {
+        "case": "story/calibration-pan",
+        "ratio": 1.2851135401459304,
+        "limit": 1.25,
+        "maxDelta": 1,
+        "minPsnr": 82.7247284862714
+      },
+      "notRun": "Remaining story cases, commerce/typography matrices, later provider/builder/inspector/frozen stages"
     }
   ]
 }

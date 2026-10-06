@@ -70,8 +70,11 @@ still hold before relying on them.
   costs are recorded (12.3–2,556.3 ms medians), without a real-time claim.
   The first final gate stopped at the stale nine-example integration inventory:
   1,840 unit / 46 runtime / 138 other integration tests passed. All ten examples
-  now compile and validate pinned assets in focused verification. A complete
-  final gate repeat and milestone PR remain pending; no owner decision is pending.
+  now compile and validate pinned assets. The second full gate passed all
+  preceding checks, then calibration-pan timing failed at 1.285× (pixels pass).
+  Compiled spatial/reference inventories and root binding fast paths are repaired;
+  pinned focused calibration passes at 1.227× and 146 focused units/build pass.
+  The full repeat and milestone PR remain pending; no owner decision is pending.
   [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
@@ -225,6 +228,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 ordinary-scope hot-path checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `3b277d5`.
+- **Failure:** second full gate passed unit/runtime/integration/depth and preceding
+  browser groups, then calibration-pan pixels passed but timing was 1.285× > 1.25.
+  Remaining family matrices and frozen-baseline stages did not execute.
+- **Repair:** compiled spatial/reference-writer inventories avoid repeated scans;
+  root binding IDs avoid allocation. Existing writer windows/axes are retained.
+- **Focused result:** pinned isolated calibration passes at 1.227×, delta one;
+  146 focused units and build pass. Timing variability remains documented.
+- **Next:** repeat complete gate on committed code; milestone PR remains pending.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 final-gate example inventory repair
 

@@ -1,4 +1,5 @@
 import type { Composition } from "@still-shift/scene-contract";
+import { compileComposition } from "../evaluate/compile.ts";
 import {
   compositionExposureFrames,
   evaluateCompositionExposure,
@@ -75,11 +76,7 @@ export function renderCompositionExposure<S extends Surface>(
       break;
     }
   // All spatial shutter samples must pass before accumulation can touch the retained frame.
-  if (
-    [comp, ...(comp.precomps ?? [])].some((scope) =>
-      scope.layers.some((layer) => layer.threeD || layer.type === "camera"),
-    )
-  )
+  if (compileComposition(comp).spatialScopes.size)
     for (const candidate of graphs())
       if (candidate.graph.spatial)
         requireSpatialCapabilities(candidate.graph.root, {

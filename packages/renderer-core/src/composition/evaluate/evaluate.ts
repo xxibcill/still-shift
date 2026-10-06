@@ -707,9 +707,11 @@ class Evaluation {
       mask.feather = Math.max(0, mask.feather);
     }
     if (state.layer.constraintReference === undefined) {
-      const written = this.writesReference(ctx, state);
+      const written = this.compiled.referenceWrites
+        ? this.writesReference(ctx, state)
+        : undefined;
       for (let axis = 0; axis < state.constraintReference.length; axis++)
-        if (!written[axis])
+        if (!written?.[axis])
           state.constraintReference[axis] = state.transform.anchor[axis]!;
     }
   }
