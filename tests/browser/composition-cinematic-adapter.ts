@@ -20,6 +20,8 @@ import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as Timing from "../helpers/paired-render-timing.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
 import { cinematicPreviewEncoder } from "../helpers/cinematic-preview-export.ts";
+import { cinematicEffectVariants } from "../helpers/composition-cinematic-effects.ts";
+import { cinematicInspectorAcceptance } from "./cinematic-inspector.ts";
 import {
   cameraHardwarePreview,
   type CameraFixture,
@@ -70,229 +72,239 @@ let totalFrames = 0;
 try {
   for (const entry of fixtures) {
     const path = resolve(root, entry.path),
-      source = CinematicSceneSchema.parse(
+      original = CinematicSceneSchema.parse(
         JSON.parse(await readFile(path, "utf8")),
       );
-    const composition = cinematicToComposition(source),
-      scene = compileCinematicScene(source);
-    const urls = Object.fromEntries(
-      composition.assets.map((asset) => [
-        asset.id,
-        `/@fs${resolve(dirname(path), asset.path)}`,
-      ]),
-    );
-    if (!smoke)
-      hardwareFixtures.push({
-        name: entry.id,
-        doc: composition,
-        assetUrls: urls,
-        backends: backends as Render.CompositionBackend[],
-        frames: [
-          0,
-          Math.floor(composition.frameCount / 2),
-          composition.frameCount - 1,
-        ],
-      });
-    for (const backend of backends) {
-      const page = await browser.newPage();
-      const encoder = smoke
-        ? undefined
-        : cinematicPreviewEncoder(
-            scene,
-            join(directory, `${hardwareFixtures.length}-${backend}.mp4`),
-          );
-      try {
-        await page.addInitScript("window.__name = (fn) => fn;");
-        await page.goto(server.resolvedUrls!.local[0]!);
-        if (!environment) {
-          environment = await probeRenderEnvironment(page);
-          assertPinnedRenderEnvironment(environment);
-        }
-        if (encoder) {
-          await page.exposeFunction("captureCinematicFrame", encoder.write);
-          await page.exposeFunction("finishCinematicCapture", encoder.finish);
-        }
-        const report = await page.evaluate(
-          async ({
-            sceneJson,
-            compositionJson,
-            urls,
-            backend,
-            smoke,
-            tier,
-          }) => {
-            const scene = JSON.parse(sceneJson) as ReturnType<
-              typeof Render.compileCinematicScene
-            >;
-            const composition = JSON.parse(compositionJson) as Composition;
-            const moduleUrl = "/packages/renderer-core/src/index.ts";
-            const m = (await import(moduleUrl)) as typeof Render;
-            const canvas = document.createElement("canvas"),
-              oldCanvas = document.createElement("canvas");
-            const legacy = m.createIllustratedPreview(
-              oldCanvas,
+    const variants = cinematicEffectVariants(entry.id, original);
+    const inputs = process.argv.includes("--effects-only")
+      ? variants
+      : [{ id: entry.id, scene: original }, ...variants];
+    for (const item of inputs) {
+      const source = CinematicSceneSchema.parse(item.scene);
+      const composition = cinematicToComposition(source),
+        scene = compileCinematicScene(source);
+      const urls = Object.fromEntries(
+        composition.assets.map((asset) => [
+          asset.id,
+          `/@fs${resolve(dirname(path), asset.path)}`,
+        ]),
+      );
+      if (!smoke)
+        hardwareFixtures.push({
+          name: item.id,
+          doc: composition,
+          assetUrls: urls,
+          backends: backends as Render.CompositionBackend[],
+          frames: [
+            0,
+            Math.floor(composition.frameCount / 2),
+            composition.frameCount - 1,
+          ],
+        });
+      for (const backend of backends) {
+        const page = await browser.newPage();
+        const encoder = smoke
+          ? undefined
+          : cinematicPreviewEncoder(
               scene,
-              await m.loadIllustratedImages(scene, (id) => urls[id]!),
+              join(directory, `${hardwareFixtures.length}-${backend}.mp4`),
             );
-            const native = m.createCompositionPreview(
-              canvas,
-              composition as Composition,
-              await m.loadCompositionResources(
-                composition as Composition,
-                (id) => urls[id]!,
-              ),
-              { backend: backend as Render.CompositionBackend },
-            );
-            const old = oldCanvas.getContext("2d")!;
-            const hashes = new Map<number, string>();
-            const hash = async (pixels: Uint8ClampedArray) =>
-              Array.from(
-                new Uint8Array(
-                  await crypto.subtle.digest("SHA-256", new Uint8Array(pixels)),
-                ),
-              ).join(",");
-            const frames = smoke
-              ? [
-                  ...new Set([
-                    0,
-                    Math.floor(composition.frameCount / 4),
-                    Math.floor(composition.frameCount / 2),
-                    Math.floor((3 * composition.frameCount) / 4),
-                    composition.frameCount - 1,
-                  ]),
-                ]
-              : Array.from(
-                  { length: composition.frameCount },
-                  (_, frame) => frame,
-                );
-            let maxDelta = 0,
-              minPsnr = Infinity;
-            const failures: { frame: number; delta: number; psnr: number }[] =
-              [];
-            const errors: unknown[] = [];
-            try {
-              for (const frame of frames) {
-                legacy.renderFrame(frame);
-                const result = native.renderFrame(frame);
-                errors.push(
-                  ...result.diagnostics.filter(
-                    (diagnostic) => diagnostic.severity === "error",
-                  ),
-                );
-                const pixels = native.readPixels();
-                const comparison = m.compareFrames(
-                  old.getImageData(0, 0, canvas.width, canvas.height).data,
-                  pixels,
-                  canvas.width,
-                  canvas.height,
-                );
-                maxDelta = Math.max(maxDelta, comparison.maxChannelDelta);
-                minPsnr = Math.min(minPsnr, comparison.psnr);
-                if (!m.meetsTier(comparison, tier))
-                  failures.push({
-                    frame,
-                    delta: comparison.maxChannelDelta,
-                    psnr: comparison.psnr,
-                  });
-                hashes.set(frame, await hash(pixels));
-                if (!smoke)
-                  await (
-                    window as unknown as {
-                      captureCinematicFrame: (png: string) => Promise<void>;
-                    }
-                  ).captureCinematicFrame(
-                    canvas.toDataURL("image/png").split(",")[1]!,
-                  );
-              }
-              for (const frame of [...frames].reverse()) {
-                native.renderFrame(frame);
-                assertBrowser(
-                  (await hash(native.readPixels())) === hashes.get(frame),
-                  `Reverse seek changed frame ${frame}`,
-                );
-              }
-              const previewChecksum = smoke
-                ? undefined
-                : await (
-                    window as unknown as {
-                      finishCinematicCapture: () => Promise<string>;
-                    }
-                  ).finishCinematicCapture();
-              let timing;
-              if (!smoke) {
-                const timingUrl = "/tests/helpers/paired-render-timing.ts";
-                const paired = (await import(timingUrl)) as typeof Timing;
-                timing = paired.measurePairedRenderTimings(
-                  composition.frameCount,
-                  {
-                    renderFrame: legacy.renderFrame,
-                    readPixels: () =>
-                      old.getImageData(0, 0, canvas.width, canvas.height),
-                  },
-                  {
-                    renderFrame: native.renderFrame,
-                    readPixels: native.readPixels,
-                  },
-                );
-              }
-              return {
-                frames: frames.length,
-                reverseFrames: frames.length,
-                maxDelta,
-                minPsnr,
-                failures,
-                errors,
-                previewChecksum,
-                ...timing,
-              };
-            } finally {
-              native.dispose();
-              legacy.dispose();
-            }
-            function assertBrowser(condition: boolean, message: string) {
-              if (!condition) throw Error(message);
-            }
-          },
-          {
-            sceneJson: JSON.stringify(scene),
-            compositionJson: JSON.stringify(composition),
-            urls,
-            backend,
-            smoke,
-            tier: entry.tier,
-          },
-        );
-        console.log(
-          `${backend} ${entry.id}: ${report.frames} frames ${JSON.stringify(report)}`,
-        );
-        assert.deepEqual(report.errors, [], `${entry.id} diagnostics`);
-        assert.deepEqual(report.failures, [], `${entry.id} pixels`);
-        if (!smoke && backend === "canvas2d")
-          assert.ok(
-            report.ratio! <= 1.25,
-            `${entry.id} Canvas ratio ${report.ratio} > 1.25`,
-          );
-        if (!smoke && backend === "webgl2" && report.ratio! > 1.25)
-          console.log(
-            `CE6-P deferred WebGL timing only: ${entry.id} ${report.ratio}`,
-          );
-        totalFrames += report.frames;
-        reports.push({ id: entry.id, backend, ...report });
-        if (!smoke)
-          exports.push(
-            await assertAdapterExport(
-              source,
-              dirname(path),
-              entry.id,
-              backend as Render.CompositionBackend,
-              report.previewChecksum,
-            ),
-          );
-      } finally {
         try {
-          await encoder?.close();
+          await page.addInitScript("window.__name = (fn) => fn;");
+          await page.goto(server.resolvedUrls!.local[0]!);
+          if (!environment) {
+            environment = await probeRenderEnvironment(page);
+            assertPinnedRenderEnvironment(environment);
+          }
+          if (encoder) {
+            await page.exposeFunction("captureCinematicFrame", encoder.write);
+            await page.exposeFunction("finishCinematicCapture", encoder.finish);
+          }
+          const report = await page.evaluate(
+            async ({
+              sceneJson,
+              compositionJson,
+              urls,
+              backend,
+              smoke,
+              tier,
+            }) => {
+              const scene = JSON.parse(sceneJson) as ReturnType<
+                typeof Render.compileCinematicScene
+              >;
+              const composition = JSON.parse(compositionJson) as Composition;
+              const moduleUrl = "/packages/renderer-core/src/index.ts";
+              const m = (await import(moduleUrl)) as typeof Render;
+              const canvas = document.createElement("canvas"),
+                oldCanvas = document.createElement("canvas");
+              const legacy = m.createIllustratedPreview(
+                oldCanvas,
+                scene,
+                await m.loadIllustratedImages(scene, (id) => urls[id]!),
+              );
+              const native = m.createCompositionPreview(
+                canvas,
+                composition as Composition,
+                await m.loadCompositionResources(
+                  composition as Composition,
+                  (id) => urls[id]!,
+                ),
+                { backend: backend as Render.CompositionBackend },
+              );
+              const old = oldCanvas.getContext("2d")!;
+              const hashes = new Map<number, string>();
+              const hash = async (pixels: Uint8ClampedArray) =>
+                Array.from(
+                  new Uint8Array(
+                    await crypto.subtle.digest(
+                      "SHA-256",
+                      new Uint8Array(pixels),
+                    ),
+                  ),
+                ).join(",");
+              const frames = smoke
+                ? [
+                    ...new Set([
+                      0,
+                      Math.floor(composition.frameCount / 4),
+                      Math.floor(composition.frameCount / 2),
+                      Math.floor((3 * composition.frameCount) / 4),
+                      composition.frameCount - 1,
+                    ]),
+                  ]
+                : Array.from(
+                    { length: composition.frameCount },
+                    (_, frame) => frame,
+                  );
+              let maxDelta = 0,
+                minPsnr = Infinity;
+              const failures: { frame: number; delta: number; psnr: number }[] =
+                [];
+              const errors: unknown[] = [];
+              try {
+                for (const frame of frames) {
+                  legacy.renderFrame(frame);
+                  const result = native.renderFrame(frame);
+                  errors.push(
+                    ...result.diagnostics.filter(
+                      (diagnostic) => diagnostic.severity === "error",
+                    ),
+                  );
+                  const pixels = native.readPixels();
+                  const comparison = m.compareFrames(
+                    old.getImageData(0, 0, canvas.width, canvas.height).data,
+                    pixels,
+                    canvas.width,
+                    canvas.height,
+                  );
+                  maxDelta = Math.max(maxDelta, comparison.maxChannelDelta);
+                  minPsnr = Math.min(minPsnr, comparison.psnr);
+                  if (!m.meetsTier(comparison, tier))
+                    failures.push({
+                      frame,
+                      delta: comparison.maxChannelDelta,
+                      psnr: comparison.psnr,
+                    });
+                  hashes.set(frame, await hash(pixels));
+                  if (!smoke)
+                    await (
+                      window as unknown as {
+                        captureCinematicFrame: (png: string) => Promise<void>;
+                      }
+                    ).captureCinematicFrame(
+                      canvas.toDataURL("image/png").split(",")[1]!,
+                    );
+                }
+                for (const frame of [...frames].reverse()) {
+                  native.renderFrame(frame);
+                  assertBrowser(
+                    (await hash(native.readPixels())) === hashes.get(frame),
+                    `Reverse seek changed frame ${frame}`,
+                  );
+                }
+                const previewChecksum = smoke
+                  ? undefined
+                  : await (
+                      window as unknown as {
+                        finishCinematicCapture: () => Promise<string>;
+                      }
+                    ).finishCinematicCapture();
+                let timing;
+                if (!smoke) {
+                  const timingUrl = "/tests/helpers/paired-render-timing.ts";
+                  const paired = (await import(timingUrl)) as typeof Timing;
+                  timing = paired.measurePairedRenderTimings(
+                    composition.frameCount,
+                    {
+                      renderFrame: legacy.renderFrame,
+                      readPixels: () =>
+                        old.getImageData(0, 0, canvas.width, canvas.height),
+                    },
+                    {
+                      renderFrame: native.renderFrame,
+                      readPixels: native.readPixels,
+                    },
+                  );
+                }
+                return {
+                  frames: frames.length,
+                  reverseFrames: frames.length,
+                  maxDelta,
+                  minPsnr,
+                  failures,
+                  errors,
+                  previewChecksum,
+                  ...timing,
+                };
+              } finally {
+                native.dispose();
+                legacy.dispose();
+              }
+              function assertBrowser(condition: boolean, message: string) {
+                if (!condition) throw Error(message);
+              }
+            },
+            {
+              sceneJson: JSON.stringify(scene),
+              compositionJson: JSON.stringify(composition),
+              urls,
+              backend,
+              smoke,
+              tier: entry.tier,
+            },
+          );
+          console.log(
+            `${backend} ${item.id}: ${report.frames} frames ${JSON.stringify(report)}`,
+          );
+          assert.deepEqual(report.errors, [], `${item.id} diagnostics`);
+          assert.deepEqual(report.failures, [], `${item.id} pixels`);
+          if (!smoke && backend === "canvas2d")
+            assert.ok(
+              report.ratio! <= 1.25,
+              `${item.id} Canvas ratio ${report.ratio} > 1.25`,
+            );
+          if (!smoke && backend === "webgl2" && report.ratio! > 1.25)
+            console.log(
+              `CE6-P deferred WebGL timing only: ${item.id} ${report.ratio}`,
+            );
+          totalFrames += report.frames;
+          reports.push({ id: item.id, backend, ...report });
+          if (!smoke)
+            exports.push(
+              await assertAdapterExport(
+                source,
+                dirname(path),
+                item.id,
+                backend as Render.CompositionBackend,
+                report.previewChecksum,
+              ),
+            );
         } finally {
-          await page.close();
+          try {
+            await encoder?.close();
+          } finally {
+            await page.close();
+          }
         }
       }
     }
@@ -305,6 +317,7 @@ try {
       server.resolvedUrls!.local[0]!,
       hardwareFixtures,
     );
+    const inspector = await cinematicInspectorAcceptance(browser);
     const proof = resolve(
       root,
       "benchmarks/results/composition-ce4c-verification",
@@ -318,6 +331,7 @@ try {
           reports,
           exports,
           hardware,
+          inspector,
           policy: {
             pixels: "unchanged CE0 near tiers",
             state: "0.001 pixel, unit all-frame",

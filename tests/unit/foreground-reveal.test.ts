@@ -1,4 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { cinematicToComposition } from "../../packages/renderer-core/src/composition/adapters/cinematic.ts";
+import { validateCinematicCompositionCoverage } from "../../packages/renderer-core/src/composition/adapters/cinematic-coverage.ts";
+import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { CinematicSceneSchema } from "../../packages/scene-contract/src/cinematic.ts";
 import {
   compileCinematicScene,
@@ -106,6 +109,87 @@ const images = () =>
   ]);
 
 describe("foreground reveal", () => {
+  it("preserves the alpha gate and native projection after composition JSON reload", () => {
+    const input = CinematicSceneSchema.parse(source());
+    const composition = JSON.parse(
+      JSON.stringify(cinematicToComposition(input)),
+    );
+    const assets = images();
+    const native = validateCinematicCompositionCoverage(
+      composition,
+      (id) => assets.get(id)!,
+    );
+    const legacy = inspectForegroundReveal(
+      compileCinematicScene(input),
+      assets,
+    );
+    expect(native!.checkedFrames).toBe(legacy.checkedFrames);
+    expect(native!.clearFrame).toBe(legacy.clearFrame);
+    native!.coverage.forEach((value, frame) =>
+      expect(value).toBeCloseTo(legacy.coverage[frame]!, 12),
+    );
+    const camera = composition.layers.find(
+      (layer: { type: string }) => layer.type === "camera",
+    );
+    camera.viewOffset = [1000, 0];
+    expect(() =>
+      validateCinematicCompositionCoverage(
+        composition,
+        (id) => assets.get(id)!,
+      ),
+    ).toThrow(/uncovered background/);
+  });
+
+  it("rejects painted-background transparency and a transparent reveal after adaptation", () => {
+    const composition = cinematicToComposition(
+      CinematicSceneSchema.parse(source()),
+    );
+    const assets = images();
+    assets.get("roomArt")!.data[(600 * 2400 + 1200) * 4 + 3] = 0;
+    try {
+      validateCinematicCompositionCoverage(
+        composition,
+        (id) => assets.get(id)!,
+      );
+      throw Error("Expected background alpha rejection");
+    } catch (error) {
+      expect(passageDiagnostics(error)).toContainEqual(
+        expect.objectContaining({
+          code: "comp-camera-coverage",
+          node: "far",
+          path: "metadata.cinematicCoverage",
+        }),
+      );
+    }
+    const transparent = images();
+    transparent.set("wallArt", alpha(800, 1200, 800));
+    expect(() =>
+      validateCinematicCompositionCoverage(
+        composition,
+        (id) => transparent.get(id)!,
+      ),
+    ).toThrow(/initial occlusion/);
+  });
+
+  it("rejects malformed persisted safety declarations and missing semantic layers", () => {
+    const input = CinematicSceneSchema.parse(source());
+    const composition = cinematicToComposition(input);
+    composition.metadata!.cinematicCoverage = {
+      background: "far",
+      paintedBounds: [0, 0, Infinity, 1400],
+    };
+    expect(() =>
+      validateCinematicCompositionCoverage(composition, () =>
+        alpha(2400, 1400),
+      ),
+    ).toThrow(/Invalid cinematic/);
+    const missing = cinematicToComposition(input);
+    missing.layers = missing.layers.filter((layer) => layer.id !== "wall");
+    expect(() =>
+      validateCinematicCompositionCoverage(missing, (id) => images().get(id)!),
+    ).toThrow(/single-state stretch image/);
+  });
+
   it("clears actual alpha at every strength, holds the camera early and remains deterministic at 24/30 fps", () => {
     for (const fps of [24, 30])
       for (const intensity of ["dramatic", "standard", "restrained"]) {

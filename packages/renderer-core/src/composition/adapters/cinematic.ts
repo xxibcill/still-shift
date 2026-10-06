@@ -224,6 +224,24 @@ export function cinematicToComposition(
         title: scene.title,
         provenance: scene.provenance,
         cinematicPreset: scene.recipe.preset,
+        cinematicCoverage: {
+          background: scene.recipe.background,
+          paintedBounds: scene.layers.find(
+            (layer) => layer.node === scene.recipe.background,
+          )!.paintedBounds,
+          ...(scene.recipe.preset === "foreground_reveal"
+            ? {
+                reveal: {
+                  subject: scene.recipe.subject,
+                  occluders: scene.layers
+                    .filter((layer) => layer.depth < subjectDepth)
+                    .map((layer) => layer.node),
+                  region: scene.recipe.revealRegion,
+                  settleFrame: scene.cameraFrames[2]!.frame,
+                },
+              }
+            : {}),
+        },
         sourceCameraValidation: scene.cameraValidation,
       },
       "metadata",

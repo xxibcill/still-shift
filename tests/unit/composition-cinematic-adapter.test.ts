@@ -14,6 +14,7 @@ import {
   sampleCinematicBlur,
 } from "../../packages/renderer-core/src/cinematic-scene.ts";
 import { evaluateComp } from "../../packages/renderer-core/src/composition/evaluate/evaluate.ts";
+import { cinematicEffectVariants } from "../helpers/composition-cinematic-effects.ts";
 import { projectLocalPoint } from "../../packages/renderer-core/src/composition/evaluate/spatial-geometry.ts";
 
 const inventory = JSON.parse(
@@ -92,6 +93,29 @@ it("validates native framing after an authored camera edit", () => {
       composition,
     ),
   ).toThrow();
+});
+
+it("compiles every shared cinematic effect without changing native plane geometry", () => {
+  const id = "cinematic/threshold-push";
+  const input = source(fixtures.find((fixture) => fixture.id === id)!.path);
+  const variants = cinematicEffectVariants(id, input);
+  expect(variants).toHaveLength(7);
+  for (const variant of variants) {
+    const legacy = compileCinematicScene(
+      CinematicSceneSchema.parse(variant.scene),
+    );
+    const composition = cinematicToComposition(variant.scene);
+    for (let frame = 0; frame < composition.frameCount; frame++) {
+      const tree = evaluateComp(composition, frame);
+      for (const node of legacy.nodes) {
+        const state = tree.layers.find((state) => state.id === node.id)!;
+        const actual = projectLocalPoint(state.projection!, [0, 0])!;
+        const expected = projectCinematicNode(legacy, node, frame);
+        expect(actual[0]).toBeCloseTo(expected.left, 8);
+        expect(actual[1]).toBeCloseTo(expected.top, 8);
+      }
+    }
+  }
 });
 
 it("preserves fractional shutter clocks and supported shared effects", () => {

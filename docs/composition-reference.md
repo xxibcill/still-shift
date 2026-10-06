@@ -2740,6 +2740,28 @@ screen-space grain is independent of the story camera. Shared-effect opt-in,
 root-target validation and component annotation ownership rules still apply.
 Motion blur is handled by the separate CE7 dependency.
 
+### Cinematic scenes as native compositions
+
+`cinematicToComposition(scene)` compiles `illustrated-scene-2` camera recipes to
+native 3D image planes and a keyed one-node camera. Integer and shutter sample
+times are resolved during compilation. The composition renderer reads native
+keys; it does not resample the cinematic recipe during frame rendering.
+
+Camera `viewOffset` preserves screen framing and tracking. Focus handoff uses
+the native camera's `blurModel: "gaussian"`, `maxBlur`, keyed focus distance and
+aperture; image `focusDepth` preserves the authored focus planes as the camera
+moves. Other depth, sorting, clipping and lighting calculations use the actual
+world geometry. Affine natural-size image planes use one source draw; local
+masks, nonprimitive effects, perspective and lighting retain their local surfaces.
+
+The adapter checks coverage, source density, protected framing, edge attachments
+and recipe movement against the evaluated composition camera. Persisted
+`metadata.cinematicCoverage` keeps the painted-background alpha declaration and
+semantic foreground-reveal target. Preview and export check decoded alpha and
+native projection after JSON reload. Invalid declarations, transparent painted
+coverage and a reveal that does not clear fail with `comp-camera-coverage`.
+Shared `effects-1` opt-in and target validation are preserved.
+
 ### Temporal echo (CE6 dependency slice)
 
 `time.echo` version `1.0.0` samples earlier content in the containing scope's frame

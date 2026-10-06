@@ -223,19 +223,45 @@
         }
       },
       "repair": "Natural-size source cache follows the destination software raster mode, with separate CPU/default cache entries. The middle frame becomes exact on both backends; hardware tolerances are unchanged. Final full acceptance still pending."
+    },
+    {
+      "name": "persisted cinematic alpha safety and complete effect/inspector acceptance",
+      "status": "implemented-focused-pass-browser-pending",
+      "checks": {
+        "focusedUnit": {
+          "files": 2,
+          "tests": 26,
+          "status": "pass"
+        },
+        "build": "pass",
+        "focusedLint": "pass",
+        "schemaGeneration": "pass"
+      },
+      "semantics": [
+        "Persisted background painted alpha and all-frame native projected coverage, including three-sigma focus padding",
+        "Shared projected reveal alpha algorithm, preserving legacy arithmetic and evaluating native planes after JSON reload",
+        "Located invalid/transparent/missing semantic-layer failures",
+        "Seven bounded effects-1 variants cover all six effects and active multi-sample stacking",
+        "Real xy tangent edit, frustum, undo/redo, Gaussian control preservation and JSON/backend reload harness"
+      ],
+      "failedAttempts": [
+        "Initial build did not narrow layers/matrices through an implicitly typed never-returning callback; explicitly typed the fail callback and build passed"
+      ],
+      "browserAcceptance": "Pending; no render result claimed for this slice"
     }
   ],
   "pending": [
-    "cinematic adapter and all-frame state parity",
-    "coverage/source/framing checks on adapted native camera",
-    "Gaussian focus compatibility and renderer parity",
-    "all fifteen cinematic fixtures, reverse seeks, repeat exports and hardware",
-    "final complete pinned pnpm check",
-    "milestone PR creation and attachment"
+    "Final full native base/effect matrix, exports, actual hardware and real inspector",
+    "Full pinned pnpm check with frozen baselines unchanged",
+    "Milestone PR creation and attachment"
   ],
   "unchangedPolicies": [
     "frozen CE0 baselines",
     "Canvas pixel/timing assertions",
     "GitHub Actions prohibited and disabled"
-  ]
+  ],
+  "coordination": {
+    "status": "native timings queued while independent review checks are active",
+    "approval": "Handoff message rejected by automatic approval review for missing explicit follow-up authorization; user question pending. No message sent."
+  }
 }

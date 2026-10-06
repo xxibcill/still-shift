@@ -52,7 +52,9 @@ still hold before relying on them.
   The full focus run passes 192 software frames/seeks and all export comparisons,
   but fails hardware blur (SSIM0.98918). CPU source raster consistency repairs it;
   all six hardware samples, 11 focused tests and build pass. Full native acceptance
-  and the complete local gate remain pending. No owner decision is pending.
+  and the complete local gate remain pending. Persisted native alpha safety and
+  seven effect variants pass 26 focused tests/build/lint. Independent review gates
+  are active; native timing is queued. Follow-up coordination authorization is pending.
   [Evidence](./composition-ce4c-results.json).
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
@@ -235,6 +237,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c persisted alpha safety checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, raster fix `c3f85ec`.
+- **Done:** persisted background alpha/native coverage and semantic reveal checks;
+  all six shared-effect variants and real framing editor/save/reload acceptance.
+- **Results:** 26 focused tests, build/lint and schema generation pass. The new
+  browser checks and final full gate remain pending. Initial narrowing build
+  failure is repaired and retained in the evidence.
+- **Open / next:** native smoke/full matrix and complete local verification.
+  Independent review gates are active; timed checks are queued. Automatic review
+  rejected a coordination follow-up; explicit user authorization is pending.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c source raster consistency checkpoint
 
