@@ -708,6 +708,17 @@ describe("composition-1 fixtures", () => {
     ) as Composition;
     expect(validateComposition(depthImage).ok).toBe(true);
     allLayers.push(...depthImage.layers);
+    const imagePlane = JSON.parse(
+      readFileSync(
+        resolve(
+          root,
+          "benchmarks/fixtures/composition/ce4d/linear-image-plane.json",
+        ),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(imagePlane).ok).toBe(true);
+    allLayers.push(...imagePlane.layers);
     for (const option of layers.CompositionLayerSchema.options) {
       const type = option.shape.type.value;
       if (UNAVAILABLE_LAYER_TYPES[type]) continue;

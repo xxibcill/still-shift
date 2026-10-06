@@ -8,7 +8,11 @@ import {
 import { evaluateComp, buildRenderGraph } from "@still-shift/renderer-core";
 import { ownCurve } from "../../packages/renderer-core/src/composition/evaluate/expression-keys.ts";
 import { requireSpatialCapabilities } from "../../packages/renderer-core/src/composition/render/spatial-capabilities.ts";
-import { depthImageGrid } from "../../packages/renderer-core/src/composition/render/webgl-depth-image.ts";
+import {
+  depthImageGrid,
+  validateImagePlaneSurface,
+  validateImagePlaneAssets,
+} from "../../packages/renderer-core/src/composition/render/webgl-depth-image.ts";
 import { compositionTracks } from "../../apps/lab/src/composition-keys.ts";
 import { comp, depthImage, seq } from "@still-shift/motion";
 
@@ -56,6 +60,33 @@ function fixture(): Composition {
 }
 
 describe("native depth-image contract and local evaluation", () => {
+  it("preflights local MSAA and source/depth budgets before clearing the target", () => {
+    expect(() => validateImagePlaneSurface(1920, 1080, "photo")).not.toThrow();
+    expect(() => validateImagePlaneSurface(7680, 4320, "photo")).toThrow(
+      /128 MiB/,
+    );
+    expect(() => validateImagePlaneSurface(100.5, 100, "photo")).toThrow(
+      /integer dimensions/,
+    );
+    expect(() =>
+      validateImagePlaneAssets([1600, 900], [1600, 900], "photo"),
+    ).not.toThrow();
+    expect(() =>
+      validateImagePlaneAssets([8192, 8192], undefined, "photo"),
+    ).toThrow(/128 MiB GPU texture/);
+    const doc = fixture();
+    doc.layers[0] = {
+      ...doc.layers[0]!,
+      size: [7680, 4320],
+    } as Composition["layers"][number];
+    const graph = buildRenderGraph(doc, evaluateComp(doc, 14));
+    expect(() =>
+      requireSpatialCapabilities(graph.root, {
+        projective: true,
+        depthImage: true,
+      }),
+    ).toThrow(/128 MiB/);
+  });
   it("registers both prepared builder assets and animates native depth controls", () => {
     const assets = fixture().assets as Extract<
       Composition["assets"][number],

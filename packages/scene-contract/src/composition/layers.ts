@@ -4,7 +4,7 @@ import { TextContainerSchema } from "../story-acting.ts";
 import { PoseRegistrationSchema } from "../story-acting.ts";
 import { compositionTypographyFields } from "./typography.ts";
 import { ShapeContentsSchema } from "./shapes.ts";
-import { depthImageFields } from "./depth-image.ts";
+import { depthImageFields, ImagePlaneSchema } from "./depth-image.ts";
 import {
   AnimatableColorSchema,
   AnimatableDiscreteSchema,
@@ -221,6 +221,10 @@ export const ImageLayerSchema = z
     stateMix: animatableScalar(unit).optional(),
     /** `natural-size` rasterises vector sources once at their natural size (parity note 5). */
     rasterize: z.enum(["draw", "natural-size"]).optional(),
+    /** Opt-in linear-light source filtering on the native WebGL image plane. */
+    sampling: z.literal("linear-srgb").optional(),
+    alphaMode: z.enum(["preserve", "opaque"]).optional(),
+    plane: ImagePlaneSchema.optional(),
   })
   .strict();
 

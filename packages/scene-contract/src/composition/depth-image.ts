@@ -12,7 +12,46 @@ export const DepthMotionSchema = z
   })
   .strict();
 
+/** Image-local pan/zoom/roll, before its layer transform and camera. */
+export const ImagePlaneMotionSchema = z
+  .object({
+    scale: animatableScalar(finite.min(0.5).max(4)).optional(),
+    offset: animatableVector2(finite.min(-2).max(2)).optional(),
+    roll: animatableScalar(finite.min(-360).max(360)).optional(),
+  })
+  .strict();
+
+export const ImagePlaneSchema = z
+  .object({
+    overscan: finite.min(0).max(0.14).optional(),
+    framing: z
+      .object({
+        x: unit,
+        y: unit,
+        width: finite.positive().max(1),
+        height: finite.positive().max(1),
+      })
+      .strict()
+      .refine(
+        (value) =>
+          value.x + value.width <= 1.000000001 &&
+          value.y + value.height <= 1.000000001,
+        "Framing crop must stay inside the source",
+      )
+      .optional(),
+    motion: ImagePlaneMotionSchema.optional(),
+    reveal: z
+      .object({
+        mode: z.enum(["wipe", "half-wipe"]),
+        progress: animatableScalar(unit),
+      })
+      .strict()
+      .optional(),
+  })
+  .strict();
+
 export const depthImageFields = {
+  alphaMode: z.enum(["preserve", "opaque"]).optional(),
   sourceAsset: compositionId,
   /** Prepared red-channel normalized depth. Both dimensions must match its asset. */
   depth: z

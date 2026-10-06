@@ -141,6 +141,9 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `stateFrom`           | no       | integer or object                                                                                                                                                                                     |
 | `stateMix`            | no       | number or object                                                                                                                                                                                      |
 | `rasterize`           | no       | `draw`, `natural-size`                                                                                                                                                                                |
+| `sampling`            | no       | `linear-srgb`                                                                                                                                                                                         |
+| `alphaMode`           | no       | `preserve`, `opaque`                                                                                                                                                                                  |
+| `plane`               | no       | object                                                                                                                                                                                                |
 
 ### `depth-image` contract
 
@@ -176,6 +179,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `metadata`            | no       | object                                                                                                                                                                                                |
 | `type`                | yes      | `depth-image`                                                                                                                                                                                         |
 | `size`                | yes      | [number, number]                                                                                                                                                                                      |
+| `alphaMode`           | no       | `preserve`, `opaque`                                                                                                                                                                                  |
 | `sourceAsset`         | yes      | string                                                                                                                                                                                                |
 | `depth`               | yes      | object                                                                                                                                                                                                |
 | `overscan`            | yes      | number                                                                                                                                                                                                |
@@ -1088,6 +1092,9 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-effect-registration`         | Effect registration requires a unique ID, valid definition and GPU callback.                             |
 | `comp-effect-surface`              | Effect scratch textures and output must belong to the current callback and meet size/budget constraints. |
 | `comp-effect-version`              | Registered effect versions differ from the captured export snapshot.                                     |
+| `comp-depth-motion`                | Depth-image local motion exceeds its safe bounded envelope.                                              |
+| `comp-depth-provenance`            | Prepared depth motion, dimensions or request provenance are inconsistent.                                |
+| `comp-image-plane`                 | Image-plane local sampling controls exceed their bounded envelope.                                       |
 | `comp-effect-params`               | Check evaluated effect controls and their cross-parameter invariants.                                    |
 | `comp-effect-curve`                | Evaluated color curve points must be bounded, ordered and span the input domain.                         |
 | `comp-effect-bounds`               | An effect bounds callback failed or returned a non-finite/reversed rectangle.                            |

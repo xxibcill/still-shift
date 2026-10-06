@@ -151,6 +151,54 @@ export function compositionTracks(document: Composition): KeyTrack[] {
           name === "scale" ? 1 : 0,
         );
     }
+    if (layer.type === "image" && layer.sampling === "linear-srgb") {
+      for (const name of ["scale", "roll"] as const)
+        add(
+          layer.plane?.motion?.[name],
+          [...path, "plane", "motion", name],
+          `plane.motion.${name}`,
+          "scalar",
+          scope,
+          layer.id,
+          fps,
+        );
+      const raw = layer.plane?.motion?.offset;
+      if (
+        raw &&
+        typeof raw === "object" &&
+        !Array.isArray(raw) &&
+        !isKeyed(raw)
+      )
+        for (const axis of ["x", "y"] as const)
+          add(
+            raw[axis],
+            [...path, "plane", "motion", "offset", axis],
+            `plane.motion.offset.${axis}`,
+            "scalar",
+            scope,
+            layer.id,
+            fps,
+          );
+      else
+        add(
+          raw,
+          [...path, "plane", "motion", "offset"],
+          "plane.motion.offset",
+          "vector",
+          scope,
+          layer.id,
+          fps,
+        );
+      add(
+        layer.plane?.reveal?.progress,
+        [...path, "plane", "reveal", "progress"],
+        "plane.reveal.progress",
+        "scalar",
+        scope,
+        layer.id,
+        fps,
+      );
+    }
     if (layer.type === "depth-image") {
       for (const name of ["scale", "strength", "roll"] as const)
         add(

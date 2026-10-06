@@ -360,6 +360,26 @@ function checkLayer(
       break;
     }
     case "image": {
+      if ((layer.plane || layer.alphaMode) && layer.sampling !== "linear-srgb")
+        fail(
+          "comp-asset-type",
+          [...path, "sampling"],
+          "Image-local plane controls/alphaMode require explicit linear-srgb sampling",
+        );
+      if (
+        layer.sampling === "linear-srgb" &&
+        (layer.sources.length !== 1 ||
+          !["cover", "stretch"].includes(layer.fit ?? "contain") ||
+          layer.sources[0]!.crop ||
+          layer.sources[0]!.registration ||
+          layer.stateFrom !== undefined ||
+          layer.stateMix !== undefined)
+      )
+        fail(
+          "comp-asset-type",
+          [...path, "sampling"],
+          "Linear image planes require one cover/stretch source without crop, registration or crossfade",
+        );
       layer.sources.forEach((source, i) => {
         const image = asset(source.asset, "image", ["sources", i, "asset"]);
         if (

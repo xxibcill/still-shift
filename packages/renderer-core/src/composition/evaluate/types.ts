@@ -15,7 +15,7 @@ import type {
 } from "./spatial-geometry.ts";
 import type { SampledCameraControls } from "./spatial-state.ts";
 import type { SampledLight, WorldLight } from "./lighting.ts";
-import type { SampledDepthMotion } from "./depth-image.ts";
+import type { SampledDepthMotion, SampledImagePlane } from "./depth-image.ts";
 
 export type Rgba = [number, number, number, number];
 export type Bounds = {
@@ -73,6 +73,7 @@ export type EvaluatedLayer = {
   camera?: SampledCameraControls;
   light?: SampledLight;
   depthMotion?: SampledDepthMotion;
+  imagePlane?: SampledImagePlane;
   /** Includes ancestor group opacity; ordinary parent opacity never inherits. */
   opacity: number;
   bounds: Bounds | null;

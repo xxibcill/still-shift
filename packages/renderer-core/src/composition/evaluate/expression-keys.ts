@@ -63,6 +63,17 @@ export function ownCurve(
   let spatial = false;
   let fallbackZ = 0;
   switch (head!.name) {
+    case "plane":
+      if (layer.type !== "image") return undefined;
+      raw =
+        next!.name === "reveal"
+          ? layer.plane?.reveal?.progress
+          : layer.plane?.motion?.[last!.name as "scale" | "offset" | "roll"];
+      if (last!.name === "offset") {
+        kind = "vector";
+        axis = segments[3]?.name;
+      }
+      break;
     case "motion":
       raw =
         layer.type === "depth-image"

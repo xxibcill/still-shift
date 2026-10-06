@@ -11,6 +11,7 @@ import {
   fallback2DScene,
   isFlatPreset,
   resolvePreviewScene,
+  resolveDepthPreviewPreset,
   type PreviewPreset,
   type PreviewScene,
   type PreviewWarning,
@@ -304,15 +305,13 @@ const choosePreset = (
   request: AnimationRequest,
   normalizedSourceHash: string,
 ): PreviewPreset => {
-  if (request.preset !== "auto") return request.preset;
-  if (request.height > request.width) return "horizontal_drift";
-  const presets: PreviewPreset[] = [
-    "slow_push",
-    "horizontal_drift",
-    "cinematic_float",
-  ];
-  const hashPrefix = Number.parseInt(normalizedSourceHash.slice(7, 15), 16);
-  return presets[((hashPrefix ^ request.seed) >>> 0) % presets.length]!;
+  return resolveDepthPreviewPreset(
+    request.preset,
+    request.seed,
+    request.width,
+    request.height,
+    normalizedSourceHash,
+  );
 };
 
 const fileExists = async (path: string): Promise<boolean> => {

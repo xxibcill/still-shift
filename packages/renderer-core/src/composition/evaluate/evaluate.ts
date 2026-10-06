@@ -1,6 +1,11 @@
 import { ShapeGeometryBudget } from "../shapes/budget.ts";
 import { sampleShapes, clampShapes, cloneShapes } from "../shapes/sample.ts";
-import { sampleDepthMotion, validateDepthMotion } from "./depth-image.ts";
+import {
+  sampleDepthMotion,
+  validateDepthMotion,
+  sampleImagePlane,
+  validateImagePlane,
+} from "./depth-image.ts";
 import { compileShapes } from "../shapes/compile.ts";
 import {
   sampleEffects,
@@ -106,7 +111,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-48";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-49";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -338,6 +343,8 @@ function baseState(
     state.contents = sampleShapes(layer.contents, time, fps, budget);
   if (layer.type === "depth-image")
     state.depthMotion = sampleDepthMotion(layer, time, fps);
+  if (layer.type === "image" && layer.sampling === "linear-srgb")
+    state.imagePlane = sampleImagePlane(layer, time, fps);
   if (layer.type === "light") {
     const sampled = sampleLight(layer, time, fps);
     state.light = sampled.controls;
@@ -692,6 +699,8 @@ class Evaluation {
     state.transform.opacity = unit(state.transform.opacity);
     if (state.depthMotion)
       validateDepthMotion(state.depthMotion, state.id, this.time);
+    if (state.imagePlane)
+      validateImagePlane(state.imagePlane, state.id, this.time);
     if (state.light) {
       try {
         validateLight(state.light, false);
@@ -1654,6 +1663,14 @@ function sealStage(
       : {}),
     ...(state.color ? { color: [...state.color] as typeof state.color } : {}),
     ...(state.light ? { light: { ...state.light } } : {}),
+    ...(state.imagePlane
+      ? {
+          imagePlane: {
+            ...state.imagePlane,
+            offset: [...state.imagePlane.offset] as [number, number],
+          },
+        }
+      : {}),
     ...(state.depthMotion
       ? {
           depthMotion: {

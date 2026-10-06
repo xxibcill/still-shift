@@ -1,10 +1,43 @@
 import { coverFit, PREVIEW_LIMITS } from "../../scene.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import type { CanvasImageResources } from "./canvas2d.ts";
-import type { DepthImageContent } from "./graph.ts";
+import type { DepthImageContent, ImageContent } from "./graph.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 
-export const DEPTH_IMAGE_SHADER_VERSION = "composition-depth-image-0.1.0";
+export const DEPTH_IMAGE_SHADER_VERSION = "composition-image-plane-0.2.0";
+const IMAGE_PLANE_BYTE_LIMIT = 128 * 1024 * 1024;
+
+export function validateImagePlaneSurface(
+  width: number,
+  height: number,
+  node: string,
+) {
+  if (
+    !Number.isInteger(width) ||
+    !Number.isInteger(height) ||
+    width < 1 ||
+    height < 1 ||
+    width * height * 24 > IMAGE_PLANE_BYTE_LIMIT
+  )
+    passageError(
+      "comp-feature-backend",
+      "Native image planes require integer dimensions and at most 128 MiB of local MSAA/resolve scratch",
+      { node },
+    );
+}
+export function validateImagePlaneAssets(
+  source: readonly [number, number],
+  depth: readonly [number, number] | undefined,
+  node: string,
+) {
+  const bytes = (source[0] * source[1] + (depth ? depth[0] * depth[1] : 0)) * 4;
+  if (bytes > IMAGE_PLANE_BYTE_LIMIT)
+    passageError(
+      "comp-feature-backend",
+      "Image-plane source/depth assets exceed the 128 MiB GPU texture budget",
+      { node },
+    );
+}
 
 const VERTEX = `#version 300 es
 precision highp float;
@@ -30,9 +63,17 @@ const FRAGMENT = `#version 300 es
 precision highp float;
 in vec2 uv;
 uniform sampler2D source;
+uniform float revealMode, revealProgress, opaqueAlpha;
 out vec4 pixel;
 void main() {
   vec4 value=texture(source,uv);
+  if (opaqueAlpha>0.5) value.a=1.0;
+  if (revealMode>0.5 && revealProgress<1.0) {
+    vec3 backdrop=texture(source,vec2(0.01,0.99)).rgb;
+    float boundary=revealMode<1.5 ? revealProgress : 0.5+0.5*revealProgress;
+    float visibility=1.0-smoothstep(boundary-0.0008,boundary+0.0008,uv.x);
+    value=vec4(mix(backdrop,value.rgb,visibility),1.0);
+  }
   // Match the pinned source algorithm's sRGB OETF after linear-light filtering.
   vec3 encoded=mix(pow(value.rgb,vec3(0.41666))*1.055-vec3(0.055),value.rgb*12.92,lessThanEqual(value.rgb,vec3(0.0031308)));
   pixel=vec4(encoded*value.a,value.a);
@@ -78,6 +119,8 @@ export class WebglDepthImages {
   private vertex?: WebGLBuffer;
   private index?: WebGLBuffer;
   private readonly textures = new Map<string, WebGLTexture>();
+  private textureBytes = 0;
+  private readonly textureSizes = new Map<string, number>();
   private readonly locations = new Map<string, WebGLUniformLocation | null>();
   private multisample: Multisample | undefined;
   private count = 0;
@@ -181,13 +224,21 @@ export class WebglDepthImages {
         gl.UNSIGNED_BYTE,
         image as TexImageSource,
       );
+      const bytes = size[0] * size[1] * 4;
       // A bounded asset cache; evictions are recreated from immutable verified bytes.
-      if (this.textures.size >= 64) {
+      while (
+        this.textures.size >= 64 ||
+        this.textureBytes + bytes > IMAGE_PLANE_BYTE_LIMIT
+      ) {
         const oldest = this.textures.keys().next().value!;
         gl.deleteTexture(this.textures.get(oldest)!);
         this.textures.delete(oldest);
+        this.textureBytes -= this.textureSizes.get(oldest)!;
+        this.textureSizes.delete(oldest);
       }
       this.textures.set(key, texture);
+      this.textureSizes.set(key, bytes);
+      this.textureBytes += bytes;
       return texture;
     } catch (error) {
       gl.deleteTexture(texture);
@@ -247,8 +298,65 @@ export class WebglDepthImages {
     }
   }
 
-  draw(content: DepthImageContent): WebglSurface {
+  draw(content: DepthImageContent | ImageContent): WebglSurface {
+    const layer =
+      content.type === "depth-image"
+        ? {
+            id: content.layer.id,
+            sourceAsset: content.layer.sourceAsset,
+            depth: content.layer.depth,
+            sourceHash: content.sourceHash,
+            depthHash: content.depthHash,
+            overscan: content.layer.overscan,
+            edgeDamping: content.layer.edgeDamping ?? 1,
+            framing: content.layer.framing,
+            alphaMode: content.layer.alphaMode ?? "preserve",
+            revealMode: 0,
+            revealProgress: 1,
+            motion: content.motion,
+          }
+        : {
+            id: content.plane!.owner,
+            sourceAsset: content.sources[0]!.asset,
+            depth: undefined,
+            sourceHash: content.plane!.sourceHash,
+            depthHash: undefined,
+            overscan: content.plane!.controls?.overscan ?? 0,
+            edgeDamping: 0,
+            framing: content.plane!.controls?.framing,
+            alphaMode: content.plane!.alphaMode,
+            revealMode:
+              content.plane!.controls?.reveal?.mode === "wipe"
+                ? 1
+                : content.plane!.controls?.reveal?.mode === "half-wipe"
+                  ? 2
+                  : 0,
+            revealProgress: content.plane!.motion.revealProgress,
+            motion: { ...content.plane!.motion, strength: 0 },
+          };
     const gl = this.device.gl;
+    validateImagePlaneSurface(content.width, content.height, layer.id);
+    const requiredAssets = [
+      layer.sourceAsset,
+      ...(layer.depth ? [layer.depth.asset] : []),
+    ];
+    let assetBytes = 0;
+    for (const id of requiredAssets) {
+      const size = this.images.sizes.get(id);
+      if (!size)
+        passageError(
+          "comp-asset-missing",
+          `Image-plane dimensions are unavailable for "${id}"`,
+          { node: layer.id },
+        );
+      assetBytes += size[0] * size[1] * 4;
+    }
+    if (assetBytes > IMAGE_PLANE_BYTE_LIMIT)
+      passageError(
+        "comp-feature-backend",
+        "Image-plane source/depth assets exceed the 128 MiB GPU texture budget",
+        { node: layer.id },
+      );
     const output = this.device.surface(content.width, content.height);
     let resolved: WebglSurface | undefined;
     const old = {
@@ -281,32 +389,20 @@ export class WebglDepthImages {
     let completed = false;
     try {
       this.initialize();
-      const target = this.antialias(
-        content.width,
-        content.height,
-        content.layer.id,
-      );
+      const target = this.antialias(content.width, content.height, layer.id);
       gl.useProgram(this.program!);
       gl.bindVertexArray(this.vao!);
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(
         gl.TEXTURE_2D,
-        this.texture(
-          content.layer.sourceAsset,
-          content.sourceHash,
-          true,
-          content.layer.id,
-        ),
+        this.texture(layer.sourceAsset, layer.sourceHash, true, layer.id),
       );
       gl.activeTexture(gl.TEXTURE1);
       gl.bindTexture(
         gl.TEXTURE_2D,
-        this.texture(
-          content.layer.depth.asset,
-          content.depthHash,
-          false,
-          content.layer.id,
-        ),
+        layer.depth
+          ? this.texture(layer.depth.asset, layer.depthHash!, false, layer.id)
+          : this.texture(layer.sourceAsset, layer.sourceHash, true, layer.id),
       );
       const uniform = (name: string) => {
         if (!this.locations.has(name))
@@ -315,14 +411,24 @@ export class WebglDepthImages {
       };
       gl.uniform1i(uniform("source"), 0);
       gl.uniform1i(uniform("depth"), 1);
-      const sourceSize = this.images.sizes.get(content.layer.sourceAsset)!;
+      gl.uniform1f(uniform("revealMode"), layer.revealMode);
+      gl.uniform1f(uniform("revealProgress"), layer.revealProgress);
+      gl.uniform1f(
+        uniform("opaqueAlpha"),
+        layer.alphaMode === "opaque" ? 1 : 0,
+      );
+      const sourceSize = this.images.sizes.get(layer.sourceAsset)!;
       const cover = coverFit(
           sourceSize[0],
           sourceSize[1],
           content.width,
           content.height,
         ),
-        crop = content.layer.framing;
+        crop = layer.framing;
+      if (content.type === "image" && content.fit === "stretch") {
+        cover.x = 1;
+        cover.y = 1;
+      }
       gl.uniform2f(uniform("cover"), cover.x, cover.y);
       gl.uniform2f(
         uniform("framing"),
@@ -334,12 +440,12 @@ export class WebglDepthImages {
         Math.max(1 / sourceSize[0], 1 / PREVIEW_LIMITS.gridColumns),
         Math.max(1 / sourceSize[1], 1 / PREVIEW_LIMITS.gridRows),
       );
-      gl.uniform2fv(uniform("offset"), content.motion.offset);
-      gl.uniform1f(uniform("overscan"), content.layer.overscan);
-      gl.uniform1f(uniform("scale"), content.motion.scale);
-      gl.uniform1f(uniform("strength"), content.motion.strength);
-      gl.uniform1f(uniform("roll"), (content.motion.roll * Math.PI) / 180);
-      gl.uniform1f(uniform("edgeDamping"), content.layer.edgeDamping ?? 1);
+      gl.uniform2fv(uniform("offset"), layer.motion.offset);
+      gl.uniform1f(uniform("overscan"), layer.overscan);
+      gl.uniform1f(uniform("scale"), layer.motion.scale);
+      gl.uniform1f(uniform("strength"), layer.motion.strength);
+      gl.uniform1f(uniform("roll"), (layer.motion.roll * Math.PI) / 180);
+      gl.uniform1f(uniform("edgeDamping"), layer.edgeDamping);
       gl.bindFramebuffer(gl.FRAMEBUFFER, target.framebuffer);
       gl.viewport(0, 0, content.width, content.height);
       for (const [flag] of flags) gl.disable(flag);
@@ -411,6 +517,8 @@ export class WebglDepthImages {
     const gl = this.device.gl;
     for (const texture of this.textures.values()) gl.deleteTexture(texture);
     this.textures.clear();
+    this.textureSizes.clear();
+    this.textureBytes = 0;
     this.locations.clear();
     if (this.multisample) {
       gl.deleteFramebuffer(this.multisample.framebuffer);

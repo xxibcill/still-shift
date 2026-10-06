@@ -144,3 +144,9 @@ export {
   type CompositionEffectPlugin,
   type GpuEffectContext,
 } from "./composition/render/effect-plugins.ts";
+export {
+  depthToComposition,
+  resolveDepthPreviewPreset,
+  DEPTH_ADAPTER_VERSION,
+  type DepthCompositionOptions,
+} from "./composition/adapters/depth.ts";

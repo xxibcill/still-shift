@@ -46,8 +46,9 @@ still hold before relying on them.
 - **CE4d in progress (2026-10-06):** `codex/composition-ce4d` from CE4c
   `17666eb`. All 17 old-depth references pass 1,530 forward/reverse frames and
   independent repeat. Native depth contract/evaluation/shared WebGL checkpoint
-  passes 151 focused unit checks and build. All seven true-depth cases match
-  exactly across 630 forward/reverse frames. Flat modes, legacy preset adaptation,
+  passes 158 focused unit checks, build and lint. All 17 depth/flat/fallback cases
+  match exactly across 1,530 forward/reverse frames; final budget/cache checkpoint
+  recheck follows. Legacy preset adaptation,
   family default consolidation and all milestone acceptance remain pending.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
@@ -246,6 +247,20 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d flat/depth adapter checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** verified prepared assets compile to native depth or flat image layers;
+  deterministic auto choice is shared with preparation. Native image-plane controls
+  preserve linear filtering/reveals, local clocks and explicit alpha policy.
+  Resource budgets and shader/asset cache identities are checked before painting.
+- **Results:** 158 focused unit tests, build and scoped lint pass. All 17 adapter
+  timelines match old pixels exactly across 1,530 forward/reverse frames; final
+  checkpoint recheck follows added budget/cache metadata. No defaults switched yet.
+- **Open / next:** additional depth acceptance, six legacy presets and production
+  family renderer consolidation, then complete milestone gate and PR.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d depth pixels exact
 

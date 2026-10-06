@@ -74,7 +74,8 @@
       },
       "transform": {
         "anchor": [0, 0]
-      }
+      },
+      "alphaMode": "opaque"
     }
   ]
 }

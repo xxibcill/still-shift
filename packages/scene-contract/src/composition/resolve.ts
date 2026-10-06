@@ -89,6 +89,29 @@ function resolveSegments(
     return missing(text, "an indexed property");
 
   switch (head.name) {
+    case "plane":
+      if (
+        layer.type !== "image" ||
+        layer.sampling !== "linear-srgb" ||
+        !next ||
+        indexed(next)
+      )
+        return missing(text, "an image-plane property");
+      if (next.name === "motion" && rest[0] && rest[0].index === undefined) {
+        if (rest[0].name === "offset")
+          return component("vec2", COMPONENTS.vec2, rest.slice(1));
+        if (["scale", "roll"].includes(rest[0].name))
+          return component("scalar", [], rest.slice(1));
+      }
+      if (
+        next.name === "reveal" &&
+        layer.plane?.reveal &&
+        rest[0]?.name === "progress" &&
+        rest.length === 1 &&
+        rest[0].index === undefined
+      )
+        return { type: "scalar" };
+      return missing(text, "an image-plane motion/reveal property");
     case "motion":
       if (layer.type !== "depth-image" || !next || indexed(next))
         return missing(text, "a depth-image motion property");

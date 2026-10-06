@@ -7,11 +7,8 @@ import {
   probeRenderEnvironment,
   assertPinnedRenderEnvironment,
 } from "@still-shift/execution-runtime";
-import {
-  CompositionSchema,
-  type Composition,
-} from "@still-shift/scene-contract";
-import { evaluateFrame } from "@still-shift/renderer-core";
+import { type Composition } from "@still-shift/scene-contract";
+import { depthToComposition } from "@still-shift/renderer-core";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as Legacy from "../../packages/renderer-core/src/webgl-renderer.ts";
 import type * as Metrics from "../../packages/renderer-core/src/frame-tolerance.ts";
@@ -41,67 +38,39 @@ await server.listen();
 const browser = await launchRenderBrowser();
 const reports = [];
 try {
-  const fixtures = depthReferenceFixtures().filter(
-    (fixture) => fixture.scene.motion.mode === "depth",
-  );
-  assert.equal(fixtures.length, 7);
+  const fixtures = depthReferenceFixtures();
+  assert.equal(fixtures.length, 17);
   for (const fixture of fixtures) {
     const reference = manifest.rows.find((row) => row.id === fixture.id)!;
-    const states = Array.from(
-      { length: fixture.scene.timeline.frameCount },
-      (_, frame) => evaluateFrame(fixture.scene, frame),
-    );
-    const scalarKeys = (values: number[]) => ({
-      keys: values.map((value, frame) => ({ frame, value })),
-    });
-    const doc = CompositionSchema.parse({
-      schemaVersion: "composition-1",
-      id: fixture.id,
-      width: fixture.width,
-      height: fixture.height,
-      frameCount: states.length,
-      fps: 30,
-      background: "#141414",
-      assets: ["source", "depth"].map((id) => ({
-        id,
-        type: "image",
-        path: id === "source" ? fixture.source : fixture.depth,
-        sha256:
-          "sha256:" +
-          (id === "source" ? reference.sourceHash : reference.depthHash),
-        width: 1600,
-        height: 900,
-      })),
-      layers: [
-        {
-          id: "photo",
-          type: "depth-image",
-          size: [fixture.width, fixture.height],
-          sourceAsset: "source",
-          depth: {
-            asset: "depth",
-            encoding: "r8-unorm",
-            width: 1600,
-            height: 900,
-          },
-          overscan: fixture.scene.motion.overscan,
-          edgeDamping: fixture.scene.motion.preset === "slow_push" ? 0 : 1,
-          ...(fixture.scene.framing
-            ? { framing: fixture.scene.framing.crop }
-            : {}),
-          transform: { anchor: [0, 0] },
-          motion: {
-            scale: scalarKeys(states.map((state) => state.scale)),
-            strength: scalarKeys(states.map((state) => state.depthStrength)),
-            roll: scalarKeys(states.map((state) => state.rollDegrees)),
-            offset: {
-              x: scalarKeys(states.map((state) => state.translationX)),
-              y: scalarKeys(states.map((state) => state.translationY)),
-            },
-          },
+    const doc = depthToComposition(
+      {
+        ...fixture.scene,
+        canvas: { width: fixture.width, height: fixture.height },
+      },
+      {
+        id: fixture.id,
+        source: {
+          id: "source",
+          type: "image",
+          path: fixture.source,
+          sha256: "sha256:" + reference.sourceHash,
+          width: 1600,
+          height: 900,
         },
-      ],
-    });
+        ...(fixture.scene.motion.mode === "depth"
+          ? {
+              depth: {
+                id: "depth",
+                type: "image" as const,
+                path: fixture.depth!,
+                sha256: "sha256:" + reference.depthHash,
+                width: 1600,
+                height: 900,
+              },
+            }
+          : {}),
+      },
+    );
     const page = await browser.newPage();
     try {
       await page.addInitScript("window.__name=(fn)=>fn;");
@@ -236,7 +205,7 @@ try {
     JSON.stringify(
       {
         scope:
-          "native depth only; flat/preset adapter/default consolidation/exports/hardware remain pending",
+          "all 17 prepared depth/flat/fallback adapter timelines; default consolidation/exports/hardware remain pending",
         reports,
       },
       null,

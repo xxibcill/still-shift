@@ -10,6 +10,15 @@ const colorAxis = { r: 0, g: 1, b: 2, a: 3 } as const;
 
 function container(state: EvaluatedLayer, segments: PropertyPathSegment[]) {
   const [head, next, component] = segments;
+  if (head!.name === "plane" && state.imagePlane) {
+    const field = next!.name === "reveal" ? "revealProgress" : component!.name;
+    return field === "offset" && segments[3]
+      ? {
+          object: state.imagePlane.offset,
+          key: vectorAxis[segments[3].name as "x" | "y"],
+        }
+      : { object: state.imagePlane, key: field };
+  }
   if (head!.name === "motion" && state.depthMotion)
     return next!.name === "offset" && component
       ? {

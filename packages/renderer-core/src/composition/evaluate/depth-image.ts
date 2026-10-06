@@ -8,6 +8,47 @@ export type SampledDepthMotion = {
   offset: [number, number];
   roll: number;
 };
+export type SampledImagePlane = Omit<SampledDepthMotion, "strength"> & {
+  revealProgress: number;
+};
+
+export function sampleImagePlane(
+  layer: Extract<CompositionLayer, { type: "image" }>,
+  time: number,
+  fps: number,
+): SampledImagePlane {
+  return {
+    scale: scalar(layer.plane?.motion?.scale, time, fps, 1),
+    offset: vector(layer.plane?.motion?.offset, time, fps, [0, 0]),
+    roll: scalar(layer.plane?.motion?.roll, time, fps, 0),
+    revealProgress: scalar(layer.plane?.reveal?.progress, time, fps, 1),
+  };
+}
+
+export function validateImagePlane(
+  plane: SampledImagePlane,
+  node: string,
+  frame: number,
+) {
+  if (
+    !Number.isFinite(plane.scale) ||
+    plane.scale < 0.5 ||
+    plane.scale > 4 ||
+    !Number.isFinite(plane.roll) ||
+    Math.abs(plane.roll) > 360 ||
+    !plane.offset.every(
+      (value) => Number.isFinite(value) && Math.abs(value) <= 2,
+    ) ||
+    !Number.isFinite(plane.revealProgress) ||
+    plane.revealProgress < 0 ||
+    plane.revealProgress > 1
+  )
+    passageError(
+      "comp-image-plane",
+      "Image-plane controls exceed their bounded local envelope",
+      { node, frame, path: `${node}.plane` },
+    );
+}
 
 export function sampleDepthMotion(
   layer: Extract<CompositionLayer, { type: "depth-image" }>,
