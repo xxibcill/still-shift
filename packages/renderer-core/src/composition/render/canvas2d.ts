@@ -354,6 +354,7 @@ export function createCanvas2dBackend(
           content.stateMix === 0 && content.stateFrom !== undefined
             ? content.stateFrom
             : content.state,
+          dst.rasterMode,
         );
         ctx.restore();
         return;
@@ -364,10 +365,10 @@ export function createCanvas2dBackend(
       const ctx = tmp.ctx;
       transform(ctx, matrix, transforms);
       ctx.globalAlpha = 1 - content.stateMix;
-      drawSource(ctx, content, content.stateFrom);
+      drawSource(ctx, content, content.stateFrom, dst.rasterMode);
       ctx.globalCompositeOperation = "lighter";
       ctx.globalAlpha = content.stateMix;
-      drawSource(ctx, content, content.state);
+      drawSource(ctx, content, content.state, dst.rasterMode);
       backend.composite(
         tmp,
         dst,
@@ -701,18 +702,25 @@ export function createCanvas2dBackend(
     matte.ctx.putImageData(image, 0, 0);
   }
 
-  function source(asset: string, rasterize: ImageContent["rasterize"]) {
+  function source(
+    asset: string,
+    rasterize: ImageContent["rasterize"],
+    rasterMode?: "software",
+  ) {
     const image = options.images.images.get(asset);
     if (!image)
       throw new Error(`comp-asset-missing: image ${asset} was not loaded`);
     if (rasterize !== "natural-size") return image;
-    let raster = rasters.get(asset);
+    const key = `${asset}:${rasterMode ?? "default"}`;
+    let raster = rasters.get(key);
     if (!raster) {
       // Vector sources rasterise once, so every placement shares the same pixels.
       const [w, h] = options.images.sizes.get(asset)!;
       raster = make(w, h);
-      raster.getContext("2d")!.drawImage(image, 0, 0, w, h);
-      rasters.set(asset, raster);
+      raster
+        .getContext("2d", { willReadFrequently: rasterMode === "software" })!
+        .drawImage(image, 0, 0, w, h);
+      rasters.set(key, raster);
     }
     return raster;
   }
@@ -721,6 +729,7 @@ export function createCanvas2dBackend(
     ctx: CanvasRenderingContext2D,
     content: ImageContent,
     index: number,
+    rasterMode?: "software",
   ) {
     const variant = content.sources[index];
     if (!variant)
@@ -737,7 +746,7 @@ export function createCanvas2dBackend(
       ctx.clip();
     }
     ctx.drawImage(
-      source(variant.asset, content.rasterize),
+      source(variant.asset, content.rasterize, rasterMode),
       p.sx,
       p.sy,
       p.sw,

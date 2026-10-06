@@ -49,8 +49,10 @@ still hold before relying on them.
   frames pass native state parity. The first rendered smoke exposed double
   resampling (delta88); direct affine source drawing repairs it. Sampled fixture
   pixels/seeks and final focus cleanup pass; 58 focused tests, build/lint pass.
-  Full pixels/timing, independent/repeated/raw exports, hardware and the complete
-  local gate remain pending. No owner decision is pending.
+  The full focus run passes 192 software frames/seeks and all export comparisons,
+  but fails hardware blur (SSIM0.98918). CPU source raster consistency repairs it;
+  all six hardware samples, 11 focused tests and build pass. Full native acceptance
+  and the complete local gate remain pending. No owner decision is pending.
   [Evidence](./composition-ce4c-results.json).
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
@@ -233,6 +235,17 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c source raster consistency checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, raster `f7b1302`.
+- **Done:** natural-size image caches follow destination CPU/default raster modes.
+- **Results:** 11 focused tests/build pass; six actual hardware samples pass.
+  The complete focus run before the fix passes both software timelines, seeks,
+  timing and independent/repeated/raw exports, but hardware middle-frame SSIM
+  is 0.98918. The scoped fix makes that frame exact without changing policy.
+- **Open / next:** persisted asset alpha safety, final full native matrix and local gate.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c affine raster and acceptance checkpoint
 
