@@ -1,6 +1,6 @@
 {
   "milestone": "CE4c",
-  "status": "complete-pr-pending",
+  "status": "complete",
   "started": "2026-10-06",
   "branch": "codex/composition-ce4c",
   "base": "e1bd4bc",
@@ -1736,7 +1736,7 @@
       "finalAcceptanceSnapshot": "e1fb3e3"
     }
   ],
-  "pending": ["Milestone PR creation and attachment"],
+  "pending": [],
   "unchangedPolicies": [
     "frozen CE0 baselines",
     "Canvas pixel/timing assertions",
@@ -8072,6 +8072,7 @@
     "fullGate": "pass",
     "frozenReferences": "unchanged",
     "webglPerformance": "existing CE6-P deferral; measured in native acceptance",
-    "pr": "pending"
-  }
+    "pr": "https://github.com/xxibcill/still-shift/pull/45"
+  },
+  "pr": "https://github.com/xxibcill/still-shift/pull/45"
 }

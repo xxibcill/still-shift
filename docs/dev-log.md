@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE4c complete, PR pending (2026-10-06):** `codex/composition-ce4c` from
+- **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
   CE8-L `e1bd4bc`; final runtime `37cc07a`, verified snapshot `e1fb3e3`.
   Native camera framing, depth planes, Gaussian focus, decoded-alpha safety and
   shared effects pass all 46 backend cases / 5,520 forward and reverse frames,
@@ -54,7 +54,8 @@ still hold before relying on them.
   family matrices pass the unchanged pixel and 1.25 timing policies; all tracked
   visual references remain unchanged. Earlier failures and diagnostics remain in
   the [evidence](./composition-ce4c-results.json). WebGL speed targets remain CE6-P.
-  Create and attach the stacked PR, then start CE4d on a new branch.
+  [PR #45](https://github.com/xxibcill/still-shift/pull/45) is open and attached against CE8-L.
+  Start CE4d on a new branch.
   Separate cross-chat coordination authorization remains pending.
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
