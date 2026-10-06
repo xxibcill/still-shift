@@ -4,6 +4,8 @@ import {
   linearTransferBytes,
   LINEAR_LERP_SHADER,
 } from "./linear-color.ts";
+import { passageError } from "../../passage-diagnostics.ts";
+import { PROJECTIVE_SHADER,PROJECTIVE_CLIP_SHADER,projectionUniforms } from "./webgl-projective.ts";
 import { blurPadding } from "./webgl-blur-padding.ts";
 import { blurKernelLength } from "./webgl-blur-kernel.ts";
 import { WebglPaint } from "./webgl-paint.ts";
@@ -31,7 +33,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.54.0" as const;
+  "composition-webgl2-0.55.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -247,7 +249,7 @@ export function createWebgl2Backend(
         [1, 1, 1, 1],
         1,
         "normal",
-        clips,
+        clips.filter(clip=>!clip.projection||clip.projection.affineMatrix),
         transforms,
       );
       device.upload(coverage, pixels.canvas);
@@ -282,11 +284,17 @@ export function createWebgl2Backend(
         ],
         size: [src.width, src.height],
       });
+      projectiveClips(output,clips);
       return output;
     } finally {
       device.release(coverage);
       raster.releaseSurface(pixels);
     }
+  }
+
+  function projectiveClips(surface:WebglSurface,clips:ClipRect[]) {
+    for(const clip of clips) if(clip.projection&&!clip.projection.affineMatrix)
+      replace(surface,PROJECTIVE_CLIP_SHADER,[surface],projectionUniforms(clip.projection,clip.width,clip.height));
   }
 
   function blurredPlacement(
@@ -666,7 +674,7 @@ export function createWebgl2Backend(
                 [1, 1, 1, 1],
                 1,
                 "normal",
-                clips,
+                clips.filter(clip=>!clip.projection||clip.projection.affineMatrix),
               );
               device.upload(coverage, pixels.canvas);
               replace(
@@ -679,6 +687,7 @@ export function createWebgl2Backend(
               device.release(coverage);
             }
           }
+          projectiveClips(source,clips);
           blend(source, dst, mode, opacity);
         } finally {
           device.release(source);
@@ -704,6 +713,19 @@ export function createWebgl2Backend(
         }
       }
     },
+    validateSpatialSurface(width,height,node) {
+      const maximum=device.gl.getParameter(device.gl.MAX_TEXTURE_SIZE) as number;
+      if(width>maximum||height>maximum) passageError("comp-feature-backend",`The local projected surface exceeds this WebGL2 device's ${maximum}-pixel texture limit`,{node});
+    },
+    project(src,dst,placement) {
+      if(placement.affineMatrix) {
+        const source=placed(src,dst,placement.affineMatrix,[]);
+        try {blend(source,dst,"normal",1);} finally {device.release(source);}
+      } else device.pass(PROJECTIVE_SHADER,dst,[src],projectionUniforms(placement,src.width,src.height));
+      if(placement.bounds) bounds.include(dst,{left:placement.bounds.left-2,top:placement.bounds.top-2,right:placement.bounds.right+2,bottom:placement.bounds.bottom+2});
+      else bounds.full(dst);
+    },
+    applyProjectiveClips:projectiveClips,
     applyEffects: (target, stack, layers) => {
       effects.apply(target, stack, layers);
     },

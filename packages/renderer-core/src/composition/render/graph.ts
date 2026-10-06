@@ -20,6 +20,9 @@ import type {
 } from "../evaluate/types.ts";
 import { cameraMatrix } from "../evaluate/camera.ts";
 import { projectBounds } from "../evaluate/geometry.ts";
+import { passageError } from "../../passage-diagnostics.ts";
+import { localSurfaceBounds,planePlacement,type ProjectivePlacement } from "./projective-placement.ts";
+import { affineHomography,inverseHomography,multiplyHomographies,projectPlane,type Homography } from "../evaluate/spatial-geometry.ts";
 import { spatialStackOrder } from "./spatial-order.ts";
 
 export type RenderEffect = EvaluatedEffect & {
@@ -37,6 +40,7 @@ export type ClipRect = {
   transforms?: Matrix[];
   width: number;
   height: number;
+  projection?: ProjectivePlacement;
 };
 
 export type MaskOp = {
@@ -165,7 +169,9 @@ function backdropAt(
       const op = ops[i]!;
       if (op === target) return { ops: ops.slice(0, i), background };
       const nested =
-        op.kind === "isolate"
+        op.kind === "project"
+          ? backdropAt(op.surface,target)
+          : op.kind === "isolate"
           ? visit(op.ops, null)
           : op.kind === "draw" && op.content.type === "surface"
             ? backdropAt(op.content.surface, target)
@@ -183,7 +189,19 @@ export type MatteOp = {
   /** Ops that draw the matte layer with its own transform, opacity, masks and matte. */
   ops: RenderOp[];
 };
-export type RenderOp = DrawOp | IsolateOp | AdjustOp;
+/** Local artwork and its effects precede projection; focus blur and matte follow it. */
+export type ProjectOp = {
+  kind: "project";
+  layer: string;
+  surface: SurfaceNode;
+  placement: ProjectivePlacement;
+  effects: RenderEffect[];
+  matte: MatteOp | null;
+  opacity: number;
+  blend: CompositionBlendMode;
+  clips: ClipRect[];
+};
+export type RenderOp = DrawOp | IsolateOp | AdjustOp | ProjectOp;
 
 /** One composition scope rendered into its own surface. */
 export type SurfaceNode = {
@@ -199,6 +217,7 @@ export type RenderGraph = {
   root: SurfaceNode;
   /** Layer keys skipped because their bounds miss the surface they draw into. */
   culled: string[];
+  spatial?: true;
 };
 export type RenderGraphOptions = EvaluationOptions & {
   /** Preparation must discover offscreen glyph samples before final bounds exist. */
@@ -219,6 +238,7 @@ type Frame = {
   sourceGroup?: string;
   captureSource?: string;
   background: Rgba | null;
+  localCapture?: {inverse: Homography; origin: [number,number]};
 };
 type Scope = {
   tree: EvaluatedLayerTree;
@@ -245,6 +265,7 @@ function boundsMiss(bounds: Bounds, matrix: Matrix, frame: Frame) {
 
 class GraphBuilder {
   readonly culled: string[] = [];
+  spatial = false;
   private readonly cameras = new Map<string, Matrix>();
   private readonly history = new Map<string, Scope>();
   private readonly exposures = new WeakMap<EvaluatedLayerTree, Scope>();
@@ -413,11 +434,12 @@ class GraphBuilder {
         sourceScope = this.scope(scope.tree, scope.def, id);
       this.inputDepth++;
       try {
-        layerInputs[slot] = this.layerOps(
+        const captureFrame=frame.localCapture ? {...frame,matrix:IDENTITY,transforms:[],clips:[],viewport:{width:scope.tree.width,height:scope.tree.height},localCapture:undefined} : frame;
+        const captured = this.layerOps(
           sourceScope,
           source,
           {
-            ...frame,
+            ...captureFrame,
             opacity: 1,
             background: null,
             captureSource: id,
@@ -426,6 +448,14 @@ class GraphBuilder {
           },
           { blend: "normal", cull: false, seen: new Set([...seen, id]) },
         );
+        if(frame.localCapture) {
+          const {inverse:ownerInverse,origin}=frame.localCapture;
+          const h=multiplyHomographies([1,0,-origin[0],0,1,-origin[1],0,0,1],ownerInverse);
+          const inverse=inverseHomography(h)!;
+          const affineMatrix:Matrix|null=h[6]===0&&h[7]===0 ? [h[0]/h[8],h[3]/h[8],h[1]/h[8],h[4]/h[8],h[2]/h[8],h[5]/h[8]] : null;
+          this.spatial=true;
+          layerInputs[slot]=[{kind:"project",layer:frame.prefix+id,surface:{id:id+":input",width:scope.tree.width,height:scope.tree.height,background:null,ops:captured},placement:{homography:h,inverse,affineMatrix,bounds:null},effects:[],matte:null,opacity:1,blend:"normal",clips:[]}];
+        } else layerInputs[slot]=captured;
       } finally {
         this.inputDepth--;
       }
@@ -482,13 +512,22 @@ class GraphBuilder {
       parent = scope.byId.get(parent)!.layer.parent
     ) {
       const ancestor = scope.byId.get(parent)!;
-      if (ancestor.layer.type === "group" && ancestor.layer.clip)
+      if (ancestor.layer.type === "group" && ancestor.layer.clip) {
+        if(ancestor.projection&&ancestor.worldMatrix3d&&scope.tree.camera) {
+          const plane=projectPlane(ancestor.worldMatrix3d,scope.tree.camera,{left:0,top:0,right:ancestor.layer.size[0],bottom:ancestor.layer.size[1]});
+          const projection=planePlacement(plane,frame.matrix,[0,0]);
+          // A wholly clipped ancestor covers nothing.
+          if(!projection) clips.push({matrix:[0,0,0,0,0,0],width:0,height:0});
+          else {this.spatial=true;clips.push({matrix:projection.affineMatrix??IDENTITY,width:ancestor.layer.size[0],height:ancestor.layer.size[1],projection});}
+          continue;
+        }
         clips.push({
           matrix: multiplyMatrix(frame.matrix, ancestor.screenMatrix),
           transforms: this.transforms(scope, ancestor, frame),
           width: ancestor.layer.size[0],
           height: ancestor.layer.size[1],
         });
+      }
     }
     return [...frame.clips, ...clips.reverse()];
   }
@@ -499,6 +538,7 @@ class GraphBuilder {
     frame: Frame,
   ): Matrix[] {
     scope = this.exposureScope(scope, state);
+    if(state.projection?.affineMatrix) return [...frame.transforms,state.projection.affineMatrix];
     const local: Matrix[] = [];
     let root = state;
     for (;;) {
@@ -848,6 +888,39 @@ class GraphBuilder {
     return samples;
   }
 
+  private projectedLayer(scope:Scope,state:EvaluatedLayer,frame:Frame,options:{blend?:CompositionBlendMode;seen?:Set<string>;cull?:boolean;raw?:boolean},opacity:number,blend:CompositionBlendMode,paintBlur:number):RenderOp[] {
+    const plane=state.projection!,key=frame.prefix+state.id,layer=state.layer;
+    if(!plane.inverse||!plane.bounds) return [];
+    if(layer.type==="precomp"&&layer.collapseTransforms)
+      passageError("comp-3d-collapse","A projected precomp must be a flat surface; collapseTransforms requires an affine 2D parent",{node:key,frame:this.time});
+    if(!options.raw&&state.effects.some(effect=>effect.enabled&&effect.effect==="time.echo"))
+      passageError("comp-3d-effect","time.echo on a projected layer requires a scope-space adjustment or flat precomp",{node:key,frame:this.time});
+    const content=this.content(scope,state,frame);if(!content) return [];
+    const raster=localSurfaceBounds(plane.localBounds,key);
+    const placement=planePlacement(plane,frame.matrix,raster.origin);if(!placement) return [];
+    const matrix:Matrix=[1,0,0,1,-raster.origin[0],-raster.origin[1]],transforms=[matrix];
+    const seen=options.seen??new Set([layer.id]);
+    const localFrame:Frame={...frame,matrix,transforms,clips:[],opacity:1,background:null,viewport:{width:raster.width,height:raster.height},cull:false,localCapture:{inverse:plane.inverse,origin:raster.origin}};
+    const effects:RenderEffect[]=(options.raw ? [] : state.effects).filter(effect=>effect.enabled&&effect.effect!=="time.echo"&&effect.effect!=="blur.primitive").map(effect=>{
+      const captured=this.effectInputs(this.exposureScope(scope,state),effect,localFrame,seen);
+      if(!compositionEffectDefinition(effect.effect)!.usesLayerSpace) return captured;
+      let effectMatrix=matrix;
+      if(effect.space&&effect.space!==state.id) {
+        const source=this.exposureScope(scope,state).byId.get(effect.space)!;
+        const h=multiplyHomographies(affineHomography(matrix),multiplyHomographies(plane.inverse,source.projection?.homography??affineHomography(source.screenMatrix)));
+        if(h[6]!==0||h[7]!==0) passageError("comp-3d-effect-space","A layer-space effect requires an affine relation between the source and projected owner planes",{node:key,frame:this.time,path:effect.id});
+        effectMatrix=[h[0]/h[8],h[3]/h[8],h[1]/h[8],h[4]/h[8],h[2]/h[8],h[5]/h[8]];
+      }
+      return {...captured,placement:{matrix:effectMatrix,transforms:[effectMatrix]}};
+    });
+    const masks=options.raw ? [] : this.masks(state,matrix,transforms);
+    const draw:DrawOp={kind:"draw",layer:key,content,matrix,transforms,opacity:1,blend:"normal",clips:[],...(paintBlur ? {paintBlur} : {})};
+    const localOps:RenderOp[]=effects.length||masks.length ? [{kind:"isolate",layer:key,ops:[draw],effects,masks,matte:null,opacity:1,blend:"normal",clips:[]}] : [draw];
+    const focus:RenderEffect[]=state.focusBlur ? [{id:"camera-focus",effect:"blur.lens",version:compositionEffectDefinition("blur.lens")!.version,enabled:true,params:{radius:state.focusBlur,samples:32}}] : [];
+    this.spatial=true;
+    return [{kind:"project",layer:key,surface:{id:key+":local",width:raster.width,height:raster.height,background:null,...(this.comp.colorSpace ? {colorSpace:this.comp.colorSpace} : {}),ops:localOps},placement,effects:focus,matte:options.raw ? null : this.matte(scope,state,frame,seen),opacity,blend,clips:this.groupClips(scope,state,frame)}];
+  }
+
   layerOps(
     scope: Scope,
     state: EvaluatedLayer,
@@ -879,6 +952,7 @@ class GraphBuilder {
       this.culled.push(key);
       return [];
     }
+    if(state.projection&&layer.type!=="group") return this.projectedLayer(scope,state,frame,options,opacity,blend,paintBlur);
     const clips = this.groupClips(scope, state, frame);
     const masks = options.raw ? [] : this.masks(state, matrix, transforms);
     const echo =
@@ -1069,8 +1143,6 @@ export function buildRenderGraph(
   options: RenderGraphOptions = {},
 ): RenderGraph {
   const builder = new GraphBuilder(comp, tree.time, options);
-  return {
-    root: builder.surface(tree, comp, ""),
-    culled: builder.culled,
-  };
+  const root=builder.surface(tree,comp,"");
+  return {root,culled:builder.culled,...(builder.spatial ? {spatial:true as const} : {})};
 }

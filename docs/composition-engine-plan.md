@@ -3634,6 +3634,11 @@ corners are authored; independent scope/switch/focus cases remain unexecuted.
 Stable camera-depth ordering within drawable 3D runs preserves 2D barriers,
 authored ties and group ownership; regression cases remain unexecuted.
 
+Camera-facing orientation and bounded local/effect → GPU homography → focus/matte
+rendering, projective group clips/named inputs and transactional capability checks
+are authored in WebGL2 source version 0.55.0. Native validation stays gated and
+verification remains deferred; limitations are explicit in the evidence record.
+
 **Completion record:** _to be filled in._
 
 ---

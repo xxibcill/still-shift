@@ -131,7 +131,41 @@
         "reason": "Coordinated CE6-P quiet window remains active",
         "analyticCases": "Authored near/far painter order, 2D barriers, depth ties/source immutability and invalid-depth rejection"
       },
-      "pending": "Billboard orientation, native projective graph/backend/quality/inspector integration and verification"
+      "pending": "Billboard orientation, native projective graph/backend/quality/inspector integration and verification",
+      "implementation": "20f6dd9"
+    },
+    {
+      "name": "Camera-facing orientation and bounded projective rendering",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Spherical camera-facing world orientation preserves authored linear geometry and world anchors",
+        "Local artwork/effects/masks precede homography projection; focus lens blur and scope matte follow",
+        "Bounded local surfaces, inverse-homography GPU sampling and near/far clipping",
+        "Projective group clips and local captures of named layer inputs",
+        "Complete spatial graph capability checks precede retained-target mutation",
+        "Native availability remains gated until integration and verification"
+      ],
+      "versions": {
+        "evaluator": "composition-evaluate-0.45.0",
+        "webgl2": "composition-webgl2-0.55.0"
+      },
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored billboard basis/anchor/mirror/shear, negative local origins, outer placement, bounded allocation and transactional nested Canvas capability checks"
+      },
+      "declaredLimits": [
+        "Perspective precomps remain flat and cannot collapseTransforms",
+        "Native time.echo uses a scope-space adjustment or flat precomp",
+        "Cross-plane layer-space effect coordinates require an affine relation",
+        "Unbounded local effect generators use the declared artwork domain"
+      ],
+      "sourceReviewRepairs": [
+        "Handle null/unbounded effect bounds explicitly rather than passing them to plane projection",
+        "Conservative focus bounds include screen-space lens support",
+        "Release intermediate surfaces after local rendering or allocation failures"
+      ],
+      "pending": "Native validation activation, honest projective inspector/coverage and analytic/pixel/export acceptance"
     }
   ],
   "pending": [

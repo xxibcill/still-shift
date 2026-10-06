@@ -12,7 +12,10 @@ import {
   projectPlane,
   worldPoint,
   type Point3,
+  type Matrix4,
+  multiplyWorldMatrices,
 } from "./spatial-geometry.ts";
+import { cameraFacingWorld } from "./spatial-orient.ts";
 import { sampleSpatialTransform } from "./spatial-state.ts";
 import type { EvaluatedLayer, EvaluatedLayerTree, EvaluationOptions } from "./types.ts";
 
@@ -47,8 +50,30 @@ export function projectSpatialScope(comp: Composition,scope: CompositionScope,tr
     passageError("comp-camera-geometry",error instanceof Error ? error.message : String(error),{...location,...(active ? {node:active.id,path:[...route,active.id].join("/")} : {})});
   }
   const camera=tree.camera!;
+  if(tree.layers.some(state=>state.layer.transform?.autoOrient==="camera")) {
+    for(let parent=active;parent;parent=parent.layer.parent ? byId.get(parent.layer.parent) : undefined)
+      if(parent.layer.transform?.autoOrient==="camera")
+        passageError("comp-camera-cycle","An active camera cannot depend on a camera-facing parent",{...location,node:parent.id});
+    const settled=new Set<string>();
+    const orient=(state:EvaluatedLayer):Matrix4=>{
+      if(settled.has(state.id)) return state.worldMatrix3d!;
+      const parent=state.layer.parent ? orient(byId.get(state.layer.parent)!) : undefined;
+      const t=state.transform;
+      try {
+        const local=state.layer.threeD||state.camera ? layerMatrix3d({anchor:[t.anchor[0],t.anchor[1],t.anchor[2]??0],position:[t.position[0],t.position[1],t.position[2]??0],scale:[t.scale[0],t.scale[1],t.scale[2]??1],orientation:t.orientation??[0,0,0],rotation:t.rotation,rotationX:t.rotationX??0,rotationY:t.rotationY??0,skewX:t.skewX,skewY:t.skewY}) : affineMatrix4(state.localMatrix);
+        let world=parent ? multiplyWorldMatrices(parent,local) : local;
+        if(state.layer.transform?.autoOrient==="camera") world=cameraFacingWorld(world,parent,[t.anchor[0],t.anchor[1],t.anchor[2]??0],camera);
+        state.worldMatrix3d=world;
+        settled.add(state.id);
+        return world;
+      } catch(error) {
+        passageError("comp-3d-transform",error instanceof Error ? error.message : String(error),{...location,node:state.id,path:[...route,state.id].join("/")});
+      }
+    };
+    tree.layers.forEach(orient);
+  }
   for(const state of tree.layers) {
-    if(!state.layer.threeD||!state.worldMatrix3d) continue;
+    if((!state.layer.threeD&&!state.spatialWorld)||!state.worldMatrix3d||state.camera||state.layer.type==="light") continue;
     const anchor=state.transform.anchor;
     state.cameraDepth=cameraDepth(camera,worldPoint(state.worldMatrix3d,[anchor[0],anchor[1],anchor[2]??0] as Point3));
     state.focusBlur=circleOfConfusion(camera,state.cameraDepth);
@@ -56,9 +81,10 @@ export function projectSpatialScope(comp: Composition,scope: CompositionScope,tr
     if(!bounds) continue;
     const path=[...route,state.id].join("/");
     const expanded=effectBounds(bounds,state.effects,{node:state.id,path,frame:rootFrame});
-    const plane=projectPlane(state.worldMatrix3d,camera,expanded);
+    // Unbounded generators operate within this flat layer's declared artwork domain.
+    const plane=projectPlane(state.worldMatrix3d,camera,expanded??bounds);
     state.projection=plane;
-    state.bounds=plane.bounds;
+    state.bounds=plane.bounds&&state.focusBlur ? {left:plane.bounds.left-state.focusBlur-1,top:plane.bounds.top-state.focusBlur-1,right:plane.bounds.right+state.focusBlur+1,bottom:plane.bounds.bottom+state.focusBlur+1} : plane.bounds;
     if(plane.affineMatrix) state.screenMatrix=plane.affineMatrix;
   }
 }

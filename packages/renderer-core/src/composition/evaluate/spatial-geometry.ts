@@ -168,7 +168,7 @@ export function cameraFrustum(camera: CameraGeometry, distance: number): Point3[
     return [0,1,2].map(axis=>camera.position[axis]!+camera.forward[axis]!*distance+camera.right[axis]!*horizontal+camera.down[axis]!*vertical) as Point3;
   });
 }
-function inverse3(matrix: Homography): Homography | null {
+export function inverseHomography(matrix: Homography): Homography | null {
   const [a,b,c,d,e,f,g,h,i]=matrix;
   const A=e*i-f*h, B=f*g-d*i, C=d*h-e*g;
   const determinant=a*A+b*B+c*C;
@@ -204,7 +204,7 @@ export function projectPlane(world: Matrix4, camera: CameraGeometry, bounds: Bou
   const cx=camera.width/2, cy=camera.height/2, z=camera.zoom;
   const homography: Homography=[z*x[0]+cx*x[2],z*y[0]+cx*y[2],z*origin[0]+cx*origin[2],z*x[1]+cy*x[2],z*y[1]+cy*y[2],z*origin[1]+cy*origin[2],x[2],y[2],origin[2]];
   const depth: Point3=[x[2],y[2],origin[2]];
-  const inverse=inverse3(homography);
+  const inverse=inverseHomography(homography);
   const localPolygon=clipDepth(clipDepth([
     [bounds.left,bounds.top],[bounds.right,bounds.top],[bounds.right,bounds.bottom],[bounds.left,bounds.bottom],
   ],depth,camera.nearClip,true),depth,camera.farClip,false);
@@ -225,4 +225,11 @@ export function projectLocalPoint(plane: ProjectedPlane, point: Point): Point | 
 export function circleOfConfusion(camera: CameraGeometry, depth: number): number {
   if (camera.aperture===0 || camera.blurLevel===0 || depth<=0) return 0;
   return Math.min(128,camera.aperture*camera.zoom/(2*camera.filmSize)*Math.abs(1-camera.focusDistance/depth)*camera.blurLevel);
+}
+
+export function multiplyHomographies(a:Homography,b:Homography):Homography {
+  return [0,1,2].flatMap(row=>[0,1,2].map(column=>[0,1,2].reduce((sum,k)=>sum+a[row*3+k]!*b[k*3+column]!,0))) as Homography;
+}
+export function affineHomography(m:Matrix):Homography {
+  return [m[0],m[2],m[4],m[1],m[3],m[5],0,0,1];
 }

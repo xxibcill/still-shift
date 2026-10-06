@@ -52,7 +52,8 @@ still hold before relying on them.
   2D arithmetic; shared spatial/camera sampling and optical rules are authored.
   Evaluated xyz/camera state, stage copies and spatial parent matrices are authored
   in evaluator source version 45; scoped camera/projection/focus/frustum hooks
-  and stable 3D-run ordering are authored. Tests, formatting and builds have not run:
+  and stable 3D-run ordering, camera-facing orientation and bounded projective
+  rendering are authored. Tests, formatting and builds have not run:
   the coordinated CE6-P quiet window is active. Runtime camera/3D availability
   remains gated until evaluation/render integration is implemented and verified.
   No owner decision is pending. Next: focused verification after release, xyz
@@ -210,6 +211,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 projective rendering checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after stable order `20f6dd9`.
+- **Authored:** camera-facing orientation retaining anchors/linear geometry; bounded
+  local artwork → GPU homography → focus lens blur → scope matte/composite path,
+  projective clips and named inputs; nested capability checks precede target writes.
+- **Review:** unbounded local effect domains and focus support are explicit;
+  perspective collapse/echo/cross-plane coordinate limits have structured errors.
+- **Verification:** analytic and transactional cases are authored but unexecuted.
+  Builds, formatters, tests, matrices and exports remain held for CE6-P.
+- **Next:** native validation, genuine camera/plane inspection and coverage acceptance.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 stable 3D order checkpoint
 
