@@ -46,23 +46,20 @@ still hold before relying on them.
 - **CE4c in progress (2026-10-06):** `codex/composition-ce4c` from CE8-L
   `e1bd4bc` / [PR #44](https://github.com/xxibcill/still-shift/pull/44).
   Native framing, camera/plane adaptation, Gaussian focus, alpha safety and shared
-  effect ordering/exposure are delivered; regression checkpoint `5335756` is pushed.
-  Valid close focus gaps now use bounded artistic inverse-depth coordinates;
-  37 focused tests/build/schema/lint pass after three aperture-limit failures.
-  Final code `37cc07a` also passes both full focus variants: 384 forward/reverse
-  frames, 12 production exports, four independent encodes, 12 hardware checks and
-  real inspector. These are untimed diagnostics; complete acceptance remains.
-  All 15 fixtures / 2,160 state frames, 44 sampled cases / 220 frames, 132 actual
-  Metal comparisons and real inspector edits/save/reload pass on prior code. Pinned unit/runtime
-  and depth checks pass (1,935 / 46 / 14). Native camera and lighting regression
-  commands pass exact stored hashes, exports, inspectors and 36 / 45 hardware
-  comparisons. Full integration failed a stale CLI assertion (repaired; seven
-  focused tests pass) and a 5000ms preview-watch timeout (four unchanged isolated
-  tests pass). The prior 44-case cinematic matrix is being checked untimed; final
-  acceptance adds a close-gap case (46 cases / 5,520 frames);
-  timing is queued behind independent suites. Complete `pnpm check` and PR remain
-  pending. Coordination authorization is pending; failures remain in the
-  [evidence](./composition-ce4c-results.json).
+  effect ordering/exposure are delivered. Final runtime `37cc07a` bounds valid
+  close-focus gaps; 37 focused tests/build/schema/lint and both full focus variants
+  pass (384 forward/reverse frames, 12 production exports, 12 hardware comparisons,
+  real inspector). The broader prior-code untimed diagnostic finishes with exit 0:
+  44 cases / 5,328 forward/reverse frames, delta2, 44 independent encodes, 132
+  production exports, 132 hardware comparisons and inspector pass. These are
+  correctness diagnostics; required performance acceptance remains pending.
+  Final checkpoint `ceda80c` passes pinned toolchain/schema/boundaries/format/lint/build
+  preflight. Prior unit/runtime/depth checks pass (1,935 / 46 / 14); camera/lighting
+  stored-hash, export and inspector regressions pass. Earlier integration failures
+  and their focused repairs remain in the [evidence](./composition-ce4c-results.json).
+  Complete `pnpm check` (including 46 final-code cinematic cases / 5,520 frames) is
+  queued behind independent verification. Milestone PR and coordination
+  authorization remain pending.
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
   `9d8f33a`; final code `d72ba2c`, verified checkpoint `3820c1c`. Bounded ambient,
@@ -244,6 +241,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c full correctness diagnostic checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, final runtime `37cc07a`.
+- **Results:** prior checkpoint `640c8c5` completes 44 cases / 5,328 forward and
+  reverse frames, delta2, 44 independent encodes / 132 production exports, 132
+  hardware comparisons and real inspector with exit 0. Final close-focus behavior
+  already passes both full focus variants. Final pinned preflight also passes.
+- **Open / next:** full `pnpm check` includes the required timed 46-case cinematic
+  matrix. Timing was omitted only from the private diagnostic; required source
+  assertions, frozen references and pixel policy remain unchanged.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c complete focus correctness checkpoint
 

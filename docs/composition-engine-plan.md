@@ -1393,8 +1393,10 @@ a composition/precomp node type to the legacy story scene schema in CE4a.
 checks; cinematic plane/camera adaptation and native safety/focus controls now pass
 all 15 fixtures / 2,160 state frames. Affine image raster repair and sampled pixel/seek
 checks pass. Persisted decoded-alpha safety and shared-effect state checks pass;
-all-fixture/effect sampled pixels and real editor/save/reload pass. Full timelines,
-render timing, production exports, hardware and complete verification remain pending.
+all-fixture/effect complete forward/reverse pixels, independent/repeated exports,
+hardware and real editor/save/reload pass in an untimed diagnostic on `640c8c5`.
+Final bounded close-focus code `37cc07a` also passes both complete focus variants.
+Required timing and complete pinned verification remain pending.
 [Implementation evidence](./composition-ce4c-results.json).
 
 - [ ] Map depth planes to 3D layers and the cinematic camera (including dolly zoom,
