@@ -45,26 +45,19 @@ still hold before relying on them.
 
 - **CE4c in progress (2026-10-06):** `codex/composition-ce4c` from CE8-L
   `e1bd4bc` / [PR #44](https://github.com/xxibcill/still-shift/pull/44).
-  Native framing, camera/plane adaptation, Gaussian focus, alpha safety and shared
-  effect ordering/exposure are delivered. Final runtime `37cc07a` bounds valid
-  close-focus gaps; 37 focused tests/build/schema/lint and both full focus variants
-  pass (384 forward/reverse frames, 12 production exports, 12 hardware comparisons,
-  real inspector). The broader prior-code untimed diagnostic finishes with exit 0:
-  44 cases / 5,328 forward/reverse frames, delta2, 44 independent encodes, 132
-  production exports, 132 hardware comparisons and inspector pass. These are
-  correctness diagnostics; required performance acceptance remains pending.
-  Final checkpoint `ceda80c` passes pinned toolchain/schema/boundaries/format/lint/build
-  preflight. Prior unit/runtime/depth checks pass (1,935 / 46 / 14); camera/lighting
-  stored-hash, export and inspector regressions pass. Earlier integration failures
-  and their focused repairs remain in the [evidence](./composition-ce4c-results.json).
-  Complete `pnpm check` is running on isolated checkpoint `e1fb3e3`, including
-  46 final-code cinematic cases / 5,520 frames. Final preflight and non-browser
-  checks pass: 1,938 unit / 46 runtime / 140 integration / 14 depth tests.
-  Story Canvas (69 cases / 14,086 frames) and Commerce Canvas (127 / 28,200)
-  pass unchanged pixels and the 1.25 timing limit (max ratios 1.175 / 1.190).
-  Final cinematic acceptance, typography and frozen-baseline closure remain
-  pending; the complete gate is not terminal. Milestone PR and coordination
-  authorization remain pending.
+  Final runtime `37cc07a`, full snapshot `e1fb3e3`. Complete native acceptance
+  passes all 46 backend cases / 5,520 forward and reverse frames, delta2,
+  46 independent preview encodes, 138 production exports, 138 actual hardware
+  comparisons and real inspector edits/undo/reload. Full Canvas cinematic timing
+  passes at max ratio 1.087; WebGL timing retains the existing CE6-P deferral.
+  Hardware minima: PSNR 48.111 / SSIM 0.998063 under unchanged policy.
+  The complete pinned `pnpm check` is still running: preflight and 1,938 unit /
+  46 runtime / 140 integration / 14 depth tests pass. Story Canvas (69 / 14,086)
+  and Commerce Canvas (127 / 28,200) pass unchanged pixels and timing, max ratios
+  1.175 / 1.190. Typography and frozen-baseline closure remain pending.
+  No source, threshold or reference changed during this gate. Earlier failures and
+  diagnostics remain in the [evidence](./composition-ce4c-results.json).
+  Milestone PR and coordination authorization remain pending.
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
   `9d8f33a`; final code `d72ba2c`, verified checkpoint `3820c1c`. Bounded ambient,
@@ -246,6 +239,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c complete native acceptance checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, runtime `37cc07a`.
+- **Results:** required native suite passes 46 backend cases / 5,520 forward and
+  reverse frames, delta2, 46 independent encodes, 138 production exports, 138
+  hardware comparisons and real inspector edits/undo/reload. Canvas timing max
+  1.087 passes the unchanged 1.25 limit; WebGL timing remains assigned to CE6-P.
+  Hardware minimum PSNR 48.111 / SSIM 0.998063 passes unchanged policy.
+- **Open / next:** complete `pnpm check` is in typography, with frozen-baseline
+  closure still pending. No code or reference changes during the gate.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c full family matrix checkpoint
 

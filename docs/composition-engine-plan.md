@@ -363,7 +363,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE3   | Render graph and Canvas 2D reference backend    | A      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce3`             | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
 | CE4a  | Story adapter with visual parity                | A      | CE3                  | Codex                  | `codex/composition-ce4a-completion` | `[x]`  | [Completion](#ce4a-completion-record-2026-10-05)                                   |
 | CE4b  | Commerce and reusable-component adapter         | A      | CE3, CE6 slices      | Codex                  | `codex/composition-ce4b`            | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
-| CE4c  | Cinematic adapter                               | A      | CE3, CE8             |                        |                                     | `[ ]`  |                                                                                    |
+| CE4c  | Cinematic adapter                               | A      | CE3, CE8             | Codex                  | `codex/composition-ce4c`            | `[~]`  | [evidence](./composition-ce4c-results.json)                                        |
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
 | CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
@@ -1389,14 +1389,16 @@ a composition/precomp node type to the legacy story scene schema in CE4a.
 ### CE4c — Cinematic
 
 **Status:** `[~]` in progress on `codex/composition-ce4c` from CE8-L
-`e1bd4bc` / PR #44. Native screen-space camera offset is delivered with focused
-checks; cinematic plane/camera adaptation and native safety/focus controls now pass
-all 15 fixtures / 2,160 state frames. Affine image raster repair and sampled pixel/seek
-checks pass. Persisted decoded-alpha safety and shared-effect state checks pass;
-all-fixture/effect complete forward/reverse pixels, independent/repeated exports,
-hardware and real editor/save/reload pass in an untimed diagnostic on `640c8c5`.
-Final bounded close-focus code `37cc07a` also passes both complete focus variants.
-Required timing and complete pinned verification remain pending.
+`e1bd4bc` / PR #44. Final runtime `37cc07a` passes complete native acceptance on
+`e1fb3e3`: all 46 backend cases / 5,520 forward and reverse frames, delta2,
+46 independent preview encodes, 138 production exports, 138 actual hardware
+comparisons and real inspector edits/undo/reload. Canvas cinematic timing passes
+at max ratio 1.087 against the unchanged 1.25 limit; WebGL timing retains CE6-P's
+existing deferral. Hardware minimum PSNR 48.111 / SSIM 0.998063 passes unchanged
+policy. Complete pinned `pnpm check` remains in progress: 1,938 unit / 46 runtime /
+140 integration / 14 depth tests and full Story/Commerce Canvas matrices pass;
+typography and frozen-baseline closure remain pending. No source, reference or
+threshold changed during the final gate.
 [Implementation evidence](./composition-ce4c-results.json).
 
 - [ ] Map depth planes to 3D layers and the cinematic camera (including dolly zoom,
