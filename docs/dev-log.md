@@ -239,6 +239,37 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 
 ## Entries
 
+### 2026-10-06 — Repair PR #38 smooth zig-zag sampling
+
+- **Agent / branch:** Codex on isolated `codex/pr38-shape-review-fixes`, from `2b1c6e5`.
+- **Done:** posted both review findings inline; preserve smooth zig-zag mode without
+  overwriting animated polystar counts; add regressions and bump output identities.
+- **Results:** fast checks pass all 1,620 unit tests; 62 focused shape tests and native shape acceptance pass,
+  including inspector, independent/repeated transports and 18 exact hardware comparisons.
+  Previous corner hashes reproduce exactly; every corrected reference pixel stays in
+  cell 13. Source fixtures, animation/core and frozen CE0 baselines are unchanged.
+- **Retained failure:** initial fast check linted a temporary review probe; moved
+  probes outside the disposable verification snapshot. Production code was unaffected.
+- **Next:** finish square-cap bounds in its own commit, then push both commits once.
+  Full `pnpm check` was not rerun; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-38-fix-results.json), [inline review](https://github.com/xxibcill/still-shift/pull/38#pullrequestreview-5424533811).
+
+### 2026-10-06 — Resolve CE5 PR #38 against the advancing CE11 base
+
+- **Agent / branch:** Codex in isolated `pr38-ce5-conflicts`, targeting `codex/composition-ce5`.
+- **Done:** first merge `f615017` integrates CE11 `4946e9d`; a second merge
+  integrates advanced `00d5fba`. Both sides' log histories and feature fixes survive.
+  Equivalent save imports resolve to the public lock entrypoint and narrow diagnostics.
+- **Results:** final fast checks (1,618 unit), 46 runtime, 47 focused integration,
+  14 depth, affected browser acceptance and all 176 frozen items / 36,061 frames pass.
+  Native hashes, reverse seeks, 18 hardware comparisons and both-backend exports pass.
+- **Retained failure:** initial integration config loading failed; broad save imports
+  were narrowed. A temporary unrelated constructor probe was reverted. No full
+  `pnpm check` rerun or baseline regeneration is claimed; Actions remain disabled.
+- **Next:** owner review and merge of the existing PR; delivery uses a normal push.
+- **Records:** [Resolution evidence](./pr-38-conflict-resolution-results.json),
+  [CE5 acceptance](./composition-ce5-results.json), [CE11/CE10 merge evidence](./pr-37-merge-results.json).
+
 ### 2026-10-06 — CE4c complete verification checkpoint
 
 - **Agent / branch:** Codex on `codex/composition-ce4c`, runtime `37cc07a`.
