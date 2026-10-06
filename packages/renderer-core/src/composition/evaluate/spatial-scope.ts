@@ -54,7 +54,7 @@ export function projectSpatialScope(comp: Composition,scope: CompositionScope,tr
     for(let parent=active;parent;parent=parent.layer.parent ? byId.get(parent.layer.parent) : undefined)
       if(parent.layer.transform?.autoOrient==="camera")
         passageError("comp-camera-cycle","An active camera cannot depend on a camera-facing parent",{...location,node:parent.id});
-    const settled=new Set<string>();
+    const settled=new Set<string>(),unmirrored=new Map<string,Matrix4>();
     const orient=(state:EvaluatedLayer):Matrix4=>{
       if(settled.has(state.id)) return state.worldMatrix3d!;
       const parent=state.layer.parent ? orient(byId.get(state.layer.parent)!) : undefined;
@@ -62,7 +62,15 @@ export function projectSpatialScope(comp: Composition,scope: CompositionScope,tr
       try {
         const local=state.layer.threeD||state.camera ? layerMatrix3d({anchor:[t.anchor[0],t.anchor[1],t.anchor[2]??0],position:[t.position[0],t.position[1],t.position[2]??0],scale:[t.scale[0],t.scale[1],t.scale[2]??1],orientation:t.orientation??[0,0,0],rotation:t.rotation,rotationX:t.rotationX??0,rotationY:t.rotationY??0,skewX:t.skewX,skewY:t.skewY}) : affineMatrix4(state.localMatrix);
         let world=parent ? multiplyWorldMatrices(parent,local) : local;
-        if(state.layer.transform?.autoOrient==="camera") world=cameraFacingWorld(world,parent,[t.anchor[0],t.anchor[1],t.anchor[2]??0],camera);
+        const parentBasis=state.layer.parent ? unmirrored.get(state.layer.parent) : undefined;
+        const anchor:Point3=[t.anchor[0],t.anchor[1],t.anchor[2]??0];
+        let basis=layerMatrix3d({anchor,position:[t.position[0],t.position[1],t.position[2]??0],scale:[Math.abs(t.scale[0]),Math.abs(t.scale[1]),Math.abs(t.scale[2]??1)],orientation:t.orientation??[0,0,0],rotation:t.rotation,rotationX:t.rotationX??0,rotationY:t.rotationY??0,skewX:t.skewX,skewY:t.skewY},parentBasis);
+        if(state.layer.transform?.autoOrient==="camera") {
+          const look=worldPoint(world,anchor);
+          world=cameraFacingWorld(world,parentBasis,anchor,camera);
+          basis=cameraFacingWorld(basis,parentBasis,anchor,camera,look);
+        }
+        unmirrored.set(state.id,basis);
         state.worldMatrix3d=world;
         settled.add(state.id);
         return world;

@@ -12,17 +12,18 @@ const column=(m:Matrix4,offset:number):Point3=>[m[offset]!,m[offset+1]!,m[offset
 
 /**
  * Spherical camera-facing orientation replaces the parent's orthonormal frame.
+ * The parent frame comes from the same authored chain with absolute scales.
  * Rotate the complete authored linear map: local rotations, shear, signed scale
  * and parent mirror parity survive. The world anchor stays fixed.
  */
-export function cameraFacingWorld(world:Matrix4,parent:Matrix4|undefined,anchor:Point3,camera:CameraGeometry):Matrix4 {
+export function cameraFacingWorld(world:Matrix4,unmirroredParent:Matrix4|undefined,anchor:Point3,camera:CameraGeometry,lookPosition?:Point3):Matrix4 {
   const position=worldPoint(world,anchor);
-  const forward=unit(position.map((v,axis)=>v-camera.position[axis]!) as Point3);
+  const forward=unit((lookPosition??position).map((v,axis)=>v-camera.position[axis]!) as Point3);
   let hint=camera.down;
   if(Math.hypot(...cross(hint,forward))<=1e-12) hint=camera.right;
   const right=unit(cross(hint,forward)),down=unit(cross(forward,right));
-  const oldRight=parent ? unit(column(parent,0)) : [1,0,0] as Point3;
-  const parentDown=parent ? column(parent,4) : [0,1,0] as Point3;
+  const oldRight=unmirroredParent ? unit(column(unmirroredParent,0)) : [1,0,0] as Point3;
+  const parentDown=unmirroredParent ? column(unmirroredParent,4) : [0,1,0] as Point3;
   const oldDown=unit(parentDown.map((v,axis)=>v-oldRight[axis]!*dot(parentDown,oldRight)) as Point3);
   const oldForward=unit(cross(oldRight,oldDown));
   const old=[oldRight,oldDown,oldForward],facing=[right,down,forward];

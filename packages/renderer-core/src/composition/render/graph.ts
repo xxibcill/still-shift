@@ -442,7 +442,11 @@ class GraphBuilder {
         sourceScope = this.scope(scope.tree, scope.def, id);
       this.inputDepth++;
       try {
-        const captureFrame=frame.localCapture ? {...frame,matrix:IDENTITY,transforms:[],clips:[],viewport:{width:scope.tree.width,height:scope.tree.height},localCapture:undefined} : frame;
+        let captureFrame=frame;
+        if(frame.localCapture) {
+          captureFrame={...frame,matrix:IDENTITY,transforms:[],clips:[],viewport:{width:scope.tree.width,height:scope.tree.height}};
+          delete captureFrame.localCapture;
+        }
         const captured = this.layerOps(
           sourceScope,
           source,

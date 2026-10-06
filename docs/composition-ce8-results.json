@@ -218,7 +218,23 @@
         "Keep scope-local required coverage semantics for nested precomps",
         "Preflight padded focus dimensions and preserve source depth while shifting screen placement"
       ],
-      "pending": "Focused checks after CE6-P release; independent native pixel/seek/hash/hardware/MP4/1080p acceptance and the full local gate"
+      "pending": "Focused checks after CE6-P release; independent native pixel/seek/hash/hardware/MP4/1080p acceptance and the full local gate",
+      "implementation": "c17af4d"
+    },
+    {
+      "name": "Source-review mirror and typed integration repairs",
+      "status": "authored-verification-deferred",
+      "sourceReviewRepairs": [
+        "Camera-facing baselines use an absolute-scale parent chain so authored mirror axes remain in the artwork plane instead of migrating to depth",
+        "Named-input capture frames omit optional localCapture rather than assigning undefined under exactOptionalPropertyTypes",
+        "Existing render-graph summaries recognize projective operations; the old 3D-unavailable case now tests explicit 2D constraint rejection"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "cases": "Additional parent-horizontal-mirror regression authored; all source checks remain pending"
+      },
+      "pending": "Projective group masks, independent native acceptance and full gate after release"
     }
   ],
   "pending": [

@@ -3649,6 +3649,10 @@ frustum insets and bounded focus overscan are authored. Required-layer alpha
 checks now include actual shutter samples. Analytic/track/footprint cases remain
 unexecuted during CE6-P's quiet window; native acceptance and full verification follow.
 
+Source review retains parent mirror axes through camera-facing orientation and
+updates exact optional capture state/graph summaries/constraint diagnostics.
+The additional mirror regression remains unexecuted during the quiet window.
+
 **Completion record:** _to be filled in._
 
 ---

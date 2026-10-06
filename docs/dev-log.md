@@ -59,7 +59,8 @@ still hold before relying on them.
   all-frame required-layer alpha and spatial track editing are authored. These
   changes remain unverified. No owner decision is pending. Next: real projective
   inspector/quality geometry and bounded focus overscan are now authored.
-  Next: focused checks after release, independent native acceptance and full gate.
+  Source review repairs parent mirror axes and typed capture/graph integration.
+  Next: projected group masks, focused checks after release and native acceptance.
   [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
@@ -213,6 +214,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 mirror and typed integration review checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after inspection `c17af4d`.
+- **Review repair:** camera-facing orientation uses an absolute-scale parent basis,
+  retaining authored mirror axes in the artwork plane; an explicit regression is
+  authored. Capture frames omit absent optional state and graph summaries include
+  the new operation; the old unavailable-3D case now tests 2D-constraint rejection.
+- **Verification:** source review only; no formatter/build/test/matrix/export ran.
+  The CE6-P quiet window remains active.
+- **Next:** projective group masks and independent native acceptance after release.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 projected inspection and focus overscan checkpoint
 

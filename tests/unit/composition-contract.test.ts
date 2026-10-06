@@ -1118,9 +1118,9 @@ const invalid: Mutation[] = [
     "drivers[1].target",
   ],
   [
-    "3D layer",
+    "3D layer used by a 2D constraint",
     (d) => set(house(d), { threeD: true }),
-    "comp-feature-unavailable",
+    "comp-3d-constraint",
   ],
   [
     "effects",
