@@ -44,7 +44,7 @@ still hold before relying on them.
 ## Current state
 
 - **CE4d in progress (2026-10-06):** `codex/composition-ce4d` from CE4c
-  `17666eb`; latest checkpoint `2b05a6a` is pushed. Legacy/depth adapters, native
+  `17666eb`; formatted code checkpoint `f01a35b` is pushed. Legacy/depth adapters, native
   depth schema/evaluation/shared GPU pass, mixed graph/inspector support, family
   preparation and Q2 freeze guidance are implemented. PR43 and zipper QA source
   repairs are integrated; focused regressions/build/lint/schema/boundaries pass
@@ -58,10 +58,11 @@ still hold before relying on them.
   Depth delivery completed 23 serial cost brackets and 17 timelines / 51
   production-repeat-raw exports plus 17 independent encodes, then failed at browser
   initialization. Acceptance is incomplete; numeric costs were not saved and the
-  cause is unconfirmed. Export-worker 0.6.6 private cache/startup diagnostics,
-  prepared provenance and startup failure/retry regression are unverified.
+  cause is unconfirmed. Export-worker 0.6.6 private cache/startup diagnostics and
+  provenance pass build/lint/toolchain, 25 unit and 11 integration checks. All 23
+  prepared wrappers re-pass 2,070 exact forward/reverse frames on `f01a35b`.
   **CE6-P's second timing hold is released:** scoped formatting is complete,
-  and focused startup/cancellation/provenance verification is starting. A private
+  and focused startup/cancellation/provenance verification passes. A private
   default-migration patch is prepared but unapplied. Next: verify startup cleanup,
   finish depth/legacy delivery and timing, switch
   defaults, run actual-route acceptance and the final complete local gate, then
@@ -263,6 +264,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d startup and provenance focused acceptance passes
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`; verified snapshot `f01a35b`.
+- **Results:** build/scoped lint/toolchain, 25 unit checks and 11 integration checks
+  pass. HTTP 503/module failures report diagnostics, close the browser, roll back
+  output and permit retry; cancellation/publication/pinned-renderer checks pass.
+  All 23 prepared depth timelines match exactly in 2,070 forward/reverse frames,
+  including requested-auto/actual source and depth hash provenance.
+- **Open / next:** retry complete serial depth delivery, then legacy timing/exports,
+  actual defaults and final full gate before the CE4d PR. Earlier failed delivery
+  remains recorded; its cause is still unconfirmed.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d resumes after timing release
 
