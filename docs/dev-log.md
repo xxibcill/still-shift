@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #37 final review fixes in progress (2026-10-06):** isolated
+  `codex/pr37-review-fixes` from `00d5fba`; R11 and R12 are posted inline.
+  R11 preserves layer/visibility keyboard focus after accepted and rejected updates;
+  TypeScript and full inspector desktop/phone/save/watch/MP4 acceptance pass.
+  R12 retained-draft asset ownership is next. One finding per commit, then one final
+  normal push to `codex/composition-ce11`. No owner checkout changes or Actions;
+  full `pnpm check` and frozen baselines are not rerun for this repair slice.
+  [Evidence](./pr-37-retained-draft-fix-results.json).
+
 - **PR #37 base merge verified (2026-10-06):** isolated managed worktree
   from CE11 `4946e9d`, integrating current CE10 `6e0d108` without rewriting
   history. Both log histories and milestone/review behavior are preserved;
@@ -210,6 +219,17 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #37 R11: Retain layer-control keyboard focus
+
+- **Agent / branch:** Codex on isolated `codex/pr37-review-fixes` from `00d5fba`.
+- **Done:** posted both findings inline; restore layer selection and visibility
+  focus after staged acceptance/rejection without stealing another control's focus.
+- **Results:** new regression fails before the repair; TypeScript and complete
+  inspector desktop/phone/watch/save/MP4 acceptance pass with the new focus checks.
+- **Next:** R12 in a separate commit, affected final checks, then one normal push.
+  Owner checkout remains untouched; full gate/baselines were not rerun. No Actions.
+- **Records:** [Repair evidence](./pr-37-retained-draft-fix-results.json).
 
 ### 2026-10-06 — Resolve PR #37 against current CE10
 

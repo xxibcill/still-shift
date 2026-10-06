@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-06",
+  "pr": "https://github.com/xxibcill/still-shift/pull/37",
+  "reviewHead": "00d5fba4fc9ae42dd10aa56d479be6aac4d64d35",
+  "reviewUrl": "https://github.com/xxibcill/still-shift/pull/37#pullrequestreview-5424541841",
+  "policy": "One finding per commit; one normal push after the final finding commit. GitHub Actions remain disabled.",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3"
+  },
+  "findings": [
+    {
+      "id": "R11",
+      "title": "Preserve focus after rebuilding layer controls",
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4192163317",
+      "status": "fixed",
+      "change": "Restore the focused layer/control identity after selection and successful or rejected visibility staging, without moving focus away from another control or a replaced source history.",
+      "regressionBefore": "Pinned inspector browser acceptance fails: Selecting a layer must preserve keyboard focus; actual false.",
+      "verification": [
+        "TypeScript build passes.",
+        "Full inspector desktop/phone/watch/save/MP4 acceptance passes with repeated layer and Hide/Show/Solo keyboard activation, rejected asset-load rollback, and no focus stealing during a paused asset load."
+      ]
+    },
+    {
+      "id": "R12",
+      "title": "Preserve assets belonging to retained dirty drafts",
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4192163320",
+      "status": "pending"
+    }
+  ],
+  "limitations": [
+    "Full pnpm check and frozen baselines are not rerun for this focused repair slice."
+  ],
+  "delivery": {
+    "branch": "codex/pr37-review-fixes",
+    "target": "codex/composition-ce11",
+    "strategy": "One final normal push after the second finding commit",
+    "status": "pending"
+  }
+}

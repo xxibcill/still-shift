@@ -89,6 +89,90 @@ try {
   const original = await pixels();
   await page.locator('[data-layer="box"] > button').first().click();
   assert.equal(await page.locator("#key-lanes .key-lane").count(), 1);
+  const layerPick = page.locator('[data-layer="box"] > button').first();
+  await layerPick.focus();
+  await layerPick.press("Enter");
+  assert.equal(
+    await layerPick.evaluate((control) => document.activeElement === control),
+    true,
+    "Selecting a layer must preserve keyboard focus",
+  );
+  for (const index of [1, 2]) {
+    const toggle = page.locator('[data-layer="box"] > button').nth(index);
+    await toggle.focus();
+    for (const pressed of ["true", "false"]) {
+      await toggle.press("Enter");
+      await page.waitForFunction(
+        ({ index, pressed }) => {
+          const controls = document.querySelectorAll(
+            '[data-layer="box"] > button',
+          );
+          return (
+            !document.querySelector<HTMLFieldSetElement>("#inspector-edit")!
+              .disabled &&
+            controls[index]?.getAttribute("aria-pressed") === pressed
+          );
+        },
+        { index, pressed },
+      );
+      assert.equal(
+        await toggle.evaluate((control) => document.activeElement === control),
+        true,
+        "Visibility toggles must preserve focus for repeated keyboard activation",
+      );
+    }
+  }
+  const hideControl = page.locator('[data-layer="box"] > button').nth(1);
+  await page.route("**/composition/program-asset?*", (route) =>
+    route.fulfill({ status: 503, body: "Unavailable" }),
+  );
+  await hideControl.focus();
+  await hideControl.press("Enter");
+  await page.waitForFunction(() =>
+    document
+      .getElementById("error")!
+      .textContent!.includes("Asset unavailable"),
+  );
+  assert.equal(await hideControl.getAttribute("aria-pressed"), "false");
+  assert.equal(
+    await hideControl.evaluate((control) => document.activeElement === control),
+    true,
+    "A rejected view update must restore layer-control focus",
+  );
+  await page.unroute("**/composition/program-asset?*");
+  let resumeAsset!: () => void;
+  const pausedAsset = new Promise<void>((resolve) => {
+    resumeAsset = resolve;
+  });
+  await page.route("**/composition/program-asset?*", async (route) => {
+    await pausedAsset;
+    await route.continue();
+  });
+  await hideControl.press("Enter");
+  await page.waitForFunction(
+    () =>
+      document.querySelector<HTMLFieldSetElement>("#inspector-edit")!.disabled,
+  );
+  const safeArea = page.locator("#overlay-safe");
+  await safeArea.focus();
+  resumeAsset();
+  await page.waitForFunction(
+    () =>
+      !document.querySelector<HTMLFieldSetElement>("#inspector-edit")!.disabled,
+  );
+  assert.equal(
+    await safeArea.evaluate((control) => document.activeElement === control),
+    true,
+    "Finishing a view update must not steal focus from another control",
+  );
+  await page.unroute("**/composition/program-asset?*");
+  await page.locator("#reset-visibility").click();
+  await page.waitForFunction(
+    () =>
+      !document.querySelector<HTMLFieldSetElement>("#inspector-edit")!.disabled,
+  );
+  assert.deepEqual(await pixels(), original);
+
   const keySelector = page.getByLabel("Key to edit", { exact: true });
   await keySelector.focus();
   for (const value of ["1", "0"]) {
@@ -543,6 +627,8 @@ try {
         "overlays",
         "keyboard Bezier graph handles",
         "key and resolved-instance selector focus",
+        "layer selection and repeated visibility keyboard focus",
+        "rejected visibility focus and no focus stealing",
         "lossless source save",
         "backend draft/frame retention",
         "MP4 native byte identity",

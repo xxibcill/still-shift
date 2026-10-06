@@ -83,6 +83,25 @@ export function createCompositionInspector(options: {
       return false;
     }
   }
+  function restoreLayerFocus(control: HTMLButtonElement) {
+    const focused = document.activeElement === control,
+      owner = history,
+      identity = control.dataset.layerControl;
+    return () => {
+      if (
+        !focused ||
+        history !== owner ||
+        (document.activeElement !== document.body &&
+          document.activeElement !== control)
+      )
+        return;
+      Array.from(
+        element("layer-stack").querySelectorAll<HTMLButtonElement>("button"),
+      )
+        .find((candidate) => candidate.dataset.layerControl === identity)
+        ?.focus();
+    };
+  }
   function viewDocument(document = history!.document) {
     const draft = structuredClone(document);
     for (const [path, state] of visibility)
@@ -119,13 +138,16 @@ export function createCompositionInspector(options: {
         row.className = "layer-row";
         row.dataset.layer = layer.id;
         const pick = button(layer.name ?? layer.id, () => {
+          const restoreFocus = restoreLayerFocus(pick);
           selected = { scope: entry.scope, layer: layer.id, path };
           track = tracks.find(
             (t) => t.scope === entry.scope && t.owner === layer.id,
           );
           options.selected(selected);
           refresh(history!);
+          restoreFocus();
         });
+        pick.dataset.layerControl = JSON.stringify([path, "select"]);
         pick.setAttribute(
           "aria-pressed",
           String(
@@ -164,7 +186,8 @@ export function createCompositionInspector(options: {
                 ? "Unsolo"
                 : "Solo",
             () => {
-              const previous = visibility.get(key);
+              const restoreFocus = restoreLayerFocus(toggle),
+                previous = visibility.get(key);
               visibility.set(key, { ...visibility.get(key), [mode]: !state });
               void options.view(viewDocument()).then((ok) => {
                 if (ok) {
@@ -176,9 +199,11 @@ export function createCompositionInspector(options: {
                   else visibility.delete(key);
                   layerRows();
                 }
+                restoreFocus();
               });
             },
           );
+          toggle.dataset.layerControl = JSON.stringify([path, mode]);
           toggle.setAttribute(
             "aria-pressed",
             String(mode === "solo" ? state : !state),
