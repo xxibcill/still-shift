@@ -283,7 +283,8 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 - **Done:** shared Canvas drawing preserves the active matrix transfer for distinct
   image crossfades (Canvas 1.44.0). Supply-ramps now matches exactly in all 192
   forward/reverse frames. Acceptance failures name the item; subset reports use
-  distinct filenames.
+  distinct filenames. Depth acceptance records all 23 cost brackets serially
+  before its independent export/correctness phase; build and scoped lint pass.
 - **Results:** 60 focused tests/build/lint pass; all five motion-craft fixtures
   (698 frames) match exactly, and eight typography fixtures (1,309 frames) plus
   every text-node ink/container probe pass the unchanged near tier (delta <=2).

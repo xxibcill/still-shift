@@ -150,29 +150,55 @@ try {
       cliJsonRelocation: "pass",
     };
   }
+  const preparedFixtures = await Promise.all(
+    fixtures.map(async (fixture) => {
+      const assets: CompositionAsset[] = [
+        {
+          id: "source",
+          type: "image",
+          path: join(fixtureDirectory, fixture.source),
+          sha256: `sha256:${digest(await readFile(join(fixtureDirectory, fixture.source)))}`,
+          width: 1600,
+          height: 900,
+        },
+      ];
+      if (fixture.scene.motion.mode === "depth")
+        assets.push({
+          id: "depth",
+          type: "image",
+          path: join(fixtureDirectory, fixture.depth!),
+          sha256: `sha256:${digest(await readFile(join(fixtureDirectory, fixture.depth!)))}`,
+          width: fixture.depthWidth ?? 1600,
+          height: fixture.depthHeight ?? 900,
+        });
+      return { fixture, assets };
+    }),
+  );
+  const costs = [];
+  for (const { fixture, assets } of preparedFixtures) {
+    const doc = depthToComposition(fixture.scene, {
+      id: `${fixture.id}-cost`,
+      requestedPreset: fixture.requestedPreset,
+      source: assets[0] as Extract<CompositionAsset, { type: "image" }>,
+      ...(assets[1]
+        ? { depth: assets[1] as Extract<CompositionAsset, { type: "image" }> }
+        : {}),
+    });
+    const urls = Object.fromEntries(
+      doc.assets.map((asset) => [asset.id, `/@fs${asset.path}`]),
+    );
+    costs.push({
+      id: fixture.id,
+      ...(await depthRenderCosts(page, doc, fixture.scene, urls)),
+    });
+    console.log(`Depth ${fixture.id}: serial render/readback costs recorded`);
+  }
+  console.log(
+    "All 23 serial depth cost brackets completed; correctness/export phase starts",
+  );
   let localBase: Composition | undefined;
   let localScene: (typeof fixtures)[number]["scene"] | undefined;
-  const costs = [];
-  for (const fixture of fixtures) {
-    const assets: CompositionAsset[] = [
-      {
-        id: "source",
-        type: "image",
-        path: join(fixtureDirectory, fixture.source),
-        sha256: `sha256:${digest(await readFile(join(fixtureDirectory, fixture.source)))}`,
-        width: 1600,
-        height: 900,
-      },
-    ];
-    if (fixture.scene.motion.mode === "depth")
-      assets.push({
-        id: "depth",
-        type: "image",
-        path: join(fixtureDirectory, fixture.depth!),
-        sha256: `sha256:${digest(await readFile(join(fixtureDirectory, fixture.depth!)))}`,
-        width: fixture.depthWidth ?? 1600,
-        height: fixture.depthHeight ?? 900,
-      });
+  for (const { fixture, assets } of preparedFixtures) {
     const doc = depthToComposition(
         {
           ...fixture.scene,
@@ -214,18 +240,6 @@ try {
         doc,
         forward.map((frame) => preview.pngs[frame]!),
       )),
-    });
-    const fullSize = depthToComposition(fixture.scene, {
-      id: `${fixture.id}-cost`,
-      requestedPreset: fixture.requestedPreset,
-      source: assets[0] as Extract<CompositionAsset, { type: "image" }>,
-      ...(assets[1]
-        ? { depth: assets[1] as Extract<CompositionAsset, { type: "image" }> }
-        : {}),
-    });
-    costs.push({
-      id: fixture.id,
-      ...(await depthRenderCosts(page, fullSize, fixture.scene, assetUrls)),
     });
     hardwareFixtures.push({
       name: doc.id,

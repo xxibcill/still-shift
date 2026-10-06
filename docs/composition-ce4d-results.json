@@ -2873,7 +2873,8 @@
       ],
       "scope": [
         "Shared Canvas image boundary/crossfade transfer, retaining settled direct draws",
-        "Family acceptance errors identify the actual item; diagnostic subset report names no longer collide"
+        "Family acceptance errors identify the actual item; diagnostic subset report names no longer collide",
+        "All 23 depth render/readback cost brackets execute serially before the acceptance export/correctness phase"
       ],
       "productionDefaults": "unchanged; full all-176 parity and depth export/hardware/cost acceptance pending"
     }
