@@ -53,8 +53,10 @@ still hold before relying on them.
   but fails hardware blur (SSIM0.98918). CPU source raster consistency repairs it;
   all six hardware samples, 11 focused tests and build pass. Full native acceptance
   and the complete local gate remain pending. Persisted native alpha safety and
-  seven effect variants pass 26 focused tests/build/lint. Independent review gates
-  are active; native timing is queued. Follow-up coordination authorization is pending.
+  seven effect variants pass 26 focused tests/build/lint. Final sampled pixels/seeks
+  pass 44 cases / 220 frames (delta1); real temporal editing/save/reload passes.
+  Paint-order and adjustment-exposure failures are repaired and retained. Independent
+  review gates are active; native timing is queued. Coordination authorization is pending.
   [Evidence](./composition-ce4c-results.json).
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
@@ -237,6 +239,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c effect ordering and exposure checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, alpha `6fdb243`.
+- **Done:** native paint-order conversion and shutter sampling of adjustments.
+- **Results:** all 15 fixtures plus seven effect variants pass sampled forward and
+  reverse pixels (44 cases / 220 frames, delta1); real temporal editing, frustum,
+  undo/redo, save/reload and backend switch pass. 26 focused tests/build/lint pass.
+- **Rejected:** grain-before-art (delta8), central-frame-only grain during exposure
+  (delta4), and an inspector fixture requesting unsupported spatial xy tangents.
+  Repairs retain the schema and pixel policies.
+- **Open / next:** full native acceptance and complete pinned local gate; independent
+  reviews are active, so timings remain queued. Coordination permission is pending.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c persisted alpha safety checkpoint
 

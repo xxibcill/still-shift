@@ -14,6 +14,7 @@ import {
   sampleCinematicBlur,
 } from "../../packages/renderer-core/src/cinematic-scene.ts";
 import { evaluateComp } from "../../packages/renderer-core/src/composition/evaluate/evaluate.ts";
+import { buildRenderGraph } from "../../packages/renderer-core/src/composition/render/graph.ts";
 import { cinematicEffectVariants } from "../helpers/composition-cinematic-effects.ts";
 import { projectLocalPoint } from "../../packages/renderer-core/src/composition/evaluate/spatial-geometry.ts";
 
@@ -105,6 +106,15 @@ it("compiles every shared cinematic effect without changing native plane geometr
       CinematicSceneSchema.parse(variant.scene),
     );
     const composition = cinematicToComposition(variant.scene);
+    if (composition.motionBlur)
+      expect(composition.layers.every((layer) => layer.motionBlur)).toBe(true);
+    if (variant.id.endsWith("effects-grain")) {
+      const graph = buildRenderGraph(composition, evaluateComp(composition, 0));
+      expect(graph.root.ops.at(-1)).toMatchObject({
+        kind: "adjust",
+        effects: [{ effect: "stylize.grain" }],
+      });
+    }
     for (let frame = 0; frame < composition.frameCount; frame++) {
       const tree = evaluateComp(composition, frame);
       for (const node of legacy.nodes) {

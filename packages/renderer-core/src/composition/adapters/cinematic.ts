@@ -204,7 +204,7 @@ export function cinematicToComposition(
   if (exposure)
     for (const layer of layers) {
       layer.sampleTimes ??= times;
-      if (layer.type !== "adjustment") layer.motionBlur = true;
+      layer.motionBlur = true;
     }
   const composition: Composition = {
     schemaVersion: "composition-1",
@@ -215,7 +215,7 @@ export function cinematicToComposition(
     frameCount,
     background: scene.background,
     assets: scene.assets.map((asset) => ({ ...asset, type: "image" })),
-    layers,
+    layers: layers.reverse(),
     ...(exposure ? { motionBlur: exposure.motionBlur } : {}),
     ...(scene.format ? { format: scene.format } : {}),
     metadata: params(

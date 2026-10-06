@@ -248,6 +248,45 @@
         "Initial build did not narrow layers/matrices through an implicitly typed never-returning callback; explicitly typed the fail callback and build passed"
       ],
       "browserAcceptance": "Pending; no render result claimed for this slice"
+    },
+    {
+      "name": "cinematic paint order and adjustment exposure",
+      "status": "implemented-focused-pass-full-pending",
+      "checks": {
+        "focusedUnit": {
+          "files": 2,
+          "tests": 26,
+          "status": "pass"
+        },
+        "build": "pass",
+        "focusedLint": "pass",
+        "finalAllFixtureSmoke": {
+          "sourceFixtures": 15,
+          "effectVariants": 7,
+          "backendCases": 44,
+          "forwardFrames": 220,
+          "reverseFrames": 220,
+          "maxDelta": 1,
+          "status": "pass diagnostic only"
+        },
+        "realInspector": {
+          "status": "passed",
+          "checks": [
+            "xy framing temporal-handle edit",
+            "actual camera frustum",
+            "undo/redo pixels",
+            "native Gaussian controls preserved",
+            "JSON save/reload pixels",
+            "both backends"
+          ]
+        }
+      },
+      "failedAttempts": [
+        "First grain smoke failed maxDelta8/PSNR40: cinematic paint-order array was not reversed to native top-to-bottom semantics; corrected adapter order",
+        "After order fix, multi-sample grain stack failed maxDelta4/PSNR43.79: adjustment was excluded from shutter sampling; all adapted layers now sample exposure, matching existing story/commerce behavior",
+        "Inspector fixture requested spatial tangents unsupported by strict xy viewOffset contract. A temporary UI exposure also failed schema validation and was removed. The fixture now edits supported temporal handles and passes. No spatial contract expansion retained."
+      ],
+      "verificationLimits": "Sampled 220 frames and real editor checks do not replace full timelines, timing, production exports, hardware matrix or the complete local gate."
     }
   ],
   "pending": [

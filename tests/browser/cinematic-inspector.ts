@@ -77,13 +77,10 @@ export async function cinematicInspectorAcceptance(browser: Browser) {
       .filter({ hasText: "viewOffset" })
       .first()
       .click();
-    assert.equal(
-      await page.getByLabel("spatialOut", { exact: true }).inputValue(),
-      "0,0",
-    );
-    await page.getByLabel("spatialOut", { exact: true }).fill("8,3");
+    await page.getByLabel("out ease", { exact: true }).fill("0.8");
+    await page.getByLabel("out speed", { exact: true }).fill("0,0");
     await page
-      .getByRole("button", { name: "Apply spatialOut", exact: true })
+      .getByRole("button", { name: "Apply out handle", exact: true })
       .click();
     await page.waitForFunction(
       () =>
@@ -103,7 +100,10 @@ export async function cinematicInspectorAcceptance(browser: Browser) {
         document.getElementById("status")?.textContent === "JSON source saved.",
     );
     const saved = JSON.parse(await readFile(input, "utf8"));
-    assert.deepEqual(saved.layers[0].viewOffset.keys[0].spatialOut, [8, 3]);
+    assert.deepEqual(saved.layers[0].viewOffset.keys[0].out, {
+      ease: 0.8,
+      speed: [0, 0],
+    });
     assert.equal(saved.layers[0].blurModel, "gaussian");
     assert.equal(saved.layers[0].maxBlur, 4);
     assert.deepEqual(saved.layers[1], doc.layers[1]);
@@ -128,7 +128,7 @@ export async function cinematicInspectorAcceptance(browser: Browser) {
     return {
       status: "passed",
       checks: [
-        "xy framing tangent edit",
+        "xy framing temporal-handle edit",
         "actual camera frustum",
         "undo/redo pixels",
         "native Gaussian controls preserved",
