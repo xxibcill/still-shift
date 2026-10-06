@@ -31,6 +31,37 @@
         "Expected red tests established missing schema/path/projection support",
         "First implementation used general xyz vector schema; strict xy schema added after ignored-z rejection failed",
         "Clock regression used invalid start field; corrected fixture to contract startFrame and focused suite/build passed"
+      ],
+      "checkpoint": "c5a3816"
+    },
+    {
+      "name": "cinematic adapter and native safety/focus controls",
+      "status": "implemented-focused-pass-render-acceptance-pending",
+      "mapping": "depth-weighted world xyz image planes; keyed camera position/zoom/screen offset; native Gaussian capped inverse-depth focus",
+      "stateMatrix": {
+        "fixtures": 15,
+        "frames": 2160,
+        "positionTolerance": 0.001,
+        "status": "pass"
+      },
+      "safety": "Existing coverage, source-resolution, protected framing, edge attachments, movement and reveal rules are reapplied to actual native camera projection and focus state",
+      "checks": {
+        "focusedUnit": {
+          "files": 11,
+          "tests": 132,
+          "status": "pass"
+        },
+        "cliIntegration": {
+          "files": 1,
+          "tests": 7,
+          "status": "pass"
+        },
+        "build": "pass"
+      },
+      "failedAttempts": [
+        "Native lateral validation produced a floating-roundoff negative scale-change statistic; clamped its mathematically nonnegative statistic at zero",
+        "Echo regression used an effect excluded by cinematic effects-1; corrected the test to supported grain without relaxing contract",
+        "Browser harness initial TypeScript imports/deep serialized argument failed build; changed to dynamic module variables and serialized scene payloads"
       ]
     }
   ],

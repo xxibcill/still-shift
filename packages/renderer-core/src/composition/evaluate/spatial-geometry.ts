@@ -59,6 +59,8 @@ export type CameraGeometry = {
   focusDistance: number;
   aperture: number;
   blurLevel: number;
+  blurModel: "lens" | "gaussian";
+  maxBlur: number;
 };
 export type ProjectedPlane = {
   localBounds: Bounds;
@@ -218,6 +220,8 @@ export function cameraGeometry(options: {
   focusDistance?: number;
   aperture?: number;
   blurLevel?: number;
+  blurModel?: "lens" | "gaussian";
+  maxBlur?: number;
 }): CameraGeometry {
   const { width, height, world, zoom } = options;
   const viewOffset: Point = [...(options.viewOffset ?? [0, 0])];
@@ -236,6 +240,15 @@ export function cameraGeometry(options: {
     focusDistance = options.focusDistance ?? zoom;
   const aperture = options.aperture ?? 0,
     blurLevel = options.blurLevel ?? 1;
+  const maxBlur = options.maxBlur ?? 128,
+    blurModel = options.blurModel ?? "lens";
+  if (
+    !Number.isFinite(maxBlur) ||
+    maxBlur < 0 ||
+    maxBlur > 128 ||
+    !["lens", "gaussian"].includes(blurModel)
+  )
+    throw Error("Camera focus blur model or radius cap is invalid");
   if (
     ![width, height, zoom, filmSize, focusDistance].every(
       (value) => Number.isFinite(value) && value > 0,
@@ -308,6 +321,8 @@ export function cameraGeometry(options: {
     focusDistance,
     aperture,
     blurLevel,
+    blurModel,
+    maxBlur,
   };
 }
 function cameraPoint(camera: CameraGeometry, world: Point3): Point3 {
@@ -514,7 +529,7 @@ export function circleOfConfusion(
 ): number {
   if (camera.aperture === 0 || camera.blurLevel === 0 || depth <= 0) return 0;
   return Math.min(
-    128,
+    camera.maxBlur,
     ((camera.aperture * camera.zoom) / (2 * camera.filmSize)) *
       Math.abs(1 - camera.focusDistance / depth) *
       camera.blurLevel,

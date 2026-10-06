@@ -203,6 +203,10 @@ describe("native camera analytic geometry", () => {
     expect(circleOfConfusion(focused, 100 / 1.5)).toBeCloseTo(25);
     expect(circleOfConfusion(focused, 1)).toBe(128);
     expect(circleOfConfusion({ ...focused, aperture: 0 }, 1)).toBe(0);
+    expect(
+      circleOfConfusion({ ...focused, maxBlur: 4, blurModel: "gaussian" }, 1),
+    ).toBe(4);
+    expect(circleOfConfusion({ ...focused, maxBlur: 0 }, 1)).toBe(0);
   });
 
   it("rejects invalid optics and singular camera basis before projection", () => {

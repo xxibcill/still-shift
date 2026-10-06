@@ -94,6 +94,8 @@ export function projectSpatialScope(
           farClip: controls.farClip,
           focusDistance: controls.focusDistance,
           blurLevel: controls.blurLevel,
+          blurModel: controls.blurModel,
+          maxBlur: controls.maxBlur,
           ...(pointOfInterest ? { pointOfInterest } : {}),
           aperture: controls.depthOfField ? controls.aperture : 0,
         }),
@@ -261,7 +263,10 @@ export function projectSpatialScope(
         anchor[2] ?? 0,
       ] as Point3),
     );
-    state.focusBlur = circleOfConfusion(camera, state.cameraDepth);
+    state.focusBlur = circleOfConfusion(
+      camera,
+      state.layer.focusDepth ?? state.cameraDepth,
+    );
     const bounds = localBounds(comp, scope, state, options);
     if (!bounds) continue;
     const path = [...route, state.id].join("/");

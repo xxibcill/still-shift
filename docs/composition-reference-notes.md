@@ -885,6 +885,15 @@ millimetres (default 0) and blur level (default 1). The declared screen radius i
 Zero aperture/blur is an exact identity. Focus blur follows local artwork/effects
 and projective placement, with screen overscan, then matte/opacity/blending.
 
+For artistic flat planes, camera `blurModel: "gaussian"` selects screen-space
+Gaussian focus instead of the default lens model. Static `maxBlur` caps the
+screen radius within 0–128 pixels (default 128). An explicitly 3D image, solid,
+text, shape or flat precomp may author static `focusDepth` in world pixels
+(0.001–10,000,000), overriding its focus distance while its projection, sorting,
+clipping and lighting retain actual world depth. Without this override, focus
+continues to use evaluated camera depth. These controls preserve cinematic
+inverse-depth focus handoffs and remain available to native compositions.
+
 WebGL2 uses actual plane homographies and near/far clipping. True perspective
 uses four quarter-pixel coverage samples and RGBA8 premultiplied bilinear weights
 quantized to 1/16, with a 1e-4 quantizer-unit tie bias to bound float32 boundary

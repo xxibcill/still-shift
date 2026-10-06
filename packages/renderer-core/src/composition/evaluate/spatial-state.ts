@@ -22,6 +22,8 @@ export type SampledCameraControls = {
   focusDistance: number;
   aperture: number;
   blurLevel: number;
+  blurModel: "lens" | "gaussian";
+  maxBlur: number;
 };
 
 /** Samples the layer's keyed/indexed clock; parent composition and procedural clocks belong to evaluation. */
@@ -105,6 +107,8 @@ export function sampleCameraControls(
     focusDistance: scalar(layer.focusDistance, time, fps, viewport[0]),
     aperture: scalar(layer.aperture, time, fps, 0),
     blurLevel: scalar(layer.blurLevel, time, fps, 1),
+    blurModel: layer.blurModel ?? "lens",
+    maxBlur: layer.maxBlur ?? 128,
   };
   validateCameraControls(controls);
   return controls;
@@ -130,6 +134,7 @@ export function validateCameraControls(controls: SampledCameraControls) {
     focusDistance: [0.001, 10_000_000],
     aperture: [0, 1000],
     blurLevel: [0, 100],
+    maxBlur: [0, 128],
   } as const;
   for (const name of Object.keys(ranges) as (keyof typeof ranges)[]) {
     const value = controls[name],

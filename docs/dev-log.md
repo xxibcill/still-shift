@@ -45,10 +45,11 @@ still hold before relying on them.
 
 - **CE4c in progress (2026-10-06):** `codex/composition-ce4c` from CE8-L
   `e1bd4bc` / [PR #44](https://github.com/xxibcill/still-shift/pull/44).
-  Native camera screen-space `viewOffset` is implemented across contract, pure
-  geometry/property clocks and inspector tracks. Focused 91 tests / 11 files and
-  build pass. Cinematic adaptation, camera validations, focus/pixel parity and
-  complete native/full acceptance remain pending. No owner decision is pending.
+  Native framing checkpoint `c5a3816` is pushed. Cinematic 3D plane/camera adaptation,
+  Gaussian capped focus, native safety validation and CLI JSON export are authored.
+  All 15 fixtures / 2,160 frames pass state parity; 132 focused unit tests, seven
+  CLI integrations and build pass. Browser pixels/timing, exports, hardware and
+  full local gate remain pending. No owner decision is pending.
   [Evidence](./composition-ce4c-results.json).
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
@@ -231,6 +232,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c camera/plane adapter checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, framing `c5a3816`.
+- **Done:** native camera/plane compiler, explicit Gaussian/artistic focus,
+  existing safety rules on evaluated native geometry, shared shutter/effects and CLI JSON.
+- **Results:** all 15 fixtures / 2,160 frames pass state parity; 132 focused unit
+  tests, seven CLI integrations and build pass. Earlier fixture/roundoff/harness
+  failures are recorded. Browser parity harness is authored; acceptance is pending.
+- **Open / next:** rendered pixels/timing, repeats, independent export agreement,
+  hardware and complete local gate before CE4c PR delivery.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c native framing checkpoint
 

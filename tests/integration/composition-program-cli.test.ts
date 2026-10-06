@@ -41,6 +41,42 @@ async function run(args: string[]) {
   return { code, stdout, stderr };
 }
 const program = `import{comp,solid,expr}from'@still-shift/motion';console.log('author console');export default comp({width:64,height:64,fps:24,frames:24},c=>{const n=c.add(solid('box',{size:[8,8],color:'#223344'}));c.expression(n.path('transform.rotation'),expr\`frame * 2\`);});`;
+it("exports cinematic recipes as inspectable native camera/plane JSON with relocated assets", async () => {
+  const root = await directory(),
+    output = join(root, "cinematic.json");
+  const fixture = resolve(
+    "benchmarks/fixtures/cinematic-illustrated/ci-08-dolly-zoom-tension.json",
+  );
+  const source = JSON.parse(await readFile(fixture, "utf8"));
+  const result = await run([
+    "export-json",
+    "--scene",
+    fixture,
+    "--output",
+    output,
+  ]);
+  expect(result.code).toBe(0);
+  expect(result.stderr).toBe("");
+  const doc = JSON.parse(await readFile(output, "utf8"));
+  expect(doc.layers[0]).toMatchObject({
+    type: "camera",
+    zoom: { keys: expect.any(Array) },
+  });
+  expect(
+    doc.layers
+      .slice(1)
+      .every(
+        (layer: { type: string; threeD: boolean }) =>
+          layer.type === "image" && layer.threeD,
+      ),
+  ).toBe(true);
+  expect(doc.metadata.nativeCameraValidation.checkedFrames).toBe(
+    doc.frameCount,
+  );
+  expect(resolve(root, doc.assets[0].path)).toBe(
+    await realpath(resolve(dirname(fixture), source.assets[0].path)),
+  );
+});
 it("preserves render usage and scene exit codes while unreadable input remains a runtime failure", async () => {
   const result = await run([
     "render",

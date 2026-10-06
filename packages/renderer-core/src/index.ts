@@ -77,6 +77,10 @@ export {
   COMMERCE_ADAPTER_VERSION,
 } from "./composition/adapters/commerce.ts";
 export { COMMERCE_CONTENT_PROVIDERS } from "./composition/adapters/commerce-providers.ts";
+export {
+  cinematicToComposition,
+  CINEMATIC_ADAPTER_VERSION,
+} from "./composition/adapters/cinematic.ts";
 export * from "./motion-craft.ts";
 export * from "./motion-appearance.ts";
 export * from "./motion-inspector.ts";

@@ -3,6 +3,7 @@ import {
   type Composition,
 } from "@still-shift/scene-contract";
 import type { StoryRenderScene } from "../../story-scene.ts";
+import type { CinematicRenderScene } from "../../cinematic-scene.ts";
 import type { CommerceRenderScene } from "../../commerce-scene.ts";
 import { sourceExposureTimeline } from "../../commerce-exposure.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
@@ -11,7 +12,7 @@ import { passageError } from "../../passage-diagnostics.ts";
 
 /** Compile every reachable shutter/history time once; rendering uses only native data. */
 export function compileFamilyExposure(
-  scene: CommerceRenderScene | StoryRenderScene,
+  scene: CommerceRenderScene | StoryRenderScene | CinematicRenderScene,
 ):
   | {
       times: number[];
@@ -21,7 +22,10 @@ export function compileFamilyExposure(
   const blur = scene.effects?.find((effect) => effect.type === "motion-blur");
   if (!blur || !blur.shutterAngle) return undefined;
   const { cuts, times } = sourceExposureTimeline(scene);
-  const components = componentCapabilities(scene.componentData);
+  const frameCount = scene.timeline.frameCount;
+  const components = componentCapabilities(
+    "componentData" in scene ? scene.componentData : undefined,
+  );
   const canHold =
     scene.schemaVersion === "commerce-scene-1" &&
     !scene.motionModel &&
@@ -51,7 +55,7 @@ export function compileFamilyExposure(
     );
     const changed = pose !== previous;
     previous = pose;
-    return changed || time === scene.frameCount - 1;
+    return changed || time === frameCount - 1;
   });
   if (ordered.length > COMPOSITION_LIMITS.maxKeys)
     passageError(
@@ -69,7 +73,7 @@ export function compileFamilyExposure(
       ...(blur.active
         ? { inPoint: blur.active.start, outPoint: blur.active.end }
         : {}),
-      cuts: cuts.filter((cut) => cut < scene.frameCount),
+      cuts: cuts.filter((cut) => cut < frameCount),
     },
   };
 }

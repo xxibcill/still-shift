@@ -58,6 +58,9 @@ it.each([
   { viewOffset: [0, 0, 1] },
   { viewOffset: [1_000_001, 0] },
   { model: "orbit" },
+  { blurModel: "box" },
+  { maxBlur: 129 },
+  { maxBlur: -1 },
 ])("bounds camera optics and targets: %j", (fields) => {
   expect(
     CameraLayerSchema.safeParse({ id: "camera", type: "camera", ...fields })

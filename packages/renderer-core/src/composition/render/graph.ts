@@ -1163,14 +1163,19 @@ class GraphBuilder {
             },
           ]
         : [draw];
+    const gaussianFocus =
+      this.exposureScope(scope, state).tree.camera?.blurModel === "gaussian";
+    const focusKind = gaussianFocus ? "blur.gaussian" : "blur.lens";
     const focus: RenderEffect[] = state.focusBlur
       ? [
           {
             id: "camera-focus",
-            effect: "blur.lens",
-            version: compositionEffectDefinition("blur.lens")!.version,
+            effect: focusKind,
+            version: compositionEffectDefinition(focusKind)!.version,
             enabled: true,
-            params: { radius: state.focusBlur, samples: 32 },
+            params: gaussianFocus
+              ? { radius: state.focusBlur }
+              : { radius: state.focusBlur, samples: 32 },
           },
         ]
       : [];

@@ -1,20 +1,28 @@
 import type { CommerceRenderScene } from "./commerce-scene.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
+import type { CinematicRenderScene } from "./cinematic-scene.ts";
 import { exposureFrames, isEffectActive } from "./commerce-effect-motion.ts";
 import { componentStateCuts } from "./component-state.ts";
 import { componentVisibilityCuts } from "./component-visibility.ts";
 
-type ExposureScene = CommerceRenderScene | StoryRenderScene;
+type ExposureScene =
+  | CommerceRenderScene
+  | StoryRenderScene
+  | CinematicRenderScene;
 
 /** Reachable source clocks for preparation and compilation, including raw echo history. */
 export function sourceExposureTimeline(scene: ExposureScene) {
+  const frameCount = scene.timeline.frameCount;
+  const componentScene = {
+    componentData: "componentData" in scene ? scene.componentData : undefined,
+  };
   const blur = scene.effects?.find((effect) => effect.type === "motion-blur");
   const cuts = [
     ...new Set([
       0,
-      scene.frameCount,
-      ...componentStateCuts(scene),
-      ...componentVisibilityCuts(scene),
+      frameCount,
+      ...componentStateCuts(componentScene),
+      ...componentVisibilityCuts(componentScene),
       ...("visibility" in scene ? (scene.visibility ?? []) : []).flatMap(
         (gate) => [gate.start, gate.end],
       ),
@@ -24,14 +32,14 @@ export function sourceExposureTimeline(scene: ExposureScene) {
     ]),
   ].sort((a, b) => a - b);
   const times = new Set<number>();
-  for (let frame = 0; frame < scene.frameCount; frame++) {
+  for (let frame = 0; frame < frameCount; frame++) {
     times.add(frame);
     if (!blur?.shutterAngle || !isEffectActive(blur, frame)) continue;
     const lower = Math.max(...cuts.filter((cut) => cut <= frame));
     const upper = Math.min(...cuts.filter((cut) => cut > frame));
     for (const time of exposureFrames(
       frame,
-      scene.frameCount,
+      frameCount,
       blur.shutterAngle,
       blur.samples,
     ))

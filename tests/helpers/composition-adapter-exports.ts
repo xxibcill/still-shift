@@ -2,14 +2,18 @@ import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, relative, resolve } from "node:path";
-import type { CommerceScene, StoryScene } from "@still-shift/scene-contract";
+import type {
+  CommerceScene,
+  StoryScene,
+  CinematicScene,
+} from "@still-shift/scene-contract";
 import { renderComposition } from "@still-shift/animation-engine";
 import type { CompositionBackend } from "@still-shift/renderer-core";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 
 /** Verify that compiled adapter scenes remain portable through CLI JSON and export. */
 export async function assertAdapterExport(
-  source: CommerceScene | StoryScene,
+  source: CommerceScene | StoryScene | CinematicScene,
   sourceDirectory: string,
   id: string,
   backend: CompositionBackend = "canvas2d",
@@ -17,7 +21,14 @@ export async function assertAdapterExport(
   const directory = await mkdtemp(join(tmpdir(), "still-shift-ce4b-export-"));
   try {
     const scene = structuredClone(source);
-    for (const asset of [...scene.assets, ...(scene.fonts ?? [])])
+    const frameCount =
+      "frameCount" in scene
+        ? scene.frameCount
+        : (scene.fps * scene.durationMs) / 1000;
+    for (const asset of [
+      ...scene.assets,
+      ...("fonts" in scene ? (scene.fonts ?? []) : []),
+    ])
       asset.path = relative(directory, resolve(sourceDirectory, asset.path));
     const sourcePath = join(directory, "scene.json");
     const compositionPath = join(directory, "composition.json");
@@ -53,12 +64,12 @@ export async function assertAdapterExport(
       backend,
       outputPath: join(directory, "second.mp4"),
     });
-    assert.equal(first.frameCount, scene.frameCount);
+    assert.equal(first.frameCount, frameCount);
     assert.equal(first.checksums.output, second.checksums.output);
     assert.deepEqual(first.systemFontLayers, []);
     assert.equal(await runCli(args, { stdout: () => {}, stderr: () => {} }), 1);
     console.log(
-      `CE4b ${backend} ${id} export: ${scene.frameCount} frames, two byte-identical MP4s; relocated assets and overwrite protection pass`,
+      `Adapter ${backend} ${id} export: ${frameCount} frames, two byte-identical MP4s; relocated assets and overwrite protection pass`,
     );
   } finally {
     await rm(directory, { recursive: true, force: true });

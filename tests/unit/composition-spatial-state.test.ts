@@ -30,6 +30,8 @@ it("samples native camera defaults in an identity z=0 optical setup", () => {
     focusDistance: 100,
     aperture: 0,
     blurLevel: 1,
+    blurModel: "lens",
+    maxBlur: 128,
   });
 });
 

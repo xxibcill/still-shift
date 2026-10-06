@@ -152,6 +152,8 @@ const layerBase = {
   solo: z.boolean().optional(),
   guide: z.boolean().optional(),
   threeD: z.boolean().optional(),
+  /** Optional artistic focus distance for a flat 3D artwork plane; geometry still uses its true depth. */
+  focusDepth: finite.min(0.001).max(10_000_000).optional(),
   /** Opt in to scoped flat-surface lighting; valid only on explicitly 3D artwork. */
   receivesLight: z.boolean().optional(),
   transform: TransformSchema.optional(),
@@ -383,6 +385,9 @@ export const CameraLayerSchema = z
     /** Aperture diameter in millimetres; zero is an exact focus-blur identity. */
     aperture: animatableScalar(finite.min(0).max(1000)).optional(),
     blurLevel: animatableScalar(finite.min(0).max(100)).optional(),
+    /** Screen-space focus aesthetic and radius cap; lens/128 remain the defaults. */
+    blurModel: z.enum(["lens", "gaussian"]).optional(),
+    maxBlur: finite.min(0).max(128).optional(),
   })
   .strict();
 
