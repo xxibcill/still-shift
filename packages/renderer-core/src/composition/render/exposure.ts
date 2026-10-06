@@ -3,6 +3,7 @@ import {
   compositionExposureFrames,
   evaluateCompositionExposure,
 } from "../evaluate/exposure.ts";
+import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
 import type { PassageDiagnostic } from "../../passage-diagnostics.ts";
 import {
   buildRenderGraph,
@@ -73,6 +74,9 @@ export function renderCompositionExposure<S extends Surface>(
       stationary = false;
       break;
     }
+  // All spatial shutter samples must pass before accumulation can touch the retained frame.
+  if([comp,...(comp.precomps??[])].some(scope=>scope.layers.some(layer=>layer.threeD||layer.type==="camera")))
+    for(const candidate of graphs()) if(candidate.graph.spatial) requireSpatialCapabilities(candidate.graph.root,{projective:!!backend.project&&!!backend.applyProjectiveClips,validateSurface:backend.validateSpatialSurface});
   if (stationary) {
     const reused =
       cache?.root !== undefined &&

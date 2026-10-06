@@ -1211,6 +1211,20 @@ class Evaluation {
     return angle ?? 0;
   }
 
+  private *spatialHeading(path:PropertyPath):Task<[number,number]> {
+    const at=(frame:number)=>this.readPath(path,frame) as Task<number[]>;
+    const direction=(a:number[],b:number[])=>{
+      const [x,y,z]=[0,1,2].map(axis=>(a[axis]??0)-(b[axis]??0));
+      if(Math.hypot(x!,y!,z!)<=1e-9) return undefined;
+      return [Math.atan2(y!,x!)*180/Math.PI,-Math.atan2(z!,Math.hypot(x!,y!))*180/Math.PI] as [number,number];
+    };
+    const here=yield* at(this.time);
+    let angles=direction(yield* at(this.time+1),yield* at(this.time-1));
+    for(let k=1;angles===undefined&&k<=AUTO_ORIENT_LOOKAROUND_FRAMES;k++) angles=direction(here,yield* at(this.time-k));
+    for(let k=1;angles===undefined&&k<=AUTO_ORIENT_LOOKAROUND_FRAMES;k++) angles=direction(yield* at(this.time+k),here);
+    return angles??[0,0];
+  }
+
   evaluate(ctx: Context, layer: CompositionLayer): EvaluatedLayer {
     return this.run(this.layerTask(ctx, layer));
   }
@@ -1259,12 +1273,14 @@ class Evaluation {
       stage.sealed = sealStage(state, this.shapeBudget(ctx, layer));
     else stage.constrained = true;
     // AE auto-orient: added after expressions, invisible to rotation reads.
-    if (layer.transform?.autoOrient === "path")
-      state.transform.rotation += yield* this.heading({
-        scope: ctx.route,
-        layer: layer.id,
-        segments: AUTO_ORIENT_POSITION,
-      });
+    if (layer.transform?.autoOrient === "path") {
+      const path={scope:ctx.route,layer:layer.id,segments:AUTO_ORIENT_POSITION};
+      if(layer.threeD) {
+        const [rotation,rotationY]=yield* this.spatialHeading(path);
+        state.transform.rotation+=rotation;
+        state.transform.rotationY=(state.transform.rotationY??0)+rotationY;
+      } else state.transform.rotation += yield* this.heading(path);
+    }
     const parent = layer.parent
       ? yield* this.layerState(ctx, this.layer(ctx, layer.parent))
       : undefined;

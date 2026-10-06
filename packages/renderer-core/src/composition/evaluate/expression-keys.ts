@@ -100,7 +100,7 @@ export function ownCurve(
       raw = layer.constraintReference;
       kind = "vector";
       axis = next?.name;
-      spatial = layer.threeD === true;
+      spatial = layer.threeD === true || layer.type === "camera";
       break;
     case "color":
       raw = "color" in layer ? layer.color : undefined;

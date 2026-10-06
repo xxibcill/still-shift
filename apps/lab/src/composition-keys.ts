@@ -18,6 +18,7 @@ import {
   motionScalar,
   scalar,
   vector,
+  vector3,
 } from "../../../packages/renderer-core/src/composition/evaluate/sample.ts";
 import { readJsonPath, type JsonPath } from "./composition-document.ts";
 
@@ -29,8 +30,8 @@ type Key = {
   smooth?: boolean;
   interpolation?: string;
   bezier?: [number, number, number, number];
-  spatialIn?: [number, number];
-  spatialOut?: [number, number];
+  spatialIn?: [number, number] | [number, number, number];
+  spatialOut?: [number, number] | [number, number, number];
 };
 export type KeyTrack = {
   id: string;
@@ -52,6 +53,8 @@ export type KeyTrack = {
   fps: number;
   spatial: boolean;
   array: boolean;
+  dimensions?: 3;
+  fallbackZ?: number;
 };
 
 /** Only contract-owned domains are visited; provider parameters and metadata stay opaque. */
@@ -66,6 +69,8 @@ export function compositionTracks(document: Composition): KeyTrack[] {
     owner: string,
     fps: number,
     array = false,
+    dimensions?: 3,
+    fallbackZ=0,
   ) {
     const keys =
       array && Array.isArray(raw)
@@ -87,7 +92,8 @@ export function compositionTracks(document: Composition): KeyTrack[] {
       raw,
       fps,
       array,
-      spatial: keys.some((k) => k.spatialIn || k.spatialOut),
+      spatial: keys.some((k) => k.spatialIn || k.spatialOut || k.in?.spatialSpeed!==undefined || k.out?.spatialSpeed!==undefined),
+      ...(dimensions ? {dimensions,fallbackZ} : {}),
     });
   }
   function layerTracks(
@@ -98,7 +104,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
   ) {
     const value = layer as unknown as Record<string, unknown>;
     for (const [name, raw] of Object.entries(layer.transform ?? {})) {
-      const kind = ["anchor", "position", "scale"].includes(name)
+      const kind = ["anchor", "position", "scale", "orientation"].includes(name)
         ? "vector"
         : "scalar";
       if (
@@ -108,7 +114,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
         !Array.isArray(raw) &&
         !isKeyed(raw)
       ) {
-        for (const axis of ["x", "y"])
+        for (const axis of (layer.threeD||layer.type==="camera" ? ["x", "y", "z"] : ["x", "y"]))
           add(
             (raw as Record<string, unknown>)[axis],
             [...path, "transform", name, axis],
@@ -127,7 +133,17 @@ export function compositionTracks(document: Composition): KeyTrack[] {
           scope,
           layer.id,
           fps,
+          false,
+          kind==="vector"&&(layer.threeD||layer.type==="camera") ? 3 : undefined,
+          name==="scale" ? 1 : 0,
         );
+    }
+    if(layer.type==="camera") {
+      const raw=layer.pointOfInterest;
+      if(raw&&typeof raw==="object"&&!Array.isArray(raw)&&!isKeyed(raw)) {
+        for(const axis of ["x","y","z"]) add((raw as Record<string,unknown>)[axis],[...path,"pointOfInterest",axis],`pointOfInterest.${axis}`,"scalar",scope,layer.id,fps);
+      } else add(raw,[...path,"pointOfInterest"],"pointOfInterest","vector",scope,layer.id,fps,false,3);
+      for(const name of ["zoom","focalLength","filmSize","focusDistance","aperture","blurLevel"] as const) add(layer[name],[...path,name],name,"scalar",scope,layer.id,fps);
     }
     for (const name of [
       "color",
@@ -155,6 +171,8 @@ export function compositionTracks(document: Composition): KeyTrack[] {
         scope,
         layer.id,
         fps,
+        false,
+        name==="constraintReference"&&(layer.threeD||layer.type==="camera") ? 3 : undefined,
       );
     layer.masks?.forEach((mask, i) => {
       for (const name of ["path", "feather", "expansion", "opacity"] as const)
@@ -404,7 +422,7 @@ export function sampleTrack(track: KeyTrack, frame: number): number[] {
         [1, 1],
       ]).flat();
     case "vector":
-      return vector(track.raw, frame, track.fps, [0, 0]);
+      return track.dimensions===3 ? vector3(track.raw,frame,track.fps,[0,0,track.fallbackZ??0]) : vector(track.raw, frame, track.fps, [0, 0]);
     case "color":
       return color(track.raw, frame, track.fps);
     case "discrete":
@@ -490,14 +508,15 @@ export function editSpatialTangent(
   track: KeyTrack,
   index: number,
   side: "spatialIn" | "spatialOut",
-  value: [number, number],
+  value: [number, number] | [number,number,number],
 ) {
   if (track.kind !== "vector")
     throw new Error("Spatial tangents need a joint vector track");
   const keys = keysIn(draft, track),
     key = keys[index];
   if (!key) throw new Error("Key no longer exists");
-  key[side] = value;
+  if(value.length!==(track.dimensions??2)) throw Error(`This track requires ${track.dimensions??2} tangent components`);
+  key[side] = [...value] as typeof value;
   for (const k of keys)
     for (const handle of [k.in, k.out])
       if (handle && Array.isArray(handle.speed)) delete handle.speed;

@@ -101,6 +101,7 @@ export const COMPOSITION_DIAGNOSTICS = {
     "Conflicting, overlapping or impossible text transitions.",
   "comp-camera-key-range": "A `camera2d` key lies at or after `frameCount`.",
   "comp-camera-settings": "Native camera optical controls, model or clip planes are invalid after sampling.",
+  "comp-3d-constraint": "The constraint uses 2D geometry and cannot reference a spatial layer or parent chain.",
   "comp-3d-transform": "Spatial transform sampling or parent composition produces non-finite world geometry.",
   "comp-camera-cycle": "An active camera cannot depend on a camera-facing parent transform.",
   "comp-3d-surface-budget": "A projected local artwork surface exceeds the bounded allocation budget.",

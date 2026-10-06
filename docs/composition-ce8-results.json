@@ -165,7 +165,37 @@
         "Conservative focus bounds include screen-space lens support",
         "Release intermediate surfaces after local rendering or allocation failures"
       ],
-      "pending": "Native validation activation, honest projective inspector/coverage and analytic/pixel/export acceptance"
+      "pending": "Native validation activation, honest projective inspector/coverage and analytic/pixel/export acceptance",
+      "implementation": "c95eb8e"
+    },
+    {
+      "name": "Native activation, all-frame alpha coverage and spatial authoring",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Enable native cameras and explicit 3D with bounded optics, writer conflicts and camera-parent feedback validation",
+        "Keep 2D constraints explicit: spatial targets/reference ancestry return comp-3d-constraint",
+        "3D path auto-orient includes z direction",
+        "Validate actual isolated required-layer alpha throughout each active owning scope; error by default with optional warning policy",
+        "Preflight every spatial exposure sample before retained-target accumulation",
+        "XYZ/orientation/POI/optical tracks and dimensional tangent editing use the native sampler"
+      ],
+      "versions": {
+        "evaluator": "composition-evaluate-0.45.0",
+        "canvas": "composition-canvas-1.40.0",
+        "webgl2": "composition-webgl2-0.55.0",
+        "export": "chromium-ffmpeg-0.6.2"
+      },
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "cases": "Authored native evaluation/graph integration, writer/POI/cycle validation, 3D parenting/path orientation, seeded shake, local-effect/focus ordering and shared alpha threshold"
+      },
+      "sourceReviewRepairs": [
+        "Derived focal length in zoom mode is positive/finite rather than incorrectly restricted as an authored primary optic",
+        "Camera constraint-reference dimensionality agrees with sampling and property paths",
+        "Exclude camera/light/null/adjustment/audio layers from image-input and coverage semantics"
+      ],
+      "pending": "Projective quality/inspector geometry, focused verification after release, native pixels/seeks/hardware/MP4/cost and full gate"
     }
   ],
   "pending": [

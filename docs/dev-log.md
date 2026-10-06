@@ -55,9 +55,10 @@ still hold before relying on them.
   and stable 3D-run ordering, camera-facing orientation and bounded projective
   rendering are authored. Tests, formatting and builds have not run:
   the coordinated CE6-P quiet window is active. Runtime camera/3D availability
-  remains gated until evaluation/render integration is implemented and verified.
-  No owner decision is pending. Next: focused verification after release, xyz
-  property evaluation, shared projective rendering, inspection and acceptance.
+  is enabled in authored source with writer/cycle/2D-constraint checks; actual
+  all-frame required-layer alpha and spatial track editing are authored. These
+  changes remain unverified. No owner decision is pending. Next: real projective
+  inspector/quality geometry, focused checks after release and native acceptance.
   [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
@@ -211,6 +212,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 native activation and coverage checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after projective path `c95eb8e`.
+- **Authored:** native validation/activation, deterministic 3D path orientation and
+  camera-writer rules; actual required-layer alpha across active scope frames,
+  optional warning policy and preflight of all spatial exposure samples.
+- **Authoring:** xyz/orientation/POI/optics tracks and dimensional tangent edits;
+  native integration/shake/order/validation cases are authored but unexecuted.
+- **Limits:** constraints retain their explicit 2D geometry and reject spatial
+  target/reference ancestry; light availability remains CE8-L.
+- **Verification:** no formatter/build/test/matrix/export ran; CE6-P holds the lane.
+- **Next:** genuine projective inspector/quality geometry, focused checks after release.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 projective rendering checkpoint
 

@@ -3639,6 +3639,11 @@ rendering, projective group clips/named inputs and transactional capability chec
 are authored in WebGL2 source version 0.55.0. Native validation stays gated and
 verification remains deferred; limitations are explicit in the evidence record.
 
+Native camera/3D activation, optical writer/cycle rules, explicit 2D-constraint
+limits, z-aware path orientation, isolated all-frame required-layer alpha checks
+and xyz/POI/optical track editing are authored but unverified. Canvas source
+version 1.40.0 and export worker 0.6.2 identify the new spatial behavior.
+
 **Completion record:** _to be filled in._
 
 ---

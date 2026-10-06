@@ -13,7 +13,7 @@ it("rejects perspective before lifecycle hooks or retained-target mutation",()=>
 });
 it("traverses nested local artwork, named inputs and mattes before publishing a frame",()=>{
   const affine={...project,placement:{...project.placement,affineMatrix:[1,0,0,1,0,0] as [number,number,number,number,number,number]}};
-  const captures=[{...affine,surface:{...local,ops:[project]}},{...affine,matte:{mode:"alpha" as const,layer:"matte",ops:[project]}},{...affine,effects:[{id:"input",effect:"compound.blur",enabled:true,params:{},layerInputs:{map:[project]}}]}];
+  const captures=[{...affine,surface:{...local,ops:[project]}},{...affine,matte:{mode:"alpha" as const,layer:"matte",ops:[project]}},{...affine,effects:[{id:"input",effect:"transition.gradient-wipe",enabled:true,params:{},layerInputs:{map:[project]}}]}];
   for(const capture of captures) expect(()=>requireSpatialCapabilities({...root,ops:[capture]},{projective:false})).toThrow("True perspective");
 });
 it("accepts affine camera projection on Canvas and validates device allocations on WebGL",()=>{

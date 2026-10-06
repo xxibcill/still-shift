@@ -90,7 +90,7 @@ function resolveSegments(
 
   switch (head.name) {
     case "constraintReference":
-      return layer.threeD
+      return layer.threeD || layer.type === "camera"
         ? component("vec3", COMPONENTS.vec3, segments.slice(1))
         : component("vec2", COMPONENTS.vec2, segments.slice(1));
     case "transform": {

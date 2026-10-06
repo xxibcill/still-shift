@@ -314,6 +314,13 @@ class GraphBuilder {
     };
   }
 
+  coverageSurface(tree:EvaluatedLayerTree,def:CompositionScope,id:string,prefix:string):SurfaceNode {
+    const state=tree.layers.find(state=>state.id===id)!;
+    const scope=this.scope(tree,def,state.layer.type==="group" ? id : undefined);
+    const ops=state.visible&&state.opacity>0 ? this.layerOps(scope,state,{matrix:IDENTITY,transforms:[],opacity:1,clips:[],viewport:{width:tree.width,height:tree.height},prefix,background:null,cull:false}) : [];
+    return {id:tree.id,width:tree.width,height:tree.height,background:null,ops,...(this.comp.colorSpace ? {colorSpace:this.comp.colorSpace} : {})};
+  }
+
   scopeOps(
     tree: EvaluatedLayerTree,
     def: CompositionScope,
@@ -1144,5 +1151,12 @@ export function buildRenderGraph(
 ): RenderGraph {
   const builder = new GraphBuilder(comp, tree.time, options);
   const root=builder.surface(tree,comp,"");
+  return {root,culled:builder.culled,...(builder.spatial ? {spatial:true as const} : {})};
+}
+
+/** Actual isolated coverage in the owning scope; no background can hide alpha holes. */
+export function buildLayerRenderGraph(comp:Composition,tree:EvaluatedLayerTree,scope:CompositionScope,id:string,prefix:string,options:RenderGraphOptions={}):RenderGraph {
+  const builder=new GraphBuilder(comp,tree.time,options);
+  const root=builder.coverageSurface(tree,scope,id,prefix);
   return {root,culled:builder.culled,...(builder.spatial ? {spatial:true as const} : {})};
 }

@@ -18,6 +18,7 @@ import {
   type IssueReporter,
 } from "./primitives.ts";
 import { isResolvedProperty, resolvePropertyPath } from "./resolve.ts";
+import { checkSpatialLayer,checkCameraWriters,spatialLayer } from "./validate-spatial.ts";
 import { checkTextAnimatorAxes } from "./text-axes.ts";
 
 const L = COMPOSITION_LIMITS;
@@ -62,7 +63,7 @@ function checkVectorDimensions(
   layer: CompositionLayer,
   path: Path,
 ) {
-  if (layer.threeD) return;
+  if (layer.threeD||layer.type==="camera") return;
   for (const field of [
     "anchor",
     "position",
@@ -136,7 +137,7 @@ function checkLayer(
     );
   const missingType = UNAVAILABLE_LAYER_TYPES[layer.type];
   if (missingType) unavailable(["type"], `${layer.type} layers`, missingType);
-  if (layer.threeD) unavailable(["threeD"], "3D layers", "CE8");
+  checkSpatialLayer(layer,scope,path,fail);
   layer.effects?.forEach((effect, index) => {
     const at = [...path, "effects", index];
     const definition = compositionEffectDefinition(effect.effect);
@@ -194,7 +195,7 @@ function checkLayer(
       if (
         !slots.includes(slot) ||
         !source ||
-        ["null", "adjustment"].includes(source.type)
+        ["null", "adjustment", "camera", "light", "audio"].includes(source.type)
       )
         fail(
           "comp-effect-layer",
@@ -222,14 +223,8 @@ function checkLayer(
         );
   });
   for (const field of ["rotationX", "rotationY", "orientation"] as const)
-    if (layer.transform?.[field] !== undefined)
+    if (layer.transform?.[field] !== undefined&&!layer.threeD&&layer.type!=="camera")
       unavailable(["transform", field], `transform.${field}`, "CE8");
-  if (layer.transform?.autoOrient === "camera")
-    unavailable(
-      ["transform", "autoOrient"],
-      "auto-orient toward the camera",
-      "CE8",
-    );
   checkVectorDimensions(fail, layer, path);
 
   if (layer.cameraDepth !== undefined && (layer.parent || scope !== comp))
@@ -273,6 +268,8 @@ function checkLayer(
         [...path, "trackMatte", "layer"],
         "a layer cannot be its own track matte",
       );
+    else if (scope.layers.some(l=>l.id===matte&&["null","camera","light","audio","adjustment"].includes(l.type)))
+      fail("comp-matte-missing",[...path,"trackMatte","layer"],"A track matte needs drawable artwork or a group");
     else if (!scope.layers.some((l) => l.id === matte))
       fail(
         "comp-matte-missing",
@@ -767,6 +764,8 @@ function checkConstraints(
           [...path, field],
           `no layer "${id}" in this composition`,
         );
+    if(refs.some(([,id])=>{const layer=layers.get(id);return layer&&spatialLayer(layer,scope);}))
+      fail("comp-3d-constraint",path,"These constraints solve 2D geometry; spatial targets/references require an explicit 2D helper or an expression");
     if (constraint.type === "follow-path") {
       if (layers.get(constraint.path)?.type !== "shape")
         fail(
@@ -1020,6 +1019,7 @@ export function validateCompositionSemantics(
     );
   checkPrecompGraph(comp, fail);
   checkMotion(comp, fail, signals, new Set(comp.markers?.map((m) => m.id)));
+  checkCameraWriters(comp,fail);
   checkMotionDependencies(comp, fail, compileExpressions(comp, fail));
 
   if (comp.camera2d) {

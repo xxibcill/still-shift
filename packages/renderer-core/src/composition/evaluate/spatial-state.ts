@@ -75,6 +75,10 @@ export function validateCameraControls(controls: SampledCameraControls) {
   const ranges={zoom:[.001,1_000_000],focalLength:[.001,10_000],filmSize:[.001,1000],nearClip:[.001,1_000_000],farClip:[.002,10_000_000],focusDistance:[.001,10_000_000],aperture:[0,1000],blurLevel:[0,100]} as const;
   for(const name of Object.keys(ranges) as (keyof typeof ranges)[]) {
     const value=controls[name], [minimum,maximum]=ranges[name];
+    if(name==="focalLength"&&controls.opticalMode==="zoom") {
+      if(!Number.isFinite(value)||value<=0) throw Error("Derived camera focalLength must be finite and positive");
+      continue;
+    }
     if(!Number.isFinite(value)||value<minimum||value>maximum)
       throw Error(`Camera ${name} must be finite and within ${minimum}..${maximum}`);
   }

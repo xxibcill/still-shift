@@ -546,13 +546,13 @@ export function createCompositionInspector(options: {
     }
     if (current.kind === "vector" && current.property === "transform.position")
       for (const side of ["spatialIn", "spatialOut"] as const) {
-        const tangent = textInput(side, key[side] ?? [0, 0]);
+        const tangent = textInput(side, key[side] ?? (current.dimensions===3 ? [0,0,0] : [0, 0]));
         area.append(
           tangent.label,
           button(`Apply ${side}`, () => {
             const values = tangent.input.value.split(",").map(Number);
-            if (values.length !== 2) {
-              report("Enter x,y tangent offsets");
+            if (values.length !== (current.dimensions??2)) {
+              report(current.dimensions===3 ? "Enter x,y,z tangent offsets" : "Enter x,y tangent offsets");
               return;
             }
             void submit(side, (d) =>
@@ -561,7 +561,7 @@ export function createCompositionInspector(options: {
                 current,
                 index,
                 side,
-                values as [number, number],
+                values as [number, number] | [number,number,number],
               ),
             );
           }),
