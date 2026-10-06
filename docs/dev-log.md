@@ -43,6 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE5-X audit stop (2026-10-06):** Codex on isolated `codex/composition-ce5x`
+  from complete CE4c `17666eb`; setup checkpoint `a64a96e` includes the requested
+  plan and three PR38 review fixes. All 67 focused shape tests and pinned toolchain
+  startup pass. Browser native baselines/seeks/exports/inspector, 144 legacy connector
+  frames and 18 hardware comparisons pass. Audit covers 265 source/beat/variant cases, with 132 affected cases
+  and 71 frozen CE0 items / 14,916 frames. It finds component spatial/morph/appearance
+  providers, product attachments and multi-vertex annotations beyond the named scope
+  or B3 contract. Migration is stopped under the owner instruction; no native fields
+  or emission changes were added. Owner must resolve that scope before resuming.
+  A1 baseline approval and the rest of CE5-X sequence stay open. CE4d remains active
+  in the primary checkout; this work uses private dependencies/caches/venv.
+  [Evidence](./composition-ce5x-results.json). No complete phase gate is claimed.
+
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
   CE8-L `e1bd4bc`; final runtime `37cc07a`, verified snapshot `e1fb3e3`.
   Native camera framing, depth planes, Gaussian focus, decoded-alpha safety and
@@ -55,7 +68,7 @@ still hold before relying on them.
   visual references remain unchanged. Earlier failures and diagnostics remain in
   the [evidence](./composition-ce4c-results.json). WebGL speed targets remain CE6-P.
   [PR #45](https://github.com/xxibcill/still-shift/pull/45) is open and attached against CE8-L.
-  Start CE4d on a new branch.
+  CE4d is active in the primary checkout; CE5-X uses its own managed worktree.
   Separate cross-chat coordination authorization remains pending.
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
@@ -180,7 +193,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
+_Last updated 2026-10-06 by Codex for CE5-X audit; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -238,6 +251,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE5-X prerequisites and provider audit stop
+
+- **Agent / branch:** Codex on isolated `codex/composition-ce5x`, from CE4c `17666eb`.
+- **Done:** plan `e39f99b` and review fixes `335ff23`, `3d0da6a`, `d3093bd`
+  cherry-picked with CE4c functionality retained; record scoped owner approval/Q9.
+- **Results:** pinned toolchain, Python imports and 67 focused shape tests pass;
+  native shape baselines/seeks/exports/inspector, 144 legacy connector frames and
+  18 exact hardware comparisons pass.
+  Audit: 265 cases, 132 affected, 268 named path/flow provider layers before migration;
+  71 affected CE0 items / 14,916 frames. Final inventory has zero audit errors.
+- **Retained failures:** initial isolated dependency imports and fitted-panel audit
+  preparation failed; repaired and retained in evidence. No full `pnpm check` run.
+- **Open / next:** owner stop triggered for additional component motion providers,
+  source-image attachments and four/five-vertex annotations; runtime migration stops.
+  Resolve scope/contract first. A1 and remaining sequence decisions stay open.
+- **Records:** [CE5-X audit](./composition-ce5x-results.json), [plan](./composition-engine-plan.md#ce5-x--shape-fidelity-connectors-and-expressive-strokes).
 
 ### 2026-10-06 — Repair PR #38 square-cap bounds and close both findings
 
