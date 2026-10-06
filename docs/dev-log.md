@@ -44,8 +44,9 @@ still hold before relying on them.
 ## Current state
 
 - **CE4d in progress (2026-10-06):** `codex/composition-ce4d` from CE4c
-  `17666eb`. Dedicated old-depth capture harness covers 17 cases; build passes.
-  Reference capture, native depth-image integration, legacy preset adaptation,
+  `17666eb`. All 17 old-depth references pass 1,530 forward/reverse frames and
+  independent repeat. Native depth contract/evaluation/shared WebGL checkpoint
+  passes 151 focused unit checks and build; native pixels, legacy preset adaptation,
   family default consolidation and all milestone acceptance remain pending.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
@@ -244,6 +245,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d native depth checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** 17 old-depth cases captured; 1,530 forward/reverse frames and all stored
+  hashes/state records pass independent repeat, with 51 sample PNGs preserved.
+  Native contract, local evaluation, paths, builder, inspector tracks and shared
+  device depth draw are implemented; no nested Three renderer is used.
+- **Results:** 151 focused unit tests, build and scoped lint pass. Native browser
+  parity, remaining adapters/default consolidation and full acceptance are pending.
+- **Rejected / do not repeat:** JSON signed-zero state mismatch corrected without
+  pixel changes; invalid test expression/self-driver payloads corrected.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d reference capture begins
 

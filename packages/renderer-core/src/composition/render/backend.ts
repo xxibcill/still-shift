@@ -15,6 +15,7 @@ import type { Rgba } from "../evaluate/types.ts";
 import type {
   ClipRect,
   ImageContent,
+  DepthImageContent,
   MaskOp,
   RenderGraph,
   RenderOp,
@@ -29,7 +30,10 @@ import type {
 
 export type SolidDraw = DrawOp & { content: SolidContent };
 export type VectorDraw = DrawOp & {
-  content: Exclude<DrawOp["content"], { type: "image" | "surface" }>;
+  content: Exclude<
+    DrawOp["content"],
+    { type: "image" | "depth-image" | "surface" }
+  >;
 };
 
 /** A premultiplied RGBA render target owned by a backend. */
@@ -73,6 +77,16 @@ export interface RenderBackend<S extends Surface = Surface> {
   drawImage(
     dst: S,
     content: ImageContent,
+    matrix: Matrix,
+    opacity: number,
+    blend: CompositionBlendMode,
+    clips: ClipRect[],
+    transforms?: Matrix[],
+    paintBlur?: number,
+  ): void;
+  drawDepthImage?(
+    dst: S,
+    content: DepthImageContent,
     matrix: Matrix,
     opacity: number,
     blend: CompositionBlendMode,
@@ -256,6 +270,17 @@ export function executeGraph<S extends Surface>(
           );
         else if (c.type === "image")
           backend.drawImage(
+            dst,
+            c,
+            matrix,
+            opacity,
+            blend,
+            clips,
+            transforms,
+            paintBlur,
+          );
+        else if (c.type === "depth-image")
+          backend.drawDepthImage!(
             dst,
             c,
             matrix,
@@ -477,6 +502,7 @@ export function executeGraph<S extends Surface>(
   const vector = (op: RenderOp): op is VectorDraw =>
     op.kind === "draw" &&
     op.content.type !== "image" &&
+    op.content.type !== "depth-image" &&
     op.content.type !== "surface" &&
     op.blend === "normal" &&
     !op.clips.some((clip) => clip.projection);
@@ -515,6 +541,7 @@ export function executeGraph<S extends Surface>(
   };
   if (graph.spatial)
     requireSpatialCapabilities(graph.root, {
+      depthImage: !!backend.drawDepthImage,
       lighting: !!backend.applyLighting,
       projective: !!backend.project && !!backend.applyProjectiveClips,
       validateSurface: backend.validateSpatialSurface,

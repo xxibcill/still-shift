@@ -10,6 +10,13 @@ const colorAxis = { r: 0, g: 1, b: 2, a: 3 } as const;
 
 function container(state: EvaluatedLayer, segments: PropertyPathSegment[]) {
   const [head, next, component] = segments;
+  if (head!.name === "motion" && state.depthMotion)
+    return next!.name === "offset" && component
+      ? {
+          object: state.depthMotion.offset,
+          key: vectorAxis[component.name as "x" | "y"],
+        }
+      : { object: state.depthMotion, key: next!.name };
   if (head!.name === "contents") {
     const location = locateShapeProperty(state.contents!, segments)!;
     if (location.component !== undefined)

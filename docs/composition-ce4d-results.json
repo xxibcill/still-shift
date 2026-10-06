@@ -8,18 +8,55 @@
   "slices": [
     {
       "name": "dedicated old-depth reference capture",
-      "status": "harness-implemented-capture-pending",
+      "status": "captured-verified",
       "cases": 17,
       "forwardFrames": 1530,
       "reverseFrames": 1530,
       "checks": {
         "build": "pass"
       },
-      "scope": "All seven explicit presets in landscape/vertical, two structured fallbacks, sharp discontinuity. Actual shader and sampled state retained; separate from 176 frozen CE0 items."
+      "scope": "All seven explicit presets in landscape/vertical, two structured fallbacks, sharp discontinuity. Actual shader and sampled state retained; separate from 176 frozen CE0 items.",
+      "checkpoint": "1c7a1e7",
+      "reference": "tests/visual/composition-depth-reference/darwin-arm64.json",
+      "samplePngs": 51,
+      "repeat": "All 1530 hashes/state records and complete reverse seeks pass in independent repeat; signed-zero JSON normalization only",
+      "failedAttempts": [
+        "Independent repeat initially rejected numeric -0 versus serialized 0; pixel hashes unchanged. Normalize both sides through JSON for stored-state comparison."
+      ]
+    },
+    {
+      "name": "native depth contract/evaluation/shared GPU content checkpoint",
+      "status": "implemented-focused-verification",
+      "scope": [
+        "Strict prepared asset references/encoding/dimensions/framing/overscan",
+        "Bounded keyed local motion, paths, expressions/drivers, owned stages",
+        "Shared WebGL2 device mesh/SRGB filtering/local MSAA; no nested renderer",
+        "Shared graph placement, masks/effects/lighting/precomp integration",
+        "Located unsupported Canvas preflight",
+        "Builder asset registration, inspector tracks, generated schema/reference"
+      ],
+      "checks": {
+        "focusedUnit": {
+          "files": 4,
+          "tests": 151,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass"
+      },
+      "nativePixelParity": "pending focused browser",
+      "versions": {
+        "evaluator": "composition-evaluator-48",
+        "webgl": "composition-webgl2-0.58.0"
+      },
+      "failedAttempts": [
+        "Initial test payloads used unsupported expression strings/double quotes and a prohibited self-driver cycle; corrected to contract objects/single quotes/independent control node.",
+        "Added a new CE4d all-field fixture after the frozen CE1 coverage test correctly reported missing depth fields; CE1 references unchanged."
+      ]
     }
   ],
   "pending": [
-    "Capture and verify old depth references",
+    "Native depth pixel parity and integration acceptance",
     "Native depth-image contract/evaluation/shared WebGL backend",
     "Legacy adapter and family default consolidation",
     "Native parity, exports, inspector, costs and complete local gate",

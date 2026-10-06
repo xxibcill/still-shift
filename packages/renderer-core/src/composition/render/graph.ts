@@ -1,4 +1,5 @@
 import type { CompiledShapes } from "../shapes/types.ts";
+import type { SampledDepthMotion } from "../evaluate/depth-image.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import type { EvaluatedEffect } from "../evaluate/effects.ts";
 import { evaluateComp } from "../evaluate/evaluate.ts";
@@ -87,6 +88,15 @@ export type ImageContent = {
   stateFrom?: number;
   stateMix?: number;
 };
+export type DepthImageContent = {
+  type: "depth-image";
+  width: number;
+  height: number;
+  layer: Extract<CompositionLayer, { type: "depth-image" }>;
+  motion: SampledDepthMotion;
+  sourceHash: string;
+  depthHash: string;
+};
 export type TextContent = {
   type: "text";
   /** Root layer id or `precomp-id/layer-id`, as in `EvaluationOptions.textBounds`. */
@@ -117,6 +127,7 @@ export type LayerContent =
   | ShapeContent
   | SolidContent
   | ImageContent
+  | DepthImageContent
   | TextContent
   | ProviderContent
   | SurfaceContent;
@@ -809,6 +820,20 @@ class GraphBuilder {
           ...(state.stateFrom !== undefined && state.stateMix !== undefined
             ? { stateFrom: state.stateFrom, stateMix: state.stateMix }
             : {}),
+        };
+      case "depth-image":
+        return {
+          type: "depth-image",
+          width: layer.size[0],
+          height: layer.size[1],
+          layer,
+          motion: state.depthMotion!,
+          sourceHash: this.comp.assets.find(
+            (asset) => asset.id === layer.sourceAsset,
+          )!.sha256,
+          depthHash: this.comp.assets.find(
+            (asset) => asset.id === layer.depth.asset,
+          )!.sha256,
         };
       case "text":
         return {

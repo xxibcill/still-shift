@@ -89,6 +89,14 @@ function resolveSegments(
     return missing(text, "an indexed property");
 
   switch (head.name) {
+    case "motion":
+      if (layer.type !== "depth-image" || !next || indexed(next))
+        return missing(text, "a depth-image motion property");
+      if (next.name === "offset")
+        return component("vec2", COMPONENTS.vec2, rest);
+      if (["scale", "strength", "roll"].includes(next.name))
+        return component("scalar", [], rest);
+      return missing(text, "a depth-image motion property");
     case "constraintReference":
       return layer.threeD || layer.type === "camera" || layer.type === "light"
         ? component("vec3", COMPONENTS.vec3, segments.slice(1))

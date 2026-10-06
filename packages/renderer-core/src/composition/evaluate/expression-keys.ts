@@ -63,6 +63,18 @@ export function ownCurve(
   let spatial = false;
   let fallbackZ = 0;
   switch (head!.name) {
+    case "motion":
+      raw =
+        layer.type === "depth-image"
+          ? layer.motion?.[
+              next!.name as "scale" | "strength" | "offset" | "roll"
+            ]
+          : undefined;
+      if (next!.name === "offset") {
+        kind = "vector";
+        axis = last?.name;
+      }
+      break;
     case "contents": {
       if (layer.type !== "shape") return undefined;
       const location = locateShapeProperty(layer.contents, segments);

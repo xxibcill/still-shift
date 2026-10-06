@@ -700,6 +700,14 @@ describe("composition-1 fixtures", () => {
     ) as Composition;
     expect(validateComposition(framingFocus).ok).toBe(true);
     allLayers.push(...framingFocus.layers);
+    const depthImage = JSON.parse(
+      readFileSync(
+        resolve(root, "benchmarks/fixtures/composition/ce4d/native-depth.json"),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(depthImage).ok).toBe(true);
+    allLayers.push(...depthImage.layers);
     for (const option of layers.CompositionLayerSchema.options) {
       const type = option.shape.type.value;
       if (UNAVAILABLE_LAYER_TYPES[type]) continue;

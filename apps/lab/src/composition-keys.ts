@@ -151,6 +151,45 @@ export function compositionTracks(document: Composition): KeyTrack[] {
           name === "scale" ? 1 : 0,
         );
     }
+    if (layer.type === "depth-image") {
+      for (const name of ["scale", "strength", "roll"] as const)
+        add(
+          layer.motion?.[name],
+          [...path, "motion", name],
+          `motion.${name}`,
+          "scalar",
+          scope,
+          layer.id,
+          fps,
+        );
+      const raw = layer.motion?.offset;
+      if (
+        raw &&
+        typeof raw === "object" &&
+        !Array.isArray(raw) &&
+        !isKeyed(raw)
+      )
+        for (const axis of ["x", "y"] as const)
+          add(
+            raw[axis],
+            [...path, "motion", "offset", axis],
+            `motion.offset.${axis}`,
+            "scalar",
+            scope,
+            layer.id,
+            fps,
+          );
+      else
+        add(
+          raw,
+          [...path, "motion", "offset"],
+          "motion.offset",
+          "vector",
+          scope,
+          layer.id,
+          fps,
+        );
+    }
     if (layer.type === "camera") {
       for (const name of ["pointOfInterest", "viewOffset"] as const) {
         const raw = layer[name];

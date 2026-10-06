@@ -338,6 +338,27 @@ function checkLayer(
       "stateFrom and stateMix must be set together",
     );
   switch (layer.type) {
+    case "depth-image": {
+      const source = asset(layer.sourceAsset, "image", ["sourceAsset"]);
+      const depth = asset(layer.depth.asset, "image", ["depth", "asset"]);
+      if (
+        depth?.type === "image" &&
+        (depth.width !== layer.depth.width ||
+          depth.height !== layer.depth.height)
+      )
+        fail(
+          "comp-asset-type",
+          [...path, "depth"],
+          "Declared depth dimensions must match the prepared asset",
+        );
+      if (source?.type === "image" && (source.width < 2 || source.height < 2))
+        fail(
+          "comp-asset-type",
+          [...path, "sourceAsset"],
+          "Depth displacement needs a source of at least 2 × 2 pixels",
+        );
+      break;
+    }
     case "image": {
       layer.sources.forEach((source, i) => {
         const image = asset(source.asset, "image", ["sources", i, "asset"]);

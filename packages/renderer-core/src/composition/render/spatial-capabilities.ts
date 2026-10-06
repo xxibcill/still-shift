@@ -11,6 +11,7 @@ export function requireSpatialCapabilities(
   capabilities: {
     projective: boolean;
     lighting?: boolean;
+    depthImage?: boolean;
     validateSurface?:
       | ((width: number, height: number, node: string) => void)
       | undefined;
@@ -72,6 +73,12 @@ export function requireSpatialCapabilities(
         capabilities.validateSurface?.(screen.width, screen.height, op.layer);
         visit(op.surface.ops, op.surface.width, op.surface.height);
       } else if (op.kind === "draw") {
+        if (op.content.type === "depth-image" && !capabilities.depthImage)
+          passageError(
+            "comp-feature-backend",
+            "Depth displacement requires the composition WebGL2 backend; prepare an explicit flat-image equivalent for Canvas",
+            { node: op.layer },
+          );
         if (op.projection) check(op.projection, op.layer);
         if (op.content.type === "surface")
           visit(

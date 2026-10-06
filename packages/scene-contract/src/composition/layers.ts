@@ -4,6 +4,7 @@ import { TextContainerSchema } from "../story-acting.ts";
 import { PoseRegistrationSchema } from "../story-acting.ts";
 import { compositionTypographyFields } from "./typography.ts";
 import { ShapeContentsSchema } from "./shapes.ts";
+import { depthImageFields } from "./depth-image.ts";
 import {
   AnimatableColorSchema,
   AnimatableDiscreteSchema,
@@ -223,6 +224,16 @@ export const ImageLayerSchema = z
   })
   .strict();
 
+/** Bounded native displacement; source/depth preparation stays outside rendering. */
+export const DepthImageLayerSchema = z
+  .object({
+    ...layerBase,
+    type: z.literal("depth-image"),
+    size: size2,
+    ...depthImageFields,
+  })
+  .strict();
+
 export const TextLayerSchema = z
   .object({
     ...layerBase,
@@ -428,6 +439,7 @@ export const AudioLayerSchema = mediaLayer("audio");
 export const CompositionLayerSchema = z.discriminatedUnion("type", [
   SolidLayerSchema,
   ImageLayerSchema,
+  DepthImageLayerSchema,
   TextLayerSchema,
   NullLayerSchema,
   ProviderLayerSchema,
@@ -462,6 +474,7 @@ export const UNAVAILABLE_LAYER_TYPES: Partial<
 export const SIZED_LAYER_TYPES = new Set<CompositionLayerType>([
   "solid",
   "image",
+  "depth-image",
   "group",
   "precomp",
   "adjustment",

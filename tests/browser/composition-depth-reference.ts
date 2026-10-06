@@ -165,7 +165,7 @@ try {
       await readFile(resolve(destination, "darwin-arm64.json"), "utf8"),
     );
     assert.deepEqual(
-      rows,
+      JSON.parse(JSON.stringify(rows)),
       stored.rows,
       "Dedicated old-depth references changed",
     );

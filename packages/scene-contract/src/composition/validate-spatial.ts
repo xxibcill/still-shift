@@ -27,7 +27,9 @@ export function checkSpatialLayer(
   if (
     layer.focusDepth !== undefined &&
     (!layer.threeD ||
-      !["image", "solid", "text", "shape", "precomp"].includes(layer.type))
+      !["image", "depth-image", "solid", "text", "shape", "precomp"].includes(
+        layer.type,
+      ))
   )
     fail(
       "comp-camera-settings",
@@ -37,7 +39,9 @@ export function checkSpatialLayer(
   if (
     layer.receivesLight !== undefined &&
     (!layer.threeD ||
-      !["image", "solid", "text", "shape", "precomp"].includes(layer.type))
+      !["image", "depth-image", "solid", "text", "shape", "precomp"].includes(
+        layer.type,
+      ))
   )
     fail(
       "comp-light-receiver",
