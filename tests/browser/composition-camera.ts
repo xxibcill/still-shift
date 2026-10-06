@@ -27,6 +27,7 @@ import {
 } from "./camera-hardware.ts";
 import { cameraFailureAcceptance } from "./camera-failures.ts";
 import { cameraGroupBlurAcceptance } from "./camera-group-blur.ts";
+import { cameraAncestorCoverageAcceptance } from "./camera-ancestor-coverage.ts";
 import { cameraSampleCosts } from "./camera-cost.ts";
 import {
   cameraInspectorAcceptance,
@@ -205,6 +206,7 @@ try {
     console.log("Native CE8 fixture:", name);
   }
   const groupBlur = await cameraGroupBlurAcceptance(page),
+    ancestorCoverage = await cameraAncestorCoverageAcceptance(page),
     failures = await cameraFailureAcceptance(page, root),
     hardware = await cameraHardwarePreview(
       server.resolvedUrls!.local[0]!,
@@ -247,6 +249,7 @@ try {
         failures,
         hardware,
         groupBlur,
+        ancestorCoverage,
         inspector,
         xyInspector,
         baseline: writing ? "created new CE8 baseline" : "exact",
@@ -262,6 +265,7 @@ try {
       failures,
       hardware,
       groupBlur,
+      ancestorCoverage,
       inspector,
       xyInspector,
       baseline: writing ? "created CE8" : "exact",

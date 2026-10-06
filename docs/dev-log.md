@@ -43,13 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #43 review fixes in flight (2026-10-06):** `codex/pr43-fixes` from CE8
-  `9d8f33a`. Three findings are posted inline. Inherited projected primitive blur
-  is repaired in `e16d962`; XY tangent editing is verified with 14 focused units
-  and real camera-position/POI/artwork edit, undo/redo and save flows.
-  Ancestor-group required coverage remains. Final verification and the single
-  final push are pending; previous CE8 gate evidence is historical.
-  No owner decision is pending. [Fix evidence](./pr-43-fix-results.json).
+- **PR #43 review fixes complete (2026-10-06):** `codex/pr43-fixes` from CE8
+  `9d8f33a`. Three findings are posted inline; inherited projected primitive blur
+  is repaired in `e16d962`, authored XY tangents in `c36c686`, and ancestor-group
+  required coverage in the final finding commit. Delivery uses one commit per finding.
+  Full pinned `pnpm check` passes 1,851 unit / 46 runtime / 139 integration /
+  14 depth tests, every required browser suite and 176 frozen baselines / 36,061 frames.
+  Camera acceptance includes 24 exact blur comparisons, 72 ancestor-coverage cases,
+  three XY inspector flows, XYZ controls and 36 hardware comparisons.
+  Baselines are unchanged; GitHub Actions are verified disabled. No implementation
+  blocker remains; PR #43 owner review/merge remain. Earlier CE8 gate evidence is historical.
+  [Fix evidence](./pr-43-fix-results.json).
 
 - **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
   final code `16262ec`. Scoped cameras, XYZ transforms, projective planes,
@@ -214,6 +218,22 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #43 ancestor-group coverage fix
+
+- **Agent / branch:** Codex on `codex/pr43-fixes`, after XY fix `c36c686`.
+- **Done:** required alpha retains ancestor masks, mattes, effects and echo;
+  unrelated siblings cannot hide holes, and captured source groups remain intact.
+- **Results:** 35 focused units and 72 coverage cases pass. Final full pinned
+  `pnpm check` passes 1,851 unit / 46 runtime / 139 integration / 14 depth,
+  every required browser suite and all 176 frozen baselines / 36,061 frames.
+- **Rejected / repaired:** current-child visibility prematurely bypassed ancestor
+  echo; out-point/zero-opacity regressions now pass. Initial full gate stopped on
+  a copied Python CLI's stale shebang; isolated environment repair and full rerun pass.
+- **Open / next:** owner review/merge of PR #43. One finding per commit;
+  push after the final commit. Baselines unchanged; GitHub Actions verified disabled.
+- **Records:** [Fix evidence](./pr-43-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759936).
 
 ### 2026-10-06 — PR #43 XY spatial tangent fix
 

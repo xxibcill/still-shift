@@ -255,6 +255,7 @@ type Frame = {
   captureSource?: string;
   background: Rgba | null;
   localCapture?: { inverse: Homography; origin: [number, number] };
+  coverageLayers?: ReadonlySet<string>;
 };
 type Scope = {
   tree: EvaluatedLayerTree;
@@ -342,9 +343,35 @@ class GraphBuilder {
       def,
       state.layer.type === "group" ? id : undefined,
     );
+    const coverageLayers = new Set([id]);
+    if (state.layer.type === "group")
+      for (const candidate of tree.layers)
+        for (
+          let parent = candidate.layer.parent;
+          parent;
+          parent = scope.byId.get(parent)!.layer.parent
+        )
+          if (parent === id) {
+            coverageLayers.add(candidate.id);
+            break;
+          }
+    for (
+      let parent = state.layer.parent;
+      parent;
+      parent = scope.byId.get(parent)!.layer.parent
+    )
+      coverageLayers.add(parent);
+    let root = state;
+    for (
+      let owner = scope.owners.get(root.id);
+      owner;
+      owner = scope.owners.get(root.id)
+    )
+      root = scope.byId.get(owner)!;
     const ops =
-      state.visible && state.opacity > 0
-        ? this.layerOps(scope, state, {
+      root.visible && root.opacity > 0
+        ? this.layerOps(scope, root, {
+            coverageLayers,
             matrix: IDENTITY,
             transforms: [],
             opacity: 1,
@@ -580,6 +607,12 @@ class GraphBuilder {
     for (let i = layers.length - 1; i >= 0; i--) {
       if (this.reachedHistoryTarget) break;
       const state = layers[i]!;
+      if (
+        frame.coverageLayers &&
+        !frame.captureSource &&
+        !frame.coverageLayers.has(state.id)
+      )
+        continue;
       if (scope.owners.get(state.id) !== owner) continue;
       if (
         (frame.sourceGroup
