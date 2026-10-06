@@ -45,8 +45,9 @@ still hold before relying on them.
 
 - **PR #36 current-head fixes in progress (2026-10-06):** isolated
   `codex/pr36-current-review-fixes` from `8be5fc7`; three findings are posted inline.
-  Exact text-style source matching passes 50 builder tests, build and targeted lint.
-  Successful asset-read recovery and explicit deferred-anchor precedence remain.
+  Exact text-style source matching passes 50 builder tests. Asset reads survive
+  later failures and recover through image/font edits (33 asset/program/watch tests).
+  Build, boundaries and targeted lint pass; explicit-anchor precedence remains.
   Delivery will use one commit per finding and one push after the final fix;
   owner review/merge remain pending. No blocker; Actions remain disabled.
   [Evidence](./pr-36-current-head-fix-results.json).
@@ -398,13 +399,15 @@ _Last updated 2026-10-06 by Codex for PR #35 conflict resolution; both histories
 
 - **Agent / branch:** Codex on isolated `codex/pr36-current-review-fixes`, from `8be5fc7`.
 - **Done:** post all three findings inline; match exact text-style JSON paths so
-  similarly named styles report their own authoring calls.
+  similarly named styles report their own authoring calls (`1e97b29`). Trace successful
+  image/font reads independently of compilation success, retaining failed-edit recovery.
 - **Results:** the intended source-location regressions fail before the fix;
-  50 builder tests, TypeScript build, targeted lint and formatting pass afterward.
+  50 builder and 33 asset/program/watch tests, TypeScript build, package boundaries,
+  targeted lint and formatting pass afterward. Four watch/dependency regressions fail
+  before their fix and pass afterward.
 - **Rejected:** dot/quote style IDs are invalid under the existing schema; remove
   those test assumptions rather than widening the contract.
-- **Open / next:** asset-read watch recovery and explicit-anchor precedence are
-  pending. One finding per commit; one final push; owner review/merge remain.
+- **Open / next:** explicit-anchor precedence remains pending. One finding per commit; one final push; owner review/merge remain.
 - **Records:** [fix evidence](./pr-36-current-head-fix-results.json),
   [PR #36](https://github.com/xxibcill/still-shift/pull/36). Full gate not rerun.
 

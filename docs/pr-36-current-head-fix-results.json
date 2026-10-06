@@ -4,7 +4,7 @@
   "reviewedHead": "8be5fc7c867c36b9b3b835d4ea9c264b74225475",
   "branch": "codex/pr36-current-review-fixes",
   "policy": "One finding per commit; one push after the final fix commit. GitHub Actions remain disabled.",
-  "status": "first-finding-fixed-two-pending",
+  "status": "two-findings-fixed-anchor-pending",
   "findings": [
     {
       "number": 1,
@@ -29,13 +29,40 @@
           "changed-file Prettier"
         ],
         "rejectedHarness": "Dot and quote style IDs are prohibited by the existing schema; removed those two test assumptions without changing the schema. Initial failure log: /private/tmp/pr36-current-fix1-red.log."
-      }
+      },
+      "commit": "1e97b29"
     },
     {
       "number": 2,
       "finding": "retain successful asset reads through later compilation failures",
       "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4192032538",
-      "status": "pending"
+      "status": "fixed",
+      "commitSubject": "fix(cli): trace asset reads before program completion",
+      "verification": {
+        "red": {
+          "failedTests": 4,
+          "log": "/private/tmp/pr36-current-fix2-red.log",
+          "note": "ESM/CommonJS dependency assertions fail; unrecovered image/font watch tests reach their original 5-second test deadline. The final watch tests allow 10 seconds for their explicit 6-second assertions."
+        },
+        "green": {
+          "tests": 33,
+          "log": "/private/tmp/pr36-current-fix2-green.log"
+        },
+        "coverage": [
+          "image and font read paths survive a later program exception in ESM and CommonJS",
+          "initial schema failure recovers when only a dimension-source image changes",
+          "failed source edit retains valid preview and recovers after a newly read font changes",
+          "successful read dependencies are traced even when assets are not registered in final JSON",
+          "existing missing imports, invalid assets, immutable snapshots, timeout and cancellation behavior"
+        ],
+        "implementation": "Node asset reads publish a diagnostics-channel event before I/O; the fresh CLI child appends it to the existing dependency trace. No authoring API or JSON contract changes.",
+        "staticChecks": [
+          "pnpm build",
+          "pnpm check:boundaries",
+          "targeted ESLint",
+          "changed-file Prettier"
+        ]
+      }
     },
     {
       "number": 3,
@@ -49,5 +76,8 @@
     "pnpm": "10.29.3",
     "fullGateRerun": false
   },
-  "delivery": { "pushes": 0, "ownerReviewAndMerge": "pending" }
+  "delivery": {
+    "pushes": 0,
+    "ownerReviewAndMerge": "pending"
+  }
 }
