@@ -825,6 +825,31 @@
           "Serial 1080p costs",
           "Complete final-code local gate"
         ]
+      },
+      "implementation": "23ba343"
+    },
+    {
+      "name": "Native baseline and profiler fixture checkpoint",
+      "status": "native-correctness-pass-cost-repair-and-full-gate-pending",
+      "features": [
+        "Add only new CE8 baseline: 384 all-frame hashes and 36 sample PNGs",
+        "One-sample cost uses disabled blur with schema-valid configured sample count two",
+        "Assert each measured actual exposure count equals the intended one or four samples"
+      ],
+      "verification": {
+        "command": "pnpm test:browser:composition-camera --write-ce8-baseline --profile",
+        "commit": "23ba343",
+        "passed": "All native frame/seek/reference/export/failure/inspector checks and 36 hardware comparisons; baseline created after correctness checks",
+        "failed": "Optional profile phase rejected configured samples=1; motion blur schema minimum is 2 even when disabled",
+        "repair": "samples=Math.max(2,samples), retain enabled=samples>1 and assert actual sample counts",
+        "baseline": "tests/visual/composition-camera/darwin-arm64.json; separate native scope, no legacy regeneration",
+        "visualInspection": [
+          "parents/content/group-mask/focus mid-frame sample PNGs inspected"
+        ],
+        "pending": [
+          "Successful complete native acceptance with profile on committed repair",
+          "Final local pnpm check"
+        ]
       }
     }
   ],

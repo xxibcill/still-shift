@@ -25,7 +25,7 @@ export async function cameraSampleCosts(page: Page) {
               enabled: samples > 1,
               shutterAngle: 180,
               shutterPhase: 0,
-              samples,
+              samples: Math.max(2, samples),
             },
             layers: [
               { id: "camera", type: "camera" },
@@ -85,6 +85,10 @@ export async function cameraSampleCosts(page: Page) {
         } finally {
           preview.dispose();
         }
+        if (sampleCounts.some((actual) => actual !== samples))
+          throw Error(
+            `Camera cost ${count} layers: expected ${samples} actual exposure samples, got ${sampleCounts}`,
+          );
         const measured = times.slice(3),
           sorted = [...measured].sort((a, b) => a - b);
         reports.push({

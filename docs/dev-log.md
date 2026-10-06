@@ -65,7 +65,10 @@ still hold before relying on them.
   All 1,840 units pass. First native all-frame/seek/export checks passed, then
   hardware Canvas affine PSNR failed. Pinned native raster preparation repairs
   all 36 hardware comparisons to delta at most one. Committed-source native
-  repeat, serial cost and the full gate remain pending. No owner decision is pending.
+  correctness/export/inspector/hardware checks pass; the optional profiler fixture
+  rejected configured samples=1 and is repaired. New CE8-only hashes/PNGs are
+  recorded. Complete native profile repeat and full gate remain pending; no
+  owner decision is pending.
   [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
@@ -219,6 +222,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 native baseline and cost fixture checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `23ba343`.
+- **Done:** new CE8-only baseline (384 hashes / 36 PNGs); corrected the optional
+  one-sample cost fixture to use disabled blur with schema-valid configuration.
+  Actual one/four exposure counts are asserted. Four native PNGs inspected.
+- **Results:** committed repaired native correctness/export/inspector/hardware
+  checks pass. Optional cost phase then rejected samples=1; failure retained.
+  No complete command or final gate pass is claimed yet.
+- **Next:** complete native profile repeat, final gate, milestone PR then CE8-L.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 hardware raster checkpoint
 

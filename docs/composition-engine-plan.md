@@ -3694,6 +3694,13 @@ hardware comparisons at maximum channel delta one. The committed repaired source
 still needs complete native repeat/cost and the final local gate; no frozen
 legacy baseline or acceptance threshold changed.
 
+Committed repaired native correctness/export/failure/inspector/hardware checks
+pass, and the new CE8-only baseline contains 384 hashes and 36 sample PNGs.
+The optional profiling phase rejected its one-sample configured blur count;
+configuration now keeps blur disabled with a schema-valid count and asserts the
+actual exposure count. A successful native profile repeat and the final complete
+local gate remain pending; the failed command is retained as incomplete evidence.
+
 **Completion record:** _to be filled in._
 
 ---
