@@ -4925,6 +4925,15 @@
         ]
       },
       "limits": "Candidate preparation only; actual production defaults, timing/export matrices and final full gate remain required. No new verification started during CE6-P hold."
+    },
+    {
+      "name": "complete browser startup diagnostics",
+      "status": "implemented-unverified",
+      "scope": [
+        "Capture HTTP error responses and browser console errors in addition to module exceptions and network failures",
+        "Injected HTTP 503 and throwing-module regressions both require rollback, closed browser and successful retry"
+      ],
+      "checks": "git diff --check passes; pnpm/Node/test/browser verification remains held for CE6-P"
     }
   ],
   "pending": [

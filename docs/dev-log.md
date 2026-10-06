@@ -264,6 +264,16 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 
 ## Entries
 
+### 2026-10-06 — CE4d covers HTTP startup failures
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` (from `1732208`).
+- **Done:** export startup diagnostics also capture HTTP error responses and console
+  errors. Injected HTTP 503 and throwing-module cases require cleanup and retry.
+- **Results:** `git diff --check` passes; all new verification remains held for
+  CE6-P. Complete candidate parity stays passed; production defaults stay unchanged.
+- **Open / next:** verify startup regressions and delivery after timing release.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
+
 ### 2026-10-06 — CE4d complete family candidate parity passes
 
 - **Agent / branch:** Codex on `codex/composition-ce4d`; verified snapshot `a843cf9`.

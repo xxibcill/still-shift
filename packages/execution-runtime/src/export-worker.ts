@@ -585,9 +585,21 @@ export const exportScene = async (
     });
     const startupErrors: string[] = [];
     page.on("pageerror", (error) => startupErrors.push(error.message));
-    page.on("requestfailed", (failed) => startupErrors.push(
-      `${failed.url().slice(0, 256)}: ${failed.failure()?.errorText ?? "request failed"}`,
-    ));
+    page.on("console", (message) => {
+      if (message.type() === "error")
+        startupErrors.push(message.text().slice(0, 1024));
+    });
+    page.on("response", (response) => {
+      if (response.status() >= 400)
+        startupErrors.push(
+          `${response.status()} ${response.url().slice(0, 256)}`,
+        );
+    });
+    page.on("requestfailed", (failed) =>
+      startupErrors.push(
+        `${failed.url().slice(0, 256)}: ${failed.failure()?.errorText ?? "request failed"}`,
+      ),
+    );
     await page.goto(runtimeBrowserUrl(baseUrl, "export"));
     try {
       await page.waitForFunction(() => Boolean(window.runStillShiftExport));
@@ -747,8 +759,9 @@ export const exportScene = async (
       published ? null : memorySample,
       published ? null : browser?.close(),
       (async () => {
-        try { await server?.close(); }
-        finally {
+        try {
+          await server?.close();
+        } finally {
           if (viteCacheDirectory)
             await rm(viteCacheDirectory, { recursive: true, force: true });
         }

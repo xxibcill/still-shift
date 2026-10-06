@@ -52,7 +52,7 @@ afterEach(() => {
 });
 
 describe("export verification cancellation", () => {
-  it("reports a browser module startup failure, cleans up, and permits retry", async () => {
+  it.each(["module", "http"] as const)("reports %s startup failure, cleans up, and permits retry", async (mode) => {
     const directory = await mkdtemp(
       join(tmpdir(), "still-shift-startup-failure-"),
     );
@@ -68,6 +68,7 @@ describe("export verification cancellation", () => {
         page.setDefaultNavigationTimeout(30_000);
         await page.route("**/export-page.ts", (route) =>
           route.fulfill({
+            status: mode === "http" ? 503 : 200,
             contentType: "application/javascript",
             body: `throw new Error(${JSON.stringify(failure)});`,
           }),
@@ -85,9 +86,9 @@ describe("export verification cancellation", () => {
         depthPath: null,
         outputPath: join(directory, "output.mp4"),
       };
-      await expect(exportScene(request)).rejects.toThrow(
-        `Export browser did not initialize: ${failure}`,
-      );
+      const pending = exportScene(request);
+      await expect(pending).rejects.toThrow("Export browser did not initialize");
+      await expect(pending).rejects.toThrow(mode === "http" ? "503 " : failure);
       expect(browser?.isConnected()).toBe(false);
       expect((await readdir(directory)).sort()).toEqual([
         "scene.json",
