@@ -43,11 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #34 fixes in progress (2026-10-06):** three P2 findings on `f870fce`
-  are posted inline. Separated vector timing (`ea08b39`) and shared velocity-budget
-  accounting are repaired with focused regressions passing; evaluated stagger
-  starts and final verification remain pending. Work runs in an isolated managed worktree; one commit per finding
-  and one final push are requested. No owner decision is pending.
+- **PR #34 lint fixes verified (2026-10-06):** three P2 findings on `f870fce`
+  are posted inline and repaired one per commit: separated vector timing
+  (`ea08b39`), shared velocity-budget accounting (`342115f`) and evaluated
+  stagger onset including shot/cut boundaries. Fast checks pass 1,663 unit
+  tests; 46 runtime, 16 CLI, browser quality and four targeted Node/Chromium
+  comparisons pass. Corpus lint covers 176 items / 36,061 frames with zero
+  unexpected failures; one false co-start warning is removed, with all other
+  reports and baseline checksums unchanged. Delivery uses one final push;
+  owner review/merge remains pending. Full `pnpm check` was not rerun.
   [Evidence](./pr-34-20261006-fix-results.json).
 
 - **PR #34 conflict resolution (2026-10-05):** integrates `main` at `3581855`
@@ -253,7 +257,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for PR #34 conflict resolution; both histories retained._
+_Last updated 2026-10-06 by Codex for PR #34 lint review repairs; prior histories retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -315,11 +319,12 @@ _Last updated 2026-10-05 by Codex for PR #34 conflict resolution; both histories
 ### 2026-10-06 — PR #34 lint review repairs
 
 - **Agent / branch:** Codex on `codex/pr34-lint-review-fixes` from `f870fce`.
-- **Scope:** separated vector timing, velocity probe capacity and evaluated co-start.
-- **Done:** all findings posted inline; separated timing (`ea08b39`) and shared probe budget repaired.
-- **Results:** 108 separated-timing and 96 budget/core lint tests pass; final verification and stagger repair remain pending.
-- **Rejected / do not repeat:** off-canvas anchor test control corrected before red/green evidence.
-- **Open / next:** repair evaluated stagger starts, verify locally, then push all three commits once. Owner review/merge remains pending.
+- **Scope:** separated vector timing, velocity capacity and evaluated co-start.
+- **Done:** three findings posted inline; separated timing (`ea08b39`), shared probe budget (`342115f`) and stagger/cut onset repaired in separate commits.
+- **Results:** fast checks (1,663 unit), 46 runtime, 16 CLI, native browser quality and four targeted Node/Chromium cases pass. Both final review axes are clear.
+- **Corpus:** 176 items / 36,061 frames, zero unexpected failures; one false co-start removed. All other reports and baseline checksum unchanged.
+- **Rejected / do not repeat:** off-canvas anchor and zero-offset stagger test controls corrected; re-review cut-boundary defect repaired and affected checks refreshed.
+- **Open / next:** one final push delivers the three commits. Owner review/merge remains pending; full `pnpm check` and unrelated render/export matrices were not rerun.
 - **Records:** [Evidence](./pr-34-20261006-fix-results.json), [PR #34](https://github.com/xxibcill/still-shift/pull/34).
 
 ### 2026-10-05 — Resolve PR #34 against main

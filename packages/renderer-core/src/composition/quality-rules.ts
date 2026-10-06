@@ -394,17 +394,20 @@ export function compositionTimingFindings(
           visible[0]!.sample!,
           track.path,
         );
-        if (
-          firstValue === undefined ||
-          visible.every(
-            ({ sample: s }) =>
-              qualityTrackSignature(s!, track.path) === firstValue,
-          )
-        )
-          continue;
+        if (firstValue === undefined) continue;
+        const firstMovement = visible.findIndex(
+          ({ sample: s }) =>
+            qualityTrackSignature(s!, track.path) !== firstValue,
+        );
+        if (firstMovement < 1) continue;
+        const before = visible[firstMovement - 1]!,
+          current = visible[firstMovement]!;
         segments.push({
           id: sample.id,
-          start: visible[0]!.at,
+          start:
+            before.at + 1 === current.at && !policy.cuts.has(current.at)
+              ? before.at
+              : current.at,
           end: visible.at(-1)!.at,
           easing: easingSignature(a, b),
           path: `${sample.path}.${track.path}`,
