@@ -89,6 +89,16 @@ try {
   const original = await pixels();
   await page.locator('[data-layer="box"] > button').first().click();
   assert.equal(await page.locator("#key-lanes .key-lane").count(), 1);
+  const keySelector = page.getByLabel("Key to edit", { exact: true });
+  await keySelector.focus();
+  for (const value of ["1", "0"]) {
+    await keySelector.selectOption(value);
+    assert.equal(
+      await keySelector.evaluate((select) => document.activeElement === select),
+      true,
+      "Changing the selected key must preserve keyboard focus",
+    );
+  }
   await page.getByLabel("out ease", { exact: true }).fill("0.85");
   await page.getByLabel("out speed", { exact: true }).fill("0,0");
   await page
@@ -181,14 +191,32 @@ try {
       .getElementById("edit-message")!
       .textContent!.includes("Drag segment Bézier"),
   );
+  const focusedHandle = () =>
+    page.evaluate(() => document.activeElement?.getAttribute("aria-label"));
+  const startHandleLabel =
+    "Bézier start handle; arrow keys move x, Shift arrow keys move y";
+  assert.equal(await focusedHandle(), startHandleLabel);
+  for (const key of ["ArrowRight", "Shift+ArrowUp"]) {
+    const before = await page.locator("#edited-keys").inputValue();
+    await page.keyboard.press(key);
+    await page.waitForFunction(
+      (previous) =>
+        (document.getElementById("edited-keys") as HTMLTextAreaElement)
+          .value !== previous,
+      before,
+    );
+    assert.equal(await focusedHandle(), startHandleLabel);
+  }
   assert.match(await page.locator("#edited-keys").inputValue(), /"bezier"/);
   assert.doesNotMatch(await page.locator("#edited-keys").inputValue(), /"out"/);
-  await page.locator("#undo").click();
-  await page.waitForFunction(() =>
-    (
-      document.getElementById("edited-keys") as HTMLTextAreaElement
-    ).value.includes('"out"'),
-  );
+  for (let i = 0; i < 3; i++) {
+    await page.locator("#undo").click();
+    await page.waitForFunction(
+      () =>
+        !document.getElementById("inspector-edit")!.hasAttribute("disabled"),
+    );
+  }
+  assert.match(await page.locator("#edited-keys").inputValue(), /"out"/);
   assert.deepEqual(await pixels(), edited);
   await page.locator("#save-document").click();
   await page.waitForFunction(
@@ -351,6 +379,157 @@ try {
     "Source unchanged",
   );
   assert.equal(await page.locator("#save-document").isDisabled(), true);
+  const pathSource = structuredClone(saved);
+  pathSource.name = "Path copy selection";
+  pathSource.layers[0]!.masks = [
+    {
+      id: "cutout",
+      mode: "add",
+      path: {
+        keys: [
+          {
+            frame: 0,
+            value: {
+              closed: true,
+              vertices: [
+                [0, 0],
+                [8, 0],
+                [8, 8],
+                [0, 8],
+              ],
+            },
+          },
+          {
+            frame: 7,
+            value: {
+              closed: true,
+              vertices: [
+                [0, 0],
+                [8, 0],
+                [8, 8],
+                [0, 8],
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ];
+  await writeFile(
+    builderInput,
+    `export default ${JSON.stringify(pathSource)};`,
+  );
+  await page.waitForFunction(() =>
+    document
+      .getElementById("status")!
+      .textContent!.includes("Path copy selection"),
+  );
+  await page
+    .getByRole("button", {
+      name: "root / box · masks[cutout].path",
+      exact: true,
+    })
+    .click();
+  const copiedPath = await page.locator("#edited-keys").inputValue();
+  assert.match(copiedPath, /masks\[cutout\].path/);
+  assert.doesNotMatch(copiedPath, /transform.position/);
+  assert.equal(await page.locator("#copy-keys").isDisabled(), false);
+  const referenceSource = structuredClone(pathSource);
+  referenceSource.name = "Separated reference lanes";
+  referenceSource.layers[0]!.constraintReference = {
+    x: {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 7, value: 7 },
+      ],
+    },
+    y: 0,
+  };
+  await writeFile(
+    builderInput,
+    `export default ${JSON.stringify(referenceSource)};`,
+  );
+  await page.waitForFunction(() =>
+    document
+      .getElementById("status")!
+      .textContent!.includes("Separated reference lanes"),
+  );
+  await page
+    .getByRole("button", {
+      name: "root / box · constraintReference.x",
+      exact: true,
+    })
+    .click();
+  assert.match(
+    await page.locator("#edited-keys").inputValue(),
+    /constraintReference.x/,
+  );
+  await page.locator("#edit-key").selectOption("0");
+  await page.getByLabel("out ease", { exact: true }).fill("0.6");
+  await page.getByLabel("out speed", { exact: true }).fill("2");
+  await page
+    .getByRole("button", { name: "Apply out handle", exact: true })
+    .click();
+  await page.waitForFunction(
+    () =>
+      document.getElementById("document-state")!.textContent ===
+      "Unsaved motion edits",
+  );
+  assert.match(await page.locator("#edited-keys").inputValue(), /"ease": 0.6/);
+  const unkeyed = structuredClone(saved);
+  unkeyed.name = "Unkeyed copy reset";
+  unkeyed.layers[0]!.transform!.position = [4, 20];
+  await writeFile(builderInput, `export default ${JSON.stringify(unkeyed)};`);
+  await page.waitForFunction(() =>
+    document
+      .getElementById("status")!
+      .textContent!.includes("Unkeyed copy reset"),
+  );
+  assert.equal(await page.locator("#edited-keys").inputValue(), "");
+  assert.equal(await page.locator("#copy-keys").isDisabled(), true);
+  const instanced = structuredClone(source);
+  instanced.name = "Resolved instance focus";
+  instanced.precomps = [
+    {
+      id: "shared",
+      width: 64,
+      height: 64,
+      frameCount: 8,
+      layers: [structuredClone(source.layers[0]!)],
+    },
+  ];
+  instanced.layers = [
+    { id: "first", type: "precomp", comp: "shared" },
+    { id: "second", type: "precomp", comp: "shared", startFrame: 2 },
+  ];
+  await writeFile(builderInput, `export default ${JSON.stringify(instanced)};`);
+  await page.waitForFunction(() =>
+    document
+      .getElementById("status")!
+      .textContent!.includes("Resolved instance focus"),
+  );
+  await page.locator('[data-layer="box"] > button').first().click();
+  const instanceSelector = page.getByLabel("Resolved property instance", {
+    exact: true,
+  });
+  await page
+    .getByText("Resolved motion in root frames", { exact: true })
+    .click();
+  await instanceSelector.focus();
+  for (const value of [
+    "second/box.transform.position",
+    "first/box.transform.position",
+  ]) {
+    await instanceSelector.selectOption(value);
+    assert.equal(await instanceSelector.inputValue(), value);
+    assert.equal(
+      await instanceSelector.evaluate(
+        (select) => document.activeElement === select,
+      ),
+      true,
+      "Changing the resolved instance must preserve keyboard focus",
+    );
+  }
   assert.deepEqual(errors, []);
   console.log(
     JSON.stringify({
@@ -363,6 +542,7 @@ try {
         "visibility retained across curve edits and undo/redo",
         "overlays",
         "keyboard Bezier graph handles",
+        "key and resolved-instance selector focus",
         "lossless source save",
         "backend draft/frame retention",
         "MP4 native byte identity",

@@ -533,7 +533,14 @@ exportButton.onclick = () => {
           }),
         },
       );
-      if (!response.ok) throw new Error(await response.text());
+      if (!response.ok) {
+        const payload = (await response.json()) as ProgramResponse;
+        throw new Error(
+          payload.diagnostics
+            .map((d) => `${d.code} ${d.path}: ${d.message}`)
+            .join("\n"),
+        );
+      }
       download(await response.blob(), `${snapshot.composition.id}.mp4`);
       return "MP4 exported with the pinned software renderer.";
     })

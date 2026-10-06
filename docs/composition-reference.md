@@ -1157,8 +1157,10 @@ Temporal speed is property units per frame; grouped vectors/colours accept match
 speed tuples and spatial position accepts arc-length speed. Numeric spatial
 tangents use the property's native coordinates. Segment Bézier handles support
 numeric input, pointer dragging and keyboard arrows (Shift moves y). Applying
-Bézier clears the segment's outgoing/incoming temporal handles and smoothing,
-as stated beside the control. Discrete, path and native 2D camera tracks do not
+Bézier clears the selected segment's outgoing/incoming temporal handles and smoothing,
+as stated beside the control. Adjacent smooth motion is retained as explicit temporal
+velocity on the opposite sides of its endpoint keys, preserving existing handle ease.
+Discrete, path and native 2D camera tracks do not
 offer incompatible temporal handles. Each accepted edit replaces the immutable
 document only after native validation and a successful staged frame. Undo/redo
 retains at most 64 entries within a 16 MiB serialized-document budget.

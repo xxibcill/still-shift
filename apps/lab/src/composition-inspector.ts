@@ -255,7 +255,12 @@ export function createCompositionInspector(options: {
   }
   function graph(index = keyIndex) {
     const area = element("curve-controls"),
-      chart = element("curve-graph");
+      chart = element("curve-graph"),
+      code = element<HTMLTextAreaElement>("edited-keys"),
+      copy = element<HTMLButtonElement>("copy-keys");
+    code.value = "";
+    copy.disabled = true;
+    copy.onclick = null;
     area.replaceChildren();
     chart.replaceChildren();
     element("resolved-graph").replaceChildren();
@@ -280,6 +285,16 @@ export function createCompositionInspector(options: {
     element("curve-title").textContent = current.label;
     element("curve-clock").textContent =
       `Authored local key frames · ${current.fps} fps · speed in units/frame${current.spatial ? " · spatial path" : ""}. Resolved expressions, constraints and motion additions are visible in the preview.`;
+    code.value = editedKeysCode(current);
+    copy.disabled = false;
+    copy.onclick = () => {
+      void navigator.clipboard
+        .writeText(code.value)
+        .then(() => {
+          message.textContent = "Edited keys copied as code.";
+        })
+        .catch(report);
+    };
     const points = trackGraph(current),
       all = points.flatMap((p) => [...p.value, ...p.speed]);
     if (!all.length) {
@@ -304,8 +319,11 @@ export function createCompositionInspector(options: {
       );
       instance.value = rootPath!;
       instance.onchange = () => {
+        const focused = document.activeElement === instance;
         rootPath = instance.value;
         graph();
+        if (focused)
+          resolved.querySelector<HTMLSelectElement>("select")?.focus();
       };
       resolved.append(instance);
       try {
@@ -337,7 +355,11 @@ export function createCompositionInspector(options: {
       choose.add(new Option(`Key ${i + 1} · frame ${key.frame}`, String(i))),
     );
     choose.value = String(index);
-    choose.onchange = () => graph(Number(choose.value));
+    choose.onchange = () => {
+      const focused = document.activeElement === choose;
+      graph(Number(choose.value));
+      if (focused) area.querySelector<HTMLSelectElement>("#edit-key")?.focus();
+    };
     area.append(choose);
     const key = current.keys[index]!;
     if (current.kind === "camera")
@@ -445,6 +467,7 @@ export function createCompositionInspector(options: {
             fill: "#e6c989",
             tabindex: 0,
             role: "button",
+            "data-bezier-handle": i,
             "aria-label": `Bézier ${i ? "end" : "start"} handle; arrow keys move x, Shift arrow keys move y`,
           }),
         );
@@ -469,10 +492,16 @@ export function createCompositionInspector(options: {
             .map((v) => Number(v.toFixed(4)))
             .join(",");
         }
-        function apply() {
-          void submit("Drag segment Bézier handle", (d) =>
+        async function apply(focusedHandle?: number) {
+          const accepted = await submit("Drag segment Bézier handle", (d) =>
             editSegmentBezier(d, current, index, values),
           );
+          if (accepted && focusedHandle !== undefined)
+            area
+              .querySelector<SVGElement>(
+                `[data-bezier-handle="${focusedHandle}"]`,
+              )
+              ?.focus();
         }
         handles.forEach((handle, i) => {
           let dragging = false;
@@ -510,7 +539,7 @@ export function createCompositionInspector(options: {
           handle.addEventListener("pointerup", () => {
             if (dragging && !fieldset.disabled) {
               dragging = false;
-              apply();
+              void apply();
             }
           });
           handle.addEventListener("pointercancel", () => {
@@ -537,7 +566,7 @@ export function createCompositionInspector(options: {
               Math.min(keyboard.shiftKey ? 3 : 1, values[axis]! + delta),
             );
             redraw();
-            apply();
+            void apply(i);
           });
         });
         redraw();
@@ -567,16 +596,6 @@ export function createCompositionInspector(options: {
           }),
         );
       }
-    const code = element<HTMLTextAreaElement>("edited-keys");
-    code.value = editedKeysCode(current);
-    element<HTMLButtonElement>("copy-keys").onclick = () => {
-      void navigator.clipboard
-        .writeText(code.value)
-        .then(() => {
-          message.textContent = "Edited keys copied as code.";
-        })
-        .catch(report);
-    };
   }
   function refresh(next: CompositionDocument) {
     history = next;
