@@ -45,7 +45,6 @@
       "id": "camera-a",
       "type": "camera",
       "parent": "rig",
-      "out": 16,
       "model": "two-node",
       "pointOfInterest": {
         "keys": [
@@ -67,12 +66,12 @@
             "interpolation": "linear"
           }
         ]
-      }
+      },
+      "outPoint": 16
     },
     {
       "id": "camera-b",
       "type": "camera",
-      "in": 16,
       "model": "one-node",
       "focalLength": 36,
       "filmSize": 36,
@@ -83,7 +82,8 @@
           -128
         ],
         "rotationY": -8
-      }
+      },
+      "inPoint": 16
     },
     {
       "id": "mirror",

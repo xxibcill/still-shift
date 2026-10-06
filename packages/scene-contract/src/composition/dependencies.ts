@@ -6,6 +6,7 @@ import {
   type CompiledExpression,
 } from "./expressions.ts";
 import type { CompositionLayer } from "./layers.ts";
+import { cameraOpticalDependencies } from "./camera-dependencies.ts";
 import type { IssueReporter } from "./primitives.ts";
 import type { PropertyPath, PropertyPathSegment } from "./property-path.ts";
 import {
@@ -257,6 +258,13 @@ function addExpressionDependencies(
     targets.set(node, list);
   }
   const readNodes = new Set<string>();
+  const motionOptics=new Map<string,string[]>();
+  if([comp,...(comp.precomps??[])].some(scope=>scope.layers.some(layer=>layer.type==="camera"))) for(const text of [...(comp.drivers??[]).map(driver=>driver.target),...(comp.periodic??[]).map(motion=>motion.target??`${motion.node}.${motion.property}`)]) {
+    const resolved=resolvePropertyPath(comp,text);
+    if(!isResolvedProperty(resolved)||resolved.layer?.type!=="camera") continue;
+    const node=[...resolved.scope,resolved.layer.id].join("/"),names=motionOptics.get(node)??[];
+    names.push(resolved.path.slice(resolved.path.lastIndexOf(".")+1));motionOptics.set(node,names);
+  }
   const readNode = (path: PropertyPath, layer: CompositionLayer) => {
     const node = layerNodeOf(path);
     if (layer.type === "precomp" && path.segments[0]!.name === "timeRemap")
@@ -267,9 +275,10 @@ function addExpressionDependencies(
     const prefix = path.scope.length ? `${path.scope.join("/")}/` : "";
     addDependency(graph, name, `${node}@stage`, []);
     if (prefix) addDependency(graph, `${node}@stage`, `${prefix}comp.time`, []);
-    for (const target of targets.get(node) ?? []) {
+    const writers=targets.get(node)??[],optics=layer.type==="camera" ? cameraOpticalDependencies(layer,path.segments[0]!.name,[...writers.map(target=>target.segments[0]!.name),...(motionOptics.get(node)??[])]) : [];
+    for (const target of writers) {
       const source = `${node}#${segmentKey(target.segments)}`;
-      if (source !== name && segmentsOverlap(target.segments, path.segments))
+      if (source !== name && (segmentsOverlap(target.segments, path.segments)||optics.includes(target.segments[0]!.name)))
         addDependency(graph, name, source, target.origin, true);
     }
     return name;

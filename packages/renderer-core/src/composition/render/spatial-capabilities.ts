@@ -2,7 +2,7 @@ import { passageError } from "../../passage-diagnostics.ts";
 import type { RenderOp,SurfaceNode } from "./graph.ts";
 import { localSurfaceBounds,type ProjectivePlacement } from "./projective-placement.ts";
 /** Check the complete spatial graph before a retained target is cleared or drawn. */
-export function requireSpatialCapabilities(root:SurfaceNode,capabilities:{projective:boolean;validateSurface?:(width:number,height:number,node:string)=>void}) {
+export function requireSpatialCapabilities(root:SurfaceNode,capabilities:{projective:boolean;validateSurface?:((width:number,height:number,node:string)=>void)|undefined}) {
   const check=(placement:ProjectivePlacement,node:string)=>{
     if(![...placement.homography,...placement.inverse,...(placement.depth??[])].every(value=>Number.isFinite(Math.fround(value))))
       passageError("comp-3d-transform","Projection coefficients exceed finite WebGL2 precision",{node});

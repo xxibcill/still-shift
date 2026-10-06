@@ -3669,6 +3669,11 @@ and z tracks, a native example and real inspector edit/frustum/save checks are
 authored. Authoring reference/guidance source is updated; generated outputs and
 all source/native/full checks remain pending until the quiet window is released.
 
+Source review adds implicit secondary-optics expression dependencies and cycle
+validation, declares primary focal expressions before film writes, and authors
+reverse-order/driver regressions. Surface callback optional typing and camera
+switch field names are repaired; all checks remain deferred until release.
+
 **Completion record:** _to be filled in._
 
 ---

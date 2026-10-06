@@ -10,6 +10,7 @@ import {
 import {
   COMPOSITION_LIMITS,
   SIZED_LAYER_TYPES,
+  cameraOpticalDependencies,
   type Composition,
   type CompositionLayer,
   type CompositionScope,
@@ -759,6 +760,12 @@ class Evaluation {
       this.shapeBudget(ctx, layer),
     );
     yield* this.motion(ctx, state);
+    // Declare an expression's primary optic before any film-size write so
+    // derived optical reads cannot depend on object insertion order.
+    if(state.camera&&this.compiled.expressions.get(this.bindings(ctx,layer.id))?.some(binding=>binding.segments[0]!.name==="focalLength")) {
+      state.camera.opticalMode="focal-length";
+      this.normalize(ctx,state);
+    }
     const stage: Stage = { state };
     ctx.stageActive.delete(layer.id);
     ctx.stages.set(layer.id, stage);
@@ -814,12 +821,13 @@ class Evaluation {
       yield* this.motion(ctx, fresh);
       return copy(readProperty(fresh, segments));
     }
-    if (!stage.sealed)
-      for (const binding of this.compiled.expressions.get(
-        this.bindings(ctx, layer.id),
-      ) ?? [])
-        if (!binding.clock && overlaps(binding.segments, segments))
+    if (!stage.sealed) {
+      const bindings=this.compiled.expressions.get(this.bindings(ctx,layer.id))??[],
+        optics=layer.type==="camera" ? cameraOpticalDependencies(layer,segments[0]!.name,[...bindings.map(binding=>binding.segments[0]!.name),...(stage.state.camera?.opticalMode==="focal-length" ? ["focalLength"] : [])]) : [];
+      for (const binding of bindings)
+        if (!binding.clock && (overlaps(binding.segments, segments)||optics.includes(binding.segments[0]!.name)))
           yield* this.applied(ctx, layer, binding);
+    }
     return copy(readProperty(stage.sealed ?? stage.state, segments));
   }
 

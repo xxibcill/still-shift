@@ -294,7 +294,28 @@
         "reason": "CE6-P quiet window remains active",
         "generatedDocs": "Schema/reference/skill generation is pending until release; only their source guidance was edited"
       },
-      "pending": "Focused type/schema/lint/unit and native acceptance repair, then complete gate"
+      "pending": "Focused type/schema/lint/unit and native acceptance repair, then complete gate",
+      "implementation": "0779c31"
+    },
+    {
+      "name": "Derived optics dependency review repairs",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Secondary focal/zoom expression reads apply primary-control and film-size dependencies",
+        "Validation graph includes implicit optical dependencies and rejects feedback cycles",
+        "Focal expression primacy is established before film writes to prevent insertion-order drift",
+        "Driver-selected optical modes and ordinary 2D expression paths remain distinct"
+      ],
+      "sourceReviewRepairs": [
+        "Allow explicitly absent optional backend surface callbacks under exactOptionalPropertyTypes",
+        "Correct camera-switch fixture inPoint/outPoint field names"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "CE6-P quiet window remains active",
+        "cases": "Reverse author order, both secondary optics, driven focal/film and implicit cycle cases authored"
+      },
+      "pending": "Focused checks and complete native/full acceptance after release"
     }
   ],
   "pending": [

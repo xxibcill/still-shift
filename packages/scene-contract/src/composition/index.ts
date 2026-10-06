@@ -25,3 +25,4 @@ export * from "./expression-ast.ts";
 export * from "./expression-check.ts";
 export * from "./behaviours.ts";
 export * from "./expressions.ts";
+export * from "./camera-dependencies.ts";

@@ -58,6 +58,8 @@ still hold before relying on them.
   Camera builder defaults/xyz setters, a native camera example, reference source
   guidance and the real inspector edit/frustum/save flow are now authored.
   Schema/reference/skill generation remains pending during the quiet window.
+  Derived optics now include primary-control/film expression dependencies and
+  implicit cycle validation; author-order/driver regressions remain unexecuted.
   No owner decision is pending. Next: focused repair, native acceptance and the
   complete gate after release. [Evidence](./composition-ce8-results.json).
 
@@ -212,6 +214,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 derived optics source review checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `0779c31`.
+- **Repair:** derived focal/zoom reads include primary optic and film expression
+  dependencies; validation rejects implicit optical feedback. Primary focal
+  expressions settle before film writes, including motion-selected modes.
+- **Authored:** reverse-order/driver/cycle regressions; surface callback optional
+  typing and camera-switch fixture field names corrected by source review.
+- **Verification:** unexecuted; coordinated CE6-P quiet window remains active.
+- **Next:** focused checks, native acceptance and the complete local gate.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 builder and inspector source checkpoint
 
