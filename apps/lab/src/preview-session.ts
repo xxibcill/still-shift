@@ -2,7 +2,12 @@ import { createIllustratedPreview } from "../../../packages/renderer-core/src/il
 
 type SceneTiming = { fps: number; frameCount: number };
 type PreviewSnapshot = { scene: SceneTiming };
-type DisabledControl = HTMLButtonElement | HTMLInputElement | HTMLSelectElement;
+type DisabledControl =
+  | HTMLButtonElement
+  | HTMLInputElement
+  | HTMLSelectElement
+  | HTMLFieldSetElement;
+type PreviewRenderer = { renderFrame(frame: number): unknown; dispose(): void };
 type PreviewControls = {
   play: HTMLButtonElement;
   scrub: HTMLInputElement;
@@ -20,19 +25,29 @@ type SessionOptions<T> = {
   ready: (snapshot: T) => void;
   canUpdate?: () => boolean;
   disableWhileExporting?: boolean;
+  disableEditsWhileLoading?: boolean;
   restartOnFirstPlay?: boolean;
+  retainValidOnFailure?: boolean;
+  frameChanged?: (frame: number, snapshot: T) => void;
 };
 
 /** Resources belong to a candidate until its first frame can replace the active preview. */
 function previewResources() {
   const urls: string[] = [];
   const surfaces: {
-    target: HTMLCanvasElement;
-    staging: HTMLCanvasElement;
-    renderer: ReturnType<typeof createIllustratedPreview>;
+    renderer: PreviewRenderer;
+    present: () => void;
     visible: () => boolean;
   }[] = [];
   return {
+    renderer<R extends PreviewRenderer>(
+      renderer: R,
+      present: () => void,
+      visible = () => true,
+    ): R {
+      surfaces.push({ renderer, present, visible });
+      return renderer;
+    },
     url(blob: Blob) {
       const url = URL.createObjectURL(blob);
       urls.push(url);
@@ -46,7 +61,15 @@ function previewResources() {
     ) {
       const staging = document.createElement("canvas");
       const renderer = createIllustratedPreview(staging, scene, images);
-      surfaces.push({ target, staging, renderer, visible });
+      surfaces.push({
+        renderer,
+        visible,
+        present() {
+          if (target.width !== staging.width) target.width = staging.width;
+          if (target.height !== staging.height) target.height = staging.height;
+          target.getContext("2d")!.drawImage(staging, 0, 0);
+        },
+      });
       return renderer;
     },
     render(frame: number, validateAll = false) {
@@ -55,12 +78,7 @@ function previewResources() {
           surface.renderer.renderFrame(frame);
     },
     present() {
-      for (const { target, staging, visible } of surfaces) {
-        if (!visible()) continue;
-        if (target.width !== staging.width) target.width = staging.width;
-        if (target.height !== staging.height) target.height = staging.height;
-        target.getContext("2d")!.drawImage(staging, 0, 0);
-      }
+      for (const surface of surfaces) if (surface.visible()) surface.present();
     },
     dispose() {
       for (const { renderer } of surfaces) renderer.dispose();
@@ -70,7 +88,7 @@ function previewResources() {
 }
 type PreviewResources = Pick<
   ReturnType<typeof previewResources>,
-  "url" | "preview"
+  "url" | "preview" | "renderer"
 >;
 
 export function createPreviewSession<T extends PreviewSnapshot>(
@@ -92,7 +110,9 @@ export function createPreviewSession<T extends PreviewSnapshot>(
     const available =
       !dirty && Boolean(active) && (options.canUpdate?.() ?? true);
     const locked = Boolean(options.disableWhileExporting && exporting);
-    for (const control of controls.edit ?? []) control.disabled = exporting;
+    for (const control of controls.edit ?? [])
+      control.disabled =
+        exporting || Boolean(options.disableEditsWhileLoading && dirty);
     for (const control of [
       controls.play,
       controls.restart,
@@ -116,6 +136,7 @@ export function createPreviewSession<T extends PreviewSnapshot>(
     active.resources.render(frame);
     active.resources.present();
     syncPosition();
+    options.frameChanged?.(frame, active.snapshot);
   }
   function syncPosition() {
     if (!active) return;
@@ -149,7 +170,7 @@ export function createPreviewSession<T extends PreviewSnapshot>(
     let committed = false;
     try {
       const candidate = await prepare(resources);
-      if (run !== generation) return;
+      if (run !== generation) return false;
       const initialFrame = Math.max(
         0,
         Math.min(
@@ -170,12 +191,17 @@ export function createPreviewSession<T extends PreviewSnapshot>(
       resources.present();
       syncPosition();
       options.ready(candidate.snapshot);
+      options.frameChanged?.(frame, candidate.snapshot);
     } catch (error) {
-      if (run === generation) failed(error);
+      if (run === generation) {
+        if (active && options.retainValidOnFailure) dirty = false;
+        failed(error);
+      }
     } finally {
       if (!committed) resources.dispose();
       syncControls();
     }
+    return committed;
   }
   async function edit<D>(
     read: () => Promise<D>,
@@ -263,6 +289,7 @@ export function createPreviewSession<T extends PreviewSnapshot>(
     export: exportSnapshot,
     clear,
     show,
+    pause,
     get snapshot() {
       return dirty ? undefined : active?.snapshot;
     },

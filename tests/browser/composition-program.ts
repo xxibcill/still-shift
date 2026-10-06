@@ -100,10 +100,15 @@ try {
     const response = await route.fetch();
     const payload = await response.json();
     payload.snapshot.composition = qualityCapacityComposition();
+    payload.snapshot.document = payload.snapshot.composition;
     payload.snapshot.assets = {};
     await route.fulfill({ response, json: payload });
   });
   await page.locator("#backend").selectOption("canvas2d");
+  await page.waitForFunction(
+    () => document.getElementById("status")?.dataset.backend === "canvas2d",
+  );
+  await page.locator("#reload-source").click();
   await page.waitForFunction(() =>
     document
       .getElementById("lint-summary")

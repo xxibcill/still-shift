@@ -56,6 +56,7 @@
       }
       button,
       select {
+        min-height: 44px;
         padding: 10px 16px;
         border: 1px solid #6d6b5b;
         color: #eee8d9;
@@ -121,6 +122,7 @@
         border-radius: 4px;
       }
       #lint-timeline button {
+        min-height: 0;
         position: absolute;
         height: 22px;
         padding: 0;
@@ -152,6 +154,174 @@
       }
       code {
         font-size: 13px;
+        overflow-wrap: anywhere;
+      }
+      #preview-stage {
+        position: relative;
+        width: fit-content;
+        max-width: 100%;
+        margin: auto;
+      }
+      #composition-overlay {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      fieldset {
+        border: 1px solid #514c3c;
+        border-radius: 6px;
+        margin: 28px 0;
+        padding: 18px;
+        min-width: 0;
+      }
+      legend,
+      h2,
+      h3 {
+        color: #e6d7a8;
+      }
+      h2 {
+        font-size: 20px;
+        margin-top: 0;
+      }
+      h3 {
+        font-size: 16px;
+      }
+      .inspector-grid {
+        display: grid;
+        grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.8fr);
+        gap: 28px;
+      }
+      .scope-label {
+        color: #beab87;
+        font-size: 13px;
+      }
+      .layer-row {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 6px;
+        border-bottom: 1px solid #514c3c;
+        padding: 10px 0;
+      }
+      .layer-row > button:first-child,
+      .layer-row small,
+      .layer-bar {
+        grid-column: 1 / -1;
+        text-align: left;
+      }
+      .layer-row button[aria-pressed="true"] {
+        border-color: #c79b55;
+        background: #484b37;
+      }
+      .layer-row small {
+        line-height: 1.5;
+        color: #ccc4b0;
+      }
+      .layer-bar {
+        background: #33352b;
+        height: 20px;
+        overflow: hidden;
+      }
+      .layer-bar span {
+        display: block;
+        background: #536147;
+        font-size: 12px;
+        min-width: 1px;
+        height: 20px;
+        white-space: nowrap;
+      }
+      .key-lane {
+        margin-bottom: 12px;
+      }
+      .key-lane > button {
+        padding: 6px 10px;
+        font-size: 13px;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        text-align: left;
+      }
+      .keys-strip {
+        margin: 4px 16px 0;
+        height: 44px;
+        position: relative;
+        background: #33352b;
+      }
+      .keys-strip button {
+        position: absolute;
+        padding: 6px;
+        transform: translateX(-50%);
+        border: 0;
+        color: #e6c989;
+      }
+      #source-motion {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        font-size: 12px;
+      }
+      #resolved-value {
+        overflow-wrap: anywhere;
+        font-size: 13px;
+      }
+      #resolved-graph select {
+        max-width: 100%;
+      }
+      #curve-graph svg,
+      #resolved-graph svg {
+        width: 100%;
+        display: block;
+        background: #292921;
+        border: 1px solid #514c3c;
+      }
+      #curve-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 14px;
+      }
+      .handle-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: end;
+      }
+      #curve-controls label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      #curve-controls input {
+        background: #292921;
+        color: #eee8d9;
+        border: 1px solid #6d6b5b;
+        padding: 9px;
+        width: 180px;
+        max-width: 100%;
+      }
+      #curve-clock,
+      #source-policy,
+      .inspector-grid p,
+      #edit-message {
+        font-size: 13px;
+        line-height: 1.6;
+        color: #ccc4b0;
+      }
+      #edited-keys {
+        width: 100%;
+        min-height: 180px;
+        margin: 12px 0;
+        background: #292921;
+        color: #eee8d9;
+        font: 12px/1.6 monospace;
+      }
+      :focus-visible {
+        outline: 2px solid #e6c989;
+        outline-offset: 3px;
+      }
+      @media (max-width: 900px) {
+        .inspector-grid {
+          grid-template-columns: 1fr;
+        }
       }
       @media (max-width: 700px) {
         main {
@@ -185,7 +355,24 @@
         ><button id="play" disabled>Play</button
         ><span id="renderer" role="note">Checking renderer…</span>
       </div>
-      <canvas id="preview" aria-label="Composition preview"></canvas>
+      <div id="preview-stage">
+        <canvas id="preview" aria-label="Composition preview"></canvas
+        ><svg
+          id="composition-overlay"
+          aria-label="Composition inspection overlays"
+        ></svg>
+      </div>
+      <div class="controls">
+        <label
+          ><input type="checkbox" id="overlay-bounds" checked /> Bounds and
+          anchors</label
+        >
+        <label
+          ><input type="checkbox" id="overlay-paths" /> Motion paths and
+          tangents</label
+        >
+        <label><input type="checkbox" id="overlay-safe" /> Safe areas</label>
+      </div>
       <div class="controls">
         <label for="frame">Frame</label
         ><input id="frame" type="range" min="0" max="0" value="0" /><output
@@ -196,6 +383,63 @@
       <p id="status" role="status">Loading compositions…</p>
       <p id="error" role="alert"></p>
       <ul id="diagnostics" aria-label="Warnings and frame diagnostics"></ul>
+      <fieldset id="inspector-edit">
+        <legend>Composition inspector</legend>
+        <div class="controls">
+          <button id="undo" disabled>Undo</button
+          ><button id="redo" disabled>Redo</button>
+          <button id="save-document" disabled>Save JSON</button
+          ><button id="export-composition" disabled>Export MP4</button>
+          <button id="reload-source">Reload source</button
+          ><output id="document-state">Source unchanged</output>
+        </div>
+        <p id="source-policy"></p>
+        <p id="edit-message" role="status"></p>
+        <div class="inspector-grid">
+          <section aria-label="Layer stack">
+            <h2>Layers</h2>
+            <button id="all-properties">All root properties</button>
+            <div id="layer-stack"></div>
+            <div class="controls">
+              <button id="apply-visibility">Apply visibility</button
+              ><button id="reset-visibility">Reset view</button>
+            </div>
+          </section>
+          <section aria-label="Property keys and curves">
+            <h2>Keyframes</h2>
+            <p>
+              Bars use the owning composition clock. Key diamonds use authored
+              layer time.
+            </p>
+            <div id="key-lanes"></div>
+            <h3 id="curve-title">Authored curve</h3>
+            <p id="curve-clock"></p>
+            <div id="curve-graph"></div>
+            <details>
+              <summary>Resolved motion in root frames</summary>
+              <p>
+                Includes expressions, drivers, constraints and instance clocks.
+              </p>
+              <div id="resolved-graph"></div>
+              <output id="resolved-value"></output>
+            </details>
+            <details>
+              <summary>Source motion bindings</summary>
+              <pre id="source-motion"></pre>
+            </details>
+            <div id="curve-controls"></div>
+            <details>
+              <summary>Edited keys as code</summary>
+              <textarea
+                id="edited-keys"
+                readonly
+                aria-label="Edited native keys as code"
+              ></textarea
+              ><button id="copy-keys">Copy edited keys</button>
+            </details>
+          </section>
+        </div>
+      </fieldset>
       <section aria-label="Motion lint findings">
         <div class="controls">
           <button id="lint" disabled>Check rendered motion</button

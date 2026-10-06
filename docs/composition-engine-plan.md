@@ -375,7 +375,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
-| CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            |                        |                                     | `[ ]`  |                                                                                    |
+| CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
 | CE12  | Motion linting                                  | C      | CE2                  | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7             |                        |                                     | `[ ]`  |                                                                                    |
 | CE14  | Mesh warp and puppet pins                       | D      | CE6                  |                        |                                     | `[ ]`  |                                                                                    |
@@ -3307,6 +3307,8 @@ and cinematic cameras.
 - [ ] Optional lights (point, spot, ambient) are **not** in this milestone; record them
       as a follow-up if needed.
 
+- [ ] Complete CE11's camera-frustum inspector overlay using real evaluated cameras.
+
 **Acceptance:** Native-composition test scenes demonstrate correct perspective and
 parallax from z depth, depth sorting, depth of field, camera shake and affine 2D
 story-style camera paths. Test true perspective on WebGL2 and affine moves on both
@@ -3710,18 +3712,18 @@ timeline-algebra unit tests, CLI integration tests.
 **Outcome:** Code-authored motion can be seen, scrubbed and tuned visually, with edits
 written back to data.
 
-- [ ] `apps/lab/composition.html` using the shared
+- [x] `apps/lab/composition.html` using the shared
       [preview session](../apps/lab/src/preview-session.ts).
-- [ ] Layer stack with in/out bars, parenting, blend mode, matte and effect badges;
+- [x] Layer stack with in/out bars, parenting, blend mode, matte and effect badges;
       solo/hide toggles (view-only unless saved).
-- [ ] Keyframe lanes per property path; marker/cue lane; audio waveform when present.
-- [ ] Graph editor: value graph and speed graph per property, handle editing that writes
+- [x] Keyframe lanes per property path; marker/cue lane; audio waveform when present.
+- [x] Graph editor: value graph and speed graph per property, handle editing that writes
       `in`/`out` temporal handles and bezier values back into the composition.
-- [ ] Overlays: bounds, anchor points, motion paths with spatial tangents, safe areas,
+- [x] Overlays: bounds, anchor points, motion paths with spatial tangents, safe areas,
       camera frustum (CE8), diagnostics with jump-to-frame.
-- [ ] Hot reload from a builder file (`preview --watch`). Builder-sourced compositions
+- [x] Hot reload from a builder file (`preview --watch`). Builder-sourced compositions
       are read-only in the Lab with "copy edited keys as code" instead of writing JSON.
-- [ ] Undo/redo, save, lossless round trip, desktop and phone browser checks as the
+- [x] Undo/redo, save, lossless round trip, desktop and phone browser checks as the
       passage workbench does.
 
 **Acceptance:** An author changes an easing handle in the graph editor, sees the
@@ -3730,7 +3732,57 @@ result, saves, and the exported MP4 matches the Lab preview.
 **Verification:** Browser tests for editing, undo/redo, save/reload, hot reload and
 preview/export parity.
 
-**Completion record:** _to be filled in._
+### CE11 PR #37 main conflict integration (2026-10-06)
+
+Merge main `54782d7` into reviewed CE11 `7fac583` without rewriting shared history.
+Retain inspector edits, transactional preview/document history and captured assets;
+keep main's motion lint advisory inside the shared ready callback. Preserve both
+pnpm test aggregates and development histories, and keep saved soundtrack guidance
+in the reference generator source. The existing lint-capacity regression explicitly
+reloads source because renderer switches now preserve the accepted draft.
+
+[Conflict evidence](./pr-37-main-conflict-resolution-results.json) records 1,803 unit,
+46 runtime, 60 affected integration and six browser groups, plus final affected
+static checks. Builder pixels/exports, retained-asset MP4 and exact soundtrack PCM
+pass. Initial reference drift and missing soundtrack-runtime failure are retained.
+Full `pnpm check` and frozen baselines were not rerun or regenerated; no pixel,
+timing or budget policy changed. Owner review/merge remain; Actions remain disabled.
+
+### CE11 completion record (2026-10-05)
+
+- **Owner / branch:** Codex on `codex/composition-ce11`, from CE10 `afb4045` /
+  [PR #36](https://github.com/xxibcill/still-shift/pull/36); runtime `5f36268`.
+  Nine checkpoint commits deliver shared-session ownership, page adoption,
+  history/save models, inspector/export integration, builder/resolved inspection,
+  native import compatibility, inspector guidance, save-mode preservation and transient visibility across history.
+- **Delivered:** layer timing, parenting/blend/matte/effect badges, transient
+  visibility with explicit save semantics, native keys/markers and separate
+  authored/local and resolved/root value/speed graphs. Numeric, pointer and keyboard
+  temporal/Bézier edits and spatial tangents stage a valid native picture before
+  committing lossless bounded history. Overlays use a separate SVG surface for
+  bounds, anchors, motion paths, tangents and safe areas; diagnostic jumps use root frames.
+- **Source ownership:** fixed-input JSON saves retain raw metadata and source asset
+  paths, no-op bytes and file modes, with revision/hash conflict checks and atomic
+  replacement. Builder sources remain read-only with executable key timeline copies;
+  watch, renderer changes, exports and staged loading preserve draft/frame ownership.
+  Native draft exports use captured registered asset bytes and the pinned renderer.
+- **Acceptance:** desktop and 390px phone checks cover edits, rejection, undo/redo,
+  save/reload, watch recovery, visibility and native backend retention. A downloaded
+  edited MP4 is byte-identical to an independent CLI render of the saved JSON;
+  decoded H.264 preview agreement stays within documented mean RGB tolerance 3.
+  Real copied-key snippets compile the exact edited curve in a fresh builder process.
+- **Local verification:** complete `pnpm check` at `5f36268` passes pinned
+  Node 22.23.1 / pnpm 10.29.3: 1,510 unit, 46 runtime, 139 integration and
+  14 depth tests, all browser suites and 176 frozen CE0 baselines / 36,061 frames.
+  The tracked snapshot preserves owner edits and uses an isolated Python environment.
+  Initial loader/timeouts and repaired reruns remain in [CE11 evidence](./composition-ce11-results.json).
+  Baselines were not regenerated; GitHub Actions remain disabled.
+- **Follow-through:** real camera-frustum overlays arrive with CE8 and audio
+  waveforms with CE13. Instance selectors are bounded to 128 routes / 4096 visited
+  scopes; unused definitions retain authored-only graphs. CE9-F1 was revisited:
+  resolved inspection already reads the native evaluator, so runtime lowering remains
+  its numerical-parity-gated follow-up without changing legacy sampling.
+- **PR / next:** [PR #37](https://github.com/xxibcill/still-shift/pull/37) is open and attached, based on CE10. Start CE5 on a new branch.
 
 ---
 
@@ -3932,6 +3984,8 @@ image sequences and sound with stills and graphics.
 - [ ] Colour handling: detect source colour metadata and convert to the composition
       space; reject unsupported inputs with a diagnostic.
 - [ ] Limits: maximum duration, resolution and total decoded-cache size, configurable.
+
+- [ ] Complete CE11's audio waveform lane using decoded native audio source data.
 
 **Acceptance:** A composition combining a video clip with time remap, a still with
 motion and a lower-third shape layer exports with correct sync (± 0 frames) and

@@ -43,6 +43,88 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #37 inspector repairs complete (2026-10-06):** isolated
+  `codex/pr37-inspector-fixes` from reviewed `12bfc1d`; all three findings are
+  posted inline. R13 numeric Apply focus (`6f992bc`) and R14 asynchronous handle
+  focus (`22308f5`) and R15 distinct top-level/precomp scope identity are fixed.
+  Fast checks pass 1,805 unit tests; 31 affected integration, 46 runtime and four
+  browser groups pass, including desktop/phone edits, captured MP4 parity and the
+  new focus/scope regressions. Independent standards/spec review found no new issues.
+  A missing isolated CLI dependency link and new regression fixture/parser
+  assumptions were repaired; production thresholds and baselines stay unchanged.
+  Three separate finding commits are delivered with one normal final push.
+  No implementation blocker; owner review/merge remain separate. Full gate/depth/
+  frozen baselines were not rerun or regenerated. Actions stay disabled.
+  [Evidence](./pr-37-inspector-fix-results.json).
+
+- **PR #37 main conflicts resolved (2026-10-06):** isolated managed worktree
+  from CE11 `7fac583`, integrating main `54782d7` without rewriting history.
+  Inspector/draft/asset ownership and advisory lint are retained; soundtrack,
+  inspector and session test groups and both development histories are preserved.
+  Fast checks pass 1,803 unit tests; 46 runtime, 60 affected integration and six
+  browser groups pass. Final affected schema/format/lint/build checks pass after
+  the watch-error guard. Native builder pixels/exports and retained-draft MP4 pass.
+  Generated-reference drift and a missing isolated soundtrack runtime were repaired;
+  the unchanged soundtrack retry passes exact PCM and passage export acceptance.
+  Full `pnpm check` and frozen baselines were not rerun or regenerated. Owner
+  review/merge remain; no implementation blocker. Actions remain disabled.
+  [Evidence](./pr-37-main-conflict-resolution-results.json).
+
+- **PR #37 final review fixes complete (2026-10-06):** isolated
+  `codex/pr37-review-fixes` from `00d5fba`; R11 and R12 are posted inline.
+  Layer/visibility controls retain keyboard focus; dirty drafts retain captured
+  asset bytes across watch changes, edits, history, renderer switching and MP4
+  export. Failed/replaced loads and disconnected owners release their leases.
+  Fast checks pass 1,563 unit tests; 29 affected integration, 46 runtime and four
+  browser groups pass. Independent standards/spec review found no new defects.
+  Two finding commits were delivered at `7fac583` to `codex/composition-ce11`.
+  Owner review/merge remain; no owner checkout changes, full gate rerun or baseline
+  regeneration. CE10 advanced to `515dfe0` during this slice; its fixes and
+  current main are now integrated by the conflict-resolution session above.
+  GitHub Actions remain disabled.
+  [Evidence](./pr-37-retained-draft-fix-results.json).
+
+- **PR #37 base merge verified (2026-10-06):** isolated managed worktree
+  from CE11 `4946e9d`, integrating current CE10 `6e0d108` without rewriting
+  history. Both log histories and milestone/review behavior are preserved;
+  a narrow save-diagnostics import restores native Vite configuration loading.
+  Fast checks pass 1,559 unit tests; 46 runtime, 14 depth and seven affected
+  browser groups pass, including exact 192-frame builder pixels and exports.
+  The corrected integration aggregate has 156 passes and one watch timeout;
+  all 13 tests in that file pass on unchanged standalone retry. Full `pnpm check`
+  and frozen baselines were not rerun. Delivered as `00d5fba`; current main
+  integration is recorded above. Owner review/merge remain pending. No blocker or
+  owner checkout changes; Actions remain disabled.
+  [Merge evidence](./pr-37-merge-results.json).
+
+- **PR #37 follow-up fixes complete (2026-10-05):** reviewed `9b2247e` on
+  `codex/composition-ce11`. Three additional P2 findings are posted inline.
+  R8 selector focus, R9 neighboring smoothing and R10 fixture-export ownership
+  are fixed in three separate finding commits. `check:fast` passes 1,534 unit tests;
+  20 focused integration and 46 runtime tests pass, along with inspector desktop/phone/
+  MP4, shared/legacy session and builder watch/export checks. Independent standards/spec
+  review found no incomplete fixes or new defects. One final normal push delivers all
+  three commits; owner review/merge remain. Full `pnpm check` was not rerun and baselines
+  were not regenerated. Primary CE5 work is untouched; GitHub Actions remain disabled.
+  [Follow-up evidence](./pr-37-followup-fix-results.json).
+
+- **PR #37 review fixes complete (2026-10-05):** on `codex/composition-ce11`,
+  reviewed `a0c56df`. Seven inline findings are fixed in seven separate commits;
+  delivery is one final push. `check:fast` passes 1,514 unit tests; 18 focused
+  integration and 46 runtime tests pass, along with inspector desktop/phone/MP4
+  acceptance, native/legacy sessions and program watch/export checks. Independent
+  standards/spec re-review found no new defects. Owner review/merge remain;
+  no full `pnpm check` rerun or baseline regeneration is claimed. No Actions.
+  [Fix evidence](./pr-37-fix-results.json).
+
+- **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
+  Native inspector, graph/handle edits, overlays, lossless history, guarded source
+  saves and captured-asset exports pass desktop/phone and builder/watch acceptance.
+  Full `pnpm check` passes: 1,510 unit, 46 runtime, 139 integration and 14 depth
+  tests, all browser suites and 176 frozen baselines / 36,061 frames. Initial failures
+  and repairs are retained. [PR #37](https://github.com/xxibcill/still-shift/pull/37) is open and attached; begin CE5 on a new branch. Native camera
+  frusta and audio waveforms follow CE8/CE13. [Evidence](./composition-ce11-results.json).
+
 - **PR #36 current-head fixes verified (2026-10-06):** isolated
   `codex/pr36-current-review-fixes` from `8be5fc7`; three findings posted inline.
   Exact style source paths (`1e97b29`), asset-read recovery (`e374d05`) and explicit
@@ -124,7 +206,7 @@ still hold before relying on them.
   The 197-line builder has exact 192-frame Canvas/WebGL parity and identical exports;
   a fresh skill-only source validates without repairs and renders correctly. Initial
   trial/gate failures are retained. [PR #36](https://github.com/xxibcill/still-shift/pull/36)
-  is open and attached; owner review/merge remain. CE11 is next on a new branch.
+  is open and attached; owner review/merge remain. CE11 is complete; CE5 follows.
   [Evidence](./composition-ce10-results.json).
 
 - **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
@@ -408,6 +490,101 @@ _Last updated 2026-10-06 by Codex for PR #35 main integration; both histories re
 
 ## Entries
 
+### 2026-10-06 — PR #37 R15: Separate top-level and precomp scope identity
+
+- **Agent / branch:** Codex on isolated `codex/pr37-inspector-fixes`, after R14 `22308f5`.
+- **Done:** distinguish top-level scope from every authored precomp ID in keys,
+  selection, markers, instance routes and overlays; preserve the unselected source
+  layer when a nested root-named definition is edited and saved.
+- **Results:** validated regression fails on `12bfc1d` and passes after repair;
+  fast checks: 1,805 unit, 31 affected integration, 46 runtime and four browser
+  groups pass. Inspector phone/desktop, captured MP4 parity and new focus/scope checks pass.
+- **Repairs:** correct new fixture fps/snippet parsing and restore missing isolated
+  CLI dependency links. Independent standards/spec review found no new issues.
+- **Next:** one normal final push delivers all three finding commits. Owner
+  review/merge remain; full gate/depth/baselines were not rerun. No Actions.
+- **Records:** [Repair evidence](./pr-37-inspector-fix-results.json).
+
+### 2026-10-06 — PR #37 R14: Respect focus moved during Bezier edits
+
+- **Agent / branch:** Codex on isolated `codex/pr37-inspector-fixes`, after R13 `6f992bc`.
+- **Done:** guard asynchronous SVG handle focus with original control and history
+  ownership; preserve repeated arrow edits while respecting focus moved elsewhere.
+- **Results:** paused-asset checkbox-focus assertion fails before repair and passes
+  afterward; R13 focus checks remain passing. Build and affected lint pass.
+- **Next:** R15 scope identity in its own commit, affected final checks, one push.
+  Full gate/depth/baselines were not rerun. Owner checkout untouched; no Actions.
+- **Records:** [Repair evidence](./pr-37-inspector-fix-results.json).
+
+### 2026-10-06 — PR #37 R13: Preserve numeric Apply keyboard focus
+
+- **Agent / branch:** Codex on isolated `codex/pr37-inspector-fixes` from `12bfc1d`.
+- **Done:** post all three findings inline; restore graph Apply button focus
+  after acceptance/rejection while respecting changed focus and source ownership.
+- **Results:** new browser regression fails before repair and passes afterward;
+  temporal/Bezier/spatial controls, repeated activation, rejection and moved-focus
+  guards pass. Build, affected lint and pinned toolchain preflight pass.
+- **Next:** R14 and R15 in separate commits, affected final checks, one final push.
+  Full gate/depth/baselines were not rerun. Owner checkout untouched; no Actions.
+- **Records:** [Repair evidence](./pr-37-inspector-fix-results.json).
+
+### 2026-10-06 — Resolve PR #37 against main
+
+- **Agent / branch:** Codex in isolated `pr37-conflicts`, from CE11 `7fac583`.
+- **Done:** merge main `54782d7`; retain native inspector/draft/asset ownership,
+  integrate advisory lint, preserve both test aggregates and development histories.
+- **Results:** fast checks: 1,803 unit; 46 runtime, 60 affected integration and six
+  browser groups pass. Final affected static checks pass after the watch-error guard.
+  Builder 192-frame pixels/exports, inspector phone/desktop/MP4 and retained assets pass.
+- **Repair:** generated-reference source drift and missing isolated soundtrack
+  runtime are repaired; unchanged soundtrack retry passes exact PCM and passage mux.
+- **Next:** normal push to PR #37; owner review/merge remain. Full gate and frozen
+  baselines were not rerun or regenerated; Actions remain disabled. Owner checkout untouched.
+- **Records:** [Conflict evidence](./pr-37-main-conflict-resolution-results.json).
+
+### 2026-10-06 — PR #37 R12: Retain dirty-draft asset snapshots
+
+- **Agent / branch:** Codex on isolated `codex/pr37-review-fixes`, after R11 `516422d`.
+- **Done:** connection-owned captured assets survive recent-revision eviction;
+  failed/replaced drafts and socket closure retire bounded leases. Native edits,
+  history, renderer changes and export keep the accepted draft's original bytes.
+- **Results:** fast checks: 1,563 unit; 29 affected integration, 46 runtime and four
+  browser groups pass, including byte-identical retained-asset MP4 and cleanup.
+  Independent standards/spec review found no new substantive findings.
+- **Verification repair:** startup can reach revision 2; the new regression now
+  captures its accepted revision instead of assuming 1. Combined acceptance passes.
+- **Next:** one final normal push delivers both finding commits. CE10 advanced to
+  `515dfe0`; integrating its new base conflicts is separate pending work. Owner
+  review/merge remain. Full gate/depth/baselines not rerun; owner checkout untouched.
+  No Actions.
+- **Records:** [Repair evidence](./pr-37-retained-draft-fix-results.json).
+
+### 2026-10-06 — PR #37 R11: Retain layer-control keyboard focus
+
+- **Agent / branch:** Codex on isolated `codex/pr37-review-fixes` from `00d5fba`.
+- **Done:** posted both findings inline; restore layer selection and visibility
+  focus after staged acceptance/rejection without stealing another control's focus.
+- **Results:** new regression fails before the repair; TypeScript and complete
+  inspector desktop/phone/watch/save/MP4 acceptance pass with the new focus checks.
+- **Next:** R12 in a separate commit, affected final checks, then one normal push.
+  Owner checkout remains untouched; full gate/baselines were not rerun. No Actions.
+- **Records:** [Repair evidence](./pr-37-retained-draft-fix-results.json).
+
+### 2026-10-06 — Resolve PR #37 against current CE10
+
+- **Agent / branch:** Codex in an isolated managed CE11 worktree from `4946e9d`.
+- **Scope:** merge CE10 `6e0d108`, preserve both milestones and review fixes.
+- **Done:** retain both conflicted log sections and narrow the save-diagnostics
+  import that made the Lab config load an unrelated unsupported TypeScript class.
+- **Results:** 1,559 unit, 46 runtime, 14 depth and seven browser groups pass.
+  Corrected integration: 156 passes and one timeout; all 13 affected-file tests
+  pass on unchanged retry. Original setup failures and Python warmup are recorded.
+  Full `pnpm check` and frozen baselines were not rerun; no aggregate pass is claimed.
+- **Delivery:** recheck current base/head, then commit and normally push only
+  PR #37; GitHub mergeability is checked after delivery. Review/merge remain owner decisions.
+- **Records:** [Merge evidence](./pr-37-merge-results.json),
+  [CE11 acceptance](./composition-ce11-results.json).
+
 ### 2026-10-06 — Repair PR #36 current-head review findings
 
 - **Agent / branch:** Codex on isolated `codex/pr36-current-review-fixes`, from `8be5fc7`.
@@ -493,6 +670,230 @@ _Last updated 2026-10-06 by Codex for PR #35 main integration; both histories re
 - **Open / next:** owner review and merge; full gate and baseline matrices not rerun.
 - **Records:** [fix evidence](./pr-35-current-head-fix-results.json),
   [review](https://github.com/xxibcill/still-shift/pull/35#pullrequestreview-5418458083).
+
+### 2026-10-05 — PR #37 R10: Guard fixture export asset reads
+
+- **Agent / branch:** Codex on `codex/composition-ce11`; R8/R9 are `7d9f76c` /
+  `290af0c`.
+- **Done:** acquired export ownership before reading registered fixture assets
+  and released it after staging/rendering failures as well as successful exports.
+- **Results:** the paused-read race fails before the fix; 20 focused integration,
+  1,534 unit and 46 runtime tests pass with static gates and all four selected browser
+  groups. Both review axes found no new defects; the test import lint error is repaired.
+- **Next:** one normal push after this third finding commit; owner review/merge remain.
+- **Records:** [follow-up evidence](./pr-37-followup-fix-results.json).
+
+### 2026-10-05 — PR #37 R9: Preserve neighboring Bézier motion
+
+- **Agent / branch:** Codex on `codex/composition-ce11`; R8 is `7d9f76c`.
+- **Done:** retained native smooth velocities on untouched neighboring segments
+  when Bézier replaces the selected segment's smoothing; reference updated.
+- **Results:** 20 new scalar/vector/color/spatial/signal regressions fail before
+  the fix; all 35 curve/history tests, TypeScript and inspector acceptance pass.
+- **Next:** R10 in its own commit, then final local checks and one push.
+- **Records:** [follow-up evidence](./pr-37-followup-fix-results.json).
+
+### 2026-10-05 — PR #37 R8: Preserve graph-selector focus
+
+- **Agent / branch:** Codex on `codex/composition-ce11` from `9b2247e`.
+- **Done:** posted all three follow-up inline findings; restored focus after key
+  and resolved-instance selection rebuilds their native graph controls.
+- **Results:** new focus regression fails before the fix; full inspector browser
+  acceptance passes after it, including repeated selections and existing MP4 parity.
+- **Next:** R9 and R10 in separate commits, then final local checks and one push.
+- **Records:** [follow-up evidence](./pr-37-followup-fix-results.json).
+
+### 2026-10-05 — PR #37 R7: Share curve sampling and speed calculation
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Share uniform curve sampling and clipped finite-difference speed calculation across authored and resolved graphs while retaining each callers sampling bounds.
+- **Results:** All 15 focused curve/history tests pass, including exact authored/resolved agreement, linear boundary speeds, zero-duration ranges and the 512 sample cap. Final check:fast passes 1514 unit tests; 18 focused integration and 46 runtime tests pass; all four selected browser groups pass.
+- **Next:** One final push; owner review and merge remain.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168177).
+
+### 2026-10-05 — PR #37 R6: Discover separated constraint-reference channels
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Discover separated x/y channels through one native vector-track path, including constraintReference, with scalar lanes, resolved graphs, edits and code copies.
+- **Results:** Red: valid separated constraintReference returned no tracks. Green: all 10 key tests and inspector acceptance pass, including native reference path sampling, handle edits, code copy and history. TypeScript build passes.
+- **Next:** R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168168).
+
+### 2026-10-05 — PR #37 R5: Clear stale copied code when selecting path keys
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Reset copy state on every graph selection, populate native path-key snippets before the numeric-graph early return, and disable copying when the source has no tracks.
+- **Results:** Red: selecting masks[cutout].path retained transform.position code. Green: inspector acceptance passes path snippet selection and empty-source copy disabling alongside editing, watch, phone and MP4 parity checks.
+- **Next:** R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168163).
+
+### 2026-10-05 — PR #37 R4: Preserve the opposite side when editing a handle
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Keep shared smooth settings when replacing one temporal handle so the opposite segment retains its native motion.
+- **Results:** Red: both smooth encodings changed untouched incoming values (frame 5: 2.5 to 5). Green: 13 curve/history tests pass with exact incoming/outgoing preservation, edited-side changes and undo/redo round trips.
+- **Next:** R5, R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168155).
+
+### 2026-10-05 — PR #37 R3: Preserve structured validation diagnostics
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Retain native validation and font diagnostics through the shared passage-diagnostics error model; save and both export APIs return JSON envelopes, and the Lab displays their property paths.
+- **Results:** Red: save flattened two native range errors into one generic filename diagnostic. Green: all 7 save/API tests pass; invalid documents return the exact native diagnostics from save and both export endpoints. TypeScript build passes.
+- **Next:** R4, R5, R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168142).
+
+### 2026-10-05 — PR #37 R2: Restore focus after keyboard handle edits
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Restore the selected SVG handle focus after accepted keyboard edits; pointer edits retain their existing behavior.
+- **Results:** Red: the repeated-keyboard browser test lost focus after its first adjustment. Green: inspector acceptance passes with consecutive horizontal and Shift vertical edits, undo, save, phone layout and native MP4 parity.
+- **Next:** R3, R4, R5, R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168138).
+
+### 2026-10-05 — PR #37 R1: Serialize saves across preview sessions
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Guard canonical JSON sources with the existing cross-process artifact lock across conflict checks and atomic replacement.
+- **Results:** Red: helper saves both succeeded and independent preview returned 422. Green: all 6 save tests pass, including independent previews, repeated helper races and separate Node processes.
+- **Next:** R2, R3, R4, R5, R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168129).
+
+### 2026-10-05 — Complete CE11 inspector and full local acceptance
+
+- **Agent / branch:** Codex on `codex/composition-ce11`; runtime `5f36268`.
+- **Done:** native shared-session preview, layer/property/marker inspection,
+  authored and resolved graphs, temporal/spatial/Bézier edits, overlays, lossless
+  undo/redo, guarded JSON saves, executable builder-key copies and native draft export.
+- **Results:** complete local `pnpm check` passes: 1,510 unit, 46 runtime,
+  139 integration and 14 depth tests, all browser groups and 176 frozen baselines /
+  36,061 frames. Desktop/phone acceptance and byte-identical saved-source/MP4
+  exports pass. Initial failures and repairs remain recorded; no baseline regeneration.
+- **PR / next:** [PR #37](https://github.com/xxibcill/still-shift/pull/37) is open and attached; create CE5's branch. Camera frusta and
+  waveforms follow native CE8/CE13; runtime motion lowering remains parity-gated.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
+
+### 2026-10-05 — Retain inspector view visibility across motion edits
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `57a7e92`.
+- **Done:** apply transient hide/solo to staged edit/history previews while keeping
+  those flags outside the raw proposal until Apply visibility or Save.
+- **Results:** browser regression confirms the original mismatch (hidden layer
+  reappeared after curve edits). Complete desktop/phone acceptance passes with
+  hide → edit → undo/redo coverage, native MP4 parity, saves, builder copy and watch.
+  Build/lint pass. The prior full gate is stopped (143) at the superseded source.
+- **Next:** checkpoint this repair and rerun the full isolated local gate before
+  publishing CE11. Existing source-ownership and explicit reset/save rules remain.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
+
+### 2026-10-05 — Preserve JSON source permissions on native save
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `35ea938`.
+- **Done:** restore source permission bits on the temporary JSON file before
+  atomic replacement, avoiding process-umask changes to existing permissions.
+- **Results:** regression fails before the fix (`0666` becomes `0644`) and all
+  four save/API tests pass afterward. Changed lint passes; formatting corrected.
+- **Next:** the isolated full check at `35ea938` was stopped during integration
+  (exit 143) after reproducing this defect. Restart at the repaired checkpoint;
+  no full-check success is claimed. Owner's running Lab remains untouched.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
+
+### 2026-10-05 — CE11 inspector guidance and verification isolation
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `46240f5`.
+- **Done:** user guide and maintained/generated reference document inspector edits,
+  graph clocks, source ownership, visibility saves and native draft exports.
+- **Results:** second full check passes 1,510 unit, 46 runtime, 139 integration,
+  14 depth tests, story/commerce matrices, then fails the typography module fetch.
+  The unchanged focused typography rerun passes all 20 cases / 3,367 frames.
+- **Rejected / next:** no successful full-check claim. Snapshot Vite caches were
+  shared with the primary checkout; isolate them for the next full check. Their
+  involvement is unconfirmed. Preserve both failure and recheck evidence.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
+
+### 2026-10-05 — Repair native imports in the CE11 Vite configuration
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `4714cce`.
+- **Done:** narrow relative native composition imports preserve Vite bundling; save
+  errors use explicit fields compatible with Node strip-only loading.
+- **Results:** build, lint and dependency boundaries pass. The first full check
+  passed 1,510 unit and 46 runtime tests, then failed integration loading. Retain
+  that run and its repaired-suite attempt. Three depth timeouts pass on isolated
+  recheck; a sound transition timeout passes its isolated trace. Timeouts unchanged.
+- **Next:** all 25 affected integration tests pass; repeat the full local gate before
+  the CE11 PR. The primary Python environment and owner changes are preserved.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
+
+### 2026-10-05 — Verify copied builder keys and resolved inspector motion
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `f47fda5`.
+- **Done:** executable builder key copies, separate resolved/root and authored/local
+  graphs with instance FPS, native camera inspection, source bindings and diagnostic
+  jumps. Save applies transient visibility; native export includes the accepted view.
+  History checks precede preview swap. Automatic local ports avoid session collisions.
+- **Results:** 12 focused model/copied-builder tests and four save API tests pass;
+  full inspector desktop/phone acceptance and shared/legacy lifecycle checks pass.
+  MP4 downloads equal CLI bytes; screenshots and media evidence are retained.
+- **Next:** full local CE11 milestone gates, then its stacked PR before CE5.
+  Native audio and camera frusta remain with CE13/CE8; route selection is bounded.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
+
+### 2026-10-05 — Connect native inspector edits, overlays and MP4 export
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `3f217d3`.
+- **Done:** layer timing/badges and view-only visibility, property/marker lanes,
+  native value/speed graphs and temporal/spatial/Bezier controls, SVG overlays,
+  history/save integration and captured-asset native MP4 draft export.
+- **Results:** desktop/390px-phone acceptance passes with relative image assets:
+  edit/undo/redo, rejection rollback, graphical Bezier keys, transient visibility,
+  overlays, lossless save, backend retention and external conflicts. Downloaded MP4
+  exactly matches an independent CLI render; decoded preview mean difference is <3.
+  Builder watch regressions, build/lint and boundaries pass. Staged asset loads now
+  lock inspector edits; codec-threshold and loading-race repairs are retained.
+- **Next:** final inspector/builder-copy review, full local gates, then the milestone
+  PR before CE5. Camera frusta/audio remain tracked with native CE8/CE13 integration.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
+
+### 2026-10-05 — Add lossless native edit history and fixed-source saves
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `0dae1ac`.
+- **Done:** immutable document proposals and bounded undo/redo; native key discovery,
+  value/speed sampling and temporal/spatial/Bezier edits; raw source documents/hashes
+  and local fixed-input JSON saves with conflict guards and atomic replacement.
+- **Results:** eight model tests and three save integration tests pass, plus build,
+  changed-file lint and package boundaries. Builder source writes are rejected;
+  no-op bytes, untouched fields, permissions and competing-save conflicts are checked.
+- **Next:** connect the inspector and accepted edit lifecycle; native draft export
+  and desktop/phone preview/save/export acceptance remain.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
+
+### 2026-10-05 — Move composition preview into the shared session
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, after `f436ef5`.
+- **Done:** the composition page uses shared transactional loads, playback and
+  renderer ownership; native Canvas/WebGL surfaces retain their original context.
+  Frame callbacks update diagnostics without rendering a duplicate frame.
+- **Results:** build/lint and composition-program, quality and renderer browser
+  gates pass. Watch errors preserve frame 17 and pixels, shortened duration clamps
+  to 7, backend switching keeps the frame and source/JSON exports remain identical.
+- **Next:** native lossless document history, layer/key/graph editing, overlays and
+  save/export acceptance. Fixed-input JSON source bytes still need save API support.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
+
+### 2026-10-05 — Start CE11 shared-session renderer support
+
+- **Agent / branch:** Codex on `codex/composition-ce11`, from CE10 `afb4045` /
+  [PR #36](https://github.com/xxibcill/still-shift/pull/36).
+- **Done:** generic renderer/presentation ownership, optional valid-preview retention,
+  frame callbacks, commit result and fieldset export locks in the shared session.
+  Preserve legacy session defaults; record the existing Lab tone as an implementation
+  default while the optional design question remains unanswered.
+- **Results:** build, lint, boundaries and formatting pass. New browser lifecycle
+  coverage and all existing shared-session workbench regressions pass.
+- **Next:** move the composition page to this session; implement native document
+  history, layers, graph editing, overlays and lossless save/export acceptance.
+  Real camera-frustum/audio waveform follow-through belongs to CE8/CE13 availability.
+- **Records:** [CE11 evidence](./composition-ce11-results.json).
 
 ### 2026-10-05 — Integrate CE12 base and verify PR #35 follow-up fixes
 

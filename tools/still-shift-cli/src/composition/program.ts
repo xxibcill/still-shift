@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { authoredFontDiagnostics } from "@still-shift/motion";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { createRequire } from "node:module";
@@ -13,6 +14,8 @@ import {
 } from "@still-shift/scene-contract";
 export type LoadedProgram = {
   composition: Composition;
+  document?: Composition;
+  sourceSha256?: string;
   dependencies: string[];
   source: "json" | "builder";
 };
@@ -28,12 +31,15 @@ export async function loadProgram(
   const requested = resolve(path),
     input = await realpath(requested).catch(() => requested),
     extension = extname(input);
+  let sourceSha256: string | undefined;
   let value: unknown,
     dependencies = [input];
   if (extension === ".json") {
     let text: string;
     try {
-      text = await readFile(input, "utf8");
+      const bytes = await readFile(input);
+      text = bytes.toString("utf8");
+      sourceSha256 = createHash("sha256").update(bytes).digest("hex");
     } catch (error) {
       programError(
         "comp-program-file",
@@ -215,6 +221,9 @@ export async function loadProgram(
   );
   return {
     composition,
+    ...(sourceSha256
+      ? { document: structuredClone(value) as Composition, sourceSha256 }
+      : {}),
     dependencies,
     source: extension === ".json" ? "json" : "builder",
   };

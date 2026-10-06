@@ -147,8 +147,39 @@ always exact. The fixture browser reports `comp-text-system-font` for unpinned t
 authored JSON and TypeScript CLI inputs require a real pinned font asset.
 
 See the [composition reference](./composition-reference.md#rendering-a-composition)
-for the rendering rules. The full Lab composition inspector follows in CE11;
-existing scene workflows remain available for producing videos.
+for the rendering rules and [Lab inspector](./composition-reference.md#lab-composition-inspector-ce11)
+for editing controls and source ownership.
+
+### Inspect and tune a composition in Lab
+
+Open the URL from `comp preview --input composition.json --watch`, or browse
+fixtures at `/composition.html`. Select a layer to see its timing, parent, blend,
+matte and effect badges, then select a key lane. **All root properties** includes
+composition controls and signals. The authored graph shows values and speeds in
+local key frames; **Resolved motion in root frames** includes native expressions,
+drivers, constraints and the selected precomp instance's clock.
+
+Edit temporal ease/speed or spatial tangents numerically. Segment Bézier handles
+also support dragging and keyboard arrows (Shift changes the vertical coordinate).
+Applying Bézier replaces that segment's temporal handles and smoothing. Valid edits
+update the picture and enter undo/redo history; rejected edits retain the last valid
+picture. Discrete, path and 2D camera tracks expose their native data without
+unsupported temporal handle controls.
+
+Hide/solo controls change the preview. **Apply visibility** commits them to the
+draft, **Reset view** restores the draft's visibility, and saving includes current
+view visibility. **Export MP4** renders the visible draft with captured asset bytes.
+Bounds/anchors, motion paths/tangents and safe-area overlays stay outside exports.
+Click a located diagnostic to seek to its root frame.
+
+**Save JSON source** writes only the fixed JSON input. It preserves native fields,
+metadata and source asset paths; external edits retain your dirty draft and require
+**Reload source** before saving. Reload discards the draft. Fixture previews instead
+offer **Download edited JSON**; keep the file beside its original source so relative
+asset paths resolve. TypeScript previews offer temporary tuning and **Copy edited
+keys**. Paste the emitted timeline into the owning builder layer, respecting its
+local clock; a source reload replaces that temporary draft. Lab never writes the
+TypeScript program.
 
 ### Author a composition in TypeScript
 
@@ -168,7 +199,9 @@ pnpm --silent still-shift comp render --input timeline.json --output timeline.mp
 Open the URL printed by `preview`. Changes to imported helpers, data and image/font
 files rebuild without a page reload. A failed rebuild retains the last valid picture
 and scrub position, with located diagnostics; a shorter valid composition clamps the
-current frame. Builder previews show their provenance and are read-only.
+current frame. Builder previews show their provenance; source files are read-only,
+while [inspector tuning](#inspect-and-tune-a-composition-in-lab) can produce edited
+keys to paste back into the program.
 
 Node asset helpers in `@still-shift/motion/node` compute hashes and intrinsic sizes
 from real files. Use `relativeTo: import.meta.url` for paths relative to the program,
