@@ -422,13 +422,19 @@ export const SceneManifestSchema = z
   .superRefine((manifest, context) => {
     validateSceneFormat(manifest, context);
     const composition = manifest.composition;
-    if (composition && (
-      composition.width !== manifest.canvas.width ||
-      composition.height !== manifest.canvas.height ||
-      composition.fps !== manifest.timeline.fps ||
-      composition.frameCount !== manifest.timeline.frameCount
-    )) context.addIssue({code:"custom", path:["composition"],
-      message:"Native composition dimensions and timeline must match the manifest"});
+    if (
+      composition &&
+      (composition.width !== manifest.canvas.width ||
+        composition.height !== manifest.canvas.height ||
+        composition.fps !== manifest.timeline.fps ||
+        composition.frameCount !== manifest.timeline.frameCount)
+    )
+      context.addIssue({
+        code: "custom",
+        path: ["composition"],
+        message:
+          "Native composition dimensions and timeline must match the manifest",
+      });
     const scene = manifest.renderScene;
     if (manifest.execution.adapter === "webgl" && !scene) {
       context.addIssue({

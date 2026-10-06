@@ -69,10 +69,9 @@ still hold before relying on them.
   Zipper QA WebGL lint/lighting-signature fixes are integrated from 9b1b41a:
   74 unit regressions and the new CLI option check pass, plus build/lint/schema.
   Preview wrappers and actual-depth-default reference assertions are prepared.
-  New native depth export preparation/manifest data, inspector rejection/history
-  assertions and serial depth costs are staged; verification and formatting of
-  these latest edits are explicitly pending the quiet-window release.
-  Browser runs remain pending during CE6-P's requested quiet timing window.
+  Native depth export preparation/manifest data, inspector rejection/history
+  assertions and serial depth costs pass 41 focused checks/build/lint/schema and
+  package boundaries. CE6-P released its timing hold; browser parity is next.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
@@ -270,6 +269,18 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d resumes parity verification after timing release
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** formatted and verified the native depth export preparation and manifest
+  checkpoint `187e131`; isolated family acceptance Vite caches and cleaned up
+  independent FFmpeg encoding failures before rejection.
+- **Results:** 41 focused tests in four files, build, scoped lint, schema check and
+  package boundaries pass. CE6-P explicitly released its quiet timing hold.
+- **Open / next:** capture the separate six-case old-depth extension, verify prepared
+  wrappers and all family parity, then switch defaults and run the full CE4d gate.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d quiet-window implementation checkpoint
 

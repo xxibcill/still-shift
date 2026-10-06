@@ -2518,11 +2518,7 @@
     {
       "name": "PR43 spatial correctness fixes reconciled",
       "status": "integrated-focused-verification",
-      "sourceCommits": [
-        "e16d962",
-        "c36c686",
-        "c0c8f5d"
-      ],
+      "sourceCommits": ["e16d962", "c36c686", "c0c8f5d"],
       "scope": [
         "Projected children and collapsed precomps retain inherited primitive blur bounds",
         "Required coverage includes ancestor group masks/mattes/effects/visibility",
@@ -2667,26 +2663,38 @@
       "zipperInput": "/Users/jjae/Documents/obsidian/ai-business/YouTube Workflow Experiments/2026-10-06-zipper-final/composition-v004.json",
       "zipperPolicy": {
         "maxFrozenFrames": 60,
-        "intentionalCuts": [
-          270,
-          510
-        ]
+        "intentionalCuts": [270, 510]
       },
       "productionDefaults": "unchanged; switch after independent parity"
     },
     {
       "name": "quiet-window native depth export preparation checkpoint",
-      "status": "implemented-unverified",
+      "status": "implemented-focused-verification",
       "scope": [
         "Unwired Node native depth export compiler verifies file hashes and actual image dimensions",
         "Optional native picture in legacy manifest with canvas/fps/frame-count consistency",
         "New export-preparation and manifest regressions",
         "Serial old/native/old full-resolution render/readback cost brackets",
-        "Depth inspector starts in WebGL2 and asserts invalid-value rejection and undo/redo"
+        "Depth inspector starts in WebGL2 and asserts invalid-value rejection and undo/redo",
+        "Private Vite cache for full family-default acceptance",
+        "Independent preview encoder awaits child termination when frame writing fails"
       ],
-      "checks": "not run; formatting/build/lint/focused/schema/browser checks held for owner-authorized CE6-P quiet timing window",
+      "checks": {
+        "focusedUnit": {
+          "tests": 41,
+          "files": 4,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass",
+        "schemaCheck": "pass",
+        "boundaries": "pass",
+        "format": "pass"
+      },
       "previousVerifiedCheckpoint": "5e3f517",
-      "productionDefaults": "unchanged; switch after independent parity"
+      "productionDefaults": "unchanged; switch after independent parity",
+      "unverifiedCheckpoint": "187e131",
+      "browser": "pending; quiet timing window released"
     }
   ],
   "pending": [

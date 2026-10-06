@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { readFile, mkdir, writeFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { readFile, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { dirname, join, resolve } from "node:path";
 import { createServer } from "vite";
 import {
   launchRenderBrowser,
@@ -53,9 +54,11 @@ if (candidate || smoke || only >= 0)
   console.log(
     "Diagnostic candidate/subset; production-default milestone acceptance remains pending.",
   );
+const directory = await mkdtemp(join(tmpdir(), "ce4d-family-defaults-"));
 const server = await createServer({
   root,
   configFile: false,
+  cacheDir: join(directory, "vite-cache"),
   server: { host: "127.0.0.1", port: 0 },
   logLevel: "error",
 });
@@ -269,6 +272,10 @@ try {
   try {
     await browser.close();
   } finally {
-    await server.close();
+    try {
+      await server.close();
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
   }
 }

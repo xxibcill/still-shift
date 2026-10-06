@@ -98,20 +98,30 @@ try {
         { stdio: ["pipe", "ignore", "pipe"] },
       );
       let errors = "";
+      let writeFailure: unknown;
+      const failWriting = (error: unknown) => {
+        writeFailure ??= error;
+        encoder.stdin.destroy();
+        encoder.kill();
+      };
       encoder.stderr.on("data", (chunk) => {
         errors += String(chunk);
       });
       encoder.on("error", reject);
-      encoder.stdin.on("error", reject);
+      encoder.stdin.on("error", failWriting);
       encoder.on("close", (code) =>
-        code === 0 ? accept() : reject(Error(`ffmpeg ${code}: ${errors}`)),
+        writeFailure !== undefined
+          ? reject(writeFailure)
+          : code === 0
+            ? accept()
+            : reject(Error(`ffmpeg ${code}: ${errors}`)),
       );
       void (async () => {
         for (const png of pngs)
           if (!encoder.stdin.write(Buffer.from(png, "base64")))
             await once(encoder.stdin, "drain");
         encoder.stdin.end();
-      })().catch(reject);
+      })().catch(failWriting);
     });
     const expectedHash = `sha256:${digest(await readFile(expectedPath))}`;
     for (const [label, transport] of [
@@ -206,11 +216,17 @@ try {
       )),
     });
     const fullSize = depthToComposition(fixture.scene, {
-      id: `${fixture.id}-cost`, requestedPreset: fixture.requestedPreset,
-      source: assets[0] as Extract<CompositionAsset, {type:"image"}>,
-      ...(assets[1] ? {depth: assets[1] as Extract<CompositionAsset,{type:"image"}>} : {}),
+      id: `${fixture.id}-cost`,
+      requestedPreset: fixture.requestedPreset,
+      source: assets[0] as Extract<CompositionAsset, { type: "image" }>,
+      ...(assets[1]
+        ? { depth: assets[1] as Extract<CompositionAsset, { type: "image" }> }
+        : {}),
     });
-    costs.push({id: fixture.id, ...await depthRenderCosts(page, fullSize, fixture.scene, assetUrls)});
+    costs.push({
+      id: fixture.id,
+      ...(await depthRenderCosts(page, fullSize, fixture.scene, assetUrls)),
+    });
     hardwareFixtures.push({
       name: doc.id,
       doc,
@@ -293,8 +309,11 @@ try {
   await mkdir(proof, { recursive: true });
   await writeFile(
     join(proof, "native-acceptance.json"),
-    JSON.stringify({ environment, reports, inspector, hardware, costs }, null, 2) +
-      "\n",
+    JSON.stringify(
+      { environment, reports, inspector, hardware, costs },
+      null,
+      2,
+    ) + "\n",
   );
 } finally {
   await browser.close();
