@@ -55,7 +55,10 @@ still hold before relying on them.
   remain exact. Complete serial migration delivery passes legacy/native independent
   and repeat/raw exports, hardware, inspector/resources/alpha and native cost checks;
   unchanged Canvas timing passes, while CE6-P retains WebGL speed work. Static
-  preflight passes on an isolated snapshot. One complete local `pnpm check` remains,
+  preflight passes. The first full `pnpm check` failed after unit/runtime/integration/
+  Python suites at a pending Depth Lab refresh measurement (217.48 seconds). Committed-
+  parameter waits retain original motion limits and pass. Readiness/latest-seek/staged
+  commit repair is implemented; focused Lab tests and a complete gate rerun remain,
   then CE4d PR and CE13 → CE15 → CE14 with CE16 audit/reuse. CE5-X/Q9 remains pending;
   no owner decision blocks this approved order. Failed/rejected diagnostics and
   measured proof are in [results](./composition-ce4d-results.json); continuation
@@ -256,6 +259,20 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d full gate finds asynchronous Depth Lab handoff
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` after `8ce662a`.
+- **Full gate:** stopped after 217.48 seconds at the Depth Lab motion check; 2,005 unit,
+  46 runtime, 143 integration and 14 Python depth tests passed first. This gate failed.
+- **Diagnostic:** waiting for committed parameters preserves all motion assertions and
+  passes: far marker 10.5 px, near marker 17.5 px. The old test observed pending refresh.
+- **Repair:** explicit updating/readiness state, latest seek at commit, first-frame staging
+  before active replacement, stale-load error protection and truthful native Lab version.
+  A real delayed-decode regression seeks during preparation; no threshold changes.
+- **Open / next:** focused Depth Lab/Lab sessions, then a complete local gate rerun and
+  milestone PR/attachment. The approved CE13 → CE15 → CE14 order remains unchanged.
+- **Records:** [results](./composition-ce4d-results.json).
 
 ### 2026-10-07 — CE4d complete public-default focused acceptance passes
 

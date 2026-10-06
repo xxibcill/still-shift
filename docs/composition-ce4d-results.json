@@ -18862,7 +18862,68 @@
         }
       },
       "pending": ["complete local milestone pnpm check"]
+    },
+    {
+      "name": "transactional async depth Lab refresh and pending seeks",
+      "date": "2026-10-07",
+      "status": "implemented; focused browser acceptance pending",
+      "scope": [
+        "Mark loading/updating previews aria-busy and publish ready only after native renderer commit",
+        "Preserve the latest user seek while same-source async preparation is pending",
+        "Draw the candidate initial frame before swapping or disposing the previous active renderer",
+        "Discard stale load errors without changing newer readiness state",
+        "Show truthful native renderer version in Lab parameters",
+        "Browser regression delays a real image decode and seeks during preparation; original motion/crop/fallback/edge/race assertions and thresholds remain"
+      ],
+      "checks": {
+        "scopedFormatLintBuild": "pass"
+      },
+      "pending": [
+        "focused real depth Lab regression and Lab sessions",
+        "complete rerun of local pnpm check"
+      ]
     }
   ],
-  "pending": ["Complete final local pnpm check", "CE4d PR delivery"]
+  "pending": [
+    "Verify async depth Lab refresh/pending seek repair",
+    "Complete full local pnpm check from final repaired checkpoint",
+    "CE4d PR delivery"
+  ],
+  "fullGates": [
+    {
+      "checkpoint": "8ce662a",
+      "runtime": "75c0828",
+      "status": "failed",
+      "command": "pnpm check",
+      "durationSeconds": 217.48,
+      "passedBeforeFailure": {
+        "unitTests": 2005,
+        "unitFiles": 201,
+        "runtimeTests": 46,
+        "integrationTests": 143,
+        "integrationFiles": 39,
+        "pythonDepthTests": 14
+      },
+      "failedSuite": "test:browser:depth",
+      "failure": "Far marker must move: the Lab motion test measured a pending asynchronous refresh as if it were already committed",
+      "log": {
+        "path": "/private/tmp/ce4d-full-check-8ce662a.log",
+        "sha256": "sha256:a46a4ccb3b42513000dceb25f3ba234696c66cacbe90f335d6fbe9d35da4c218"
+      },
+      "startupPreflight": {
+        "path": "/private/tmp/ce4d-final-startup-8ce662a.log",
+        "sha256": "sha256:61352e3d61b594842b608eac943ac38d79bdadb024e417c67ee881c04b2ccc5f"
+      },
+      "diagnostic": {
+        "status": "pass; diagnostic-only separate test with committed-parameter waits",
+        "unchangedMotionThresholds": true,
+        "farTravelPixels": 10.5,
+        "nearTravelPixels": 17.5,
+        "log": {
+          "path": "/private/tmp/ce4d-depth-lab-wait-diagnostic-8ce662a.log",
+          "sha256": "sha256:1b5a7200e70408be20cb7569282280ed163e56d24654d7a33cae3a8d70ef87b0"
+        }
+      }
+    }
+  ]
 }

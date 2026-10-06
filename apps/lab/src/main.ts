@@ -130,7 +130,7 @@ const showFrame = (frameIndex: number): void => {
     `${formatTime(frameIndex, scene.timeline.fps)} / ${formatTime(scene.timeline.frameCount, scene.timeline.fps)}`;
   parameters.textContent = JSON.stringify(
     {
-      rendererVersion: scene.rendererVersion,
+      rendererVersion: renderer.rendererVersion,
       presetVersion: scene.presetVersion,
       source: scene.source,
       canvas: scene.canvas,
@@ -300,7 +300,7 @@ const activateScene = async (
   depth: HTMLImageElement | null,
   nextScene: PreviewScene,
   requestId: number,
-  frameIndex = 0,
+  frameIndex: number | (() => number) = 0,
 ): Promise<void> => {
   // Prepare on a private canvas. A superseded async load must not alter the
   // active canvas or dispose the newer scene's GPU resources.
@@ -316,6 +316,16 @@ const activateScene = async (
   if (requestId !== previewRequestId) {
     nextRenderer.dispose();
     return;
+  }
+  const nextFrame = Math.min(
+    typeof frameIndex === "function" ? frameIndex() : frameIndex,
+    nextScene.timeline.frameCount - 1,
+  );
+  try {
+    nextRenderer.renderFrame(nextFrame);
+  } catch (error) {
+    nextRenderer.dispose();
+    throw error;
   }
   stop();
   renderer?.dispose();
@@ -336,7 +346,8 @@ const activateScene = async (
   frameSlider.max = String(nextScene.timeline.frameCount - 1);
   frameSlider.disabled = false;
   playButton.disabled = false;
-  showFrame(Math.min(frameIndex, nextScene.timeline.frameCount - 1));
+  showFrame(nextFrame);
+  previewStage.setAttribute("aria-busy", "false");
   status.classList.remove("error");
   status.textContent = `${name} ready · ${nextScene.canvas.width} × ${nextScene.canvas.height} · ${nextScene.motion.preset} / ${nextScene.motion.intensity} · ${nextScene.motion.mode} · ${nextScene.timeline.frameCount} frames · ${nextScene.warnings.length} warnings`;
 };
@@ -349,9 +360,16 @@ const inspectPair = async (
   if (requestId !== previewRequestId) return;
   stop();
   status.textContent = `Loading ${name}…`;
-  const { source, depth, resolvedScene } = await loadScene(pair);
-  if (requestId !== previewRequestId) return;
-  await activateScene(name, pair, source, depth, resolvedScene, requestId);
+  previewStage.setAttribute("aria-busy", "true");
+  try {
+    const { source, depth, resolvedScene } = await loadScene(pair);
+    if (requestId !== previewRequestId) return;
+    await activateScene(name, pair, source, depth, resolvedScene, requestId);
+  } catch (error) {
+    if (requestId !== previewRequestId) return;
+    previewStage.setAttribute("aria-busy", "false");
+    throw error;
+  }
 };
 
 const refreshScene = (): void => {
@@ -361,6 +379,8 @@ const refreshScene = (): void => {
   void (async () => {
     try {
       const nextScene = resolveLabScene(source, depth, pair.durationMs);
+      status.textContent = `Updating ${name}…`;
+      previewStage.setAttribute("aria-busy", "true");
       await activateScene(
         name,
         pair,
@@ -368,10 +388,13 @@ const refreshScene = (): void => {
         depth,
         nextScene,
         requestId,
-        currentFrame,
+        () => currentFrame,
       );
     } catch (error) {
-      if (requestId === previewRequestId) showError(error);
+      if (requestId === previewRequestId) {
+        previewStage.setAttribute("aria-busy", "false");
+        showError(error);
+      }
     }
   })();
 };
