@@ -2518,11 +2518,7 @@
     {
       "name": "PR43 spatial correctness fixes reconciled",
       "status": "integrated-focused-verification",
-      "sourceCommits": [
-        "e16d962",
-        "c36c686",
-        "c0c8f5d"
-      ],
+      "sourceCommits": ["e16d962", "c36c686", "c0c8f5d"],
       "scope": [
         "Projected children and collapsed precomps retain inherited primitive blur bounds",
         "Required coverage includes ancestor group masks/mattes/effects/visibility",
@@ -2567,6 +2563,28 @@
       },
       "extendedReferenceCapture": "pending quiet window; capture separate darwin-arm64-extended.json without replacing original manifest",
       "productionDefaults": "not switched; full acceptance pending"
+    },
+    {
+      "name": "mixed depth graphs and inspector controls",
+      "status": "implemented-focused-verification",
+      "checks": {
+        "focusedUnit": {
+          "tests": 1,
+          "files": 1,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass"
+      },
+      "scope": [
+        "Depth and image-plane key values use existing schema-bounded inspector history",
+        "Six mixed graphs independently replace only local depth with old Three rasters",
+        "Lighting reference uses 24 native image sources; other cases use a test-only provider"
+      ],
+      "rejected": [
+        "90 sources exceeded the unchanged 32-source cap; reference design repaired without modifying production contract"
+      ],
+      "browser": "implemented but unrun; hold during CE6-P quiet timing window"
     }
   ],
   "pending": [

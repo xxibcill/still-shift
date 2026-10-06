@@ -57,6 +57,9 @@ still hold before relying on them.
   focused regressions/build/lint passing; browser regressions join the final gate.
   Six additional depth cases pass 18 focused state checks; reference capture is
   pending. Q2 vocabulary comments/contributor guidance and format docs are updated.
+  Mixed depth graph/reference and real inspector acceptance are implemented;
+  the focused graph state test, build and lint pass. GPU/inspector runs are held
+  for the CE6-P quiet timing window.
   PR42 is running its timed gate; defer new timed browser acceptance until it ends.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
@@ -255,6 +258,20 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d mixed depth and inspector checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** depth/image-plane key value controls and real edit/history/save/reload
+  acceptance. Added six mixed graphs with independent old-depth raster references
+  for local clocks, parenting, masks/mattes/effects, repeated/remapped precomps,
+  shutter samples, cameras and opt-in lighting.
+- **Results:** focused mixed-graph state test, build and scoped lint pass. Browser
+  acceptance is implemented but unrun during CE6-P's quiet timing window.
+- **Rejected:** 90 image sources exceed the unchanged 32-source limit; use a
+  test-only local-raster provider and a bounded 24-source native lighting reference.
+- **Open / next:** run GPU/inspector/export acceptance when released, finish default
+  consolidation and the complete gate. [Evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d extended depth and vocabulary checkpoint
 
