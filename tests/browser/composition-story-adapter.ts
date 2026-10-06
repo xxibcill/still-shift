@@ -1,3 +1,4 @@
+import type * as LegacyOracle from "../helpers/legacy-illustrated-oracle.ts";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -64,11 +65,13 @@ try {
         typeof Render.compileStoryScene
       >;
       const composition = JSON.parse(compositionJson) as Composition;
+      const oracleUrl = "/tests/helpers/legacy-illustrated-oracle.ts";
+      const oracle = (await import(oracleUrl)) as typeof LegacyOracle;
       const moduleUrl = "/packages/renderer-core/src/index.ts";
       const m = (await import(moduleUrl)) as typeof Render;
       const oldCanvas = document.createElement("canvas"),
         canvas = document.createElement("canvas");
-      const legacy = m.createIllustratedPreview(
+      const legacy = oracle.createIllustratedPreview(
         oldCanvas,
         scene,
         await m.loadIllustratedImages(scene, (id) => urls[id]!),
@@ -226,7 +229,7 @@ try {
       ) as Composition;
       const longLegacyCanvas = document.createElement("canvas"),
         longCanvas = document.createElement("canvas");
-      const longLegacy = m.createIllustratedPreview(
+      const longLegacy = oracle.createIllustratedPreview(
         longLegacyCanvas,
         longScene,
         await m.loadIllustratedImages(longScene, (id) => urls[id]!),

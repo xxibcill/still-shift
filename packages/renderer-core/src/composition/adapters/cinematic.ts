@@ -126,9 +126,18 @@ export function cinematicToComposition(
   source: CinematicScene,
   options: { id?: string } = {},
 ): Composition {
-  const input = CinematicSceneSchema.parse(source);
-  const scene = compileCinematicScene(input),
-    frameCount = scene.timeline.frameCount;
+  return compiledCinematicToComposition(
+    compileCinematicScene(CinematicSceneSchema.parse(source)),
+    options,
+  );
+}
+
+/** Compile a prepared camera recipe once, before native frame rendering. */
+export function compiledCinematicToComposition(
+  scene: CinematicRenderScene,
+  options: { id?: string } = {},
+): Composition {
+  const frameCount = scene.timeline.frameCount;
   if (frameCount > COMPOSITION_LIMITS.maxKeys)
     passageError(
       "comp-adapter-limit",
@@ -171,7 +180,7 @@ export function cinematicToComposition(
       model: "one-node",
       nearClip: 0.01,
       ...clock,
-      source: { family: input.schemaVersion, id: "camera" },
+      source: { family: scene.schemaVersion, id: "camera" },
       transform: {
         position: {
           x: baked(cameras.map((camera) => centre[0] + camera.x)),
@@ -198,7 +207,7 @@ export function cinematicToComposition(
         type: "image",
         threeD: true,
         ...clock,
-        source: { family: input.schemaVersion, id: node.id },
+        source: { family: scene.schemaVersion, id: node.id },
         size: [node.width, node.height],
         sources: node.states,
         fit: node.fit,

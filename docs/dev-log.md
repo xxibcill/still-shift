@@ -50,7 +50,10 @@ still hold before relying on them.
   match exactly across 1,530 forward/reverse frames including the final budget/cache
   checkpoint recheck. Six legacy preset adapters and native followers pass 15 focused
   all-frame state tests and build; legacy pixels/exports, family default consolidation
-  and remaining milestone acceptance are pending.
+  and remaining milestone acceptance are pending. Prepared family compilation and
+  independent test-only legacy oracle pass 85 focused checks/build/lint/boundaries;
+  the all-176 native migration/default acceptance suite is implemented but unrun.
+  PR42 is running its timed gate; defer new timed browser acceptance until it ends.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
@@ -248,6 +251,20 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d preparation and independent oracle checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** compiled-scene adapter cores retain measured/edited layouts. A test-only
+  copy of the old renderer, effects, masks and observer preserves the independent
+  CE0 oracle; family matrices use it after production defaults migrate. Added an
+  all-176 native-versus-frozen and reverse-seek/default acceptance suite.
+- **Results:** 85 focused unit tests, build, scoped lint and boundaries pass. Legacy
+  seven-fixture smoke passes both backends / 70 forward and reverse frames at the
+  unchanged near tier. Full timelines/exports/hardware and the new suite are unrun.
+- **Open / next:** defer timing/browser acceptance while PR42's timed full gate runs;
+  finish remaining depth acceptance and default migration before the final gate/PR.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d legacy adapter checkpoint
 

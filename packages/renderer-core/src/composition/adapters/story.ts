@@ -89,6 +89,15 @@ export function storyToComposition(
       options.textLayout.context,
       options.textLayout.fonts,
     );
+  return compiledStoryToComposition(scene, options);
+}
+
+/** Preparation-only entry point for an already compiled, measured recipe scene. */
+export function compiledStoryToComposition(
+  scene: StoryRenderScene,
+  options: Pick<StoryCompositionOptions, "id"> = {},
+): Composition {
+  checkSupported(scene);
   validateComponentAnnotations(scene);
   const components = componentCapabilities(scene.componentData);
   const layers: CompositionLayer[] = [];

@@ -8,6 +8,7 @@ import {
 } from "@still-shift/scene-contract";
 import {
   compilePreparedScene,
+  type LegacyIllustratedScene,
   evaluatePreparedNode,
   sampleTrack,
 } from "../../prepared-scene.ts";
@@ -21,15 +22,24 @@ export function legacyToComposition(
   source: PreparedScene,
   options: { id?: string } = {},
 ): Composition {
-  const input = PreparedSceneSchema.parse(source);
-  const frameCount = (input.fps * input.durationMs) / 1000;
+  return compiledLegacyToComposition(
+    compilePreparedScene(PreparedSceneSchema.parse(source)),
+    options,
+  );
+}
+
+/** Accept a prepared recipe scene; native playback never re-enters its tracks. */
+export function compiledLegacyToComposition(
+  scene: LegacyIllustratedScene,
+  options: { id?: string } = {},
+): Composition {
+  const frameCount = scene.timeline.frameCount;
   if (!Number.isInteger(frameCount) || frameCount > COMPOSITION_LIMITS.maxKeys)
     passageError(
       "comp-adapter-limit",
       `Legacy adaptation needs an integer timeline of at most ${COMPOSITION_LIMITS.maxKeys} frames`,
       { path: "durationMs" },
     );
-  const scene = compilePreparedScene(input);
   const layers: CompositionLayer[] = [];
   const signals: NonNullable<Composition["signals"]> = [];
   const constraints: NonNullable<Composition["constraints"]> = [];
@@ -75,7 +85,7 @@ export function legacyToComposition(
               path: { closed: false, vertices: path.points },
             },
           ],
-          source: { family: input.schemaVersion, id: follower.path },
+          source: { family: scene.schemaVersion, id: follower.path },
         });
         const values = Array.from({ length: frameCount }, (_, frame) =>
           sampleTrack(follower.keys, (frame * 1000) / scene.fps),

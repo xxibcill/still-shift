@@ -1,3 +1,4 @@
+import type * as LegacyOracle from "../helpers/legacy-illustrated-oracle.ts";
 import assert from "node:assert/strict";
 import { readFile, mkdtemp, rm, mkdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -140,11 +141,13 @@ try {
                 typeof Render.compileCinematicScene
               >;
               const composition = JSON.parse(compositionJson) as Composition;
+              const oracleUrl = "/tests/helpers/legacy-illustrated-oracle.ts";
+              const oracle = (await import(oracleUrl)) as typeof LegacyOracle;
               const moduleUrl = "/packages/renderer-core/src/index.ts";
               const m = (await import(moduleUrl)) as typeof Render;
               const canvas = document.createElement("canvas"),
                 oldCanvas = document.createElement("canvas");
-              const legacy = m.createIllustratedPreview(
+              const legacy = oracle.createIllustratedPreview(
                 oldCanvas,
                 scene,
                 await m.loadIllustratedImages(scene, (id) => urls[id]!),

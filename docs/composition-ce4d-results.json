@@ -2473,11 +2473,47 @@
         "build": "pass",
         "scopedLint": "pass"
       },
-      "browserPixelsExportsHardware": "pending",
+      "browserPixelsExportsHardware": {
+        "diagnosticSmoke": {
+          "checkpoint": "0d23767",
+          "status": "pass",
+          "cases": 7,
+          "backends": 2,
+          "forwardFrames": 70,
+          "reverseFrames": 70,
+          "maxChannelDelta": 2,
+          "policy": "unchanged near",
+          "log": "/private/tmp/ce4d-legacy-smoke-0d23767.log"
+        },
+        "allFrameTimingExportsHardware": "pending quiet window after active PR42 full gate"
+      },
       "failedAttempts": [
         "Initial uncompressed progress signals exceeded existing 100-key limit; remove consecutive unchanged hold values without changing sampled frames.",
         "Two initial test assumptions were invalid: evaluated image state field is state, and legacy validation requires path/follower to share a parent. Assertions corrected without changing schema."
       ]
+    },
+    {
+      "name": "prepared family compilation and independent legacy oracle",
+      "status": "implemented-focused-verification",
+      "scope": [
+        "Four existing strict source adapters delegate to compiled-scene cores",
+        "Prepared measured layouts adapt without re-running recipe preparation",
+        "Preserved independent test-only legacy renderer/effects/masks/recipe observer",
+        "Frozen CE0 checks and family matrices continue using independent old rendering",
+        "New all-176 / 36061-frame migration and actual-default acceptance suite; not yet run"
+      ],
+      "checks": {
+        "focusedUnit": {
+          "tests": 85,
+          "files": 4,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass",
+        "boundaries": "pass"
+      },
+      "productionDefaults": "unchanged; switch follows required parity acceptance",
+      "browser": "pending; other chat is running timed verification"
     }
   ],
   "pending": [

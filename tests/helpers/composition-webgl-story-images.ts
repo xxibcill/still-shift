@@ -1,10 +1,12 @@
 import {
+  createIllustratedPreview,
+  loadIllustratedImages,
+} from "./legacy-illustrated-oracle.ts";
+import {
   compareFrames,
   compileStoryScene,
   createCompositionPreview,
-  createIllustratedPreview,
   loadCompositionResources,
-  loadIllustratedImages,
   meetsTier,
   storyToComposition,
 } from "../../packages/renderer-core/src/index.ts";

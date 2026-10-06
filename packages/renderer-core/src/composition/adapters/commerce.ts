@@ -8,7 +8,10 @@ import {
   type Composition,
   type CompositionLayer,
 } from "@still-shift/scene-contract";
-import { compileCommerceScene } from "../../commerce-scene.ts";
+import {
+  compileCommerceScene,
+  type CommerceRenderScene,
+} from "../../commerce-scene.ts";
 import {
   requiresCompositionTextLayout,
   type CompositionTextLayout,
@@ -140,6 +143,15 @@ export function commerceToComposition(
       fonts,
     );
   }
+  return compiledCommerceToComposition(scene, options);
+}
+
+/** Preparation-only entry point; text fitting has already resolved node geometry. */
+export function compiledCommerceToComposition(
+  scene: CommerceRenderScene,
+  options: CommerceCompositionOptions = {},
+): Composition {
+  checkSupported(scene);
   validateAttachedPaths(scene);
   validateComponentAnnotations(scene);
   const visibility = new Map<string, { start: number; end: number }>([
