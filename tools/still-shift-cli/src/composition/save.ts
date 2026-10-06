@@ -10,7 +10,10 @@ import {
 } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
 import { acquireArtifactLock } from "@still-shift/execution-runtime";
-import { PassageError, passageDiagnostics } from "@still-shift/renderer-core";
+import {
+  PassageError,
+  passageDiagnostics,
+} from "../../../../packages/renderer-core/src/passage-diagnostics.ts";
 import { authoredFontDiagnostics } from "@still-shift/motion";
 import {
   AnimationEngineError,

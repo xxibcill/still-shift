@@ -1,3 +1,4 @@
+import { createServer as createPortProbe } from "node:net";
 import {
   mkdtemp,
   mkdir,
@@ -41,7 +42,10 @@ it("serves immutable asset snapshots, keeps the last valid rebuild and watches h
     input,
     `import{comp,image}from'@still-shift/motion';import{imageAsset}from'@still-shift/motion/node';import{x}from${JSON.stringify(helper)};const asset=await imageAsset('art','./art.svg',{relativeTo:import.meta.url});export default comp({width:64,height:64,fps:24,frames:24},c=>c.add(image('drawing',asset).at(x,8)));`,
   );
-  const session = await createProgramPreview(input, { watch: true });
+  const session = await createProgramPreview(input, {
+    watch: true,
+    port: await freePort(),
+  });
   sessions.push(session);
   const base = new URL(session.url).origin;
   const first = session.snapshot()!;
@@ -95,7 +99,10 @@ it("recovers when an initially missing imported module is created", async () => 
     input,
     `import{comp}from'@still-shift/motion';import{count}from'./missing.ts';export default comp({width:64,height:64,fps:24,frames:count},()=>{});`,
   );
-  const session = await createProgramPreview(input, { watch: true });
+  const session = await createProgramPreview(input, {
+    watch: true,
+    port: await freePort(),
+  });
   sessions.push(session);
   expect(session.snapshot()).toBeUndefined();
   await writeFile(helper, "export const count=24;");
@@ -111,7 +118,10 @@ it("recovers when an initially missing builder image asset is created", async ()
     input,
     `import{comp,image}from'@still-shift/motion';import{imageAsset}from'@still-shift/motion/node';const asset=await imageAsset('art','./missing.svg',{relativeTo:import.meta.url});export default comp({width:64,height:64,fps:24,frames:24},c=>c.add(image('drawing',asset)));`,
   );
-  const session = await createProgramPreview(input, { watch: true });
+  const session = await createProgramPreview(input, {
+    watch: true,
+    port: await freePort(),
+  });
   sessions.push(session);
   expect(session.snapshot()).toBeUndefined();
   await writeFile(
@@ -123,6 +133,39 @@ it("recovers when an initially missing builder image asset is created", async ()
       timeout: 6000,
     })
     .toBe("art");
+});
+
+it("recovers after repairing an initially schema-invalid builder image asset", async () => {
+  const root = await directory(),
+    input = join(root, "program.ts"),
+    art = join(root, "invalid.svg");
+  await writeFile(art, '<svg width="0" height="12"/>');
+  await writeFile(
+    input,
+    `import{comp,image}from'@still-shift/motion';import{imageAsset}from'@still-shift/motion/node';const asset=await imageAsset('art','./invalid.svg',{relativeTo:import.meta.url});export default comp({width:64,height:64,fps:24,frames:24},c=>c.add(image('drawing',asset)));`,
+  );
+  const session = await createProgramPreview(input, {
+    watch: true,
+    port: await freePort(),
+  });
+  sessions.push(session);
+  expect(session.snapshot()).toBeUndefined();
+  const base = new URL(session.url).origin;
+  expect(
+    (await (await fetch(base + "/composition/program")).json()).diagnostics,
+  ).toEqual([expect.objectContaining({ code: "comp-builder-asset" })]);
+  const repaired = '<svg width="8" height="12"/>';
+  await writeFile(art, repaired);
+  await expect
+    .poll(() => session.snapshot()?.composition.assets[0], { timeout: 6000 })
+    .toMatchObject({
+      id: "art",
+      width: 8,
+      height: 12,
+    });
+  expect(
+    await (await fetch(base + session.snapshot()!.assets.art!)).text(),
+  ).toBe(repaired);
 });
 
 it("serves native JSON assets through a logical directory alias while watching canonical paths", async () => {
@@ -142,7 +185,10 @@ it("serves native JSON assets through a logical directory alias while watching c
   composition.assets[0]!.path = relative(alias, await realpath(art));
   const input = join(alias, "native.json");
   await writeFile(input, JSON.stringify(composition));
-  const session = await createProgramPreview(input, { watch: true });
+  const session = await createProgramPreview(input, {
+    watch: true,
+    port: await freePort(),
+  });
   sessions.push(session);
   const first = session.snapshot()!,
     base = new URL(session.url).origin;
@@ -161,3 +207,104 @@ it("serves native JSON assets through a logical directory alias while watching c
     await (await fetch(base + session.snapshot()!.assets.art!)).text(),
   ).toBe(original);
 });
+
+async function freePort(): Promise<number> {
+  const probe = createPortProbe();
+  await new Promise<void>((yes, no) => {
+    probe.once("error", no);
+    probe.listen(0, "127.0.0.1", yes);
+  });
+  const address = probe.address();
+  if (!address || typeof address === "string") throw new Error("Missing port");
+  const port = address.port;
+  await new Promise<void>((yes, no) =>
+    probe.close((error) => (error ? no(error) : yes())),
+  );
+  return port;
+}
+it.each([
+  ["./missing.js", "missing.ts"],
+  ["./missing", "missing.ts"],
+  ["./missing.mjs", "missing.mts"],
+  ["./nested", "nested/index.ts"],
+])(
+  "recovers TypeScript resolution candidates for initially missing %s",
+  async (specifier, helperName) => {
+    const root = await directory(),
+      input = join(root, "program.ts"),
+      helper = join(root, helperName);
+    await writeFile(
+      input,
+      `import{comp}from'@still-shift/motion';import{count}from${JSON.stringify(specifier)};export default comp({width:64,height:64,fps:24,frames:count},()=>{});`,
+    );
+    const session = await createProgramPreview(input, {
+      watch: true,
+      port: await freePort(),
+    });
+    sessions.push(session);
+    expect(session.snapshot()).toBeUndefined();
+    await mkdir(join(root, helperName.includes("/") ? "nested" : "."), {
+      recursive: true,
+    });
+    await writeFile(helper, "export const count=24;");
+    await expect
+      .poll(() => session.snapshot()?.composition.frameCount, { timeout: 6000 })
+      .toBe(24);
+  },
+);
+
+it("rebuilds CommonJS helper and transitive JSON data edits", async () => {
+  const root = await directory(),
+    input = join(root, "program.cts"),
+    helper = join(root, "helper.cts"),
+    data = join(root, "data.json");
+  await writeFile(data, JSON.stringify({ count: 24 }));
+  await writeFile(
+    helper,
+    `const data=require('./data.json');export const count=data.count;`,
+  );
+  await writeFile(
+    input,
+    `const{count}=require('./helper.cts');export default {schemaVersion:'composition-1',id:'commonjs',width:64,height:64,fps:24,frameCount:count,layers:[],assets:[]};`,
+  );
+  const session = await createProgramPreview(input, {
+    watch: true,
+    port: await freePort(),
+  });
+  sessions.push(session);
+  expect(session.snapshot()?.composition.frameCount).toBe(24);
+  await writeFile(data, JSON.stringify({ count: 48 }));
+  await expect
+    .poll(() => session.snapshot()?.composition.frameCount, { timeout: 6000 })
+    .toBe(48);
+  await writeFile(helper, "export const count=72;");
+  await expect
+    .poll(() => session.snapshot()?.composition.frameCount, { timeout: 6000 })
+    .toBe(72);
+});
+
+it.each(["./missing.cts", "./missing", "absolute"])(
+  "recovers initially missing CommonJS dependency %s",
+  async (specifier) => {
+    const root = await directory(),
+      input = join(root, "program.cts"),
+      helper = join(
+        root,
+        specifier.endsWith(".cts") ? "missing.cts" : "missing.ts",
+      );
+    await writeFile(
+      input,
+      `const{count}=require(${JSON.stringify(specifier === "absolute" ? helper : specifier)});export default {schemaVersion:'composition-1',id:'commonjs',width:64,height:64,fps:24,frameCount:count,layers:[],assets:[]};`,
+    );
+    const session = await createProgramPreview(input, {
+      watch: true,
+      port: await freePort(),
+    });
+    sessions.push(session);
+    expect(session.snapshot()).toBeUndefined();
+    await writeFile(helper, "export const count=24;");
+    await expect
+      .poll(() => session.snapshot()?.composition.frameCount, { timeout: 6000 })
+      .toBe(24);
+  },
+);
