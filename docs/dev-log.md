@@ -47,7 +47,9 @@ still hold before relying on them.
   from CE6 `2f1a99c`. Three inline findings are posted. Hidden animated text inputs
   are fixed: eight focused unit tests, build/lint and 24 browser frames pass; text,
   group and remapped precomp sources exactly match visible controls on both backends.
-  Nested input failure cleanup and premultiplied transition coverage remain next.
+  Nested input failure cleanup is also fixed: 38 focused tests pass with zero live
+  surfaces after six repeated initialization/effect failures. Premultiplied transition
+  coverage remains next.
   Final full local verification is pending; all three commits will be pushed together.
   No owner decision is pending. [Evidence](./pr-42-fix-results.json).
 
@@ -197,6 +199,16 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #42 nested input failure cleanup
+
+- **Agent / branch:** Codex on `codex/pr42-review-fixes`; text fix `8618bee`.
+- **Done:** release owned precomp destinations if initialization or rendering fails;
+  keep caller-owned surfaces and propagate the original failure.
+- **Results:** 38 focused unit tests and build/lint pass; six repeated failures leave
+  zero live surfaces. Initial test placement was offscreen and is repaired in the fixture.
+- **Next:** transition coverage in its own commit, final verification, then one push.
+- **Records:** [PR #42 fix evidence](./pr-42-fix-results.json).
 
 ### 2026-10-06 — PR #42 hidden animated text input fix
 

@@ -20,12 +20,30 @@
         "seekOrder": [4, 8, 1, 4],
         "build": "passed",
         "focusedLint": "passed"
-      }
+      },
+      "commit": "8618bee"
     },
     {
       "id": "nested-input-failure-cleanup",
       "comment": "https://github.com/xxibcill/still-shift/pull/42#discussion_r4192761355",
-      "status": "pending"
+      "status": "fixed",
+      "changes": "Release internally allocated nested composition surfaces when initialization or rendering throws; retain caller-owned destinations.",
+      "verification": {
+        "focusedUnitTests": 38,
+        "failureStages": ["clear", "effect"],
+        "repeatsPerStage": 3,
+        "liveSurfacesAfterEachFailure": 0,
+        "originalFailurePropagation": "preserved",
+        "build": "passed",
+        "focusedLint": "passed"
+      },
+      "failedAttempts": [
+        {
+          "reason": "The new effect-failure fixture inherited a position outside the 16x16 precomp, so culling skipped its callback.",
+          "attempts": 2,
+          "repair": "Place the source at [0,0] with a matching 16x16 size; no production change was needed."
+        }
+      ]
     },
     {
       "id": "transition-premultiplied-coverage",

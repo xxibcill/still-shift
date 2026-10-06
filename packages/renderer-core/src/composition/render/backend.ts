@@ -147,9 +147,14 @@ export function executeGraph<S extends Surface>(
 ): void {
   const surface = (node: SurfaceNode, into?: S): S => {
     const dst = into ?? backend.createSurface(node.width, node.height);
-    backend.clear(dst, node.background);
-    runOps(node.ops, dst);
-    return dst;
+    try {
+      backend.clear(dst, node.background);
+      runOps(node.ops, dst);
+      return dst;
+    } catch (error) {
+      if (!into) backend.releaseSurface(dst);
+      throw error;
+    }
   };
   const isolated = (ops: RenderOp[], like: S) => {
     const tmp = backend.createSurface(like.width, like.height);
