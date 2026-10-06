@@ -1,0 +1,36 @@
+{
+  "milestone": "CE8",
+  "status": "in-progress",
+  "branch": "codex/composition-ce8",
+  "base": "2f1a99c",
+  "started": "2026-10-06",
+  "slices": [
+    {
+      "name": "Camera contract and pure spatial geometry",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Bounded optics, parent-space point of interest and coverage declaration",
+        "Column-major 4x4 transforms with documented orientation/rotation order",
+        "Orthonormal one/two-node camera geometry and real inverse plane homography",
+        "Near/far clipping before projected bounds and explicit singular-plane handling",
+        "Declared inverse-depth focus blur capped at 128 screen pixels"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window reserves builds, formatters, tests, browser matrices and exports until release",
+        "analyticCases": "Authored independent projection, parallax, parent/anchor/rotation, inverse homography, clipping, singular camera and focus cases; not yet executed"
+      },
+      "runtimeAvailability": "Camera and 3D validation remain gated pending complete evaluator/render integration"
+    }
+  ],
+  "pending": [
+    "Focused verification and formatting after CE6-P release",
+    "XYZ keyed/separated/spatial sampling, expression/property/bake integration",
+    "Scope camera evaluation, stable 3D-run order and shared projective graph",
+    "GPU perspective composition, affine Canvas reference and transactional capability rejection",
+    "Depth of field, shake, coverage/source-alpha checks and actual camera inspection",
+    "Native stored hashes, hardware, independent/repeated exports, serial cost evidence and full local gate",
+    "CE8 milestone PR then CE8-L on a new branch"
+  ],
+  "githubActions": "prohibited/disabled"
+}

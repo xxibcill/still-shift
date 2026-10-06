@@ -161,6 +161,8 @@ const layerBase = {
   motionBlur: z.boolean().optional(),
   /** How strongly the composition 2D camera moves an unparented layer (0 = fixed to screen). */
   cameraDepth: finite.min(0).max(2).optional(),
+  /** Require opaque coverage of this scope's viewport on every frame. */
+  coverage: z.enum(["required", "optional"]).optional(),
   qualification: z.string().min(1).max(400).optional(),
   source: z
     .object({ family: compositionId, id: z.string().min(1).max(200) })
@@ -356,7 +358,25 @@ export const ShapeLayerSchema = z
   .strict();
 
 export const CameraLayerSchema = z
-  .object({ ...layerBase, type: z.literal("camera") })
+  .object({
+    ...layerBase,
+    type: z.literal("camera"),
+    model: z.enum(["one-node", "two-node"]).optional(),
+    /** Parent-space target of a two-node camera; the default is the scope centre. */
+    pointOfInterest: animatableVector(bounded, { spatial: true }).optional(),
+    /** Horizontal zoom in pixels; mutually exclusive with authored focalLength. */
+    zoom: animatableScalar(finite.min(0.001).max(1_000_000)).optional(),
+    /** Focal length and horizontal film size are millimetres. */
+    focalLength: animatableScalar(finite.min(0.001).max(10_000)).optional(),
+    filmSize: animatableScalar(finite.min(0.001).max(1000)).optional(),
+    nearClip: finite.min(0.001).max(1_000_000).optional(),
+    farClip: finite.min(0.002).max(10_000_000).optional(),
+    depthOfField: z.boolean().optional(),
+    focusDistance: animatableScalar(finite.min(0.001).max(10_000_000)).optional(),
+    /** Aperture diameter in millimetres; zero is an exact focus-blur identity. */
+    aperture: animatableScalar(finite.min(0).max(1000)).optional(),
+    blurLevel: animatableScalar(finite.min(0).max(100)).optional(),
+  })
   .strict();
 
 export const LightLayerSchema = z

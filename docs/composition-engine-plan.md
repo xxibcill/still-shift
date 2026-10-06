@@ -369,7 +369,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
-| CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
+| CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        | Codex                  | `codex/composition-ce8`             | `[~]`  | [evidence](./composition-ce8-results.json)                                         |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
@@ -3601,6 +3601,17 @@ CE8 completion does not require CE4c.
 
 **Verification:** Projection unit tests against hand-computed points, depth-sort tests,
 DOF blur amount vs focus distance, coverage-check regression tests.
+
+### CE8 camera/geometry checkpoint (2026-10-06)
+
+`codex/composition-ce8` begins from CE6 `2f1a99c` / [PR #42](https://github.com/xxibcill/still-shift/pull/42).
+The first authored slice adds bounded camera optics/POI and coverage fields,
+4x4 transforms, camera bases, true plane homographies, near/far polygon clipping
+and a declared bounded circle of confusion. Analytic tests use independent
+hand-computed projection and parenting points. No tests, formatter or build have
+run during the coordinated CE6-P quiet window; this checkpoint is unverified.
+Runtime availability remains gated while xyz evaluation and shared projective
+rendering are pending. [Evidence](./composition-ce8-results.json).
 
 **Completion record:** _to be filled in._
 

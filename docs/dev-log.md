@@ -43,6 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE8 in progress (2026-10-06):** `codex/composition-ce8` from completed CE6
+  `2f1a99c` / [PR #42](https://github.com/xxibcill/still-shift/pull/42).
+  First authored slice defines camera optics/coverage fields and pure 4x4 world,
+  camera-basis, clipped projective-plane and bounded focus-blur geometry, with
+  independent analytic test cases. Tests, formatting and builds have not run:
+  the coordinated CE6-P quiet window is active. Runtime camera/3D availability
+  remains gated until evaluation/render integration is implemented and verified.
+  No owner decision is pending. Next: focused verification after release, xyz
+  property evaluation, shared projective rendering, inspection and acceptance.
+  [Evidence](./composition-ce8-results.json).
+
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
   CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
   All 39 native effects, GPU filtering, scoped inputs/history and optional linear
@@ -194,6 +205,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 camera contract and analytic geometry checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, from CE6 `2f1a99c`.
+- **Authored:** bounded camera optics, parent-space POI and required coverage;
+  pure 4x4 transforms, camera bases, inverse homography, near/far polygon clipping
+  and capped lens circle of confusion; independent hand-computed test cases.
+- **Verification:** not run or formatted yet; preserve the coordinated CE6-P
+  machine reservation until its release. No runtime availability is claimed.
+- **Next:** verify this slice after release, then xyz sampling/property paths and
+  evaluator/graph/backend integration. CE8-L follows CE8 as approved.
+- **Records:** [CE8 evidence](./composition-ce8-results.json), [CE6 PR #42](https://github.com/xxibcill/still-shift/pull/42).
 
 ### 2026-10-06 — CE6 complete local verification
 
