@@ -1,3 +1,4 @@
+import type * as TextInputChecks from "../helpers/composition-text-input-reference.ts";
 import type * as CapturedHistoryChecks from "../helpers/composition-captured-history-reference.ts";
 import type * as LargeBlurChecks from "../helpers/composition-large-blur-reference.ts";
 import type * as LinearChecks from "../helpers/composition-linear-reference.ts";
@@ -40,6 +41,16 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const animatedInputs = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-text-input-reference.ts";
+    return (
+      (await import(url)) as typeof TextInputChecks
+    ).checkAnimatedTextInputRendering();
+  });
+  console.log(
+    "WebGL hidden animated text inputs:",
+    JSON.stringify(animatedInputs),
+  );
   const largeBlur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-large-blur-reference.ts";
     return (

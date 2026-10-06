@@ -1,0 +1,41 @@
+{
+  "pr": 42,
+  "reviewedHead": "2f1a99ca2c69b328412ae4f23fb85069bd07f309",
+  "date": "2026-10-06",
+  "branch": "codex/pr42-review-fixes",
+  "pushPolicy": "Push all three finding commits together after the final code checkpoint.",
+  "findings": [
+    {
+      "id": "hidden-animated-text-input",
+      "comment": "https://github.com/xxibcill/still-shift/pull/42#discussion_r4192761350",
+      "status": "fixed",
+      "changes": "Collect render-graph text clocks when scoped effect inputs exist, retaining lazy preparation for unused hidden text.",
+      "verification": {
+        "focusedUnitTests": 8,
+        "browser": "Chromium 151.0.7922.34 / pinned SwiftShader",
+        "nativeRows": 6,
+        "renderedFrames": 24,
+        "maximumDeltaFromVisibleControl": 0,
+        "sources": ["text", "group", "remapped precomp"],
+        "seekOrder": [4, 8, 1, 4],
+        "build": "passed",
+        "focusedLint": "passed"
+      }
+    },
+    {
+      "id": "nested-input-failure-cleanup",
+      "comment": "https://github.com/xxibcill/still-shift/pull/42#discussion_r4192761355",
+      "status": "pending"
+    },
+    {
+      "id": "transition-premultiplied-coverage",
+      "comment": "https://github.com/xxibcill/still-shift/pull/42#discussion_r4192761363",
+      "status": "pending"
+    }
+  ],
+  "finalGate": {
+    "status": "pending"
+  },
+  "githubActions": "disabled; local verification only",
+  "baselines": "No frozen baselines or thresholds modified."
+}

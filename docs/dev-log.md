@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #42 review fixes in progress (2026-10-06):** `codex/pr42-review-fixes`
+  from CE6 `2f1a99c`. Three inline findings are posted. Hidden animated text inputs
+  are fixed: eight focused unit tests, build/lint and 24 browser frames pass; text,
+  group and remapped precomp sources exactly match visible controls on both backends.
+  Nested input failure cleanup and premultiplied transition coverage remain next.
+  Final full local verification is pending; all three commits will be pushed together.
+  No owner decision is pending. [Evidence](./pr-42-fix-results.json).
+
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
   CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
   All 39 native effects, GPU filtering, scoped inputs/history and optional linear
@@ -54,11 +62,6 @@ still hold before relying on them.
   [PR #42](https://github.com/xxibcill/still-shift/pull/42) is open and attached against CE7; CE8 follows on a new branch.
   CE6-P targets remain separate; no owner decision is pending.
   [Evidence](./composition-ce6-completion-results.json).
-
-- **Verification quiet window (2026-10-06):** the CE6 gate has exited; hold
-  builds, formatters, tests, browser matrices and exports for the coordinated
-  CE6-P lane until its release message. Light source/prose review and CE6
-  publication can continue; neither checkout, policy nor baseline is changed.
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -194,6 +197,17 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #42 hidden animated text input fix
+
+- **Agent / branch:** Codex on `codex/pr42-review-fixes` from `2f1a99c`.
+- **Done:** posted all three findings inline; collect glyph clocks for scoped effect
+  inputs even without echo, preserving inactive-window and unused-source behavior.
+- **Results:** eight focused unit tests, build/lint and 24 pinned-browser frames pass;
+  hidden text/group/remapped precomp inputs exactly match visible source controls.
+- **Next:** one commit each for nested failure cleanup and transition coverage;
+  complete final local verification, then push the three commits together.
+- **Records:** [PR #42 fix evidence](./pr-42-fix-results.json).
 
 ### 2026-10-06 — CE6 complete local verification
 
