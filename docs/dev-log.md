@@ -67,7 +67,13 @@ still hold before relying on them.
   is 0.3.0. Build/lint/20 focused unit tests pass; all 23 prepared timelines remain
   exact over 2,070 forward/reverse frames. All 87 hardware comparisons pass; three
   tiny rasters (1x1, 2x1, 4x4) retain opaque coverage and exact hardware parity.
-  Fresh full delivery acceptance and final milestone gate remain pending.
+  Fresh full delivery is running on `1ec5d04` (PTY65922/PID79519); all23 serial
+  costs are saved and export correctness is underway. Final acceptance is not
+  claimed. A valid16x16actual-pixel probe confirms preserved-alpha dark fringes
+  (pure-red edge over green RGB111,112,0); repair is not applied yet.
+  **User-requested fresh-chat handoff:** receive the running job before starting
+  further verification. Continue from [the saved handoff](./composition-continuation-handoff-2026-10-07.md).
+  Default consolidation and final milestone gate remain pending.
   Export-worker startup/provenance passes build/lint/toolchain, 25 unit and 11
   integration tests; all 23 prepared wrappers re-pass 2,070 exact frames.
   **CE6-P's second timing hold is released:** scoped formatting is complete,
@@ -273,6 +279,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — Composition work handed to a fresh chat
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`; code `1ec5d04` pushed.
+- **Scope:** User requested a fresh chat because this one is large and lagging.
+- **State:** Verified hardware repair is checkpointed. Existing full native depth
+  job remains running (PTY65922/PID79519); no final acceptance pass is claimed.
+  Confirmed preserved-alpha edge darkening is recorded but unrepaired.
+- **Next:** New chat receives the job without overlapping verification, fixes alpha,
+  closes CE4d, then continues CE13 → CE15 → CE14 and audits/reuses CE16.
+- **Records:** [Saved handoff](./composition-continuation-handoff-2026-10-07.md),
+  [measured evidence](./composition-ce4d-results.json). Owner edits are preserved.
+
 
 ### 2026-10-07 — CE4d hardware depth interpolation checkpoint
 
