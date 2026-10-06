@@ -18922,10 +18922,26 @@
         "logSha256": "sha256:a97ac1fa61ab61f3db4ea02799cb3b36fb4b43d98d69ae5fcf11cc174f64af4d",
         "repair": "Wait for the public committed-readiness state before comparison-step and locked-hold pixel reads; no pixel/motion threshold change"
       }
+    },
+    {
+      "name": "golden baseline and native renderer identity separation",
+      "date": "2026-10-07",
+      "status": "implemented; focused regression pending",
+      "scope": [
+        "Preserve frozen baseline metadata and every stored sample",
+        "Verify every actual Lab scene reports native WebGL version",
+        "Keep all original pixel, motion and export transport assertions"
+      ],
+      "checks": {},
+      "pending": [
+        "focused golden parity",
+        "complete full local gate from repaired checkpoint"
+      ]
     }
   ],
   "pending": [
-    "Complete final full local pnpm check from repaired checkpoint",
+    "Focused golden identity regression",
+    "Complete full local pnpm check from repaired checkpoint",
     "CE4d PR delivery"
   ],
   "fullGates": [
@@ -18963,6 +18979,34 @@
           "sha256": "sha256:1b5a7200e70408be20cb7569282280ed163e56d24654d7a33cae3a8d70ef87b0"
         }
       }
+    },
+    {
+      "checkpoint": "4a8ba90",
+      "runtime": "69469a8",
+      "harness": "e8a70d9",
+      "status": "failed",
+      "command": "pnpm check",
+      "durationSeconds": 332.26,
+      "passedBeforeFailure": {
+        "unitTests": 2005,
+        "unitFiles": 201,
+        "runtimeTests": 46,
+        "integrationTests": 143,
+        "integrationFiles": 39,
+        "pythonDepthTests": 14,
+        "browserSuites": ["depth", "vertical-image", "export"]
+      },
+      "failedSuite": "test:golden",
+      "failure": "Final renderer identity equality compared frozen preview-render-0.5.0 reference metadata with the truthful migrated Lab composition-webgl2-0.65.0; all golden pixel, transport and motion checks completed before this final assertion.",
+      "log": {
+        "path": "/private/tmp/ce4d-full-check-4a8ba90.log",
+        "sha256": "sha256:0ed192bd10c3a1454b6a93c4ff466a2748f7ecfa480207fed844b07246697c7a"
+      },
+      "startupPreflight": {
+        "path": "/private/tmp/ce4d-final-startup-4a8ba90.log",
+        "sha256": "sha256:f015b99459eb9e2d1c1cd0e87e8b49f587257560dbae7cd2e2de0485338e58e8"
+      },
+      "repair": "Assert each actual Lab renderer equals the native WebGL version and independently assert the unchanged frozen reference uses its legacy renderer version. All sample bytes, motion/pixel thresholds and transport comparisons remain unchanged."
     }
   ]
 }

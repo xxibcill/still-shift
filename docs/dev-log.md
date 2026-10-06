@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE4d final gate rerun pending (2026-10-07):** `codex/composition-ce4d` from
+- **CE4d golden identity repair pending (2026-10-07):** `codex/composition-ce4d` from
   CE4c `17666eb`. Runtime `69469a8` stages native Depth Lab refreshes, preserves
   pending seeks and publishes truthful readiness/version; harness `e8a70d9` passes
   the complete affected depth and Lab session suites. CLI cache repair `75c0828`
@@ -56,7 +56,11 @@ still hold before relying on them.
   QA pass. All 141 prior visual files remain exact. First full `pnpm check` failed
   after 2,005 unit / 46 runtime / 143 integration / 14 Python tests at a pending
   refresh pixel read (217.48 seconds); original assertions now await commit and
-  delayed-decode seek regression passes. A complete full gate rerun remains, then
+  delayed-decode seek regression passes. The second full gate passes those suites,
+  then fails the final golden renderer identity assertion after pixel/motion parity
+  passes (332.26 seconds). Native and frozen-reference identities are now checked
+  separately without changing baseline bytes or tolerances. Focused proof and a
+  complete full gate rerun remain, then
   CE4d PR and CE13 → CE15 → CE14 with CE16 audit/reuse. CE5-X/Q9 remains pending;
   CE6-P retains WebGL speed work. No owner decision blocks the approved order.
   Failed/rejected diagnostics and measured proof are in
@@ -258,6 +262,17 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d golden renderer metadata migration repair
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, from `4a8ba90`.
+- **Failure:** second full gate passes 2,005 unit / 46 runtime / 143 integration /
+  14 Python tests and depth, vertical and export browser suites. Golden pixel/motion
+  and transport checks pass, then old renderer metadata equality fails (332.26 seconds).
+- **Repair:** assert native Lab renderer identity and frozen legacy reference identity
+  separately; every stored sample, threshold and transport assertion is unchanged.
+- **Next:** focused golden regression and full gate from the start on a fresh checkpoint.
+- **Records:** [results](./composition-ce4d-results.json).
 
 ### 2026-10-07 — CE4d repaired Depth Lab acceptance passes
 

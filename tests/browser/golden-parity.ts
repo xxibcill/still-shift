@@ -13,6 +13,8 @@ import {
   compareFrameSamples,
 } from "../../packages/renderer-core/src/parity.ts";
 import type { PreviewScene } from "../../packages/renderer-core/src/scene.ts";
+import { RENDERER_VERSION } from "../../packages/renderer-core/src/scene.ts";
+import { COMPOSITION_WEBGL_RENDERER_VERSION } from "../../packages/renderer-core/src/composition/render/webgl2.ts";
 import { SHADER_VERSION } from "../helpers/legacy-depth-oracle.ts";
 import { exportScene } from "@still-shift/execution-runtime/export";
 import { GOLDEN_SCENES } from "../visual/golden-scenes.ts";
@@ -164,6 +166,7 @@ try {
       };
     void _evaluatedFrame;
     rendererVersion = scene.rendererVersion;
+    assert.equal(rendererVersion, COMPOSITION_WEBGL_RENDERER_VERSION);
     assert.equal(
       scene.motion.mode,
       "depth",
@@ -311,7 +314,7 @@ try {
     };
     await writeFile(baselinePath, JSON.stringify(baseline, null, 2) + "\n");
   } else {
-    assert.equal(saved!.rendererVersion, rendererVersion);
+    assert.equal(saved!.rendererVersion, RENDERER_VERSION);
     assert.deepEqual(
       Object.keys(samples).sort(),
       Object.keys(saved!.samples).sort(),
