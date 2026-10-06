@@ -1,0 +1,38 @@
+{
+  "pullRequest": 40,
+  "base": "817cc9f982f9459cc641af864a8f160bfedc668e",
+  "status": "in-progress",
+  "review": "https://github.com/xxibcill/still-shift/pull/40#pullrequestreview-5423806559",
+  "findings": [
+    {
+      "id": "posterized-cut-rounding",
+      "status": "fixed-focused-verification",
+      "changes": "Verify cut inversion against the unchanged layerContentTime floor; bracket floating-point error and refine the reachable scope boundary.",
+      "regressions": {
+        "red": 3,
+        "greenFocusedTests": 48,
+        "covers": [
+          "integer export frames",
+          "forward/reversed clocks",
+          "start/stretch transforms",
+          "nested state/effect cuts",
+          "nominal cut rounded after an already-reachable integer export frame"
+        ]
+      },
+      "checks": {
+        "toolchain": "passed",
+        "build": "passed",
+        "changedFileLint": "passed",
+        "boundaries": "passed"
+      },
+      "rejectedExperiment": "Returning an already-reachable nominal cut missed earlier reachable scope doubles; independent review reproduced all-old samples at integer frame216 with stretch13. Bracketing now checks both sides."
+    },
+    {
+      "id": "posterized-outgoing-state-visibility",
+      "status": "pending"
+    }
+  ],
+  "finalVerification": "pending",
+  "frozenBaselines": "not regenerated",
+  "githubActions": "disabled"
+}

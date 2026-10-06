@@ -3,6 +3,7 @@ import type {
   Composition,
   CompositionLayer,
 } from "@still-shift/scene-contract";
+import { evaluateComp } from "../../packages/renderer-core/src/composition/evaluate/evaluate.ts";
 import { evaluateCompositionExposure } from "../../packages/renderer-core/src/composition/evaluate/exposure.ts";
 
 const text = (): Extract<CompositionLayer, { type: "text" }> => ({
@@ -65,6 +66,68 @@ describe("time-control exposure cuts", () => {
     expect(states(doc, 12.4)).toEqual([0, 0, 0, 0]);
     expect(states(doc, 12.5)).toEqual([1, 1, 1, 1]);
     expect(states(doc, 12.6)).toEqual([1, 1, 1, 1]);
+  });
+  it("keeps rounded posterized cuts on the selected side at integer export frames", () => {
+    for (const [startFrame, stretch, frame] of [
+      [0, 1, 11],
+      [24, -1, 13],
+      [5, 2, 27],
+      [27, -2, 5],
+    ]) {
+      const doc = fixture();
+      doc.fps = 24;
+      const layer = doc.layers[0] as ReturnType<typeof text>;
+      Object.assign(layer, { posterizeFps: 11, startFrame, stretch });
+      layer.state = {
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 9, value: 1 },
+        ],
+      };
+      expect(evaluateComp(doc, frame!).layers[0]!.state).toBe(1);
+      expect(states(doc, frame!)).toEqual([1, 1, 1, 1]);
+    }
+  });
+  it("finds a rounded switch that is already reachable before its nominal cut", () => {
+    const doc = fixture();
+    doc.fps = 24;
+    doc.frameCount = 240;
+    const layer = doc.layers[0] as ReturnType<typeof text>;
+    Object.assign(layer, { posterizeFps: 13, stretch: 13 });
+    layer.state = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 15, value: 1 },
+      ],
+    };
+    expect(evaluateComp(doc, 216).layers[0]!.state).toBe(1);
+    expect(states(doc, 216)).toEqual([1, 1, 1, 1]);
+  });
+  it("keeps rounded nested posterized state and effect cuts on the selected grid", () => {
+    const doc = nested();
+    doc.fps = 24;
+    const layer = doc.precomps![0]!.layers[0] as ReturnType<typeof text>;
+    layer.posterizeFps = 11;
+    layer.state = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 9, value: 1 },
+      ],
+    };
+    layer.effects = [
+      {
+        id: "blur",
+        effect: "blur.gaussian",
+        inPoint: 9,
+        params: { radius: 1 },
+      },
+    ];
+    expect(states(doc, 11)).toEqual([1, 1, 1, 1]);
+    expect(
+      [...evaluateCompositionExposure(doc, 11)].every(
+        (tree) => tree.layers[0]!.precomp!.layers[0]!.effects[0]!.enabled,
+      ),
+    ).toBe(true);
   });
   it("preserves inclusive-before behavior for a reversed posterized clock", () => {
     const doc = fixture();

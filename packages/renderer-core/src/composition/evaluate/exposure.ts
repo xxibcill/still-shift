@@ -7,7 +7,11 @@ import {
   type CompositionScope,
 } from "@still-shift/scene-contract";
 import { evaluateComp } from "./evaluate.ts";
-import { loopedPrecompTime, scopeTimeOverride } from "./time-controls.ts";
+import {
+  layerContentCut,
+  loopedPrecompTime,
+  scopeTimeOverride,
+} from "./time-controls.ts";
 import { adaptiveExposureSamples } from "./adaptive.ts";
 import { scalar } from "./sample.ts";
 import type { EvaluatedLayerTree, EvaluationOptions } from "./types.ts";
@@ -59,15 +63,8 @@ function cutsFor(
     forward.add(layer.outPoint ?? scope.frameCount);
     if (layer.holdFrame !== undefined) continue;
     const layerCuts = (layer.stretch ?? 1) < 0 ? reversed : forward;
-    const global = (time: number) => {
-      const source =
-        layer.posterizeFps === undefined
-          ? time
-          : (Math.ceil((time * layer.posterizeFps) / (scope.fps ?? comp.fps)) *
-              (scope.fps ?? comp.fps)) /
-            layer.posterizeFps;
-      return source * (layer.stretch ?? 1) + (layer.startFrame ?? 0);
-    };
+    const global = (time: number) =>
+      layerContentCut(layer, time, scope.fps ?? comp.fps);
     if ("state" in layer || "stateFrom" in layer)
       for (const channel of ["state", "stateFrom"] as const) {
         const state = layer[channel];

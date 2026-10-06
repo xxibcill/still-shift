@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #40 fixes in progress (2026-10-06):** `codex/composition-ce7` from
+  `817cc9f`. Posterized cut mapping now verifies the reachable content grid,
+  including reversed clocks and start/stretch rounding; strict flooring is preserved.
+  Forty-eight focused tests, build, changed-file lint and package boundaries pass.
+  The outgoing-state visibility fix and final verification/push remain pending.
+  No owner decision is pending. [Evidence](./pr-40-fix-results.json).
+
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
   exposure and controlled cuts are delivered. Full `pnpm check` passes 1,600 unit,
@@ -177,6 +184,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #40 posterized cut boundary correction
+
+- **Agent / branch:** Codex on `codex/composition-ce7`, from `817cc9f`.
+- **Done:** posted both findings as inline PR comments; corrected cut inversion
+  against the actual floored clock and bumped evaluator/backend identities.
+- **Results:** three new regressions failed before repair; all 48 focused tests,
+  build, changed-file lint and package boundaries now pass. Pinned toolchain passes
+  with separate optimizer caches and a copied Python environment.
+- **Open / next:** fix outgoing-state suppression in its own commit, then run final
+  affected verification and push both commits together. No full gate claimed yet.
+- **Records:** [fix evidence](./pr-40-fix-results.json),
+  [PR review](https://github.com/xxibcill/still-shift/pull/40#pullrequestreview-5423806559).
 
 ### 2026-10-06 — CE7 milestone verification complete
 

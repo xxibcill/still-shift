@@ -3322,6 +3322,15 @@ arithmetic; decoded media rendering follows CE13. Root-global procedural clocks
 retain documented semantics alongside layer-local controls. [PR #40](https://github.com/xxibcill/still-shift/pull/40) is open
 and attached, based on CE5; CE6 begins on a new branch. [Evidence](./composition-ce7-results.json).
 
+### PR #40 review corrections (2026-10-06)
+
+The first correction aligns posterized state/effect cuts with the actual floored
+content clock, including reversed start/stretch transforms, while preserving strict
+negative/pre-boundary flooring. Three new root/nested regressions failed before the
+repair; 48 focused tests, build, changed-file lint and boundaries pass. The second
+outgoing-state visibility correction and final verification are pending.
+[Review-fix evidence](./pr-40-fix-results.json).
+
 ---
 
 ## CE8 — 2.5D layers and unified camera
