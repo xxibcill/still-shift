@@ -8,6 +8,7 @@ import { monotoneTangents, sampleCurve, type CurveKey } from "../../curve.ts";
 import type { Point } from "../../node-transform.ts";
 import { addSignalMotion } from "../../motion-sampling.ts";
 import type { Rgba } from "./types.ts";
+import type { Point3 } from "./spatial-geometry.ts";
 
 type Key = Keyed<unknown>["keys"][number];
 type Compiled = { keys: CurveKey[]; tangents: number[] };
@@ -259,6 +260,64 @@ export function vector(
       axis,
     ),
   ) as Point;
+}
+
+type SpatialTable3 = { points: Point3[]; lengths: number[]; total: number };
+const spatial3 = new WeakMap<object, Map<string, SpatialTable3>>();
+const point3 = (value: unknown, fallback: Point3): Point3 => {
+  const point=value as number[];
+  return [point[0] ?? fallback[0],point[1] ?? fallback[1],point[2] ?? fallback[2]];
+};
+function spatialTable3(owner: object, a: Key, b: Key, index: number, fallback: Point3): SpatialTable3 {
+  let tables=spatial3.get(owner);
+  if (!tables) spatial3.set(owner,(tables=new Map()));
+  const id=`${index}/${fallback[2]}`;
+  const cached=tables.get(id);
+  if(cached) return cached;
+  const start=point3(a.value,fallback),end=point3(b.value,fallback);
+  const out=a.spatialOut ? point3(a.spatialOut,[0,0,0]) : [0,0,0];
+  const incoming=b.spatialIn ? point3(b.spatialIn,[0,0,0]) : [0,0,0];
+  const points=Array.from({length:129},(_,index)=>{
+    const t=index/128;
+    return [0,1,2].map(axis=>(1-t)**3*start[axis]!+3*(1-t)**2*t*(start[axis]!+out[axis]!)+3*(1-t)*t**2*(end[axis]!+incoming[axis]!)+t**3*end[axis]!) as Point3;
+  });
+  const lengths=[0];
+  for(let index=1;index<points.length;index++)
+    lengths.push(lengths[index-1]!+Math.hypot(...points[index]!.map((value,axis)=>value-points[index-1]![axis]!)));
+  const table={points,lengths,total:lengths.at(-1)!};
+  tables.set(id,table);
+  return table;
+}
+
+/** Opt-in xyz sampling; the established 2D sampler and arithmetic stay unchanged. */
+export function vector3(value: unknown,time: number,fps: number,fallback: Point3): Point3 {
+  if(Array.isArray(value)) return point3(value,fallback);
+  if(!isKeyed(value)) {
+    const separated=value as {x?:unknown;y?:unknown;z?:unknown}|undefined;
+    return [scalar(separated?.x,time,fps,fallback[0]),scalar(separated?.y,time,fps,fallback[1]),scalar(separated?.z,time,fps,fallback[2])];
+  }
+  if(!value.keys.some(key=>key.spatialIn||key.spatialOut))
+    return [0,1,2].map(axis=>channel(value,value.keys,`v3${axis}/${fallback[axis]}`,(key)=>(key.value as number[])[axis] ?? fallback[axis]!,time,fps,axis)) as Point3;
+  if(time<=value.keys[0]!.frame) return point3(value.keys[0]!.value,fallback);
+  if(time>=value.keys.at(-1)!.frame) return point3(value.keys.at(-1)!.value,fallback);
+  const index=value.keys.findIndex((key,i)=>i>0&&key.frame>time)-1;
+  const progressHandles=(key:Key,index:number)=>{
+    const handle=(side:"in"|"out",segment:number)=>{
+      const authored=key[side] as Handle|undefined;
+      if(!authored) return undefined;
+      if(authored.spatialSpeed===undefined) return {ease:authored.ease};
+      const total=segment<0||segment>=value.keys.length-1 ? 0 : spatialTable3(value,value.keys[segment]!,value.keys[segment+1]!,segment,fallback).total;
+      return {ease:authored.ease,speed:total ? authored.spatialSpeed/total : 0};
+    };
+    return {in:handle("in",index-1),out:handle("out",index)};
+  };
+  const progress=channel(value,value.keys,`progress3/${fallback[2]}`,key=>value.keys.indexOf(key),time,fps,undefined,progressHandles)-index;
+  const table=spatialTable3(value,value.keys[index]!,value.keys[index+1]!,index,fallback);
+  const distance=Math.max(0,Math.min(1,progress))*table.total;
+  const at=Math.max(1,table.lengths.findIndex((length,index)=>index>0&&length>=distance));
+  const length=table.lengths[at]!-table.lengths[at-1]!;
+  const t=length ? (distance-table.lengths[at-1]!)/length : 0;
+  return [0,1,2].map(axis=>table.points[at-1]![axis]!+(table.points[at]![axis]!-table.points[at-1]![axis]!)*t) as Point3;
 }
 
 /** Stable-topology color curve points, keyed together or with per-point numeric clocks. */

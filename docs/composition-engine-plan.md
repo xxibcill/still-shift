@@ -3613,6 +3613,10 @@ run during the coordinated CE6-P quiet window; this checkpoint is unverified.
 Runtime availability remains gated while xyz evaluation and shared projective
 rendering are pending. [Evidence](./composition-ce8-results.json).
 
+Opt-in xyz keyed/separated/spatial sampling is now authored with full 3D arc
+lengths and fallback-sensitive cache keys; its fractional/reverse/shared-cache
+tests remain unexecuted during the same quiet window.
+
 **Completion record:** _to be filled in._
 
 ---

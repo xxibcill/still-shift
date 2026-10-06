@@ -47,7 +47,8 @@ still hold before relying on them.
   `2f1a99c` / [PR #42](https://github.com/xxibcill/still-shift/pull/42).
   First authored slice defines camera optics/coverage fields and pure 4x4 world,
   camera-basis, clipped projective-plane and bounded focus-blur geometry, with
-  independent analytic test cases. Tests, formatting and builds have not run:
+  independent analytic test cases, plus opt-in xyz keyed/separated/spatial
+  sampling with unchanged 2D arithmetic. Tests, formatting and builds have not run:
   the coordinated CE6-P quiet window is active. Runtime camera/3D availability
   remains gated until evaluation/render integration is implemented and verified.
   No owner decision is pending. Next: focused verification after release, xyz
@@ -205,6 +206,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 xyz sampling checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`; preceding checkpoint `88dd444`.
+- **Authored:** opt-in static/grouped/separated xyz sampling, three-dimensional
+  spatial arc lengths/speed handles, and explicit implicit-z/cache defaults.
+  The existing 2D sampler and its arithmetic are unchanged.
+- **Verification:** analytic fractional/reverse/shared-cache cases are authored;
+  no test, formatter or build ran during the coordinated CE6-P quiet window.
+- **Next:** focused verification after release; integrate xyz property reads,
+  expressions/baking and scope camera evaluation before projective rendering.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 camera contract and analytic geometry checkpoint
 

@@ -20,7 +20,23 @@
         "reason": "Coordinated CE6-P quiet window reserves builds, formatters, tests, browser matrices and exports until release",
         "analyticCases": "Authored independent projection, parallax, parent/anchor/rotation, inverse homography, clipping, singular camera and focus cases; not yet executed"
       },
-      "runtimeAvailability": "Camera and 3D validation remain gated pending complete evaluator/render integration"
+      "runtimeAvailability": "Camera and 3D validation remain gated pending complete evaluator/render integration",
+      "implementation": "88dd444"
+    },
+    {
+      "name": "Opt-in xyz sampling",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Static, grouped and separated xyz values with explicit implicit-z defaults",
+        "Deterministic 128-subdivision full-xyz spatial arc length and spatial-speed handles",
+        "Component temporal handles and fallback-sensitive cache identity",
+        "Established 2D sampler and arithmetic are unchanged"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored constant/grouped/separated/fractional, pure-z spatial motion, reverse/random sampling, shared keyed position/scale defaults and unchanged xy checks"
+      }
     }
   ],
   "pending": [
