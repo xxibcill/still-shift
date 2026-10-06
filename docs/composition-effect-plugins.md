@@ -113,7 +113,9 @@ The final CE6 audits and full milestone acceptance are tracked in
 with animated `progress`: zero preserves the input, one clears it. `softness`
 sets the transition band in normalized rank space; zero gives a hard boundary.
 The remaining fraction is rounded to an 8-bit coverage value before multiplying
-premultiplied channels. Masks and mattes follow the effect stack.
+premultiplied channels. Canvas reconstructs stored premultiplied bytes before
+applying coverage, then converts the rounded result back to straight image data.
+The four transition kernels are version 1.0.1. Masks and mattes follow the effect stack.
 
 Linear wipe projects pixel centers along the angle, normalized to the surface
 rectangle. Venetian blinds repeat that projection at the authored pixel width.

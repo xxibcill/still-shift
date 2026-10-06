@@ -43,15 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #42 review fixes in progress (2026-10-06):** `codex/pr42-review-fixes`
-  from CE6 `2f1a99c`. Three inline findings are posted. Hidden animated text inputs
-  are fixed: eight focused unit tests, build/lint and 24 browser frames pass; text,
-  group and remapped precomp sources exactly match visible controls on both backends.
-  Nested input failure cleanup is also fixed: 38 focused tests pass with zero live
-  surfaces after six repeated initialization/effect failures. Premultiplied transition
-  coverage remains next.
-  Final full local verification is pending; all three commits will be pushed together.
-  No owner decision is pending. [Evidence](./pr-42-fix-results.json).
+- **PR #42 review fixes validated (2026-10-06):** `codex/pr42-review-fixes`
+  from CE6 `2f1a99c`. All three findings have inline comments and separate fixes:
+  hidden animated text inputs, nested failure cleanup, and premultiplied transition
+  coverage. Independent Standards and Spec reviews have no actionable findings.
+  Complete local `pnpm check` passes 1,717 unit, 46 runtime, 139 integration,
+  14 depth tests, all 55 required test suites and 176 frozen baselines / 36,061 frames.
+  Full Canvas family matrices pass unchanged pixel/timing policy; native hashes,
+  seeks, repeated/independent exports and 36 hardware comparisons pass.
+  Original reference files and thresholds remain intact; corrected Canvas transition
+  coverage uses a separate versioned exact oracle. Earlier failures and timing
+  controls are retained in the evidence. Owner review and merge remain.
+  [Evidence](./pr-42-fix-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
   CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
@@ -141,7 +144,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
+_Last updated 2026-10-06 by Codex for PR #42 fixes; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -199,6 +202,22 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #42 premultiplied transition coverage
+
+- **Agent / branch:** Codex on `codex/pr42-review-fixes` after `ebb9bbf`.
+- **Done:** multiply stored premultiplied transition RGBA consistently with GPU;
+  bump the four effect versions to 1.0.1 and Canvas renderer to 1.40.0.
+- **Results:** four composed-map cases / 32 browser frames are exact (previous
+  maximum delta 255); focused checks and independent implementation reviews pass.
+- **Final gate:** full local `pnpm check` at `db35017` passes 1,717 unit, 46 runtime,
+  139 integration, 14 depth tests, all required browser groups and 176 frozen baselines /
+  36,061 frames. All three full Canvas family matrices and native CE6 acceptance pass.
+- **Retained:** original reference files and thresholds; a separate versioned corrected
+  Canvas oracle. Earlier stopped/failed gates and original/fixed timing controls are
+  recorded; the successful gate's calibration-pan ratio is 1.0998 against 1.25.
+- **Next:** owner review and merge. Final evidence belongs to this third finding commit.
+- **Records:** [PR #42 fix evidence](./pr-42-fix-results.json).
 
 ### 2026-10-06 — PR #42 nested input failure cleanup
 
