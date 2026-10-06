@@ -23,7 +23,7 @@ import {
 import type { RenderEnvironment } from "@still-shift/execution-runtime/render-browser";
 import { acquirePassageJob } from "./passage-job.ts";
 import assert from "node:assert/strict";
-import { readFile, mkdir, rm } from "node:fs/promises";
+import { readFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
@@ -203,6 +203,13 @@ async function assembleStoryPassage(
           options.signal,
         ),
     });
+    const native = options.compositions?.[beat.id];
+    // The cache copy records its first render; this copy names this run's asset files.
+    if (native)
+      await replacePassageJson(
+        join(options.sceneDirectory, beat.id + ".composition.json"),
+        native,
+      );
     clips.push(clip);
     await options.job.beat(beat.id);
     options.onProgress?.({
@@ -461,6 +468,18 @@ async function assembleStoryPassage(
   };
   await writePassageJson(join(output, "render-report.json"), report);
   return report;
+}
+
+async function replacePassageJson(path: string, value: unknown) {
+  const temporary = `${path}.write-${randomUUID()}`;
+  try {
+    await writeFile(temporary, JSON.stringify(value, null, 2) + "\n", {
+      flag: "wx",
+    });
+    await rename(temporary, path);
+  } finally {
+    await rm(temporary, { force: true });
+  }
 }
 
 export type PassageRenderOptions = {

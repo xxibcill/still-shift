@@ -1,0 +1,184 @@
+{
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/36",
+  "date": "2026-10-06",
+  "status": "initial-base-verified-latest-base-integration-pending",
+  "headBefore": "6e0d1087893a0635245f697d6c98f293681c4939",
+  "baseIntegrated": "91f9c54b16f1d182dbcb28594adca30a4a6c9390",
+  "headBranch": "codex/composition-ce10",
+  "baseBranch": "codex/composition-ce4a-completion",
+  "worktree": "/Users/jjae/.codex/worktrees/pr36-ce10-conflicts/still-shift",
+  "resolution": [
+    "Non-rewriting merge of the current remote CE4a base into the existing CE10 head; retain both development-log histories.",
+    "Carry CE4a reference guidance into CE10 maintained composition-reference-notes.md and regenerate the reference; the generated output matches the base guidance.",
+    "Add story adapter provenance to the provider reading-time fixture so CE10 authored-font enforcement and CE12 reading-time lint both remain exercised. Add a CLI regression retaining rejection without provenance.",
+    "No application source conflict or application implementation change beyond the automatically merged base fixes."
+  ],
+  "preflight": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromium": "151.0.7922.34",
+    "ffmpeg": "8.0.1",
+    "workspaceDependencies": "Own frozen-lockfile install; no shared node_modules, optimizer or Vite config caches",
+    "pythonEnvironment": "Own uv sync --frozen environment",
+    "uvCache": "/private/tmp/still-shift-pr36-conflict-uv-cache",
+    "imports": "Relevant modules import through the repository tsx loader; Python numpy/cv2/PIL/torch/transformers import successfully"
+  },
+  "codeFixturesAssetsToolchainFingerprint": {
+    "algorithm": "sha256(relative path + NUL + bytes + NUL), sorted git ls-files excluding docs/ and README.md, ROADMAP.md, AGENTS.md",
+    "files": 1339,
+    "sha256": "f87ad57968459a0679775282d0b2e351a12a747087ed8e57331cb931ca0f084a"
+  },
+  "verification": {
+    "unit": 1598,
+    "runtime": {
+      "status": "passed",
+      "tests": 46,
+      "command": "pnpm test:runtime",
+      "log": "/private/tmp/pr36-conflict-runtime.log"
+    },
+    "integration": {
+      "aggregateStatus": "failed-before-fixture-repair",
+      "command": "pnpm test:integration",
+      "testsPassed": 161,
+      "testsFailed": 2,
+      "log": "/private/tmp/pr36-conflict-integration.log",
+      "affectedFinalRerun": {
+        "status": "passed",
+        "tests": 29,
+        "files": [
+          "tests/integration/composition-preview.test.ts",
+          "tests/integration/composition-lint-cli.test.ts"
+        ],
+        "command": "pnpm exec vitest run tests/integration/composition-preview.test.ts tests/integration/composition-lint-cli.test.ts --maxWorkers=1 --no-file-parallelism",
+        "log": "/private/tmp/pr36-conflict-focused-rerun.log"
+      },
+      "finalCoverage": "All 164 current integration cases covered by the initial aggregate plus the affected final rerun; do not label the aggregate command as passed."
+    },
+    "checks": [
+      {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "seconds": 48.25,
+        "log": "/private/tmp/pr36-conflict-check-fast.log"
+      },
+      {
+        "command": "pnpm format:check",
+        "exitCode": 0,
+        "seconds": 11.07,
+        "log": "/private/tmp/pr36-conflict-format-check.log"
+      },
+      {
+        "command": "pnpm lint",
+        "exitCode": 0,
+        "seconds": 5.0,
+        "log": "/private/tmp/pr36-conflict-lint.log"
+      },
+      {
+        "command": "pnpm test:depth",
+        "exitCode": 0,
+        "seconds": 1.28,
+        "log": "/private/tmp/pr36-conflict-test-depth.log"
+      },
+      {
+        "command": "pnpm test:browser:smoke",
+        "exitCode": 0,
+        "seconds": 30.07,
+        "log": "/private/tmp/pr36-conflict-test-browser-smoke.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-program",
+        "exitCode": 1,
+        "seconds": 1.73,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-program.log"
+      },
+      {
+        "command": "pnpm exec tsx tests/browser/pr36-conflict-program-check.ts",
+        "suite": "composition-program.ts with explicit available port only",
+        "exitCode": 0,
+        "seconds": 14.49,
+        "log": "/private/tmp/pr36-conflict-program-available-port.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-builder",
+        "exitCode": 0,
+        "seconds": 27.07,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-builder.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-quality",
+        "exitCode": 0,
+        "seconds": 8.59,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-quality.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-native-passage",
+        "exitCode": 0,
+        "seconds": 51.07,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-native-passage.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-native-passage:webgl",
+        "exitCode": 0,
+        "seconds": 99.6,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-native-passage-webgl.log"
+      },
+      {
+        "command": "pnpm test:browser:passage:authoring",
+        "exitCode": 0,
+        "seconds": 73.14,
+        "log": "/private/tmp/pr36-conflict-test-browser-passage-authoring.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-evaluator",
+        "exitCode": 0,
+        "seconds": 1.51,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-evaluator.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-expressions",
+        "exitCode": 0,
+        "seconds": 12.28,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-expressions.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-provider-typography",
+        "exitCode": 0,
+        "seconds": 8.2,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-provider-typography.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-baselines",
+        "exitCode": 0,
+        "seconds": 298.79,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-baselines.log"
+      }
+    ],
+    "frozenBaselines": {
+      "status": "passed",
+      "items": 176,
+      "frames": 36061,
+      "regenerated": false,
+      "seconds": 292.52
+    }
+  },
+  "retainedFailures": [
+    "Initial check:fast rejected stale generated reference; repaired its maintained source and subsequent fast checks passed.",
+    "Initial integration run: missing.js watch recovery exceeded its unchanged 5-second timeout, and provider reading lint was stopped by CE10 unpinned-font enforcement. The isolated watch rerun instead timed out in its first immutable-snapshot case. All 13 unchanged watch assertions pass in the final focused rerun; fixture repair and authored-font rejection pass all 16 lint CLI cases.",
+    "Normal composition-program browser command could not start because Vite maps port 0 to occupied 5173. An identical temporary suite copy with only an explicit available port passes every original assertion; the copy is removed.",
+    "A bare Node strip-only preflight over broad app imports encountered the unchanged CinematicCoverageError parameter property. The repository normal tsx imports and pinned toolchain/browser/Python preflight pass; no unrelated implementation change was made."
+  ],
+  "limits": [
+    "Full pnpm check aggregate and unrelated browser matrices were not rerun for this base integration. Focused checks retain required pixel, seek, repeat-export and all frozen baseline assertions.",
+    "Deferred CE6-P strict performance matrices and real-media corpus acceptance were not rerun."
+  ],
+  "actionsEnabled": false,
+  "delivery": {
+    "status": "pending",
+    "mergePullRequest": false,
+    "closePullRequest": false,
+    "latestBaseDetected": "ddaf9d28c5450ac73589e5a675fdbb0e05fd9d6c"
+  }
+}

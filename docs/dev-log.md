@@ -43,6 +43,48 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #36 base integration in flight (2026-10-06):** isolated managed worktree
+  from `6e0d108`; initial CE4a base `91f9c54` is integrated and verified. Both
+  log histories and generated reference guidance are retained; provider lint
+  fixtures explicitly declare adapter provenance while authored fonts stay strict.
+  Fast checks (1,598 unit), 46 runtime, 14 depth, affected integration/browser
+  checks and all 176 baselines / 36,061 frames pass, with initial failures retained.
+  Final fetch found updated base `ddaf9d2`; integrating its expression/soundtrack
+  changes and rerunning affected checks precedes the final push. No owner checkout
+  or other PR branch changes. [Evidence](./pr-36-conflict-resolution-results.json).
+
+- **PR #35 current-head fixes verified (2026-10-06):** three inline findings on
+  `282b112` are fixed one per commit: native event-anchored sounds require mapped
+  markers (`023d33a`), `--prepare-only` validates native beat maps (`d1673b1`), and
+  each render writes its current native composition (`e796802`). Fast checks pass
+  with 1,538 unit tests; 46 runtime, passage integration, both 576-frame native
+  passage backends and Lab authoring checks pass. Full `pnpm check` and baseline
+  matrices were not rerun; renderer output is unchanged. One final push delivers the
+  fixes; owner review/merge remains pending.
+  [Evidence](./pr-35-current-head-fix-results.json).
+
+- **PR #35 follow-up fixes verified (2026-10-05):** all three inline findings on
+  `84d7924` are fixed separately: Lab diagnostics (`ea62b7b`), native handoff
+  mappings/boundaries (`bff1305`) and first/reinstalled native inspection
+  (`cde2c2c`). CE12 base `8c717b3` is integrated and both logs retained. Fast checks
+  pass with 1,536 unit tests; 46 runtime, 130 integration, 14 Python and smoke tests
+  pass. Both 576-frame passage backends, authoring and native lint browser checks
+  pass; all 176 frozen fixtures / 36,061 frames match without regeneration.
+  Delivery uses one final push; owner review/merge remains pending. Full browser
+  aggregate and deferred CE6-P timing matrices were not rerun. Unrelated CE5 work
+  remains in the original checkout. [Evidence](./pr-35-followup-fix-results.json).
+
+- **PR #35 review fixes (2026-10-05):** isolated
+  `codex/pr35-review-fixes` from `869a793`. Three findings are posted inline.
+  `6ce9993` retains native diagnostics and field/beat/source context; `c9c0971`
+  preserves evidence qualifications through states and corrections. WebGL previews
+  use two contexts per passage, four during replacement, and release them on
+  disposal or preparation failure. Fast, runtime, integration, Python, smoke and
+  affected passage checks pass, with one unchanged depth-protocol rerun recorded.
+  All 176 frozen baseline items / 36,061 frames match. Delivery uses one commit per
+  finding and one push after the final commit; owner review and merge remain pending.
+  [Evidence](./pr-35-fix-results.json).
+
 - **PR #36 re-review fixes complete (2026-10-05):** isolated
   `codex/pr36-rereview-fixes` from `f68f135`; three findings posted inline.
   Delayed explicit `from` segments preserve preceding static state; merged outgoing
@@ -80,6 +122,37 @@ still hold before relying on them.
   deferred to CE6-P. CE10 is complete; broader CE7 stays open.
   [Evidence](./composition-ce4a-completion-results.json).
 
+- **PR #34 follow-up fixes verified (2026-10-05):** all three inline findings on
+  `a41f687` are repaired one per commit: provider reveal (`99605b4`), collapsed
+  precomp paint (`498c771`) and structured lint capacity failures. Fast checks pass
+  with 1,509 unit tests; 46 runtime, 15 CLI and native browser checks pass. Corpus
+  lint covers 176 items / 36,061 frames with zero unexpected failures; two additional
+  reading-time errors are now detected in one existing fixture, with all other
+  diagnostics and reference hashes unchanged. One final push delivers the repairs;
+  owner review/merge remains pending. Full render/export checks were not rerun.
+  [Follow-up evidence](./pr-34-followup-fix-results.json).
+
+- **PR #34 re-review fixes verified (2026-10-05):** all five inline findings on
+  `82453d9` are repaired in separate commits: browser diagnostics, effect timing,
+  matte dependencies, isolated scale/opacity pulses and clipped coverage. Fast
+  checks pass with 1,496 unit tests; 46 runtime tests, 12 CLI tests and the expanded
+  native browser suite pass. Corpus lint covers all 176 items / 36,061 frames
+  with zero unexpected failures and unchanged reports/reference checksum.
+  Delivery uses one final push to `codex/composition-ce12`; owner review/merge
+  remains pending. Full render/export checks were not rerun; renderer output,
+  versions and frozen baselines are unchanged. Original local work retained.
+  [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
+- **PR #34 review fixes verified (2026-10-05):** all three inline findings posted
+  on `0987396` and fixed in separate commits: structured policy diagnostics
+  (`b91eb24`), inactive-effect motion (`9eba6a2`), and parent-driven timing with
+  instance identity and fractional joins. Fast checks pass with 1,468 unit tests;
+  all 11 CLI tests and the expanded CE12 browser suite pass. Corpus lint covers
+  all 176 items / 36,061 frames, with zero unexpected failures and identical
+  reports/reference checksums. Delivery uses one final push; owner review/merge
+  remains pending. No renderer/version or baseline changes; original local work
+  retained. [Fix evidence](./pr-34-fix-results.json).
+
 - **CE12 motion linting (`[x]`, 2026-10-05):** complete on
   `codex/composition-ce12`, implementation `a365f26` from delivered CE9 `dee9e7b`.
   Rules, CLI lint and Lab timeline are delivered. Full `pnpm check` and all 176
@@ -111,7 +184,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
+_Last updated 2026-10-05 by Codex for PR #35 follow-up fixes; prior work retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -169,6 +242,133 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — Verify PR #36 initial CE4a base merge
+
+- **Agent / branch:** Codex in isolated `pr36-ce10-conflicts`, CE10 head `6e0d108`.
+- **Done:** merge CE4a `91f9c54`; retain both log histories, maintain base guidance
+  in CE10's generator source, and mark the provider lint fixture as adapter output.
+  A new CLI test retains rejection of authored unpinned providers.
+- **Results:** fast checks (1,598 unit), 46 runtime and 14 depth pass. Initial
+  integration passes 161 cases; all 29 affected final cases pass after repair and
+  unchanged watch timeout reruns. Builder and native passages retain both backend
+  parity, backward seeks and identical exports; all 176 baselines / 36,061 frames pass.
+- **Limits:** normal watch-browser startup hits occupied 5173; an identical temporary
+  copy with an explicit available port passes. Full `pnpm check` was not rerun.
+- **Next:** final fetch found base `ddaf9d2`; integrate it and rerun affected checks
+  before pushing. Owner review/merge remain pending; Actions remain disabled.
+- **Records:** [resolution evidence](./pr-36-conflict-resolution-results.json).
+
+### 2026-10-06 — Fix PR #35 current-head review findings
+
+- **Agent / branch:** Claude Code on `codex/pr35-audio-binding-fixes` from `282b112`.
+- **Scope / done:** three findings posted inline and fixed one per commit. Native
+  beats bind event-anchored sounds to native markers instead of inheriting template
+  event timing; `story:passage` validates `--composition-beats` before any output,
+  including `--prepare-only`; every render writes the native composition it used to
+  `scenes/<beat>.composition.json`, including on cache reuse.
+- **Results:** `pnpm check:fast` (1,538 unit), 46 runtime, passage integration/CLI,
+  both 576-frame native passage backends and Lab authoring checks pass on Node
+  22.23.1. Each new regression failed before its fix.
+- **Rejected:** Node 24.16 runs fail one unrelated `comp bake` test on the
+  unmodified head; verification uses the pinned toolchain.
+- **Open / next:** owner review and merge; full gate and baseline matrices not rerun.
+- **Records:** [fix evidence](./pr-35-current-head-fix-results.json),
+  [review](https://github.com/xxibcill/still-shift/pull/35#pullrequestreview-5418458083).
+
+### 2026-10-05 — Integrate CE12 base and verify PR #35 follow-up fixes
+
+- **Agent / branch:** Codex on `codex/pr35-followup-fixes` after `cde2c2c`.
+- **Scope / done:** merge CE12 `8c717b3` and retain the PR #34 and PR #35 records
+  when resolving the development-log conflict; no source conflicts occurred.
+- **Results:** fast checks (1,536 unit), 46 runtime, 130 integration, 14 Python and
+  smoke tests pass. Both 576-frame passage backends, authoring and native lint
+  browser checks pass; 176 frozen fixtures / 36,061 frames match. Normal Vite CLI
+  native loading passes. Full browser aggregate/timing matrices were not rerun.
+- **Delivery:** all three finding commits remain separate, followed by this base
+  merge and one final push; owner review/merge remains pending.
+- **Records:** [fix evidence](./pr-35-followup-fix-results.json).
+
+### 2026-10-05 — Initialize PR #35 native inspection after preview installation
+
+- **Agent / branch:** Codex on `codex/pr35-followup-fixes` after `bff1305`.
+- **Scope:** third follow-up finding, one separate implementation commit.
+- **Done:** initialize native layer options/state for first and single beats and
+  retain a valid selection through edit, undo and redo preview replacement.
+- **Results:** all 17 passage Lab integration cases, TypeScript and targeted ESLint
+  pass, including both renderers. Final gates/base integration remain before push.
+- **Rejected:** both new cases first reproduced surrogate layer options; browser
+  interaction was corrected to open the collapsed inspector before selecting.
+- **Open / next:** integrate the CE12 base log, run final checks and push all fixes.
+- **Records:** [fix evidence](./pr-35-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968018).
+
+### 2026-10-05 — Validate PR #35 native handoff subjects and boundary visibility
+
+- **Agent / branch:** Codex on `codex/pr35-followup-fixes` after `ea62b7b`.
+- **Scope:** second follow-up finding, one separate implementation commit.
+- **Done:** require incoming targets/outgoing sources beyond focus/evidence; check
+  native enter/exit visibility through root/precomp paths and instance clocks.
+  Retain the passage boundary before transition tails and Node strip-only loading.
+- **Results:** 123 focused unit/integration tests, 576-frame Canvas mixed passage,
+  Node import compatibility, TypeScript and targeted ESLint pass.
+- **Rejected:** all five new tests failed against the prior missing-subject or
+  unknown-mapping behavior before implementation.
+- **Open / next:** repair initial/reinstalled native inspection, then final gates/push.
+- **Records:** [fix evidence](./pr-35-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968013).
+
+### 2026-10-05 — Preserve PR #35 Lab native diagnostics end to end
+
+- **Agent / branch:** Codex on `codex/pr35-followup-fixes` from `84d7924`.
+- **Scope:** first follow-up finding, posted inline before implementation.
+- **Done:** retain the structured PassageError contract across Vite module identities
+  and HTTP responses; display codes and both source/field locations in Lab.
+- **Results:** 19 focused unit/integration tests, TypeScript and targeted ESLint pass.
+  The new test verifies the actual bundled API and both invalid fields in Chromium.
+- **Rejected:** the initial foreign-constructor test reproduced generic diagnostic
+  fallback; approval-service capacity failures executed no setup changes.
+- **Open / next:** native handoff targets and initial inspection; one final push.
+- **Records:** [fix evidence](./pr-35-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968004).
+
+### 2026-10-05 — Fix PR #35 WebGL passage context budget
+
+- **Agent / branch:** Codex on `codex/pr35-review-fixes`, after `c9c0971`.
+- **Done:** two GPU preview slots serve independent beat picture canvases. Native
+  validation remains eager; disposal and failed preparation release GL contexts.
+- **Results:** 20 beats and eight overlapping edits preserve pixels and backward
+  seeks, peak at four live contexts and end at zero. Fast checks pass 1,470 unit
+  tests; 46 runtime, 117 integration, 14 Python, smoke, both mixed 576-frame passage
+  backends and authoring checks pass. All 176 frozen items / 36,061 frames match.
+- **Initial failures:** fresh-environment depth-protocol timeouts passed on one
+  unchanged targeted rerun; helper TypeScript inference was repaired. See evidence.
+- **Delivery:** one finding per commit; push all three together after this final
+  finding commit. Owner review and merge remain pending.
+- **Records:** [fix evidence](./pr-35-fix-results.json).
+
+### 2026-10-05 — Fix PR #35 native evidence text alternatives
+
+- **Agent / branch:** Codex on `codex/pr35-review-fixes`, after `6ce9993`.
+- **Done:** mapped evidence states and whole-layer corrections retain the passage
+  qualification; span corrections fail explicitly on mapped evidence layers.
+- **Results:** six regressions cover matching alternatives, root/precomp states,
+  delayed state changes and text replacements. All 18 focused checks, build,
+  targeted lint and formatting pass. Initial nested test-fixture repair is recorded.
+- **Open / next:** bound WebGL passage contexts, finish local verification and
+  push all three finding commits together. Owner merge remains pending.
+- **Records:** [fix evidence](./pr-35-fix-results.json).
+
+### 2026-10-05 — Fix PR #35 native composition diagnostics
+
+- **Agent / branch:** Codex on isolated `codex/pr35-review-fixes`, from `869a793`.
+- **Done:** posted all three inline findings; loader retains every schema diagnostic
+  and adds beat/source context. Lab displays the source filename and field path.
+- **Results:** two invalid fields retain both original diagnostics; 12 focused
+  unit/integration checks, build, targeted lint and formatting pass.
+- **Open / next:** evidence text-state validation and bounded WebGL previews;
+  commit each finding separately, then push all three together. Owner merge remains.
+- **Records:** [fix evidence](./pr-35-fix-results.json).
 
 ### 2026-10-05 — PR #36 re-review fix 3: recover watched invalid assets
 
@@ -434,6 +634,129 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   CE6-P, broader CE7 stays open. Prior owner documentation changes are retained.
 - **Records:** [CE4a completion](./composition-engine-plan.md#ce4a-completion-record-2026-10-05),
   [verification](./composition-ce4a-completion-results.json).
+
+### 2026-10-05 — PR #34 structured lint limits and final verification
+
+- **Agent / branch:** Codex on `codex/pr34-followup-fixes`, after `498c771`.
+- **Done:** third finding repaired with stable `comp-lint-limit` / `layers` errors
+  and early rejection of oversized root timelines, including rendered lint.
+- **Results:** original capacity regression failed; all 99 focused quality/CLI
+  tests, fast checks (1,509 unit), 46 runtime tests and native browser checks pass.
+  CE0 lint covers 176 items / 36,061 frames; zero unexpected failures, two newly
+  caught reading-time errors, other diagnostics and reference checksum unchanged.
+- **Open / next:** one final push after this third commit; owner review/merge.
+  Original checkout retained; no renderer/version or baseline changes.
+- **Records:** [Follow-up evidence](./pr-34-followup-fix-results.json).
+
+### 2026-10-05 — PR #34 collapsed precomp sampling
+
+- **Agent / branch:** Codex on `codex/pr34-followup-fixes`, after `99605b4`.
+- **Done:** traverse collapsed paint outside source bounds; framing follows painted
+  descendants, and unused collapsed backgrounds do not count as motion.
+- **Results:** two regressions failed before repair; all 96 focused quality/CLI
+  tests, rendered browser checks, TypeScript and ESLint pass. Invalid test interval
+  corrected; hidden, clipped, nested and empty content controls pass.
+- **Open / next:** structured lint limits, final verification and one final push.
+- **Records:** [Follow-up evidence](./pr-34-followup-fix-results.json).
+
+### 2026-10-05 — PR #34 provider reading reveal
+
+- **Agent / branch:** Codex on `codex/pr34-followup-fixes`, from `a41f687`.
+- **Done:** posted all three inline findings; reading time now uses provider reveal.
+- **Results:** three regression failures before the fix; all 87 focused quality/CLI
+  tests, rendered browser checks, TypeScript and ESLint pass.
+- **Open / next:** collapsed precomp traversal, structured lint limits and final
+  verification; one final push after all three finding commits.
+- **Records:** [Follow-up evidence](./pr-34-followup-fix-results.json).
+
+### 2026-10-05 — PR #34 clipped viewport coverage
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired clipped viewport coverage.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** all five repairs and final local verification complete;
+  delivery uses one final push, followed by owner review/merge.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
+### 2026-10-05 — PR #34 one-frame scale and opacity pulses
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired one-frame scale and opacity pulses.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** 1 finding repairs, final verification and one final push;
+  owner review/merge remains pending.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
+### 2026-10-05 — PR #34 contributing matte motion
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired contributing matte motion.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** 2 finding repairs, final verification and one final push;
+  owner review/merge remains pending.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
+### 2026-10-05 — PR #34 active effect tracks
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired active effect tracks.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** 3 finding repairs, final verification and one final push;
+  owner review/merge remains pending.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
+### 2026-10-05 — PR #34 pixel-mode diagnostics
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired pixel-mode diagnostics.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** 4 finding repairs, final verification and one final push;
+  owner review/merge remains pending.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
+### 2026-10-05 — PR #34 parent-driven timing and final verification
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, from reviewed `0987396`.
+- **Done:** final finding fixed by collecting contributing ancestors, preserving
+  instance identity, counting shared tracks once and inspecting fractional
+  forward/reverse joins. Null opacity stays excluded; group opacity contributes.
+- **Results:** six regressions failed before the fix; all 43 quality tests,
+  11 CLI tests, fast checks (1,468 unit tests) and expanded CE12 browser checks pass.
+  Corpus lint covers 176 items / 36,061 frames with identical reports and no
+  unexpected failure. Source checksums are recorded; renderer/baselines unchanged.
+- **Open / next:** one final push delivers all three finding commits; owner review
+  and merge remain pending. A sandbox Vite-temp write failure passed on retry.
+- **Records:** [Fix evidence](./pr-34-fix-results.json),
+  [CE12 plan](./composition-engine-plan.md#ce12--motion-linting).
+
+### 2026-10-05 — PR #34 inactive-effect motion evidence
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`.
+- **Done:** second finding fixed by excluding inactive effects from state signatures
+  and velocity inputs, preserving evaluation and rendered output.
+- **Results:** all four new regressions failed before the fix; 44 focused tests,
+  build, changed-file ESLint and the CE12 browser group now pass, including rendered
+  static content with disabled animated effects.
+- **Open / next:** parent-driven timing is the final finding; verify then push once.
+- **Records:** [Fix evidence](./pr-34-fix-results.json),
+  [CE12 plan](./composition-engine-plan.md#ce12--motion-linting).
+
+### 2026-10-05 — PR #34 structured policy diagnostics
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, from PR head `0987396`.
+- **Done:** first finding fixed with stable cut, shot and pixel-evidence codes/paths;
+  posted all three inline comments on the reviewed PR diff.
+- **Results:** nine regressions reproduced the failures; 40 focused tests, build
+  and changed-file ESLint pass on Node 22.23.1 / pnpm 10.29.3.
+- **Open / next:** fix inactive-effect motion and parent-driven timing, one finding
+  per commit, then verify and push once. Original local work retained.
+- **Records:** [Fix evidence](./pr-34-fix-results.json),
+  [CE12 plan](./composition-engine-plan.md#ce12--motion-linting).
 
 ### 2026-10-05 — Complete CE12 motion linting
 

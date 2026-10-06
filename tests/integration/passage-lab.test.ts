@@ -27,6 +27,88 @@ describe("passage Lab file actions", () => {
     await server?.close();
   });
 
+  test("native load errors retain schema locations through the bundled API and Lab", async () => {
+    const directory = await mkdtemp(
+      resolve("benchmarks/fixtures/composition/ce4a/diagnostics-"),
+    );
+    const sourcePath = join(directory, "picture.json");
+    const mapPath = join(directory, "beats.json");
+    const page = await browser.newPage();
+    try {
+      await writeFile(
+        sourcePath,
+        JSON.stringify({
+          schemaVersion: "composition-1",
+          id: "",
+          width: 1920,
+          height: 1080,
+          fps: 24,
+          frameCount: 192,
+          assets: [],
+          layers: [
+            { id: "", type: "solid", size: [100, 100], color: "#123456" },
+          ],
+        }),
+      );
+      await writeFile(mapPath, JSON.stringify({ reset: "picture.json" }));
+      const parameters = new URLSearchParams({
+        path: "benchmarks/fixtures/story-authoring/linked-comparison.json",
+        compositionBeats: mapPath,
+      });
+      const response = await fetch(base + "passage-api/load?" + parameters);
+      assert.equal(response.status, 400);
+      const result = (await response.json()) as {
+        diagnostics: {
+          code: string;
+          path: string;
+          beat: string;
+          sourcePath: string;
+        }[];
+      };
+      assert.deepEqual(
+        result.diagnostics.map(({ code, path, beat, sourcePath }) => ({
+          code,
+          path,
+          beat,
+          sourcePath,
+        })),
+        [
+          { code: "comp-schema-format", path: "id", beat: "reset", sourcePath },
+          {
+            code: "comp-schema-format",
+            path: "layers[0].id",
+            beat: "reset",
+            sourcePath,
+          },
+        ],
+      );
+      await page.goto(
+        base +
+          "passage.html?" +
+          new URLSearchParams({
+            renderer: "composition",
+            "composition-beats": mapPath,
+          }),
+      );
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#status")
+          ?.textContent?.includes("could not load"),
+      );
+      const errors = await page.locator("#errors > div").allTextContents();
+      assert.equal(errors.length, 2);
+      for (const text of errors) {
+        assert.ok(text.includes("comp-schema-format"));
+        assert.ok(text.includes("reset"));
+        assert.ok(text.includes(sourcePath));
+      }
+      assert.ok(errors[1]!.includes("layers[0].id"));
+    } finally {
+      await page.close();
+      await rm(directory, { recursive: true, force: true });
+    }
+  }, 30_000);
+
   test("import preserves multilingual passage metadata", async () => {
     const basePath =
       "benchmarks/fixtures/story-authoring/linked-comparison.json";
@@ -41,6 +123,91 @@ describe("passage Lab file actions", () => {
     const result = (await response.json()) as { plan: { title: string } };
     assert.equal(result.plan.title, plan.title);
   });
+
+  test.each(["canvas2d", "webgl2"])(
+    "native inspector initializes and survives edit/undo/redo on %s",
+    async (backend) => {
+      const page = await browser.newPage();
+      try {
+        await page.route("**/passage-api/load?**", async (route) => {
+          const response = await route.fetch();
+          const packet = await response.json();
+          packet.plan.beats = [packet.plan.beats[2]];
+          await route.fulfill({ response, json: packet });
+        });
+        await page.goto(
+          base +
+            "passage.html?" +
+            new URLSearchParams({
+              renderer: "composition",
+              backend,
+              "composition-beats":
+                "benchmarks/fixtures/composition/ce4a/native-beats.json",
+            }),
+        );
+        await page.waitForFunction(() =>
+          document.querySelector("#status")?.textContent?.includes("1 beats"),
+        );
+        const layers = () =>
+          page
+            .locator("#node")
+            .evaluate((select) =>
+              [...(select as HTMLSelectElement).options].map(
+                (option) => option.value,
+              ),
+            );
+        assert.deepEqual(await layers(), [
+          "difference-panel",
+          "moving-panel",
+          "story-content",
+        ]);
+        assert.equal(
+          JSON.parse((await page.locator("#node-state").textContent())!).id,
+          "difference-panel",
+        );
+        await page.getByText("Node state", { exact: true }).click();
+        await page.locator("#node").selectOption("moving-panel");
+        const original = await page
+          .getByRole("textbox", { name: "title", exact: true })
+          .inputValue();
+        const title = page.getByRole("textbox", { name: "title", exact: true });
+        await title.fill("Native inspector edit");
+        await title.press("Tab");
+        for (const [action, expected] of [
+          ["edit", "Native inspector edit"],
+          ["undo", original],
+          ["redo", "Native inspector edit"],
+        ]) {
+          if (action !== "edit") await page.locator("#" + action).click();
+          await page.waitForFunction(
+            (expected) =>
+              (
+                window.passageLab!.snapshot() as {
+                  plan: { beats: { parameters: { title: string } }[] };
+                }
+              ).plan.beats[0]?.parameters.title === expected,
+            expected,
+          );
+          await page.waitForFunction(() => {
+            const state = document.querySelector("#node-state")?.textContent;
+            return !!state && JSON.parse(state).id === "moving-panel";
+          });
+          assert.deepEqual(await layers(), [
+            "difference-panel",
+            "moving-panel",
+            "story-content",
+          ]);
+          assert.equal(
+            await page.locator("#node").inputValue(),
+            "moving-panel",
+          );
+        }
+      } finally {
+        await page.close();
+      }
+    },
+    60_000,
+  );
 
   test("vertical selector keeps workbench edits and proposal is saved explicitly", async () => {
     const page = await browser.newPage({ acceptDownloads: true });

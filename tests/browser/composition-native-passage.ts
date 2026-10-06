@@ -15,6 +15,7 @@ import {
 } from "@still-shift/animation-engine";
 import { PassageError } from "@still-shift/renderer-core";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
+import { assertBoundedPassagePreviews } from "../helpers/passage-composition-previews.ts";
 
 const root = await mkdtemp(join(tmpdir(), "still-shift-native-beat-"));
 const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
@@ -103,6 +104,21 @@ try {
   );
   const portableRender = await render("portable", portable);
   assert.ok(portableRender.cache.every((clip) => clip.reused));
+  for (const run of ["first", "portable"]) {
+    const current = JSON.parse(
+      await readFile(
+        join(root, run, "scenes", "reset.composition.json"),
+        "utf8",
+      ),
+    );
+    assert.deepEqual(
+      current.assets.map((asset: { path: string }) => asset.path),
+      (run === "first" ? compositions : portable).reset!.assets.map(
+        (asset) => asset.path,
+      ),
+      "Each run's native composition names that run's asset files, even on cache reuse",
+    );
+  }
   assert.ok(first.cache[2]!.key !== first.planSha256);
   const changed = structuredClone(compositions);
   if (changed.reset!.layers[0]!.type !== "solid")
@@ -230,6 +246,11 @@ try {
       );
     }
     assert.deepEqual(errors, []);
+    if (backend === "webgl2")
+      await assertBoundedPassagePreviews(
+        browser,
+        server.resolvedUrls!.local[0]!,
+      );
   } finally {
     await browser.close();
     await server.close();

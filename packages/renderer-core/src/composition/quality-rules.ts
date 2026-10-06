@@ -8,6 +8,8 @@ import {
 } from "./quality-policy.ts";
 import {
   compositionQualityFrame,
+  contributingMotionLayers,
+  qualityTrackContributes,
   layerQualityTracks,
   numericValues,
   type CompositionQualityFrame,
@@ -67,9 +69,11 @@ function coversViewport(
   sample: CompositionQualitySample,
   width: number,
   height: number,
+  size?: readonly [number, number],
 ) {
   const layer = sample.state.layer;
-  if (!("size" in layer) || !layer.size) return false;
+  const extent = size ?? ("size" in layer ? layer.size : undefined);
+  if (!extent) return false;
   const [a, b, c, d, e, f] = sample.matrix;
   const determinant = a * d - b * c;
   if (Math.abs(determinant) < 1e-12) return false;
@@ -84,8 +88,8 @@ function coversViewport(
     return (
       localX >= -1e-6 &&
       localY >= -1e-6 &&
-      localX <= layer.size![0] + 1e-6 &&
-      localY <= layer.size![1] + 1e-6
+      localX <= extent[0] + 1e-6 &&
+      localY <= extent[1] + 1e-6
     );
   });
 }
@@ -150,7 +154,22 @@ export function compositionFramingFindings(
           });
         continue;
       }
-      const b = sample.bounds;
+      const b = sample.clippedBounds;
+      const ancestorClips = sample.ancestors.some((id) => {
+        const ancestor = frame.layers.get(id);
+        if (!ancestor) return false;
+        const layer = ancestor.state.layer;
+        if (layer.type === "group" && layer.clip)
+          return !coversViewport(ancestor, comp.width, comp.height);
+        if (layer.type === "precomp" && !layer.collapseTransforms) {
+          const source = comp.precomps!.find((p) => p.id === layer.comp)!;
+          return !coversViewport(ancestor, comp.width, comp.height, [
+            source.width,
+            source.height,
+          ]);
+        }
+        return false;
+      });
       if (
         !sample.visible ||
         sample.opacity < 0.999 ||
@@ -160,6 +179,7 @@ export function compositionFramingFindings(
         b.right < comp.width ||
         b.bottom < comp.height ||
         !coversViewport(sample, comp.width, comp.height) ||
+        ancestorClips ||
         sample.state.masks.some((mask) => mask.mode !== "none") ||
         !!sample.state.layer.trackMatte
       )
@@ -192,7 +212,8 @@ export function compositionPopFindings(
       const before = frames[at - 1]!.layers.get(id);
       if (!before || !(before.visible || current.visible)) continue;
       const prior = frames[at - 2]?.layers.get(id),
-        next = frames[at + 1]?.layers.get(id);
+        next = frames[at + 1]?.layers.get(id),
+        after = frames[at + 2]?.layers.get(id);
       for (const [code, threshold, delta] of [
         [
           "opacity-pop",
@@ -203,15 +224,29 @@ export function compositionPopFindings(
         ["scale-pop", policy.scalePop, scaleDelta],
       ] as const) {
         const jump = delta(current, before);
-        const neighbours = Math.max(
-          prior ? delta(before, prior) : 0,
-          next ? delta(next, current) : 0,
-        );
-        if (jump > threshold && neighbours <= jump * policy.popNeighbourRatio)
+        const priorJump =
+          prior && !policy.cuts.has(at - 1) ? delta(before, prior) : 0;
+        const nextJump =
+          next && !policy.cuts.has(at + 1) ? delta(next, current) : 0;
+        const neighbours = Math.max(priorJump, nextJump);
+        const excursion =
+          next &&
+          !policy.cuts.has(at + 1) &&
+          nextJump > threshold &&
+          delta(next, before) <=
+            Math.min(jump, nextJump) * policy.popNeighbourRatio &&
+          priorJump <= jump * policy.popNeighbourRatio &&
+          (!after ||
+            policy.cuts.has(at + 2) ||
+            delta(after, next) <= nextJump * policy.popNeighbourRatio);
+        if (
+          jump > threshold &&
+          (neighbours <= jump * policy.popNeighbourRatio || excursion)
+        )
           add(
             code,
             current,
-            [at - 1, at],
+            [at - 1, excursion ? at + 1 : at],
             jump,
             "Abrupt single-frame change next to settled frames; smooth it or mark an intentional cut.",
             `${current.path}.transform.${code === "scale-pop" ? "scale" : "opacity"}`,
@@ -255,11 +290,13 @@ export function compositionTimingFindings(
     end: number;
     easing: string;
     path: string;
+    property: string;
   }[] = [];
+  const contributingFrames = frames.map(contributingMotionLayers);
   const instances = new Map<string, CompositionQualitySample>();
-  for (const frame of frames)
-    for (const sample of frame.layers.values())
-      if (sample.onScreen && !instances.has(sample.id))
+  for (const frame of contributingFrames)
+    for (const sample of frame.values())
+      if (!instances.has(sample.id) || sample.onScreen)
         instances.set(sample.id, sample);
   for (const sample of instances.values()) {
     for (const track of layerQualityTracks(sample.state.layer)) {
@@ -273,11 +310,16 @@ export function compositionTimingFindings(
           b.interpolation === "hold"
         )
           continue;
-        const visible = frames
-          .map((frame, at) => ({ sample: frame.layers.get(sample.id), at }))
+        const visible = contributingFrames
+          .map((frame, at) => ({ sample: frame.get(sample.id), at }))
           .filter(
-            ({ sample: s }) =>
-              s?.onScreen &&
+            ({ sample: s, at }) =>
+              s &&
+              qualityTrackContributes(
+                s,
+                track.path,
+                frames[at]!.matteSources.has(s.id),
+              ) &&
               s.state.time >= Number(a.frame) &&
               s.state.time <= Number(b.frame),
           );
@@ -294,6 +336,7 @@ export function compositionTimingFindings(
           end: visible.at(-1)!.at,
           easing: easingSignature(a, b),
           path: `${sample.path}.${track.path}`,
+          property: `${sample.id}:${track.path}`,
         });
       }
     }
@@ -302,7 +345,7 @@ export function compositionTimingFindings(
     const moving = segments.filter(
       (s) => s.start < shot.end && s.end >= shot.start,
     );
-    const properties = new Set(moving.map((s) => s.path));
+    const properties = new Set(moving.map((s) => s.property));
     if (properties.size >= policy.minimumMovingProperties) {
       const counts = new Map<string, number>();
       for (const segment of moving) {
@@ -358,22 +401,18 @@ function joinFrames(
     Array.from({ length: Math.max(0, frames.length - 2) }, (_, i) => i + 1),
   );
   const keyTimes = new Map<string, number[]>();
+  let previous = contributingMotionLayers(frames[0]!);
   for (let frame = 1; frame < frames.length; frame++) {
-    for (const current of frames[frame]!.layers.values()) {
-      const before = frames[frame - 1]!.layers.get(current.id);
-      if (
-        !before ||
-        !current.onScreen ||
-        !before.onScreen ||
-        before.state.time === current.state.time
-      )
-        continue;
+    const contributing = contributingMotionLayers(frames[frame]!);
+    for (const current of contributing.values()) {
+      const before = previous.get(current.id);
+      if (!before || before.state.time === current.state.time) continue;
       let keys = keyTimes.get(current.id);
       if (!keys) {
         keys = [
           ...new Set(
-            layerQualityTracks(current.state.layer).flatMap((t) =>
-              t.keys.map((key) => Number(key.frame)),
+            layerQualityTracks(current.state.layer).flatMap((track) =>
+              track.keys.map((key) => Number(key.frame)),
             ),
           ),
         ];
@@ -401,6 +440,7 @@ function joinFrames(
         joins.add((lo + hi) / 2);
       }
     }
+    previous = contributing;
   }
   return [...joins].sort((a, b) => a - b);
 }
@@ -412,7 +452,7 @@ function velocityValues(sample: CompositionQualitySample) {
     sample.opacity * 100,
     (sample.state.reveal ?? 1) * 100,
     ...(sample.state.color ?? []).map((n) => n * 100),
-    ...numericValues(sample.state.effects),
+    ...numericValues(sample.effects),
     ...numericValues(sample.state.masks),
   ];
 }
@@ -439,7 +479,14 @@ export function compositionVelocityFindings(
     for (const current of middle.layers.values()) {
       const before = left.layers.get(current.id),
         after = right.layers.get(current.id);
-      if (!current.onScreen || !before?.onScreen || !after?.onScreen) continue;
+      if (
+        !before ||
+        !after ||
+        !(current.onScreen || middle.matteSources.has(current.id)) ||
+        !(before.onScreen || left.matteSources.has(current.id)) ||
+        !(after.onScreen || right.matteSources.has(current.id))
+      )
+        continue;
       const incoming = velocityValues(before),
         value = velocityValues(current),
         outgoing = velocityValues(after);

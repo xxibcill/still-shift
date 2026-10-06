@@ -19,13 +19,16 @@ import {
 import { storyCameraTransform } from "../../../packages/renderer-core/src/story-camera.ts";
 import { nodeMatrix } from "../../../packages/renderer-core/src/node-transform.ts";
 import { drawFormatGuides } from "./format-guides.ts";
+import { createWebglPassagePreviews } from "./passage-composition-previews.ts";
 
 export type ReadyBeat = {
   nativeComposition?: Composition;
   scene: ReturnType<typeof compileStoryScene>;
-  preview:
+  preview: Pick<
     | ReturnType<typeof createIllustratedPreview>
-    | ReturnType<typeof createCompositionPreview>;
+    | ReturnType<typeof createCompositionPreview>,
+    "renderFrame" | "dispose"
+  >;
   canvas: HTMLCanvasElement;
   images: Awaited<ReturnType<typeof loadIllustratedImages>>;
 };
@@ -55,49 +58,59 @@ export async function preparePreviews(
     throw new Error("Unknown composition backend");
   if (Object.keys(native).length && renderer !== "composition")
     throw new Error("Native beat files require renderer=composition");
+  const webgl =
+    renderer === "composition" && backend === "webgl2"
+      ? createWebglPassagePreviews()
+      : undefined;
   const prepared: ReadyBeat[] = [];
-  for (const beat of passage.beats) {
-    const scene = compileStoryScene(beat.scene);
-    const images = await loadIllustratedImages(scene, (id) =>
-      assetUrl(
-        [...scene.assets, ...(scene.fonts ?? [])].find((a) => a.id === id)!
-          .path,
-      ),
-    );
-    const target = document.createElement("canvas");
-    target.width = scene.width;
-    target.height = scene.height;
-    const composition =
-      native[beat.id] ??
-      (renderer === "composition"
-        ? await prepareStoryComposition(beat.scene, (id) =>
-            assetUrl(
-              [...beat.scene.assets, ...(beat.scene.fonts ?? [])].find(
-                (asset) => asset.id === id,
-              )!.path,
-            ),
-          )
-        : undefined);
-    prepared.push({
-      ...(native[beat.id] ? { nativeComposition: native[beat.id] } : {}),
-      scene,
-      preview: composition
-        ? createCompositionPreview(
-            target,
-            composition,
-            await loadCompositionResources(composition, (id) =>
+  try {
+    for (const beat of passage.beats) {
+      const scene = compileStoryScene(beat.scene);
+      const images = await loadIllustratedImages(scene, (id) =>
+        assetUrl(
+          [...scene.assets, ...(scene.fonts ?? [])].find((a) => a.id === id)!
+            .path,
+        ),
+      );
+      const target = document.createElement("canvas");
+      target.width = scene.width;
+      target.height = scene.height;
+      const composition =
+        native[beat.id] ??
+        (renderer === "composition"
+          ? await prepareStoryComposition(beat.scene, (id) =>
               assetUrl(
-                composition.assets.find((asset) => asset.id === id)!.path,
+                [...beat.scene.assets, ...(beat.scene.fonts ?? [])].find(
+                  (asset) => asset.id === id,
+                )!.path,
               ),
-            ),
-            { backend: backend as CompositionBackend },
+            )
+          : undefined);
+      const resources = composition
+        ? await loadCompositionResources(composition, (id) =>
+            assetUrl(composition.assets.find((asset) => asset.id === id)!.path),
           )
-        : createIllustratedPreview(target, scene, images),
-      canvas: target,
-      images,
-    });
+        : undefined;
+      prepared.push({
+        ...(native[beat.id] ? { nativeComposition: native[beat.id] } : {}),
+        scene,
+        preview: composition
+          ? webgl
+            ? webgl.create(target, composition, resources!)
+            : createCompositionPreview(target, composition, resources!, {
+                backend: backend as CompositionBackend,
+              })
+          : createIllustratedPreview(target, scene, images),
+        canvas: target,
+        images,
+      });
+    }
+    return prepared;
+  } catch (error) {
+    prepared.forEach((beat) => beat.preview.dispose());
+    webgl?.dispose();
+    throw error;
   }
-  return prepared;
 }
 export function drawOverlays(
   overlay: HTMLCanvasElement,

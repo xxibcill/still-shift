@@ -1451,6 +1451,9 @@ This is CE4a's required CE7 exposure slice, not completion of all CE7 controls.
 Renderer, evaluator, adapter and backend identities separate cached beat clips.
 Changing the renderer or backend requires a fresh render request/output directory.
 The cache retains each compiled `.composition.json` beside its encoded beat.
+Native picture beats also write `scenes/<beat>.composition.json` on every render,
+including cache reuse, so it names that run's asset files after relocation; the
+cache copy records the entry's first render.
 
 ### Native passage picture files (CE4a/Q2)
 
@@ -1472,18 +1475,22 @@ Diagnostics: `comp-passage-reference` (invalid map/file), `comp-passage-limit`
 (over 400 overrides), `comp-passage-beat` (unknown ID), `comp-passage-timing`
 (dimensions/fps/duration mismatch), `comp-passage-handoff` (implicit carry) and
 `comp-passage-renderer` (native pictures require the composition path). Native
-composition schema diagnostics retain their codes and gain the beat ID.
+composition schema diagnostics retain every code and JSON field path, and gain the
+beat ID and a separate `sourcePath` for the picture file. Lab displays both the
+source and field location.
 The API checks map, picture and asset paths against the Lab workspace boundary.
 
 Native pictures declare `metadata.passage` with three explicit maps:
 `cueMarkers` maps each narrative cue ID to a root marker at its cue frame;
-`eventMarkers` maps each narration-linked event ID to a root marker with its exact
-start and duration; `subjectLayers` maps focal subjects and any evidence node to a
+`eventMarkers` maps each narration-linked event ID, and every event anchoring a
+passage sound on that beat, to a root marker with its exact start and duration; `subjectLayers` maps focal subjects and any evidence node to a
 native layer ID or precomp instance path (for example `story-content/house-a`).
 Missing targets, unknown narrative IDs and mismatched timing return
 `comp-passage-binding`. A mapped evidence qualification must be native text matching
-the passage's qualification. Legacy action/pose/prop tracks and implicit carry are
-unsupported at native boundaries and fail explicitly; author that motion in the
+the passage's qualification. Every evidence text state and whole-layer correction
+must retain the same qualification; span corrections are unsupported on mapped
+evidence layers. Legacy action/pose/prop tracks and implicit carry are unsupported
+at native boundaries and fail explicitly; author that motion in the
 composition. The fixture `ce4a/native-beat.json` embeds an adapted story as a precomp
 with a native difference-blend overlay and preserves its assets and cue mappings.
 
