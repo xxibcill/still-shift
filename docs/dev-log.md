@@ -69,6 +69,9 @@ still hold before relying on them.
   Zipper QA WebGL lint/lighting-signature fixes are integrated from 9b1b41a:
   74 unit regressions and the new CLI option check pass, plus build/lint/schema.
   Preview wrappers and actual-depth-default reference assertions are prepared.
+  New native depth export preparation/manifest data, inspector rejection/history
+  assertions and serial depth costs are staged; verification and formatting of
+  these latest edits are explicitly pending the quiet-window release.
   Browser runs remain pending during CE6-P's requested quiet timing window.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
@@ -267,6 +270,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d quiet-window implementation checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** unwired Node depth export preparation verifies actual file hashes and
+  dimensions and preserves requested/resolved provenance. Legacy manifests accept
+  native picture data with matching canvas/fps/frame-count checks. Added pending
+  regressions, serial old/native/old depth cost brackets and stronger real inspector
+  rejection/history assertions; the depth inspector opens directly in WebGL2.
+- **Results:** these latest edits are **unverified**. All pnpm/Node/test/browser/
+  export verification and formatting remain held for CE6-P's owner-authorized
+  timing window. Previous checkpoint results remain bound to `5e3f517`.
+- **Open / next:** format and run focused checks after release, then independent
+  depth/family parity, actual defaults, zipper pixels, full gate and CE4d PR.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d integrates zipper QA and prepares default wrappers
 

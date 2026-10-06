@@ -37,6 +37,7 @@ import {
   depthAlphaAcceptance,
 } from "./depth-failures.ts";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
+import { depthRenderCosts } from "./depth-cost.ts";
 
 const root = resolve(import.meta.dirname, "../.."),
   directory = await mkdtemp(join(tmpdir(), "ce4d-depth-acceptance-")),
@@ -141,6 +142,7 @@ try {
   }
   let localBase: Composition | undefined;
   let localScene: (typeof fixtures)[number]["scene"] | undefined;
+  const costs = [];
   for (const fixture of fixtures) {
     const assets: CompositionAsset[] = [
       {
@@ -203,6 +205,12 @@ try {
         forward.map((frame) => preview.pngs[frame]!),
       )),
     });
+    const fullSize = depthToComposition(fixture.scene, {
+      id: `${fixture.id}-cost`, requestedPreset: fixture.requestedPreset,
+      source: assets[0] as Extract<CompositionAsset, {type:"image"}>,
+      ...(assets[1] ? {depth: assets[1] as Extract<CompositionAsset,{type:"image"}>} : {}),
+    });
+    costs.push({id: fixture.id, ...await depthRenderCosts(page, fullSize, fixture.scene, assetUrls)});
     hardwareFixtures.push({
       name: doc.id,
       doc,
@@ -285,7 +293,7 @@ try {
   await mkdir(proof, { recursive: true });
   await writeFile(
     join(proof, "native-acceptance.json"),
-    JSON.stringify({ environment, reports, inspector, hardware }, null, 2) +
+    JSON.stringify({ environment, reports, inspector, hardware, costs }, null, 2) +
       "\n",
   );
 } finally {

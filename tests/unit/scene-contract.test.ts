@@ -192,6 +192,22 @@ describe("SceneManifestSchema", () => {
     expect(SceneManifestSchema.safeParse(validWebglScene).success).toBe(true);
   });
 
+  it("retains native picture data while requiring matching dimensions and timeline", () => {
+    const composition = {
+      schemaVersion: "composition-1", id: "prepared-picture",
+      width: 1920, height:1080, fps:30, frameCount:150, assets:[],
+      layers:[{id:"backdrop", type:"solid", size:[1920,1080], color:"#141414"}],
+    };
+    expect(SceneManifestSchema.parse({...validWebglScene, composition}).composition).toEqual(composition);
+    for (const field of ["width", "height", "fps", "frameCount"] as const) {
+      const result = SceneManifestSchema.safeParse({...validWebglScene,
+        composition:{...composition, [field]: composition[field]-1}});
+      expect(result.success).toBe(false);
+      if (!result.success) expect(result.error.issues.some(issue => issue.path[0] === "composition")).toBe(true);
+    }
+    expect(SceneManifestSchema.safeParse(validWebglScene).success).toBe(true);
+  });
+
   it.each([
     "locked_hold",
     "story_settle",
