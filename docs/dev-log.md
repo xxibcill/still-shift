@@ -43,31 +43,21 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE4d final full gate pending (2026-10-07):** `codex/composition-ce4d` from
-  CE4c `17666eb`. Runtime `69469a8` stages native Depth Lab refreshes, preserves
-  pending seeks and publishes truthful readiness/version; harness `e8a70d9` passes
-  the complete affected depth and Lab session suites. CLI cache repair `75c0828`
-  preserves scene identity across cache relocation. Canvas 1.44, WebGL2 0.65,
-  image-plane shader 0.4, depth adapter 0.1 and pipeline 0.13 are current. All 176
-  public family defaults pass 36,061 forward/reverse frames and every unchanged CE0
-  hash; all 23 public-depth defaults pass 2,070 frames exactly. Native/legacy serial
-  delivery, independent/repeat/raw exports, hardware, inspector/resource/alpha,
-  unchanged Canvas timing, strict CLI/vertical exports and fresh 690-frame zipper
-  QA pass. All 141 prior visual files remain exact. First full `pnpm check` failed
-  after 2,005 unit / 46 runtime / 143 integration / 14 Python tests at a pending
-  refresh pixel read (217.48 seconds); original assertions now await commit and
-  delayed-decode seek regression passes. The second full gate passes those suites,
-  then fails the final golden renderer identity assertion after pixel/motion parity
-  passes (332.26 seconds). Native and frozen-reference identities are now checked
-  separately without changing baseline bytes or tolerances. Focused golden proof
-  passes all five scenes / 15 samples / 30 transport comparisons on `3747d16`,
-  with pinned startup, format, lint and build passing. A complete full gate
-  rerun remains, then
-  CE4d PR and CE13 → CE15 → CE14 with CE16 audit/reuse. CE5-X/Q9 remains pending;
-  CE6-P retains WebGL speed work. No owner decision blocks the approved order.
-  Failed/rejected diagnostics and measured proof are in
-  [results](./composition-ce4d-results.json); continuation rules are in the
-  [handoff](./composition-continuation-handoff-2026-10-07.md).
+- **CE4d complete; PR delivery pending (2026-10-07):**
+  `codex/composition-ce4d` from CE4c `17666eb`. Native production defaults and old
+  painter retirement are complete. Canvas 1.44 / WebGL2 0.65 / image-plane shader
+  0.4 / depth adapter 0.1 / pipeline 0.13 are current. Immutable `ae2e1f0` passes
+  complete pinned local `pnpm check` in 11705.18 seconds: 2,005 unit / 46 runtime /
+  143 integration / 14 Python tests, all 61 required commands, all browser gates,
+  all 176 actual family defaults and 176 frozen items / 36,061 frames. Four Canvas
+  family matrices pass their unchanged 1.25× policy; all 141 prior visual files
+  remain exact. Independent/repeated/raw exports, depth/legacy delivery, hardware,
+  Lab pending seeks, cache relocation and fresh zipper QA pass. Both prior failed
+  gates and rejected diagnostics remain in the [evidence](./composition-ce4d-results.json).
+  Publish/attach the CE4d PR, then CE13 → CE15 → CE14 with CE16 audit/reuse.
+  CE5-X/Q9 remains pending; CE6-P retains WebGL timing work. No verification job
+  remains active and no owner decision blocks the approved order.
+  [Continuation](./composition-continuation-handoff-2026-10-07.md).
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
   CE8-L `e1bd4bc`; final runtime `37cc07a`, verified snapshot `e1fb3e3`.
@@ -81,7 +71,7 @@ still hold before relying on them.
   visual references remain unchanged. Earlier failures and diagnostics remain in
   the [evidence](./composition-ce4c-results.json). WebGL speed targets remain CE6-P.
   [PR #45](https://github.com/xxibcill/still-shift/pull/45) is open and attached against CE8-L.
-  CE4d is now in progress on its own branch.
+  CE4d is complete; PR delivery follows.
   Separate cross-chat coordination authorization remains pending.
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
@@ -264,6 +254,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d complete local gate and native-default closeout
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, verified `ae2e1f0`.
+- **Done:** native family/depth defaults, shared-graph painter consolidation and
+  truthful Lab/cache provenance complete; every existing acceptance gate is retained.
+- **Results:** full pinned local `pnpm check` passes in 11705.18 seconds, all
+  61 test commands, 2,005/46/143/14 tests, all 176 defaults/frozen items and all
+  four strict Canvas matrices. All 141 prior visual files remain exact.
+- **Rejected / do not repeat:** both earlier failed full gates remain recorded;
+  never claim focused checks replace the full gate or reapply superseded drafts.
+- **Open / next:** publish/attach CE4d PR; CE13 → CE15 → CE14 with CE16 reuse.
+  WebGL speed remains CE6-P; CE5-X/Q9 pending. Actions remain disabled.
+- **Records:** [results](./composition-ce4d-results.json),
+  [plan](./composition-engine-plan.md#ce4d-completion-record-2026-10-07).
 
 ### 2026-10-07 — CE4d native golden identity and parity pass
 
