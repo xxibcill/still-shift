@@ -29,4 +29,5 @@ four receivers and 1/4 actual exposure samples. `--write-ce8l-baseline` writes
 only the new lighting directory. Native acceptance on `d72ba2c` passes
 all cases, exports, hardware and inspector checks. Offscreen transparent RGBA
 checks preserve alpha exactly across all 416 frames, including alpha128 source
-pixels. The complete local gate remains pending.
+pixels. The complete pinned local gate passes on `3820c1c`, including exact committed
+lighting hashes and all frozen legacy baselines.

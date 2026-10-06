@@ -43,24 +43,21 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE8-L in progress (2026-10-06):** `codex/composition-ce8-lighting` from CE8
-  `9d8f33a` / [PR #43](https://github.com/xxibcill/still-shift/pull/43).
-  Bounded ambient/point/spot lighting, XYZ keys, scoped pure evaluation, GPU shading,
-  receiver/cache/preflight integration, builder and inspector controls are authored.
-  All 1,889 unit tests, permitted 139-test integration rerun, build, lint, pinned
-  preflight, schema, boundaries and formatting pass. Final code `d72ba2c` passes
-  native acceptance: 480 forward / 480 reverse frames, 135 seeks, 416 transparent
-  frames with exact alpha, 45 production and 15 independent preview exports,
-  four Canvas failure-retention cases, legacy unlit identity and real inspector.
-  Hardware: 43 exact / two near under unchanged policy. All 95 existing visual
-  files remain exact; 46 new lighting files are separate. Serial 1080p costs for
-  four receivers / 1,4,8 lights are recorded for one/four actual exposure samples.
-  Full gate `3820c1c` stopped at the passage-components instances timing assertion
-  (1.312 against 1.25); all 60 completed story pixel checks pass. Serial focused
-  profiles pass on CE8 (1.217) and CE8-L (1.154), with exact pixels. A full rerun
-  from the start is pending; production, baselines and policy stayed unchanged.
-  Earlier oracle/inspector test assumptions remain recorded.
-  No owner decision is pending. [Evidence](./composition-ce8-lighting-results.json).
+- **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
+  `9d8f33a`; final code `d72ba2c`, verified checkpoint `3820c1c`. Bounded ambient,
+  point and spot lighting, scoped pure evaluation, linear GPU shading, cache/Canvas
+  preflight, builder and inspector controls are delivered. Complete pinned local
+  `pnpm check` passes 1,889 unit / 46 runtime / 139 integration / 14 depth tests,
+  all required browser groups, 176 frozen CE0 items / 36,061 frames and unchanged
+  Canvas family matrices. All 141 committed visual files remain exact; 46 lighting
+  files are new and all 95 preexisting files are unchanged. Native correctness,
+  alpha, seeks, repeat/independent exports, hardware and real inspector pass.
+  Serial 1080p costs are recorded. Earlier oracle/inspector failures and the first full-gate timing failure remain
+  in the evidence. Serial profiles passed; the complete gate was rerun from the
+  start under unchanged assertions. No source output or tolerance was changed.
+  Milestone PR delivery follows; CE4c starts next on its own branch. CE6-P/CE8-L-F
+  remain separate future work. No owner decision is pending.
+  [Evidence](./composition-ce8-lighting-results.json).
 
 - **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
   final code `16262ec`. Scoped cameras, XYZ transforms, projective planes,
@@ -225,6 +222,22 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8-L complete local gate
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`, code `d72ba2c`,
+  verified checkpoint `3820c1c`.
+- **Done:** every lighting checklist and native/full local acceptance passes.
+  Schema/reference/authoring/inspector, cache/Canvas failure retention and independent
+  pixels/alpha/exports/hardware are delivered with new-only lighting baselines.
+- **Results:** full `pnpm check` terminal zero: 1,889 unit / 46 runtime / 139
+  integration / 14 depth, every required browser group, all 176 frozen items /
+  36,061 frames and unchanged Canvas family pixel/timing policy. All 141 visual
+  files remain exact. Serial costs and earlier failures, including the first full-gate timing failure,
+  are recorded. A complete rerun from the start passes unchanged assertions.
+- **Open / next:** create/attach the milestone PR, then CE4c on a new branch.
+  CE6-P and advanced lighting remain separate; no owner decision is pending.
+- **Records:** [Lighting evidence](./composition-ce8-lighting-results.json).
 
 ### 2026-10-06 — CE8-L full-gate timing diagnosis
 
