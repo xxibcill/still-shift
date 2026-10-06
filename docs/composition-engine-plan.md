@@ -3701,6 +3701,17 @@ configuration now keeps blur disabled with a schema-valid count and asserts the
 actual exposure count. A successful native profile repeat and the final complete
 local gate remain pending; the failed command is retained as incomplete evidence.
 
+Complete native acceptance on final code `5effcf3` now exits zero: 384 forward,
+384 reverse frames, 108 seeks, exact stored hashes and independent oracle pixels,
+36 production/repeat/raw exports and 12 independent preview exports byte-identical.
+Eight expected failures and inspector checks pass. All 36 actual hardware checks
+pass unchanged policy (33 exact, three mask cases near; maximum channel delta one).
+Six serial 1080p cost cases retain cold/two-warmup/five-measure records and actual
+exposure counts: medians 12.3 / 61.3 ms for one plane, 77.1 / 319.4 ms for eight,
+618.8 / 2,556.3 ms for 64 at one/four samples. This is measured feature cost, not a
+real-time claim; CE6-P remains separate. The complete final-code gate and milestone
+PR are pending, with no frozen legacy regeneration.
+
 **Completion record:** _to be filled in._
 
 ---

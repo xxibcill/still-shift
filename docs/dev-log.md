@@ -65,10 +65,11 @@ still hold before relying on them.
   All 1,840 units pass. First native all-frame/seek/export checks passed, then
   hardware Canvas affine PSNR failed. Pinned native raster preparation repairs
   all 36 hardware comparisons to delta at most one. Committed-source native
-  correctness/export/inspector/hardware checks pass; the optional profiler fixture
-  rejected configured samples=1 and is repaired. New CE8-only hashes/PNGs are
-  recorded. Complete native profile repeat and full gate remain pending; no
-  owner decision is pending.
+  correctness/export/inspector/hardware checks and repaired serial profile now
+  pass together on `5effcf3`. New CE8-only hashes/PNGs are exact; all six 1080p
+  costs are recorded (12.3–2,556.3 ms medians), without a real-time claim.
+  Complete final-code gate and milestone PR remain pending; no owner decision
+  is pending.
   [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
@@ -222,6 +223,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 native acceptance checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, final code `5effcf3`.
+- **Results:** complete native acceptance with profile exits zero: 384 forward,
+  384 reverse frames / 108 seeks, exact stored hashes and independent oracles;
+  36 production/repeat/raw exports and 12 independent preview MP4s identical.
+  All eight expected failures, inspector checks and 36 actual hardware comparisons
+  pass; maximum channel delta one. Six serial 1080p cost cases recorded.
+- **Limits:** costs range 12.3 ms (one plane / one sample) to 2,556.3 ms (64 / four),
+  without a real-time claim. CE6-P remains separate; no frozen regeneration.
+- **Next:** full pinned final-code local gate, milestone PR, then CE8-L.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 native baseline and cost fixture checkpoint
 
