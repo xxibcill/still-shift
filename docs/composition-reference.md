@@ -992,8 +992,10 @@ Real camera-frustum and source-backed waveform overlays follow CE8 and CE13.
 Fixed JSON previews offer **Save JSON source**, guarded by source revision and
 byte hash. Saves preserve raw native fields, metadata, source asset paths and file
 mode; no-op saves preserve bytes. Asset bindings cannot change through this endpoint.
-External changes retain a dirty draft, reject stale saves and require explicit
-**Reload source**, which discards the draft. Fixture previews download edited JSON;
+External changes retain a dirty draft and its captured asset bytes across edits,
+undo/redo, renderer changes and MP4 export. They reject stale saves and require
+explicit **Reload source**, which discards the draft and accepts the new source
+and asset bytes. Fixture previews download edited JSON;
 place it beside its source for relative assets. Builder source files remain read-only:
 tune a temporary preview and **Copy edited keys** into the owning layer. The emitted
 `c.timeline(layer.property(...).keys(...))` uses local key times and placement zero;

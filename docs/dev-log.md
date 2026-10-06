@@ -43,13 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #37 final review fixes in progress (2026-10-06):** isolated
+- **PR #37 final review fixes complete (2026-10-06):** isolated
   `codex/pr37-review-fixes` from `00d5fba`; R11 and R12 are posted inline.
-  R11 preserves layer/visibility keyboard focus after accepted and rejected updates;
-  TypeScript and full inspector desktop/phone/save/watch/MP4 acceptance pass.
-  R12 retained-draft asset ownership is next. One finding per commit, then one final
-  normal push to `codex/composition-ce11`. No owner checkout changes or Actions;
-  full `pnpm check` and frozen baselines are not rerun for this repair slice.
+  Layer/visibility controls retain keyboard focus; dirty drafts retain captured
+  asset bytes across watch changes, edits, history, renderer switching and MP4
+  export. Failed/replaced loads and disconnected owners release their leases.
+  Fast checks pass 1,563 unit tests; 29 affected integration, 46 runtime and four
+  browser groups pass. Independent standards/spec review found no new defects.
+  Two finding commits; delivery is one final normal push to `codex/composition-ce11`.
+  Owner review/merge remain; no owner checkout changes, full gate rerun or baseline
+  regeneration. CE10 advanced to `515dfe0` during this slice; new base integration
+  remains pending (conflicts in Lab composition, dev log and package scripts).
+  GitHub Actions remain disabled.
   [Evidence](./pr-37-retained-draft-fix-results.json).
 
 - **PR #37 base merge verified (2026-10-06):** isolated managed worktree
@@ -219,6 +224,23 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #37 R12: Retain dirty-draft asset snapshots
+
+- **Agent / branch:** Codex on isolated `codex/pr37-review-fixes`, after R11 `516422d`.
+- **Done:** connection-owned captured assets survive recent-revision eviction;
+  failed/replaced drafts and socket closure retire bounded leases. Native edits,
+  history, renderer changes and export keep the accepted draft's original bytes.
+- **Results:** fast checks: 1,563 unit; 29 affected integration, 46 runtime and four
+  browser groups pass, including byte-identical retained-asset MP4 and cleanup.
+  Independent standards/spec review found no new substantive findings.
+- **Verification repair:** startup can reach revision 2; the new regression now
+  captures its accepted revision instead of assuming 1. Combined acceptance passes.
+- **Next:** one final normal push delivers both finding commits. CE10 advanced to
+  `515dfe0`; integrating its new base conflicts is separate pending work. Owner
+  review/merge remain. Full gate/depth/baselines not rerun; owner checkout untouched.
+  No Actions.
+- **Records:** [Repair evidence](./pr-37-retained-draft-fix-results.json).
 
 ### 2026-10-06 — PR #37 R11: Retain layer-control keyboard focus
 

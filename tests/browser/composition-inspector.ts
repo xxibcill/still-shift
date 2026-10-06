@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { verifyCompositionInspectorRetention } from "./composition-inspector-retention.ts";
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
@@ -647,3 +648,5 @@ try {
   if (process.env.KEEP_CE11_ARTIFACTS !== "1")
     await rm(root, { recursive: true, force: true });
 }
+
+await verifyCompositionInspectorRetention();

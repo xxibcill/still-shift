@@ -22,18 +22,16 @@ import {
 import { createCompositionInspector } from "./composition-inspector.ts";
 import { createCompositionOverlay } from "./composition-overlay.ts";
 import { createPreviewSession } from "./preview-session.ts";
+import {
+  retainProgramSnapshot,
+  releaseProgramSnapshot,
+  type OwnedProgramSnapshot,
+} from "./composition-program-assets.ts";
+import type { ProgramSnapshot } from "../../../tools/still-shift-cli/src/composition/preview.ts";
 
 const programMode = new URLSearchParams(location.search).has("program");
 type ProgramResponse = {
-  snapshot?: {
-    revision: number;
-    composition: Composition;
-    document?: Composition;
-    sourceSha256?: string;
-    source: "json" | "builder";
-    input: string;
-    assets: Record<string, string>;
-  };
+  snapshot?: ProgramSnapshot & { lease?: string };
   diagnostics: { code: string; path: string; message: string }[];
 };
 
@@ -305,6 +303,7 @@ async function load(
   lintAbort?.abort();
   error.textContent = "";
   status.textContent = `Loading ${path}…`;
+  let retainedProgram: OwnedProgramSnapshot | undefined;
   const accepted = await session.load(async (ownership) => {
     const query = `scene=${encodeURIComponent(path)}`;
     const response = edit.document
@@ -323,8 +322,10 @@ async function load(
             .map((d) => `${d.code} ${d.path}: ${d.message}`)
             .join("\n"),
         );
-      program = payload.snapshot;
-      if (!program) throw new Error("No valid composition is available yet.");
+      if (!payload.snapshot)
+        throw new Error("No valid composition is available yet.");
+      retainedProgram = await retainProgramSnapshot(payload.snapshot);
+      program = retainedProgram;
       value = program.document ?? program.composition;
     } else {
       if (!response!.ok) throw new Error(`Cannot load ${path}`);
@@ -366,6 +367,8 @@ async function load(
       backend,
       program,
       accept() {
+        if (currentProgram?.lease !== program?.lease)
+          releaseProgramSnapshot(currentProgram);
         currentProgram = program;
         if (edit.proposal) nextHistory.commit(edit.proposal);
         documentHistory = nextHistory;
@@ -394,6 +397,7 @@ async function load(
     );
     return { snapshot, initialFrame: retainedFrame };
   });
+  if (!accepted) releaseProgramSnapshot(retainedProgram);
   select.disabled = programMode;
   saveButton.disabled =
     currentProgram?.source === "builder" || !documentHistory;
@@ -498,7 +502,9 @@ saveButton.onclick = async () => {
               .map((d) => `${d.code}: ${d.message}`)
               .join("\n") || "Save failed",
           );
-        currentProgram = payload.snapshot;
+        const savedProgram = await retainProgramSnapshot(payload.snapshot);
+        releaseProgramSnapshot(currentProgram);
+        currentProgram = savedProgram;
         const snapshot = session.snapshot;
         if (snapshot) snapshot.program = currentProgram;
         documentHistory.markSaved();
@@ -527,7 +533,8 @@ exportButton.onclick = () => {
             "x-still-shift-composition": "1",
           },
           body: JSON.stringify({
-            revision: currentProgram?.revision,
+            revision: snapshot.program?.revision,
+            lease: snapshot.program?.lease,
             document: snapshot.document,
             backend: snapshot.backend,
           }),
