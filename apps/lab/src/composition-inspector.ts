@@ -69,6 +69,7 @@ export function createCompositionInspector(options: {
     label: string,
     change: (document: Composition) => void,
   ) {
+    const restoreFocus = restoreGraphButtonFocus();
     try {
       const proposal = history?.propose(label, change);
       if (!proposal) return true;
@@ -81,12 +82,16 @@ export function createCompositionInspector(options: {
     } catch (error) {
       report(error);
       return false;
+    } finally {
+      restoreFocus();
     }
   }
-  function restoreLayerFocus(control: HTMLButtonElement) {
+  function restoreControlFocus(
+    control: Element,
+    replacement: () => HTMLElement | SVGElement | undefined,
+  ) {
     const focused = document.activeElement === control,
-      owner = history,
-      identity = control.dataset.layerControl;
+      owner = history;
     return () => {
       if (
         !focused ||
@@ -95,12 +100,28 @@ export function createCompositionInspector(options: {
           document.activeElement !== control)
       )
         return;
+      replacement()?.focus();
+    };
+  }
+  function restoreLayerFocus(control: HTMLButtonElement) {
+    const identity = control.dataset.layerControl;
+    return restoreControlFocus(control, () =>
       Array.from(
         element("layer-stack").querySelectorAll<HTMLButtonElement>("button"),
-      )
-        .find((candidate) => candidate.dataset.layerControl === identity)
-        ?.focus();
-    };
+      ).find((candidate) => candidate.dataset.layerControl === identity),
+    );
+  }
+  function restoreGraphButtonFocus() {
+    const control = document.activeElement,
+      area = element("curve-controls");
+    if (!(control instanceof HTMLButtonElement) || !area.contains(control))
+      return () => {};
+    const name = control.textContent;
+    return restoreControlFocus(control, () =>
+      Array.from(area.querySelectorAll<HTMLButtonElement>("button")).find(
+        (candidate) => candidate.textContent === name,
+      ),
+    );
   }
   function viewDocument(document = history!.document) {
     const draft = structuredClone(document);

@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #37 inspector repairs in progress (2026-10-06):** isolated
+  `codex/pr37-inspector-fixes` from reviewed `12bfc1d`; all three findings are
+  posted inline. R13 numeric Apply focus is fixed; its browser regression,
+  build and affected lint pass. R14 asynchronous handle focus and R15 scope
+  identity remain, followed by affected final verification and one normal push.
+  No blocker or owner decision is needed for these authorized repairs; owner
+  review/merge remain separate. Actions stay disabled.
+  [Evidence](./pr-37-inspector-fix-results.json).
+
 - **PR #37 main conflicts resolved (2026-10-06):** isolated managed worktree
   from CE11 `7fac583`, integrating main `54782d7` without rewriting history.
   Inspector/draft/asset ownership and advisory lint are retained; soundtrack,
@@ -475,6 +484,18 @@ _Last updated 2026-10-06 by Codex for PR #35 main integration; both histories re
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — PR #37 R13: Preserve numeric Apply keyboard focus
+
+- **Agent / branch:** Codex on isolated `codex/pr37-inspector-fixes` from `12bfc1d`.
+- **Done:** post all three findings inline; restore graph Apply button focus
+  after acceptance/rejection while respecting changed focus and source ownership.
+- **Results:** new browser regression fails before repair and passes afterward;
+  temporal/Bezier/spatial controls, repeated activation, rejection and moved-focus
+  guards pass. Build, affected lint and pinned toolchain preflight pass.
+- **Next:** R14 and R15 in separate commits, affected final checks, one final push.
+  Full gate/depth/baselines were not rerun. Owner checkout untouched; no Actions.
+- **Records:** [Repair evidence](./pr-37-inspector-fix-results.json).
 
 ### 2026-10-06 — Resolve PR #37 against main
 
