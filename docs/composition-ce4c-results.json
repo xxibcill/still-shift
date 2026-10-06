@@ -4411,7 +4411,25 @@
       "depthTests": 14,
       "browserStatus": "running",
       "log": "/private/tmp/ce4c-full-e1fb3e3.log",
-      "limits": "Non-browser stages have completed; the full gate has not. Required timed matrices, native cinematic acceptance and frozen-baseline closure remain pending."
+      "limits": "Non-browser stages have completed; the full gate has not. Required timed matrices, native cinematic acceptance and frozen-baseline closure remain pending.",
+      "completedCanvasMatrices": {
+        "story": {
+          "cases": 69,
+          "frames": 14086,
+          "maxRatio": 1.174965101854858,
+          "maxDelta": 2,
+          "status": "pass",
+          "policy": "unchanged Canvas near pixels and 1.25 timing limit"
+        },
+        "commerce": {
+          "cases": 127,
+          "frames": 28200,
+          "maxRatio": 1.1900276971919619,
+          "maxDelta": 1,
+          "status": "pass",
+          "policy": "unchanged Canvas near pixels and 1.25 timing limit"
+        }
+      }
     }
   ]
 }

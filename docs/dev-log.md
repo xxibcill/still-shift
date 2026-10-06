@@ -60,8 +60,11 @@ still hold before relying on them.
   Complete `pnpm check` is running on isolated checkpoint `e1fb3e3`, including
   46 final-code cinematic cases / 5,520 frames. Final preflight and non-browser
   checks pass: 1,938 unit / 46 runtime / 140 integration / 14 depth tests.
-  Browser acceptance is in progress; the complete gate is not terminal.
-  Milestone PR and coordination authorization remain pending.
+  Story Canvas (69 cases / 14,086 frames) and Commerce Canvas (127 / 28,200)
+  pass unchanged pixels and the 1.25 timing limit (max ratios 1.175 / 1.190).
+  Final cinematic acceptance, typography and frozen-baseline closure remain
+  pending; the complete gate is not terminal. Milestone PR and coordination
+  authorization remain pending.
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
   `9d8f33a`; final code `d72ba2c`, verified checkpoint `3820c1c`. Bounded ambient,
@@ -243,6 +246,16 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c full family matrix checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, full snapshot `e1fb3e3`.
+- **Results:** complete Story Canvas 69 cases / 14,086 frames (max ratio 1.175)
+  and Commerce Canvas 127 / 28,200 (max ratio 1.190, delta1) pass the unchanged
+  pixel and 1.25 timing limits. No source or reference changes during this gate.
+- **Open / next:** full cinematic acceptance, typography and frozen-baseline
+  closure remain pending. The complete `pnpm check` is still in progress.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c final gate non-browser checkpoint
 
