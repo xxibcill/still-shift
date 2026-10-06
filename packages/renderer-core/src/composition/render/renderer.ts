@@ -21,7 +21,11 @@ import {
   renderCompositionExposure,
   type CompositionFrameCache,
 } from "./exposure.ts";
-import { loadCompositionFonts, prepareCompositionText } from "./text.ts";
+import {
+  loadCompositionFonts,
+  prepareCompositionText,
+  type TextProbe,
+} from "./text.ts";
 import { COMPOSITION_RENDERER_VERSION } from "./version.ts";
 import {
   prepareCompositionProviders,
@@ -133,6 +137,8 @@ export function compositionScene(
 }
 
 export type CompositionResources = {
+  /** Optional local glyph/container diagnostic; never part of a saved document. */
+  textProbe?: TextProbe;
   images: Map<string, CanvasImageSource>;
   /** PNG signatures verified from asset bytes, independent of filenames and URLs. */
   pngImages?: ReadonlySet<string>;
@@ -264,7 +270,13 @@ export function createCompositionPreview(
   };
   validateStoryCompositionCoverage(composition, readAssetPixels);
   validateCinematicCompositionCoverage(composition, readAssetPixels);
-  const text = prepareCompositionText(composition, resources.fonts, ctx);
+  const text = prepareCompositionText(
+    composition,
+    resources.fonts,
+    ctx,
+    undefined,
+    resources.textProbe,
+  );
   const drawProvider = prepareCompositionProviders(
     composition,
     { ...resources, softwareRaster: requiresSoftwareFilters(composition) },

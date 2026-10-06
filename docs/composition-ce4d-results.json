@@ -2607,6 +2607,28 @@
       ],
       "browser": "implemented but unrun during CE6-P quiet timing window",
       "productionDefaults": "unchanged; migrate after required parity"
+    },
+    {
+      "name": "typography diagnostic probes and required CE4d gate coverage",
+      "status": "implemented-focused-verification",
+      "checks": {
+        "focusedUnit": {
+          "tests": 62,
+          "files": 5,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass",
+        "boundaries": "pass"
+      },
+      "scope": [
+        "Native glyph/container diagnostic draws and local text providers preserve existing typography pixel quality checks",
+        "Independent old-renderer text-probe comparisons registered for typography fixtures",
+        "Asset loading moved unchanged into adapter preparation",
+        "Depth, legacy adapter and actual family-default groups added to required pnpm test"
+      ],
+      "browser": "implemented but unrun during CE6-P quiet timing window",
+      "productionDefaults": "unchanged; migrate after parity"
     }
   ],
   "pending": [

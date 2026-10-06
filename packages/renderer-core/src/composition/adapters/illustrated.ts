@@ -1,5 +1,5 @@
 import type { IllustratedScene } from "../../prepared-scene.ts";
-import type { Images } from "../../illustrated-renderer.ts";
+import type { Images } from "./illustrated-assets.ts";
 import type { CompositionResources } from "../render/renderer.ts";
 import { compiledStoryToComposition } from "./story.ts";
 import { compiledCommerceToComposition } from "./commerce.ts";
@@ -93,6 +93,7 @@ export function prepareIllustratedComposition(
       ),
     );
   const resources: CompositionResources = {
+    ...(images.textProbe ? { textProbe: images.textProbe } : {}),
     images: new Map(
       [...images].map(([id, image]) => [id, images.rasters?.get(id) ?? image]),
     ),

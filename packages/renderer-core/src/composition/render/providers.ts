@@ -6,9 +6,11 @@ import { passageError } from "../../passage-diagnostics.ts";
 import type { LoadedFont } from "../../prepared-fonts.ts";
 import type { ProviderContent } from "./graph.ts";
 import type { Bounds } from "../evaluate/types.ts";
+import type { TextProbe } from "./text.ts";
 
 export type ProviderLayer = Extract<CompositionLayer, { type: "provider" }>;
 export type ProviderResources = {
+  textProbe?: TextProbe;
   images: ReadonlyMap<string, CanvasImageSource>;
   /** Match prepared glyphs to the composition primitive-filter raster policy. */
   softwareRaster?: boolean;
@@ -120,6 +122,7 @@ export function prepareCompositionProviders(
       const key = `${index ? `${scope.id}/` : ""}${layer.id}`;
       // Limit the provider's resource view to its declared dependencies.
       const available: ProviderResources = {
+        ...(resources.textProbe ? { textProbe: resources.textProbe } : {}),
         ...(resources.softwareRaster ? { softwareRaster: true } : {}),
         images: new Map(
           [...resources.images].filter(([id]) => declared.has(id)),

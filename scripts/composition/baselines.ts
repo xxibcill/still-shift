@@ -1,7 +1,7 @@
 /**
  * Composition-engine baselines (docs/composition-engine-plan.md, CE0).
  *
- * Renders every frame of each acceptance fixture through the current renderer in the
+ * Renders every frame through the preserved test-only legacy oracle in the
  * pinned software-rendering browser, then writes or checks per-frame hashes, sampled
  * thumbnails and render timings.
  *

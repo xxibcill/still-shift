@@ -63,6 +63,9 @@ still hold before relying on them.
   Family state sampling now belongs to adapters, with 132 focused regressions
   passing. Full 23-timeline depth and six mixed-graph export/hardware acceptance,
   alpha/resource diagnostics and verified-byte preview preparation are implemented.
+  Typography diagnostic probes are supported by shared text/providers and
+  independently compared; asset loading belongs to preparation. These changes
+  pass 62 focused checks/build/lint/boundaries. Required CE4d groups join pnpm test.
   Browser runs remain pending during CE6-P's requested quiet timing window.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
@@ -261,6 +264,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d diagnostic preparation and mandatory gate coverage
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** preserved ink/container typography diagnostics through shared native
+  text and local providers; added independent probe pixels to the family acceptance
+  suite. Asset loading moved unchanged into adapter preparation. Depth, legacy
+  adapter and all-family actual-default acceptance are mandatory in `pnpm test`.
+- **Results:** 62 focused text/provider regressions, build, scoped lint and package
+  boundaries pass. New browser coverage is implemented but unrun during CE6-P's
+  quiet window; default migration and full gate remain pending.
+- **Open / next:** finish required parity, migrate all default entry points and
+  deliver the milestone. [Evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d adapter-owned sampling and depth delivery checks
 

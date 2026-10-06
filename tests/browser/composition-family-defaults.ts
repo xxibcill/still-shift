@@ -20,6 +20,7 @@ import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as Adapter from "../../packages/renderer-core/src/composition/adapters/illustrated.ts";
 import type * as Oracle from "../helpers/legacy-illustrated-oracle.ts";
 import type { ToleranceTier } from "../../packages/renderer-core/src/frame-tolerance.ts";
+import { familyTextProbeAcceptance } from "./family-text-probes.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const inventory = JSON.parse(
@@ -30,6 +31,7 @@ const inventory = JSON.parse(
 ) as {
   fixtures: {
     id: string;
+    family: string;
     kind: "scene" | "passage";
     path: string;
     tier: ToleranceTier;
@@ -226,7 +228,15 @@ try {
             smoke,
           },
         );
-        reports.push({ id: item.id, ...report });
+        const textProbes =
+          entry.family === "typography"
+            ? await familyTextProbeAcceptance(page, item.scene, urls)
+            : undefined;
+        reports.push({
+          id: item.id,
+          ...report,
+          ...(textProbes ? { textProbes } : {}),
+        });
         completed.push(item.id);
         totalFrames += report.frames;
         console.log(
