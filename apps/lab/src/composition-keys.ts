@@ -99,7 +99,11 @@ export function compositionTracks(document: Composition): KeyTrack[] {
           k.in?.spatialSpeed !== undefined ||
           k.out?.spatialSpeed !== undefined,
       ),
-      ...(dimensions ? { dimensions, fallbackZ } : {}),
+      ...(dimensions &&
+      Array.isArray(keys[0]!.value) &&
+      keys[0]!.value.length === 3
+        ? { dimensions, fallbackZ }
+        : {}),
     });
   }
   function layerTracks(

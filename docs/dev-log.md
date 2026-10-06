@@ -53,6 +53,8 @@ still hold before relying on them.
   and remaining milestone acceptance are pending. Prepared family compilation and
   independent test-only legacy oracle pass 85 focused checks/build/lint/boundaries;
   the all-176 native migration/default acceptance suite is implemented but unrun.
+  PR43 inherited-blur/ancestor-coverage/XY-tangent fixes are integrated with 43
+  focused regressions/build/lint passing; browser regressions join the final gate.
   PR42 is running its timed gate; defer new timed browser acceptance until it ends.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
@@ -251,6 +253,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d reconciles spatial review fixes
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** integrated source/tests from PR43 fixes `e16d962`, `c36c686`, `c0c8f5d`:
+  inherited projected blur, ancestor-group required coverage and XY inspector
+  tangents. Advanced current evaluator/backend/export versions without rollback.
+- **Results:** 43 focused regressions, build and scoped lint pass. Upstream browser
+  checks are included in the required camera group; final-code browser/full gate
+  remain pending. No upstream owner documentation or worktree is changed.
+- **Open / next:** remaining depth acceptance, independent all-family migration
+  proof and default consolidation; new timing waits for PR42's active full gate.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d preparation and independent oracle checkpoint
 

@@ -2514,6 +2514,37 @@
       },
       "productionDefaults": "unchanged; switch follows required parity acceptance",
       "browser": "pending; other chat is running timed verification"
+    },
+    {
+      "name": "PR43 spatial correctness fixes reconciled",
+      "status": "integrated-focused-verification",
+      "sourceCommits": [
+        "e16d962",
+        "c36c686",
+        "c0c8f5d"
+      ],
+      "scope": [
+        "Projected children and collapsed precomps retain inherited primitive blur bounds",
+        "Required coverage includes ancestor group masks/mattes/effects/visibility",
+        "Inspector retains authored XY tangent dimensions"
+      ],
+      "checks": {
+        "focusedUnit": {
+          "tests": 43,
+          "files": 5,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass"
+      },
+      "versions": {
+        "evaluator": "composition-evaluator-50",
+        "canvas": "composition-canvas-1.43.0",
+        "webgl": "composition-webgl2-0.60.0",
+        "exportWorker": "chromium-ffmpeg-0.6.5"
+      },
+      "browserAcceptance": "Added existing upstream regressions to required composition-camera group; final CE4d gate pending",
+      "integration": "Source/tests only; upstream owner documents, historical versions and unrelated worktrees untouched"
     }
   ],
   "pending": [

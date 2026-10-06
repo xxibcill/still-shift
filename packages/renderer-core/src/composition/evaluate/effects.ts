@@ -4,7 +4,7 @@ import {
   type CompositionLayer,
 } from "@still-shift/scene-contract";
 import { scalar, vector, color, unit, effectCurve } from "./sample.ts";
-import type { Bounds, Rgba } from "./types.ts";
+import type { Bounds, EvaluatedLayer, Rgba } from "./types.ts";
 import type { Point } from "../../node-transform.ts";
 import {
   passageError,
@@ -21,6 +21,25 @@ export type EvaluatedEffect = {
   inputs?: Readonly<Record<string, string>>;
   params: Record<string, number | Rgba | Point | Point[]>;
 };
+
+/** A positive local radius overrides group paint; zero retains the nearest positive group radius. */
+export function primitiveBlurEffect(
+  state: EvaluatedLayer,
+  byId: ReadonlyMap<string, EvaluatedLayer>,
+): EvaluatedEffect | undefined {
+  for (
+    let current: EvaluatedLayer | undefined = state;
+    current;
+    current = current.layer.parent ? byId.get(current.layer.parent) : undefined
+  ) {
+    if (current !== state && current.layer.type !== "group") continue;
+    const blur = current.effects.find(
+      (effect) => effect.enabled && effect.effect === "blur.primitive",
+    );
+    if (blur && (blur.params.radius as number) > 0) return blur;
+  }
+  return undefined;
+}
 
 export function sampleEffects(
   layer: CompositionLayer,

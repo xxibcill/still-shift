@@ -26,8 +26,13 @@ import {
   type CameraFixture,
 } from "./camera-hardware.ts";
 import { cameraFailureAcceptance } from "./camera-failures.ts";
+import { cameraGroupBlurAcceptance } from "./camera-group-blur.ts";
+import { cameraAncestorCoverageAcceptance } from "./camera-ancestor-coverage.ts";
 import { cameraSampleCosts } from "./camera-cost.ts";
-import { cameraInspectorAcceptance } from "./camera-inspector.ts";
+import {
+  cameraInspectorAcceptance,
+  cameraXyInspectorAcceptance,
+} from "./camera-inspector.ts";
 
 const root = resolve(import.meta.dirname, "../.."),
   cache = await mkdtemp(join(tmpdir(), "ce8-camera-vite-")),
@@ -200,12 +205,15 @@ try {
     items[name] = { source: digest(JSON.stringify(doc)), hashes };
     console.log("Native CE8 fixture:", name);
   }
-  const failures = await cameraFailureAcceptance(page, root),
+  const groupBlur = await cameraGroupBlurAcceptance(page),
+    ancestorCoverage = await cameraAncestorCoverageAcceptance(page),
+    failures = await cameraFailureAcceptance(page, root),
     hardware = await cameraHardwarePreview(
       server.resolvedUrls!.local[0]!,
       fixtures,
     ),
-    inspector = await cameraInspectorAcceptance(browser);
+    inspector = await cameraInspectorAcceptance(browser),
+    xyInspector = await cameraXyInspectorAcceptance(browser);
   if (writing)
     await writeFile(
       baselinePath,
@@ -240,7 +248,10 @@ try {
         reports,
         failures,
         hardware,
+        groupBlur,
+        ancestorCoverage,
         inspector,
+        xyInspector,
         baseline: writing ? "created new CE8 baseline" : "exact",
       },
       null,
@@ -253,7 +264,10 @@ try {
       reports,
       failures,
       hardware,
+      groupBlur,
+      ancestorCoverage,
       inspector,
+      xyInspector,
       baseline: writing ? "created CE8" : "exact",
     }),
   );
