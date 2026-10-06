@@ -54,7 +54,9 @@ still hold before relying on them.
   Public family/depth factories now use the prepared shared composition backends;
   duplicate frame painters are removed. Node manifests/exports carry native
   composition and truthful provenance; pipeline 0.12 and native versions enter cache
-  identity. Build/scoped ESLint pass. Actual-default depth/family/Lab/export acceptance,
+  identity. Build/scoped ESLint, 42 focused units and 11 integration tests pass. Frozen
+  test oracles now declare pinned Three explicitly at the test root, after initial
+  browser module resolution failed before pixel checks. Actual-default depth/family/Lab/export acceptance,
   fresh zipper QA and complete local `pnpm check` remain pending, then CE4d PR →
   CE13 → CE15 → CE14 (audit/reuse CE16). No owner decision blocks this approved
   order; CE5-X/Q9 remains pending. Failed/rejected experiments and full proof remain
@@ -256,6 +258,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d frozen-oracle dependency is made explicit
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` after `db0a4ca`.
+- **Results:** 42 focused unit tests and 11 startup/cancellation/publication integration tests pass.
+  Actual-default browser acceptance stopped before pixels: test-only Three resolution had relied
+  on the retired production import.
+- **Done:** pinned Three 0.186.0 and its types move to root test development dependencies;
+  renderer production dependencies no longer include Three. Lock package/snapshot maps and
+  all versions/integrities are unchanged. Build passes.
+- **Open / next:** rerun actual-default browser acceptance, required family/Lab/export matrices,
+  zipper QA and full local gate; then CE4d PR and remaining approved milestones.
+- **Records:** [results](./composition-ce4d-results.json).
 
 ### 2026-10-07 — CE4d native delivery passes and production defaults are consolidated
 

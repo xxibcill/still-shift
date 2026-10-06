@@ -16647,7 +16647,21 @@
       ],
       "checks": {
         "build": "pass",
-        "scopedEslint": "pass"
+        "scopedEslint": "pass",
+        "focusedUnits": {
+          "status": "pass",
+          "snapshot": "db0a4ca",
+          "tests": 42,
+          "files": 6,
+          "log": "/private/tmp/ce4d-default-focused-db0a4ca.log"
+        },
+        "focusedIntegration": {
+          "status": "pass",
+          "snapshot": "db0a4ca",
+          "tests": 11,
+          "files": 3,
+          "log": "/private/tmp/ce4d-default-integration-db0a4ca.log"
+        }
       },
       "pending": [
         "focused units/integration and actual default wrappers",
@@ -16656,7 +16670,16 @@
         "fresh zipper CLI QA",
         "complete local pnpm check",
         "CE4d completion PR and continuation CE13 \u2192 CE15 \u2192 CE14"
-      ]
+      ],
+      "browserSetupFailure": {
+        "snapshot": "db0a4ca",
+        "status": "failed before parity sampling",
+        "reason": "Frozen test oracle Three import was incidentally resolved via production import before retirement; test-root dependency was missing",
+        "log": "/private/tmp/ce4d-default-depth-base-db0a4ca.log",
+        "logSha256": "sha256:53b7a16918b68d8b1dde2945af38b6f2dc690bb4098d0ea7a13071de2de652cd",
+        "repair": "Three0.186.0 and types0.186.0 move from renderer production package to explicit root development dependencies; lock package/snapshot/version/integrity maps are unchanged",
+        "verification": "build passes; default browser acceptance rerun pending"
+      }
     }
   ],
   "pending": [
