@@ -47,6 +47,61 @@ function compile(contents: unknown[], time = 0) {
 }
 
 describe("native sampled shape state", () => {
+  it("preserves smooth zig-zag handles through sampling and compilation", () => {
+    const contents = [
+      {
+        id: "path",
+        type: "path",
+        path: {
+          closed: false,
+          vertices: [
+            [0, 0],
+            [100, 0],
+          ],
+        },
+      },
+      { id: "zig", type: "zig-zag", size: 10, ridges: 2 },
+      { id: "stroke", type: "stroke", width: 2, color: "#ff0000" },
+    ];
+    const smooth = compile([
+      contents[0],
+      { ...contents[1], points: "smooth" },
+      contents[2],
+    ]).draws[0]!.paths[0]!.path;
+    const corner = compile([
+      contents[0],
+      { ...contents[1], points: "corner" },
+      contents[2],
+    ]).draws[0]!.paths[0]!.path;
+    expect(smooth.vertices).toEqual(corner.vertices);
+    expect(smooth.inTangents?.some(([x, y]) => x !== 0 || y !== 0)).toBe(true);
+    expect(smooth.outTangents?.some(([x, y]) => x !== 0 || y !== 0)).toBe(true);
+    expect(corner.inTangents).toBeUndefined();
+    expect(corner.outTangents).toBeUndefined();
+  });
+  it("still samples animated polystar point counts as numeric fields", () => {
+    const sampled = sampleShapes(
+      ShapeContentsSchema.parse([
+        {
+          id: "star",
+          type: "polystar",
+          kind: "star",
+          points: {
+            keys: [
+              { frame: 0, value: 5 },
+              { frame: 10, value: 7 },
+            ],
+          },
+          outerRadius: 20,
+          innerRadius: 10,
+        },
+      ]),
+      5,
+      24,
+      new ShapeGeometryBudget(),
+    );
+    expect(sampled[0]).toMatchObject({ points: 6 });
+  });
   it("samples explicit vectors, nested transforms/stops and defaults without traversing metadata", () => {
     const authored = ShapeContentsSchema.parse([
       {

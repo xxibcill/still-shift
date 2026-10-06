@@ -15,6 +15,12 @@ Run `pnpm test:browser:composition-shapes` to check. The explicit
 Do not use it to hide an unexpected regression. PNGs show first, middle and last
 Canvas frames of the reference, animation and connector fixtures.
 
+On 2026-10-06, PR #38's smooth zig-zag repair updated only the reference sheet's
+zig-zag cell (cell 13), its frame hashes and three sampled PNGs. Forward/reverse
+comparisons reproduced every previous corner-mode hash and confined all corrected
+pixel changes to that cell. Fixture sources, animation/core hashes and PNGs, and
+frozen CE0 baselines stayed unchanged. See [repair evidence](../../../docs/pr-38-fix-results.json).
+
 ![Reference sheet](./reference-sheet-24.png)
 
 Cells are 128×96 pixels, six columns, left to right and top to bottom:

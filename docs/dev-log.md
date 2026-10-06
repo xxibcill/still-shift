@@ -43,6 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #38 review fixes in progress (2026-10-06):** isolated
+  `codex/pr38-shape-review-fixes` from `2b1c6e5`. Both P2 findings are posted
+  inline. Smooth zig-zag sampling is repaired with geometry regressions and
+  versioned output identity. Fast checks pass 1,620 unit tests; all 62 focused shape tests and native acceptance,
+  independent exports, inspector and 18 exact hardware comparisons pass.
+  The reference-sheet migration changes only cell 13; source fixtures,
+  animation/core and frozen CE0 baselines remain unchanged. Square-cap bounds
+  are the second pending finding. Delivery will be two finding commits and one
+  final normal push; no owner decision or implementation blocker. Actions remain
+  disabled. [Fix evidence](./pr-38-fix-results.json).
+
 - **PR #38 base integration verified (2026-10-06):** CE11 `00d5fba` is merged
   into CE5 in an isolated managed worktree without rewriting shared history.
   CE5 native shapes and the CE11/CE10 review fixes are retained; narrow save
@@ -229,6 +240,21 @@ _Last updated 2026-10-06 by Codex for PR #38 base integration; prior work retain
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — Repair PR #38 smooth zig-zag sampling
+
+- **Agent / branch:** Codex on isolated `codex/pr38-shape-review-fixes`, from `2b1c6e5`.
+- **Done:** posted both review findings inline; preserve smooth zig-zag mode without
+  overwriting animated polystar counts; add regressions and bump output identities.
+- **Results:** fast checks pass all 1,620 unit tests; 62 focused shape tests and native shape acceptance pass,
+  including inspector, independent/repeated transports and 18 exact hardware comparisons.
+  Previous corner hashes reproduce exactly; every corrected reference pixel stays in
+  cell 13. Source fixtures, animation/core and frozen CE0 baselines are unchanged.
+- **Retained failure:** initial fast check linted a temporary review probe; moved
+  probes outside the disposable verification snapshot. Production code was unaffected.
+- **Next:** finish square-cap bounds in its own commit, then push both commits once.
+  Full `pnpm check` was not rerun; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-38-fix-results.json), [inline review](https://github.com/xxibcill/still-shift/pull/38#pullrequestreview-5424533811).
 
 ### 2026-10-06 — Resolve CE5 PR #38 against the advancing CE11 base
 
