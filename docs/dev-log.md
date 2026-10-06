@@ -43,6 +43,12 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE4d in progress (2026-10-06):** `codex/composition-ce4d` from CE4c
+  `17666eb`. Dedicated old-depth capture harness covers 17 cases; build passes.
+  Reference capture, native depth-image integration, legacy preset adaptation,
+  family default consolidation and all milestone acceptance remain pending.
+  [Evidence](./composition-ce4d-results.json). No owner decision is required.
+
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
   CE8-L `e1bd4bc`; final runtime `37cc07a`, verified snapshot `e1fb3e3`.
   Native camera framing, depth planes, Gaussian focus, decoded-alpha safety and
@@ -55,7 +61,7 @@ still hold before relying on them.
   visual references remain unchanged. Earlier failures and diagnostics remain in
   the [evidence](./composition-ce4c-results.json). WebGL speed targets remain CE6-P.
   [PR #45](https://github.com/xxibcill/still-shift/pull/45) is open and attached against CE8-L.
-  Start CE4d on a new branch.
+  CE4d is now in progress on its own branch.
   Separate cross-chat coordination authorization remains pending.
 
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
@@ -238,6 +244,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d reference capture begins
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, from CE4c `17666eb`.
+- **Scope:** legacy/depth adapters and renderer consolidation, after attached
+  [PR #45](https://github.com/xxibcill/still-shift/pull/45).
+- **Done:** independent old-depth capture harness and source/depth fixtures for
+  17 landscape/vertical, flat, fallback and discontinuity cases.
+- **Results:** TypeScript build passes. Browser capture and native integration
+  remain pending; the old renderer and frozen CE0 references are unchanged.
+- **Open / next:** capture references before replacing depth drawing, then native
+  contract/evaluation/shared WebGL integration and family consolidation.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4c complete verification checkpoint
 
