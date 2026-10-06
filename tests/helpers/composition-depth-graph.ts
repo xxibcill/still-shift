@@ -3,7 +3,7 @@ import {
   type Composition,
   type CompositionAsset,
   type CompositionLayer,
-} from "@still-shift/scene-contract";
+} from "../../packages/scene-contract/src/index.ts";
 
 /** Small mixed graphs share exactly the same local old-depth raster oracle. */
 export function depthGraphFixtures(

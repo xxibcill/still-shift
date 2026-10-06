@@ -130,7 +130,7 @@ window.runStillShiftExport = async (scene, hasDepth, transport) => {
         scene,
         await loadIllustratedImages(scene, (id) => `/_export/assets/${id}`),
       )
-    : createWebGLPreview(canvas, scene, source!, depth);
+    : await createWebGLPreview(canvas, scene, source!, depth);
   const gl = illustrated ? null : canvas.getContext("webgl2");
   if (!illustrated && !gl)
     throw new Error("WebGL2 is unavailable in export browser");

@@ -71,7 +71,12 @@ still hold before relying on them.
   Preview wrappers and actual-depth-default reference assertions are prepared.
   Native depth export preparation/manifest data, inspector rejection/history
   assertions and serial depth costs pass 41 focused checks/build/lint/schema and
-  package boundaries. CE6-P released its timing hold; browser parity is next.
+  package boundaries. CE6-P released its timing hold. All 23 prepared depth
+  wrapper timelines pass 2,070 exact forward/reverse frames; six mixed graphs and
+  resource/real inspector diagnostics pass after a spatial preflight repair.
+  WebGL2 is now 0.61.0. Actual depth Lab checks and 31 focused regressions pass.
+  All-family candidate stopped at supply-ramps frame 36 (delta 13); its repair,
+  remaining parity, exports/hardware/costs, defaults and full gate are pending.
   [Evidence](./composition-ce4d-results.json). No owner decision is required.
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
@@ -269,6 +274,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4d depth parity and integration repair checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`.
+- **Done:** separately captured/repeated six extra old-depth cases; all 23 prepared
+  native wrapper timelines match exactly in 2,070 forward/reverse frames. Fixed
+  depth capability propagation in spatial shutter preflight (WebGL2 0.61.0),
+  browser fixture imports and inspector reload revisions. Lab activation awaits
+  private candidate canvases and rejects superseded loads safely.
+- **Results:** 31 focused regressions/build/lint and actual depth-motion Lab checks
+  pass. Six mixed graphs pass 144 forward/reverse frames (delta at most 2), four
+  resource rejection cases and real inspector edit/undo/redo/save/reload pass.
+- **Rejected / open:** all-family candidate stopped at supply-ramps frame 36
+  (delta 13, near tier unchanged). Defaults remain old; trace and repair this
+  mismatch, finish exports/hardware/costs, then migrate and run the full gate.
+- **Records:** [CE4d evidence](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d resumes parity verification after timing release
 

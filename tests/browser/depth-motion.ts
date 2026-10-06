@@ -359,7 +359,7 @@ try {
         requestedDepthStrength: 0.03,
         requestedLateralTravel: 0,
       });
-      const edgePreview = createWebGLPreview(
+      const edgePreview = await createWebGLPreview(
         edgeCanvas,
         edgeScene,
         source,

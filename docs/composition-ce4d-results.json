@@ -2695,6 +2695,141 @@
       "productionDefaults": "unchanged; switch after independent parity",
       "unverifiedCheckpoint": "187e131",
       "browser": "pending; quiet timing window released"
+    },
+    {
+      "name": "depth reference extension, async activation and spatial preflight repair",
+      "status": "implemented-focused-verification",
+      "rendererVersion": "composition-webgl2-0.61.0",
+      "checks": {
+        "focusedUnit": {
+          "tests": 31,
+          "files": 3,
+          "status": "pass"
+        },
+        "depthGraphAndExportPreparation": {
+          "tests": 5,
+          "files": 2,
+          "status": "pass"
+        },
+        "build": "pass",
+        "scopedLint": "pass"
+      },
+      "depthReferences": {
+        "baseOriginalFiles": "unchanged",
+        "extensionCases": 6,
+        "extensionFrames": 540,
+        "extensionReverseFrames": 540,
+        "independentOldRepeat": "pass",
+        "newFiles": 19,
+        "manifest": "tests/visual/composition-depth-reference/darwin-arm64-extended.json"
+      },
+      "preparedDepthWrapper": {
+        "timelines": 23,
+        "forwardFrames": 2070,
+        "reverseFrames": 2070,
+        "maximumChannelDelta": 0,
+        "logs": [
+          "/private/tmp/ce4d-depth-prepared-0b14fd1.log",
+          "/private/tmp/ce4d-depth-prepared-extended-0b14fd1.log"
+        ]
+      },
+      "mixedDepthDiagnostic": {
+        "diagnosticOnly": true,
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "mixed": [
+          {
+            "id": "depth-local-clock-overlay",
+            "frames": 24,
+            "maxChannelDelta": 0
+          },
+          {
+            "id": "depth-parent-mask-matte-effect",
+            "frames": 24,
+            "maxChannelDelta": 2
+          },
+          {
+            "id": "depth-repeated-precomp-remap",
+            "frames": 24,
+            "maxChannelDelta": 0
+          },
+          {
+            "id": "depth-fractional-shutter",
+            "frames": 24,
+            "maxChannelDelta": 0
+          },
+          {
+            "id": "depth-camera-applied-once",
+            "frames": 24,
+            "maxChannelDelta": 0
+          },
+          {
+            "id": "depth-opt-in-flat-lighting",
+            "frames": 24,
+            "maxChannelDelta": 0
+          }
+        ],
+        "failures": [
+          {
+            "kind": "hash",
+            "status": "rejected-before-paint",
+            "message": "Asset checksum differs: source"
+          },
+          {
+            "kind": "dimensions",
+            "status": "rejected-before-paint",
+            "message": "Dimensions differ for source"
+          },
+          {
+            "kind": "missing",
+            "status": "rejected-before-paint",
+            "message": "Asset unavailable: source"
+          },
+          {
+            "kind": "decode",
+            "status": "rejected-before-paint",
+            "message": "The source image cannot be decoded."
+          }
+        ],
+        "inspector": {
+          "backend": "webgl2",
+          "realKeyEdit": "pass",
+          "boundedValueRejection": "pass",
+          "evaluatedStrength": 0.01,
+          "undoRedo": "pass",
+          "sourceSaveReload": "pass",
+          "assetsUnchanged": "pass"
+        }
+      },
+      "actualLabDepthMotion": "pass; existing near/far motion, framing, fallback, latest selection and gallery checks",
+      "familyAttempt": {
+        "complete": false,
+        "passedItems": 31,
+        "passedFrames": 7510,
+        "failedItem": "motion-craft/supply-ramps",
+        "failedFrame": 36,
+        "maximumChannelDelta": 13,
+        "psnr": 82.25270117192284,
+        "unchangedTier": "near",
+        "log": "/private/tmp/ce4d-family-candidate-0b14fd1.log"
+      },
+      "repairs": [
+        "Spatial shutter preflight now passes backend depth-image support before any target mutation",
+        "Browser fixture uses a directly resolvable contract import",
+        "Inspector reload accepts the saved program revision instead of assuming revision 1",
+        "Lab prepares candidate canvases privately and disposes superseded activation safely; export callers await preparation"
+      ],
+      "pending": [
+        "Family parity failure repair and remaining all-176 coverage",
+        "Full depth independent/repeat/raw exports, hardware and serial costs",
+        "Actual renderer defaults and full milestone gate"
+      ]
     }
   ],
   "pending": [

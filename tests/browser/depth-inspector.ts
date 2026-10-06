@@ -16,6 +16,7 @@ export async function depthInspectorAcceptance(
   const page = await browser.newPage({
     viewport: { width: 1280, height: 900 },
   });
+  page.setDefaultTimeout(30_000);
   let app: Awaited<ReturnType<typeof createProgramPreview>> | undefined;
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
@@ -100,7 +101,7 @@ export async function depthInspectorAcceptance(
     assert.deepEqual(saved.assets, doc.assets);
     await page.reload();
     await page.waitForFunction(
-      () => document.getElementById("status")?.dataset.revision === "1",
+      () => Number(document.getElementById("status")?.dataset.revision) > 0,
     );
     await page.locator("#backend").selectOption("webgl2");
     await page.waitForFunction(

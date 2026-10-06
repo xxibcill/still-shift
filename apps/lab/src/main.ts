@@ -43,7 +43,7 @@ const byId = <T extends HTMLElement>(id: string): T => {
   return element as T;
 };
 
-const canvas = byId<HTMLCanvasElement>("preview");
+let canvas = byId<HTMLCanvasElement>("preview");
 const guides = byId<HTMLCanvasElement>("preview-guides");
 const formatSelect = byId<HTMLSelectElement>("output-format");
 const focusModeSelect = byId<HTMLSelectElement>("focus-mode");
@@ -293,20 +293,36 @@ const loadScene = async (pair: PreviewPair) => {
   };
 };
 
-const activateScene = (
+const activateScene = async (
   name: string,
   pair: PreviewPair,
   source: HTMLImageElement,
   depth: HTMLImageElement | null,
   nextScene: PreviewScene,
+  requestId: number,
   frameIndex = 0,
-): void => {
+): Promise<void> => {
+  // Prepare on a private canvas. A superseded async load must not alter the
+  // active canvas or dispose the newer scene's GPU resources.
+  const nextCanvas = canvas.cloneNode(false) as HTMLCanvasElement;
+  nextCanvas.width = nextScene.canvas.width;
+  nextCanvas.height = nextScene.canvas.height;
+  const nextRenderer = await createWebGLPreview(
+    nextCanvas,
+    nextScene,
+    source,
+    depth,
+  );
+  if (requestId !== previewRequestId) {
+    nextRenderer.dispose();
+    return;
+  }
   stop();
   renderer?.dispose();
-  canvas.width = nextScene.canvas.width;
-  canvas.height = nextScene.canvas.height;
+  canvas.replaceWith(nextCanvas);
+  canvas = nextCanvas;
   setPreviewAspect(previewStage, nextScene.canvas);
-  renderer = createWebGLPreview(canvas, nextScene, source, depth);
+  renderer = nextRenderer;
   scene = nextScene;
   activeImages = { name, pair, source, depth };
   byId<HTMLElement>("scene-name").textContent = name;
@@ -335,18 +351,29 @@ const inspectPair = async (
   status.textContent = `Loading ${name}…`;
   const { source, depth, resolvedScene } = await loadScene(pair);
   if (requestId !== previewRequestId) return;
-  activateScene(name, pair, source, depth, resolvedScene);
+  await activateScene(name, pair, source, depth, resolvedScene, requestId);
 };
 
 const refreshScene = (): void => {
   if (!activeImages) return;
-  try {
-    const { name, pair, source, depth } = activeImages;
-    const nextScene = resolveLabScene(source, depth, pair.durationMs);
-    activateScene(name, pair, source, depth, nextScene, currentFrame);
-  } catch (error) {
-    showError(error);
-  }
+  const requestId = ++previewRequestId;
+  const { name, pair, source, depth } = activeImages;
+  void (async () => {
+    try {
+      const nextScene = resolveLabScene(source, depth, pair.durationMs);
+      await activateScene(
+        name,
+        pair,
+        source,
+        depth,
+        nextScene,
+        requestId,
+        currentFrame,
+      );
+    } catch (error) {
+      if (requestId === previewRequestId) showError(error);
+    }
+  })();
 };
 
 const fetchJson = async <T extends z.ZodType>(
@@ -504,7 +531,7 @@ const buildGallery = async (): Promise<void> => {
             );
             posterCanvas.width = resolvedScene.canvas.width;
             posterCanvas.height = resolvedScene.canvas.height;
-            const posterRenderer = createWebGLPreview(
+            const posterRenderer = await createWebGLPreview(
               posterCanvas,
               resolvedScene,
               source,

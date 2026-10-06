@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import {
   CompositionSchema,
   type CompositionAsset,
@@ -12,6 +12,8 @@ import {
   depthGraphFixtures,
   depthRasterReference,
 } from "../helpers/composition-depth-graph.ts";
+import { renderCompositionExposure } from "../../packages/renderer-core/src/composition/render/exposure.ts";
+import type { RenderBackend } from "../../packages/renderer-core/src/composition/render/backend.ts";
 
 const base = CompositionSchema.parse(
   JSON.parse(
@@ -77,4 +79,54 @@ it("builds valid mixed depth graphs and independently clocked local-raster subst
     for (let frame = fixture.frameCount - 1; frame >= 0; frame--)
       compare(evaluateComp(fixture, frame), evaluateComp(reference, frame));
   }
+});
+
+it("preflights depth camera shutter samples against the selected backend before painting", () => {
+  const doc = depthGraphFixtures(base, { ...font, type: "font" }).find(
+    (item) => item.id === "depth-camera-applied-once",
+  )!;
+  doc.motionBlur = {
+    enabled: true,
+    shutterAngle: 180,
+    shutterPhase: -90,
+    samples: 4,
+  };
+  doc.layers.find((layer) => layer.type === "depth-image")!.motionBlur = true;
+  const clear = vi.fn(),
+    drawDepthImage = vi.fn(),
+    project = vi.fn();
+  const backend: RenderBackend = {
+    version: "test",
+    createSurface: (width, height) => ({ width, height }),
+    releaseSurface: () => {},
+    clear,
+    fillRect: () => {},
+    drawImage: () => {},
+    drawText: () => {},
+    drawShape: () => {},
+    drawProvider: () => {},
+    composite: () => {},
+    drawDepthImage,
+    project,
+    applyProjectiveClips: () => {},
+    applyEffects: () => {},
+    applyMask: () => {},
+    applyMatte: () => {},
+    lerp: () => {},
+    readPixels: () => new Uint8ClampedArray(),
+    accumulateExposure: (_target, count, draw) => {
+      for (let index = 0; index < count; index++) draw(index);
+    },
+  };
+  const target = { width: doc.width, height: doc.height };
+  const unsupported = { ...backend };
+  delete unsupported.drawDepthImage;
+  expect(() => renderCompositionExposure(unsupported, target, doc, 10)).toThrow(
+    "Depth displacement requires",
+  );
+  expect(clear).not.toHaveBeenCalled();
+  const report = renderCompositionExposure(backend, target, doc, 10);
+  expect(report.samples).toBe(4);
+  expect(drawDepthImage).toHaveBeenCalledTimes(4);
+  expect(project).toHaveBeenCalledTimes(4);
 });
