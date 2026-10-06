@@ -132,9 +132,11 @@ it.each(["driver", "expression"])(
   (kind) => {
     for (const reverse of [false, true]) {
       const d = doc();
-      const values: [[string, number], [string, number]] = [
+      const values: [string, number][] = [
         ["light.falloffStart", 200],
         ["light.range", 400],
+        ["light.innerCone", 80],
+        ["light.outerCone", 90],
       ];
       if (reverse) values.reverse();
       if (kind === "driver") {
@@ -153,6 +155,8 @@ it.each(["driver", "expression"])(
       expect(evaluateComp(d, 5).lights![0]).toMatchObject({
         range: 400,
         falloffStart: 200,
+        innerCone: 80,
+        outerCone: 90,
       });
       expect(evaluateProperty(d, "light.range", 5)).toBe(400);
     }

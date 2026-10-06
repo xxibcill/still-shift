@@ -49,7 +49,11 @@ still hold before relying on them.
   are authored. WebGL shading before effects, receiver-relative uniforms, cache
   identity and complete Canvas preflight are implemented. Build and 55 focused
   tests pass; pinned GPU pixels and full milestone acceptance remain pending.
-  Native rendering/authoring/acceptance and the complete gate remain pending.
+  Thirteen native scenes, independent pixels, authoring/inspector controls and
+  required verification are authored. Pinned three-type GPU smoke passes on
+  `8e9b0e3`; 34 focused tests and the 132-test contract inventory pass.
+  Integration hit sandbox listen/browser EPERM; an isolated permitted rerun follows.
+  Native acceptance and the complete gate remain pending.
   No owner decision is pending. [Evidence](./composition-ce8-lighting-results.json).
 
 - **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
@@ -215,6 +219,17 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8-L authoring and native acceptance checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`.
+- **Done:** 13 pinned native scenes, independent lighting oracle, required runner,
+  builder receiving, inspector light key/source controls and generated reference.
+- **Results:** pinned ambient/point/spot smoke passes on `8e9b0e3`; build, 34 focused
+  tests and all 132 contract/reference tests pass. Integration requires a permitted
+  isolated rerun after sandbox listen/browser EPERM; no full pass is claimed.
+- **Next:** all-frame/export/hardware/inspector acceptance, serial costs, full gate.
+- **Records:** [CE8-L evidence](./composition-ce8-lighting-results.json).
 
 ### 2026-10-06 — CE8-L GPU graph and backend checkpoint
 

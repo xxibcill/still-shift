@@ -662,6 +662,33 @@ describe("composition-1 fixtures", () => {
         ...(spatial.precomps ?? []).flatMap((scope) => scope.layers),
       );
     }
+    for (const name of [
+      "ambient",
+      "point",
+      "spot",
+      "overlap",
+      "content",
+      "scopes",
+      "unlit",
+      "disabled",
+      "zero",
+      "exposure",
+      "focus",
+      "effects",
+      "mirror",
+    ]) {
+      const lighting = JSON.parse(
+        readFileSync(
+          resolve(root, `benchmarks/fixtures/composition/ce8l/${name}.json`),
+          "utf8",
+        ),
+      ) as Composition;
+      expect(validateComposition(lighting).ok, name).toBe(true);
+      allLayers.push(
+        ...lighting.layers,
+        ...(lighting.precomps ?? []).flatMap((scope) => scope.layers),
+      );
+    }
     for (const option of layers.CompositionLayerSchema.options) {
       const type = option.shape.type.value;
       if (UNAVAILABLE_LAYER_TYPES[type]) continue;

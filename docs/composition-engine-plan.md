@@ -457,6 +457,32 @@ through the story adapter with recorded parity.
 - [ ] CE10 builder and CLI, including `comp render`, after CE4a, CE9 and CE12.
 - [ ] Record commands, results and limitations here before marking the slice complete.
 
+### Recommended execution sequence
+
+**Owner approved, 2026-10-05.** Use this order for the main implementation lane.
+The tracker defines required dependencies; the order below also expresses product
+priority. A later position does not add a new technical prerequisite. Independent
+work may proceed alongside this lane once its tracker dependencies are complete.
+Planning this sequence does not start milestones or mark acceptance gates passed.
+
+| Order | Milestone                                                   | Work and reason for this position                                                                                                                                |
+| ----- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1     | **CE12 — Motion linting complete**                          | Rules, CLI, Lab findings and full verification are closed; see the [completion record](#ce12-completion-record-2026-10-05).                                      |
+| 2     | **Finish CE4a — Story adapter**                             | Reconcile delivered slices, close story feature gaps and passage integration, and prove full story parity. This completes CE10's remaining adapter prerequisite. |
+| 3     | **CE10 — TypeScript builder and CLI**                       | Make validated composition authoring, rendering, baking and linting practical for coders and agents.                                                             |
+| 4     | **CE11 — Inspector and graph editor**                       | Provide inspection of timing, expressions and composition structure for subsequent feature work.                                                                 |
+| 5     | **CE5 — Shape layers**                                      | Add reusable vector primitives and operators for diagrams, titles and motion graphics.                                                                           |
+| 6     | **CE7 — Motion blur and time controls**                     | Complete shared time behaviour and the prerequisite for frame-accurate media layers.                                                                             |
+| 7     | **Finish CE6 — Backend features and effects**               | Complete the effect interface, catalogue and correctness acceptance needed by camera and mesh work.                                                              |
+| 8     | **CE8 — Unified 2.5D camera**                               | Complete perspective, depth sorting and camera controls before lighting and cinematic adaptation.                                                                |
+| 9     | **CE8-L — Bounded lighting**                                | Add ambient, point and spot lighting of flat layers; defer cast shadows and realistic surface shading to CE8-L-F.                                                |
+| 10    | **CE4c — Cinematic adapter**                                | Translate cinematic scenes and prove parity after CE8. Lighting precedes this by priority, not as a technical prerequisite.                                      |
+| 11    | **CE4d — Legacy/depth adapters and renderer consolidation** | Complete the legacy adapter and depth-image integration; switch defaults and remove old render paths after all required parity passes.                           |
+| 12    | **CE13 — Video, image-sequence and audio layers**           | Enable mixed-media production using CE7's time controls. Video precedes mesh deformation under Q5.                                                               |
+| 13    | **CE15 — Output formats, caching and parallel rendering**   | Improve delivery and throughput against the expanded rendering workload. Its technical prerequisite remains CE3.                                                 |
+| 14    | **CE14 — Mesh warp and puppet pins**                        | Add character and artwork deformation after the broader authoring and media production path. Its technical prerequisite remains CE6.                             |
+
+
 ---
 
 ## CE0 — Baseline, parity harness and feature matrix
@@ -3767,7 +3793,10 @@ artwork in composition space, using CE8's existing 3D transforms and projection.
 `9d8f33a` / PR #43. Owner approved 2026-10-05 (Q6). Depends on CE8, which
 already requires CE6 and CE9. Implement immediately after CE8 in the recommended
 sequence. This is a separate feature milestone; neither CE8 nor CE4c acceptance
-waits for it. No implementation or lighting verification is claimed by this entry.
+waits for it. Contract, pure model, WebGL shading/cache/preflight, authoring and
+native acceptance are authored. Pinned three-type GPU smoke, build and focused
+tests pass; complete native acceptance/full local verification remain pending.
+[Implementation evidence](./composition-ce8-lighting-results.json).
 
 ### Scope and limits
 

@@ -100,6 +100,12 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-text-transition":
     "Conflicting, overlapping or impossible text transitions.",
   "comp-camera-key-range": "A `camera2d` key lies at or after `frameCount`.",
+  "comp-light-limit":
+    "More than eight authored light layers in one scope, including disabled lights.",
+  "comp-light-settings":
+    "Invalid light type controls, bounded values, cone/falloff relations or finite GPU coefficients.",
+  "comp-light-receiver":
+    "Lighting opt-in requires explicitly 3D image, solid, text, shape or flat precomp artwork.",
   "comp-camera-settings":
     "Native camera optical controls, model or clip planes are invalid after sampling.",
   "comp-3d-constraint":

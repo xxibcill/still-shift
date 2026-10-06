@@ -135,6 +135,8 @@ export function createCompositionInspector(options: {
         row.append(pick);
         const badges = [
           layer.type,
+          layer.type === "light" ? layer.lightType : "",
+          layer.receivesLight ? "receives light" : "",
           layer.parent ? `parent ${layer.parent}` : "",
           layer.blendMode ?? "normal",
           layer.trackMatte
@@ -143,6 +145,24 @@ export function createCompositionInspector(options: {
           ...(layer.effects ?? []).map((e) => e.effect),
         ].filter(Boolean);
         row.append(documentNode("small", badges.join(" · ")));
+        if (
+          layer.threeD &&
+          ["image", "solid", "text", "shape", "precomp"].includes(layer.type)
+        ) {
+          const receiving = layer.receivesLight === true;
+          const toggle = button(
+            `Receive light: ${receiving ? "on" : "off"}`,
+            () => {
+              void submit("Change light receiving", (draft) => {
+                (readJsonPath(draft, path) as CompositionLayer).receivesLight =
+                  !receiving;
+              });
+            },
+          );
+          toggle.setAttribute("aria-pressed", String(receiving));
+          toggle.dataset.control = "receives-light";
+          row.append(toggle);
+        }
         const bar = documentNode("div", "");
         bar.className = "layer-bar";
         const start = layer.inPoint ?? 0,
@@ -340,6 +360,36 @@ export function createCompositionInspector(options: {
     choose.onchange = () => graph(Number(choose.value));
     area.append(choose);
     const key = current.keys[index]!;
+    const ownerScope =
+      current.scope === "root"
+        ? history!.document
+        : history!.document.precomps?.find(
+            (scope) => scope.id === current.scope,
+          );
+    if (
+      ownerScope?.layers.find((layer) => layer.id === current.owner)?.type ===
+        "light" &&
+      ["scalar", "color", "vector"].includes(current.kind)
+    ) {
+      const value = textInput("Light key value", key.value);
+      area.append(
+        value.label,
+        button("Apply light key value", () => {
+          const authored =
+            current.kind === "color"
+              ? value.input.value.trim()
+              : current.kind === "vector"
+                ? value.input.value.split(",").map(Number)
+                : Number(value.input.value);
+          void submit(`${current.owner} key value`, (draft) => {
+            const raw = readJsonPath(draft, current.path) as {
+              keys: { value: unknown }[];
+            };
+            raw.keys[index]!.value = authored;
+          });
+        }),
+      );
+    }
     if (current.kind === "camera")
       area.append(
         documentNode(

@@ -24,7 +24,26 @@
       "rejected": [
         "New integration test drafts used string expressions, omitted group size and shutterPhase; corrected to the existing contract before acceptance. No production policy changed."
       ],
-      "pending": "Pinned GPU pixels, exports/hardware/native fixtures and complete gate"
+      "pending": "Pinned GPU pixels, exports/hardware/native fixtures and complete gate",
+      "implementation": "8e9b0e3"
+    },
+    {
+      "scope": "Native fixtures/independent CPU pixels, builder receiving and light paths, inspector keyed light values/receiving source edits, generated schema/reference/skill and required browser runner",
+      "checks": {
+        "pinnedGpuSmoke": {
+          "checkpoint": "8e9b0e3",
+          "ambient": [92, 42, 17, 255],
+          "point": [92, 42, 17, 255],
+          "spot": [92, 42, 17, 255]
+        },
+        "build": "pass",
+        "focusedUnit": "34 pass including 13 asset-pinned lighting scenes; generated contract/reference inventory 132 pass",
+        "integrationAttempt": "139 cases: 38 pass, 51 fail and 50 skip under restricted sandbox (local listen/browser process EPERM); isolated permitted rerun pending"
+      },
+      "rejected": [
+        "Draft builder tests incorrectly called toJSON and supplied transform in options; corrected to the established native composition return and .transform API. Reference/diagnostic inventory was stale until generation."
+      ],
+      "pending": "All-frame native oracles/alpha/hashes, export, hardware, inspector execution, serial costs and complete local gate"
     }
   ],
   "pending": [

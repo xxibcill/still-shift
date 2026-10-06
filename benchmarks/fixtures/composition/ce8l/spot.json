@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8l-spot",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "assets": [],
+  "layers": [
+    {
+      "id": "light",
+      "type": "light",
+      "lightType": "spot",
+      "color": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#ffcc80"
+          },
+          {
+            "frame": 31,
+            "value": "#80ccff",
+            "interpolation": "linear"
+          }
+        ]
+      },
+      "intensity": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.4
+          },
+          {
+            "frame": 31,
+            "value": 1.6,
+            "interpolation": "linear"
+          }
+        ]
+      },
+      "range": 320,
+      "falloffStart": 30,
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [20, 40, -100]
+            },
+            {
+              "frame": 31,
+              "value": [108, 56, -100],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "orientation": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [0, 0, 0]
+            },
+            {
+              "frame": 31,
+              "value": [8, -8, 0],
+              "interpolation": "linear"
+            }
+          ]
+        }
+      },
+      "innerCone": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 15
+          },
+          {
+            "frame": 31,
+            "value": 35,
+            "interpolation": "linear"
+          }
+        ]
+      },
+      "outerCone": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 50
+          },
+          {
+            "frame": 31,
+            "value": 80,
+            "interpolation": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "plane",
+      "type": "solid",
+      "size": [128, 96],
+      "color": "#808080",
+      "threeD": true,
+      "receivesLight": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [0, 0, 0]
+      }
+    }
+  ]
+}

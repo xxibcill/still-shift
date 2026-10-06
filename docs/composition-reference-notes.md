@@ -838,7 +838,7 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 | `adjustment`                 | `size` (default: composition size). Applies its effects to the layers below.                                                                                                                                                                                                                                                                                                                                               | CE1       |
 | `shape`                      | `contents`.                                                                                                                                                                                                                                                                                                                                                                                                                | CE5       |
 | `camera`                     | `model`, `pointOfInterest`, `zoom` or `focalLength`, `filmSize`, clips and focus controls; see native camera below.                                                                                                                                                                                                                                                                                                        | CE8       |
-| `light`                      | —                                                                                                                                                                                                                                                                                                                                                                                                                          | CE8-L     |
+| `light`                      | `lightType`, colour/intensity, point/spot distance and spot cones; see bounded lighting below.                                                                                                                                                                                                                                                                                                                             | CE8-L     |
 | `video`, `sequence`, `audio` | `asset`; `timeRemap`.                                                                                                                                                                                                                                                                                                                                                                                                      | CE13      |
 
 Layers of an unavailable type validate structurally and then fail with
@@ -898,11 +898,79 @@ states, interior transparency, masks, mattes and effects are included. Failures
 identify the owning layer, frame and first exposed pixel; previews can choose
 `coverageSeverity: "warning"`. Optional layers do not trigger this check.
 Local surfaces have an 8192-pixel axis and 128 MiB RGBA8 budget plus actual GPU
-texture limits; violations fail before painting. Native lighting follows CE8-L.
+texture limits; violations fail before painting. Bounded flat lighting is described below.
 
 Use [the native camera program](../examples/composition/10-native-camera.ts) and
 [the acceptance scenes](../benchmarks/fixtures/composition/ce8/README.md) for
-concrete authored setups. Runtime acceptance is pending in the CE8 evidence record.
+concrete authored setups. [CE8 acceptance](./composition-ce8-results.json) is complete.
+
+### Bounded flat-surface lighting (CE8-L)
+
+`light` layers are implicit XYZ transform dependencies. Choose `lightType` as
+`ambient`, `point` or `spot`; at most eight authored lights are allowed per scope,
+including disabled lights. Lights remain active under drawable solo, but obey
+`enabled`, guide exclusion, in/out and ancestor group activation. Sum contributions
+in source authored order. Layer opacity does not scale illumination; use intensity
+or colour alpha. Position denotes transformed local origin, including authored
+anchor offsets. Spot forward is normalized transformed local +Z; a degenerate
+spot axis contributes no light except at the declared coincident-point convention.
+
+| Control        | Default   | Units and limits                                           |
+| -------------- | --------- | ---------------------------------------------------------- |
+| `color`        | `#ffffff` | Animatable encoded sRGB RGBA; alpha scales intensity       |
+| `intensity`    | `1`       | Animatable scalar, 0–16                                    |
+| `range`        | `1000`    | Point/spot world pixels, 0.001–1,000,000                   |
+| `falloffStart` | `0`       | Point/spot world pixels, 0–1,000,000; less than range      |
+| `innerCone`    | `30`      | Spot full angle in degrees, 0–180                          |
+| `outerCone`    | `60`      | Spot full angle in degrees, 0.001–180; at least inner cone |
+
+Ambient lights reject distance/cone controls; point lights reject cones. Controls
+accept native keys, drivers, periodic motion and expressions. Runtime bounded
+values and final paired relations are checked after writers settle. Schema bounds
+include keyed values; runtime overshoot fails with located `comp-light-settings`.
+The eight-light limit is `comp-light-limit`.
+
+Set `receivesLight: true` only on explicitly 3D image, solid, text, shape or flat
+precomp artwork. Default false is implicit; ordinary adapters remain unlit.
+Unsupported receiving flags fail with `comp-light-receiver`. With no active lights,
+all lights disabled, or receiving off, the exact existing path is used. An enabled
+zero-intensity light gives a black contribution, rather than a full-bright fallback.
+A precomp shades its own contents with internal lights; parent lights shade only
+its opted-in flattened quad. Groups, cameras, lights and adjustments cannot receive.
+
+`flat-lighting-1` decodes source and light RGB into linear sRGB. Ambient is uniform;
+point/spot diffuse uses `abs(dot(normal,towardLight))`, so front and back faces
+receive symmetrically. The unit plane normal is the cross product of transformed
+local X/Y axes, including parenting, mirrors, nonuniform scale and skew. Degenerate
+normals receive ambient only. Distance weight is `1-smoothstep(falloffStart,range,d)`;
+at/above range it is zero. At zero distance, nondegenerate planes receive full
+angular/spot weight. Spot weight smoothly interpolates between the outer/inner
+half-angle cosines; equal angles use a hard cone edge. Float32 cosine collapse
+also uses that hard edge, avoiding division by zero. There are no shadows,
+occlusion passes, inferred photo geometry, normal maps, specular terms or materials.
+
+Multiply decoded source RGB by the fixed-order illumination sum, clamp final linear
+RGB to 0–1, encode and quantize premultiplied RGBA8; do not clamp illumination before
+source multiplication. Alpha is preserved. This local boundary runs independently
+of the selected composition colour space; it does not enable global linear blending
+or HDR storage. Prepared vector/text artwork still uses its existing CPU raster
+boundary; all required illumination is GPU shading. No CPU lighting fallback is used.
+
+Shading precedes local layer effects and masks, projection, camera focus blur,
+matte/opacity/blending. On lit surfaces, inherited/authored primitive paint blur
+becomes native Gaussian blur after shading; the unlit compatibility path is exact.
+Lights, geometry and focus use the receiver-selected CE7 exposure scope, including
+held poses and precomp clocks. A light's own blur flag does not override a held
+receiver's clock. GPU positions are relative to the local raster's world origin;
+finite coefficient/allocation checks run before any frame mutation. Lighting state
+and model version participate in frame, isolate and export identities.
+
+Canvas reports `comp-feature-backend` before touching the target when any required
+lighting appears in a visible graph, named input, matte or actual shutter sample.
+The Lab exposes keyed colour/intensity/distance/cone/XYZ controls and a **Receive
+light** source toggle with undo/redo/save. Builder `light(id,{lightType,...})`,
+`.receiveLight()` and generic `.property(...)` use the same contract; see
+[the native lighting program](../examples/composition/11-flat-lighting.ts).
 
 ### Transform
 

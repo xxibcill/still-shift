@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8l-point",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "assets": [],
+  "layers": [
+    {
+      "id": "light",
+      "type": "light",
+      "lightType": "point",
+      "color": "#ffb478",
+      "intensity": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.3
+          },
+          {
+            "frame": 31,
+            "value": 1.5,
+            "interpolation": "linear"
+          }
+        ]
+      },
+      "range": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 220
+          },
+          {
+            "frame": 31,
+            "value": 350,
+            "interpolation": "linear"
+          }
+        ]
+      },
+      "falloffStart": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 10
+          },
+          {
+            "frame": 31,
+            "value": 40,
+            "interpolation": "linear"
+          }
+        ]
+      },
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [15, 48, -60]
+            },
+            {
+              "frame": 31,
+              "value": [115, 48, -100],
+              "interpolation": "linear"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "plane",
+      "type": "solid",
+      "size": [128, 96],
+      "color": "#808080",
+      "threeD": true,
+      "receivesLight": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [0, 0, 0]
+      }
+    }
+  ]
+}

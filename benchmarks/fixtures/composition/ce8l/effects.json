@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8l-effects",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "assets": [],
+  "layers": [
+    {
+      "id": "light",
+      "type": "light",
+      "lightType": "point",
+      "color": "#ffb478",
+      "intensity": 0.8,
+      "range": 320,
+      "falloffStart": 30,
+      "transform": {
+        "position": [64, 48, -100]
+      }
+    },
+    {
+      "id": "plane",
+      "type": "solid",
+      "size": [88, 66],
+      "color": "#808080",
+      "threeD": true,
+      "receivesLight": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [20, 15, 0]
+      },
+      "effects": [
+        {
+          "id": "primitive",
+          "effect": "blur.primitive",
+          "params": {
+            "radius": 2
+          }
+        },
+        {
+          "id": "tint",
+          "effect": "color.tint",
+          "params": {
+            "amount": 0.2
+          }
+        }
+      ],
+      "masks": [
+        {
+          "id": "oval",
+          "mode": "add",
+          "path": {
+            "closed": true,
+            "vertices": [
+              [4, 4],
+              [84, 4],
+              [84, 62],
+              [4, 62]
+            ],
+            "inTangents": [
+              [0, 0],
+              [0, 0],
+              [0, 0],
+              [0, 0]
+            ],
+            "outTangents": [
+              [0, 0],
+              [0, 0],
+              [0, 0],
+              [0, 0]
+            ]
+          },
+          "feather": 2
+        }
+      ]
+    }
+  ]
+}

@@ -158,3 +158,42 @@ describe("GPU visual keys", () => {
     );
   });
 });
+
+it("invalidates a retained isolate when scoped light controls change", () => {
+  const removed: WebglSurface[] = [],
+    cache = new WebglIsolates(new WebglVisualKey(), (s) => removed.push(s)),
+    like = surface(),
+    first = surface(),
+    second = surface();
+  const layer: IsolateOp = {
+    ...op("lit"),
+    lighting: {
+      version: "flat-lighting-1",
+      x: [1, 0, 0],
+      y: [0, 1, 0],
+      normal: [0, 0, 1],
+      lights: [
+        {
+          positionKind: [0, 0, 0, 0],
+          colorWeight: [1, 1, 1, 0.5],
+          directionOuter: [0, 0, 1, 0.5],
+          falloffInner: [0, 1000, 0.8, 0],
+        },
+      ],
+    },
+  };
+  expect(cache.render(layer, like, () => first)).toBe(first);
+  cache.release(first);
+  expect(
+    cache.render(structuredClone(layer), like, () => {
+      throw Error("Unchanged lighting repainted");
+    }),
+  ).toBe(first);
+  cache.release(first);
+  const changed = structuredClone(layer);
+  changed.lighting!.lights[0]!.colorWeight[3] = 0.75;
+  expect(cache.render(changed, like, () => second)).toBe(second);
+  cache.release(second);
+  cache.dispose();
+  expect(removed).toEqual([first, second]);
+});

@@ -49,9 +49,11 @@ export function checkSpatialLayer(
           `${name} is not a property of an ${layer.lightType} light`,
         );
     if (
-      typeof layer.range === "number" &&
-      typeof layer.falloffStart === "number" &&
-      layer.falloffStart >= layer.range
+      layer.lightType !== "ambient" &&
+      (layer.range === undefined || typeof layer.range === "number") &&
+      (layer.falloffStart === undefined ||
+        typeof layer.falloffStart === "number") &&
+      (layer.falloffStart ?? 0) >= (layer.range ?? 1000)
     )
       fail(
         "comp-light-settings",
@@ -59,9 +61,10 @@ export function checkSpatialLayer(
         "Light falloffStart must be less than range",
       );
     if (
-      typeof layer.innerCone === "number" &&
-      typeof layer.outerCone === "number" &&
-      layer.innerCone > layer.outerCone
+      layer.lightType === "spot" &&
+      (layer.innerCone === undefined || typeof layer.innerCone === "number") &&
+      (layer.outerCone === undefined || typeof layer.outerCone === "number") &&
+      (layer.innerCone ?? 30) > (layer.outerCone ?? 60)
     )
       fail(
         "comp-light-settings",
