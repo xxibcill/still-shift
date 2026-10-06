@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8-affine",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "background": "#000000",
+  "assets": [],
+  "layers": [
+    {
+      "id": "camera",
+      "type": "camera",
+      "transform": {
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 64
+              },
+              {
+                "frame": 31,
+                "value": 80,
+                "interpolation": "linear"
+              }
+            ]
+          },
+          "y": 48,
+          "z": -128
+        }
+      }
+    },
+    {
+      "id": "red",
+      "type": "solid",
+      "size": [
+        48,
+        40
+      ],
+      "color": "#eb8d55",
+      "threeD": true,
+      "transform": {
+        "anchor": [
+          0,
+          0,
+          0
+        ],
+        "position": {
+          "x": 35,
+          "y": 18,
+          "z": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": -12
+              },
+              {
+                "frame": 31,
+                "value": 60,
+                "interpolation": "linear"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "blue",
+      "type": "solid",
+      "size": [
+        48,
+        40
+      ],
+      "color": "#347fac",
+      "threeD": true,
+      "transform": {
+        "anchor": [
+          0,
+          0,
+          0
+        ],
+        "position": {
+          "x": 52,
+          "y": 30,
+          "z": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 60
+              },
+              {
+                "frame": 31,
+                "value": -12,
+                "interpolation": "linear"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "overlay",
+      "type": "solid",
+      "size": [
+        128,
+        6
+      ],
+      "color": "#ffffff",
+      "transform": {
+        "anchor": [
+          0,
+          0
+        ],
+        "position": [
+          0,
+          88
+        ]
+      }
+    },
+    {
+      "id": "rear",
+      "type": "solid",
+      "size": [
+        90,
+        66
+      ],
+      "color": "#9a78b4",
+      "threeD": true,
+      "transform": {
+        "anchor": [
+          0,
+          0,
+          0
+        ],
+        "position": [
+          25,
+          14,
+          90
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8-exposure",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "background": "#000000",
+  "assets": [],
+  "layers": [
+    {
+      "id": "camera",
+      "type": "camera"
+    },
+    {
+      "id": "moving",
+      "type": "solid",
+      "size": [
+        48,
+        40
+      ],
+      "color": "#ffffff",
+      "threeD": true,
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [
+                25,
+                35,
+                0
+              ]
+            },
+            {
+              "frame": 31,
+              "value": [
+                90,
+                50,
+                100
+              ],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "autoOrient": "camera"
+      },
+      "motionBlur": true
+    }
+  ],
+  "motionBlur": {
+    "enabled": true,
+    "shutterAngle": 180,
+    "shutterPhase": 0,
+    "samples": 4
+  },
+  "behaviours": [
+    {
+      "type": "camera-shake",
+      "target": "camera.transform.position",
+      "amplitude": 2,
+      "startFrame": 0,
+      "seed": 19
+    }
+  ]
+}

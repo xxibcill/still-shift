@@ -257,7 +257,26 @@
         "remainingProcesses": "None found by process inspection",
         "mitigation": "Subsequent Git commands use gc.auto=0; no formatter/build/test/matrix/export ran"
       },
-      "pending": "Independent camera acceptance and focused/full verification after release"
+      "pending": "Independent camera acceptance and focused/full verification after release",
+      "implementation": "2e26ae4"
+    },
+    {
+      "name": "Native camera acceptance preparation",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Ten native 32-frame camera scenes with pinned checker/alpha-hole images and font",
+        "Independent ray/plane oracle for solid and image projection/clipping; independent affine parallax/depth-order reference",
+        "Forward/reverse/random hashes, fresh hardware comparisons and repeated/raw/independent preview exports",
+        "Actual alpha failures for later image states, masks and mattes; Canvas perspective rejection preserves prior frame including exposure",
+        "Opt-in serial cold/warm 1080p costs for 1/8/64 planes and 1/4 samples",
+        "Native camera browser group added to the existing complete local test chain"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "CE6-P quiet window remains active",
+        "baselines": "No hashes, PNG baselines, metrics or exports have been generated"
+      },
+      "pending": "Focused diagnostics/repair, real inspector flow, native acceptance and complete local gate after release"
     }
   ],
   "pending": [

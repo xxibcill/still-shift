@@ -3659,6 +3659,11 @@ POI tangent editing and mask analytic/integration/backend rejection cases are
 authored; all checks remain deferred. Git reported auto packing at the prior
 checkpoint; no process remained at 00:57 UTC, and later Git calls use gc.auto=0.
 
+Ten native camera scenes and independent ray/plane/affine reference code are
+authored, with seek/hash/hardware/export checks, alpha failure cases and serial
+1080p cost measurement. The native camera browser group joins the local gate.
+No check has run and no baseline is generated; acceptance remains pending.
+
 **Completion record:** _to be filled in._
 
 ---

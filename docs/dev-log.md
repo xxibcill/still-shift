@@ -53,8 +53,10 @@ still hold before relying on them.
   All CE8 code remains unverified: the CE6-P quiet window holds formatters,
   builds, tests, browser matrices and exports. Previous Git auto packing was
   reported; no process remained at 00:57 UTC, and further Git calls use gc.auto=0.
-  No owner decision is pending. Next: native acceptance preparation, then focused
-  checks and the complete gate after release. [Evidence](./composition-ce8-results.json).
+  Ten native scenes and independent ray/affine references, hardware/export/alpha
+  acceptance and serial cost code are authored; no new baseline is generated.
+  No owner decision is pending. Next: focused repair and real inspector flow,
+  native acceptance and the complete gate after release. [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
   CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
@@ -207,6 +209,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 native acceptance source checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `2e26ae4`.
+- **Authored:** ten native scenes, pinned checker/alpha-hole/font resources,
+  independent ray/plane and affine references, all-frame seek/hash checks,
+  hardware comparisons, repeated/raw/independent exports and coverage failures.
+  The native browser group joins the local gate; serial 1080p costs are opt-in.
+- **Verification:** none run, no baseline generated; CE6-P quiet window remains
+  active. Source fixtures and test code do not constitute acceptance evidence.
+- **Next:** focused repair, real inspector flow, native acceptance and full gate.
+- **Records:** [CE8 evidence](./composition-ce8-results.json),
+  [native scene guide](../benchmarks/fixtures/composition/ce8/README.md).
 
 ### 2026-10-06 — CE8 projected group mask checkpoint
 
