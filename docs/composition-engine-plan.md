@@ -368,7 +368,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-performance` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
-| CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[~]`  | [evidence](./composition-ce7-results.json)                                         |
+| CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
@@ -3275,13 +3275,13 @@ in AE.
 - [x] Composition-level motion blur (shutter angle 0–720, phase, 2–64 samples) with
       per-layer opt-in, evaluated by deterministic subframe sampling of the evaluator
       and accumulation on the backend.
-- [ ] Adaptive sample count by screen-space velocity (cap by setting) — optional, must
+- [x] Adaptive sample count by screen-space velocity (cap by setting) — optional, must
       stay deterministic.
-- [ ] Replace the commerce-only motion-blur effect with this mechanism (keep an alias).
-- [ ] Posterize time (per layer and per precomp), frame blending (for CE13 media), hold
+- [x] Replace the commerce-only motion-blur effect with this mechanism (keep an alias).
+- [x] Posterize time (per layer and per precomp), frame blending (for CE13 media), hold
       frames.
-- [ ] Loop helpers for precomps: `loop: "cycle" | "pingpong"` with count.
-- [ ] Freeze frame (time remap with a single hold key).
+- [x] Loop helpers for precomps: `loop: "cycle" | "pingpong"` with count.
+- [x] Freeze frame (time remap with a single hold key).
 
 **Acceptance:** A fast-moving layer shows correct blur length for its velocity and
 shutter angle; blur is zero for a stationary layer; nested precomps inherit blur
@@ -3300,17 +3300,27 @@ This delivers the CE4a prerequisite only. Adaptive samples and the remaining tim
 controls above stay open until the CE7 milestone branch.
 [Evidence](./composition-ce4a-completion-results.json).
 
-**Implementation record (2026-10-05):** checkpoint slices deliver local
-posterization/holds, precomp loops/counts, single-key freeze, CE13 frame-pair handoff,
-optional deterministic adaptive sampling and controlled exposure cuts. One planned
-sample array drives accumulation and both graph passes; fixed arithmetic remains
-unchanged. Root procedural semantics and conservative adaptive fallback are explicit.
-266 focused tests pass. Both native fixtures (96 frames) pass analytic pixels,
-forward/reverse/random seeks, new CE7 stored hashes and independent/repeated exports
-on both backends. All 12 actual hardware comparisons pass unchanged thresholds;
-serial seven-count 1080p costs are recorded. Build/lint/schema/boundaries pass.
-Complete local gate/frozen CE0 and milestone PR remain pending.
-[Evidence](./composition-ce7-results.json).
+**Completion record (2026-10-06):** complete on `codex/composition-ce7`, code
+`0e48388`. Local posterization/holds, cycle/ping-pong/counts, single-key freeze and
+cut-safe exposure are delivered. Optional adaptation uses deterministic screen
+velocity for provable translations, with the configured cap for complex content
+and key/source boundaries; fixed sampling retains its existing arithmetic.
+The commerce motion-blur alias and its cut/overlap variants pass compatibility.
+
+The complete local `pnpm check` passes 1,600 unit, 46 runtime, 139 integration,
+14 depth, every required browser group and all 176 frozen baselines / 36,061 frames
+without regeneration. All 69 story / 14,086 frames, 127 commerce / 28,200 frames and
+20 typography / 3,367 frames pass existing Canvas pixel/timing assertions. Native
+96-frame acceptance passes independent analytic pixels, stored CE7 hashes,
+forward/reverse/random seeks, 12 actual hardware comparisons and independent/
+repeated exports on both backends. Serial 1080p costs for all seven sample counts
+are recorded. Initial focused failures and the cache-report assertion repair remain
+in the evidence; no thresholds or frozen baselines were changed.
+
+Frame blending is validated with deterministic hold/linear source-frame-pair
+arithmetic; decoded media rendering follows CE13. Root-global procedural clocks
+retain documented semantics alongside layer-local controls. [PR #40](https://github.com/xxibcill/still-shift/pull/40) is open
+and attached, based on CE5; CE6 begins on a new branch. [Evidence](./composition-ce7-results.json).
 
 ---
 

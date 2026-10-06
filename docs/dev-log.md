@@ -54,12 +54,14 @@ still hold before relying on them.
   [Specification](./composition-ce8lf-cast-shadow-spec.md),
   [evidence](./composition-ce8lf-results.json).
 
-- **CE7 in progress (2026-10-05):** `codex/composition-ce7` from CE5 `edb958a`.
-  Clock controls/loops/adaptive sampling pass 266 focused tests; native 96-frame
-  acceptance passes both backends, reverse/random seeks, independent/repeated
-  exports and 12 hardware comparisons. Separate new stored CE7 baselines and
-  serial seven-count 1080p costs are recorded. Build/lint/schema/boundaries pass.
-  Complete local gate/frozen CE0 and PR remain; no owner decision is pending.
+- **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
+  Local holds/posterization, source loops, freeze remap, deterministic adaptive
+  exposure and controlled cuts are delivered. Full `pnpm check` passes 1,600 unit,
+  46 runtime, 139 integration, 14 depth, all browser groups and 176 frozen baselines
+  / 36,061 frames. Native pixels/seeks/stored hashes, 12 hardware comparisons,
+  independent/repeated exports and serial seven-count 1080p costs pass/are recorded.
+  CE13 decode integration remains its conditional handoff. [PR #40](https://github.com/xxibcill/still-shift/pull/40) is open
+  and attached; CE6 starts on a new branch. No owner decision is pending.
   [Evidence](./composition-ce7-results.json).
 
 - **CE5 complete (2026-10-05):** `codex/composition-ce5`, runtime `4908cbe`.
@@ -68,7 +70,7 @@ still hold before relying on them.
   all browser groups and 176 frozen baselines / 36,061 frames. Native stored hashes
   and reverse seeks pass; legacy connectors, actual CE4a brush conversion and all
   18 Apple hardware comparisons are exact. Failed attempts/repairs are retained.
-  [PR #38](https://github.com/xxibcill/still-shift/pull/38) is open and attached; begin CE7 on a new branch.
+  [PR #38](https://github.com/xxibcill/still-shift/pull/38) is open and attached; CE7 is now complete.
   No owner decision is pending. [Evidence](./composition-ce5-results.json).
 
 - **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
@@ -202,6 +204,19 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   and attached; primary checkout untouched. No merge performed.
 - **Records:** [specification](./composition-ce8lf-cast-shadow-spec.md),
   [evidence](./composition-ce8lf-results.json), [gallery](./composition-ce8lf-gallery.png).
+
+### 2026-10-06 — CE7 milestone verification complete
+
+- **Agent / branch:** Codex on `codex/composition-ce7`, code `0e48388`.
+- **Done:** local time controls, loops/freeze, adaptive sampling, cut-safe exposure,
+  native acceptance and source-frame-pair handoff for CE13.
+- **Results:** complete local `pnpm check` passes 1,600 unit, 46 runtime,
+  139 integration and 14 depth tests, every browser group and all 176 frozen
+  baselines / 36,061 frames without regeneration. Current Canvas matrices retain
+  their pixel/timing assertions; new native hashes and both-backend exports pass.
+- **PR / next:** [PR #40](https://github.com/xxibcill/still-shift/pull/40) is open and attached; start CE6 on its own branch.
+- **Records:** [CE7 evidence](./composition-ce7-results.json), including initial
+  focused failures, assertion repair, actual hardware and serial cost evidence.
 
 ### 2026-10-05 — CE7 native acceptance and serial sample costs
 

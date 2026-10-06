@@ -1,6 +1,6 @@
 {
   "milestone": "CE7",
-  "status": "in-progress",
+  "status": "complete",
   "branch": "codex/composition-ce7",
   "base": "edb958a",
   "slices": [
@@ -320,10 +320,7 @@
       "remaining": ["Full local pnpm check/frozen CE0", "Milestone PR"]
     }
   ],
-  "pending": [
-    "Full local pnpm check and frozen CE0 baselines",
-    "PR creation and attachment"
-  ],
+  "pending": [],
   "verificationAttempts": [
     {
       "command": "focused unit selection",
@@ -350,5 +347,58 @@
     "evaluator": "composition-evaluator-29",
     "canvas": "composition-canvas-1.24.1",
     "webgl": "composition-webgl2-0.38.1"
+  },
+  "completed": "2026-10-06",
+  "implementation": "0e48388",
+  "fullVerification": {
+    "command": "pnpm check",
+    "status": "passed",
+    "exitCode": 0,
+    "snapshot": "/private/tmp/still-shift-ce7-check-0e48388",
+    "unitTests": 1600,
+    "runtimeTests": 46,
+    "integrationTests": 139,
+    "depthTests": 14,
+    "browserGroups": "all required groups passed",
+    "frozenBaselines": 176,
+    "frozenFrames": 36061,
+    "regeneratedFrozenBaselines": false,
+    "log": "benchmarks/results/composition-ce7-verification/ce7-full-0e48388.log",
+    "preflight": "pinned toolchain, private Python package, own Vite caches/browser imports and both backend startup passed",
+    "nativeTimeControlAcceptance": "stored CE7 hashes, independent oracle, reverse/random seeks, hardware and independent/repeated exports passed within unchanged thresholds",
+    "canvasMatrices": {
+      "story": {
+        "cases": 69,
+        "frames": 14086,
+        "maxRatio": 1.1757761252275207,
+        "maxDelta": 2,
+        "tier": "existing Canvas pixel/timing policy"
+      },
+      "commerce": {
+        "cases": 127,
+        "frames": 28200,
+        "maxRatio": 1.1751287681540208,
+        "maxDelta": 1,
+        "tier": "existing Canvas pixel/timing policy"
+      },
+      "typography": {
+        "cases": 20,
+        "frames": 3367,
+        "maxRatio": 1.184144509539858,
+        "maxDelta": 2,
+        "tier": "existing Canvas pixel/timing policy"
+      }
+    }
+  },
+  "delivery": {
+    "pr": "https://github.com/xxibcill/still-shift/pull/40",
+    "nextMilestone": "CE6 current-version completion on a new branch",
+    "merge": "not performed",
+    "attached": true
+  },
+  "conditionalHandoffs": {
+    "CE13": "Validated hold/linear frame blending and deterministic sourceFramePair kernel are ready; decoded video/sequence rendering follows CE13.",
+    "clockSemantics": "Layer-local keyed/content clocks are stepped/held. Documented root-global procedural inputs remain live; no complete AE procedural posterization equivalence is claimed.",
+    "CE6-P": "Future GPU speed requirements remain deferred; existing current Canvas timing assertions were preserved."
   }
 }
