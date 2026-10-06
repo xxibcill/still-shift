@@ -86,3 +86,15 @@ export function cinematicEffectVariants(id: string, source: CinematicScene) {
     },
   }));
 }
+
+/** A valid authored focus gap must not exceed the native aperture budget. */
+export function cinematicFocusVariants(id: string, source: CinematicScene) {
+  if (id !== "cinematic/focus-handoff") return [];
+  const scene = structuredClone(source);
+  const subject = scene.layers.find(
+    (layer) => layer.node === scene.recipe.subject,
+  )!;
+  scene.layers.find((layer) => layer.node === scene.recipe.foreground)!.depth =
+    subject.depth - 1e-12;
+  return [{ id: `${id}/close-gap`, scene }];
+}

@@ -159,3 +159,37 @@ it("preserves fractional shutter clocks and supported shared effects", () => {
     expect(actual[1]).toBeCloseTo(expected.top, 8);
   }
 });
+
+it.each([3.99, 3.999999, 4 - 1e-12])(
+  "keeps valid close focus planes within native camera limits: %s",
+  (foregroundDepth) => {
+    const input = source(
+      fixtures.find((fixture) => fixture.id === "cinematic/focus-handoff")!
+        .path,
+    );
+    input.layers.find(
+      (layer) => layer.node === input.recipe.foreground,
+    )!.depth = foregroundDepth;
+    const legacy = compileCinematicScene(input);
+    const composition = cinematicToComposition(input);
+    expect(validateComposition(composition).ok).toBe(true);
+    expect(composition.metadata!.cinematicFocusSpace).toBe(
+      "normalized-inverse-depth",
+    );
+    for (let frame = 0; frame < composition.frameCount; frame++) {
+      const tree = evaluateComp(composition, frame);
+      for (const node of legacy.nodes) {
+        const state = tree.layers.find((layer) => layer.id === node.id)!;
+        expect(
+          Math.abs(
+            state.focusBlur! - sampleCinematicBlur(legacy, node.id, frame),
+          ),
+        ).toBeLessThanOrEqual(1e-6);
+        const expected = projectCinematicNode(legacy, node, frame);
+        const origin = projectLocalPoint(state.projection!, [0, 0])!;
+        expect(Math.abs(origin[0] - expected.left)).toBeLessThanOrEqual(0.001);
+        expect(Math.abs(origin[1] - expected.top)).toBeLessThanOrEqual(0.001);
+      }
+    }
+  },
+);

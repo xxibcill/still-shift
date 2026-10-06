@@ -20,7 +20,10 @@ import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as Timing from "../helpers/paired-render-timing.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
 import { cinematicPreviewEncoder } from "../helpers/cinematic-preview-export.ts";
-import { cinematicEffectVariants } from "../helpers/composition-cinematic-effects.ts";
+import {
+  cinematicEffectVariants,
+  cinematicFocusVariants,
+} from "../helpers/composition-cinematic-effects.ts";
 import { cinematicInspectorAcceptance } from "./cinematic-inspector.ts";
 import {
   cameraHardwarePreview,
@@ -78,7 +81,11 @@ try {
     const variants = cinematicEffectVariants(entry.id, original);
     const inputs = process.argv.includes("--effects-only")
       ? variants
-      : [{ id: entry.id, scene: original }, ...variants];
+      : [
+          { id: entry.id, scene: original },
+          ...variants,
+          ...cinematicFocusVariants(entry.id, original),
+        ];
     for (const item of inputs) {
       const source = CinematicSceneSchema.parse(item.scene);
       const composition = cinematicToComposition(source),

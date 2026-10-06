@@ -1700,6 +1700,31 @@
         "Broader integration preview-watch recovery reached its unchanged 5000ms timeout under concurrent workloads; standalone unchanged-case verification and complete rerun remain pending."
       ],
       "verificationLimits": "132 actual Apple Metal comparisons and real inspector pass; this diagnostic does not replace complete software timelines, production exports, timing or full pnpm check."
+    },
+    {
+      "name": "bounded close-plane focus compatibility",
+      "status": "implemented-focused-pass-pixel-acceptance-pending",
+      "adapterVersion": "cinematic-composition-0.1.1",
+      "failedAttempts": [
+        "Three valid focus scenes with foreground depths 3.99, 3.999999 and 4-1e-12 passed the existing recipe compiler but failed native validation: required aperture exceeded 1000. The previous 18 adapter tests passed; all three new cases failed."
+      ],
+      "repair": "Only when the physical aperture exceeds its existing budget, compile camera and static artistic focus depths in normalized inverse-depth coordinates. Actual plane geometry, ordering and clipping retain source depths. Existing within-budget mappings are unchanged. Persist the artistic coordinate-space declaration in metadata.",
+      "precision": "Finite focusDepth maximum yields at most 4e-7px saturated far-radius error, below the unchanged 0.001px state tolerance. Focused tests assert <=1e-6px radius error and unchanged projected origin.",
+      "checks": {
+        "focusedUnit": {
+          "files": 3,
+          "tests": 37,
+          "status": "pass"
+        },
+        "newCloseStateCases": 3,
+        "newCloseStateFrames": 288,
+        "all15SourceStateFrames": 2160,
+        "build": "pass",
+        "schemaGenerationAndCheck": "pass",
+        "focusedLint": "pass"
+      },
+      "acceptanceExpansion": "Required full cinematic acceptance now adds one valid close-gap variant: 15 bases, seven shared-effect variants and one focus edge case; 46 backend cases / 5520 forward and reverse frames, 46 independent preview encodes / 138 production exports / 138 hardware comparisons. None are claimed passed by this focused checkpoint.",
+      "verificationLimits": "The ongoing 640c8c5 untimed correctness run covers the previous 44-case standard matrix; it does not verify this new close-gap implementation or replace final-code full acceptance."
     }
   ],
   "pending": [

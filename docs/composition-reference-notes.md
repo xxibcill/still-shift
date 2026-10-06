@@ -1587,8 +1587,15 @@ Camera `viewOffset` preserves screen framing and tracking. Focus handoff uses
 the native camera's `blurModel: "gaussian"`, `maxBlur`, keyed focus distance and
 aperture; image `focusDepth` preserves the authored focus planes as the camera
 moves. Other depth, sorting, clipping and lighting calculations use the actual
-world geometry. Affine natural-size image planes use one source draw; local
-masks, nonprimitive effects, perspective and lighting retain their local surfaces.
+world geometry. Very close authored focus planes can exceed the camera's physical
+aperture budget. Those scenes use a bounded artistic inverse-depth space, declared
+in `metadata.cinematicFocusSpace`; geometry remains unchanged. The finite far
+focus-depth limit introduces at most 0.0000004 pixel of radius error, below the
+0.001-pixel state-parity tolerance. Existing scenes within the aperture budget
+retain their original focus coordinates.
+
+Affine natural-size image planes use one source draw; local masks, nonprimitive
+effects, perspective and lighting retain their local surfaces.
 
 The adapter checks coverage, source density, protected framing, edge attachments
 and recipe movement against the evaluated composition camera. Persisted

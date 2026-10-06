@@ -21,7 +21,7 @@ import { compileFamilyEffects } from "./effects.ts";
 import { evaluateComp } from "../evaluate/evaluate.ts";
 import { projectLocalPoint } from "../evaluate/spatial-geometry.ts";
 
-export const CINEMATIC_ADAPTER_VERSION = "cinematic-composition-0.1.0";
+export const CINEMATIC_ADAPTER_VERSION = "cinematic-composition-0.1.1";
 
 /** Reuse recipe safety rules against actual evaluated native camera geometry. */
 export function inspectCinematicCompositionCamera(
@@ -70,11 +70,12 @@ export function inspectCinematicCompositionCamera(
 }
 
 function focusControls(scene: CinematicRenderScene, times: readonly number[]) {
-  if (scene.recipe.preset !== "focus_handoff") return {};
+  if (scene.recipe.preset !== "focus_handoff") return undefined;
   const depth = (id: string) =>
     scene.layers.find((layer) => layer.node === id)!.depth;
   const near = 1 / depth(scene.recipe.foreground),
-    far = 1 / depth(scene.recipe.subject);
+    far = 1 / depth(scene.recipe.subject),
+    span = near - far;
   const maximum =
     scene.camera.focus!.maxBlurPx *
     (scene.recipe.intensity === "dramatic"
@@ -82,24 +83,41 @@ function focusControls(scene: CinematicRenderScene, times: readonly number[]) {
       : scene.recipe.intensity === "standard"
         ? 0.75
         : 0.5);
-  const inverse = times.map(
+  const progress = times.map(
     (time) =>
-      near -
-      (sampleCinematicBlur(scene, scene.recipe.foreground, time) / maximum) *
-        (near - far),
+      sampleCinematicBlur(scene, scene.recipe.foreground, time) / maximum,
   );
+  const inverse = progress.map((value) => near - value * span);
+  let apertures = inverse.map(
+    (value, index) =>
+      (2 * 36 * maximum * value) /
+      (sampleCinematicCamera(scene, times[index]!).focal * span),
+  );
+  const normalized = apertures.some((value) => value > 1000);
+  // A close authored depth gap can require an unbounded physical aperture.
+  // An artistic inverse-depth space retains the same capped Gaussian radii.
+  const focus = normalized ? progress.map((value) => 2 - value) : inverse;
+  if (normalized)
+    apertures = focus.map(
+      (value, index) =>
+        (2 * 36 * maximum * value) /
+        sampleCinematicCamera(scene, times[index]!).focal,
+    );
   return {
-    depthOfField: true,
-    blurModel: "gaussian" as const,
-    maxBlur: maximum,
-    focusDistance: baked(inverse.map((value) => 1 / value)),
-    aperture: baked(
-      inverse.map(
-        (value, index) =>
-          (2 * 36 * maximum * value) /
-          (sampleCinematicCamera(scene, times[index]!).focal * (near - far)),
-      ),
-    ),
+    camera: {
+      depthOfField: true,
+      blurModel: "gaussian" as const,
+      maxBlur: maximum,
+      focusDistance: baked(focus.map((value) => 1 / value)),
+      aperture: baked(apertures),
+    },
+    normalized,
+    // Focus inverse depth stays in [1,2]; values above 3 are fully blurred.
+    // The finite far clamp introduces at most 4e-7px error (source cap is 4px).
+    depth: (value: number) =>
+      normalized
+        ? 1 / Math.max(1e-7, Math.min(3, 2 + (1 / value - near) / span))
+        : value,
   };
 }
 
@@ -121,6 +139,7 @@ export function cinematicToComposition(
   const times =
     exposure?.times ?? Array.from({ length: frameCount }, (_, frame) => frame);
   const cameras = times.map((time) => sampleCinematicCamera(scene, time));
+  const focus = focusControls(scene, times);
   const centre: [number, number] = [scene.width / 2, scene.height / 2];
   const subject = scene.nodes.find((node) => node.id === scene.recipe.subject)!;
   const subjectDepth = scene.layers.find(
@@ -165,7 +184,7 @@ export function cinematicToComposition(
         x: baked(offsets.map((offset) => offset[0]!)),
         y: baked(offsets.map((offset) => offset[1]!)),
       },
-      ...focusControls(scene, times),
+      ...focus?.camera,
     },
     ...scene.nodes.map((node): CompositionLayer => {
       const depth = scene.layers.find((layer) => layer.node === node.id)!.depth;
@@ -184,9 +203,7 @@ export function cinematicToComposition(
         sources: node.states,
         fit: node.fit,
         rasterize: "natural-size",
-        ...(scene.recipe.preset === "focus_handoff"
-          ? { focusDepth: depth }
-          : {}),
+        ...(focus ? { focusDepth: focus.depth(depth) } : {}),
         transform: {
           anchor,
           position: [
@@ -224,6 +241,9 @@ export function cinematicToComposition(
         title: scene.title,
         provenance: scene.provenance,
         cinematicPreset: scene.recipe.preset,
+        ...(focus?.normalized
+          ? { cinematicFocusSpace: "normalized-inverse-depth" }
+          : {}),
         cinematicCoverage: {
           background: scene.recipe.background,
           paintedBounds: scene.layers.find(

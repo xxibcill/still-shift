@@ -46,14 +46,17 @@ still hold before relying on them.
 - **CE4c in progress (2026-10-06):** `codex/composition-ce4c` from CE8-L
   `e1bd4bc` / [PR #44](https://github.com/xxibcill/still-shift/pull/44).
   Native framing, camera/plane adaptation, Gaussian focus, alpha safety and shared
-  effect ordering/exposure are delivered; latest checkpoint `640c8c5` is pushed.
+  effect ordering/exposure are delivered; regression checkpoint `5335756` is pushed.
+  Valid close focus gaps now use bounded artistic inverse-depth coordinates;
+  37 focused tests/build/schema/lint pass after three aperture-limit failures.
   All 15 fixtures / 2,160 state frames, 44 sampled cases / 220 frames, 132 actual
-  Metal comparisons and real inspector edits/save/reload pass. Pinned unit/runtime
+  Metal comparisons and real inspector edits/save/reload pass on prior code. Pinned unit/runtime
   and depth checks pass (1,935 / 46 / 14). Native camera and lighting regression
   commands pass exact stored hashes, exports, inspectors and 36 / 45 hardware
   comparisons. Full integration failed a stale CLI assertion (repaired; seven
   focused tests pass) and a 5000ms preview-watch timeout (four unchanged isolated
-  tests pass). Full cinematic timelines/exports are being checked untimed;
+  tests pass). The prior 44-case cinematic matrix is being checked untimed; final
+  acceptance adds a close-gap case (46 cases / 5,520 frames);
   timing is queued behind independent suites. Complete `pnpm check` and PR remain
   pending. Coordination authorization is pending; failures remain in the
   [evidence](./composition-ce4c-results.json).
@@ -238,6 +241,20 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE4c bounded close-focus compatibility checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, regressions `5335756`.
+- **Done:** normalize artistic focus coordinates only for valid recipes exceeding
+  the unchanged native aperture budget; physical geometry stays unchanged.
+- **Results:** 37 focused tests/build/schema/lint pass. Three new close-gap cases
+  reproduce all 288 states with <=0.000001px blur error and unchanged projection.
+- **Rejected:** the previous mapping failed all three valid cases at aperture1000;
+  camera limits and parity tolerances remain unchanged. Add the close-gap fixture
+  to required rendered/export/hardware acceptance (46 cases / 5,520 frames).
+- **Open / next:** new-case rendered checks, final native acceptance and pinned
+  gate; the ongoing prior-code correctness diagnostic retains its original scope.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE4c camera and lighting regression checkpoint
 
