@@ -11856,7 +11856,7 @@
     {
       "name": "separate native Canvas shadow/source paints in shared WebGL compositor",
       "date": "2026-10-07",
-      "status": "complete legacy delivery passes; native depth refresh running; defaults and final gate pending",
+      "status": "complete repaired legacy and native depth delivery pass before default consolidation",
       "rendererVersion": "composition-webgl2-0.65.0",
       "failure": {
         "snapshot": "fe5b8a6",
@@ -14260,13 +14260,2403 @@
               "sha256": "sha256:96db39d497e64ddd03fdb838581c3e06e23d91401e2a800aafeb23d886a905c2"
             }
           ]
+        },
+        "nativeDepthDelivery": {
+          "status": "pass",
+          "snapshot": "5bcba60",
+          "command": "node --import tsx tests/browser/composition-depth-acceptance.ts",
+          "timelines": 29,
+          "independentEncodes": 29,
+          "productionRepeatRawExports": 87,
+          "hardwareComparisons": 90,
+          "serialCostBrackets": 23,
+          "minHardwarePsnr": 54.952242999848224,
+          "minHardwareSsim": 0.999609945559673,
+          "report": {
+            "environment": {
+              "profile": "chromium-software-2",
+              "browserVersion": "151.0.7922.34",
+              "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+              "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+              "platform": "darwin",
+              "arch": "arm64"
+            },
+            "reports": [
+              {
+                "id": "landscape-slow_push",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "landscape-horizontal_drift",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "landscape-cinematic_float",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "landscape-locked_hold",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "landscape-story_settle",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "landscape-panel_reveal",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "landscape-comparison_step",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "vertical-slow_push",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "vertical-horizontal_drift",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "vertical-cinematic_float",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "vertical-locked_hold",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "vertical-story_settle",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "vertical-panel_reveal",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "vertical-comparison_step",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "fallback-depth_range_flat",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "fallback-depth_preparation_failed",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "discontinuous-depth",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "auto-landscape-cinematic_float",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "auto-landscape-horizontal_drift",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "auto-landscape-slow_push",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "auto-vertical-protected-focus",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "transparent-source-opaque-compatibility",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "depth-alpha-policy",
+                "checks": [
+                  {
+                    "alphaMode": "preserve",
+                    "corner": [16, 36, 59, 255]
+                  },
+                  {
+                    "alphaMode": "opaque",
+                    "corner": [0, 0, 0, 255]
+                  }
+                ]
+              },
+              {
+                "id": "prepared-depth-half-resolution",
+                "forward": 90,
+                "reverse": 90,
+                "seeks": 5,
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "depth-resource-failures",
+                "checks": [
+                  {
+                    "kind": "hash",
+                    "status": "rejected-before-paint",
+                    "message": "Asset checksum differs: source"
+                  },
+                  {
+                    "kind": "dimensions",
+                    "status": "rejected-before-paint",
+                    "message": "Dimensions differ for source"
+                  },
+                  {
+                    "kind": "missing",
+                    "status": "rejected-before-paint",
+                    "message": "Asset unavailable: source"
+                  },
+                  {
+                    "kind": "decode",
+                    "status": "rejected-before-paint",
+                    "message": "The source image cannot be decoded."
+                  }
+                ]
+              },
+              {
+                "id": "depth-local-clock-overlay",
+                "forward": 24,
+                "reverse": 24,
+                "maxChannelDelta": 0,
+                "hashes": [
+                  "cda11517b2f2d4e58b08bb6058ae34486e8d0cf96a0ddf6d7f36183562ddc284",
+                  "cda11517b2f2d4e58b08bb6058ae34486e8d0cf96a0ddf6d7f36183562ddc284",
+                  "e6d4f15f3abe2dc83fb3c540c5fc734df497dcfb1534dda7000ed63156886113",
+                  "e6d4f15f3abe2dc83fb3c540c5fc734df497dcfb1534dda7000ed63156886113",
+                  "35cb1449ea099adb4db49f3ed4a894e0c0cf65cbaaad2ebfb1af51f9ab6d01cd",
+                  "35cb1449ea099adb4db49f3ed4a894e0c0cf65cbaaad2ebfb1af51f9ab6d01cd",
+                  "da5c5f1c784834582ca4d3a39d3e85fb8495c5d1de6bd29c0f2bb1022c78120b",
+                  "da5c5f1c784834582ca4d3a39d3e85fb8495c5d1de6bd29c0f2bb1022c78120b",
+                  "2acf9fa9142a0fdbe0bf492a4cc46bf97d80bcc72371dba09dbc79266818d02d",
+                  "2acf9fa9142a0fdbe0bf492a4cc46bf97d80bcc72371dba09dbc79266818d02d",
+                  "915f66ae5e554e6ff7d20d04788c50a0dcdf3e1cc497233f76c81e82b7aba97e",
+                  "915f66ae5e554e6ff7d20d04788c50a0dcdf3e1cc497233f76c81e82b7aba97e",
+                  "4c601ba0fb0ba756cbf1df5a24847e076327bc2114d8542141da88a0aa8ca4e0",
+                  "4c601ba0fb0ba756cbf1df5a24847e076327bc2114d8542141da88a0aa8ca4e0",
+                  "3acb0e0be229f03f6bd3ba552470c73a9ebef1d167f3ec49e51be8a14e0f6a61",
+                  "3acb0e0be229f03f6bd3ba552470c73a9ebef1d167f3ec49e51be8a14e0f6a61",
+                  "7140929595d692b00a285d35e0dfbbf38f7c69deed37f900159982cb4c19a89b",
+                  "7140929595d692b00a285d35e0dfbbf38f7c69deed37f900159982cb4c19a89b",
+                  "969999fe5e482470d98b928e1a922f3d20af2e53c05b7402d0650bed0a52332d",
+                  "969999fe5e482470d98b928e1a922f3d20af2e53c05b7402d0650bed0a52332d",
+                  "c9efb49541074f457ffe8e387eb3e9e9709ff56155090c87d2675ea7ad74556c",
+                  "c9efb49541074f457ffe8e387eb3e9e9709ff56155090c87d2675ea7ad74556c",
+                  "57de1dc4f728895b1aaefa8279606deec17369a8678be78c7298c2278e87c0b2",
+                  "57de1dc4f728895b1aaefa8279606deec17369a8678be78c7298c2278e87c0b2"
+                ],
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "depth-parent-mask-matte-effect",
+                "forward": 24,
+                "reverse": 24,
+                "maxChannelDelta": 2,
+                "hashes": [
+                  "36640b462de1fc5f82cc9f2135a97ac58dc8cfa1557fabd8332a3645a7bd50b7",
+                  "4663d761f5178c34ff3762125ecfce3ff782821d27b80c789e0417b64e23d353",
+                  "211818adadd9a1a563978b033962806aa871eaa5d32a7ebce6c44df110af0025",
+                  "66c8badf0c51abedeec0151274429647564a21042c2fccae395e279387352725",
+                  "2ab143cd918558894d7dc47a909dbfd7d6252db32b0fe78e21487023650a00ac",
+                  "35350941f99d7dae6da15b05a3279d60bffe3e8cae37afeddfb376fcc719e19f",
+                  "e1f3aac8ee872eab9cef53fac346a8a1601913acd27427a2a3538f5d11cc5961",
+                  "677efefe966f6707501a6788f8bb693278de99de58509f31d0e94ed81fb0319f",
+                  "c403864869d2c3442fb46f1ce91689791f4edf2ce9e1bf2378ae155940800bd1",
+                  "b42e845c648ce5bd98c23b88e4f52f074ba2d2eb72f06003d3a436e11806df2b",
+                  "c3046425eb1c1551b53b151c279bc4a1a785e4c77a57a718c4e41f4aa3194aac",
+                  "5500d333c025f4b37c40258faff5c736cbf6af7de1df45b442d962a00bad8fd0",
+                  "192374c0916e1c5f17ada4cd68f56a4187cddec9e327bc7f5588281f40444760",
+                  "16dc115ce10d33d322959ba4bd0a3267a8b909fed8d82ea9588a9c98c46a96dc",
+                  "3560c2a193222c09d248854bc9df795779c82d9c4833b62a831c7bdf163d7ff2",
+                  "862a14d6a5ab56dab353461c170bc247b1c34a74653ddca4fea9e95f1f95007c",
+                  "93e13d9e0d32d436027d6aae2bb74d0406dc8ae82689c02677e16336d09e46bc",
+                  "0921707710a9579631fcc0c2a49279976220c0b1012d40b7d8b0c1d45def488f",
+                  "9524198d18818634f033e1019e05d2da5ec9231df7b13602199f120b4fb7f493",
+                  "4cf24e98322eb4887f26bd236747010dd1246baad618355c6fa94eadbc50b359",
+                  "c858155a66985aafe4eb49818c925a12059a6e6fc0a37adc87692a691c728651",
+                  "56d47a0734931756bf4844c7d559e88a1c150321d6b69941f69ef4bd1f4a0b0c",
+                  "2a87eb351310f947b888adee9ffdcb203a1d4e603acc8b693049aba6c6e74d0c",
+                  "ce33f8d865a8f59094d32cb40c55425ce191e5c7d00d0f18d310b8299305a879"
+                ],
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "depth-repeated-precomp-remap",
+                "forward": 24,
+                "reverse": 24,
+                "maxChannelDelta": 0,
+                "hashes": [
+                  "fdf5614a8e08b8f58445368936014a12f1de7f421bb0c45c8e9c3fa03ea14e64",
+                  "ed662fd7a2f1d9b74fa58a09437c0c6a5e39ddce44235868380837b1e38bad4c",
+                  "0da598ab8b049f928405a8600243a70a0616bd06fc6193ef21d73ab1a6381a01",
+                  "ebe30bd36193272ee938bdcf73fb6a5dc98f41f2793e7695a31b954771138fb2",
+                  "a878fac18c93fd840beb8297de6b9d85b2d8c9d0b4b259d1fdaca400c7b41157",
+                  "fbb7c9af3f1b26e2c10229dc17e40c52abfa72f0ee7488c67f6e5766d6b06bd3",
+                  "44ed12550bffdb91b1a04079ec1caf8599115f6140b50819d2a5185125dd8fd3",
+                  "e93e00d212026ce7f6199ad6c555be27c21039b5882a291c3a86fbe70bf96fcc",
+                  "2081aa8af1f9278949a9fd00b50c3ac5ca06ebacd368ab780a81460ee4d9661f",
+                  "9c37ccac60a2f5a7d33b5928c24c5dcac6ac57520174fdcdf9f5f6e7b1564e78",
+                  "eb30a8a71f895262a90bd6a8da852eeb8151513e30aff96de1e74a1975a62b10",
+                  "b45436b43165a2d7c5faebe52aecb09350e972930138246a2754f82acad6dfbc",
+                  "e1b98f83fa27a0ed4bf3a7932fcc1c51914d88616fe85189b6ed7de7f4566827",
+                  "c7b1727587e8c40cbff609100068c508881ad744c28b737c478fa7978afed3a6",
+                  "09365da8f564ba71c7df854258b79e0034cffdbf1540033f4094f868e95841d5",
+                  "da12eff5b0e57985cef3070ba9c73251032bb4ae6fefc0c37346ff14b493c2ec",
+                  "3b2c8e223f0ca88a707997390f197c26fe5ba3fb11ca22c53f04394da809999f",
+                  "ffd7c1510fecbc9facd66151aa493ca8e7e0ceec70c303f3bce7713971a46974",
+                  "811889c0b4dc902e43741b9feae1796acccdd24f93bc78715cf61acc898f374e",
+                  "434fcc6ea513738b683c862529f38de30811ba18f68fcffecbc518a7bcd32e34",
+                  "98e8c64c87608d0ecd0fc4493780bacd8032cc7b2d51dab68841f1a22150f379",
+                  "e53e1ca87c00a1ed73148b6c17921db2d4dd802113c74c8561124e669fe967ea",
+                  "40d2da26e0ca2d690cd0c4613d26b61f49d1847dbafcfd3531f9233b553ec560",
+                  "1eab757179cdc58e188f912a76ff3331299c28995648c10a73f334e669fd9c47"
+                ],
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "depth-fractional-shutter",
+                "forward": 24,
+                "reverse": 24,
+                "maxChannelDelta": 0,
+                "hashes": [
+                  "cda11517b2f2d4e58b08bb6058ae34486e8d0cf96a0ddf6d7f36183562ddc284",
+                  "cda11517b2f2d4e58b08bb6058ae34486e8d0cf96a0ddf6d7f36183562ddc284",
+                  "cda11517b2f2d4e58b08bb6058ae34486e8d0cf96a0ddf6d7f36183562ddc284",
+                  "e6d4f15f3abe2dc83fb3c540c5fc734df497dcfb1534dda7000ed63156886113",
+                  "e6d4f15f3abe2dc83fb3c540c5fc734df497dcfb1534dda7000ed63156886113",
+                  "35cb1449ea099adb4db49f3ed4a894e0c0cf65cbaaad2ebfb1af51f9ab6d01cd",
+                  "35cb1449ea099adb4db49f3ed4a894e0c0cf65cbaaad2ebfb1af51f9ab6d01cd",
+                  "da5c5f1c784834582ca4d3a39d3e85fb8495c5d1de6bd29c0f2bb1022c78120b",
+                  "da5c5f1c784834582ca4d3a39d3e85fb8495c5d1de6bd29c0f2bb1022c78120b",
+                  "2acf9fa9142a0fdbe0bf492a4cc46bf97d80bcc72371dba09dbc79266818d02d",
+                  "2acf9fa9142a0fdbe0bf492a4cc46bf97d80bcc72371dba09dbc79266818d02d",
+                  "915f66ae5e554e6ff7d20d04788c50a0dcdf3e1cc497233f76c81e82b7aba97e",
+                  "915f66ae5e554e6ff7d20d04788c50a0dcdf3e1cc497233f76c81e82b7aba97e",
+                  "4c601ba0fb0ba756cbf1df5a24847e076327bc2114d8542141da88a0aa8ca4e0",
+                  "4c601ba0fb0ba756cbf1df5a24847e076327bc2114d8542141da88a0aa8ca4e0",
+                  "3acb0e0be229f03f6bd3ba552470c73a9ebef1d167f3ec49e51be8a14e0f6a61",
+                  "3acb0e0be229f03f6bd3ba552470c73a9ebef1d167f3ec49e51be8a14e0f6a61",
+                  "7140929595d692b00a285d35e0dfbbf38f7c69deed37f900159982cb4c19a89b",
+                  "7140929595d692b00a285d35e0dfbbf38f7c69deed37f900159982cb4c19a89b",
+                  "969999fe5e482470d98b928e1a922f3d20af2e53c05b7402d0650bed0a52332d",
+                  "969999fe5e482470d98b928e1a922f3d20af2e53c05b7402d0650bed0a52332d",
+                  "c9efb49541074f457ffe8e387eb3e9e9709ff56155090c87d2675ea7ad74556c",
+                  "c9efb49541074f457ffe8e387eb3e9e9709ff56155090c87d2675ea7ad74556c",
+                  "57de1dc4f728895b1aaefa8279606deec17369a8678be78c7298c2278e87c0b2"
+                ],
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "depth-camera-applied-once",
+                "forward": 24,
+                "reverse": 24,
+                "maxChannelDelta": 0,
+                "hashes": [
+                  "729e6de262a59b27e40a8e3b37028c2a3b62494a57a7adef57bb15cde5a8e18d",
+                  "dff58622c7547a91742e334a4fac4d7ca5452c65b644bd0defc9e38a8d39d8fd",
+                  "668987a21f7dbf3da30671b29f42b2214ec4aacdb99df9c89de8cc6a52b990d7",
+                  "49aba11f3402fd16aacf6488e48a9943260750c592b67d55752a9a28b465f452",
+                  "6619b9ec7f235d66a7dc89c13da0d843f366322365905cbb53a9aef3460cfb3e",
+                  "7065e98d33574753effc08e364d826563a3753cdbd496fed301be6a042702560",
+                  "f92beb27e3449ae30ee987f86bb6a8dd08f960a0c96c40b0787010358392b323",
+                  "b103abf7fbf1a9489e0e39a77cab73ba0f6a04d62d85ffa46aff9f1881a879b5",
+                  "1fb5d5d488bb7b4c07946465d38a0b53b10a16a170fc9666535406043d473d25",
+                  "940d5374b43eb29c1499d6ea99301292a037c89a7aeade10c28b1fd0837903c1",
+                  "77c3e4d4431b6b7149e6763975de9e7df43d2aeab246fd011623d5bcd6a3f2a8",
+                  "7312744eea94cdbeb1770d515c53c2345e07eb3b405db28eb9c039e560145ca0",
+                  "bbd7d4abf26104db9142278fa4bd6f0f72291bec749efe1b0b3c84b8eb292823",
+                  "4f12e7b0b2a8c7ab9377fdf8d2bc23359d61d3a079d5d117f132fd04ccc03565",
+                  "187e35550dcc3e4f2468bf4746f8f9f10c01c930bc039ebe954616c6206c2d5f",
+                  "cb9f0f0bc868701a3c566168455559584a78a283483688348b1620b839b931d9",
+                  "443508bbdc31ee1fb8728f239b6b4400af278441a85b84940578f67ad857230b",
+                  "efe1ab7227b7a1511205407d1e6c8e1d781a395a562e86b617aae2c0c49ceba9",
+                  "444fefa0c6a31d06a916e2d5fc9d91cd8ae61a8735e5ba6070856336283a4339",
+                  "3e3ca7c6f2f94f8120455a41cc3f9775c7cf3fbfadbc0923014095f9935105df",
+                  "b26a743cd7ad2356d823cabf64b3838a2f23f884dc5db6dacdbc09efbc6b08d6",
+                  "a4b32031d96fdad4414a4a189766b85f20e82ee8f74e4d622d4de935949e32c0",
+                  "b981b51506f7b1ebdb402e43ef5d58263398e7c00a49a3bca01697f25cf3acad",
+                  "90c98078d3b39a8099b2126e13a14d9311a1975be30384044adc2a2a630aed1b"
+                ],
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "depth-opt-in-flat-lighting",
+                "forward": 24,
+                "reverse": 24,
+                "maxChannelDelta": 0,
+                "hashes": [
+                  "5adcb78b45fc009433d072960dd6db43109cfc19d5554ec34b15d1dbd34dc7b9",
+                  "ebbd269505ce158a0c29d226d8f0580d9ef038651af032e12963555fc49635f6",
+                  "8c23703322351336da09bfe0b6d831242cb69d6d377a9aadd669bf24bc5bda43",
+                  "cfc763da1459a2aec771b0d1d3cbfa529741f005ea8aa9ee7e8c5389478b0166",
+                  "11db563abfd4297d3ef76dc2f9c7817acf5db4c4e631928cfa7d8728d40d02e4",
+                  "de9303d10ba72102976287cc7102da84cd2bbdf8ade23f909f88a036ff34318c",
+                  "7c0aeba6a74af4f11cb324cae73391516180aa153651c532b13ba22f6de2f3d8",
+                  "981804faa91ea80457d7019c9208bd58fc908eb0c5672f499c5696ad5233438b",
+                  "1147311815e0f9eb8496f0c53d51b1999b32eab2fb4e4d60f6de57af1b59bc6f",
+                  "9062ab1ed3f8f657a26c222add133081d2750443e7b24dc045fd1fcfc671daec",
+                  "3c2040deb1695b42d8f607ff487857d0f80e593b6f86175f4ab85f9963523dca",
+                  "a81bc0f51d83f47556ec2b136799c0482cd2320a9da4ae69c73ad8aeaedecea1",
+                  "0efb7a240efbc95c282cd26adde035a17ce33158141f554c629d254a23399369",
+                  "9aeaa95f0bb0547c9434b9a364b265930675ee8bcbfb3a79f9387492f7c5da8c",
+                  "68c85861c73d5070ff23436d8be977a186b5f2be380f5ef938a629329235f662",
+                  "71f3ef2e27fa629ebd0f3f95f971737e1290ef26740c59298e1d1743fd578b4e",
+                  "622abd5f4ba13b011df29303463f5e485849feea1c9d96be89db5b5f5ec8f5f5",
+                  "b034fa915c2792973a9e4f23b3e7fb09572b445aead00573e46e5de68b7784ed",
+                  "fd5fe5cc26f51c28d35325774af791bf8723090c1910c13cdd6a34fc703096ae",
+                  "496919d1a9d66d31c8275c92f6dc778edee0e7861c2f70e3215c14caf11697e2",
+                  "7268de3b0a0339778348d2a1a6fe5bfad798bbe732c05e392f30343a15d6ef9d",
+                  "8693bf4f26af6cc6d8fd230f4bed64056d49055d47d81d937b15e9f579eb26fd",
+                  "2bf303c9a5abd4d762cacfd5616dcab53a995b60c3dc5370a6c19650ed13ff82",
+                  "4794c234f87ef5200c666a86b15fef1c976ea50c84820d7298dfd907aa16a8a8"
+                ],
+                "independentPreviewMp4": "byte-identical",
+                "repeatedMp4": "byte-identical",
+                "rawPngTransport": "byte-identical",
+                "cliJsonRelocation": "pass"
+              },
+              {
+                "id": "depth-small-raster-coverage",
+                "localSizes": [
+                  [1, 1],
+                  [2, 1],
+                  [4, 4]
+                ],
+                "status": "opaque red coverage preserved"
+              },
+              {
+                "id": "depth-preserved-alpha-edge",
+                "checks": [
+                  {
+                    "profile": "pinned",
+                    "environment": {
+                      "profile": "chromium-software-2",
+                      "browserVersion": "151.0.7922.34",
+                      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                      "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                      "platform": "darwin",
+                      "arch": "arm64"
+                    },
+                    "intermediatePixels": 128,
+                    "maxConservationError": 0,
+                    "row": [
+                      [255, 0, 0, 255],
+                      [255, 0, 0, 255],
+                      [255, 0, 0, 255],
+                      [255, 0, 0, 255],
+                      [239, 16, 0, 255],
+                      [207, 48, 0, 255],
+                      [175, 80, 0, 255],
+                      [143, 112, 0, 255],
+                      [112, 143, 0, 255],
+                      [80, 175, 0, 255],
+                      [48, 207, 0, 255],
+                      [16, 239, 0, 255],
+                      [0, 255, 0, 255],
+                      [0, 255, 0, 255],
+                      [0, 255, 0, 255],
+                      [0, 255, 0, 255]
+                    ]
+                  },
+                  {
+                    "profile": "hardware",
+                    "environment": {
+                      "profile": "hardware",
+                      "browserVersion": "151.0.7922.34",
+                      "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                      "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                      "platform": "darwin",
+                      "arch": "arm64"
+                    },
+                    "intermediatePixels": 128,
+                    "maxConservationError": 0,
+                    "row": [
+                      [255, 0, 0, 255],
+                      [255, 0, 0, 255],
+                      [255, 0, 0, 255],
+                      [255, 0, 0, 255],
+                      [239, 16, 0, 255],
+                      [207, 48, 0, 255],
+                      [175, 80, 0, 255],
+                      [143, 112, 0, 255],
+                      [112, 143, 0, 255],
+                      [80, 175, 0, 255],
+                      [48, 207, 0, 255],
+                      [16, 239, 0, 255],
+                      [0, 255, 0, 255],
+                      [0, 255, 0, 255],
+                      [0, 255, 0, 255],
+                      [0, 255, 0, 255]
+                    ]
+                  }
+                ]
+              }
+            ],
+            "inspector": {
+              "backend": "webgl2",
+              "realKeyEdit": "pass",
+              "boundedValueRejection": "pass",
+              "evaluatedStrength": 0.01,
+              "undoRedo": "pass",
+              "sourceSaveReload": "pass",
+              "assetsUnchanged": "pass"
+            },
+            "hardware": {
+              "environments": [
+                {
+                  "profile": "chromium-software-2",
+                  "browserVersion": "151.0.7922.34",
+                  "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                  "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                  "platform": "darwin",
+                  "arch": "arm64"
+                },
+                {
+                  "profile": "hardware",
+                  "browserVersion": "151.0.7922.34",
+                  "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                  "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                  "platform": "darwin",
+                  "arch": "arm64"
+                }
+              ],
+              "policy": "unchanged perceptual hardware policy",
+              "reports": [
+                {
+                  "fixture": "landscape-slow_push",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 19473,
+                  "psnr": 63.63251226487961,
+                  "ssim": 0.9999616263458815
+                },
+                {
+                  "fixture": "landscape-slow_push",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 17,
+                  "differingChannels": 21264,
+                  "psnr": 60.90843603607787,
+                  "ssim": 0.9999093886883827
+                },
+                {
+                  "fixture": "landscape-slow_push",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 12,
+                  "differingChannels": 20463,
+                  "psnr": 63.34516370209781,
+                  "ssim": 0.9999477087499031
+                },
+                {
+                  "fixture": "landscape-horizontal_drift",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 19575,
+                  "psnr": 63.60982319608766,
+                  "ssim": 0.9999594077795494
+                },
+                {
+                  "fixture": "landscape-horizontal_drift",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 10,
+                  "differingChannels": 21041,
+                  "psnr": 63.138691529211286,
+                  "ssim": 0.9999502775510046
+                },
+                {
+                  "fixture": "landscape-horizontal_drift",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 22,
+                  "differingChannels": 22672,
+                  "psnr": 62.36193365544425,
+                  "ssim": 0.9999429705224306
+                },
+                {
+                  "fixture": "landscape-cinematic_float",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 19713,
+                  "psnr": 63.579313684285694,
+                  "ssim": 0.9999561374919251
+                },
+                {
+                  "fixture": "landscape-cinematic_float",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 16,
+                  "differingChannels": 28813,
+                  "psnr": 54.952242999848224,
+                  "ssim": 0.9996378574216749
+                },
+                {
+                  "fixture": "landscape-cinematic_float",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 31,
+                  "differingChannels": 20432,
+                  "psnr": 62.77294854284368,
+                  "ssim": 0.9999492067502639
+                },
+                {
+                  "fixture": "landscape-locked_hold",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 3990,
+                  "psnr": 70.51711194651999,
+                  "ssim": 0.9999931488914309
+                },
+                {
+                  "fixture": "landscape-locked_hold",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 3990,
+                  "psnr": 70.51711194651999,
+                  "ssim": 0.9999931488914309
+                },
+                {
+                  "fixture": "landscape-locked_hold",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 3990,
+                  "psnr": 70.51711194651999,
+                  "ssim": 0.9999931488914309
+                },
+                {
+                  "fixture": "landscape-story_settle",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 3990,
+                  "psnr": 70.51711194651999,
+                  "ssim": 0.9999931488914309
+                },
+                {
+                  "fixture": "landscape-story_settle",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 21288,
+                  "psnr": 63.24549228795415,
+                  "ssim": 0.9999435629572601
+                },
+                {
+                  "fixture": "landscape-story_settle",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 21288,
+                  "psnr": 63.24549228795415,
+                  "ssim": 0.9999435629572601
+                },
+                {
+                  "fixture": "landscape-panel_reveal",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "landscape-panel_reveal",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 3990,
+                  "psnr": 70.51711194651999,
+                  "ssim": 0.9999931488914309
+                },
+                {
+                  "fixture": "landscape-panel_reveal",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 3990,
+                  "psnr": 70.51711194651999,
+                  "ssim": 0.9999931488914309
+                },
+                {
+                  "fixture": "landscape-comparison_step",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 2580,
+                  "psnr": 72.41064384375517,
+                  "ssim": 0.9999964926351596
+                },
+                {
+                  "fixture": "landscape-comparison_step",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 3990,
+                  "psnr": 70.51711194651999,
+                  "ssim": 0.9999931488914309
+                },
+                {
+                  "fixture": "landscape-comparison_step",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 3990,
+                  "psnr": 70.51711194651999,
+                  "ssim": 0.9999931488914309
+                },
+                {
+                  "fixture": "vertical-slow_push",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 13581,
+                  "psnr": 65.19752341123832,
+                  "ssim": 0.9999678042567064
+                },
+                {
+                  "fixture": "vertical-slow_push",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "near",
+                  "maxChannelDelta": 2,
+                  "differingChannels": 10068,
+                  "psnr": 66.49094323149608,
+                  "ssim": 0.9999728903310803
+                },
+                {
+                  "fixture": "vertical-slow_push",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 7,
+                  "differingChannels": 14163,
+                  "psnr": 64.70640544395683,
+                  "ssim": 0.9999568548542649
+                },
+                {
+                  "fixture": "vertical-horizontal_drift",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 14085,
+                  "psnr": 65.03927239016954,
+                  "ssim": 0.9999697885341026
+                },
+                {
+                  "fixture": "vertical-horizontal_drift",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 7,
+                  "differingChannels": 13477,
+                  "psnr": 65.21450495749062,
+                  "ssim": 0.9999651266844444
+                },
+                {
+                  "fixture": "vertical-horizontal_drift",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 5,
+                  "differingChannels": 14995,
+                  "psnr": 64.72070839727144,
+                  "ssim": 0.999957433093792
+                },
+                {
+                  "fixture": "vertical-cinematic_float",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 12451,
+                  "psnr": 65.57479857216929,
+                  "ssim": 0.9999643494642987
+                },
+                {
+                  "fixture": "vertical-cinematic_float",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 9,
+                  "differingChannels": 18855,
+                  "psnr": 60.55241219438172,
+                  "ssim": 0.999900612360929
+                },
+                {
+                  "fixture": "vertical-cinematic_float",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 7,
+                  "differingChannels": 13169,
+                  "psnr": 65.28016872640137,
+                  "ssim": 0.9999607615272366
+                },
+                {
+                  "fixture": "vertical-locked_hold",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 14492,
+                  "psnr": 64.91555764976248,
+                  "ssim": 0.9999589804279728
+                },
+                {
+                  "fixture": "vertical-locked_hold",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 14492,
+                  "psnr": 64.91555764976248,
+                  "ssim": 0.9999589804279728
+                },
+                {
+                  "fixture": "vertical-locked_hold",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 14492,
+                  "psnr": 64.91555764976248,
+                  "ssim": 0.9999589804279728
+                },
+                {
+                  "fixture": "vertical-story_settle",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 14492,
+                  "psnr": 64.91555764976248,
+                  "ssim": 0.9999589804279728
+                },
+                {
+                  "fixture": "vertical-story_settle",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 14122,
+                  "psnr": 65.02787883179987,
+                  "ssim": 0.999960012399366
+                },
+                {
+                  "fixture": "vertical-story_settle",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 14122,
+                  "psnr": 65.02787883179987,
+                  "ssim": 0.999960012399366
+                },
+                {
+                  "fixture": "vertical-panel_reveal",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "vertical-panel_reveal",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 14492,
+                  "psnr": 64.91555764976248,
+                  "ssim": 0.9999589804279728
+                },
+                {
+                  "fixture": "vertical-panel_reveal",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 14492,
+                  "psnr": 64.91555764976248,
+                  "ssim": 0.9999589804279728
+                },
+                {
+                  "fixture": "vertical-comparison_step",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 1275,
+                  "psnr": 75.47173905568773,
+                  "ssim": 0.999994723926861
+                },
+                {
+                  "fixture": "vertical-comparison_step",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 14492,
+                  "psnr": 64.91555764976248,
+                  "ssim": 0.9999589804279728
+                },
+                {
+                  "fixture": "vertical-comparison_step",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 14492,
+                  "psnr": 64.91555764976248,
+                  "ssim": 0.9999589804279728
+                },
+                {
+                  "fixture": "fallback-depth_range_flat",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 20471,
+                  "psnr": 63.41545032049755,
+                  "ssim": 0.9999603352079867
+                },
+                {
+                  "fixture": "fallback-depth_range_flat",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 18504,
+                  "psnr": 63.85418470576184,
+                  "ssim": 0.9999577711814854
+                },
+                {
+                  "fixture": "fallback-depth_range_flat",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 19253,
+                  "psnr": 63.681856795107024,
+                  "ssim": 0.9999609494660515
+                },
+                {
+                  "fixture": "fallback-depth_preparation_failed",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 20471,
+                  "psnr": 63.41545032049755,
+                  "ssim": 0.9999603352079867
+                },
+                {
+                  "fixture": "fallback-depth_preparation_failed",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 18504,
+                  "psnr": 63.85418470576184,
+                  "ssim": 0.9999577711814854
+                },
+                {
+                  "fixture": "fallback-depth_preparation_failed",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 19253,
+                  "psnr": 63.681856795107024,
+                  "ssim": 0.9999609494660515
+                },
+                {
+                  "fixture": "discontinuous-depth",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 19473,
+                  "psnr": 63.63251226487961,
+                  "ssim": 0.9999616263458815
+                },
+                {
+                  "fixture": "discontinuous-depth",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 4,
+                  "differingChannels": 20812,
+                  "psnr": 63.28504560620847,
+                  "ssim": 0.999953042780913
+                },
+                {
+                  "fixture": "discontinuous-depth",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 19569,
+                  "psnr": 63.611154570965965,
+                  "ssim": 0.9999506563736538
+                },
+                {
+                  "fixture": "auto-landscape-cinematic_float",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 19713,
+                  "psnr": 63.579313684285694,
+                  "ssim": 0.9999561374919251
+                },
+                {
+                  "fixture": "auto-landscape-cinematic_float",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 16,
+                  "differingChannels": 29038,
+                  "psnr": 55.06506423841428,
+                  "ssim": 0.999609945559673
+                },
+                {
+                  "fixture": "auto-landscape-cinematic_float",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 31,
+                  "differingChannels": 20432,
+                  "psnr": 62.77294854284368,
+                  "ssim": 0.9999492067502639
+                },
+                {
+                  "fixture": "auto-landscape-horizontal_drift",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 19575,
+                  "psnr": 63.60982319608766,
+                  "ssim": 0.9999594077795494
+                },
+                {
+                  "fixture": "auto-landscape-horizontal_drift",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 10,
+                  "differingChannels": 21041,
+                  "psnr": 63.138691529211286,
+                  "ssim": 0.9999502775510046
+                },
+                {
+                  "fixture": "auto-landscape-horizontal_drift",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 22,
+                  "differingChannels": 22672,
+                  "psnr": 62.36193365544425,
+                  "ssim": 0.9999429705224306
+                },
+                {
+                  "fixture": "auto-landscape-slow_push",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 19473,
+                  "psnr": 63.63251226487961,
+                  "ssim": 0.9999616263458815
+                },
+                {
+                  "fixture": "auto-landscape-slow_push",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 17,
+                  "differingChannels": 21264,
+                  "psnr": 60.90843603607787,
+                  "ssim": 0.9999093886883827
+                },
+                {
+                  "fixture": "auto-landscape-slow_push",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 12,
+                  "differingChannels": 20463,
+                  "psnr": 63.34516370209781,
+                  "ssim": 0.9999477087499031
+                },
+                {
+                  "fixture": "auto-vertical-protected-focus",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 22882,
+                  "psnr": 62.931901090725155,
+                  "ssim": 0.9999653036624861
+                },
+                {
+                  "fixture": "auto-vertical-protected-focus",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 7,
+                  "differingChannels": 26337,
+                  "psnr": 61.88134932104888,
+                  "ssim": 0.9999538542562098
+                },
+                {
+                  "fixture": "auto-vertical-protected-focus",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 3,
+                  "differingChannels": 21396,
+                  "psnr": 63.16845220758793,
+                  "ssim": 0.9999581990969556
+                },
+                {
+                  "fixture": "transparent-source-opaque-compatibility",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 235,
+                  "psnr": 82.8161622806701,
+                  "ssim": 0.9999991252357139
+                },
+                {
+                  "fixture": "transparent-source-opaque-compatibility",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 16,
+                  "differingChannels": 976,
+                  "psnr": 73.60206496670963,
+                  "ssim": 0.9999966205082048
+                },
+                {
+                  "fixture": "transparent-source-opaque-compatibility",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 6,
+                  "differingChannels": 729,
+                  "psnr": 77.40462033806332,
+                  "ssim": 0.9999987046859439
+                },
+                {
+                  "fixture": "prepared-depth-half-resolution",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "near",
+                  "maxChannelDelta": 1,
+                  "differingChannels": 19473,
+                  "psnr": 63.63251226487961,
+                  "ssim": 0.9999616263458815
+                },
+                {
+                  "fixture": "prepared-depth-half-resolution",
+                  "backend": "webgl2",
+                  "frame": 45,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 7,
+                  "differingChannels": 21583,
+                  "psnr": 62.45990656542535,
+                  "ssim": 0.9999509857713497
+                },
+                {
+                  "fixture": "prepared-depth-half-resolution",
+                  "backend": "webgl2",
+                  "frame": 89,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 9,
+                  "differingChannels": 21136,
+                  "psnr": 62.96753903259879,
+                  "ssim": 0.9999298050919859
+                },
+                {
+                  "fixture": "depth-local-clock-overlay",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 4,
+                  "differingChannels": 1675,
+                  "psnr": 66.96707868090422,
+                  "ssim": 0.9999854244294364
+                },
+                {
+                  "fixture": "depth-local-clock-overlay",
+                  "backend": "webgl2",
+                  "frame": 12,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 5,
+                  "differingChannels": 1857,
+                  "psnr": 65.6052509394748,
+                  "ssim": 0.9999756660494945
+                },
+                {
+                  "fixture": "depth-local-clock-overlay",
+                  "backend": "webgl2",
+                  "frame": 23,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 8,
+                  "differingChannels": 2066,
+                  "psnr": 64.43812952091821,
+                  "ssim": 0.9999793448440218
+                },
+                {
+                  "fixture": "depth-parent-mask-matte-effect",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 2805,
+                  "psnr": 56.86279512928599,
+                  "ssim": 0.9997996756734228
+                },
+                {
+                  "fixture": "depth-parent-mask-matte-effect",
+                  "backend": "webgl2",
+                  "frame": 12,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3483,
+                  "psnr": 56.38937065788773,
+                  "ssim": 0.9997707264871797
+                },
+                {
+                  "fixture": "depth-parent-mask-matte-effect",
+                  "backend": "webgl2",
+                  "frame": 23,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3340,
+                  "psnr": 56.67724947503948,
+                  "ssim": 0.9997798388820142
+                },
+                {
+                  "fixture": "depth-repeated-precomp-remap",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 14,
+                  "differingChannels": 3343,
+                  "psnr": 64.32053070890655,
+                  "ssim": 0.9999672590644318
+                },
+                {
+                  "fixture": "depth-repeated-precomp-remap",
+                  "backend": "webgl2",
+                  "frame": 12,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 18,
+                  "differingChannels": 5428,
+                  "psnr": 59.953987151569656,
+                  "ssim": 0.9999031039434222
+                },
+                {
+                  "fixture": "depth-repeated-precomp-remap",
+                  "backend": "webgl2",
+                  "frame": 23,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 17,
+                  "differingChannels": 4813,
+                  "psnr": 61.17389970295977,
+                  "ssim": 0.9999197094282608
+                },
+                {
+                  "fixture": "depth-fractional-shutter",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 4,
+                  "differingChannels": 1675,
+                  "psnr": 66.96707868090422,
+                  "ssim": 0.9999854244294364
+                },
+                {
+                  "fixture": "depth-fractional-shutter",
+                  "backend": "webgl2",
+                  "frame": 12,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 5,
+                  "differingChannels": 1698,
+                  "psnr": 67.06428383139351,
+                  "ssim": 0.9999876597501741
+                },
+                {
+                  "fixture": "depth-fractional-shutter",
+                  "backend": "webgl2",
+                  "frame": 23,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 8,
+                  "differingChannels": 2066,
+                  "psnr": 64.43812952091821,
+                  "ssim": 0.9999793448440218
+                },
+                {
+                  "fixture": "depth-camera-applied-once",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 4,
+                  "differingChannels": 2026,
+                  "psnr": 64.53917069329339,
+                  "ssim": 0.999984130241849
+                },
+                {
+                  "fixture": "depth-camera-applied-once",
+                  "backend": "webgl2",
+                  "frame": 12,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 5,
+                  "differingChannels": 3309,
+                  "psnr": 64.00510934567214,
+                  "ssim": 0.9999411223479187
+                },
+                {
+                  "fixture": "depth-camera-applied-once",
+                  "backend": "webgl2",
+                  "frame": 23,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 13,
+                  "differingChannels": 3066,
+                  "psnr": 64.10540367637664,
+                  "ssim": 0.9999436678105682
+                },
+                {
+                  "fixture": "depth-opt-in-flat-lighting",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 3,
+                  "differingChannels": 1421,
+                  "psnr": 66.91357934404037,
+                  "ssim": 0.9999822343839517
+                },
+                {
+                  "fixture": "depth-opt-in-flat-lighting",
+                  "backend": "webgl2",
+                  "frame": 12,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 4,
+                  "differingChannels": 2258,
+                  "psnr": 65.79479133850151,
+                  "ssim": 0.9999466799127734
+                },
+                {
+                  "fixture": "depth-opt-in-flat-lighting",
+                  "backend": "webgl2",
+                  "frame": 23,
+                  "tier": "perceptual",
+                  "maxChannelDelta": 11,
+                  "differingChannels": 2065,
+                  "psnr": 66.1685426508592,
+                  "ssim": 0.9999573558781775
+                },
+                {
+                  "fixture": "depth-small-raster-1x1",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "depth-small-raster-2x1",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "depth-small-raster-4x4",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxChannelDelta": 0,
+                  "differingChannels": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                }
+              ]
+            },
+            "costs": [
+              {
+                "id": "landscape-slow_push",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 122.29999995231628,
+                  "warmups": [18.900000035762787, 18.599999964237213],
+                  "measured": [
+                    18.30000001192093, 18.400000035762787, 17.799999952316284,
+                    18, 17.5
+                  ],
+                  "median": 18
+                },
+                "native": {
+                  "cold": 153.39999997615814,
+                  "warmups": [29, 26.30000001192093],
+                  "measured": [
+                    25.19999998807907, 22.5, 22.69999998807907,
+                    24.100000023841858, 23
+                  ],
+                  "median": 23,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 18.400000035762787,
+                  "warmups": [17.099999964237213, 17.30000001192093],
+                  "measured": [
+                    16.30000001192093, 16.5, 17.899999976158142, 16.5,
+                    16.30000001192093
+                  ],
+                  "median": 16.5
+                },
+                "ratio": 1.3333333333333333,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "landscape-horizontal_drift",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 81.79999995231628,
+                  "warmups": [18.200000047683716, 16.899999976158142],
+                  "measured": [
+                    16.69999998807907, 16.19999998807907, 16.80000001192093,
+                    19.600000023841858, 17.599999964237213
+                  ],
+                  "median": 16.80000001192093
+                },
+                "native": {
+                  "cold": 122.30000001192093,
+                  "warmups": [21.69999998807907, 21.600000023841858],
+                  "measured": [
+                    21.899999976158142, 22.80000001192093, 20.900000035762787,
+                    22.299999952316284, 21.700000047683716
+                  ],
+                  "median": 21.899999976158142,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 16.400000035762787,
+                  "warmups": [16.399999976158142, 16.69999998807907],
+                  "measured": [
+                    17.30000001192093, 16.5, 16.30000001192093, 16.5,
+                    16.099999964237213
+                  ],
+                  "median": 16.5
+                },
+                "ratio": 1.3153153134125075,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "landscape-cinematic_float",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 83,
+                  "warmups": [17.5, 16.19999998807907],
+                  "measured": [
+                    16.100000023841858, 15.5, 15.5, 15.599999964237213,
+                    15.800000011920929
+                  ],
+                  "median": 15.599999964237213
+                },
+                "native": {
+                  "cold": 118.90000003576279,
+                  "warmups": [22.599999964237213, 20.80000001192093],
+                  "measured": [
+                    22.399999976158142, 21.30000001192093, 21.19999998807907,
+                    21.900000035762787, 21.5
+                  ],
+                  "median": 21.5,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 15.800000011920929,
+                  "warmups": [15.599999964237213, 15.800000011920929],
+                  "measured": [
+                    15.699999988079071, 16.400000035762787, 16.099999964237213,
+                    16, 16.19999998807907
+                  ],
+                  "median": 16.099999964237213
+                },
+                "ratio": 1.356466880032242,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "landscape-locked_hold",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 93,
+                  "warmups": [19.200000047683716, 16.399999976158142],
+                  "measured": [
+                    16, 16.69999998807907, 15.800000011920929,
+                    15.199999988079071, 15.300000011920929
+                  ],
+                  "median": 15.800000011920929
+                },
+                "native": {
+                  "cold": 121.89999997615814,
+                  "warmups": [0.9000000357627869, 0.699999988079071],
+                  "measured": [
+                    0.699999988079071, 0.699999988079071, 0.6000000238418579,
+                    0.800000011920929, 0.5
+                  ],
+                  "median": 0.699999988079071,
+                  "actualSampleCounts": [1, 0, 0, 0, 0, 0, 0, 0]
+                },
+                "oldAfter": {
+                  "cold": 16.30000001192093,
+                  "warmups": [16.399999976158142, 15.5],
+                  "measured": [
+                    15.5, 15.399999976158142, 15.5, 15.300000011920929,
+                    15.300000011920929
+                  ],
+                  "median": 15.399999976158142
+                },
+                "ratio": 0.044871794124777424,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "landscape-story_settle",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 78.89999997615814,
+                  "warmups": [17.399999976158142, 15.800000011920929],
+                  "measured": [
+                    15.800000011920929, 15.600000023841858, 15.599999964237213,
+                    15.699999988079071, 15.5
+                  ],
+                  "median": 15.600000023841858
+                },
+                "native": {
+                  "cold": 109.5,
+                  "warmups": [20.400000035762787, 21.5],
+                  "measured": [
+                    22.19999998807907, 20.69999998807907, 20.80000001192093,
+                    20.899999976158142, 21.400000035762787
+                  ],
+                  "median": 20.899999976158142,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 15.599999964237213,
+                  "warmups": [18.200000047683716, 21.399999976158142],
+                  "measured": [
+                    16.100000023841858, 16, 15.899999976158142, 15.5,
+                    15.699999988079071
+                  ],
+                  "median": 15.899999976158142
+                },
+                "ratio": 1.3269841254703583,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "landscape-panel_reveal",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 81.69999998807907,
+                  "warmups": [18.900000035762787, 17.69999998807907],
+                  "measured": [
+                    17.899999976158142, 17.400000035762787, 17.19999998807907,
+                    17.19999998807907, 18.5
+                  ],
+                  "median": 17.400000035762787
+                },
+                "native": {
+                  "cold": 121.60000002384186,
+                  "warmups": [24.19999998807907, 24],
+                  "measured": [
+                    25.099999964237213, 23.600000023841858, 22.899999976158142,
+                    23.5, 23.80000001192093
+                  ],
+                  "median": 23.600000023841858,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 20,
+                  "warmups": [17.80000001192093, 17.399999976158142],
+                  "measured": [
+                    18.100000023841858, 17.5, 17.5, 17.19999998807907, 17.5
+                  ],
+                  "median": 17.5
+                },
+                "ratio": 1.3524355300663855,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "landscape-comparison_step",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 83.90000003576279,
+                  "warmups": [19.099999964237213, 17.900000035762787],
+                  "measured": [
+                    17.599999964237213, 18.400000035762787, 20,
+                    17.099999964237213, 17.30000001192093
+                  ],
+                  "median": 17.599999964237213
+                },
+                "native": {
+                  "cold": 128.69999998807907,
+                  "warmups": [0.7000000476837158, 0.5],
+                  "measured": [0.699999988079071, 0.5, 0.5, 0.5, 0.5],
+                  "median": 0.5,
+                  "actualSampleCounts": [1, 0, 0, 0, 0, 0, 0, 0]
+                },
+                "oldAfter": {
+                  "cold": 20,
+                  "warmups": [17.899999976158142, 17],
+                  "measured": [
+                    17, 17.19999998807907, 17, 17.100000023841858,
+                    17.100000023841858
+                  ],
+                  "median": 17.100000023841858
+                },
+                "ratio": 0.028818443813934946,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "vertical-slow_push",
+                "width": 1080,
+                "height": 1920,
+                "oldBefore": {
+                  "cold": 81.89999997615814,
+                  "warmups": [15.100000023841858, 13.800000011920929],
+                  "measured": [
+                    13.599999964237213, 13.5, 13.900000035762787,
+                    14.199999988079071, 14.399999976158142
+                  ],
+                  "median": 13.900000035762787
+                },
+                "native": {
+                  "cold": 112.90000003576279,
+                  "warmups": [19.19999998807907, 19.69999998807907],
+                  "measured": [
+                    19, 19.30000001192093, 18.69999998807907, 19.5,
+                    19.399999976158142
+                  ],
+                  "median": 19.30000001192093,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 14,
+                  "warmups": [13.800000011920929, 13.800000011920929],
+                  "measured": [
+                    13.699999988079071, 13.5, 13.600000023841858,
+                    13.599999964237213, 13.300000011920929
+                  ],
+                  "median": 13.599999964237213
+                },
+                "ratio": 1.4036363645033403,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "vertical-horizontal_drift",
+                "width": 1080,
+                "height": 1920,
+                "oldBefore": {
+                  "cold": 87.89999997615814,
+                  "warmups": [15.100000023841858, 13.600000023841858],
+                  "measured": [
+                    13.5, 13.5, 13.899999976158142, 13.699999988079071, 13.5
+                  ],
+                  "median": 13.5
+                },
+                "native": {
+                  "cold": 137.30000001192093,
+                  "warmups": [23.299999952316284, 19.600000023841858],
+                  "measured": [
+                    21.100000023841858, 18.899999976158142, 19.5,
+                    19.30000001192093, 19.399999976158142
+                  ],
+                  "median": 19.399999976158142,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 14.5,
+                  "warmups": [14.600000023841858, 14.300000011920929],
+                  "measured": [
+                    14, 13.5, 13.399999976158142, 13.600000023841858,
+                    13.600000023841858
+                  ],
+                  "median": 13.600000023841858
+                },
+                "ratio": 1.431734314324025,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "vertical-cinematic_float",
+                "width": 1080,
+                "height": 1920,
+                "oldBefore": {
+                  "cold": 82.30000001192093,
+                  "warmups": [15.300000011920929, 14.099999964237213],
+                  "measured": [
+                    14.400000035762787, 14, 13.799999952316284, 14,
+                    13.400000035762787
+                  ],
+                  "median": 14
+                },
+                "native": {
+                  "cold": 120.30000001192093,
+                  "warmups": [21.599999964237213, 20],
+                  "measured": [
+                    20.69999998807907, 20.30000001192093, 19.100000023841858,
+                    19.19999998807907, 19.899999976158142
+                  ],
+                  "median": 19.899999976158142,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 15.200000047683716,
+                  "warmups": [14.099999964237213, 14.199999988079071],
+                  "measured": [
+                    14.200000047683716, 14.199999988079071, 13.899999976158142,
+                    14.199999988079071, 13.899999976158142
+                  ],
+                  "median": 14.199999988079071
+                },
+                "ratio": 1.4113475166362006,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "vertical-locked_hold",
+                "width": 1080,
+                "height": 1920,
+                "oldBefore": {
+                  "cold": 85.70000004768372,
+                  "warmups": [15.199999988079071, 14],
+                  "measured": [
+                    13.699999988079071, 13.600000023841858, 14.099999964237213,
+                    14, 14
+                  ],
+                  "median": 14
+                },
+                "native": {
+                  "cold": 110.80000001192093,
+                  "warmups": [0.6000000238418579, 1],
+                  "measured": [
+                    0.699999988079071, 0.5, 0.5999999642372131,
+                    0.7000000476837158, 0.5
+                  ],
+                  "median": 0.5999999642372131,
+                  "actualSampleCounts": [1, 0, 0, 0, 0, 0, 0, 0]
+                },
+                "oldAfter": {
+                  "cold": 14.099999964237213,
+                  "warmups": [14.199999988079071, 13.800000011920929],
+                  "measured": [
+                    13.599999964237213, 13.800000011920929, 13.699999988079071,
+                    13.600000023841858, 13.600000023841858
+                  ],
+                  "median": 13.600000023841858
+                },
+                "ratio": 0.04347825824050086,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "vertical-story_settle",
+                "width": 1080,
+                "height": 1920,
+                "oldBefore": {
+                  "cold": 86,
+                  "warmups": [16.30000001192093, 14.100000023841858],
+                  "measured": [
+                    14.399999976158142, 13.5, 13.600000023841858,
+                    13.699999988079071, 13.699999988079071
+                  ],
+                  "median": 13.699999988079071
+                },
+                "native": {
+                  "cold": 115.69999998807907,
+                  "warmups": [22, 19.5],
+                  "measured": [
+                    22.100000023841858, 23.80000001192093, 19.19999998807907,
+                    18.80000001192093, 18.5
+                  ],
+                  "median": 19.19999998807907,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 14.5,
+                  "warmups": [13.699999988079071, 13.699999988079071],
+                  "measured": [
+                    13.600000023841858, 13.599999964237213, 13.600000023841858,
+                    13.300000011920929, 13.099999964237213
+                  ],
+                  "median": 13.599999964237213
+                },
+                "ratio": 1.4065934081769136,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "vertical-panel_reveal",
+                "width": 1080,
+                "height": 1920,
+                "oldBefore": {
+                  "cold": 79.10000002384186,
+                  "warmups": [16.80000001192093, 15.299999952316284],
+                  "measured": [
+                    14.700000047683716, 14.599999964237213, 14.600000023841858,
+                    14.5, 14.599999964237213
+                  ],
+                  "median": 14.599999964237213
+                },
+                "native": {
+                  "cold": 114.20000004768372,
+                  "warmups": [19.299999952316284, 19.600000023841858],
+                  "measured": [
+                    19.69999998807907, 19.5, 19.80000001192093,
+                    25.399999976158142, 24.400000035762787
+                  ],
+                  "median": 19.80000001192093,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 21.100000023841858,
+                  "warmups": [18, 15.800000011920929],
+                  "measured": [
+                    15.199999988079071, 15.300000011920929, 14.900000035762787,
+                    14.899999976158142, 16.400000035762787
+                  ],
+                  "median": 15.199999988079071
+                },
+                "ratio": 1.328859063329087,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "vertical-comparison_step",
+                "width": 1080,
+                "height": 1920,
+                "oldBefore": {
+                  "cold": 84.5,
+                  "warmups": [16.80000001192093, 15.100000023841858],
+                  "measured": [
+                    15.299999952316284, 14.900000035762787, 14.800000011920929,
+                    15, 14.899999976158142
+                  ],
+                  "median": 14.900000035762787
+                },
+                "native": {
+                  "cold": 114,
+                  "warmups": [0.6000000238418579, 0.5],
+                  "measured": [
+                    0.5, 0.5999999642372131, 0.5, 21.900000035762787, 0.5
+                  ],
+                  "median": 0.5,
+                  "actualSampleCounts": [1, 0, 0, 0, 0, 0, 0, 0]
+                },
+                "oldAfter": {
+                  "cold": 18.399999976158142,
+                  "warmups": [15.199999988079071, 14.699999988079071],
+                  "measured": [
+                    14.800000011920929, 15.100000023841858, 14.899999976158142,
+                    15, 15.100000023841858
+                  ],
+                  "median": 15
+                },
+                "ratio": 0.033444816013509036,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "fallback-depth_range_flat",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 80.40000003576279,
+                  "warmups": [17.400000035762787, 16.599999964237213],
+                  "measured": [
+                    16, 15.800000011920929, 15.899999976158142,
+                    16.100000023841858, 16.19999998807907
+                  ],
+                  "median": 16
+                },
+                "native": {
+                  "cold": 110.39999997615814,
+                  "warmups": [21.900000035762787, 23.19999998807907],
+                  "measured": [
+                    23.099999964237213, 23.200000047683716, 23.599999964237213,
+                    22.80000001192093, 22.19999998807907
+                  ],
+                  "median": 23.099999964237213,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 16.80000001192093,
+                  "warmups": [16.600000023841858, 16.69999998807907],
+                  "measured": [
+                    16.599999964237213, 16.200000047683716, 16,
+                    16.099999964237213, 16.19999998807907
+                  ],
+                  "median": 16.19999998807907
+                },
+                "ratio": 1.4347826070055394,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "fallback-depth_preparation_failed",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 81.20000004768372,
+                  "warmups": [17.399999976158142, 16.19999998807907],
+                  "measured": [
+                    16.400000035762787, 16.099999964237213, 16.30000001192093,
+                    16.19999998807907, 16.30000001192093
+                  ],
+                  "median": 16.30000001192093
+                },
+                "native": {
+                  "cold": 112,
+                  "warmups": [22.5, 21.30000001192093],
+                  "measured": [
+                    21, 21.599999964237213, 21.700000047683716,
+                    22.69999998807907, 21.899999976158142
+                  ],
+                  "median": 21.700000047683716,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 18.30000001192093,
+                  "warmups": [16.80000001192093, 16.599999964237213],
+                  "measured": [
+                    16.5, 16.80000001192093, 16.30000001192093,
+                    16.399999976158142, 16.30000001192093
+                  ],
+                  "median": 16.399999976158142
+                },
+                "ratio": 1.3272171287825412,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "discontinuous-depth",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 84,
+                  "warmups": [18.899999976158142, 16.80000001192093],
+                  "measured": [
+                    16.899999976158142, 17.100000023841858, 16.69999998807907,
+                    17.5, 18
+                  ],
+                  "median": 17.100000023841858
+                },
+                "native": {
+                  "cold": 117,
+                  "warmups": [21.399999976158142, 21.600000023841858],
+                  "measured": [
+                    35.80000001192093, 22, 22.80000001192093,
+                    22.099999964237213, 21.900000035762787
+                  ],
+                  "median": 22.099999964237213,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 18,
+                  "warmups": [16.600000023841858, 16.599999964237213],
+                  "measured": [
+                    16.5, 16.700000047683716, 16.399999976158142,
+                    16.600000023841858, 16.299999952316284
+                  ],
+                  "median": 16.5
+                },
+                "ratio": 1.3154761874140188,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "auto-landscape-cinematic_float",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 89.5,
+                  "warmups": [17.400000035762787, 16.69999998807907],
+                  "measured": [
+                    17.5, 16.399999976158142, 16.200000047683716,
+                    16.099999964237213, 17.099999964237213
+                  ],
+                  "median": 16.399999976158142
+                },
+                "native": {
+                  "cold": 124.5,
+                  "warmups": [21, 20.900000035762787],
+                  "measured": [
+                    22, 21.599999964237213, 21.100000023841858,
+                    21.69999998807907, 20.600000023841858
+                  ],
+                  "median": 21.599999964237213,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 16.30000001192093,
+                  "warmups": [16.30000001192093, 16.100000023841858],
+                  "measured": [
+                    16.099999964237213, 16.5, 15.800000011920929, 15.5,
+                    15.600000023841858
+                  ],
+                  "median": 15.800000011920929
+                },
+                "ratio": 1.3416149051076933,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "auto-landscape-horizontal_drift",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 83,
+                  "warmups": [17.5, 15.800000011920929],
+                  "measured": [
+                    16.30000001192093, 16.30000001192093, 15.899999976158142,
+                    16, 16.80000001192093
+                  ],
+                  "median": 16.30000001192093
+                },
+                "native": {
+                  "cold": 124.19999998807907,
+                  "warmups": [21.80000001192093, 22],
+                  "measured": [
+                    22.100000023841858, 21.399999976158142, 21.80000001192093,
+                    21.899999976158142, 21.5
+                  ],
+                  "median": 21.80000001192093,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 17.900000035762787,
+                  "warmups": [16.19999998807907, 16.399999976158142],
+                  "measured": [
+                    16.30000001192093, 16.19999998807907, 16.100000023841858,
+                    16.19999998807907, 16.19999998807907
+                  ],
+                  "median": 16.19999998807907
+                },
+                "ratio": 1.3415384622720572,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "auto-landscape-slow_push",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 84.10000002384186,
+                  "warmups": [17.80000001192093, 16.5],
+                  "measured": [
+                    16.799999952316284, 16.400000035762787, 16.30000001192093,
+                    16.299999952316284, 16.30000001192093
+                  ],
+                  "median": 16.30000001192093
+                },
+                "native": {
+                  "cold": 119.5,
+                  "warmups": [21.19999998807907, 22],
+                  "measured": [
+                    21.200000047683716, 21.399999976158142, 22, 22,
+                    22.399999976158142
+                  ],
+                  "median": 22,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 16.80000001192093,
+                  "warmups": [16.30000001192093, 16.5],
+                  "measured": [
+                    16.19999998807907, 16.5, 19.100000023841858,
+                    17.19999998807907, 16.899999976158142
+                  ],
+                  "median": 16.899999976158142
+                },
+                "ratio": 1.3253012052951452,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "auto-vertical-protected-focus",
+                "width": 1080,
+                "height": 1920,
+                "oldBefore": {
+                  "cold": 95,
+                  "warmups": [15.800000011920929, 13.5],
+                  "measured": [
+                    13.399999976158142, 13.600000023841858, 13,
+                    12.899999976158142, 13.100000023841858
+                  ],
+                  "median": 13.100000023841858
+                },
+                "native": {
+                  "cold": 126.80000001192093,
+                  "warmups": [18.19999998807907, 19.30000001192093],
+                  "measured": [
+                    20.5, 19.5, 18.799999952316284, 19.100000023841858,
+                    18.19999998807907
+                  ],
+                  "median": 19.100000023841858,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 13.699999988079071,
+                  "warmups": [13.200000047683716, 13.099999964237213],
+                  "measured": [
+                    13.199999988079071, 13.100000023841858, 13.300000011920929,
+                    12.899999976158142, 13
+                  ],
+                  "median": 13.100000023841858
+                },
+                "ratio": 1.4580152663419896,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "transparent-source-opaque-compatibility",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 79.20000004768372,
+                  "warmups": [19.299999952316284, 16.30000001192093],
+                  "measured": [16.100000023841858, 16, 16, 16, 16],
+                  "median": 16
+                },
+                "native": {
+                  "cold": 110.69999998807907,
+                  "warmups": [23.80000001192093, 21.899999976158142],
+                  "measured": [
+                    22.19999998807907, 21.80000001192093, 21.900000035762787,
+                    22.69999998807907, 21.599999964237213
+                  ],
+                  "median": 21.900000035762787,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 16.600000023841858,
+                  "warmups": [16.799999952316284, 16.30000001192093],
+                  "measured": [
+                    16.100000023841858, 16.099999964237213, 15.900000035762787,
+                    16.099999964237213, 16.5
+                  ],
+                  "median": 16.099999964237213
+                },
+                "ratio": 1.3644859850568036,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              },
+              {
+                "id": "prepared-depth-half-resolution",
+                "width": 1920,
+                "height": 1080,
+                "oldBefore": {
+                  "cold": 79.10000002384186,
+                  "warmups": [17.19999998807907, 16.19999998807907],
+                  "measured": [
+                    16.5, 16, 16.600000023841858, 16, 16.30000001192093
+                  ],
+                  "median": 16.30000001192093
+                },
+                "native": {
+                  "cold": 114.59999996423721,
+                  "warmups": [21.19999998807907, 21.100000023841858],
+                  "measured": [
+                    21.899999976158142, 22, 22.100000023841858,
+                    22.100000023841858, 21.69999998807907
+                  ],
+                  "median": 22,
+                  "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+                },
+                "oldAfter": {
+                  "cold": 18.30000001192093,
+                  "warmups": [16.69999998807907, 16.80000001192093],
+                  "measured": [
+                    16.5, 16.5, 18.19999998807907, 20.5, 18.899999976158142
+                  ],
+                  "median": 18.19999998807907
+                },
+                "ratio": 1.2753623188405796,
+                "shader": "depth-plane-0.5.0",
+                "rendererVersion": "composition-webgl2-0.65.0",
+                "policy": "recorded serial render/readback; deferred WebGL speed targets remain CE6-P"
+              }
+            ]
+          },
+          "reportPath": "/private/tmp/still-shift-ce8-check-5bcba60/benchmarks/results/composition-ce4d-depth-verification/native-acceptance.json",
+          "reportSha256": "sha256:57e6d1150f2c24c6241f7cb56153d31b214bb6189142684b7024987c27f482a3",
+          "log": "/private/tmp/ce4d-depth-delivery-5bcba60.log",
+          "logSha256": "sha256:a4fd1e41e30dc5d264749d3008d9529e035bcd7c8088ee4c4b7f352857459659"
         }
       },
       "pending": [
-        "complete native depth delivery refresh (running)",
-        "default migration, actual-default acceptance and final full gate"
+        "default consolidation actual-route acceptance and final full gate"
       ],
       "checkpoint": "5bcba60"
+    },
+    {
+      "name": "shared composition production defaults and duplicate painter retirement",
+      "date": "2026-10-07",
+      "status": "implemented; focused/actual-default/final acceptance pending",
+      "rendererVersion": "composition-webgl2-0.65.0",
+      "shaderVersion": "composition-image-plane-0.4.0",
+      "pipelineVersion": "animation-pipeline-0.12.0",
+      "prerequisiteDeliveryCheckpoint": "5bcba60",
+      "scope": [
+        "Illustrated family public factory delegates synchronously to prepared shared composition Canvas backend; all per-family frame drawing removed",
+        "Depth public factory delegates asynchronously to prepared shared composition WebGL backend; standalone Three drawing removed from production",
+        "Obsolete commerce effects painter and component-mask painting removed, retaining pure preparation",
+        "Node animation export uses native composition, asset paths, truthful renderer manifest/result and requested/resolved depth provenance",
+        "Cache identity includes pipeline, native renderer, depth adapter and shader versions",
+        "Historical geometric/frozen shader identity stays on test-only legacy oracle; frozen references and thresholds unchanged"
+      ],
+      "checks": {
+        "build": "pass",
+        "scopedEslint": "pass"
+      },
+      "pending": [
+        "focused units/integration and actual default wrappers",
+        "all23 actual-default depth timelines",
+        "all176 actual-default family items and required Lab/export matrices",
+        "fresh zipper CLI QA",
+        "complete local pnpm check",
+        "CE4d completion PR and continuation CE13 \u2192 CE15 \u2192 CE14"
+      ]
     }
   ],
   "pending": [

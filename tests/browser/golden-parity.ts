@@ -13,7 +13,7 @@ import {
   compareFrameSamples,
 } from "../../packages/renderer-core/src/parity.ts";
 import type { PreviewScene } from "../../packages/renderer-core/src/scene.ts";
-import { SHADER_VERSION } from "../../packages/renderer-core/src/webgl-renderer.ts";
+import { SHADER_VERSION } from "../helpers/legacy-depth-oracle.ts";
 import { exportScene } from "@still-shift/execution-runtime/export";
 import { GOLDEN_SCENES } from "../visual/golden-scenes.ts";
 

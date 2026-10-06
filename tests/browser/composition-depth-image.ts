@@ -156,6 +156,7 @@ try {
                 },
                 source!,
                 depth,
+                { requestedPreset: fixture.requestedPreset },
               )
             : preparedPath
               ? await prepared.createPreparedDepthPreview(

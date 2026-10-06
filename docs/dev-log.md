@@ -43,25 +43,23 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE4d in progress (2026-10-07):** `codex/composition-ce4d` from CE4c `17666eb`;
-  pushed implementation checkpoint `5bcba60`. Canvas is 1.44.0, WebGL2 is 0.65.0,
-  image-plane shader is 0.4.0 and depth adapter is 0.1.0. Legacy/depth adapters,
-  native depth-image graph/inspector support, family preparation and Q2 freeze
-  guidance are implemented. Hardware interpolation, preserved-alpha fringes,
-  verified PNG blending and separate shadow/source rounding repairs are verified.
-  All 7 legacy fixtures on both backends now pass complete serial delivery: 2,352
-  forward and reverse frames, 14 independent encodes, 42 production/repeat/raw
-  exports and 66 hardware comparisons; worst Canvas median ratio 1.1822 ≤ 1.25.
-  All 23 prepared depth timelines remain exact over 2,070 forward/reverse frames;
-  both GPU alpha-edge checks conserve coverage exactly. Complete native depth
-  delivery is running serially on an immutable `5bcba60` snapshot. The earlier
-  full native `1ec5d04` proof remains historical and does not cover the new repairs.
-  Default consolidation, actual-default acceptance, fresh zipper QA and final full
-  local `pnpm check` remain pending, then CE4d PR → CE13 → CE15 → CE14 (audit/reuse CE16).
-  No owner decision blocks this approved order. CE5-X/Q9 remains pending.
-  Failed delivery attempts and rejected bitmap/software-shadow alternatives are
-  retained in [results](./composition-ce4d-results.json); the older
-  [handoff](./composition-continuation-handoff-2026-10-07.md) supplies continuation rules.
+- **CE4d in progress (2026-10-07):** `codex/composition-ce4d` from CE4c `17666eb`.
+  Canvas is 1.44.0, WebGL2 is 0.65.0, image-plane shader is 0.4.0 and depth adapter
+  is 0.1.0. Complete repaired delivery on pushed `5bcba60` passes all 7 legacy
+  fixtures on both backends (2,352 forward/reverse frames, 14 independent encodes,
+  42 production/repeat/raw exports, 66 hardware checks, worst Canvas ratio 1.1822)
+  and native depth (29 timelines, 29 independent encodes, 87 exports, 23 cost
+  brackets, inspector/resources and 90 hardware checks). All 23 prepared depth
+  timelines match frozen references exactly; both GPU alpha edges conserve coverage.
+  Public family/depth factories now use the prepared shared composition backends;
+  duplicate frame painters are removed. Node manifests/exports carry native
+  composition and truthful provenance; pipeline 0.12 and native versions enter cache
+  identity. Build/scoped ESLint pass. Actual-default depth/family/Lab/export acceptance,
+  fresh zipper QA and complete local `pnpm check` remain pending, then CE4d PR →
+  CE13 → CE15 → CE14 (audit/reuse CE16). No owner decision blocks this approved
+  order; CE5-X/Q9 remains pending. Failed/rejected experiments and full proof remain
+  in [results](./composition-ce4d-results.json); continuation rules are in the
+  [handoff](./composition-continuation-handoff-2026-10-07.md).
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
   CE8-L `e1bd4bc`; final runtime `37cc07a`, verified snapshot `e1fb3e3`.
@@ -258,6 +256,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d native delivery passes and production defaults are consolidated
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` after `7359189`.
+- **Prerequisite proof:** immutable `5bcba60` native delivery passes 29 timelines, 29 independent
+  encodes, 87 byte-identical production/repeat/raw exports, 23 cost brackets, inspector/resource
+  checks and 90 hardware comparisons. Both GPU alpha edges conserve coverage exactly.
+- **Done:** public family/depth factories now use the prepared shared composition backends;
+  duplicate Three/family/commerce/mask frame painters are retired. Node exports and manifests
+  carry native composition/provenance; pipeline 0.12 and renderer/adapter/shader enter cache identity.
+  Historical references remain on test-only oracles.
+- **Results:** build/scoped ESLint pass; default-route focused checks and milestone acceptance are pending.
+- **Open / next:** actual-default depth/family/Lab/export checks, zipper QA and complete local gate;
+  create/attach CE4d PR, then continue CE13 → CE15 → CE14 with CE16 audit/reuse.
+- **Records:** [results](./composition-ce4d-results.json).
 
 ### 2026-10-07 — CE4d complete legacy delivery passes after shadow repair
 
