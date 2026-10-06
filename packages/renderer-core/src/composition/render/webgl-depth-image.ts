@@ -4,7 +4,7 @@ import type { CanvasImageResources } from "./canvas2d.ts";
 import type { DepthImageContent, ImageContent } from "./graph.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 
-export const DEPTH_IMAGE_SHADER_VERSION = "composition-image-plane-0.2.0";
+export const DEPTH_IMAGE_SHADER_VERSION = "composition-image-plane-0.3.0";
 const IMAGE_PLANE_BYTE_LIMIT = 128 * 1024 * 1024;
 
 export function validateImagePlaneSurface(
@@ -79,6 +79,86 @@ void main() {
   pixel=vec4(encoded*value.a,value.a);
 }`;
 
+// Keep the pinned software shader unchanged. Hardware smooth interpolation uses
+// different subpixel precision, which is visible when a depth mesh is downscaled.
+// Reconstruct hardware UVs from 1/16-pixel vertices to match the pinned legacy
+// precision, without changing triangle coverage or the export algorithm.
+// https://github.com/google/swiftshader/blob/master/src/Vulkan/VkConfig.hpp
+const HARDWARE_VERTEX = `#version 300 es
+precision highp float;
+layout(location=0) in vec4 vertex;
+layout(location=1) in vec4 triangleA;
+layout(location=2) in vec4 triangleB;
+layout(location=3) in vec4 triangleC;
+out vec2 fallbackUv;
+flat out vec2 screenA;
+flat out vec2 screenB;
+flat out vec2 screenC;
+flat out vec2 uvA;
+flat out vec2 uvB;
+flat out vec2 uvC;
+uniform sampler2D depth;
+uniform vec2 cover, framing, stepSize, offset;
+uniform float overscan, scale, strength, roll, edgeDamping;
+uniform vec2 rasterSize;
+float safeDepth(vec2 p) { float value=texture(depth,p).r; return value>=0.0 && value<=1.0 ? value : 0.5; }
+vec2 position(vec4 point) {
+  vec2 uv=point.zw;
+  float value=safeDepth(uv);
+  float gradient=max(max(abs(value-safeDepth(uv+vec2(stepSize.x,0.0))),abs(value-safeDepth(uv-vec2(stepSize.x,0.0)))),max(abs(value-safeDepth(uv+vec2(0.0,stepSize.y))),abs(value-safeDepth(uv-vec2(0.0,stepSize.y)))));
+  float damping=1.0-edgeDamping*0.8*smoothstep(0.06,0.25,gradient);
+  float parallax=1.0/(1.0-value*strength*damping);
+  vec2 p=(point.xy*cover+framing)*(1.0+overscan)*scale*parallax;
+  float cosine=cos(roll), sine=sin(roll);
+  p=vec2(p.x*cosine-p.y*sine,p.x*sine+p.y*cosine)+offset;
+  return p;
+}
+vec2 snap(vec2 p) { return floor((p+1.0)*0.5*rasterSize*16.0+0.5)/16.0; }
+void main() {
+  fallbackUv=vertex.zw;
+  gl_Position=vec4(position(vertex),0.0,1.0);
+  screenA=snap(position(triangleA)); screenB=snap(position(triangleB)); screenC=snap(position(triangleC));
+  uvA=triangleA.zw; uvB=triangleB.zw; uvC=triangleC.zw;
+}
+`;
+const HARDWARE_FRAGMENT = `#version 300 es
+precision highp float;
+in vec2 fallbackUv;
+flat in vec2 screenA;
+flat in vec2 screenB;
+flat in vec2 screenC;
+flat in vec2 uvA;
+flat in vec2 uvB;
+flat in vec2 uvC;
+uniform vec2 rasterSize;
+uniform sampler2D source;
+uniform float revealMode, revealProgress, opaqueAlpha;
+out vec4 pixel;
+void main() {
+  vec2 center=floor(gl_FragCoord.xy)+vec2(0.5);
+  vec2 ab=screenB-screenA, ac=screenC-screenA, relative=center-screenA;
+  float determinant=ab.x*ac.y-ab.y*ac.x;
+  // At very small local resolutions, quantization can collapse a triangle.
+  // Its native smooth varying remains defined for the original coverage mesh.
+  vec2 uv=fallbackUv;
+  if (determinant!=0.0) {
+    float b=(relative.x*ac.y-relative.y*ac.x)/determinant;
+    float c=(ab.x*relative.y-ab.y*relative.x)/determinant;
+    uv=uvA+(uvB-uvA)*b+(uvC-uvA)*c;
+  }
+  vec4 value=texture(source,uv);
+  if (opaqueAlpha>0.5) value.a=1.0;
+  if (revealMode>0.5 && revealProgress<1.0) {
+    vec3 backdrop=texture(source,vec2(0.01,0.99)).rgb;
+    float boundary=revealMode<1.5 ? revealProgress : 0.5+0.5*revealProgress;
+    float visibility=1.0-smoothstep(boundary-0.0008,boundary+0.0008,uv.x);
+    value=vec4(mix(backdrop,value.rgb,visibility),1.0);
+  }
+  // Match the pinned source algorithm's sRGB OETF after linear-light filtering.
+  vec3 encoded=mix(pow(value.rgb,vec3(0.41666))*1.055-vec3(0.055),value.rgb*12.92,lessThanEqual(value.rgb,vec3(0.0031308)));
+  pixel=vec4(encoded*value.a,value.a);
+}`;
+
 /** Fixed source mesh; no family renderer, camera or export pipeline is created. */
 export function depthImageGrid() {
   const columns = PREVIEW_LIMITS.gridColumns,
@@ -138,12 +218,18 @@ export class WebglDepthImages {
   private initialize() {
     if (this.program) return;
     const gl = this.device.gl;
+    const rendererInfo = gl.getExtension("WEBGL_debug_renderer_info");
+    const software =
+      rendererInfo &&
+      /SwiftShader/.test(
+        String(gl.getParameter(rendererInfo.UNMASKED_RENDERER_WEBGL)),
+      );
     const shaders: WebGLShader[] = [];
     const program = gl.createProgram()!;
     try {
       for (const [type, code] of [
-        [gl.VERTEX_SHADER, VERTEX],
-        [gl.FRAGMENT_SHADER, FRAGMENT],
+        [gl.VERTEX_SHADER, software ? VERTEX : HARDWARE_VERTEX],
+        [gl.FRAGMENT_SHADER, software ? FRAGMENT : HARDWARE_FRAGMENT],
       ] as const) {
         const shader = gl.createShader(type)!;
         shaders.push(shader);
@@ -165,14 +251,49 @@ export class WebglDepthImages {
       this.vertex = gl.createBuffer()!;
       this.index = gl.createBuffer()!;
       gl.bindVertexArray(this.vao);
-      const { vertices, indices } = depthImageGrid();
-      this.count = indices.length;
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex);
-      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-      gl.enableVertexAttribArray(0);
-      gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 16, 0);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index);
-      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+      if (software) {
+        const { vertices, indices } = depthImageGrid();
+        this.count = indices.length;
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex);
+        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(0);
+        gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 16, 0);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+      } else {
+        const grid = depthImageGrid();
+        const indices = new Uint16Array(grid.indices.length);
+        const vertices = new Float32Array(indices.length * 16);
+        for (let start = 0; start < indices.length; start += 3) {
+          const triangle = [0, 1, 2].map((corner) => {
+            const offset = grid.indices[start + corner]! * 4;
+            return grid.vertices.subarray(offset, offset + 4);
+          });
+          for (let corner = 0; corner < 3; corner++) {
+            const index = start + corner;
+            indices[index] = index;
+            vertices.set(triangle[corner]!, index * 16);
+            for (let other = 0; other < 3; other++)
+              vertices.set(triangle[other]!, index * 16 + 4 + other * 4);
+          }
+        }
+        this.count = indices.length;
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex);
+        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+        for (let attribute = 0; attribute < 4; attribute++) {
+          gl.enableVertexAttribArray(attribute);
+          gl.vertexAttribPointer(
+            attribute,
+            4,
+            gl.FLOAT,
+            false,
+            64,
+            attribute * 16,
+          );
+        }
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+      }
     } catch (error) {
       gl.deleteProgram(program);
       this.program = undefined;
@@ -409,6 +530,7 @@ export class WebglDepthImages {
           this.locations.set(name, gl.getUniformLocation(this.program!, name));
         return this.locations.get(name)!;
       };
+      gl.uniform2f(uniform("rasterSize"), content.width, content.height);
       gl.uniform1i(uniform("source"), 0);
       gl.uniform1i(uniform("depth"), 1);
       gl.uniform1f(uniform("revealMode"), layer.revealMode);

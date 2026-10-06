@@ -48,7 +48,7 @@ still hold before relying on them.
   depth schema/evaluation/shared GPU pass, mixed graph/inspector support, family
   preparation and Q2 freeze guidance are implemented. PR43 and zipper QA source
   repairs are integrated; focused regressions/build/lint/schema/boundaries pass
-  on their recorded checkpoints. Canvas is 1.44.0 and WebGL2 is 0.61.0.
+  on their recorded checkpoints. Canvas is 1.44.0 and WebGL2 is 0.62.0.
   All 23 prepared depth timelines match exactly in 2,070 forward/reverse frames;
   six mixed graphs, asset rejection and actual inspector history/save/reload pass
   diagnostic checks. Six extended old-depth references are captured and repeated.
@@ -62,13 +62,17 @@ still hold before relying on them.
   CPU source rasterization, explicit bilinear filtering and derivative correction
   did not improve it. Full triangle reconstruction improves hardware but fails
   frozen software near parity; rounding and centroid alternatives are rejected.
-  Testing hardware-only explicit interpolation while preserving the pinned pass.
-  No production shader change yet; final acceptance remains incomplete.
+  Hardware interpolation now reproduces pinned 1/16-pixel vertex precision, while
+  keeping the software shader/mesh unchanged. WebGL2 is 0.62.0; image-plane shader
+  is 0.3.0. Build/lint/20 focused unit tests pass; all 23 prepared timelines remain
+  exact over 2,070 forward/reverse frames. All 87 hardware comparisons pass; three
+  tiny rasters (1x1, 2x1, 4x4) retain opaque coverage and exact hardware parity.
+  Fresh full delivery acceptance and final milestone gate remain pending.
   Export-worker startup/provenance passes build/lint/toolchain, 25 unit and 11
   integration tests; all 23 prepared wrappers re-pass 2,070 exact frames.
   **CE6-P's second timing hold is released:** scoped formatting is complete,
   and focused startup/cancellation/provenance verification passes. A private
-  default-migration patch is prepared but unapplied. Next: repair hardware interpolation,
+  default-migration patch is prepared but unapplied. Next: re-run complete native depth acceptance,
   finish depth/legacy delivery and timing, switch
   defaults, run actual-route acceptance and the final complete local gate, then
   create/attach the CE4d PR. Continue CE13 → CE15 → CE14 on separate branches.
@@ -269,6 +273,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE4d hardware depth interpolation checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` after `bcc1c8b`.
+- **Done:** Hardware UVs use pinned 1/16-pixel subpixel precision; the software
+  shader/mesh stay unchanged. WebGL2 0.62.0 / image-plane shader 0.3.0.
+- **Results:** Build/lint/20 unit tests pass; all 23 timelines / 2,070 forward and
+  reverse frames stay exact. All 87 hardware comparisons pass the unchanged
+  policy. Three tiny rasters retain full coverage and exact hardware parity.
+- **Next:** Fresh full native delivery, legacy timing/delivery, default switch and
+  complete milestone gate. Earlier failed/rejected diagnostics remain recorded.
+- **Records:** [Full measured evidence](./composition-ce4d-results.json).
+
 
 ### 2026-10-07 — CE4d complete depth delivery reaches hardware failure
 

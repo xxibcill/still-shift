@@ -35,6 +35,7 @@ import { depthInspectorAcceptance } from "./depth-inspector.ts";
 import {
   depthFailureAcceptance,
   depthAlphaAcceptance,
+  depthSmallRasterAcceptance,
 } from "./depth-failures.ts";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 import { depthRenderCosts } from "./depth-cost.ts";
@@ -321,6 +322,17 @@ try {
       `Depth ${doc.id}: independent old-local-raster integration, seeks and exports pass`,
     );
   }
+  const smallRasters = await depthSmallRasterAcceptance(page);
+  hardwareFixtures.push(...smallRasters);
+  reports.push({
+    id: "depth-small-raster-coverage",
+    localSizes: [
+      [1, 1],
+      [2, 1],
+      [4, 4],
+    ],
+    status: "opaque red coverage preserved",
+  });
   const inspector = await depthInspectorAcceptance(
       browser,
       directory,

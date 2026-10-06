@@ -112,3 +112,108 @@ export async function depthAlphaAcceptance(
     { json: JSON.stringify(doc), assetUrls },
   );
 }
+
+/** Subpixel triangles may collapse after interpolation quantization; their coverage stays valid. */
+export async function depthSmallRasterAcceptance(page: Page) {
+  return page.evaluate(async () => {
+    const url = "/packages/renderer-core/src/index.ts",
+      renderer: typeof Render = await import(url),
+      fixtures = [];
+    const asset = async (id: string, color: string) => {
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = 2;
+      const context = canvas.getContext("2d")!;
+      context.fillStyle = color;
+      context.fillRect(0, 0, 2, 2);
+      const path = canvas.toDataURL("image/png"),
+        bytes = await (await fetch(path)).arrayBuffer(),
+        sha256 =
+          "sha256:" +
+          Array.from(
+            new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+            (value) => value.toString(16).padStart(2, "0"),
+          ).join("");
+      return { id, type: "image" as const, path, sha256, width: 2, height: 2 };
+    };
+    const assets = [
+        await asset("source", "#ff0000"),
+        await asset("depth", "#808080"),
+      ],
+      assetUrls = Object.fromEntries(
+        assets.map((value) => [value.id, value.path]),
+      );
+    for (const [width, height] of [
+      [1, 1],
+      [2, 1],
+      [4, 4],
+    ] as const) {
+      const doc: Composition = {
+        schemaVersion: "composition-1",
+        id: `depth-small-raster-${width}x${height}`,
+        width: 16,
+        height: 16,
+        fps: 30,
+        frameCount: 1,
+        background: "#000000",
+        assets,
+        layers: [
+          {
+            id: "photo",
+            type: "depth-image",
+            size: [width, height],
+            sourceAsset: "source",
+            depth: {
+              asset: "depth",
+              encoding: "r8-unorm",
+              width: 2,
+              height: 2,
+            },
+            alphaMode: "opaque",
+            overscan: 0,
+            edgeDamping: 1,
+            motion: { scale: 1, strength: 0, offset: [0, 0], roll: 0 },
+            transform: {
+              anchor: [0, 0],
+              position: [0, 0],
+              scale: [16 / width, 16 / height],
+            },
+          },
+        ],
+      };
+      const resources = await renderer.loadCompositionResources(
+          doc,
+          (id) => assetUrls[id]!,
+        ),
+        preview = renderer.createCompositionPreview(
+          document.createElement("canvas"),
+          doc,
+          resources,
+          { backend: "webgl2" },
+        );
+      try {
+        preview.renderFrame(0);
+        const pixels = preview.readPixels();
+        for (let offset = 0; offset < pixels.length; offset += 4)
+          if (
+            pixels[offset] !== 255 ||
+            pixels[offset + 1] !== 0 ||
+            pixels[offset + 2] !== 0 ||
+            pixels[offset + 3] !== 255
+          )
+            throw Error(
+              `Small depth raster ${width}x${height} lost opaque source coverage at ${offset / 4}`,
+            );
+      } finally {
+        preview.dispose();
+      }
+      fixtures.push({
+        name: doc.id,
+        doc,
+        assetUrls,
+        backends: ["webgl2" as const],
+        frames: [0],
+      });
+    }
+    return fixtures;
+  });
+}
