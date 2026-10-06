@@ -54,7 +54,8 @@ still hold before relying on them.
   or emission changes were added. Owner must resolve that scope before resuming.
   A1 baseline approval and the rest of CE5-X sequence stay open. CE4d remains active
   in the primary checkout; this work uses private dependencies/caches/venv.
-  [Evidence](./composition-ce5x-results.json). No complete phase gate is claimed.
+  [Draft PR #46](https://github.com/xxibcill/still-shift/pull/46) targets CE4c; auto-merge
+  is disabled. [Evidence](./composition-ce5x-results.json). No complete phase gate is claimed.
 
 - **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
   CE8-L `e1bd4bc`; final runtime `37cc07a`, verified snapshot `e1fb3e3`.
@@ -267,6 +268,8 @@ _Last updated 2026-10-06 by Codex for CE5-X audit; prior work retained._
 - **Open / next:** owner stop triggered for additional component motion providers,
   source-image attachments and four/five-vertex annotations; runtime migration stops.
   Resolve scope/contract first. A1 and remaining sequence decisions stay open.
+- **PR:** [Draft #46](https://github.com/xxibcill/still-shift/pull/46) targets CE4c;
+  audit checkpoint `f793fc0`, no auto-merge. Active CE4d checkout remains untouched.
 - **Records:** [CE5-X audit](./composition-ce5x-results.json), [plan](./composition-engine-plan.md#ce5-x--shape-fidelity-connectors-and-expressive-strokes).
 
 ### 2026-10-06 — Repair PR #38 square-cap bounds and close both findings

@@ -21,7 +21,8 @@
     "frozenSourceHashes": {
       "tests/visual/composition-baselines/darwin-arm64.json": "25c2465f27c57121ef1623ee48477d9ee52757a06b0e7b20a8458b3e206b4a79",
       "tests/visual/composition-baselines/fixtures.json": "47d05d3894efd55efef2e19bad69d04db226f32c393afe0f87d911d25bec5216"
-    }
+    },
+    "auditCheckpoint": "f793fc0"
   },
   "audit": {
     "method": "All benchmark JSON with story-scene-1 or commerce-scene-1; all story-passage-1/2 beat expansion; existing story/commerce family helper variants. Actual adapter emission; pinned browser font preparation where required. Counts include each source fixture, passage beat and helper variant once; CE0 subset is reported separately.",
@@ -17963,6 +17964,30 @@
       "attempt": "Restricted gh pr view 45",
       "result": "api.github.com connection failed",
       "repair": "Permitted read-only retry succeeds; base/naming pattern and absence of existing CE5-X PR confirmed."
+    },
+    {
+      "stage": "cherry-pick",
+      "attempt": "e39f99b",
+      "result": "tracker table conflict against complete CE4c",
+      "repair": "Retain CE4c rows and insert CE5-X row; continue as e74bb1a"
+    },
+    {
+      "stage": "cherry-pick",
+      "attempt": "335ff23",
+      "result": "conflicts in evaluator/render versions, reference versions and dev-log history",
+      "repair": "Retain CE4c functionality/history, preserve incoming historical entries, advance output identities; continue as 3422f87"
+    },
+    {
+      "stage": "cherry-pick",
+      "attempt": "3d0da6a",
+      "result": "conflicts in evaluator/render versions, reference versions and dev-log current state",
+      "repair": "Retain CE4c current state/history and advance identities; continue as 8d8076c"
+    },
+    {
+      "stage": "cherry-pick",
+      "attempt": "d3093bd",
+      "result": "conflicts in evaluator/render versions and dev-log current state",
+      "repair": "Retain CE4c features/history, advance identities and reference versions; continue as a64a96e"
     }
   ],
   "ownerApproval": {
@@ -18702,5 +18727,15 @@
     "New composition-shapes-x browser group",
     "Final migration counts and affected family/frozen-baseline acceptance",
     "User-guide and new-field reference documentation after implementation"
-  ]
+  ],
+  "delivery": {
+    "pr": "https://github.com/xxibcill/still-shift/pull/46",
+    "draft": true,
+    "head": "codex/composition-ce5x",
+    "base": "codex/composition-ce4c",
+    "autoMerge": false,
+    "actionsEnabled": false,
+    "migration": "not started; owner audit stop condition",
+    "approvalQuestion": "Pending scope/contract clarification; no approval inferred from elapsed time"
+  }
 }
