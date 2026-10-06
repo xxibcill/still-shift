@@ -3,27 +3,40 @@
 - Date: 2026-10-05
 - Branch: `codex/composition-ce6p-compatible`
 - Starting commit: `0e4838852855f6dc8cf91bba763a402dfd716f88` (CE7)
-- Status: owner resumed unchanged CE6-P completion work and explicitly approved the scoped echo correction plus quiet-window coordination. Renderer 0.42.0 retains the correction and reviewed particle candidate; targeted correctness and cost measurements are retained. Native paint/copy removal alone fails its budget gate; selected particle gains do not close the pinned strict misses. All 119 timing misses and native 2× acceptance remain open. The full local gate passes retained 0.42.0; the fresh-owned-read/known-clear cost gate rejects that candidate on both profiles. No compatible closure mechanism is selected.
+- Status: `[d]`, owner paused CE6-P and deferred remaining performance work to an unscheduled future version on 2026-10-07. Milestone acceptance remains incomplete. Reviewed renderer 0.42.0 and all evidence are retained in PR #41; the full local gate passes, while the original timing failures, native 2× and full strict audit on 0.42.0 remain open.
+
+## Owner deferral — 2026-10-07
+
+The owner requested: “let's just pause here and defer it to future version again”.
+Pause the completion goal and stop performance tuning, additional timing windows
+and architecture experiments until an explicit owner request resumes the work.
+No future version number or deadline is assigned. Preserve the 1.25× family and
+native 2× targets, original 117 cases and all correctness/ownership acceptance.
+This decision defers the requirements; it does not mark CE6-P complete.
+
+Retain renderer 0.42.0 / `d4ecdf8`, the approved scoped echo correction,
+particle gain, full local gate and [PR #41](https://github.com/xxibcill/still-shift/pull/41).
+The existing strict ledger has 119 timing misses; the complete 195-case audit has
+not been repeated on 0.42.0. Both timing holds ended. The rejected native
+owned-output candidate stays rejected, and the proposed GPU-resident/asynchronous
+architecture prototype is not approved. Detailed earlier records below are
+historical; they do not authorize a restart.
 
 The owner requested research before further trial and error on 2026-10-06.
-Continue from the [resolution plan](./composition-ce6p-resolution-plan.md) and
-[cited research](./composition-ce6p-resolution-research.md), which set budget,
-eligibility and stop conditions before another implementation. The subsequent
-[execution record](./composition-ce6p-resolution-plan.md#execution-record-2026-10-06)
-reports particle work reduction, byte proof, the scoped echo correction proposal
-and routing of all 119 timing misses. Elapsed timing and explicit echo compatibility
-approval remain pending. The earlier records below remain history.
+The [resolution plan](./composition-ce6p-resolution-plan.md) and
+[cited research](./composition-ce6p-resolution-research.md) preserve budget,
+eligibility and stop conditions. The [execution record](./composition-ce6p-resolution-plan.md#execution-record-2026-10-06)
+retains particle work reduction, the approved echo correction, routing of all 119
+timing misses, and the costed rejection of native paint/owned-output candidates.
+The scoped echo authorization and elapsed sessions are complete; all original
+strict timing failures and native acceptance remain open.
 
-The [active goal and GPU trace record](./composition-ce6p-resolution-plan.md#active-completion-goal-and-gpu-operation-coverage)
+The [prior goal and GPU trace record](./composition-ce6p-resolution-plan.md#active-completion-goal-and-gpu-operation-coverage)
 retains 476 selected frames across all 119 failures, with exact repeated operation
-counts and owned pixel hashes. Known-clear copies occur in 100 cases; their elapsed
-cost and the native budget gate remain unmeasured. Structural coverage is not
-milestone completion.
-
-The owner resumed CE6-P using the current WebGL renderer in this isolated
-worktree. Do not modify the primary checkout or main feature chat. No CPU/GPU
-composition hybrid, default-backend change, GPU-policy change, acceptance revision
-or frozen-baseline regeneration is authorized. GitHub Actions remain disabled.
+counts and owned pixel hashes. Structural coverage is not milestone completion.
+The isolated lane leaves the primary checkout independent. No CPU/GPU composition
+hybrid, default-backend change, GPU-policy change, acceptance revision or
+frozen-baseline regeneration is authorized. GitHub Actions remain disabled.
 
 ## Preserved acceptance
 

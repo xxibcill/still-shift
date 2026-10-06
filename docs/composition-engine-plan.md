@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-10-05
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE6 feature work incomplete. CE6-P WebGL performance work resumed in an isolated parallel lane (owner request 2026-10-05); its acceptance remains incomplete. Q1 and Q3 decided
+- **Updated:** 2026-10-07
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE6 feature work incomplete. CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -367,7 +367,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
 | CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-performance` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
-| CE6-P | WebGL performance acceptance                    | Future | CE6                  | Codex                  | `codex/composition-ce6p-compatible` | `[~]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
+| CE6-P | WebGL performance acceptance                    | Future | CE6                  | Codex                  | `codex/composition-ce6p-compatible` | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
@@ -415,6 +415,14 @@ completion gates. Family-fixture parity is a CE4 adapter gate after its prerequi
 milestones are complete; it cannot block the backend or camera that the adapter needs.
 
 ### Current-version priority and deferred performance
+
+**Latest owner decision, 2026-10-07:** pause CE6-P and defer remaining performance
+work to an unscheduled future version again. Retain reviewed 0.42.0 / `d4ecdf8`
+and PR #41, its verified corrections/gains and all evidence. The completion goal
+is paused; resume tuning or architecture experiments only on explicit owner
+request. Original 117/current 119 timing misses, native 2× and the complete strict
+audit on 0.42.0 remain open. Acceptance is preserved and CE6-P is not complete.
+No architecture prototype is approved. [Deferral record](./composition-ce6p-plan.md#owner-deferral--2026-10-07).
 
 **Owner decision, 2026-10-03:** defer the remaining WebGL performance work to a
 future version and prioritize other features. CE6-P owns the WebGL **1.25×**
@@ -3232,14 +3240,14 @@ tests, backend parity suite, repeated-export determinism test.
 
 <a id="ce6-p--deferred-webgl-performance-acceptance"></a>
 
-### CE6-P — Resumed WebGL performance acceptance
+### CE6-P — Deferred WebGL performance acceptance
 
-- **Status:** `[~]`, owner resumed 2026-10-05 on the current WebGL approach in
-  isolated branch `codex/composition-ce6p-compatible`, starting at `0e48388`.
-  A measured compatibility-preserving exposure slice is delivered for review in
-  [PR #41](https://github.com/xxibcill/still-shift/pull/41); milestone acceptance
-  remains incomplete. The main feature lane remains independent.
-  [Slice plan](./composition-ce6p-plan.md).
+- **Status:** `[d]`, owner paused and deferred again on 2026-10-07 after the
+  isolated 2026-10-05/06 resumption. Reviewed renderer 0.42.0 / `d4ecdf8` remains
+  delivered for review in [PR #41](https://github.com/xxibcill/still-shift/pull/41).
+  Milestone acceptance is incomplete. No future version or restart date is assigned;
+  resume only on explicit owner request. The main feature lane remains independent.
+  [Deferral record](./composition-ce6p-plan.md#owner-deferral--2026-10-07).
 - **Prior deferral:** user approved 2026-10-03. This superseded the earlier
   CE4b-to-CE6 timing ownership decision and the performance slices' requests for
   an immediate rendering-path decision. Optimization and architecture experiments

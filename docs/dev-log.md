@@ -43,28 +43,22 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE6-P resumed by owner (2026-10-06):** renderer 0.42.0 retains the approved
-  echo correction and reviewed particle candidate. Targeted pinned frames/seeks,
-  four identical MP4 pairs, selected profile agreement and focused checks pass.
-  Eight uncontended particle sessions show a 1.355× pinned base improvement and
-  1.776–2.170× hardware contrasts; pinned environment drift limits those gains.
-  All pinned candidate ratios still exceed 1.25×. Native paint/copy removal alone
-  fails its budget gate. The fixed native fresh-owned-read/known-clear overlay
-  preserves bytes but regresses: 1.7875/1.8125 ms versus matched budgets
-  0.39375/0.375 ms. Complete allocate+fill alone costs 0.850/0.925 ms.
-  Reject that candidate; no compatible closure mechanism is selected.
-  The first quiet timing slice was released; PR42 was archived before release
-  delivery. The second quiet slice is released to main. This branch’s full local gate passes all browser
-  groups and 176 frozen baselines / 36,061 frames. All 119 timing misses /
-  original 117, native 2× and strict audits remain open. The goal tool retains its prior blocked
-  status; the owner explicitly resumed the unchanged objective.
-  [Execution record](./composition-ce6p-resolution-plan.md#quiet-window-cost-decisions--2026-10-06),
-  [echo proof](./composition-ce6p-echo-diagnosis-results.json),
-  [cost evidence](./composition-ce6p-cost-results.json).
+- **CE6-P deferred again by owner (2026-10-07):** pause the completion goal
+  and defer remaining performance work to an unscheduled future version.
+  Retain reviewed renderer 0.42.0 (`d4ecdf8`) and [PR #41](https://github.com/xxibcill/still-shift/pull/41):
+  the scoped echo correction, particle improvement and full local gate pass.
+  CE6-P remains incomplete: original 117/current 119 timing misses, native 2×,
+  and the complete strict 195-case audit on 0.42.0 stay open. Rejected owned-output
+  experiments and all raw evidence remain retained. Both timing holds ended.
+  No architecture prototype or API/acceptance change is approved; no restart date
+  is assigned. Resume tuning or architecture experiments only on explicit owner request.
+  [Deferral](./composition-ce6p-plan.md#owner-deferral--2026-10-07),
+  [execution and costs](./composition-ce6p-resolution-plan.md#native-owned-output-decision--2026-10-06),
+  [echo proof](./composition-ce6p-echo-diagnosis-results.json).
 
-- **CE6-P measured slice delivered (2026-10-06):** isolated
+- **CE6-P earlier measured slice delivered (2026-10-06):** isolated
   `codex/composition-ce6p-compatible` from CE7 `0e48388`; renderer stays `7a797a9`
-  / 0.40.0. All 852 exactness cases per GPU profile, focused regressions and the
+  / 0.40.0 during that earlier verification. All 852 exactness cases per GPU profile, focused regressions and the
   full local gate pass. Four valid brackets establish pinned sparse exposure
   export gains of 2.676–3.962× over fusion alone; broad hardware gains are unproven.
   Strict audits complete 195 cases / 40,783 frames and 53 identical MP4 pairs,
@@ -211,6 +205,34 @@ _Last updated 2026-10-07 by Codex for CE6-P; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE6-P paused and deferred again
+
+- **Owner decision:** “let's just pause here and defer it to future version again”.
+- **Status:** completion goal paused; CE6-P is deferred, not complete. No future version
+  number or restart date is assigned. Resume only on an explicit owner request.
+- **Retained:** reviewed 0.42.0 / `d4ecdf8` in [PR #41](https://github.com/xxibcill/still-shift/pull/41),
+  passing local/targeted correctness and all measured gains, failures and rejected experiments.
+- **Open:** original 117/current 119 timing misses, native 2× and the full strict audit on 0.42.0.
+  Requirements remain unchanged; the proposed architecture prototype is not approved.
+- **Verification:** documentation formatting/diff checks only; no further performance work.
+- **Records:** [deferral](./composition-ce6p-plan.md#owner-deferral--2026-10-07),
+  [resolution record](./composition-ce6p-resolution-plan.md#owner-deferral--2026-10-07).
+
+### 2026-10-07 — CE6-P feasibility assessment
+
+- **Scope:** owner asked whether the unchanged target justifies further work after three days.
+- **Evidence:** native production is 1.450/1.500 ms against matched 0.39375/0.375 ms
+  budgets, requiring roughly 73–75% less total time. Standalone allocate+slice
+  costs 0.500/0.525 ms; this is an observed control, not a universal lower bound.
+- **Assessment:** the complete unchanged target is unlikely under the current approach;
+  no compatible closure mechanism or original strict timing failure closure is demonstrated.
+- **Recommendation / owner decision:** retain reviewed 0.42.0 and avoid an unbounded tuning loop.
+  A separately authorized architecture prototype needs an early feasibility gate and may
+  improve preview throughput without proving the original synchronous timing requirement.
+- **Verification:** reviewed retained evidence; no benchmark or acceptance rerun.
+- **Records:** [native decision](./composition-ce6p-resolution-plan.md#native-owned-output-decision--2026-10-06),
+  [cost evidence](./composition-ce6p-cost-results.json).
 
 ### 2026-10-07 — CE6-P 0.42.0 reviewed delivery
 

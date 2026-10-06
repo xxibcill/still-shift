@@ -1,7 +1,9 @@
 # CE6-P resolution plan after research
 
 Date: 2026-10-06. Evidence snapshot: `633138b`, runtime `7a797a9` / WebGL 0.40.0.
-Status: owner-approved renderer 0.42.0 retains the tested echo correction and
+Status: **paused and deferred to an unscheduled future version by owner on
+2026-10-07**. CE6-P is incomplete; resume only on explicit owner request.
+Owner-approved renderer 0.42.0 retains the tested echo correction and
 particle candidate. Targeted correctness and quiet-window cost measurements are
 complete; the full local gate passes retained renderer 0.42.0. Native 2× and
 unchanged strict family audits remain open. The fresh-owned-read candidate is
@@ -9,7 +11,7 @@ rejected on both profiles; no compatible closure mechanism is selected. CE6-P
 remains incomplete. The initial research snapshot is retained below;
 see the [execution record](#execution-record-2026-10-06) for new work.
 
-## Recommendation
+## Prior recommendation (historical)
 
 Use one bounded diagnosis stage to establish whether the current contract has a
 credible route to acceptance, then select an implementation from measured costs.
@@ -739,3 +741,17 @@ cannot silently satisfy the existing CE6-P timing requirement. Revising the
 native or family performance criteria is a separate explicit owner decision,
 not part of the approved echo fix or quiet-window coordination. None of those
 contract/backend/policy/criterion changes has been made.
+
+## Owner deferral — 2026-10-07
+
+The owner explicitly requested pausing here and deferring CE6-P to a future
+version again. The completion goal is paused. No further performance tuning,
+timing windows or architecture experiments are authorized until an explicit
+owner resumption; no future version or date is assigned.
+
+Preserve reviewed 0.42.0 / `d4ecdf8` in PR #41 and all passing verification,
+selected gains, raw failures and rejected experiments. Original 117/no-new-miss
+acceptance, the complete strict audit on 0.42.0 and native 2× remain open. The
+1.25× family and native 2× targets and all correctness/ownership requirements
+remain unchanged. The separately proposed GPU-resident preview/asynchronous
+export prototype is not approved. This is a deferral, not milestone completion.
