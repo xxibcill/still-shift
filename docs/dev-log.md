@@ -68,8 +68,10 @@ still hold before relying on them.
   correctness/export/inspector/hardware checks and repaired serial profile now
   pass together on `5effcf3`. New CE8-only hashes/PNGs are exact; all six 1080p
   costs are recorded (12.3–2,556.3 ms medians), without a real-time claim.
-  Complete final-code gate and milestone PR remain pending; no owner decision
-  is pending.
+  The first final gate stopped at the stale nine-example integration inventory:
+  1,840 unit / 46 runtime / 138 other integration tests passed. All ten examples
+  now compile and validate pinned assets in focused verification. A complete
+  final gate repeat and milestone PR remain pending; no owner decision is pending.
   [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
@@ -223,6 +225,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 final-gate example inventory repair
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `3665326`.
+- **Failure:** full gate passed 1,840 units and 46 runtime tests, then stopped
+  at one stale integration inventory: nine expected examples, ten present.
+  Other 138 integration tests passed; later suites did not execute.
+- **Repair / focused result:** strict inventory now requires ten; all ten
+  programs compile and validate pinned assets in the focused integration test.
+  Runtime code and complete native acceptance/cost evidence are unchanged.
+- **Next:** complete final-code gate repeat; no incomplete pass claimed.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 native acceptance checkpoint
 

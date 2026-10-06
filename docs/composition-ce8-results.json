@@ -1662,7 +1662,22 @@
         "True perspective requires WebGL2; precomps remain flattened, constraints remain 2D",
         "Serial 64-plane/four-sample 1080p median 2556.3ms is measured feature cost, not a real-time performance claim; CE6-P remains separate"
       ],
-      "pending": "Full final-code local pnpm check, CE8 PR, then CE8-L new branch"
+      "pending": "Full final-code local pnpm check, CE8 PR, then CE8-L new branch",
+      "implementation": "3665326"
+    },
+    {
+      "name": "Final-gate example inventory repair",
+      "status": "focused-pass-full-gate-repeat-pending",
+      "features": [
+        "Include the tenth native camera example in the strict integration inventory"
+      ],
+      "verification": {
+        "command": "pnpm exec vitest run tests/integration/composition-examples.test.ts --maxWorkers=2 --no-file-parallelism",
+        "result": "1 test pass; all ten programs compile and pinned assets validate",
+        "log": "/private/tmp/ce8-examples-repair.log",
+        "runtimeChange": "none; native correctness/hardware/cost fingerprints remain valid"
+      },
+      "pending": "Repeat complete pnpm check on committed final test repair"
     }
   ],
   "pending": [
@@ -1670,5 +1685,24 @@
     "CE8 milestone PR then CE8-L on a new branch"
   ],
   "githubActions": "prohibited/disabled",
-  "finalCodeCheckpoint": "5effcf3"
+  "runtimeCheckpoint": "5effcf3",
+  "fullGateAttempts": [
+    {
+      "checkpoint": "3665326",
+      "runtimeCheckpoint": "5effcf3",
+      "command": "pnpm check",
+      "snapshot": "/private/tmp/still-shift-ce8-check-3665326",
+      "log": "/private/tmp/ce8-full-3665326.log",
+      "status": "failed-incomplete",
+      "passed": {
+        "units": 1840,
+        "unitFiles": 187,
+        "runtime": 46,
+        "runtimeFiles": 9,
+        "integrationPassed": 138
+      },
+      "failure": "composition-examples.test.ts expected nine examples after native CE8 added a tenth; 1 failed / 138 passed integration, no later suites executed",
+      "repair": "Inventory now requires ten; focused integration compiles all ten and validates pinned assets (pass)"
+    }
+  ]
 }

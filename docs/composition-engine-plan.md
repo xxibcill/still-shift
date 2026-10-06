@@ -3712,6 +3712,13 @@ exposure counts: medians 12.3 / 61.3 ms for one plane, 77.1 / 319.4 ms for eight
 real-time claim; CE6-P remains separate. The complete final-code gate and milestone
 PR are pending, with no frozen legacy regeneration.
 
+The first complete-gate attempt on `3665326` is retained as failed/incomplete:
+1,840 units, 46 runtime and 138 integration tests passed; a stale example inventory
+expected nine after CE8 added a tenth. The strict inventory is repaired and its
+focused test compiles/validates all ten programs and pinned assets. Runtime and
+native correctness/hardware/cost fingerprints are unchanged. The complete gate
+will repeat on the committed test repair; no later suite was skipped or claimed.
+
 **Completion record:** _to be filled in._
 
 ---
