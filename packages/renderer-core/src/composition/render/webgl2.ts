@@ -738,6 +738,21 @@ export function createWebgl2Backend(
         if (masks[0]?.mode === "subtract" || masks[0]?.mode === "intersect")
           device.clear(combined, [1, 1, 1, 1]);
         for (const mask of masks) {
+          let bakedOpacity=false;
+          if(mask.projected) {
+            const local=device.surface(mask.projected.width,mask.projected.height);
+            let rasterMask:CanvasSurface|undefined;
+            try {
+              rasterMask=raster.createSurface(mask.projected.width,mask.projected.height);
+              raster.clear(rasterMask,[1,1,1,1]);
+              raster.applyMask(rasterMask,[{...mask,mode:"intersect",inverted:false,opacity:1,feather:0}]);
+              device.upload(local,rasterMask.canvas);
+              if(mask.feather>0) effects.blur(local,mask.feather/2);
+              device.clear(coverage);
+              if(mask.projected.placement) backend.project!(local,coverage,mask.projected.placement);
+              if(mask.inverted) replace(coverage,"void main(){float alpha=1.0-texture(source,uv).a;pixel=bytes(vec4(alpha));}",[coverage]);
+            } finally {if(rasterMask) raster.releaseSurface(rasterMask);device.release(local);}
+          } else {
           const sigma =
             (mask.feather / 2) *
             Math.sqrt(
@@ -748,7 +763,7 @@ export function createWebgl2Backend(
             );
           // Preserve the raster filter's combined opacity/blur rounding when a
           // transformed feather enters the rescaled Gaussian domain.
-          const bakedOpacity = sigma > 135;
+          bakedOpacity = sigma > 135;
           raster.clear(pixels, [1, 1, 1, 1]);
           raster.applyMask(pixels, [
             {
@@ -760,6 +775,7 @@ export function createWebgl2Backend(
           ]);
           device.upload(coverage, pixels.canvas);
           if (mask.feather > 0) effects.blur(coverage, sigma);
+          }
           const formula =
             mask.mode === "add"
               ? "s+d*(1.0-s.a)"

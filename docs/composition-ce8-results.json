@@ -234,7 +234,30 @@
         "reason": "Coordinated CE6-P quiet window remains active",
         "cases": "Additional parent-horizontal-mirror regression authored; all source checks remain pending"
       },
-      "pending": "Projective group masks, independent native acceptance and full gate after release"
+      "pending": "Projective group masks, independent native acceptance and full gate after release",
+      "implementation": "1bf1b93"
+    },
+    {
+      "name": "Projected group mask coverage",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Bounded local Bezier mask raster with expansion/feather support, then actual plane projection",
+        "Apply global inversion and mask combination after projective coverage",
+        "Preflight projected mask surface/backend limits before painting",
+        "Expose camera point-of-interest tangent editing"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "cases": "Analytic mask support/placement/clipping, graph integration and Canvas rejection cases authored"
+      },
+      "coordinationEvent": {
+        "event": "Git commit 1bf1b93 reported background auto packing",
+        "checkedAt": "2026-10-06 00:57:02 UTC",
+        "remainingProcesses": "None found by process inspection",
+        "mitigation": "Subsequent Git commands use gc.auto=0; no formatter/build/test/matrix/export ran"
+      },
+      "pending": "Independent camera acceptance and focused/full verification after release"
     }
   ],
   "pending": [

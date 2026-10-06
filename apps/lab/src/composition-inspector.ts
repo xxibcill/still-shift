@@ -544,7 +544,7 @@ export function createCompositionInspector(options: {
         area.append(pad);
       }
     }
-    if (current.kind === "vector" && current.property === "transform.position")
+    if (current.kind === "vector" && ["transform.position","pointOfInterest"].includes(current.property??""))
       for (const side of ["spatialIn", "spatialOut"] as const) {
         const tangent = textInput(side, key[side] ?? (current.dimensions===3 ? [0,0,0] : [0, 0]));
         area.append(

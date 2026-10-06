@@ -43,25 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE8 in progress (2026-10-06):** `codex/composition-ce8` from completed CE6
+- **CE8 in progress (2026-10-06):** `codex/composition-ce8` from CE6
   `2f1a99c` / [PR #42](https://github.com/xxibcill/still-shift/pull/42).
-  First authored slice defines camera optics/coverage fields and pure 4x4 world,
-  camera-basis, clipped projective-plane and bounded focus-blur geometry, with
-  independent analytic test cases, plus opt-in xyz keyed/separated/spatial
-  sampling, xyz own-key loops/roving and camera/spatial paths with unchanged
-  2D arithmetic; shared spatial/camera sampling and optical rules are authored.
-  Evaluated xyz/camera state, stage copies and spatial parent matrices are authored
-  in evaluator source version 45; scoped camera/projection/focus/frustum hooks
-  and stable 3D-run ordering, camera-facing orientation and bounded projective
-  rendering are authored. Tests, formatting and builds have not run:
-  the coordinated CE6-P quiet window is active. Runtime camera/3D availability
-  is enabled in authored source with writer/cycle/2D-constraint checks; actual
-  all-frame required-layer alpha and spatial track editing are authored. These
-  changes remain unverified. No owner decision is pending. Next: real projective
-  inspector/quality geometry and bounded focus overscan are now authored.
-  Source review repairs parent mirror axes and typed capture/graph integration.
-  Next: projected group masks, focused checks after release and native acceptance.
-  [Evidence](./composition-ce8-results.json).
+  XYZ sampling/expression state, camera optics/world geometry, stable depth runs,
+  actual projective rendering, camera-facing orientation, focus overscan,
+  required alpha coverage and projected inspector/quality geometry are authored.
+  Projected group masks now retain local expansion/feather support and combine
+  coverage after projection; POI tangent editing is authored.
+  All CE8 code remains unverified: the CE6-P quiet window holds formatters,
+  builds, tests, browser matrices and exports. Previous Git auto packing was
+  reported; no process remained at 00:57 UTC, and further Git calls use gc.auto=0.
+  No owner decision is pending. Next: native acceptance preparation, then focused
+  checks and the complete gate after release. [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
   CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
@@ -214,6 +207,18 @@ _Last updated 2026-10-05 by Codex for CE12 closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — CE8 projected group mask checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `1bf1b93`.
+- **Scope:** local mask bounds/support project through the actual group plane;
+  inversion/combination follows projection. Surface/backend preflight, analytic
+  coverage cases and camera POI tangent editing are authored.
+- **Verification:** unexecuted; CE6-P quiet window remains active. Git reported
+  background auto packing at the previous commit; process inspection at 00:57 UTC
+  found none remaining. Further Git calls disable automatic packing per command.
+- **Next:** independent native acceptance and focused/full checks after release.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
 
 ### 2026-10-06 — CE8 mirror and typed integration review checkpoint
 

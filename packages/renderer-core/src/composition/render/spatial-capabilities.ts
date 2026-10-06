@@ -27,6 +27,11 @@ export function requireSpatialCapabilities(root:SurfaceNode,capabilities:{projec
         else for(const history of op.history??[]) visit(history.ops,width,height);
       }
       if(op.kind!=="draw") {
+        if(op.kind!=="project") for(const mask of op.masks) if(mask.projected) {
+          if(!capabilities.projective) passageError("comp-feature-backend","Projective group masks require the composition WebGL2 backend",{node:op.layer});
+          if(mask.projected.placement) check(mask.projected.placement,op.layer);
+          capabilities.validateSurface?.(mask.projected.width,mask.projected.height,op.layer);
+        }
         for(const effect of op.effects) for(const input of Object.values(effect.layerInputs??{})) visit(input,width,height);
         if(op.matte) visit(op.matte.ops,width,height);
       }

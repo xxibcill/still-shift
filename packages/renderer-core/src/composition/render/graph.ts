@@ -20,6 +20,7 @@ import type {
 } from "../evaluate/types.ts";
 import { cameraMatrix } from "../evaluate/camera.ts";
 import { projectBounds } from "../evaluate/geometry.ts";
+import { projectedMaskGeometry,type ProjectedMask } from "./projected-mask.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import { localSurfaceBounds,planePlacement,type ProjectivePlacement } from "./projective-placement.ts";
 import { affineHomography,inverseHomography,multiplyHomographies,projectPlane,type Homography } from "../evaluate/spatial-geometry.ts";
@@ -54,6 +55,7 @@ export type MaskOp = {
   /** Layer space to surface space. */
   matrix: Matrix;
   transforms?: Matrix[];
+  projected?: ProjectedMask;
 };
 
 export type SolidContent = {
@@ -967,6 +969,14 @@ class GraphBuilder {
     if(state.projection&&layer.type!=="group") return this.projectedLayer(scope,state,frame,options,opacity,blend,paintBlur);
     const clips = this.groupClips(scope, state, frame);
     const masks = options.raw ? [] : this.masks(state, matrix, transforms);
+    if(layer.type==="group"&&state.projection&&!state.projection.affineMatrix&&state.worldMatrix3d) {
+      const camera=this.exposureScope(scope,state).tree.camera!;
+      for(const mask of masks) {
+        const evaluated=state.masks.find(value=>value.id===mask.id)!;
+        Object.assign(mask,projectedMaskGeometry(evaluated,state.worldMatrix3d,camera,frame.matrix,key));
+        this.spatial=true;
+      }
+    }
     const echo =
       !options.raw && !this.historical
         ? state.effects.find(
@@ -996,6 +1006,8 @@ class GraphBuilder {
         );
         if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
           return effect;
+        if(layer.type==="group"&&state.projection&&!state.projection.affineMatrix)
+          passageError("comp-3d-effect-space","Perspective group layer-space effects require a flat precomp; group pixel effects use scope space",{node:key,path:effect.id,frame:this.time});
         const source = effect.space ? scope.byId.get(effect.space)! : state;
         return {
           ...effect,

@@ -34,3 +34,9 @@ it("checks padded focus surfaces before any backend allocation",()=>{
   expect(validateSurface).toHaveBeenCalledWith(154,154,"plane");
   expect(()=>requireSpatialCapabilities({...root,width:8192,ops:[{...project,focusPadding:27}]},{projective:true})).toThrow("surface exceeds");
 });
+
+it("checks genuine group masks before beginning a Canvas frame",()=>{
+  const projectedMask={id:"mask",path:{closed:true,vertices:[[0,0],[10,0],[10,10]] as [number,number][]},mode:"add" as const,inverted:false,feather:0,expansion:0,opacity:1,matrix:[1,0,0,1,0,0] as [number,number,number,number,number,number],projected:{width:10,height:10,placement:project.placement}};
+  const isolated={kind:"isolate" as const,layer:"group",ops:[],effects:[],masks:[projectedMask],matte:null,opacity:1,blend:"normal" as const,clips:[]};
+  expect(()=>requireSpatialCapabilities({...root,ops:[isolated]},{projective:false})).toThrow("Projective group masks");
+});

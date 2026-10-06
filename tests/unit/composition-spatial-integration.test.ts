@@ -48,3 +48,13 @@ it("a camera-facing parent updates descendant geometry before projection",()=>{
   expect(child.worldMatrix3d!.slice(0,12)).toEqual(parent.worldMatrix3d!.slice(0,12));
   expect(projectLocalPoint(child.projection!,[5,5])).toEqual([75,50]);
 });
+
+it("projects parent group masks using bounded local coverage instead of an XY approximation",()=>{
+  const doc=CompositionSchema.parse(document([{id:"group",type:"group",threeD:true,size:[30,30],transform:{position:[50,50,0],rotationY:25},masks:[{id:"cut",mode:"subtract",inverted:true,feather:2,path:{closed:true,vertices:[[0,0],[20,0],[20,20],[0,20]]}}]},{...plane("art"),parent:"group",transform:{position:[15,15,0]}}]));
+  const op=buildRenderGraph(doc,evaluateComp(doc,0)).root.ops[0]!;
+  expect(op.kind).toBe("isolate");
+  if(op.kind!=="isolate") throw Error("Expected parent isolation");
+  expect(op.masks[0]!.projected!.placement!.affineMatrix).toBeNull();
+  expect(op.masks[0]!.matrix).toEqual([1,0,0,1,5,5]);
+  expect(op.ops[0]!.kind).toBe("project");
+});

@@ -3653,6 +3653,12 @@ Source review retains parent mirror axes through camera-facing orientation and
 updates exact optional capture state/graph summaries/constraint diagnostics.
 The additional mirror regression remains unexecuted during the quiet window.
 
+Projected group masks now rasterize bounded local path/feather support before
+actual camera projection, then perform global inversion and mask combination.
+POI tangent editing and mask analytic/integration/backend rejection cases are
+authored; all checks remain deferred. Git reported auto packing at the prior
+checkpoint; no process remained at 00:57 UTC, and later Git calls use gc.auto=0.
+
 **Completion record:** _to be filled in._
 
 ---
