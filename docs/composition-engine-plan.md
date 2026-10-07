@@ -3397,6 +3397,27 @@ suite, serial cost profile or strict timing-matrix run is claimed. Historical
 full gates retain their original snapshots; no baseline or tolerance is changed.
 [Fix evidence](./pr-40-clock-fix-results.json).
 
+### CE7 PR #40 unreachable-state exposure review repair (2026-10-07)
+
+One P2 finding is inline on reviewed `824a627`. Posterized state/stateFrom
+cuts now compare effective states on adjacent content grids, retaining cuts
+conservatively when root precision skips grids. Ordinary clocks, real switches,
+indexed clocks and reversed boundary semantics retain their existing behavior.
+Evaluator 34 / Canvas 1.24.5 / WebGL2 0.38.5 separate corrected output caches.
+
+Three original and two extreme-stretch precision regressions fail before their
+repairs; 246 focused tests and independent standards/spec reviews pass. Final full
+local `pnpm check` passes 1,921 unit, 46 runtime, 224 integration, 14 depth and all
+52 required browser/golden groups. New both-backend cases match equivalent constant
+states in 112 exact pixel comparisons; CE7 native/hardware acceptance and repeated
+exports pass. All 176 frozen items / 36,061 frames remain exact, with the final
+source fingerprint unchanged. The first gate stopped at a copied virtualenv
+launcher path and one audio timeout; the local environment repair, passing focused
+and full integration reruns, and successful full gate are retained. Delivery uses
+one finding commit and one final normal push; owner review/merge remain. No baseline
+or tolerance is regenerated or changed. No separate optional serial cost profile
+or full backend timing matrix is claimed. [Fix evidence](./pr-40-posterized-cut-fix-results.json).
+
 ---
 
 ## CE8 — 2.5D layers and unified camera

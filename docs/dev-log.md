@@ -43,6 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #40 posterized-state review repair complete (2026-10-07):** isolated
+  `codex/pr40-posterized-cut-fix` from reviewed `824a627`; one inline P2 finding.
+  Unreachable temporary states preserve unrelated motion blur; real cuts survive
+  indexed/reversed clocks and root precision that skips source grids. Evaluator 34 /
+  Canvas 1.24.5 / WebGL2 0.38.5 separate corrected output. All 246 focused tests and
+  both independent reviews pass. Final full local `pnpm check` passes 1,921 unit,
+  46 runtime, 224 integration, 14 depth, all required browser groups and 176 exact
+  frozen items / 36,061 frames. New both-backend regressions pass 112 exact pixel
+  comparisons; final source fingerprint is unchanged. The first gate failure and
+  isolated virtualenv launcher repair are retained. Delivery uses one finding
+  commit and one final normal push. Owner review/merge remain; no implementation
+  blocker. Actions stay disabled. [Evidence](./pr-40-posterized-cut-fix-results.json).
+
 - **PR #40 clock review fixes complete (2026-10-07):** isolated
   `codex/pr40-clock-fixes` from reviewed `e907d16`. Both findings are inline;
   echo bake history now uses held/posterized content clocks, and explicit instance
@@ -539,7 +552,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-07 by Codex for PR #40 conflict repair; both histories retained._
+_Last updated 2026-10-07 by Codex for the verified PR #40 posterized-state cut repair._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -597,6 +610,22 @@ _Last updated 2026-10-07 by Codex for PR #40 conflict repair; both histories ret
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — PR #40 unreachable posterized-state cuts
+
+- **Agent / branch:** Codex on `codex/pr40-posterized-cut-fix` from `824a627`.
+- **Scope:** One inline P2 finding; preserve motion blur when posterization skips temporary states.
+- **Done:** Reachable discrete-state comparison with conservative precision handling;
+  evaluator/backend versions and unit/both-backend pixel regressions updated.
+- **Results:** 246 focused tests and both independent reviews pass. Full local
+  `pnpm check` passes 1,921 unit, 46 runtime, 224 integration, 14 depth and all browser
+  groups; 112 new pixel comparisons and 176 frozen items / 36,061 frames are exact.
+  Final source fingerprint is unchanged; first gate failure and environment repair retained.
+- **Rejected / do not repeat:** Comparing a theoretical prior grid without proving it
+  brackets the authored switch loses real cuts under extreme stretch.
+- **Open / next:** Owner review/merge; delivery uses one finding commit and one final normal push.
+- **Records:** [Fix evidence](./pr-40-posterized-cut-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/40#discussion_r4204819931).
 
 ### 2026-10-07 — PR #40 explicit loop overrides and final acceptance
 
