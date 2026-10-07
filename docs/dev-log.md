@@ -43,15 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #44 conflict resolution (2026-10-08):** isolated managed `pr44-review`
-  checkout integrates `main` at `e97dacbc` into lighting head `e1bd4bc`.
-  Eight conflicts combine bounded lighting with all upstream camera, XYZ editing,
-  effect, exposure, soundtrack and inspector fixes. Cache identities advance to
-  E49 / Canvas 1.41.1 / WebGL 0.56.1 / export 0.6.5. Fast checks pass 2,313 units, 112 focused regressions and 46 runtime tests; native
-  lighting/camera hashes, alpha, seeks, exports/hardware and real inspector pass.
-  Export compatibility and frozen baselines are in flight. No new full repository
-  gate is claimed. Review is underway on the resolved checkpoint. CE6-P stays deferred and Actions disabled.
-  [Evidence](./pr-44-conflict-resolution-results.json).
+- **PR #44 conflict resolution and review (2026-10-08):** isolated managed
+  `pr44-review` integrates `main` at `e97dacbc` into lighting head `e1bd4bc`.
+  Merge `548b5c7` preserves all eight conflicts; `3640c69` repairs the light-key
+  editor for null root scopes. Fast checks pass 2,313 unit tests, 112 focused
+  regressions and 46 runtime tests; native lighting/camera, alpha, seeks,
+  independent/repeated exports, hardware and real inspector pass. All 176 frozen
+  items / 36,061 frames and all retained baseline bytes pass without regeneration.
+  Review is complete: one Standards usability P2 (receiving-toggle keyboard focus)
+  and one Spec P2 (implicit XYZ light Z reference dependencies) remain open.
+  PR #44 remains open for owner repair/merge. No new full repository
+  gate or performance acceptance is claimed. CE6-P stays deferred and Actions disabled.
+  [Resolution](./pr-44-conflict-resolution-results.json),
+  [review](./pr-44-review-results.json).
 
 - **PR #43 follow-up repairs verified (2026-10-08):** isolated
   `codex/pr43-followup-fixes` from reviewed `9b53db3`. All four findings have
@@ -814,19 +818,21 @@ _Last updated 2026-10-08 by Codex for PR #43 review repairs._
 
 ## Entries
 
-### 2026-10-08 — Resolve PR #44 against merged CE8
+### 2026-10-08 — Resolve and review PR #44 against merged CE8
 
 - **Agent / branch:** Codex in isolated managed `pr44-review`, from `e1bd4bc`.
-- **Scope / done:** integrate `main` at `e97dacbc`; combine all eight conflicts,
-  preserving lighting, camera/XYZ controls, effects/exposure and soundtrack commands.
-  Both documentation histories and frozen fixtures are retained.
-- **Results:** fast checks (2,313 unit), 112 focused regressions and 46 runtime
-  tests pass. Native lighting/camera, alpha, seeks, export/hardware and real
-  inspector pass; root light-key controls retain the upstream null-scope model.
-  No complete `pnpm check` is claimed; export/baseline checks remain in flight.
-- **Open / next:** finish focused checks, normally push the merge and review
-  the resolved diff. Owner checkout and other PR heads remain untouched.
-- **Records:** [resolution evidence](./pr-44-conflict-resolution-results.json).
+- **Done:** merge `548b5c7` combines eight conflicts with `main` at `e97dacbc`;
+  `3640c69` preserves light-key editing under main's null root scopes.
+  Lighting, camera/XYZ, effect/exposure, soundtrack and both histories are retained.
+- **Results:** fast checks (2,313 unit), 112 focused regressions, 46 runtime and
+  all eleven example programs pass. Native lighting/camera/export/hardware and
+  real inspector pass; all 176 frozen items / 36,061 frames match unchanged references.
+- **Review / next:** one Standards usability P2 and one Spec P2 remain open:
+  receiving-toggle focus and implicit XYZ light Z reference dependencies.
+  Normal push delivers the conflict resolution; owner repair/merge remain.
+  No full `pnpm check` or performance gate rerun; owner checkout is untouched.
+- **Records:** [resolution](./pr-44-conflict-resolution-results.json),
+  [review](./pr-44-review-results.json).
 
 ### 2026-10-08 — PR #43 null-guide repair and final verification
 

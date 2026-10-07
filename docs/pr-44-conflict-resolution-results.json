@@ -3,7 +3,7 @@
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/44",
   "originalHead": "e1bd4bc5ac7566bf2316504cffb8348205e60c69",
   "integratedBase": "e97dacbced3c23507c88b2a62eeaf221a850c3d5",
-  "status": "conflicts resolved locally; lighting/camera/static verification passed; export/baselines running; not yet pushed",
+  "status": "conflicts resolved; focused verification and independent review complete; two P2 review findings remain open",
   "fullPnpmCheckRun": false,
   "resolvedMergeCommit": "548b5c7bab32f04e3b3738e8c3a8a5c8e3ec1d19",
   "headBranch": "codex/composition-ce8-lighting",
@@ -19,8 +19,8 @@
       "packages/renderer-core/src/composition/render/version.ts",
       "packages/renderer-core/src/composition/render/webgl2.ts"
     ],
-    "behavior": "Combine bounded scoped lights with all main camera/XYZ, effect, exposure, soundtrack, builder and inspector repairs. Preserve separated XYZ tracks and smooth velocities through main\u2019s shared track collector. Preserve settled camera validation and projected spatial null effect coordinates. Retain every mandatory test command and both documentation histories.",
-    "integrationRepair": "Light key editor recognizes main\u2019s null root scope rather than the earlier literal root string. Native light key editing, undo/redo/save pass.",
+    "behavior": "Combine bounded scoped lights with all main camera/XYZ, effect, exposure, soundtrack, builder and inspector repairs. Preserve separated XYZ tracks and smooth velocities through main’s shared track collector. Preserve settled camera validation and projected spatial null effect coordinates. Retain every mandatory test command and both documentation histories.",
+    "integrationRepair": "Light key editor recognizes main’s null root scope rather than the earlier literal root string. Native light key editing, undo/redo/save pass.",
     "versions": {
       "evaluator": "composition-evaluator-49",
       "canvas": "composition-canvas-1.41.1",
@@ -162,6 +162,35 @@
         "seconds": 30.31,
         "log": "/private/tmp/pr44-webgl-export.log",
         "logSha256": "ba8954e0e6d68e2293aeef0a0f3c0460cfd564f5dc911b61745d4109ad968c29"
+      },
+      {
+        "label": "review-focus",
+        "command": ["node", "--import", "tsx", "/private/tmp/pr44-focus.mts"],
+        "exitCode": 0,
+        "seconds": 2.74,
+        "log": "/private/tmp/pr44-review-focus.log",
+        "logSha256": "2e21776aa10770b22125909994935a81467e26516de97be89a3f627e509c9313"
+      },
+      {
+        "label": "review-xyz",
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "/private/tmp/pr44-light-xyz-dependency-probe.mts"
+        ],
+        "exitCode": 0,
+        "seconds": 0.86,
+        "log": "/private/tmp/pr44-review-xyz.log",
+        "logSha256": "734bcc53935cc35c93496f67b38dcfddc1fe927c4baa7f099c7591fa40ba9cf6"
+      },
+      {
+        "label": "baselines",
+        "command": ["pnpm", "test:browser:composition-baselines"],
+        "exitCode": 0,
+        "seconds": 286.4,
+        "log": "/private/tmp/pr44-baselines.log",
+        "logSha256": "ad62eb4ac5bd8a7a224d4905a160d1a765807ebeac1d6f35dc8cd5efaa9c92b2"
       }
     ],
     "lighting": {
@@ -240,6 +269,31 @@
       "sha256": "585714b8d318ee1f5aec7d9a8baf8e0cc15ecb6eeefed93c9d6046022c64f1aa",
       "head": "548b5c7bab32f04e3b3738e8c3a8a5c8e3ec1d19",
       "uncommittedSource": "apps/lab/src/composition-inspector.ts: null root-scope merge repair"
+    },
+    "counts": {
+      "unit": 2313,
+      "focusedRegressions": 112,
+      "runtime": 46,
+      "examplesPrograms": 11,
+      "frozenItems": 176,
+      "frozenFrames": 36061
+    },
+    "sourceUnchangedAfterAcceptance": true,
+    "notRun": [
+      "full pnpm check",
+      "complete integration suite",
+      "Python/depth suites beyond preflight",
+      "unaffected browser groups",
+      "full Canvas family timing matrices",
+      "CE6-P/lighting performance measurements"
+    ],
+    "camera": {
+      "cases": 12,
+      "forwardFrames": 384,
+      "reverseFrames": 384,
+      "seeks": 108,
+      "hardwareComparisons": 36,
+      "baseline": "exact"
     }
   },
   "mergeAudit": {
@@ -265,7 +319,10 @@
       "missingHeadings": [],
       "testCommands": 57,
       "missingCommands": []
-    }
+    },
+    "clarification": "Main’s 94 non-Markdown visual artifacts remain exact; all 46 original lighting baseline artifacts remain exact. README differences are documentation. Older branch shape-baseline repairs are inherited byte-for-byte from main, with no regeneration.",
+    "mandatoryCommandsRetained": 58,
+    "allParentDevelopmentLogHeadingsRetainedExactlyOnce": true
   },
   "environment": {
     "node": "22.23.1",
@@ -274,12 +331,17 @@
     "playwright": "1.62.1",
     "ffmpeg": "8.0.1",
     "isolation": "Frozen offline worktree-local pnpm; cloned worktree-local Python virtualenv and isolated UV cache; independent Vite optimizer/config caches and native lighting/camera temporary caches.",
-    "initialPreflightFailure": "Missing prior UV cache path; first isolated offline toolchain run could not resolve hatchling. Cloned the verified PR43 follow-up cache and rebuilt this checkout\u2019s editable package; pinned preflight and imports then passed."
+    "initialPreflightFailure": "Missing prior UV cache path; first isolated offline toolchain run could not resolve hatchling. Cloned the verified PR43 follow-up cache and rebuilt this checkout’s editable package; pinned preflight and imports then passed."
   },
   "review": {
-    "status": "in progress on resolved merge; working-tree null root repair verified",
-    "standards": "No hard documented-policy violation. Receive light keyboard focus is being reproduced.",
-    "spec": "Implicit XYZ light constraint-reference Z dependency finding reproduced; final details pending."
+    "status": "complete; two P2 findings remain open",
+    "codeCheckpoint": "3640c69d3a9cc8bdc74b87f62ae263c05e8c5fa2",
+    "standardsFindings": 1,
+    "hardStandardViolations": 0,
+    "specFindings": 1,
+    "evidence": "docs/pr-44-review-results.json",
+    "publishedReviewComments": false
   },
-  "githubActionsEnabled": false
+  "githubActionsEnabled": false,
+  "resolvedCodeCheckpoint": "3640c69d3a9cc8bdc74b87f62ae263c05e8c5fa2"
 }

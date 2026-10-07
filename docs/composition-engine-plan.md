@@ -4123,7 +4123,20 @@ are recorded with their corrections and serial timing diagnosis. The full gate
 was rerun from the start under unchanged assertions. No source rendering or tolerance
 was changed to repair those tests. [Detailed evidence](./composition-ce8-lighting-results.json).
 
-[PR #44](https://github.com/xxibcill/still-shift/pull/44) is open and attached against CE8. CE4c starts next on its own branch.
+[PR #44](https://github.com/xxibcill/still-shift/pull/44) now targets `main` after CE8 merged.
+
+**PR #44 conflict resolution and review (2026-10-08):** merge `548b5c7`
+combines current `main` at `e97dacbc`; code checkpoint `3640c69` also preserves
+light key editing with main's null root scope. Fast checks pass 2,313 unit tests,
+112 focused regressions, 46 runtime and all eleven example programs. Native
+lighting/camera, alpha, seeks, independent/repeated exports, hardware and real
+inspector pass; all 176 frozen items / 36,061 frames match without regeneration.
+Cache identities are E49 / Canvas 1.41.1 / WebGL 0.56.1 / export 0.6.5.
+This is focused follow-up evidence, with no new full `pnpm check` or performance
+acceptance. Review leaves two P2 findings open: receiving-toggle keyboard focus
+and implicit XYZ light Z reference dependencies. Owner repair/merge remain.
+[Resolution evidence](./pr-44-conflict-resolution-results.json),
+[review evidence](./pr-44-review-results.json).
 
 ### CE8-L-F — Deferred advanced lighting
 

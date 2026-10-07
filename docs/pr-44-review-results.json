@@ -1,0 +1,148 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/44",
+  "base": "e97dacbced3c23507c88b2a62eeaf221a850c3d5",
+  "reviewedCodeCheckpoint": "3640c69d3a9cc8bdc74b87f62ae263c05e8c5fa2",
+  "diffCommand": "git diff e97dacbced3c23507c88b2a62eeaf221a850c3d5...3640c69d3a9cc8bdc74b87f62ae263c05e8c5fa2",
+  "status": "review complete; findings remain open; no GitHub review comments published",
+  "method": "Independent Standards and Spec sub-agents under code-review skill; root verified both reproductions on pinned Node 22.23.1/Chromium and inspected the final source repair.",
+  "standards": {
+    "hardViolations": 0,
+    "meaningfulBaselineSmells": 0,
+    "findings": [
+      {
+        "priority": 2,
+        "type": "usability judgment, not documented-standard breach",
+        "title": "Preserve keyboard focus after toggling Receive light",
+        "file": "apps/lab/src/composition-inspector.ts",
+        "startLine": 197,
+        "endLine": 207,
+        "description": "The new toggle calls submit, which refreshes and replaces the layer stack, but lacks the stable layerControl identity and restoreLayerFocus used by adjacent controls. Keyboard Space activation moves focus to BODY, so subsequent navigation restarts outside the edited layer.",
+        "suggestedRepair": "Assign a stable JSON.stringify([path, \"receives-light\"]) layerControl identity, capture restoreLayerFocus before submission and restore after completion using the existing moved-focus guard.",
+        "evidence": {
+          "selectResult": {
+            "tag": "BUTTON",
+            "id": "",
+            "text": "box",
+            "layerControl": "[[\"layers\",0],\"select\"]"
+          },
+          "hideResult": {
+            "tag": "BUTTON",
+            "id": "",
+            "text": "Show",
+            "layerControl": "[[\"layers\",0],\"enabled\"]"
+          },
+          "receiveResult": {
+            "tag": "BODY",
+            "id": "",
+            "text": "Still Shift / composition-1\n          Compositions\n        \n        Story recipes\n      \n      \n    "
+          },
+          "receivePreserved": false,
+          "movedFocusResult": {
+            "tag": "INPUT",
+            "id": "overlay-safe",
+            "text": ""
+          },
+          "movedFocusPreserved": true,
+          "errors": []
+        }
+      }
+    ]
+  },
+  "spec": {
+    "source": [
+      "docs/composition-engine-plan.md: CE8-L scope and limits",
+      "docs/composition-reference-notes.md: Lighting for flat 3D artwork"
+    ],
+    "findings": [
+      {
+        "priority": 2,
+        "title": "Complete implicit XYZ expression dependencies for lights",
+        "file": "packages/scene-contract/src/composition/resolve.ts",
+        "startLine": 92,
+        "endLine": 95,
+        "relatedSource": "packages/scene-contract/src/composition/expressions.ts:113-114",
+        "requirementQuotes": [
+          "Reuse CE8 transforms, parenting and CE9 property paths/expressions.",
+          "`light` layers are implicit XYZ transform dependencies."
+        ],
+        "description": "The newly exposed light.constraintReference.z path inherits anchor.z, but implicitAnchorDependencies only includes Z for threeD or camera layers. An implicit light whose anchor.z expression is 20 and a receiver whose position.z reads that reference evaluates the receiver to 0 or 20 depending on authored layer order. Explicit threeD yields 20 in both orders. The implicit light also misses the anchor/reference self-cycle diagnostic.",
+        "suggestedRepair": "Treat light layers as implicit XYZ in shared anchor/reference dependency discovery and cover evaluation order, fresh-stage reads and cycle diagnostics.",
+        "evidence": {
+          "results": [
+            {
+              "explicitThreeD": false,
+              "observerFirst": true,
+              "planeZ": 0,
+              "lightWorldZ": -20,
+              "referenceZInFreshStage": 0
+            },
+            {
+              "explicitThreeD": false,
+              "observerFirst": false,
+              "planeZ": 20,
+              "lightWorldZ": -20,
+              "referenceZInFreshStage": 0
+            },
+            {
+              "explicitThreeD": true,
+              "observerFirst": true,
+              "planeZ": 20,
+              "lightWorldZ": -20,
+              "referenceZInFreshStage": 20
+            },
+            {
+              "explicitThreeD": true,
+              "observerFirst": false,
+              "planeZ": 20,
+              "lightWorldZ": -20,
+              "referenceZInFreshStage": 20
+            }
+          ],
+          "cycles": [
+            {
+              "explicitThreeD": false,
+              "ok": true,
+              "diagnostics": []
+            },
+            {
+              "explicitThreeD": true,
+              "ok": false,
+              "diagnostics": [
+                {
+                  "code": "comp-expression-cycle",
+                  "message": "expression dependencies form a cycle: light#transform.anchor.z \u2192 light#constraintReference.z \u2192 light#transform.anchor.z"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "scopeCreep": []
+  },
+  "resolvedDuringConflictIntegration": [
+    {
+      "file": "apps/lab/src/composition-inspector.ts",
+      "line": 433,
+      "description": "Recognize null root scopes from main; native light key editing/undo/redo/save passes."
+    }
+  ],
+  "reproductions": {
+    "focus": {
+      "command": "node --import tsx /private/tmp/pr44-focus.mts",
+      "source": "import assert from \"node:assert/strict\";\nimport { createHash } from \"node:crypto\";\nimport { mkdtemp, rm, writeFile } from \"node:fs/promises\";\nimport { join } from \"node:path\";\nimport { tmpdir } from \"node:os\";\nimport { launchRenderBrowser } from \"/Users/jjae/.codex/worktrees/pr44-review/still-shift/packages/execution-runtime/src/render-browser.ts\";\nimport { createProgramPreview } from \"/Users/jjae/.codex/worktrees/pr44-review/still-shift/tools/still-shift-cli/src/composition/preview.ts\";\n\nconst root = await mkdtemp(join(tmpdir(), \"pr44-focus-\"));\nconst input = join(root, \"source.json\");\nconst art = Buffer.from('<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"4\" height=\"4\"><rect width=\"4\" height=\"4\" fill=\"red\"/></svg>');\nawait writeFile(join(root, \"art.svg\"), art);\nawait writeFile(input, JSON.stringify({\n  schemaVersion: \"composition-1\", id: \"focus\", width: 64, height: 64,\n  fps: 24, frameCount: 8,\n  assets: [{ id: \"art\", type: \"image\", path: \"art.svg\", width: 4, height: 4,\n    sha256: `sha256:${createHash(\"sha256\").update(art).digest(\"hex\")}` }],\n  layers: [{ id: \"box\", type: \"image\", size: [16, 16], threeD: true,\n    sources: [{ asset: \"art\" }], transform: { position: [32, 32, 0] } }],\n}));\nlet app: Awaited<ReturnType<typeof createProgramPreview>> | undefined;\nlet browser: Awaited<ReturnType<typeof launchRenderBrowser>> | undefined;\ntry {\n  app = await createProgramPreview(input, { watch: false });\n  browser = await launchRenderBrowser();\n  const page = await browser.newPage();\n  const errors: string[] = [];\n  page.on(\"pageerror\", (error) => errors.push(error.message));\n  await page.goto(app.url);\n  await page.waitForFunction(() => Number(document.getElementById(\"status\")?.dataset.revision) > 0);\n  const ready = () => page.waitForFunction(() =>\n    !document.querySelector<HTMLFieldSetElement>(\"#inspector-edit\")!.disabled);\n  const active = () => page.evaluate(() => ({\n    tag: document.activeElement?.tagName,\n    id: document.activeElement?.id,\n    text: document.activeElement?.textContent?.trim().slice(0, 100),\n    layerControl: (document.activeElement as HTMLElement)?.dataset.layerControl,\n  }));\n  const row = page.locator('[data-layer=\"box\"]');\n  const select = row.locator('button').first();\n  await select.focus();\n  await select.press(\"Space\");\n  await ready();\n  const selectResult = await active();\n  assert.equal(await select.evaluate((node) => document.activeElement === node), true, \"existing select baseline\");\n  const hide = row.getByRole(\"button\", { name: \"Hide\", exact: true });\n  await hide.focus();\n  await hide.press(\"Space\");\n  await row.getByRole(\"button\", { name: \"Show\", exact: true }).waitFor();\n  const hideResult = await active();\n  assert.equal(await row.getByRole(\"button\", { name: \"Show\", exact: true }).evaluate((node) => document.activeElement === node), true, \"existing Hide baseline\");\n  await row.getByRole(\"button\", { name: \"Show\", exact: true }).press(\"Space\");\n  await row.getByRole(\"button\", { name: \"Hide\", exact: true }).waitFor();\n  const receiving = row.locator('[data-control=\"receives-light\"]');\n  await receiving.focus();\n  await receiving.press(\"Space\");\n  await page.waitForFunction(() => document.querySelector('[data-control=\"receives-light\"]')?.getAttribute(\"aria-pressed\") === \"true\");\n  await ready();\n  const receiveResult = await active();\n  const receivePreserved = await receiving.evaluate((node) => document.activeElement === node);\n  let resumeAsset!: () => void;\n  const pausedAsset = new Promise<void>((resolve) => { resumeAsset = resolve; });\n  const requested = page.waitForRequest(/composition\\/program-asset\\?/, { timeout: 15000 });\n  await page.route(\"**/composition/program-asset?*\", async (route) => {\n    await pausedAsset;\n    await route.continue();\n  });\n  await receiving.focus();\n  await receiving.press(\"Space\");\n  await requested;\n  await page.locator(\"#overlay-safe\").focus();\n  resumeAsset();\n  await page.waitForFunction(() => document.querySelector('[data-control=\"receives-light\"]')?.getAttribute(\"aria-pressed\") === \"false\");\n  await ready();\n  const movedFocusResult = await active();\n  const movedFocusPreserved = await page.locator(\"#overlay-safe\").evaluate((node) => document.activeElement === node);\n  assert.deepEqual(errors, []);\n  console.log(JSON.stringify({\n    selectResult, hideResult, receiveResult, receivePreserved,\n    movedFocusResult, movedFocusPreserved, errors,\n  }, null, 2));\n} finally {\n  await browser?.close();\n  await app?.close();\n  await rm(root, { recursive: true, force: true });\n}\n"
+    },
+    "xyz": {
+      "command": "node --import tsx /private/tmp/pr44-light-xyz-dependency-probe.mts",
+      "source": "import { evaluateComp, evaluateStageProperty } from '/Users/jjae/.codex/worktrees/pr44-review/still-shift/packages/renderer-core/src/composition/evaluate/index.ts';\nimport { validateComposition, type Composition, type CompositionLayer } from '/Users/jjae/.codex/worktrees/pr44-review/still-shift/packages/scene-contract/src/index.ts';\n\nconst base = { schemaVersion: 'composition-1' as const, id: 'main', width: 100, height: 100, fps: 24, frameCount: 24, assets: [] };\nconst results = [];\nfor (const explicitThreeD of [false, true]) for (const observerFirst of [true, false]) {\n  const light: CompositionLayer = { id: 'light', type: 'light', lightType: 'point', ...(explicitThreeD ? { threeD: true } : {}) };\n  const observer: CompositionLayer = { id: 'plane', type: 'solid', size: [20, 20], color: '#ffffff', threeD: true, receivesLight: true, transform: { position: [50, 50, 0] } };\n  const doc: Composition = { ...base, layers: observerFirst ? [observer, light] : [light, observer], expressions: { 'light.transform.anchor.z': { source: '20' }, 'plane.transform.position.z': { source: \"ref('light.constraintReference.z')\" } } };\n  const tree = evaluateComp(doc, 5);\n  results.push({ explicitThreeD, observerFirst, planeZ: tree.layers.find(state => state.id === 'plane')!.transform.position[2], lightWorldZ: tree.lights![0]!.position[2], referenceZInFreshStage: evaluateStageProperty(doc, 'light.constraintReference.z', 5).value });\n}\nconst cycles = [false, true].map(explicitThreeD => {\n  const doc: Composition = { ...base, layers: [{ id: 'light', type: 'light', lightType: 'point', ...(explicitThreeD ? { threeD: true } : {}) }], expressions: { 'light.transform.anchor.z': { source: \"ref('light.constraintReference.z') + 20\" } } };\n  const validation = validateComposition(doc);\n  return { explicitThreeD, ok: validation.ok, diagnostics: validation.diagnostics.map(diagnostic => ({ code: diagnostic.code, message: diagnostic.message })) };\n});\nconsole.log(JSON.stringify({ results, cycles }, null, 2));\n"
+    }
+  },
+  "verificationEvidence": "docs/pr-44-conflict-resolution-results.json",
+  "totalFindings": {
+    "standards": 1,
+    "spec": 1
+  },
+  "fullPnpmCheckRun": false,
+  "githubActionsEnabled": false
+}
