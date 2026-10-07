@@ -1,0 +1,46 @@
+{
+  "pr": 42,
+  "date": "2026-10-07",
+  "reviewedHead": "b2f20484fd536c5d9adf128ea9d65525fd554453",
+  "branch": "codex/pr42-followup-fixes",
+  "pushPolicy": "One finding per commit; push both commits together after the final code checkpoint and verification.",
+  "findings": [
+    {
+      "id": "normalized-plugin-definition",
+      "comment": "https://github.com/xxibcill/still-shift/pull/42#discussion_r4208191479",
+      "status": "fixed",
+      "change": "Renderer registration retains the contract registry's normalized immutable descriptor rather than a shallow copy of the caller's definition.",
+      "verification": {
+        "before": "Both new backend regressions fail with comp-effect-layer for the caller-added undeclared slot.",
+        "after": "GPU and Canvas continue rendering the original registered map slot after caller mutation.",
+        "focusedTests": 30,
+        "unitFiles": [
+          "tests/unit/composition-effect-plugins.test.ts",
+          "tests/unit/composition-effect-contract.test.ts",
+          "tests/unit/composition-effect-inputs.test.ts"
+        ],
+        "build": "passed",
+        "focusedLint": "passed"
+      }
+    },
+    {
+      "id": "hidden-source-echo-history",
+      "comment": "https://github.com/xxibcill/still-shift/pull/42#discussion_r4208191497",
+      "status": "pending",
+      "reproduction": "At frame 8, a valid captured solid or group with time.echo(count=2,spacing=2,decay=0.5) has three paints while enabled and only the current paint while disabled."
+    }
+  ],
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "nodeDependencies": "Separate APFS clones of dependency files and worktree-local workspace links; Vite caches belong to this checkout.",
+    "pythonEnvironment": "Worktree-local .venv from frozen uv sync and a separate UV cache.",
+    "setupAttempts": [
+      "Offline uv sync failed because the prior cache did not contain every locked package; frozen network sync completed successfully."
+    ]
+  },
+  "finalVerification": "pending after the second finding",
+  "githubActions": "disabled; local verification only",
+  "baselines": "No frozen fixture, reference or threshold changes."
+}

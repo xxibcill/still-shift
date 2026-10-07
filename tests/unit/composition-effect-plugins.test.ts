@@ -58,6 +58,70 @@ it("installs and releases render callbacks with their validated definition", () 
   expect(compositionEffectPlugin("test.invert")).toBeUndefined();
   expect(compositionEffectDefinition("test.invert")).toBeUndefined();
 });
+it.each(["gpu", "canvas"])(
+  "retains registered input slots after caller mutation on %s",
+  (backend) => {
+    const slots = ["map"],
+      supplied = {
+        ...defineCompositionEffect({
+          version: "1.0.0",
+          properties: definition.properties,
+          requiresLayers: slots,
+        }),
+        requiresLayers: slots,
+      },
+      release = registerCompositionEffect({
+        id: "test.invert",
+        definition: supplied,
+        renderGpu(context, input) {
+          expect([...context.layers.keys()]).toEqual(["map"]);
+          return input;
+        },
+        renderCanvas(context, input) {
+          expect([...context.layers!.keys()]).toEqual(["map"]);
+          return input;
+        },
+      });
+    try {
+      slots.push("undeclared");
+      expect(
+        compositionEffectDefinition("test.invert")!.requiresLayers,
+      ).toEqual(["map"]);
+      if (backend === "gpu") {
+        expect(
+          renderGpuEffect(
+            fakeDevice() as unknown as WebglDevice,
+            surface(),
+            effect,
+            new Map([["map", surface()]]),
+          ),
+        ).toBe(true);
+      } else {
+        const makeCanvas = () =>
+          ({
+            width: 8,
+            height: 8,
+            canvas: {} as HTMLCanvasElement,
+            ctx: { drawImage: vi.fn() },
+          }) as unknown as CanvasSurface;
+        expect(
+          renderCanvasEffect(
+            {
+              createSurface: makeCanvas,
+              releaseSurface: vi.fn(),
+              clear: vi.fn(),
+            },
+            makeCanvas(),
+            effect,
+            new Map([["map", makeCanvas()]]),
+          ),
+        ).toBe(true);
+      }
+    } finally {
+      release();
+    }
+  },
+);
 it("releases every GPU scratch surface after a failing kernel without publishing pixels", () => {
   const release = registerCompositionEffect({
     id: "test.invert",

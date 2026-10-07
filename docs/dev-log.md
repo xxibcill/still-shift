@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #42 follow-up fixes in progress (2026-10-07):** isolated
+  `codex/pr42-followup-fixes` from reviewed `b2f2048`. Both P2 findings are inline.
+  Normalized plugin registration now preserves declared input slots after caller
+  mutation on both backends; 30 focused tests, build and focused lint pass.
+  Hidden-source echo history remains in flight. One finding per commit and one
+  final push are requested; final affected verification remains pending.
+  The Python environment is isolated and pinned; an incomplete offline cache
+  was repaired with frozen sync. CE6-P stays owner-deferred.
+  [Evidence](./pr-42-followup-fix-results.json).
+
 - **PR #42 conflict integration (2026-10-07):** isolated PR head `f000d8d`
   integrates `main` at `3a5f2ff9`. Both CE6 native effects/linear color and
   upstream CE6-P exposure/disjoint paints, clock/shape/builder/inspector and
@@ -718,6 +728,17 @@ still hold before relying on them.
 _Last updated 2026-10-07 by Codex for PR #42 conflict resolution._
 
 ## Entries
+
+### 2026-10-07 — PR #42 normalized plugin registration repair
+
+- **Agent / branch:** Codex on isolated `codex/pr42-followup-fixes`, from `b2f2048`.
+- **Scope:** first of two posted P2 findings; retain the contract-owned descriptor.
+- **Done:** renderer input snapshots follow the immutable normalized registration.
+- **Results:** both new regressions fail before repair and pass afterward; all 30
+  focused plugin/input/contract tests, build and focused lint pass.
+- **Next:** preserve hidden-source echo history, verify, commit separately and push
+  both finding commits together. Final affected gates remain pending.
+- **Records:** [review/fix evidence](./pr-42-followup-fix-results.json).
 
 ### 2026-10-07 — PR #42 main conflict resolution
 
