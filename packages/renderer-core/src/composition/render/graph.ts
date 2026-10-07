@@ -23,6 +23,8 @@ import { projectBounds } from "../evaluate/geometry.ts";
 
 export type RenderEffect = EvaluatedEffect & {
   placement?: { matrix: Matrix; transforms: Matrix[] };
+  /** Input slots rendered independently at this scope and clock. */
+  layerInputs?: Readonly<Record<string, RenderOp[]>>;
 };
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
@@ -130,6 +132,8 @@ export type IsolateOp = {
 /** Re-composite everything below within a layer-space region (adjustment layer). */
 export type AdjustOp = {
   kind: "adjust";
+  /** Oldest-first upstream backdrop snapshots, before the current input. */
+  history?: BackdropSample[];
   layer: string;
   matrix: Matrix;
   transforms: Matrix[];
@@ -142,6 +146,38 @@ export type AdjustOp = {
   blend: CompositionBlendMode;
   clips: ClipRect[];
 };
+export type BackdropSample = {
+  ops: RenderOp[];
+  background: Rgba | null;
+  opacity: number;
+};
+type HistoryBudget = { captures: number; depth: number };
+
+/** Find the destination prefix at an adjustment, respecting isolated surfaces. */
+function backdropAt(
+  node: SurfaceNode,
+  target: AdjustOp,
+): Omit<BackdropSample, "opacity"> | undefined {
+  const visit = (
+    ops: RenderOp[],
+    background: Rgba | null,
+  ): Omit<BackdropSample, "opacity"> | undefined => {
+    for (let i = 0; i < ops.length; i++) {
+      const op = ops[i]!;
+      if (op === target) return { ops: ops.slice(0, i), background };
+      const nested =
+        op.kind === "isolate"
+          ? visit(op.ops, null)
+          : op.kind === "draw" && op.content.type === "surface"
+            ? backdropAt(op.content.surface, target)
+            : undefined;
+      if (nested) return nested;
+    }
+    return undefined;
+  };
+  return visit(node.ops, node.background);
+}
+
 export type MatteOp = {
   mode: TrackMatte["mode"];
   layer: string;
@@ -155,6 +191,7 @@ export type SurfaceNode = {
   id: string;
   width: number;
   height: number;
+  colorSpace?: "srgb" | "linear-srgb";
   background: Rgba | null;
   ops: RenderOp[];
 };
@@ -180,6 +217,10 @@ type Frame = {
   /** An ancestor effect may pull offscreen content into view. */
   cull?: boolean;
   paintBlur?: number;
+  sourceGroup?: string;
+  /** Scoped layer key whose ordinary visibility is ignored during capture. */
+  captureSource?: string;
+  background: Rgba | null;
 };
 type Scope = {
   tree: EvaluatedLayerTree;
@@ -231,12 +272,20 @@ class GraphBuilder {
   private readonly cameras = new Map<string, Matrix>();
   private readonly history = new Map<string, Scope>();
   private readonly exposures = new WeakMap<EvaluatedLayerTree, Scope>();
+  private reachedHistoryTarget = false;
+  private targetAdjustment?: AdjustOp;
+  private readonly historyBudget: HistoryBudget;
   constructor(
     readonly comp: Composition,
     readonly time: number,
     readonly options: RenderGraphOptions,
     readonly historical = false,
-  ) {}
+    readonly historyTarget?: string,
+    budget?: HistoryBudget,
+    readonly historyTargetSource?: string,
+  ) {
+    this.historyBudget = budget ?? { captures: 0, depth: 0 };
+  }
 
   private precomp(id: string): CompositionScope {
     return this.comp.precomps!.find((p) => p.id === id)!;
@@ -246,9 +295,11 @@ class GraphBuilder {
     tree: EvaluatedLayerTree,
     def: CompositionScope,
     prefix: string,
+    captureSource?: string,
   ): SurfaceNode {
     return {
       id: tree.id,
+      ...(this.comp.colorSpace ? { colorSpace: this.comp.colorSpace } : {}),
       width: tree.width,
       height: tree.height,
       background: tree.background,
@@ -259,6 +310,8 @@ class GraphBuilder {
         clips: [],
         viewport: { width: tree.width, height: tree.height },
         prefix,
+        background: tree.background,
+        ...(captureSource ? { captureSource } : {}),
         ...(this.options.cull === false ? { cull: false } : {}),
       }),
     };
@@ -272,7 +325,11 @@ class GraphBuilder {
     return this.scopeLayers(this.scope(tree, def), frame);
   }
 
-  private scope(tree: EvaluatedLayerTree, def: CompositionScope): Scope {
+  private scope(
+    tree: EvaluatedLayerTree,
+    def: CompositionScope,
+    sourceGroup?: string,
+  ): Scope {
     const scope: Scope = {
       tree,
       def,
@@ -290,7 +347,8 @@ class GraphBuilder {
         .filter(
           (layer) =>
             layer.type === "group" &&
-            (scope.matteSources.has(layer.id) ||
+            (layer.id === sourceGroup ||
+              scope.matteSources.has(layer.id) ||
               layer.trackMatte ||
               layer.masks?.length ||
               layer.effects?.length ||
@@ -314,15 +372,106 @@ class GraphBuilder {
     return scope;
   }
 
+  private inputWork = 0;
+  private inputDepth = 0;
+  private sourceVisible(
+    scope: Scope,
+    state: EvaluatedLayer,
+    root: string,
+  ): boolean {
+    const time = scope.tree.time;
+    for (
+      let current: EvaluatedLayer | undefined = state;
+      current;
+      current = current.layer.parent
+        ? scope.byId.get(current.layer.parent)
+        : undefined
+    ) {
+      const layer = current.layer;
+      if (
+        time < (layer.inPoint ?? 0) ||
+        time >= (layer.outPoint ?? scope.def.frameCount)
+      )
+        return false;
+      if (current.id === root) return time >= 0 && time < scope.def.frameCount;
+      if (
+        layer.enabled === false ||
+        (layer.guide && !this.options.includeGuides)
+      )
+        return false;
+    }
+    return false;
+  }
+  private effectInputs(
+    scope: Scope,
+    effect: EvaluatedEffect,
+    frame: Frame,
+    seen: Set<string>,
+  ): RenderEffect {
+    if (!effect.inputs || !Object.keys(effect.inputs).length) return effect;
+    const layerInputs: Record<string, RenderOp[]> = {};
+    for (const [slot, id] of Object.entries(effect.inputs)) {
+      if (++this.inputWork > 10000)
+        throw Error(
+          "comp-effect-budget: layer input graph exceeds 10000 source visits",
+        );
+      if (seen.has(id))
+        throw Error("comp-effect-cycle: recursive scoped layer input");
+      let sourceScope = scope;
+      const source = scope.byId.get(id);
+      if (!source)
+        throw Error(`comp-effect-layer: no input layer "${id}" in this scope`);
+      if (this.inputDepth >= 64)
+        throw Error("comp-effect-budget: input dependency depth exceeds 64");
+      const time = scope.tree.time;
+      if (
+        time < 0 ||
+        time >= scope.def.frameCount ||
+        time < (source.layer.inPoint ?? 0) ||
+        time >= (source.layer.outPoint ?? scope.def.frameCount)
+      ) {
+        layerInputs[slot] = [];
+        continue;
+      }
+      if (source.layer.type === "group")
+        sourceScope = this.scope(scope.tree, scope.def, id);
+      this.inputDepth++;
+      try {
+        layerInputs[slot] = this.layerOps(
+          sourceScope,
+          source,
+          {
+            ...frame,
+            opacity: 1,
+            background: null,
+            captureSource: frame.prefix + id,
+            cull: false,
+            ...(source.layer.type === "group" ? { sourceGroup: id } : {}),
+          },
+          { blend: "normal", cull: false, seen: new Set([...seen, id]) },
+        );
+      } finally {
+        this.inputDepth--;
+      }
+    }
+    return { ...effect, layerInputs };
+  }
   private scopeLayers(scope: Scope, frame: Frame, owner?: string): RenderOp[] {
     const ops: RenderOp[] = [];
     // layers[0] is the top layer, so paint from the end of the list.
     for (let i = scope.tree.layers.length - 1; i >= 0; i--) {
+      if (this.reachedHistoryTarget) break;
       const state = scope.tree.layers[i]!;
       if (scope.owners.get(state.id) !== owner) continue;
       if (
-        state.drawable ||
-        (state.visible &&
+        (frame.sourceGroup
+          ? this.sourceVisible(scope, state, frame.sourceGroup) &&
+            !["null", "group"].includes(state.layer.type) &&
+            !scope.matteSources.has(state.id)
+          : state.drawable) ||
+        ((frame.sourceGroup
+          ? this.sourceVisible(scope, state, frame.sourceGroup)
+          : state.visible) &&
           scope.containers.has(state.id) &&
           !scope.matteSources.has(state.id))
       )
@@ -443,7 +592,13 @@ class GraphBuilder {
         ? this.layerOps(
             scope,
             source,
-            { ...frame, opacity: 1 },
+            {
+              ...frame,
+              opacity: 1,
+              background: null,
+              captureSource: frame.prefix + matte.layer,
+              ...(layer.type === "group" ? { sourceGroup: layer.id } : {}),
+            },
             {
               blend: "normal",
               seen: new Set([...seen, layer.id]),
@@ -522,6 +677,7 @@ class GraphBuilder {
                 state.precomp,
                 this.precomp(layer.comp),
                 `${frame.prefix}${layer.id}/`,
+                frame.captureSource,
               ),
             }
           : null;
@@ -592,8 +748,14 @@ class GraphBuilder {
         this.history.set(key, sample);
       }
       const prior = sample.byId.get(state.id)!;
+      const visible =
+        frame.captureSource === frame.prefix + state.id ||
+        (frame.sourceGroup
+          ? this.sourceVisible(sample, prior, frame.sourceGroup)
+          : prior.visible) ||
+        sample.matteSources.has(state.id);
       if (
-        (!prior.visible && !sample.matteSources.has(state.id)) ||
+        !visible ||
         time < (prior.layer.inPoint ?? 0) ||
         time >= (prior.layer.outPoint ?? scope.def.frameCount) ||
         (skipUnchanged &&
@@ -611,6 +773,103 @@ class GraphBuilder {
       );
     }
     return ops;
+  }
+
+  private adjustmentHistory(
+    scope: Scope,
+    state: EvaluatedLayer,
+    frame: Frame,
+    echo: EvaluatedEffect,
+  ): BackdropSample[] {
+    const { count, spacing, decay, skipUnchanged, sourceRevision } =
+      echo.params as Record<string, number>;
+    if (!decay) return [];
+    const rootTime = state.exposure?.rootTime ?? this.time;
+    const scopeTime = state.exposure?.tree.time ?? scope.tree.time;
+    const route = frame.prefix.split("/").filter(Boolean);
+    const key = frame.prefix + state.id;
+    const samples: BackdropSample[] = [];
+    for (let i = count!; i >= 1; i--) {
+      if (++this.historyBudget.captures > 256 || this.historyBudget.depth >= 16)
+        throw Error(
+          "comp-effect-budget: adjustment history exceeds 256 captures or 16 replay levels",
+        );
+      const time = Math.max(0, scopeTime - i * spacing!);
+      const root = evaluateComp(this.comp, route.length ? rootTime : time, {
+        ...this.options,
+        ...(route.length
+          ? {
+              scopeTimes: {
+                ...this.options.scopeTimes,
+                [route.join("/")]: time,
+              },
+            }
+          : {}),
+      });
+      let local = root;
+      for (const id of route) {
+        const next = local.layers.find((layer) => layer.id === id)?.precomp;
+        if (!next) return samples;
+        local = next;
+      }
+      const prior = local.layers.find((layer) => layer.id === state.id);
+      const active =
+        prior &&
+        (frame.sourceGroup
+          ? this.sourceVisible(
+              this.scope(local, scope.def, frame.sourceGroup),
+              prior,
+              frame.sourceGroup,
+            )
+          : prior.visible);
+      if (
+        !active ||
+        (skipUnchanged &&
+          prior.effects.find((effect) => effect.id === echo.id)?.params
+            .sourceRevision === sourceRevision)
+      )
+        continue;
+      this.historyBudget.depth++;
+      try {
+        const builder = new GraphBuilder(
+          this.comp,
+          root.time,
+          this.options,
+          false,
+          key,
+          this.historyBudget,
+          frame.captureSource,
+        );
+        let destination: SurfaceNode;
+        if (frame.captureSource) {
+          let ops: RenderOp[];
+          if (frame.sourceGroup) {
+            const captured = builder.scope(local, scope.def, frame.sourceGroup);
+            ops = builder.layerOps(
+              captured,
+              captured.byId.get(frame.sourceGroup)!,
+              { ...frame, cull: false },
+              { blend: "normal", cull: false },
+            );
+          } else
+            ops = builder.scopeOps(local, scope.def, { ...frame, cull: false });
+          destination = {
+            id: local.id,
+            width: frame.viewport.width,
+            height: frame.viewport.height,
+            background: frame.background ?? null,
+            ops,
+          };
+        } else destination = builder.surface(root, this.comp, "");
+        const backdrop = builder.targetAdjustment
+          ? backdropAt(destination, builder.targetAdjustment)
+          : undefined;
+        if (backdrop) samples.push({ ...backdrop, opacity: decay! ** i });
+      } finally {
+        this.historyBudget.depth--;
+      }
+    }
+    return samples;
   }
 
   layerOps(
@@ -652,13 +911,27 @@ class GraphBuilder {
             (effect) => effect.enabled && effect.effect === "time.echo",
           )
         : undefined;
+    const seen = options.seen ?? new Set([layer.id]);
     const effects: RenderEffect[] = (options.raw ? [] : state.effects)
       .filter(
         (effect) =>
           effect.enabled &&
-          !["time.echo", "blur.primitive"].includes(effect.effect),
+          effect.effect !== "time.echo" &&
+          (layer.type === "adjustment" || effect.effect !== "blur.primitive"),
       )
-      .map((effect) => {
+      .map((original) => {
+        if (layer.type === "adjustment" && original.effect === "blur.primitive")
+          original = {
+            ...original,
+            effect: "blur.gaussian",
+            version: compositionEffectDefinition("blur.gaussian")!.version,
+          };
+        const effect = this.effectInputs(
+          this.exposureScope(scope, state),
+          original,
+          frame,
+          seen,
+        );
         if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
           return effect;
         const source = effect.space ? scope.byId.get(effect.space)! : state;
@@ -670,9 +943,8 @@ class GraphBuilder {
           },
         };
       });
-    const seen = options.seen ?? new Set([layer.id]);
     const matte = options.raw ? null : this.matte(scope, state, frame, seen);
-    if (echo) {
+    if (echo && layer.type !== "adjustment") {
       return [
         {
           kind: "isolate",
@@ -696,23 +968,33 @@ class GraphBuilder {
       ];
     }
     if (layer.type === "adjustment") {
-      if (blend === "normal" && !effects.length) return [];
-      return [
-        {
-          kind: "adjust",
-          layer: key,
-          matrix,
-          transforms,
-          width: layer.size?.[0] ?? scope.tree.width,
-          height: layer.size?.[1] ?? scope.tree.height,
-          effects,
-          masks,
-          matte,
-          opacity,
-          blend,
-          clips,
-        },
-      ];
+      const target =
+        key === this.historyTarget &&
+        frame.captureSource === this.historyTargetSource;
+      if (target) this.reachedHistoryTarget = true;
+      const history =
+        echo && !target
+          ? this.adjustmentHistory(scope, state, frame, echo)
+          : [];
+      if (!target && blend === "normal" && !effects.length && !history.length)
+        return [];
+      const op: AdjustOp = {
+        kind: "adjust",
+        ...(history.length ? { history } : {}),
+        layer: key,
+        matrix,
+        transforms,
+        width: layer.size?.[0] ?? scope.tree.width,
+        height: layer.size?.[1] ?? scope.tree.height,
+        effects,
+        masks,
+        matte,
+        opacity,
+        blend,
+        clips,
+      };
+      if (target) this.targetAdjustment = op;
+      return [op];
     }
     const isolated =
       blend !== "normal" ||
@@ -724,7 +1006,11 @@ class GraphBuilder {
       // Group opacity is already inherited by each child, including overlapping ones.
       ops = this.scopeLayers(
         scope,
-        effects.length ? { ...frame, cull: false } : frame,
+        {
+          ...frame,
+          ...(isolated ? { background: null } : {}),
+          ...(effects.length ? { cull: false } : {}),
+        },
         layer.id,
       );
       if (!isolated) return ops;
@@ -751,6 +1037,10 @@ class GraphBuilder {
             clips: isolated ? [] : clips,
             viewport: frame.viewport,
             prefix: `${key}/`,
+            background: frame.background,
+            ...(frame.captureSource
+              ? { captureSource: frame.captureSource }
+              : {}),
             ...(paintBlur ? { paintBlur } : {}),
             ...(effects.length || frame.cull === false ? { cull: false } : {}),
           })

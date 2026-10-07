@@ -187,8 +187,8 @@ describe("property path resolution", () => {
   });
 
   it.each([
-    ["house.blur", "comp-feature-unavailable"],
-    ["house.trimEnd", "comp-feature-unavailable"],
+    ["house.blur", "comp-path-property"],
+    ["house.trimEnd", "comp-path-property"],
     ["house.transform.rotationX", "comp-feature-unavailable"],
     ["house.effects[ghost].radius", "comp-path-property"],
     ["house.masks[ghost].path", "comp-path-property"],

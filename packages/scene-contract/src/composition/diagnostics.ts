@@ -21,6 +21,24 @@ export const COMPOSITION_DIAGNOSTICS = {
     "A value matches none of the allowed forms (for example an unknown layer `type`).",
   "comp-schema": "Any other structural error.",
   "comp-limit": "An array, string or record exceeds its size limit.",
+  "comp-effect-layer":
+    "An effect input slot is missing, undeclared or outside its scope.",
+  "comp-effect-cycle":
+    "Layer inputs, mattes or group descendants form a render dependency cycle.",
+  "comp-effect-budget":
+    "The scoped effect source graph exceeds its bounded work budget.",
+  "comp-effect-registration":
+    "Effect registration requires a unique ID, valid definition and GPU callback.",
+  "comp-effect-surface":
+    "Effect scratch textures and output must belong to the current callback and meet size/budget constraints.",
+  "comp-effect-version":
+    "Registered effect versions differ from the captured export snapshot.",
+  "comp-effect-params":
+    "Check evaluated effect controls and their cross-parameter invariants.",
+  "comp-effect-curve":
+    "Evaluated color curve points must be bounded, ordered and span the input domain.",
+  "comp-effect-bounds":
+    "An effect bounds callback failed or returned a non-finite/reversed rectangle.",
   // Keys and animated values
   "comp-key-order": "Key frames are not strictly increasing.",
   "comp-sample-time-order": "Baked sample times are not strictly increasing.",

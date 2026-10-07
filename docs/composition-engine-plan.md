@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-10-07
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE6 feature work incomplete. CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE6 feature work complete (2026-10-06). CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -369,7 +369,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE4c  | Cinematic adapter                               | A      | CE3, CE8             |                        |                                     | `[ ]`  |                                                                                    |
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
 | CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
-| CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-performance` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
+| CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  | Codex                  | `codex/composition-ce6p-compatible` | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
@@ -3062,12 +3062,12 @@ type EffectDefinition<P> = {
 
 ### Checklist
 
-- [ ] WebGL2 backend implementing the CE3 backend interface: texture per surface,
+- [x] WebGL2 backend implementing the CE3 backend interface: texture per surface,
       FBO pool, premultiplied alpha, all blend modes in shaders, luma mattes,
       feathered masks via distance field or blur.
-- [ ] Effect registry with the interface above; effects are addressable by property
+- [x] Effect registry with the interface above; effects are addressable by property
       path (`layer.effects[id].param`).
-- [ ] Initial effects (each with tests and a reference render):
+- [x] Initial effects (each with tests and a reference render):
   - Blur: gaussian (separable), directional, radial/zoom, camera lens blur (shared
     with CE8 depth of field).
   - Light: glow, drop shadow, inner shadow, light sweep, background light.
@@ -3079,24 +3079,24 @@ type EffectDefinition<P> = {
     chromatic aberration, echo.
   - Transitions: linear wipe, radial wipe, venetian blinds, block dissolve (seeded),
     gradient wipe.
-- [ ] Port every commerce effect (`motion-blur`, `directional-blur`, `overshoot`,
+- [x] Port every commerce effect (`motion-blur`, `directional-blur`, `overshoot`,
       `drift`, `height-shadow`, `focus-blur`, `parallax`, `light-sweep`, `glow`, `echo`,
       `grain`, `particles`, `background-light`, `displacement`). Motion-type commerce
       "effects" (overshoot, drift, parallax) become behaviours (CE9) or drivers, not
       pixel effects.
-- [ ] Optional linear-light compositing (`colorSpace: "linear-srgb"`).
-- [ ] Apply the [GPU determinism policy](#gpu-determinism-policy) to the WebGL2
+- [x] Optional linear-light compositing (`colorSpace: "linear-srgb"`).
+- [x] Apply the [GPU determinism policy](#gpu-determinism-policy) to the WebGL2
       backend: export and tests run on pinned SwiftShader; the Lab may use a hardware
       GPU and shows which renderer is active.
-- [ ] Avoid avoidable nondeterminism even on software rendering: fixed summation order
+- [x] Avoid avoidable nondeterminism even on software rendering: fixed summation order
       in multi-pass effects, no reliance on driver-specific precision qualifiers, seeded
       noise computed in shaders from integer hashes rather than `sin`-based tricks.
-- [ ] Record SwiftShader render cost per effect at 1920×1080 and representative
+- [x] Record SwiftShader render cost per effect at 1920×1080 and representative
       parameters, so heavy effects have visible budgets.
-- [ ] Backend parity suite: native `composition-1` fixtures covering the implemented
+- [x] Backend parity suite: native `composition-1` fixtures covering the implemented
       effects and layer features supported by both backends meet their recorded tiers.
       Family-fixture comparisons belong to CE4b/CE4c after their adapters are available.
-- [ ] Preview parity suite: on a machine with a hardware GPU, native-composition
+- [x] Preview parity suite: on a machine with a hardware GPU, native-composition
       preview frames match export within each fixture's tier.
 - [d] Moved to [CE6-P](#ce6-p--deferred-webgl-performance-acceptance): close the CE4b performance requirement transferred by the user's
   2026-10-03 scope decision: retain the **1.25×** legacy render/readback target
@@ -3120,6 +3120,252 @@ do not require future family adapters.
 
 **Verification:** Per-effect pixel tests at several parameter values, bounds expansion
 tests, backend parity suite, repeated-export determinism test.
+
+### CE6 completion record (2026-10-06)
+
+Complete on `codex/composition-ce6-completion`, runtime `4cd8a8d`, final code/test
+checkpoint `f11a7b7`. All 39 native effects, paired plugin callbacks, bounded
+animated controls/version identity, scoped inputs, captured adjustment history,
+GPU Gaussian/feather filtering and optional linear-light compositing are delivered.
+Linear blending uses quantized transfer boundaries; surfaces remain encoded
+premultiplied RGBA8 rather than persistent floating linear images.
+Existing per-draw primitive-blur compatibility retains CPU raster preparation;
+native surface filtering and transformed feather filtering run on GPU textures.
+
+The complete local `pnpm check` passes 1,712 unit, 46 runtime, 139 integration,
+14 depth tests, every required browser group and all 176 frozen baselines / 36,061
+frames without regeneration. Full Canvas matrices pass their existing pixel/timing
+policy: 69 story cases / 14,086 frames, 127 commerce / 28,200 frames and 20 typography
+cases / 3,367 frames. Full WebGL family matrices were not rerun; speed acceptance
+remains deferred to CE6-P.
+
+Six 32-frame native scenes cover every builtin. 384 forward hashes, 384 reverse
+checks and 132 random seeks meet software delta 1; 24 production exports and 12
+independent encodes agree. All 36 actual Apple GPU comparisons pass the unchanged
+perceptual policy (maximum delta 47, minimum PSNR 53.39 dB, SSIM 0.99916). The 78
+serial 1080p cold/warm cost rows are recorded. Earlier format/contract failures
+and rejected renderer experiments remain documented; no thresholds changed.
+[PR #42](https://github.com/xxibcill/still-shift/pull/42) is open and attached against CE7; begin CE8 on a new branch.
+[Evidence](./composition-ce6-completion-results.json).
+
+### CE6 current-version completion checkpoint (2026-10-06)
+
+Work continues on `codex/composition-ce6-completion` from completed CE7 `817cc9f`.
+The first slice supplies descriptor-backed registration, bounded animated 2D
+points throughout evaluation, paths, drivers, the native inspector and builder,
+checked pure expansion and captured effect-version export identity. Registration
+changes invalidate compiled validation and evaluated versions enter graph keys.
+The ten existing kernels retain their definitions and arithmetic. Descriptor
+registration now pairs required GPU and optional Canvas callbacks with bounded
+scratch ownership, checked outputs and failure cleanup. Twelve plugin frames are
+exact across Canvas/SwiftShader, including an independent oracle and seven random
+seeks; 35 focused tests and the existing WebGL browser gate pass. The remaining
+catalogue/dependencies, linear-light composition and the complete
+native/hardware/export/cost/full-gate acceptance are still pending. Focused checks
+and failed attempts are recorded in [CE6 evidence](./composition-ce6-completion-results.json).
+CE6-P speed acceptance remains deferred; frozen baselines are unchanged.
+
+### CE6 native color correction checkpoint (2026-10-06)
+
+Nine color effects (levels, tint, hue/saturation, exposure, brightness/contrast,
+fill, gradient ramp, invert and posterize) have bounded animated descriptors,
+actual GPU shaders and Canvas reference equations. Native acceptance passes
+243 cases / 2,916 frames across nine drawable/group/precomp/adjustment variants
+and three parameter sets per effect, including animation. The maximum backend
+delta is 1, minimum PSNR 64.97 dB and all 3,402 seeks are unchanged. All 32,895
+valid byte/alpha pairs are exact at six posterize level counts. An initial
+antialiased-text posterize failure (delta 10) exposed platform unpremultiplication rounding;
+both adapters now use explicit premultiplied-byte reconstruction and half-up
+quantization. No threshold or frozen baseline changed. 150 focused tests,
+build/lint/schema/boundaries pass. Curves and the remaining catalogue/dependencies,
+linear-light composition and complete hardware/hash/export/cost/full-gate
+acceptance remain. [Evidence](./composition-ce6-completion-results.json) and
+[conventions](./composition-effect-plugins.md).
+
+### CE6 animated curves checkpoint (2026-10-06)
+
+Curves support 2–16 bounded ordered controls, fixed whole-key topology and
+individually animated points. Point paths, drivers/expressions, sibling-preserving
+builder edits/baking and inspector value/speed graphs pass focused checks.
+Ordering is checked after the final expression stage. The GPU transforms image
+pixels with a control-derived 256-entry table; Canvas evaluates the independent
+piecewise equation. Ten color effects pass 270 native cases / 3,240 frames and
+3,780 seeks, maximum delta 1 and minimum PSNR 64.97 dB. Exhaustive 32,895 byte/
+alpha pairs are exact for four curves, including tightly spaced and sixteen-point
+controls, and six posterize cases. 246 focused tests and build/lint/schema/
+boundaries pass. Remaining catalogue/dependencies, linear-light and complete
+hardware/hash/export/cost/full-gate acceptance remain; thresholds and frozen
+baselines are unchanged. [Evidence](./composition-ce6-completion-results.json).
+
+### CE6 native transition checkpoint (2026-10-06)
+
+Linear/radial wipes, venetian blinds and integer-seeded block dissolve have
+bounded animated controls, actual GPU kernels and pure Canvas coverage references.
+Native acceptance passes 108 cases / 1,296 frames / 1,512 seeks across nine layer
+variants, max delta 1 and minimum PSNR 64.43 dB; 16 direct coverage oracles pass.
+76 focused tests and build/lint/schema/boundaries pass. Radial center/full turns,
+quantized directions and coverage rounding are explicit. Gradient wipe follows
+scoped-input dependencies; remaining spatial/catalogue, linear-light and complete
+hardware/hash/export/cost/full-gate acceptance remain. Existing thresholds and
+frozen baselines are unchanged. [Evidence](./composition-ce6-completion-results.json).
+
+### CE6 sampled blur checkpoint (2026-10-06)
+
+Radial, zoom and lens aperture blur use bounded 2–64 fixed-order samples,
+quantized affine/disk controls and transparent-padded premultiplied interpolation.
+GPU kernels sample actual textures; Canvas is the byte reference. Native tests
+pass 81 cases / 972 frames and 27 upper-control cases / 324 frames at 64 samples,
+including 1,512 seeks. 62 focused tests and build/lint/schema/boundaries pass.
+Neutral/bounds and independent interpolation oracles pass. CE8 will supply focus
+integration; remaining spatial/catalogue/dependencies, linear-light and complete
+hardware/hash/export/cost/full-gate acceptance remain. Existing Gaussian and
+directional arithmetic, thresholds and frozen baselines are unchanged.
+[Evidence](./composition-ce6-completion-results.json).
+
+### CE6 transform and corner-pin checkpoint (2026-10-06)
+
+Native transform and convex projective corner pin run on actual GPU textures,
+with Canvas byte references. Affine control precision and mixed-radix sampling
+retain small-scale cancellation; projective mapping uses explicit float32 steps.
+Final cross-parameter validation runs after drivers/expressions on immutable
+snapshots and reports the owning layer/path/root frame. 143 focused tests and
+build/lint/schema/boundaries pass. All 63 native cases / 756 frames / 882 seeks
+are exact, including the independent four-color cancellation oracle. Remaining
+distortion/stylize/shadows/dependencies, linear-light and complete hardware/hash/
+export/cost/full-gate acceptance remain. No threshold or frozen baseline changed.
+[Evidence](./composition-ce6-completion-results.json).
+
+### CE6 seeded native fields checkpoint (2026-10-06)
+
+Fractal fill and turbulent displacement compute actual GPU integer fields and
+image samples, with Canvas references. Seed/epoch bits, fixed 16-bit trilinear
+rounding, 1–8 ordered octaves and signed displacement quotients are explicit.
+68 focused tests and build/lint/schema/boundaries pass. Native acceptance is
+exact for 54 cases / 648 frames / 756 seeks; packed fields are exact at 81,920
+points and 65,536 values have exact quotients at seven signed/neutral amplitudes.
+Remaining distortion/stylize/shadows/dependencies, adjustment history,
+linear-light and complete hardware/hash/export/cost/full-gate acceptance remain.
+No threshold or frozen baseline changed. [Evidence](./composition-ce6-completion-results.json).
+
+### CE6 vignette and chromatic checkpoint (2026-10-06)
+
+Vignette and chromatic aberration have real GPU kernels and Canvas references,
+animated bounded controls, coverage preservation and exact neutral paths.
+48 focused tests and build/lint/schema/boundaries pass. Native acceptance passes
+54 cases / 648 frames / 756 seeks at max delta 1; independent vignette falloff
+and chromatic channel/padding pixel oracles are exact on both backends.
+Remaining distortion/shadows/scoped inputs/history/linear-light and complete
+hardware/hash/export/cost/full-gate acceptance remain. Missing GPU dimensions
+binding was repaired; no threshold or frozen baseline changed.
+[Evidence](./composition-ce6-completion-results.json).
+
+### CE6 bulge and ripple checkpoint (2026-10-06)
+
+Bulge/ripple perform actual GPU radial image warps with Canvas references and
+bounded one-dimensional geometry control tables. Integer source coordinates,
+signed products and two-word squared distances preserve sampling agreement.
+43 focused tests and build/lint/schema/boundaries pass. Native acceptance is
+exact for 54 cases / 648 frames / 756 seeks. Arbitrary-precision root and virtual
+8192×8192 source-coordinate proofs pass at 65,536 and 131,072 points.
+Remaining shadows/scoped inputs/history/linear-light and complete native
+hardware/hash/export/cost/full-gate acceptance remain. Frozen baselines and
+thresholds are unchanged. [Evidence](./composition-ce6-completion-results.json).
+
+### CE6 drop and inner shadow checkpoint (2026-10-06)
+
+Drop/inner shadows use actual separable GPU Gaussian filtering and independent
+Canvas references, fixed weighted sums, signed offsets and explicit complementary
+coverage padding. 36 focused tests and build/lint/schema/boundaries pass. Native
+acceptance is exact for 54 cases / 648 frames / 756 seeks; maximum-radius blur
+passes 2 cases / 24 frames / 28 seeks exactly. Independent translucent source/
+shadow pixel oracles are exact. Scoped inputs/history/linear-light and complete
+hardware/hash/export/cost/full-gate acceptance remain. Thresholds and frozen
+baselines are unchanged. [Evidence](./composition-ce6-completion-results.json).
+
+### CE6 scoped layer input checkpoint (2026-10-06)
+
+Named input slots bind same-scope layer IDs per effect instance and expose owned
+snapshots through both plugin contexts. Sources retain masks, effects, mattes,
+placement and matching scope/exposure clocks; hidden group/precomp capture does
+not change ordinary visibility. Input/matte/group cycles and bounded 10,000
+source visits/64 dependency levels have explicit diagnostics and failure cleanup.
+162 focused tests and build/lint/schema/boundaries pass. Nine drawable owners
+and eight source variants / 204 frames / 238 seeks are exact. Hidden masked
+source visibility and six remapped clock oracles pass exactly. Remaining map/
+wipe kernels, adjustment history/linear-light and complete hardware/hash/export/
+cost/full-gate acceptance remain. [Evidence](./composition-ce6-completion-results.json).
+
+### CE6 native map/wipe checkpoint (2026-10-06)
+
+Displacement and gradient wipe consume scoped map snapshots on both backends.
+54 cases / 648 frames / 756 seeks pass with maximum delta 1, alongside 80 focused
+unit tests and build/lint/schema/boundaries. Canonical gradient-ramp 1.1.0 controls
+repair the initial amplified one-byte difference. All 114,688 projection ranks,
+393,216 signed quotients per backend, staged map bytes and independent pixels
+are exact; 27 gradient cases pass. No threshold or baseline changed. Adjustment
+history, linear-light and complete milestone acceptance remain.
+[Evidence](./composition-ce6-completion-results.json).
+
+### CE6 adjustment backdrop history checkpoint (2026-10-06)
+
+Adjustments replay their upstream paint at historical scoped clocks, including
+upstream echoes/effects/masks/mattes, bounded to 256 captures and 16 replay levels.
+Primitive blur filters their captured backdrop at its stack position; drawable
+paint semantics remain unchanged. Historical glyph preparation and failure cleanup
+are included. 54 focused tests and build/lint/schema/boundaries pass; 54 cases /
+648 frames / 756 seeks meet delta 2/PSNR 50. Independent echo pixels are exact.
+A discovered offscreen precomp blur defect (delta 21) is repaired by GPU capture
+padding: six cases / 72 frames / 84 seeks now match exactly. Broader affine
+regressions, linear-light and complete milestone acceptance remain.
+[Evidence](./composition-ce6-completion-results.json).
+
+### CE6 native catalogue and cost acceptance (2026-10-06)
+
+Six 32-frame native scenes cover all 39 builtins. 384 forward hashes, 384 reverse
+checks and 132 random seeks meet software delta 1. Repeated PNG/raw exports and
+independent preview MP4 encodes agree on both backends. 36 actual Apple GPU
+comparisons meet the unchanged perceptual hardware policy; maximum delta 47,
+minimum PSNR 53.39 and SSIM .99916 are recorded. Separate new hashes and 24 PNGs
+leave frozen baselines unchanged. All 78 serial 1080p cold/warm per-effect/backend
+costs are recorded; SwiftShader warm medians range 12.5–180.6 ms, with CE6-P speed
+acceptance deferred. Build/lint/schema/boundaries and stored-fixture coverage unit
+pass. Final full local `pnpm check`, CE6 PR and CE8 branch remain.
+[Evidence](./composition-ce6-completion-results.json).
+
+### CE6 GPU Gaussian/feather completion (2026-10-06)
+
+Gaussian and transformed feather filtering now stay on GPU textures with the
+pinned raster domain's sigma-532 clamp and progressive centered rescaling above 135. The oversized-feather CPU image-filter fallback is removed. 11 focused tests
+and build/lint/schema/boundaries pass. 84 native renders/seeks across radii
+136–1,000 meet delta 2/PSNR 53; all 18 extreme-scale feathers are exact and the
+68 prior WebGL reference cases pass. Triangular-prefix/clamp-only experiments
+were rejected for raster parity. Final hardware/hash/export/cost/full-gate and
+CE6 PR remain. [Evidence](./composition-ce6-completion-results.json).
+
+### CE6 captured-source history and path audit (2026-10-06)
+
+Captured groups and precomp inputs/mattes now replay their scoped adjustment
+history even when their caller is absent at earlier frames. Native primitive-blur
+aliases bind one declared effect through drivers/expressions. Shape/effect path
+errors use current explicit native targeting. 119 focused tests and build/lint/
+schema/boundaries pass; 24 independent capture oracles are exact and all previous
+input/adjustment native regressions pass. GPU high-sigma feather rescaling remains
+in flight before hardware/hash/export/cost/full-gate acceptance and CE6 PR.
+[Evidence](./composition-ce6-completion-results.json).
+
+### CE6 optional linear-light checkpoint (2026-10-06)
+
+Opt-in `linear-srgb` uses real 16-bit premultiplied linear blending for all 17
+modes, adjustment interpolation and fixed-order exposure averaging. Source paints,
+effects and luma measurement retain encoded-sRGB semantics; ordinary sRGB arithmetic
+is unchanged. Bounded transfer controls run image blending on the GPU without
+readback. Layer batches are disabled in the opt-in path and color-domain switches
+invalidate retained pixels. All 1,700 unit tests and build/lint/schema/boundaries
+pass. 180 cases / 2,160 frames / 2,520 seeks meet delta 2/PSNR 50; 559,215 alpha
+byte-pair/mode cases meet delta 1. Independent pixels/exposure/cache switches pass.
+28 affine offscreen blur cases / 336 frames / 392 seeks are exact. Final feature/
+fallback/source-history audit, hardware/hash/export/cost/full-gate acceptance and
+CE6 PR remain. [Evidence](./composition-ce6-completion-results.json).
 
 ### CE6 performance slice 1: exact effect work (2026-10-03)
 
@@ -3359,8 +3605,9 @@ tests, backend parity suite, repeated-export determinism test.
   approach or explicitly revises acceptance. No CPU/GPU hybrid, default backend
   switch, GPU policy change or baseline regeneration is authorized by this deferral.
 
-**Completion record:** CE6 feature work remains independent; CE6-P performance
-acceptance is resumed and remains incomplete. Preserve every original target.
+**Completion record:** CE6 feature work is complete; CE6-P performance
+acceptance remains incomplete and owner-deferred again on 2026-10-07. Preserve
+every original target and the measured slices below.
 
 ---
 

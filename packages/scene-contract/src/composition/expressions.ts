@@ -168,7 +168,7 @@ export function compileExpressions(
       continue;
     }
     const type = target.resolved.type;
-    if (type === "discrete" || type === "path") {
+    if (type === "discrete" || type === "path" || type === "curve") {
       report(
         "comp-expression-type",
         entry.origin,

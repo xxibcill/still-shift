@@ -36,6 +36,16 @@ const isolate = (...ops: RenderOp[]): IsolateOp => ({
   clips: [],
 });
 describe("GPU framebuffer damage", () => {
+  it("repaints when the composition color domain changes", () => {
+    const damage = new WebglDamage(new WebglVisualKey()),
+      scene = root(layer("box", 0));
+    damage.next(scene);
+    expect(damage.next(scene)).toBeNull();
+    expect(
+      damage.next({ ...scene, colorSpace: "linear-srgb" }),
+    ).toBeUndefined();
+    expect(damage.next(scene)).toBeUndefined();
+  });
   it("unions nested group coverage across motion, opacity changes and reverse seeks", () => {
     const damage = new WebglDamage(new WebglVisualKey());
     const scene = (x: number, opacity = 1) =>

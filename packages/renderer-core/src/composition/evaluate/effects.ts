@@ -1,16 +1,25 @@
 import {
   compositionEffectDefinition,
+  effectCurveIssue,
   type CompositionLayer,
 } from "@still-shift/scene-contract";
-import { scalar, color, unit } from "./sample.ts";
+import { scalar, vector, color, unit, effectCurve } from "./sample.ts";
 import type { Bounds, Rgba } from "./types.ts";
+import type { Point } from "../../node-transform.ts";
+import {
+  passageError,
+  type PassageDiagnostic,
+} from "../../passage-diagnostics.ts";
 
 export type EvaluatedEffect = {
   id: string;
   effect: string;
+  /** Evaluated stacks carry versions; standalone backend probes may omit them. */
+  version?: string;
   enabled: boolean;
   space?: string;
-  params: Record<string, number | Rgba>;
+  inputs?: Readonly<Record<string, string>>;
+  params: Record<string, number | Rgba | Point | Point[]>;
 };
 
 export function sampleEffects(
@@ -24,7 +33,9 @@ export function sampleEffects(
     return {
       id: effect.id,
       effect: effect.effect,
+      version: definition.version,
       ...(effect.space ? { space: effect.space } : {}),
+      ...(effect.inputs ? { inputs: { ...effect.inputs } } : {}),
       enabled:
         effect.enabled !== false &&
         time >= (effect.inPoint ?? -Infinity) &&
@@ -32,9 +43,15 @@ export function sampleEffects(
       params: Object.fromEntries(
         Object.entries(definition.properties).map(([name, property]) => [
           name,
-          property.type === "color"
-            ? color(effect.params?.[name] ?? property.default, keyTime, fps)
-            : scalar(effect.params?.[name], keyTime, fps, property.default),
+          property.type === "curve"
+            ? effectCurve(effect.params?.[name], keyTime, fps, property.default)
+            : property.type === "color"
+              ? color(effect.params?.[name] ?? property.default, keyTime, fps)
+              : property.type === "vec2"
+                ? vector(effect.params?.[name], keyTime, fps, [
+                    ...property.default,
+                  ])
+                : scalar(effect.params?.[name], keyTime, fps, property.default),
         ]),
       ),
     };
@@ -47,8 +64,17 @@ export function clampEffects(effects: EvaluatedEffect[]) {
     for (const [name, property] of Object.entries(
       compositionEffectDefinition(effect.effect)!.properties,
     )) {
-      if (property.type === "color")
+      if (property.type === "curve") {
+        const points = (effect.params[name] as Point[]).map(
+          (point) => point.map(unit) as Point,
+        );
+        effect.params[name] = points;
+      } else if (property.type === "color")
         effect.params[name] = (effect.params[name] as Rgba).map(unit) as Rgba;
+      else if (property.type === "vec2")
+        effect.params[name] = (effect.params[name] as Point).map((value) =>
+          Math.max(property.min, Math.min(property.max, value)),
+        ) as Point;
       else {
         const value = effect.params[name] as number;
         effect.params[name] = Math.max(
@@ -59,16 +85,105 @@ export function clampEffects(effects: EvaluatedEffect[]) {
     }
 }
 
+function validationParameters(
+  params: EvaluatedEffect["params"],
+): EvaluatedEffect["params"] {
+  const snapshot = structuredClone(params);
+  for (const value of Object.values(snapshot))
+    if (Array.isArray(value)) {
+      for (const point of value) if (Array.isArray(point)) Object.freeze(point);
+      Object.freeze(value);
+    }
+  return Object.freeze(snapshot);
+}
+/** Validate final cross-parameter invariants without allowing callbacks to mutate the result. */
+export function validateEffectParameters(
+  effects: EvaluatedEffect[],
+  location: Pick<PassageDiagnostic, "node" | "path" | "frame">,
+) {
+  for (const effect of effects) {
+    const definition = compositionEffectDefinition(effect.effect)!;
+    try {
+      if (effect.enabled && definition.validateParams) {
+        const result = definition.validateParams(
+          validationParameters(effect.params),
+        ) as unknown;
+        if (result !== undefined)
+          throw Error(
+            "Effect parameter validation must be synchronous and return no value",
+          );
+      }
+    } catch (error) {
+      passageError(
+        "comp-effect-params",
+        error instanceof Error
+          ? error.message
+          : "Invalid evaluated effect parameters",
+        {
+          ...location,
+          path: `${location.path ?? "layer"}.effects[${effect.id}]`,
+        },
+      );
+    }
+    for (const [name, property] of Object.entries(definition.properties)) {
+      if (property.type !== "curve") continue;
+      const issue = effectCurveIssue(effect.params[name] as Point[]);
+      if (issue)
+        passageError("comp-effect-curve", issue, {
+          ...location,
+          path: `${location.path ?? "layer"}.effects[${effect.id}].${name}`,
+        });
+    }
+  }
+}
+
 /** Kernels operate in the current composition surface's pixel space. */
 export function effectBounds(
   bounds: Bounds,
   effects: EvaluatedEffect[],
+  location: Pick<PassageDiagnostic, "node" | "path" | "frame"> = {},
 ): Bounds | null {
   let margin = 0;
+  let current = bounds;
   for (const effect of effects)
     if (effect.enabled) {
       if (compositionEffectDefinition(effect.effect)!.generatesContent)
         return null;
+      const definition = compositionEffectDefinition(effect.effect)!;
+      if (definition.expandBounds) {
+        if (margin) {
+          current = expanded(current, margin);
+          margin = 0;
+        }
+        let next: Bounds | null;
+        try {
+          next = definition.expandBounds({ ...current }, effect.params);
+        } catch {
+          passageError("comp-effect-bounds", "Effect bounds callback failed", {
+            ...location,
+            path: `${location.path ?? "layer"}.effects[${effect.id}]`,
+          });
+        }
+        if (next === null) return null;
+        if (
+          !next ||
+          ![next.left, next.top, next.right, next.bottom].every(
+            Number.isFinite,
+          ) ||
+          next.left > next.right ||
+          next.top > next.bottom
+        )
+          passageError(
+            "comp-effect-bounds",
+            "Effect bounds must be finite and ordered",
+            {
+              ...location,
+              path: `${location.path ?? "layer"}.effects[${effect.id}]`,
+            },
+          );
+        current = next;
+        continue;
+      }
       const params = effect.params as Record<string, number>;
       if (
         effect.effect === "blur.gaussian" ||
@@ -81,12 +196,13 @@ export function effectBounds(
       else if (effect.effect === "distort.sine")
         margin += Math.abs(params.amount!) + 1;
     }
-  return margin
-    ? {
-        left: bounds.left - margin,
-        top: bounds.top - margin,
-        right: bounds.right + margin,
-        bottom: bounds.bottom + margin,
-      }
-    : bounds;
+  return margin ? expanded(current, margin) : current;
+}
+function expanded(bounds: Bounds, margin: number): Bounds {
+  return {
+    left: bounds.left - margin,
+    top: bounds.top - margin,
+    right: bounds.right + margin,
+    bottom: bounds.bottom + margin,
+  };
 }

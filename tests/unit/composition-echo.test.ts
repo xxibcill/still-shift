@@ -174,7 +174,7 @@ describe("native temporal echo", () => {
     comp.layers[0]!.effects!.push({ ...effect, id: "second" });
     expect(validateComposition(comp).ok).toBe(false);
     comp.layers = [{ id: "adjust", type: "adjustment", effects: [effect] }];
-    expect(validateComposition(comp).ok).toBe(false);
+    expect(validateComposition(comp).ok).toBe(true);
     expect(() =>
       evaluateComp(fixture(), 0, { scopeTimes: { inset: Infinity } }),
     ).toThrow(/finite/);

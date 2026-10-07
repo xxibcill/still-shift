@@ -81,8 +81,8 @@ export function formatPropertyPath(path: PropertyPath) {
 
 /**
  * Legacy `node.property` targets used by story and commerce motion craft, mapped to
- * composition property paths. Properties whose general form arrives later map to
- * the milestone that provides them.
+ * composition property paths. Shape modifiers require an explicit native contents
+ * path; their historical milestone labels are retained for existing consumers.
  */
 export const LEGACY_PROPERTY_ALIASES: Record<string, string> = {
   x: "transform.position.x",
@@ -105,5 +105,4 @@ export const LEGACY_UNAVAILABLE_PROPERTIES: Record<string, string> = {
   trimStart: "CE5",
   trimEnd: "CE5",
   trimOffset: "CE5",
-  blur: "CE6",
 };

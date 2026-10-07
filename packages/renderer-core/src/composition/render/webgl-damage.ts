@@ -83,7 +83,13 @@ export class WebglDamage {
       return undefined;
     }
     const frame: Frame = {
-      header: this.keys.of([root.id, root.width, root.height, root.background]),
+      header: this.keys.of([
+        root.id,
+        root.width,
+        root.height,
+        root.background,
+        root.colorSpace,
+      ]),
       layers: root.ops.map((op, i) => ({
         id: op.layer,
         key: this.keys.of(op),

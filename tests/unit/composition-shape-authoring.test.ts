@@ -252,11 +252,14 @@ describe("native shape expression baking", () => {
         const source = evaluateProperty(doc, property.path, frame),
           baked = evaluateProperty(result.composition, property.path, frame);
         if (Array.isArray(source) && Array.isArray(baked))
-          source.forEach((value, i) =>
-            expect(Math.abs(value - baked[i]!)).toBeLessThanOrEqual(
+          source.forEach((value, i) => {
+            const other = baked[i];
+            if (typeof value !== "number" || typeof other !== "number")
+              throw Error("Expected numeric vector or color channels");
+            expect(Math.abs(value - other)).toBeLessThanOrEqual(
               property.path.endsWith(".color") ? 1 / 255 : 1e-9,
-            ),
-          );
+            );
+          });
         else expect(baked).toEqual(source);
       }
   });

@@ -1,4 +1,8 @@
 import { locateShapeProperty } from "./shape-properties.ts";
+import {
+  effectCurvePointIndex,
+  effectCurvePointCount,
+} from "./effect-curves.ts";
 import { compositionEffectDefinition } from "./effects.ts";
 import type { Composition, CompositionScope } from "./composition.ts";
 import type { CompositionLayer } from "./layers.ts";
@@ -19,7 +23,8 @@ export type PropertyValueType =
   | "vec3"
   | "color"
   | "discrete"
-  | "path";
+  | "path"
+  | "curve";
 
 export type ResolvedProperty = {
   /** Canonical form: aliases expanded. */
@@ -157,15 +162,34 @@ function resolveSegments(
       const effect = layer.effects?.find((e) => e.id === head.index);
       if (!effect) return missing(text, "an effect on this layer");
       const definition = compositionEffectDefinition(effect.effect);
-      if (!definition) return unavailable(text, "CE6");
-      if (
-        !next ||
-        indexed(next) ||
-        !Object.hasOwn(definition.properties, next.name)
-      )
+      if (!definition) return missing(text, "a registered effect");
+      if (!next || !Object.hasOwn(definition.properties, next.name))
         return missing(text, "an effect parameter");
-      const type = definition.properties[next.name]!.type;
-      return component(type, type === "color" ? COLOR_COMPONENTS : [], rest);
+      const descriptor = definition.properties[next.name]!;
+      const type = descriptor.type;
+      if (type === "curve" && next.index !== undefined) {
+        const index = effectCurvePointIndex(next.index);
+        if (
+          index === undefined ||
+          index >=
+            effectCurvePointCount(
+              effect.params?.[next.name],
+              descriptor.default,
+            )
+        )
+          return missing(text, "a color curve control point");
+        return component("vec2", COMPONENTS.vec2, rest);
+      }
+      if (next.index !== undefined) return missing(text, "an effect parameter");
+      return component(
+        type,
+        type === "color"
+          ? COLOR_COMPONENTS
+          : type === "vec2"
+            ? COMPONENTS.vec2
+            : [],
+        rest,
+      );
     }
     case "contents": {
       const property =
@@ -229,7 +253,21 @@ export function resolvePropertyPath(comp: Composition, text: string): Result {
   if (segments.length === 1 && segments[0]!.index === undefined) {
     const name = segments[0]!.name;
     if (Object.hasOwn(LEGACY_UNAVAILABLE_PROPERTIES, name))
-      return unavailable(text, LEGACY_UNAVAILABLE_PROPERTIES[name]!);
+      return missing(
+        text,
+        "an explicit native shape property; use contents[...].<field>",
+      );
+    if (name === "blur") {
+      const paint =
+        layer.effects?.filter((effect) => effect.effect === "blur.primitive") ??
+        [];
+      if (paint.length !== 1)
+        return missing(
+          text,
+          "one declared primitive blur; use effects[id].radius",
+        );
+      segments = [{ name: "effects", index: paint[0]!.id }, { name: "radius" }];
+    }
     const alias = Object.hasOwn(LEGACY_PROPERTY_ALIASES, name)
       ? LEGACY_PROPERTY_ALIASES[name]
       : undefined;

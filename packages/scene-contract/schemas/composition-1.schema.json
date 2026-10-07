@@ -2969,6 +2969,11 @@
           },
           "enabled": { "type": "boolean" },
           "space": { "$ref": "#/$defs/__schema0" },
+          "inputs": {
+            "type": "object",
+            "propertyNames": { "$ref": "#/$defs/__schema0" },
+            "additionalProperties": { "$ref": "#/$defs/__schema0" }
+          },
           "inPoint": { "$ref": "#/$defs/__schema13" },
           "outPoint": { "$ref": "#/$defs/__schema13" },
           "params": {

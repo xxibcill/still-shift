@@ -1,24 +1,19 @@
+import { MAP_EFFECT_DEFINITIONS } from "./map-effects.ts";
+import { SHADOW_EFFECT_DEFINITIONS } from "./shadow-effects.ts";
+import { RADIAL_DISTORTION_DEFINITIONS } from "./radial-distortion.ts";
 import { z } from "zod";
-import { animatableScalar, AnimatableColorSchema } from "./keys.ts";
-import { finite } from "./primitives.ts";
-
-/** The contract owns validation and paths; the graph and backends execute effect stages. */
-export type EffectScalar = {
-  type: "scalar";
-  default: number;
-  min: number;
-  max: number;
-  integer?: boolean;
-};
-export type EffectColor = { type: "color"; default: string };
-export type CompositionEffectDefinition = {
-  version: string;
-  params: z.ZodType;
-  properties: Readonly<Record<string, EffectScalar | EffectColor>>;
-  generatesContent?: boolean;
-  preservesOpaque?: boolean;
-  usesLayerSpace?: boolean;
-};
+import {
+  defineCompositionEffect,
+  type CompositionEffectDefinition,
+  type EffectScalar,
+} from "./effect-definition.ts";
+import { STYLIZE_EFFECT_DEFINITIONS } from "./stylize-effects.ts";
+import { NOISE_EFFECT_DEFINITIONS } from "./noise-effects.ts";
+import { WARP_EFFECT_DEFINITIONS } from "./warp-effects.ts";
+import { SAMPLED_BLUR_DEFINITIONS } from "./blur-effects.ts";
+import { COLOR_EFFECT_DEFINITIONS } from "./color-effects.ts";
+import { TRANSITION_EFFECT_DEFINITIONS } from "./transition-effects.ts";
+export * from "./effect-definition.ts";
 
 function defineEffect(
   properties: Record<string, Omit<EffectScalar, "type">>,
@@ -28,7 +23,7 @@ function defineEffect(
     "generatesContent" | "preservesOpaque" | "usesLayerSpace"
   > = {},
 ): CompositionEffectDefinition {
-  return {
+  return defineCompositionEffect({
     version: "1.0.0",
     ...options,
     properties: Object.fromEntries([
@@ -41,27 +36,21 @@ function defineEffect(
         { type: "color" as const, default: value },
       ]),
     ]),
-    params: z
-      .object(
-        Object.fromEntries([
-          ...Object.entries(properties).map(([name, property]) => {
-            let number = finite.min(property.min).max(property.max);
-            if (property.integer) number = number.int();
-            return [name, animatableScalar(number).optional()];
-          }),
-          ...Object.keys(colors).map((name) => [
-            name,
-            AnimatableColorSchema.optional(),
-          ]),
-        ]),
-      )
-      .strict(),
-  };
+  });
 }
 
 export const COMPOSITION_EFFECTS: Readonly<
   Record<string, CompositionEffectDefinition>
 > = {
+  ...COLOR_EFFECT_DEFINITIONS,
+  ...TRANSITION_EFFECT_DEFINITIONS,
+  ...SAMPLED_BLUR_DEFINITIONS,
+  ...WARP_EFFECT_DEFINITIONS,
+  ...NOISE_EFFECT_DEFINITIONS,
+  ...STYLIZE_EFFECT_DEFINITIONS,
+  ...RADIAL_DISTORTION_DEFINITIONS,
+  ...SHADOW_EFFECT_DEFINITIONS,
+  ...MAP_EFFECT_DEFINITIONS,
   "blur.primitive": defineEffect({ radius: { default: 0, min: 0, max: 1000 } }),
   "time.echo": defineEffect(
     {
@@ -137,8 +126,59 @@ export const COMPOSITION_EFFECTS: Readonly<
   }),
 };
 
+const registered = new Map<string, CompositionEffectDefinition>();
+let revision = 0;
+
+/** Register before validating/rendering; cleanup cannot remove a later registration. */
+export function registerCompositionEffectDefinition(
+  id: string,
+  definition: CompositionEffectDefinition,
+): () => void {
+  if (
+    !/^[a-z][\w.-]*$/.test(id) ||
+    id.length > 64 ||
+    Object.hasOwn(Object.prototype, id) ||
+    compositionEffectDefinition(id)
+  )
+    throw Error(`comp-effect-registration: invalid or duplicate effect ${id}`);
+  if (!definition.params || typeof definition.params.safeParse !== "function")
+    throw Error(
+      "comp-effect-registration: a validated effect definition is required",
+    );
+  const declared = defineCompositionEffect(definition);
+  const normalized = Object.freeze({
+    ...declared,
+    params: z.intersection(declared.params, definition.params),
+  });
+  const defaults = Object.fromEntries(
+    Object.entries(declared.properties).map(([name, property]) => [
+      name,
+      property.default,
+    ]),
+  );
+  if (!normalized.params.safeParse(defaults).success)
+    throw Error(
+      "comp-effect-registration: defaults fail the supplied parameter schema",
+    );
+  registered.set(id, normalized);
+  revision++;
+  return () => {
+    if (registered.get(id) !== normalized) return;
+    registered.delete(id);
+    revision++;
+  };
+}
+
+/** Compiled path/validation caches must not outlive plugin registration changes. */
+export function compositionEffectRegistryRevision(): number {
+  return revision;
+}
+
 export function compositionEffectDefinition(id: string) {
-  return Object.hasOwn(COMPOSITION_EFFECTS, id)
-    ? COMPOSITION_EFFECTS[id]
-    : undefined;
+  return (
+    registered.get(id) ??
+    (Object.hasOwn(COMPOSITION_EFFECTS, id)
+      ? COMPOSITION_EFFECTS[id]
+      : undefined)
+  );
 }

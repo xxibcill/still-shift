@@ -150,8 +150,7 @@ function checkLayer(
     }
     if (
       effect.effect === "time.echo" &&
-      (layer.type === "adjustment" ||
-        layer.type === "null" ||
+      (layer.type === "null" ||
         layer
           .effects!.slice(0, index)
           .some((prior) => prior.effect === "time.echo"))
@@ -159,12 +158,11 @@ function checkLayer(
       fail(
         "comp-effect-history",
         at,
-        "One echo is allowed per drawable layer or group; adjustment backdrops have no source history",
+        "One echo is allowed per drawable layer, group or adjustment",
       );
     if (
       effect.effect === "blur.primitive" &&
-      (layer.type === "adjustment" ||
-        layer.type === "null" ||
+      (layer.type === "null" ||
         layer
           .effects!.slice(0, index)
           .some((prior) => prior.effect === "blur.primitive"))
@@ -172,7 +170,7 @@ function checkLayer(
       fail(
         "comp-effect-paint",
         at,
-        "One primitive blur is allowed per drawable layer or group",
+        "One primitive blur is allowed per drawable layer, group or adjustment",
       );
     if (
       effect.space &&
@@ -186,6 +184,28 @@ function checkLayer(
           ? `No coordinate layer "${effect.space}" in this scope`
           : "This effect uses surface coordinates",
       );
+    const slots = definition.requiresLayers ?? [];
+    for (const slot of new Set([
+      ...slots,
+      ...Object.keys(effect.inputs ?? {}),
+    ])) {
+      const id = effect.inputs?.[slot],
+        source = scope.layers.find((candidate) => candidate.id === id);
+      if (
+        !slots.includes(slot) ||
+        !source ||
+        ["null", "adjustment"].includes(source.type)
+      )
+        fail(
+          "comp-effect-layer",
+          [...at, "inputs", slot],
+          !slots.includes(slot)
+            ? `Undeclared effect input slot "${slot}"`
+            : !source
+              ? `No input layer "${id ?? ""}" in this scope`
+              : "Effect inputs need drawable layers or groups",
+        );
+    }
     if ((effect.inPoint ?? -Infinity) >= (effect.outPoint ?? Infinity))
       fail("comp-effect-time", at, "Effect inPoint must precede outPoint");
     const parsed = definition.params.safeParse(effect.params ?? {});
@@ -643,6 +663,39 @@ function checkParents(
       pending.push(...(children.get(id) ?? []));
     }
   });
+  // Effect inputs, mattes and group descendants share one dependency graph.
+  scope.layers.forEach((layer, i) => {
+    if (
+      !layer.effects?.some((effect) => Object.keys(effect.inputs ?? {}).length)
+    )
+      return;
+    const pending = layer.effects.flatMap((effect) =>
+        Object.values(effect.inputs ?? {}),
+      ),
+      seen = new Set<string>();
+    while (pending.length) {
+      const id = pending.pop()!;
+      if (id === layer.id) {
+        fail(
+          "comp-effect-cycle",
+          [...base, "layers", i, "effects"],
+          `Effect inputs of "${layer.id}" form a cycle through a layer, matte or group`,
+        );
+        return;
+      }
+      if (seen.has(id)) continue;
+      seen.add(id);
+      const source = byId.get(id);
+      if (!source) continue;
+      if (source.trackMatte) pending.push(source.trackMatte.layer);
+      pending.push(
+        ...(source.effects ?? []).flatMap((effect) =>
+          Object.values(effect.inputs ?? {}),
+        ),
+        ...(children.get(id) ?? []),
+      );
+    }
+  });
 }
 
 /** Precomp references form a DAG no deeper than the nesting limit. */
@@ -1016,12 +1069,6 @@ export function validateCompositionSemantics(
         );
     });
   }
-  if (comp.colorSpace === "linear-srgb")
-    fail(
-      "comp-feature-unavailable",
-      ["colorSpace"],
-      "linear-light compositing is not available until CE6",
-    );
   if (comp.format) {
     const size = formatSize(comp.format);
     if (comp.width !== size.width || comp.height !== size.height)

@@ -1,0 +1,623 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "catalogue-transition",
+  "width": 320,
+  "height": 180,
+  "fps": 24,
+  "frameCount": 32,
+  "assets": [],
+  "background": "#101a2a",
+  "layers": [
+    {
+      "id": "cell-0",
+      "type": "group",
+      "size": [80, 90],
+      "transform": {
+        "anchor": [0, 0],
+        "position": [0, 0]
+      },
+      "effects": [
+        {
+          "id": "treatment",
+          "effect": "transition.linear-wipe",
+          "params": {
+            "progress": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": 0.1,
+                  "easing": "linear"
+                },
+                {
+                  "frame": 31,
+                  "value": 0.85,
+                  "easing": "linear"
+                }
+              ]
+            },
+            "softness": 0.15,
+            "angle": 25
+          }
+        }
+      ]
+    },
+    {
+      "id": "cell-0-paint-0",
+      "type": "solid",
+      "parent": "cell-0",
+      "size": [18, 58.5],
+      "color": "#f0ba58",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 5,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 10,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 1
+      }
+    },
+    {
+      "id": "cell-0-paint-1",
+      "type": "solid",
+      "parent": "cell-0",
+      "size": [18, 58.5],
+      "color": "#3baea0",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 28,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 33,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 0.65
+      }
+    },
+    {
+      "id": "cell-0-paint-2",
+      "type": "solid",
+      "parent": "cell-0",
+      "size": [18, 58.5],
+      "color": "#b86884",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 51,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 56,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 1
+      }
+    },
+    {
+      "id": "cell-1",
+      "type": "group",
+      "size": [80, 90],
+      "transform": {
+        "anchor": [0, 0],
+        "position": [80, 0]
+      },
+      "effects": [
+        {
+          "id": "treatment",
+          "effect": "transition.radial-wipe",
+          "params": {
+            "progress": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": 0.1,
+                  "easing": "linear"
+                },
+                {
+                  "frame": 31,
+                  "value": 0.85,
+                  "easing": "linear"
+                }
+              ]
+            },
+            "softness": 0.08
+          }
+        }
+      ]
+    },
+    {
+      "id": "cell-1-paint-0",
+      "type": "solid",
+      "parent": "cell-1",
+      "size": [18, 58.5],
+      "color": "#f0ba58",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 5,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 10,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 1
+      }
+    },
+    {
+      "id": "cell-1-paint-1",
+      "type": "solid",
+      "parent": "cell-1",
+      "size": [18, 58.5],
+      "color": "#3baea0",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 28,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 33,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 0.65
+      }
+    },
+    {
+      "id": "cell-1-paint-2",
+      "type": "solid",
+      "parent": "cell-1",
+      "size": [18, 58.5],
+      "color": "#b86884",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 51,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 56,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 1
+      }
+    },
+    {
+      "id": "cell-2",
+      "type": "group",
+      "size": [80, 90],
+      "transform": {
+        "anchor": [0, 0],
+        "position": [160, 0]
+      },
+      "effects": [
+        {
+          "id": "treatment",
+          "effect": "transition.venetian-blinds",
+          "params": {
+            "progress": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": 0.1,
+                  "easing": "linear"
+                },
+                {
+                  "frame": 31,
+                  "value": 0.85,
+                  "easing": "linear"
+                }
+              ]
+            },
+            "softness": 0.1,
+            "width": 24,
+            "angle": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "cell-2-paint-0",
+      "type": "solid",
+      "parent": "cell-2",
+      "size": [18, 58.5],
+      "color": "#f0ba58",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 5,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 10,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 1
+      }
+    },
+    {
+      "id": "cell-2-paint-1",
+      "type": "solid",
+      "parent": "cell-2",
+      "size": [18, 58.5],
+      "color": "#3baea0",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 28,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 33,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 0.65
+      }
+    },
+    {
+      "id": "cell-2-paint-2",
+      "type": "solid",
+      "parent": "cell-2",
+      "size": [18, 58.5],
+      "color": "#b86884",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 51,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 56,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 1
+      }
+    },
+    {
+      "id": "cell-3",
+      "type": "group",
+      "size": [80, 90],
+      "transform": {
+        "anchor": [0, 0],
+        "position": [240, 0]
+      },
+      "effects": [
+        {
+          "id": "treatment",
+          "effect": "transition.block-dissolve",
+          "params": {
+            "progress": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": 0.1,
+                  "easing": "linear"
+                },
+                {
+                  "frame": 31,
+                  "value": 0.85,
+                  "easing": "linear"
+                }
+              ]
+            },
+            "softness": 0.12,
+            "seed": 912,
+            "width": 12,
+            "height": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "cell-3-paint-0",
+      "type": "solid",
+      "parent": "cell-3",
+      "size": [18, 58.5],
+      "color": "#f0ba58",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 5,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 10,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 1
+      }
+    },
+    {
+      "id": "cell-3-paint-1",
+      "type": "solid",
+      "parent": "cell-3",
+      "size": [18, 58.5],
+      "color": "#3baea0",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 28,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 33,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 0.65
+      }
+    },
+    {
+      "id": "cell-3-paint-2",
+      "type": "solid",
+      "parent": "cell-3",
+      "size": [18, 58.5],
+      "color": "#b86884",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 51,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 56,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 1
+      }
+    },
+    {
+      "id": "cell-4",
+      "type": "group",
+      "size": [80, 90],
+      "transform": {
+        "anchor": [0, 0],
+        "position": [0, 90]
+      },
+      "effects": [
+        {
+          "id": "treatment",
+          "effect": "transition.gradient-wipe",
+          "params": {
+            "progress": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": 0.1,
+                  "easing": "linear"
+                },
+                {
+                  "frame": 31,
+                  "value": 0.85,
+                  "easing": "linear"
+                }
+              ]
+            },
+            "softness": 0.15
+          },
+          "inputs": {
+            "map": "map"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cell-4-paint-0",
+      "type": "solid",
+      "parent": "cell-4",
+      "size": [18, 58.5],
+      "color": "#f0ba58",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 5,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 10,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 1
+      }
+    },
+    {
+      "id": "cell-4-paint-1",
+      "type": "solid",
+      "parent": "cell-4",
+      "size": [18, 58.5],
+      "color": "#3baea0",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 28,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 33,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 0.65
+      }
+    },
+    {
+      "id": "cell-4-paint-2",
+      "type": "solid",
+      "parent": "cell-4",
+      "size": [18, 58.5],
+      "color": "#b86884",
+      "transform": {
+        "anchor": [0, 0],
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 51,
+                "easing": "linear"
+              },
+              {
+                "frame": 31,
+                "value": 56,
+                "easing": "linear"
+              }
+            ]
+          },
+          "y": 18
+        },
+        "opacity": 1
+      }
+    },
+    {
+      "id": "map",
+      "type": "solid",
+      "enabled": false,
+      "size": [320, 180],
+      "color": "#ffffff",
+      "transform": {
+        "anchor": [0, 0]
+      },
+      "effects": [
+        {
+          "id": "rank",
+          "effect": "color.gradient-ramp",
+          "params": {
+            "start": [0, 0],
+            "end": [320, 180],
+            "startColor": "#336699",
+            "endColor": "#dddddd"
+          }
+        }
+      ]
+    }
+  ]
+}

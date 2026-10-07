@@ -13,6 +13,7 @@ import {
 import { sampleCameraMotion } from "../../../packages/renderer-core/src/camera-sampling.ts";
 import {
   color,
+  effectCurve,
   discrete,
   motionScalar,
   scalar,
@@ -42,7 +43,14 @@ export type KeyTrack = {
   owner: string;
   path: JsonPath;
   property?: string;
-  kind: "scalar" | "vector" | "color" | "discrete" | "path" | "camera";
+  kind:
+    | "scalar"
+    | "vector"
+    | "color"
+    | "discrete"
+    | "path"
+    | "camera"
+    | "curve";
   keys: Key[];
   raw: unknown;
   fps: number;
@@ -168,16 +176,60 @@ export function compositionTracks(document: Composition): KeyTrack[] {
     });
     layer.effects?.forEach((effect, i) => {
       const definition = compositionEffectDefinition(effect.effect);
-      for (const [name, spec] of Object.entries(definition?.properties ?? {}))
-        add(
-          effect.params?.[name],
-          [...path, "effects", i, "params", name],
-          `effects[${effect.id}].${name}`,
-          spec.type,
-          scope,
-          layer.id,
-          fps,
-        );
+      for (const [name, spec] of Object.entries(definition?.properties ?? {})) {
+        const raw = effect.params?.[name],
+          property = `effects[${effect.id}].${name}`,
+          json = [...path, "effects", i, "params", name];
+        if (spec.type === "curve" && Array.isArray(raw)) {
+          raw.forEach((point, index) => {
+            const at = [...json, index],
+              name = `${property}[p${index}]`;
+            if (
+              point &&
+              typeof point === "object" &&
+              !Array.isArray(point) &&
+              !isKeyed(point)
+            ) {
+              for (const axis of ["x", "y"])
+                add(
+                  (point as Record<string, unknown>)[axis],
+                  [...at, axis],
+                  `${name}.${axis}`,
+                  "scalar",
+                  scope,
+                  layer.id,
+                  fps,
+                );
+            } else add(point, at, name, "vector", scope, layer.id, fps);
+          });
+        } else if (
+          spec.type === "vec2" &&
+          raw &&
+          typeof raw === "object" &&
+          !Array.isArray(raw) &&
+          !("keys" in raw)
+        ) {
+          for (const axis of ["x", "y"])
+            add(
+              (raw as Record<string, unknown>)[axis],
+              [...json, axis],
+              `${property}.${axis}`,
+              "scalar",
+              scope,
+              layer.id,
+              fps,
+            );
+        } else
+          add(
+            raw,
+            json,
+            property,
+            spec.type === "vec2" ? "vector" : spec.type,
+            scope,
+            layer.id,
+            fps,
+          );
+      }
     });
     if (layer.type === "shape") {
       const fields = (
@@ -352,6 +404,11 @@ export function sampleTrack(track: KeyTrack, frame: number): number[] {
   }
   if (track.array) return [motionScalar(track.keys, frame, track.fps)];
   switch (track.kind) {
+    case "curve":
+      return effectCurve(track.raw, frame, track.fps, [
+        [0, 0],
+        [1, 1],
+      ]).flat();
     case "vector":
       return vector(track.raw, frame, track.fps, [0, 0]);
     case "color":
@@ -386,6 +443,10 @@ export function editTemporalHandle(
 ) {
   if (["discrete", "path", "camera"].includes(track.kind))
     throw new Error("This track has no numeric temporal handle editor");
+  if (track.kind === "curve" && speed !== undefined)
+    throw Error(
+      "Whole color curves use shared easing; edit a point for numeric speeds",
+    );
   const key = keysIn(draft, track)[index];
   if (!key) throw new Error("Key no longer exists");
   key[side] = {

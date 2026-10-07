@@ -1,3 +1,4 @@
+import { renderCanvasEffect } from "./effect-plugins.ts";
 import type { RenderEffect } from "./graph.ts";
 import {
   paintRadialLight,
@@ -17,6 +18,7 @@ import type { EvaluatedEffect } from "../evaluate/effects.ts";
 import type { CanvasSurface } from "./canvas2d.ts";
 
 export type CanvasEffectContext = {
+  readonly layers?: ReadonlyMap<string, CanvasSurface>;
   createSurface(width: number, height: number): CanvasSurface;
   releaseSurface(surface: CanvasSurface): void;
   clear(surface: CanvasSurface, background: null): void;
@@ -118,8 +120,11 @@ export function applyCanvasEffects(
   context: CanvasEffectContext,
   target: CanvasSurface,
   stack: RenderEffect[],
+  layers?: ReadonlyMap<string, CanvasSurface>,
 ) {
   for (const effect of stack) {
+    if (!effect.enabled) continue;
+    if (renderCanvasEffect(context, target, effect, layers)) continue;
     const render = Object.hasOwn(effects, effect.effect)
       ? effects[effect.effect]
       : undefined;

@@ -152,9 +152,13 @@ describe("render graph", () => {
     },
   );
 
-  it.each([true, false])(
-    "preserves paint order and isolation when solid batching is %s",
-    (batching) => {
+  it.each([
+    [true, false],
+    [false, false],
+    [true, true],
+  ])(
+    "preserves paint order with batching=%s and linear=%s",
+    (batching, linear) => {
       const calls: string[] = [];
       const backend: RenderBackend = {
         version: "test",
@@ -223,9 +227,12 @@ describe("render graph", () => {
         solid("b", { size: [2, 10] }),
         solid("a", { size: [1, 10] }),
       ]);
+      if (linear) doc.colorSpace = "linear-srgb";
       executeGraph(backend, graph(doc), { width: 200, height: 100 });
       expect(calls).toEqual([
-        ...(batching ? ["batch:1,2,3"] : ["fill:1", "fill:2", "fill:3"]),
+        ...(batching && !linear
+          ? ["batch:1,2,3"]
+          : ["fill:1", "fill:2", "fill:3"]),
         "fill:4",
         "fill:5",
         "composite",
@@ -557,3 +564,83 @@ describe("render graph", () => {
     ]);
   });
 });
+
+it.each(["clear", "effect"])(
+  "releases nested input surfaces after repeated %s failures",
+  (stage) => {
+    const doc = comp(
+      [
+        solid("owner", {
+          effects: [
+            {
+              id: "wipe",
+              effect: "transition.gradient-wipe",
+              inputs: { map: "map" },
+            },
+          ],
+        }),
+        { id: "map", type: "precomp", comp: "nested", enabled: false },
+      ],
+      {
+        precomps: [
+          {
+            id: "nested",
+            width: 16,
+            height: 16,
+            frameCount: 60,
+            layers: [
+              solid("source", {
+                size: [16, 16],
+                transform: { anchor: [0, 0], position: [0, 0] },
+                effects: [{ id: "invert", effect: "color.invert" }],
+              }),
+            ],
+          },
+        ],
+      },
+    );
+    const live = new Set<Surface>();
+    const failure = new Error("input callback failure");
+    const backend: RenderBackend = {
+      version: "failure-test",
+      createSurface: (width, height) => {
+        const surface = { width, height };
+        live.add(surface);
+        return surface;
+      },
+      releaseSurface: (surface) => {
+        expect(live.delete(surface)).toBe(true);
+      },
+      clear: (surface) => {
+        if (stage === "clear" && surface.width === 16) throw failure;
+      },
+      fillRect: () => {},
+      drawImage: () => {},
+      drawText: () => {},
+      drawProvider: () => {},
+      drawShape: () => {},
+      composite: () => {},
+      applyMask: () => {},
+      applyMatte: () => {},
+      lerp: () => {},
+      applyEffects: (_surface, effects) => {
+        if (
+          stage === "effect" &&
+          effects.some((effect) => effect.effect === "color.invert")
+        )
+          throw failure;
+      },
+      readPixels: () => new Uint8ClampedArray(),
+      accumulateExposure: () => {
+        throw Error("Unexpected exposure");
+      },
+    };
+    const captured = graph(doc);
+    for (let attempt = 0; attempt < 3; attempt++) {
+      expect(() =>
+        executeGraph(backend, captured, { width: 200, height: 100 }),
+      ).toThrow(failure);
+      expect(live.size).toBe(0);
+    }
+  },
+);

@@ -43,6 +43,56 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #42 follow-up fixes verified (2026-10-07):** isolated
+  `codex/pr42-followup-fixes` from reviewed `b2f2048`. Both inline P2 findings
+  have separate fixes: immutable normalized plugin descriptors and hidden-source
+  echo history, including descendant windows and remapped clocks. Independent
+  Standards and Spec reviews have no findings. Fast checks pass 2,093 units;
+  40 exact Canvas/WebGL cases, renderer/export/exposure groups, native catalogue
+  hashes/seeks/repeated and independent exports, 36 hardware comparisons and all
+  176 frozen items / 36,061 frames pass. Renderer identities are 1.40.2 / 0.54.2.
+  One final normal push delivers both finding commits; owner review/merge remain.
+  Full `pnpm check` was not rerun; parent gates remain historical and CE6-P stays
+  owner-deferred. Frozen references and thresholds remain intact.
+  [Evidence](./pr-42-followup-fix-results.json).
+
+- **PR #42 conflict integration (2026-10-07):** isolated PR head `f000d8d`
+  integrates `main` at `3a5f2ff9`. Both CE6 native effects/linear color and
+  upstream CE6-P exposure/disjoint paints, clock/shape/builder/inspector and
+  soundtrack repairs are retained. Combined evaluator/Canvas/WebGL cache identities
+  are 45 / 1.40.1 / 0.54.1. Fast checks pass 2,077 units; all 224 integration
+  tests, ten focused renderer/export/inspector browser groups, native effect
+  catalogue and all 176 frozen items / 36,061 frames pass unchanged assertions.
+  No new full `pnpm check` is claimed; parent gates stay historical.
+  CE6-P performance remains owner-deferred. Resolution is complete; PR review
+  and merge remain pending.
+  [Evidence](./pr-42-conflict-resolution-results.json).
+
+- **PR #42 review fixes validated (2026-10-06):** `codex/pr42-review-fixes`
+  from CE6 `2f1a99c`. All three findings have inline comments and separate fixes:
+  hidden animated text inputs, nested failure cleanup, and premultiplied transition
+  coverage. Independent Standards and Spec reviews have no actionable findings.
+  Complete local `pnpm check` passes 1,717 unit, 46 runtime, 139 integration,
+  14 depth tests, all 55 required test suites and 176 frozen baselines / 36,061 frames.
+  Full Canvas family matrices pass unchanged pixel/timing policy; native hashes,
+  seeks, repeated/independent exports and 36 hardware comparisons pass.
+  Original reference files and thresholds remain intact; corrected Canvas transition
+  coverage uses a separate versioned exact oracle. Earlier failures and timing
+  controls are retained in the evidence. Owner review and merge remain.
+  [Evidence](./pr-42-fix-results.json).
+
+- **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
+  CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
+  All 39 native effects, GPU filtering, scoped inputs/history and optional linear
+  blending are delivered. Complete `pnpm check` passes 1,712 unit, 46 runtime,
+  139 integration, 14 depth tests, all browser groups and 176 frozen baselines /
+  36,061 frames; all three full Canvas family matrices pass unchanged policy.
+  Native software/hash/seek/independent and repeated exports pass; 36 hardware
+  comparisons pass their perceptual policy, and all 78 serial 1080p costs are recorded.
+  [PR #42](https://github.com/xxibcill/still-shift/pull/42) targets `main`; conflict integration is tracked above. CE8 follows on its separate branch.
+  CE6-P targets remain separate; no owner decision is pending.
+  [Evidence](./composition-ce6-completion-results.json).
+
 - **PR #41 benchmark review repairs complete (2026-10-07):** isolated
   `codex/pr41-benchmark-fixes` from reviewed `4e3c32b`; both P2 findings are inline.
   Workload/PID guard `81238bb` and shared-source freezing are verified for separate
@@ -52,7 +102,8 @@ still hold before relying on them.
   exposure cases, 24 exact particle cases and current/historical renderer imports.
   Invalid source setup/timing attempts are retained. CE6-P remains owner-deferred;
   no timing bracket, strict family audit or complete full gate is claimed.
-  Owner review/merge remain. [Evidence](./pr-41-benchmark-fix-results.json).
+  Integrated into `main` through merged PR #41 at `3a5f2ff9`.
+  [Evidence](./pr-41-benchmark-fix-results.json).
 
 - **PR #41 conflict resolution (2026-10-07):** isolated PR head `e5f4992`
   integrates `main` at `fb785772`, preserving CE6-P echo/particle/exposure changes
@@ -621,8 +672,6 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-07 by Codex for PR #41 conflict resolution._
-
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
   main correctness fixes. GitHub confirms `MERGEABLE` / `CLEAN`.
@@ -662,7 +711,7 @@ _Last updated 2026-10-07 by Codex for PR #41 conflict resolution._
   - **Rendering-path decision deferred:** effect-free cases are bounded by the
     GPU-process boundary on pinned SwiftShader. Retain the measurements and
     rejected experiments for the future version.
-- **Feature priority:** CE4a and CE6 features remain incomplete. CE12 linting is
+- **Historical feature priority (superseded by subsequent completion):** CE4a and CE6 features were incomplete. CE12 linting is
   complete; CE10's builder/CLI still needs CE4a feature/parity acceptance. CE5
   shape layers and CE7 time controls are also ready. CE8 needs CE6 features and
   CE9; CE14 needs CE6 features; neither needs CE6-P.
@@ -679,7 +728,48 @@ _Last updated 2026-10-07 by Codex for PR #41 conflict resolution._
   must not use TypeScript constructor parameter properties: Node's strip-only mode
   rejects them and five Lab integration suites fail.
 
+_Last updated 2026-10-07 by Codex for PR #42 conflict resolution._
+
 ## Entries
+
+### 2026-10-07 — PR #42 hidden-source echo history repair
+
+- **Agent / branch:** Codex on isolated `codex/pr42-followup-fixes`, after `6e33664`.
+- **Scope:** second inline P2 finding; preserve the captured source's own echo.
+- **Done:** apply scoped capture visibility to historical source paints and group
+  descendants while retaining in/out points; separate corrected renderer caches.
+- **Results:** ten regressions fail before repair; 59 focused tests pass afterward.
+  Final fast gate passes 2,093 units; 40 exact backend cases / 160 renders, catalogue,
+  hardware/export/exposure checks and 176 frozen items / 36,061 frames pass.
+  Independent Standards and Spec review have no findings; full gate was not rerun.
+- **Next:** one normal push delivers both finding commits; owner review/merge remain.
+- **Records:** [review/fix evidence](./pr-42-followup-fix-results.json).
+
+### 2026-10-07 — PR #42 normalized plugin registration repair
+
+- **Agent / branch:** Codex on isolated `codex/pr42-followup-fixes`, from `b2f2048`.
+- **Scope:** first of two posted P2 findings; retain the contract-owned descriptor.
+- **Done:** renderer input snapshots follow the immutable normalized registration.
+- **Results:** both new regressions fail before repair and pass afterward; all 30
+  focused plugin/input/contract tests, build and focused lint pass.
+- **Next:** the separate echo repair and final evidence are recorded above;
+  both finding commits share one final normal push. Owner review/merge remain.
+- **Records:** [review/fix evidence](./pr-42-followup-fix-results.json).
+
+### 2026-10-07 — PR #42 main conflict resolution
+
+- **Agent / branch:** Codex on isolated PR head `f000d8d` from
+  `codex/composition-ce6-completion`; merge `main` at `3a5f2ff9`.
+- **Done:** retain both native effect/linear-light paths and upstream exposure,
+  disjoint paints, shape/clock/builder/inspector and soundtrack repairs.
+  Fresh evaluator/Canvas/WebGL identities separate combined caches.
+- **Results:** fast checks pass 2,077 units; all 224 integration tests and ten
+  focused browser groups pass. Native catalogue seeks, independent/repeated exports,
+  hardware comparisons and all 176 frozen items / 36,061 frames pass.
+  All 196 prior entries and 56 required test commands remain; assets match parents.
+- **Next:** owner review/merge of PR #42. No new full gate or
+  CE6-P performance acceptance is claimed. Primary CE15 edits remain untouched.
+- **Records:** [conflict evidence](./pr-42-conflict-resolution-results.json).
 
 ### 2026-10-07 — PR #41 immutable benchmark sources repair
 
@@ -1411,6 +1501,338 @@ _Last updated 2026-10-07 by Codex for PR #41 conflict resolution._
 - **Open / next:** owner review and merge; full gate and baseline matrices not rerun.
 - **Records:** [fix evidence](./pr-35-current-head-fix-results.json),
   [review](https://github.com/xxibcill/still-shift/pull/35#pullrequestreview-5418458083).
+
+### 2026-10-06 — PR #42 premultiplied transition coverage
+
+- **Agent / branch:** Codex on `codex/pr42-review-fixes` after `ebb9bbf`.
+- **Done:** multiply stored premultiplied transition RGBA consistently with GPU;
+  bump the four effect versions to 1.0.1 and Canvas renderer to 1.40.0.
+- **Results:** four composed-map cases / 32 browser frames are exact (previous
+  maximum delta 255); focused checks and independent implementation reviews pass.
+- **Final gate:** full local `pnpm check` at `db35017` passes 1,717 unit, 46 runtime,
+  139 integration, 14 depth tests, all required browser groups and 176 frozen baselines /
+  36,061 frames. All three full Canvas family matrices and native CE6 acceptance pass.
+- **Retained:** original reference files and thresholds; a separate versioned corrected
+  Canvas oracle. Earlier stopped/failed gates and original/fixed timing controls are
+  recorded; the successful gate's calibration-pan ratio is 1.0998 against 1.25.
+- **Next:** owner review and merge. Final evidence belongs to this third finding commit.
+- **Records:** [PR #42 fix evidence](./pr-42-fix-results.json).
+
+### 2026-10-06 — PR #42 nested input failure cleanup
+
+- **Agent / branch:** Codex on `codex/pr42-review-fixes`; text fix `8618bee`.
+- **Done:** release owned precomp destinations if initialization or rendering fails;
+  keep caller-owned surfaces and propagate the original failure.
+- **Results:** 38 focused unit tests and build/lint pass; six repeated failures leave
+  zero live surfaces. Initial test placement was offscreen and is repaired in the fixture.
+- **Next:** transition coverage in its own commit, final verification, then one push.
+- **Records:** [PR #42 fix evidence](./pr-42-fix-results.json).
+
+### 2026-10-06 — PR #42 hidden animated text input fix
+
+- **Agent / branch:** Codex on `codex/pr42-review-fixes` from `2f1a99c`.
+- **Done:** posted all three findings inline; collect glyph clocks for scoped effect
+  inputs even without echo, preserving inactive-window and unused-source behavior.
+- **Results:** eight focused unit tests, build/lint and 24 pinned-browser frames pass;
+  hidden text/group/remapped precomp inputs exactly match visible source controls.
+- **Next:** one commit each for nested failure cleanup and transition coverage;
+  complete final local verification, then push the three commits together.
+- **Records:** [PR #42 fix evidence](./pr-42-fix-results.json).
+
+### 2026-10-06 — CE6 complete local verification
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** complete 39-effect catalogue and all audit/acceptance slices; runtime
+  `4cd8a8d`, final code/test checkpoint `f11a7b7`, frequent checkpoints pushed.
+- **Results:** full `pnpm check`: 1,712 unit / 46 runtime / 139 integration /
+  14 depth tests, all browser groups and 176 frozen baselines / 36,061 frames.
+  All full Canvas family matrices pass unchanged pixel/timing assertions.
+- **Acceptance:** native hashes/seeks and independent/repeated exports pass;
+  36 actual hardware comparisons pass perceptual policy; 78 serial costs recorded.
+- **Retained:** two early full-gate failures and repairs; WebGL speed targets
+  remain deferred to CE6-P, with no threshold or frozen-baseline changes.
+- **Next:** [PR #42](https://github.com/xxibcill/still-shift/pull/42) is open and attached; begin CE8 and the remaining approved sequence.
+  Further verification waits for the coordinated CE6-P quiet-window release.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 blur-alias contract expectation repair
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Result:** full gate at `86a7143` passed formatting/lint/build and 1,711 unit
+  tests, then stopped on the old unavailable-blur expectation. The native alias
+  requires one declared primitive effect and correctly reports a property error.
+- **Repaired / verified:** update that contract assertion; all 1,712 unit tests
+  in 165 files pass. No renderer, threshold or frozen baseline changed.
+- **Next:** the complete full gate on the repaired checkpoint, CE6 PR and CE8.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 full-gate formatting repair
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Result:** full `pnpm check` at `46cc000` stopped at formatting before test
+  suites ran. Wrapped the earlier unknown-effect contract assertion with Prettier;
+  renderer semantics, thresholds and frozen baselines are unchanged.
+- **Next:** complete-snapshot format preflight and the full command on the repaired
+  checkpoint, then CE6 PR and CE8. Native/export/hardware/cost proof remains valid.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 native catalogue acceptance checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** six 32-frame native scenes cover all 39 effects; new stored hashes/
+  PNGs and permanent seeking/export/hardware checks; serial per-effect costs.
+- **Results:** build/lint/schema/boundaries and stored-fixture coverage unit pass.
+  384 forward hashes, 384 reverse checks and 132 seeks meet software delta 1.
+  All 24 production PNG/raw MP4 outputs and 12 independent preview encodes agree;
+  36 actual Apple GPU comparisons meet the unchanged perceptual policy (max
+  delta 47, minimum PSNR 53.39/SSIM .99916). Frozen baselines are unchanged.
+- **Costs:** 78 serial 1080p backend rows record cold/warm costs; SwiftShader warm
+  medians range 12.5–180.6 ms. CE6-P speed acceptance stays deferred.
+- **Next:** final complete `pnpm check`, CE6 PR, CE8 branch and remaining milestones.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 GPU Gaussian and feather checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** mapped-sigma clamp and progressive GPU Gaussian rescaling replace
+  oversized-feather image readback/Canvas filtering; source geometry retains
+  prefilter opacity and lower-sigma image arithmetic stays unchanged.
+- **Results:** 11 focused tests, build/lint/schema/boundaries; 84 native renders/
+  seeks across radii 136–1,000 and even/odd dimensions meet delta 2/PSNR 53.
+  All 18 extreme-scale feathers are exact; 68 prior WebGL cases still pass.
+- **Rejected:** triangular prefix convolution and clamping alone failed modern
+  raster rescale parity; removed. No threshold or frozen baseline changed.
+- **Next:** native hardware/hash/export/serial-cost acceptance, complete CE6 gate/
+  PR, then remaining milestones in plan order. This is not a full `pnpm check`.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 captured history and path audit checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** captured input/matte groups and precomps retain adjustment echo when
+  their caller is absent at earlier frames. Primitive blur aliases bind real
+  declared effects through drivers and expressions; native path errors are current.
+- **Results:** 119 focused tests, build/lint/schema/boundaries; 24 exact independent
+  native captures and previous 17 input / 54 adjustment cases and clock/pixel oracles
+  pass. No threshold or frozen baseline changed; this is not a full `pnpm check`.
+- **Next:** GPU high-sigma/feather repair, final hardware/hash/export/serial-cost
+  proof, complete CE6 gate/PR, then remaining milestones in plan order.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 optional linear-light checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** all layer blend modes, adjustment/exposure linear interpolation,
+  bounded GPU transfer controls, unbatched layer boundaries and cache invalidation.
+- **Results:** all 1,700 unit tests plus build/lint/schema/boundaries; 180 native
+  cases / 2,160 frames / 2,520 seeks meet delta 2/PSNR 50. All 559,215 byte-pair/
+  mode cases meet delta 1; 20 independent pixels/exposure and six cache switches
+  pass. 28 affine offscreen blur cases / 336 frames / 392 seeks are exact.
+- **Repaired:** undersized unit fixture and stale unavailable-zoom assertion;
+  no threshold or frozen baseline changed. This is not a complete `pnpm check`.
+- **Next:** final feature/fallback/source-history audit, hardware/hash/export/
+  serial costs and complete CE6 full gate/PR, then CE8.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 adjustment backdrop history checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** scoped upstream history, bounded replay, adjustment primitive blur,
+  historical glyph preparation/cleanup and GPU offscreen blur input padding.
+- **Results:** 54 focused tests and build/lint/schema/boundaries; 54 native
+  cases / 648 frames / 756 seeks meet delta 2/PSNR 50. Independent echo pixels
+  are exact; six animated offscreen precomp cases / 72 frames / 84 seeks are exact.
+- **Repaired:** initial snapshot links and oracle anchor; offscreen blur clipped
+  input before filtering (delta 21), repaired with finite GPU capture padding.
+  No threshold or frozen baseline changed.
+- **Next:** linear-light, broader affine regressions and complete CE6 acceptance/PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 native map/wipe checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** GPU/Canvas displacement and gradient wipe use owned scoped maps;
+  gradient-ramp 1.1.0 uses canonical projection and geometry/color controls.
+- **Results:** 80 focused tests and build/lint/schema/boundaries; 54 cases /
+  648 frames / 756 seeks, maximum delta 1. All 114,688 gradient ranks and
+  393,216 signed quotients per backend are exact. Staged map bytes and
+  independent displacement/wipe pixels pass; 27 gradient cases also pass.
+- **Repaired / rejected:** one-byte gradient mismatch amplified by displacement;
+  fixed projection precision collapsed long gradients. Adaptive precision fixes
+  both, with no threshold or frozen baseline changes.
+- **Next:** adjustment history, linear-light and complete CE6 acceptance/PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 scoped layer input checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** named input slots, paired owned snapshots, matching scoped clocks,
+  mask/effect/matte capture, combined cycles, bounded depth/work and cleanup.
+- **Results:** 162 focused tests plus build/lint/schema/boundaries; nine owner
+  and eight source variants / 204 frames / 238 seeks are exact. Hidden masked
+  sources remain hidden normally; six remapped scope clock oracles pass exactly.
+- **Repaired:** test API assumptions; initially unwired clock helper was caught
+  by lint and included in the final native run. No threshold/baseline changed.
+- **Next:** map/wipe kernels, adjustment history, linear-light, complete
+  hardware/hash/export/cost/full-gate acceptance and CE6 PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 drop and inner shadow checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** real separable GPU Gaussian shadows, fixed weighted sums, Canvas
+  references, signed offsets and explicit inner-shadow exterior coverage.
+- **Results:** 36 focused tests plus build/lint/schema/boundaries; 54 native
+  cases / 648 frames / 756 seeks are exact. Maximum blur passes 2 cases /
+  24 frames / 28 seeks; independent translucent-pixel oracles are exact.
+- **Next:** scoped inputs/displacement map/gradient wipe, adjustment history,
+  linear-light, complete hardware/hash/export/cost/full-gate acceptance, CE6 PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 bulge and ripple checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** actual GPU radial image warps, Canvas references, bounded control
+  tables and exact signed sampling coordinates/two-word squared distances.
+- **Results:** 43 focused tests plus build/lint/schema/boundaries; 54 cases /
+  648 frames / 756 seeks are exact. Arbitrary-precision root and full 8192×8192
+  coordinate oracles pass at 65,536 and 131,072 points, respectively.
+- **Next:** shadows, scoped inputs/history and linear-light, then complete
+  hardware/hash/export/cost/full-gate acceptance and CE6 PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 vignette and chromatic checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** real GPU vignette/chromatic kernels and Canvas references, bounded
+  animated controls, coverage preservation and exact neutral paths.
+- **Results:** 48 focused tests plus build/lint/schema/boundaries; 54 cases /
+  648 frames / 756 seeks pass at max delta 1. Independent center/shoulder/edge
+  and chromatic channel/padding pixel oracles are exact on both backends.
+- **Repaired:** missing GPU dimensions binding; Float32 unit precision;
+  generated reference refreshed. Pixel tolerances/frozen baselines unchanged.
+- **Next:** remaining distortion/shadows/scoped inputs/history/linear-light,
+  then complete hardware/hash/export/cost/full-gate acceptance and CE6 PR.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 seeded native fields checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** actual GPU fractal fill/turbulent sampling, integer seeded fields,
+  bounded octaves/evolution, fixed sums and explicit signed quotient correction.
+- **Results:** 68 focused tests plus build/lint/schema/boundaries; 54 native
+  cases / 648 frames / 756 seeks are exact. Packed fields are exact at 81,920
+  points; 65,536 values at each of seven amplitudes have exact quotients.
+- **Repaired:** neutral CPU helper returned negative zero; result normalized.
+  Complete milestone gate remains pending; no pixel threshold changed.
+- **Next:** remaining distortion/stylize/shadows and scoped inputs/history,
+  then linear-light and complete hardware/hash/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [field conventions](./composition-effect-plugins.md#seeded-native-fields).
+
+### 2026-10-06 — CE6 transform and corner-pin checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** native GPU/Canvas warps, high-resolution affine controls with exact
+  cancellation, float32 homography, final immutable parameter validation/diagnostics.
+- **Results:** 143 focused tests plus build/lint/schema/boundaries; 63 native
+  cases / 756 frames / 882 seeks are exact. Independent four-color cancellation
+  oracle is exact. Complete milestone gate remains pending.
+- **Repaired:** new cancellation expectations assumed unquantized controls;
+  exact 1080p and native pixel oracles now exercise the documented arithmetic.
+- **Next:** remaining distortion/stylize/shadows and scoped inputs, then
+  linear-light and complete hardware/hash/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [warp conventions](./composition-effect-plugins.md#native-geometric-warps).
+
+### 2026-10-06 — CE6 sampled blur checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** radial, zoom and reusable lens aperture kernels; real GPU samples,
+  Canvas premultiplied reference, fixed sums/quantized controls, neutral/bounds tests.
+- **Results:** 62 focused tests plus build/lint/schema/boundaries; 81 native
+  cases / 972 frames and 27 maximum-control cases / 324 frames at 64 samples.
+  Pixels and 1,512 seeks pass. Complete milestone gate remains pending.
+- **Next:** spatial and remaining catalogue effects, scoped inputs/gradient
+  wipe, linear-light and complete hardware/hash/export/cost/full-gate acceptance.
+  CE8 supplies focus-driven lens controls later.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [sampling conventions](./composition-effect-plugins.md#native-sampled-blur).
+
+### 2026-10-06 — CE6 native transition checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** linear/radial wipes, venetian blinds and integer-seeded block
+  dissolve, with animated coverage, explicit direction/radial/rounding rules.
+- **Results:** 76 focused tests plus build/lint/schema/boundaries; 108 native
+  cases / 1,296 frames / 1,512 seeks, max delta 1 and minimum PSNR 64.43 dB.
+  Sixteen direct coverage oracles pass. Complete milestone gate remains pending.
+- **Repaired:** test expected transparent WebGL screen output; direct coverage
+  oracle now uses explicit black background. Radial center/full turns are defined.
+- **Next:** spatial and remaining catalogue effects, scoped inputs/gradient
+  wipe, linear-light and complete hardware/hash/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [transition conventions](./composition-effect-plugins.md#native-transitions).
+
+### 2026-10-06 — CE6 animated curves checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** bounded curves, stable topology, point/component animation,
+  drivers/expressions, lossless builder/baking and native inspector graphs;
+  GPU control transfer with owned uploads and Canvas piecewise reference.
+- **Results:** 246 focused tests plus build/lint/schema/boundaries. Ten color
+  effects pass 270 cases / 3,240 frames and 3,780 seeks; max delta 1, minimum
+  PSNR 64.97 dB. Exhaustive byte/alpha parity is exact in four curve and six
+  posterize cases. Full milestone gate remains pending.
+- **Repaired:** validate ordering after all drivers/expressions, including
+  layers without expressions; initial type/caller failures are retained.
+- **Next:** remaining catalogue/dependencies and linear-light composition,
+  then complete hardware/hash/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [effect conventions](./composition-effect-plugins.md).
+
+### 2026-10-06 — CE6 native color correction checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** nine color effects, animated gradients, real GPU kernels and Canvas
+  equations with explicit premultiplied-byte reconstruction/quantization.
+- **Results:** 150 focused tests plus build/lint/schema/boundaries; 243 native
+  cases / 2,916 frames across nine layer variants, max delta 1 and minimum
+  PSNR 64.97 dB; 3,402 seeks pass. All 32,895 byte/alpha pairs are exact at six
+  posterize counts. Full milestone gate and remaining acceptance are pending.
+- **Rejected / repaired:** platform unpremultiplication crossed posterize
+  thresholds (delta 10); explicit common byte semantics repaired it. Reciprocal/
+  round-even hypotheses and shader/test-helper failures remain recorded.
+- **Next:** curves and remaining effects/dependencies, then linear-light and
+  complete native/hardware/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json),
+  [plugin and color conventions](./composition-effect-plugins.md).
+
+### 2026-10-06 — CE6 paired render callback checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion`.
+- **Done:** paired descriptor/GPU/Canvas registration, pooled shader stages,
+  bounded scratch ownership and transactional output with cleanup diagnostics.
+- **Results:** 35 focused tests, build/lint/schema/boundaries and the existing
+  WebGL browser gate pass. All 12 custom-plugin frames match Canvas exactly;
+  seven random seeks and an independent gray-value oracle pass.
+- **Repaired:** standalone browser helper package alias; initial failure retained.
+- **Next:** remaining built-in catalogue, layer dependencies and linear-light
+  composition, then complete native/hardware/export/cost/full-gate acceptance.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
+
+### 2026-10-06 — CE6 effect contract checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6-completion` from `817cc9f`.
+- **Done:** descriptor-backed registration, animated points, default-preserving
+  builder/inspector lanes, checked expansion and effect-version export identity.
+- **Results:** 200 focused tests plus build/schema/boundaries/lint; existing
+  native effect and WebGL browser checks recorded separately. Full gate pending.
+- **Rejected / repaired:** incomplete bounds, object-order version comparison and
+  split-point default loss; regressions now cover all three. Initial failed
+  fixtures/build attempts remain recorded.
+- **Next:** paired GPU/Canvas runtime callbacks and remaining CE6 effect features.
+- **Records:** [CE6 evidence](./composition-ce6-completion-results.json).
 
 ### 2026-10-05 — CE6-P parallel optimization lane resumed
 

@@ -593,7 +593,6 @@ Reserved aliases:
 | `trimStart`   | CE5                |
 | `trimEnd`     | CE5                |
 | `trimOffset`  | CE5                |
-| `blur`        | CE6                |
 
 ## Generated expression grammar
 
@@ -670,47 +669,151 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 
 ## Generated effect registry
 
-| Effect             | Property         | Type   | Default   | Range                  |
-| ------------------ | ---------------- | ------ | --------- | ---------------------- |
-| `blur.primitive`   | `radius`         | scalar | `0`       | 0–1000                 |
-| `time.echo`        | `spacing`        | scalar | `1`       | 1–120                  |
-| `time.echo`        | `count`          | scalar | `3`       | 1–8 (integer)          |
-| `time.echo`        | `decay`          | scalar | `0.5`     | 0–1                    |
-| `time.echo`        | `skipUnchanged`  | scalar | `0`       | 0–1 (integer)          |
-| `time.echo`        | `sourceRevision` | scalar | `0`       | 0–1000000 (integer)    |
-| `light.sweep`      | `width`          | scalar | `100`     | 0–1000000              |
-| `light.sweep`      | `height`         | scalar | `100`     | 0–1000000              |
-| `light.sweep`      | `left`           | scalar | `0`       | 0–1                    |
-| `light.sweep`      | `top`            | scalar | `0`       | 0–1                    |
-| `light.sweep`      | `regionWidth`    | scalar | `1`       | 0.001–1                |
-| `light.sweep`      | `regionHeight`   | scalar | `1`       | 0.001–1                |
-| `light.sweep`      | `band`           | scalar | `0.1`     | 0.001–1                |
-| `light.sweep`      | `progress`       | scalar | `0`       | 0–1                    |
-| `light.sweep`      | `strength`       | scalar | `0.5`     | 0–1                    |
-| `light.radial`     | `x`              | scalar | `0`       | -1000000–1000000       |
-| `light.radial`     | `y`              | scalar | `0`       | -1000000–1000000       |
-| `light.radial`     | `radius`         | scalar | `100`     | 0.01–10000             |
-| `light.radial`     | `strength`       | scalar | `1`       | 0–1                    |
-| `light.radial`     | `color`          | color  | `#ffffff` | colour                 |
-| `particles.rise`   | `count`          | scalar | `20`      | 1–100 (integer)        |
-| `particles.rise`   | `radius`         | scalar | `2`       | 0.01–100               |
-| `particles.rise`   | `opacity`        | scalar | `0.5`     | 0–1                    |
-| `particles.rise`   | `seed`           | scalar | `1`       | 0–2147483647 (integer) |
-| `particles.rise`   | `progress`       | scalar | `0`       | 0–1000                 |
-| `particles.rise`   | `color`          | color  | `#ffffff` | colour                 |
-| `stylize.grain`    | `amount`         | scalar | `0`       | 0–1                    |
-| `stylize.grain`    | `seed`           | scalar | `1`       | 0–2147483647 (integer) |
-| `stylize.grain`    | `evolution`      | scalar | `0`       | -216000–216000         |
-| `blur.gaussian`    | `radius`         | scalar | `0`       | 0–1000                 |
-| `blur.directional` | `length`         | scalar | `0`       | 0–1000                 |
-| `blur.directional` | `angle`          | scalar | `0`       | -36000–36000           |
-| `blur.directional` | `samples`        | scalar | `8`       | 2–64 (integer)         |
-| `light.glow`       | `radius`         | scalar | `0`       | 0–1000                 |
-| `light.glow`       | `intensity`      | scalar | `1`       | 0–1                    |
-| `light.glow`       | `threshold`      | scalar | `0`       | 0–1                    |
-| `distort.sine`     | `amount`         | scalar | `0`       | -1000–1000             |
-| `distort.sine`     | `wavelength`     | scalar | `100`     | 1–100000               |
-| `distort.sine`     | `phase`          | scalar | `0`       | -1000000–1000000       |
+| Effect                         | Property         | Type   | Default         | Range                                        |
+| ------------------------------ | ---------------- | ------ | --------------- | -------------------------------------------- |
+| `color.curves`                 | `curve`          | curve  | `[[0,0],[1,1]]` | 2–16 ordered points; x/y 0–1; endpoint x 0/1 |
+| `color.curves`                 | `amount`         | scalar | `1`             | 0–1                                          |
+| `color.levels`                 | `inputBlack`     | scalar | `0`             | 0–1                                          |
+| `color.levels`                 | `inputWhite`     | scalar | `1`             | 0–1                                          |
+| `color.levels`                 | `gamma`          | scalar | `1`             | 0.05–10                                      |
+| `color.levels`                 | `outputBlack`    | scalar | `0`             | 0–1                                          |
+| `color.levels`                 | `outputWhite`    | scalar | `1`             | 0–1                                          |
+| `color.tint`                   | `black`          | color  | `#000000`       | colour                                       |
+| `color.tint`                   | `white`          | color  | `#ffffff`       | colour                                       |
+| `color.tint`                   | `amount`         | scalar | `1`             | 0–1                                          |
+| `color.hue-saturation`         | `hue`            | scalar | `0`             | -36000–36000                                 |
+| `color.hue-saturation`         | `saturation`     | scalar | `0`             | -100–100                                     |
+| `color.hue-saturation`         | `lightness`      | scalar | `0`             | -100–100                                     |
+| `color.exposure`               | `exposure`       | scalar | `0`             | -20–20                                       |
+| `color.exposure`               | `offset`         | scalar | `0`             | -1–1                                         |
+| `color.exposure`               | `gamma`          | scalar | `1`             | 0.05–10                                      |
+| `color.brightness-contrast`    | `brightness`     | scalar | `0`             | -1–1                                         |
+| `color.brightness-contrast`    | `contrast`       | scalar | `0`             | -1–1                                         |
+| `color.fill`                   | `color`          | color  | `#ffffff`       | colour                                       |
+| `color.fill`                   | `amount`         | scalar | `1`             | 0–1                                          |
+| `color.gradient-ramp`          | `start`          | vec2   | `[0,0]`         | -1000000–1000000 per axis                    |
+| `color.gradient-ramp`          | `end`            | vec2   | `[100,0]`       | -1000000–1000000 per axis                    |
+| `color.gradient-ramp`          | `startColor`     | color  | `#000000`       | colour                                       |
+| `color.gradient-ramp`          | `endColor`       | color  | `#ffffff`       | colour                                       |
+| `color.gradient-ramp`          | `amount`         | scalar | `1`             | 0–1                                          |
+| `color.invert`                 | `amount`         | scalar | `1`             | 0–1                                          |
+| `color.posterize`              | `levels`         | scalar | `8`             | 2–256 (integer)                              |
+| `transition.linear-wipe`       | `progress`       | scalar | `0`             | 0–1                                          |
+| `transition.linear-wipe`       | `softness`       | scalar | `0`             | 0–1                                          |
+| `transition.linear-wipe`       | `angle`          | scalar | `0`             | -36000–36000                                 |
+| `transition.radial-wipe`       | `progress`       | scalar | `0`             | 0–1                                          |
+| `transition.radial-wipe`       | `softness`       | scalar | `0`             | 0–1                                          |
+| `transition.radial-wipe`       | `angle`          | scalar | `0`             | -36000–36000                                 |
+| `transition.radial-wipe`       | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `transition.venetian-blinds`   | `progress`       | scalar | `0`             | 0–1                                          |
+| `transition.venetian-blinds`   | `softness`       | scalar | `0`             | 0–1                                          |
+| `transition.venetian-blinds`   | `angle`          | scalar | `0`             | -36000–36000                                 |
+| `transition.venetian-blinds`   | `width`          | scalar | `16`            | 1–8192                                       |
+| `transition.block-dissolve`    | `progress`       | scalar | `0`             | 0–1                                          |
+| `transition.block-dissolve`    | `softness`       | scalar | `0`             | 0–1                                          |
+| `transition.block-dissolve`    | `width`          | scalar | `16`            | 1–8192                                       |
+| `transition.block-dissolve`    | `height`         | scalar | `16`            | 1–8192                                       |
+| `transition.block-dissolve`    | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
+| `blur.radial`                  | `angle`          | scalar | `0`             | -180–180                                     |
+| `blur.radial`                  | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `blur.radial`                  | `samples`        | scalar | `16`            | 2–64 (integer)                               |
+| `blur.zoom`                    | `amount`         | scalar | `0`             | -1–1                                         |
+| `blur.zoom`                    | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `blur.zoom`                    | `samples`        | scalar | `16`            | 2–64 (integer)                               |
+| `blur.lens`                    | `radius`         | scalar | `0`             | 0–1000                                       |
+| `blur.lens`                    | `samples`        | scalar | `16`            | 2–64 (integer)                               |
+| `distort.transform`            | `offset`         | vec2   | `[0,0]`         | -1000000–1000000 per axis                    |
+| `distort.transform`            | `anchor`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `distort.transform`            | `scale`          | vec2   | `[1,1]`         | -10–10 per axis                              |
+| `distort.transform`            | `rotation`       | scalar | `0`             | -36000–36000                                 |
+| `distort.corner-pin`           | `topLeft`        | vec2   | `[0,0]`         | -10–10 per axis                              |
+| `distort.corner-pin`           | `topRight`       | vec2   | `[1,0]`         | -10–10 per axis                              |
+| `distort.corner-pin`           | `bottomRight`    | vec2   | `[1,1]`         | -10–10 per axis                              |
+| `distort.corner-pin`           | `bottomLeft`     | vec2   | `[0,1]`         | -10–10 per axis                              |
+| `stylize.fractal-noise`        | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
+| `stylize.fractal-noise`        | `scale`          | scalar | `64`            | 1–10000                                      |
+| `stylize.fractal-noise`        | `octaves`        | scalar | `4`             | 1–8 (integer)                                |
+| `stylize.fractal-noise`        | `evolution`      | scalar | `0`             | -216000–216000                               |
+| `stylize.fractal-noise`        | `amount`         | scalar | `1`             | 0–1                                          |
+| `stylize.fractal-noise`        | `contrast`       | scalar | `1`             | 0.1–8                                        |
+| `stylize.fractal-noise`        | `brightness`     | scalar | `0`             | -1–1                                         |
+| `stylize.fractal-noise`        | `dark`           | color  | `#000000`       | colour                                       |
+| `stylize.fractal-noise`        | `light`          | color  | `#ffffff`       | colour                                       |
+| `distort.turbulent`            | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
+| `distort.turbulent`            | `scale`          | scalar | `64`            | 1–10000                                      |
+| `distort.turbulent`            | `octaves`        | scalar | `4`             | 1–8 (integer)                                |
+| `distort.turbulent`            | `evolution`      | scalar | `0`             | -216000–216000                               |
+| `distort.turbulent`            | `amount`         | scalar | `0`             | -1000–1000                                   |
+| `stylize.vignette`             | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `stylize.vignette`             | `radius`         | vec2   | `[100,100]`     | 0.01–10000 per axis                          |
+| `stylize.vignette`             | `softness`       | scalar | `0.5`           | 0.001–1                                      |
+| `stylize.vignette`             | `amount`         | scalar | `0.5`           | 0–1                                          |
+| `stylize.vignette`             | `color`          | color  | `#000000`       | colour                                       |
+| `stylize.chromatic-aberration` | `offset`         | vec2   | `[0,0]`         | -1000–1000 per axis                          |
+| `stylize.chromatic-aberration` | `amount`         | scalar | `1`             | 0–1                                          |
+| `distort.bulge`                | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `distort.bulge`                | `radius`         | vec2   | `[100,100]`     | 0.0625–10000 per axis                        |
+| `distort.bulge`                | `amount`         | scalar | `0`             | -1–1                                         |
+| `distort.ripple`               | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
+| `distort.ripple`               | `amplitude`      | scalar | `0`             | -1000–1000                                   |
+| `distort.ripple`               | `wavelength`     | scalar | `64`            | 1–100000                                     |
+| `distort.ripple`               | `phase`          | scalar | `0`             | -36000–36000                                 |
+| `distort.ripple`               | `decay`          | scalar | `0`             | 0–1                                          |
+| `light.drop-shadow`            | `offset`         | vec2   | `[6,6]`         | -1000–1000 per axis                          |
+| `light.drop-shadow`            | `blur`           | scalar | `8`             | 0–128                                        |
+| `light.drop-shadow`            | `opacity`        | scalar | `1`             | 0–1                                          |
+| `light.drop-shadow`            | `color`          | color  | `#000000`       | colour                                       |
+| `light.inner-shadow`           | `offset`         | vec2   | `[6,6]`         | -1000–1000 per axis                          |
+| `light.inner-shadow`           | `blur`           | scalar | `8`             | 0–128                                        |
+| `light.inner-shadow`           | `opacity`        | scalar | `1`             | 0–1                                          |
+| `light.inner-shadow`           | `color`          | color  | `#000000`       | colour                                       |
+| `distort.displacement-map`     | `amount`         | vec2   | `[0,0]`         | -1000–1000 per axis                          |
+| `distort.displacement-map`     | `channelX`       | scalar | `0`             | 0–4 (integer)                                |
+| `distort.displacement-map`     | `channelY`       | scalar | `1`             | 0–4 (integer)                                |
+| `distort.displacement-map`     | `midpoint`       | scalar | `0.5`           | 0–1                                          |
+| `transition.gradient-wipe`     | `progress`       | scalar | `0`             | 0–1                                          |
+| `transition.gradient-wipe`     | `softness`       | scalar | `0`             | 0–1                                          |
+| `transition.gradient-wipe`     | `channel`        | scalar | `4`             | 0–4 (integer)                                |
+| `transition.gradient-wipe`     | `invert`         | scalar | `0`             | 0–1 (integer)                                |
+| `blur.primitive`               | `radius`         | scalar | `0`             | 0–1000                                       |
+| `time.echo`                    | `spacing`        | scalar | `1`             | 1–120                                        |
+| `time.echo`                    | `count`          | scalar | `3`             | 1–8 (integer)                                |
+| `time.echo`                    | `decay`          | scalar | `0.5`           | 0–1                                          |
+| `time.echo`                    | `skipUnchanged`  | scalar | `0`             | 0–1 (integer)                                |
+| `time.echo`                    | `sourceRevision` | scalar | `0`             | 0–1000000 (integer)                          |
+| `light.sweep`                  | `width`          | scalar | `100`           | 0–1000000                                    |
+| `light.sweep`                  | `height`         | scalar | `100`           | 0–1000000                                    |
+| `light.sweep`                  | `left`           | scalar | `0`             | 0–1                                          |
+| `light.sweep`                  | `top`            | scalar | `0`             | 0–1                                          |
+| `light.sweep`                  | `regionWidth`    | scalar | `1`             | 0.001–1                                      |
+| `light.sweep`                  | `regionHeight`   | scalar | `1`             | 0.001–1                                      |
+| `light.sweep`                  | `band`           | scalar | `0.1`           | 0.001–1                                      |
+| `light.sweep`                  | `progress`       | scalar | `0`             | 0–1                                          |
+| `light.sweep`                  | `strength`       | scalar | `0.5`           | 0–1                                          |
+| `light.radial`                 | `x`              | scalar | `0`             | -1000000–1000000                             |
+| `light.radial`                 | `y`              | scalar | `0`             | -1000000–1000000                             |
+| `light.radial`                 | `radius`         | scalar | `100`           | 0.01–10000                                   |
+| `light.radial`                 | `strength`       | scalar | `1`             | 0–1                                          |
+| `light.radial`                 | `color`          | color  | `#ffffff`       | colour                                       |
+| `particles.rise`               | `count`          | scalar | `20`            | 1–100 (integer)                              |
+| `particles.rise`               | `radius`         | scalar | `2`             | 0.01–100                                     |
+| `particles.rise`               | `opacity`        | scalar | `0.5`           | 0–1                                          |
+| `particles.rise`               | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
+| `particles.rise`               | `progress`       | scalar | `0`             | 0–1000                                       |
+| `particles.rise`               | `color`          | color  | `#ffffff`       | colour                                       |
+| `stylize.grain`                | `amount`         | scalar | `0`             | 0–1                                          |
+| `stylize.grain`                | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
+| `stylize.grain`                | `evolution`      | scalar | `0`             | -216000–216000                               |
+| `blur.gaussian`                | `radius`         | scalar | `0`             | 0–1000                                       |
+| `blur.directional`             | `length`         | scalar | `0`             | 0–1000                                       |
+| `blur.directional`             | `angle`          | scalar | `0`             | -36000–36000                                 |
+| `blur.directional`             | `samples`        | scalar | `8`             | 2–64 (integer)                               |
+| `light.glow`                   | `radius`         | scalar | `0`             | 0–1000                                       |
+| `light.glow`                   | `intensity`      | scalar | `1`             | 0–1                                          |
+| `light.glow`                   | `threshold`      | scalar | `0`             | 0–1                                          |
+| `distort.sine`                 | `amount`         | scalar | `0`             | -1000–1000                                   |
+| `distort.sine`                 | `wavelength`     | scalar | `100`           | 1–100000                                     |
+| `distort.sine`                 | `phase`          | scalar | `0`             | -1000000–1000000                             |
 
 Blend modes: `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`, `color-dodge`, `color-burn`, `hard-light`, `soft-light`, `difference`, `exclusion`, `hue`, `saturation`, `color`, `luminosity`, `add`.
 
@@ -864,116 +967,125 @@ Motion intents: `settle`, `press`, `recoil`, `handoff`, `breathe`, `draw-on`, `l
 
 Schema validation yields stable codes with JSON paths; builder input also yields authored file:line:column sites. Warnings can be promoted for authored input, including unpinned system fonts.
 
-| Code                               | Meaning                                                                                               |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `comp-schema-version`              | `schemaVersion` is not `composition-1`.                                                               |
-| `comp-schema-type`                 | A value has the wrong JSON type.                                                                      |
-| `comp-schema-unknown-key`          | An object has a field the contract does not define.                                                   |
-| `comp-schema-value`                | A value is not one of the allowed literals or enum members.                                           |
-| `comp-schema-format`               | A string does not match its required format (id, colour, hash).                                       |
-| `comp-schema-range`                | A number is outside its allowed range.                                                                |
-| `comp-schema-union`                | A value matches none of the allowed forms (for example an unknown layer `type`).                      |
-| `comp-schema`                      | Any other structural error.                                                                           |
-| `comp-limit`                       | An array, string or record exceeds its size limit.                                                    |
-| `comp-key-order`                   | Key frames are not strictly increasing.                                                               |
-| `comp-sample-time-order`           | Baked sample times are not strictly increasing.                                                       |
-| `comp-motion-blur-range`           | The exposure interval or cut list is outside the composition or not increasing.                       |
-| `comp-key-smooth`                  | A smooth key is the first or last key.                                                                |
-| `comp-key-bezier`                  | `interpolation: "bezier"` without `bezier` handles.                                                   |
-| `comp-key-speed-vector`            | A temporal handle `speed` on a vector or colour property.                                             |
-| `comp-path-tangents`               | A bezier path's tangent count differs from its vertex count.                                          |
-| `comp-path-vertex-count`           | Keys of one path property have different vertex counts.                                               |
-| `comp-vector-dimension`            | A three-component vector on a layer without `threeD`.                                                 |
-| `comp-duplicate-id`                | An id is used twice in its namespace.                                                                 |
-| `comp-reserved-id`                 | A layer or precomp uses the reserved id `comp`.                                                       |
-| `comp-layer-time`                  | `inPoint` is not before `outPoint`.                                                                   |
-| `comp-time-control`                | A finite precomp loop count requires a loop mode.                                                     |
-| `comp-media-time`                  | Media sampling needs finite source time and a positive safe integer frame count.                      |
-| `comp-media-frame-blending`        | Frame blending must be hold or linear.                                                                |
-| `comp-layer-limit`                 | More than 2,000 layers across the composition and its precomps.                                       |
-| `comp-parent-missing`              | `parent` names no layer in the same composition.                                                      |
-| `comp-parent-cycle`                | A parent chain loops.                                                                                 |
-| `comp-parent-depth`                | A parent chain is deeper than 32.                                                                     |
-| `comp-matte-missing`               | `trackMatte.layer` names no layer in the same composition.                                            |
-| `comp-matte-self`                  | A layer is its own track matte.                                                                       |
-| `comp-matte-cycle`                 | Track mattes reference each other in a loop.                                                          |
-| `comp-mask-open`                   | A mask path is not closed.                                                                            |
-| `comp-precomp-missing`             | A precomp layer references an unknown precomp.                                                        |
-| `comp-precomp-cycle`               | A precomp contains itself directly or indirectly.                                                     |
-| `comp-precomp-depth`               | Precomps nest deeper than 8.                                                                          |
-| `comp-asset-missing`               | A layer references an unknown asset.                                                                  |
-| `comp-asset-type`                  | A layer references an asset of the wrong type.                                                        |
-| `comp-crop-bounds`                 | An image crop extends beyond its asset.                                                               |
-| `comp-image-registration`          | Pose registration on an image whose fit is not `contain`.                                             |
-| `comp-state-range`                 | A `state` or `stateFrom` value has no matching source or text state.                                  |
-| `comp-state-mix`                   | Only one of `stateFrom` and `stateMix` is set.                                                        |
-| `comp-text-style-missing`          | A text layer uses an unknown text style.                                                              |
-| `comp-text-font`                   | A text size above 180 without a pinned font.                                                          |
-| `comp-text-pinned-font`            | Spans, decorations, transitions, text animators or `textBox` on a text layer without a pinned font.   |
-| `comp-text-box-size`               | A `textBox` text layer without a `size`.                                                              |
-| `comp-marker-frame`                | A marker lies at or after `frameCount`.                                                               |
-| `comp-marker-duration`             | A marker's `duration` runs past `frameCount`.                                                         |
-| `comp-text-span-range`             | A text span ends after the text or a state, or overlaps another span.                                 |
-| `comp-text-span-missing`           | A decoration or text animator names an unknown span.                                                  |
-| `comp-text-font-axis`              | A style, span or animated variable-font axis is absent or outside the pinned font's range.            |
-| `comp-text-locale`                 | A text layer's locale is not recognised.                                                              |
-| `comp-text-transition`             | Conflicting, overlapping or impossible text transitions.                                              |
-| `comp-camera-key-range`            | A `camera2d` key lies at or after `frameCount`.                                                       |
-| `comp-marker-missing`              | A `cue` names no marker in the same composition.                                                      |
-| `comp-signal-missing`              | A reference names no signal.                                                                          |
-| `comp-constraint-target`           | A constraint names no layer in the same composition.                                                  |
-| `comp-text-animator-target`        | A text animator's `node` is not a text layer in the same composition.                                 |
-| `comp-camera-depth`                | `cameraDepth` on a parented layer or inside a precomp.                                                |
-| `comp-camera-jolt`                 | A camera jolt starts at or after `frameCount`.                                                        |
-| `comp-format-size`                 | `format` disagrees with `width` and `height`.                                                         |
-| `comp-metadata-size`               | Metadata serialises to more than 64 KiB.                                                              |
-| `comp-json-size`                   | An opaque JSON payload serialises to more than 64 KiB.                                                |
-| `comp-json-depth`                  | A JSON payload exceeds its payload-specific container-depth bound below its root.                     |
-| `comp-metadata-depth`              | Metadata nests more than 64 container levels below its root.                                          |
-| `comp-driver-source`               | A driver has none or several of `signal`, `source` and `sum`.                                         |
-| `comp-motion-cycle`                | Driver, constraint or parent dependencies form a cycle.                                               |
-| `comp-periodic`                    | Invalid periodic motion window, generator or target form.                                             |
-| `comp-expression-syntax`           | Expression text does not match the grammar (including unknown identifiers).                           |
-| `comp-expression-unknown-function` | An expression calls a function that is not a registered built-in.                                     |
-| `comp-expression-type`             | An expression's types do not fit an operator, built-in or its target property.                        |
-| `comp-expression-limit`            | An expression exceeds 2,000 characters, 500 AST nodes, 64 nesting levels or a literal argument bound. |
-| `comp-expression-mismatch`         | An expression's `ast` differs from the AST parsed from its `source`.                                  |
-| `comp-expression-cycle`            | Expression reads form a dependency cycle, alone or with drivers, constraints or parents.              |
-| `comp-expression-overlap`          | Two expressions or behaviours target the same property or one of its components.                      |
-| `comp-key-speed-dimension`         | A grouped temporal speed tuple does not match its value's dimensions.                                 |
-| `comp-key-speed-spatial`           | A component speed tuple on spatial keys, or `spatialSpeed` on keys without spatial tangents.          |
-| `comp-path-syntax`                 | A property path does not match the grammar.                                                           |
-| `comp-path-scope`                  | A path's precomp layer instance is missing or not a precomp at that level.                            |
-| `comp-path-layer`                  | A path names no layer in its composition.                                                             |
-| `comp-path-property`               | A path names no property of its layer.                                                                |
-| `comp-path-type`                   | A driver or periodic motion targets a non-scalar property.                                            |
-| `comp-path-readonly`               | A path that can only be read is used as a target.                                                     |
-| `comp-shape-id`                    | Shape content or gradient stop IDs are not unique in their collection.                                |
-| `comp-shape-limit`                 | A native shape tree exceeds its content or nesting limits.                                            |
-| `comp-shape-value`                 | A sampled native shape value is not finite.                                                           |
-| `comp-shape-range`                 | A generated primitive has invalid dimensions or point counts.                                         |
-| `comp-shape-work-limit`            | Generated geometry or reference copies exceed the shared evaluation budget.                           |
-| `comp-shape-coordinate`            | Generated coordinates exceed their finite coordinate envelope.                                        |
-| `comp-shape-flatten-limit`         | Cubic flattening cannot meet its fixed tolerance within the depth limit.                              |
-| `comp-shape-polygon-limit`         | A polygon operation exceeds its input-vertex complexity limit.                                        |
-| `comp-shape-polygon-coordinate`    | Quantized polygon coordinates are not safe integers.                                                  |
-| `comp-shape-polygon`               | The pinned polygon library rejected an operation.                                                     |
-| `comp-shape-repeater-range`        | Repeater copies exceed their supported range.                                                         |
-| `comp-shape-repeater-scale`        | A repeated scale power is undefined or not finite.                                                    |
-| `comp-shape-repeater-transform`    | A repeated transform is not finite.                                                                   |
-| `comp-shape-dash-precision`        | Nib dash spacing is below the available coordinate precision.                                         |
-| `comp-shape-follow-empty`          | A follow-path source has no contour or zero arc length.                                               |
-| `comp-constraint-path`             | A follow-path source is not a native shape layer.                                                     |
-| `comp-feature-unavailable`         | A contract feature whose implementation milestone has not landed.                                     |
-| `comp-provider-bounds`             | Provider bounds have non-positive width or height.                                                    |
-| `comp-provider-unavailable`        | A versioned content provider is not registered in this renderer.                                      |
-| `comp-provider-duplicate`          | A provider id was registered more than once.                                                          |
-| `comp-provider-params`             | A provider payload fails its registered schema.                                                       |
-| `comp-provider-asset`              | A provider uses an undeclared, missing or incompatible asset.                                         |
-| `comp-camera-coverage`             | A persisted story image cover leaves the viewport uncovered or samples transparent pixels.            |
-| `comp-adapter-unsupported`         | A family feature is not supported by the current adapter slice.                                       |
-| `comp-adapter-limit`               | Baking an adapter scene would exceed composition limits.                                              |
-| `comp-adapter-layout-required`     | Font-dependent geometry needs a pinned-font measurement context before compilation.                   |
+| Code                               | Meaning                                                                                                  |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `comp-schema-version`              | `schemaVersion` is not `composition-1`.                                                                  |
+| `comp-schema-type`                 | A value has the wrong JSON type.                                                                         |
+| `comp-schema-unknown-key`          | An object has a field the contract does not define.                                                      |
+| `comp-schema-value`                | A value is not one of the allowed literals or enum members.                                              |
+| `comp-schema-format`               | A string does not match its required format (id, colour, hash).                                          |
+| `comp-schema-range`                | A number is outside its allowed range.                                                                   |
+| `comp-schema-union`                | A value matches none of the allowed forms (for example an unknown layer `type`).                         |
+| `comp-schema`                      | Any other structural error.                                                                              |
+| `comp-limit`                       | An array, string or record exceeds its size limit.                                                       |
+| `comp-effect-layer`                | An effect input slot is missing, undeclared or outside its scope.                                        |
+| `comp-effect-cycle`                | Layer inputs, mattes or group descendants form a render dependency cycle.                                |
+| `comp-effect-budget`               | The scoped effect source graph exceeds its bounded work budget.                                          |
+| `comp-effect-registration`         | Effect registration requires a unique ID, valid definition and GPU callback.                             |
+| `comp-effect-surface`              | Effect scratch textures and output must belong to the current callback and meet size/budget constraints. |
+| `comp-effect-version`              | Registered effect versions differ from the captured export snapshot.                                     |
+| `comp-effect-params`               | Check evaluated effect controls and their cross-parameter invariants.                                    |
+| `comp-effect-curve`                | Evaluated color curve points must be bounded, ordered and span the input domain.                         |
+| `comp-effect-bounds`               | An effect bounds callback failed or returned a non-finite/reversed rectangle.                            |
+| `comp-key-order`                   | Key frames are not strictly increasing.                                                                  |
+| `comp-sample-time-order`           | Baked sample times are not strictly increasing.                                                          |
+| `comp-motion-blur-range`           | The exposure interval or cut list is outside the composition or not increasing.                          |
+| `comp-key-smooth`                  | A smooth key is the first or last key.                                                                   |
+| `comp-key-bezier`                  | `interpolation: "bezier"` without `bezier` handles.                                                      |
+| `comp-key-speed-vector`            | A temporal handle `speed` on a vector or colour property.                                                |
+| `comp-path-tangents`               | A bezier path's tangent count differs from its vertex count.                                             |
+| `comp-path-vertex-count`           | Keys of one path property have different vertex counts.                                                  |
+| `comp-vector-dimension`            | A three-component vector on a layer without `threeD`.                                                    |
+| `comp-duplicate-id`                | An id is used twice in its namespace.                                                                    |
+| `comp-reserved-id`                 | A layer or precomp uses the reserved id `comp`.                                                          |
+| `comp-layer-time`                  | `inPoint` is not before `outPoint`.                                                                      |
+| `comp-time-control`                | A finite precomp loop count requires a loop mode.                                                        |
+| `comp-media-time`                  | Media sampling needs finite source time and a positive safe integer frame count.                         |
+| `comp-media-frame-blending`        | Frame blending must be hold or linear.                                                                   |
+| `comp-layer-limit`                 | More than 2,000 layers across the composition and its precomps.                                          |
+| `comp-parent-missing`              | `parent` names no layer in the same composition.                                                         |
+| `comp-parent-cycle`                | A parent chain loops.                                                                                    |
+| `comp-parent-depth`                | A parent chain is deeper than 32.                                                                        |
+| `comp-matte-missing`               | `trackMatte.layer` names no layer in the same composition.                                               |
+| `comp-matte-self`                  | A layer is its own track matte.                                                                          |
+| `comp-matte-cycle`                 | Track mattes reference each other in a loop.                                                             |
+| `comp-mask-open`                   | A mask path is not closed.                                                                               |
+| `comp-precomp-missing`             | A precomp layer references an unknown precomp.                                                           |
+| `comp-precomp-cycle`               | A precomp contains itself directly or indirectly.                                                        |
+| `comp-precomp-depth`               | Precomps nest deeper than 8.                                                                             |
+| `comp-asset-missing`               | A layer references an unknown asset.                                                                     |
+| `comp-asset-type`                  | A layer references an asset of the wrong type.                                                           |
+| `comp-crop-bounds`                 | An image crop extends beyond its asset.                                                                  |
+| `comp-image-registration`          | Pose registration on an image whose fit is not `contain`.                                                |
+| `comp-state-range`                 | A `state` or `stateFrom` value has no matching source or text state.                                     |
+| `comp-state-mix`                   | Only one of `stateFrom` and `stateMix` is set.                                                           |
+| `comp-text-style-missing`          | A text layer uses an unknown text style.                                                                 |
+| `comp-text-font`                   | A text size above 180 without a pinned font.                                                             |
+| `comp-text-pinned-font`            | Spans, decorations, transitions, text animators or `textBox` on a text layer without a pinned font.      |
+| `comp-text-box-size`               | A `textBox` text layer without a `size`.                                                                 |
+| `comp-marker-frame`                | A marker lies at or after `frameCount`.                                                                  |
+| `comp-marker-duration`             | A marker's `duration` runs past `frameCount`.                                                            |
+| `comp-text-span-range`             | A text span ends after the text or a state, or overlaps another span.                                    |
+| `comp-text-span-missing`           | A decoration or text animator names an unknown span.                                                     |
+| `comp-text-font-axis`              | A style, span or animated variable-font axis is absent or outside the pinned font's range.               |
+| `comp-text-locale`                 | A text layer's locale is not recognised.                                                                 |
+| `comp-text-transition`             | Conflicting, overlapping or impossible text transitions.                                                 |
+| `comp-camera-key-range`            | A `camera2d` key lies at or after `frameCount`.                                                          |
+| `comp-marker-missing`              | A `cue` names no marker in the same composition.                                                         |
+| `comp-signal-missing`              | A reference names no signal.                                                                             |
+| `comp-constraint-target`           | A constraint names no layer in the same composition.                                                     |
+| `comp-text-animator-target`        | A text animator's `node` is not a text layer in the same composition.                                    |
+| `comp-camera-depth`                | `cameraDepth` on a parented layer or inside a precomp.                                                   |
+| `comp-camera-jolt`                 | A camera jolt starts at or after `frameCount`.                                                           |
+| `comp-format-size`                 | `format` disagrees with `width` and `height`.                                                            |
+| `comp-metadata-size`               | Metadata serialises to more than 64 KiB.                                                                 |
+| `comp-json-size`                   | An opaque JSON payload serialises to more than 64 KiB.                                                   |
+| `comp-json-depth`                  | A JSON payload exceeds its payload-specific container-depth bound below its root.                        |
+| `comp-metadata-depth`              | Metadata nests more than 64 container levels below its root.                                             |
+| `comp-driver-source`               | A driver has none or several of `signal`, `source` and `sum`.                                            |
+| `comp-motion-cycle`                | Driver, constraint or parent dependencies form a cycle.                                                  |
+| `comp-periodic`                    | Invalid periodic motion window, generator or target form.                                                |
+| `comp-expression-syntax`           | Expression text does not match the grammar (including unknown identifiers).                              |
+| `comp-expression-unknown-function` | An expression calls a function that is not a registered built-in.                                        |
+| `comp-expression-type`             | An expression's types do not fit an operator, built-in or its target property.                           |
+| `comp-expression-limit`            | An expression exceeds 2,000 characters, 500 AST nodes, 64 nesting levels or a literal argument bound.    |
+| `comp-expression-mismatch`         | An expression's `ast` differs from the AST parsed from its `source`.                                     |
+| `comp-expression-cycle`            | Expression reads form a dependency cycle, alone or with drivers, constraints or parents.                 |
+| `comp-expression-overlap`          | Two expressions or behaviours target the same property or one of its components.                         |
+| `comp-key-speed-dimension`         | A grouped temporal speed tuple does not match its value's dimensions.                                    |
+| `comp-key-speed-spatial`           | A component speed tuple on spatial keys, or `spatialSpeed` on keys without spatial tangents.             |
+| `comp-path-syntax`                 | A property path does not match the grammar.                                                              |
+| `comp-path-scope`                  | A path's precomp layer instance is missing or not a precomp at that level.                               |
+| `comp-path-layer`                  | A path names no layer in its composition.                                                                |
+| `comp-path-property`               | A path names no property of its layer.                                                                   |
+| `comp-path-type`                   | A driver or periodic motion targets a non-scalar property.                                               |
+| `comp-path-readonly`               | A path that can only be read is used as a target.                                                        |
+| `comp-shape-id`                    | Shape content or gradient stop IDs are not unique in their collection.                                   |
+| `comp-shape-limit`                 | A native shape tree exceeds its content or nesting limits.                                               |
+| `comp-shape-value`                 | A sampled native shape value is not finite.                                                              |
+| `comp-shape-range`                 | A generated primitive has invalid dimensions or point counts.                                            |
+| `comp-shape-work-limit`            | Generated geometry or reference copies exceed the shared evaluation budget.                              |
+| `comp-shape-coordinate`            | Generated coordinates exceed their finite coordinate envelope.                                           |
+| `comp-shape-flatten-limit`         | Cubic flattening cannot meet its fixed tolerance within the depth limit.                                 |
+| `comp-shape-polygon-limit`         | A polygon operation exceeds its input-vertex complexity limit.                                           |
+| `comp-shape-polygon-coordinate`    | Quantized polygon coordinates are not safe integers.                                                     |
+| `comp-shape-polygon`               | The pinned polygon library rejected an operation.                                                        |
+| `comp-shape-repeater-range`        | Repeater copies exceed their supported range.                                                            |
+| `comp-shape-repeater-scale`        | A repeated scale power is undefined or not finite.                                                       |
+| `comp-shape-repeater-transform`    | A repeated transform is not finite.                                                                      |
+| `comp-shape-dash-precision`        | Nib dash spacing is below the available coordinate precision.                                            |
+| `comp-shape-follow-empty`          | A follow-path source has no contour or zero arc length.                                                  |
+| `comp-constraint-path`             | A follow-path source is not a native shape layer.                                                        |
+| `comp-feature-unavailable`         | A contract feature whose implementation milestone has not landed.                                        |
+| `comp-provider-bounds`             | Provider bounds have non-positive width or height.                                                       |
+| `comp-provider-unavailable`        | A versioned content provider is not registered in this renderer.                                         |
+| `comp-provider-duplicate`          | A provider id was registered more than once.                                                             |
+| `comp-provider-params`             | A provider payload fails its registered schema.                                                          |
+| `comp-provider-asset`              | A provider uses an undeclared, missing or incompatible asset.                                            |
+| `comp-camera-coverage`             | A persisted story image cover leaves the viewport uncovered or samples transparent pixels.               |
+| `comp-adapter-unsupported`         | A family feature is not supported by the current adapter slice.                                          |
+| `comp-adapter-limit`               | Baking an adapter scene would exceed composition limits.                                                 |
+| `comp-adapter-layout-required`     | Font-dependent geometry needs a pinned-font measurement context before compilation.                      |
 
 ---
 
@@ -1654,7 +1766,7 @@ structure only; use `validateComposition` for the full rules.
 | `frameCount`                     | integer 1–108,000                                  | Required.                                                                                                             |
 | `background`                     | colour or `null`                                   | `null` or absent: transparent.                                                                                        |
 | `format`                         | `landscape` or `vertical`                          | When set, `width` and `height` must match it.                                                                         |
-| `colorSpace`                     | `srgb` or `linear-srgb`                            | `linear-srgb` arrives in CE6.                                                                                         |
+| `colorSpace`                     | `srgb` or `linear-srgb`                            | Defaults to `srgb`; opt in to linear-light composition.                                                               |
 | `motionBlur`                     | `{ enabled, shutterAngle, shutterPhase, samples }` | Optional `inPoint`, `outPoint` and ordered `cuts`; see exposure sampling below.                                       |
 | `assets`                         | [asset](#assets)[]                                 | Required (may be empty).                                                                                              |
 | `layers`                         | [layer](#layers)[]                                 | Required (may be empty).                                                                                              |
@@ -1667,6 +1779,23 @@ structure only; use `validateComposition` for the full rules.
 | `behaviours`                     | behaviour[] (at most 200)                          | Motion-design intent compiled to expressions; see [behaviours](#behaviours).                                          |
 | `camera2d`                       | see [2D camera](#2d-camera)                        |                                                                                                                       |
 | `metadata`                       | JSON object                                        | Passed through unchanged (registration, claims, review notes); at most 64 KiB and 64 container levels below its root. |
+
+### Linear-light composition
+
+`colorSpace: "linear-srgb"` applies across composition layer boundaries, including
+isolated groups/precomps, all blend modes, adjustment interpolation and exposure
+averaging. Intrinsic source paints, authored gradients, pixel-effect operations
+and luma-matte measurement retain encoded-sRGB semantics. Layer batching that
+would blend overlapping sources in sRGB is disabled for the opt-in path.
+
+Render targets remain encoded-sRGB premultiplied RGBA8. Each composition pass
+recovers canonical straight bytes, decodes through a 16-bit transfer table,
+composites premultiplied linear values with fixed integer normalization, then
+encodes through the inverse table. Alpha stays coverage. Exposure sums 16-bit
+linear premultiplied samples in fixed order; hardware shaders use the same
+transfer controls without image readback. For example, half-covered white over
+black produces 188 rather than the default sRGB value 128. Changing color space
+invalidates retained frame and isolate pixels.
 
 ## Precomps and scopes
 
@@ -1767,23 +1896,23 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 
 ### Fields on every layer
 
-| Field                                 | Notes                                                                                                                          |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `id`, `type`                          | Required. `type` selects the fields below.                                                                                     |
-| `name`                                | Display name.                                                                                                                  |
-| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                     |
-| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                           |
-| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                      |
-| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                            |
-| `transform`                           | See [transform](#transform).                                                                                                   |
-| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.             |
-| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                             |
-| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                          |
-| `masks`                               | See [masks](#masks).                                                                                                           |
-| `effects`                             | `{ id, effect, enabled?, space?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
-| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                 |
-| `threeD`, `motionBlur`                | `threeD` arrives in CE8; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants).                |
-| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                        |
+| Field                                 | Notes                                                                                                                                   |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`, `type`                          | Required. `type` selects the fields below.                                                                                              |
+| `name`                                | Display name.                                                                                                                           |
+| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                              |
+| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                                    |
+| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                               |
+| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                                     |
+| `transform`                           | See [transform](#transform).                                                                                                            |
+| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.                      |
+| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                                      |
+| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                                   |
+| `masks`                               | See [masks](#masks).                                                                                                                    |
+| `effects`                             | `{ id, effect, enabled?, space?, inputs?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
+| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                          |
+| `threeD`, `motionBlur`                | `threeD` arrives in CE8; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants).                         |
+| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                                 |
 
 ### Layer types
 
@@ -2105,16 +2234,16 @@ segment  := name | name "[" id "]"
 Drivers and periodic motion target scalars. Legacy `node.property` targets remain valid
 and resolve to their canonical path:
 
-| Legacy                                                                       | Canonical                        |
-| ---------------------------------------------------------------------------- | -------------------------------- |
-| `x`, `y`                                                                     | `transform.position.x`, `.y`     |
-| `scaleX`, `scaleY`                                                           | `transform.scale.x`, `.y`        |
-| `anchorX`, `anchorY`                                                         | `transform.anchor.x`, `.y`       |
-| `rotation`, `opacity`                                                        | `transform.rotation`, `.opacity` |
-| `skewX`, `skewY`                                                             | `transform.skewX`, `.skewY`      |
-| `reveal`                                                                     | `reveal`                         |
-| `gap`, `pulse`, `pinch`, `strokeWidth`, `trimStart`, `trimEnd`, `trimOffset` | CE5 (shape strokes)              |
-| `blur`                                                                       | CE6 (effects)                    |
+| Legacy                                                                       | Canonical                                        |
+| ---------------------------------------------------------------------------- | ------------------------------------------------ |
+| `x`, `y`                                                                     | `transform.position.x`, `.y`                     |
+| `scaleX`, `scaleY`                                                           | `transform.scale.x`, `.y`                        |
+| `anchorX`, `anchorY`                                                         | `transform.anchor.x`, `.y`                       |
+| `rotation`, `opacity`                                                        | `transform.rotation`, `.opacity`                 |
+| `skewX`, `skewY`                                                             | `transform.skewX`, `.skewY`                      |
+| `reveal`                                                                     | `reveal`                                         |
+| `gap`, `pulse`, `pinch`, `strokeWidth`, `trimStart`, `trimEnd`, `trimOffset` | Use explicit native `contents[...]` paths        |
+| `blur`                                                                       | Existing `blur.primitive` → `effects[id].radius` |
 
 Aliases are names only: values follow `composition-1` semantics. For example,
 `position` is where the anchor sits, not a legacy node's top-left corner, so family
@@ -2131,13 +2260,15 @@ diagnostic code.
 
 ## Feature availability
 
+Native shapes/follow-path constraints, the effect catalogue and opt-in
+linear-light compositing are implemented. Unknown or undeclared properties have
+path diagnostics; completed milestones are not promised as future availability.
+
 Features that are in the contract but not yet implemented fail with
 `comp-feature-unavailable`; the message names the milestone.
 
 | Feature                                                      | Milestone |
 | ------------------------------------------------------------ | --------- |
-| Shape layers, follow-path constraints, stroke properties     | CE5       |
-| Effects, `linear-srgb` compositing, `blur`                   | CE6       |
 | 3D layers, camera layers, 3D rotation, auto-orient to camera | CE8       |
 | Video, image-sequence and audio layers and assets            | CE13      |
 | Light layers                                                 | Q6        |
@@ -2450,8 +2581,12 @@ are known. The existing glyph preparation memory budget still applies.
 `radius` (default 0; 0–1,000 surface pixels). It runs during painting before the
 ordinary pixel effect stack. A positive radius overrides the nearest inherited
 group radius; zero retains that inherited radius. Null parenting does not inherit
-paint effects. One primitive blur may be attached to a drawable layer or group;
-adjustment and null layers reject it.
+paint effects. One primitive blur may be attached to a drawable layer, group or
+adjustment; null layers reject it. On adjustments it becomes Gaussian filtering
+of the captured backdrop at its effect-stack position. A legacy `<layer>.blur`
+alias resolves only when that layer declares exactly one primitive blur, and
+normalizes to `<layer>.effects[id].radius`. Other legacy shape aliases require
+explicit native `contents[...]` property paths.
 
 Group children retain separate overlapping filtered draws. Non-collapsed precomps
 filter their flattened surface; collapsed precomps carry the drawing filter to
@@ -2704,6 +2839,19 @@ with a native difference-blend overlay and preserves its assets and cue mappings
 
 `@still-shift/renderer-core/passage-compositions` is the narrow public entrypoint for
 passage picture validation and diagnostics; it does not import renderer backends.
+
+### Scoped effect inputs
+
+Effect definitions may declare up to eight unique input slot names in
+`requiresLayers`. Bind them on an instance with `inputs: {map: "source-layer"}`.
+Bindings use static layer IDs from the owner’s composition scope. Referenced
+layers retain their transform, opacity, masks, effects and matte at that scope’s
+sampled clock. Their enabled/solo switches do not suppress captured content;
+group descendants retain their own enable and interval rules. Ordinary source
+visibility stays unchanged. Null and adjustment backdrops cannot serve as source
+layers. Missing/undeclared bindings and cycles through inputs, mattes or groups
+are explicit diagnostics. Source visits are bounded to 10,000 per render graph and 64 dependency levels.
+The paired plugin contexts expose owned input snapshots through `layers`.
 
 ## CE16 soundtrack project
 

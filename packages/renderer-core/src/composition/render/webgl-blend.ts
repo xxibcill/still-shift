@@ -1,7 +1,7 @@
 import type { CompositionBlendMode } from "@still-shift/scene-contract";
 
 /** CSS Compositing blend functions operate on unpremultiplied sRGB colors. */
-const FUNCTIONS = `
+export const BLEND_FUNCTIONS = `
 float lum(vec3 c) { return dot(c, vec3(0.3, 0.59, 0.11)); }
 float sat(vec3 c) { return max(max(c.r, c.g), c.b) - min(min(c.r, c.g), c.b); }
 vec3 clipColor(vec3 c) {
@@ -22,7 +22,7 @@ float soft(float b, float s) {
   return s <= 0.5 ? b - (1.0-2.0*s)*b*(1.0-b) : b+(2.0*s-1.0)*(d-b);
 }
 `;
-const MODES: Record<CompositionBlendMode, string> = {
+export const BLEND_MODES: Record<CompositionBlendMode, string> = {
   normal: "s",
   multiply: "b*s",
   screen: "b+s-b*s",
@@ -43,7 +43,7 @@ const MODES: Record<CompositionBlendMode, string> = {
 };
 
 export function blendShader(mode: CompositionBlendMode, primitive = false) {
-  return `${FUNCTIONS}
+  return `${BLEND_FUNCTIONS}
 uniform float opacity;
 void main() {
   vec4 src = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0, dst = texture(backdrop, uv);
@@ -57,7 +57,7 @@ void main() {
         : `
   vec3 s = src.a > 0.0 ? src.rgb / src.a : vec3(0.0);
   vec3 b = dst.a > 0.0 ? dst.rgb / dst.a : vec3(0.0);
-  vec3 blended = ${MODES[mode]};
+  vec3 blended = ${BLEND_MODES[mode]};
   pixel = bytes(vec4(src.rgb*(1.0-dst.a) + dst.rgb*(1.0-src.a) + src.a*dst.a*blended, src.a + dst.a*(1.0-src.a)));`
   }
 }`;

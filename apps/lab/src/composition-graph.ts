@@ -13,7 +13,15 @@ const numeric = (value: unknown): number[] =>
     ? [value]
     : Array.isArray(value) && value.every((v) => typeof v === "number")
       ? value
-      : [];
+      : Array.isArray(value) &&
+          value.every(
+            (point) =>
+              Array.isArray(point) &&
+              point.length === 2 &&
+              point.every((channel) => typeof channel === "number"),
+          )
+        ? (value.flat() as number[])
+        : [];
 export function resolvedGraph(
   document: Composition,
   path: string,
@@ -68,7 +76,7 @@ export function curveGraph(points: GraphPoint[], title: string): SVGSVGElement {
       chart.append(
         node("polyline", {
           fill: "none",
-          stroke: colors[axis]!,
+          stroke: colors[axis % colors.length]!,
           "stroke-width": 2,
           points: points
             .map(

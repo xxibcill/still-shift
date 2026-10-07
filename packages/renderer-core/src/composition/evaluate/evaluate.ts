@@ -1,7 +1,12 @@
 import { ShapeGeometryBudget } from "../shapes/budget.ts";
 import { sampleShapes, clampShapes, cloneShapes } from "../shapes/sample.ts";
 import { compileShapes } from "../shapes/compile.ts";
-import { sampleEffects, clampEffects, effectBounds } from "./effects.ts";
+import {
+  sampleEffects,
+  clampEffects,
+  effectBounds,
+  validateEffectParameters,
+} from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
   implicitAnchorDependencies,
@@ -88,7 +93,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-34";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-45";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -162,7 +167,7 @@ type Numeric = number | number[];
 /** An expression-stage value with its layer time and key time (sample index if baked). */
 export type StageSample = { value: Numeric; time: number; keyTime: number };
 const copy = (value: PropertyValue | Numeric): Numeric =>
-  Array.isArray(value) ? [...value] : (value as Numeric);
+  Array.isArray(value) ? [...(value as number[])] : (value as Numeric);
 
 function selectSoloLayers(scope: CompositionScope): Set<string> | null {
   if (!scope.layers.some((layer) => layer.solo)) return null;
@@ -1238,6 +1243,11 @@ class Evaluation {
         state.time / ctx.fps,
         this.shapeBudget(ctx, layer),
       );
+    validateEffectParameters(state.effects, {
+      node: layer.id,
+      path: layerKey(ctx.route, layer.id),
+      frame: this.time,
+    });
     // Only compositions with stage readers pay for the pre-constraint copy.
     if (this.compiled.stageReads)
       stage.sealed = sealStage(state, this.shapeBudget(ctx, layer));
@@ -1300,7 +1310,11 @@ class Evaluation {
       this.options,
     );
     state.bounds = local
-      ? effectBounds(projectBounds(local, state.screenMatrix), state.effects)
+      ? effectBounds(projectBounds(local, state.screenMatrix), state.effects, {
+          node: layer.id,
+          path: layerKey(ctx.route, layer.id),
+          frame: this.time,
+        })
       : null;
     state.visible &&= !layer.guide || this.options.includeGuides === true;
     // Group visibility gates descendants; ordinary null parenting only carries transforms.
@@ -1325,6 +1339,30 @@ class Evaluation {
     return state;
   }
 
+  private readonly effectSources = new WeakMap<CompositionScope, Set<string>>();
+  private effectSourceLayer(scope: CompositionScope, id: string): boolean {
+    let sources = this.effectSources.get(scope);
+    if (!sources) {
+      sources = new Set(
+        scope.layers.flatMap((layer) =>
+          (layer.effects ?? []).flatMap((effect) =>
+            Object.values(effect.inputs ?? {}),
+          ),
+        ),
+      );
+      this.effectSources.set(scope, sources);
+    }
+    if (!sources.size) return false;
+    for (
+      let layer = scope.layers.find((layer) => layer.id === id);
+      layer;
+      layer = scope.layers.find((parent) => parent.id === layer!.parent)
+    ) {
+      if (sources.has(layer.id)) return true;
+      if (!layer.parent) break;
+    }
+    return false;
+  }
   tree(ctx = this.root): EvaluatedLayerTree {
     const layers = ctx.scope.layers.map((layer) => this.evaluate(ctx, layer));
     const diagnostics: EvaluatedLayerTree["diagnostics"] = [];
@@ -1341,7 +1379,9 @@ class Evaluation {
       // Track mattes ignore `enabled` and solo, so matte precomps need content too.
       if (
         state.layer.type === "precomp" &&
-        (state.visible || ctx.matteLayers.has(state.id))
+        (state.visible ||
+          ctx.matteLayers.has(state.id) ||
+          this.effectSourceLayer(ctx.scope, state.id))
       )
         state.precomp = this.tree(this.run(this.child(ctx, state.layer)));
     }

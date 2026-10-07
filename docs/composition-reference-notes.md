@@ -677,7 +677,7 @@ structure only; use `validateComposition` for the full rules.
 | `frameCount`                     | integer 1–108,000                                  | Required.                                                                                                             |
 | `background`                     | colour or `null`                                   | `null` or absent: transparent.                                                                                        |
 | `format`                         | `landscape` or `vertical`                          | When set, `width` and `height` must match it.                                                                         |
-| `colorSpace`                     | `srgb` or `linear-srgb`                            | `linear-srgb` arrives in CE6.                                                                                         |
+| `colorSpace`                     | `srgb` or `linear-srgb`                            | Defaults to `srgb`; opt in to linear-light composition.                                                               |
 | `motionBlur`                     | `{ enabled, shutterAngle, shutterPhase, samples }` | Optional `inPoint`, `outPoint` and ordered `cuts`; see exposure sampling below.                                       |
 | `assets`                         | [asset](#assets)[]                                 | Required (may be empty).                                                                                              |
 | `layers`                         | [layer](#layers)[]                                 | Required (may be empty).                                                                                              |
@@ -690,6 +690,23 @@ structure only; use `validateComposition` for the full rules.
 | `behaviours`                     | behaviour[] (at most 200)                          | Motion-design intent compiled to expressions; see [behaviours](#behaviours).                                          |
 | `camera2d`                       | see [2D camera](#2d-camera)                        |                                                                                                                       |
 | `metadata`                       | JSON object                                        | Passed through unchanged (registration, claims, review notes); at most 64 KiB and 64 container levels below its root. |
+
+### Linear-light composition
+
+`colorSpace: "linear-srgb"` applies across composition layer boundaries, including
+isolated groups/precomps, all blend modes, adjustment interpolation and exposure
+averaging. Intrinsic source paints, authored gradients, pixel-effect operations
+and luma-matte measurement retain encoded-sRGB semantics. Layer batching that
+would blend overlapping sources in sRGB is disabled for the opt-in path.
+
+Render targets remain encoded-sRGB premultiplied RGBA8. Each composition pass
+recovers canonical straight bytes, decodes through a 16-bit transfer table,
+composites premultiplied linear values with fixed integer normalization, then
+encodes through the inverse table. Alpha stays coverage. Exposure sums 16-bit
+linear premultiplied samples in fixed order; hardware shaders use the same
+transfer controls without image readback. For example, half-covered white over
+black produces 188 rather than the default sRGB value 128. Changing color space
+invalidates retained frame and isolate pixels.
 
 ## Precomps and scopes
 
@@ -790,23 +807,23 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 
 ### Fields on every layer
 
-| Field                                 | Notes                                                                                                                          |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `id`, `type`                          | Required. `type` selects the fields below.                                                                                     |
-| `name`                                | Display name.                                                                                                                  |
-| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                     |
-| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                           |
-| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                      |
-| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                            |
-| `transform`                           | See [transform](#transform).                                                                                                   |
-| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.             |
-| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                             |
-| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                          |
-| `masks`                               | See [masks](#masks).                                                                                                           |
-| `effects`                             | `{ id, effect, enabled?, space?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
-| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                 |
-| `threeD`, `motionBlur`                | `threeD` arrives in CE8; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants).                |
-| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                        |
+| Field                                 | Notes                                                                                                                                   |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`, `type`                          | Required. `type` selects the fields below.                                                                                              |
+| `name`                                | Display name.                                                                                                                           |
+| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                              |
+| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                                    |
+| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                               |
+| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                                     |
+| `transform`                           | See [transform](#transform).                                                                                                            |
+| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.                      |
+| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                                      |
+| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                                   |
+| `masks`                               | See [masks](#masks).                                                                                                                    |
+| `effects`                             | `{ id, effect, enabled?, space?, inputs?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
+| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                          |
+| `threeD`, `motionBlur`                | `threeD` arrives in CE8; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants).                         |
+| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                                 |
 
 ### Layer types
 
@@ -1128,16 +1145,16 @@ segment  := name | name "[" id "]"
 Drivers and periodic motion target scalars. Legacy `node.property` targets remain valid
 and resolve to their canonical path:
 
-| Legacy                                                                       | Canonical                        |
-| ---------------------------------------------------------------------------- | -------------------------------- |
-| `x`, `y`                                                                     | `transform.position.x`, `.y`     |
-| `scaleX`, `scaleY`                                                           | `transform.scale.x`, `.y`        |
-| `anchorX`, `anchorY`                                                         | `transform.anchor.x`, `.y`       |
-| `rotation`, `opacity`                                                        | `transform.rotation`, `.opacity` |
-| `skewX`, `skewY`                                                             | `transform.skewX`, `.skewY`      |
-| `reveal`                                                                     | `reveal`                         |
-| `gap`, `pulse`, `pinch`, `strokeWidth`, `trimStart`, `trimEnd`, `trimOffset` | CE5 (shape strokes)              |
-| `blur`                                                                       | CE6 (effects)                    |
+| Legacy                                                                       | Canonical                                        |
+| ---------------------------------------------------------------------------- | ------------------------------------------------ |
+| `x`, `y`                                                                     | `transform.position.x`, `.y`                     |
+| `scaleX`, `scaleY`                                                           | `transform.scale.x`, `.y`                        |
+| `anchorX`, `anchorY`                                                         | `transform.anchor.x`, `.y`                       |
+| `rotation`, `opacity`                                                        | `transform.rotation`, `.opacity`                 |
+| `skewX`, `skewY`                                                             | `transform.skewX`, `.skewY`                      |
+| `reveal`                                                                     | `reveal`                                         |
+| `gap`, `pulse`, `pinch`, `strokeWidth`, `trimStart`, `trimEnd`, `trimOffset` | Use explicit native `contents[...]` paths        |
+| `blur`                                                                       | Existing `blur.primitive` → `effects[id].radius` |
 
 Aliases are names only: values follow `composition-1` semantics. For example,
 `position` is where the anchor sits, not a legacy node's top-left corner, so family
@@ -1154,13 +1171,15 @@ diagnostic code.
 
 ## Feature availability
 
+Native shapes/follow-path constraints, the effect catalogue and opt-in
+linear-light compositing are implemented. Unknown or undeclared properties have
+path diagnostics; completed milestones are not promised as future availability.
+
 Features that are in the contract but not yet implemented fail with
 `comp-feature-unavailable`; the message names the milestone.
 
 | Feature                                                      | Milestone |
 | ------------------------------------------------------------ | --------- |
-| Shape layers, follow-path constraints, stroke properties     | CE5       |
-| Effects, `linear-srgb` compositing, `blur`                   | CE6       |
 | 3D layers, camera layers, 3D rotation, auto-orient to camera | CE8       |
 | Video, image-sequence and audio layers and assets            | CE13      |
 | Light layers                                                 | Q6        |
@@ -1473,8 +1492,12 @@ are known. The existing glyph preparation memory budget still applies.
 `radius` (default 0; 0–1,000 surface pixels). It runs during painting before the
 ordinary pixel effect stack. A positive radius overrides the nearest inherited
 group radius; zero retains that inherited radius. Null parenting does not inherit
-paint effects. One primitive blur may be attached to a drawable layer or group;
-adjustment and null layers reject it.
+paint effects. One primitive blur may be attached to a drawable layer, group or
+adjustment; null layers reject it. On adjustments it becomes Gaussian filtering
+of the captured backdrop at its effect-stack position. A legacy `<layer>.blur`
+alias resolves only when that layer declares exactly one primitive blur, and
+normalizes to `<layer>.effects[id].radius`. Other legacy shape aliases require
+explicit native `contents[...]` property paths.
 
 Group children retain separate overlapping filtered draws. Non-collapsed precomps
 filter their flattened surface; collapsed precomps carry the drawing filter to
@@ -1727,6 +1750,19 @@ with a native difference-blend overlay and preserves its assets and cue mappings
 
 `@still-shift/renderer-core/passage-compositions` is the narrow public entrypoint for
 passage picture validation and diagnostics; it does not import renderer backends.
+
+### Scoped effect inputs
+
+Effect definitions may declare up to eight unique input slot names in
+`requiresLayers`. Bind them on an instance with `inputs: {map: "source-layer"}`.
+Bindings use static layer IDs from the owner’s composition scope. Referenced
+layers retain their transform, opacity, masks, effects and matte at that scope’s
+sampled clock. Their enabled/solo switches do not suppress captured content;
+group descendants retain their own enable and interval rules. Ordinary source
+visibility stays unchanged. Null and adjustment backdrops cannot serve as source
+layers. Missing/undeclared bindings and cycles through inputs, mattes or groups
+are explicit diagnostics. Source visits are bounded to 10,000 per render graph and 64 dependency levels.
+The paired plugin contexts expose owned input snapshots through `layers`.
 
 ## CE16 soundtrack project
 

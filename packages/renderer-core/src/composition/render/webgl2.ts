@@ -1,3 +1,10 @@
+import {
+  linearBlendShader,
+  linearShaderControls,
+  linearTransferBytes,
+  LINEAR_LERP_SHADER,
+} from "./linear-color.ts";
+import { blurPadding } from "./webgl-blur-padding.ts";
 import { accumulateWebglExposure } from "./webgl-exposure.ts";
 import { blurKernelLength } from "./webgl-blur-kernel.ts";
 import { WebglPaint } from "./webgl-paint.ts";
@@ -25,7 +32,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.42.1" as const;
+  "composition-webgl2-0.54.2" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -69,6 +76,7 @@ export function createWebgl2Backend(
   const device = new WebglDevice(canvas);
   const raster = createCanvas2dBackend({
     ...options,
+    colorSpace: "srgb",
     poolByteLimit: 128 * 1024 * 1024,
   });
   const target = device.surface(canvas.width, canvas.height, false, true, true);
@@ -117,6 +125,22 @@ export function createWebgl2Backend(
     device.release(surface);
   });
 
+  let linear = options.colorSpace === "linear-srgb";
+  let transfer: WebglSurface | undefined;
+  function transferSurface() {
+    if (!transfer) {
+      const table = device.surface(256, 256);
+      try {
+        device.uploadBytes(table, linearTransferBytes());
+        transfer = table;
+      } catch (error) {
+        device.release(table);
+        throw error;
+      }
+    }
+    return transfer;
+  }
+
   function readSurface(surface: WebglSurface) {
     const region = bounds.read(device, surface);
     if (region) return region;
@@ -161,7 +185,11 @@ export function createWebgl2Backend(
     primitive = false,
     painted?: Bounds,
   ) {
-    if (primitive && mode === "normal") {
+    if (linear) {
+      replace(dst, linearBlendShader(mode), [src, dst, transferSurface()], {
+        opacity,
+      });
+    } else if (primitive && mode === "normal") {
       replace(dst, blendShader(mode, true), [src, dst], { opacity });
     } else if (mode === "normal" || mode === "add") {
       gl.enable(gl.BLEND);
@@ -203,7 +231,7 @@ export function createWebgl2Backend(
 
   function placed(
     src: WebglSurface,
-    dst: WebglSurface,
+    dst: Pick<WebglSurface, "width" | "height">,
     matrix: Matrix,
     clips: ClipRect[],
     transforms?: Matrix[],
@@ -262,10 +290,85 @@ export function createWebgl2Backend(
     }
   }
 
+  function blurredPlacement(
+    src: WebglSurface,
+    dst: WebglSurface,
+    matrix: Matrix,
+    transforms: Matrix[] | undefined,
+    sigma: number,
+  ) {
+    const transform = new DOMMatrix();
+    if (transforms)
+      for (const local of transforms)
+        transform.multiplySelf(new DOMMatrix(local));
+    else transform.multiplySelf(new DOMMatrix(matrix));
+    const corners = [
+      [0, 0],
+      [src.width, 0],
+      [0, src.height],
+      [src.width, src.height],
+    ].map(([x, y]) => transform.transformPoint(new DOMPoint(x, y)));
+    const padding = blurPadding(
+      dst.width,
+      dst.height,
+      {
+        left: Math.min(...corners.map((p) => p.x)),
+        top: Math.min(...corners.map((p) => p.y)),
+        right: Math.max(...corners.map((p) => p.x)),
+        bottom: Math.max(...corners.map((p) => p.y)),
+      },
+      Math.ceil((blurKernelLength(sigma) - 1) / 2) + 1,
+      gl.getParameter(gl.MAX_TEXTURE_SIZE) as number,
+    );
+    const shift: Matrix = [1, 0, 0, 1, padding.left, padding.top];
+    const chain = [shift, ...(transforms ?? [matrix])];
+    const shifted: Matrix = [
+      matrix[0],
+      matrix[1],
+      matrix[2],
+      matrix[3],
+      matrix[4] + padding.left,
+      matrix[5] + padding.top,
+    ];
+    const padded = padding.width !== dst.width || padding.height !== dst.height;
+    const source = padded
+      ? placed(src, padding, shifted, [], chain)
+      : placed(src, dst, matrix, [], transforms);
+    let transferred = false;
+    try {
+      effects.blur(source, sigma);
+      if (!padded) {
+        transferred = true;
+        return source;
+      }
+      const output = device.surface(dst.width, dst.height);
+      try {
+        device.pass(
+          "uniform vec2 offset; void main(){pixel=texelFetch(source,ivec2(gl_FragCoord.xy)+ivec2(offset),0);}",
+          output,
+          [source],
+          { offset: [padding.left, padding.top] },
+        );
+        return output;
+      } catch (error) {
+        device.release(output);
+        throw error;
+      }
+    } finally {
+      if (!transferred) device.release(source);
+    }
+  }
+
   const backend: Webgl2Backend = {
     version: COMPOSITION_WEBGL_RENDERER_VERSION,
     frameKey: (root) => keys.of(root),
     beginFrame(root) {
+      const next = (root.colorSpace ?? options.colorSpace) === "linear-srgb";
+      if (next !== linear) {
+        isolates.dispose();
+        damage.reset();
+      }
+      linear = next;
       renderingFrame = true;
       device.setFrameClip(exposure ? undefined : damage.next(root));
     },
@@ -275,7 +378,61 @@ export function createWebgl2Backend(
       if (!completed) damage.reset();
     },
     renderIsolate: (op, like, draw) => isolates.render(op, like, draw),
-    drawVectors: (dst, ops) => bounds.include(dst, vectors.draw(dst, ops)),
+    drawVectors: (dst, ops) => {
+      if (!linear) {
+        bounds.include(dst, vectors.draw(dst, ops));
+        return;
+      }
+      for (const op of ops) {
+        const content = op.content;
+        if (content.type === "solid")
+          backend.fillRect(
+            dst,
+            op.matrix,
+            content.width,
+            content.height,
+            content.color,
+            op.opacity,
+            op.blend,
+            op.clips,
+            op.transforms,
+            op.paintBlur,
+          );
+        else if (content.type === "text")
+          backend.drawText(
+            dst,
+            content,
+            op.matrix,
+            op.opacity,
+            op.blend,
+            op.clips,
+            op.transforms,
+            op.paintBlur,
+          );
+        else if (content.type === "shape")
+          backend.drawShape(
+            dst,
+            content,
+            op.matrix,
+            op.opacity,
+            op.blend,
+            op.clips,
+            op.transforms,
+            op.paintBlur,
+          );
+        else
+          backend.drawProvider(
+            dst,
+            content,
+            op.matrix,
+            op.opacity,
+            op.blend,
+            op.clips,
+            op.transforms,
+            op.paintBlur,
+          );
+      }
+    },
     target,
     get allocated() {
       return device.allocated;
@@ -334,6 +491,22 @@ export function createWebgl2Backend(
     // Keep a vector batch together: raster coverage rounds each overlapping fill.
     // Splitting it into separately quantized uploads changes repeated AA edges.
     fillRects(dst, ops) {
+      if (linear) {
+        for (const op of ops)
+          backend.fillRect(
+            dst,
+            op.matrix,
+            op.content.width,
+            op.content.height,
+            op.content.color,
+            op.opacity,
+            op.blend,
+            op.clips,
+            op.transforms,
+            op.paintBlur,
+          );
+        return;
+      }
       for (const op of ops)
         bounds.draw(dst, op.matrix, op.content.width, op.content.height);
       draw(dst, "normal", (pixels) => raster.fillRects!(pixels, ops));
@@ -351,6 +524,7 @@ export function createWebgl2Backend(
       if (paintBlur) bounds.full(dst);
       else bounds.draw(dst, matrix, content.width, content.height);
       if (
+        !linear &&
         !paintBlur &&
         mode === "normal" &&
         (pngImages.draw(dst, content, matrix, opacity, clips, transforms) ||
@@ -473,9 +647,14 @@ export function createWebgl2Backend(
       if (paintBlur) bounds.full(dst);
       else bounds.composite(src, dst, matrix);
       if (paintBlur) {
-        const source = placed(src, dst, matrix, [], transforms);
+        const source = blurredPlacement(
+          src,
+          dst,
+          matrix,
+          transforms,
+          paintBlur,
+        );
         try {
-          effects.blur(source, paintBlur);
           if (clips.length) {
             const pixels = raster.createSurface(dst.width, dst.height);
             const coverage = device.surface(dst.width, dst.height);
@@ -526,17 +705,18 @@ export function createWebgl2Backend(
         }
       }
     },
-    applyEffects: (target, stack) => {
-      effects.apply(target, stack);
+    applyEffects: (target, stack, layers) => {
+      effects.apply(target, stack, layers);
     },
     applyMask(dst, masks) {
       if (dst.opaque) bounds.full(dst);
-      const maximum = Math.min(
-        device.gl.getParameter(device.gl.MAX_TEXTURE_SIZE) as number,
-        8192,
-      );
-      if (
-        masks.some((mask) => {
+      const combined = device.surface(dst.width, dst.height);
+      const coverage = device.surface(dst.width, dst.height);
+      const pixels = raster.createSurface(dst.width, dst.height);
+      try {
+        if (masks[0]?.mode === "subtract" || masks[0]?.mode === "intersect")
+          device.clear(combined, [1, 1, 1, 1]);
+        for (const mask of masks) {
           const sigma =
             (mask.feather / 2) *
             Math.sqrt(
@@ -545,51 +725,20 @@ export function createWebgl2Backend(
                   mask.matrix[1] * mask.matrix[2],
               ),
             );
-          return blurKernelLength(sigma) > maximum;
-        })
-      ) {
-        // Filtering and mask opacity round together in Canvas. Preserve that
-        // combined operation when a transformed feather exceeds GPU storage.
-        const pixels = raster.createSurface(dst.width, dst.height, "software");
-        const coverage = device.surface(dst.width, dst.height);
-        try {
-          raster.clear(pixels, [1, 1, 1, 1]);
-          raster.applyMask(pixels, masks);
-          device.upload(coverage, pixels.canvas);
-          replace(
-            dst,
-            "void main() { pixel=bytes(texture(source,uv)*texture(backdrop,uv).a); }",
-            [dst, coverage],
-          );
-        } finally {
-          raster.releaseSurface(pixels);
-          device.release(coverage);
-        }
-        return;
-      }
-      const combined = device.surface(dst.width, dst.height);
-      const coverage = device.surface(dst.width, dst.height);
-      const pixels = raster.createSurface(dst.width, dst.height);
-      try {
-        if (masks[0]?.mode === "subtract" || masks[0]?.mode === "intersect")
-          device.clear(combined, [1, 1, 1, 1]);
-        for (const mask of masks) {
+          // Preserve the raster filter's combined opacity/blur rounding when a
+          // transformed feather enters the rescaled Gaussian domain.
+          const bakedOpacity = sigma > 135;
           raster.clear(pixels, [1, 1, 1, 1]);
           raster.applyMask(pixels, [
-            { ...mask, mode: "intersect", opacity: 1, feather: 0 },
+            {
+              ...mask,
+              mode: "intersect",
+              opacity: bakedOpacity ? mask.opacity : 1,
+              feather: 0,
+            },
           ]);
           device.upload(coverage, pixels.canvas);
-          if (mask.feather > 0)
-            effects.blur(
-              coverage,
-              (mask.feather / 2) *
-                Math.sqrt(
-                  Math.abs(
-                    mask.matrix[0] * mask.matrix[3] -
-                      mask.matrix[1] * mask.matrix[2],
-                  ),
-                ),
-            );
+          if (mask.feather > 0) effects.blur(coverage, sigma);
           const formula =
             mask.mode === "add"
               ? "s+d*(1.0-s.a)"
@@ -602,7 +751,7 @@ export function createWebgl2Backend(
             combined,
             `uniform float opacity; void main() {vec4 s=bytes(texture(source,uv)*opacity),d=texture(backdrop,uv);pixel=bytes(${formula});}`,
             [coverage, combined],
-            { opacity: mask.opacity },
+            { opacity: bakedOpacity ? 1 : mask.opacity },
           );
         }
         replace(
@@ -632,6 +781,15 @@ export function createWebgl2Backend(
     },
     lerp(dst, src, coverage, opacity) {
       bounds.include(dst, bounds.snapshot(src));
+      if (linear) {
+        replace(
+          dst,
+          LINEAR_LERP_SHADER,
+          [src, dst, coverage, transferSurface()],
+          { opacity },
+        );
+        return;
+      }
       replace(
         dst,
         `uniform float opacity;
@@ -655,14 +813,41 @@ export function createWebgl2Backend(
       let background: number | undefined;
       try {
         exposure = true;
-        accumulateWebglExposure(device, dst, count, (i) => {
+        const renderSample = (i: number) => {
           render(i);
           if (i === 0) background = bounds.clearColor(dst);
           else if (background !== bounds.clearColor(dst)) bounds.full(dst);
           bounds.include(dst, painted);
           painted = bounds.snapshot(dst);
           return { background: bounds.exactClearColor(dst), painted };
-        });
+        };
+        if (!linear) {
+          accumulateWebglExposure(device, dst, count, renderSample);
+        } else {
+          const sum = device.surface(dst.width, dst.height, true);
+          let next: WebglSurface | undefined;
+          try {
+            next = device.surface(dst.width, dst.height, true);
+            for (let i = 0; i < count; i++) {
+              renderSample(i);
+              device.pass(
+                `${linearShaderControls()} void main(){pixel=texture(backdrop,uv)+vec4(linearWords(stored(texture(source,uv))));}`,
+                next,
+                [dst, sum, transferSurface()],
+              );
+              device.swap(sum, next);
+            }
+            device.pass(
+              `${linearShaderControls("backdrop")} uniform float count; void main(){uvec4 sums=uvec4(texture(source,uv)),words=uvec4(0u);for(int c=0;c<4;c++)words[c]=roundedDivide(sums[c],uint(count));pixel=vec4(encodedWords(words))/255.0;}`,
+              dst,
+              [sum, transferSurface()],
+              { count },
+            );
+          } finally {
+            device.release(sum);
+            if (next) device.release(next);
+          }
+        }
       } finally {
         exposure = false;
         damage.reset();
