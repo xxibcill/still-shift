@@ -70,10 +70,13 @@ still hold before relying on them.
 
 - **CE8-L-F preparation (2026-10-06):** isolated branch
   `codex/composition-ce8lf-prototype` from CE7 `0e48388`. Candidate flat-alpha
-  shadow specification, CPU/geometry oracle and isolated shader pass 12 analytic
+  shadow specification, CPU/geometry oracle and isolated shader pass 14 analytic
   tests, 96 frozen poses, independent repeats and 12 hardware cases exactly.
   PR #39's review fixes allow a receiver self entry while retaining duplicate-caster
   rejection, and reject float32-ill-conditioned bases before CPU/GPU rendering.
+  The 2026-10-07 conditioning-margin repair rejects nonzero-determinant inaccurate
+  shears; five supported near-limit 64² alpha controls pass both profiles and
+  independent software repeats within the unchanged one-byte tolerance.
   Toolchain/static checks pass;
   [PR #39](https://github.com/xxibcill/still-shift/pull/39) is open and attached.
   Preparation is complete; CE8/CE8-L and owner policy/budget decisions precede
@@ -81,7 +84,8 @@ still hold before relying on them.
   [Specification](./composition-ce8lf-cast-shadow-spec.md),
   [preparation evidence](./composition-ce8lf-results.json),
   [self-entry fix evidence](./pr-39-self-entry-fix-results.json),
-  [Gram conditioning fix evidence](./pr-39-gram-fix-results.json).
+  [Gram conditioning fix evidence](./pr-39-gram-fix-results.json),
+  [conditioning-margin fix evidence](./pr-39-conditioning-margin-fix-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -597,6 +601,22 @@ _Last updated 2026-10-07 by Codex for PR #39 CE7 base refresh; both histories re
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — PR #39 conservative shadow-plane conditioning margin
+
+- **Agent / branch:** Codex on isolated `codex/pr39-conditioning-fix`, from `0a11372`.
+- **Finding:** [P2 inaccurate accepted shears](https://github.com/xxibcill/still-shift/pull/39#discussion_r4203797977)
+  reproduced 155-byte pinned / 140-byte hardware errors; an interior pixel differs by 30 bytes.
+- **Done:** raise the shared float32 Gram margin to `1e-2`, reject the reported
+  nonzero-determinant shear and retain five supported near-limit/full-resolution controls.
+- **Results:** regression failed before repair; 14 analytic tests, pinned toolchain,
+  build, schema, boundaries and focused lint/format pass. All 96 frozen poses,
+  288 seek draws, 96 independent repeats, 12 hardware probes and maximum inputs
+  remain exact. Supported-shear controls pass all three profiles within one byte.
+- **Delivery:** one finding commit and one final normal push to the existing PR branch.
+- **Open / next:** owner review/merge; full repository/native/export acceptance,
+  production precision and owner quality/budget choices remain deferred. Actions stay disabled.
+- **Records:** [fix evidence](./pr-39-conditioning-margin-fix-results.json).
 
 ### 2026-10-07 — Resolve PR #40 against current CE5
 

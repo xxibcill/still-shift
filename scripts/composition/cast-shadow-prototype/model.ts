@@ -6,7 +6,7 @@ export const LIMITS = {
   coordinate: 1_000_000,
   bias: 0.001,
   angularEpsilon: 1e-6,
-  basisConditionEpsilon: 1e-6,
+  basisConditionEpsilon: 1e-2,
 } as const;
 export type Vec3 = [number, number, number];
 export type Alpha = { width: number; height: number; pixels: number[] };
@@ -130,7 +130,8 @@ export function validateExperiment(scene: Experiment): void {
       dot(p.v, p.v) === 0
     )
       fail("degenerate plane");
-    // Match float32 Gram arithmetic with margin for differing GPU dot reductions.
+    // A nonzero float32 determinant alone does not bound cancellation in the UV solve.
+    // Reserve a conservative conditioning margin for the 64-texel alpha rasters.
     const floatDot = (a: Vec3, b: Vec3) =>
       a.reduce(
         (sum, value, index) =>

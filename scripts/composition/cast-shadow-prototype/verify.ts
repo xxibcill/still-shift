@@ -12,7 +12,12 @@ import {
 import { SIDE, referenceCases, referencePixels } from "./reference.ts";
 import { SHADOW_MODEL } from "./model.ts";
 import { drawVisibility, shaderInput } from "./shader.ts";
-import { maximumInputFixture, nearCollinearFixture } from "./fixtures.ts";
+import {
+  conditionedShearFixtures,
+  maximumInputFixture,
+  nearCollinearFixture,
+  unstableShearFixture,
+} from "./fixtures.ts";
 
 const hash = (pixels: number[] | Buffer) =>
   createHash("sha256").update(Buffer.from(pixels)).digest("hex");
@@ -64,12 +69,30 @@ assert.equal(new Set(orders.random).size, cases.length);
 const pinnedHashes = new Map<string, { rgba: string; png: string }>();
 const maximumScene = maximumInputFixture();
 const maximumReference = referencePixels(maximumScene);
-const nearCollinearScene = nearCollinearFixture();
-assert.throws(
-  () => shaderInput(nearCollinearScene, SIDE),
-  /shadow-prototype-input: ill-conditioned plane/,
-  "near-collinear input must fail before any GPU draw",
-);
+const controlCases = [
+  { id: "maximum-input", scene: maximumScene, pixels: maximumReference },
+  ...conditionedShearFixtures().map(({ id, scene }) => ({
+    id,
+    scene,
+    pixels: referencePixels(scene),
+  })),
+];
+const rejectedInputs = [
+  { id: "near-collinear", scene: nearCollinearFixture() },
+  { id: "unstable-shear", scene: unstableShearFixture() },
+].map(({ id, scene }) => {
+  assert.throws(
+    () => shaderInput(scene, SIDE),
+    /shadow-prototype-input: ill-conditioned plane/,
+    `${id} must fail before any GPU draw`,
+  );
+  return {
+    id,
+    hash: hash(Buffer.from(JSON.stringify(scene))),
+    diagnostic: "shadow-prototype-input: ill-conditioned plane",
+    result: "pass",
+  };
+});
 
 async function probe(profile: RenderBrowserProfile, repeat: boolean) {
   const browser = await launchRenderBrowser({ profile });
@@ -151,27 +174,31 @@ async function probe(profile: RenderBrowserProfile, repeat: boolean) {
           );
         }
       }
-    const maximum = await page.evaluate(
-      drawVisibility,
-      shaderInput(maximumScene, SIDE),
-    );
-    const maximumDelta = Math.max(
-      ...maximum.pixels.map((value, index) =>
-        Math.abs(value - maximumReference[index]!),
-      ),
-    );
-    assert.ok(
-      maximumDelta <= 1,
-      `maximum-input CPU delta ${maximumDelta} exceeds 1`,
-    );
-    const maximumDigest = {
-      rgba: hash(maximum.pixels),
-      png: hash(Buffer.from(maximum.png.split(",")[1]!, "base64")),
-    };
-    if (profile === "pinned") {
-      if (repeat)
-        assert.deepEqual(maximumDigest, pinnedHashes.get("maximum-input"));
-      else pinnedHashes.set("maximum-input", maximumDigest);
+    const controls: { id: string; inputHash: string; maxDelta: number }[] = [];
+    for (const { id, scene, pixels } of controlCases) {
+      const result = await page.evaluate(
+        drawVisibility,
+        shaderInput(scene, SIDE),
+      );
+      const delta = Math.max(
+        ...result.pixels.map((value, index) =>
+          Math.abs(value - pixels[index]!),
+        ),
+      );
+      assert.ok(delta <= 1, `${id} CPU delta ${delta} exceeds 1`);
+      const digest = {
+        rgba: hash(result.pixels),
+        png: hash(Buffer.from(result.png.split(",")[1]!, "base64")),
+      };
+      if (profile === "pinned") {
+        if (repeat) assert.deepEqual(digest, pinnedHashes.get(id));
+        else pinnedHashes.set(id, digest);
+      }
+      controls.push({
+        id,
+        inputHash: hash(Buffer.from(JSON.stringify(scene))),
+        maxDelta: delta,
+      });
     }
     return {
       environment,
@@ -181,8 +208,9 @@ async function probe(profile: RenderBrowserProfile, repeat: boolean) {
         casters: 8,
         samples: 16,
         textureSide: 64,
-        maxDelta: maximumDelta,
+        maxDelta: controls[0]!.maxDelta,
       },
+      conditionedShears: controls.slice(1),
       result: "pass",
       repeat,
     };
@@ -221,11 +249,7 @@ const report = {
   sourceHashes: sources,
   inputHash: hash(Buffer.from(JSON.stringify(cases))),
   maximumInputHash: hash(Buffer.from(JSON.stringify(maximumScene))),
-  rejectedNearCollinearInput: {
-    hash: hash(Buffer.from(JSON.stringify(nearCollinearScene))),
-    diagnostic: "shadow-prototype-input: ill-conditioned plane",
-    result: "pass",
-  },
+  rejectedInputs,
   referenceCount: references.length,
   toleranceBytes: 1,
   pinned,

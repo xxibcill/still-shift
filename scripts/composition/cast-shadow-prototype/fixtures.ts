@@ -131,3 +131,37 @@ export function nearCollinearFixture(): Experiment {
   scene.casters[0]!.v = [8, 0.0008, 0];
   return scene;
 }
+
+/** A nonzero float32 Gram determinant can still produce large interior UV errors. */
+export function unstableShearFixture(): Experiment {
+  const scene = experiment();
+  scene.receiver.origin = [0, 0, 20];
+  scene.receiver.u = [(32 * 64) / 65, 0, 0];
+  scene.receiver.v = [0, (1.6 * 0.0081 * 64) / 65, 0];
+  scene.casters[0]!.origin = [0, 0, 10];
+  scene.casters[0]!.u = [8, 0, 0];
+  scene.casters[0]!.v = [8, 0.0081, 0];
+  return scene;
+}
+
+/** Supported near-limit shears, with full-resolution alpha and interior sampling. */
+export function conditionedShearFixtures(): {
+  id: string;
+  scene: Experiment;
+}[] {
+  return [0.805, 0.82, 1, 2, 8].map((shear) => {
+    const scene = experiment();
+    scene.receiver.origin = [0, 0, 20];
+    scene.receiver.u = [31.51, 0, 0];
+    scene.receiver.v = [0, 1.57 * shear, 0];
+    scene.casters[0]!.origin = [0, 0, 10];
+    scene.casters[0]!.u = [8, 0, 0];
+    scene.casters[0]!.v = [8, shear, 0];
+    scene.casters[0]!.alpha = {
+      width: 64,
+      height: 64,
+      pixels: Array.from({ length: 4096 }, (_, i) => (i % 3 === 0 ? 0 : 255)),
+    };
+    return { id: `conditioned-shear-${shear}`, scene };
+  });
+}

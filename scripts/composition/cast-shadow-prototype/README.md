@@ -15,7 +15,9 @@ CE8-L-F integration after CE8 and CE8-L. Read the
 - `verify.ts`: frozen CPU references, software forward/reverse/random seeks,
   independent software pixel/PNG repeats and one hardware pose per fixture. A
   separate 8-caster/16-sample/64²-alpha smoke probe checks the maximum input size.
-  A near-collinear regression must fail preflight before constructing shader input.
+  Near-collinear and inaccurate nonzero-determinant shears must fail preflight
+  before constructing shader input. Five supported near-limit/full-resolution
+  shear controls are compared on both profiles and repeated software.
 
 Run from the repository root with its own installed dependencies:
 

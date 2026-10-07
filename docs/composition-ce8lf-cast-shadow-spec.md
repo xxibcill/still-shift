@@ -73,7 +73,10 @@ unit or orthogonal bases. Singular/nearly collinear bases produce a diagnostic;
 animated degeneracy must yield a deterministic empty caster/receiver with a
 diagnostic, never NaN. The prototype rejects geometrically degenerate input and
 float32-ill-conditioned bases at preflight: its float32 Gram determinant must
-exceed `1e-6 * (U·U) * (V·V)`. Shader input construction runs the same validation
+exceed `1e-2 * (U·U) * (V·V)`. A merely nonzero determinant is insufficient:
+near-parallel bases can amplify float32 cancellation into visible alpha errors.
+The conservative bound retains supported shears tested with 64² alpha rasters.
+Shader input construction runs the same validation
 before any draw; rejected bases report `shadow-prototype-input: ill-conditioned plane`.
 
 The candidate ±1e6 coordinate bound does not prove ≤0.001-pixel GPU precision.

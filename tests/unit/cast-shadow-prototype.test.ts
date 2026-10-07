@@ -9,9 +9,11 @@ import {
   type Experiment,
 } from "../../scripts/composition/cast-shadow-prototype/model.ts";
 import {
+  conditionedShearFixtures,
   experiment,
   nearCollinearFixture,
   plane,
+  unstableShearFixture,
 } from "../../scripts/composition/cast-shadow-prototype/fixtures.ts";
 
 import {
@@ -86,10 +88,27 @@ describe("isolated cast-shadow candidate", () => {
     for (const render of [validateExperiment, referencePixels, shaderInput])
       expect(() => render(scene, 8)).toThrow("ill-conditioned plane");
     // A less parallel shear remains supported; an exactly collinear basis does not.
-    scene.casters[0]!.v = [8, 0.08, 0];
+    scene.casters[0]!.v = [8, 1, 0];
     expect(() => shaderInput(scene, 8)).not.toThrow();
     scene.casters[0]!.v = [8, 0, 0];
     expect(() => shaderInput(scene, 8)).toThrow("degenerate plane");
+  });
+
+  it("rejects inaccurate shears even when their float32 determinant is nonzero", () => {
+    const scene = unstableShearFixture();
+    for (const shear of [0.0081, 0.009, 0.01, 0.08]) {
+      scene.casters[0]!.v = [8, shear, 0];
+      for (const render of [validateExperiment, referencePixels, shaderInput])
+        expect(() => render(scene, 64)).toThrow("ill-conditioned plane");
+    }
+  });
+
+  it("retains well-conditioned shears at the supported limit", () => {
+    for (const { scene } of conditionedShearFixtures())
+      expect(() => shaderInput(scene, 64)).not.toThrow();
+    const scene = conditionedShearFixtures()[0]!.scene;
+    scene.casters[0]!.v = [8, 0.79, 0];
+    expect(() => shaderInput(scene, 64)).toThrow("ill-conditioned plane");
   });
 
   it("isolates instance scopes and rejects self, flags and disabled shadow changes", () => {
