@@ -5,8 +5,10 @@ import {
   releaseRenderPixels,
   renderMemory,
 } from "../../managed-memory-context.ts";
-import { sha256Hex } from "../../browser-checksum.ts";
-import { hashRenderMetadata } from "../../managed-metadata-hash.ts";
+import {
+  hashRenderMetadata,
+  hashRenderPixels,
+} from "../../managed-metadata-hash.ts";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
@@ -247,12 +249,20 @@ export class CompositionSourceCache {
       if (claim.kind === "hit") {
         if (
           claim.bytes.byteLength !== bytes ||
-          claim.bytes.buffer.byteLength !== bytes ||
-          "sha256:" + (await sha256Hex(claim.bytes.buffer)) !== claim.checksum
+          claim.bytes.buffer.byteLength !== bytes
         )
           throw Error(
             "Composition preparation pixels differ from their checksum or dimensions",
           );
+        const checksum = await hashRenderPixels(claim.bytes.buffer);
+        try {
+          if (checksum.value !== claim.checksum)
+            throw Error(
+              "Composition preparation pixels differ from their checksum or dimensions",
+            );
+        } finally {
+          checksum.release();
+        }
         this.assertOpen();
         this.resize(undefined, undefined, this.state.active.size + 1);
         const start = performance.now();
@@ -285,14 +295,18 @@ export class CompositionSourceCache {
         );
         counts.paintAndReadbackMs += performance.now() - start;
         counts.paints++;
-        const checksum = "sha256:" + (await sha256Hex(pixels.buffer));
-        this.assertOpen();
-        await this.options.exchange.publish(
-          claim.token,
-          { encoding: "rgba8-straight", bytes: pixels },
-          checksum,
-        );
-        releaseRenderPixels(pixels);
+        const checksum = await hashRenderPixels(pixels.buffer);
+        try {
+          this.assertOpen();
+          await this.options.exchange.publish(
+            claim.token,
+            { encoding: "rgba8-straight", bytes: pixels },
+            checksum.value!,
+          );
+          releaseRenderPixels(pixels);
+        } finally {
+          checksum.release();
+        }
       }
       this.assertOpen();
       if (canvas.width !== request.width || canvas.height !== request.height)

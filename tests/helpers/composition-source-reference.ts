@@ -1,4 +1,5 @@
 import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
+import { releaseRenderMetadata } from "../../packages/renderer-core/src/managed-metadata.ts";
 import {
   withManagedMemory,
   createRenderCanvas,
@@ -354,18 +355,23 @@ export async function checkSourcePreparationFailures() {
       throw Error(`Source ${failure} violated preparation admission`);
     if (canvas && (canvas.width !== 0 || canvas.height !== 0))
       throw Error(`Source ${failure} retained its failed producer canvas`);
-    reports.push({
-      failure,
-      claims,
-      paints,
-      restores,
-      publishes,
-      originalReason:
-        failure.startsWith("abort-") ||
-        failure === "null-abort" ||
-        failure === "claim-error",
-      retainedCanvasBytes: sources.statistics.retainedCanvasBytes,
-    });
+    const statistics = sources.statistics;
+    try {
+      reports.push({
+        failure,
+        claims,
+        paints,
+        restores,
+        publishes,
+        originalReason:
+          failure.startsWith("abort-") ||
+          failure === "null-abort" ||
+          failure === "claim-error",
+        retainedCanvasBytes: statistics.retainedCanvasBytes,
+      });
+    } finally {
+      releaseRenderMetadata(statistics);
+    }
   }
   return reports;
 }
@@ -378,6 +384,8 @@ export async function checkManagedSourceFailures() {
       checkSourcePreparationFailures,
     );
     const before = memory.statistics;
+    if (before.current.metadata !== 0)
+      throw Error("Managed source failure cases retained unused metadata");
     memory.dispose();
     return { reports, before, after: memory.statistics };
   } finally {

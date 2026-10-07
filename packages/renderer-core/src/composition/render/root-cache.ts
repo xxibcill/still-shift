@@ -1,7 +1,9 @@
 import { renderMembers } from "./statistics.ts";
 import { compositionRootPrefix } from "./prefix.ts";
-import { sha256Hex } from "../../browser-checksum.ts";
-import { hashRenderMetadata } from "../../managed-metadata-hash.ts";
+import {
+  hashRenderMetadata,
+  hashRenderPixels,
+} from "../../managed-metadata-hash.ts";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
@@ -319,12 +321,20 @@ export class CompositionRootCache<S extends Surface> {
         if (
           claim.bytes.byteLength !== bytes ||
           claim.bytes.byteOffset !== 0 ||
-          claim.bytes.buffer.byteLength !== bytes ||
-          "sha256:" + (await sha256Hex(claim.bytes.buffer)) !== claim.checksum
+          claim.bytes.buffer.byteLength !== bytes
         )
           throw Error(
             "Composition root pixels differ from their checksum or dimensions",
           );
+        const checksum = await hashRenderPixels(claim.bytes.buffer);
+        try {
+          if (checksum.value !== claim.checksum)
+            throw Error(
+              "Composition root pixels differ from their checksum or dimensions",
+            );
+        } finally {
+          checksum.release();
+        }
         this.assertOpen();
         pixels = allocateRenderMetadata(
           64,
@@ -358,10 +368,18 @@ export class CompositionRootCache<S extends Surface> {
           );
         counts.paintAndReadbackMs += performance.now() - start;
         counts.paints++;
-        const checksum = "sha256:" + (await sha256Hex(pixels.bytes.buffer));
-        this.assertOpen();
-        await this.options.exchange.publish(claim.token, pixels, checksum);
-        this.assertOpen();
+        const checksum = await hashRenderPixels(pixels.bytes.buffer);
+        try {
+          this.assertOpen();
+          await this.options.exchange.publish(
+            claim.token,
+            pixels,
+            checksum.value!,
+          );
+          this.assertOpen();
+        } finally {
+          checksum.release();
+        }
       }
       this.resize(this.state.entries.size + 1);
       let entry: Entry | undefined;

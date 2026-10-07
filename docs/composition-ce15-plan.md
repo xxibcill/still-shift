@@ -549,6 +549,32 @@ Provider/WebGL keys, evaluated graph/font/checksum/ledger/Node metadata, actual
 production/aggregate admission, speed and full-gate acceptance remain pending.
 [Evidence](./composition-ce15-surface-metadata-results.json).
 
+## Accepted cache pixel checksum metadata checkpoint — 2026-10-08
+
+Source/root/independent-surface checksums now reserve actual native digest backing,
+original hex-building capacity and final SHA256 text before native hashing. Pixel
+inputs keep their existing owners and require no new input allocation. Digest
+backing detaches after native completion; result text remains admitted through
+comparison or complete publish acknowledgement, then releases. Dimension guards,
+native digest/hex operators, abort points and original failure reasons stay intact.
+Review expanded the temporary arena to 4 KiB, explicitly covering both arrays and
+all conservative intermediate string controls. The first native audit exposed
+unused owned snapshots accumulating in a protected-failure fixture; immediate
+release after its numeric read fixes that leak while retaining its 8 KiB quota,
+original reasons/counts and a new before-disposal zero-unused-metadata assertion.
+
+Build, lint, boundaries and 118 focused tests pass. Native SHA256 output matches
+an independent Node oracle; borrowed input backing survives quota/null/duplicate-
+adoption failures. All 144 audit cases / 8,000 exact comparisons, original protected
+checksum/abort cases and 96 managed source/root/surface RPC snapshots pass. Original
+WebGL, 69 typography tests, 12 provider cases / 60 frames and eight fixtures pass.
+Glyph 1.389886× meets unchanged 1.5 maximum. All 64 exports preserve 768 complete
+bodies and frames against pushed `9d7cea9`.
+
+Other checksum text, provider/WebGL/graph/font/ledger/Node metadata, actual production/
+aggregate admission, speed and full-gate acceptance remain pending.
+[Evidence](./composition-ce15-checksum-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

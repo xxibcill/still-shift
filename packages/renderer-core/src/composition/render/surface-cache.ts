@@ -1,5 +1,7 @@
-import { sha256Hex } from "../../browser-checksum.ts";
-import { hashRenderMetadata } from "../../managed-metadata-hash.ts";
+import {
+  hashRenderMetadata,
+  hashRenderPixels,
+} from "../../managed-metadata-hash.ts";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
@@ -558,12 +560,20 @@ export class CompositionSurfaceCache<S extends Surface> {
         if (
           claim.bytes.byteOffset !== 0 ||
           claim.bytes.buffer.byteLength !== bytes ||
-          claim.bytes.byteLength !== bytes ||
-          "sha256:" + (await sha256Hex(claim.bytes.buffer)) !== claim.checksum
+          claim.bytes.byteLength !== bytes
         )
           throw Error(
             "Composition retained surface bytes differ from their checksum or dimensions",
           );
+        const checksum = await hashRenderPixels(claim.bytes.buffer);
+        try {
+          if (checksum.value !== claim.checksum)
+            throw Error(
+              "Composition retained surface bytes differ from their checksum or dimensions",
+            );
+        } finally {
+          checksum.release();
+        }
         this.assertOpen();
         this.peakTransferBytes = Math.max(this.peakTransferBytes, bytes);
         const pixels = allocateRenderMetadata(64, () => ({
@@ -610,11 +620,19 @@ export class CompositionSurfaceCache<S extends Surface> {
           );
         this.paintAndReadbackMs += performance.now() - start;
         this.peakTransferBytes = Math.max(this.peakTransferBytes, bytes);
-        const checksum = "sha256:" + (await sha256Hex(pixels.bytes.buffer));
-        this.assertOpen();
-        await this.options.exchange.publish(claim.token, pixels, checksum);
-        releaseRenderPixels(pixels.bytes);
-        this.assertOpen();
+        const checksum = await hashRenderPixels(pixels.bytes.buffer);
+        try {
+          this.assertOpen();
+          await this.options.exchange.publish(
+            claim.token,
+            pixels,
+            checksum.value!,
+          );
+          releaseRenderPixels(pixels.bytes);
+          this.assertOpen();
+        } finally {
+          checksum.release();
+        }
       } finally {
         this.seeding = undefined;
         releaseRenderMetadata(seed);

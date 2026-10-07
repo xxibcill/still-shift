@@ -54,11 +54,29 @@ function adoptBytes(
 export async function hashRenderMetadata(
   value: string,
 ): Promise<ManagedMetadataText> {
+  return hashRenderValue(value);
+}
+
+/** Pixel inputs keep their existing owner; only the native digest and result are new metadata. */
+export async function hashRenderPixels(
+  bytes: ArrayBuffer,
+): Promise<ManagedMetadataText> {
+  return hashRenderValue(bytes);
+}
+
+async function hashRenderValue(
+  value: string | ArrayBuffer,
+): Promise<ManagedMetadataText> {
   const memory = renderMemory();
   if (!memory)
     return {
       value:
-        "sha256:" + (await sha256Hex(new TextEncoder().encode(value).buffer)),
+        "sha256:" +
+        (await sha256Hex(
+          typeof value === "string"
+            ? new TextEncoder().encode(value).buffer
+            : value,
+        )),
       retain() {},
       release() {},
     };
@@ -73,14 +91,20 @@ export async function hashRenderMetadata(
     memory.adopt(record, output, () => {
       record.value = undefined;
     });
-    inputLease = memory.reserve("metadata", value.length * 3);
+    if (typeof value === "string")
+      inputLease = memory.reserve("metadata", value.length * 3);
     digestLease = memory.reserve("metadata", 32);
-    // Two 32-element arrays, the digest view, bounded hexadecimal intermediates,
-    // TextEncoder/control references and their headers fit this fixed 2KiB arena.
-    temporary = memory.reserve("metadata", 2048);
-    const input = new TextEncoder().encode(value).buffer;
-    adoptBytes(memory, input, inputLease);
-    inputLease.resize(input.byteLength);
+    // Two 32-slot arrays (576), at most 64 two-character string controls (2304),
+    // the view/encoder (128) and joined text (160) fit below this 4KiB allowance.
+    temporary = memory.reserve("metadata", 4096);
+    const input =
+      typeof value === "string"
+        ? new TextEncoder().encode(value).buffer
+        : value;
+    if (inputLease) {
+      adoptBytes(memory, input, inputLease);
+      inputLease.resize(input.byteLength);
+    }
     const digest = await crypto.subtle.digest("SHA-256", input);
     adoptBytes(memory, digest, digestLease);
     record.value =

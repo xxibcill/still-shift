@@ -150,7 +150,7 @@ it("releases traversal containers when a real graph dependency cycle rejects bef
     memory.dispose();
   });
 });
-it("denies insertion control capacity before restoring any claimed native surface", async () => {
+it("denies checksum or insertion metadata before restoring any claimed native surface", async () => {
   const { graph } = fixture();
   const bytes = new Uint8Array(16),
     checksum = "sha256:" + createHash("sha256").update(bytes).digest("hex");

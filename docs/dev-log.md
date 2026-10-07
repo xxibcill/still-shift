@@ -90,13 +90,14 @@ still hold before relying on them.
   Glyph 1.383989× meets unchanged 1.5×. Native capture/upload admission now passes
   70 tests, the complete audit, six native complete-body oracles, twelve failure
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
-  Owned submission/source/root/surface key/control/counter/snapshot metadata now
-  passes 114 focused tests, the complete audit, 22 native submission frames and 96
-  owned source/root/surface RPC snapshots with actual acknowledgement. Traversal,
-  seeding, dependency cycles and quota-before-restoration regressions pass. Original
-  WebGL/provider checks, 69 typography tests and 64 exports / 768 prior-exact bodies/
-  frames pass; glyph 1.343124× meets unchanged 1.5 maximum. Provider/WebGL/graph/font/
-  checksum/ledger-control/Node metadata, production admission, aggregate memory, the actual
+  Owned submission/source/root/surface keys, controls, snapshots and cache pixel
+  checksums now pass 118 focused tests, the complete audit, 22 native submission
+  frames and 96 owned RPC snapshots with actual acknowledgement. Native digest
+  capacity, borrowed inputs, original checksum/abort/null cases and cleanup pass.
+  Original WebGL/provider checks, 69 typography tests and 64 exports / 768 prior-
+  exact bodies/frames pass; glyph 1.389886× meets unchanged 1.5 maximum. Other checksum/
+  provider/WebGL/graph/font/ledger-control/Node metadata, production admission,
+  aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -330,6 +331,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 native cache pixel checksum metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `9d7cea9`.
+- **Done:** owned native digest/hex/result capacity through comparison or publish
+  acknowledgement, with borrowed input ownership and original operators preserved.
+- **Results:** build/lint/boundaries, 118 focused / 69 typography tests; complete
+  144-case / 8,000-frame audit, protected checksum/abort checks, 96 managed RPC
+  snapshots and original WebGL/provider/typography checks pass. All 64 exports /
+  768 bodies/frames match prior output; glyph 1.389886× meets unchanged 1.5 maximum.
+- **Review:** expanded intermediate capacity to 4 KiB; repaired unused fixture
+  snapshot accumulation with unchanged 8 KiB budget/errors, retaining the failed audit.
+- **Next:** other checksum/provider/WebGL/graph/font/ledger/Node metadata, production/
+  aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [checksum metadata evidence](./composition-ce15-checksum-metadata-results.json).
 
 ### 2026-10-08 — CE15 independent-surface metadata and native RPC lifetime
 
