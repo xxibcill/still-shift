@@ -162,11 +162,7 @@
           "savedRevision": 19,
           "starts": [
             {
-              "args": [
-                0.04533333333333334,
-                2.5,
-                5.5
-              ],
+              "args": [0.04533333333333334, 2.5, 5.5],
               "length": 384000,
               "rate": 48000,
               "channels": 2
@@ -471,11 +467,7 @@
         "burntInFrameNumbers": {
           "sourceRate": "30000/1001",
           "originalCount": 16,
-          "selectedOrdinals": [
-            0,
-            7,
-            15
-          ],
+          "selectedOrdinals": [0, 7, 15],
           "maxCodeError": 1,
           "relocationHit": true,
           "mappingChangeMiss": true
@@ -491,19 +483,13 @@
         },
         "sequence": {
           "firstFrame": 37,
-          "selectedOrdinals": [
-            0,
-            2
-          ],
+          "selectedOrdinals": [0, 2],
           "exactRgba8": true,
           "unselectedTamperRejected": true,
           "untaggedAuthorityExplicit": true
         },
         "cachePixelAndManifestTamperRejected": true,
-        "concurrentMissHit": [
-          false,
-          true
-        ],
+        "concurrentMissHit": [false, true],
         "cancelledStageAndPartialPublicationAbsent": true,
         "configuredLiveFrameAndCumulativeReservationRejected": true
       },
@@ -646,42 +632,12 @@
             "colorSpace": "srgb",
             "backend": "canvas2d",
             "pixels": [
-              [
-                128,
-                0,
-                127,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                0,
-                127,
-                255
-              ]
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
             ],
             "frameHashes": [
               "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
@@ -705,42 +661,12 @@
             "colorSpace": "srgb",
             "backend": "webgl2",
             "pixels": [
-              [
-                128,
-                0,
-                127,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                0,
-                127,
-                255
-              ]
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
             ],
             "frameHashes": [
               "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
@@ -764,42 +690,12 @@
             "colorSpace": "linear-srgb",
             "backend": "canvas2d",
             "pixels": [
-              [
-                188,
-                0,
-                187,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                188,
-                0,
-                187,
-                255
-              ]
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
             ],
             "frameHashes": [
               "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
@@ -823,42 +719,12 @@
             "colorSpace": "linear-srgb",
             "backend": "webgl2",
             "pixels": [
-              [
-                188,
-                0,
-                187,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                188,
-                0,
-                187,
-                255
-              ]
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
             ],
             "frameHashes": [
               "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
@@ -3286,31 +3152,19 @@
               "mode": "camera-position",
               "status": "passed",
               "dimensions": 2,
-              "checks": [
-                "XY tangent edit",
-                "undo/redo",
-                "lossless save"
-              ]
+              "checks": ["XY tangent edit", "undo/redo", "lossless save"]
             },
             {
               "mode": "camera-poi",
               "status": "passed",
               "dimensions": 2,
-              "checks": [
-                "XY tangent edit",
-                "undo/redo",
-                "lossless save"
-              ]
+              "checks": ["XY tangent edit", "undo/redo", "lossless save"]
             },
             {
               "mode": "spatial-position",
               "status": "passed",
               "dimensions": 2,
-              "checks": [
-                "XY tangent edit",
-                "undo/redo",
-                "lossless save"
-              ]
+              "checks": ["XY tangent edit", "undo/redo", "lossless save"]
             }
           ],
           "baseline": "exact"
@@ -3493,42 +3347,12 @@
             "colorSpace": "srgb",
             "backend": "canvas2d",
             "pixels": [
-              [
-                128,
-                0,
-                127,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                0,
-                127,
-                255
-              ]
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
             ],
             "frameHashes": [
               "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
@@ -3552,42 +3376,12 @@
             "colorSpace": "srgb",
             "backend": "webgl2",
             "pixels": [
-              [
-                128,
-                0,
-                127,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                0,
-                127,
-                255
-              ]
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
             ],
             "frameHashes": [
               "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
@@ -3611,42 +3405,12 @@
             "colorSpace": "linear-srgb",
             "backend": "canvas2d",
             "pixels": [
-              [
-                188,
-                0,
-                187,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                188,
-                0,
-                187,
-                255
-              ]
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
             ],
             "frameHashes": [
               "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
@@ -3670,42 +3434,12 @@
             "colorSpace": "linear-srgb",
             "backend": "webgl2",
             "pixels": [
-              [
-                188,
-                0,
-                187,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                188,
-                0,
-                187,
-                255
-              ]
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
             ],
             "frameHashes": [
               "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
@@ -3749,11 +3483,7 @@
             "source": "sequence",
             "backend": "canvas2d",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical"
@@ -3762,11 +3492,7 @@
             "source": "sequence",
             "backend": "webgl2",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical"
@@ -3775,11 +3501,7 @@
             "source": "video",
             "backend": "canvas2d",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical"
@@ -3788,11 +3510,7 @@
             "source": "video",
             "backend": "webgl2",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical"
@@ -3911,42 +3629,12 @@
             "colorSpace": "srgb",
             "backend": "canvas2d",
             "pixels": [
-              [
-                128,
-                0,
-                127,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                0,
-                127,
-                255
-              ]
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
             ],
             "frameHashes": [
               "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
@@ -3970,42 +3658,12 @@
             "colorSpace": "srgb",
             "backend": "webgl2",
             "pixels": [
-              [
-                128,
-                0,
-                127,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                0,
-                127,
-                255
-              ]
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
             ],
             "frameHashes": [
               "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
@@ -4029,42 +3687,12 @@
             "colorSpace": "linear-srgb",
             "backend": "canvas2d",
             "pixels": [
-              [
-                188,
-                0,
-                187,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                188,
-                0,
-                187,
-                255
-              ]
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
             ],
             "frameHashes": [
               "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
@@ -4088,42 +3716,12 @@
             "colorSpace": "linear-srgb",
             "backend": "webgl2",
             "pixels": [
-              [
-                188,
-                0,
-                187,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                188,
-                0,
-                187,
-                255
-              ]
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
             ],
             "frameHashes": [
               "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
@@ -4167,11 +3765,7 @@
             "source": "sequence",
             "backend": "canvas2d",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical"
@@ -4180,11 +3774,7 @@
             "source": "sequence",
             "backend": "webgl2",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical"
@@ -4193,11 +3783,7 @@
             "source": "video",
             "backend": "canvas2d",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical"
@@ -4206,11 +3792,7 @@
             "source": "video",
             "backend": "webgl2",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical"
@@ -4266,10 +3848,7 @@
             "readonlyBuilder": true
           },
           "render": {
-            "sources": [
-              "typescript",
-              "json"
-            ],
+            "sources": ["typescript", "json"],
             "frames": 8,
             "fps": 24,
             "byteIdentical": true
@@ -5170,42 +4749,12 @@
             "colorSpace": "srgb",
             "backend": "canvas2d",
             "pixels": [
-              [
-                128,
-                0,
-                127,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                0,
-                127,
-                255
-              ]
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
             ],
             "frameHashes": [
               "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
@@ -5229,42 +4778,12 @@
             "colorSpace": "srgb",
             "backend": "webgl2",
             "pixels": [
-              [
-                128,
-                0,
-                127,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                0,
-                127,
-                255
-              ]
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
             ],
             "frameHashes": [
               "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
@@ -5288,42 +4807,12 @@
             "colorSpace": "linear-srgb",
             "backend": "canvas2d",
             "pixels": [
-              [
-                188,
-                0,
-                187,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                188,
-                0,
-                187,
-                255
-              ]
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
             ],
             "frameHashes": [
               "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
@@ -5347,42 +4836,12 @@
             "colorSpace": "linear-srgb",
             "backend": "webgl2",
             "pixels": [
-              [
-                188,
-                0,
-                187,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                188,
-                0,
-                187,
-                255
-              ]
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
             ],
             "frameHashes": [
               "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
@@ -5426,11 +4885,7 @@
             "source": "sequence",
             "backend": "canvas2d",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical",
@@ -5444,11 +4899,7 @@
             "source": "sequence",
             "backend": "webgl2",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical",
@@ -5462,11 +4913,7 @@
             "source": "video",
             "backend": "canvas2d",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical",
@@ -5480,11 +4927,7 @@
             "source": "video",
             "backend": "webgl2",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical",
@@ -5660,42 +5103,12 @@
             "colorSpace": "srgb",
             "backend": "canvas2d",
             "pixels": [
-              [
-                128,
-                0,
-                127,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                0,
-                127,
-                255
-              ]
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
             ],
             "frameHashes": [
               "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
@@ -5719,42 +5132,12 @@
             "colorSpace": "srgb",
             "backend": "webgl2",
             "pixels": [
-              [
-                128,
-                0,
-                127,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                64,
-                128,
-                63,
-                255
-              ],
-              [
-                128,
-                0,
-                127,
-                255
-              ]
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
             ],
             "frameHashes": [
               "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
@@ -5778,42 +5161,12 @@
             "colorSpace": "linear-srgb",
             "backend": "canvas2d",
             "pixels": [
-              [
-                188,
-                0,
-                187,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                188,
-                0,
-                187,
-                255
-              ]
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
             ],
             "frameHashes": [
               "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
@@ -5837,42 +5190,12 @@
             "colorSpace": "linear-srgb",
             "backend": "webgl2",
             "pixels": [
-              [
-                188,
-                0,
-                187,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                128,
-                255,
-                128,
-                255
-              ],
-              [
-                255,
-                255,
-                255,
-                255
-              ],
-              [
-                74,
-                149,
-                136,
-                255
-              ],
-              [
-                188,
-                0,
-                187,
-                255
-              ]
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
             ],
             "frameHashes": [
               "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
@@ -5916,11 +5239,7 @@
             "source": "sequence",
             "backend": "canvas2d",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical",
@@ -5934,11 +5253,7 @@
             "source": "sequence",
             "backend": "webgl2",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical",
@@ -5952,11 +5267,7 @@
             "source": "video",
             "backend": "canvas2d",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical",
@@ -5970,11 +5281,7 @@
             "source": "video",
             "backend": "webgl2",
             "frames": 6,
-            "originalFrames": [
-              0,
-              1,
-              2
-            ],
+            "originalFrames": [0, 1, 2],
             "repeatedMp4": "byte-identical",
             "independentPreviewMp4": "byte-identical",
             "rawPngTransport": "byte-identical",
