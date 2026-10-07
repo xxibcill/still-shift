@@ -83,6 +83,8 @@ export type ImageContent = {
   height: number;
   fit: "contain" | "cover" | "stretch";
   rasterize: "draw" | "natural-size";
+  /** Echo history stacking uses bitmap source-over on transparent targets. */
+  bitmapRounding?: true;
   sources: ImageLayer["sources"];
   state: number;
   stateFrom?: number;
@@ -252,6 +254,7 @@ type Frame = {
   cull?: boolean;
   paintBlur?: number;
   sourceGroup?: string;
+  /** Scoped layer key whose ordinary visibility is ignored during capture. */
   captureSource?: string;
   background: Rgba | null;
   localCapture?: { inverse: Homography; origin: [number, number] };
@@ -278,6 +281,28 @@ function boundsMiss(bounds: Bounds, matrix: Matrix, frame: Frame) {
     projected.left >= frame.viewport.width ||
     projected.top >= frame.viewport.height
   );
+}
+
+/** Tag echo content only; matte images retain their own composition semantics. */
+function echoImageOps(ops: RenderOp[]): RenderOp[] {
+  return ops.map((op) => {
+    if (op.kind === "isolate") return { ...op, ops: echoImageOps(op.ops) };
+    if (op.kind !== "draw") return op;
+    if (op.content.type === "image")
+      return { ...op, content: { ...op.content, bitmapRounding: true } };
+    if (op.content.type === "surface")
+      return {
+        ...op,
+        content: {
+          ...op.content,
+          surface: {
+            ...op.content.surface,
+            ops: echoImageOps(op.content.surface.ops),
+          },
+        },
+      };
+    return op;
+  });
 }
 
 class GraphBuilder {
@@ -530,7 +555,7 @@ class GraphBuilder {
             ...captureFrame,
             opacity: 1,
             background: null,
-            captureSource: id,
+            captureSource: frame.prefix + id,
             cull: false,
             ...(source.layer.type === "group" ? { sourceGroup: id } : {}),
           },
@@ -780,7 +805,7 @@ class GraphBuilder {
               ...frame,
               opacity: 1,
               background: null,
-              captureSource: matte.layer,
+              captureSource: frame.prefix + matte.layer,
               ...(layer.type === "group" ? { sourceGroup: layer.id } : {}),
             },
             {
@@ -919,8 +944,14 @@ class GraphBuilder {
         this.history.set(key, sample);
       }
       const prior = sample.byId.get(state.id)!;
+      const visible =
+        frame.captureSource === frame.prefix + state.id ||
+        (frame.sourceGroup
+          ? this.sourceVisible(sample, prior, frame.sourceGroup)
+          : prior.visible) ||
+        sample.matteSources.has(state.id);
       if (
-        (!prior.visible && !sample.matteSources.has(state.id)) ||
+        !visible ||
         time < (prior.layer.inPoint ?? 0) ||
         time >= (prior.layer.outPoint ?? scope.def.frameCount) ||
         (skipUnchanged &&
@@ -1343,7 +1374,7 @@ class GraphBuilder {
         {
           kind: "isolate",
           layer: key,
-          ops: [
+          ops: echoImageOps([
             ...this.echoOps(scope, state, frame, echo),
             ...this.layerOps(scope, state, frame, {
               ...options,
@@ -1351,7 +1382,7 @@ class GraphBuilder {
               blend: "normal",
               cull: false,
             }),
-          ],
+          ]),
           effects,
           masks,
           matte,

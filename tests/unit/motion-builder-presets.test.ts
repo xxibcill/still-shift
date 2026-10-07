@@ -10,6 +10,7 @@ import {
   par,
   at,
   builderSource,
+  BuilderError,
 } from "@still-shift/motion";
 import {
   STORY_MOTION_PRESETS,
@@ -246,4 +247,46 @@ it("matches the shared story text compiler and retains located errors", () => {
       c.timeline(presets.press(box, 0));
     }),
   ).toThrow("comp-builder-duration");
+});
+
+it("attributes an invalid text preset to its call after a valid preset", () => {
+  const c = new CompositionBuilder({ ...options, assets: [font] });
+  const first = c.add(text("Valid reveal", { fontAsset: "font" }));
+  const second = c.add(
+    text("Invalid count", { fontAsset: "font", states: ["A", "B"] }),
+  );
+  const reveal = presets.text.reveal(first, 12);
+  const count = presets.text.count(second, 12);
+  if (count.kind !== "clip") throw new Error("Expected preset clip");
+  c.timeline(par(reveal, count));
+  try {
+    c.finish();
+    expect.fail("Invalid count must fail");
+  } catch (error) {
+    expect(error).toBeInstanceOf(BuilderError);
+    expect((error as BuilderError).message).toContain("text-count-figures");
+    expect((error as BuilderError).location).toEqual(count.value.location);
+  }
+});
+
+it("locates the second identical text event when it conflicts with the first", () => {
+  const c = new CompositionBuilder({ ...options, assets: [font] });
+  c.textStyle("numbers", { fontAsset: "font", figures: "tabular" });
+  const title = c.add(
+    text("20", { fontAsset: "font", states: ["20", "30"], style: "numbers" }),
+  );
+  const first = presets.text.count(title, 12);
+  const second = presets.text.count(title, 12);
+  if (second.kind !== "clip") throw new Error("Expected preset clip");
+  c.timeline(par(first, second));
+  try {
+    c.finish();
+    expect.fail("Overlapping counts must fail");
+  } catch (error) {
+    expect(error).toBeInstanceOf(BuilderError);
+    expect((error as BuilderError).message).toContain(
+      "text-transition-conflict",
+    );
+    expect((error as BuilderError).location).toEqual(second.value.location);
+  }
 });

@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-05",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/34",
+  "startingHead": "afa9be0f9e9bbb6194dd2901c37ff997d850ee1b",
+  "mergedMain": "3581855a6d46a82ad048ecadf88ed9ccc520d857",
+  "strategy": "Merge current main into the PR branch; no rebase or force push.",
+  "conflicts": [
+    {
+      "file": "package.json",
+      "resolution": "Retain every pnpm command and required test group from both parents, including composition quality and soundtrack browser checks; no duplicate test groups."
+    },
+    {
+      "file": "packages/animation-engine/src/index.ts",
+      "resolution": "Keep lintCompositionFile and all soundtrack project IO, render and passage exports."
+    },
+    {
+      "file": "packages/renderer-core/src/index.ts",
+      "resolution": "Keep motion lint policy/analysis exports and soundtrack edit exports."
+    },
+    {
+      "file": "docs/composition-reference.md",
+      "resolution": "Retain both CE12 motion linting and CE16 soundtrack reference sections."
+    },
+    {
+      "file": "docs/dev-log.md",
+      "resolution": "Retain all 34 PR-head and 44 main historical entry titles, order by date and record the integrated dependency and conflict resolution."
+    }
+  ],
+  "automaticMergeReview": "Main expression/bake repairs, soundtrack source/contracts/tests, shared CLI dispatch, guides and schema generation merged without manual implementation changes.",
+  "verification": {
+    "toolchain": "Node22.23.1, pnpm10.29.3, Python3.12.11, Playwright1.62.1/Chromium1234, FFmpeg8.0.1; pnpm toolchain:check passed.",
+    "checks": [
+      {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "log": "/private/tmp/pr34-conflict-fast.log",
+        "logSha256": "cacd9bf1690a0025d84cfd105b0695fe30be3094a033a1dd50912cb6ad07c28d",
+        "testsPassed": 1651
+      },
+      {
+        "command": "pnpm test:runtime",
+        "exitCode": 0,
+        "log": "/private/tmp/pr34-conflict-runtime.log",
+        "logSha256": "a8ad292c35d0a96d3b5fbdfe8752c42903b1d3311bf2861b1fb4438d6c30245c",
+        "testsPassed": 46
+      },
+      {
+        "command": "pnpm test:integration",
+        "exitCode": 1,
+        "log": "/private/tmp/pr34-conflict-integration.log",
+        "logSha256": "2569f7738a3887ea529af3dabc09cfeec0ff1238af13258d9c3b9f5717cb1927",
+        "testsPassed": 169,
+        "testsFailed": 1,
+        "resolution": "169 passed; lab-fallback failed because the shared executable shebang points at a removed pr35-followup checkout. Local isolated launcher repaired; focused rerun below passed."
+      },
+      {
+        "command": "pnpm exec vitest run tests/integration/lab-fallback.test.ts --no-file-parallelism",
+        "exitCode": 0,
+        "log": "/private/tmp/pr34-conflict-integration-fallback-rerun.log",
+        "logSha256": "d4dff0854e50d259d670e4726d50394c0a993d242b2b0e2a4c322b78d9c6610b",
+        "testsPassed": 1
+      },
+      {
+        "command": "pnpm test:depth",
+        "exitCode": 0,
+        "log": "/private/tmp/pr34-conflict-depth.log",
+        "logSha256": "ba30c56dedbc38b924b8a5cfaca9912d8499798fe264a49dac2e99391bd332f7"
+      },
+      {
+        "command": "pnpm soundtrack:lint",
+        "exitCode": 0,
+        "log": "/private/tmp/pr34-conflict-soundtrack-lint.log",
+        "logSha256": "1bdd229b3fe1cf0a07e4cbfd2b028787764e31bbfaa3f3f462c92b6d1d67b576"
+      },
+      {
+        "command": "pnpm test:browser:composition-quality",
+        "exitCode": 0,
+        "log": "/private/tmp/pr34-conflict-browser-quality.log",
+        "logSha256": "c37ab7fe9a965c512f463bd752bd14c0d6a6827bfa42e00aaf5d8a02e867a719"
+      },
+      {
+        "command": "pnpm test:browser:composition-expressions",
+        "exitCode": 0,
+        "log": "/private/tmp/pr34-conflict-browser-expressions.log",
+        "logSha256": "7295abd711c5b4b9851e0135776f06e91b7c2d6cebf2c9a384bef1963050cf9e"
+      }
+    ],
+    "additionalChecks": [
+      "Both parents pnpm commands/test groups retained exactly, with no duplicate groups.",
+      "Combined animation-engine and renderer-core lint/soundtrack module exports import successfully.",
+      "All historical entry titles from both parents retained.",
+      "git diff --check"
+    ],
+    "environment": {
+      "dependencies": "Separate frozen-lockfile offline pnpm installation; isolated node_modules and Vite optimizer/config caches.",
+      "python": "Initial ignored .venv symlink had a stale still-shift-depth shebang pointing to a removed checkout. Replaced only the isolated checkout binding with its own pinned venv and launcher; .pth reads installed dependency packages and this checkout depth source. Shared environment unchanged. UV_NO_SYNC=1 and isolated uv cache.",
+      "soundtrackPython": "Existing CE16 runtime selected by STILL_SHIFT_SOUNDTRACK_PYTHON; numpy/DawDreamer imports verified."
+    },
+    "githubActionsEnabled": false,
+    "workflowChanges": [],
+    "notRerun": [
+      "Full pnpm check",
+      "Unrelated browser matrices",
+      "Frozen CE0 baseline corpus",
+      "Listening or human audiovisual QA"
+    ],
+    "scope": "Conflict integration checks only; earlier full milestone gates remain historical evidence, not a full check on this merge."
+  },
+  "delivery": "One merge commit pushed to codex/composition-ce12; PR review/merge remains an owner decision."
+}

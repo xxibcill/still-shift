@@ -76,6 +76,22 @@
               aria-hidden="true"
             ></canvas>
           </div>
+          <details>
+            <summary>Saved soundtrack (optional)</summary>
+            <label
+              >Project path<input
+                id="soundtrack-project"
+                placeholder="path/to/project.json"
+            /></label>
+            <button id="soundtrack-load" type="button">
+              Render and attach saved revision
+            </button>
+            <button id="soundtrack-clear" type="button">
+              Use passage audio
+            </button>
+            <p id="soundtrack-status" role="status">Passage audio</p>
+            <a href="/soundtrack.html">Edit soundtrack layers</a>
+          </details>
           <div class="transport">
             <label
               ><input id="sound-effects-enabled" type="checkbox" checked />

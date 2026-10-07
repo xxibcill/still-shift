@@ -19,6 +19,7 @@ const { values } = parseArgs({
     plan: { type: "string" },
     "output-dir": { type: "string" },
     narration: { type: "string" },
+    soundtrack: { type: "string" },
     silent: { type: "boolean", default: false },
     "sound-only": { type: "boolean", default: false },
     "without-sound-effects": { type: "boolean", default: false },
@@ -43,18 +44,19 @@ process.once("SIGTERM", cancel);
 try {
   if (!values.plan || !values["output-dir"])
     throw new Error(
-      "Pass --plan <JSON> --output-dir <directory>, plus --narration <WAV>, --sound-only, --silent, or --prepare-only",
+      "Pass --plan <JSON> --output-dir <directory>, plus --soundtrack <project.json>, --narration <WAV>, --sound-only, --silent, or --prepare-only",
     );
   if (
     [
       Boolean(values.narration),
+      Boolean(values.soundtrack),
       values["sound-only"],
       values.silent,
       values["prepare-only"],
     ].filter(Boolean).length !== 1
   )
     throw new Error(
-      "Choose exactly one of --narration, --sound-only, --silent or --prepare-only",
+      "Choose exactly one of --soundtrack, --narration, --sound-only, --silent or --prepare-only",
     );
   if (values["without-sound-effects"] && !values.narration)
     throw new Error("--without-sound-effects requires --narration");
@@ -74,6 +76,8 @@ try {
     throw new Error("--backend must be canvas2d or webgl2");
   if (values.renderer === "legacy" && values.backend !== "canvas2d")
     throw new Error("--backend webgl2 requires --renderer composition");
+  if (values["composition-beats"] && values.renderer !== "composition")
+    throw new Error("--composition-beats requires --renderer composition");
   const passage = await readStoryPassage(
     values.plan,
     format ? { format } : undefined,
@@ -100,21 +104,22 @@ try {
     range.end <= range.start
   )
     throw new Error("Invalid half-open preview frame range");
+  // Validate native picture files before writing outputs, including --prepare-only.
+  const compositions = values["composition-beats"]
+    ? await loadPassageCompositions(values["composition-beats"], passage)
+    : undefined;
   if (narration) await verifyPassageNarration(passage, narration);
   if (!values.resume) await writePreparedPassage(output, passage);
   let report: Awaited<ReturnType<typeof renderStoryPassage>> | undefined;
   if (!values["prepare-only"])
     report = await renderStoryPassage(output, passage, narration, {
-      ...(values["composition-beats"]
-        ? {
-            compositions: await loadPassageCompositions(
-              values["composition-beats"],
-              passage,
-            ),
-          }
-        : {}),
+      ...(compositions ? { compositions } : {}),
       renderer: values.renderer as "legacy" | "composition",
       backend: values.backend as "canvas2d" | "webgl2",
+
+      ...(values.soundtrack
+        ? { soundtrackProject: resolve(values.soundtrack) }
+        : {}),
       soundEffects: !values.silent && !values["without-sound-effects"],
       resume: values.resume,
       signal: controller.signal,
@@ -127,11 +132,13 @@ try {
     });
   const mode = values["prepare-only"]
     ? "prepared"
-    : narration
-      ? "narrated"
-      : values["sound-only"]
-        ? "sound-only"
-        : "silent";
+    : values.soundtrack
+      ? "soundtrack"
+      : narration
+        ? "narrated"
+        : values["sound-only"]
+          ? "sound-only"
+          : "silent";
   const html =
     (range.start === 0 && range.end === passage.frameCount) ||
     values["prepare-only"]

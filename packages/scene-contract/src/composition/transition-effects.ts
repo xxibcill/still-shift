@@ -16,7 +16,7 @@ const scalar = (
   ...(integer ? { integer: true } : {}),
 });
 const effect = (properties: Record<string, EffectProperty>) =>
-  defineCompositionEffect({ version: "1.0.0", properties });
+  defineCompositionEffect({ version: "1.0.1", properties });
 const shared = { progress: scalar(0, 0, 1), softness: scalar(0, 0, 1) };
 /** Progress removes coverage in surface space; zero preserves the input and one clears it. */
 export const TRANSITION_EFFECT_DEFINITIONS: Readonly<

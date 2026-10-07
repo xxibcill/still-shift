@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "pr-review-fix-evidence-1",
+  "date": "2026-10-07",
+  "pr": "https://github.com/xxibcill/still-shift/pull/39",
+  "reviewedHead": "0a113728cc9e741affc6d99d32e39eddae64657f",
+  "finding": {
+    "priority": "P2",
+    "title": "Tighten float32 conditioning before accepting shadow planes",
+    "comment": "https://github.com/xxibcill/still-shift/pull/39#discussion_r4203797977",
+    "fix": "Raise the float32 Gram determinant margin from 1e-6 to 1e-2 times uu*vv. Reject inaccurate near-parallel bases through shared CPU/shader preflight without changing the visibility oracle, GLSL, quadrature or frozen reference bytes.",
+    "regressions": [
+      "Reported shear and three related nonzero-determinant bases fail validateExperiment, referencePixels and shaderInput before any GPU draw.",
+      "Five supported shears near and above the conservative boundary validate and compare full-resolution 64-square alpha on pinned software, independent software repeat and actual hardware within the unchanged one-byte tolerance.",
+      "A shear just below the revised margin fails preflight; exact degeneracy and the prior near-collinear rejection retain their existing diagnostics."
+    ],
+    "redRun": "The added inaccurate-shear regression failed before changing the margin: expected a preflight exception, but none was thrown. The other 12 tests passed.",
+    "greenRun": "All 14 analytic tests pass after the fix.",
+    "originalBrowserFailure": {
+      "scene": {
+        "version": "flat-alpha-shadow-candidate-1",
+        "receiver": {
+          "id": "receiver",
+          "scope": "root",
+          "order": 0,
+          "origin": [0, 0, 20],
+          "u": [31.50769230769231, 0, 0],
+          "v": [0, 0.012760615384615384, 0],
+          "alpha": {
+            "width": 1,
+            "height": 1,
+            "pixels": [255]
+          },
+          "opacity": 1,
+          "castsShadow": true,
+          "receivesShadow": true
+        },
+        "casters": [
+          {
+            "id": "caster",
+            "scope": "root",
+            "order": 0,
+            "origin": [0, 0, 10],
+            "u": [8, 0, 0],
+            "v": [8, 0.0081, 0],
+            "alpha": {
+              "width": 1,
+              "height": 1,
+              "pixels": [255]
+            },
+            "opacity": 1,
+            "castsShadow": true,
+            "receivesShadow": true
+          }
+        ],
+        "light": {
+          "position": [0, 0, 0],
+          "radius": 0,
+          "samples": 1,
+          "enabled": true
+        }
+      },
+      "profiles": [
+        {
+          "profile": "pinned",
+          "environment": {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "maxDelta": 155,
+          "mismatchPixels": 1707,
+          "firstMismatch": {
+            "x": 9,
+            "y": 0,
+            "cpu": 154,
+            "gpu": 152
+          },
+          "center": {
+            "cpu": 48,
+            "gpu": 78
+          }
+        },
+        {
+          "profile": "hardware",
+          "environment": {
+            "profile": "hardware",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+            "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "maxDelta": 140,
+          "mismatchPixels": 1261,
+          "firstMismatch": {
+            "x": 16,
+            "y": 0,
+            "cpu": 126,
+            "gpu": 128
+          },
+          "center": {
+            "cpu": 48,
+            "gpu": 78
+          }
+        }
+      ]
+    }
+  },
+  "checks": {
+    "toolchain": "pnpm toolchain:check passed: Node 22.23.1, pnpm 10.29.3, private Python 3.12.11, uv 0.7.12, Playwright 1.62.1 / Chromium revision 1234 / version 151.0.7922.34, FFmpeg/ffprobe 8.0.1.",
+    "imports": "Prototype model/fixtures and local execution-runtime render-browser modules import successfully.",
+    "analytic": "pnpm exec vitest run tests/unit/cast-shadow-prototype.test.ts --maxWorkers=1 --no-file-parallelism passed: 14 tests.",
+    "build": "pnpm build passed.",
+    "schema": "pnpm schema:check passed.",
+    "boundaries": "pnpm check:boundaries passed.",
+    "lint": "pnpm exec eslint scripts/composition/cast-shadow-prototype tests/unit/cast-shadow-prototype.test.ts passed.",
+    "format": "Focused Prettier and git diff --check pass for changed code and records.",
+    "browser": "Complete isolated verify.ts passed: both rejected inputs, 96 unchanged frozen poses, 288 seek draws, 96 independent pixel/PNG repeats, 12 hardware comparisons, exact maximum-input checks and five supported-shear controls on all three profiles.",
+    "frozenReferences": "git diff --exit-code 0a113728 -- tests/visual/cast-shadow-prototype passed; no frozen reference changed.",
+    "productionIsolation": "Production packages, apps, manifests, schemas and locks are unchanged. Original shader and reference.ts remain exact.",
+    "fullRepositoryGate": "NOT RUN: focused isolated-prototype review correction. Native production integration, real export, large-coordinate/edge precision, quality and 1080p budget acceptance remain deferred by the candidate specification.",
+    "actions": "No GitHub Actions files or settings changed; all verification ran locally."
+  },
+  "isolation": "Managed worktree from exact reviewed head. Physical APFS clones of dependency trees and rewritten local command wrappers keep Vite optimizer/config caches independent; private Python 3.12.11 venv, UV_NO_SYNC=1 and task-specific UV cache. Isolated browser runner serves no Vite app.",
+  "browser": {
+    "model": "flat-alpha-shadow-candidate-1",
+    "scope": "isolated direct-visibility shader; not production assets, CE7 integration or MP4 export",
+    "dimensions": [64, 64],
+    "node": "22.23.1",
+    "sourceHashes": [
+      {
+        "name": "model.ts",
+        "hash": "f8a161a69062a0c8b4b1260f8b564c63dcff7aee27799b5ca11a0a42fb3935c7"
+      },
+      {
+        "name": "fixtures.ts",
+        "hash": "dccdb8d11323d57a0c2e2b8ae7efa5089100a4e902d90a8a7680731904c289c6"
+      },
+      {
+        "name": "reference.ts",
+        "hash": "d20e525e9cf58a6594a8604b06dc1746c1ef044dadcb7b6c17e594b16be5d5bc"
+      },
+      {
+        "name": "shader.ts",
+        "hash": "c8f6b669f614448f08d6525d1021b9d6865283481d05ca5829b93028f61060fc"
+      },
+      {
+        "name": "verify.ts",
+        "hash": "1ddc6e8c28004989edbfdf7fbf5c5af323854099f62fe7596c0d6b61dff11534"
+      }
+    ],
+    "inputHash": "d581feec5c1b59eb18028cfbf1039864445033a0402f34928cf363ac41f3438c",
+    "maximumInputHash": "8edc340244028af6689c833351e0c5b69d644a198a55ea56e1c719e3130309e9",
+    "rejectedInputs": [
+      {
+        "id": "near-collinear",
+        "hash": "5e71460f25bf5395eca8bab7a4e6c1fb8e6e1db703d372e3580a840442a73b5f",
+        "diagnostic": "shadow-prototype-input: ill-conditioned plane",
+        "result": "pass"
+      },
+      {
+        "id": "unstable-shear",
+        "hash": "4c2c9525c35863949b5342a52b8f798ef51a7688ecba54f07f53498a6db449bc",
+        "diagnostic": "shadow-prototype-input: ill-conditioned plane",
+        "result": "pass"
+      }
+    ],
+    "referenceCount": 96,
+    "toleranceBytes": 1,
+    "pinned": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 288,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "conditionedShears": [
+        {
+          "id": "conditioned-shear-0.805",
+          "inputHash": "d5d9dc61de9bf10b04123241989b4bd2f1e02fb90b53eaafe4295c7762995bc4",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-0.82",
+          "inputHash": "b066c7b8a8d15fee83710e6311d276dd1c59933a054b4c9dd04e70e65f4b4ff5",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-1",
+          "inputHash": "b13f7097f4b3b214e8a366ce8a513de536cc5aa4ff51b8df158449846aacd97f",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-2",
+          "inputHash": "af7b96142ad158db11815c08e8102766d2125e8090228a657c311c21f597c073",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-8",
+          "inputHash": "c3f234edac7325b2334a4063ab2ecb3a1ab0c351466f603b12051b379e6b77d3",
+          "maxDelta": 0
+        }
+      ],
+      "result": "pass",
+      "repeat": false
+    },
+    "repeated": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 96,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "conditionedShears": [
+        {
+          "id": "conditioned-shear-0.805",
+          "inputHash": "d5d9dc61de9bf10b04123241989b4bd2f1e02fb90b53eaafe4295c7762995bc4",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-0.82",
+          "inputHash": "b066c7b8a8d15fee83710e6311d276dd1c59933a054b4c9dd04e70e65f4b4ff5",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-1",
+          "inputHash": "b13f7097f4b3b214e8a366ce8a513de536cc5aa4ff51b8df158449846aacd97f",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-2",
+          "inputHash": "af7b96142ad158db11815c08e8102766d2125e8090228a657c311c21f597c073",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-8",
+          "inputHash": "c3f234edac7325b2334a4063ab2ecb3a1ab0c351466f603b12051b379e6b77d3",
+          "maxDelta": 0
+        }
+      ],
+      "result": "pass",
+      "repeat": true
+    },
+    "hardware": {
+      "environment": {
+        "profile": "hardware",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+        "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 12,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "conditionedShears": [
+        {
+          "id": "conditioned-shear-0.805",
+          "inputHash": "d5d9dc61de9bf10b04123241989b4bd2f1e02fb90b53eaafe4295c7762995bc4",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-0.82",
+          "inputHash": "b066c7b8a8d15fee83710e6311d276dd1c59933a054b4c9dd04e70e65f4b4ff5",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-1",
+          "inputHash": "b13f7097f4b3b214e8a366ce8a513de536cc5aa4ff51b8df158449846aacd97f",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-2",
+          "inputHash": "af7b96142ad158db11815c08e8102766d2125e8090228a657c311c21f597c073",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-8",
+          "inputHash": "c3f234edac7325b2334a4063ab2ecb3a1ab0c351466f603b12051b379e6b77d3",
+          "maxDelta": 0
+        }
+      ],
+      "result": "pass",
+      "repeat": false
+    },
+    "performanceMeasured": false
+  },
+  "testSourceSha256": "da895d59375bd26a9d7dd73e727ef0564e8fe5b12227710706583176f5004975",
+  "frozenReferenceSha256": {
+    "tests/visual/cast-shadow-prototype/solid-reference.json": "d099c8c3afcc294c60ad11bbd52dcab840514c2dd21f1919b41e56fa63432f22",
+    "tests/visual/cast-shadow-prototype/reference.json": "a4fbe1464063792d432417739b475ecb33e5544c82a972e33a4ab9e17339d9c0"
+  },
+  "pending": [
+    "Native CE8/CE8-L integration, real exports, production precision and owner policy/budget decisions remain as documented in the candidate specification."
+  ],
+  "delivery": "One finding, one fix commit, one final normal push to the existing PR branch."
+}

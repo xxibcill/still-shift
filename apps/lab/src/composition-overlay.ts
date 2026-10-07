@@ -30,13 +30,14 @@ import {
 } from "../../../packages/renderer-core/src/node-transform.ts";
 import { isKeyed } from "../../../packages/scene-contract/src/index.ts";
 import type { InspectorSelection } from "./composition-inspector.ts";
+import type { CompositionScope } from "./composition-keys.ts";
 const identity: Matrix = [1, 0, 0, 1, 0, 0];
 type Located = {
   state: EvaluatedLayer;
   matrix: Matrix;
   outer: Matrix;
   route: string;
-  scope: string;
+  scope: CompositionScope;
   tree: EvaluatedLayerTree;
   homography?: Homography;
   outerHomography?: Homography;
@@ -61,7 +62,7 @@ function locate(
       matrix: multiplyMatrix(matrix, state.screenMatrix),
       outer: matrix,
       route: `${route}/${state.id}`,
-      scope: route === "root" ? "root" : tree.id,
+      scope: route === "root" ? null : tree.id,
       tree,
       ...(homography ? { homography } : {}),
       ...(outerHomography ? { outerHomography } : {}),
@@ -370,7 +371,7 @@ export function createCompositionOverlay() {
       }
     }
     if (paths.checked && selected) {
-      const selection = `${selected.scope}/${selected.layer}`;
+      const selection = JSON.stringify([selected.scope, selected.layer]);
       if (
         cached?.composition !== composition ||
         cached.selection !== selection

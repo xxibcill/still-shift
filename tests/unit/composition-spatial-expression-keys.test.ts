@@ -101,3 +101,101 @@ it("samples camera orientation and point-of-interest own keys in xyz", () => {
     )!.sample(10),
   ).toEqual([5, 10, 15]);
 });
+
+it("roves separated xyz keys by their full three-dimensional path length", () => {
+  const layer: CompositionLayer = {
+    id: "control",
+    type: "null",
+    threeD: true,
+    transform: {
+      position: {
+        x: {
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: 10, value: 10, interpolation: "linear" },
+            { frame: 20, value: 10, interpolation: "linear" },
+          ],
+        },
+        y: 0,
+        z: {
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: 10, value: 0, interpolation: "linear" },
+            { frame: 20, value: 30, interpolation: "linear" },
+          ],
+        },
+      },
+    },
+  };
+  const curve = ownCurve(
+    layer,
+    [{ name: "transform" }, { name: "position" }],
+    24,
+  )!;
+  expect(rove(curve, 10, curve.sample(10))).toEqual([10, 0, 10]);
+});
+
+it("keeps separated roving caches distinct across dimensions and implicit scale z", () => {
+  const axes = {
+    x: {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 20, value: 20, interpolation: "linear" as const },
+      ],
+    },
+    y: 0,
+  };
+  for (const [threeD, property, expected] of [
+    [false, "position", [10, 0]],
+    [true, "position", [10, 0, 0]],
+    [true, "scale", [10, 0, 1]],
+    [false, "position", [10, 0]],
+  ] as const) {
+    const layer: CompositionLayer = {
+      id: "control",
+      type: "null",
+      threeD,
+      transform: { [property]: axes },
+    };
+    const curve = ownCurve(
+      layer,
+      [{ name: "transform" }, { name: property }],
+      24,
+    )!;
+    expect(rove(curve, 10, curve.sample(10))).toEqual(expected);
+  }
+});
+
+it("bounds the work required by separated z-axis spring oscillation", () => {
+  const layer: CompositionLayer = {
+    id: "control",
+    type: "null",
+    threeD: true,
+    transform: {
+      position: {
+        x: 0,
+        y: 0,
+        z: {
+          keys: [
+            { frame: 0, value: 0 },
+            {
+              frame: 10_000,
+              value: 100,
+              easing: {
+                spring: { stiffness: 1_000, damping: 0.1, mass: 0.1 },
+              },
+            },
+          ],
+        },
+      },
+    },
+  };
+  const curve = ownCurve(
+    layer,
+    [{ name: "transform" }, { name: "position" }],
+    30,
+  )!;
+  expect(() => rove(curve, 0, curve.sample(0))).toThrow(
+    "rove(): resolving this separated path requires",
+  );
+});
