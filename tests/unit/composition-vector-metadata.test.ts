@@ -240,3 +240,192 @@ it("cleans non-retained vector keys after the original byte policy and remains s
     expect(() => cache.draw(surface(), [op()])).toThrow("disposed");
   });
 });
+
+function nativePartHarness() {
+  const keys = new WebglVisualKey(),
+    release = vi.fn(),
+    uploadRegion = vi.fn(),
+    nativeSurface = vi.fn((width: number, height: number) =>
+      surface(width, height),
+    );
+  const pixels = {
+    canvas: {} as HTMLCanvasElement,
+    ctx: {} as CanvasRenderingContext2D,
+    width: 32,
+    height: 24,
+  };
+  const createSurface = vi.fn(() => pixels),
+    releaseSurface = vi.fn(),
+    fillRect = vi.fn();
+  const cache = new WebglVectors(
+    { release, surface: nativeSurface, uploadRegion } as unknown as WebglDevice,
+    { createSurface, releaseSurface, fillRect } as unknown as Canvas2dBackend,
+    keys,
+    { hasBackdrop: () => false, drawMany: vi.fn() } as unknown as WebglPaint,
+  );
+  const geometry = cache as unknown as {
+    extent(ops: VectorDraw[], dst: WebglSurface): Bounds;
+  };
+  vi.spyOn(geometry, "extent").mockImplementation(() => box);
+  const state = cache as unknown as {
+    state: {
+      cached: Map<
+        string,
+        {
+          entry:
+            | {
+                parts: {
+                  surface: WebglSurface;
+                  rect: Bounds;
+                  primitive: boolean;
+                }[];
+              }
+            | undefined;
+        }
+      >;
+    };
+  };
+  return {
+    keys,
+    cache,
+    state,
+    createSurface,
+    releaseSurface,
+    fillRect,
+    nativeSurface,
+    uploadRegion,
+    release,
+  };
+}
+it("retains the actual RasterPart container and independent bounds through frame cleanup", async () => {
+  const memory = new ManagedMemory(limits);
+  await withManagedMemory(memory, async () => {
+    const {
+      keys,
+      cache,
+      state,
+      releaseSurface,
+      nativeSurface,
+      uploadRegion,
+      release,
+    } = nativePartHarness();
+    memory.beginScratch();
+    cache.draw(surface(), [op()]);
+    memory.endScratch();
+    const parts = [...state.state.cached.values()][0]!.entry!.parts;
+    expect(memory.owns(parts)).toBe(true);
+    expect(parts).toHaveLength(1);
+    expect(parts[0]!.rect).toEqual(box);
+    expect(parts[0]!.rect).not.toBe(box);
+    expect(parts[0]!.primitive).toBe(true);
+    expect(nativeSurface).toHaveBeenCalledTimes(1);
+    expect(uploadRegion).toHaveBeenCalledTimes(1);
+    expect(releaseSurface).toHaveBeenCalledTimes(1);
+    const before = memory.statistics.current.metadata;
+    memory.beginScratch();
+    cache.draw(surface(), [op()]);
+    memory.endScratch();
+    expect(memory.statistics.current.metadata).toBe(before);
+    expect(nativeSurface).toHaveBeenCalledTimes(1);
+    cache.dispose();
+    expect(release).toHaveBeenCalledTimes(1);
+    expect(memory.owns(parts)).toBe(false);
+    expect(parts).toEqual([]);
+    keys.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
+    memory.dispose();
+  });
+});
+it("releases an already-created raster scratch surface when part-container admission is denied", async () => {
+  const memory = new ManagedMemory(limits);
+  await withManagedMemory(memory, async () => {
+    const {
+      keys,
+      cache,
+      createSurface,
+      releaseSurface,
+      nativeSurface,
+      fillRect,
+    } = nativePartHarness();
+    let blocker: ReturnType<ManagedMemory["reserve"]> | undefined;
+    createSurface.mockImplementationOnce(() => {
+      blocker = memory.reserve(
+        "metadata",
+        limits.metadata - memory.statistics.current.metadata - 31,
+      );
+      return {
+        canvas: {} as HTMLCanvasElement,
+        ctx: {} as CanvasRenderingContext2D,
+        width: 32,
+        height: 24,
+      };
+    });
+    expect(() => cache.draw(surface(), [op()])).toThrow("metadata");
+    expect(releaseSurface).toHaveBeenCalledTimes(1);
+    expect(nativeSurface).not.toHaveBeenCalled();
+    expect(fillRect).not.toHaveBeenCalled();
+    blocker!.release();
+    expect(memory.statistics.current.metadata).toBe(512);
+    expect(memory.statistics.reservations).toBe(2);
+    cache.dispose();
+    keys.dispose();
+    memory.dispose();
+  });
+});
+it("admits part records and their bounds before GPU production, cleaning args and scratch on denial", async () => {
+  const memory = new ManagedMemory(limits);
+  await withManagedMemory(memory, async () => {
+    const { keys, cache, releaseSurface, nativeSurface, fillRect } =
+      nativePartHarness();
+    let blocker: ReturnType<ManagedMemory["reserve"]> | undefined;
+    fillRect.mockImplementationOnce(() => {
+      blocker = memory.reserve(
+        "metadata",
+        limits.metadata - memory.statistics.current.metadata,
+      );
+    });
+    expect(() => cache.draw(surface(), [op()])).toThrow("metadata");
+    expect(fillRect).toHaveBeenCalledTimes(1);
+    expect(nativeSurface).not.toHaveBeenCalled();
+    expect(releaseSurface).toHaveBeenCalledTimes(1);
+    blocker!.release();
+    expect(memory.statistics.current.metadata).toBe(512);
+    expect(memory.statistics.reservations).toBe(2);
+    cache.dispose();
+    keys.dispose();
+    memory.dispose();
+  });
+});
+it("drops actual part and call-argument references while preserving a null upload failure", async () => {
+  const memory = new ManagedMemory(limits);
+  await withManagedMemory(memory, async () => {
+    const {
+      keys,
+      cache,
+      nativeSurface,
+      uploadRegion,
+      releaseSurface,
+      release,
+      state,
+    } = nativePartHarness();
+    uploadRegion.mockImplementationOnce(() => {
+      throw null;
+    });
+    let caught: unknown = "missing";
+    try {
+      cache.draw(surface(), [op()]);
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBeNull();
+    expect(nativeSurface).toHaveBeenCalledTimes(1);
+    expect(release).toHaveBeenCalledTimes(1);
+    expect(releaseSurface).toHaveBeenCalledTimes(1);
+    expect(state.state.cached.size).toBe(0);
+    expect(memory.statistics.current.metadata).toBe(512);
+    expect(memory.statistics.reservations).toBe(2);
+    cache.dispose();
+    keys.dispose();
+    memory.dispose();
+  });
+});

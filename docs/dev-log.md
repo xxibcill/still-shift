@@ -90,15 +90,15 @@ still hold before relying on them.
   Glyph 1.383989× meets unchanged 1.5×. Native capture/upload admission now passes
   70 tests, the complete audit, six native complete-body oracles, twelve failure
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
-  Owned submission/source/root/surface metadata, cache checksums and WebGL
-  definition/isolate/frame/damage/vector-cache keys/controls now pass 161 focused
-  tests, the complete audit, 22 moving/blurred and ten stationary native frames
-  and 96 owned RPC snapshots. Actual retained keys, Map/Raster pre-admission,
-  quota/null/borrowed cleanup and original native cache/order behavior pass.
-  Original WebGL/provider checks, 69 typography tests and 64 exports / 768 prior-
-  exact bodies/frames pass; glyph 1.405493× meets unchanged 1.5 maximum. Vector
-  geometry/parts/recording and provider/graph/font/checksum/ledger-control/Node
-  metadata, production admission, aggregate memory, the actual
+  Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
+  controls and actual raster parts/bounds/calls now pass 165 focused tests, the
+  complete audit, 22 moving/blurred and ten stationary native frames and 96 owned
+  RPC snapshots. Part admission precedes GPU production; actual retained arrays,
+  independent bounds, scratch-denial/null cleanup and original native operators
+  pass. Original WebGL/provider checks, 69 typography tests and 64 exports / 768
+  prior-exact bodies/frames pass; glyph 1.421648× meets unchanged 1.5 maximum. Vector
+  extent/region/recording and provider/graph/font/checksum/ledger-control/Node metadata,
+  production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -332,6 +332,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual raster parts and paint-call metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `03184b5`.
+- **Done:** admitted actual part arrays/records and independent bounds before GPU
+  production; retained owners, original argument tuples and recording surface copies.
+- **Results:** build/lint/boundaries, 165 focused / 69 typography tests; complete
+  144-case / 8,000-comparison audit, 22 moving/blurred and ten stationary native
+  frames, 96 actual RPC snapshots and original WebGL/provider checks pass. All 64
+  exports / 768 bodies/frames match prior output; glyph 1.421648× meets unchanged 1.5.
+- **Review:** preserved native dimensions/offsets/pixels/order; container denial after
+  scratch creation and pre-GPU growth denial release actual surfaces/metadata.
+- **Next:** vector extent/region/recording, provider/graph/font/ledger/Node metadata,
+  production/aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [raster-part metadata evidence](./composition-ce15-vector-parts-metadata-results.json).
 
 ### 2026-10-08 — CE15 vector-cache keys and controls
 

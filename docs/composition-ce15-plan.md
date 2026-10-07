@@ -668,6 +668,31 @@ font/checksum/ledger/Node metadata, actual production/aggregate admission, speed
 and full-gate acceptance remain pending.
 [Evidence](./composition-ce15-vector-key-metadata-results.json).
 
+## Accepted raster-part and paint-call metadata checkpoint — 2026-10-08
+
+The actual RasterPart array reserves before construction (32-byte header), then
+grows by 168 per part before original GPU production, part records and independent
+bounds copies. Retained entries own this actual array through frame cleanup;
+teardown releases native surfaces and clears part references. Original six-slot
+call arrays reserve 80 bytes before creation and clear after consumption. Active
+recording's original shallow pixel-surface copy admits each own field before
+spread, borrows the original pixels/contexts, and drops its own references after
+painting/group rendering/upload. Computed geometry, dimensions, source offsets,
+native pixel/shader operators, grouping and original draw order remain unchanged.
+
+Build, lint, boundaries and 165 focused tests pass, including four actual part/call
+producer regressions for retention/independent geometry, scratch cleanup after
+container denial, pre-GPU record denial and original null upload failure. The
+complete 144-case / 8,000-comparison audit, 96 actual RPC snapshots, 22 moving/blurred
+and ten stationary native frames pass. Original WebGL, 69 typography tests,
+12 provider cases / 60 frames and eight fixtures pass; glyph 1.421648× meets unchanged
+1.5 maximum. All 64 exports preserve 768 complete bodies/frames against pushed
+`03184b5`. First focused/native attempts pass; no new failure is discarded.
+
+Vector extent/region/recording and other WebGL bounds/device/pool/shader/paint
+controls, provider keys, retained graphs, font/checksum/ledger/Node metadata, actual
+production/aggregate admission, speed and full-gate acceptance remain pending. [Evidence](./composition-ce15-vector-parts-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

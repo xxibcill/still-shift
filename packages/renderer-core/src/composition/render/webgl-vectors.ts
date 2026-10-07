@@ -102,7 +102,10 @@ export class WebglVectors {
             }
           }
     } finally {
-      if (entry) entry.parts.length = 0;
+      if (entry) {
+        releaseRenderMetadata(entry.parts);
+        entry.parts.length = 0;
+      }
       value.entry = undefined;
       value.key.release();
       value.id.release();
@@ -231,8 +234,8 @@ export class WebglVectors {
             deferPaints: true,
           })
         : undefined;
-    const painting = recording ? { ...pixels, ctx: recording.context } : pixels;
-    const parts: RasterPart[] = [];
+    let painting = pixels;
+    let parts: RasterPart[] | undefined;
     const upload = (
       canvas: HTMLCanvasElement,
       box: Bounds,
@@ -247,21 +250,53 @@ export class WebglVectors {
         dst.height - box.top,
         Math.ceil((box.bottom - box.top) / 64) * 64,
       );
+      const target = parts!;
+      resizeRenderMetadata(target, 32 + 168 * (target.length + 1));
       const surface = this.device.surface(width, height);
-      parts.push({ surface, rect: box, primitive });
+      target.push({ surface, rect: { ...box }, primitive });
       this.device.uploadRegion(surface, canvas, box.left, box.top);
     };
     try {
+      if (recording) {
+        let fields = 1;
+        for (const field in pixels) if (Object.hasOwn(pixels, field)) fields++;
+        painting = allocateRenderMetadata(
+          64 + 16 * fields,
+          () => ({ ...pixels, ctx: recording.context }),
+          false,
+          (value) => {
+            for (const field in value)
+              if (Object.hasOwn(value, field))
+                delete (value as unknown as Record<string, unknown>)[field];
+          },
+        );
+      }
+      parts = allocateRenderMetadata<RasterPart[]>(
+        32,
+        () => [],
+        true,
+        (value) => {
+          value.length = 0;
+        },
+      );
       for (const op of ops) {
         const c = op.content;
-        const args = [
-          op.matrix,
-          op.opacity,
-          "normal",
-          op.clips,
-          op.transforms,
-          op.paintBlur,
-        ] as const;
+        const args = allocateRenderMetadata(
+          80,
+          () =>
+            [
+              op.matrix,
+              op.opacity,
+              "normal",
+              op.clips,
+              op.transforms,
+              op.paintBlur,
+            ] as const,
+          false,
+          (value) => {
+            (value as unknown as unknown[]).length = 0;
+          },
+        );
         const paint = () => {
           if (c.type === "solid")
             this.raster.fillRect(
@@ -282,12 +317,16 @@ export class WebglVectors {
             this.raster.drawText(painting, c, ...args);
           else this.raster.drawProvider(painting, c, ...args);
         };
-        if (this.statistics)
-          this.statistics.measure(
-            { stage: "native-content", members: renderMembers([op]) },
-            paint,
-          );
-        else paint();
+        try {
+          if (this.statistics)
+            this.statistics.measure(
+              { stage: "native-content", members: renderMembers([op]) },
+              paint,
+            );
+          else paint();
+        } finally {
+          releaseRenderMetadata(args);
+        }
       }
       let groups = recording?.groups();
       if (
@@ -336,9 +375,17 @@ export class WebglVectors {
         }
       return parts;
     } catch (error) {
-      for (const part of parts) this.device.release(part.surface);
+      preserveFailure(true, () => {
+        try {
+          if (parts)
+            for (const part of parts) this.device.release(part.surface);
+        } finally {
+          if (parts) releaseRenderMetadata(parts);
+        }
+      });
       throw error;
     } finally {
+      if (painting !== pixels) releaseRenderMetadata(painting);
       recording?.dispose();
       this.raster.releaseSurface(pixels);
     }
