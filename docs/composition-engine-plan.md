@@ -5128,14 +5128,13 @@ Native capture/upload admission now passes 70 tests, the complete audit, six
 native complete-body oracles, twelve failure cases, original media/WebGL export
 commands and 64 prior-exact public exports / 768 bodies and frames. Owned submission/
 source/root/surface metadata, cache checksums and WebGL definition/isolate/frame/
-damage keys/controls now pass 152 focused tests, the complete audit, 22 moving/blurred
-and ten stationary native frames and 96 owned RPC snapshots. Original damage
-bounds/copies admit before creation; dirty owners persist through actual clip
-consumption. Quota/null/borrowed geometry and zero post-preview storage pass.
-Original WebGL/provider checks and 69 typography tests pass; glyph 1.417335× meets
-unchanged 1.5 maximum. All 64 exports / 768 bodies and frames retain prior exact
-output. Other vector/provider/graph/font/checksum/ledger-control/Node metadata and
-production admission remain pending.
+damage/vector-cache keys/controls now pass 161 focused tests, the complete audit,
+22 moving/blurred and ten stationary native frames and 96 owned RPC snapshots.
+Actual retained keys, Map/Raster admission, quota/null cleanup and original native
+cache/order behavior pass. Original WebGL/provider checks and 69 typography tests
+pass; glyph 1.405493× meets unchanged 1.5 maximum. All 64 exports / 768 bodies and
+frames retain prior exact output. Vector geometry/parts/recording, provider/graph/
+font/checksum/ledger-control/Node metadata and production admission remain pending.
 Aggregate limits, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),

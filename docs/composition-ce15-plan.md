@@ -644,6 +644,30 @@ Vector/provider keys, retained graphs, font/checksum/ledger/Node metadata, actua
 production/aggregate admission, speed and full-gate acceptance remain pending.
 [Evidence](./composition-ce15-damage-metadata-results.json).
 
+## Accepted vector-cache key/control metadata checkpoint — 2026-10-08
+
+Original native ID/layer-map and signature inputs admit before construction;
+complete native output keys have explicit owners. Map capacity grows before
+insertion and original Raster/owner controls admit before the native paint
+producer. Retained entries own canonical ID/signature text across scratch cleanup;
+hits release duplicates and reinsert the actual retained ID owner. Failed paint,
+original oversized policy and complete final teardown release temporary/retained
+key/control owners. Completed retained rasters survive original drawing failures.
+Native painting/order/overlap and original 128MiB RGBA cache policy remain unchanged.
+
+Build, lint, boundaries and 161 focused tests pass, including six vector metadata
+regressions and three original region cases. The complete 144-case / 8,000-comparison
+audit, 96 actual RPC snapshots, 22 moving/blurred and ten stationary native frames
+pass. Original WebGL, 69 typography tests, 12 provider cases / 60 frames and eight
+fixtures pass; glyph 1.405493× meets unchanged 1.5 maximum. All 64 exports preserve
+768 complete bodies/frames against pushed `5e5f115`. Initial fixture typing and
+byte-counter admission review evidence is retained.
+
+Vector geometry/RasterPart/recording metadata, provider keys, retained graphs,
+font/checksum/ledger/Node metadata, actual production/aggregate admission, speed
+and full-gate acceptance remain pending.
+[Evidence](./composition-ce15-vector-key-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

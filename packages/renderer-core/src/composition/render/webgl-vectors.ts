@@ -19,8 +19,30 @@ import type { VectorDraw } from "./backend.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import type { WebglVisualKey } from "./webgl-visual-key.ts";
 
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+  resizeRenderMetadata,
+  serializeRenderMetadata,
+  type ManagedMetadataText,
+} from "../../managed-metadata.ts";
+
 type RasterPart = { surface: WebglSurface; rect: Bounds; primitive: boolean };
 type Raster = { key: string; parts: RasterPart[] };
+type OwnedRaster = {
+  entry: Raster | undefined;
+  id: ManagedMetadataText;
+  key: ManagedMetadataText;
+  removed: boolean;
+};
+function preserveFailure(failed: boolean, cleanup: () => void): void {
+  if (!failed) return cleanup();
+  try {
+    cleanup();
+  } catch {
+    /* Preserve the original producer/consumer failure. */
+  }
+}
 const rasterBytes = (entry: Raster) =>
   entry.parts.reduce(
     (sum, part) => sum + part.surface.width * part.surface.height * 4,
@@ -29,7 +51,8 @@ const rasterBytes = (entry: Raster) =>
 
 /** Cache local vector coverage; retain per-primitive rounding where artwork overlaps. */
 export class WebglVectors {
-  private readonly cached = new Map<string, Raster>();
+  private readonly state: { cached: Map<string, OwnedRaster> };
+  private closed = false;
   private bytes = 0;
   private readonly limit = 128 * 1024 * 1024;
   constructor(
@@ -50,13 +73,60 @@ export class WebglVectors {
       content: ProviderContent | TextContent,
     ) => boolean,
     private readonly statistics?: CompositionRenderStatistics,
-  ) {}
+  ) {
+    this.state = allocateRenderMetadata(
+      256,
+      () => ({ cached: new Map<string, OwnedRaster>() }),
+      false,
+      () => this.clear(),
+    );
+  }
+  private resize(entries = this.state.cached.size) {
+    resizeRenderMetadata(this.state, 256 + 64 * entries);
+  }
+  private destroy(value: OwnedRaster) {
+    if (value.removed) return;
+    value.removed = true;
+    let failed = false,
+      failure: unknown;
+    const entry = value.entry;
+    try {
+      if (entry)
+        for (const part of entry.parts)
+          try {
+            this.device.release(part.surface);
+          } catch (error) {
+            if (!failed) {
+              failed = true;
+              failure = error;
+            }
+          }
+    } finally {
+      if (entry) entry.parts.length = 0;
+      value.entry = undefined;
+      value.key.release();
+      value.id.release();
+    }
+    if (failed) throw failure;
+  }
+  private release(value: OwnedRaster) {
+    try {
+      this.destroy(value);
+    } finally {
+      releaseRenderMetadata(value);
+    }
+  }
 
   private forget(id: string) {
-    const entry = this.cached.get(id)!;
-    this.cached.delete(id);
+    const owner = this.state.cached.get(id)!;
+    const entry = owner.entry!;
+    this.state.cached.delete(id);
     this.bytes -= rasterBytes(entry);
-    for (const part of entry.parts) this.device.release(part.surface);
+    try {
+      this.release(owner);
+    } finally {
+      if (!this.closed) this.resize();
+    }
   }
 
   private extent(ops: VectorDraw[], dst: WebglSurface): Bounds {
@@ -308,40 +378,123 @@ export class WebglVectors {
     ops: VectorDraw[],
     region: Bounds,
   ): Bounds | null {
-    const id = JSON.stringify([
-      dst.width,
-      dst.height,
-      ops.map((op) => op.layer),
-    ]);
-    const key = this.keys.of([ops, this.paintOver.hasBackdrop(dst)]);
-    let entry = this.cached.get(id);
-    const hit = entry?.key === key;
-    if (entry?.key !== key) {
-      if (entry) this.forget(id);
-      const rect = region;
-      if (rect.right <= rect.left || rect.bottom <= rect.top) return null;
-      entry = { key, parts: this.paint(dst, ops, rect) };
-    } else this.cached.delete(id);
-    const size = rasterBytes(entry);
-    const retained = size <= this.limit;
-    if (retained) {
-      if (!hit) {
-        while (this.bytes + size > this.limit && this.cached.size)
-          this.forget(this.cached.keys().next().value!);
-        this.bytes += size;
-      }
-      this.cached.set(id, entry);
-    }
+    if (this.closed) throw Error("WebGL vector cache is disposed");
+    const input = allocateRenderMetadata(
+      96 + 8 * ops.length,
+      () => [dst.width, dst.height, ops.map((op) => op.layer)],
+      false,
+      (value) => {
+        const layers = value[2];
+        if (Array.isArray(layers)) layers.length = 0;
+        value.length = 0;
+      },
+    );
+    let id: ManagedMetadataText;
     try {
-      this.paintOver.drawMany(entry.parts, dst);
+      id = serializeRenderMetadata(input);
     } finally {
-      if (!retained)
-        for (const part of entry.parts) this.device.release(part.surface);
+      releaseRenderMetadata(input);
     }
-    return region;
+    let key: ManagedMetadataText | undefined, owner: OwnedRaster | undefined;
+    let kept = false,
+      failed = false;
+    try {
+      const keyInput = allocateRenderMetadata(
+        48,
+        () => [ops, this.paintOver.hasBackdrop(dst)],
+        false,
+        (value) => {
+          value.length = 0;
+        },
+      );
+      try {
+        key = this.keys.metadata(keyInput);
+      } finally {
+        releaseRenderMetadata(keyInput);
+      }
+      const existing = this.state.cached.get(id.value!),
+        hit = existing?.entry?.key === key.value;
+      if (!hit) {
+        if (existing) this.forget(id.value!);
+        if (region.right <= region.left || region.bottom <= region.top)
+          return null;
+        this.resize(this.state.cached.size + 1);
+        const signature = key;
+        owner = allocateRenderMetadata<OwnedRaster>(
+          192,
+          () => ({
+            entry: {
+              key: signature.value!,
+              parts: this.paint(dst, ops, region),
+            },
+            id,
+            key: signature,
+            removed: false,
+          }),
+          true,
+          (value) => this.destroy(value),
+        );
+        id.retain();
+        key.retain();
+      } else {
+        owner = existing!;
+        this.state.cached.delete(id.value!);
+      }
+      const entry = owner.entry!,
+        size = rasterBytes(entry),
+        retained = size <= this.limit;
+      if (retained) {
+        if (!hit) {
+          while (this.bytes + size > this.limit && this.state.cached.size)
+            this.forget(this.state.cached.keys().next().value!);
+        }
+        this.resize(this.state.cached.size + 1);
+        if (!hit) this.bytes += size;
+        // Keep the actual retained text owner when reinserting a cache hit.
+        this.state.cached.set(owner.id.value!, owner);
+        kept = true;
+      }
+      this.paintOver.drawMany(entry.parts, dst);
+      return region;
+    } catch (error) {
+      failed = true;
+      throw error;
+    } finally {
+      preserveFailure(failed, () => {
+        try {
+          if (owner && !kept) this.release(owner);
+        } finally {
+          if (!owner || owner.id !== id) id.release();
+          if (!owner || owner.key !== key) key?.release();
+          if (!this.closed) this.resize();
+        }
+      });
+    }
   }
 
+  private clear() {
+    if (this.closed) return;
+    this.closed = true;
+    let failed = false,
+      failure: unknown;
+    for (const id of this.state.cached.keys())
+      try {
+        this.forget(id);
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          failure = error;
+        }
+      }
+    this.state.cached.clear();
+    this.bytes = 0;
+    if (failed) throw failure;
+  }
   dispose() {
-    for (const id of this.cached.keys()) this.forget(id);
+    try {
+      this.clear();
+    } finally {
+      releaseRenderMetadata(this.state);
+    }
   }
 }
