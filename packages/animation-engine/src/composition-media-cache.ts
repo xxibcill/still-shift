@@ -354,7 +354,6 @@ export async function prepareCompositionVisualMedia(
       { path: asset.id },
     );
   if (
-    !ordinals.length ||
     ordinals.some(
       (frame) =>
         !Number.isSafeInteger(frame) || frame < 0 || frame >= asset.frameCount,
@@ -378,7 +377,8 @@ export async function prepareCompositionVisualMedia(
   const rawBytes = asset.height * (asset.width * 4 + 1);
   const worstFrameBytes = rawBytes + Math.ceil(rawBytes / 65535) * 32 + 65536;
   if (
-    asset.width * asset.height * 4 > limits.decodedFrameBytes ||
+    (ordinals.length > 0 &&
+      asset.width * asset.height * 4 > limits.decodedFrameBytes) ||
     ordinals.length * (asset.width * asset.height * 4 + asset.height + 1024) >
       limits.decodedCacheBytes
   )
@@ -467,9 +467,11 @@ export async function prepareCompositionVisualMedia(
         priorBytes +
           ordinals.length * worstFrameBytes +
           manifestBudget +
-          (asset.type === "sequence"
-            ? asset.width * asset.height * 8 + 1024 * 1024 + worstFrameBytes
-            : worstFrameBytes) >
+          (ordinals.length === 0
+            ? 0
+            : asset.type === "sequence"
+              ? asset.width * asset.height * 8 + 1024 * 1024 + worstFrameBytes
+              : worstFrameBytes) >
         limits.decodedCacheBytes
       )
         passageError(

@@ -55,9 +55,11 @@ still hold before relying on them.
   CFR PTS, color/coverage and transform checks are verified (`fc23442`). Actual SDR
   conversion/cache are pushed as `ac9f68c`. Bounded CPU/GPU readiness and exact
   graph/coverage dependencies pass 2,077 unit tests, runtime/media regressions and real
-  native/existing CE7/CE8 browser proofs. Source/export/Lab hookup, native PCM/waveforms
-  and production/full acceptance remain in
-  flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
+  native/existing CE7/CE8 browser proofs (`7f42571`). Source preparation and native
+  production picture export now pass actual video/sequence + animated still/lower-third
+  proofs on Canvas 1.45 / WebGL2 0.66: repeated, independent and raw/PNG MP4s are
+  byte-identical. Lab/CLI preview/draft hookup, native PCM/waveforms and audio/video
+  production/full acceptance remain in flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
   [Evidence](./composition-ce13-results.json).
 
 - **CE4d complete (2026-10-07):**
@@ -272,6 +274,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 native production picture export
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed readiness `7f42571`.
+- **Done:** exact source preparation, immutable frame manifests and original/resource
+  path separation; export awaits native readiness. Canvas 1.45 / WebGL2 0.66.
+- **Results:** actual video and sequence with animated still/lower third export on
+  both backends. Repeated MP4, independent preview encode and raw/PNG transport are
+  byte-identical in all four cases. Source/cache/probe/examples: 18 tests / 4 files;
+  build and static checks pass. Build fixture repairs remain in the evidence.
+- **Next:** Lab/CLI preview and draft integration, continuous PCM/waveforms and native
+  passage audio, then full production acceptance and the final local gate.
+- **Records:** [media guide](./composition-media.md), [CE13 evidence](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 bounded native frame readiness
 

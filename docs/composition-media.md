@@ -92,7 +92,7 @@ All original hashes and dimensions verify even when only a subset is selected.
 Animated PNG and corrupt chunks reject. A root lock protects cumulative disk
 accounting. Conservative reservations include transient files and manifest bytes;
 private staging publishes atomically and is removed on cancellation or failure.
-Browser CPU/GPU resource allocation and actual audio remain pending.
+Browser CPU/GPU resource allocation is verified; actual audio remains pending.
 
 `loadCompositionResources` accepts the captured `preparedMedia` manifest. Native
 previews call `await preview.prepareFrame(frame)` before `preview.renderFrame(frame)`.
@@ -111,5 +111,22 @@ surfaces keep their existing renderer policies. Encoded download buffers have a
 separate bound based on the pinned frame dimensions and byte count; they are not
 counted as decoded bitmap residency. Prepared manifests allow at most 131,072 frame
 entries, and one disk cache entry at most 262,144, to bound metadata. Native source
-frame-count limits remain unchanged. Source-loader, export-page and Lab integration,
-actual PCM and complete CE13 acceptance are the next work.
+frame-count limits remain unchanged. Source-loader and export-page integration are verified. Lab/CLI preview and draft
+integration, actual PCM and complete CE13 acceptance are the next work.
+
+`loadComposition` and `renderComposition` prepare native sources before browser
+rendering. An optional `cacheDirectory`, or `STILL_SHIFT_COMPOSITION_MEDIA_CACHE`,
+selects the preparation cache; the default is scoped by the absolute workspace path
+under the system temporary directory. `assetPaths` contains only drawable still/font
+resources and captured native PNG IDs. `mediaSourcePaths` retains original video and
+sequence pattern/manifest paths for trusted authoring integration. The exported scene
+carries the immutable `preparedMedia` manifest and awaits readiness for each frame.
+Still-only export callbacks keep their synchronous path.
+
+Capture walks the full document with culling disabled, so history, mattes and required
+coverage cannot miss originals. Documents whose measured text may drive source clocks
+capture a conservative source set, bounded by the manifest entry cap. Unused sources
+verify provenance but do not allocate decoded pixels. Actual video and sequence exports
+with an animated still and native shape lower third match independently encoded preview
+frames, repeat exports and raw/PNG transport on Canvas 1.45 and WebGL2 0.66. Matching
+audio is still pending.

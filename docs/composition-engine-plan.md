@@ -4773,6 +4773,20 @@ and held-frame pixels remain seek-independent. CPU peaks at 16 KiB and native GP
 pass. Source/export/Lab hookup, PCM/waveforms and full acceptance remain pending.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 production picture export checkpoint (2026-10-07)
+
+The Node source loader now collects complete-document native dependencies and prepares
+verified immutable PNG manifests. Original media paths remain separate from drawable
+resource IDs. Unused sources still verify provenance without pixel allocation, and
+relocated sources reuse the same captures. Export awaits native readiness for every
+frame; still-only callbacks remain synchronous. Canvas 1.45 / WebGL2 0.66 identify the
+new pipeline. Actual video and sequence fixtures include an animated still and shape
+lower third; both backends match independently encoded preview frames, repeated MP4s
+and raw/PNG transport byte for byte. Eighteen source/cache/probe/examples tests and all
+static checks pass. Lab/CLI preview/drafts, continuous PCM/waveforms, native passage
+mixing and complete matching-audio/full acceptance remain pending.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

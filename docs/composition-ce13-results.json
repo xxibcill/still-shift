@@ -3298,12 +3298,282 @@
           "sha256": "sha256:6b16ddbd6bff994af36c6e132f311421304c58c6fc2c15976f7106914044f0c0"
         }
       ],
+      "fullGate": false,
+      "checkpoint": "7f42571"
+    },
+    {
+      "slice": "production native source preparation and asynchronous export",
+      "sourceFingerprint": "sha256:4ddc0ffba34badb09b4203eb7193a0a74d8249f363dbde688d3092d6ec413db6",
+      "sourceFiles": [
+        "packages/animation-engine/src/composition-media-cache.ts",
+        "packages/animation-engine/src/composition-media.ts",
+        "packages/animation-engine/src/composition-render.ts",
+        "packages/animation-engine/src/composition-source.ts",
+        "packages/animation-engine/src/index.ts",
+        "packages/execution-runtime/src/export-page.ts",
+        "packages/renderer-core/src/composition/render/version.ts",
+        "packages/renderer-core/src/composition/render/webgl2.ts",
+        "tests/browser/composition-media-exports.ts",
+        "tests/browser/composition-media.ts",
+        "tests/integration/composition-media-source.test.ts"
+      ],
+      "checks": {
+        "build": "pass",
+        "schema": "pass",
+        "boundaries": "pass",
+        "lint": "pass",
+        "format": "pass",
+        "focusedIntegration": {
+          "exitCode": 0,
+          "passed": 18,
+          "files": 4,
+          "seconds": 9.23
+        }
+      },
+      "implemented": [
+        "complete-document exact original selection after source clocks, history and required coverage",
+        "conservative measured-text clock selection with metadata hard bounds",
+        "source loader captures immutable canonical frame manifests and separates original media paths from drawable resource IDs",
+        "unused sources verify provenance without decoding or allocating pixels",
+        "relocated sources reuse path-independent decode captures",
+        "export page awaits native frame readiness; still-only callbacks remain synchronous",
+        "renderer cache identity versions Canvas1.45/WebGL0.66"
+      ],
+      "browser": {
+        "status": "passed",
+        "preparedKey": "sha256:9941e5f60996b3f0d823c1e25bf664dd066559e905a060c0c53e0874fb2cb403",
+        "cases": [
+          {
+            "colorSpace": "srgb",
+            "backend": "canvas2d",
+            "pixels": [
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
+            ],
+            "frameHashes": [
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "srgb",
+            "backend": "webgl2",
+            "pixels": [
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
+            ],
+            "frameHashes": [
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "backend": "canvas2d",
+            "pixels": [
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
+            ],
+            "frameHashes": [
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "backend": "webgl2",
+            "pixels": [
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
+            ],
+            "frameHashes": [
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          }
+        ],
+        "compare": [
+          {
+            "colorSpace": "srgb",
+            "maxDelta": 0,
+            "differing": 0
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "maxDelta": 0,
+            "differing": 0
+          }
+        ],
+        "pairBudget": "PassageError: Complete exposure/history frame set exceeds live decoded budget",
+        "gpu": {
+          "peakGpu": 30208,
+          "disposedGpu": 0,
+          "gpuBudget": "PassageError: Native image raster texture exceeds configured GPU cache bytes"
+        },
+        "exports": [
+          {
+            "source": "sequence",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          },
+          {
+            "source": "sequence",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          },
+          {
+            "source": "video",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          },
+          {
+            "source": "video",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          }
+        ]
+      },
+      "failedAttempts": [
+        {
+          "exitCode": 2,
+          "kind": "source hook build",
+          "detail": "Existing illustrated render callback returned a report; changed callback block to void for the explicit void-or-Promise type."
+        },
+        {
+          "exitCode": 2,
+          "kind": "new browser export fixture build",
+          "detail": "Still image layer uses size/sources rather than native asset; repaired fixture before running browser."
+        }
+      ],
+      "pending": [
+        "Lab/CLI preview, edited source preparation and draft export integration",
+        "continuous native PCM, source/processed waveforms and native passage mixing",
+        "complete audio/video production acceptance and full local gate"
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-media-source-build-draft.log",
+          "sha256": "sha256:3d35e4aa362cb72b0c276b57e5806b0c60f9fbe38d2ff8ef566dffa5f8829601"
+        },
+        {
+          "path": "/private/tmp/ce13-media-source-build-rerun.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-media-source-focused-draft.log",
+          "sha256": "sha256:c7ab961e36aae409991beb83b8cec01166f17b7adf41b8e933f2a3d454b04133"
+        },
+        {
+          "path": "/private/tmp/ce13-media-source-export-build-draft.log",
+          "sha256": "sha256:90bf014bffd9f7fc859c481a08a6db0c1db90850ef162dee5933be184556dfda"
+        },
+        {
+          "path": "/private/tmp/ce13-media-source-export-build-rerun.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-media-source-export-browser-draft.log",
+          "sha256": "sha256:022ed38aa85bb510f3a0e94d92cc51ad48c1ba49756e2ff8815f4c7a87939e42"
+        },
+        {
+          "path": "/private/tmp/ce13-media-source-static-final.log",
+          "sha256": "sha256:11d597c5d62bfde9b5c7f01f4dab8d887c30a027d243f1d84c61eb9d759fe9d5"
+        },
+        {
+          "path": "/private/tmp/ce13-media-source-focused-final.log",
+          "sha256": "sha256:139223ff50b7b2813f538060057a2d31ac6b3ee8036654e8603667c457f05d6f"
+        }
+      ],
       "fullGate": false
     }
   ],
   "fullGates": [],
   "pending": [
-    "source/export/Lab integration of verified native preparation; continuous native audio PCM/waveforms",
+    "Lab/CLI native preview/draft integration; continuous native PCM/waveforms",
     "native audio protection, mixing and waveforms",
     "real Lab and export acceptance",
     "complete final local pnpm check",

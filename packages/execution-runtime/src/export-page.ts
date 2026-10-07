@@ -143,7 +143,9 @@ window.runStillShiftExport = async (scene, hasDepth, transport) => {
         : "Canvas2D illustrated compositor";
   return renderFrames(
     scene.timeline.frameCount,
-    (frame) => preview.renderFrame(frame),
+    (frame) => {
+      preview.renderFrame(frame);
+    },
     () => preview.dispose(),
     canvas,
     gl,
@@ -160,6 +162,7 @@ const exportComposition = async (
   const resources = await loadCompositionResources(
     scene.composition,
     (id) => `/_export/assets/${id}`,
+    scene.preparedMedia ? { preparedMedia: scene.preparedMedia } : {},
   );
   const canvas = document.createElement("canvas");
   document.body.append(canvas);
@@ -176,7 +179,14 @@ const exportComposition = async (
     : "Canvas2D";
   return renderFrames(
     scene.timeline.frameCount,
-    (frame) => preview.renderFrame(frame),
+    resources.media
+      ? async (frame) => {
+          await preview.prepareFrame(frame);
+          preview.renderFrame(frame);
+        }
+      : (frame) => {
+          preview.renderFrame(frame);
+        },
     () => preview.dispose(),
     canvas,
     gl,
@@ -187,7 +197,7 @@ const exportComposition = async (
 
 const renderFrames = async (
   frameCount: number,
-  renderFrame: (frame: number) => void,
+  renderFrame: (frame: number) => void | Promise<void>,
   dispose: () => void,
   canvas: HTMLCanvasElement,
   gl: WebGL2RenderingContext | null,
@@ -199,7 +209,8 @@ const renderFrames = async (
   try {
     for (let frameIndex = 0; frameIndex < frameCount; frameIndex += 1) {
       const frameStart = performance.now();
-      renderFrame(frameIndex);
+      const readiness = renderFrame(frameIndex);
+      if (readiness) await readiness;
       const frameBytes = await captureFrame(canvas, gl, transport);
       timings.push(performance.now() - frameStart);
       const uploadStart = performance.now();

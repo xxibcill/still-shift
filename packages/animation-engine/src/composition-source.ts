@@ -6,7 +6,13 @@ import {
   validateComposition,
   type Composition,
   type CompositionDiagnostic,
+  type CompositionPreparedMedia,
 } from "@still-shift/scene-contract";
+import {
+  prepareCompositionMedia,
+  type CompositionMediaPreparationOptions,
+  type CompositionMediaPreparation,
+} from "./composition-media.ts";
 import { validatePreparedAssets } from "./prepared-animation-engine.ts";
 const hash = (bytes: Uint8Array) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
@@ -36,8 +42,10 @@ export type CompositionSource = {
   warnings: CompositionDiagnostic[];
   /** Text layers whose output depends on the machine's generic fonts. */
   systemFontLayers: string[];
-  /** Absolute paths of image and font assets, by asset id. */
+  /** Absolute paths of still images, fonts and captured native PNGs, by resource id. */
   assetPaths: Record<string, string>;
+  preparedMedia?: CompositionPreparedMedia;
+  mediaSourcePaths?: CompositionMediaPreparation["sourceAssetPaths"];
   sourcePath: string;
   sourceChecksum: string;
 };
@@ -45,7 +53,9 @@ export type CompositionSource = {
 /** Read, validate and resolve a `composition-1` file and its pinned assets. */
 export async function readCompositionSource(
   compositionPath: string,
+  options: CompositionMediaPreparationOptions = {},
 ): Promise<CompositionSource> {
+  options.signal?.throwIfAborted();
   const sourcePath = resolve(compositionPath);
   let bytes: Buffer;
   try {
@@ -75,7 +85,7 @@ export async function readCompositionSource(
     );
   const composition = result.composition;
   const unsupported = composition.assets.find(
-    (asset) => asset.type !== "image" && asset.type !== "font",
+    (asset) => asset.type === "audio",
   );
   if (unsupported)
     throw new AnimationEngineError(
@@ -91,11 +101,22 @@ export async function readCompositionSource(
     },
     dirname(sourcePath),
   );
+  const media = await prepareCompositionMedia(
+    composition,
+    dirname(sourcePath),
+    options,
+  );
   return {
     composition,
     warnings: result.diagnostics,
     systemFontLayers: systemFontLayers(composition),
-    assetPaths,
+    assetPaths: { ...assetPaths, ...media?.assetPaths },
+    ...(media
+      ? {
+          preparedMedia: media.preparedMedia,
+          mediaSourcePaths: media.sourceAssetPaths,
+        }
+      : {}),
     sourcePath,
     sourceChecksum: hash(bytes),
   };

@@ -11,6 +11,7 @@ import type {
   CompositionPreparedMedia,
 } from "@still-shift/scene-contract";
 import type * as Render from "../../packages/renderer-core/src/composition/render/index.ts";
+import { verifyNativeMediaExports } from "./composition-media-exports.ts";
 import {
   mediaPngChunk,
   mediaRgbaPng,
@@ -100,6 +101,7 @@ const prepared: CompositionPreparedMedia = {
     sourceHash: decoded.sourceHash,
   })),
 };
+const capturedPaths = { ...decoded.assetPaths };
 const server = await createServer({
   root,
   configFile: false,
@@ -113,7 +115,7 @@ const server = await createServer({
         server.middlewares.use((request, response, next) => {
           const url = new URL(request.url ?? "/", "http://localhost");
           if (url.pathname !== "/native-frame") return next();
-          const path = decoded.assetPaths[url.searchParams.get("id") ?? ""];
+          const path = capturedPaths[url.searchParams.get("id") ?? ""];
           if (!path) {
             response.statusCode = 404;
             response.end();
@@ -415,9 +417,15 @@ try {
   assert.match(proof.gpu.gpuBudget, /GPU/);
   assert.equal(proof.gpu.disposedGpu, 0);
   assert.ok(proof.gpu.peakGpu > 0 && proof.gpu.peakGpu <= 32768);
+  const exports = await verifyNativeMediaExports(
+    page,
+    directory,
+    comp,
+    capturedPaths,
+  );
   console.log(
     JSON.stringify(
-      { status: "passed", preparedKey: decoded.key, ...proof },
+      { status: "passed", preparedKey: decoded.key, ...proof, exports },
       null,
       2,
     ),
