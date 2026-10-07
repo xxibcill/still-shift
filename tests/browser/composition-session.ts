@@ -67,11 +67,13 @@ try {
       frames: number,
       fail = false,
       gate?: Promise<void>,
+      prepareFrame?: (frame: number) => Promise<void>,
     ) =>
       session.load(async (resources) => {
         const canvas = document.createElement("canvas");
         canvas.width = canvas.height = 32;
         const renderer = {
+          ...(prepareFrame ? { prepareFrame } : {}),
           renderFrame(frame: number) {
             if (fail) throw new Error("Invalid staged frame");
             const context = canvas.getContext("2d")!;
@@ -164,8 +166,59 @@ try {
       !edit.disabled && !dynamicInput.matches(":disabled"),
       "Export lock must release",
     );
+    const initialGate = deferred<void>();
+    const stalePreparation = load(
+      "async-stale",
+      8,
+      false,
+      undefined,
+      () => initialGate.promise,
+    );
+    await Promise.resolve();
+    check(
+      pixels() === latest,
+      "Pending native first frame must preserve active pixels",
+    );
+    const seekGate = deferred<void>(),
+      clearGate = deferred<void>();
+    check(
+      await load("async-native", 8, false, undefined, (frame) => {
+        if (frame === 4) return seekGate.promise;
+        if (frame === 7) return clearGate.promise;
+        if (frame === 6)
+          return Promise.reject(Error("Native preparation failed"));
+        return Promise.resolve();
+      }),
+      "Ready native candidate must commit",
+    );
+    initialGate.resolve();
+    check(
+      !(await stalePreparation),
+      "Late native first-frame preparation must not commit",
+    );
+    const pendingSeek = session.show(4);
+    check(
+      session.frame === 1,
+      "Pending native seek must retain displayed frame",
+    );
+    await session.show(2);
+    const newestPixels = pixels();
+    seekGate.resolve();
+    await pendingSeek;
+    check(
+      session.frame === 2 && pixels() === newestPixels,
+      "Late native seek must not replace newer pixels or position",
+    );
+    await session.show(6);
+    check(
+      session.frame === 2 && pixels() === newestPixels,
+      "Failed native seek must retain exact valid pixels",
+    );
+    const clearSeek = session.show(7);
     session.pause();
     session.clear();
+    clearGate.resolve();
+    await clearSeek;
     check(
       session.snapshot === undefined && play.disabled,
       "Clear must retire the active snapshot",
@@ -178,6 +231,11 @@ try {
       disposed.filter((name) => name === "stale").length === 1,
       "Stale renderer must be disposed once",
     );
+    check(
+      disposed.filter((name) => name === "async-stale").length === 1 &&
+        disposed.filter((name) => name === "async-native").length === 1,
+      "Stale and accepted native renderers must dispose exactly once",
+    );
     return {
       failedFrameRetained: true,
       staleIgnored: true,
@@ -185,12 +243,17 @@ try {
       rendererIdentity: true,
       callbackOrder: true,
       dynamicExportLock: true,
+      nativeInitialReadiness: true,
+      nativeStaleSeekIgnored: true,
+      nativeFailureRetained: true,
+      nativePendingClear: true,
       errors,
       disposed,
     };
   }, "/src/preview-session.ts");
-  assert.equal(report.errors.length, 1);
+  assert.equal(report.errors.length, 2);
   assert.match(report.errors[0]!, /Invalid staged frame.*preserved/);
+  assert.match(report.errors[1]!, /Native preparation failed.*preserved/);
   console.log("Composition session:", JSON.stringify(report));
 } finally {
   await browser?.close();

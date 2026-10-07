@@ -8,7 +8,11 @@ import type { ServerResponse } from "node:http";
 import { renderComposition } from "../../../../packages/animation-engine/src/composition-render.ts";
 import type { Composition } from "@still-shift/scene-contract";
 import { CompositionSaveError, editableDocument } from "./save.ts";
-export type DraftAsset = { bytes: Buffer; type: string };
+import {
+  capturedMediaComposition,
+  type DraftAsset,
+} from "./captured-assets.ts";
+export type { DraftAsset } from "./captured-assets.ts";
 /** Render accepted native edits against captured source assets, never client-supplied paths. */
 export async function exportCompositionDraft(
   value: unknown,
@@ -31,11 +35,13 @@ export async function exportCompositionDraft(
   response.on("close", abort);
   const directory = await mkdtemp(join(tmpdir(), "composition-draft-export-"));
   try {
-    const composition = structuredClone(document);
+    const composition = capturedMediaComposition(document, assets);
     for (const [index, asset] of composition.assets.entries()) {
+      if (asset.type === "video" || asset.type === "sequence") continue;
       const captured = assets.get(asset.id);
       if (
         !captured ||
+        !("bytes" in captured) ||
         `sha256:${createHash("sha256").update(captured.bytes).digest("hex")}` !==
           asset.sha256
       )

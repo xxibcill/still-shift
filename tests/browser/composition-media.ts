@@ -12,6 +12,7 @@ import type {
 } from "@still-shift/scene-contract";
 import type * as Render from "../../packages/renderer-core/src/composition/render/index.ts";
 import { verifyNativeMediaExports } from "./composition-media-exports.ts";
+import { verifyNativeMediaAuthoring } from "./composition-media-authoring.ts";
 import {
   mediaPngChunk,
   mediaRgbaPng,
@@ -423,9 +424,21 @@ try {
     comp,
     capturedPaths,
   );
+  const authoring = await verifyNativeMediaAuthoring(
+    browser,
+    root,
+    directory,
+    comp,
+  );
   console.log(
     JSON.stringify(
-      { status: "passed", preparedKey: decoded.key, ...proof, exports },
+      {
+        status: "passed",
+        preparedKey: decoded.key,
+        ...proof,
+        exports,
+        authoring,
+      },
       null,
       2,
     ),

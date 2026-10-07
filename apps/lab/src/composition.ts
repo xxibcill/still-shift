@@ -7,6 +7,7 @@ import {
 import {
   validateComposition,
   type Composition,
+  type CompositionPreparedMedia,
 } from "../../../packages/scene-contract/src/index.ts";
 import {
   createCompositionPreview,
@@ -33,6 +34,7 @@ type ProgramResponse = {
     source: "json" | "builder";
     input: string;
     assets: Record<string, string>;
+    preparedMedia?: CompositionPreparedMedia;
   };
   diagnostics: { code: string; path: string; message: string }[];
 };
@@ -311,6 +313,7 @@ async function load(
       ? undefined
       : await fetch(
           programMode ? "/composition/program" : `/composition/scene?${query}`,
+          { signal: ownership.signal },
         );
     let value: unknown;
     let program: ProgramResponse["snapshot"] = currentProgram;
@@ -343,11 +346,53 @@ async function load(
         : new CompositionDocument(structuredClone(value) as Composition);
     if (edit.proposal && !nextHistory.accepts(edit.proposal))
       throw new Error("A newer document superseded this edit");
+    let capture: {
+      preparedMedia?: CompositionPreparedMedia;
+      assets: Record<string, string>;
+    } = {
+      ...(program?.preparedMedia
+        ? { preparedMedia: program.preparedMedia }
+        : {}),
+      assets: program?.assets ?? {},
+    };
+    if (
+      result.composition.assets.some(
+        (asset) => asset.type === "video" || asset.type === "sequence",
+      ) &&
+      (!capture.preparedMedia || edit.document)
+    ) {
+      const response = await fetch(
+        programMode
+          ? "/composition/program-prepare"
+          : `/composition/prepare?${query}`,
+        {
+          method: "POST",
+          signal: ownership.signal,
+          headers: {
+            "Content-Type": "application/json",
+            "x-still-shift-composition": "1",
+          },
+          body: JSON.stringify({
+            ...(programMode ? { revision: program!.revision } : {}),
+            document: value,
+          }),
+        },
+      );
+      if (!response.ok) throw new Error(await response.text());
+      capture = (await response.json()) as typeof capture;
+    }
+    ownership.signal.throwIfAborted();
     const resources = await loadCompositionResources(
       result.composition,
       (id) =>
-        program?.assets[id] ??
+        capture.assets[id] ??
         `/composition/asset?${query}&id=${encodeURIComponent(id)}`,
+      {
+        ...(capture.preparedMedia
+          ? { preparedMedia: capture.preparedMedia }
+          : {}),
+        signal: ownership.signal,
+      },
     );
     const nextCanvas = canvas.cloneNode(false) as HTMLCanvasElement;
     const renderer = createCompositionPreview(
@@ -378,6 +423,9 @@ async function load(
     };
     ownership.renderer(
       {
+        ...(resources.media
+          ? { prepareFrame: (frame: number) => renderer.prepareFrame(frame) }
+          : {}),
         renderFrame(frame: number) {
           return (snapshot.report = renderer.renderFrame(frame));
         },
@@ -499,6 +547,16 @@ saveButton.onclick = async () => {
               .join("\n") || "Save failed",
           );
         currentProgram = payload.snapshot;
+        if (
+          currentProgram.preparedMedia &&
+          !(await load("program", {
+            preserveHistory: true,
+            frame: session.frame,
+          }))
+        )
+          throw new Error(
+            "Source saved, but its native preview could not reload.",
+          );
         const snapshot = session.snapshot;
         if (snapshot) snapshot.program = currentProgram;
         documentHistory.markSaved();

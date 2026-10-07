@@ -1,12 +1,24 @@
-import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile, realpath } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import { createReadStream } from "node:fs";
+import { pipeline } from "node:stream/promises";
 import { dirname, extname, join, relative, resolve, sep } from "node:path";
 import type { ServerResponse } from "node:http";
 import { exportCompositionDraft } from "../../tools/still-shift-cli/src/composition/draft-export.ts";
 import {
   CompositionSaveError,
   readEditRequest,
+  editableDocument,
 } from "../../tools/still-shift-cli/src/composition/save.ts";
-import type { Composition } from "../../packages/scene-contract/src/index.ts";
+import { validateComposition } from "../../packages/scene-contract/src/index.ts";
+import {
+  readCompositionSource,
+  prepareCompositionMedia,
+} from "../../packages/animation-engine/src/index.ts";
+import {
+  captureCompositionAssets,
+  capturedMediaComposition,
+} from "../../tools/still-shift-cli/src/composition/captured-assets.ts";
 import type { Plugin } from "vite";
 
 const root = resolve(import.meta.dirname, "../..");
@@ -73,9 +85,56 @@ const send = (
  */
 export const compositionApi = (): Plugin => {
   let exporting = false;
+  const captures = new Map<
+    string,
+    { scene: string; paths: Record<string, string> }
+  >();
+  const preparing = new Set<AbortController>();
+  async function source(scene: string, signal?: AbortSignal) {
+    const validation = validateComposition(
+      JSON.parse(await readFile(scene, "utf8")),
+    );
+    if (!validation.ok)
+      throw new CompositionSaveError(
+        422,
+        "comp-edit-validation",
+        "Invalid registered fixture",
+      );
+    const check = async (path: string) => {
+      signal?.throwIfAborted();
+      if (!inside(root, await realpath(path)))
+        throw new CompositionSaveError(
+          422,
+          "comp-edit-asset",
+          "Registered fixture assets must stay inside the repository",
+        );
+    };
+    for (const asset of validation.composition.assets) {
+      if (asset.type === "sequence") {
+        await check(resolve(dirname(scene), asset.manifestPath));
+        const pattern = resolve(dirname(scene), asset.path);
+        const format = /%0([1-9])d/.exec(pattern)!;
+        for (let ordinal = 0; ordinal < asset.frameCount; ordinal++)
+          await check(
+            pattern.replace(
+              format[0],
+              String(asset.firstFrame + ordinal).padStart(
+                Number(format[1]),
+                "0",
+              ),
+            ),
+          );
+      } else await check(resolve(dirname(scene), asset.path));
+    }
+    return readCompositionSource(scene, { signal });
+  }
   return {
     name: "still-shift-composition-fixtures",
     configureServer(server) {
+      server.httpServer?.once("close", () => {
+        for (const controller of preparing) controller.abort();
+        captures.clear();
+      });
       server.middlewares.use((request, response, next) => {
         const url = new URL(request.url ?? "/", "http://localhost");
         if (!url.pathname.startsWith("/composition/")) return next();
@@ -109,9 +168,79 @@ export const compositionApi = (): Plugin => {
           }
           const scene = fixturePath(url.searchParams.get("scene"));
           if (!scene) return send(response, 404, "Unknown composition");
+          if (url.pathname === "/composition/native-asset") {
+            const capture = captures.get(url.searchParams.get("capture") ?? "");
+            const id = url.searchParams.get("id") ?? "";
+            const path =
+              capture?.scene === scene && id.startsWith("__media:")
+                ? capture.paths[id]
+                : undefined;
+            if (!path)
+              return send(response, 404, "Unknown captured native frame");
+            response.setHeader("Content-Type", "image/png");
+            response.setHeader("Cache-Control", "no-store");
+            await pipeline(createReadStream(path), response);
+            return;
+          }
           const text = await readFile(scene, "utf8");
           if (url.pathname === "/composition/scene")
             return send(response, 200, text, types[".json"]);
+          if (url.pathname === "/composition/prepare") {
+            const controller = new AbortController();
+            const abort = () => {
+              if (!response.writableEnded) controller.abort();
+            };
+            preparing.add(controller);
+            response.on("close", abort);
+            try {
+              const body = (await readEditRequest(request)) as {
+                document?: unknown;
+              };
+              if (!body || Object.keys(body).some((key) => key !== "document"))
+                throw new CompositionSaveError(
+                  400,
+                  "comp-edit-request",
+                  "Use document",
+                );
+              const loaded = await source(scene, controller.signal);
+              const document = editableDocument(
+                body.document,
+                JSON.parse(text),
+              );
+              const assets = await captureCompositionAssets(loaded);
+              const prepared = await prepareCompositionMedia(
+                capturedMediaComposition(document, assets),
+                dirname(scene),
+                { signal: controller.signal },
+              );
+              controller.signal.throwIfAborted();
+              const capture = randomUUID();
+              captures.set(capture, {
+                scene,
+                paths: prepared?.assetPaths ?? {},
+              });
+              while (captures.size > 4)
+                captures.delete(captures.keys().next().value!);
+              send(
+                response,
+                200,
+                JSON.stringify({
+                  preparedMedia: prepared?.preparedMedia,
+                  assets: Object.fromEntries(
+                    Object.keys(prepared?.assetPaths ?? {}).map((id) => [
+                      id,
+                      `/composition/native-asset?scene=${encodeURIComponent(url.searchParams.get("scene")!)}&capture=${capture}&id=${encodeURIComponent(id)}`,
+                    ]),
+                  ),
+                }),
+                types[".json"],
+              );
+            } finally {
+              response.off("close", abort);
+              preparing.delete(controller);
+            }
+            return;
+          }
           if (url.pathname === "/composition/export") {
             const body = (await readEditRequest(request)) as {
               document?: unknown;
@@ -134,21 +263,8 @@ export const compositionApi = (): Plugin => {
                 "comp-edit-busy",
                 "A composition export is already running",
               );
-            const base = JSON.parse(text) as Composition,
-              assets = new Map<string, { bytes: Buffer; type: string }>();
-            for (const asset of base.assets) {
-              const path = resolve(dirname(scene), asset.path);
-              if (!inside(root, path) || !types[extname(path)])
-                throw new CompositionSaveError(
-                  422,
-                  "comp-edit-asset",
-                  "Unknown registered fixture asset",
-                );
-              assets.set(asset.id, {
-                bytes: await readFile(path),
-                type: types[extname(path)]!,
-              });
-            }
+            const base = JSON.parse(text),
+              assets = await captureCompositionAssets(await source(scene));
             exporting = true;
             try {
               await exportCompositionDraft(

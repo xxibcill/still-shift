@@ -1,22 +1,34 @@
-import { createHash } from "node:crypto";
+import { randomUUID } from "node:crypto";
+import { createReadStream } from "node:fs";
 import { readFile, realpath } from "node:fs/promises";
 import { createServer as createSocketServer } from "node:net";
-import { extname, resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { pipeline } from "node:stream/promises";
 import { createServer, type Plugin, type ViteDevServer } from "vite";
-import { readCompositionSource } from "@still-shift/animation-engine";
+import {
+  readCompositionSource,
+  prepareCompositionMedia,
+} from "@still-shift/animation-engine";
 import type {
   Composition,
   CompositionDiagnostic,
+  CompositionPreparedMedia,
 } from "@still-shift/scene-contract";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { loadProgram } from "./program.ts";
 import { exportCompositionDraft } from "./draft-export.ts";
+import {
+  captureCompositionAssets,
+  capturedMediaComposition,
+  type DraftAsset,
+} from "./captured-assets.ts";
 import { withProgramFile } from "./files.ts";
 import {
   CompositionSaveError,
   readEditRequest,
   saveCompositionDocument,
   sourceHash,
+  editableDocument,
 } from "./save.ts";
 export type ProgramSnapshot = {
   revision: number;
@@ -26,24 +38,13 @@ export type ProgramSnapshot = {
   source: "json" | "builder";
   input: string;
   assets: Record<string, string>;
+  preparedMedia?: CompositionPreparedMedia;
   diagnostics: CompositionDiagnostic[];
 };
 type SnapshotBytes = {
   snapshot: ProgramSnapshot;
-  bytes: Map<string, { bytes: Buffer; type: string }>;
-};
-const types: Record<string, string> = {
-  ".svg": "image/svg+xml",
-  ".png": "image/png",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".webp": "image/webp",
-  ".gif": "image/gif",
-  ".bmp": "image/bmp",
-  ".ttf": "font/ttf",
-  ".otf": "font/otf",
-  ".woff": "font/woff",
-  ".woff2": "font/woff2",
+  bytes: Map<string, DraftAsset>;
+  captures: Map<string, Record<string, string>>;
 };
 async function availablePort() {
   const socket = createSocketServer();
@@ -72,6 +73,8 @@ export async function createProgramPreview(
   const root = resolve(import.meta.dirname, "../../../../");
   const watched = new Set<string>([input]),
     snapshots = new Map<number, SnapshotBytes>();
+  const sequencePatterns = new Map<string, RegExp>();
+  const preparing = new Set<AbortController>();
   let current: SnapshotBytes | undefined,
     revision = 0,
     pending = false,
@@ -98,31 +101,23 @@ export async function createProgramPreview(
       addDependencies([
         ...program.dependencies,
         ...program.composition.assets.map((asset) => asset.path),
+        ...program.composition.assets.flatMap((asset) =>
+          asset.type === "sequence" ? [asset.manifestPath] : [],
+        ),
       ]);
-      const source = await withProgramFile(
-        program,
-        sourceInput,
-        readCompositionSource,
+      sequencePatterns.clear();
+      for (const asset of program.composition.assets)
+        if (asset.type === "sequence") {
+          const pattern = asset.path
+            .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+            .replace(/%0[1-9]d/, "[0-9]+");
+          sequencePatterns.set(asset.id, new RegExp(`^${pattern}$`));
+          server.watcher.add(dirname(asset.path));
+        }
+      const source = await withProgramFile(program, sourceInput, (path) =>
+        readCompositionSource(path, { signal: controller.signal }),
       );
-      const bytes = new Map<string, { bytes: Buffer; type: string }>();
-      for (const asset of program.composition.assets) {
-        const data = await readFile(source.assetPaths[asset.id]!);
-        if (
-          `sha256:${createHash("sha256").update(data).digest("hex")}` !==
-          asset.sha256
-        )
-          programError(
-            "comp-program-asset-race",
-            `Asset ${asset.id} changed during rebuild`,
-            asset.path,
-          );
-        bytes.set(asset.id, {
-          bytes: data,
-          type:
-            types[extname(asset.path).toLowerCase()] ??
-            "application/octet-stream",
-        });
-      }
+      const bytes = await captureCompositionAssets(source);
       if (
         program.sourceSha256 &&
         sourceHash(await readFile(input)) !== program.sourceSha256
@@ -143,14 +138,21 @@ export async function createProgramPreview(
         source: program.source,
         input: sourceInput,
         diagnostics: source.warnings,
+        ...(source.preparedMedia
+          ? { preparedMedia: source.preparedMedia }
+          : {}),
         assets: Object.fromEntries(
-          [...bytes.keys()].map((id) => [
+          Object.keys(source.assetPaths).map((id) => [
             id,
-            `/composition/program-asset?revision=${revision}&id=${encodeURIComponent(id)}`,
+            `/composition/program-asset?revision=${revision}&capture=source&id=${encodeURIComponent(id)}`,
           ]),
         ),
       };
-      current = { snapshot, bytes };
+      current = {
+        snapshot,
+        bytes,
+        captures: new Map([["source", source.assetPaths]]),
+      };
       snapshots.set(revision, current);
       while (snapshots.size > 2)
         snapshots.delete(snapshots.keys().next().value!);
@@ -201,7 +203,12 @@ export async function createProgramPreview(
     if (
       !options.watch ||
       !["add", "change", "unlink"].includes(event) ||
-      !watched.has(resolve(path))
+      !(
+        watched.has(resolve(path)) ||
+        [...sequencePatterns.values()].some((pattern) =>
+          pattern.test(resolve(path)),
+        )
+      )
     )
       return;
     if (resolve(path) === input && event !== "unlink") {
@@ -232,10 +239,88 @@ export async function createProgramPreview(
             "/composition/program-asset",
             "/composition/program-save",
             "/composition/program-export",
+            "/composition/program-prepare",
           ].includes(url.pathname)
         )
           return next();
         response.setHeader("Cache-Control", "no-store");
+        if (url.pathname === "/composition/program-prepare") {
+          void (async () => {
+            const controller = new AbortController();
+            const abort = () => {
+              if (!response.writableEnded) controller.abort();
+            };
+            preparing.add(controller);
+            response.on("close", abort);
+            try {
+              const body = (await readEditRequest(request)) as {
+                revision?: number;
+                document?: unknown;
+              };
+              if (
+                !body ||
+                Object.keys(body).some(
+                  (key) => !["revision", "document"].includes(key),
+                )
+              )
+                throw new CompositionSaveError(
+                  400,
+                  "comp-edit-request",
+                  "Use revision and document",
+                );
+              const captured = snapshots.get(body.revision ?? -1);
+              if (!captured)
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-revision",
+                  "Source asset revision expired; reload before preparing",
+                );
+              const document = editableDocument(
+                body.document,
+                captured.snapshot.document ?? captured.snapshot.composition,
+              );
+              const prepared = await prepareCompositionMedia(
+                capturedMediaComposition(document, captured.bytes),
+                dirname(sourceInput),
+                { signal: controller.signal },
+              );
+              controller.signal.throwIfAborted();
+              const capture = randomUUID();
+              captured.captures.set(capture, prepared?.assetPaths ?? {});
+              while (captured.captures.size > 3) {
+                const oldest = [...captured.captures.keys()].find(
+                  (id) => id !== "source",
+                )!;
+                captured.captures.delete(oldest);
+              }
+              response.setHeader("Content-Type", "application/json");
+              response.end(
+                JSON.stringify({
+                  preparedMedia: prepared?.preparedMedia,
+                  assets: {
+                    ...captured.snapshot.assets,
+                    ...Object.fromEntries(
+                      Object.keys(prepared?.assetPaths ?? {}).map((id) => [
+                        id,
+                        `/composition/program-asset?revision=${captured.snapshot.revision}&capture=${capture}&id=${encodeURIComponent(id)}`,
+                      ]),
+                    ),
+                  },
+                }),
+              );
+            } catch (error) {
+              if (!response.headersSent && !response.destroyed) {
+                response.statusCode =
+                  error instanceof CompositionSaveError ? error.status : 422;
+                response.end(String(error));
+              }
+            } finally {
+              response.off("close", abort);
+              preparing.delete(controller);
+            }
+          })();
+          return;
+        }
         if (url.pathname === "/composition/program-export") {
           void (async () => {
             try {
@@ -395,10 +480,22 @@ export async function createProgramPreview(
           );
           return;
         }
-        const asset = snapshots
-          .get(Number(url.searchParams.get("revision")))
-          ?.bytes.get(url.searchParams.get("id") ?? "");
-        if (!asset) {
+        const captured = snapshots.get(
+          Number(url.searchParams.get("revision")),
+        );
+        const id = url.searchParams.get("id") ?? "";
+        const asset = captured?.bytes.get(id);
+        const path = captured?.captures.get(
+          url.searchParams.get("capture") ?? "source",
+        )?.[id];
+        if (id.startsWith("__media:") && path) {
+          response.setHeader("Content-Type", "image/png");
+          void pipeline(createReadStream(path), response).catch(() =>
+            response.destroy(),
+          );
+          return;
+        }
+        if (!asset || !("bytes" in asset)) {
           response.statusCode = 404;
           response.end();
           return;
@@ -443,6 +540,7 @@ export async function createProgramPreview(
       closed = true;
       clearTimeout(timer);
       abort?.abort();
+      for (const controller of preparing) controller.abort();
       server.watcher.off("all", changed);
       await active;
       await saving;

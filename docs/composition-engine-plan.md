@@ -4787,6 +4787,22 @@ static checks pass. Lab/CLI preview/drafts, continuous PCM/waveforms, native pas
 mixing and complete matching-audio/full acceptance remain pending.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 native authoring checkpoint (2026-10-07)
+
+CLI and registered Lab fixtures now prepare edited native source clocks and serve
+only captured frame IDs. Native originals stay on disk and reverify their pinned
+bytes before preparation/export. Sequence pattern and manifest bindings resolve and
+relocate together, including macOS aliases. Optional asynchronous session readiness
+preserves the synchronous still path; staged first frames, seeks, playback and early
+stale disposal have generation/cancellation guards. A real inspector remap edit
+prepares a previously uncaptured original; undo/redo, save/reload, backend switch,
+playback and fixture preview retain exact pixels. Native draft MP4 matches direct
+render; changed originals reject and restoration recovers. Forty-eight focused units,
+23 CLI-preview-save tests, static checks and existing session/Lab/builder/inspector
+browser suites pass. Continuous PCM/waveforms, native passage mixing and matching
+audio/video plus the final full gate remain pending.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

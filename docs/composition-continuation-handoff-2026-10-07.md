@@ -63,9 +63,11 @@ checks are pushed as `fc23442`. Actual SDR conversion and atomic bounded frame c
 are pushed as `ac9f68c`. Bounded native readiness/shared graph dependencies now pass
 2,077 units, 46 runtime / 13 media regressions, static checks and real native/CE7/CE8
 browser proofs (`7f42571`). Source preparation and actual video/sequence production
-picture exports now pass both backends with animated still/lower third; repeated,
-independent and raw/PNG MP4s match exactly (Canvas1.45/WebGL0.66). Lab/CLI previews and
-drafts, native PCM/waveforms and matching audio production acceptance remain pending;
+picture exports are pushed as `9aca1ae` and pass both backends with animated still/
+lower third; repeated, independent and raw/PNG MP4s match (Canvas1.45/WebGL0.66).
+Native Lab/CLI inspector edits, preparation/seek/playback readiness, saved reload and
+draft exports now pass real browser proof and authoring regressions. Native PCM/
+waveforms, native passage mixing and matching audio production acceptance remain pending;
 no final CE13 gate has run.
 CE15 and CE14 remain in flight.
 Private notes contain exact source

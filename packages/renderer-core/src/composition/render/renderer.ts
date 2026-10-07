@@ -166,8 +166,10 @@ export async function loadCompositionResources(
   options: {
     providers?: readonly CanvasContentProvider[];
     preparedMedia?: CompositionPreparedMedia;
+    signal?: AbortSignal;
   } = {},
 ): Promise<CompositionResources> {
+  options.signal?.throwIfAborted();
   if (
     !options.preparedMedia &&
     composition.assets.some(
@@ -184,7 +186,9 @@ export async function loadCompositionResources(
   await Promise.all(
     composition.assets.map(async (asset) => {
       if (asset.type !== "image") return;
-      const response = await fetch(assetUrl(asset.id));
+      const response = await fetch(assetUrl(asset.id), {
+        signal: options.signal ?? null,
+      });
       if (!response.ok) throw new Error(`Asset unavailable: ${asset.id}`);
       const bytes = await response.arrayBuffer();
       if (`sha256:${await sha256Hex(bytes)}` !== asset.sha256)
@@ -199,6 +203,7 @@ export async function loadCompositionResources(
       image.src = url;
       try {
         await image.decode();
+        options.signal?.throwIfAborted();
       } finally {
         URL.revokeObjectURL(url);
       }
@@ -218,6 +223,7 @@ export async function loadCompositionResources(
     }),
   );
   const fonts = await loadCompositionFonts(composition, assetUrl);
+  options.signal?.throwIfAborted();
   return {
     images,
     ...(options.preparedMedia

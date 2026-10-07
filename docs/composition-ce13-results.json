@@ -3568,12 +3568,419 @@
           "sha256": "sha256:139223ff50b7b2813f538060057a2d31ac6b3ee8036654e8603667c457f05d6f"
         }
       ],
+      "fullGate": false,
+      "checkpoint": "9aca1ae"
+    },
+    {
+      "slice": "native CLI/Lab authoring, readiness lifecycle and draft export",
+      "sourceFingerprint": "sha256:f0d579e5b02cf10398616fe9c5e62a1ef7c9678a25492fc72ca2ac84a4daa333",
+      "sourceFiles": [
+        "apps/lab/composition-api.ts",
+        "apps/lab/src/composition-inspector.ts",
+        "apps/lab/src/composition.ts",
+        "apps/lab/src/preview-session.ts",
+        "packages/renderer-core/src/composition/quality-render.ts",
+        "packages/renderer-core/src/composition/render/renderer.ts",
+        "tests/browser/composition-media-authoring.ts",
+        "tests/browser/composition-media.ts",
+        "tests/browser/composition-session.ts",
+        "tests/integration/composition-program.test.ts",
+        "tools/still-shift-cli/src/composition/captured-assets.ts",
+        "tools/still-shift-cli/src/composition/draft-export.ts",
+        "tools/still-shift-cli/src/composition/files.ts",
+        "tools/still-shift-cli/src/composition/preview.ts",
+        "tools/still-shift-cli/src/composition/program.ts"
+      ],
+      "checks": {
+        "build": "pass",
+        "schema": "pass",
+        "boundaries": "pass",
+        "lint": "pass",
+        "format": "pass",
+        "unit": {
+          "exitCode": 0,
+          "passed": 48,
+          "files": 4,
+          "seconds": 0.811
+        },
+        "cliPreviewSave": {
+          "exitCode": 0,
+          "passed": 23,
+          "files": 4,
+          "seconds": 16.77
+        }
+      },
+      "implemented": [
+        "optional asynchronous session readiness retains synchronous still-only presentation",
+        "generation guards for staged first frames, seeks and playback restart; early idempotent stale candidate disposal",
+        "candidate AbortSignal cancels source preparation requests",
+        "captured-resource-only endpoints and edited media preparation from fixed server-registered pinned originals",
+        "native originals stay on disk and reverify instead of becoming large browser snapshot buffers",
+        "native draft export uses trusted original bindings and verified frame preparation",
+        "sequence manifest/pattern portable resolution and canonical alias handling",
+        "original sequence watcher rejects tampering and recovers on restoration",
+        "native Media key value inspector editing; rendered quality analysis awaits native readiness"
+      ],
+      "browser": {
+        "status": "passed",
+        "preparedKey": "sha256:9941e5f60996b3f0d823c1e25bf664dd066559e905a060c0c53e0874fb2cb403",
+        "cases": [
+          {
+            "colorSpace": "srgb",
+            "backend": "canvas2d",
+            "pixels": [
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
+            ],
+            "frameHashes": [
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "srgb",
+            "backend": "webgl2",
+            "pixels": [
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
+            ],
+            "frameHashes": [
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "backend": "canvas2d",
+            "pixels": [
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
+            ],
+            "frameHashes": [
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "backend": "webgl2",
+            "pixels": [
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
+            ],
+            "frameHashes": [
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          }
+        ],
+        "compare": [
+          {
+            "colorSpace": "srgb",
+            "maxDelta": 0,
+            "differing": 0
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "maxDelta": 0,
+            "differing": 0
+          }
+        ],
+        "pairBudget": "PassageError: Complete exposure/history frame set exceeds live decoded budget",
+        "gpu": {
+          "peakGpu": 30208,
+          "disposedGpu": 0,
+          "gpuBudget": "PassageError: Native image raster texture exceeds configured GPU cache bytes"
+        },
+        "exports": [
+          {
+            "source": "sequence",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          },
+          {
+            "source": "sequence",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          },
+          {
+            "source": "video",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          },
+          {
+            "source": "video",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          }
+        ],
+        "authoring": {
+          "newlyReferencedOriginal": 1,
+          "inspectorUndoRedo": "exact",
+          "savedReload": "exact",
+          "backendSwitch": "exact",
+          "draftExport": "byte-identical",
+          "playback": "last frame exact",
+          "fixturePreview": "exact",
+          "changedBindingsRejected": true,
+          "originalMediaNotServed": true,
+          "sequenceOriginalWatch": "changed bytes rejected; restored pixels exact"
+        }
+      },
+      "existingBrowserRegressions": {
+        "session": {
+          "failedFrameRetained": true,
+          "staleIgnored": true,
+          "shorterClamped": true,
+          "rendererIdentity": true,
+          "callbackOrder": true,
+          "dynamicExportLock": true,
+          "nativeInitialReadiness": true,
+          "nativeStaleSeekIgnored": true,
+          "nativeFailureRetained": true,
+          "nativePendingClear": true,
+          "errors": [
+            "Invalid staged frame Previous valid preview is preserved.",
+            "Native preparation failed Previous valid preview is preserved."
+          ],
+          "disposed": [
+            "invalid",
+            "stale",
+            "first",
+            "async-stale",
+            "latest",
+            "async-native"
+          ]
+        },
+        "program": {
+          "status": "passed",
+          "watch": {
+            "helperReload": true,
+            "invalidKeepsPixels": true,
+            "frameRetained": 17,
+            "shorterClamped": 7,
+            "backendSwitch": true,
+            "fullReload": false,
+            "readonlyBuilder": true
+          },
+          "render": {
+            "sources": ["typescript", "json"],
+            "frames": 8,
+            "fps": 24,
+            "byteIdentical": true
+          }
+        },
+        "inspector": {
+          "status": "passed",
+          "checks": [
+            "desktop edit",
+            "undo/redo",
+            "invalid-edit rollback",
+            "transient visibility",
+            "visibility retained across curve edits and undo/redo",
+            "overlays",
+            "keyboard Bezier graph handles",
+            "lossless source save",
+            "backend draft/frame retention",
+            "MP4 native byte identity",
+            "decoded preview parity",
+            "external conflict/reload",
+            "phone layout",
+            "save applies view visibility",
+            "builder edited-key copy/read-only source/hot reload"
+          ],
+          "root": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-inspector-15rZpY"
+        }
+      },
+      "existingLabSessions": "commerce, components, reusable and depth retain stale/failed/edit/export/retry/playback behavior",
+      "failedAttempts": [
+        {
+          "exitCode": 1,
+          "kind": "new authoring fixture source set",
+          "detail": "Hold interpolation belongs to the ending key in the established curve convention. Added it there so the edit proves a previously uncaptured original."
+        },
+        {
+          "exitCode": 1,
+          "kind": "new browser lane locator",
+          "detail": "Inspector lane labels include owner/scope, not the bare property name; matched the displayed timeRemap label."
+        },
+        {
+          "exitCode": 1,
+          "kind": "new path relocation regression",
+          "passed": 18,
+          "failed": 1,
+          "detail": "Missing manifest fallback kept the lexical /var alias while pattern paths canonicalized to /private/var. Shared the same canonical-parent resolver for both paths."
+        }
+      ],
+      "pending": [
+        "continuous native PCM and source/processed waveforms",
+        "native composition beat audio into the whole-passage mixer",
+        "complete matching-audio production acceptance and final full local gate"
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-preview-session-build-draft.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-session-browser-draft.log",
+          "sha256": "sha256:ce337cb6389b36f4ab17e6e86febcf7f610f0a77ea20d8c3b43946afc7169f4d"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-session-lab-regression.log",
+          "sha256": "sha256:0a5bf6c9d531b40e4ba887176063d9c4eb518c398cfd5827401a2b25e6982dbb"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-build-draft.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-build-final-draft.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-browser-draft.log",
+          "sha256": "sha256:ef8f85c03b3e69030479e0e6bdcf821ac51a3b16c846d654f07458bca6dc8fc6"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-build-rerun.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-browser-rerun.log",
+          "sha256": "sha256:7fc2eab64b46c7ebd599584f90053b75bee5b84f72c8eb4e0d24d1687f381655"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-cli-regressions.log",
+          "sha256": "sha256:d9df78e8ffac74de8b15353d0248852f8fdd3a163025308c7756ce6774d79459"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-build-second-rerun.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-browser-second-rerun.log",
+          "sha256": "sha256:a01bcd7ea75efab3a376fa6e2c952af40d5749bdb071b9ccbdf20e752aca3977"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-cli-regressions-rerun.log",
+          "sha256": "sha256:8e5c6571c7ea6c135b2fbb0133ed60d420d99d52c0eaf6563c4f7ae7cf3e6e18"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-session-final.log",
+          "sha256": "sha256:7afe2d32001e31bf6debde35ec7baa14191cc5aac753f24a80ecb50e313270bb"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-lab-final.log",
+          "sha256": "sha256:0a5bf6c9d531b40e4ba887176063d9c4eb518c398cfd5827401a2b25e6982dbb"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-program-final.log",
+          "sha256": "sha256:2edebd97fd96f3fe57723d4a8dd5254a446a2b3dc062d9513f5654a5881e8d01"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-inspector-final.log",
+          "sha256": "sha256:e28bc69a5c58b71081a2a3e551b5755de3c11708b7638818f741df4380c817ec"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-static-final.log",
+          "sha256": "sha256:11d597c5d62bfde9b5c7f01f4dab8d887c30a027d243f1d84c61eb9d759fe9d5"
+        },
+        {
+          "path": "/private/tmp/ce13-preview-native-unit-final.log",
+          "sha256": "sha256:7472b365f16350e8f20da913df39f4abbaf8ab32a421fd8414c3eac31b7441dd"
+        }
+      ],
       "fullGate": false
     }
   ],
   "fullGates": [],
   "pending": [
-    "Lab/CLI native preview/draft integration; continuous native PCM/waveforms",
+    "continuous native PCM/source and processed waveforms; native passage mixing",
     "native audio protection, mixing and waveforms",
     "real Lab and export acceptance",
     "complete final local pnpm check",

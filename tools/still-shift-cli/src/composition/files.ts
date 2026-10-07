@@ -13,6 +13,9 @@ export function portableComposition(
     assets: composition.assets.map((asset) => ({
       ...asset,
       path: relative(target, asset.path),
+      ...(asset.type === "sequence"
+        ? { manifestPath: relative(target, asset.manifestPath) }
+        : {}),
     })),
   };
 }

@@ -376,7 +376,10 @@ export function createCompositionInspector(options: {
           ? "Depth key value"
           : ownerLayer?.type === "image" && ownerLayer.plane
             ? "Image plane key value"
-            : undefined;
+            : ownerLayer &&
+                ["video", "sequence", "audio"].includes(ownerLayer.type)
+              ? "Media key value"
+              : undefined;
     if (keyValueLabel && ["scalar", "color", "vector"].includes(current.kind)) {
       const value = textInput(keyValueLabel, key.value);
       area.append(

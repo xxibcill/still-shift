@@ -111,8 +111,8 @@ surfaces keep their existing renderer policies. Encoded download buffers have a
 separate bound based on the pinned frame dimensions and byte count; they are not
 counted as decoded bitmap residency. Prepared manifests allow at most 131,072 frame
 entries, and one disk cache entry at most 262,144, to bound metadata. Native source
-frame-count limits remain unchanged. Source-loader and export-page integration are verified. Lab/CLI preview and draft
-integration, actual PCM and complete CE13 acceptance are the next work.
+frame-count limits remain unchanged. Source-loader and export-page integration are verified. Lab/CLI preview and draft integration are verified. Actual PCM, native passage mixing
+and complete CE13 acceptance are the next work.
 
 `loadComposition` and `renderComposition` prepare native sources before browser
 rendering. An optional `cacheDirectory`, or `STILL_SHIFT_COMPOSITION_MEDIA_CACHE`,
@@ -130,3 +130,20 @@ verify provenance but do not allocate decoded pixels. Actual video and sequence 
 with an animated still and native shape lower third match independently encoded preview
 frames, repeat exports and raw/PNG transport on Canvas 1.45 and WebGL2 0.66. Matching
 audio is still pending.
+
+Native authoring requests prepare only an accepted document with unchanged source
+bindings. CLI revision captures and registered Lab fixture captures serve exact PNG
+resource IDs, not arbitrary filesystem paths or original video files. A remap edit
+can prepare a newly referenced original. Source files stay on disk rather than being
+loaded into large browser snapshot buffers; every preparation/export revalidates the
+pinned original bytes. Changed sources reject and preserve the last valid preview.
+Sequence watchers include numbered originals and the manifest. Portable JSON resolves
+and relocates both the sequence pattern and manifest path.
+
+Preview sessions accept optional asynchronous `prepareFrame` readiness. They retain
+visible pixels until readiness succeeds, ignore superseded seeks/first frames, cancel
+stale candidates, and dispose resources once. Playback waits for each native readiness
+step and guards restart/pause generations. Still-only renderers remain synchronous.
+Native inspector source-clock keys expose Media key value editing. Real edit/undo/redo,
+save/reload, backend switching and draft-export checks are verified; actual native PCM
+and source/processed waveform lanes are the next work.

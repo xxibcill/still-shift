@@ -15,7 +15,12 @@ export async function analyzeRenderedCompositionQuality(
 ) {
   const counts: number[] = [];
   let previous: Uint8Array | undefined;
+  const native = comp.assets.some(
+    (asset) => asset.type === "video" || asset.type === "sequence",
+  );
   for (let frame = 0; frame < comp.frameCount; frame++) {
+    options.signal?.throwIfAborted();
+    if (native) await preview.prepareFrame(frame);
     options.signal?.throwIfAborted();
     const report = preview.renderFrame(frame);
     if (report.diagnostics.some((d) => d.severity === "error"))

@@ -58,8 +58,10 @@ still hold before relying on them.
   native/existing CE7/CE8 browser proofs (`7f42571`). Source preparation and native
   production picture export now pass actual video/sequence + animated still/lower-third
   proofs on Canvas 1.45 / WebGL2 0.66: repeated, independent and raw/PNG MP4s are
-  byte-identical. Lab/CLI preview/draft hookup, native PCM/waveforms and audio/video
-  production/full acceptance remain in flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
+  byte-identical (`9aca1ae`). Native Lab/CLI inspector edits, preparation, seek/playback
+  readiness and draft exports now pass real browser proof, existing authoring regressions,
+  48 focused units / 23 CLI tests and static checks. Native PCM/waveforms, passage audio
+  and matching audio/video production/full acceptance remain in flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
   [Evidence](./composition-ce13-results.json).
 
 - **CE4d complete (2026-10-07):**
@@ -274,6 +276,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 native authoring readiness and drafts
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed source/export `9aca1ae`.
+- **Done:** native CLI/Lab preparation and captured frame routes, asynchronous seek/
+  first-frame/playback guards, stale cancellation, native draft export and sequence
+  pattern/manifest portability. Originals stay on disk and reverify pinned bytes.
+- **Results:** a real inspector remap edit prepares a new original; undo/redo,
+  save/reload, backend switch, playback and fixture preview preserve exact pixels.
+  Draft MP4 matches direct render. Changed originals reject; restoration recovers.
+- **Regressions:** 48 focused units / 23 CLI-preview-save tests and static checks pass;
+  existing session, Lab, builder watch and inspector/export browser suites pass.
+- **Repairs:** hold/locator fixture errors and canonical manifest alias failure remain
+  in evidence. Native PCM/waveforms, passage audio and final full acceptance are next.
+- **Records:** [media guide](./composition-media.md), [CE13 evidence](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 native production picture export
 
