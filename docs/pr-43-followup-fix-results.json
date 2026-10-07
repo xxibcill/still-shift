@@ -29,6 +29,7 @@
       "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163510",
       "status": "fixed",
       "commitSubject": "fix(composition): validate camera optics after writers settle",
+      "commit": "69fd183",
       "repair": "Validate independent controls at every sample/write while deferring the derived zoom domain until camera expressions and motion writers settle. Preserve immediate finite/positive secondary values and final optical bounds. Advance evaluator cache identity to 48.",
       "red": {
         "command": "pnpm exec vitest run tests/unit/composition-camera-expression-dependencies.test.ts --maxWorkers=1",
@@ -45,7 +46,19 @@
     {
       "id": "affine-effect-space-tolerance",
       "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163530",
-      "status": "pending"
+      "status": "fixed",
+      "commitSubject": "fix(composition): tolerate affine effect-space roundoff",
+      "repair": "Convert effect coordinate homographies with a denominator-relative 32-machine-epsilon tolerance, rejecting nonfinite/degenerate and genuinely projective relations. Advance Canvas/WebGL identities to 1.40.4/0.55.3.",
+      "red": {
+        "command": "pnpm exec vitest run tests/unit/composition-spatial-effect-space.test.ts --maxWorkers=1",
+        "failed": 2,
+        "passed": 2
+      },
+      "green": {
+        "command": "pnpm exec vitest run tests/unit/composition-spatial-effect-space.test.ts tests/unit/composition-projective-placement.test.ts tests/unit/composition-spatial-capabilities.test.ts tests/unit/composition-spatial-integration.test.ts tests/unit/composition-effect-inputs.test.ts --maxWorkers=2",
+        "passed": 32,
+        "coverage": "Identical compound-rotation planes, source anchor offsets, signed/rescaled homography identity, genuinely projective relations, invalid denominators and finite values, existing capability/placement/input tests."
+      }
     },
     {
       "id": "spatial-null-effect-space",

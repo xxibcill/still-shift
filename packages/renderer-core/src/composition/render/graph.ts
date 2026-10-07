@@ -28,6 +28,7 @@ import { passageError } from "../../passage-diagnostics.ts";
 import {
   localSurfaceBounds,
   planePlacement,
+  affineCoordinateMatrix,
   type ProjectivePlacement,
 } from "./projective-placement.ts";
 import {
@@ -1170,20 +1171,14 @@ class GraphBuilder {
                 affineHomography(source.screenMatrix),
             ),
           );
-          if (h[6] !== 0 || h[7] !== 0)
+          const affine = affineCoordinateMatrix(h);
+          if (!affine)
             passageError(
               "comp-3d-effect-space",
               "A layer-space effect requires an affine relation between the source and projected owner planes",
               { node: key, frame: this.time, path: effect.id },
             );
-          effectMatrix = [
-            h[0] / h[8],
-            h[3] / h[8],
-            h[1] / h[8],
-            h[4] / h[8],
-            h[2] / h[8],
-            h[5] / h[8],
-          ];
+          effectMatrix = affine;
         }
         return {
           ...captured,
