@@ -246,69 +246,45 @@ export function prepareTypography(
   const nodes = new Map<string, Map<string, TextRaster>>(),
     pairs = new Map<string, [number, number][]>(),
     slideLimits = new Map<string, number>();
-  const ctx = surface(1, 1).getContext("2d")!;
-  const exposureTimes = scene.effects?.some(
-    (effect) => effect.type === "motion-blur" && effect.shutterAngle > 0,
-  )
-    ? sourceExposureTimeline(scene).times
-    : undefined;
-  let pixels = 0;
-  const reserveCanvas = (canvas: HTMLCanvasElement) => {
-    pixels += canvas.width * canvas.height;
-    if (pixels > 128_000_000)
-      throw new Error("text-raster-budget: scene exceeds 128 megapixels");
-    return canvas;
-  };
-  const reserveRaster = (raster: TextRaster, sourceColor = false) => {
-    reserveCanvas(raster.canvas);
-    if (options.strokeCoverage && !sourceColor) raster.strokeCoverage = true;
-    return raster;
-  };
-  for (const node of scene.nodes) {
-    if (node.type !== "text") continue;
-    const sourceColor = options.sourceColorNodes?.has(node.id) ?? false;
-    const colorCoverage = options.colorCoverage && !sourceColor;
-    const values = typographyTextValues(scene, node);
-    const layouts = new Map(
-      [...values].map((text) => [
-        text,
-        shapeText(ctx, node, text, fonts, scene.textStyles),
-      ]),
-    );
-    const count = (
-      node.transitions ?? (node.transition ? [node.transition] : [])
-    ).some((t) => t.kind === "count");
-    if (count) reserveCountWidth(layouts.values());
-    const rasters = new Map<string, TextRaster>();
-    for (const [text, layout] of layouts) {
-      rasters.set(
-        text,
-        reserveRaster(
-          rasterizeText(
-            node,
-            layout,
-            fonts,
-            colorCoverage,
-            options.softwareRaster,
-            options.sourceCanvas,
-          ),
-          sourceColor,
-        ),
-      );
-    }
-    const axes = nodeAxisVariants(scene, node, [...layouts.values()], fonts);
-    for (const [text, raster] of rasters)
-      for (const [key, deltas] of axes) {
-        const layout = axisLayout(
-          ctx,
-          node,
+  const measureCanvas = surface(1, 1);
+  const ctx = measureCanvas.getContext("2d")!;
+  try {
+    const exposureTimes = scene.effects?.some(
+      (effect) => effect.type === "motion-blur" && effect.shutterAngle > 0,
+    )
+      ? sourceExposureTimeline(scene).times
+      : undefined;
+    let pixels = 0;
+    const reserveCanvas = (canvas: HTMLCanvasElement) => {
+      pixels += canvas.width * canvas.height;
+      if (pixels > 128_000_000)
+        throw new Error("text-raster-budget: scene exceeds 128 megapixels");
+      return canvas;
+    };
+    const reserveRaster = (raster: TextRaster, sourceColor = false) => {
+      reserveCanvas(raster.canvas);
+      if (options.strokeCoverage && !sourceColor) raster.strokeCoverage = true;
+      return raster;
+    };
+    for (const node of scene.nodes) {
+      if (node.type !== "text") continue;
+      const sourceColor = options.sourceColorNodes?.has(node.id) ?? false;
+      const colorCoverage = options.colorCoverage && !sourceColor;
+      const values = typographyTextValues(scene, node);
+      const layouts = new Map(
+        [...values].map((text) => [
           text,
-          scene.textStyles ?? {},
-          fonts,
-          deltas,
-        );
-        raster.variants.set(
-          key,
+          shapeText(ctx, node, text, fonts, scene.textStyles),
+        ]),
+      );
+      const count = (
+        node.transitions ?? (node.transition ? [node.transition] : [])
+      ).some((t) => t.kind === "count");
+      if (count) reserveCountWidth(layouts.values());
+      const rasters = new Map<string, TextRaster>();
+      for (const [text, layout] of layouts) {
+        rasters.set(
+          text,
           reserveRaster(
             rasterizeText(
               node,
@@ -322,147 +298,200 @@ export function prepareTypography(
           ),
         );
       }
-    if (
-      scene.textAnimators?.some(
-        (animator) =>
-          animator.node === node.id &&
-          (animator.from.strokeWidth !== undefined ||
-            animator.to?.strokeWidth !== undefined),
-      )
-    ) {
-      // Authored states stay drawable at any frame (the type specimen draws each one); generated
-      // count and component texts get outlines only on frames where the renderer shows them.
-      const staticValues = [node.text, ...(node.states ?? [])];
-      const layoutsByText = new Map(
-        [...rasters].map(([text, raster]) => [text, raster.layout]),
-      );
-      const visibility = Object.hasOwn(scene.animationFrames ?? {}, node.id)
-        ? [...textAnimationFrames(scene, node)].map((frame) => ({
-            frame,
-            texts: [...rasters.keys()],
-          }))
-        : textVisibility(scene, node, layoutsByText, exposureTimes);
-      for (const { frame, texts } of visibility) {
-        for (const text of new Set([...staticValues, ...texts])) {
-          const raster = rasters.get(text);
-          if (!raster)
-            throw new Error(`text-layout-not-prepared: ${node.id}: ${text}`);
-          const poses = evaluateTextPoses(
+      const axes = nodeAxisVariants(scene, node, [...layouts.values()], fonts);
+      for (const [text, raster] of rasters)
+        for (const [key, deltas] of axes) {
+          const layout = axisLayout(
+            ctx,
             node,
-            raster.layout,
-            scene.textAnimators ?? [],
-            Math.round(frame),
-            scene,
+            text,
+            scene.textStyles ?? {},
+            fonts,
+            deltas,
           );
-          for (const pose of poses) {
-            const width = quantizeStrokeWidth(pose.strokeWidth);
-            if (pose.opacity <= 0 || width <= 0) continue;
-            const target = axisRaster(raster, pose.axes);
-            const strokeColor = target.strokeCoverage ? "#ffffff" : pose.stroke;
-            const strokeKey = `${width}:${strokeColor}`;
-            if (!target.strokes.has(strokeKey))
-              target.strokes.set(
-                strokeKey,
-                reserveCanvas(
-                  renderStrokedRaster(
-                    target,
-                    width,
-                    strokeColor,
-                    options.sourceCanvas,
+          raster.variants.set(
+            key,
+            reserveRaster(
+              rasterizeText(
+                node,
+                layout,
+                fonts,
+                colorCoverage,
+                options.softwareRaster,
+                options.sourceCanvas,
+              ),
+              sourceColor,
+            ),
+          );
+        }
+      if (
+        scene.textAnimators?.some(
+          (animator) =>
+            animator.node === node.id &&
+            (animator.from.strokeWidth !== undefined ||
+              animator.to?.strokeWidth !== undefined),
+        )
+      ) {
+        // Authored states stay drawable at any frame (the type specimen draws each one); generated
+        // count and component texts get outlines only on frames where the renderer shows them.
+        const staticValues = [node.text, ...(node.states ?? [])];
+        const layoutsByText = new Map(
+          [...rasters].map(([text, raster]) => [text, raster.layout]),
+        );
+        const visibility = Object.hasOwn(scene.animationFrames ?? {}, node.id)
+          ? [...textAnimationFrames(scene, node)].map((frame) => ({
+              frame,
+              texts: [...rasters.keys()],
+            }))
+          : textVisibility(scene, node, layoutsByText, exposureTimes);
+        for (const { frame, texts } of visibility) {
+          for (const text of new Set([...staticValues, ...texts])) {
+            const raster = rasters.get(text);
+            if (!raster)
+              throw new Error(`text-layout-not-prepared: ${node.id}: ${text}`);
+            const poses = evaluateTextPoses(
+              node,
+              raster.layout,
+              scene.textAnimators ?? [],
+              Math.round(frame),
+              scene,
+            );
+            for (const pose of poses) {
+              const width = quantizeStrokeWidth(pose.strokeWidth);
+              if (pose.opacity <= 0 || width <= 0) continue;
+              const target = axisRaster(raster, pose.axes);
+              const strokeColor = target.strokeCoverage
+                ? "#ffffff"
+                : pose.stroke;
+              const strokeKey = `${width}:${strokeColor}`;
+              if (!target.strokes.has(strokeKey))
+                target.strokes.set(
+                  strokeKey,
+                  reserveCanvas(
+                    renderStrokedRaster(
+                      target,
+                      width,
+                      strokeColor,
+                      options.sourceCanvas,
+                    ),
                   ),
-                ),
-              );
+                );
+            }
           }
         }
       }
+      nodes.set(node.id, rasters);
+      for (const t of node.transitions ??
+        (node.transition ? [node.transition] : [])) {
+        const from = rasters.get(node.states![t.fromState ?? 0]!)!,
+          to = rasters.get(node.states![t.toState ?? 1]!)!;
+        slideLimits.set(pairKey(node, t), transitionSlideLimit(t, scene.fps));
+        pairs.set(
+          pairKey(node, t),
+          commonClusters(
+            from.layout.clusters.map((c) => c.text),
+            to.layout.clusters.map((c) => c.text),
+          ),
+        );
+      }
     }
-    nodes.set(node.id, rasters);
-    for (const t of node.transitions ??
-      (node.transition ? [node.transition] : [])) {
-      const from = rasters.get(node.states![t.fromState ?? 0]!)!,
-        to = rasters.get(node.states![t.toState ?? 1]!)!;
-      slideLimits.set(pairKey(node, t), transitionSlideLimit(t, scene.fps));
-      pairs.set(
-        pairKey(node, t),
-        commonClusters(
-          from.layout.clusters.map((c) => c.text),
-          to.layout.clusters.map((c) => c.text),
+    const corrections: PreparedTypography["corrections"] = new Map();
+    for (const event of resolveTextEvents(scene).filter(
+      (e) => e.verb === "correct",
+    )) {
+      const node = scene.nodes.find((n) => n.id === event.node);
+      if (node?.type !== "text") continue;
+      const base = nodes.get(node.id)!.get(node.text)!.layout;
+      const target = base.clusters.filter(
+        (c) => !event.span || node.spans?.[c.spanIndex]?.id === event.span,
+      );
+      if (!target.length)
+        throw new Error("text-correction: replacement has no span");
+      const box = clusterBox(target);
+      const replacement: TextNode = {
+        ...node,
+        text: event.replacement!,
+        states: undefined,
+        spans: undefined,
+        style: "correction",
+        fontAsset: resolvedTextStyle(node, scene.textStyles ?? {}).fontAsset,
+        fontSize: node.fontSize * 0.75,
+        anchor: "baseline",
+        textLayout: undefined,
+        textBox: undefined,
+        align: "left",
+        decorations: undefined,
+        transition: undefined,
+        transitions: undefined,
+        color: event.color ?? node.color,
+      };
+      const correction = {
+        ...resolvedTextStyle(node, scene.textStyles ?? {}),
+        size: replacement.fontSize,
+      };
+      const layout = shapeText(ctx, replacement, replacement.text, fonts, {
+        correction,
+      });
+      const raster = reserveRaster(
+        rasterizeText(
+          replacement,
+          layout,
+          fonts,
+          false,
+          options.softwareRaster,
+          options.sourceCanvas,
         ),
       );
+      const entries = corrections.get(node.id) ?? [];
+      entries.push({
+        node: replacement,
+        raster,
+        start: event.start + Math.floor(event.duration / 2),
+        end: event.end,
+        x: box.x,
+        y:
+          Math.min(...target.map((c) => c.baseline)) -
+          base.capHeight -
+          node.fontSize * 0.12,
+      });
+      corrections.set(node.id, entries);
     }
-  }
-  const corrections: PreparedTypography["corrections"] = new Map();
-  for (const event of resolveTextEvents(scene).filter(
-    (e) => e.verb === "correct",
-  )) {
-    const node = scene.nodes.find((n) => n.id === event.node);
-    if (node?.type !== "text") continue;
-    const base = nodes.get(node.id)!.get(node.text)!.layout;
-    const target = base.clusters.filter(
-      (c) => !event.span || node.spans?.[c.spanIndex]?.id === event.span,
-    );
-    if (!target.length)
-      throw new Error("text-correction: replacement has no span");
-    const box = clusterBox(target);
-    const replacement: TextNode = {
-      ...node,
-      text: event.replacement!,
-      states: undefined,
-      spans: undefined,
-      style: "correction",
-      fontAsset: resolvedTextStyle(node, scene.textStyles ?? {}).fontAsset,
-      fontSize: node.fontSize * 0.75,
-      anchor: "baseline",
-      textLayout: undefined,
-      textBox: undefined,
-      align: "left",
-      decorations: undefined,
-      transition: undefined,
-      transitions: undefined,
-      color: event.color ?? node.color,
+    return {
+      corrections,
+      nodes,
+      pairs,
+      slideLimits,
+      scene,
+      layer: surface(1, 1, options.softwareRaster),
+      maskLayer: surface(1, 1, options.softwareRaster),
+      transitionLayer: surface(1, 1, options.softwareRaster),
     };
-    const correction = {
-      ...resolvedTextStyle(node, scene.textStyles ?? {}),
-      size: replacement.fontSize,
-    };
-    const layout = shapeText(ctx, replacement, replacement.text, fonts, {
-      correction,
-    });
-    const raster = reserveRaster(
-      rasterizeText(
-        replacement,
-        layout,
-        fonts,
-        false,
-        options.softwareRaster,
-        options.sourceCanvas,
-      ),
-    );
-    const entries = corrections.get(node.id) ?? [];
-    entries.push({
-      node: replacement,
-      raster,
-      start: event.start + Math.floor(event.duration / 2),
-      end: event.end,
-      x: box.x,
-      y:
-        Math.min(...target.map((c) => c.baseline)) -
-        base.capHeight -
-        node.fontSize * 0.12,
-    });
-    corrections.set(node.id, entries);
+  } finally {
+    releaseRenderCanvas(measureCanvas);
   }
-  return {
-    corrections,
-    nodes,
-    pairs,
-    slideLimits,
-    scene,
-    layer: surface(1, 1, options.softwareRaster),
-    maskLayer: surface(1, 1, options.softwareRaster),
-    transitionLayer: surface(1, 1, options.softwareRaster),
-  };
 }
+/** Release native typography storage; shared preparation sources retain their separate owners. */
+export function disposeTypography(prepared: PreparedTypography): void {
+  const seen = new Set<TextRaster>();
+  const release = (raster: TextRaster) => {
+    if (seen.has(raster)) return;
+    seen.add(raster);
+    if (!raster.sourceCanvas) {
+      releaseRenderCanvas(raster.canvas);
+      for (const canvas of raster.colors.values()) releaseRenderCanvas(canvas);
+      for (const canvas of raster.strokes.values()) releaseRenderCanvas(canvas);
+    }
+    for (const variant of raster.variants.values()) release(variant);
+  };
+  for (const rasters of prepared.nodes.values())
+    for (const raster of rasters.values()) release(raster);
+  for (const corrections of prepared.corrections.values())
+    for (const correction of corrections) release(correction.raster);
+  releaseRenderCanvas(prepared.layer);
+  releaseRenderCanvas(prepared.maskLayer);
+  releaseRenderCanvas(prepared.transitionLayer);
+}
+
 /** Container content box in node space, matching the legacy text-box and text-layout limits. */
 export function typographyContainerContent(
   node: TextNode,

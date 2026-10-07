@@ -82,8 +82,13 @@ still hold before relying on them.
   tests; 144 audit cases / 8,000 frames include 24 managed cases / 1,504 comparisons.
   Native byte/float/depth/PNG storage and deletion checks, complete original WebGL,
   17 default depth timelines / 1,530 zero-delta frames and 64 public exports / 768
-  prior-checkpoint-exact bodies/frames pass. Asset/font, capture/upload, Node and
-  metadata integration, actual production admission, aggregate memory, the actual
+  prior-checkpoint-exact bodies/frames pass. Verified asset/font/media admission now
+  passes 64 admission / 86 affected / 67 typography tests, the complete 144-case /
+  8,000-frame audit, 15 native resource failures and all original provider, typography,
+  media, illustrated and story commands. Managed cases load assets/fonts inside
+  their scopes; borrowed faces, late cleanup and exact public body/frame parity pass.
+  Glyph 1.383989× meets unchanged 1.5×. Capture/upload, Node, metadata integration,
+  actual production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -317,6 +322,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 verified asset/font/media ownership checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `9761d68`.
+- **Done:** verified body/Blob/image/font/bitmap admission, nested-load rollback,
+  late native completion cleanup, borrowed font preservation and temporary probe release.
+- **Results:** build/lint/boundaries, 64 admission / 86 affected / 67 typography tests;
+  144 audit cases / 8,000 exact frames, including 24 asset/font-managed cases / 1,504
+  frames. Native resource lifetimes and 15 protected failures pass. Original provider,
+  typography, media, illustrated and story commands pass; glyph 1.383989× ≤ 1.5×.
+  All 64 public exports / 768 complete bodies and frames match the prior checkpoint.
+- **Next:** capture/upload, Node and metadata admission; production allocator,
+  aggregate/area/worker proof, authentic two-minute speed, CE15 gate/PR and all CE14.
+  Production admission remains disabled; no full gate or speed acceptance claimed.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [resource admission evidence](./composition-ce15-resource-memory-results.json).
 
 ### 2026-10-08 — CE15 GPU storage admission checkpoint
 

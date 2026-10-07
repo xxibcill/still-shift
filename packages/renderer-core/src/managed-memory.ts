@@ -153,6 +153,10 @@ export class ManagedMemory {
     this.ownership.delete(value);
   }
 
+  owns(value: object): boolean {
+    return this.ownership.get(value)?.active === true;
+  }
+
   /** Scratch remains charged through capture/upload; retained resources cross this boundary explicitly. */
   beginScratch(): void {
     if (this.closed || this.scratchActive || this.scratch.size)

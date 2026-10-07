@@ -1,4 +1,13 @@
 import {
+  createRenderBlob,
+  decodeRenderImage,
+  mapRenderResources,
+  prepareRenderResources,
+  readRenderAssetBody,
+  releaseRenderBlob,
+} from "../../managed-resources.ts";
+import { releaseRenderPixels } from "../../managed-memory-context.ts";
+import {
   createRenderCanvas,
   readRenderImageData,
   releaseRenderCanvas,
@@ -189,43 +198,42 @@ export async function loadCompositionResources(
     signal?: AbortSignal;
   } = {},
 ): Promise<CompositionResources> {
-  options.signal?.throwIfAborted();
-  if (
-    !options.preparedMedia &&
-    composition.assets.some(
-      (asset) => asset.type === "video" || asset.type === "sequence",
+  return prepareRenderResources(async () => {
+    options.signal?.throwIfAborted();
+    if (
+      !options.preparedMedia &&
+      composition.assets.some(
+        (asset) => asset.type === "video" || asset.type === "sequence",
+      )
     )
-  )
-    passageError(
-      "comp-media-not-ready",
-      "Capture native source frames before loading composition resources",
-      { path: "preparedMedia" },
-    );
-  const images = new Map<string, CanvasImageSource>();
-  const pngImages = new Set<string>();
-  await Promise.all(
-    composition.assets.map(async (asset) => {
+      passageError(
+        "comp-media-not-ready",
+        "Capture native source frames before loading composition resources",
+        { path: "preparedMedia" },
+      );
+    const images = new Map<string, CanvasImageSource>();
+    const pngImages = new Set<string>();
+    await mapRenderResources(composition.assets, async (asset) => {
       if (asset.type !== "image") return;
       const response = await fetch(assetUrl(asset.id), {
         signal: options.signal ?? null,
       });
       if (!response.ok) throw new Error(`Asset unavailable: ${asset.id}`);
-      const bytes = await response.arrayBuffer();
+      const bytes = await readRenderAssetBody(response);
       if (`sha256:${await sha256Hex(bytes)}` !== asset.sha256)
         throw new Error(`Asset checksum differs: ${asset.id}`);
-      const url = URL.createObjectURL(
-        new Blob([bytes], {
-          type:
-            response.headers.get("Content-Type") ?? "application/octet-stream",
-        }),
+      const blob = createRenderBlob(
+        bytes,
+        response.headers.get("Content-Type") ?? "application/octet-stream",
       );
-      const image = new Image();
-      image.src = url;
+      const url = URL.createObjectURL(blob);
+      let image: HTMLImageElement;
       try {
-        await image.decode();
+        image = await decodeRenderImage(url, asset.width, asset.height);
         options.signal?.throwIfAborted();
       } finally {
         URL.revokeObjectURL(url);
+        releaseRenderBlob(blob);
       }
       if (
         image.naturalWidth !== asset.width ||
@@ -240,31 +248,32 @@ export async function loadCompositionResources(
         )
       )
         pngImages.add(asset.id);
-    }),
-  );
-  const fonts = await loadCompositionFonts(composition, assetUrl);
-  options.signal?.throwIfAborted();
-  return {
-    images,
-    ...(options.preparedMedia
-      ? {
-          preparedMedia: options.preparedMedia,
-          media: createCompositionMediaResources(
-            composition,
-            options.preparedMedia,
-            assetUrl,
-            images,
-            pngImages,
-          ),
-        }
-      : {}),
-    pngImages,
-    fonts,
-    providerFonts: await loadProviderFonts(composition, fonts, [
-      ...BUILTIN_PROVIDERS,
-      ...(options.providers ?? []),
-    ]),
-  };
+      releaseRenderPixels(bytes);
+    });
+    const fonts = await loadCompositionFonts(composition, assetUrl);
+    options.signal?.throwIfAborted();
+    return {
+      images,
+      ...(options.preparedMedia
+        ? {
+            preparedMedia: options.preparedMedia,
+            media: createCompositionMediaResources(
+              composition,
+              options.preparedMedia,
+              assetUrl,
+              images,
+              pngImages,
+            ),
+          }
+        : {}),
+      pngImages,
+      fonts,
+      providerFonts: await loadProviderFonts(composition, fonts, [
+        ...BUILTIN_PROVIDERS,
+        ...(options.providers ?? []),
+      ]),
+    };
+  });
 }
 
 export type CompositionFrameReport = {
@@ -645,6 +654,7 @@ export function createCompositionPreview(
         }
         rootCache?.dispose();
         surfaceCache?.dispose();
+        text.dispose();
         backend.dispose();
         resources.media?.dispose();
         canvas.width = composition.width;

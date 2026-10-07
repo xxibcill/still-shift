@@ -369,6 +369,37 @@ remain pending before enabling the production allocator. Native driver/codec mem
 and physical RSS remain distinct from declared storage; these per-page proofs are
 not the full aggregate/area matrix, two-minute speed acceptance or complete gate.
 
+## Accepted asset/font/media ownership checkpoint — 2026-10-08
+
+Verified HTTP bodies, receive blocks, temporary Blob copies, RGBA8 native image and
+bitmap capacities and owned FontFace input copies now reserve before native work.
+Successful preparation commits retained inputs/decoders; failed phases wait for
+started nested loads and release all owned storage while preserving original errors.
+Managed loads remain sequential. Existing fonts remain borrowed; new native faces
+are deleted from the registry on release, including late completion after disposal.
+Native bitmaps survive frame scratch, and LRU eviction/disposal closes their actual
+handles. Temporary typography, axis, layout and coverage probes release after use.
+
+All 144 audit cases / 8,000 exact frames pass. The 24 managed Canvas/GPU cases /
+1,504 comparisons now load assets and fonts inside their allocator scope, preserving
+all once-global native preparation/tint/axis/correction/crossfade counts. Native
+proof preserves 61,440 image and 1,024 bitmap channels, exact font metrics, actual
+borrowed registrations and 15 protected image/font/media failures. Build, lint,
+boundaries, 64 admission and 86 affected tests pass. Original 67 typography tests,
+12 provider cases / 60 comparisons and eight typography fixtures pass; glyph ratio
+1.383989× meets the unchanged 1.5× policy. Complete original native media, illustrated
+(42 comparisons) and story (98 comparisons, 14 reverse seeks, 646-frame delivery)
+commands pass. All 64 public exports preserve 768 complete PNG bodies and decoded
+frames against the previous accepted GPU checkpoint.
+
+Four discarded 1×1 typography canvases found by exact native accounting and the new
+helper's strict typing/diagnostic assertion repairs are retained in
+[the evidence](./composition-ce15-resource-memory-results.json). Private decoder,
+font, driver, codec and VM bytes remain distinct from declared storage and physical
+RSS. Production admission is still disabled pending capture/upload, Node and
+complete metadata integration, then aggregate/area/worker checks, the authentic
+120-second speed proof and immutable complete gate.
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

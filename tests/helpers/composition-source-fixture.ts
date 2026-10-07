@@ -1,12 +1,14 @@
 import type { Composition } from "../../packages/scene-contract/src/index.ts";
 import { sha256Hex } from "../../packages/renderer-core/src/browser-checksum.ts";
 
+export const COMPOSITION_SOURCE_SVG =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="96"><rect width="160" height="96" fill="#334455"/></svg>';
+
 export async function compositionSourceFixture(
   software: boolean,
   animated: boolean,
 ) {
-  const svg =
-    '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="96"><rect width="160" height="96" fill="#334455"/></svg>';
+  const svg = COMPOSITION_SOURCE_SVG;
   const composition: Composition = {
     schemaVersion: "composition-1",
     id: "source-pixels",

@@ -65,9 +65,10 @@ export function createRenderStorage<T extends object>(
   create: () => T | null,
   initialize: (value: T) => void,
   destroy: (value: T) => void,
+  retained = true,
 ): T {
   const memory = active;
-  const lease = memory?.reserve("pixels", bytes, undefined, true);
+  const lease = memory?.reserve("pixels", bytes, undefined, retained);
   let value: T | undefined;
   try {
     value = create() ?? undefined;
@@ -85,10 +86,74 @@ export function createRenderStorage<T extends object>(
   } catch (error) {
     // Cleanup must preserve the original native/admission failure, including null.
     try {
-      if (lease) lease.release();
-      else if (value) destroy(value);
+      if (value && !memory?.owns(value)) destroy(value);
     } catch {
       /* The original failure owns this path. */
+    }
+    try {
+      lease?.release();
+    } catch {
+      /* Preserve the original failure. */
+    }
+    throw error;
+  }
+}
+
+/** Keep native decode admission and its handle alive through the asynchronous initializer. */
+export async function createRenderStorageAsync<T extends object>(
+  bytes: number,
+  create: () => T | null,
+  initialize: (value: T) => Promise<void>,
+  destroy: (value: T) => void,
+  retained = true,
+): Promise<T> {
+  const memory = active;
+  const value = createRenderStorage(bytes, create, () => {}, destroy, retained);
+  try {
+    await initialize(value);
+    if (memory && !storageLeases.get(value)?.active)
+      throw Error("Managed native decode owner was disposed");
+    return value;
+  } catch (error) {
+    try {
+      releaseRenderStorage(value, destroy);
+    } catch {
+      /* Preserve the original decode failure. */
+    }
+    throw error;
+  }
+}
+
+/** Reserve before a native asynchronous producer creates a fresh bitmap or encoded body. */
+export async function allocateRenderStorageAsync<T extends object>(
+  bytes: number,
+  factory: () => Promise<T>,
+  destroy: (value: T) => void,
+  retained = false,
+): Promise<T> {
+  const memory = active;
+  if (!memory) return factory();
+  const lease = memory.reserve("pixels", bytes, undefined, retained);
+  let value: T | undefined;
+  try {
+    value = await factory();
+    const resource = value;
+    memory.adopt(resource, lease, () => {
+      storageLeases.delete(resource);
+      destroy(resource);
+    });
+    storageLeases.set(resource, lease);
+    return resource;
+  } catch (error) {
+    try {
+      if (value && !memory.owns(value)) destroy(value);
+    } catch {
+      /* Preserve the original producer failure. */
+    }
+    try {
+      lease.release();
+    } catch {
+      /* Preserve the original producer failure. */
     }
     throw error;
   }

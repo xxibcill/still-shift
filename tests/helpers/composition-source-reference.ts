@@ -57,6 +57,13 @@ export async function checkSharedCompositionSources(options: {
       })
     : undefined;
   const renderCached = async () => {
+    const managedResources = memory
+      ? await loadCompositionResources(composition, (id) =>
+          id === "art"
+            ? "/_memory_source_art"
+            : composition.assets.find((asset) => asset.id === id)!.path,
+        )
+      : resources;
     const originalFill = CanvasRenderingContext2D.prototype.fillText,
       originalStroke = CanvasRenderingContext2D.prototype.strokeText,
       originalImage = CanvasRenderingContext2D.prototype.drawImage;
@@ -93,7 +100,7 @@ export async function checkSharedCompositionSources(options: {
       preview = await createCompositionPreviewAsync(
         createRenderCanvas(),
         composition,
-        resources,
+        managedResources,
         {
           backend: options.backend,
           preserveAlpha: true,
@@ -160,7 +167,7 @@ export async function checkSharedCompositionSources(options: {
       ...result,
       managedMemory: {
         coverage:
-          "Canvas/GPU renderer-owned storage; asset/production integration pending",
+          "Canvas/GPU renderer and verified asset/font admission; production integration pending",
         before,
         after: memory.statistics,
       },

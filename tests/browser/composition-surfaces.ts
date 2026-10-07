@@ -17,6 +17,12 @@ import type * as PrefixChecks from "../helpers/composition-prefix-reference.ts";
 import type * as RootChecks from "../helpers/composition-root-reference.ts";
 import { COMPOSITION_TINT_VARIANTS } from "../helpers/composition-tint-fixture.ts";
 import type * as SourceChecks from "../helpers/composition-source-reference.ts";
+import { COMPOSITION_SOURCE_SVG } from "../helpers/composition-source-fixture.ts";
+import {
+  mediaRgbaPng,
+  mediaPngChunk,
+} from "../helpers/composition-media-png.ts";
+import type * as ResourceChecks from "../helpers/composition-resource-memory-reference.ts";
 import type * as MemoryChecks from "../helpers/composition-memory-reference.ts";
 
 type SurfaceOutcome = Awaited<
@@ -36,6 +42,20 @@ const root = resolve(import.meta.dirname, "../..");
 const scratch = await mkdtemp(
   join(tmpdir(), "composition-surfaces-acceptance-"),
 );
+const mediaPixels = Buffer.alloc(16 * 16 * 4);
+for (let pixel = 0; pixel < 256; pixel++)
+  mediaPixels.set(
+    [(pixel * 17) % 251, (pixel * 31) % 251, (pixel * 43) % 251, 255],
+    pixel * 4,
+  );
+const mediaBytes = mediaRgbaPng(16, 16, mediaPixels, [
+  mediaPngChunk("sRGB", Buffer.from([0])),
+]);
+const wrongMediaBytes = mediaRgbaPng(8, 8, mediaPixels.subarray(0, 256));
+const mediaHash =
+  "sha256:" + createHash("sha256").update(mediaBytes).digest("hex");
+const wrongMediaHash =
+  "sha256:" + createHash("sha256").update(wrongMediaBytes).digest("hex");
 const brokers = new Map<string, CompositionSurfaceBroker>();
 const failures: unknown[] = [];
 const server = await createServer({
@@ -48,6 +68,31 @@ const server = await createServer({
       name: "composition-surface-acceptance",
       configureServer(server) {
         server.middlewares.use((request, response, next) => {
+          const resourceUrl = new URL(request.url ?? "/", "http://localhost");
+          if (resourceUrl.pathname === "/_memory_source_art") {
+            const bytes = Buffer.from(COMPOSITION_SOURCE_SVG);
+            response.setHeader("Content-Type", "image/svg+xml");
+            response.setHeader("Content-Length", bytes.length);
+            response.end(bytes);
+            return;
+          }
+          if (resourceUrl.pathname === "/_memory_media") {
+            const variant = resourceUrl.searchParams.get("case"),
+              bytes =
+                variant === "dimensions"
+                  ? wrongMediaBytes
+                  : variant === "short"
+                    ? mediaBytes.subarray(0, mediaBytes.length - 1)
+                    : variant === "long"
+                      ? Buffer.concat([mediaBytes, Buffer.from([0])])
+                      : mediaBytes;
+            response.setHeader("Content-Type", "image/png");
+            if (variant !== "short" && variant !== "long")
+              response.setHeader("Content-Length", bytes.length);
+            else response.setHeader("Transfer-Encoding", "chunked");
+            response.end(bytes);
+            return;
+          }
           if (request.url === "/_memory_primitives") {
             const bytes = Buffer.alloc(180000);
             for (let byte = 0; byte < bytes.length; byte++)
@@ -736,6 +781,21 @@ try {
       (await import(url)) as typeof MemoryChecks
     ).checkManagedPngStorage();
   });
+  const managedResources = await workers[0]!.page.evaluate(
+    async (options) => {
+      const url = "/tests/helpers/composition-resource-memory-reference.ts";
+      return (
+        (await import(url)) as typeof ResourceChecks
+      ).checkManagedResourceMemory(options);
+    },
+    {
+      mediaHash,
+      mediaBytes: mediaBytes.length,
+      wrongMediaHash,
+      wrongMediaBytes: wrongMediaBytes.length,
+    },
+  );
+  assert.equal(managedResources.status, "passed");
   const managedSourceFailures = await workers[0]!.page.evaluate(async () => {
     const url = "/tests/helpers/composition-source-reference.ts";
     return (
@@ -786,6 +846,7 @@ try {
     managedGpuStorage,
     managedDepthStorage,
     managedPngStorage,
+    managedResources,
     managedSourceFailures,
     reports,
   };

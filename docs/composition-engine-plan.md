@@ -5119,8 +5119,12 @@ and 67 typography tests; 132 audit cases / 7,248 frames include twelve managed c
 focused units; 144 audit cases / 8,000 frames include 24 managed cases / 1,504
 comparisons. Native storage/deletion, complete original WebGL, 17 default depth
 timelines / 1,530 zero-delta frames and 64 exports / 768 prior-exact bodies/frames
-pass. Asset/font, capture/upload, Node, metadata and actual production admission
-remain pending.
+pass. Verified asset/font/media admission now passes 64 admission / 86 affected /
+67 typography tests, 144 audit cases / 8,000 exact frames, 15 native resource
+failures and all original provider, typography, media, illustrated and story
+commands. Managed cases load assets/fonts within their scopes; exact public body/
+frame parity and borrowed/late native cleanup pass. Glyph 1.383989× ≤ 1.5×.
+Capture/upload, Node, metadata and actual production admission remain pending.
 Aggregate limits, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),
