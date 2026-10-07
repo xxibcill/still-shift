@@ -4978,6 +4978,19 @@ seeks pass. Both failed complete logs are retained. No assertion, tolerance, fro
 or output version changed. Fresh immutable complete local `pnpm check` remains required.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 interrupted third gate (2026-10-07)
+
+The immutable full gate at `fa72fce` ended during a deliberate chat-turn interruption.
+No gate or snapshot process survived; its complete partial log and fingerprint are
+retained. Static checks and 52 of 63 required commands completed, including 2,103 unit /
+46 runtime / 247 integration / 14 depth tests and complete native-media, native-passage,
+WebGL and Story adapter gates. Commerce completed 48 Canvas cases with exact pixels
+and a worst ratio of 1.113 under the unchanged 1.25 policy; its remaining cases and
+later required commands did not complete. No terminal exit code is available, so this
+attempt is interrupted and incomplete. A fresh complete local gate is required;
+partial commands are not substituted for full acceptance. Source and tests are unchanged.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

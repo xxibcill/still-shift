@@ -126,3 +126,11 @@ complete native-media/session and all 21 Commerce fixtures / 126 parity frames /
 exact backward seeks. Preserve both failed logs. No assertion, tolerance, frozen byte
 or native async guard changed. Commit this repair, create a fresh immutable snapshot
 and complete the full local gate before the CE13 PR; continue CE15 then CE14.
+
+The third complete CE13 gate at `fa72fce` was interrupted by the chat-turn interruption.
+No owned gate/snapshot process survives. Static checks and 52 of 63 commands completed,
+including full native-media/native-passage/WebGL/Story gates; 48 Commerce Canvas cases
+have exact pixels and worst ratio1.113. The gate has no terminal result and remaining
+Commerce/later commands are unverified. Preserve its original log/status and separate
+interruption audit. Run the complete unchanged gate from a fresh committed snapshot;
+do not skip or manually combine the partial evidence. Source/tests are unchanged.
