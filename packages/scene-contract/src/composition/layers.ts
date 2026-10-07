@@ -151,6 +151,8 @@ const layerBase = {
   solo: z.boolean().optional(),
   guide: z.boolean().optional(),
   threeD: z.boolean().optional(),
+  /** Opt in to scoped flat-surface lighting; valid only on explicitly 3D artwork. */
+  receivesLight: z.boolean().optional(),
   transform: TransformSchema.optional(),
   /** Layer-space point used by attach constraints; moving it does not move artwork. */
   constraintReference: animatableVector(bounded).optional(),
@@ -382,7 +384,19 @@ export const CameraLayerSchema = z
   .strict();
 
 export const LightLayerSchema = z
-  .object({ ...layerBase, type: z.literal("light") })
+  .object({
+    ...layerBase,
+    type: z.literal("light"),
+    lightType: z.enum(["ambient", "point", "spot"]),
+    color: AnimatableColorSchema.optional(),
+    intensity: animatableScalar(finite.min(0).max(16)).optional(),
+    /** World distance in composition pixels; attenuation is zero at this radius. */
+    range: animatableScalar(finite.min(0.001).max(1_000_000)).optional(),
+    falloffStart: animatableScalar(finite.min(0).max(1_000_000)).optional(),
+    /** Full cone angles in degrees, along the transformed local +Z axis. */
+    innerCone: animatableScalar(finite.min(0).max(180)).optional(),
+    outerCone: animatableScalar(finite.min(0.001).max(180)).optional(),
+  })
   .strict();
 
 const mediaLayer = <T extends string>(type: T) =>
@@ -431,7 +445,6 @@ export type TrackMatte = z.infer<typeof TrackMatteSchema>;
 export const UNAVAILABLE_LAYER_TYPES: Partial<
   Record<CompositionLayerType, string>
 > = {
-  light: "CE8-L",
   video: "CE13",
   sequence: "CE13",
   audio: "CE13",

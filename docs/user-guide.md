@@ -174,6 +174,35 @@ need a particular pivot; their contents do not have one declared rectangular siz
 operator order, geometry limits and polygon-library licence are in the
 [generated reference](./composition-reference.md).
 
+### Flat lighting for 2.5D artwork
+
+Use [the flat lighting example](../examples/composition/11-flat-lighting.ts) for
+ambient tint, point illumination or a spotlight with a soft cone. Add a `light`
+layer with `lightType: "ambient"`, `"point"` or `"spot"`; opt a 3D image, solid,
+text, shape or flattened precomp into shading with `receivesLight: true` or the
+builder's `.receiveLight()`. Existing artwork and adapter output default to unlit.
+
+Lighting uses WebGL2. Choose **WebGL2** in the composition preview's backend
+control, or append `&backend=webgl2` to the program preview URL. Render the example
+with:
+
+```sh
+pnpm --silent still-shift comp render --input examples/composition/11-flat-lighting.ts --output flat-lighting.mp4 --backend webgl2
+```
+
+In the inspector, **Receive light** toggles a 3D artwork layer's source setting.
+Select a light's key lane and edit **Light key value** for intensity, color or XYZ
+motion; edits support undo, redo and saving JSON. Point/spot range and falloff use
+world pixels, spotlight cone angles are full angles in degrees, and local +Z is
+the spot's forward axis. Each composition or precomp scope allows up to eight
+lights and keeps its own illumination. An opted-in precomp receives parent lights
+as one flattened plane after its internal scope renders.
+
+These lights shade a single, two-sided flat surface in linear RGB and preserve its
+alpha. They do not infer depth or surface detail from artwork. Source masks and
+effects follow shading; camera depth of field follows projection. See the
+[composition reference](./composition-reference.md) for bounds and property paths.
+
 ### Expressions and behaviours
 
 A composition can describe relationships and procedural motion instead of keys. An

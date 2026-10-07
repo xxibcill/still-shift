@@ -1,5 +1,6 @@
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
+import type { FlatLighting } from "./flat-lighting.ts";
 import {
   offsetPlacement,
   type ProjectivePlacement,
@@ -40,6 +41,7 @@ export type Surface = { readonly width: number; readonly height: number };
  */
 export interface RenderBackend<S extends Surface = Surface> {
   readonly version: string;
+  applyLighting?(surface: S, lighting: FlatLighting): void;
   /** Optional retained-frame lifecycle; effects and exposure may request a full repaint. */
   beginFrame?(root: SurfaceNode): void;
   endFrame?(completed: boolean): void;
@@ -372,6 +374,7 @@ export function executeGraph<S extends Surface>(
         const draw = () => {
           const tmp = isolated(op.ops, dst);
           try {
+            if (op.lighting) backend.applyLighting!(tmp, op.lighting);
             if (op.effects.length) effectStack(tmp, op.effects);
             mask(tmp, op.masks, op.matte);
             return tmp;
@@ -512,6 +515,7 @@ export function executeGraph<S extends Surface>(
   };
   if (graph.spatial)
     requireSpatialCapabilities(graph.root, {
+      lighting: !!backend.applyLighting,
       projective: !!backend.project && !!backend.applyProjectiveClips,
       validateSurface: backend.validateSpatialSurface,
     });

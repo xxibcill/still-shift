@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-10-07
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE6 feature work complete (2026-10-06). CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
+- **Updated:** 2026-10-08
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE5, CE6, CE7, CE8, CE8-L, CE10 and CE11 complete (2026-10-06). CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -373,6 +373,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  | Codex                  | `codex/composition-ce6p-compatible` | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        | Codex                  | `codex/composition-ce8`             | `[x]`  | [evidence](./composition-ce8-results.json)                                         |
+| CE8-L | Bounded lighting for 2.5D layers                | B      | CE8                  | Codex                  | `codex/composition-ce8-lighting`    | `[x]`  | [Evidence](./composition-ce8-lighting-results.json)                                |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
@@ -467,6 +468,31 @@ through the story adapter with recorded parity.
 - [x] CE12 linting as a prerequisite for the CE10 CLI.
 - [ ] CE10 builder and CLI, including `comp render`, after CE4a, CE9 and CE12.
 - [ ] Record commands, results and limitations here before marking the slice complete.
+
+### Recommended execution sequence
+
+**Owner approved, 2026-10-05.** Use this order for the main implementation lane.
+The tracker defines required dependencies; the order below also expresses product
+priority. A later position does not add a new technical prerequisite. Independent
+work may proceed alongside this lane once its tracker dependencies are complete.
+Planning this sequence does not start milestones or mark acceptance gates passed.
+
+| Order | Milestone                                                   | Work and reason for this position                                                                                                                                |
+| ----- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1     | **CE12 — Motion linting complete**                          | Rules, CLI, Lab findings and full verification are closed; see the [completion record](#ce12-completion-record-2026-10-05).                                      |
+| 2     | **Finish CE4a — Story adapter**                             | Reconcile delivered slices, close story feature gaps and passage integration, and prove full story parity. This completes CE10's remaining adapter prerequisite. |
+| 3     | **CE10 — TypeScript builder and CLI**                       | Make validated composition authoring, rendering, baking and linting practical for coders and agents.                                                             |
+| 4     | **CE11 — Inspector and graph editor**                       | Provide inspection of timing, expressions and composition structure for subsequent feature work.                                                                 |
+| 5     | **CE5 — Shape layers**                                      | Add reusable vector primitives and operators for diagrams, titles and motion graphics.                                                                           |
+| 6     | **CE7 — Motion blur and time controls**                     | Complete shared time behaviour and the prerequisite for frame-accurate media layers.                                                                             |
+| 7     | **Finish CE6 — Backend features and effects**               | Complete the effect interface, catalogue and correctness acceptance needed by camera and mesh work.                                                              |
+| 8     | **CE8 — Unified 2.5D camera**                               | Complete perspective, depth sorting and camera controls before lighting and cinematic adaptation.                                                                |
+| 9     | **CE8-L — Bounded lighting**                                | Add ambient, point and spot lighting of flat layers; defer cast shadows and realistic surface shading to CE8-L-F.                                                |
+| 10    | **CE4c — Cinematic adapter**                                | Translate cinematic scenes and prove parity after CE8. Lighting precedes this by priority, not as a technical prerequisite.                                      |
+| 11    | **CE4d — Legacy/depth adapters and renderer consolidation** | Complete the legacy adapter and depth-image integration; switch defaults and remove old render paths after all required parity passes.                           |
+| 12    | **CE13 — Video, image-sequence and audio layers**           | Enable mixed-media production using CE7's time controls. Video precedes mesh deformation under Q5.                                                               |
+| 13    | **CE15 — Output formats, caching and parallel rendering**   | Improve delivery and throughput against the expanded rendering workload. Its technical prerequisite remains CE3.                                                 |
+| 14    | **CE14 — Mesh warp and puppet pins**                        | Add character and artwork deformation after the broader authoring and media production path. Its technical prerequisite remains CE6.                             |
 
 ---
 
@@ -3992,6 +4018,145 @@ their assertions. The new hard-shadow control requires exact RGBA/PNG across
 Frozen references and production sources are unchanged; no full repository,
 native shadow export, performance or production integration acceptance was run.
 [Fix evidence](./pr-39-zero-radius-fix-results.json).
+
+---
+
+## CE8-L — Bounded lighting for 2.5D layers
+
+**Outcome:** Authors can animate ambient, point and spot lights to illuminate flat
+artwork in composition space, using CE8's existing 3D transforms and projection.
+
+**Status:** `[x]` complete on `codex/composition-ce8-lighting` (2026-10-06).
+Owner-approved Q6 scope, contract, pure model, WebGL/cache/preflight, authoring,
+inspector, native and complete local acceptance are delivered. CE8 remains its
+prerequisite; CE4c is next in the approved sequence.
+[Implementation evidence](./composition-ce8-lighting-results.json).
+
+### Scope and limits
+
+- Exactly three light types: ambient, point and spot. Support at most **8 light
+  layers per composition scope**, including disabled lights, with explicit schema
+  bounds for every numeric field and diagnostics for invalid combinations.
+- Animate colour and intensity; animate position for point/spot lights, orientation
+  and inner/outer cone angles for spots, and finite distance falloff for point/spot
+  lights. Reuse CE8 transforms, parenting and CE9 property paths/expressions.
+- Receive light only on opted-in CE8 3D image, solid, text and shape surfaces, or a
+  flattened precomp quad. Each surface has one geometric plane normal derived from
+  its transform. A photograph's depicted face, clothing or objects acquire no
+  inferred geometry; lighting already painted into source art remains present.
+- Use ambient plus simple diffuse illumination. No material library, specular
+  highlights, metallic/roughness controls, reflections, normal/depth-map relighting,
+  cast shadows, self-shadowing, ambient occlusion or volumetric lighting.
+- Keep lights scoped to their composition. A precomp renders its internal lights
+  internally; a parent light can shade an opted-in flattened precomp as one plane.
+  No light propagation across precomp boundaries or per-child relighting through
+  flattened precomps. Groups, cameras, lights and adjustment layers are not receivers.
+- Default `receivesLight` to false, including adapter output. Ordinary 2D layers
+  remain unlit. Disabled lighting or a scope with no enabled lights uses the
+  existing render path; adding this capability must preserve unlit output exactly.
+
+### Implementation checklist
+
+- [x] Enable the reserved `light` layer contract with validated light-type fields,
+      bounded animation/property paths and stable diagnostics. Validate spot cone
+      ordering and falloff ranges; test the 8-light limit and unsupported receivers.
+- [x] Extend pure evaluation with world-space light state and transformed unit
+      plane normals. Define front/back-face behaviour, mirrored/non-uniform scale,
+      parenting and degenerate transforms explicitly; do not derive lighting from
+      the camera's position or previously rendered frames.
+- [x] Specify one versioned shading model: ambient contribution, diffuse angular
+      response, finite falloff and spot-cone interpolation. Define zero-distance,
+      zero-intensity, cone-edge and range-edge behaviour; avoid singularities and
+      preserve a fixed summation order for overlapping lights.
+- [x] Implement WebGL2 shading on the flat layer before its layer effects and
+      matte/opacity/blend composition. Calculate illumination in linear colour,
+      explicitly convert at the shading boundary to the selected composition
+      space, and preserve alpha and premultiplication. This does not change the
+      default compositing colour space or turn on global linear compositing.
+- [x] Sample lights and receiver transforms at the same evaluation time, including
+      CE7 exposure samples. Specify ordering with CE8 depth of field; ordinary
+      depth sorting and alpha compositing continue without shadow/occlusion passes.
+- [x] Provide a small CPU shading oracle for analytic/reference tests. Canvas 2D
+      reports `comp-feature-backend` for a composition that requires this lighting;
+      it must not silently omit shading. Existing unlit Canvas support remains.
+- [x] Expose light state, receiving-layer controls and diagnostics through existing
+      authoring/inspection APIs, including CE10/CE11 where available. Update the
+      composition reference with units, limits, scope rules and flat-art limitations.
+- [x] Include light parameters, transforms, receiving flags and shading version in
+      render/cache identity. Record local 1080p render cost for 1, 4 and 8 lights,
+      with receiver counts, renderer profile and exposure settings. These are
+      bounded-feature measurements; CE6-P's speed targets remain deferred.
+
+**Acceptance:** Native fixtures demonstrate ambient tint, a moving point light,
+an animated spotlight with a soft cone boundary, and overlapping lights on rotated
+and parented planes. Cover image alpha edges, solids, text, shapes, an opted-in
+flattened precomp, an unlit overlay and an unlit legacy-adapter composition. With
+receiving disabled or all lights disabled, output is byte-identical to the unlit
+path. Enabled lighting preserves alpha, deterministic seeking, and repeated export.
+No shadow, inferred surface detail or material realism is required for acceptance.
+
+**Verification:** Analytic lighting/transform tests against hand-computed samples;
+schema/diagnostic and property-animation tests; CPU-oracle versus pinned SwiftShader
+pixel comparisons with recorded tolerances; hardware-preview/export comparisons
+under the existing GPU policy; reverse/random seeks and repeated-export checks;
+precomp scope, transparent edges, animated lights during motion blur and DOF
+interaction regressions. Run local pnpm verification and frozen legacy baselines;
+record commands, versions, per-fixture results and limitations before marking `[x]`.
+
+**Completion record (2026-10-06):** final implementation `d72ba2c`, verified
+checkpoint `3820c1c`, `codex/composition-ce8-lighting` from CE8 `9d8f33a`.
+Complete pinned local `pnpm check` passes 1,889 unit / 46 runtime / 139 integration /
+14 depth tests, every required browser group, all 176 frozen CE0 items / 36,061
+frames and the unchanged Canvas family pixel/timing matrices. All 141 committed
+visual files remain exact, including the 95 preexisting files; only the new lighting
+baseline directory is added.
+
+Thirteen native scenes pass 480 forward / 480 reverse / 135 seek frames and all
+416 transparent-target frames with exact alpha. Independent ambient/point/spot
+oracles stay within one channel value; repeat/raw/independent encoded exports,
+legacy unlit identity, four Canvas diagnostic-retention cases and real inspector
+editing/undo/redo/save pass. Hardware comparisons retain the existing perceptual
+policy. Serial 1080p costs are recorded for four receivers, 1/4/8 lights and one/four
+actual exposure samples. E46 / Canvas1.41 / WebGL0.56 / export0.6.3; flat lighting
+and existing 8-bit limits are explicit. Earlier oracle, inspector and full-gate timing failures
+are recorded with their corrections and serial timing diagnosis. The full gate
+was rerun from the start under unchanged assertions. No source rendering or tolerance
+was changed to repair those tests. [Detailed evidence](./composition-ce8-lighting-results.json).
+
+[PR #44](https://github.com/xxibcill/still-shift/pull/44) now targets `main` after CE8 merged.
+
+**PR #44 conflict resolution and review (2026-10-08):** merge `548b5c7`
+combines current `main` at `e97dacbc`; code checkpoint `3640c69` also preserves
+light key editing with main's null root scope. Fast checks pass 2,313 unit tests,
+112 focused regressions, 46 runtime and all eleven example programs. Native
+lighting/camera, alpha, seeks, independent/repeated exports, hardware and real
+inspector pass; all 176 frozen items / 36,061 frames match without regeneration.
+Cache identities are E49 / Canvas 1.41.1 / WebGL 0.56.1 / export 0.6.5.
+This is focused follow-up evidence, with no new full `pnpm check` or performance
+acceptance. The original two P2 findings were posted inline and repaired separately:
+`009ae7d` completes implicit XYZ light dependencies; the following repair preserves
+receiving-toggle keyboard focus. Evaluator identity advances to E50. Final fast
+checks pass 2,322 units; affected lighting/inspector/WebGL export browsers and all
+176 frozen items / 36,061 frames pass without regeneration. Independent Standards
+and Spec audits have no remaining findings. Owner review/merge remain.
+[Repair evidence](./pr-44-fix-results.json).
+[Resolution evidence](./pr-44-conflict-resolution-results.json),
+[review evidence](./pr-44-review-results.json).
+
+### CE8-L-F — Deferred advanced lighting
+
+- **Status:** `[d]`, owner approved 2026-10-05. Cast shadows and realistic surface
+  shading are deferred to an unscheduled future version, with no completion deadline.
+- **Deferred scope:** inter-layer cast shadows and soft-shadow quality; normal maps
+  or additional geometry for depicted-surface relighting; specular/PBR materials,
+  reflections, self-shadowing, ambient occlusion and volumetric lighting. These are
+  candidates to scope on resumption, not a promise to implement all in one release.
+- **Preserved distinction:** CE6's 2D drop/inner/height-shadow effects remain in their
+  existing scope. They do not constitute scene lights casting shadows onto other
+  surfaces, and this deferral neither removes nor expands those effect requirements.
+- **Resume gate:** an explicit owner request selects the future scope, asset inputs,
+  quality/performance budgets and acceptance fixtures before implementation. The
+  deferred work is not a prerequisite for current-version milestones.
 
 ---
 

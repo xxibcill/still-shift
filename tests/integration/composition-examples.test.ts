@@ -5,10 +5,10 @@ import { readCompositionSource } from "@still-shift/animation-engine";
 import { PassageCompositionBindingsSchema } from "@still-shift/scene-contract";
 import { loadProgram } from "../../tools/still-shift-cli/src/composition/program.ts";
 import { withProgramFile } from "../../tools/still-shift-cli/src/composition/files.ts";
-it("all ten small programs compile and validate their pinned assets", async () => {
+it("all eleven small programs compile and validate their pinned assets", async () => {
   const root = resolve("examples/composition"),
     files = (await readdir(root)).filter((file) => /^\d\d-.*\.ts$/.test(file));
-  expect(files).toHaveLength(10);
+  expect(files).toHaveLength(11);
   for (const file of files) {
     const input = resolve(root, file),
       program = await loadProgram(input);

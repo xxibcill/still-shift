@@ -95,7 +95,10 @@ export function ownCurve(
       if (["anchor", "position", "scale", "orientation"].includes(next!.name)) {
         kind = "vector";
         axis = last?.name;
-        spatial = layer.threeD === true || layer.type === "camera";
+        spatial =
+          layer.threeD === true ||
+          layer.type === "camera" ||
+          layer.type === "light";
         fallbackZ = next!.name === "scale" ? 1 : 0;
       }
       break;
@@ -109,12 +112,22 @@ export function ownCurve(
       raw = layer.constraintReference;
       kind = "vector";
       axis = next?.name;
-      spatial = layer.threeD === true || layer.type === "camera";
+      spatial =
+        layer.threeD === true ||
+        layer.type === "camera" ||
+        layer.type === "light";
       break;
     case "color":
       raw = "color" in layer ? layer.color : undefined;
       kind = "color";
       axis = next?.name;
+      break;
+    case "intensity":
+    case "range":
+    case "falloffStart":
+    case "innerCone":
+    case "outerCone":
+      raw = layer.type === "light" ? layer[head!.name] : undefined;
       break;
     case "masks": {
       const mask = layer.masks?.find((m) => m.id === head!.index);

@@ -24,5 +24,4 @@ an exposure case. `--profile` records serial cold/warm 1080p costs for 1/8/64
 planes with 1/4 shutter samples. `--write-ce8-baseline` writes only the new CE8
 baseline directory.
 
-All checks are authored but unexecuted while the coordinated CE6-P quiet window
-is active. No acceptance result is implied by these source fixtures.
+CE8 acceptance is complete; see [the evidence record](../../../../docs/composition-ce8-results.json).

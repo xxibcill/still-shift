@@ -36,9 +36,10 @@ import {
 import type { ClipRect } from "./graph.ts";
 import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
+import { FLAT_LIGHTING_SHADER, flatLightingUniforms } from "./flat-lighting.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.55.4" as const;
+  "composition-webgl2-0.56.1" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -795,6 +796,14 @@ export function createWebgl2Backend(
       else bounds.full(dst);
     },
     applyProjectiveClips: projectiveClips,
+    applyLighting: (target, lighting) => {
+      replace(
+        target,
+        FLAT_LIGHTING_SHADER,
+        [target],
+        flatLightingUniforms(lighting),
+      );
+    },
     applyEffects: (target, stack, layers) => {
       effects.apply(target, stack, layers);
     },

@@ -106,7 +106,10 @@ export function compileComposition(comp: Composition): CompiledComposition {
     spatialScopes: new Set(
       scopes.filter((scope) =>
         scope.layers.some(
-          (layer) => layer.threeD === true || layer.type === "camera",
+          (layer) =>
+            layer.threeD === true ||
+            layer.type === "camera" ||
+            layer.type === "light",
         ),
       ),
     ),

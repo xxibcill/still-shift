@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8l-ambient",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "assets": [],
+  "layers": [
+    {
+      "id": "light",
+      "type": "light",
+      "lightType": "ambient",
+      "color": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#80c0ff"
+          },
+          {
+            "frame": 31,
+            "value": "#ffc080",
+            "interpolation": "linear"
+          }
+        ]
+      },
+      "intensity": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.2
+          },
+          {
+            "frame": 31,
+            "value": 1.4,
+            "interpolation": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "plane",
+      "type": "solid",
+      "size": [128, 96],
+      "color": "#8040c080",
+      "threeD": true,
+      "receivesLight": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [0, 0, 0]
+      }
+    }
+  ]
+}

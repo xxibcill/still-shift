@@ -150,7 +150,8 @@ export function compositionTracks(document: Composition): KeyTrack[] {
         layer.id,
         fps,
         false,
-        kind === "vector" && (layer.threeD || layer.type === "camera")
+        kind === "vector" &&
+          (layer.threeD || layer.type === "camera" || layer.type === "light")
           ? 3
           : undefined,
         name === "scale" ? 1 : 0,
@@ -175,6 +176,16 @@ export function compositionTracks(document: Composition): KeyTrack[] {
         "focusDistance",
         "aperture",
         "blurLevel",
+      ] as const)
+        add(layer[name], [...path, name], name, "scalar", scope, layer.id, fps);
+    }
+    if (layer.type === "light") {
+      for (const name of [
+        "intensity",
+        "range",
+        "falloffStart",
+        "innerCone",
+        "outerCone",
       ] as const)
         add(layer[name], [...path, name], name, "scalar", scope, layer.id, fps);
     }
@@ -206,7 +217,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
         fps,
         false,
         name === "constraintReference" &&
-          (layer.threeD || layer.type === "camera")
+          (layer.threeD || layer.type === "camera" || layer.type === "light")
           ? 3
           : undefined,
       );

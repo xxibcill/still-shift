@@ -6,7 +6,7 @@ import {
   text,
   precomp,
   nullLayer,
-  light,
+  audio,
   seq,
   par,
   at,
@@ -223,9 +223,9 @@ describe("composition builder", () => {
     ).not.toThrow();
     try {
       comp(options, (c) => {
-        c.add(light("future"));
+        c.add(audio("future", "future-audio"));
       });
-      expect.fail("lighting is unavailable before CE8-L");
+      expect.fail("audio is unavailable before CE13");
     } catch (error) {
       expect(error).toBeInstanceOf(BuilderError);
       expect((error as BuilderError).code).toBe("comp-feature-unavailable");

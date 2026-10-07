@@ -1,0 +1,2332 @@
+{
+  "milestone": "CE8-L",
+  "status": "complete",
+  "branch": "codex/composition-ce8-lighting",
+  "base": "9d8f33a",
+  "started": "2026-10-06",
+  "model": "flat-lighting-1",
+  "slices": [
+    {
+      "scope": "Bounded contract, implicit XYZ property paths, sampled light state, scoped world transforms and linear CPU shading oracle",
+      "checks": {
+        "build": "pass",
+        "focusedUnit": "24 pass after correcting an analytic float identity assertion (0.7500000000000001 versus 0.75); unlit empty-light identity stays exact"
+      },
+      "availability": "Light remains gated until WebGL lighting and Canvas preflight are implemented",
+      "implementation": "5aaf70a"
+    },
+    {
+      "scope": "Receiver-relative fixed-slot WebGL shading before local effects; exact unlit path, light-aware cache identity, all-graph/shutter Canvas preflight; E46/C1.41/W0.56/export0.6.3",
+      "checks": {
+        "focusedUnit": "55 pass across five files",
+        "build": "pass"
+      },
+      "rejected": [
+        "New integration test drafts used string expressions, omitted group size and shutterPhase; corrected to the existing contract before acceptance. No production policy changed."
+      ],
+      "pending": "Pinned GPU pixels, exports/hardware/native fixtures and complete gate",
+      "implementation": "8e9b0e3"
+    },
+    {
+      "scope": "Native fixtures/independent CPU pixels, builder receiving and light paths, inspector keyed light values/receiving source edits, generated schema/reference/skill and required browser runner",
+      "checks": {
+        "pinnedGpuSmoke": {
+          "checkpoint": "8e9b0e3",
+          "ambient": [92, 42, 17, 255],
+          "point": [92, 42, 17, 255],
+          "spot": [92, 42, 17, 255]
+        },
+        "build": "pass",
+        "focusedUnit": "34 pass including 13 asset-pinned lighting scenes; generated contract/reference inventory 132 pass",
+        "integrationAttempt": "139 cases: 38 pass, 51 fail and 50 skip under restricted sandbox (local listen/browser process EPERM); isolated permitted rerun pending",
+        "integrationRerun": {
+          "checkpoint": "07165bc",
+          "command": "pnpm test:integration in isolated permitted snapshot",
+          "files": 39,
+          "tests": 139,
+          "status": "pass",
+          "log": "/private/tmp/ce8l-integration-07165bc.log"
+        }
+      },
+      "rejected": [
+        "Draft builder tests incorrectly called toJSON and supplied transform in options; corrected to the established native composition return and .transform API. Reference/diagnostic inventory was stale until generation."
+      ],
+      "pending": "All-frame native oracles/alpha/hashes, export, hardware, inspector execution, serial costs and complete local gate",
+      "implementation": "07165bc"
+    },
+    {
+      "scope": "Independent opaque-preview oracle corrected to existing black flattening; all-frame transparent offscreen alpha checks and implicit-unlit story adapter identity; scope/camera regressions",
+      "checks": {
+        "focusedUnit": "15 lighting integration tests pass",
+        "build": "pass"
+      },
+      "rejected": [
+        "First native acceptance on 07165bc failed ambient frame 0 (max delta 46, PSNR 19.2397). The test oracle expected final transparent pixels, but CE3 previews intentionally flatten on black. Pinned debug showed expected premultiplied shader RGB [12,8,46], final alpha255. Corrected oracle only; shading production unchanged. Added direct offscreen RGBA checks for alpha128 and all-fixture alpha identity."
+      ],
+      "pending": "New helper execution, independent export/hardware/inspector acceptance, serial costs and full gate",
+      "implementation": "1d89a2f"
+    },
+    {
+      "scope": "Observe actual inspector draft history rather than source revision, and document user-facing lighting workflow",
+      "checks": {
+        "unit": "1889 pass / 192 files on 1d89a2f",
+        "lint": "pass",
+        "focusedInspector": "real light value .75 / undo / redo / save pass, no page errors"
+      },
+      "rejected": [
+        "Native group reached all 13 completed fixtures, implicit-unlit adapter identity, four Canvas diagnostic cases and 45 hardware comparisons, then timed out on the inspector test expectation revision3. Source revision changes on save, not local draft edits. The test now observes edited keys; production editor was correct. Full group rerun remains required."
+      ],
+      "pending": "Complete rerun, serial costs, full gate",
+      "implementation": "d72ba2c"
+    }
+  ],
+  "pending": [],
+  "nativeAcceptance": {
+    "checkpoint": "d72ba2c",
+    "command": "pnpm test:browser:composition-lighting --write-ce8l-baseline",
+    "exitCode": 0,
+    "log": "/private/tmp/ce8l-native-d72ba2c.log",
+    "forwardFrames": 480,
+    "reverseFrames": 480,
+    "randomSeeks": 135,
+    "transparentFrames": 416,
+    "productionExports": 45,
+    "independentPreviewExports": 15,
+    "hardwareTiers": {
+      "exact": 43,
+      "near": 2
+    },
+    "maxOracleChannelDelta": 1,
+    "existingVisualFilesUnchanged": 95,
+    "newVisualFiles": 46,
+    "details": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "reports": [
+        {
+          "fixture": "ambient",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 393216,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "ambient",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "ambient",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "point",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 0,
+            "oracleMaxDelta": 1,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "point",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 1,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "point",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "spot",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 0,
+            "oracleMaxDelta": 1,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "spot",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 1,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "spot",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "overlap",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 3520,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "overlap",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "overlap",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "content",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 24599,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "content",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "content",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "scopes",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 9693,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "scopes",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "scopes",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "unlit",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 0,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "unlit",
+          "backend": "canvas2d",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "exact"
+        },
+        {
+          "fixture": "unlit",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "unlit",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "exact"
+        },
+        {
+          "fixture": "unlit",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "disabled",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 0,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "disabled",
+          "backend": "canvas2d",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "exact"
+        },
+        {
+          "fixture": "disabled",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "disabled",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "exact"
+        },
+        {
+          "fixture": "disabled",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "zero",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 393216,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "zero",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "zero",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "exposure",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 4068,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "exposure",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "exposure",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "focus",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 53071,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "focus",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "focus",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "effects",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 35328,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "effects",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "effects",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "mirror",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 0,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "mirror",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "mirror",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        }
+      ],
+      "failures": [
+        {
+          "name": "activation",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        },
+        {
+          "name": "later-shutter",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        },
+        {
+          "name": "named-input",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        },
+        {
+          "name": "matte",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        }
+      ],
+      "legacy": {
+        "source": "story-motion-continuous/access-constraint.json",
+        "reports": [
+          {
+            "backend": "canvas2d",
+            "frames": 4,
+            "identity": "byte-identical",
+            "hashes": {
+              "0": "1835183e716a8528a5685881b11a88ef31a82ea8815ce80ac262c0b683963527",
+              "96": "a9ae353eaf91321c69543568e6334c60a27b02b1abce0a2349343792f7815581",
+              "191": "520767eb33e8430fa90a12ba632645c425f3f4b790e421ee4de4fc09fb3bb114"
+            }
+          },
+          {
+            "backend": "webgl2",
+            "frames": 4,
+            "identity": "byte-identical",
+            "hashes": {
+              "0": "1835183e716a8528a5685881b11a88ef31a82ea8815ce80ac262c0b683963527",
+              "96": "f60961b576115e45b0682044d596d7a35be8a0b5fcd039b3da11b6b71e75c5f1",
+              "191": "06c55ac7793d4cae28eccd8d3005193c8ec2040799738819e5466419a8c09b35"
+            }
+          }
+        ]
+      },
+      "hardware": {
+        "environments": [
+          {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          {
+            "profile": "hardware",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+            "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+            "platform": "darwin",
+            "arch": "arm64"
+          }
+        ],
+        "policy": "unchanged perceptual hardware policy",
+        "reports": [
+          {
+            "fixture": "ambient",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "ambient",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "ambient",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "point",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "point",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "point",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "spot",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "spot",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "near",
+            "maxChannelDelta": 1,
+            "differingChannels": 1,
+            "psnr": 93.79682818275009,
+            "ssim": 0.9999999978596394
+          },
+          {
+            "fixture": "spot",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "near",
+            "maxChannelDelta": 1,
+            "differingChannels": 1,
+            "psnr": 93.79682818275009,
+            "ssim": 0.9999999978067234
+          },
+          {
+            "fixture": "overlap",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "overlap",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "overlap",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "zero",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "zero",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "zero",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "effects",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "effects",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "effects",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "mirror",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "mirror",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "mirror",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          }
+        ]
+      },
+      "inspector": {
+        "receiverToggle": "source/undo/redo/save",
+        "lightTracks": ["XYZ", "color", "intensity", "innerCone"],
+        "intensityEdit": 0.75,
+        "errors": []
+      },
+      "baseline": "created new CE8-L baseline"
+    }
+  },
+  "serialCosts": {
+    "checkpoint": "d72ba2c",
+    "environment": {
+      "profile": "chromium-software-2",
+      "browserVersion": "151.0.7922.34",
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "timings": [
+      {
+        "lights": 1,
+        "receivers": 4,
+        "shutterSamples": 1,
+        "cold": 627.3000000119209,
+        "warmups": [50.90000003576279, 50.19999998807907],
+        "measured": [
+          48.89999997615814, 50.19999998807907, 48.90000003576279, 49.5,
+          50.19999998807907
+        ],
+        "median": 49.5,
+        "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+      },
+      {
+        "lights": 1,
+        "receivers": 4,
+        "shutterSamples": 4,
+        "cold": 683.1000000238419,
+        "warmups": [215.10000002384186, 206.39999997615814],
+        "measured": [
+          223.30000001192093, 224.39999997615814, 230.5, 230.69999998807907,
+          220.70000004768372
+        ],
+        "median": 224.39999997615814,
+        "actualSampleCounts": [4, 4, 4, 4, 4, 4, 4, 4]
+      },
+      {
+        "lights": 4,
+        "receivers": 4,
+        "shutterSamples": 1,
+        "cold": 448.2999999523163,
+        "warmups": [49.10000002384186, 52.89999997615814],
+        "measured": [
+          50.700000047683716, 52.5, 54.89999997615814, 49.39999997615814,
+          51.40000003576279
+        ],
+        "median": 51.40000003576279,
+        "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+      },
+      {
+        "lights": 4,
+        "receivers": 4,
+        "shutterSamples": 4,
+        "cold": 658,
+        "warmups": [213.60000002384186, 220.39999997615814],
+        "measured": [
+          211.5, 213.80000001192093, 215.19999998807907, 217.20000004768372,
+          220.39999997615814
+        ],
+        "median": 215.19999998807907,
+        "actualSampleCounts": [4, 4, 4, 4, 4, 4, 4, 4]
+      },
+      {
+        "lights": 8,
+        "receivers": 4,
+        "shutterSamples": 1,
+        "cold": 488.80000001192093,
+        "warmups": [53.69999998807907, 56.80000001192093],
+        "measured": [54.5, 51.30000001192093, 50, 52, 53],
+        "median": 52,
+        "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+      },
+      {
+        "lights": 8,
+        "receivers": 4,
+        "shutterSamples": 4,
+        "cold": 670.1999999880791,
+        "warmups": [258.30000001192093, 226.4000000357628],
+        "measured": [
+          236.5999999642372, 248.5, 244.69999998807907, 242.10000002384186, 222
+        ],
+        "median": 242.10000002384186,
+        "actualSampleCounts": [4, 4, 4, 4, 4, 4, 4, 4]
+      }
+    ],
+    "command": "pinned browser invoking existing lightingSampleCosts directly, no competing tests/builds",
+    "log": "/private/tmp/ce8l-serial-cost-d72ba2c.log"
+  },
+  "checks": {
+    "unit": {
+      "checkpoint": "1d89a2f",
+      "tests": 1889,
+      "files": 192,
+      "status": "pass"
+    },
+    "integration": {
+      "checkpoint": "07165bc",
+      "tests": 139,
+      "files": 39,
+      "status": "pass"
+    },
+    "build": "pass on d72ba2c (code unchanged since helper correction)",
+    "lint": "pass",
+    "toolchain": "pass",
+    "schema": "pass",
+    "boundaries": "pass",
+    "format": "pass on d72ba2c",
+    "fullGate": "pass"
+  },
+  "fullGateAttempts": [
+    {
+      "checkpoint": "3820c1c",
+      "command": "pnpm check",
+      "exitCode": 1,
+      "log": "/private/tmp/ce8l-full-3820c1c.log",
+      "unitTests": 1889,
+      "runtimeTests": 46,
+      "integrationTests": 139,
+      "depthTests": 14,
+      "nativeLighting": "passed with exact committed baselines",
+      "completedStoryCases": 60,
+      "completedStoryFrames": 12358,
+      "failure": {
+        "case": "component/passage-components/instances",
+        "ratio": 1.3120195661014282,
+        "limit": 1.25,
+        "maxDelta": 0,
+        "pixelFailures": []
+      },
+      "diagnosis": "Serial focused profiles on the previous CE8 and current lighting checkpoints both pass unchanged assertions. Spatial projection and light enumeration are not invoked for this nonspatial scope; observed paired totals are dominated by readback. Timing variation is the current evidence, not a demonstrated lighting regression. No code, baselines or policy changed."
+    }
+  ],
+  "timingDiagnosis": {
+    "ce8": {
+      "checkpoint": "16262ec",
+      "log": "/private/tmp/ce8-base-passage-profile.log",
+      "command": "pnpm test:browser:composition-story-fixtures --only component/passage-components --variant instances --profile --exports",
+      "exitCode": 0,
+      "report": {
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 1.217357002332265,
+        "legacyMs": 253.50000023841858,
+        "compositionMs": 308.6000003814697,
+        "legacyRenderMs": 18.50000011920929,
+        "compositionRenderMs": 81.69999986886978,
+        "evaluationMs": 6.300000011920929,
+        "graphMs": 2.099999964237213
+      }
+    },
+    "lighting": {
+      "checkpoint": "3820c1c",
+      "log": "/private/tmp/ce8l-current-passage-profile.log",
+      "command": "pnpm test:browser:composition-story-fixtures --only component/passage-components --variant instances --profile --exports",
+      "exitCode": 0,
+      "report": {
+        "maxDelta": 0,
+        "minPsnr": null,
+        "failures": [],
+        "ratio": 1.1535580557349567,
+        "legacyMs": 213.59999936819077,
+        "compositionMs": 246.39999997615814,
+        "legacyRenderMs": 11.399999558925629,
+        "compositionRenderMs": 56.10000020265579,
+        "evaluationMs": 6.799999952316284,
+        "graphMs": 1.4000000357627869
+      }
+    },
+    "fullRerunPassageInstances": {
+      "checkpoint": "3820c1c",
+      "ratio": 1.1605633796660553,
+      "limit": 1.25,
+      "maxDelta": 0,
+      "status": "pass in full rerun"
+    }
+  },
+  "completed": "2026-10-06",
+  "finalImplementation": "d72ba2c",
+  "verificationCheckpoint": "3820c1c",
+  "fullVerification": {
+    "checkpoint": "3820c1c",
+    "attempt": 2,
+    "runtimeCheckpoint": "d72ba2c",
+    "command": "pnpm check",
+    "status": "passed",
+    "exitCode": 0,
+    "snapshot": "/private/tmp/still-shift-ce8-check-3820c1c",
+    "log": "/private/tmp/ce8l-full-3820c1c-rerun.log",
+    "unitTests": 1889,
+    "runtimeTests": 46,
+    "integrationTests": 139,
+    "depthTests": 14,
+    "requiredTestScripts": [
+      "test:unit",
+      "test:runtime",
+      "test:integration",
+      "test:depth",
+      "test:browser:depth",
+      "test:browser:vertical-image",
+      "test:browser:export",
+      "test:golden",
+      "test:browser:cli",
+      "test:browser:batch",
+      "test:browser:illustrated",
+      "test:browser:illustrated:vertical",
+      "test:browser:cinematic",
+      "test:browser:cinematic:vertical",
+      "test:browser:threshold",
+      "test:browser:dolly",
+      "test:browser:lateral",
+      "test:browser:reveal",
+      "test:browser:story",
+      "test:browser:story:activity",
+      "test:browser:story:continuous",
+      "test:browser:passage:authoring",
+      "test:browser:lab-session",
+      "test:browser:composition-session",
+      "test:browser:commerce",
+      "test:browser:commerce-components",
+      "test:browser:commerce-effects",
+      "test:browser:commerce-spatial",
+      "test:browser:reusable-components",
+      "test:browser:reusable-package",
+      "test:browser:reusable-behavior-package",
+      "test:browser:reusable-timing-package",
+      "test:browser:typography",
+      "test:browser:typography:fixtures",
+      "test:browser:composition-evaluator",
+      "test:browser:composition-expressions",
+      "test:browser:composition-quality",
+      "test:browser:composition",
+      "test:browser:composition-webgl",
+      "test:browser:composition-camera",
+      "test:browser:composition-lighting",
+      "test:browser:composition-shapes",
+      "test:browser:composition-webgl-export",
+      "test:browser:composition-exposure",
+      "test:browser:composition-effects",
+      "test:browser:composition-story-adapter",
+      "test:browser:composition-native-passage",
+      "test:browser:composition-native-passage:webgl",
+      "test:browser:composition-passage",
+      "test:browser:composition-story-fixtures",
+      "test:browser:composition-commerce-adapter",
+      "test:browser:composition-typography-adapter",
+      "test:browser:composition-provider-typography",
+      "test:browser:composition-program",
+      "test:browser:composition-inspector",
+      "test:browser:composition-builder",
+      "test:browser:composition-baselines"
+    ],
+    "frozenBaselines": 176,
+    "frozenFrames": 36061,
+    "regeneratedFrozenBaselines": false,
+    "unchangedVisualFiles": 141,
+    "canvasMatrices": {
+      "story": {
+        "cases": 69,
+        "frames": 14086,
+        "maxRatio": 1.237720111256196,
+        "maxDelta": 2,
+        "policy": "existing Canvas near pixels and 1.25 timing ratio"
+      },
+      "commerce": {
+        "cases": 127,
+        "frames": 28200,
+        "maxRatio": 1.1369137677904386,
+        "maxDelta": 1,
+        "policy": "existing Canvas near pixels and 1.25 timing ratio"
+      },
+      "typography": {
+        "cases": 20,
+        "frames": 3367,
+        "maxRatio": 1.07166257281691,
+        "maxDelta": 2,
+        "policy": "existing Canvas near pixels and 1.25 timing ratio"
+      }
+    }
+  },
+  "nativeAcceptanceAfterFullGate": {
+    "environment": {
+      "profile": "chromium-software-2",
+      "browserVersion": "151.0.7922.34",
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "reports": [
+      {
+        "fixture": "ambient",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 393216,
+          "oracleMaxDelta": 0,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "ambient",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "not applicable"
+      },
+      {
+        "fixture": "ambient",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "point",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 0,
+          "oracleMaxDelta": 1,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "point",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 1,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "not applicable"
+      },
+      {
+        "fixture": "point",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "spot",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 0,
+          "oracleMaxDelta": 1,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "spot",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 1,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "not applicable"
+      },
+      {
+        "fixture": "spot",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "overlap",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 3520,
+          "oracleMaxDelta": 0,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "overlap",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "not applicable"
+      },
+      {
+        "fixture": "overlap",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "content",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 24599,
+          "oracleMaxDelta": 0,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "content",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "not applicable"
+      },
+      {
+        "fixture": "content",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "scopes",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 9693,
+          "oracleMaxDelta": 0,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "scopes",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "not applicable"
+      },
+      {
+        "fixture": "scopes",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "unlit",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 0,
+          "oracleMaxDelta": 0,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "unlit",
+        "backend": "canvas2d",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "exact"
+      },
+      {
+        "fixture": "unlit",
+        "backend": "canvas2d",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "unlit",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "exact"
+      },
+      {
+        "fixture": "unlit",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "disabled",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 0,
+          "oracleMaxDelta": 0,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "disabled",
+        "backend": "canvas2d",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "exact"
+      },
+      {
+        "fixture": "disabled",
+        "backend": "canvas2d",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "disabled",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "exact"
+      },
+      {
+        "fixture": "disabled",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "zero",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 393216,
+          "oracleMaxDelta": 0,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "zero",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "not applicable"
+      },
+      {
+        "fixture": "zero",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "exposure",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 4068,
+          "oracleMaxDelta": 0,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "exposure",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "not applicable"
+      },
+      {
+        "fixture": "exposure",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "focus",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 53071,
+          "oracleMaxDelta": 0,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "focus",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "not applicable"
+      },
+      {
+        "fixture": "focus",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "effects",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 35328,
+          "oracleMaxDelta": 0,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "effects",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "not applicable"
+      },
+      {
+        "fixture": "effects",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "mirror",
+        "transparentRgba": {
+          "frames": 32,
+          "maxAlphaDelta": 0,
+          "partialAlphaPixels": 0,
+          "oracleMaxDelta": 0,
+          "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+        }
+      },
+      {
+        "fixture": "mirror",
+        "backend": "webgl2",
+        "forward": 32,
+        "reverse": 32,
+        "seeks": 9,
+        "oracleMaxDelta": 0,
+        "alpha": "exact across all frames",
+        "unlitIdentity": "not applicable"
+      },
+      {
+        "fixture": "mirror",
+        "backend": "webgl2",
+        "frames": 32,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      }
+    ],
+    "failures": [
+      {
+        "name": "activation",
+        "diagnostics": [
+          {
+            "code": "comp-feature-backend",
+            "severity": "error",
+            "message": "Flat-surface lighting requires the composition WebGL2 backend",
+            "node": "plane"
+          }
+        ],
+        "previousFrameUnchanged": true
+      },
+      {
+        "name": "later-shutter",
+        "diagnostics": [
+          {
+            "code": "comp-feature-backend",
+            "severity": "error",
+            "message": "Flat-surface lighting requires the composition WebGL2 backend",
+            "node": "plane"
+          }
+        ],
+        "previousFrameUnchanged": true
+      },
+      {
+        "name": "named-input",
+        "diagnostics": [
+          {
+            "code": "comp-feature-backend",
+            "severity": "error",
+            "message": "Flat-surface lighting requires the composition WebGL2 backend",
+            "node": "plane"
+          }
+        ],
+        "previousFrameUnchanged": true
+      },
+      {
+        "name": "matte",
+        "diagnostics": [
+          {
+            "code": "comp-feature-backend",
+            "severity": "error",
+            "message": "Flat-surface lighting requires the composition WebGL2 backend",
+            "node": "plane"
+          }
+        ],
+        "previousFrameUnchanged": true
+      }
+    ],
+    "legacy": {
+      "source": "story-motion-continuous/access-constraint.json",
+      "reports": [
+        {
+          "backend": "canvas2d",
+          "frames": 4,
+          "identity": "byte-identical",
+          "hashes": {
+            "0": "1835183e716a8528a5685881b11a88ef31a82ea8815ce80ac262c0b683963527",
+            "96": "a9ae353eaf91321c69543568e6334c60a27b02b1abce0a2349343792f7815581",
+            "191": "520767eb33e8430fa90a12ba632645c425f3f4b790e421ee4de4fc09fb3bb114"
+          }
+        },
+        {
+          "backend": "webgl2",
+          "frames": 4,
+          "identity": "byte-identical",
+          "hashes": {
+            "0": "1835183e716a8528a5685881b11a88ef31a82ea8815ce80ac262c0b683963527",
+            "96": "f60961b576115e45b0682044d596d7a35be8a0b5fcd039b3da11b6b71e75c5f1",
+            "191": "06c55ac7793d4cae28eccd8d3005193c8ec2040799738819e5466419a8c09b35"
+          }
+        }
+      ]
+    },
+    "hardware": {
+      "environments": [
+        {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        {
+          "profile": "hardware",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+          "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+          "platform": "darwin",
+          "arch": "arm64"
+        }
+      ],
+      "policy": "unchanged perceptual hardware policy",
+      "reports": [
+        {
+          "fixture": "ambient",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "ambient",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "ambient",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "point",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "point",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "point",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "spot",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "spot",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "near",
+          "maxChannelDelta": 1,
+          "differingChannels": 1,
+          "psnr": 93.79682818275009,
+          "ssim": 0.9999999978596394
+        },
+        {
+          "fixture": "spot",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "near",
+          "maxChannelDelta": 1,
+          "differingChannels": 1,
+          "psnr": 93.79682818275009,
+          "ssim": 0.9999999978067234
+        },
+        {
+          "fixture": "overlap",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "overlap",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "overlap",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "content",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "content",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "content",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "scopes",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "scopes",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "scopes",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "unlit",
+          "backend": "canvas2d",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "unlit",
+          "backend": "canvas2d",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "unlit",
+          "backend": "canvas2d",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "unlit",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "unlit",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "unlit",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "disabled",
+          "backend": "canvas2d",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "disabled",
+          "backend": "canvas2d",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "disabled",
+          "backend": "canvas2d",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "disabled",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "disabled",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "disabled",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "zero",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "zero",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "zero",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "exposure",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "exposure",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "exposure",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "focus",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "focus",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "focus",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "effects",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "effects",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "effects",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "mirror",
+          "backend": "webgl2",
+          "frame": 0,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "mirror",
+          "backend": "webgl2",
+          "frame": 16,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        },
+        {
+          "fixture": "mirror",
+          "backend": "webgl2",
+          "frame": 31,
+          "tier": "exact",
+          "maxChannelDelta": 0,
+          "differingChannels": 0,
+          "psnr": 999,
+          "ssim": 1
+        }
+      ]
+    },
+    "inspector": {
+      "receiverToggle": "source/undo/redo/save",
+      "lightTracks": ["XYZ", "color", "intensity", "innerCone"],
+      "intensityEdit": 0.75,
+      "errors": []
+    },
+    "baseline": "exact"
+  },
+  "delivery": {
+    "status": "open-attached",
+    "pr": "https://github.com/xxibcill/still-shift/pull/44",
+    "baseBranch": "codex/composition-ce8",
+    "headBranch": "codex/composition-ce8-lighting"
+  },
+  "limitations": [
+    "flat-lighting-1 shades one two-sided world plane normal and preserves RGBA8 alpha; no inferred surface detail, materials or cast shadows",
+    "At most eight authored lights per scope including disabled lights; parent shading sees an opted-in precomp as one flattened plane",
+    "Canvas supports the existing unlit path; active receiving uses WebGL2 and preflights every graph/shutter sample before target mutation",
+    "Receiver-selected exposure scope supplies light and receiver state together; a held receiver retains held illumination",
+    "Existing 8-bit raster/compositing precision retained; shader accumulation is linear RGB before encoded premultiplied RGBA8 output",
+    "Serial render/readback measurements are bounded-feature costs, not CE6-P speed acceptance"
+  ]
+}

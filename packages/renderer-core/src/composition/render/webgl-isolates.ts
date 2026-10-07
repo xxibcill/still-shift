@@ -25,7 +25,13 @@ export class WebglIsolates {
 
   render(op: IsolateOp, like: WebglSurface, draw: () => WebglSurface) {
     const id = `${op.layer}/${like.width}x${like.height}`;
-    const signature = this.keys.of([op.ops, op.effects, op.masks, op.matte]);
+    const signature = this.keys.of([
+      op.ops,
+      op.effects,
+      op.masks,
+      op.matte,
+      ...(op.lighting ? [op.lighting] : []),
+    ]);
     const existing = this.entries.get(id);
     if (existing?.signature === signature) {
       existing.users++;

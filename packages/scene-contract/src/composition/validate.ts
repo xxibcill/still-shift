@@ -67,7 +67,7 @@ function checkVectorDimensions(
   layer: CompositionLayer,
   path: Path,
 ) {
-  if (layer.threeD || layer.type === "camera") return;
+  if (layer.threeD || layer.type === "camera" || layer.type === "light") return;
   for (const field of [
     "anchor",
     "position",
@@ -230,7 +230,8 @@ function checkLayer(
     if (
       layer.transform?.[field] !== undefined &&
       !layer.threeD &&
-      layer.type !== "camera"
+      layer.type !== "camera" &&
+      layer.type !== "light"
     )
       unavailable(["transform", field], `transform.${field}`, "CE8");
   checkVectorDimensions(fail, layer, path);
@@ -1003,6 +1004,12 @@ export function validateCompositionSemantics(
   let layerCount = 0;
   for (const scope of scopes) {
     const base = scopeBase(comp, scope);
+    if (scope.layers.filter((layer) => layer.type === "light").length > 8)
+      fail(
+        "comp-light-limit",
+        [...base, "layers"],
+        "At most eight authored lights per composition scope, including disabled lights",
+      );
     duplicates(fail, scope.layers, [...base, "layers"], "layer");
     duplicates(fail, scope.markers, [...base, "markers"], "marker");
     scope.markers?.forEach((marker, i) => {

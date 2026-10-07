@@ -1,0 +1,237 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8l-overlap",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "assets": [],
+  "layers": [
+    {
+      "id": "ambient",
+      "type": "light",
+      "lightType": "ambient",
+      "color": "#ffffff",
+      "intensity": 0.15
+    },
+    {
+      "id": "lamp0",
+      "type": "light",
+      "lightType": "spot",
+      "color": "#ff8050",
+      "intensity": 0.25,
+      "range": 320,
+      "falloffStart": 30,
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [15, 20, -60]
+            },
+            {
+              "frame": 31,
+              "value": [120, 75, -90],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "rotationY": -8
+      },
+      "innerCone": 30,
+      "outerCone": 60
+    },
+    {
+      "id": "lamp1",
+      "type": "light",
+      "lightType": "point",
+      "color": "#80b0ff",
+      "intensity": 0.25,
+      "range": 320,
+      "falloffStart": 30,
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [30, 28, -60]
+            },
+            {
+              "frame": 31,
+              "value": [108, 70, -90],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "rotationY": -6
+      }
+    },
+    {
+      "id": "lamp2",
+      "type": "light",
+      "lightType": "spot",
+      "color": "#90ffb0",
+      "intensity": 0.25,
+      "range": 320,
+      "falloffStart": 30,
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [45, 36, -60]
+            },
+            {
+              "frame": 31,
+              "value": [96, 65, -90],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "rotationY": -4
+      },
+      "innerCone": 30,
+      "outerCone": 60
+    },
+    {
+      "id": "lamp3",
+      "type": "light",
+      "lightType": "point",
+      "color": "#ff8050",
+      "intensity": 0.25,
+      "range": 320,
+      "falloffStart": 30,
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [60, 44, -60]
+            },
+            {
+              "frame": 31,
+              "value": [84, 60, -90],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "rotationY": -2
+      }
+    },
+    {
+      "id": "lamp4",
+      "type": "light",
+      "lightType": "spot",
+      "color": "#80b0ff",
+      "intensity": 0.25,
+      "range": 320,
+      "falloffStart": 30,
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [75, 52, -60]
+            },
+            {
+              "frame": 31,
+              "value": [72, 55, -90],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "rotationY": 0
+      },
+      "innerCone": 30,
+      "outerCone": 60
+    },
+    {
+      "id": "lamp5",
+      "type": "light",
+      "lightType": "point",
+      "color": "#90ffb0",
+      "intensity": 0.25,
+      "range": 320,
+      "falloffStart": 30,
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [90, 60, -60]
+            },
+            {
+              "frame": 31,
+              "value": [60, 50, -90],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "rotationY": 2
+      }
+    },
+    {
+      "id": "lamp6",
+      "type": "light",
+      "lightType": "spot",
+      "color": "#ff8050",
+      "intensity": 0.25,
+      "range": 320,
+      "falloffStart": 30,
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [105, 68, -60]
+            },
+            {
+              "frame": 31,
+              "value": [48, 45, -90],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "rotationY": 4
+      },
+      "innerCone": 30,
+      "outerCone": 60
+    },
+    {
+      "id": "parent",
+      "type": "null",
+      "threeD": true,
+      "transform": {
+        "position": [64, 48, 10],
+        "rotationY": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": -20
+            },
+            {
+              "frame": 31,
+              "value": 20,
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "scale": [-1.1, 0.9, 1]
+      }
+    },
+    {
+      "id": "plane",
+      "type": "solid",
+      "size": [64, 52],
+      "color": "#808080",
+      "threeD": true,
+      "receivesLight": true,
+      "transform": {
+        "anchor": [32, 26, 0],
+        "position": [0, 0, 0],
+        "rotationX": 12
+      },
+      "parent": "parent"
+    }
+  ]
+}

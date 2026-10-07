@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8l-disabled",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "assets": [],
+  "layers": [
+    {
+      "id": "light",
+      "type": "light",
+      "lightType": "spot",
+      "color": "#ffb478",
+      "intensity": 0.8,
+      "range": 320,
+      "falloffStart": 30,
+      "transform": {
+        "position": [64, 48, -100]
+      },
+      "innerCone": 30,
+      "outerCone": 60,
+      "enabled": false
+    },
+    {
+      "id": "other",
+      "type": "light",
+      "lightType": "ambient",
+      "color": "#ffb478",
+      "intensity": 0.8,
+      "enabled": false
+    },
+    {
+      "id": "plane",
+      "type": "solid",
+      "size": [128, 96],
+      "color": "#808080",
+      "threeD": true,
+      "receivesLight": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [0, 0, 0]
+      }
+    }
+  ]
+}

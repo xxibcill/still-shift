@@ -1,5 +1,6 @@
 import { passageError } from "../../passage-diagnostics.ts";
 import type { RenderOp, SurfaceNode } from "./graph.ts";
+import { validateFlatLighting } from "./flat-lighting.ts";
 import {
   localSurfaceBounds,
   type ProjectivePlacement,
@@ -9,6 +10,7 @@ export function requireSpatialCapabilities(
   root: SurfaceNode,
   capabilities: {
     projective: boolean;
+    lighting?: boolean;
     validateSurface?:
       | ((width: number, height: number, node: string) => void)
       | undefined;
@@ -71,8 +73,18 @@ export function requireSpatialCapabilities(
             op.content.surface.height,
           );
       } else {
-        if (op.kind === "isolate") visit(op.ops, width, height);
-        else
+        if (op.kind === "isolate") {
+          if (op.lighting) {
+            validateFlatLighting(op.lighting, op.layer, width, height);
+            if (!capabilities.lighting)
+              passageError(
+                "comp-feature-backend",
+                "Flat-surface lighting requires the composition WebGL2 backend",
+                { node: op.layer },
+              );
+          }
+          visit(op.ops, width, height);
+        } else
           for (const history of op.history ?? [])
             visit(history.ops, width, height);
       }

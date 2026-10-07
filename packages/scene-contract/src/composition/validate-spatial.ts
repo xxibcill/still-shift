@@ -12,7 +12,8 @@ export function spatialLayer(layer: CompositionLayer, scope: CompositionScope) {
     current = scope.layers.find((candidate) => candidate.id === current!.parent)
   ) {
     seen.add(current.id);
-    if (current.threeD || current.type === "camera") return true;
+    if (current.threeD || current.type === "camera" || current.type === "light")
+      return true;
   }
   return false;
 }
@@ -23,6 +24,54 @@ export function checkSpatialLayer(
   fail: IssueReporter,
 ) {
   const spatial = spatialLayer(layer, scope);
+  if (
+    layer.receivesLight !== undefined &&
+    (!layer.threeD ||
+      !["image", "solid", "text", "shape", "precomp"].includes(layer.type))
+  )
+    fail(
+      "comp-light-receiver",
+      [...path, "receivesLight"],
+      "receivesLight requires explicitly 3D image, solid, text, shape or flat precomp artwork",
+    );
+  if (layer.type === "light") {
+    const unsupported =
+      layer.lightType === "ambient"
+        ? (["range", "falloffStart", "innerCone", "outerCone"] as const)
+        : layer.lightType === "point"
+          ? (["innerCone", "outerCone"] as const)
+          : [];
+    for (const name of unsupported)
+      if (layer[name] !== undefined)
+        fail(
+          "comp-light-settings",
+          [...path, name],
+          `${name} is not a property of an ${layer.lightType} light`,
+        );
+    if (
+      layer.lightType !== "ambient" &&
+      (layer.range === undefined || typeof layer.range === "number") &&
+      (layer.falloffStart === undefined ||
+        typeof layer.falloffStart === "number") &&
+      (layer.falloffStart ?? 0) >= (layer.range ?? 1000)
+    )
+      fail(
+        "comp-light-settings",
+        path,
+        "Light falloffStart must be less than range",
+      );
+    if (
+      layer.lightType === "spot" &&
+      (layer.innerCone === undefined || typeof layer.innerCone === "number") &&
+      (layer.outerCone === undefined || typeof layer.outerCone === "number") &&
+      (layer.innerCone ?? 30) > (layer.outerCone ?? 60)
+    )
+      fail(
+        "comp-light-settings",
+        path,
+        "Spot innerCone must not exceed outerCone",
+      );
+  }
   if (layer.type === "camera") {
     if (layer.zoom !== undefined && layer.focalLength !== undefined)
       fail(

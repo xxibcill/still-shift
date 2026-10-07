@@ -111,7 +111,9 @@ export function implicitAnchorDependencies(
   )
     return [];
   const axes =
-    layer.threeD || layer.type === "camera" ? ["x", "y", "z"] : ["x", "y"];
+    layer.threeD || layer.type === "camera" || layer.type === "light"
+      ? ["x", "y", "z"]
+      : ["x", "y"];
   return axes.flatMap((axis, i) =>
     !writtenAxes[i] && (!segments[1] || segments[1].name === axis)
       ? [[{ name: "transform" }, { name: "anchor" }, { name: axis }]]

@@ -52,7 +52,7 @@ export class Layer<K extends Kind = Kind> {
     this.draft = draft;
     this.location = location;
     this.draft.transform =
-      draft.type === "camera"
+      draft.type === "camera" || draft.type === "light"
         ? { ...draft.transform }
         : {
             anchor: [0, 0],
@@ -149,6 +149,11 @@ export class Layer<K extends Kind = Kind> {
   }
   get alpha(): Property<number> {
     return this.property("transform.opacity");
+  }
+  /** Flat-surface receiving is explicit and defaults to false. */
+  receiveLight(enabled = true): this {
+    this.draft.receivesLight = enabled;
+    return this;
   }
   get reveal(): Property<number> {
     return this.property("reveal");
@@ -293,7 +298,7 @@ export function camera(
 }
 export function light(
   id: string,
-  options: Options<"light"> = {},
+  options: Options<"light"> = { lightType: "ambient" },
 ): Layer<"light"> {
   return new Layer({ ...options, type: "light", id });
 }

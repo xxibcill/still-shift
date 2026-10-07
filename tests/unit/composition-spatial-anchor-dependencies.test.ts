@@ -3,11 +3,13 @@ import { validateComposition } from "@still-shift/scene-contract";
 import {
   evaluateComp,
   evaluateProperty,
+  evaluateStageProperty,
 } from "../../packages/renderer-core/src/composition/evaluate/index.ts";
 
 function document(
-  type: "null" | "camera",
+  type: "null" | "camera" | "light",
   expressions: Record<string, string>,
+  lightType: "ambient" | "point" | "spot" = "point",
 ) {
   return {
     schemaVersion: "composition-1",
@@ -19,7 +21,11 @@ function document(
     assets: [],
     layers: [
       { id: "reader", type: "null", threeD: true },
-      { id: "control", type, threeD: true },
+      {
+        id: "control",
+        type,
+        ...(type === "light" ? { lightType } : { threeD: true }),
+      },
     ],
     expressions: Object.fromEntries(
       Object.entries(expressions).map(([target, source]) => [
@@ -106,5 +112,103 @@ it.each([
     expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
       "comp-expression-cycle",
     );
+  },
+);
+
+it.each(["ambient", "point", "spot"] as const)(
+  "resolves implicit %s light z references independently of layer order and seek history",
+  (lightType) => {
+    for (const reversed of [false, true]) {
+      const doc = document(
+        "light",
+        {
+          "control.transform.anchor.z": "40 + frame",
+          "reader.transform.position.z": "ref('control.constraintReference.z')",
+        },
+        lightType,
+      );
+      if (reversed) doc.layers.reverse();
+      const result = validateComposition(doc);
+      expect(result.diagnostics).toEqual([]);
+      if (!result.ok) throw new Error("expected a valid light composition");
+      for (const frame of [0, 12, 4, 0]) {
+        const expected = 40 + frame;
+        expect(
+          evaluateProperty(
+            result.composition,
+            "reader.transform.position.z",
+            frame,
+          ),
+        ).toBe(expected);
+        expect(
+          evaluateStageProperty(
+            result.composition,
+            "control.constraintReference.z",
+            frame,
+          ).value,
+        ).toBe(expected);
+        const reader = evaluateComp(result.composition, frame).layers.find(
+          (layer) => layer.id === "reader",
+        )!;
+        expect(reader.transform.position[2]).toBe(expected);
+      }
+    }
+  },
+);
+
+it.each(["ambient", "point", "spot"] as const)(
+  "rejects cycles through implicit %s light z references",
+  (lightType) => {
+    for (const expressions of [
+      {
+        "control.transform.anchor.z":
+          "ref('control.constraintReference.z') + 1",
+      },
+      {
+        "control.transform.anchor.z": "ref('reader.transform.position.z')",
+        "reader.transform.position.z": "ref('control.constraintReference.z')",
+      },
+    ]) {
+      const result = validateComposition(
+        document("light", expressions, lightType),
+      );
+      expect(result.diagnostics.map((diagnostic) => diagnostic.code)).toContain(
+        "comp-expression-cycle",
+      );
+    }
+  },
+);
+
+it.each(["ambient", "point", "spot"] as const)(
+  "retains explicitly written %s light z references without a false anchor cycle",
+  (lightType) => {
+    const result = validateComposition(
+      document(
+        "light",
+        {
+          "control.constraintReference.z": "99",
+          "control.transform.anchor.z":
+            "ref('control.constraintReference.z') + 1",
+          "reader.transform.position.z": "ref('control.constraintReference.z')",
+        },
+        lightType,
+      ),
+    );
+    expect(result.diagnostics).toEqual([]);
+    if (!result.ok)
+      throw new Error("expected a valid explicit light reference");
+    expect(
+      evaluateProperty(result.composition, "reader.transform.position.z", 4),
+    ).toBe(99);
+    expect(
+      evaluateStageProperty(
+        result.composition,
+        "control.constraintReference.z",
+        4,
+      ).value,
+    ).toBe(99);
+    expect(
+      evaluateProperty(result.composition, "control.transform.anchor.z", 4),
+    ).toBe(100);
   },
 );

@@ -43,6 +43,32 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #44 review repairs verified (2026-10-08):** both P2 findings are posted
+  inline on reviewed `5b233c8` and repaired one per commit: `009ae7d` resolves
+  implicit XYZ light references with evaluator 50; the commit containing this entry
+  preserves receiving-toggle keyboard focus through accepted/rejected edits and
+  respects deliberately moved focus. Final fast checks pass 2,322 units; lighting,
+  inspector and WebGL exports pass; all 176 frozen items / 36,061 frames match
+  without regeneration. Independent Standards and Spec audits have no remaining
+  findings. One normal push follows the second commit; owner review/merge remain.
+  No new full `pnpm check` or performance gate is claimed. Owner checkout is
+  untouched and Actions remain disabled. [Repair evidence](./pr-44-fix-results.json).
+
+- **PR #44 conflict resolution and review (2026-10-08):** isolated managed
+  `pr44-review` integrates `main` at `e97dacbc` into lighting head `e1bd4bc`.
+  Merge `548b5c7` preserves all eight conflicts; `3640c69` repairs the light-key
+  editor for null root scopes. Fast checks pass 2,313 unit tests, 112 focused
+  regressions and 46 runtime tests; native lighting/camera, alpha, seeks,
+  independent/repeated exports, hardware and real inspector pass. All 176 frozen
+  items / 36,061 frames and all retained baseline bytes pass without regeneration.
+  The original review found one Standards usability P2 (receiving-toggle keyboard
+  focus) and one Spec P2 (implicit XYZ light Z reference dependencies).
+  Current repair progress is tracked above.
+  PR #44 remains open for owner review/merge. No new full repository
+  gate or performance acceptance is claimed. CE6-P stays deferred and Actions disabled.
+  [Resolution](./pr-44-conflict-resolution-results.json),
+  [review](./pr-44-review-results.json).
+
 - **PR #43 follow-up repairs verified (2026-10-08):** isolated
   `codex/pr43-followup-fixes` from reviewed `9b53db3`. All four findings have
   inline PR comments and separate repairs: XYZ smooth handles, settled camera
@@ -54,7 +80,7 @@ still hold before relying on them.
   and reverse seeks are exact; 36 hardware comparisons pass unchanged policy.
   The source fingerprint stays exact through the 98.5-minute gate. Cache identities
   are E48 / 1.40.5 / 0.55.4 / export 0.6.4. Delivery uses four finding-specific
-  commits and one final normal push; owner review/merge remain. CE6-P stays
+  commits and one final normal push; PR #43 is merged into `main` at `e97dacbc`. CE6-P stays
   owner-deferred and Actions disabled. [Evidence](./pr-43-followup-fix-results.json).
 
 - **PR #43 conflict integration verified (2026-10-07):** isolated PR head
@@ -66,7 +92,7 @@ still hold before relying on them.
   browsers and all 176 frozen items / 36,061 frames pass unchanged assertions.
   All 57 required commands, 516 fixture/visual files and 228 log headings remain.
   No new full `pnpm check` is claimed; parent gates remain historical.
-  Conflict resolution is complete; owner review/merge remain.
+  Conflict resolution is complete; PR #43 is merged into `main` at `e97dacbc`.
   CE6-P performance remains owner-deferred; GitHub Actions stay disabled.
   [Evidence](./pr-43-conflict-resolution-results.json).
 
@@ -117,8 +143,24 @@ still hold before relying on them.
   Camera acceptance includes 24 exact blur comparisons, 72 ancestor-coverage cases,
   three XY inspector flows, XYZ controls and 36 hardware comparisons.
   Baselines are unchanged; GitHub Actions are verified disabled. No implementation
-  blocker remains; PR #43 owner review/merge remain. Earlier CE8 gate evidence is historical.
+  blocker remains; PR #43 is merged into `main` at `e97dacbc`. Earlier CE8 gate evidence is historical.
   [Fix evidence](./pr-43-fix-results.json).
+- **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
+  `9d8f33a`; final code `d72ba2c`, verified checkpoint `3820c1c`. Bounded ambient,
+  point and spot lighting, scoped pure evaluation, linear GPU shading, cache/Canvas
+  preflight, builder and inspector controls are delivered. Complete pinned local
+  `pnpm check` passes 1,889 unit / 46 runtime / 139 integration / 14 depth tests,
+  all required browser groups, 176 frozen CE0 items / 36,061 frames and unchanged
+  Canvas family matrices. All 141 committed visual files remain exact; 46 lighting
+  files are new and all 95 preexisting files are unchanged. Native correctness,
+  alpha, seeks, repeat/independent exports, hardware and real inspector pass.
+  Serial 1080p costs are recorded. Earlier oracle/inspector failures and the first full-gate timing failure remain
+  in the evidence. Serial profiles passed; the complete gate was rerun from the
+  start under unchanged assertions. No source output or tolerance was changed.
+  [PR #44](https://github.com/xxibcill/still-shift/pull/44) is open and attached against `main`; conflict resolution and review repairs are tracked above.
+  CE4c starts next on its own branch. CE6-P/CE8-L-F
+  remain separate future work. No owner decision is pending.
+  [Evidence](./composition-ce8-lighting-results.json).
 
 - **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
   final code `16262ec`. Scoped cameras, XYZ transforms, projective planes,
@@ -784,9 +826,54 @@ still hold before relying on them.
   must not use TypeScript constructor parameter properties: Node's strip-only mode
   rejects them and five Lab integration suites fail.
 
-_Last updated 2026-10-08 by Codex for PR #43 review repairs._
+_Last updated 2026-10-08 by Codex for PR #44 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #44 receiving-toggle focus repair and final verification
+
+- **Agent / branch:** Codex on isolated `codex/pr44-conflict-review` after `009ae7d`.
+- **Done:** give Receive light a stable control identity and reuse guarded focus
+  restoration; keep this finding separate from the XYZ dependency commit.
+- **Results:** the original-code keyboard regression fails; repeated Space/Enter,
+  rejected edits and deliberately moved focus pass after repair. Final fast checks
+  pass 2,322 units; native lighting, inspector and WebGL exports pass. All 176 frozen
+  items / 36,061 frames and the final source fingerprint remain unchanged.
+- **Review / next:** independent Standards and Spec audits report no remaining
+  findings. Push both repair commits together after this commit; owner review/merge
+  remain. No full repository gate, performance rerun or Actions.
+- **Records:** [Repair evidence](./pr-44-fix-results.json),
+  [finding](https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916490).
+
+### 2026-10-08 — PR #44 implicit XYZ light dependency repair
+
+- **Agent / branch:** Codex on isolated `codex/pr44-conflict-review` from `5b233c8`.
+- **Done:** post both findings inline; include implicit lights in shared anchor
+  dependency discovery and advance evaluator cache identity to 50.
+- **Results:** six new unit failures and native pixel parity fail before repair;
+  75 focused tests, build/lint and six native cases pass afterward. All 240 preview
+  draws match explicit XYZ controls; 24 production/control/repeat/raw exports
+  cover 192 frames and are byte-identical within each case.
+- **Open / next:** commit this finding, repair keyboard focus in a separate commit,
+  finish scoped verification and push both together. No full gate rerun or Actions.
+- **Records:** [Repair evidence](./pr-44-fix-results.json),
+  [finding](https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916475).
+
+### 2026-10-08 — Resolve and review PR #44 against merged CE8
+
+- **Agent / branch:** Codex in isolated managed `pr44-review`, from `e1bd4bc`.
+- **Done:** merge `548b5c7` combines eight conflicts with `main` at `e97dacbc`;
+  `3640c69` preserves light-key editing under main's null root scopes.
+  Lighting, camera/XYZ, effect/exposure, soundtrack and both histories are retained.
+- **Results:** fast checks (2,313 unit), 112 focused regressions, 46 runtime and
+  all eleven example programs pass. Native lighting/camera/export/hardware and
+  real inspector pass; all 176 frozen items / 36,061 frames match unchanged references.
+- **Review / next:** one Standards usability P2 and one Spec P2 remain open:
+  receiving-toggle focus and implicit XYZ light Z reference dependencies.
+  Normal push delivers the conflict resolution; owner repair/merge remain.
+  No full `pnpm check` or performance gate rerun; owner checkout is untouched.
+- **Records:** [resolution](./pr-44-conflict-resolution-results.json),
+  [review](./pr-44-review-results.json).
 
 ### 2026-10-08 — PR #43 null-guide repair and final verification
 
@@ -1683,6 +1770,110 @@ _Last updated 2026-10-08 by Codex for PR #43 review repairs._
   final local verification and one push remain. GitHub Actions stay disabled.
 - **Records:** [Fix evidence](./pr-43-fix-results.json),
   [inline finding](https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759920).
+
+### 2026-10-06 — CE8-L complete local gate
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`, code `d72ba2c`,
+  verified checkpoint `3820c1c`.
+- **Done:** every lighting checklist and native/full local acceptance passes.
+  Schema/reference/authoring/inspector, cache/Canvas failure retention and independent
+  pixels/alpha/exports/hardware are delivered with new-only lighting baselines.
+- **Results:** full `pnpm check` terminal zero: 1,889 unit / 46 runtime / 139
+  integration / 14 depth, every required browser group, all 176 frozen items /
+  36,061 frames and unchanged Canvas family pixel/timing policy. All 141 visual
+  files remain exact. Serial costs and earlier failures, including the first full-gate timing failure,
+  are recorded. A complete rerun from the start passes unchanged assertions.
+- **Open / next:** create/attach the milestone PR, then CE4c on a new branch.
+  CE6-P and advanced lighting remain separate; no owner decision is pending.
+- **Records:** [Lighting evidence](./composition-ce8-lighting-results.json).
+
+### 2026-10-06 — CE8-L full-gate timing diagnosis
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`, checkpoint `3820c1c`.
+- **Results:** full gate passed unit/runtime/integration/depth, native lighting and
+  preceding browser groups, then stopped at passage-components instances: timing
+  1.312 exceeds 1.25. All 60 completed story cases pass pixel assertions.
+- **Diagnosis:** serial focused CE8/CE8-L profiles pass at 1.217/1.154, exact pixels;
+  paired readback totals vary. No lighting work enters this nonspatial scope.
+- **Rejected:** do not relax timing, regenerate baselines, skip suites or report the
+  failed full gate as passed. No production change is justified by these profiles.
+- **Open / next:** rerun the complete gate from the start; PR remains pending.
+- **Records:** [Failed attempt and profiles](./composition-ce8-lighting-results.json).
+
+### 2026-10-06 — CE8-L native acceptance and serial-cost checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`, final code `d72ba2c`.
+- **Done:** all native pixels/alpha/seeks, repeated/independent exports, hardware,
+  Canvas failure retention, legacy identity and actual inspector acceptance pass.
+  Commit only the new lighting baselines; all 95 existing visual files remain exact.
+- **Results:** 480 forward / 480 reverse / 135 seek frames; 416 transparent frames
+  with zero alpha delta; 45 production / 15 independent exports; hardware 43 exact
+  and two near. Serial 1080p medians for 1,4,8 lights / four receivers are
+  49.5/51.4/52.0 ms at one sample and 224.4/215.2/242.1 ms at four samples.
+- **Open / next:** complete local `pnpm check`, then create and attach the milestone
+  PR and continue CE4c on a new branch. No baseline/timing policy is relaxed.
+- **Records:** [Lighting evidence](./composition-ce8-lighting-results.json).
+
+### 2026-10-06 — CE8-L inspector acceptance correction
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`.
+- **Done:** observe edited key values through undo/redo instead of waiting for a
+  source-file revision during local draft edits; document the lighting workflow.
+- **Results:** all 1,889 unit tests / 192 files and TypeScript lint pass on `1d89a2f`.
+  Focused real inspector edit, undo, redo and save passes without page errors.
+- **Rejected:** the native group's inspector wait timed out after all 13 fixture,
+  legacy identity, Canvas failure and hardware checks completed. It waited for
+  revision3, but source revision changes only on saving. Production was unchanged.
+- **Open / next:** rerun the complete lighting group, record serial costs and then
+  run the complete local gate. No legacy baseline or tolerance is changed.
+- **Records:** [Lighting evidence](./composition-ce8-lighting-results.json).
+
+### 2026-10-06 — CE8-L alpha and oracle checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`.
+- **Done:** corrected the independent preview oracle's opaque output assumption;
+  added all-frame transparent-target alpha checks, implicit-unlit adapter identity,
+  and precomp-scope/camera-independence regressions.
+- **Results:** permitted integration rerun on `07165bc` passes 139 tests / 39 files;
+  15 focused lighting integration tests and build pass.
+- **Rejected:** first native ambient comparison failed (delta46); test oracle
+  expected transparent final pixels despite CE3's black flattening. Shader was
+  confirmed correct with pinned debug pixels. No baseline or tolerance changed.
+- **Open / next:** execute new RGBA/helper checks, complete native acceptance and
+  serial costs, then run the complete local gate before the milestone PR.
+- **Records:** [Lighting evidence](./composition-ce8-lighting-results.json).
+
+### 2026-10-06 — CE8-L authoring and native acceptance checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`.
+- **Done:** 13 pinned native scenes, independent lighting oracle, required runner,
+  builder receiving, inspector light key/source controls and generated reference.
+- **Results:** pinned ambient/point/spot smoke passes on `8e9b0e3`; build, 34 focused
+  tests and all 132 contract/reference tests pass. Integration requires a permitted
+  isolated rerun after sandbox listen/browser EPERM; no full pass is claimed.
+- **Next:** all-frame/export/hardware/inspector acceptance, serial costs, full gate.
+- **Records:** [CE8-L evidence](./composition-ce8-lighting-results.json).
+
+### 2026-10-06 — CE8-L GPU graph and backend checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`.
+- **Done:** receiver-relative WebGL shading before local effects/masks; light-aware
+  cache identity; all-graph and shutter preflight rejects required Canvas lighting.
+- **Results:** build and 55 focused tests pass. New fixture-draft contract errors
+  were repaired before acceptance; pinned GPU pixel/export checks remain pending.
+- **Next:** native fixtures, independent pixel references, authoring and inspector.
+- **Records:** [CE8-L evidence](./composition-ce8-lighting-results.json).
+
+### 2026-10-06 — CE8-L contract and pure model checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8-lighting`, from CE8 `9d8f33a`.
+- **Done:** bounded light controls and receiver validation, XYZ property paths,
+  scoped light state and two-sided linear diffuse reference model.
+- **Results:** build passes; 24 focused model/property/optical tests pass after
+  correcting a floating-point oracle assertion. Empty-light identity stays exact.
+- **Next:** WebGL shading before effects, cache identity and Canvas preflight;
+  native acceptance, full local verification and the milestone PR follow.
+- **Records:** [CE8-L evidence](./composition-ce8-lighting-results.json).
 
 ### 2026-10-06 — CE8 camera milestone complete
 

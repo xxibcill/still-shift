@@ -83,6 +83,13 @@ function container(state: EvaluatedLayer, segments: PropertyPathSegment[]) {
           key: vectorAxis[next.name as keyof typeof vectorAxis],
         }
       : { object: state.camera, key: head!.name };
+  if (
+    state.light &&
+    ["intensity", "range", "falloffStart", "innerCone", "outerCone"].includes(
+      head!.name,
+    )
+  )
+    return { object: state.light, key: head!.name };
   return { object: state, key: head!.name };
 }
 
