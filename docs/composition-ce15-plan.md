@@ -862,6 +862,29 @@ method wrappers/controller/common helper and remaining runtime/Node/production/
 aggregate/speed/full-gate admission remain pending.
 [Evidence](./composition-ce15-recording-metadata-results.json).
 
+## Accepted method call-input checkpoint — 2026-10-08
+
+Original pre-body rest arrays now use borrowed VM call arguments and an explicit
+owned dense array. Reserve 128 + 8*argument count + 2*method-name length before
+Array.from and String(property), retain the actual copy through original path/
+clone/mark/native consumption, then clear and release it in finally. Detached
+native target binding, zero function length, nonconstructibility and original
+native/query/deferred/partial failure order remain. Five regressions cover quota
+before Array.from, detached native calls, producer/native null failures, native
+query identity and allocator-first cleanup. Existing selected producer quotas add
+the live call arena. A documented local lint exception prevents rest parameters
+from restoring pre-admission allocation; global lint remains unchanged.
+
+Build/lint/boundaries and 215 focused tests pass. Complete audit 144/8,000, 96 RPC
+snapshots, 22 moving/blurred and ten stationary native frames, two real Canvas
+snapshots / 3,072 exact bytes / one protected failure, original WebGL, 69 typography
+tests, 12 providers / 60 frames and eight fixtures pass; glyph 1.413681× meets
+unchanged 1.5 maximum. All 64 exports retain 768 complete bodies/frames against
+pushed `3158c32`. Two lint failures are retained before passing compile3. Method
+wrappers, Proxy/handler/controller/common helpers and variable query results,
+remaining runtime/Node/production/aggregate admission, speed and full gate are
+pending. [Evidence](./composition-ce15-call-arguments-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -118,7 +118,7 @@ it("admits recording state before native marker setup and rolls back failed path
   });
 });
 it("admits original shallow argument-array copies before their iterator and native consumer", async () => {
-  const memory = new ManagedMemory({ pixels: 1, metadata: 1373 });
+  const memory = new ManagedMemory({ pixels: 1, metadata: 1531 });
   await withManagedMemory(memory, async () => {
     const { ctx, raw } = setup(),
       setLineDash = vi.fn();
@@ -137,7 +137,7 @@ it("admits original shallow argument-array copies before their iterator and nati
   });
 });
 it("admits original native matrix clone capacity before fromMatrix", async () => {
-  const memory = new ManagedMemory({ pixels: 1, metadata: 1511 });
+  const memory = new ManagedMemory({ pixels: 1, metadata: 1671 });
   await withManagedMemory(memory, async () => {
     const { ctx, setTransform } = setup(),
       source = new Matrix(),

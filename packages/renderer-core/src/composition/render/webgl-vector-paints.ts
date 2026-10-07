@@ -259,182 +259,206 @@ export function recordVectorPaints(
         if (property === "canvas" && options.deferPaints) invalidate();
         const value = Reflect.get(target, property, target);
         if (typeof value !== "function") return value;
-        return (...args: unknown[]) => {
-          let swapped: { values: unknown[] | undefined } | undefined;
-          try {
-            const name = String(property);
-            if (marker && name === "restore" && depth === 0) return;
-            if (!paints.has(name) && !queries.has(name) && !states.has(name))
-              invalidate();
-            if (name === "drawImage" && args[0] === target.canvas) invalidate();
-            path.record(target, name, args);
-            let recorded = args;
-            if (
-              name === "drawImage" &&
-              !(args[0] instanceof HTMLCanvasElement) &&
-              !(args[0] instanceof HTMLImageElement) &&
-              !(args[0] instanceof ImageBitmap)
-            )
-              invalidate();
-            if (
-              name === "drawImage" &&
-              args[0] instanceof HTMLCanvasElement &&
-              !options.stableImages &&
-              supported
-            ) {
-              const image = args[0];
-              const bytes = image.width * image.height * 4;
+        return {
+          invoke() {
+            // Rest parameters allocate before admission; borrow the VM call input instead.
+            // eslint-disable-next-line prefer-rest-params
+            const received = arguments;
+            const length =
+              typeof property === "string"
+                ? property.length
+                : (property.description?.length ?? 0) + 8;
+            const call = allocateRenderMetadata<{
+              args: unknown[] | undefined;
+            }>(
+              128 + 8 * received.length + 2 * length,
+              () => ({ args: Array.from(received) as unknown[] }),
+              false,
+              (entry) => {
+                if (entry.args) entry.args.length = 0;
+                entry.args = undefined;
+              },
+            );
+            const args = call.args!;
+            let swapped: { values: unknown[] | undefined } | undefined;
+            try {
+              const name = String(property);
+              if (marker && name === "restore" && depth === 0) return;
+              if (!paints.has(name) && !queries.has(name) && !states.has(name))
+                invalidate();
+              if (name === "drawImage" && args[0] === target.canvas)
+                invalidate();
+              path.record(target, name, args);
+              let recorded = args;
               if (
-                snapshotBytes + bytes > 32 * 1024 * 1024 ||
-                marks.length >= 64 ||
-                image === target.canvas
+                name === "drawImage" &&
+                !(args[0] instanceof HTMLCanvasElement) &&
+                !(args[0] instanceof HTMLImageElement) &&
+                !(args[0] instanceof ImageBitmap)
               )
                 invalidate();
-              else {
-                const before = state.bytes;
-                grow(8);
-                let snapshot: HTMLCanvasElement | undefined;
-                try {
-                  snapshot = createRenderCanvas();
-                  snapshot.width = image.width;
-                  snapshot.height = image.height;
-                  snapshot.getContext("2d")!.drawImage(image, 0, 0);
-                  snapshots.push(snapshot);
-                  retainRenderCanvas(snapshot);
-                } catch (error) {
-                  if (snapshot && snapshots.at(-1) === snapshot)
-                    snapshots.pop();
-                  try {
-                    if (snapshot)
-                      releaseSnapshot(snapshot, state.managedSnapshots);
-                    rollback(before);
-                  } catch {
-                    /* Preserve the original snapshot failure. */
-                  }
-                  throw error;
-                }
-                snapshotBytes += bytes;
-                const copied = snapshot;
-                swapped = allocateRenderMetadata<{
-                  values: unknown[] | undefined;
-                }>(
-                  96 + 16 * args.length,
-                  () => ({ values: [copied, ...args.slice(1)] }),
-                  false,
-                  (value) => {
-                    if (value.values) value.values.length = 0;
-                    value.values = undefined;
-                  },
-                );
-                recorded = swapped.values!;
-              }
-            }
-            if (commands.length >= 65536 || marks.length >= 64) invalidate();
-            if (!queries.has(name) && supported) {
-              if (paints.has(name)) {
+              if (
+                name === "drawImage" &&
+                args[0] instanceof HTMLCanvasElement &&
+                !options.stableImages &&
+                supported
+              ) {
+                const image = args[0];
+                const bytes = image.width * image.height * 4;
                 if (
-                  target.globalCompositeOperation !== "source-over" ||
-                  typeof target.fillStyle !== "string" ||
-                  typeof target.strokeStyle !== "string"
+                  snapshotBytes + bytes > 32 * 1024 * 1024 ||
+                  marks.length >= 64 ||
+                  image === target.canvas
                 )
                   invalidate();
-                const shadow =
-                  target.filter === "none" &&
-                  (target.shadowBlur !== 0 ||
-                    target.shadowOffsetX !== 0 ||
-                    target.shadowOffsetY !== 0);
-                const shadowRight = shadow
-                  ? paintBounds(
-                      target,
-                      name,
-                      args,
-                      undefined,
-                      path.bounds,
-                      keepBounds,
-                    )?.right
-                  : undefined;
-                const before = state.bytes;
-                grow(104);
-                let mark: Paint;
-                try {
-                  mark = {
-                    command: commands.length,
-                    primitive: name !== "drawImage" && target.filter === "none",
-                    bounds: paintBounds(
-                      target,
-                      name,
-                      args,
-                      fallback,
-                      path.bounds,
-                      keepBounds,
-                    )!,
-                    ...(shadowRight !== undefined &&
-                    Number.isFinite(shadowRight)
-                      ? { shadowRight }
-                      : {}),
-                  };
+                else {
+                  const before = state.bytes;
+                  grow(8);
+                  let snapshot: HTMLCanvasElement | undefined;
+                  try {
+                    snapshot = createRenderCanvas();
+                    snapshot.width = image.width;
+                    snapshot.height = image.height;
+                    snapshot.getContext("2d")!.drawImage(image, 0, 0);
+                    snapshots.push(snapshot);
+                    retainRenderCanvas(snapshot);
+                  } catch (error) {
+                    if (snapshot && snapshots.at(-1) === snapshot)
+                      snapshots.pop();
+                    try {
+                      if (snapshot)
+                        releaseSnapshot(snapshot, state.managedSnapshots);
+                      rollback(before);
+                    } catch {
+                      /* Preserve the original snapshot failure. */
+                    }
+                    throw error;
+                  }
+                  snapshotBytes += bytes;
+                  const copied = snapshot;
+                  swapped = allocateRenderMetadata<{
+                    values: unknown[] | undefined;
+                  }>(
+                    96 + 16 * args.length,
+                    () => ({ values: [copied, ...args.slice(1)] }),
+                    false,
+                    (value) => {
+                      if (value.values) value.values.length = 0;
+                      value.values = undefined;
+                    },
+                  );
+                  recorded = swapped.values!;
+                }
+              }
+              if (commands.length >= 65536 || marks.length >= 64) invalidate();
+              if (!queries.has(name) && supported) {
+                if (paints.has(name)) {
                   if (
-                    options.deferPaints &&
-                    supported &&
-                    marks.length &&
-                    (marks[0]!.primitive !== mark.primitive ||
-                      marks.some((prior) =>
-                        boundsOverlap(prior.bounds, mark.bounds),
-                      ))
+                    target.globalCompositeOperation !== "source-over" ||
+                    typeof target.fillStyle !== "string" ||
+                    typeof target.strokeStyle !== "string"
                   )
-                    deferred = true;
-                  marks.push(mark);
+                    invalidate();
+                  const shadow =
+                    target.filter === "none" &&
+                    (target.shadowBlur !== 0 ||
+                      target.shadowOffsetX !== 0 ||
+                      target.shadowOffsetY !== 0);
+                  const shadowRight = shadow
+                    ? paintBounds(
+                        target,
+                        name,
+                        args,
+                        undefined,
+                        path.bounds,
+                        keepBounds,
+                      )?.right
+                    : undefined;
+                  const before = state.bytes;
+                  grow(104);
+                  let mark: Paint;
+                  try {
+                    mark = {
+                      command: commands.length,
+                      primitive:
+                        name !== "drawImage" && target.filter === "none",
+                      bounds: paintBounds(
+                        target,
+                        name,
+                        args,
+                        fallback,
+                        path.bounds,
+                        keepBounds,
+                      )!,
+                      ...(shadowRight !== undefined &&
+                      Number.isFinite(shadowRight)
+                        ? { shadowRight }
+                        : {}),
+                    };
+                    if (
+                      options.deferPaints &&
+                      supported &&
+                      marks.length &&
+                      (marks[0]!.primitive !== mark.primitive ||
+                        marks.some((prior) =>
+                          boundsOverlap(prior.bounds, mark.bounds),
+                        ))
+                    )
+                      deferred = true;
+                    marks.push(mark);
+                  } catch (error) {
+                    try {
+                      rollback(before);
+                    } catch {
+                      /* Preserve the original mark failure. */
+                    }
+                    throw error;
+                  }
+                }
+                const before = state.bytes;
+                grow(commandCapacity(name, recorded));
+                try {
+                  commands.push({
+                    method: name,
+                    args: recorded.map((arg) =>
+                      arg instanceof Path2D
+                        ? new Path2D(arg)
+                        : arg instanceof DOMMatrixReadOnly
+                          ? DOMMatrix.fromMatrix(arg)
+                          : Array.isArray(arg)
+                            ? [...arg]
+                            : arg,
+                    ),
+                  });
                 } catch (error) {
                   try {
                     rollback(before);
                   } catch {
-                    /* Preserve the original mark failure. */
+                    /* Preserve the original command failure. */
                   }
                   throw error;
                 }
               }
-              const before = state.bytes;
-              grow(commandCapacity(name, recorded));
-              try {
-                commands.push({
-                  method: name,
-                  args: recorded.map((arg) =>
-                    arg instanceof Path2D
-                      ? new Path2D(arg)
-                      : arg instanceof DOMMatrixReadOnly
-                        ? DOMMatrix.fromMatrix(arg)
-                        : Array.isArray(arg)
-                          ? [...arg]
-                          : arg,
-                  ),
-                });
-              } catch (error) {
-                try {
-                  rollback(before);
-                } catch {
-                  /* Preserve the original command failure. */
-                }
-                throw error;
+              if (deferred && paints.has(name)) return;
+              if (supported && paints.has(name)) {
+                const index = commands.length - 1;
+                if (!painted.has(index)) grow(40);
+                painted.add(index);
               }
+              if (marker && name === "save") depth++;
+              if (marker && name === "restore") depth--;
+              const result = Reflect.apply(value, target, args);
+              if (name === "reset") {
+                depth = 0;
+                marker = false;
+              }
+              return result;
+            } finally {
+              if (swapped) releaseRenderMetadata(swapped);
+              releaseRenderMetadata(call);
             }
-            if (deferred && paints.has(name)) return;
-            if (supported && paints.has(name)) {
-              const index = commands.length - 1;
-              if (!painted.has(index)) grow(40);
-              painted.add(index);
-            }
-            if (marker && name === "save") depth++;
-            if (marker && name === "restore") depth--;
-            const result = Reflect.apply(value, target, args);
-            if (name === "reset") {
-              depth = 0;
-              marker = false;
-            }
-            return result;
-          } finally {
-            if (swapped) releaseRenderMetadata(swapped);
-          }
-        };
+          },
+        }.invoke;
       },
       set(target, property, value) {
         if (commands.length >= 65536) invalidate();

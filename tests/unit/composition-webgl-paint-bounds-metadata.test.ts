@@ -121,7 +121,7 @@ it("denies original text metrics and matrices before their native producers", as
       recording = recordVectorPaints(ctx, fallback);
     const blocker = memory.reserve(
       "metadata",
-      limits.metadata - 1152 - 104 - 2047,
+      limits.metadata - 1152 - 168 - 104 - 2047,
     );
     expect(() => recording.context.fillText("hello", 10, 10)).toThrow(
       "metadata",
@@ -137,7 +137,7 @@ it("denies original text metrics and matrices before their native producers", as
   });
 });
 it("admits retained result bounds before original point coordinate maps while rolling back failed entry capacity", async () => {
-  const memory = new ManagedMemory({ pixels: 1, metadata: 3407 });
+  const memory = new ManagedMemory({ pixels: 1, metadata: 3583 });
   await withManagedMemory(memory, async () => {
     const { ctx, matrix, getTransform, fillRect } = setup(),
       x = vi.fn(() => 1),
