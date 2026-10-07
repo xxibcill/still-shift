@@ -5030,8 +5030,8 @@ is retained; the serial passes do not replace a fresh complete local `pnpm check
   1.25× timing policy; all 141 prior visual reference files and the complete tracked
   snapshot remain exact. Three failed complete gates, the interrupted third attempt and repair diagnostics are retained.
 - **Policy / next:** Actions remain disabled; no tolerance, frozen baseline or native
-  media guard was weakened. Publish/attach the CE13 PR against CE4d PR #47, then start
-  CE15 followed by CE14 on new branches. CE5-X/Q9 and separate CE6-P remain pending.
+  media guard was weakened. [PR #48](https://github.com/xxibcill/still-shift/pull/48) is open and attached
+  against CE4d PR #47. Continue CE15 followed by CE14 on new branches. CE5-X/Q9 and separate CE6-P remain pending.
 - **Evidence:** [complete results](./composition-ce13-results.json),
   [native media contract](./composition-media.md).
 

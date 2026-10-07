@@ -1,6 +1,6 @@
 {
   "milestone": "CE13",
-  "status": "verified; PR delivery pending",
+  "status": "complete; PR #48 published and attached",
   "branch": "codex/composition-ce13",
   "base": "adf6cea",
   "started": "2026-10-07",
@@ -26703,7 +26703,7 @@
       }
     }
   ],
-  "pending": ["publish and attach CE13 PR", "continue CE15 then CE14"],
+  "pending": ["continue CE15 then CE14"],
   "policy": {
     "githubActions": false,
     "noSubagents": true,
@@ -26711,5 +26711,20 @@
     "ownerFiles": "preserve unrelated changes; scoped plan/log index patches"
   },
   "completed": "2026-10-07",
-  "verifiedCheckpoint": "01fbca203ceb012b31afd15ecfe6d68482bbe0ed"
+  "verifiedCheckpoint": "01fbca203ceb012b31afd15ecfe6d68482bbe0ed",
+  "pullRequest": {
+    "url": "https://github.com/xxibcill/still-shift/pull/48",
+    "number": 48,
+    "state": "OPEN",
+    "base": "codex/composition-ce4d",
+    "head": "codex/composition-ce13",
+    "headAtCreation": "f7080b23d9274477999bab37c49e13779cb70f88",
+    "attached": true,
+    "merged": false,
+    "actionsEnabled": false,
+    "approvalReview": {
+      "initialAttempt": "rejected: destination/publication authorization unverified",
+      "resolution": "Recovered app chat prompt, configured public repository, ADMIN permission and remote published checkpoint verified; the same creation action was accepted on retry."
+    }
+  }
 }

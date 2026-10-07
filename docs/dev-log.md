@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE13 complete; PR delivery pending (2026-10-07):** `codex/composition-ce13`
+- **CE13 complete; PR #48 delivered (2026-10-07):** `codex/composition-ce13`
   from CE4d `adf6cea`, verified `01fbca2`. Audited merged CE16 PR #33 is integrated.
   Native CFR video/sequences/audio, bounded SDR/PCM resources, waveforms/playback,
   matching exports and complete passage masters are delivered. Both backends pass
@@ -54,8 +54,9 @@ still hold before relying on them.
   176 actual defaults and 176 frozen items / 36,061 frames; all four Canvas matrices
   pass unchanged 1.25× policy. All 141 prior visual files and tracked snapshot bytes
   remain exact. Three failed gates, the interrupted third attempt and loader/readiness repairs are retained.
-  Canvas 1.45 / WebGL2 0.66 / evaluator 53 / mixer 2 / export 0.6.7 remain current. Publish/attach
-  CE13 PR, then CE15 → CE14 on new branches. No gate remains active. CE5-X/Q9 and
+  Canvas 1.45 / WebGL2 0.66 / evaluator 53 / mixer 2 / export 0.6.7 remain current.
+  [PR #48](https://github.com/xxibcill/still-shift/pull/48) is open and attached against CE4d PR #47.
+  Continue CE15 → CE14 on new branches. No gate remains active. CE5-X/Q9 and
   separate CE6-P remain pending. [Evidence](./composition-ce13-results.json).
 
 - **CE4d complete (2026-10-07):**
@@ -282,7 +283,8 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   playback observations with zero source-frame offset. Frozen bytes remain exact.
 - **Retained attempts:** three failed gates, the interrupted third attempt and
   loader/readiness diagnostics remain in results; no acceptance waiver.
-- **Next:** publish/attach CE13 PR, then CE15 → CE14. CE5-X/Q9 and CE6-P pending.
+- **Delivery / next:** [PR #48](https://github.com/xxibcill/still-shift/pull/48) is open and attached against CE4d;
+  continue CE15 → CE14. CE5-X/Q9 and CE6-P pending.
 - **Records:** [results](./composition-ce13-results.json),
   [plan](./composition-engine-plan.md#ce13-completion-record-2026-10-07).
 

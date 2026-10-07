@@ -36,11 +36,14 @@ history, failed attempts and diagnostics remain in the milestone plans/results.
 
 ## Mission
 
-CE13 is complete; publish and attach its PR against `codex/composition-ce4d` / PR #47.
-Then **continue CE15 → CE14** on a new branch per milestone. Commit and push frequent
+CE13 is complete in open/attached [PR #48](https://github.com/xxibcill/still-shift/pull/48) against
+`codex/composition-ce4d` / PR #47. **Continue CE15 → CE14** on a new branch per milestone. Commit and push frequent
 scoped checkpoints; create and attach each complete milestone PR. Do not merge PRs
 or end the approved mission after a checkpoint. CE16 PR #33 is already merged;
 its historical evidence is separate from the fresh integrated CE13 proof.
+The initial PR approval-review rejection was resolved after configured public-repository,
+ADMIN permission, published-checkpoint and recovered app prompt verification; the same
+creation action passed on retry. Actions remain disabled.
 CE5-X/Q9 remains pending. CE6-P/CE8-L-F/CE9-F1 are separate owner work.
 No owner decision blocks this sequence. No subagents or cross-chat messaging are authorized.
 
