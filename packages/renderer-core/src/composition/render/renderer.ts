@@ -16,6 +16,7 @@ import {
 import { sha256Hex } from "../../browser-checksum.ts";
 import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
 import { CompositionSourceCache } from "./source-cache.ts";
+import { prepareGraphSources } from "./source-preparation.ts";
 import { CompositionRootCache } from "./root-cache.ts";
 import {
   PassageError,
@@ -302,6 +303,7 @@ export function createCompositionPreview(
     preserveAlpha?: boolean;
     surfaceCache?: CompositionSurfaceCacheOptions;
     sourceCanvas?: CanvasPixelSource;
+    prepareSourcePixels?: (prepare: () => void) => Promise<void>;
     collectStatistics?: boolean;
   } = {},
 ): CompositionPreview {
@@ -527,6 +529,13 @@ export function createCompositionPreview(
                   } of compositionRequiredCoverageGraphs(composition, at, {
                     textBounds: text.bounds,
                   })) {
+                    await options.prepareSourcePixels?.(() =>
+                      prepareGraphSources(
+                        graph,
+                        text.preparePixels,
+                        drawProvider.preparePixels,
+                      ),
+                    );
                     await surfaceCache.prepare(graph);
                     if (rootCache) {
                       const target = backend.createSurface(
@@ -560,6 +569,13 @@ export function createCompositionPreview(
               frame,
               { textBounds: text.bounds },
             )) {
+              await options.prepareSourcePixels?.(() =>
+                prepareGraphSources(
+                  graph,
+                  text.preparePixels,
+                  drawProvider.preparePixels,
+                ),
+              );
               await surfaceCache.prepare(graph);
               await rootCache?.prepare(graph, target);
             }
@@ -628,7 +644,20 @@ export async function createCompositionPreviewAsync(
           canvas,
           composition,
           resources,
-          { ...options, sourceCanvas: sources.read },
+          {
+            ...options,
+            sourceCanvas: sources.read,
+            prepareSourcePixels: async (prepare) => {
+              for (;;) {
+                try {
+                  prepare();
+                  return;
+                } catch (error) {
+                  if (!(await sources.prepare(error))) throw error;
+                }
+              }
+            },
+          },
         );
         return {
           ...preview,

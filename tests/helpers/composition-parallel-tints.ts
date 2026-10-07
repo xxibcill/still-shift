@@ -2,25 +2,33 @@ import assert from "node:assert/strict";
 import { writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { renderComposition } from "@still-shift/animation-engine";
-import { compositionSourceFixture } from "./composition-source-fixture.ts";
+import {
+  compositionTintFixture,
+  COMPOSITION_TINT_VARIANTS,
+} from "./composition-tint-fixture.ts";
 import {
   parallelOutputProof,
   verifyParallelMetrics,
 } from "./composition-parallel-proof.ts";
 
 /** Actual export parity and global native preparation counts, including repeat runs. */
-export async function verifyParallelSources(directory: string) {
+export async function verifyParallelTints(directory: string) {
   const reports = [];
   for (const backend of ["canvas2d", "webgl2"] as const)
     for (const software of [false, true])
-      for (const animated of [false, true]) {
-        const name = `sources-${backend}-${software}-${animated}`;
-        const { composition, svg } = await compositionSourceFixture(
+      for (const variant of COMPOSITION_TINT_VARIANTS) {
+        const name = `tints-${backend}-${software}-${variant}`;
+        const { composition, svg } = await compositionTintFixture(
           software,
-          animated,
+          variant,
         );
         const font = composition.assets.find((asset) => asset.id === "body")!;
         font.path = resolve("assets/story-motion/fonts/plex-sans-semibold.ttf");
+        const thai = composition.assets.find((asset) => asset.id === "thai");
+        if (thai)
+          thai.path = resolve(
+            "assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+          );
         const art = composition.assets.find((asset) => asset.id === "art")!;
         art.path = name + ".svg";
         await writeFile(join(directory, art.path), svg);
@@ -47,7 +55,10 @@ export async function verifyParallelSources(directory: string) {
           if (expected) assert.deepEqual(proof, expected, `${name}/${run}`);
           else {
             expected = proof;
-            assert.equal(new Set(proof.decodedFrames).size, 8);
+            assert.equal(
+              new Set(proof.decodedFrames).size,
+              composition.frameCount,
+            );
           }
           if (workers) {
             verifyParallelMetrics(metrics, workers, true);
@@ -55,15 +66,26 @@ export async function verifyParallelSources(directory: string) {
             let painted = 0;
             for (const [kind, count] of [
               ["coverage-asset", 1],
-              ["glyph", 3],
-              ["glyph-stroke", animated ? 8 : 2],
+              [
+                "glyph",
+                variant === "axes"
+                  ? 27
+                  : variant === "correction" || variant === "state-mix"
+                    ? 4
+                    : 3,
+              ],
+              ["glyph-stroke", variant === "axes" ? 0 : 2],
             ] as const) {
               const sources = work.workersDetail
                 .flatMap(
                   (worker) => worker.result.sourceStatistics?.sources ?? [],
                 )
                 .filter((source) => source.kind === kind);
-              assert.equal(sources.length, workers, `${name}/${kind}`);
+              assert.equal(
+                sources.length,
+                count === 0 ? 0 : workers,
+                `${name}/${kind}`,
+              );
               assert.equal(
                 sources.reduce((sum, item) => sum + item.paints, 0),
                 count,
@@ -96,7 +118,16 @@ export async function verifyParallelSources(directory: string) {
               )
               .filter((source) => source.kind === "glyph-tint")
               .reduce((sum, source) => sum + source.paints, 0);
-            assert.ok(tintPaints > 0);
+            assert.equal(
+              tintPaints,
+              variant === "colors"
+                ? 44
+                : variant === "axes"
+                  ? 15
+                  : variant === "state-mix"
+                    ? 14
+                    : 10,
+            );
             assert.equal(
               work.surfaceStore!.publishedSurfaces,
               painted + tintPaints + independent,
@@ -104,8 +135,8 @@ export async function verifyParallelSources(directory: string) {
           } else assert.equal(metrics.work, undefined);
           exports.push({ run, workers, proof, metrics });
         }
-        reports.push({ backend, software, animated, exports });
-        console.log("Parallel source preparation:", name);
+        reports.push({ backend, software, variant, exports });
+        console.log("Parallel evaluated tints:", name);
       }
   return reports;
 }

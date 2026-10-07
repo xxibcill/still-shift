@@ -23,6 +23,7 @@ import { verifyParallelLifecycle } from "../helpers/composition-parallel-lifecyc
 import { verifyParallelNativeMedia } from "../helpers/composition-parallel-native.ts";
 import { verifyParallelPrefixes } from "../helpers/composition-parallel-prefixes.ts";
 import { verifyParallelRoots } from "../helpers/composition-parallel-roots.ts";
+import { verifyParallelTints } from "../helpers/composition-parallel-tints.ts";
 import { verifyParallelSources } from "../helpers/composition-parallel-sources.ts";
 
 const directory = await mkdtemp(join(tmpdir(), "ce15-parallel-"));
@@ -305,6 +306,7 @@ assert.deepEqual(
 reports.push({ cli: true, metrics: cli.metrics });
 const native = await verifyParallelNativeMedia(directory, composition);
 const sources = await verifyParallelSources(directory);
+const tints = await verifyParallelTints(directory);
 const roots = await verifyParallelRoots(directory);
 const prefixes = await verifyParallelPrefixes(directory);
 const failures = await verifyParallelLifecycle(directory, path);
@@ -314,6 +316,7 @@ const result = {
   formats: reports,
   native,
   sources,
+  tints,
   roots,
   prefixes,
   failures,
@@ -329,6 +332,7 @@ console.log(
     exports: reports.length,
     nativeCases: native.length,
     sourceCases: sources.length,
+    tintCases: tints.length,
     rootCases: roots.length,
     prefixCases: prefixes.length,
     failures: failures.length,

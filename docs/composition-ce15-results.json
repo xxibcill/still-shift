@@ -4,7 +4,7 @@
   "branch": "codex/composition-ce15",
   "base": "aedfc9e",
   "started": "2026-10-07",
-  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics, complete FFmpeg command CPU",
+  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics, complete FFmpeg command CPU, global runtime glyph tints and broader sources",
   "versions": {
     "canvas": "composition-canvas-1.46.0",
     "webgl": "composition-webgl2-0.67.0"
@@ -671,6 +671,28 @@
     "productionExports": 56,
     "decodedFrames": 448,
     "protectedLiveFailures": 24,
+    "fullGate": "pending",
+    "speedProof": "pending"
+  },
+  "runtimeTints": {
+    "status": "runtime tint, variable-axis, correction and state-crossfade global source parity passed; full CE15 acceptance pending",
+    "record": "docs/composition-ce15-tint-results.json",
+    "relevantFingerprint": "320c7b8aa686dfbe14377dc3942ffa833c21f2c3c283554c293aa12fb075fd4d",
+    "focusedTests": 100,
+    "typographyRegressionTests": 67,
+    "allBrowserCases": 120,
+    "allExactFrameComparisons": 6496,
+    "sourceCases": 24,
+    "sourceFrameComparisons": 1504,
+    "newSourceCases": 16,
+    "newSourceFrameComparisons": 1088,
+    "productionExports": 64,
+    "decodedFrames": 768,
+    "providerPlacementCases": 12,
+    "providerPlacementFrames": 60,
+    "originalTypographyFixtures": 8,
+    "glyphPerformanceRatio": 1.3948948940375565,
+    "glyphPerformanceLimit": 1.5,
     "fullGate": "pending",
     "speedProof": "pending"
   }

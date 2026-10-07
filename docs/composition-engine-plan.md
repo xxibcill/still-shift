@@ -5108,8 +5108,10 @@ phase/type totals and per-frame manifest values pass 57 tests, the pixel audit,
 32 prefix exports and ten coverage/nested/original/cached exports. Complete FFmpeg
 command CPU and actual process-group reaping pass 23 focused / 20 CLI tests,
 56 original-baseline exports / 448 frames and 24 live failures with actual process IDs.
-Runtime tints, broader axes/
-corrections, aggregate limits, two-minute speed proof
+Shared runtime tints, real variable axes/corrections and both state-crossfade inputs
+pass 100 focused / 67 typography tests, 120 audit cases / 6,496 exact comparisons
+and 64 public exports / 768 frames with actual once-global native painting.
+Aggregate limits, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),
 [format evidence](./composition-ce15-format-results.json).

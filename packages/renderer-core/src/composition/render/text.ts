@@ -19,6 +19,7 @@ import {
   isSingleImageTypography,
   hasStableTypographyImage,
   prepareTypography,
+  prepareTypographyColors,
   type PreparedTypography,
 } from "../../typography-renderer.ts";
 import { resolvedTextStyle, type TextNode } from "../../typography-style.ts";
@@ -54,6 +55,7 @@ export type CompositionText = {
   /** Local bounds per text state, for `EvaluationOptions.textBounds`. */
   bounds: Record<string, Bounds[]>;
   draw: CanvasTextDrawer;
+  preparePixels(content: TextContent): void;
   contentKey(content: TextContent): string | undefined;
   contentBounds(content: TextContent): Bounds | undefined;
   singleImage(content: TextContent): boolean;
@@ -475,6 +477,23 @@ export function prepareCompositionText(
   return {
     bounds,
     draw,
+    preparePixels(content) {
+      const entry = entries.get(content.key);
+      if (entry?.kind !== "typography") return;
+      const color = cssColor(content.color);
+      const node =
+        color === entry.node.color ? entry.node : { ...entry.node, color };
+      for (const state of new Set([
+        content.state,
+        ...(content.stateFrom === undefined ? [] : [content.stateFrom]),
+      ]))
+        prepareTypographyColors(
+          node,
+          { state, reveal: content.reveal },
+          entry.prepared,
+          content.time,
+        );
+    },
     singleImage(content) {
       const entry = entries.get(content.key);
       if (textProbe?.node === entry?.node.id) return false;

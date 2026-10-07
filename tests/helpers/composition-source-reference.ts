@@ -3,6 +3,10 @@ import {
   createCompositionPreviewAsync,
   loadCompositionResources,
 } from "../../packages/renderer-core/src/index.ts";
+import {
+  compositionTintFixture,
+  type CompositionTintVariant,
+} from "./composition-tint-fixture.ts";
 import { compositionSourceFixture } from "./composition-source-fixture.ts";
 import { compositionSurfaceExchange } from "../../packages/execution-runtime/src/composition-surface-client.ts";
 import { sha256Hex } from "../../packages/renderer-core/src/browser-checksum.ts";
@@ -11,19 +15,19 @@ export async function checkSharedCompositionSources(options: {
   backend: "canvas2d" | "webgl2";
   software: boolean;
   animated: boolean;
+  variant?: CompositionTintVariant;
   worker: number;
   credential: string;
   scopeKey: string;
   baseUrl: string;
 }) {
-  const { composition, svg } = await compositionSourceFixture(
-    options.software,
-    options.animated,
-  );
+  const { composition, svg } = options.variant
+    ? await compositionTintFixture(options.software, options.variant)
+    : await compositionSourceFixture(options.software, options.animated);
   const resources = await loadCompositionResources(composition, (id) =>
     id === "art"
       ? "data:image/svg+xml," + encodeURIComponent(svg)
-      : "/assets/story-motion/fonts/plex-sans-semibold.ttf",
+      : composition.assets.find((asset) => asset.id === id)!.path,
   );
   const baseline = createCompositionPreview(
     document.createElement("canvas"),
@@ -33,7 +37,7 @@ export async function checkSharedCompositionSources(options: {
   );
   const expected = new Map<number, Uint8ClampedArray>();
   try {
-    for (let frame = 0; frame < 8; frame++) {
+    for (let frame = 0; frame < composition.frameCount; frame++) {
       baseline.renderFrame(frame);
       expected.set(frame, baseline.readPixels().slice());
     }
@@ -63,6 +67,14 @@ export async function checkSharedCompositionSources(options: {
     paints.drawImage++;
     return originalImage.apply(this, args);
   } as typeof originalImage;
+  const originalRect = CanvasRenderingContext2D.prototype.fillRect;
+  let nativeTintPaints = 0;
+  CanvasRenderingContext2D.prototype.fillRect = function (
+    ...args: Parameters<typeof originalRect>
+  ) {
+    if (this.globalCompositeOperation === "source-in") nativeTintPaints++;
+    return originalRect.apply(this, args);
+  };
   let preview;
   try {
     preview = await createCompositionPreviewAsync(
@@ -79,13 +91,23 @@ export async function checkSharedCompositionSources(options: {
         },
       },
     );
+  } catch (error) {
+    CanvasRenderingContext2D.prototype.fillRect = originalRect;
+    throw error;
   } finally {
     CanvasRenderingContext2D.prototype.fillText = originalFill;
     CanvasRenderingContext2D.prototype.strokeText = originalStroke;
     CanvasRenderingContext2D.prototype.drawImage = originalImage;
   }
   try {
-    const frames = [0, 1, 2, 3, 4, 5, 6, 7, 7, 4, 1, 6, 0];
+    const frames = [
+      ...Array.from({ length: composition.frameCount }, (_, frame) => frame),
+      composition.frameCount - 1,
+      Math.floor(composition.frameCount / 2),
+      1,
+      composition.frameCount - 2,
+      0,
+    ];
     for (const frame of frames) {
       await preview.prepareFrame(frame);
       preview.renderFrame(frame);
@@ -101,11 +123,13 @@ export async function checkSharedCompositionSources(options: {
       worker: options.worker,
       frameChecks: frames.length,
       preparationPaintCalls: paints,
+      nativeTintPaints,
       sourceStatistics: preview.sourceCacheStatistics!(),
       surfaceStatistics: preview.surfaceCacheStatistics!(),
       rootStatistics: preview.rootCacheStatistics!(),
     };
   } finally {
+    CanvasRenderingContext2D.prototype.fillRect = originalRect;
     preview.dispose();
   }
 }

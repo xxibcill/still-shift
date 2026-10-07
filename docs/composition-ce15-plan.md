@@ -259,6 +259,33 @@ runner/sandbox errors are retained. Complete CE15 acceptance, memory admission,
 remaining preparation coverage and actual two-minute speed proof are pending.
 [Detailed evidence](./composition-ce15-cpu-results.json).
 
+## Accepted runtime tint and broader source checkpoint — 2026-10-07
+
+Evaluated text and provider colours now request the original source-in glyph/tint
+kernel before any parent surface/root/prefix lease. Exact native source identity
+includes layout/fonts/axes, colour and outline key. Native/provider crossfade states
+prepare both inputs. Nested surfaces, masks, effect inputs and echo histories are
+visited before drawing; constructor and runtime source failures retain their
+original reasons. Local sixteen-colour eviction cannot cause native repainting of
+an already published source.
+
+The complete 120-case audit passes 6,496 exact comparisons. Sixteen new cases add
+1,088 frames across both backends/raster policies: more than sixteen animated
+colours, real Thai width/weight variants, correction glyphs and state crossfades.
+Actual native counts equal once-global source ownership: 44 colour tints, 27 axis
+glyphs/15 tints, four correction glyphs/ten tints, and four state-mix glyphs/14 tints.
+Sixty-four public original/one/four/repeated exports preserve complete PNG bodies
+and all 768 decoded frames. All 100 focused tests, 67 typography units, twelve
+provider placements and eight original typography fixtures pass; glyph timing is
+1.394895× under the unchanged 1.5× policy. The new recursive fixture and original
+null errors are protected. Draft fixture/catalog mistakes and repairs are retained.
+
+Aggregate allocation/metadata admission, maximum-area/worker verification, actual
+120-second 3× speed proof and the immutable complete CE15 gate remain pending.
+The permanent parallel command now includes 303 successful exports / 2,680 decoded
+frames plus 24 live failures; its expanded whole run is reserved for final acceptance.
+[Detailed evidence](./composition-ce15-tint-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

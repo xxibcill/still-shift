@@ -47,6 +47,8 @@ export type TextRaster = {
   strokes: Map<string, HTMLCanvasElement>;
   fonts: Map<string, LoadedFont>;
   variants: Map<string, TextRaster>;
+  sourceCanvas?: CanvasPixelSource;
+  sourceInput?: unknown;
   softwareRaster?: boolean;
   /** Opaque glyph coverage; authored fill colour and alpha apply only when drawing. */
   colorCoverage?: boolean;
@@ -196,17 +198,14 @@ export function rasterizeText(
       );
     return canvas;
   };
+  const sourceInput = sourceCanvas
+    ? [node, layout, rasterFonts(fonts), colorCoverage, softwareRaster]
+    : undefined;
   const canvas = sourceCanvas
     ? sourceCanvas(
         {
           kind: "glyph",
-          input: [
-            node,
-            layout,
-            rasterFonts(fonts),
-            colorCoverage,
-            softwareRaster,
-          ],
+          input: sourceInput,
           width,
           height,
         },
@@ -223,6 +222,7 @@ export function rasterizeText(
     strokes: new Map(),
     fonts,
     variants: new Map(),
+    ...(sourceCanvas ? { sourceCanvas, sourceInput } : {}),
     ...(softwareRaster ? { softwareRaster: true } : {}),
     ...(colorCoverage ? { colorCoverage: true } : {}),
   };
@@ -511,16 +511,53 @@ function coloredRaster(
 ) {
   let canvas = raster.colors.get(key);
   if (!canvas) {
-    canvas = surface(
-      raster.canvas.width,
-      raster.canvas.height,
-      raster.softwareRaster,
-    );
-    const ctx = canvas.getContext("2d")!;
-    ctx.drawImage(source, 0, 0);
-    ctx.globalCompositeOperation = "source-in";
-    ctx.fillStyle = color;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const paint = () => {
+      const canvas = surface(
+        raster.canvas.width,
+        raster.canvas.height,
+        raster.softwareRaster,
+      );
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(source, 0, 0);
+      ctx.globalCompositeOperation = "source-in";
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      return canvas;
+    };
+    canvas = raster.sourceCanvas
+      ? raster.sourceCanvas(
+          {
+            kind: "glyph-tint",
+            input: [raster.sourceInput, color, key],
+            width: raster.canvas.width,
+            height: raster.canvas.height,
+          },
+          paint,
+          (pixels) => {
+            const canvas = surface(
+              raster.canvas.width,
+              raster.canvas.height,
+              raster.softwareRaster,
+            );
+            canvas
+              .getContext("2d")!
+              .putImageData(
+                new ImageData(
+                  new Uint8ClampedArray(
+                    pixels.buffer,
+                    pixels.byteOffset,
+                    pixels.byteLength,
+                  ),
+                  canvas.width,
+                  canvas.height,
+                ),
+                0,
+                0,
+              );
+            return canvas;
+          },
+        )
+      : paint();
     if (raster.colors.size >= 16)
       raster.colors.delete(raster.colors.keys().next().value!);
     raster.colors.set(key, canvas);
@@ -977,6 +1014,55 @@ function drawTypographyContent(
   blend.globalCompositeOperation = "source-over";
   ctx.drawImage(prepared.transitionLayer, left, top);
 }
+/** Request the exact evaluated glyph colours before any parent surface lease is held. */
+export function prepareTypographyColors(
+  node: TextNode,
+  state: { state: number; reveal: number },
+  prepared: PreparedTypography,
+  frame: number,
+) {
+  const prepare = (
+    node: TextNode,
+    raster: TextRaster,
+    animators: TextAnimator[],
+  ) => {
+    const poses = evaluateTextPoses(
+      node,
+      raster.layout,
+      animators,
+      Math.round(frame),
+      prepared.scene,
+    );
+    for (const [index, pose] of poses.entries()) {
+      if (pose.opacity <= 0) continue;
+      const target = axisRaster(raster, pose.axes);
+      const cluster = target.layout.clusters[index]!;
+      const width = quantizeStrokeWidth(pose.strokeWidth);
+      if (width > 0) strokedRaster(target, width, pose.stroke);
+      if (
+        pose.fill !==
+        (target.colorCoverage
+          ? "#ffffff"
+          : (node.spans?.[cluster.spanIndex]?.color ?? node.color))
+      )
+        coloredRaster(target, pose.fill);
+    }
+  };
+  const displayed = resolveDisplayedText(node, frame, state.state);
+  const texts =
+    displayed.kind === "single"
+      ? [displayed.text]
+      : [displayed.fromText, displayed.toText];
+  for (const text of new Set(texts)) {
+    const raster = prepared.nodes.get(node.id)?.get(text);
+    if (!raster) throw Error(`text-layout-not-prepared: ${node.id}: ${text}`);
+    prepare(node, raster, prepared.scene.textAnimators ?? []);
+  }
+  for (const correction of prepared.corrections.get(node.id) ?? [])
+    if (frame > correction.start)
+      prepare(correction.node, correction.raster, []);
+}
+
 export function resolveTypographyNodes<T extends TextEventScene>(scene: T): T {
   if (!scene.typography) return scene;
   return {

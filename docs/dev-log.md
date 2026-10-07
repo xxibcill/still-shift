@@ -70,7 +70,10 @@ still hold before relying on them.
   retains its original membership. Complete FFmpeg command CPU and actual timer/
   encoder group reaping now pass 23 focused / 20 CLI tests, 56 baseline-parity
   exports / 448 frames and 24 protected live failures with observed process IDs.
-  Runtime tints, broader axes/corrections, aggregate memory, the actual
+  Shared runtime tints, real variable axes/corrections and both crossfade inputs
+  now pass 100 focused / 67 typography tests, 120 audit cases / 6,496 exact frames
+  and 64 public exports / 768 decoded frames with actual once-global native counts.
+  Aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -304,6 +307,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 runtime glyph tint and broader preparation checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `101fb91`.
+- **Done:** exact shared native tints before parent leases; real variable Thai
+  glyphs, corrections and both native/provider state-crossfade inputs.
+- **Results:** build/lint/boundaries, 100 focused / 67 typography tests;
+  120 audit cases / 6,496 exact frames and 64 public exports / 768 decoded frames
+  preserve complete bodies and actual once-global glyph/outline/tint painting.
+  Original provider/typography gates pass; glyph ratio 1.394895× ≤ unchanged 1.5×.
+- **Rejected:** partial authored motion and missing crossfade catalog entry did not
+  satisfy new fixture checks. Extend real motion/register cases; strict reruns pass.
+- **Next:** complete aggregate pixel/metadata limits, area/worker matrix, real
+  two-minute speed, final CE15 gates/PR and all CE14. Full gate not run.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [tint/source evidence](./composition-ce15-tint-results.json).
 
 ### 2026-10-07 — CE15 complete FFmpeg command CPU checkpoint
 

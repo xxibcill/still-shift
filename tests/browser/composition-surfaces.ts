@@ -15,6 +15,7 @@ import type * as Checks from "../helpers/composition-surface-reference.ts";
 
 import type * as PrefixChecks from "../helpers/composition-prefix-reference.ts";
 import type * as RootChecks from "../helpers/composition-root-reference.ts";
+import { COMPOSITION_TINT_VARIANTS } from "../helpers/composition-tint-fixture.ts";
 import type * as SourceChecks from "../helpers/composition-source-reference.ts";
 
 type SurfaceOutcome = Awaited<
@@ -214,8 +215,16 @@ try {
   const sources = [];
   for (const backend of ["canvas2d", "webgl2"] as const)
     for (const software of [false, true])
-      for (const animated of [false, true]) {
-        const id = `sources-${backend}-${software}-${animated}`,
+      for (const sourceCase of [
+        { animated: false, variant: undefined },
+        { animated: true, variant: undefined },
+        ...COMPOSITION_TINT_VARIANTS.map((variant) => ({
+          animated: false,
+          variant,
+        })),
+      ]) {
+        const { animated, variant } = sourceCase;
+        const id = `sources-${backend}-${software}-${variant ?? animated}`,
           credentials = workers.map(() => randomUUID());
         const store = await CompositionSurfaceStore.create(scratch, {
           workers: 4,
@@ -249,6 +258,7 @@ try {
                   backend,
                   software,
                   animated,
+                  ...(variant ? { variant } : {}),
                   worker,
                   credential: credentials[worker]!,
                   scopeKey,
@@ -269,30 +279,85 @@ try {
             );
           assert.equal(totals("coverage-asset", "paints"), 1);
           assert.equal(totals("coverage-asset", "restores"), 3);
-          assert.equal(totals("glyph", "paints"), 3);
-          assert.equal(totals("glyph", "restores"), 9);
-          assert.equal(totals("glyph-stroke", "paints"), animated ? 8 : 2);
-          assert.equal(totals("glyph-stroke", "restores"), animated ? 24 : 6);
-          assert.equal(
-            outcomes.reduce(
-              (sum, result) => sum + result.preparationPaintCalls.drawImage,
-              0,
-            ),
-            1,
+          if (!variant) {
+            assert.equal(totals("glyph", "paints"), 3);
+            assert.equal(totals("glyph", "restores"), 9);
+            assert.equal(totals("glyph-stroke", "paints"), animated ? 8 : 2);
+            assert.equal(totals("glyph-stroke", "restores"), animated ? 24 : 6);
+            assert.equal(
+              outcomes.reduce(
+                (sum, result) => sum + result.preparationPaintCalls.drawImage,
+                0,
+              ),
+              1,
+            );
+            assert.equal(
+              outcomes.reduce(
+                (sum, result) => sum + result.preparationPaintCalls.fillText,
+                0,
+              ),
+              3,
+            );
+            assert.equal(
+              outcomes.reduce(
+                (sum, result) => sum + result.preparationPaintCalls.strokeText,
+                0,
+              ),
+              animated ? 8 : 2,
+            );
+          }
+          if (variant) {
+            const glyphs =
+              variant === "axes"
+                ? 27
+                : variant === "correction" || variant === "state-mix"
+                  ? 4
+                  : 3;
+            const tints =
+              variant === "colors"
+                ? 44
+                : variant === "axes"
+                  ? 15
+                  : variant === "state-mix"
+                    ? 14
+                    : 10;
+            assert.equal(totals("glyph", "paints"), glyphs);
+            assert.equal(totals("glyph", "restores"), glyphs * 3);
+            assert.equal(totals("glyph-tint", "paints"), tints);
+            assert.equal(totals("glyph-tint", "restores"), tints * 3);
+            assert.equal(
+              outcomes.reduce(
+                (sum, result) => sum + result.preparationPaintCalls.fillText,
+                0,
+              ),
+              glyphs,
+            );
+            assert.equal(
+              outcomes.reduce(
+                (sum, result) => sum + result.preparationPaintCalls.strokeText,
+                0,
+              ),
+              variant === "axes" ? 0 : 2,
+            );
+          }
+          const tintPaints = outcomes.reduce(
+            (sum, result) => sum + result.nativeTintPaints,
+            0,
           );
+          assert.ok(tintPaints > 0, id + ": actual native tint painting");
           assert.equal(
-            outcomes.reduce(
-              (sum, result) => sum + result.preparationPaintCalls.fillText,
-              0,
-            ),
-            3,
+            tintPaints,
+            totals("glyph-tint", "paints"),
+            id + ": once-global native tint paint count",
           );
-          assert.equal(
-            outcomes.reduce(
-              (sum, result) => sum + result.preparationPaintCalls.strokeText,
-              0,
-            ),
-            animated ? 8 : 2,
+          const sourcePaints = outcomes.reduce(
+            (sum, result) =>
+              sum +
+              result.sourceStatistics.sources.reduce(
+                (n, source) => n + source.paints,
+                0,
+              ),
+            0,
           );
           const independentPaints = outcomes.reduce(
             (sum, result) =>
@@ -301,7 +366,7 @@ try {
           );
           assert.equal(
             store.statistics.publishedSurfaces,
-            (animated ? 12 : 6) +
+            sourcePaints +
               independentPaints +
               outcomes.reduce(
                 (sum, result) =>
@@ -316,6 +381,8 @@ try {
           sources.push({
             backend,
             software,
+            animated,
+            variant,
             statistics: store.statistics,
             outcomes,
           });
