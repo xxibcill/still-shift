@@ -78,8 +78,14 @@ AAC mux now pass 91 runtime/media checks, all 2,094 units and static checks. Fou
 matching-audio sequence/video × Canvas/WebGL cases preserve 12,000 stereo master samples;
 12 production MP4s repeat/independent/raw-PNG match, with exact48k track clocks and
 independent AAC sample equality. Post-mux failure/cancellation leaves no artifacts.
-Audio playback/waveform presentation, whole-passage mixing and final acceptance remain pending;
-no final CE13 gate has run.
+Verified bounded playback and source/processed/mix waveform presentation now pass all
+2,101 units / 209 files, 46 runtime, 53 media/authoring regressions, static checks and
+complete native-media/preview-session browser suites. Actual stereo buffer/offline
+samples are exact through the last sample; A/V remains within one frame through two
+seconds and the final audio interval completes. Gain/pan edits/history/save/reload,
+byte-identical draft exports, source-change cancellation/restoration and stale audio
+ownership pass. Whole-passage native PCM/path routing and final acceptance remain
+pending; no final CE13 gate has run.
 CE15 and CE14 remain in flight.
 Private notes contain exact source
 seams and primary references: `/private/tmp/ce13-authority-map-2026-10-07.md`,

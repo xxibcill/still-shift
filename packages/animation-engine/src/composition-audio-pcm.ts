@@ -190,7 +190,7 @@ export async function compositionSourceWaveform(
 
 export async function writeCompositionPcmBytes(
   file: FileHandle,
-  bytes: Buffer,
+  bytes: Uint8Array,
 ) {
   let offset = 0;
   while (offset < bytes.length) {

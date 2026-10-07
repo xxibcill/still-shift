@@ -1,11 +1,11 @@
 import {
   resolveSoundtrackAnchors,
-  frameToSoundtrackSample,
   validateSoundtrackNarration,
 } from "../../../packages/renderer-core/src/soundtrack-edits.ts";
 import type { SoundtrackProject } from "../../../packages/scene-contract/src/soundtrack-project.ts";
 import type { CompiledStoryPassage } from "../../../packages/renderer-core/src/story-passage.ts";
 import { schedulePassageAudio } from "../../../packages/renderer-core/src/passage-audio-playback.ts";
+import { scheduleRenderedAudio } from "../../../packages/renderer-core/src/rendered-audio-playback.ts";
 import { sha256Hex } from "../../../packages/renderer-core/src/browser-checksum.ts";
 
 export class PassageAudioPlayer {
@@ -161,26 +161,12 @@ export class PassageAudioPlayer {
           ? { sha256: passage.plan.narration.sha256 }
           : {}),
       });
-      const source = context.createBufferSource();
-      source.buffer = this.soundtrack.buffer;
-      source.connect(context.destination);
-      const startSample = frameToSoundtrackSample(frame, this.fps);
-      const endSample = frameToSoundtrackSample(passage.frameCount, this.fps);
-      source.start(
-        this.started,
-        startSample / 48000,
-        (endSample - startSample) / 48000,
-      );
-      this.playback = {
-        stop: () => {
-          try {
-            source.stop();
-          } catch {
-            /* Already stopped. */
-          }
-          source.disconnect();
-        },
-      };
+      this.playback = scheduleRenderedAudio(context, this.soundtrack.buffer, {
+        frame,
+        frameCount: passage.frameCount,
+        fps: this.fps,
+        when: this.started,
+      });
       return true;
     }
     this.playback = schedulePassageAudio(

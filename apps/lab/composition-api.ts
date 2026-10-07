@@ -14,6 +14,7 @@ import { validateComposition } from "../../packages/scene-contract/src/index.ts"
 import {
   readCompositionSource,
   prepareCompositionMedia,
+  prepareCompositionAudio,
 } from "../../packages/animation-engine/src/index.ts";
 import {
   captureCompositionAssets,
@@ -172,12 +173,16 @@ export const compositionApi = (): Plugin => {
             const capture = captures.get(url.searchParams.get("capture") ?? "");
             const id = url.searchParams.get("id") ?? "";
             const path =
-              capture?.scene === scene && id.startsWith("__media:")
+              capture?.scene === scene &&
+              (id.startsWith("__media:") || id === "__audio:mix")
                 ? capture.paths[id]
                 : undefined;
             if (!path)
-              return send(response, 404, "Unknown captured native frame");
-            response.setHeader("Content-Type", "image/png");
+              return send(response, 404, "Unknown captured native resource");
+            response.setHeader(
+              "Content-Type",
+              id === "__audio:mix" ? "audio/wav" : "image/png",
+            );
             response.setHeader("Cache-Control", "no-store");
             await pipeline(createReadStream(path), response);
             return;
@@ -208,16 +213,23 @@ export const compositionApi = (): Plugin => {
                 JSON.parse(text),
               );
               const assets = await captureCompositionAssets(loaded);
+              const nativeDocument = capturedMediaComposition(document, assets);
               const prepared = await prepareCompositionMedia(
-                capturedMediaComposition(document, assets),
+                nativeDocument,
                 dirname(scene),
                 { signal: controller.signal },
               );
+              const audio = await prepareCompositionAudio(
+                nativeDocument,
+                dirname(scene),
+                { signal: controller.signal },
+              );
+              const paths = { ...prepared?.assetPaths, ...audio?.assetPaths };
               controller.signal.throwIfAborted();
               const capture = randomUUID();
               captures.set(capture, {
                 scene,
-                paths: prepared?.assetPaths ?? {},
+                paths,
               });
               while (captures.size > 4)
                 captures.delete(captures.keys().next().value!);
@@ -226,8 +238,9 @@ export const compositionApi = (): Plugin => {
                 200,
                 JSON.stringify({
                   preparedMedia: prepared?.preparedMedia,
+                  preparedAudio: audio?.preparedAudio,
                   assets: Object.fromEntries(
-                    Object.keys(prepared?.assetPaths ?? {}).map((id) => [
+                    Object.keys(paths).map((id) => [
                       id,
                       `/composition/native-asset?scene=${encodeURIComponent(url.searchParams.get("scene")!)}&capture=${capture}&id=${encodeURIComponent(id)}`,
                     ]),

@@ -31,6 +31,7 @@ try {
     const picture = document.createElement("div");
     host.append(picture);
     const disposed: string[] = [],
+      audioDisposed: string[] = [],
       callbacks: string[] = [],
       errors: string[] = [];
     let ready = "";
@@ -62,6 +63,8 @@ try {
       if (!value) throw new Error(message);
     };
     const pixels = () => picture.querySelector("canvas")!.toDataURL();
+    let audioFrame = 0;
+    let resumeAudio: Promise<boolean> | undefined;
     const load = (
       name: string,
       frames: number,
@@ -70,6 +73,19 @@ try {
       prepareFrame?: (frame: number) => Promise<void>,
     ) =>
       session.load(async (resources) => {
+        if (name.startsWith("audio-"))
+          resources.audio({
+            get frame() {
+              return audioFrame;
+            },
+            play() {
+              return resumeAudio ?? Promise.resolve(true);
+            },
+            stop() {},
+            dispose() {
+              audioDisposed.push(name);
+            },
+          });
         const canvas = document.createElement("canvas");
         canvas.width = canvas.height = 32;
         const renderer = {
@@ -236,7 +252,53 @@ try {
         disposed.filter((name) => name === "async-native").length === 1,
       "Stale and accepted native renderers must dispose exactly once",
     );
+    const audioGate = deferred<void>();
+    const staleAudio = load("audio-stale", 4, false, audioGate.promise);
+    check(await load("audio-active", 4), "Audio candidate must commit");
+    audioGate.resolve();
+    check(!(await staleAudio), "Stale audio candidate must not commit");
+    const resumeGate = deferred<boolean>();
+    resumeAudio = resumeGate.promise;
+    session.show(0);
+    play.click();
+    check(
+      await load("audio-next", 4),
+      "New audio revision must replace pending playback",
+    );
+    resumeGate.resolve(true);
+    await Promise.resolve();
+    check(
+      play.textContent === "Play",
+      "Late resume must not restart a replaced revision",
+    );
+    resumeAudio = undefined;
+    audioFrame = 3;
+    play.click();
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+    check(
+      session.frame === 3 && play.textContent === "Pause",
+      "Audio must retain the final picture until its complete interval ends",
+    );
+    audioFrame = 4;
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+    check(
+      play.textContent === "Play",
+      "Audio must stop at the complete sample clock",
+    );
+    session.clear();
+    session.clear();
+    check(
+      audioDisposed.length === 3 && new Set(audioDisposed).size === 3,
+      "Active, stale and replaced audio masters must dispose exactly once",
+    );
     return {
+      audioResources: true,
+      lateAudioResumeIgnored: true,
+      completeAudioInterval: true,
       failedFrameRetained: true,
       staleIgnored: true,
       shorterClamped: true,

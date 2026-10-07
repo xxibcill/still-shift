@@ -5014,12 +5014,453 @@
           "sha256": "sha256:403d4930fe2d7fa45fe57b3526444db6902734590e945f80de49c633ff6a3de7"
         }
       ],
+      "fullGate": false,
+      "checkpoint": "b9de1c5"
+    },
+    {
+      "slice": "verified native audio playback and source/processed waveform authoring",
+      "sourceFingerprint": "sha256:d7906d11e43c7e55d0dc9bf23254802ebde5cd469d940ca2af7c8baaf6a35ecc",
+      "sourceFiles": [
+        "apps/lab/composition-api.ts",
+        "apps/lab/composition.html",
+        "apps/lab/src/composition-audio-player.ts",
+        "apps/lab/src/composition-audio-waveforms.ts",
+        "apps/lab/src/composition-keys.ts",
+        "apps/lab/src/composition.ts",
+        "apps/lab/src/passage-audio-player.ts",
+        "apps/lab/src/preview-session.ts",
+        "packages/animation-engine/src/composition-audio-pcm.ts",
+        "packages/execution-runtime/src/composition-pcm.ts",
+        "packages/renderer-core/src/rendered-audio-playback.ts",
+        "packages/scene-contract/src/composition/audio-pcm.ts",
+        "packages/scene-contract/src/composition/index.ts",
+        "tests/browser/composition-audio-authoring.ts",
+        "tests/browser/composition-media.ts",
+        "tests/browser/composition-session.ts",
+        "tests/unit/composition-audio-preview.test.ts",
+        "tests/unit/composition-keys.test.ts",
+        "tools/still-shift-cli/src/composition/preview.ts"
+      ],
+      "checks": {
+        "build": "pass",
+        "schema": "pass",
+        "boundaries": "pass",
+        "lint": "pass",
+        "format": "pass",
+        "unit": {
+          "exitCode": 0,
+          "passed": 2101,
+          "files": 209,
+          "seconds": 17.55
+        },
+        "runtime": {
+          "exitCode": 0,
+          "passed": 46,
+          "files": 9,
+          "seconds": 10.83
+        },
+        "mediaAndTrustedAuthoring": {
+          "exitCode": 0,
+          "passed": 53,
+          "files": 7,
+          "seconds": 18.29
+        },
+        "focusedPlayerAndKeys": {
+          "exitCode": 0,
+          "passed": 24,
+          "files": 3,
+          "seconds": 1.27
+        },
+        "nativeMediaBrowser": "pass",
+        "previewSessionBrowser": "pass"
+      },
+      "versions": {
+        "canvas": "composition-canvas-1.45",
+        "webgl": "composition-webgl-0.66",
+        "evaluator": "composition-evaluator-53",
+        "audioMixer": "composition-audio-mixer-2",
+        "audioDecoder": "composition-audio-decoder-1",
+        "exportWorker": "chromium-ffmpeg-0.6.7"
+      },
+      "implemented": [
+        "CLI/Lab trusted capture APIs prepare/register the complete __audio:mix WAV alongside picture resources; original audio IDs stay unavailable",
+        "candidate-owned native player verifies schema, complete clock, mapping/evaluator, WAV header, actual SHA, finite samples and exact48k AudioContext before attachment",
+        "direct IEEE Float32-to-planar transfer preserves PCM bits without browser codec decode or resampling",
+        "shared fixed64KiB BYOB fetch page; preflight reservation is three master byte lengths plus one page, including checksum copy/planar/canonical header; active and in-flight candidates share the configured budget",
+        "periodic PCM transfer yields make cancellation responsive; failure and late/cancelled preparation release owned reservations",
+        "one pure canonical WAV header shared by source/mix/runtime/browser with no extra wrapper allocation",
+        "CE16 passage rendered masters and native composition previews share the complete-buffer sample-boundary scheduler; no duplicate gain/pan/fade processing",
+        "audio compositions advance picture from AudioContext.currentTime; final picture retains its entire final audio interval; still-only synchronous path retained",
+        "preview candidate invalidation, seek/pause, replacement, export lock, failed first frame and page lifecycle own audio stop/disposal",
+        "source/processed/mix waveform lanes show actual peaks and source/output clocks, measured headroom/full-scale counts and composition cursors",
+        "native gainDb/pan keys discovered by existing inspector lanes, histories and trusted draft preparation/save/export"
+      ],
+      "nativeMediaBrowser": {
+        "status": "passed",
+        "preparedKey": "sha256:9941e5f60996b3f0d823c1e25bf664dd066559e905a060c0c53e0874fb2cb403",
+        "cases": [
+          {
+            "colorSpace": "srgb",
+            "backend": "canvas2d",
+            "pixels": [
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
+            ],
+            "frameHashes": [
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "srgb",
+            "backend": "webgl2",
+            "pixels": [
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
+            ],
+            "frameHashes": [
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "backend": "canvas2d",
+            "pixels": [
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
+            ],
+            "frameHashes": [
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "backend": "webgl2",
+            "pixels": [
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
+            ],
+            "frameHashes": [
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          }
+        ],
+        "compare": [
+          {
+            "colorSpace": "srgb",
+            "maxDelta": 0,
+            "differing": 0
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "maxDelta": 0,
+            "differing": 0
+          }
+        ],
+        "pairBudget": "PassageError: Complete exposure/history frame set exceeds live decoded budget",
+        "gpu": {
+          "peakGpu": 30208,
+          "disposedGpu": 0,
+          "gpuBudget": "PassageError: Native image raster texture exceeds configured GPU cache bytes"
+        },
+        "exports": [
+          {
+            "source": "sequence",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit WAV asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          },
+          {
+            "source": "sequence",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit WAV asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          },
+          {
+            "source": "video",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit embedded PCM asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          },
+          {
+            "source": "video",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit embedded PCM asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count",
+            "transactionProof": "post-mux cancellation and validation rejection publish no MP4/sidecars; stages removed"
+          }
+        ],
+        "authoring": {
+          "newlyReferencedOriginal": 1,
+          "inspectorUndoRedo": "exact",
+          "savedReload": "exact",
+          "backendSwitch": "exact",
+          "draftExport": "byte-identical",
+          "playback": "last frame exact",
+          "fixturePreview": "exact",
+          "changedBindingsRejected": true,
+          "originalMediaNotServed": true,
+          "sequenceOriginalWatch": "changed bytes rejected; restored pixels exact"
+        },
+        "audioAuthoring": {
+          "sync": {
+            "samples": 240,
+            "maxFrameDifference": 1
+          },
+          "savedRevision": 3,
+          "sampleCount": 96000,
+          "rate": 48000,
+          "channels": 2,
+          "master": "all PCM sample bits exact",
+          "offlineSeek": "frame 6 through distinct last samples exact",
+          "playback": "audio clock; full final interval; seek/pause exact",
+          "gainPanEdit": "waveform changes; undo/redo exact; saved master bits exact",
+          "draftExport": "byte-identical",
+          "fixtureWaveforms": "source/processed/mix",
+          "registeredMaster": "WAV with exact captured checksum",
+          "originalAudioNotServed": true,
+          "sourceWatch": "changed source stops sound and preserves valid pixels; restored source reloads"
+        }
+      },
+      "previewSessionBrowser": {
+        "audioResources": true,
+        "lateAudioResumeIgnored": true,
+        "completeAudioInterval": true,
+        "failedFrameRetained": true,
+        "staleIgnored": true,
+        "shorterClamped": true,
+        "rendererIdentity": true,
+        "callbackOrder": true,
+        "dynamicExportLock": true,
+        "nativeInitialReadiness": true,
+        "nativeStaleSeekIgnored": true,
+        "nativeFailureRetained": true,
+        "nativePendingClear": true,
+        "errors": [
+          "Invalid staged frame Previous valid preview is preserved.",
+          "Native preparation failed Previous valid preview is preserved."
+        ],
+        "disposed": [
+          "invalid",
+          "stale",
+          "first",
+          "async-stale",
+          "latest",
+          "async-native",
+          "audio-stale",
+          "audio-active",
+          "audio-next"
+        ]
+      },
+      "actualAudioProofs": [
+        "all96,000 stereo PCM samples match independent source bits in the real AudioBuffer",
+        "actual OfflineAudioContext frame6 seek preserves every remaining sample and distinct final samples",
+        "actual picture/audio clock difference at most one frame throughout two seconds; full final interval ends before playback retirement",
+        "integer-boundary seek/pause schedules exact source offsets and remainders",
+        "gain/pan edits update actual processed waveforms; undo/redo restore exact lanes; saved/reloaded AudioBuffer bits match independently prepared master",
+        "edited native draft export byte-identical to independent production export",
+        "both CLI and fixture APIs show source/processed/mix waveforms; registered captured WAV SHA exact and original audio ID404",
+        "changed original stops sound and preserves valid pixels; restored source reloads",
+        "stale/failed/replaced owned audio disposes once; late resume cannot restart old revision; final audio clock independently tested by generic preview session"
+      ],
+      "failedAttempts": [
+        {
+          "path": "/private/tmp/ce13-audio-preview-build-draft.log",
+          "sha256": "sha256:391a6320f7cdd0bc2091307439d1d248f0a335a98a92d30d501efd782150ac29",
+          "reason": "exactOptionalPropertyTypes required an explicit undefined union for retired playback"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-units-focused.log",
+          "sha256": "sha256:68dc6033a7fcaf4623ed45dc44a8416f61e658b81d733b1c32d284abfb6fec71",
+          "reason": "new scalar-track test assumed a scalar; the existing graph sampler returns an axis array"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-build-browser-draft.log",
+          "sha256": "sha256:fdc3144538b35a4ef3f3cd465e7b8bf62bd3eb59555288742eda5bcd22ee0096",
+          "reason": "test-only instrumented Window casts needed the explicit unknown seam"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-build-draft3.log",
+          "sha256": "sha256:680e44a0ecc0440773d05ee750a3d0b8a20b23fdb0871c8702a96d8b9584146b",
+          "reason": "removed test case left an unreachable chunk comparison; fixture now uses byte streams"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-browser-draft.log",
+          "sha256": "sha256:f4e92e1a15bf0ac5855339f7a1b2f71e4ec4a09c9843c015f6dfab728e4eefaa",
+          "reason": "new serialized Playwright callback needed the existing repository __name shim"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-browser-final-draft.log",
+          "sha256": "sha256:5abdbf38f38b3446be91f83f833540dbe85d3c2b9e0ae5bc28f66413acdcb4d6",
+          "reason": "test assumed saved revision2; source rebuilds returned revision3, independently confirmed in the next complete pass; test now verifies returned revision and exact saved document"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-static-initial.log",
+          "sha256": "sha256:f6e249859b5616490b6422fe0921c56dc4831e1adb371dd8783b42a3776e5614",
+          "reason": "formatting reached the unconfigured shared uv cache; rerun uses the private milestone UV_CACHE_DIR"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-static-final-draft.log",
+          "sha256": "sha256:e250e5e324517c879bc2979d95e91ad9c2b839493d322c170b2b9360ab669ce2",
+          "reason": "temporary standalone verification recipe remained in the draft and had an unused import; removed before final static checks"
+        }
+      ],
+      "proofNote": "All final changed source/tests match the private draft fingerprint. Runtime46 proof preceded the header wrapper removal, whose byte-identical pure header behavior is covered by the final53 actual media/authoring regressions and complete native-media browser pass. Static/unit/native-media/session proofs are on final source. Complete final CE13 pnpm check remains pending.",
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-audio-preview-preflight-draft.log",
+          "sha256": "sha256:ae8e90db5f8a1e9dcf2ae4ffa0c222aca505249535c0796ec4c1bf1ab42ae43d"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-units-focused2.log",
+          "sha256": "sha256:223dd72148fc461a3218b1dfe219c28776a1e04063b6c02aaa86e714323c545a"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-runtime-draft.log",
+          "sha256": "sha256:cb8d2788fc5c8b7efe604a36783b549d54a10c7832f19a619ca67306ee1e4da7"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-integration-final-draft.log",
+          "sha256": "sha256:d881841a3eb7028eb01dd71cb1dc466fb87df1b574bc8677457a093924eafcb2"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-static-refinement-draft.log",
+          "sha256": "sha256:6b1c46c80be22802306c854e54e8fcfa9cc1cf3a76baaeb2372df0345e8c1867"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-browser-focused2.log",
+          "sha256": "sha256:75273a09168ba65f73f5c7364acdb2a882ea4ae22a18e39c4002b46680a11002"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-browser-focused3.log",
+          "sha256": "sha256:cd018a09192a66b1026ebe24a8d7b9057c1526258145a44cf3e6e485423342a7"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-browser-final-draft2.log",
+          "sha256": "sha256:5207c24b10ffdaddc8ed8220d572cad8f1ff0d87b62d6ddf4940e8dee28449e4"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-browser-final-draft3.log",
+          "sha256": "sha256:5207c24b10ffdaddc8ed8220d572cad8f1ff0d87b62d6ddf4940e8dee28449e4"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-preview-session-final-draft2.log",
+          "sha256": "sha256:a20488078a03665b97f4a50f0a1d2be80612ea861e731c0268bbf2db8a521072"
+        }
+      ],
+      "pending": [
+        "native whole-passage PCM mixing before selected range trim and original video/sequence/audio path routing",
+        "remaining CE13 acceptance decisions and one complete final local pnpm check"
+      ],
       "fullGate": false
     }
   ],
   "fullGates": [],
   "pending": [
-    "native audio preview/waveform presentation and whole-passage mixing before range trim",
+    "native whole-passage PCM mixing before range trim and original media path routing",
     "native audio protection, mixing and waveforms",
     "real Lab and export acceptance",
     "complete final local pnpm check",

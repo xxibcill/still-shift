@@ -340,3 +340,33 @@ it.each(["camera-position", "camera-poi", "spatial-position"] as const)(
     ).toEqual([10, 3]);
   },
 );
+
+it("discovers audio gain and pan keys on their owning composition clock", () => {
+  const document = source();
+  document.layers.push({
+    id: "sound",
+    type: "audio",
+    asset: "audio",
+    gainDb: {
+      keys: [
+        { frame: 0, value: -6 },
+        { frame: 23, value: 0 },
+      ],
+    },
+    pan: {
+      keys: [
+        { frame: 0, value: -1 },
+        { frame: 23, value: 1 },
+      ],
+    },
+  });
+  const tracks = compositionTracks(document).filter(
+    (track) => track.owner === "sound",
+  );
+  expect(tracks.map((track) => track.property)).toEqual(["gainDb", "pan"]);
+  expect(sampleTrack(tracks[0]!, 0)).toEqual([-6]);
+  expect(sampleTrack(tracks[1]!, 23)).toEqual([1]);
+  expect(
+    tracks.every((track) => track.fps === 24 && track.kind === "scalar"),
+  ).toBe(true);
+});

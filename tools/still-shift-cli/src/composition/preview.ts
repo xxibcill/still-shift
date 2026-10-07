@@ -8,11 +8,13 @@ import { createServer, type Plugin, type ViteDevServer } from "vite";
 import {
   readCompositionSource,
   prepareCompositionMedia,
+  prepareCompositionAudio,
 } from "@still-shift/animation-engine";
 import type {
   Composition,
   CompositionDiagnostic,
   CompositionPreparedMedia,
+  CompositionPreparedAudio,
 } from "@still-shift/scene-contract";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { loadProgram } from "./program.ts";
@@ -39,6 +41,7 @@ export type ProgramSnapshot = {
   input: string;
   assets: Record<string, string>;
   preparedMedia?: CompositionPreparedMedia;
+  preparedAudio?: CompositionPreparedAudio;
   diagnostics: CompositionDiagnostic[];
 };
 type SnapshotBytes = {
@@ -138,6 +141,9 @@ export async function createProgramPreview(
         source: program.source,
         input: sourceInput,
         diagnostics: source.warnings,
+        ...(source.preparedAudio
+          ? { preparedAudio: source.preparedAudio }
+          : {}),
         ...(source.preparedMedia
           ? { preparedMedia: source.preparedMedia }
           : {}),
@@ -279,14 +285,24 @@ export async function createProgramPreview(
                 body.document,
                 captured.snapshot.document ?? captured.snapshot.composition,
               );
+              const nativeDocument = capturedMediaComposition(
+                document,
+                captured.bytes,
+              );
               const prepared = await prepareCompositionMedia(
-                capturedMediaComposition(document, captured.bytes),
+                nativeDocument,
                 dirname(sourceInput),
                 { signal: controller.signal },
               );
+              const audio = await prepareCompositionAudio(
+                nativeDocument,
+                dirname(sourceInput),
+                { signal: controller.signal },
+              );
+              const paths = { ...prepared?.assetPaths, ...audio?.assetPaths };
               controller.signal.throwIfAborted();
               const capture = randomUUID();
-              captured.captures.set(capture, prepared?.assetPaths ?? {});
+              captured.captures.set(capture, paths);
               while (captured.captures.size > 3) {
                 const oldest = [...captured.captures.keys()].find(
                   (id) => id !== "source",
@@ -297,10 +313,11 @@ export async function createProgramPreview(
               response.end(
                 JSON.stringify({
                   preparedMedia: prepared?.preparedMedia,
+                  preparedAudio: audio?.preparedAudio,
                   assets: {
                     ...captured.snapshot.assets,
                     ...Object.fromEntries(
-                      Object.keys(prepared?.assetPaths ?? {}).map((id) => [
+                      Object.keys(paths).map((id) => [
                         id,
                         `/composition/program-asset?revision=${captured.snapshot.revision}&capture=${capture}&id=${encodeURIComponent(id)}`,
                       ]),
@@ -488,8 +505,11 @@ export async function createProgramPreview(
         const path = captured?.captures.get(
           url.searchParams.get("capture") ?? "source",
         )?.[id];
-        if (id.startsWith("__media:") && path) {
-          response.setHeader("Content-Type", "image/png");
+        if ((id.startsWith("__media:") || id === "__audio:mix") && path) {
+          response.setHeader(
+            "Content-Type",
+            id === "__audio:mix" ? "audio/wav" : "image/png",
+          );
           void pipeline(createReadStream(path), response).catch(() =>
             response.destroy(),
           );

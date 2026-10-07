@@ -8,6 +8,7 @@ import {
   validateComposition,
   type Composition,
   type CompositionPreparedMedia,
+  type CompositionPreparedAudio,
 } from "../../../packages/scene-contract/src/index.ts";
 import {
   createCompositionPreview,
@@ -22,6 +23,11 @@ import {
 } from "./composition-document.ts";
 import { createCompositionInspector } from "./composition-inspector.ts";
 import { createCompositionOverlay } from "./composition-overlay.ts";
+import { CompositionAudioPreviewLoader } from "./composition-audio-player.ts";
+import {
+  presentCompositionAudioWaveforms,
+  positionCompositionAudioWaveforms,
+} from "./composition-audio-waveforms.ts";
 import { createPreviewSession } from "./preview-session.ts";
 
 const programMode = new URLSearchParams(location.search).has("program");
@@ -35,6 +41,7 @@ type ProgramResponse = {
     input: string;
     assets: Record<string, string>;
     preparedMedia?: CompositionPreparedMedia;
+    preparedAudio?: CompositionPreparedAudio;
   };
   diagnostics: { code: string; path: string; message: string }[];
 };
@@ -131,7 +138,9 @@ type CompositionSnapshot = {
   warnings: string[];
   program: ProgramResponse["snapshot"];
   accept: () => void;
+  audio?: CompositionPreparedAudio;
 };
+const audioLoader = new CompositionAudioPreviewLoader();
 let comp: Composition | undefined;
 let preview: CompositionPreview | undefined;
 let generation = 0;
@@ -213,6 +222,7 @@ const session = createPreviewSession<CompositionSnapshot>({
   },
   ready(snapshot) {
     snapshot.accept();
+    presentCompositionAudioWaveforms(snapshot.audio);
     comp = snapshot.composition;
     preview = snapshot.preview;
     error.textContent = "";
@@ -250,6 +260,7 @@ const session = createPreviewSession<CompositionSnapshot>({
           : "Download preserves native source fields. Place JSON beside the original fixture to retain relative asset paths.";
   },
   frameChanged(frame, snapshot) {
+    positionCompositionAudioWaveforms(frame, snapshot.scene.frameCount);
     for (const marker of el(
       "lint-timeline",
     ).querySelectorAll<HTMLButtonElement>("button"))
@@ -348,18 +359,24 @@ async function load(
       throw new Error("A newer document superseded this edit");
     let capture: {
       preparedMedia?: CompositionPreparedMedia;
+      preparedAudio?: CompositionPreparedAudio;
       assets: Record<string, string>;
     } = {
+      ...(program?.preparedAudio
+        ? { preparedAudio: program.preparedAudio }
+        : {}),
       ...(program?.preparedMedia
         ? { preparedMedia: program.preparedMedia }
         : {}),
       assets: program?.assets ?? {},
     };
     if (
-      result.composition.assets.some(
+      (result.composition.assets.some((asset) => asset.type === "audio") &&
+        (!capture.preparedAudio || edit.document)) ||
+      (result.composition.assets.some(
         (asset) => asset.type === "video" || asset.type === "sequence",
       ) &&
-      (!capture.preparedMedia || edit.document)
+        (!capture.preparedMedia || edit.document))
     ) {
       const response = await fetch(
         programMode
@@ -382,6 +399,24 @@ async function load(
       capture = (await response.json()) as typeof capture;
     }
     ownership.signal.throwIfAborted();
+    if (capture.preparedAudio) {
+      const url = capture.assets[capture.preparedAudio.resource.id];
+      if (!url) throw new Error("Native audio master is unavailable");
+      ownership.audio(
+        await audioLoader.prepare(
+          result.composition,
+          capture.preparedAudio,
+          url,
+          ownership.signal,
+        ),
+      );
+    } else if (
+      result.composition.assets.some((asset) => asset.type === "audio")
+    ) {
+      throw new Error(
+        "Native audio preview requires a prepared complete master",
+      );
+    }
     const resources = await loadCompositionResources(
       result.composition,
       (id) =>
@@ -410,6 +445,7 @@ async function load(
       path,
       backend,
       program,
+      ...(capture.preparedAudio ? { audio: capture.preparedAudio } : {}),
       accept() {
         currentProgram = program;
         if (edit.proposal) nextHistory.commit(edit.proposal);
@@ -548,7 +584,7 @@ saveButton.onclick = async () => {
           );
         currentProgram = payload.snapshot;
         if (
-          currentProgram.preparedMedia &&
+          (currentProgram.preparedMedia || currentProgram.preparedAudio) &&
           !(await load("program", {
             preserveHistory: true,
             frame: session.frame,

@@ -4876,6 +4876,25 @@ Audio playback/waveform presentation, native whole-passage mixing/path routing,
 remaining production acceptance and complete final gate remain pending.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 verified playback/waveform checkpoint (2026-10-07)
+
+CLI/Lab captures now include the complete checked master, and previews transfer exact
+Float32 samples into a verified 48 kHz stereo AudioBuffer. Candidate and active PCM
+reservations share the configured limit; checksum-copy/planar/header space and a fixed
+64 KiB BYOB page are counted before fetch. CE16 and native rendered masters share one
+sample-boundary scheduler. Audio clocks advance pictures and retain the complete final
+interval. Source/processed/mix lanes show actual peaks/clocks/headroom; native gain/pan
+keys use existing inspector/history/trusted draft operations. All 2,101 units / 209
+files, 46 runtime, 53 media/authoring checks and static checks pass. Complete native
+media and preview lifecycle suites pass on final source. Real 96,000-sample stereo
+buffers and an offline seek through the distinct last samples are exact; A/V remains
+within one frame across two seconds. Gain/pan changes, exact undo/redo/save/reload,
+byte-identical draft export, changed-source stop/preserved pixels/restoration and
+stale/failed/replaced audio retirement pass. A hardcoded revision2 assertion was
+replaced by the actual returned revision/document check; the combined pass returned3.
+Whole-passage native PCM/path routing, remaining acceptance and final local gate are
+pending. [Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

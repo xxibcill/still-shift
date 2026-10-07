@@ -12,6 +12,12 @@ type PreviewRenderer = {
   renderFrame(frame: number): unknown;
   dispose(): void;
 };
+type PreviewAudio = {
+  readonly frame: number | undefined;
+  play(frame: number): Promise<boolean>;
+  stop(): void;
+  dispose(): void;
+};
 type PreviewControls = {
   play: HTMLButtonElement;
   scrub: HTMLInputElement;
@@ -40,6 +46,7 @@ function previewResources() {
   const controller = new AbortController();
   let disposed = false;
   const urls: string[] = [];
+  let audio: PreviewAudio | undefined;
   const surfaces: {
     renderer: PreviewRenderer;
     present: () => void;
@@ -47,6 +54,22 @@ function previewResources() {
   }[] = [];
   return {
     signal: controller.signal,
+    audio(player: PreviewAudio) {
+      if (disposed) player.dispose();
+      else if (audio) {
+        player.dispose();
+        throw new Error("A preview already owns an audio master");
+      } else audio = player;
+    },
+    startAudio(frame: number) {
+      return audio?.play(frame);
+    },
+    stopAudio() {
+      audio?.stop();
+    },
+    audioFrame() {
+      return audio?.frame;
+    },
     renderer<R extends PreviewRenderer>(
       renderer: R,
       present: () => void,
@@ -107,6 +130,8 @@ function previewResources() {
       if (disposed) return;
       disposed = true;
       controller.abort();
+      audio?.dispose();
+      audio = undefined;
       for (const { renderer } of surfaces) renderer.dispose();
       for (const url of urls) URL.revokeObjectURL(url);
     },
@@ -114,7 +139,7 @@ function previewResources() {
 }
 type PreviewResources = Pick<
   ReturnType<typeof previewResources>,
-  "url" | "preview" | "renderer" | "signal"
+  "url" | "preview" | "renderer" | "signal" | "audio"
 >;
 
 export function createPreviewSession<T extends PreviewSnapshot>(
@@ -157,6 +182,7 @@ export function createPreviewSession<T extends PreviewSnapshot>(
     frameGeneration++;
     playbackGeneration++;
     playing = false;
+    active?.resources.stopAudio();
     cancelAnimationFrame(animation);
     controls.play.textContent = "Play";
   }
@@ -322,20 +348,47 @@ export function createPreviewSession<T extends PreviewSnapshot>(
     hasPlayed = true;
     playing = true;
     controls.play.textContent = "Pause";
-    const startPlayback = () => {
+    const startPlayback = async () => {
       if (!active || !playing || dirty || run !== playbackGeneration) return;
+      const selected = active;
       const startFrame = frame;
       const start = performance.now();
+      const pendingAudio = selected.resources.startAudio(startFrame);
+      if (pendingAudio) {
+        try {
+          if (!(await pendingAudio)) return;
+        } catch (error) {
+          if (run === playbackGeneration) {
+            pause();
+            failed(error);
+          }
+          return;
+        }
+      }
+      if (
+        selected !== active ||
+        !playing ||
+        dirty ||
+        run !== playbackGeneration
+      )
+        return;
       const next = () => {
         if (!active || !playing || dirty || run !== playbackGeneration) return;
-        if (frame >= active.snapshot.scene.frameCount - 1) pause();
+        const audioFrame = selected.resources.audioFrame();
+        if (
+          audioFrame === undefined
+            ? frame >= active.snapshot.scene.frameCount - 1
+            : audioFrame >= active.snapshot.scene.frameCount
+        )
+          pause();
         else animation = requestAnimationFrame(tick);
       };
       const tick = (now: number) => {
         if (!active || !playing || dirty || run !== playbackGeneration) return;
         const readiness = show(
-          startFrame +
-            Math.floor(((now - start) * active.snapshot.scene.fps) / 1000),
+          selected.resources.audioFrame() ??
+            startFrame +
+              Math.floor(((now - start) * active.snapshot.scene.fps) / 1000),
         );
         if (readiness) void readiness.then(next);
         else next();
@@ -344,7 +397,7 @@ export function createPreviewSession<T extends PreviewSnapshot>(
     };
     const readiness = restarting ? show(0) : undefined;
     if (readiness) void readiness.then(startPlayback);
-    else startPlayback();
+    else void startPlayback();
   });
   window.addEventListener("pagehide", (event) => {
     pause();

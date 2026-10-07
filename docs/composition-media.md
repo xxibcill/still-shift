@@ -2,8 +2,8 @@
 
 CE13 is in progress. The contract, source-clock evaluation and visual graph are
 implemented, with actual FFmpeg source probing, SDR conversion and atomic frame-cache
-preparation and bounded browser readiness. Production source/export/Lab hookup, actual audio mixing,
-waveforms and complete production acceptance remain pending. Current proof is in
+preparation and bounded browser readiness. Production source/export/Lab hookup, actual audio mixing, waveform capture and preview
+are verified. Whole-passage audio integration and complete final acceptance remain pending. Current proof is in
 [CE13 results](./composition-ce13-results.json). The contract fixture uses placeholder
 hashes and is a structural fixture, not a playable media example.
 
@@ -60,7 +60,7 @@ live decoded-frame bytes and audio working memory. Defaults are 600 seconds,
 512 MiB of audio working memory. Decoder and renderer preparation must enforce
 their separate allocation limits and reject an over-budget required frame set.
 Disk, decoded-bitmap and native GPU raster-cache bounds now have focused proof.
-Actual native audio allocation remains pending.
+Native source/mix buffers and browser master ownership now enforce this limit.
 
 The video probe checks actual source bytes before and after ffprobe, and verifies
 all authored dimensions, rational rate, original frame count and color fields.
@@ -92,7 +92,7 @@ All original hashes and dimensions verify even when only a subset is selected.
 Animated PNG and corrupt chunks reject. A root lock protects cumulative disk
 accounting. Conservative reservations include transient files and manifest bytes;
 private staging publishes atomically and is removed on cancellation or failure.
-Browser CPU/GPU resource allocation is verified; actual audio remains pending.
+Browser CPU/GPU and native PCM source/mix/preview allocation are verified.
 
 `loadCompositionResources` accepts the captured `preparedMedia` manifest. Native
 previews call `await preview.prepareFrame(frame)` before `preview.renderFrame(frame)`.
@@ -111,14 +111,13 @@ surfaces keep their existing renderer policies. Encoded download buffers have a
 separate bound based on the pinned frame dimensions and byte count; they are not
 counted as decoded bitmap residency. Prepared manifests allow at most 131,072 frame
 entries, and one disk cache entry at most 262,144, to bound metadata. Native source
-frame-count limits remain unchanged. Source-loader and export-page integration are verified. Lab/CLI preview and draft integration are verified. Actual PCM, native passage mixing
-and complete CE13 acceptance are the next work.
+frame-count limits remain unchanged. Source-loader and export-page integration are verified. Lab/CLI preview and draft integration are verified. Native passage mixing and complete CE13 acceptance are the next work.
 
 `loadComposition` and `renderComposition` prepare native sources before browser
 rendering. An optional `cacheDirectory`, or `STILL_SHIFT_COMPOSITION_MEDIA_CACHE`,
 selects the preparation cache; the default is scoped by the absolute workspace path
 under the system temporary directory. `assetPaths` contains still/font resources, captured native PNG IDs and the verified
-`__audio:mix` WAV resource. `mediaSourcePaths` retains original video and
+`__audio:mix` WAV resource. `mediaSourcePaths` retains original audio/video and
 sequence pattern/manifest paths for trusted authoring integration. The exported scene
 carries the immutable `preparedMedia` manifest and awaits readiness for each frame.
 Still-only export callbacks keep their synchronous path.
@@ -129,7 +128,7 @@ capture a conservative source set, bounded by the manifest entry cap. Unused sou
 verify provenance but do not allocate decoded pixels. Actual video and sequence exports
 with an animated still and native shape lower third match independently encoded preview
 frames, repeat exports and raw/PNG transport on Canvas 1.45 and WebGL2 0.66. Matching
-audio is still pending.
+whole-passage audio remains pending.
 
 Native authoring requests prepare only an accepted document with unchanged source
 bindings. CLI revision captures and registered Lab fixture captures serve exact PNG
@@ -160,8 +159,8 @@ The established picture loop/terminal-hold behavior stays unchanged.
 Output samples must be nonnegative safe integers. Internal `scopeTimes` overrides
 reject in this API; authored ordinary source remap remains supported. Protected
 narration rejects baked `sampleTimes` on voice and ancestors, even when disabled, in
-addition to the previously prohibited source-clock changes. The evaluator is version 52. Continuous clock/dependency correctness is verified; actual PCM decode/mix,
-waveforms, native passage mixing and matching-audio delivery remain pending.
+addition to the previously prohibited source-clock changes. The evaluator is version 53. Continuous clock/dependency correctness, PCM decode/mix,
+waveforms, preview and matching-audio delivery are verified; passage mixing remains pending.
 
 `prepareCompositionAudioSource` verifies the actual single mono/stereo source stream
 and decodes interleaved 48 kHz Float32 PCM to disk. The descriptor count names actual
@@ -182,7 +181,7 @@ Picture and audio cache entries share one lock and cumulative disk accounting. P
 stages publish atomically; cancellation kills/reaps the active decoder before cleanup.
 Every hit revalidates the original hash, manifest and finite cached PCM/hash/count.
 Actual PCM preparation is verified. Bounded mixing, source/processed waveforms, native
-audio loading/preview/mux and passage audio are the next work.
+Whole-passage integration and final CE13 acceptance are the next work.
 
 `prepareCompositionAudio` prepares the complete 48 kHz stereo Float32 WAV master and
 the immutable `composition-prepared-audio-1` capture. Whole-document validation runs
@@ -212,7 +211,7 @@ source PCM reverify after mixing to reject races. Cancellation removes new outpu
 Both CE16 gain/pan/linear and equal-power fade reference WAVs match byte-for-byte.
 The actual 96,000-sample bounded test uses 491,578 / 524,288 PCM working bytes, with 24
 page loads and 16 reusable evictions. Full native mixing and waveform metadata are
-verified; audio loader/preview/mux, waveform presentation and passage audio remain pending.
+verified, including loader/preview/mux and waveform presentation. Passage audio remains pending.
 
 `readCompositionSource` and `loadComposition` accept actual audio assets and attach
 `preparedAudio` to the inspected source/export scene. Original audio paths remain in
@@ -236,4 +235,32 @@ still/lower third now pass Canvas/WebGL delivery. All 12,000 master samples/chan
 including the final sample, match source bits. Twelve production MP4s match repeat,
 independent preview and raw/PNG encodes; independent decoded AAC samples also match.
 Actual post-mux cancellation or validation failure leaves no output/sidecar/stage.
-Native audio playback, waveform presentation and whole-passage mixing remain pending.
+Whole-passage mixing and complete final CE13 acceptance remain pending.
+
+Lab and CLI previews fetch only registered captured masters and validate their complete
+clock, mapping/evaluator, canonical header, finite PCM and SHA. Float32 samples transfer
+directly into a verified 48 kHz stereo AudioBuffer; browser codec decode/resampling is
+not an authority. One pure WAV header is shared by capture, export and preview.
+
+The browser budget counts active planar buffers and in-flight candidate reservations.
+Before fetch, each candidate reserves three master byte lengths plus a fixed 64 KiB
+BYOB page: encoded bytes, a conservative full checksum copy, planar PCM and canonical
+header. After verification only the planar buffer remains owned. PCM transfer yields
+periodically; cancellation, failed candidates and disposal release their reservations.
+This records application-owned PCM, separately from browser/DSP process memory.
+
+CE16 passage rendered masters and native previews use the same integer-sample boundary
+scheduler. AudioContext time advances pictures; the final picture remains visible for
+its entire final audio interval. Pause, seek, replacement, invalidation, export locking
+and page lifecycle stop sound. A late resume cannot restart a replaced preview.
+
+Source lanes show original PCM time; processed lanes and the complete mix use output
+composition time, with actual peak/headroom/full-scale counts and a picture cursor.
+Gain/pan keys use the existing inspector lanes, curves, history and trusted draft
+preparation. Edits require a new master; save reloads its returned source revision.
+
+Actual 96,000-sample stereo AudioBuffers preserve all source bits. Offline playback
+from frame six preserves the remaining samples through the distinct final values.
+Real picture/audio time stays within one frame across two seconds and playback keeps
+the complete final interval. Gain/pan/waveform edit/undo/redo/save/reload, byte-identical
+draft exports, both registered APIs and changed-source stop/restoration pass.

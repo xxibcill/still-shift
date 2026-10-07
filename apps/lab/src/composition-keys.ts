@@ -155,6 +155,9 @@ export function compositionTracks(document: Composition): KeyTrack[] {
           name === "scale" ? 1 : 0,
         );
     }
+    if (layer.type === "audio")
+      for (const name of ["gainDb", "pan"] as const)
+        add(layer[name], [...path, name], name, "scalar", scope, layer.id, fps);
     if (layer.type === "image" && layer.sampling === "linear-srgb") {
       for (const name of ["scale", "roll"] as const)
         add(

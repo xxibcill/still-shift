@@ -12,6 +12,7 @@ import type {
 } from "@still-shift/scene-contract";
 import type * as Render from "../../packages/renderer-core/src/composition/render/index.ts";
 import { verifyNativeMediaExports } from "./composition-media-exports.ts";
+import { verifyNativeAudioAuthoring } from "./composition-audio-authoring.ts";
 import { verifyNativeMediaAuthoring } from "./composition-media-authoring.ts";
 import {
   mediaPngChunk,
@@ -430,6 +431,11 @@ try {
     directory,
     comp,
   );
+  const audioAuthoring = await verifyNativeAudioAuthoring(
+    browser,
+    root,
+    directory,
+  );
   console.log(
     JSON.stringify(
       {
@@ -438,6 +444,7 @@ try {
         ...proof,
         exports,
         authoring,
+        audioAuthoring,
       },
       null,
       2,

@@ -46,18 +46,18 @@ still hold before relying on them.
 - **CE13 in progress (2026-10-07):** `codex/composition-ce13` from completed CE4d
   `adf6cea`; merged/attached [CE16 PR #33](https://github.com/xxibcill/still-shift/pull/33)
   at `65f2ebe4` is audited and integrated. Native provenance/SDR/CPU/GPU readiness,
-  picture export and CLI/Lab authoring are verified on Canvas 1.45 / WebGL2 0.66.
-  Actual bounded PCM preparation (`8161bd7`) and mix/waveforms (`e3c8065`) are pushed.
-  Native audio loading and transactional AAC mux now pass 91 runtime/media checks,
-  all 2,094 units / 208 files and static checks. Four matching-audio cases preserve
-  all 12,000 stereo master samples; 12 production MP4s match repeated/independent/raw
-  encodes, with exact 48 kHz track clocks and independent AAC sample equality.
-  Post-mux failure/cancellation leaves no artifacts. Evaluator 53 / mixer 2 / export
-  worker 0.6.7 are current. Audio playback/waveform presentation, whole-passage audio
-  and remaining production/full acceptance are in flight; no final CE13 gate has run.
-  Continue CE13 → CE15 → CE14. CE5-X/Q9 and separate CE6-P work remain pending;
-  historical CE16 reports remain references, not CE13 proof.
-  [Evidence](./composition-ce13-results.json).
+  picture/transactional matching-audio export and CLI/Lab authoring are verified.
+  Loader/mux `b9de1c5` is pushed. Verified bounded native audio playback and waveform
+  presentation now pass 2,101 units / 209 files, 46 runtime, 53 media/authoring checks,
+  static checks and complete native-media/preview-session browser suites. Real
+  AudioBuffer/offline samples are exact through the last sample; A/V stays within
+  one frame and the final audio interval completes. Gain/pan edits, undo/redo,
+  save/reload, byte-identical draft export, original-source cancellation/restoration
+  and stale candidate disposal pass. Canvas 1.45 / WebGL2 0.66 / evaluator 53 / mixer 2 /
+  export worker 0.6.7 are current. Whole-passage audio/path routing and remaining
+  acceptance are in flight; no final CE13 gate has run. Continue CE13 → CE15 → CE14.
+  CE5-X/Q9 and separate CE6-P work remain pending; historical CE16 reports remain
+  references, not CE13 proof. [Evidence](./composition-ce13-results.json).
 
 - **CE4d complete (2026-10-07):**
   `codex/composition-ce4d` from CE4c `17666eb`. Native production defaults and old
@@ -271,6 +271,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 verified audio playback and waveform authoring
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed loader/mux `b9de1c5`.
+- **Done:** verified bounded PCM preview, shared CE16 rendered-buffer scheduling,
+  candidate-owned audio clocks/lifecycle, source/processed/mix lanes and gain/pan keys.
+- **Results:** 2,101 units / 209 files, 46 runtime, 53 media/authoring checks and
+  static checks pass. Complete native-media and preview-session browser suites pass.
+  All 96,000 stereo AudioBuffer samples and an offline seek through distinct last
+  samples are exact; real A/V difference stays within one frame through two seconds.
+  Full final interval, edit/undo/redo/save/reload, byte-identical draft export and
+  changed-source cancellation/restoration pass. Stale audio retires exactly once.
+- **Rejected:** hardcoded saved revision2 (rebuild returned3); test verifies returned
+  revision/source now. Callback, temporary-recipe and uv-cache failures are recorded.
+- **Next:** whole-passage native PCM/path routing and remaining/full CE13 acceptance.
+- **Records:** [media guide](./composition-media.md), [CE13 evidence](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 native audio loader and transactional mux
 
