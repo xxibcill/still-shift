@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #44 review repairs (2026-10-08):** both P2 findings are posted inline
+  on reviewed `5b233c8`. The implicit XYZ light dependency repair is complete:
+  evaluator 50, fresh-stage/order/seek/cycle regressions, native pixels and
+  production/control/repeat/raw exports. The receiving-toggle keyboard focus
+  repair is next. One finding per commit; both commits will be pushed together
+  after final focused checks. Full `pnpm check` is not required for this scoped
+  follow-up. Owner checkout is untouched and Actions remain disabled.
+  [Repair evidence](./pr-44-fix-results.json).
+
 - **PR #44 conflict resolution and review (2026-10-08):** isolated managed
   `pr44-review` integrates `main` at `e97dacbc` into lighting head `e1bd4bc`.
   Merge `548b5c7` preserves all eight conflicts; `3640c69` repairs the light-key
@@ -50,8 +59,9 @@ still hold before relying on them.
   regressions and 46 runtime tests; native lighting/camera, alpha, seeks,
   independent/repeated exports, hardware and real inspector pass. All 176 frozen
   items / 36,061 frames and all retained baseline bytes pass without regeneration.
-  Review is complete: one Standards usability P2 (receiving-toggle keyboard focus)
-  and one Spec P2 (implicit XYZ light Z reference dependencies) remain open.
+  The original review found one Standards usability P2 (receiving-toggle keyboard
+  focus) and one Spec P2 (implicit XYZ light Z reference dependencies).
+  Current repair progress is tracked above.
   PR #44 remains open for owner repair/merge. No new full repository
   gate or performance acceptance is claimed. CE6-P stays deferred and Actions disabled.
   [Resolution](./pr-44-conflict-resolution-results.json),
@@ -817,6 +827,20 @@ still hold before relying on them.
 _Last updated 2026-10-08 by Codex for PR #43 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #44 implicit XYZ light dependency repair
+
+- **Agent / branch:** Codex on isolated `codex/pr44-conflict-review` from `5b233c8`.
+- **Done:** post both findings inline; include implicit lights in shared anchor
+  dependency discovery and advance evaluator cache identity to 50.
+- **Results:** six new unit failures and native pixel parity fail before repair;
+  75 focused tests, build/lint and six native cases pass afterward. All 240 preview
+  draws match explicit XYZ controls; 24 production/control/repeat/raw exports
+  cover 192 frames and are byte-identical within each case.
+- **Open / next:** commit this finding, repair keyboard focus in a separate commit,
+  finish scoped verification and push both together. No full gate rerun or Actions.
+- **Records:** [Repair evidence](./pr-44-fix-results.json),
+  [finding](https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916475).
 
 ### 2026-10-08 — Resolve and review PR #44 against merged CE8
 

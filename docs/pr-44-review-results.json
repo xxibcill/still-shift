@@ -4,7 +4,7 @@
   "base": "e97dacbced3c23507c88b2a62eeaf221a850c3d5",
   "reviewedCodeCheckpoint": "3640c69d3a9cc8bdc74b87f62ae263c05e8c5fa2",
   "diffCommand": "git diff e97dacbced3c23507c88b2a62eeaf221a850c3d5...3640c69d3a9cc8bdc74b87f62ae263c05e8c5fa2",
-  "status": "review complete; findings remain open; no GitHub review comments published",
+  "status": "historical review findings posted inline; dedicated follow-up repairs in progress",
   "method": "Independent Standards and Spec sub-agents under code-review skill; root verified both reproductions on pinned Node 22.23.1/Chromium and inspected the final source repair.",
   "standards": {
     "hardViolations": 0,
@@ -111,7 +111,7 @@
               "diagnostics": [
                 {
                   "code": "comp-expression-cycle",
-                  "message": "expression dependencies form a cycle: light#transform.anchor.z \u2192 light#constraintReference.z \u2192 light#transform.anchor.z"
+                  "message": "expression dependencies form a cycle: light#transform.anchor.z → light#constraintReference.z → light#transform.anchor.z"
                 }
               ]
             }
@@ -144,5 +144,13 @@
     "spec": 1
   },
   "fullPnpmCheckRun": false,
-  "githubActionsEnabled": false
+  "githubActionsEnabled": false,
+  "followUp": {
+    "reviewId": 5447098396,
+    "comments": {
+      "xyz": "https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916475",
+      "focus": "https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916490"
+    },
+    "evidence": "docs/pr-44-fix-results.json"
+  }
 }

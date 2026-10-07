@@ -1,0 +1,198 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/44",
+  "reviewedHead": "5b233c8903ac64b5c06f2194cc8e13ec6a99bb78",
+  "reviewId": 5447098396,
+  "status": "XYZ repair verified; focus repair pending; no push yet",
+  "commitPolicy": "One finding per commit; normal push after the final repair commit.",
+  "findings": {
+    "xyz": {
+      "commentId": 4210916475,
+      "url": "https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916475",
+      "status": "fixed and verified in the commit containing this record",
+      "behavior": "Implicit ambient, point and spot lights inherit Z references through their expression-stage anchor, independently of authored layer order and seek history; cycles reject and written references retain precedence.",
+      "evaluatorVersion": "composition-evaluator-50",
+      "regressions": {
+        "before": "Six new XYZ/order/cycle unit cases and native implicit/explicit pixel parity fail. Explicit-reference controls pass.",
+        "after": "75 focused tests, TypeScript and changed-file lint pass. Six native dependency cases match explicit XYZ on all 240 preview draws; 24 production/control/repeat/raw exports cover 192 frames with exact output parity.",
+        "native": [
+          {
+            "lightType": "ambient",
+            "lightFirst": false,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          },
+          {
+            "lightType": "ambient",
+            "lightFirst": true,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          },
+          {
+            "lightType": "point",
+            "lightFirst": false,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          },
+          {
+            "lightType": "point",
+            "lightFirst": true,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          },
+          {
+            "lightType": "spot",
+            "lightFirst": false,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          },
+          {
+            "lightType": "spot",
+            "lightFirst": true,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          }
+        ]
+      }
+    },
+    "focus": {
+      "commentId": 4210916490,
+      "url": "https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916490",
+      "status": "pending dedicated repair commit"
+    }
+  },
+  "verification": {
+    "scope": "Focused follow-up checks; no new complete repository gate or performance acceptance.",
+    "checks": [
+      {
+        "label": "fix-xyz-red",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-spatial-anchor-dependencies.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 1,
+        "seconds": 1.1,
+        "log": "/private/tmp/pr44-fix-xyz-red.log",
+        "logSha256": "a95a6e10e16e12fd90a9f4374518cc5eb110c604057aabc2d080b743859ceb02"
+      },
+      {
+        "label": "fix-toolchain",
+        "command": ["pnpm", "toolchain:check"],
+        "exitCode": 0,
+        "seconds": 0.68,
+        "log": "/private/tmp/pr44-fix-toolchain.log",
+        "logSha256": "a376131c40425d2d875db58a88463e8fc469aa207c861242109ed740b94f8bc8"
+      },
+      {
+        "label": "fix-vite",
+        "command": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "const {loadConfigFromFile}=await import(\"vite\"); await loadConfigFromFile({command:\"serve\",mode:\"development\"},\"apps/lab/vite.config.ts\"); console.log(\"Native Vite config imports passed\");"
+        ],
+        "exitCode": 0,
+        "seconds": 0.57,
+        "log": "/private/tmp/pr44-fix-vite.log",
+        "logSha256": "e900665a5494d0fc73dacad5cadbe5b2bd1cfbd8bd4757b086b13047846063a8"
+      },
+      {
+        "label": "fix-xyz-browser-red",
+        "command": ["pnpm", "test:browser:composition-lighting"],
+        "exitCode": 1,
+        "seconds": 3.51,
+        "log": "/private/tmp/pr44-fix-xyz-browser-red.log",
+        "logSha256": "1d9facad3ad00647eab13cf44999c8d0ded7ae871cea03ff15174c5dbd56fbbe"
+      },
+      {
+        "label": "fix-xyz-focused",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-spatial-anchor-dependencies.test.ts",
+          "tests/unit/composition-lighting-model.test.ts",
+          "tests/unit/composition-lighting-integration.test.ts",
+          "tests/unit/composition-lighting-fixtures.test.ts",
+          "tests/unit/composition-expression-validation.test.ts",
+          "tests/unit/composition-camera-expression-dependencies.test.ts",
+          "tests/unit/composition-webgl-cache.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 1.7,
+        "log": "/private/tmp/pr44-fix-xyz-focused.log",
+        "logSha256": "b442c15c4013edcee2314c17990f9593769d820a381625c0f5b62f08ab6331ab"
+      },
+      {
+        "label": "fix-xyz-build",
+        "command": ["pnpm", "build"],
+        "exitCode": 0,
+        "seconds": 6.54,
+        "log": "/private/tmp/pr44-fix-xyz-build.log",
+        "logSha256": "b8a845b712b2c16819c0973efa38049bcace5f4276f0e00140964365fe05c333"
+      },
+      {
+        "label": "fix-xyz-lint",
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/scene-contract/src/composition/expressions.ts",
+          "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+          "tests/unit/composition-spatial-anchor-dependencies.test.ts",
+          "tests/browser/lighting-dependencies.ts",
+          "tests/browser/composition-lighting.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 0.79,
+        "log": "/private/tmp/pr44-fix-xyz-lint.log",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "fix-xyz-native",
+        "command": [
+          "pnpm",
+          "exec",
+          "tsx",
+          "benchmarks/results/pr44-fixes/xyz.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 31.89,
+        "log": "/private/tmp/pr44-fix-xyz-native.log",
+        "logSha256": "abcd108fab269f20fbb5b406f58efea6330466630235761a911d660a547d1111"
+      }
+    ],
+    "fullPnpmCheckRun": false
+  },
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "isolation": "Retained isolated worktree-local dependencies, Python environment/UV cache and separately owned Vite caches; preflight repeated successfully."
+  },
+  "githubActionsEnabled": false
+}

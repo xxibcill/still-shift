@@ -25,6 +25,7 @@ import {
   cameraHardwarePreview,
   type CameraFixture,
 } from "./camera-hardware.ts";
+import { lightingDependencyAcceptance } from "./lighting-dependencies.ts";
 import { lightingFailureAcceptance } from "./lighting-failures.ts";
 import { lightingFixtureReference } from "../helpers/composition-lighting-reference.ts";
 import { lightingSampleCosts } from "./lighting-cost.ts";
@@ -56,6 +57,7 @@ try {
   await page.goto(server.resolvedUrls!.local[0]!);
   const environment = await probeRenderEnvironment(page);
   assertPinnedRenderEnvironment(environment);
+  const dependencies = await lightingDependencyAcceptance(page, output);
   const baselineDirectory = join(root, "tests/visual/composition-lighting"),
     baselinePath = join(
       baselineDirectory,
@@ -305,6 +307,7 @@ try {
       {
         environment,
         reports,
+        dependencies,
         failures,
         legacy,
         hardware,
@@ -319,6 +322,7 @@ try {
     "Native CE8-L acceptance:",
     JSON.stringify({
       reports,
+      dependencies,
       failures,
       legacy,
       hardware,
