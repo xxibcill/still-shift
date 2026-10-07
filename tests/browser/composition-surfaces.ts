@@ -225,10 +225,7 @@ try {
   const sources = [];
   for (const backend of ["canvas2d", "webgl2"] as const)
     for (const software of [false, true])
-      for (const sourceCase of [
-        false,
-        ...(backend === "canvas2d" ? [true] : []),
-      ].flatMap((managed) => [
+      for (const sourceCase of [false, true].flatMap((managed) => [
         { animated: false, variant: undefined, managed },
         { animated: true, variant: undefined, managed },
         ...COMPOSITION_TINT_VARIANTS.map((variant) => ({
@@ -721,6 +718,24 @@ try {
       (await import(url)) as typeof MemoryChecks
     ).checkManagedCanvasPool();
   });
+  const managedGpuStorage = await workers[0]!.page.evaluate(async () => {
+    const url = "/tests/helpers/composition-memory-reference.ts";
+    return (
+      (await import(url)) as typeof MemoryChecks
+    ).checkManagedGpuStorage();
+  });
+  const managedDepthStorage = await workers[0]!.page.evaluate(async () => {
+    const url = "/tests/helpers/composition-memory-reference.ts";
+    return (
+      (await import(url)) as typeof MemoryChecks
+    ).checkManagedDepthStorage();
+  });
+  const managedPngStorage = await workers[0]!.page.evaluate(async () => {
+    const url = "/tests/helpers/composition-memory-reference.ts";
+    return (
+      (await import(url)) as typeof MemoryChecks
+    ).checkManagedPngStorage();
+  });
   const managedSourceFailures = await workers[0]!.page.evaluate(async () => {
     const url = "/tests/helpers/composition-source-reference.ts";
     return (
@@ -768,6 +783,9 @@ try {
     protectedRoots,
     memoryPrimitives,
     managedCanvasPool,
+    managedGpuStorage,
+    managedDepthStorage,
+    managedPngStorage,
     managedSourceFailures,
     reports,
   };

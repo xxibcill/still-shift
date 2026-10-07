@@ -1,3 +1,8 @@
+import {
+  allocateRenderPixels,
+  releaseRenderPixels,
+  retainRenderPixels,
+} from "../../managed-memory-context.ts";
 import type { Bounds } from "../evaluate/types.ts";
 
 /** Retain GPU-produced bytes and refresh every region written since the previous read. */
@@ -41,31 +46,42 @@ export class WebglReadback {
   }
 
   dispose() {
+    releaseRenderPixels(this.pixels);
     this.pixels = undefined;
     this.pending = undefined;
   }
 
   read() {
     if (this.width * this.height * 4 > this.limit) return this.readFull();
-    if (!this.pixels || this.pending === undefined)
-      this.pixels = this.readFull();
-    else if (this.pending) {
+    if (!this.pixels || this.pending === undefined) {
+      releaseRenderPixels(this.pixels);
+      this.pixels = undefined;
+      const pixels = this.readFull();
+      retainRenderPixels(pixels);
+      this.pixels = pixels;
+    } else if (this.pending) {
       const rect = this.pending,
         pixels = this.readRegion(rect),
         stride = (rect.right - rect.left) * 4;
-      for (let row = 0; row < rect.bottom - rect.top; row++) {
-        const sourceRow =
-          this.regionRows === "bottom-up"
-            ? rect.bottom - rect.top - row - 1
-            : row;
-        this.pixels.set(
-          pixels.subarray(sourceRow * stride, (sourceRow + 1) * stride),
-          ((rect.top + row) * this.width + rect.left) * 4,
-        );
+      try {
+        for (let row = 0; row < rect.bottom - rect.top; row++) {
+          const sourceRow =
+            this.regionRows === "bottom-up"
+              ? rect.bottom - rect.top - row - 1
+              : row;
+          this.pixels.set(
+            pixels.subarray(sourceRow * stride, (sourceRow + 1) * stride),
+            ((rect.top + row) * this.width + rect.left) * 4,
+          );
+        }
+      } finally {
+        releaseRenderPixels(pixels);
       }
     }
     this.pending = null;
     // Callers own their returned bytes, including across later incremental updates.
-    return this.pixels.slice();
+    return allocateRenderPixels(this.pixels.byteLength, () =>
+      this.pixels!.slice(),
+    );
   }
 }

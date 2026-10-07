@@ -1,3 +1,9 @@
+import { depthImageGrid } from "../../packages/renderer-core/src/composition/render/webgl-depth-image.ts";
+import {
+  createRenderStorage,
+  releaseRenderStorage,
+  withManagedMemory,
+} from "../../packages/renderer-core/src/managed-memory-context.ts";
 import { expect, it } from "vitest";
 import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
 
@@ -206,4 +212,121 @@ it("refuses a second adopted owner and transfer into a foreign reservation", () 
   expect(memory.statistics.current.pixels).toBe(16);
   memory.release(second);
   expect(memory.statistics.reservations).toBe(0);
+});
+
+it("admits native handles before creation, retains them through scratch and destroys them after scope exit", async () => {
+  const memory = new ManagedMemory({ pixels: 16, metadata: 8 });
+  let created = 0,
+    initialized = 0,
+    destroyed = 0;
+  const make = (bytes: number) =>
+    createRenderStorage(
+      bytes,
+      () => ({ id: ++created }),
+      () => {
+        initialized++;
+      },
+      () => {
+        destroyed++;
+      },
+    );
+  const resource = await withManagedMemory(memory, async () => {
+    memory.beginScratch();
+    const resource = make(16);
+    expect(() => make(1)).toThrow("aggregate worker quota");
+    expect(created).toBe(1);
+    expect(initialized).toBe(1);
+    memory.endScratch();
+    expect(destroyed).toBe(0);
+    expect(memory.statistics.current.pixels).toBe(16);
+    return resource;
+  });
+  releaseRenderStorage(resource, () => {
+    throw Error("fallback must not run for an owned handle");
+  });
+  expect(destroyed).toBe(1);
+  expect(memory.statistics.current.pixels).toBe(0);
+  expect(memory.statistics.reservations).toBe(0);
+  memory.dispose();
+});
+it("cleans native initialization failures and preserves original null reasons", async () => {
+  const memory = new ManagedMemory({ pixels: 16, metadata: 8 });
+  let destroyed = 0;
+  await withManagedMemory(memory, async () => {
+    let reason: unknown = "not thrown";
+    try {
+      createRenderStorage(
+        16,
+        () => ({}),
+        () => {
+          throw null;
+        },
+        () => {
+          destroyed++;
+          throw Error("cleanup failed");
+        },
+      );
+    } catch (error) {
+      reason = error;
+    }
+    expect(reason).toBe(null);
+    expect(destroyed).toBe(1);
+    expect(memory.statistics.current.pixels).toBe(0);
+    expect(() =>
+      createRenderStorage(
+        16,
+        () => null,
+        () => {},
+        () => {
+          destroyed++;
+        },
+      ),
+    ).toThrow("creation failed");
+    expect(destroyed).toBe(1);
+    expect(memory.statistics.reservations).toBe(0);
+  });
+  memory.dispose();
+});
+it("disposes every retained native handle even when one native destructor throws", async () => {
+  const memory = new ManagedMemory({ pixels: 16, metadata: 8 });
+  let destroyed = 0;
+  await withManagedMemory(memory, async () => {
+    createRenderStorage(
+      8,
+      () => ({}),
+      () => {},
+      () => {
+        destroyed++;
+        throw null;
+      },
+    );
+    createRenderStorage(
+      8,
+      () => ({}),
+      () => {},
+      () => {
+        destroyed++;
+      },
+    );
+  });
+  let reason: unknown = "not thrown";
+  try {
+    memory.dispose();
+  } catch (error) {
+    reason = error;
+  }
+  expect(reason).toBe(null);
+  expect(destroyed).toBe(2);
+  expect(memory.statistics.current.pixels).toBe(0);
+  expect(memory.statistics.reservations).toBe(0);
+});
+
+it("releases the partial CPU mesh if its second backing allocation is denied", async () => {
+  const memory = new ManagedMemory({ pixels: 200000, metadata: 8 });
+  await withManagedMemory(memory, async () => {
+    expect(() => depthImageGrid()).toThrow("aggregate worker quota");
+    expect(memory.statistics.current.pixels).toBe(0);
+    expect(memory.statistics.reservations).toBe(0);
+  });
+  memory.dispose();
 });

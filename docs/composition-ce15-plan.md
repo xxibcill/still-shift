@@ -337,6 +337,38 @@ Audit oracle/loaded assets are outside this Canvas scope; declared per-page peak
 are distinct from actual process RSS and simultaneous aggregate memory.
 [Detailed evidence](./composition-ce15-canvas-memory-results.json).
 
+## Accepted GPU storage ownership checkpoint — 2026-10-08
+
+Native texture, geometry-buffer and four-sample RGBA8 storage now reserve declared
+bytes before handle creation and storage commands. RGBA8/32F, immutable source/depth
+textures, MSAA, resolve and pooled surfaces keep admission through actual native
+ownership. Texture swaps preserve the same owners; eviction/disposal issues native
+deletes and releases the corresponding lease. CPU native byte/float readbacks,
+row scratch, shader/upload tables and partial meshes reserve before allocation.
+Incremental full reads and PNG coordinate tables survive frame scratch; completed
+copies/uploads and replaced data detach at their actual boundary.
+
+All 144 audit cases pass 8,000 exact frames. Twenty-four managed Canvas/GPU cases
+cover 1,504 comparisons across four pinned pages, both raster policies, animated
+colours, axes, corrections and crossfades with strict once-global native counts.
+Native proof checks 256 byte channels, 64 signed float channels through swapped
+textures, denial before native storage, real pool reuse/eviction and original null
+initialization errors. Depth mesh/MSAA resizing preserves 2,656 channels and deletes
+actual buffers/textures/renderbuffers; PNG coordinate reuse preserves 98,304 channels
+through four frames after scratch teardown. Every managed reservation releases.
+
+Build/lint/boundaries, 54 admission/cache/exposure/depth and 119 effect/pool/GPU/depth
+units pass. The complete original WebGL command passes unchanged assertions; all
+17 actual-default depth timelines / 1,530 frames have zero delta. Sixty-four public
+exports preserve all 768 complete PNG bodies and decoded frames against the prior
+accepted Canvas checkpoint. Failed strict typing and review repairs are retained in
+[the evidence](./composition-ce15-gpu-memory-results.json).
+
+Asset/font inputs/decodes, capture/upload, Node and complete metadata admission
+remain pending before enabling the production allocator. Native driver/codec memory
+and physical RSS remain distinct from declared storage; these per-page proofs are
+not the full aggregate/area matrix, two-minute speed acceptance or complete gate.
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

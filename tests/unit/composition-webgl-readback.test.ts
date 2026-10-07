@@ -1,3 +1,8 @@
+import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
+import {
+  allocateRenderPixels,
+  withManagedMemory,
+} from "../../packages/renderer-core/src/managed-memory-context.ts";
 import { describe, expect, it } from "vitest";
 import { WebglReadback } from "../../packages/renderer-core/src/composition/render/webgl-readback.ts";
 import type { Bounds } from "../../packages/renderer-core/src/composition/evaluate/types.ts";
@@ -119,4 +124,68 @@ describe("incremental GPU readback", () => {
     expect(cache.read()).toEqual(framebuffer);
     expect(reads()).toBe(2);
   });
+});
+
+it("retains only the native full read, detaches completed patches and returned scratch, then disposes the cache", async () => {
+  const memory = new ManagedMemory({ pixels: 64, metadata: 8 });
+  await withManagedMemory(memory, async () => {
+    let full: Uint8ClampedArray | undefined, patch: Uint8Array | undefined;
+    const cache = new WebglReadback(
+      2,
+      2,
+      () =>
+        (full = allocateRenderPixels(16, () =>
+          new Uint8ClampedArray(16).fill(11),
+        )),
+      () =>
+        (patch = allocateRenderPixels(
+          4,
+          () => new Uint8Array([22, 33, 44, 55]),
+        )),
+    );
+    memory.beginScratch();
+    const first = cache.read();
+    memory.endScratch();
+    expect(first.byteLength).toBe(0);
+    expect(full!.byteLength).toBe(16);
+    expect(memory.statistics.current.pixels).toBe(16);
+    memory.beginScratch();
+    cache.changed({ left: 1, top: 1, right: 2, bottom: 2 });
+    const next = cache.read();
+    expect([...next.slice(12)]).toEqual([22, 33, 44, 55]);
+    expect(patch!.byteLength).toBe(0);
+    memory.endScratch();
+    const previous = full!;
+    memory.beginScratch();
+    cache.changed();
+    cache.read();
+    expect(previous.byteLength).toBe(0);
+    memory.endScratch();
+    expect(memory.statistics.current.pixels).toBe(16);
+    cache.dispose();
+    expect(full!.byteLength).toBe(0);
+    expect(memory.statistics.current.pixels).toBe(0);
+    expect(memory.statistics.reservations).toBe(0);
+  });
+  memory.dispose();
+});
+it("fails capture admission without altering retained native pixels", async () => {
+  const memory = new ManagedMemory({ pixels: 16, metadata: 8 });
+  await withManagedMemory(memory, async () => {
+    const cache = new WebglReadback(
+      2,
+      2,
+      () => allocateRenderPixels(16, () => new Uint8ClampedArray(16).fill(7)),
+      () => {
+        throw Error("unexpected patch");
+      },
+    );
+    memory.beginScratch();
+    expect(() => cache.read()).toThrow("aggregate worker quota");
+    memory.endScratch();
+    expect(memory.statistics.current.pixels).toBe(16);
+    cache.dispose();
+    expect(memory.statistics.current.pixels).toBe(0);
+  });
+  memory.dispose();
 });

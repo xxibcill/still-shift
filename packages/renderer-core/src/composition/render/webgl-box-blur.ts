@@ -1,3 +1,7 @@
+import {
+  allocateRenderPixels,
+  releaseRenderPixels,
+} from "../../managed-memory-context.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import type { WebglRect } from "./webgl-bounds.ts";
 
@@ -65,32 +69,38 @@ const plans = new Map<number, Step[]>();
 export function boxSteps(length: number): Step[] {
   const cached = plans.get(length);
   if (cached) return cached;
-  const cost = new Float64Array(length + 1).fill(Infinity);
-  const from: { previous: number; step: Step }[] = [];
-  cost[1] = 0;
-  for (let count = 1; count < length; count++) {
-    if (cost[count] === Infinity) continue;
-    for (let multiple = 2; multiple <= MAXIMUM_MULTIPLE; multiple++)
-      for (
-        let extra = 0;
-        extra <= Math.min(multiple - 1, MAXIMUM_EXTRA);
-        extra++
-      ) {
-        const next = count * multiple + extra;
-        if (next > length) continue;
-        const total =
-          cost[count]! + PASS_COST + FETCH_COST * (multiple + extra);
-        if (total < cost[next]! - 1e-9) {
-          cost[next] = total;
-          from[next] = { previous: count, step: { multiple, extra } };
+  const cost = allocateRenderPixels((length + 1) * 8, () =>
+    new Float64Array(length + 1).fill(Infinity),
+  );
+  try {
+    const from: { previous: number; step: Step }[] = [];
+    cost[1] = 0;
+    for (let count = 1; count < length; count++) {
+      if (cost[count] === Infinity) continue;
+      for (let multiple = 2; multiple <= MAXIMUM_MULTIPLE; multiple++)
+        for (
+          let extra = 0;
+          extra <= Math.min(multiple - 1, MAXIMUM_EXTRA);
+          extra++
+        ) {
+          const next = count * multiple + extra;
+          if (next > length) continue;
+          const total =
+            cost[count]! + PASS_COST + FETCH_COST * (multiple + extra);
+          if (total < cost[next]! - 1e-9) {
+            cost[next] = total;
+            from[next] = { previous: count, step: { multiple, extra } };
+          }
         }
-      }
+    }
+    const steps: Step[] = [];
+    for (let count = length; count > 1; count = from[count]!.previous)
+      steps.unshift(from[count]!.step);
+    plans.set(length, steps);
+    return steps;
+  } finally {
+    releaseRenderPixels(cost);
   }
-  const steps: Step[] = [];
-  for (let count = length; count > 1; count = from[count]!.previous)
-    steps.unshift(from[count]!.step);
-  plans.set(length, steps);
-  return steps;
 }
 const DIVIDE = `uniform vec2 offset; uniform float halfDivisor; uniform vec2 factorParts;
 uint multiplyHigh(uint a, uint b) {

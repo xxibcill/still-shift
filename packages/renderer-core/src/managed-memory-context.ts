@@ -57,6 +57,53 @@ export function releaseRenderPixels(
   if (value) active?.release(ArrayBuffer.isView(value) ? value.buffer : value);
 }
 
+const storageLeases = new WeakMap<object, MemoryLease>();
+
+/** Admit native texture/buffer storage before creating its handle or submitting storage commands. */
+export function createRenderStorage<T extends object>(
+  bytes: number,
+  create: () => T | null,
+  initialize: (value: T) => void,
+  destroy: (value: T) => void,
+): T {
+  const memory = active;
+  const lease = memory?.reserve("pixels", bytes, undefined, true);
+  let value: T | undefined;
+  try {
+    value = create() ?? undefined;
+    if (!value) throw Error("Native render storage creation failed");
+    const resource = value;
+    if (memory && lease) {
+      memory.adopt(resource, lease, () => {
+        storageLeases.delete(resource);
+        destroy(resource);
+      });
+      storageLeases.set(resource, lease);
+    }
+    initialize(resource);
+    return resource;
+  } catch (error) {
+    // Cleanup must preserve the original native/admission failure, including null.
+    try {
+      if (lease) lease.release();
+      else if (value) destroy(value);
+    } catch {
+      /* The original failure owns this path. */
+    }
+    throw error;
+  }
+}
+
+/** Stored leases allow actual native destruction even after the page's active scope ends. */
+export function releaseRenderStorage<T extends object>(
+  value: T,
+  destroy: (value: T) => void,
+): void {
+  const lease = storageLeases.get(value);
+  if (lease) lease.release();
+  else destroy(value);
+}
+
 /** Canvas backing changes are admitted before the native setter changes its allocation. */
 export function createRenderCanvas(): HTMLCanvasElement {
   const memory = active;

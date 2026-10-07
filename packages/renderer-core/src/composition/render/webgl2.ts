@@ -1,3 +1,4 @@
+import { releaseRenderPixels } from "../../managed-memory-context.ts";
 import {
   linearBlendShader,
   linearShaderControls,
@@ -162,7 +163,12 @@ export function createWebgl2Backend(
     if (!transfer) {
       const table = device.surface(256, 256);
       try {
-        device.uploadBytes(table, linearTransferBytes());
+        const bytes = linearTransferBytes();
+        try {
+          device.uploadBytes(table, bytes);
+        } finally {
+          releaseRenderPixels(bytes);
+        }
         transfer = table;
       } catch (error) {
         device.release(table);

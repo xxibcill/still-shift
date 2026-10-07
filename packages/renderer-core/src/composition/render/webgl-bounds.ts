@@ -1,3 +1,7 @@
+import {
+  allocateRenderPixels,
+  releaseRenderPixels,
+} from "../../managed-memory-context.ts";
 import type { Matrix } from "../../node-transform.ts";
 import type { Rgba } from "../evaluate/types.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
@@ -17,13 +21,20 @@ export class WebglBounds {
   clear(surface: WebglSurface, color: Rgba | null) {
     if (surface === this.root) {
       const alpha = color?.[3] ?? 0;
-      const bytes = new Uint8Array([
-        ...(color ?? [0, 0, 0, 0])
-          .slice(0, 3)
-          .map((v) => Math.round(Math.max(0, Math.min(1, v * alpha)) * 255)),
-        surface.opaque ? 255 : Math.round(alpha * 255),
-      ]);
+      const bytes = allocateRenderPixels(
+        4,
+        () =>
+          new Uint8Array([
+            ...(color ?? [0, 0, 0, 0])
+              .slice(0, 3)
+              .map((v) =>
+                Math.round(Math.max(0, Math.min(1, v * alpha)) * 255),
+              ),
+            surface.opaque ? 255 : Math.round(alpha * 255),
+          ]),
+      );
       this.background = new Uint32Array(bytes.buffer)[0]!;
+      releaseRenderPixels(bytes);
       this.bounds.set(surface, null);
     } else
       this.bounds.set(
@@ -136,24 +147,36 @@ export class WebglBounds {
         surface.width * surface.height * 0.75
     )
       return undefined;
-    const result = new Uint8ClampedArray(surface.width * surface.height * 4);
-    new Uint32Array(result.buffer).fill(this.background);
-    if (rect) {
-      const width = rect.right - rect.left,
-        height = rect.bottom - rect.top;
-      const pixels = device.readRegion(
-        surface,
-        rect.left,
-        rect.top,
-        width,
-        height,
-      );
-      for (let y = 0; y < height; y++)
-        result.set(
-          pixels.subarray(y * width * 4, (y + 1) * width * 4),
-          ((rect.top + y) * surface.width + rect.left) * 4,
+    const result = allocateRenderPixels(
+      surface.width * surface.height * 4,
+      () => new Uint8ClampedArray(surface.width * surface.height * 4),
+    );
+    try {
+      new Uint32Array(result.buffer).fill(this.background);
+      if (rect) {
+        const width = rect.right - rect.left,
+          height = rect.bottom - rect.top;
+        const pixels = device.readRegion(
+          surface,
+          rect.left,
+          rect.top,
+          width,
+          height,
         );
+        try {
+          for (let y = 0; y < height; y++)
+            result.set(
+              pixels.subarray(y * width * 4, (y + 1) * width * 4),
+              ((rect.top + y) * surface.width + rect.left) * 4,
+            );
+        } finally {
+          releaseRenderPixels(pixels);
+        }
+      }
+      return result;
+    } catch (error) {
+      releaseRenderPixels(result);
+      throw error;
     }
-    return result;
   }
 }

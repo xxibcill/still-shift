@@ -5115,7 +5115,12 @@ Canvas ownership/bounded receive pass 37 admission/cache/exposure, 90 effect/poo
 and 67 typography tests; 132 audit cases / 7,248 frames include twelve managed cases /
 752 exact frames. Native detachment, pool/body/failure cleanup and 64 public exports /
 768 complete bodies/frames match the prior checkpoint. Glyph 1.291824× passes unchanged
-1.5×. Production GPU/assets/capture/Node/metadata integration remains pending.
+1.5×. GPU storage admission now passes 54 admission/cache/exposure/depth and 119
+focused units; 144 audit cases / 8,000 frames include 24 managed cases / 1,504
+comparisons. Native storage/deletion, complete original WebGL, 17 default depth
+timelines / 1,530 zero-delta frames and 64 exports / 768 prior-exact bodies/frames
+pass. Asset/font, capture/upload, Node, metadata and actual production admission
+remain pending.
 Aggregate limits, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),

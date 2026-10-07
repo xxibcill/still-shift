@@ -78,7 +78,12 @@ still hold before relying on them.
   including twelve managed cases / 752 frames. Native detachment/pool/body failures
   release actual storage. All 64 public exports / 768 bodies/frames match the prior
   accepted checkpoint; glyph ratio 1.291824× remains under unchanged 1.5×.
-  Production GPU/asset/capture/Node/metadata integration, aggregate memory, the actual
+  GPU storage admission now passes 54 admission/cache/exposure/depth and 119 focused
+  tests; 144 audit cases / 8,000 frames include 24 managed cases / 1,504 comparisons.
+  Native byte/float/depth/PNG storage and deletion checks, complete original WebGL,
+  17 default depth timelines / 1,530 zero-delta frames and 64 public exports / 768
+  prior-checkpoint-exact bodies/frames pass. Asset/font, capture/upload, Node and
+  metadata integration, actual production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -312,6 +317,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 GPU storage admission checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `ef1a9bd`.
+- **Done:** native texture/buffer/MSAA storage admission, explicit deletion/pool
+  ownership, byte/float readbacks and retained PNG coordinates; partial-failure cleanup.
+- **Results:** build/lint/boundaries, 54 admission/cache/exposure/depth and 119 focused
+  units; 144 audit cases / 8,000 exact frames, including 24 managed cases / 1,504
+  frames. Actual native byte/float/depth/PNG/pool/failure lifetime checks pass. Complete
+  original WebGL and 17 default depth timelines / 1,530 zero-delta frames pass.
+  All 64 public exports / 768 complete bodies and frames match the prior checkpoint.
+- **Next:** asset/font, capture/upload, Node and metadata admission; actual production
+  allocator, aggregate/area/worker proof, two-minute speed, CE15 gate/PR and all CE14.
+  Production allocator still disabled; no full gate or speed acceptance claimed.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [GPU admission evidence](./composition-ce15-gpu-memory-results.json).
 
 ### 2026-10-08 — CE15 Canvas storage and bounded receive checkpoint
 

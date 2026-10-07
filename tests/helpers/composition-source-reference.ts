@@ -160,7 +160,7 @@ export async function checkSharedCompositionSources(options: {
       ...result,
       managedMemory: {
         coverage:
-          "Canvas renderer-owned storage; assets and GPU integration pending",
+          "Canvas/GPU renderer-owned storage; asset/production integration pending",
         before,
         after: memory.statistics,
       },

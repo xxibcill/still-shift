@@ -1,3 +1,9 @@
+import {
+  allocateRenderPixels,
+  createRenderStorage,
+  releaseRenderPixels,
+  releaseRenderStorage,
+} from "../../managed-memory-context.ts";
 import type { Bounds } from "../evaluate/types.ts";
 /** GPU-owned, premultiplied RGBA pixels. Texture row zero is the image's top row. */
 export type WebglSurface = {
@@ -84,6 +90,7 @@ export class WebglDevice {
   constructor(
     readonly canvas: HTMLCanvasElement,
     preserveAlpha = false,
+    private readonly poolByteLimit = 128 * 1024 * 1024,
   ) {
     const gl = canvas.getContext("webgl2", {
       alpha: preserveAlpha,
@@ -133,58 +140,79 @@ export class WebglDevice {
       throw new Error(
         "comp-webgl-float: float accumulation surfaces are unavailable",
       );
-    const texture = gl.createTexture()!,
-      framebuffer = gl.createFramebuffer()!;
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texParameteri(
-      gl.TEXTURE_2D,
-      gl.TEXTURE_MIN_FILTER,
-      floating ? gl.NEAREST : gl.LINEAR,
-    );
-    gl.texParameteri(
-      gl.TEXTURE_2D,
-      gl.TEXTURE_MAG_FILTER,
-      floating ? gl.NEAREST : gl.LINEAR,
-    );
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texStorage2D(
-      gl.TEXTURE_2D,
-      1,
-      floating ? gl.RGBA32F : gl.RGBA8,
-      width,
-      height,
-    );
-    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-    gl.framebufferTexture2D(
-      gl.FRAMEBUFFER,
-      gl.COLOR_ATTACHMENT0,
-      gl.TEXTURE_2D,
-      texture,
-      0,
-    );
-    if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
-      gl.deleteTexture(texture);
-      gl.deleteFramebuffer(framebuffer);
-      throw new Error("comp-webgl-framebuffer: incomplete render surface");
+    let framebuffer: WebGLFramebuffer | undefined;
+    let texture: WebGLTexture | undefined;
+    try {
+      texture = createRenderStorage(
+        width * height * (floating ? 16 : 4),
+        () => gl.createTexture(),
+        (texture) => {
+          framebuffer = gl.createFramebuffer() ?? undefined;
+          if (!framebuffer)
+            throw Error("Native render framebuffer creation failed");
+          gl.bindTexture(gl.TEXTURE_2D, texture);
+          gl.texParameteri(
+            gl.TEXTURE_2D,
+            gl.TEXTURE_MIN_FILTER,
+            floating ? gl.NEAREST : gl.LINEAR,
+          );
+          gl.texParameteri(
+            gl.TEXTURE_2D,
+            gl.TEXTURE_MAG_FILTER,
+            floating ? gl.NEAREST : gl.LINEAR,
+          );
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.texStorage2D(
+            gl.TEXTURE_2D,
+            1,
+            floating ? gl.RGBA32F : gl.RGBA8,
+            width,
+            height,
+          );
+          gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+          gl.framebufferTexture2D(
+            gl.FRAMEBUFFER,
+            gl.COLOR_ATTACHMENT0,
+            gl.TEXTURE_2D,
+            texture,
+            0,
+          );
+          if (
+            gl.checkFramebufferStatus(gl.FRAMEBUFFER) !==
+            gl.FRAMEBUFFER_COMPLETE
+          )
+            throw new Error(
+              "comp-webgl-framebuffer: incomplete render surface",
+            );
+        },
+        (texture) => gl.deleteTexture(texture),
+      );
+      const surface: WebglSurface = {
+        width,
+        height,
+        floating,
+        opaque,
+        screen,
+        texture,
+        framebuffer: framebuffer!,
+      };
+      this.clear(surface);
+      this.surfaces.add(surface);
+      return surface;
+    } catch (error) {
+      if (texture)
+        releaseRenderStorage(texture, (value) => gl.deleteTexture(value));
+      if (framebuffer) gl.deleteFramebuffer(framebuffer);
+      throw error;
     }
-    const surface = {
-      width,
-      height,
-      floating,
-      opaque,
-      screen,
-      texture,
-      framebuffer,
-    };
-    this.surfaces.add(surface);
-    this.clear(surface);
-    return surface;
   }
 
   /** Permanently release a separately budgeted native texture, bypassing the general pool. */
   discard(surface: WebglSurface) {
-    this.gl.deleteTexture(surface.texture);
+    releaseRenderStorage(surface.texture, (value) =>
+      this.gl.deleteTexture(value),
+    );
     this.gl.deleteFramebuffer(surface.framebuffer);
     this.surfaces.delete(surface);
   }
@@ -193,12 +221,14 @@ export class WebglDevice {
     const key = `${surface.width}x${surface.height}/${surface.floating}/${surface.opaque}/${surface.screen}`;
     const list = this.pool.get(key) ?? [];
     const bytes = surface.width * surface.height * (surface.floating ? 16 : 4);
-    if (list.length < 16 && this.pooledBytes + bytes <= 128 * 1024 * 1024) {
+    if (list.length < 16 && this.pooledBytes + bytes <= this.poolByteLimit) {
       this.pooledBytes += bytes;
       list.push(surface);
       this.pool.set(key, list);
     } else {
-      this.gl.deleteTexture(surface.texture);
+      releaseRenderStorage(surface.texture, (value) =>
+        this.gl.deleteTexture(value),
+      );
       this.gl.deleteFramebuffer(surface.framebuffer);
       this.surfaces.delete(surface);
     }
@@ -557,7 +587,10 @@ export class WebglDevice {
     const previous = gl.getParameter(
       gl.READ_FRAMEBUFFER_BINDING,
     ) as WebGLFramebuffer | null;
-    const pixels = new Float32Array(surface.width * surface.height * 4);
+    const pixels = allocateRenderPixels(
+      surface.width * surface.height * 16,
+      () => new Float32Array(surface.width * surface.height * 4),
+    );
     try {
       gl.bindFramebuffer(gl.READ_FRAMEBUFFER, surface.framebuffer);
       gl.readPixels(
@@ -572,6 +605,9 @@ export class WebglDevice {
       if (gl.getError() !== gl.NO_ERROR)
         throw Error("RGBA32F surface readback failed");
       return pixels;
+    } catch (error) {
+      releaseRenderPixels(pixels);
+      throw error;
     } finally {
       gl.bindFramebuffer(gl.READ_FRAMEBUFFER, previous);
     }
@@ -586,31 +622,53 @@ export class WebglDevice {
     rowOrder: "top-down" | "native" = "top-down",
   ) {
     const gl = this.gl;
-    const pixels = new Uint8Array(width * height * 4);
-    gl.bindFramebuffer(
-      gl.FRAMEBUFFER,
-      surface.screen ? null : surface.framebuffer,
+    const pixels = allocateRenderPixels(
+      width * height * 4,
+      () => new Uint8Array(width * height * 4),
     );
-    gl.readPixels(
-      x,
-      surface.screen ? surface.height - y - height : y,
-      width,
-      height,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      pixels,
-    );
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    if (surface.screen && rowOrder === "top-down") {
-      const stride = width * 4,
-        row = new Uint8Array(stride);
-      for (let top = 0, bottom = height - 1; top < bottom; top++, bottom--) {
-        row.set(pixels.subarray(top * stride, (top + 1) * stride));
-        pixels.copyWithin(top * stride, bottom * stride, (bottom + 1) * stride);
-        pixels.set(row, bottom * stride);
+    try {
+      gl.bindFramebuffer(
+        gl.FRAMEBUFFER,
+        surface.screen ? null : surface.framebuffer,
+      );
+      gl.readPixels(
+        x,
+        surface.screen ? surface.height - y - height : y,
+        width,
+        height,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        pixels,
+      );
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      if (surface.screen && rowOrder === "top-down") {
+        const stride = width * 4;
+        const row = allocateRenderPixels(stride, () => new Uint8Array(stride));
+        try {
+          for (
+            let top = 0, bottom = height - 1;
+            top < bottom;
+            top++, bottom--
+          ) {
+            row.set(pixels.subarray(top * stride, (top + 1) * stride));
+            pixels.copyWithin(
+              top * stride,
+              bottom * stride,
+              (bottom + 1) * stride,
+            );
+            pixels.set(row, bottom * stride);
+          }
+        } finally {
+          releaseRenderPixels(row);
+        }
       }
+      return pixels;
+    } catch (error) {
+      releaseRenderPixels(pixels);
+      throw error;
+    } finally {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     }
-    return pixels;
   }
 
   present(surface: WebglSurface) {
@@ -639,7 +697,7 @@ export class WebglDevice {
     this.onScreenChange = undefined;
     const gl = this.gl;
     for (const surface of this.surfaces) {
-      gl.deleteTexture(surface.texture);
+      releaseRenderStorage(surface.texture, (value) => gl.deleteTexture(value));
       gl.deleteFramebuffer(surface.framebuffer);
     }
     for (const program of this.programs.values())

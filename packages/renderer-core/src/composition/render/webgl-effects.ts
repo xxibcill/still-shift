@@ -1,3 +1,7 @@
+import {
+  allocateRenderPixels,
+  releaseRenderPixels,
+} from "../../managed-memory-context.ts";
 import { renderGpuEffect } from "./effect-plugins.ts";
 import { FLOAT32_RATIONAL_SUM } from "./webgl-float-sum.ts";
 import { blurKernel } from "./webgl-blur-kernel.ts";
@@ -222,10 +226,15 @@ export class WebglEffects {
     const source = this.device.surface(kernel.weights.length, 1, true);
     const scratch = this.device.surface(dst.width, dst.height);
     try {
-      this.device.uploadFloats(
-        source,
-        new Float32Array(kernel.weights.flatMap((w) => [w, 0, 0, 1])),
+      const values = allocateRenderPixels(
+        kernel.weights.length * 16,
+        () => new Float32Array(kernel.weights.flatMap((w) => [w, 0, 0, 1])),
       );
+      try {
+        this.device.uploadFloats(source, values);
+      } finally {
+        releaseRenderPixels(values);
+      }
       const shader = `${SAMPLE}
       uniform float radius;
       uniform float halfDivisor;
@@ -336,7 +345,15 @@ export class WebglEffects {
             // stored bytes from one texel, converted as any backdrop texel.
             const backdrop = this.device.surface(1, 1);
             try {
-              this.device.uploadBytes(backdrop, new Uint8Array(solid));
+              const bytes = allocateRenderPixels(
+                4,
+                () => new Uint8Array(solid),
+              );
+              try {
+                this.device.uploadBytes(backdrop, bytes);
+              } finally {
+                releaseRenderPixels(bytes);
+              }
               this.device.pass(
                 `${light} void main() {
                 vec4 result=radial();
@@ -565,15 +582,22 @@ ${FLOAT32_RATIONAL_SUM}
           // authored motion. SwiftShader's approximate sin can cross a 1/16-pixel
           // sampling boundary even when the source double is on the other side.
           const offsets = this.device.surface(1, dst.height, true);
-          const values = new Float32Array(dst.height * 4);
-          for (let y = 0; y < dst.height; y++)
-            values[y * 4] =
-              Math.sin(
-                (y / (p.wavelength as number)) * Math.PI * 2 +
-                  (p.phase as number),
-              ) * (p.amount as number);
           try {
-            this.device.uploadFloats(offsets, values);
+            const values = allocateRenderPixels(
+              dst.height * 16,
+              () => new Float32Array(dst.height * 4),
+            );
+            for (let y = 0; y < dst.height; y++)
+              values[y * 4] =
+                Math.sin(
+                  (y / (p.wavelength as number)) * Math.PI * 2 +
+                    (p.phase as number),
+                ) * (p.amount as number);
+            try {
+              this.device.uploadFloats(offsets, values);
+            } finally {
+              releaseRenderPixels(values);
+            }
             this.replace(
               dst,
               `${HORIZONTAL_SAMPLE}

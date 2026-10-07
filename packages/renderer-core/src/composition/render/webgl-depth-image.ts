@@ -1,3 +1,9 @@
+import {
+  allocateRenderPixels,
+  createRenderStorage,
+  releaseRenderPixels,
+  releaseRenderStorage,
+} from "../../managed-memory-context.ts";
 import { coverFit, PREVIEW_LIMITS } from "../../scene.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import type { CanvasImageResources } from "./canvas2d.ts";
@@ -186,7 +192,10 @@ void main() {
 export function depthImageGrid() {
   const columns = PREVIEW_LIMITS.gridColumns,
     rows = PREVIEW_LIMITS.gridRows;
-  const vertices = new Float32Array((columns + 1) * (rows + 1) * 4);
+  const vertices = allocateRenderPixels(
+    (columns + 1) * (rows + 1) * 16,
+    () => new Float32Array((columns + 1) * (rows + 1) * 4),
+  );
   for (let y = 0; y <= rows; y++)
     for (let x = 0; x <= columns; x++)
       vertices.set(
@@ -198,14 +207,22 @@ export function depthImageGrid() {
         ],
         (y * (columns + 1) + x) * 4,
       );
-  const indices = new Uint16Array(columns * rows * 6);
-  for (let y = 0; y < rows; y++)
-    for (let x = 0; x < columns; x++) {
-      const a = x + (columns + 1) * y,
-        b = a + columns + 1;
-      indices.set([a, b, a + 1, b, b + 1, a + 1], (y * columns + x) * 6);
-    }
-  return { vertices, indices };
+  try {
+    const indices = allocateRenderPixels(
+      columns * rows * 12,
+      () => new Uint16Array(columns * rows * 6),
+    );
+    for (let y = 0; y < rows; y++)
+      for (let x = 0; x < columns; x++) {
+        const a = x + (columns + 1) * y,
+          b = a + columns + 1;
+        indices.set([a, b, a + 1, b, b + 1, a + 1], (y * columns + x) * 6);
+      }
+    return { vertices, indices };
+  } catch (error) {
+    releaseRenderPixels(vertices);
+    throw error;
+  }
 }
 
 type Multisample = {
@@ -218,9 +235,9 @@ type Multisample = {
 /** Layer-local GPU content, owned by the shared composition device. */
 export class WebglDepthImages {
   private program: WebGLProgram | undefined;
-  private vao?: WebGLVertexArrayObject;
-  private vertex?: WebGLBuffer;
-  private index?: WebGLBuffer;
+  private vao: WebGLVertexArrayObject | undefined;
+  private vertex: WebGLBuffer | undefined;
+  private index: WebGLBuffer | undefined;
   private readonly textures = new Map<string, WebGLTexture>();
   private textureBytes = 0;
   private readonly textureSizes = new Map<string, number>();
@@ -271,54 +288,80 @@ export class WebglDepthImages {
         );
       this.program = program;
       this.vao = gl.createVertexArray()!;
-      this.vertex = gl.createBuffer()!;
-      this.index = gl.createBuffer()!;
       gl.bindVertexArray(this.vao);
-      if (software) {
-        const { vertices, indices } = depthImageGrid();
-        this.count = indices.length;
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex);
-        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-        gl.enableVertexAttribArray(0);
-        gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 16, 0);
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-      } else {
-        const grid = depthImageGrid();
-        const indices = new Uint16Array(grid.indices.length);
-        const vertices = new Float32Array(indices.length * 16);
-        for (let start = 0; start < indices.length; start += 3) {
-          const triangle = [0, 1, 2].map((corner) => {
-            const offset = grid.indices[start + corner]! * 4;
-            return grid.vertices.subarray(offset, offset + 4);
-          });
-          for (let corner = 0; corner < 3; corner++) {
-            const index = start + corner;
-            indices[index] = index;
-            vertices.set(triangle[corner]!, index * 16);
-            for (let other = 0; other < 3; other++)
-              vertices.set(triangle[other]!, index * 16 + 4 + other * 4);
+      const grid = depthImageGrid();
+      let vertices = grid.vertices;
+      let indices = grid.indices;
+      try {
+        if (!software) {
+          indices = allocateRenderPixels(
+            grid.indices.length * 2,
+            () => new Uint16Array(grid.indices.length),
+          );
+          vertices = allocateRenderPixels(
+            indices.length * 16 * 4,
+            () => new Float32Array(indices.length * 16),
+          );
+          for (let start = 0; start < indices.length; start += 3) {
+            const triangle = [0, 1, 2].map((corner) => {
+              const offset = grid.indices[start + corner]! * 4;
+              return grid.vertices.subarray(offset, offset + 4);
+            });
+            for (let corner = 0; corner < 3; corner++) {
+              const index = start + corner;
+              indices[index] = index;
+              vertices.set(triangle[corner]!, index * 16);
+              for (let other = 0; other < 3; other++)
+                vertices.set(triangle[other]!, index * 16 + 4 + other * 4);
+            }
           }
         }
         this.count = indices.length;
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex);
-        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-        for (let attribute = 0; attribute < 4; attribute++) {
+        this.vertex = createRenderStorage(
+          vertices.byteLength,
+          () => gl.createBuffer(),
+          (buffer) => {
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+          },
+          (buffer) => gl.deleteBuffer(buffer),
+        );
+        for (let attribute = 0; attribute < (software ? 1 : 4); attribute++) {
           gl.enableVertexAttribArray(attribute);
           gl.vertexAttribPointer(
             attribute,
             4,
             gl.FLOAT,
             false,
-            64,
+            software ? 16 : 64,
             attribute * 16,
           );
         }
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+        this.index = createRenderStorage(
+          indices.byteLength,
+          () => gl.createBuffer(),
+          (buffer) => {
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+          },
+          (buffer) => gl.deleteBuffer(buffer),
+        );
+      } finally {
+        releaseRenderPixels(vertices);
+        releaseRenderPixels(indices);
+        releaseRenderPixels(grid.vertices);
+        releaseRenderPixels(grid.indices);
       }
     } catch (error) {
       gl.deleteProgram(program);
+      if (this.vertex)
+        releaseRenderStorage(this.vertex, (value) => gl.deleteBuffer(value));
+      if (this.index)
+        releaseRenderStorage(this.index, (value) => gl.deleteBuffer(value));
+      if (this.vao) gl.deleteVertexArray(this.vao);
+      this.vertex = undefined;
+      this.index = undefined;
+      this.vao = undefined;
       this.program = undefined;
       throw error;
     } finally {
@@ -350,44 +393,48 @@ export class WebglDepthImages {
         "Depth-image source exceeds this device's texture limit",
         { node },
       );
-    const texture = gl.createTexture()!;
-    try {
-      gl.bindTexture(gl.TEXTURE_2D, texture);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
-      gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
-      gl.texImage2D(
-        gl.TEXTURE_2D,
-        0,
-        color ? gl.SRGB8_ALPHA8 : gl.RGBA8,
-        gl.RGBA,
-        gl.UNSIGNED_BYTE,
-        image as TexImageSource,
+    const bytes = size[0] * size[1] * 4;
+    // Release cache storage before admitting another immutable source texture.
+    while (
+      this.textures.size &&
+      (this.textures.size >= 64 ||
+        this.textureBytes + bytes > IMAGE_PLANE_BYTE_LIMIT)
+    ) {
+      const oldest = this.textures.keys().next().value!;
+      releaseRenderStorage(this.textures.get(oldest)!, (value) =>
+        gl.deleteTexture(value),
       );
-      const bytes = size[0] * size[1] * 4;
-      // A bounded asset cache; evictions are recreated from immutable verified bytes.
-      while (
-        this.textures.size >= 64 ||
-        this.textureBytes + bytes > IMAGE_PLANE_BYTE_LIMIT
-      ) {
-        const oldest = this.textures.keys().next().value!;
-        gl.deleteTexture(this.textures.get(oldest)!);
-        this.textures.delete(oldest);
-        this.textureBytes -= this.textureSizes.get(oldest)!;
-        this.textureSizes.delete(oldest);
-      }
-      this.textures.set(key, texture);
-      this.textureSizes.set(key, bytes);
-      this.textureBytes += bytes;
-      return texture;
-    } catch (error) {
-      gl.deleteTexture(texture);
-      throw error;
+      this.textures.delete(oldest);
+      this.textureBytes -= this.textureSizes.get(oldest)!;
+      this.textureSizes.delete(oldest);
     }
+    const texture = createRenderStorage(
+      bytes,
+      () => gl.createTexture(),
+      (texture) => {
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+        gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
+        gl.texImage2D(
+          gl.TEXTURE_2D,
+          0,
+          color ? gl.SRGB8_ALPHA8 : gl.RGBA8,
+          gl.RGBA,
+          gl.UNSIGNED_BYTE,
+          image as TexImageSource,
+        );
+      },
+      (texture) => gl.deleteTexture(texture),
+    );
+    this.textures.set(key, texture);
+    this.textureSizes.set(key, bytes);
+    this.textureBytes += bytes;
+    return texture;
   }
 
   private antialias(width: number, height: number, node: string) {
@@ -396,7 +443,9 @@ export class WebglDepthImages {
       return this.multisample;
     if (this.multisample) {
       gl.deleteFramebuffer(this.multisample.framebuffer);
-      gl.deleteRenderbuffer(this.multisample.color);
+      releaseRenderStorage(this.multisample.color, (value) =>
+        gl.deleteRenderbuffer(value),
+      );
       this.multisample = undefined;
     }
     const samples = gl.getInternalformatParameter(
@@ -410,34 +459,53 @@ export class WebglDepthImages {
         "Depth-image parity requires four-sample local antialiasing",
         { node },
       );
-    const framebuffer = gl.createFramebuffer()!,
-      color = gl.createRenderbuffer()!;
+    let framebuffer: WebGLFramebuffer | undefined;
+    let color: WebGLRenderbuffer | undefined;
     try {
-      gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-      gl.bindRenderbuffer(gl.RENDERBUFFER, color);
-      gl.renderbufferStorageMultisample(
-        gl.RENDERBUFFER,
-        4,
-        gl.RGBA8,
+      color = createRenderStorage(
+        width * height * 4 * 4,
+        () => gl.createRenderbuffer(),
+        (color) => {
+          framebuffer = gl.createFramebuffer() ?? undefined;
+          if (!framebuffer)
+            throw Error("Native render framebuffer creation failed");
+          gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+          gl.bindRenderbuffer(gl.RENDERBUFFER, color);
+          gl.renderbufferStorageMultisample(
+            gl.RENDERBUFFER,
+            4,
+            gl.RGBA8,
+            width,
+            height,
+          );
+          gl.framebufferRenderbuffer(
+            gl.FRAMEBUFFER,
+            gl.COLOR_ATTACHMENT0,
+            gl.RENDERBUFFER,
+            color,
+          );
+          if (
+            gl.checkFramebufferStatus(gl.FRAMEBUFFER) !==
+            gl.FRAMEBUFFER_COMPLETE
+          )
+            passageError(
+              "comp-feature-backend",
+              "Depth-image antialias surface is incomplete",
+              { node },
+            );
+        },
+        (color) => gl.deleteRenderbuffer(color),
+      );
+      return (this.multisample = {
+        framebuffer: framebuffer!,
+        color,
         width,
         height,
-      );
-      gl.framebufferRenderbuffer(
-        gl.FRAMEBUFFER,
-        gl.COLOR_ATTACHMENT0,
-        gl.RENDERBUFFER,
-        color,
-      );
-      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE)
-        passageError(
-          "comp-feature-backend",
-          "Depth-image antialias surface is incomplete",
-          { node },
-        );
-      return (this.multisample = { framebuffer, color, width, height });
+      });
     } catch (error) {
-      gl.deleteFramebuffer(framebuffer);
-      gl.deleteRenderbuffer(color);
+      if (framebuffer) gl.deleteFramebuffer(framebuffer);
+      if (color)
+        releaseRenderStorage(color, (value) => gl.deleteRenderbuffer(value));
       throw error;
     }
   }
@@ -660,20 +728,28 @@ export class WebglDepthImages {
 
   dispose() {
     const gl = this.device.gl;
-    for (const texture of this.textures.values()) gl.deleteTexture(texture);
+    for (const texture of this.textures.values())
+      releaseRenderStorage(texture, (value) => gl.deleteTexture(value));
     this.textures.clear();
     this.textureSizes.clear();
     this.textureBytes = 0;
     this.locations.clear();
     if (this.multisample) {
       gl.deleteFramebuffer(this.multisample.framebuffer);
-      gl.deleteRenderbuffer(this.multisample.color);
+      releaseRenderStorage(this.multisample.color, (value) =>
+        gl.deleteRenderbuffer(value),
+      );
       this.multisample = undefined;
     }
-    if (this.vertex) gl.deleteBuffer(this.vertex);
-    if (this.index) gl.deleteBuffer(this.index);
+    if (this.vertex)
+      releaseRenderStorage(this.vertex, (value) => gl.deleteBuffer(value));
+    if (this.index)
+      releaseRenderStorage(this.index, (value) => gl.deleteBuffer(value));
     if (this.vao) gl.deleteVertexArray(this.vao);
     if (this.program) gl.deleteProgram(this.program);
     this.program = undefined;
+    this.vertex = undefined;
+    this.index = undefined;
+    this.vao = undefined;
   }
 }

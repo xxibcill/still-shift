@@ -1,6 +1,7 @@
 import {
   allocateRenderPixels,
   readRenderImageData,
+  releaseRenderPixels,
 } from "../../managed-memory-context.ts";
 import { imagePlacement, type Matrix } from "../../node-transform.ts";
 import type { Canvas2dBackend, CanvasImageResources } from "./canvas2d.ts";
@@ -83,11 +84,11 @@ export class WebglPngImages {
         readRenderImageData(pixels.ctx, 0, 0, 3, height),
         readRenderImageData(pixels.ctx, width - 3, 0, 3, height),
       ];
-      if (
-        edges.some(({ data }) =>
-          data.some((value, i) => i % 4 === 3 && value !== 0),
-        )
-      ) {
+      const unsupported = edges.some(({ data }) =>
+        data.some((value, i) => i % 4 === 3 && value !== 0),
+      );
+      for (const edge of edges) releaseRenderPixels(edge.data);
+      if (unsupported) {
         if (this.unsupported.size >= 1024)
           this.unsupported.delete(this.unsupported.values().next().value!);
         this.unsupported.add(key);
@@ -244,14 +245,25 @@ export class WebglPngImages {
   ) {
     const length = Math.max(dst.width, dst.height);
     if (this.control?.surface.width !== length) {
-      if (this.control) this.device.release(this.control.surface);
-      this.control = {
-        surface: this.device.surface(length, 1, true),
-        values: allocateRenderPixels(
-          length * 4 * 4,
-          () => new Float32Array(length * 4),
-        ),
-      };
+      if (this.control) {
+        this.device.release(this.control.surface);
+        releaseRenderPixels(this.control.values);
+        this.control = undefined;
+      }
+      const surface = this.device.surface(length, 1, true);
+      try {
+        this.control = {
+          surface,
+          values: allocateRenderPixels(
+            length * 16,
+            () => new Float32Array(length * 4),
+            true,
+          ),
+        };
+      } catch (error) {
+        this.device.release(surface);
+        throw error;
+      }
     }
     const { surface, values } = this.control;
     const start = Math.max(0, Math.floor(left + 0.5));
@@ -269,7 +281,10 @@ export class WebglPngImages {
   dispose() {
     for (const key of this.sources.keys()) this.forget(key);
     this.unsupported.clear();
-    if (this.control) this.device.release(this.control.surface);
+    if (this.control) {
+      this.device.release(this.control.surface);
+      releaseRenderPixels(this.control.values);
+    }
     this.control = undefined;
   }
 }
