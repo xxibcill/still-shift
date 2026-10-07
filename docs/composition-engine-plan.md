@@ -4133,8 +4133,13 @@ lighting/camera, alpha, seeks, independent/repeated exports, hardware and real
 inspector pass; all 176 frozen items / 36,061 frames match without regeneration.
 Cache identities are E49 / Canvas 1.41.1 / WebGL 0.56.1 / export 0.6.5.
 This is focused follow-up evidence, with no new full `pnpm check` or performance
-acceptance. Review leaves two P2 findings open: receiving-toggle keyboard focus
-and implicit XYZ light Z reference dependencies. Owner repair/merge remain.
+acceptance. The original two P2 findings were posted inline and repaired separately:
+`009ae7d` completes implicit XYZ light dependencies; the following repair preserves
+receiving-toggle keyboard focus. Evaluator identity advances to E50. Final fast
+checks pass 2,322 units; affected lighting/inspector/WebGL export browsers and all
+176 frozen items / 36,061 frames pass without regeneration. Independent Standards
+and Spec audits have no remaining findings. Owner review/merge remain.
+[Repair evidence](./pr-44-fix-results.json).
 [Resolution evidence](./pr-44-conflict-resolution-results.json),
 [review evidence](./pr-44-review-results.json).
 

@@ -197,14 +197,19 @@ export function createCompositionInspector(options: {
           const toggle = button(
             `Receive light: ${receiving ? "on" : "off"}`,
             () => {
+              const restoreFocus = restoreLayerFocus(toggle);
               void submit("Change light receiving", (draft) => {
                 (readJsonPath(draft, path) as CompositionLayer).receivesLight =
                   !receiving;
-              });
+              }).then(restoreFocus);
             },
           );
           toggle.setAttribute("aria-pressed", String(receiving));
           toggle.dataset.control = "receives-light";
+          toggle.dataset.layerControl = JSON.stringify([
+            path,
+            "receives-light",
+          ]);
           row.append(toggle);
         }
         const bar = documentNode("div", "");

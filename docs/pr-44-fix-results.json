@@ -3,13 +3,13 @@
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/44",
   "reviewedHead": "5b233c8903ac64b5c06f2194cc8e13ec6a99bb78",
   "reviewId": 5447098396,
-  "status": "XYZ repair verified; focus repair pending; no push yet",
+  "status": "Both inline findings repaired and verified; this record is included in the second finding commit before one final normal push.",
   "commitPolicy": "One finding per commit; normal push after the final repair commit.",
   "findings": {
     "xyz": {
       "commentId": 4210916475,
       "url": "https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916475",
-      "status": "fixed and verified in the commit containing this record",
+      "status": "fixed and verified",
       "behavior": "Implicit ambient, point and spot lights inherit Z references through their expression-stage anchor, independently of authored layer order and seek history; cycles reject and written references retain precedence.",
       "evaluatorVersion": "composition-evaluator-50",
       "regressions": {
@@ -71,12 +71,35 @@
             "exportParity": "byte-identical implicit/explicit/repeat/raw"
           }
         ]
-      }
+      },
+      "commit": "009ae7dbfa4c10f3db331a95d8747fe68401ede7"
     },
     "focus": {
       "commentId": 4210916490,
       "url": "https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916490",
-      "status": "pending dedicated repair commit"
+      "status": "fixed and verified in the commit containing this record",
+      "behavior": "Receive light keeps keyboard focus through accepted and rejected edits using the existing stable layer-control identity and guarded restoration; deliberately moved focus is preserved.",
+      "regressions": {
+        "before": "The permanent browser regression fails on the original control because keyboard Space activation loses focus.",
+        "after": {
+          "acceptedToggles": 4,
+          "rejectedToggle": "focus retained",
+          "movedFocus": "not stolen",
+          "errors": []
+        },
+        "finalNativeInspector": {
+          "receiverToggle": "source/undo/redo/save",
+          "lightTracks": ["XYZ", "color", "intensity", "innerCone"],
+          "intensityEdit": 0.75,
+          "focus": {
+            "acceptedToggles": 4,
+            "rejectedToggle": "focus retained",
+            "movedFocus": "not stolen",
+            "errors": []
+          },
+          "errors": []
+        }
+      }
     }
   },
   "verification": {
@@ -95,7 +118,8 @@
         "exitCode": 1,
         "seconds": 1.1,
         "log": "/private/tmp/pr44-fix-xyz-red.log",
-        "logSha256": "a95a6e10e16e12fd90a9f4374518cc5eb110c604057aabc2d080b743859ceb02"
+        "logSha256": "a95a6e10e16e12fd90a9f4374518cc5eb110c604057aabc2d080b743859ceb02",
+        "classification": "expected failure before repair"
       },
       {
         "label": "fix-toolchain",
@@ -103,7 +127,8 @@
         "exitCode": 0,
         "seconds": 0.68,
         "log": "/private/tmp/pr44-fix-toolchain.log",
-        "logSha256": "a376131c40425d2d875db58a88463e8fc469aa207c861242109ed740b94f8bc8"
+        "logSha256": "a376131c40425d2d875db58a88463e8fc469aa207c861242109ed740b94f8bc8",
+        "classification": "passed"
       },
       {
         "label": "fix-vite",
@@ -116,7 +141,8 @@
         "exitCode": 0,
         "seconds": 0.57,
         "log": "/private/tmp/pr44-fix-vite.log",
-        "logSha256": "e900665a5494d0fc73dacad5cadbe5b2bd1cfbd8bd4757b086b13047846063a8"
+        "logSha256": "e900665a5494d0fc73dacad5cadbe5b2bd1cfbd8bd4757b086b13047846063a8",
+        "classification": "passed"
       },
       {
         "label": "fix-xyz-browser-red",
@@ -124,7 +150,8 @@
         "exitCode": 1,
         "seconds": 3.51,
         "log": "/private/tmp/pr44-fix-xyz-browser-red.log",
-        "logSha256": "1d9facad3ad00647eab13cf44999c8d0ded7ae871cea03ff15174c5dbd56fbbe"
+        "logSha256": "1d9facad3ad00647eab13cf44999c8d0ded7ae871cea03ff15174c5dbd56fbbe",
+        "classification": "expected failure before repair"
       },
       {
         "label": "fix-xyz-focused",
@@ -145,7 +172,8 @@
         "exitCode": 0,
         "seconds": 1.7,
         "log": "/private/tmp/pr44-fix-xyz-focused.log",
-        "logSha256": "b442c15c4013edcee2314c17990f9593769d820a381625c0f5b62f08ab6331ab"
+        "logSha256": "b442c15c4013edcee2314c17990f9593769d820a381625c0f5b62f08ab6331ab",
+        "classification": "passed"
       },
       {
         "label": "fix-xyz-build",
@@ -153,7 +181,8 @@
         "exitCode": 0,
         "seconds": 6.54,
         "log": "/private/tmp/pr44-fix-xyz-build.log",
-        "logSha256": "b8a845b712b2c16819c0973efa38049bcace5f4276f0e00140964365fe05c333"
+        "logSha256": "b8a845b712b2c16819c0973efa38049bcace5f4276f0e00140964365fe05c333",
+        "classification": "passed"
       },
       {
         "label": "fix-xyz-lint",
@@ -170,7 +199,8 @@
         "exitCode": 0,
         "seconds": 0.79,
         "log": "/private/tmp/pr44-fix-xyz-lint.log",
-        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "classification": "passed"
       },
       {
         "label": "fix-xyz-native",
@@ -183,10 +213,218 @@
         "exitCode": 0,
         "seconds": 31.89,
         "log": "/private/tmp/pr44-fix-xyz-native.log",
-        "logSha256": "abcd108fab269f20fbb5b406f58efea6330466630235761a911d660a547d1111"
+        "logSha256": "abcd108fab269f20fbb5b406f58efea6330466630235761a911d660a547d1111",
+        "classification": "passed"
+      },
+      {
+        "label": "fix-focus-red",
+        "command": [
+          "pnpm",
+          "exec",
+          "tsx",
+          "benchmarks/results/pr44-fixes/focus.ts"
+        ],
+        "exitCode": 1,
+        "seconds": 2.67,
+        "log": "/private/tmp/pr44-fix-focus-red.log",
+        "logSha256": "0148bfe06047897ca589d7c2cd838ae363f43dcb7e5dac8849223be1f1694325",
+        "classification": "expected failure before repair"
+      },
+      {
+        "label": "fix-focus-green",
+        "command": [
+          "pnpm",
+          "exec",
+          "tsx",
+          "benchmarks/results/pr44-fixes/focus.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 2.3,
+        "log": "/private/tmp/pr44-fix-focus-green.log",
+        "logSha256": "efab4169726c1034c70fa1a9402a24682c9ed03665cd2191d6b07d8de1dee9d0",
+        "classification": "passed"
+      },
+      {
+        "label": "fix-focus-build",
+        "command": ["pnpm", "build"],
+        "exitCode": 0,
+        "seconds": 5.51,
+        "log": "/private/tmp/pr44-fix-focus-build.log",
+        "logSha256": "b8a845b712b2c16819c0973efa38049bcace5f4276f0e00140964365fe05c333",
+        "classification": "passed"
+      },
+      {
+        "label": "fix-focus-lint",
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "apps/lab/src/composition-inspector.ts",
+          "tests/browser/lighting-focus.ts",
+          "tests/browser/lighting-inspector.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 0.71,
+        "log": "/private/tmp/pr44-fix-focus-lint.log",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "classification": "passed"
+      },
+      {
+        "label": "fix-final-fast",
+        "command": ["pnpm", "check:fast"],
+        "exitCode": 0,
+        "seconds": 50.7,
+        "log": "/private/tmp/pr44-fix-final-fast.log",
+        "logSha256": "f84d0d693a6b8cfbbfd53c3e6aa91ace3046dd39eecd4a07c30edbf13206f2fd",
+        "classification": "passed"
+      },
+      {
+        "label": "fix-final-lighting",
+        "command": ["pnpm", "test:browser:composition-lighting"],
+        "exitCode": 0,
+        "seconds": 121.88,
+        "log": "/private/tmp/pr44-fix-final-lighting.log",
+        "logSha256": "1b0be26c147e4526a129192fe8c5b41d69f4f8b142733a0dd3e97335e92f3383",
+        "classification": "passed"
+      },
+      {
+        "label": "fix-final-inspector",
+        "command": ["pnpm", "test:browser:composition-inspector"],
+        "exitCode": 0,
+        "seconds": 13.89,
+        "log": "/private/tmp/pr44-fix-final-inspector.log",
+        "logSha256": "5ab3ffdaf62049eb79033d425e33837fc0acf0f4316d6dc0ff83ac1078ce4132",
+        "classification": "passed"
+      },
+      {
+        "label": "fix-final-webgl-export",
+        "command": ["pnpm", "test:browser:composition-webgl-export"],
+        "exitCode": 0,
+        "seconds": 29.82,
+        "log": "/private/tmp/pr44-fix-final-webgl-export.log",
+        "logSha256": "ba8954e0e6d68e2293aeef0a0f3c0460cfd564f5dc911b61745d4109ad968c29",
+        "classification": "passed"
+      },
+      {
+        "label": "fix-final-baselines",
+        "command": ["pnpm", "test:browser:composition-baselines"],
+        "exitCode": 0,
+        "seconds": 277.95,
+        "log": "/private/tmp/pr44-fix-final-baselines.log",
+        "logSha256": "99cbd1d50a5e1f743b59f26c728acba3181a93ee10130803b38fdcf520f64f57",
+        "classification": "passed"
       }
     ],
-    "fullPnpmCheckRun": false
+    "fullPnpmCheckRun": false,
+    "finalCode": {
+      "unitTests": 2322,
+      "unitFiles": 211,
+      "lighting": {
+        "fixtures": 13,
+        "forward": 480,
+        "reverse": 480,
+        "seeks": 135,
+        "transparentFrames": 416,
+        "alpha": "exact",
+        "productionRepeatRawExports": 45,
+        "independentPreviewExports": 15,
+        "lightingBaseline": "exact",
+        "dependencyCases": [
+          {
+            "lightType": "ambient",
+            "lightFirst": false,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          },
+          {
+            "lightType": "ambient",
+            "lightFirst": true,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          },
+          {
+            "lightType": "point",
+            "lightFirst": false,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          },
+          {
+            "lightType": "point",
+            "lightFirst": true,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          },
+          {
+            "lightType": "spot",
+            "lightFirst": false,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          },
+          {
+            "lightType": "spot",
+            "lightFirst": true,
+            "previewFrames": 40,
+            "pixelParity": "exact against explicit XYZ",
+            "exports": 4,
+            "exportFrames": 32,
+            "exportParity": "byte-identical implicit/explicit/repeat/raw"
+          }
+        ],
+        "hardware": {
+          "comparisons": 45,
+          "exact": 43,
+          "near": 2,
+          "policy": "unchanged perceptual hardware policy"
+        },
+        "canvasPreflightRetentionCases": 4,
+        "inspector": {
+          "receiverToggle": "source/undo/redo/save",
+          "lightTracks": ["XYZ", "color", "intensity", "innerCone"],
+          "intensityEdit": 0.75,
+          "focus": {
+            "acceptedToggles": 4,
+            "rejectedToggle": "focus retained",
+            "movedFocus": "not stolen",
+            "errors": []
+          },
+          "errors": []
+        }
+      },
+      "generalInspector": "passed desktop/mobile editing, save and export regressions",
+      "webglExport": "passed all four fixtures: production, repeated, raw/PNG, preview and Lab parity",
+      "frozenBaselines": {
+        "items": 176,
+        "frames": 36061,
+        "regenerated": false
+      },
+      "sourceFingerprint": {
+        "before": {
+          "sha256": "8d0a3c938834212592171314efcbc524993177c305b67b3705cc60c818413f03",
+          "fileCount": 1767
+        },
+        "after": {
+          "sha256": "8d0a3c938834212592171314efcbc524993177c305b67b3705cc60c818413f03",
+          "fileCount": 1767
+        },
+        "unchanged": true,
+        "includes": "All tracked and nonignored source, fixtures and visual references, excluding docs/AGENTS/README/ROADMAP."
+      }
+    }
   },
   "environment": {
     "node": "22.23.1",
@@ -194,5 +432,17 @@
     "python": "3.12.11",
     "isolation": "Retained isolated worktree-local dependencies, Python environment/UV cache and separately owned Vite caches; preflight repeated successfully."
   },
-  "githubActionsEnabled": false
+  "githubActionsEnabled": false,
+  "finalIndependentReview": {
+    "standards": {
+      "actionableFindings": 0,
+      "hardViolations": 0,
+      "meaningfulBaselineSmells": 0
+    },
+    "spec": {
+      "actionableFindings": 0,
+      "scopeCreep": []
+    },
+    "method": "Independent read-only repair audit against reviewed 5b233c8, with a pure evaluator reproduction; browser workloads remained serial."
+  }
 }

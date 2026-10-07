@@ -4,7 +4,7 @@
   "base": "e97dacbced3c23507c88b2a62eeaf221a850c3d5",
   "reviewedCodeCheckpoint": "3640c69d3a9cc8bdc74b87f62ae263c05e8c5fa2",
   "diffCommand": "git diff e97dacbced3c23507c88b2a62eeaf221a850c3d5...3640c69d3a9cc8bdc74b87f62ae263c05e8c5fa2",
-  "status": "historical review findings posted inline; dedicated follow-up repairs in progress",
+  "status": "Historical findings posted inline; both dedicated follow-up repairs are verified.",
   "method": "Independent Standards and Spec sub-agents under code-review skill; root verified both reproductions on pinned Node 22.23.1/Chromium and inspected the final source repair.",
   "standards": {
     "hardViolations": 0,
@@ -151,6 +151,13 @@
       "xyz": "https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916475",
       "focus": "https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916490"
     },
-    "evidence": "docs/pr-44-fix-results.json"
+    "evidence": "docs/pr-44-fix-results.json",
+    "status": "both findings fixed and verified; one finding per commit",
+    "xyzCommit": "009ae7dbfa4c10f3db331a95d8747fe68401ede7",
+    "focusCommit": "commit containing docs/pr-44-fix-results.json final verification",
+    "remainingFindings": {
+      "standards": 0,
+      "spec": 0
+    }
   }
 }

@@ -43,14 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #44 review repairs (2026-10-08):** both P2 findings are posted inline
-  on reviewed `5b233c8`. The implicit XYZ light dependency repair is complete:
-  evaluator 50, fresh-stage/order/seek/cycle regressions, native pixels and
-  production/control/repeat/raw exports. The receiving-toggle keyboard focus
-  repair is next. One finding per commit; both commits will be pushed together
-  after final focused checks. Full `pnpm check` is not required for this scoped
-  follow-up. Owner checkout is untouched and Actions remain disabled.
-  [Repair evidence](./pr-44-fix-results.json).
+- **PR #44 review repairs verified (2026-10-08):** both P2 findings are posted
+  inline on reviewed `5b233c8` and repaired one per commit: `009ae7d` resolves
+  implicit XYZ light references with evaluator 50; the commit containing this entry
+  preserves receiving-toggle keyboard focus through accepted/rejected edits and
+  respects deliberately moved focus. Final fast checks pass 2,322 units; lighting,
+  inspector and WebGL exports pass; all 176 frozen items / 36,061 frames match
+  without regeneration. Independent Standards and Spec audits have no remaining
+  findings. One normal push follows the second commit; owner review/merge remain.
+  No new full `pnpm check` or performance gate is claimed. Owner checkout is
+  untouched and Actions remain disabled. [Repair evidence](./pr-44-fix-results.json).
 
 - **PR #44 conflict resolution and review (2026-10-08):** isolated managed
   `pr44-review` integrates `main` at `e97dacbc` into lighting head `e1bd4bc`.
@@ -62,7 +64,7 @@ still hold before relying on them.
   The original review found one Standards usability P2 (receiving-toggle keyboard
   focus) and one Spec P2 (implicit XYZ light Z reference dependencies).
   Current repair progress is tracked above.
-  PR #44 remains open for owner repair/merge. No new full repository
+  PR #44 remains open for owner review/merge. No new full repository
   gate or performance acceptance is claimed. CE6-P stays deferred and Actions disabled.
   [Resolution](./pr-44-conflict-resolution-results.json),
   [review](./pr-44-review-results.json).
@@ -155,7 +157,7 @@ still hold before relying on them.
   Serial 1080p costs are recorded. Earlier oracle/inspector failures and the first full-gate timing failure remain
   in the evidence. Serial profiles passed; the complete gate was rerun from the
   start under unchanged assertions. No source output or tolerance was changed.
-  [PR #44](https://github.com/xxibcill/still-shift/pull/44) is open and attached against CE8.
+  [PR #44](https://github.com/xxibcill/still-shift/pull/44) is open and attached against `main`; conflict resolution and review repairs are tracked above.
   CE4c starts next on its own branch. CE6-P/CE8-L-F
   remain separate future work. No owner decision is pending.
   [Evidence](./composition-ce8-lighting-results.json).
@@ -824,9 +826,24 @@ still hold before relying on them.
   must not use TypeScript constructor parameter properties: Node's strip-only mode
   rejects them and five Lab integration suites fail.
 
-_Last updated 2026-10-08 by Codex for PR #43 review repairs._
+_Last updated 2026-10-08 by Codex for PR #44 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #44 receiving-toggle focus repair and final verification
+
+- **Agent / branch:** Codex on isolated `codex/pr44-conflict-review` after `009ae7d`.
+- **Done:** give Receive light a stable control identity and reuse guarded focus
+  restoration; keep this finding separate from the XYZ dependency commit.
+- **Results:** the original-code keyboard regression fails; repeated Space/Enter,
+  rejected edits and deliberately moved focus pass after repair. Final fast checks
+  pass 2,322 units; native lighting, inspector and WebGL exports pass. All 176 frozen
+  items / 36,061 frames and the final source fingerprint remain unchanged.
+- **Review / next:** independent Standards and Spec audits report no remaining
+  findings. Push both repair commits together after this commit; owner review/merge
+  remain. No full repository gate, performance rerun or Actions.
+- **Records:** [Repair evidence](./pr-44-fix-results.json),
+  [finding](https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916490).
 
 ### 2026-10-08 — PR #44 implicit XYZ light dependency repair
 
