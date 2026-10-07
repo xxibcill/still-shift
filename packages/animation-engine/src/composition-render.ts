@@ -40,6 +40,7 @@ export async function loadComposition(
     scene: {
       ...compositionScene(source.composition, backend),
       ...(source.preparedMedia ? { preparedMedia: source.preparedMedia } : {}),
+      ...(source.preparedAudio ? { preparedAudio: source.preparedAudio } : {}),
     },
   };
 }
@@ -128,6 +129,16 @@ export async function renderComposition(request: {
     sourcePath: loaded.sourcePath,
     depthPath: null,
     assetPaths: loaded.assetPaths,
+    ...(loaded.preparedAudio
+      ? {
+          audioInput: {
+            path: loaded.assetPaths[loaded.preparedAudio.resource.id]!,
+            sha256: loaded.preparedAudio.resource.sha256,
+            byteLength: loaded.preparedAudio.resource.byteLength,
+            sampleCount: loaded.preparedAudio.sampleCount,
+          },
+        }
+      : {}),
     outputPath,
     sceneManifestContents: manifestBytes,
     transport: request.transport ?? "png_pipe",

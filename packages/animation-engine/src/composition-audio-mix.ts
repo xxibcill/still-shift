@@ -503,6 +503,8 @@ export async function prepareCompositionAudio(
         schemaVersion: "composition-prepared-audio-1",
         decoderVersion: COMPOSITION_AUDIO_DECODER_VERSION,
         mixerVersion: COMPOSITION_AUDIO_MIXER_VERSION,
+        evaluatorVersion: COMPOSITION_EVALUATOR_VERSION,
+        mappingHash: compositionMediaMappingIdentity(composition),
         sampleRate: 48000,
         channels: 2,
         sampleCount,

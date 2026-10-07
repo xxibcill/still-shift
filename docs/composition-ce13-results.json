@@ -4674,12 +4674,352 @@
           "sha256": "sha256:7fed05432a6155e58960977d727a2cd7111262e4d83b48ad56dfb9ddd8607d37"
         }
       ],
+      "fullGate": false,
+      "checkpoint": "e3c8065"
+    },
+    {
+      "slice": "native audio loading and transactional matching-audio production exports",
+      "sourceFingerprint": "sha256:d556fc31db9a295be76ad98995170096beee51826524cbbd5eabbfe70ccc699f",
+      "sourceFiles": [
+        "packages/animation-engine/src/composition-audio-mix.ts",
+        "packages/animation-engine/src/composition-audio-pcm.ts",
+        "packages/animation-engine/src/composition-media-audio.ts",
+        "packages/animation-engine/src/composition-media-cache-storage.ts",
+        "packages/animation-engine/src/composition-render.ts",
+        "packages/animation-engine/src/composition-source.ts",
+        "packages/execution-runtime/package.json",
+        "packages/execution-runtime/src/composition-pcm.ts",
+        "packages/execution-runtime/src/export-worker.ts",
+        "packages/renderer-core/src/composition/render/renderer.ts",
+        "packages/scene-contract/src/composition/audio.ts",
+        "tests/browser/composition-media-exports.ts",
+        "tests/helpers/composition-media-audio.ts",
+        "tests/integration/composition-media-source.test.ts",
+        "tools/still-shift-cli/src/composition/captured-assets.ts",
+        "tools/still-shift-cli/src/composition/draft-export.ts"
+      ],
+      "checks": {
+        "build": "pass",
+        "schema": "pass",
+        "boundaries": "pass",
+        "lint": "pass",
+        "format": "pass",
+        "unit": {
+          "exitCode": 0,
+          "passed": 2094,
+          "files": 208,
+          "seconds": 17.68
+        },
+        "runtimeAndMedia": {
+          "exitCode": 0,
+          "passed": 91,
+          "files": 14,
+          "seconds": 24.38
+        },
+        "audioLoader": {
+          "exitCode": 0,
+          "passed": 6,
+          "files": 1,
+          "seconds": 2.12
+        }
+      },
+      "versions": {
+        "exportWorker": "chromium-ffmpeg-0.6.7",
+        "audioMixer": "composition-audio-mixer-2",
+        "audioDecoder": "composition-audio-decoder-1",
+        "evaluator": "composition-evaluator-53"
+      },
+      "implemented": [
+        "actual audio accepted by read/loadComposition with verified complete master and source/processed/mix capture",
+        "captured __audio:mix WAV path separate from original audio binding; originals stay on disk for trusted draft edits",
+        "shared runtime finite/count/hash PCM verifier and canonical Float32 WAV header, reused by source/mixer/export",
+        "canonical authored mapping independent of object field order and physical media locations; audio capture pins mapping/evaluator versions to reject stale gain/source-clock captures",
+        "mixer2 invalidates prior capture format caches; audio decoder1 and sample processing behavior remain unchanged",
+        "export requires native complete master, validates snapshot/hash/header/count before encoding and after encoding",
+        "actual AAC mux runs inside existing MP4/scene/result atomic publication transaction; no post-publication mux",
+        "explicit source WAV or explicit same-file embedded audio asset; video alone never implicitly selects audio",
+        "native AAC uses48kHz stereo192kbps with48k movie timebase/edit list to preserve exact authored track duration; no-audio encoder arguments remain unchanged",
+        "export metrics record master identity and sample count; worker0.6.7 participates in delivery identity"
+      ],
+      "browserProofBeforeTransactionHelperExtension": {
+        "status": "passed",
+        "preparedKey": "sha256:9941e5f60996b3f0d823c1e25bf664dd066559e905a060c0c53e0874fb2cb403",
+        "cases": [
+          {
+            "colorSpace": "srgb",
+            "backend": "canvas2d",
+            "pixels": [
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
+            ],
+            "frameHashes": [
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "srgb",
+            "backend": "webgl2",
+            "pixels": [
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
+            ],
+            "frameHashes": [
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "backend": "canvas2d",
+            "pixels": [
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
+            ],
+            "frameHashes": [
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "backend": "webgl2",
+            "pixels": [
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
+            ],
+            "frameHashes": [
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          }
+        ],
+        "compare": [
+          {
+            "colorSpace": "srgb",
+            "maxDelta": 0,
+            "differing": 0
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "maxDelta": 0,
+            "differing": 0
+          }
+        ],
+        "pairBudget": "PassageError: Complete exposure/history frame set exceeds live decoded budget",
+        "gpu": {
+          "peakGpu": 30208,
+          "disposedGpu": 0,
+          "gpuBudget": "PassageError: Native image raster texture exceeds configured GPU cache bytes"
+        },
+        "exports": [
+          {
+            "source": "sequence",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit WAV asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          },
+          {
+            "source": "sequence",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit WAV asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          },
+          {
+            "source": "video",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit embedded PCM asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          },
+          {
+            "source": "video",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit embedded PCM asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          }
+        ],
+        "authoring": {
+          "newlyReferencedOriginal": 1,
+          "inspectorUndoRedo": "exact",
+          "savedReload": "exact",
+          "backendSwitch": "exact",
+          "draftExport": "byte-identical",
+          "playback": "last frame exact",
+          "fixturePreview": "exact",
+          "changedBindingsRejected": true,
+          "originalMediaNotServed": true,
+          "sequenceOriginalWatch": "changed bytes rejected; restored pixels exact"
+        }
+      },
+      "supplementalNativeTransactionProof": {
+        "proof": "native-audio-transaction",
+        "result": "post-mux cancellation and validation rejection publish no MP4/sidecars; stages removed"
+      },
+      "supplementalRecipe": {
+        "path": "/private/tmp/ce13-audio-transaction-recipe.ts",
+        "sha256": "sha256:72b23abc7836035ae90dbf8e4b6195836c1e19af703ee22a842a9c491c68ec0f"
+      },
+      "proofNote": "Mandatory native browser suite passed all four matching-audio cases and retained resource/authoring proofs before the helper-only transaction extension. The new shared transaction helper then passed two real standalone WebGL native mux failures; final helper build/lint/format reran. Implementation code did not change after broad static/unit/runtime proof. Final CE13 full gate remains pending.",
+      "actualMediaProofs": [
+        "all12,000 master PCM samples/channel preserve source bits including distinct last sample",
+        "four sequence/video\u00d7Canvas/WebGL cases with animated still and lower third",
+        "12 production MP4s repeat/independent-preview/raw-PNG byte-identical",
+        "actual AAC output decodes sample-bit-identically to independent reference encode in allfour cases",
+        "actual output AAC rate/channels/timebase/track duration exact48k/2/1-48000/12,000samples",
+        "native audio original paths retained/captured bindings resolved; original asset ID has no raw browser resource path",
+        "absent master, changed gain mapping and tampered master reject before output artifacts",
+        "post-mux cancellation and validation rejection publish no MP4/scene/result sidecar and leave no staging files"
+      ],
+      "failedAttempts": [],
+      "pending": [
+        "CLI/Lab verified native audio playback and waveform presentation",
+        "native complete-passage mixing before range trim and original path routing",
+        "remaining CE13 acceptance and final local pnpm check"
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-audio-export-build-draft.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-export-cache-regression-draft.log",
+          "sha256": "sha256:47edec106af37945e1b2846d50d8cb4135d2fe781053b3ddd930aafb2b0e7f74"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-export-build-fixtures-draft.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-export-loader-focused-draft.log",
+          "sha256": "sha256:39b67afa3d1a7d55a34d92aee25fbb7c84b4f5ef9ce4c77d1865c92c6e639212"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-export-browser-draft.log",
+          "sha256": "sha256:6292c2d0c601e6e84540ec4b0901fc3f68ce860d6095bdbafe06276066b8ae29"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-export-static-units-draft.log",
+          "sha256": "sha256:f7f5541afdbe1d37269bcfc9e0593e7d8350bfb83742beca54b7ffd8f2c7e72e"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-export-runtime-focused-draft.log",
+          "sha256": "sha256:ee4e8decbf7e690dbcf2bf0a8c3e63558a6a8e8298aab90d621328751566c061"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-export-transaction-draft.log",
+          "sha256": "sha256:b370cba2d05fa867b3b3914005687c775d69d76286c22a32929970af0381eed7"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-export-static-transaction-final.log",
+          "sha256": "sha256:403d4930fe2d7fa45fe57b3526444db6902734590e945f80de49c633ff6a3de7"
+        }
+      ],
       "fullGate": false
     }
   ],
   "fullGates": [],
   "pending": [
-    "native audio loader/preview/export and waveform presentation; native whole-passage mixing",
+    "native audio preview/waveform presentation and whole-passage mixing before range trim",
     "native audio protection, mixing and waveforms",
     "real Lab and export acceptance",
     "complete final local pnpm check",

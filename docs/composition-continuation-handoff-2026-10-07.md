@@ -73,8 +73,12 @@ checks and existing CE7 picture acceptance (evaluator52, `e4f27a2`). Actual stre
 Bounded continuous mix and actual waveform metadata now pass 60 focused checks /
 all 2,094 units / static checks, including byte-identical CE16 reference WAVs and
 491,578 / 524,288 PCM bytes with 16 reusable page evictions. A singleton terminal
-repair uses Q16 PCM arithmetic and evaluator53. Native audio loader/preview/export,
-waveform presentation, passage mixing and matching-audio acceptance remain pending;
+repair uses Q16 PCM arithmetic and evaluator53. Actual audio loading and transactional
+AAC mux now pass 91 runtime/media checks, all 2,094 units and static checks. Four
+matching-audio sequence/video × Canvas/WebGL cases preserve 12,000 stereo master samples;
+12 production MP4s repeat/independent/raw-PNG match, with exact48k track clocks and
+independent AAC sample equality. Post-mux failure/cancellation leaves no artifacts.
+Audio playback/waveform presentation, whole-passage mixing and final acceptance remain pending;
 no final CE13 gate has run.
 CE15 and CE14 remain in flight.
 Private notes contain exact source

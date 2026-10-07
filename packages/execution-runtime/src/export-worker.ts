@@ -16,7 +16,19 @@ import type {
   IllustratedScene,
   PassageDiagnostic,
 } from "@still-shift/renderer-core";
-import { AnimationEngineError } from "@still-shift/scene-contract";
+import {
+  passageError,
+  COMPOSITION_EVALUATOR_VERSION,
+} from "@still-shift/renderer-core";
+import {
+  AnimationEngineError,
+  CompositionPreparedAudioSchema,
+  compositionMediaMappingDocument,
+} from "@still-shift/scene-contract";
+import {
+  compositionPcmWavHeader,
+  verifyCompositionAudioPcm,
+} from "./composition-pcm.ts";
 import {
   defaultBrowserProjectRoot,
   runtimeBrowserUrl,
@@ -38,7 +50,14 @@ export type ExportableScene =
   | IllustratedScene
   | CompositionScene;
 
-const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.6";
+const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.7";
+
+export type ExportAudioInput = {
+  path: string;
+  sha256: string;
+  byteLength: number;
+  sampleCount: number;
+};
 
 export type ExportRequest = {
   runtime?: BrowserRuntimeOptions;
@@ -47,6 +66,8 @@ export type ExportRequest = {
   sourcePath: string;
   depthPath: string | null;
   assetPaths?: Record<string, string>;
+  /** Verified complete 48 kHz stereo Float32 WAV, muxed before artifact publication. */
+  audioInput?: ExportAudioInput;
   outputPath: string;
   sceneManifestContents?: string;
   resultManifestContents?: (metrics: ExportMetrics) => string | Promise<string>;
@@ -91,6 +112,13 @@ export type ExportMetrics = {
   ffmpegVersion: string;
   ffmpegCodec: string;
   frameTransport: FrameTransport;
+  audio?: {
+    sourceChecksum: string;
+    sampleCount: number;
+    sampleRate: 48000;
+    channels: 2;
+    codec: "aac";
+  };
 };
 
 export type ExportSceneManifest = {
@@ -160,6 +188,7 @@ export const ffmpegArguments = (
   temporaryPath: string,
   encoder: "libx264" | "h264_videotoolbox",
   transport: FrameTransport,
+  audioInput?: ExportAudioInput,
 ) => {
   const transportArguments = frameTransportArguments(scene, transport);
   return [
@@ -173,8 +202,26 @@ export const ffmpegArguments = (
     String(scene.timeline.fps),
     "-i",
     "pipe:0",
+    ...(audioInput
+      ? ["-i", audioInput.path, "-map", "0:v:0", "-map", "1:a:0"]
+      : []),
     ...transportArguments.filter,
-    "-an",
+    ...(audioInput
+      ? [
+          "-c:a",
+          "aac",
+          "-b:a",
+          "192k",
+          "-ar",
+          "48000",
+          "-ac",
+          "2",
+          "-movie_timescale",
+          "48000",
+          "-use_editlist",
+          "1",
+        ]
+      : ["-an"]),
     ...codecArguments(encoder),
     "-y",
     temporaryPath,
@@ -438,6 +485,60 @@ export const exportScene = async (
   const projectRoot = request.runtime?.projectRoot ?? defaultBrowserProjectRoot;
   const start = performance.now();
   const { scene } = request;
+  const audioInput = request.audioInput;
+  const nativeAudio =
+    "composition" in scene &&
+    scene.composition.assets.some((asset) => asset.type === "audio");
+  const expectedSamples =
+    (scene.timeline.frameCount * 48000) / scene.timeline.fps;
+  if (nativeAudio && (!audioInput || !scene.preparedAudio))
+    passageError(
+      "comp-media-provenance",
+      "Native audio export requires the captured complete PCM master",
+      { path: "preparedAudio" },
+    );
+  if (audioInput) {
+    if (
+      !Number.isSafeInteger(expectedSamples) ||
+      expectedSamples < 1 ||
+      expectedSamples > 172800000 ||
+      audioInput.sampleCount !== expectedSamples ||
+      audioInput.byteLength !== expectedSamples * 8 + 58 ||
+      !/^sha256:[a-f0-9]{64}$/.test(audioInput.sha256)
+    )
+      passageError(
+        "comp-media-provenance",
+        "Export audio must fit the complete 48 kHz stereo output clock",
+        { path: "audioInput" },
+      );
+    if ("composition" in scene && scene.preparedAudio) {
+      const capture = CompositionPreparedAudioSchema.safeParse(
+        scene.preparedAudio,
+      );
+      if (
+        !capture.success ||
+        capture.data.evaluatorVersion !== COMPOSITION_EVALUATOR_VERSION ||
+        capture.data.mappingHash !==
+          contentChecksum(compositionMediaMappingDocument(scene.composition)) ||
+        capture.data.sampleCount !== expectedSamples ||
+        capture.data.resource.sha256 !== audioInput.sha256 ||
+        capture.data.resource.byteLength !== audioInput.byteLength
+      )
+        passageError(
+          "comp-media-provenance",
+          "Export audio differs from its captured PCM identity",
+          { path: "preparedAudio" },
+        );
+    }
+    await verifyCompositionAudioPcm(
+      audioInput.path,
+      {
+        ...audioInput,
+        header: compositionPcmWavHeader(audioInput.sampleCount),
+      },
+      request.signal,
+    );
+  }
   const frameAuthoritative =
     "schemaVersion" in scene &&
     (scene.schemaVersion === "story-scene-1" ||
@@ -496,7 +597,7 @@ export const exportScene = async (
   const transport = request.transport ?? "png_pipe";
   const encoder = spawn(
     "ffmpeg",
-    ffmpegArguments(scene, temporaryPath, encoderName, transport),
+    ffmpegArguments(scene, temporaryPath, encoderName, transport, audioInput),
     {
       stdio: ["pipe", "ignore", "pipe"],
     },
@@ -668,6 +769,54 @@ export const exportScene = async (
     await sampleMemory();
     const validationStart = performance.now();
     await verifyOutput(temporaryPath, scene, request.signal);
+    if (audioInput) {
+      const probe = await runProcess(
+        "ffprobe",
+        [
+          "-v",
+          "error",
+          "-select_streams",
+          "a",
+          "-show_entries",
+          "stream=codec_name,sample_rate,channels,duration_ts,time_base",
+          "-of",
+          "json",
+          temporaryPath,
+        ],
+        { signal: request.signal, maxBuffer: 65536 },
+      );
+      const streams = (
+        JSON.parse(probe.stdout) as {
+          streams?: {
+            codec_name?: string;
+            sample_rate?: string;
+            channels?: number;
+            duration_ts?: number;
+            time_base?: string;
+          }[];
+        }
+      ).streams;
+      const audio = streams?.[0];
+      if (
+        streams?.length !== 1 ||
+        audio?.codec_name !== "aac" ||
+        audio.sample_rate !== "48000" ||
+        audio.channels !== 2 ||
+        audio.time_base !== "1/48000" ||
+        audio.duration_ts !== audioInput.sampleCount
+      )
+        throw new Error(
+          "FFprobe validation failed for muxed native audio clock",
+        );
+      await verifyCompositionAudioPcm(
+        audioInput.path,
+        {
+          ...audioInput,
+          header: compositionPcmWavHeader(audioInput.sampleCount),
+        },
+        request.signal,
+      );
+    }
     const validationWallMs = performance.now() - validationStart;
     const outputBytes = (await stat(temporaryPath)).size;
     const outputChecksum = await fileChecksum(temporaryPath, request.signal);
@@ -720,6 +869,17 @@ export const exportScene = async (
       ffmpegVersion,
       ffmpegCodec: codecArguments(encoderName).join(" "),
       frameTransport: transport,
+      ...(audioInput
+        ? {
+            audio: {
+              sourceChecksum: audioInput.sha256,
+              sampleCount: audioInput.sampleCount,
+              sampleRate: 48000 as const,
+              channels: 2 as const,
+              codec: "aac" as const,
+            },
+          }
+        : {}),
     };
     await request.validateResult?.(metrics);
     if (request.resultManifestContents) {

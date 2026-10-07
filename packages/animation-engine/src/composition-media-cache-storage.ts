@@ -5,6 +5,7 @@ import { join, resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import {
   AnimationEngineError,
+  compositionMediaMappingDocument,
   type Composition,
 } from "@still-shift/scene-contract";
 import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
@@ -25,18 +26,7 @@ export function compositionMediaCacheDirectory(directory?: string) {
 }
 /** Relocated physical source files do not change the authored clock/mix identity. */
 export function compositionMediaMappingIdentity(composition: Composition) {
-  return checksum(
-    JSON.stringify({
-      ...composition,
-      assets: composition.assets.map((asset) => {
-        const record = { ...asset } as Record<string, unknown>;
-        delete record.path;
-        delete record.manifestPath;
-        delete record.firstFrame;
-        return record;
-      }),
-    }),
-  );
+  return checksum(compositionMediaMappingDocument(composition));
 }
 
 export async function compositionMediaCacheLock(

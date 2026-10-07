@@ -1,15 +1,19 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { Page } from "playwright";
 import {
   loadComposition,
   probeCompositionVideo,
   renderComposition,
+  type LoadedComposition,
 } from "@still-shift/animation-engine";
-import { ffmpegArguments } from "@still-shift/execution-runtime/export";
+import {
+  exportScene,
+  ffmpegArguments,
+} from "@still-shift/execution-runtime/export";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
 import type {
   Composition,
@@ -20,9 +24,58 @@ import {
   mediaPngChunk,
   mediaRgbaPng,
 } from "../helpers/composition-media-png.ts";
+import { mediaFloat32Wave } from "../helpers/composition-media-audio.ts";
 
 const checksum = (bytes: Uint8Array) =>
   "sha256:" + createHash("sha256").update(bytes).digest("hex");
+
+export async function verifyNativeAudioTransactions(
+  directory: string,
+  loaded: LoadedComposition,
+  compositionPath: string,
+) {
+  const audio = loaded.preparedAudio!;
+  const audioInput = {
+    path: loaded.assetPaths[audio.resource.id]!,
+    sha256: audio.resource.sha256,
+    byteLength: audio.resource.byteLength,
+    sampleCount: audio.sampleCount,
+  };
+  for (const failure of ["cancel", "validation"] as const) {
+    const controller = new AbortController();
+    const outputPath = join(directory, `native-mux-${failure}.mp4`);
+    await assert.rejects(
+      exportScene({
+        scene: loaded.scene,
+        sourcePath: compositionPath,
+        depthPath: null,
+        assetPaths: loaded.assetPaths,
+        audioInput,
+        outputPath,
+        signal: controller.signal,
+        resultManifestContents: () => "{}",
+        validateResult: (metrics) => {
+          assert.equal(metrics.audio?.sampleCount, audio.sampleCount);
+          if (failure === "cancel")
+            controller.abort(
+              new Error("Native mux cancelled before publication"),
+            );
+          else throw Error("Native mux validation rejected");
+        },
+      }),
+      /Native mux (cancelled before publication|validation rejected)/,
+    );
+    for (const suffix of ["", ".scene.json", ".result.json"])
+      await assert.rejects(readFile(outputPath + suffix), { code: "ENOENT" });
+    assert.equal(
+      (await readdir(directory)).some((name) =>
+        name.startsWith(`.native-mux-${failure}.mp4.`),
+      ),
+      false,
+    );
+  }
+  return "post-mux cancellation and validation rejection publish no MP4/sidecars; stages removed";
+}
 
 /** Exercise the production capture/export path against a separate preview encoder. */
 export async function verifyNativeMediaExports(
@@ -32,6 +85,15 @@ export async function verifyNativeMediaExports(
   capturedPaths: Record<string, string>,
 ) {
   const videoPath = join(directory, "source.mkv");
+  const audioPath = join(directory, "source-audio.wav");
+  const audio = mediaFloat32Wave(12000, 2, (sample, channel) => {
+    if (sample === 11999) return channel ? -0.125 : 0.0625;
+    const local = sample % 4000;
+    return local < 240
+      ? Math.sin((local * Math.PI * 2 * (channel ? 997 : 431)) / 48000) * 0.35
+      : 0;
+  });
+  await writeFile(audioPath, audio.wav);
   await runProcess("ffmpeg", [
     "-v",
     "error",
@@ -39,6 +101,12 @@ export async function verifyNativeMediaExports(
     "12",
     "-i",
     join(directory, "frame_%01d.png"),
+    "-i",
+    audioPath,
+    "-map",
+    "0:v:0",
+    "-map",
+    "1:a:0",
     "-frames:v",
     "3",
     "-vf",
@@ -47,6 +115,8 @@ export async function verifyNativeMediaExports(
     "ffv1",
     "-pix_fmt",
     "gbrap16le",
+    "-c:a",
+    "pcm_f32le",
     "-color_primaries",
     "bt709",
     "-color_trc",
@@ -94,6 +164,22 @@ export async function verifyNativeMediaExports(
       width: 16,
       height: 16,
     });
+    const nativeAudioPath = source === "video" ? videoPath : audioPath;
+    composition.assets.push({
+      id: "voice",
+      type: "audio",
+      path: nativeAudioPath,
+      sha256: checksum(await readFile(nativeAudioPath)),
+      sampleRate: 48000,
+      sampleCount: 12000,
+      channels: 2,
+    });
+    composition.layers.push({
+      id: "voice",
+      type: "audio",
+      asset: "voice",
+      role: "narration",
+    });
     composition.layers.push(
       {
         id: "moving-still",
@@ -135,6 +221,15 @@ export async function verifyNativeMediaExports(
       });
       Object.assign(capturedPaths, loaded.assetPaths);
       assert.equal(loaded.preparedMedia!.frames.length, 3);
+      assert.equal(loaded.preparedAudio!.sampleCount, 12000);
+      const masterPath = loaded.assetPaths[loaded.preparedAudio!.resource.id]!;
+      assert.deepEqual((await readFile(masterPath)).subarray(58), audio.pcm);
+      const audioInput = {
+        path: masterPath,
+        sha256: loaded.preparedAudio!.resource.sha256,
+        byteLength: loaded.preparedAudio!.resource.byteLength,
+        sampleCount: 12000,
+      };
       const pngs = await page.evaluate(
         async ({ documentJson, preparedJson, backend }) => {
           const composition = JSON.parse(documentJson) as Composition;
@@ -202,6 +297,13 @@ export async function verifyNativeMediaExports(
         outputPath: join(directory, `${source}-${backend}-raw.mp4`),
       });
       assert.equal(exported.frameCount, 6);
+      assert.deepEqual(exported.metrics.audio, {
+        sourceChecksum: audioInput.sha256,
+        sampleCount: 12000,
+        sampleRate: 48000,
+        channels: 2,
+        codec: "aac",
+      });
       assert.equal(repeat.checksums.output, exported.checksums.output);
       assert.equal(raw.checksums.output, exported.checksums.output);
       const independentPath = join(
@@ -211,7 +313,13 @@ export async function verifyNativeMediaExports(
       await new Promise<void>((accept, reject) => {
         const encoder = spawn(
           "ffmpeg",
-          ffmpegArguments(loaded.scene, independentPath, "libx264", "png_pipe"),
+          ffmpegArguments(
+            loaded.scene,
+            independentPath,
+            "libx264",
+            "png_pipe",
+            audioInput,
+          ),
           { stdio: ["pipe", "ignore", "pipe"] },
         );
         let errors = "";
@@ -230,6 +338,48 @@ export async function verifyNativeMediaExports(
         checksum(await readFile(independentPath)),
         exported.checksums.output,
       );
+      const audioProbe = JSON.parse(
+        (
+          await runProcess("ffprobe", [
+            "-v",
+            "error",
+            "-select_streams",
+            "a",
+            "-show_entries",
+            "stream=sample_rate,channels,duration_ts,time_base",
+            "-of",
+            "json",
+            outputPath,
+          ])
+        ).stdout,
+      ).streams[0];
+      assert.equal(audioProbe.duration_ts, 12000);
+      assert.equal(audioProbe.sample_rate, "48000");
+      assert.equal(audioProbe.channels, 2);
+      assert.equal(audioProbe.time_base, "1/48000");
+      const decodedAudio = outputPath + ".f32",
+        referenceAudio = independentPath + ".f32";
+      for (const [input, output] of [
+        [outputPath, decodedAudio],
+        [independentPath, referenceAudio],
+      ])
+        await runProcess("ffmpeg", [
+          "-v",
+          "error",
+          "-i",
+          input!,
+          "-map",
+          "0:a:0",
+          "-f",
+          "f32le",
+          "-codec:a",
+          "pcm_f32le",
+          output!,
+        ]);
+      assert.deepEqual(
+        await readFile(decodedAudio),
+        await readFile(referenceAudio),
+      );
       reports.push({
         source,
         backend,
@@ -240,6 +390,23 @@ export async function verifyNativeMediaExports(
         repeatedMp4: "byte-identical",
         independentPreviewMp4: "byte-identical",
         rawPngTransport: "byte-identical",
+        audioSource:
+          source === "video"
+            ? "explicit embedded PCM asset"
+            : "explicit WAV asset",
+        masterSamples: 12000,
+        masterPcm: "source-bit-identical including final sample",
+        audioDecoded: "independent AAC sample-bit-identical",
+        audioTrackClock: "exact 48k sample count",
+        ...(source === "video" && backend === "webgl2"
+          ? {
+              transactionProof: await verifyNativeAudioTransactions(
+                directory,
+                loaded,
+                compositionPath,
+              ),
+            }
+          : {}),
       });
     }
   }

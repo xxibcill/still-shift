@@ -1,8 +1,32 @@
 import { z } from "zod";
 import { compositionId, finite, sha256 } from "./primitives.ts";
+import type { Composition } from "./composition.ts";
 
 export const COMPOSITION_AUDIO_DECODER_VERSION = "composition-audio-decoder-1";
-export const COMPOSITION_AUDIO_MIXER_VERSION = "composition-audio-mixer-1";
+export const COMPOSITION_AUDIO_MIXER_VERSION = "composition-audio-mixer-2";
+
+/** Canonical authored media mapping, independent of resolved physical source locations. */
+export function compositionMediaMappingDocument(composition: Composition) {
+  const document = {
+    ...composition,
+    assets: composition.assets.map((asset) => {
+      const record = { ...asset } as Record<string, unknown>;
+      delete record.path;
+      delete record.manifestPath;
+      delete record.firstFrame;
+      return record;
+    }),
+  };
+  return JSON.stringify(document, (_key, value: unknown) =>
+    value !== null && typeof value === "object" && !Array.isArray(value)
+      ? Object.fromEntries(
+          Object.entries(value).sort(([a], [b]) =>
+            a < b ? -1 : a > b ? 1 : 0,
+          ),
+        )
+      : value,
+  );
+}
 export const COMPOSITION_AUDIO_WAVEFORM_POINTS = 131072;
 const sampleCount = finite.int().min(1).max(172_800_000);
 const waveform = z.object({
@@ -18,6 +42,11 @@ export const CompositionPreparedAudioSchema = z
     schemaVersion: z.literal("composition-prepared-audio-1"),
     decoderVersion: z.literal(COMPOSITION_AUDIO_DECODER_VERSION),
     mixerVersion: z.literal(COMPOSITION_AUDIO_MIXER_VERSION),
+    evaluatorVersion: z
+      .string()
+      .regex(/^composition-evaluator-\d+$/)
+      .max(128),
+    mappingHash: sha256,
     sampleRate: z.literal(48000),
     channels: z.literal(2),
     sampleCount,

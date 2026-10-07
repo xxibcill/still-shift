@@ -19,6 +19,13 @@ import {
   mediaPngChunk,
   mediaRgbaPng,
 } from "../helpers/composition-media-png.ts";
+import { mediaFloat32Wave } from "../helpers/composition-media-audio.ts";
+import {
+  captureCompositionAssets,
+  capturedMediaComposition,
+} from "../../tools/still-shift-cli/src/composition/captured-assets.ts";
+import { exportScene } from "@still-shift/execution-runtime/export";
+import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 let root: string;
 const hash = (bytes: Uint8Array) =>
   "sha256:" + createHash("sha256").update(bytes).digest("hex");
@@ -164,4 +171,109 @@ it("cancellation is observed before reading a native source or allocating its ca
       signal: controller.signal,
     }),
   ).rejects.toMatchObject({ name: "AbortError" });
+});
+
+it("loads actual native audio with the complete pinned master, waveforms and disk-backed authoring binding", async () => {
+  const { path, directory, composition } = await fixture("audio");
+  const wave = mediaFloat32Wave(16000, 2, (sample, channel) =>
+    sample === 15999 ? (channel ? -0.5 : 0.25) : channel ? -0.125 : 0.125,
+  );
+  const audioPath = join(directory, "voice.wav");
+  await writeFile(audioPath, wave.wav);
+  composition.assets.push({
+    id: "voice",
+    type: "audio",
+    path: "voice.wav",
+    sha256: hash(wave.wav),
+    sampleRate: 48000,
+    sampleCount: 16000,
+    channels: 2,
+  });
+  composition.layers.push({
+    id: "voice",
+    type: "audio",
+    asset: "voice",
+    role: "narration",
+  });
+  await writeFile(path, JSON.stringify(composition));
+  const loaded = await loadComposition(path, "webgl2", {
+    cacheDirectory: join(root, "audio-cache"),
+  });
+  expect(loaded.scene.preparedAudio).toEqual(loaded.preparedAudio);
+  expect(loaded.mediaSourcePaths!.voice).toEqual({ path: audioPath });
+  expect(loaded.assetPaths.voice).toBeUndefined();
+  expect(
+    (await readFile(loaded.assetPaths["__audio:mix"]!)).subarray(58),
+  ).toEqual(wave.pcm);
+  expect(loaded.preparedAudio!.waveforms.processed[0]!.key).toBe("voice");
+  const assets = await captureCompositionAssets(loaded);
+  expect(assets.get("voice")).toEqual({ source: { path: audioPath } });
+  const resolved = capturedMediaComposition(loaded.composition, assets);
+  expect(resolved.assets.find((asset) => asset.id === "voice")!.path).toBe(
+    audioPath,
+  );
+  expect(loaded.preparedAudio!.mappingHash).toMatch(/^sha256:/);
+});
+
+it("rejects absent or stale native audio masters before export can create artifacts", async () => {
+  const { path, directory, composition } = await fixture("stale-audio");
+  const wave = mediaFloat32Wave(16000, 1, () => 0.25);
+  await writeFile(join(directory, "voice.wav"), wave.wav);
+  composition.assets.push({
+    id: "voice",
+    type: "audio",
+    path: "voice.wav",
+    sha256: hash(wave.wav),
+    sampleRate: 48000,
+    sampleCount: 16000,
+    channels: 1,
+  });
+  composition.layers.push({ id: "voice", type: "audio", asset: "voice" });
+  await writeFile(path, JSON.stringify(composition));
+  const loaded = await loadComposition(path, "canvas2d", {
+    cacheDirectory: join(root, "stale-audio-cache"),
+  });
+  const outputPath = join(directory, "rejected.mp4");
+  const request = {
+    scene: loaded.scene,
+    sourcePath: path,
+    depthPath: null,
+    assetPaths: loaded.assetPaths,
+    outputPath,
+  };
+  const code = async (operation: Promise<unknown>) => {
+    try {
+      await operation;
+      expect.fail("must reject");
+    } catch (error) {
+      return passageDiagnostics(error)[0]!.code;
+    }
+  };
+  expect(await code(exportScene(request))).toBe("comp-media-provenance");
+  const changed = structuredClone(loaded.scene);
+  const voice = changed.composition.layers.find(
+    (layer) => layer.id === "voice",
+  )!;
+  if (voice.type !== "audio") throw Error("Expected audio");
+  voice.gainDb = -6;
+  const audioInput = {
+    path: loaded.assetPaths["__audio:mix"]!,
+    sha256: loaded.preparedAudio!.resource.sha256,
+    byteLength: loaded.preparedAudio!.resource.byteLength,
+    sampleCount: 16000,
+  };
+  expect(
+    await code(exportScene({ ...request, scene: changed, audioInput })),
+  ).toBe("comp-media-provenance");
+  const master = await readFile(audioInput.path);
+  master.writeFloatLE(0.9, 66);
+  await writeFile(audioInput.path, master);
+  expect(await code(exportScene({ ...request, audioInput }))).toBe(
+    "comp-media-checksum",
+  );
+  expect((await readFile(path, "utf8")).length).toBeGreaterThan(0);
+  await expect(readFile(outputPath)).rejects.toMatchObject({ code: "ENOENT" });
+  await expect(readFile(outputPath + ".scene.json")).rejects.toMatchObject({
+    code: "ENOENT",
+  });
 });

@@ -66,7 +66,12 @@ export function capturedMediaComposition(
 ) {
   const composition = structuredClone(document);
   for (const asset of composition.assets) {
-    if (asset.type !== "video" && asset.type !== "sequence") continue;
+    if (
+      asset.type !== "video" &&
+      asset.type !== "sequence" &&
+      asset.type !== "audio"
+    )
+      continue;
     const captured = assets.get(asset.id);
     if (!captured || !("source" in captured))
       throw new CompositionSaveError(

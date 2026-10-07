@@ -9,6 +9,7 @@ import {
   validateComposition,
   type Composition,
   type CompositionPreparedMedia,
+  type CompositionPreparedAudio,
 } from "@still-shift/scene-contract";
 import { sha256Hex } from "../../browser-checksum.ts";
 import {
@@ -122,6 +123,7 @@ export type CompositionScene = {
   backend?: CompositionBackend;
   composition: Composition;
   preparedMedia?: CompositionPreparedMedia;
+  preparedAudio?: CompositionPreparedAudio;
   canvas: { width: number; height: number };
   timeline: { fps: number; frameCount: number; durationMs: number };
 };

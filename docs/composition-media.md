@@ -117,8 +117,8 @@ and complete CE13 acceptance are the next work.
 `loadComposition` and `renderComposition` prepare native sources before browser
 rendering. An optional `cacheDirectory`, or `STILL_SHIFT_COMPOSITION_MEDIA_CACHE`,
 selects the preparation cache; the default is scoped by the absolute workspace path
-under the system temporary directory. `assetPaths` contains only drawable still/font
-resources and captured native PNG IDs. `mediaSourcePaths` retains original video and
+under the system temporary directory. `assetPaths` contains still/font resources, captured native PNG IDs and the verified
+`__audio:mix` WAV resource. `mediaSourcePaths` retains original video and
 sequence pattern/manifest paths for trusted authoring integration. The exported scene
 carries the immutable `preparedMedia` manifest and awaits readiness for each frame.
 Still-only export callbacks keep their synchronous path.
@@ -213,3 +213,27 @@ Both CE16 gain/pan/linear and equal-power fade reference WAVs match byte-for-byt
 The actual 96,000-sample bounded test uses 491,578 / 524,288 PCM working bytes, with 24
 page loads and 16 reusable evictions. Full native mixing and waveform metadata are
 verified; audio loader/preview/mux, waveform presentation and passage audio remain pending.
+
+`readCompositionSource` and `loadComposition` accept actual audio assets and attach
+`preparedAudio` to the inspected source/export scene. Original audio paths remain in
+`mediaSourcePaths`; `assetPaths["__audio:mix"]` names the verified complete WAV master.
+Trusted draft capture retains original bindings on disk and revalidates their hashes.
+The shared capture now pins canonical authored mapping and evaluator identity;
+changing gain or a source clock requires a new capture. Canonical mapping ignores
+physical paths and object field order while retaining authored array order.
+
+`exportScene` accepts a verified `audioInput` and requires it for a composition with
+native audio. It verifies the captured mapping, evaluator, complete sample clock,
+canonical header, finite PCM and SHA before encoding and again after encoding. AAC
+is muxed inside the existing atomic MP4/scene/result transaction. Native AAC uses
+48 kHz stereo at 192 kbps and a 48 kHz movie timebase/edit list, so the track duration
+retains the exact authored sample count. The absent-audio argument path is unchanged.
+Export metrics include master SHA/count and the delivery codec. Current versions are
+audio mixer 2, export worker 0.6.7 and evaluator 53; audio decoder remains 1.
+
+Actual WAV and explicitly declared embedded audio alongside video/sequence + animated
+still/lower third now pass Canvas/WebGL delivery. All 12,000 master samples/channel,
+including the final sample, match source bits. Twelve production MP4s match repeat,
+independent preview and raw/PNG encodes; independent decoded AAC samples also match.
+Actual post-mux cancellation or validation failure leaves no output/sidecar/stage.
+Native audio playback, waveform presentation and whole-passage mixing remain pending.

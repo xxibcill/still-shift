@@ -1,3 +1,4 @@
+export { compositionPcmWavHeader } from "@still-shift/execution-runtime/pcm";
 import { createReadStream } from "node:fs";
 import { open, type FileHandle } from "node:fs/promises";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
@@ -185,28 +186,6 @@ export async function compositionSourceWaveform(
       path: source.path,
     });
   return { ...wave.result(), asset: source.asset, channels: source.channels };
-}
-
-/** Matches CE16's Float32 RIFF layout, including the decoded frame count fact chunk. */
-export function compositionPcmWavHeader(sampleCount: number) {
-  const header = Buffer.alloc(58),
-    bytes = sampleCount * 8;
-  header.write("RIFF", 0);
-  header.writeUInt32LE(bytes + 50, 4);
-  header.write("WAVEfmt ", 8);
-  header.writeUInt32LE(18, 16);
-  header.writeUInt16LE(3, 20);
-  header.writeUInt16LE(2, 22);
-  header.writeUInt32LE(48000, 24);
-  header.writeUInt32LE(48000 * 8, 28);
-  header.writeUInt16LE(8, 32);
-  header.writeUInt16LE(32, 34);
-  header.write("fact", 38);
-  header.writeUInt32LE(4, 42);
-  header.writeUInt32LE(sampleCount, 46);
-  header.write("data", 50);
-  header.writeUInt32LE(bytes, 54);
-  return header;
 }
 
 export async function writeCompositionPcmBytes(

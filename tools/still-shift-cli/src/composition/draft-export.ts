@@ -37,7 +37,12 @@ export async function exportCompositionDraft(
   try {
     const composition = capturedMediaComposition(document, assets);
     for (const [index, asset] of composition.assets.entries()) {
-      if (asset.type === "video" || asset.type === "sequence") continue;
+      if (
+        asset.type === "video" ||
+        asset.type === "sequence" ||
+        asset.type === "audio"
+      )
+        continue;
       const captured = assets.get(asset.id);
       if (
         !captured ||

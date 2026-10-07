@@ -4857,6 +4857,25 @@ loads and 16 reusable evictions. Loader/preview/mux, waveform presentation, nati
 passage mixing, matching-audio production acceptance and final full gate remain pending.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 native audio loader/export checkpoint (2026-10-07)
+
+Actual native audio now loads with the complete verified Float32 master and waveform
+capture. Original bindings remain separate from the captured WAV. Canonical mapping
+and evaluator pinning reject stale captures; the shared runtime PCM verifier checks
+header/count/finite samples/hash before and after export encoding. AAC mux is inside
+the existing MP4/scene/result publication transaction. Native audio uses a 48 kHz
+movie clock/edit list for exact duration; absent-audio arguments remain unchanged.
+Evaluator 53 / mixer 2 / export worker 0.6.7 / decoder 1 are current. Four actual
+sequence/video × Canvas/WebGL cases with animated still/lower third preserve all
+12,000 master samples/channel and yield 12 repeated/independent/raw-PNG byte-identical
+production MP4s. AAC tracks have exact rate/channels/timebase/count and independent
+decoded sample equality. Post-mux cancellation or validation rejection leaves no MP4,
+sidecar or stage; absent/stale/tampered master rejects before artifact creation. All
+91 runtime/media checks / 14 files, 2,094 units / 208 files and static checks pass.
+Audio playback/waveform presentation, native whole-passage mixing/path routing,
+remaining production acceptance and complete final gate remain pending.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---
