@@ -23,6 +23,7 @@ import {
   mediaPngChunk,
 } from "../helpers/composition-media-png.ts";
 import type * as CaptureChecks from "../helpers/composition-capture-memory-reference.ts";
+import type * as StatisticsChecks from "../helpers/composition-statistics-memory-reference.ts";
 import type * as ResourceChecks from "../helpers/composition-resource-memory-reference.ts";
 import type * as MemoryChecks from "../helpers/composition-memory-reference.ts";
 
@@ -37,6 +38,12 @@ type PrefixOutcome = Awaited<
 >;
 type RootOutcome = Awaited<
   ReturnType<typeof RootChecks.checkSharedCompositionRoots>
+>;
+type SubmissionOutcome = Awaited<
+  ReturnType<typeof StatisticsChecks.checkManagedSubmissionMemory>
+>;
+type SubmissionAcknowledgement = ReturnType<
+  typeof StatisticsChecks.acknowledgeManagedSubmissionMemory
 >;
 
 const root = resolve(import.meta.dirname, "../..");
@@ -839,6 +846,42 @@ try {
   });
   assert.equal(managedCaptures.nativeCaptures, 6);
   assert.equal(managedCaptures.failures.length, 12);
+  const managedSubmission: {
+    report: SubmissionOutcome;
+    acknowledgement: SubmissionAcknowledgement;
+  }[] = [];
+  for (const backend of ["canvas2d", "webgl2"] as const) {
+    const report: SubmissionOutcome = await workers[0]!.page.evaluate(
+      async (backend) => {
+        const url = "/tests/helpers/composition-statistics-memory-reference.ts";
+        return (
+          (await import(url)) as typeof StatisticsChecks
+        ).checkManagedSubmissionMemory(backend);
+      },
+      backend,
+    );
+    assert.equal(report.status, "passed");
+    assert.equal(report.frameChecks, 11);
+    assert.equal(report.ownedThroughRpc, true);
+    assert.equal(report.beforeRpc.current.pixels, 0);
+    assert.ok(report.beforeRpc.current.metadata > 0);
+    const spansBefore = JSON.stringify(report.submission);
+    const acknowledgement: SubmissionAcknowledgement =
+      await workers[0]!.page.evaluate(async () => {
+        const url = "/tests/helpers/composition-statistics-memory-reference.ts";
+        return (
+          (await import(url)) as typeof StatisticsChecks
+        ).acknowledgeManagedSubmissionMemory();
+      });
+    assert.equal(acknowledgement.ownedBefore, true);
+    assert.ok(acknowledgement.rowsBefore > 0);
+    assert.equal(acknowledgement.snapshotReferencesDropped, true);
+    assert.equal(acknowledgement.after.current.pixels, 0);
+    assert.equal(acknowledgement.after.current.metadata, 0);
+    assert.equal(acknowledgement.after.reservations, 0);
+    assert.equal(JSON.stringify(report.submission), spansBefore);
+    managedSubmission.push({ report, acknowledgement });
+  }
   const managedSourceFailures = await workers[0]!.page.evaluate(async () => {
     const url = "/tests/helpers/composition-source-reference.ts";
     return (
@@ -891,6 +934,7 @@ try {
     managedPngStorage,
     managedResources,
     managedCaptures,
+    managedSubmission,
     managedSourceFailures,
     reports,
   };

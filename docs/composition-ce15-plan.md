@@ -449,6 +449,35 @@ graph/font, transport/stream/result and actual production admission remain pendi
 along with aggregate/area/worker checks, authentic two-minute speed acceptance,
 the complete immutable gate and CE15 PR before CE14.
 
+## Accepted retained submission metadata checkpoint — 2026-10-08
+
+Statistics admit original lookup strings, row/member copies, Map growth, nesting
+and independent snapshots before their allocation. Retained rows keep explicit
+text owners; repeated lookup strings release immediately. Failed row construction
+rolls back Map capacity. Preview-construction rollback and completed preview
+disposal release rows/keys, while returned snapshots keep their independent owner.
+
+Build, lint, boundaries and 90 focused tests pass. All 144 audit cases / 8,000
+exact comparisons pass, including all 24 managed cases / 1,504 frames. New real
+Canvas/WebGL checks preserve 22 original-native frames and hold actual snapshot
+ownership through page RPC until the caller acknowledges completion. Disposal
+then clears page snapshot copies; Node's deserialized counters remain intact.
+Original WebGL export checks, 67 typography tests, 12 provider cases / 60 frames
+and eight original typography fixtures pass. Glyph ratio 1.439058× meets the unchanged
+1.5 maximum. All 64 public exports preserve 768 complete PNG bodies and decoded
+frames against the prior accepted capture checkpoint.
+
+The native proof found and repaired an unreleased WebGL 300x150 measurement
+Canvas. It now releases after original coverage/text preparation, including failure;
+post-preview native pixel admission is zero on both backends. Typing/lint/IPC and
+native failure evidence is retained in [the record](./composition-ce15-statistics-memory-results.json).
+
+Selected statistics capacities are declared logical container/text storage. Ledger
+control, remaining cache/provider/graph/font metadata, Node protocol/results and
+actual production admission remain pending. RPC lifetime coverage here does not
+claim complete production transport admission, aggregate memory, speed or full-gate
+acceptance. CE15 completion/PR and all CE14 remain in the approved mission.
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

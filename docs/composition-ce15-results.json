@@ -4,7 +4,7 @@
   "branch": "codex/composition-ce15",
   "base": "aedfc9e",
   "started": "2026-10-07",
-  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics, complete FFmpeg command CPU, global runtime glyph tints and broader sources, managed allocation foundation, Canvas allocation lifetimes and bounded receive storage, GPU storage admission and explicit native resource lifetime, verified asset/font/media admission and native decoder lifetime, native capture and complete upload ownership, owned metadata serialization foundation",
+  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics, complete FFmpeg command CPU, global runtime glyph tints and broader sources, managed allocation foundation, Canvas allocation lifetimes and bounded receive storage, GPU storage admission and explicit native resource lifetime, verified asset/font/media admission and native decoder lifetime, native capture and complete upload ownership, owned metadata serialization foundation, retained submission metadata and actual RPC snapshot lifetime",
   "versions": {
     "canvas": "composition-canvas-1.46.0",
     "webgl": "composition-webgl2-0.67.0"
@@ -824,6 +824,32 @@
     "admissionCacheExposureDepthCaptureMetadataTests": 78,
     "metadataSerializationTests": 8,
     "productionIntegration": "pending",
+    "fullGate": "pending",
+    "speedProof": "pending"
+  },
+  "managedStatisticsMemory": {
+    "status": "retained submission metadata and actual RPC lifetime passed; remaining cache/graph/font/Node/production admission pending",
+    "record": "docs/composition-ce15-statistics-memory-results.json",
+    "relevantFingerprint": "379d656effe3ac05b812d4415682e321b81d171bcd49196a8d401e99a139dac4",
+    "admissionCacheExposureDepthCaptureMetadataTests": 90,
+    "metadataFactorySerializationTests": 10,
+    "submissionStatisticsTests": 10,
+    "affectedTypographyTests": 67,
+    "providerTypographyCases": 12,
+    "providerTypographyFrames": 60,
+    "typographyFixtures": 8,
+    "browserCases": 144,
+    "exactFrameComparisons": 8000,
+    "managedCanvasGpuAssetFontCases": 24,
+    "managedFrames": 1504,
+    "nativeSubmissionBackends": 2,
+    "nativeSubmissionFrames": 22,
+    "productionExports": 64,
+    "productionDecodedFrames": 768,
+    "priorAcceptedEncodedBodiesPreserved": 768,
+    "priorAcceptedDecodedFramesPreserved": 768,
+    "glyphRatio": 1.4390581728405483,
+    "aggregateProductionIntegration": "pending",
     "fullGate": "pending",
     "speedProof": "pending"
   }

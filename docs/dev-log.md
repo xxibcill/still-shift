@@ -90,10 +90,13 @@ still hold before relying on them.
   Glyph 1.383989× meets unchanged 1.5×. Native capture/upload admission now passes
   70 tests, the complete audit, six native complete-body oracles, twelve failure
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
-  Owned metadata serialization now passes 78 focused tests with exact native text,
-  callback/coercion counts, pre-emission quota and retained/error cleanup checks.
-  Cache/graph/font/Node metadata integration, actual production admission, aggregate
-  memory, the actual
+  Owned submission key/member/row/Map/stack/snapshot metadata now passes 90 focused
+  tests, the complete audit and 22 new native frames with actual RPC acknowledgement.
+  The native WebGL measurement Canvas releases after preparation; post-preview
+  pixels are zero. Original WebGL/typography/provider checks and 64 public exports /
+  768 prior-exact bodies/frames pass; glyph 1.439058× meets unchanged 1.5 maximum.
+  Remaining cache/graph/font/ledger-control/Node metadata integration, actual
+  production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -327,6 +330,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 retained submission metadata and native RPC lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `35b905a`.
+- **Done:** admitted key/member/row/Map/stack/snapshot capacity; retained/duplicate
+  keys, construction/error cleanup and independent snapshot lifetime. Repaired
+  actual unreleased WebGL 300x150 measurement Canvas.
+- **Results:** build/lint/boundaries and 90 focused / 67 typography tests; complete
+  144-case / 8,000-frame audit, 22 new native frames with real RPC acknowledgement,
+  original WebGL/provider/typography checks and 64 public exports / 768 prior-exact
+  complete bodies/frames pass. Glyph 1.439058× meets unchanged 1.5 maximum.
+- **Next:** remaining metadata/ledger control/Node and actual production admission,
+  aggregate/area/workers, speed/full CE15 gate/PR and all CE14. No aggregate memory,
+  speed or full gate acceptance is claimed.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [submission metadata evidence](./composition-ce15-statistics-memory-results.json).
 
 ### 2026-10-08 — CE15 owned metadata serialization foundation
 

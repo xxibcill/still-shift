@@ -335,7 +335,10 @@ export function createCompositionPreview(
     alpha: options.preserveAlpha === true,
     ...(softwareRaster ? { willReadFrequently: true } : {}),
   });
-  if (!ctx) throw new Error("Canvas 2D is unavailable");
+  if (!ctx) {
+    if (kind === "webgl2") releaseRenderCanvas(measurementCanvas);
+    throw new Error("Canvas 2D is unavailable");
+  }
   const readAssetPixels = (id: string) => {
     const asset = composition.assets.find((asset) => asset.id === id)!;
     if (asset.type !== "image")
@@ -405,16 +408,21 @@ export function createCompositionPreview(
       if (!options.sourceCanvas) releaseRenderCanvas(source);
     }
   };
-  validateStoryCompositionCoverage(composition, readAssetPixels);
-  validateCinematicCompositionCoverage(composition, readAssetPixels);
-  const text = prepareCompositionText(
-    composition,
-    resources.fonts,
-    ctx,
-    undefined,
-    resources.textProbe,
-    options.sourceCanvas,
-  );
+  let text: ReturnType<typeof prepareCompositionText>;
+  try {
+    validateStoryCompositionCoverage(composition, readAssetPixels);
+    validateCinematicCompositionCoverage(composition, readAssetPixels);
+    text = prepareCompositionText(
+      composition,
+      resources.fonts,
+      ctx,
+      undefined,
+      resources.textProbe,
+      options.sourceCanvas,
+    );
+  } finally {
+    if (kind === "webgl2") releaseRenderCanvas(measurementCanvas);
+  }
   const drawProvider = prepareCompositionProviders(
     composition,
     {
@@ -522,6 +530,7 @@ export function createCompositionPreview(
         );
     } catch (error) {
       backend.dispose();
+      statistics?.dispose();
       throw error;
     }
     return {
@@ -656,6 +665,7 @@ export function createCompositionPreview(
         surfaceCache?.dispose();
         text.dispose();
         backend.dispose();
+        statistics?.dispose();
         resources.media?.dispose();
         canvas.width = composition.width;
       },

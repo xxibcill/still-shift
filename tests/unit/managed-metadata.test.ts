@@ -3,7 +3,11 @@ import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.t
 import {
   serializeManagedMetadata,
   sortedMetadataObject,
+  allocateRenderMetadata,
+  resizeRenderMetadata,
+  releaseRenderMetadata,
 } from "../../packages/renderer-core/src/managed-metadata.ts";
+import { withManagedMemory } from "../../packages/renderer-core/src/managed-memory-context.ts";
 
 it("preserves complete native JSON strings, escapes, omission, holes, numbers and toJSON", () => {
   const memory = new ManagedMemory({ pixels: 1, metadata: 65536 });
@@ -37,6 +41,71 @@ it("preserves complete native JSON strings, escapes, omission, holes, numbers an
     expect(memory.statistics.reservations).toBe(0);
   }
   memory.dispose();
+});
+it("admits metadata factories before invocation and protects prior owners from failed duplicate adoption", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 256 });
+  await withManagedMemory(memory, async () => {
+    let factories = 0,
+      destroyed = 0;
+    const value = allocateRenderMetadata(
+      128,
+      () => {
+        factories++;
+        return { entries: 0 };
+      },
+      false,
+      () => destroyed++,
+    );
+    expect(() =>
+      allocateRenderMetadata(256, () => {
+        factories++;
+        return {};
+      }),
+    ).toThrow("aggregate worker quota");
+    expect(factories).toBe(1);
+    expect(() =>
+      allocateRenderMetadata(
+        64,
+        () => value,
+        false,
+        () => destroyed++,
+      ),
+    ).toThrow("already owned resource");
+    expect(destroyed).toBe(0);
+    expect(memory.owns(value)).toBe(true);
+    expect(memory.statistics.current.metadata).toBe(128);
+    resizeRenderMetadata(value, 256);
+    expect(() => resizeRenderMetadata(value, 257)).toThrow(
+      "aggregate worker quota",
+    );
+    expect(memory.statistics.current.metadata).toBe(256);
+    releaseRenderMetadata(value);
+    expect(destroyed).toBe(1);
+    expect(memory.statistics.reservations).toBe(0);
+    memory.dispose();
+  });
+});
+it("cleans a fresh metadata result after allocator disposal while preserving the original ownership error", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 256 });
+  await withManagedMemory(memory, async () => {
+    let destroyed = 0;
+    expect(() =>
+      allocateRenderMetadata(
+        128,
+        () => {
+          memory.dispose();
+          return {};
+        },
+        false,
+        () => {
+          destroyed++;
+          throw null;
+        },
+      ),
+    ).toThrow("no active owner");
+    expect(destroyed).toBe(1);
+    expect(memory.statistics.reservations).toBe(0);
+  });
 });
 it("preserves sorted native output and invokes original getters and toJSON once", () => {
   const memory = new ManagedMemory({ pixels: 1, metadata: 65536 });

@@ -14,6 +14,51 @@ export type ManagedMetadataText = {
 type Serialization = { memory: ManagedMemory; temporary: MemoryLease[] };
 let serialization: Serialization | undefined;
 const textControlBytes = 128;
+const metadataLeases = new WeakMap<object, MemoryLease>();
+
+/** Declare container/entry capacity before the original metadata factory allocates it. */
+export function allocateRenderMetadata<T extends object>(
+  bytes: number,
+  factory: () => T,
+  retained = false,
+  destroy?: (value: T) => void,
+): T {
+  const memory = renderMemory();
+  if (!memory) return factory();
+  const lease = memory.reserve("metadata", bytes, undefined, retained);
+  let value: T | undefined;
+  try {
+    value = factory();
+    const owner = value;
+    memory.adopt(owner, lease, () => {
+      metadataLeases.delete(owner);
+      destroy?.(owner);
+    });
+    metadataLeases.set(owner, lease);
+    return owner;
+  } catch (error) {
+    try {
+      if (value && !memory.owns(value)) destroy?.(value);
+    } catch {
+      /* Preserve the original ownership/factory error. */
+    }
+    try {
+      lease.release();
+    } catch {
+      /* Preserve the original factory/admission error. */
+    }
+    throw error;
+  }
+}
+export function resizeRenderMetadata(value: object, bytes: number): void {
+  const lease = metadataLeases.get(value);
+  if (lease) lease.resize(bytes);
+  else if (renderMemory())
+    throw Error("Managed metadata container has no admitted owner");
+}
+export function releaseRenderMetadata(value: object): void {
+  metadataLeases.get(value)?.release();
+}
 
 // JSON unboxes these after the replacer, including the original numeric/string coercion.
 function unboxJsonPrimitive(value: unknown): unknown {
