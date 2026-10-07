@@ -96,6 +96,29 @@ still hold before relying on them.
   Owner review/merge remain; no implementation blocker or owner decision is pending.
   [Evidence](./pr-40-fix-results.json).
 
+- **CE8-L-F preparation (2026-10-06):** isolated branch
+  `codex/composition-ce8lf-prototype` from CE7 `0e48388`. Candidate flat-alpha
+  shadow specification, CPU/geometry oracle and isolated shader pass 15 analytic
+  tests, 96 frozen poses, independent repeats and 12 hardware cases exactly.
+  PR #39's review fixes allow a receiver self entry while retaining duplicate-caster
+  rejection, and reject float32-ill-conditioned bases before CPU/GPU rendering.
+  The 2026-10-07 conditioning-margin repair rejects nonzero-determinant inaccurate
+  shears; five supported near-limit 64² alpha controls pass both profiles and
+  independent software repeats within the unchanged one-byte tolerance.
+  The radius-zero repair uses one effective center sample in both CPU and shader
+  paths while preserving authored quality. All three sample-count settings retain
+  exact CPU bytes and per-profile RGBA/PNG equality, including independent repeats.
+  Toolchain/static checks pass;
+  [PR #39](https://github.com/xxibcill/still-shift/pull/39) is open and attached.
+  Preparation is complete; CE8/CE8-L and owner policy/budget decisions precede
+  production integration; advanced surface shading remains deferred.
+  [Specification](./composition-ce8lf-cast-shadow-spec.md),
+  [preparation evidence](./composition-ce8lf-results.json),
+  [self-entry fix evidence](./pr-39-self-entry-fix-results.json),
+  [Gram conditioning fix evidence](./pr-39-gram-fix-results.json),
+  [conditioning-margin fix evidence](./pr-39-conditioning-margin-fix-results.json),
+  [radius-zero fix evidence](./pr-39-zero-radius-fix-results.json).
+
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
   exposure and controlled cuts are delivered. Full `pnpm check` passes 1,600 unit,
@@ -655,6 +678,38 @@ _Last updated 2026-10-07 by Codex for the verified PR #40 posterized-state cut r
   and one normal push to the existing PR. No full gate or baseline regeneration claimed.
 - **Records:** [Fix evidence](./pr-40-clock-fix-results.json),
   [inline finding](https://github.com/xxibcill/still-shift/pull/40#discussion_r4203762759).
+### 2026-10-07 — PR #39 quality-independent radius-zero shadows
+
+- **Agent / branch:** Codex on isolated `codex/pr39-zero-radius-fix`, from `cf38a439`.
+- **Finding:** [P2 radius-zero quality changes](https://github.com/xxibcill/still-shift/pull/39#discussion_r4204571866)
+  reproduced one-byte changes in both the CPU reference and pinned software shader.
+- **Done:** share effective sample selection between CPU and shader construction;
+  point emitters use one center sample and retain the authored sample-count option.
+- **Results:** new regression failed before repair; 15 analytic tests, toolchain,
+  build, schema, boundaries and focused lint/format pass. Complete prototype GPU
+  verification retains all 96 frozen poses, seek/repeat/hardware, maximum-input
+  and conditioned-shear checks. Radius-zero RGBA/PNG are exact across qualities
+  within each profile and independent software repeats; frozen references are unchanged.
+- **Delivery:** one finding commit and one final normal push to the existing PR branch.
+- **Open / next:** owner review/merge; full repository/native/export acceptance,
+  production precision and owner quality/budget choices remain deferred. Actions stay disabled.
+- **Records:** [fix evidence](./pr-39-zero-radius-fix-results.json).
+
+### 2026-10-07 — PR #39 conservative shadow-plane conditioning margin
+
+- **Agent / branch:** Codex on isolated `codex/pr39-conditioning-fix`, from `0a11372`.
+- **Finding:** [P2 inaccurate accepted shears](https://github.com/xxibcill/still-shift/pull/39#discussion_r4203797977)
+  reproduced 155-byte pinned / 140-byte hardware errors; an interior pixel differs by 30 bytes.
+- **Done:** raise the shared float32 Gram margin to `1e-2`, reject the reported
+  nonzero-determinant shear and retain five supported near-limit/full-resolution controls.
+- **Results:** regression failed before repair; 14 analytic tests, pinned toolchain,
+  build, schema, boundaries and focused lint/format pass. All 96 frozen poses,
+  288 seek draws, 96 independent repeats, 12 hardware probes and maximum inputs
+  remain exact. Supported-shear controls pass all three profiles within one byte.
+- **Delivery:** one finding commit and one final normal push to the existing PR branch.
+- **Open / next:** owner review/merge; full repository/native/export acceptance,
+  production precision and owner quality/budget choices remain deferred. Actions stay disabled.
+- **Records:** [fix evidence](./pr-39-conditioning-margin-fix-results.json).
 
 ### 2026-10-07 — Resolve PR #40 against current CE5
 
@@ -700,6 +755,54 @@ _Last updated 2026-10-07 by Codex for the verified PR #40 posterized-state cut r
   affected verification and push both commits together. No full gate claimed yet.
 - **Records:** [fix evidence](./pr-40-fix-results.json),
   [PR review](https://github.com/xxibcill/still-shift/pull/40#pullrequestreview-5423806559).
+
+### 2026-10-06 — PR #39 float32 Gram conditioning fix
+
+- **Agent / checkout:** Codex on `codex/pr39-gram-fix` from PR head `a521818`.
+- **Finding:** [P2 shader UV division](https://github.com/xxibcill/still-shift/pull/39#discussion_r4192154579)
+  reproduced 253-byte software / 255-byte hardware errors on a small-coordinate plane.
+- **Done:** reject float32-ill-conditioned bases in shared preflight and guard shader
+  input construction. Regression reproduced before the fix; one focused fix commit.
+- **Results:** all 12 analytic tests, pinned toolchain and focused static checks pass.
+  All 96 frozen poses, 288 seek draws, 96 independent repeats, 12 hardware probes
+  and maximum-input checks remain byte exact; frozen references are unchanged.
+- **Rejected:** cross-product UV solve still differed by 127 bytes at thin-plane
+  boundaries; reverted it rather than changing the oracle or frozen references.
+- **Open / next:** full repository/native/real-export acceptance was not run;
+  CE8/CE8-L integration and owner policy/budget decisions remain pending.
+- **Records:** [fix evidence](./pr-39-gram-fix-results.json).
+
+### 2026-10-06 — PR #39 receiver self-entry preflight fix
+
+- **Agent / checkout:** Codex in an isolated PR #39 worktree from `344cb8e`.
+- **Finding:** posted the P2 preflight mismatch as an
+  [inline review comment](https://github.com/xxibcill/still-shift/pull/39#discussion_r4191535608).
+- **Done:** allow one caster with the receiver's scoped identity; keep input
+  validation and duplicate-caster rejection. Regression covers shared/copied self
+  entries, other caster visibility and duplicate self entries through preflight.
+- **Results:** regression reproduced first; all 11 analytic tests and focused
+  toolchain/static gates pass. All 96 frozen poses, 288 seek draws, 96 independent
+  repeats, 12 hardware probes and maximum-input checks remain byte exact.
+- **Limits:** full repository/native/real-export gate not run for this isolated
+  prototype correction; production integration remains pending. Actions stay disabled.
+- **Delivery:** one focused fix commit for PR #39; no merge.
+- **Records:** [review-fix evidence](./pr-39-self-entry-fix-results.json).
+
+### 2026-10-06 — CE8-L-F bounded cast-shadow preparation
+
+- **Agent / branch:** Codex on `codex/composition-ce8lf-prototype`, CE7 `0e48388`.
+- **Done:** `20210b8` specifies the candidate/CPU oracle; `f04f593` delivers the
+  independent shader, frozen alpha fixtures, reviewed gallery and evidence.
+- **Results:** 9 analytic tests; 96 frozen poses, 288 seek draws, 96 independent
+  PNG repeats and 12 actual hardware comparisons exact, plus maximum-input checks.
+  Toolchain/static gates pass. Full repository/native/real-export acceptance was
+  not run for this isolated preparation. Actions remain disabled.
+- **Limits:** four-sample lobes and 16-sample bands retained; no production
+  quality/performance claim. CE8/CE8-L, owner policy/budgets and integration remain.
+- **Delivery:** [draft PR #39](https://github.com/xxibcill/still-shift/pull/39) is open
+  and attached; primary checkout untouched. No merge performed.
+- **Records:** [specification](./composition-ce8lf-cast-shadow-spec.md),
+  [evidence](./composition-ce8lf-results.json), [gallery](./composition-ce8lf-gallery.png).
 
 ### 2026-10-06 — CE7 milestone verification complete
 

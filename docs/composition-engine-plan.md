@@ -3456,6 +3456,49 @@ DOF blur amount vs focus distance, coverage-check regression tests.
 
 ---
 
+### CE8-L-F cast-shadow preparation (2026-10-06)
+
+Owner resumed **bounded inter-layer cast shadows** for independent design and
+prototypes, from CE7 `0e48388` on `codex/composition-ce8lf-prototype`. Production
+integration follows delivered CE8 and CE8-L. The main lane's CE8-L plan scopes
+ambient/point/spot lights on flat opted-in planes; this base has neither milestone.
+This preparation does not mark CE8, CE8-L or CE8-L-F complete, enable the reserved
+light contract, or resume realistic surface shading. See the
+[candidate specification](./composition-ce8lf-cast-shadow-spec.md) and
+[preparation evidence](./composition-ce8lf-results.json) for explicit alpha assets,
+candidate flags, geometry, bounded budgets, fixtures and integration decisions.
+
+**Preparation delivered (2026-10-06):** [draft PR #39](https://github.com/xxibcill/still-shift/pull/39)
+contains the reviewable specification and isolated CPU/shader/geometry prototypes.
+Nine analytic tests and 96 frozen poses pass; pinned seeking/independent PNG
+repeats and 12 hardware probes are exact. Proposed budgets and visible soft-shadow
+banding remain owner decisions. Production integration and its full acceptance
+remain outstanding; no CE8-L-F milestone completion is claimed.
+
+**PR #39 base refresh (2026-10-07):** merge verified CE7 `e907d16` while
+retaining the candidate and both prototype review fixes. The development log
+retains all 149 parent entries exactly once; manual resolution is documentation-only.
+Production code/configuration matches the new base; prototype source and frozen
+inputs match original head `82e3a92`. Focused 24 tests, complete fast checks
+(1,919 units), repository/Python format and lint pass. All 96 frozen poses,
+288 seek draws, 96 independent pixel/PNG repeats, 12 hardware comparisons and
+maximum inputs remain byte exact. No complete `pnpm check`, native shadow export
+or production integration acceptance is claimed; existing prerequisites and owner
+policy/budget decisions remain. [Resolution evidence](./pr-39-conflict-resolution-2026-10-07.json).
+
+**PR #39 radius-zero correction (2026-10-07):** shared CPU/shader sample selection
+uses one center sample for a zero-radius emitter while retaining the authored
+quality option. A rounding-boundary regression failed before repair; 15 analytic
+tests and focused static gates pass. All 96 frozen poses, seek draws, independent
+repeats, hardware probes, maximum inputs and conditioned-shear controls retain
+their assertions. The new hard-shadow control requires exact RGBA/PNG across
+1/4/16 authored samples within each profile and independent software repeats.
+Frozen references and production sources are unchanged; no full repository,
+native shadow export, performance or production integration acceptance was run.
+[Fix evidence](./pr-39-zero-radius-fix-results.json).
+
+---
+
 ## CE9 — Expressions and motion behaviours
 
 **Outcome:** Authors describe relationships and procedural motion instead of keying
