@@ -1,6 +1,7 @@
 import { assertCompositionEffectVersions } from "@still-shift/renderer-core";
 import {
   createCompositionPreview,
+  createCompositionPreviewAsync,
   createWebGLPreview,
   createIllustratedPreview,
   loadCompositionResources,
@@ -21,6 +22,9 @@ export type BrowserExportResult = {
   work?: {
     worker: number;
     frames: { index: number; renderMs: number; uploadMs: number }[];
+    sourceStatistics?: ReturnType<
+      NonNullable<CompositionPreview["sourceCacheStatistics"]>
+    >;
     cacheStatistics?: ReturnType<
       NonNullable<CompositionPreview["surfaceCacheStatistics"]>
     >;
@@ -204,26 +208,25 @@ const exportComposition = async (
   );
   const canvas = document.createElement("canvas");
   document.body.append(canvas);
-  const preview = createCompositionPreview(
-    canvas,
-    scene.composition,
-    resources,
-    {
-      backend: scene.backend ?? "canvas2d",
-      ...(output ? { preserveAlpha: output.preserveAlpha } : {}),
-      ...(output?.work?.surfaceCache
-        ? {
-            surfaceCache: {
-              ...output.work.surfaceCache,
-              exchange: compositionSurfaceExchange({
-                worker: output.work.worker,
-                credential: output.work.credential,
-              }),
-            },
-          }
-        : {}),
-    },
-  );
+  const preview = await (
+    output?.work?.surfaceCache
+      ? createCompositionPreviewAsync
+      : createCompositionPreview
+  )(canvas, scene.composition, resources, {
+    backend: scene.backend ?? "canvas2d",
+    ...(output ? { preserveAlpha: output.preserveAlpha } : {}),
+    ...(output?.work?.surfaceCache
+      ? {
+          surfaceCache: {
+            ...output.work.surfaceCache,
+            exchange: compositionSurfaceExchange({
+              worker: output.work.worker,
+              credential: output.work.credential,
+            }),
+          },
+        }
+      : {}),
+  });
   const gl = preview.backend === "webgl2" ? canvas.getContext("webgl2") : null;
   const info = gl?.getExtension("WEBGL_debug_renderer_info");
   const renderer = gl
@@ -232,6 +235,9 @@ const exportComposition = async (
   let cacheStatistics: NonNullable<
     BrowserExportResult["work"]
   >["cacheStatistics"];
+  let sourceStatistics: NonNullable<
+    BrowserExportResult["work"]
+  >["sourceStatistics"];
   const result = await renderFrames(
     scene.timeline.frameCount,
     resources.media || output?.work?.surfaceCache
@@ -244,6 +250,7 @@ const exportComposition = async (
         },
     () => {
       cacheStatistics = preview.surfaceCacheStatistics?.();
+      sourceStatistics = preview.sourceCacheStatistics?.();
       preview.dispose();
     },
     canvas,
@@ -257,6 +264,8 @@ const exportComposition = async (
   );
   if (result.work && cacheStatistics)
     result.work.cacheStatistics = cacheStatistics;
+  if (result.work && sourceStatistics)
+    result.work.sourceStatistics = sourceStatistics;
   return result;
 };
 

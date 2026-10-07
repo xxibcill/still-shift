@@ -1,3 +1,4 @@
+import type { CanvasPixelSource } from "./canvas-pixel-source.ts";
 import { resolveTextEvents } from "./typography-events.ts";
 import { easeMotion } from "./motion-easing.ts";
 import { axisKey, axisLayout, nodeAxisVariants } from "./typography-axes.ts";
@@ -110,12 +111,20 @@ const surface = (width: number, height: number, softwareRaster = false) => {
   if (softwareRaster) canvas.getContext("2d", { willReadFrequently: true });
   return canvas;
 };
+function rasterFonts(fonts: ReadonlyMap<string, LoadedFont>) {
+  return [...fonts]
+    .map(([id, font]) => [id, font.family, font.weight, font.style ?? "normal"])
+    .sort((a, b) =>
+      String(a[0]) < String(b[0]) ? -1 : String(a[0]) > String(b[0]) ? 1 : 0,
+    );
+}
 export function rasterizeText(
   node: TextNode,
   layout: ShapedLayout,
   fonts: Map<string, LoadedFont>,
   colorCoverage = false,
   softwareRaster = false,
+  sourceCanvas?: CanvasPixelSource,
 ): TextRaster {
   const pad = Math.ceil(
     Math.max(
@@ -127,41 +136,84 @@ export function rasterizeText(
   const left = Math.floor(Math.min(0, ...layout.lines.map((l) => l.x)) - pad),
     top = Math.floor(layout.top - pad);
   const right = Math.max(...layout.lines.map((l) => l.x + l.width));
-  const canvas = surface(
-      right - left + pad,
-      layout.top + layout.height - top + pad,
-      softwareRaster,
-    ),
-    ctx = canvas.getContext("2d")!;
-  ctx.translate(-left, -top);
-  const clusterColor = (index: number) =>
-    colorCoverage
-      ? "#ffffff"
-      : (node.spans?.[layout.clusters[index]!.spanIndex]?.color ?? node.color);
-  for (const run of layout.runs) {
-    applyTextStyle(ctx, run.style, fonts);
-    const first = run.clusters[0]!,
-      last = run.clusters.at(-1)!;
-    const colors = [...new Set(run.clusters.map(clusterColor))];
-    for (const color of colors) {
-      ctx.save();
-      ctx.beginPath();
-      for (const i of run.clusters) {
-        const cluster = layout.clusters[i]!;
-        if (clusterColor(i) !== color) continue;
-        const x = i === first ? run.x - pad : Math.round(cluster.x);
-        const right =
-          i === last
-            ? run.x + run.width + pad
-            : Math.round(cluster.x + cluster.advance);
-        ctx.rect(x, top, right - x, canvas.height);
+  const width = Math.max(1, Math.ceil(right - left + pad));
+  const height = Math.max(1, Math.ceil(layout.top + layout.height - top + pad));
+  const paint = () => {
+    const canvas = surface(
+        right - left + pad,
+        layout.top + layout.height - top + pad,
+        softwareRaster,
+      ),
+      ctx = canvas.getContext("2d")!;
+    ctx.translate(-left, -top);
+    const clusterColor = (index: number) =>
+      colorCoverage
+        ? "#ffffff"
+        : (node.spans?.[layout.clusters[index]!.spanIndex]?.color ??
+          node.color);
+    for (const run of layout.runs) {
+      applyTextStyle(ctx, run.style, fonts);
+      const first = run.clusters[0]!,
+        last = run.clusters.at(-1)!;
+      const colors = [...new Set(run.clusters.map(clusterColor))];
+      for (const color of colors) {
+        ctx.save();
+        ctx.beginPath();
+        for (const i of run.clusters) {
+          const cluster = layout.clusters[i]!;
+          if (clusterColor(i) !== color) continue;
+          const x = i === first ? run.x - pad : Math.round(cluster.x);
+          const right =
+            i === last
+              ? run.x + run.width + pad
+              : Math.round(cluster.x + cluster.advance);
+          ctx.rect(x, top, right - x, canvas.height);
+        }
+        ctx.clip();
+        ctx.fillStyle = color;
+        ctx.fillText(run.text, run.x, run.baseline);
+        ctx.restore();
       }
-      ctx.clip();
-      ctx.fillStyle = color;
-      ctx.fillText(run.text, run.x, run.baseline);
-      ctx.restore();
     }
-  }
+    return canvas;
+  };
+  const restore = (pixels: Uint8Array<ArrayBuffer>) => {
+    const canvas = surface(width, height, softwareRaster);
+    canvas
+      .getContext("2d")!
+      .putImageData(
+        new ImageData(
+          new Uint8ClampedArray(
+            pixels.buffer,
+            pixels.byteOffset,
+            pixels.byteLength,
+          ),
+          width,
+          height,
+        ),
+        0,
+        0,
+      );
+    return canvas;
+  };
+  const canvas = sourceCanvas
+    ? sourceCanvas(
+        {
+          kind: "glyph",
+          input: [
+            node,
+            layout,
+            rasterFonts(fonts),
+            colorCoverage,
+            softwareRaster,
+          ],
+          width,
+          height,
+        },
+        paint,
+        restore,
+      )
+    : paint();
   return {
     layout,
     canvas,
@@ -183,6 +235,7 @@ export function prepareTypography(
     colorCoverage?: boolean;
     sourceColorNodes?: ReadonlySet<string>;
     softwareRaster?: boolean;
+    sourceCanvas?: CanvasPixelSource;
   } = {},
 ): PreparedTypography {
   const nodes = new Map<string, Map<string, TextRaster>>(),
@@ -232,6 +285,7 @@ export function prepareTypography(
             fonts,
             colorCoverage,
             options.softwareRaster,
+            options.sourceCanvas,
           ),
           sourceColor,
         ),
@@ -257,6 +311,7 @@ export function prepareTypography(
               fonts,
               colorCoverage,
               options.softwareRaster,
+              options.sourceCanvas,
             ),
             sourceColor,
           ),
@@ -303,7 +358,14 @@ export function prepareTypography(
             if (!target.strokes.has(strokeKey))
               target.strokes.set(
                 strokeKey,
-                reserveCanvas(renderStrokedRaster(target, width, strokeColor)),
+                reserveCanvas(
+                  renderStrokedRaster(
+                    target,
+                    width,
+                    strokeColor,
+                    options.sourceCanvas,
+                  ),
+                ),
               );
           }
         }
@@ -362,7 +424,14 @@ export function prepareTypography(
       correction,
     });
     const raster = reserveRaster(
-      rasterizeText(replacement, layout, fonts, false, options.softwareRaster),
+      rasterizeText(
+        replacement,
+        layout,
+        fonts,
+        false,
+        options.softwareRaster,
+        options.sourceCanvas,
+      ),
     );
     const entries = corrections.get(node.id) ?? [];
     entries.push({
@@ -458,22 +527,68 @@ function coloredRaster(
   }
   return canvas;
 }
-function renderStrokedRaster(raster: TextRaster, width: number, color: string) {
-  const canvas = surface(
-    raster.canvas.width,
-    raster.canvas.height,
-    raster.softwareRaster,
+function renderStrokedRaster(
+  raster: TextRaster,
+  width: number,
+  color: string,
+  sourceCanvas?: CanvasPixelSource,
+) {
+  const paint = () => {
+    const canvas = surface(
+      raster.canvas.width,
+      raster.canvas.height,
+      raster.softwareRaster,
+    );
+    const ctx = canvas.getContext("2d")!;
+    ctx.translate(-raster.left, -raster.top);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineJoin = "round";
+    for (const run of raster.layout.runs) {
+      applyTextStyle(ctx, run.style, raster.fonts);
+      ctx.strokeText(run.text, run.x, run.baseline);
+    }
+    return canvas;
+  };
+  if (!sourceCanvas) return paint();
+  const w = raster.canvas.width,
+    h = raster.canvas.height;
+  return sourceCanvas(
+    {
+      kind: "glyph-stroke",
+      input: [
+        raster.layout,
+        rasterFonts(raster.fonts),
+        raster.left,
+        raster.top,
+        width,
+        color,
+        raster.softwareRaster ?? false,
+      ],
+      width: w,
+      height: h,
+    },
+    paint,
+    (pixels) => {
+      const canvas = surface(w, h, raster.softwareRaster);
+      canvas
+        .getContext("2d")!
+        .putImageData(
+          new ImageData(
+            new Uint8ClampedArray(
+              pixels.buffer,
+              pixels.byteOffset,
+              pixels.byteLength,
+            ),
+            w,
+            h,
+          ),
+          0,
+          0,
+        );
+      return canvas;
+    },
   );
-  const ctx = canvas.getContext("2d")!;
-  ctx.translate(-raster.left, -raster.top);
-  ctx.strokeStyle = color;
-  ctx.lineWidth = width;
-  ctx.lineJoin = "round";
-  for (const run of raster.layout.runs) {
-    applyTextStyle(ctx, run.style, raster.fonts);
-    ctx.strokeText(run.text, run.x, run.baseline);
-  }
-  return canvas;
 }
 /** Outlines are cached per width, so animated widths share a 0.25 px grid. */
 export function quantizeStrokeWidth(width: number) {

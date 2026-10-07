@@ -13,8 +13,13 @@ import {
 } from "@still-shift/execution-runtime";
 import type * as Checks from "../helpers/composition-surface-reference.ts";
 
+import type * as SourceChecks from "../helpers/composition-source-reference.ts";
+
 type SurfaceOutcome = Awaited<
   ReturnType<typeof Checks.checkSharedCompositionSurfaces>
+>;
+type SourceOutcome = Awaited<
+  ReturnType<typeof SourceChecks.checkSharedCompositionSources>
 >;
 
 const root = resolve(import.meta.dirname, "../..");
@@ -186,6 +191,109 @@ try {
         await store.dispose();
       }
     }
+  const sources = [];
+  for (const backend of ["canvas2d", "webgl2"] as const)
+    for (const software of [false, true])
+      for (const animated of [false, true]) {
+        const id = `sources-${backend}-${software}-${animated}`,
+          credentials = workers.map(() => randomUUID());
+        const store = await CompositionSurfaceStore.create(scratch, {
+          workers: 4,
+          byteLimit: 64 * 1024 * 1024,
+        });
+        brokers.set(
+          id,
+          new CompositionSurfaceBroker(store, credentials, (error) => {
+            failures.push(error);
+            void store.dispose(
+              error instanceof Error ? error : Error(String(error)),
+            );
+          }),
+        );
+        try {
+          const scopeKey =
+            "sha256:" +
+            createHash("sha256")
+              .update(JSON.stringify([id, environments[0]]))
+              .digest("hex");
+          const outcomes: SourceOutcome[] = await Promise.all(
+            workers.map(({ page }, worker) =>
+              page.evaluate(
+                async (options) => {
+                  const url = "/tests/helpers/composition-source-reference.ts";
+                  return (
+                    (await import(url)) as typeof SourceChecks
+                  ).checkSharedCompositionSources(options);
+                },
+                {
+                  backend,
+                  software,
+                  animated,
+                  worker,
+                  credential: credentials[worker]!,
+                  scopeKey,
+                  baseUrl: `/_surface/${id}`,
+                },
+              ),
+            ),
+          );
+          assert.deepEqual(failures, []);
+          const totals = (kind: string, field: "paints" | "restores") =>
+            outcomes.reduce(
+              (sum, result) =>
+                sum +
+                (result.sourceStatistics.sources.find(
+                  (source) => source.kind === kind,
+                )?.[field] ?? 0),
+              0,
+            );
+          assert.equal(totals("coverage-asset", "paints"), 1);
+          assert.equal(totals("coverage-asset", "restores"), 3);
+          assert.equal(totals("glyph", "paints"), 3);
+          assert.equal(totals("glyph", "restores"), 9);
+          assert.equal(totals("glyph-stroke", "paints"), animated ? 8 : 2);
+          assert.equal(totals("glyph-stroke", "restores"), animated ? 24 : 6);
+          assert.equal(
+            outcomes.reduce(
+              (sum, result) => sum + result.preparationPaintCalls.drawImage,
+              0,
+            ),
+            1,
+          );
+          assert.equal(
+            outcomes.reduce(
+              (sum, result) => sum + result.preparationPaintCalls.fillText,
+              0,
+            ),
+            3,
+          );
+          assert.equal(
+            outcomes.reduce(
+              (sum, result) => sum + result.preparationPaintCalls.strokeText,
+              0,
+            ),
+            animated ? 8 : 2,
+          );
+          const independentPaints = outcomes.reduce(
+            (sum, result) =>
+              sum + result.surfaceStatistics.independentSurfacePaints,
+            0,
+          );
+          assert.equal(
+            store.statistics.publishedSurfaces,
+            (animated ? 12 : 6) + independentPaints,
+          );
+          sources.push({
+            backend,
+            software,
+            statistics: store.statistics,
+            outcomes,
+          });
+        } finally {
+          brokers.delete(id);
+          await store.dispose();
+        }
+      }
   const floating = await workers[0]!.page.evaluate(async () => {
     const url = "/tests/helpers/composition-surface-reference.ts";
     return ((await import(url)) as typeof Checks).checkFloatSurfaceTransfer();
@@ -200,13 +308,21 @@ try {
       (await import(url)) as typeof Checks
     ).checkSurfacePreparationFailures();
   });
+  const protectedSources = await workers[0]!.page.evaluate(async () => {
+    const url = "/tests/helpers/composition-source-reference.ts";
+    return (
+      (await import(url)) as typeof SourceChecks
+    ).checkSourcePreparationFailures();
+  });
   const directory = join(root, "benchmarks/results/composition-ce15-surfaces");
   await mkdir(directory, { recursive: true });
   const result = {
     status: "passed",
     environments,
-    cases: reports.length,
-    frameChecks: reports.reduce(
+    surfaceCases: reports.length,
+    sourceCases: sources.length,
+    cases: reports.length + sources.length,
+    sourceFrameChecks: sources.reduce(
       (sum, report) =>
         sum +
         report.outcomes.reduce(
@@ -215,9 +331,20 @@ try {
         ),
       0,
     ),
+    frameChecks: [...reports, ...sources].reduce(
+      (sum, report) =>
+        sum +
+        report.outcomes.reduce(
+          (count, outcome) => count + outcome.frameChecks,
+          0,
+        ),
+      0,
+    ),
+    sources,
     floating,
     nativeStorage,
     protectedPreparation,
+    protectedSources,
     reports,
   };
   await writeFile(

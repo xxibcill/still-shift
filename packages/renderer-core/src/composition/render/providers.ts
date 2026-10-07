@@ -1,3 +1,4 @@
+import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
 import type {
   Composition,
   CompositionLayer,
@@ -10,6 +11,7 @@ import type { TextProbe } from "./text.ts";
 
 export type ProviderLayer = Extract<CompositionLayer, { type: "provider" }>;
 export type ProviderResources = {
+  sourceCanvas?: CanvasPixelSource;
   textProbe?: TextProbe;
   images: ReadonlyMap<string, CanvasImageSource>;
   /** Match prepared glyphs to the composition primitive-filter raster policy. */
@@ -122,6 +124,9 @@ export function prepareCompositionProviders(
       const key = `${index ? `${scope.id}/` : ""}${layer.id}`;
       // Limit the provider's resource view to its declared dependencies.
       const available: ProviderResources = {
+        ...(resources.sourceCanvas
+          ? { sourceCanvas: resources.sourceCanvas }
+          : {}),
         ...(resources.textProbe ? { textProbe: resources.textProbe } : {}),
         ...(resources.softwareRaster ? { softwareRaster: true } : {}),
         images: new Map(

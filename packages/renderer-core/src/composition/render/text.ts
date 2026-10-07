@@ -1,3 +1,4 @@
+import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
 /**
  * The one module that shapes, measures and draws composition text. Every text
  * layout decision (shaping, advances, line breaks) is made here through the
@@ -267,7 +268,22 @@ function compositionTextFrames(
         }
       : {}),
   };
-  const { bounds } = prepareCompositionText(staticComp, fonts, context, {});
+  // Frame discovery consumes shaped layout and measured bounds only. Its
+  // temporary raster headers preserve dimensions without painting glyphs.
+  const boundsOnly: CanvasPixelSource = ({ width, height }) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    return canvas;
+  };
+  const { bounds } = prepareCompositionText(
+    staticComp,
+    fonts,
+    context,
+    {},
+    undefined,
+    boundsOnly,
+  );
   return collectCompositionTextFrames(comp, bounds);
 }
 
@@ -310,13 +326,11 @@ export function prepareCompositionText(
   comp: Composition,
   fonts: Map<string, LoadedFont>,
   measureContext: CanvasRenderingContext2D,
-  frames: CompositionTextFrames = compositionTextFrames(
-    comp,
-    fonts,
-    measureContext,
-  ),
+  frames: CompositionTextFrames | undefined = undefined,
   textProbe?: TextProbe,
+  sourceCanvas?: CanvasPixelSource,
 ): CompositionText {
+  frames ??= compositionTextFrames(comp, fonts, measureContext);
   const entries = new Map<string, Entry>();
   const bounds: Record<string, Bounds[]> = {};
   for (const [scope, prefix] of scopes(comp)) {
@@ -334,6 +348,7 @@ export function prepareCompositionText(
     const prepared = typed.length
       ? prepareTypography(scene, fonts, {
           softwareRaster: requiresSoftwareFilters(comp),
+          ...(sourceCanvas ? { sourceCanvas } : {}),
           strokeCoverage: true,
           colorCoverage: true,
           sourceColorNodes: new Set(

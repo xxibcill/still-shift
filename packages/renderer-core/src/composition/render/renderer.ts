@@ -12,6 +12,8 @@ import {
   type CompositionPreparedAudio,
 } from "@still-shift/scene-contract";
 import { sha256Hex } from "../../browser-checksum.ts";
+import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
+import { CompositionSourceCache } from "./source-cache.ts";
 import {
   PassageError,
   type PassageDiagnostic,
@@ -264,6 +266,7 @@ export type CompositionFrameReport = {
 };
 
 export type CompositionPreview = {
+  sourceCacheStatistics?: () => CompositionSourceCache["statistics"];
   readonly backend: CompositionBackend;
   readonly rendererVersion: string;
   readPixels(): Uint8ClampedArray;
@@ -293,6 +296,7 @@ export function createCompositionPreview(
     /** Carry the authored background alpha; opaque preview remains the default. */
     preserveAlpha?: boolean;
     surfaceCache?: CompositionSurfaceCacheOptions;
+    sourceCanvas?: CanvasPixelSource;
   } = {},
 ): CompositionPreview {
   const validation = validateComposition(composition);
@@ -323,8 +327,40 @@ export function createCompositionPreview(
     probe.height = asset.height;
     const context = probe.getContext("2d", { willReadFrequently: true });
     if (!context) throw new Error("Canvas 2D is unavailable");
-    context.drawImage(image, 0, 0);
-    return context.getImageData(0, 0, probe.width, probe.height);
+    const paint = () => {
+      context.drawImage(image, 0, 0);
+      return probe;
+    };
+    const source = options.sourceCanvas
+      ? options.sourceCanvas(
+          {
+            kind: "coverage-asset",
+            input: [asset, context.getContextAttributes()],
+            width: asset.width,
+            height: asset.height,
+          },
+          paint,
+          (pixels) => {
+            context.putImageData(
+              new ImageData(
+                new Uint8ClampedArray(
+                  pixels.buffer,
+                  pixels.byteOffset,
+                  pixels.byteLength,
+                ),
+                asset.width,
+                asset.height,
+              ),
+              0,
+              0,
+            );
+            return probe;
+          },
+        )
+      : paint();
+    return source
+      .getContext("2d")!
+      .getImageData(0, 0, source.width, source.height);
   };
   validateStoryCompositionCoverage(composition, readAssetPixels);
   validateCinematicCompositionCoverage(composition, readAssetPixels);
@@ -334,10 +370,15 @@ export function createCompositionPreview(
     ctx,
     undefined,
     resources.textProbe,
+    options.sourceCanvas,
   );
   const drawProvider = prepareCompositionProviders(
     composition,
-    { ...resources, softwareRaster: requiresSoftwareFilters(composition) },
+    {
+      ...resources,
+      softwareRaster: requiresSoftwareFilters(composition),
+      ...(options.sourceCanvas ? { sourceCanvas: options.sourceCanvas } : {}),
+    },
     [...BUILTIN_PROVIDERS, ...(options.providers ?? [])],
   );
   const backendOptions = {
@@ -524,5 +565,42 @@ export function createCompositionPreview(
         canvas.width = composition.width;
       },
     };
+  }
+}
+
+/** Shares preparation pixels before constructing the ordinary synchronous preview. */
+export async function createCompositionPreviewAsync(
+  canvas: HTMLCanvasElement,
+  composition: Composition,
+  resources: CompositionResources,
+  options: NonNullable<Parameters<typeof createCompositionPreview>[3]> = {},
+): Promise<CompositionPreview> {
+  if (!options.surfaceCache)
+    return createCompositionPreview(canvas, composition, resources, options);
+  const sources = new CompositionSourceCache(options.surfaceCache);
+  try {
+    for (;;) {
+      try {
+        const preview = createCompositionPreview(
+          canvas,
+          composition,
+          resources,
+          { ...options, sourceCanvas: sources.read },
+        );
+        return {
+          ...preview,
+          sourceCacheStatistics: () => sources.statistics,
+          dispose() {
+            preview.dispose();
+            sources.dispose();
+          },
+        };
+      } catch (error) {
+        if (!(await sources.prepare(error))) throw error;
+      }
+    }
+  } catch (error) {
+    sources.dispose();
+    throw error;
   }
 }

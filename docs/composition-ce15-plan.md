@@ -133,6 +133,33 @@ built-in preparation counts, total allocation admission, per-layer timing, the
 actual two-minute 3× proof and final full gate remain mandatory.
 [Detailed production evidence](./composition-ce15-parallel-results.json).
 
+## Accepted native preparation checkpoint — 2026-10-07
+
+Pinned glyphs, prepared outline variants and coverage probes now paint once
+globally through the actual export store. Consumers restore the original native
+RGBA8 pixels before ordinary preview construction. Font-frame discovery uses
+identical shaped bounds with unpainted raster headers; the paint audit exposed
+and removed redundant glyph painting during construction retries (51 calls became
+three).
+
+Eight source cases cover both backends, both raster policies, and fixed/animated
+outlines. All 416 source comparisons and 1,664 complete audit frame comparisons
+pass exactly. Thirty-two actual production exports (uncached, one/four workers and
+four-worker repeats) preserve complete PNG bodies and all 256 decoded frames.
+Native preparation calls and actual global ownership counts agree: one coverage
+paint, three glyph paints and two fixed/eight animated outline variants per export.
+Eleven malformed/abort cases preserve original reasons, admit no invalid restores
+and clear failed producer canvases. Build/lint/boundaries, 63 focused tests,
+12 provider placement cases and all eight original typography fixtures pass.
+Glyph performance is 1.2926× under the unchanged 1.5× policy.
+
+Per-source durations and retained/payload bytes are measured. Direct/root/prefix
+painting, runtime tinting, broader variable/correction coverage, complete aggregate
+allocation, per-layer timing, two-minute speed acceptance and the final full gate
+remain mandatory. The permanent parallel browser suite includes the 32 new exports;
+its expanded whole command will run at final acceptance. Prior failed fixtures and
+the redundant-paint finding remain in the [evidence](./composition-ce15-source-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

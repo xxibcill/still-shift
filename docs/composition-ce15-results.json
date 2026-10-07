@@ -4,7 +4,7 @@
   "branch": "codex/composition-ce15",
   "base": "aedfc9e",
   "started": "2026-10-07",
-  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle",
+  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources",
   "versions": {
     "canvas": "composition-canvas-1.46.0",
     "webgl": "composition-webgl2-0.67.0"
@@ -591,5 +591,20 @@
     "browserSeconds": 181.14023083401844,
     "fullGate": "pending",
     "speedProof": "pending"
+  },
+  "preparationSources": {
+    "status": "preparation source ownership and production parity passed; full CE15 acceptance pending",
+    "record": "docs/composition-ce15-source-results.json",
+    "relevantFingerprint": "b3b32321f53433e2081c319938022e868363e4e1760e32559fb5d6c332d37289",
+    "sourceCases": 8,
+    "sourceCachedBaselineFrameComparisons": 416,
+    "allCachedBaselineFrameComparisons": 1664,
+    "productionExports": 32,
+    "decodedProductionFrames": 256,
+    "protectedSourceFailures": 11,
+    "providerTypographyPlacementCases": 12,
+    "providerTypographyFrames": 60,
+    "typographyFixtures": 8,
+    "fullGate": "pending"
   }
 }

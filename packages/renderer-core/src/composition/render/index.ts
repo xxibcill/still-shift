@@ -42,6 +42,7 @@ export {
 export {
   compositionScene,
   createCompositionPreview,
+  createCompositionPreviewAsync,
   loadCompositionResources,
   type CompositionFrameReport,
   type CompositionPreview,

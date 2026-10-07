@@ -5096,8 +5096,11 @@ encodes, CLI, dimensions and protected publication/source failures. Existing
 media/WebGL export regressions pass. Public/CLI parallel export now passes 111
 successful exports, eight native timing cases, 24 live failures and complete
 media/frame/audio parity; 32 focused tests and existing format/legacy suites pass.
-Global static/preparation paint counts, aggregate limits, per-layer statistics,
-two-minute speed proof and final local gate remain pending.
+Native preparation sources pass 1,664 exact audit comparisons, 32 production
+exports / 256 decoded frames, 11 protected failures, 63 focused tests and original
+typography checks. Direct/root/prefix and runtime tint paint coverage, broader
+axes/corrections, aggregate limits, per-layer statistics, two-minute speed proof
+and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),
 [format evidence](./composition-ce15-format-results.json).
 

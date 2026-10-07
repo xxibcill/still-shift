@@ -57,8 +57,11 @@ still hold before relying on them.
   successful exports, eight native timing cases, 24 live failures and complete
   media/frame/audio parity; all worker counts, old format/legacy suites, 32 focused
   tests and build/lint/boundaries pass. New Canvas isolation and synchronous binary
-  XHR remain rejected. Global static/preparation paint counts, aggregate memory,
-  per-layer statistics, the actual two-minute speed proof and final full gate remain in
+  XHR remain rejected. Native preparation sources now pass 1,664 exact audit
+  frames, 32 production exports / 256 decoded frames, 11 protected failures and 63
+  focused tests plus original typography checks. Direct/root/prefix, runtime tints,
+  broader axes/corrections, aggregate memory, per-layer statistics, the actual
+  two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
   [format evidence](./composition-ce15-format-results.json).
@@ -291,6 +294,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 native preparation source checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `94fc857`.
+- **Done:** shared original native glyph/outline/coverage pixels, exact font/raster
+  identities, source ownership/timing counters and unpainted bounds discovery.
+- **Results:** 1,664 exact browser frame comparisons; 32 production exports / 256
+  decoded frames preserve complete PNG bodies; 11 protected source failures pass.
+  Build/lint/boundaries, 63 focused tests, provider placements and eight typography
+  fixtures pass; glyph timing remains inside its unchanged 1.5× policy.
+- **Rejected:** count audit exposed 51 redundant bounds-only glyph paints; production
+  now measures identical bounds without painting. Failed fixtures remain recorded.
+- **Next:** root/direct/prefix and tint audit, broader axis/correction coverage, complete
+  allocation/timing, actual two-minute speed proof, full CE15 gate/PR, then all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [preparation evidence](./composition-ce15-source-results.json).
 
 ### 2026-10-07 — CE15 production parallel worker checkpoint
 
