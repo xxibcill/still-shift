@@ -1,3 +1,9 @@
+import {
+  preparePassageNativeAudio,
+  renderPassageNativeAudio,
+  type PassageNativeAudio,
+} from "./passage-native-audio.ts";
+import { frameToSoundtrackSample } from "@still-shift/renderer-core/soundtrack";
 import { soundtrackFail } from "@still-shift/scene-contract";
 import { renderPassageSoundtrack } from "./soundtrack-passage.ts";
 import {
@@ -53,6 +59,10 @@ type Stream = {
   height?: number;
   r_frame_rate?: string;
   duration?: string;
+  time_base?: string;
+  duration_ts?: number;
+  sample_rate?: string;
+  channels?: number;
 };
 const probe = async (
   path: string,
@@ -97,6 +107,7 @@ async function verifyVideo(
   size: { width: number; height: number },
   audio: boolean,
   signal?: AbortSignal,
+  exactAudioSamples?: number,
 ) {
   const { streams } = await probe(path, signal);
   const video = streams.find((stream) => stream.codec_type === "video");
@@ -112,6 +123,17 @@ async function verifyVideo(
     streams.some((stream) => stream.codec_type === "audio"),
     audio,
   );
+  if (exactAudioSamples !== undefined) {
+    const stream = streams.find((stream) => stream.codec_type === "audio");
+    assert.equal(stream?.sample_rate, "48000");
+    assert.equal(stream?.channels, 2);
+    assert.equal(stream?.time_base, "1/48000");
+    assert.equal(
+      stream?.duration_ts,
+      exactAudioSamples,
+      "Native passage AAC must retain the exact selected sample clock",
+    );
+  }
   await runProcess("ffmpeg", ["-v", "error", "-i", path, "-f", "null", "-"], {
     signal,
   });
@@ -128,7 +150,9 @@ async function assembleStoryPassage(
   narration: string | undefined,
   options: PassageRenderOptions & {
     cacheDirectory: string;
+    nativeAudio?: PassageNativeAudio;
     soundtrackRevision?: number;
+    soundtrackProjectSha256?: string;
     runtime: string;
     renderEnvironment: RenderEnvironment;
     sceneDirectory: string;
@@ -199,6 +223,7 @@ async function assembleStoryPassage(
           compositionPath,
           outputPath,
           backend,
+          cacheDirectory: options.cacheDirectory,
           signal: options.signal,
         });
       },
@@ -208,7 +233,11 @@ async function assembleStoryPassage(
           beat.scene.frameCount,
           plan.fps,
           size,
-          false,
+          Boolean(
+            options.nativeAudio?.masters.some(
+              (master) => master.beat === beat.id,
+            ),
+          ),
           options.signal,
         ),
     });
@@ -281,8 +310,39 @@ async function assembleStoryPassage(
     ":end_frame=" +
     (renderStart + frameCount) +
     ",setpts=PTS-STARTPTS[v]";
-  const mixedAudio = options.soundtrackProject
-    ? await renderPassageSoundtrack(
+  const audioOptions = {
+    range,
+    soundEffects: options.soundEffects,
+    signal: options.signal,
+  };
+  let mixedAudio;
+  if (options.nativeAudio) {
+    if (options.soundtrackProject) {
+      const nativeMix = await renderPassageNativeAudio(
+        join(output, "native.wav"),
+        passage,
+        options.nativeAudio,
+        undefined,
+        {
+          signal: options.signal,
+          cacheDirectory: options.cacheDirectory,
+          masterGainDb: 0,
+          stem: "sounds",
+        },
+      );
+      const nativeNarration = await renderPassageNativeAudio(
+        join(output, "native-narration.wav"),
+        passage,
+        options.nativeAudio,
+        undefined,
+        {
+          signal: options.signal,
+          cacheDirectory: options.cacheDirectory,
+          masterGainDb: 0,
+          stem: "narration",
+        },
+      );
+      mixedAudio = await renderPassageSoundtrack(
         join(output, "mix.wav"),
         passage,
         options.soundtrackProject,
@@ -292,13 +352,57 @@ async function assembleStoryPassage(
           ...(options.soundtrackRevision !== undefined
             ? { expectedRevision: options.soundtrackRevision }
             : {}),
+          nativeAudio: nativeMix,
+          nativeNarration,
+          ...(options.soundtrackProjectSha256
+            ? { expectedProjectSha256: options.soundtrackProjectSha256 }
+            : {}),
         },
-      )
-    : await renderPassageAudio(join(output, "mix.wav"), passage, narration, {
-        range,
-        soundEffects: options.soundEffects,
-        signal: options.signal,
-      });
+      );
+    } else {
+      const legacy = await renderPassageAudio(
+        join(output, "legacy.wav"),
+        passage,
+        narration,
+        {
+          soundEffects: options.soundEffects,
+          signal: options.signal,
+          narrationExclusions: options.nativeAudio.narrationExclusions,
+          masterGainDb: 0,
+        },
+      );
+      mixedAudio = await renderPassageNativeAudio(
+        join(output, "mix.wav"),
+        passage,
+        options.nativeAudio,
+        legacy?.path,
+        {
+          range,
+          signal: options.signal,
+          cacheDirectory: options.cacheDirectory,
+        },
+      );
+    }
+  } else
+    mixedAudio = options.soundtrackProject
+      ? await renderPassageSoundtrack(
+          join(output, "mix.wav"),
+          passage,
+          options.soundtrackProject,
+          {
+            range,
+            signal: options.signal,
+            ...(options.soundtrackRevision !== undefined
+              ? { expectedRevision: options.soundtrackRevision }
+              : {}),
+          },
+        )
+      : await renderPassageAudio(
+          join(output, "mix.wav"),
+          passage,
+          narration,
+          audioOptions,
+        );
   const hasAudio = Boolean(mixedAudio);
   const audio = mixedAudio ? `;[${assemblyInputs.length}:a:0]anull[a]` : "";
   await run("ffmpeg", [
@@ -312,6 +416,18 @@ async function assembleStoryPassage(
     "-map",
     "[v]",
     ...(hasAudio ? ["-map", "[a]", "-c:a", "aac", "-b:a", "192k"] : []),
+    ...(options.nativeAudio
+      ? [
+          "-ar",
+          "48000",
+          "-ac",
+          "2",
+          "-movie_timescale",
+          "48000",
+          "-use_editlist",
+          "1",
+        ]
+      : []),
     "-frames:v",
     String(frameCount),
     "-t",
@@ -335,6 +451,9 @@ async function assembleStoryPassage(
     size,
     hasAudio,
     options.signal,
+    options.nativeAudio
+      ? frameToSoundtrackSample(frameCount, plan.fps)
+      : undefined,
   );
   const slices = [];
   for (const original of plan.delivery) {
@@ -352,11 +471,13 @@ async function assembleStoryPassage(
       shot.end +
       ",setpts=PTS-STARTPTS[v]";
     const trimAudio = hasAudio
-      ? ";[0:a]atrim=start=" +
-        shot.start / plan.fps +
-        ":end=" +
-        shot.end / plan.fps +
-        ",asetpts=PTS-STARTPTS[a]"
+      ? options.nativeAudio
+        ? `;[1:a]atrim=start_sample=${frameToSoundtrackSample(shot.start, plan.fps)}:end_sample=${frameToSoundtrackSample(shot.end, plan.fps)},asetpts=PTS-STARTPTS[a]`
+        : ";[0:a]atrim=start=" +
+          shot.start / plan.fps +
+          ":end=" +
+          shot.end / plan.fps +
+          ",asetpts=PTS-STARTPTS[a]"
       : "";
     await run("ffmpeg", [
       "-v",
@@ -364,11 +485,26 @@ async function assembleStoryPassage(
       "-n",
       "-i",
       video,
+      ...(options.nativeAudio && mixedAudio ? ["-i", mixedAudio.path] : []),
       "-filter_complex",
       filter + trimAudio,
       "-map",
       "[v]",
       ...(hasAudio ? ["-map", "[a]", "-c:a", "aac"] : []),
+      ...(options.nativeAudio
+        ? [
+            "-b:a",
+            "192k",
+            "-ar",
+            "48000",
+            "-ac",
+            "2",
+            "-movie_timescale",
+            "48000",
+            "-use_editlist",
+            "1",
+          ]
+        : []),
       "-frames:v",
       String(shot.end - shot.start),
       "-t",
@@ -392,6 +528,9 @@ async function assembleStoryPassage(
         size,
         hasAudio,
         options.signal,
+        options.nativeAudio
+          ? frameToSoundtrackSample(shot.end - shot.start, plan.fps)
+          : undefined,
       )),
     });
   }
@@ -561,15 +700,35 @@ export async function renderStoryPassage(
         "Prepared scene changed; prepare a fresh output directory",
       );
   }
+  const cacheDirectory = resolve(
+    options.cacheDirectory ?? "benchmarks/results/passage-cache",
+  );
+  const nativeAudio = await preparePassageNativeAudio(passage, compositions, {
+    cacheDirectory,
+    signal: options.signal,
+    separateNarration: Boolean(options.soundtrackProject),
+  });
   const { identity: runtime, renderEnvironment } = await passageRenderRuntime(
     options.signal,
   );
   const jobRuntime = await passageJobRuntimeIdentity(runtime, options.signal);
+  const soundtrackProjectSha256 = options.soundtrackProject
+    ? await soundtrackChecksum(options.soundtrackProject)
+    : undefined;
   const soundtrack = options.soundtrackProject
     ? await readSoundtrackProject(options.soundtrackProject)
     : undefined;
-  if (soundtrack)
+  if (soundtrack) {
     await verifySoundtrackSources(soundtrack, options.soundtrackProject!);
+    if (
+      (await soundtrackChecksum(options.soundtrackProject!)) !==
+      soundtrackProjectSha256
+    )
+      soundtrackFail(
+        "revision-conflict",
+        "Soundtrack changed during passage preparation; reload and retry",
+      );
+  }
   const soundtrackIdentity = soundtrack
     ? {
         project: soundtrack,
@@ -618,16 +777,28 @@ export async function renderStoryPassage(
     await mkdir(join(assembly, "delivery"));
     const report = await assembleStoryPassage(assembly, passage, narration, {
       ...options,
+      ...(nativeAudio ? { nativeAudio } : {}),
       ...(soundtrack ? { soundtrackRevision: soundtrack.revision } : {}),
+      ...(soundtrackProjectSha256 ? { soundtrackProjectSha256 } : {}),
       range,
-      cacheDirectory: resolve(
-        options.cacheDirectory ?? "benchmarks/results/passage-cache",
-      ),
+      cacheDirectory,
       runtime,
       renderEnvironment,
       sceneDirectory: join(output, "scenes"),
       job,
     });
+    await nativeAudio?.verify();
+    if (soundtrack) {
+      if (
+        (await soundtrackChecksum(options.soundtrackProject!)) !==
+        soundtrackProjectSha256
+      )
+        soundtrackFail(
+          "revision-conflict",
+          "Soundtrack changed before passage publication; reload and retry",
+        );
+      await verifySoundtrackSources(soundtrack, options.soundtrackProject!);
+    }
     const products = [
       "passage.mp4",
       "passage.png",

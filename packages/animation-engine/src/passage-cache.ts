@@ -21,7 +21,13 @@ import {
 import { constants } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import type { Composition } from "@still-shift/scene-contract";
-import { validateComposition } from "@still-shift/scene-contract";
+import {
+  validateComposition,
+  compositionMediaMappingDocument,
+  COMPOSITION_AUDIO_DECODER_VERSION,
+  COMPOSITION_AUDIO_MIXER_VERSION,
+  COMPOSITION_MEDIA_DECODER_VERSION,
+} from "@still-shift/scene-contract";
 import type { StoryScene } from "../../scene-contract/src/story.ts";
 import { AnimationEngineError } from "../../scene-contract/src/errors.ts";
 import {
@@ -88,12 +94,16 @@ export function passageCompositionKey(
 ) {
   const result = validateComposition(composition);
   if (!result.ok) throw new Error("Invalid native passage composition");
-  const normalized = structuredClone(result.composition);
-  for (const asset of normalized.assets) asset.path = asset.sha256;
+  const normalized = JSON.parse(
+    compositionMediaMappingDocument(result.composition),
+  );
   return passageHash(
     stableJson({
-      version: "composition-passage-cache-1",
+      version: "composition-passage-cache-2",
       composition: normalized,
+      mediaDecoder: COMPOSITION_MEDIA_DECODER_VERSION,
+      audioDecoder: COMPOSITION_AUDIO_DECODER_VERSION,
+      audioMixer: COMPOSITION_AUDIO_MIXER_VERSION,
       renderer: compositionRendererVersion(backend),
       evaluator: COMPOSITION_EVALUATOR_VERSION,
       runtime,
@@ -154,6 +164,15 @@ export async function passageRenderRuntime(
     "packages/animation-engine/src/composition-compile.ts",
     "packages/animation-engine/src/composition-render.ts",
     "packages/animation-engine/src/composition-source.ts",
+    "packages/animation-engine/src/composition-audio-mix.ts",
+    "packages/animation-engine/src/composition-audio-pcm.ts",
+    "packages/animation-engine/src/composition-media-audio.ts",
+    "packages/animation-engine/src/composition-media-cache.ts",
+    "packages/animation-engine/src/composition-media-cache-storage.ts",
+    "packages/animation-engine/src/composition-media-color.ts",
+    "packages/animation-engine/src/composition-media-probe.ts",
+    "packages/animation-engine/src/composition-media-sequence.ts",
+    "packages/animation-engine/src/composition-media.ts",
     "toolchain.json",
     "pnpm-lock.yaml",
   );
@@ -163,11 +182,8 @@ export async function passageRenderRuntime(
     hash.update(file);
     hash.update(await readFile(join(root, file)));
   }
-  hash.update(
-    (await runProcess("ffmpeg", ["-version"], { signal })).stdout.split(
-      "\n",
-    )[0]!,
-  );
+  for (const command of ["ffmpeg", "ffprobe"])
+    hash.update((await runProcess(command, ["-version"], { signal })).stdout);
   const renderEnvironment = await measurePassageRenderEnvironment(signal);
   hash.update(stableJson({ renderEnvironment }));
   hash.update(process.version);
@@ -187,9 +203,14 @@ export async function passageJobRuntimeIdentity(
 ) {
   signal?.throwIfAborted();
   const sources = await Promise.all(
-    ["story-passage-render.ts", "passage-audio.ts"].map((file) =>
-      readFile(resolve(import.meta.dirname, file)),
-    ),
+    [
+      "story-passage-render.ts",
+      "passage-audio.ts",
+      "passage-native-audio.ts",
+      "soundtrack-passage.ts",
+      "soundtrack-render.ts",
+      "soundtrack-project-io.ts",
+    ].map((file) => readFile(resolve(import.meta.dirname, file))),
   );
   signal?.throwIfAborted();
   return passageHash(beatRuntime + ":" + sources.map(passageHash).join(":"));

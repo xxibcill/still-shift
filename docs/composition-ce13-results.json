@@ -5525,12 +5525,134 @@
       ],
       "proofNote": "Relevant actual source/cache/preview/authorizing regressions and native passage units pass. Broad units/runtime and complete milestone gate were not repeated for this path-only slice; required final gate remains pending.",
       "fullGate": false
+    },
+    {
+      "slice": "complete native passage PCM and saved narration routing",
+      "sourceFingerprint": "sha256:b268cfa16e6fb0f548121cb96cec3d41e4c3bb6a57fb409d80e345886c6c6c6c",
+      "sourceFiles": [
+        "packages/animation-engine/src/passage-audio.ts",
+        "packages/animation-engine/src/passage-cache.ts",
+        "packages/animation-engine/src/passage-native-audio.ts",
+        "packages/animation-engine/src/soundtrack-passage.ts",
+        "packages/animation-engine/src/story-passage-render.ts",
+        "packages/scene-contract/src/composition/index.ts",
+        "packages/scene-contract/src/composition/validate-media.ts",
+        "tests/integration/passage-native-audio.test.ts",
+        "tests/unit/passage-runtime-identity.test.ts"
+      ],
+      "checks": {
+        "build": "pass",
+        "schema": "pass",
+        "boundaries": "pass",
+        "lint": "pass",
+        "format": "pass",
+        "focused": {
+          "exitCode": 0,
+          "passed": 72,
+          "files": 7,
+          "seconds": 34.57
+        },
+        "newActualNativePassageCases": 8,
+        "nativePassageBrowserBackends": ["canvas2d", "webgl2"],
+        "withoutOptionalBackend": {
+          "exitCode": 0,
+          "actualBackendExports": 2,
+          "python": "intentionally unavailable",
+          "note": "focused export selection only; eight other cases intentionally unselected for this absence proof, all nine pass in complete focused suite"
+        },
+        "newNativePassageCases": 9,
+        "canonicalMappingCases": 1
+      },
+      "implemented": [
+        "all native originals and protected narration intervals verified across the complete passage before selected picture ranges or render jobs",
+        "protected interval trace reused from contract validation; matching native voice overrides exact global voice intervals, including authored muted voice, without shifting source clock",
+        "complete beat masters placed in authored beat order including outgoing handoff tails; Float32 addition then one common master gain; selected WAV copies exact complete-master sample range",
+        "bounded disk paging with two 32768-byte pages, at most 32 source handles, 327684-byte assembly PCM reservation and complete 3600-second duration rejection before preparation",
+        "captured complete PCM and source provenance rechecked before/after mixing and before passage artifact publication; cancellation removes private whole/range/assembly output",
+        "saved CE16 adapter receives separate complete native narration/non-narration stems in a private validated derived project; native narration joins saved narration track before filters, ducking and master lookahead limiting; original project/revision/source checks retained",
+        "native beat AAC presence accepted in picture cache; final picture concat ignores beat audio and uses actual PCM masters, never lossy AAC as mix source",
+        "native passage/delivery AAC uses exact 48k stereo sample clock/movie timescale/edit list; delivery encodes original selected PCM rather than another AAC generation",
+        "native beat cache2 uses canonical content mapping without original pattern/manifest/first filename; full FFmpeg/ffprobe build identities and source/mix/assembly helpers enter runtime fingerprints",
+        "existing no-native-audio encoder arguments and default optional-backend boundary preserved; renderer/evaluator/decoder/mixer versions and frozen visuals unchanged"
+      ],
+      "actualProofs": [
+        "all 24000 stereo root sample bits match independent authored-order/gain oracle, including distinct last samples and outgoing native tail overlap",
+        "complete/range/repeat WAV identities exact; mid-fade nested native narration/global remainder samples exact without duplicate voice",
+        "actual original/disabled protected voice outside a selected picture range rejects on changed identity/placement/bytes before publication",
+        "native duration over 3600 seconds rejects before cache creation",
+        "active complete-master cancellation observed after private whole file opens; partial output removed",
+        "saved native/full-range PCM identical to independent CE16 reference with actual narration highpass, ducking and active lookahead limiter; original saved JSON bytes unchanged",
+        "actual Canvas/WebGL2 full/repeat/range/delivery MP4s have exact track sample counts; both decoded AAC streams match independent encoder reference; repeated passage MP4 bytes identical",
+        "production cancellation at assembly leaves no passage output/private assembly",
+        "existing complete 576-frame native passage browser suites pass both backends: standalone native encoded beat, isolated/relocated cache edits, cue mappings, narration and Lab seeks",
+        "both native passage backends export successfully with intentionally unavailable optional soundtrack Python path"
+      ],
+      "failedAttempts": [
+        {
+          "path": "/private/tmp/ce13-passage-audio-build-draft.log",
+          "sha256": "sha256:651609aafaff9bacf3937a775d5eebd2179d1513e9129d98491fe1a24650ff7b",
+          "reason": "typed optional path / required audio field repaired"
+        },
+        {
+          "path": "/private/tmp/ce13-passage-audio-build-draft2.log",
+          "sha256": "sha256:406f9b10b8748e81f3b702f83bd5d49fc5880b3d007fbbf4c3c22e837f3448ef",
+          "reason": "nested fixture required dimensions repaired"
+        },
+        {
+          "path": "/private/tmp/ce13-passage-audio-build-draft4.log",
+          "sha256": "sha256:2ea12504ea2ef29634a8dad37b9e5a761064bb12f01408bec5ab139eb470898b",
+          "reason": "typed v2 fixture narrowing and handoff repaired"
+        },
+        {
+          "path": "/private/tmp/ce13-passage-audio-build-draft5.log",
+          "sha256": "sha256:9d2356bec62d988a44d977d740f7ec5867f71555ba6d84579c2c0f6b6dbad293",
+          "reason": "fixture narrowing insertion repaired"
+        },
+        {
+          "path": "/private/tmp/ce13-passage-audio-focused-draft.log",
+          "sha256": "sha256:4e84c8c747c821bc492776054121926779bf9cca01eb26a3d08ebb7c093d3574",
+          "reason": "oracle retained negative zero before authored Float32 addition; corrected expectation"
+        },
+        {
+          "path": "/private/tmp/ce13-passage-audio-focused-draft4.log",
+          "sha256": "sha256:52486338cca841c751f8558568452401aa2cb8b7ec0cc7b753407f36ba102e8a",
+          "reason": "cancellation fixture reused source as output; changed to distinct output and retained original source"
+        }
+      ],
+      "reviewCorrections": [
+        "saved native voice routed onto narration track to retain its filters/ducking signal before master DSP",
+        "final original/captured-master verification uses bounded source/cache checks rather than rerendering complete masters",
+        "full decoder build descriptions invalidate native beat reuse even when the release banner is unchanged"
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-passage-audio-static-final-draft.log",
+          "sha256": "sha256:fe900eaf27fd313086d3aec13d19cd4a96f51af16f2164b83ec4a2fb04d0e80f"
+        },
+        {
+          "path": "/private/tmp/ce13-passage-audio-focused-final-draft.log",
+          "sha256": "sha256:6ec36a71b6283ec22213fc561b509bd86c94675913fa1504197712639545bb80"
+        },
+        {
+          "path": "/private/tmp/ce13-passage-audio-native-browser-final-draft.log",
+          "sha256": "sha256:4a21e738166c4b475f7b0591fd70f89305e4ed7749c045f83378b9b5158a5728"
+        },
+        {
+          "path": "/private/tmp/ce13-passage-audio-without-daw-final-draft.log",
+          "sha256": "sha256:46d5c18cb440673bb1e2cd591ece9976af9628892fd37e8bca39bf19b3e32c24"
+        }
+      ],
+      "pending": [
+        "remaining combined video/audio preview acceptance and recorded preview decoder decision",
+        "complete final CE13 local pnpm check and PR publication/attachment"
+      ],
+      "proofNote": "Focused relevant checks and both mandatory native-passage browser suites pass on the final source fingerprint. Broad all-unit/all-runtime and complete milestone gate were not substituted or repeated for this slice; final complete gate remains pending.",
+      "fullGate": false
     }
   ],
   "fullGates": [],
   "pending": [
-    "native whole-passage PCM mixing before selected range trim",
-    "remaining combined-media and whole-passage production acceptance plus preview-decoder decision",
+    "remaining combined-media preview acceptance and recorded preview-decoder decision",
     "complete final local pnpm check",
     "publish and attach CE13 PR; continue CE15 then CE14"
   ],

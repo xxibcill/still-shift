@@ -45,19 +45,19 @@ still hold before relying on them.
 
 - **CE13 in progress (2026-10-07):** `codex/composition-ce13` from completed CE4d
   `adf6cea`; merged/attached [CE16 PR #33](https://github.com/xxibcill/still-shift/pull/33)
-  at `65f2ebe4` is audited and integrated. Native provenance/SDR/CPU/GPU readiness,
-  picture/matching-audio export and CLI/Lab authoring are verified. Loader/mux
-  `b9de1c5` and bounded playback/waveforms `edda35b` are pushed; real buffer/offline
-  samples are exact through the last sample, A/V stays within one frame and the
-  complete final interval plays. Native passage original bindings/manifest/all-PNG
-  authorization now pass 35 focused checks / 5 files and static checks, including
-  six actual-media cases and `%010d` source watching. Previous playback proof is
-  2,101 units / 209 files, 46 runtime, 53 media/authoring and complete native-media/
-  session browser suites. Canvas 1.45 / WebGL2 0.66 / evaluator 53 / mixer 2 / export
-  worker 0.6.7 remain current. Whole-passage native PCM and remaining production
-  acceptance are in flight; no final CE13 gate has run. Continue CE13 → CE15 → CE14.
-  CE5-X/Q9 and separate CE6-P remain pending; historical CE16 reports are references,
-  not CE13 proof. [Evidence](./composition-ce13-results.json).
+  at `65f2ebe4` is audited and integrated. Native original provenance, SDR/CPU/GPU
+  readiness, matching picture/audio exports and bounded Lab playback/waveforms pass.
+  Loader/mux `b9de1c5`, playback `edda35b` and original bindings `522b219` are pushed.
+  Complete native passage PCM now passes 72 relevant tests / 7 files, static checks,
+  both full native-passage browser suites and actual default exports without optional
+  Python. Exact whole/range/repeat/last samples, nested protected voice replacement,
+  saved narration filters/ducking/limiter, independent AAC and cancellation pass;
+  assembly reserves 327,684 PCM bytes. Native cache2 excludes physical filenames and
+  pins full decoder builds. Canvas 1.45 / WebGL2 0.66 / evaluator 53 / mixer 2 / export
+  worker 0.6.7 remain current; frozen visuals remain unchanged. Combined video/audio
+  preview proof, recorded decoder decision and final immutable CE13 gate remain
+  pending; no final CE13 gate has run. Continue CE13 → CE15 → CE14. CE5-X/Q9 and
+  separate CE6-P remain pending. [Evidence](./composition-ce13-results.json).
 
 - **CE4d complete (2026-10-07):**
   `codex/composition-ce4d` from CE4c `17666eb`. Native production defaults and old
@@ -271,6 +271,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 complete native passage PCM
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed bindings `522b219`.
+- **Done:** complete verified beat masters mix before crop, with outgoing tails,
+  exact global/native narration replacement and bounded disk paging. Saved CE16
+  narration retains track filters, ducking and master limiting through private stems.
+  Native beat/cache, delivery AAC clocks, transactional guards and build identity pass.
+- **Results:** 72 relevant tests / 7 files, all static checks and both complete native
+  passage browser suites pass. Whole/range/repeat PCM, independent AAC/reference DSP,
+  last samples, active cancellation and disabled/out-of-range provenance are exact.
+  Default exports pass with optional Python unavailable; assembly reserves 327,684 PCM bytes.
+- **Rejected:** negative-zero oracle and source/output filename fixture errors repaired;
+  no renderer/evaluator/mixer law, frozen visual or acceptance tolerance changed.
+- **Next:** combined video/audio preview proof, decoder decision, immutable full CE13
+  gate and PR. Continue CE15 → CE14; broad/full gates were not replaced by this slice.
+- **Records:** [media guide](./composition-media.md), [CE13 evidence](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 native passage original bindings
 

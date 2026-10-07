@@ -3,8 +3,7 @@
 CE13 is in progress. The contract, source-clock evaluation and visual graph are
 implemented, with actual FFmpeg source probing, SDR conversion and atomic frame-cache
 preparation and bounded browser readiness. Production source/export/Lab hookup, actual
-audio mixing, waveform capture and preview are verified. Whole-passage audio integration
-and complete final acceptance remain pending. Current proof is in
+audio mixing, waveform capture and preview are verified. Whole-passage PCM integration is verified; complete final acceptance remains pending. Current proof is in
 [CE13 results](./composition-ce13-results.json). The contract fixture uses placeholder
 hashes and is a structural fixture, not a playable media example.
 
@@ -112,7 +111,7 @@ surfaces keep their existing renderer policies. Encoded download buffers have a
 separate bound based on the pinned frame dimensions and byte count; they are not
 counted as decoded bitmap residency. Prepared manifests allow at most 131,072 frame
 entries, and one disk cache entry at most 262,144, to bound metadata. Native source
-frame-count limits remain unchanged. Source-loader and export-page integration are verified. Lab/CLI preview and draft integration are verified. Native passage mixing and complete CE13 acceptance are the next work.
+frame-count limits remain unchanged. Source-loader and export-page integration are verified. Lab/CLI preview and draft integration are verified. Native passage mixing is verified; complete CE13 acceptance remains pending.
 
 `loadComposition` and `renderComposition` prepare native sources before browser
 rendering. An optional `cacheDirectory`, or `STILL_SHIFT_COMPOSITION_MEDIA_CACHE`,
@@ -128,8 +127,7 @@ coverage cannot miss originals. Documents whose measured text may drive source c
 capture a conservative source set, bounded by the manifest entry cap. Unused sources
 verify provenance but do not allocate decoded pixels. Actual video and sequence exports
 with an animated still and native shape lower third match independently encoded preview
-frames, repeat exports and raw/PNG transport on Canvas 1.45 and WebGL2 0.66. Matching
-whole-passage audio remains pending.
+frames, repeat exports and raw/PNG transport on Canvas 1.45 and WebGL2 0.66. Matching whole-passage audio is verified; final CE13 acceptance remains pending.
 
 Native authoring requests prepare only an accepted document with unchanged source
 bindings. CLI revision captures and registered Lab fixture captures serve exact PNG
@@ -161,7 +159,7 @@ Output samples must be nonnegative safe integers. Internal `scopeTimes` override
 reject in this API; authored ordinary source remap remains supported. Protected
 narration rejects baked `sampleTimes` on voice and ancestors, even when disabled, in
 addition to the previously prohibited source-clock changes. The evaluator is version 53. Continuous clock/dependency correctness, PCM decode/mix,
-waveforms, preview and matching-audio delivery are verified; passage mixing remains pending.
+waveforms, preview and matching-audio delivery are verified; passage mixing is verified.
 
 `prepareCompositionAudioSource` verifies the actual single mono/stereo source stream
 and decodes interleaved 48 kHz Float32 PCM to disk. The descriptor count names actual
@@ -182,7 +180,7 @@ Picture and audio cache entries share one lock and cumulative disk accounting. P
 stages publish atomically; cancellation kills/reaps the active decoder before cleanup.
 Every hit revalidates the original hash, manifest and finite cached PCM/hash/count.
 Actual PCM preparation is verified. Bounded mixing, source/processed waveforms, native
-Whole-passage integration and final CE13 acceptance are the next work.
+Whole-passage integration is verified; final CE13 acceptance remains pending.
 
 `prepareCompositionAudio` prepares the complete 48 kHz stereo Float32 WAV master and
 the immutable `composition-prepared-audio-1` capture. Whole-document validation runs
@@ -236,7 +234,7 @@ still/lower third now pass Canvas/WebGL delivery. All 12,000 master samples/chan
 including the final sample, match source bits. Twelve production MP4s match repeat,
 independent preview and raw/PNG encodes; independent decoded AAC samples also match.
 Actual post-mux cancellation or validation failure leaves no output/sidecar/stage.
-Whole-passage mixing and complete final CE13 acceptance remain pending.
+Whole-passage mixing is verified; complete final CE13 acceptance remains pending.
 
 Lab and CLI previews fetch only registered captured masters and validate their complete
 clock, mapping/evaluator, canonical header, finite PCM and SHA. Float32 samples transfer
@@ -276,4 +274,41 @@ Private-cache and AbortSignal options propagate through this loader.
 Numbered PNG decoding and authorization share the contract's bounded `%01d`…`%099d`
 padding rules. Two-digit widths such as `%010d` now decode and trigger CLI original
 source watching correctly. The source-frame ordinal and pixel/sample laws remain
-unchanged. Native whole-passage audio assembly remains in progress.
+unchanged. Native whole-passage audio assembly is verified.
+
+Passage exports prepare all native originals and complete beat masters before selecting
+a picture range. Masters mix at compiled 48 kHz sample placements, in authored beat
+order, including outgoing handoff tails. Float32 addition precedes one common master
+gain. The selected canonical WAV copies exact samples from the complete master; source
+fades and authorized trims do not restart at a range boundary. The disk mixer reserves
+327,684 PCM bytes, uses two 4096-sample pages and at most 32 open source handles. Its
+complete root clock is bounded to 3600 seconds before preparation. This reservation
+excludes decoder process RSS, non-PCM metadata and earlier native beat preparation.
+
+Every reachable native narration instance must preserve the contract's complete source
+clock/visibility law. When the passage has a narration authority, the source SHA and
+source sample interval must match its global sample placement. The native interval
+replaces exactly that portion of the global narration, including authored muted voice;
+the global voice continues elsewhere. Authored overlapping native instances still add
+in their authored order. Validation and original-byte checks include beats outside a
+selected picture range. Final verification checks captured masters without allocating
+or rerendering their complete samples.
+
+A saved CE16 project receives separate complete native narration/non-narration masters
+through a private validated project. Native narration joins the saved narration track
+before its gain, mute/solo, filters and ducking; its own native envelopes remain baked
+into the stem. Global clip fades/automation remain on the remaining global voice. The
+native non-narration stem enters a separate master-routed track. Saved master gain and
+lookahead limiter process the complete project before cropping. Original saved JSON,
+revision, source hashes and existing project track/clip/resource limits remain binding.
+Default native audio export requires no optional DawDreamer/Python backend.
+
+Native beat AAC is verified for picture caching, but passage audio comes from verified
+PCM masters. Final and delivery AAC use 48 kHz stereo, a 48 kHz movie timescale and edit
+lists with exact selected track counts. Delivery encodes original selected PCM rather
+than decoding the passage's AAC again. Native cache2 uses content/source clock identity
+without physical sequence patterns, manifests or first filenames; complete FFmpeg and
+ffprobe build descriptions plus preparation/assembly helpers invalidate stale reuse.
+All originals/captures are rechecked before publication, and failure/cancellation leaves
+no passage product or private complete/range/assembly artifact. The existing no-native
+encoder arguments, renderer/evaluator/mixer laws and frozen visuals remain unchanged.

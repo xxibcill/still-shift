@@ -4910,6 +4910,27 @@ transactions/production proof and the complete final gate remain pending. Broad 
 runtime/full gate were not repeated for this path-only slice.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 whole-passage PCM checkpoint (2026-10-07)
+
+Complete verified native beat masters now mix in authored beat order at compiled sample
+placements, including outgoing tails, before selecting any range. Bounded disk pages
+retain Float32 addition/master gain and the exact last sample. All originals and every
+protected interval are verified before jobs/crops and rechecked before publication.
+Matching native narration replaces only its authorized global intervals. Saved CE16
+projects receive separate complete native voice/non-voice stems in a private validated
+project; narration stays in its saved track filters/ducking before master limiting.
+Original project/revision/source guards and the default optional-backend boundary hold.
+Native picture caches accept their AAC stream but passage mixing uses complete PCM;
+final/delivery AAC clocks are exact and delivery uses original PCM. Canonical native
+cache2 excludes physical sequence names and pins complete decoder builds/helpers.
+All 72 relevant tests / 7 files, static checks and both complete native-passage browser
+suites pass. Real root/range/repeat samples, independent AAC/CE16 DSP, active cancel,
+disabled/out-of-range provenance and 3600-second preflight bounds pass. Actual default
+exports work with optional Python unavailable. Assembly reserves 327,684 PCM bytes.
+Earlier fixture/oracle failures remain recorded. Frozen visuals and renderer/evaluator/
+mixer laws remain unchanged; combined preview/decoder decision and the complete final
+CE13 gate remain pending. [Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

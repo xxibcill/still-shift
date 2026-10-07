@@ -86,9 +86,14 @@ seconds and the final audio interval completes. Gain/pan edits/history/save/relo
 byte-identical draft exports, source-change cancellation/restoration and stale audio
 ownership pass. Native passage original path/manifest/all-PNG authorization now passes 35 focused
 checks / 5 files and static checks, including actual embedded video/PCM and `%010d`
-source decode/watch. Whole-passage PCM and final acceptance remain pending; no final
-CE13 gate has run.
-CE15 and CE14 remain in flight.
+source decode/watch. Complete native passage PCM now passes 72 relevant checks / 7 files,
+static checks, both complete native-passage browser suites and actual default exports
+with optional Python unavailable. Whole/range/repeat PCM, independent AAC/saved CE16
+filter/ducking/limiter references, last samples, active cancellation and outside-range
+provenance pass. Native cache2 pins full decoder builds without physical filenames;
+assembly reserves 327,684 PCM bytes. Combined video/audio preview proof and decoder
+decision remain, followed by the immutable final gate. No final CE13 gate has run.
+CE15 and CE14 follow in the approved order.
 Private notes contain exact source
 seams and primary references: `/private/tmp/ce13-authority-map-2026-10-07.md`,
 `ce13-design-decision-candidates-2026-10-07.md`,

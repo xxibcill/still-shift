@@ -30,3 +30,8 @@ export * from "./expression-check.ts";
 export * from "./behaviours.ts";
 export * from "./expressions.ts";
 export * from "./camera-dependencies.ts";
+
+export {
+  compositionProtectedNarration,
+  type CompositionProtectedNarration,
+} from "./validate-media.ts";

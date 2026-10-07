@@ -30,8 +30,15 @@ vi.mock(
   },
 );
 
+const decoderBuild = vi.hoisted(() => ({
+  ffmpeg: "fixed version\nbuild A",
+  ffprobe: "fixed version\nbuild A",
+}));
 vi.mock("@still-shift/execution-runtime/subprocess", () => ({
-  runProcess: async () => ({ stdout: "fixed tool version", stderr: "" }),
+  runProcess: async (command: "ffmpeg" | "ffprobe") => ({
+    stdout: decoderBuild[command],
+    stderr: "",
+  }),
 }));
 
 const environment: RenderEnvironment = {
@@ -45,6 +52,8 @@ const environment: RenderEnvironment = {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  decoderBuild.ffmpeg = "fixed version\nbuild A";
+  decoderBuild.ffprobe = "fixed version\nbuild A";
   browser.newPage.mockResolvedValue(browser.page);
   browser.close.mockResolvedValue(undefined);
   browser.launch.mockResolvedValue({
@@ -82,6 +91,15 @@ describe("passage runtime render identity", () => {
     async (_, change) => {
       const first = await passageRuntimeIdentity();
       browser.probe.mockResolvedValue({ ...environment, ...change });
+      expect(await passageRuntimeIdentity()).not.toBe(first);
+    },
+  );
+
+  it.each(["ffmpeg", "ffprobe"] as const)(
+    "invalidates native beat reuse when the %s build changes under the same release banner",
+    async (command) => {
+      const first = await passageRuntimeIdentity();
+      decoderBuild[command] = "fixed version\nbuild B";
       expect(await passageRuntimeIdentity()).not.toBe(first);
     },
   );

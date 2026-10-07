@@ -133,11 +133,27 @@ const changedClock = (layer: CompositionLayer) =>
   ("timeRemap" in layer && layer.timeRemap !== undefined) ||
   (layer.type === "precomp" && layer.loop !== undefined);
 
+export type CompositionProtectedNarration = {
+  key: string;
+  asset: Extract<CompositionAsset, { type: "audio" }>;
+  startSample: number;
+  sourceStartSample: number;
+  sourceEndSample: number;
+};
+
+/** The validation walk also supplies exact authorized intervals to passage assembly. */
+export function compositionProtectedNarration(comp: Composition) {
+  return checkProtectedNarration(comp, (code, _path, message) => {
+    throw new Error(`${code}: ${message}`);
+  });
+}
+
 /** Validate every authored reachable voice before any preview/export range is selected. */
 export function checkProtectedNarration(
   comp: Composition,
   fail: IssueReporter,
 ) {
+  const voices: CompositionProtectedNarration[] = [];
   if (
     ![comp, ...(comp.precomps ?? [])].some((scope) =>
       scope.layers.some(
@@ -145,7 +161,7 @@ export function checkProtectedNarration(
       ),
     )
   )
-    return;
+    return voices;
   const clockWriters = new Set<string>();
   for (const target of [
     ...Object.keys(comp.expressions ?? {}),
@@ -205,6 +221,13 @@ export function checkProtectedNarration(
           );
         const asset = assets.get(layer.asset);
         if (asset?.type === "audio") {
+          voices.push({
+            key,
+            asset,
+            startSample: placement,
+            sourceStartSample: layer.sourceStartSample ?? 0,
+            sourceEndSample: layer.sourceEndSample ?? asset.sampleCount,
+          });
           const length =
             (layer.sourceEndSample ?? asset.sampleCount) -
             (layer.sourceStartSample ?? 0);
@@ -239,4 +262,5 @@ export function checkProtectedNarration(
     });
   };
   walk(comp, [], 0, 0, comp.frameCount * (48000 / comp.fps), false, new Set());
+  return voices;
 }

@@ -10,6 +10,10 @@ import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 const sampleRate = 48000;
 export type PassageAudioOptions = {
   soundEffects?: boolean | undefined;
+  /** Native narration owns these exact output-sample intervals. */
+  narrationExclusions?: readonly { start: number; end: number }[];
+  /** Internal passage adapter applies the common master after adding native PCM. */
+  masterGainDb?: number;
   range?: { start: number; end: number };
   signal?: AbortSignal | undefined;
 };
@@ -142,11 +146,42 @@ export async function renderPassageAudio(
   };
   if (narration) {
     const { channels } = await probeAudio(narration, options.signal);
-    filters.push(
-      input(narration, channels) +
-        `,atrim=start_sample=${samples(passage.plan.sourceStartFrame)}:end_sample=${samples(passage.endFrameExclusive)},asetpts=PTS-STARTPTS,volume=${decibelsToGain(passage.audio?.narrationGainDb ?? 0)}[voice]`,
-    );
-    tracks.push("[voice]");
+    const exclusions = options.narrationExclusions ?? [];
+    const voiceIntervals: { start: number; end: number }[] = [];
+    let begin = 0;
+    for (const interval of exclusions) {
+      if (
+        !Number.isSafeInteger(interval.start) ||
+        !Number.isSafeInteger(interval.end) ||
+        interval.start < begin ||
+        interval.end <= interval.start ||
+        interval.end > samples(passage.frameCount)
+      )
+        throw new Error("Invalid native narration exclusion interval");
+      if (begin < interval.start)
+        voiceIntervals.push({ start: begin, end: interval.start });
+      begin = interval.end;
+    }
+    if (begin < samples(passage.frameCount))
+      voiceIntervals.push({ start: begin, end: samples(passage.frameCount) });
+    if (voiceIntervals.length)
+      filters.push(
+        input(narration, channels) +
+          `,atrim=start_sample=${samples(passage.plan.sourceStartFrame)}:end_sample=${samples(passage.endFrameExclusive)},asetpts=PTS-STARTPTS,volume=${decibelsToGain(passage.audio?.narrationGainDb ?? 0)}[voice]`,
+      );
+    if (!exclusions.length) tracks.push("[voice]");
+    else if (voiceIntervals.length) {
+      filters.push(
+        `[voice]asplit=${voiceIntervals.length}` +
+          voiceIntervals.map((_, i) => `[voicePart${i}]`).join(""),
+      );
+      voiceIntervals.forEach((interval, i) => {
+        filters.push(
+          `[voicePart${i}]atrim=start_sample=${interval.start}:end_sample=${interval.end},asetpts=PTS-STARTPTS,adelay=${interval.start}S:all=1[voiceKept${i}]`,
+        );
+        tracks.push(`[voiceKept${i}]`);
+      });
+    }
   }
   for (const [index, sound] of sounds.entries()) {
     const asset = passage.audio!.assets.find(
@@ -163,9 +198,11 @@ export async function renderPassageAudio(
     filters.push(filter);
     tracks.push(`[sound${index}]`);
   }
+  if (!tracks.length) return undefined;
+  const masterGainDb = options.masterGainDb ?? passage.audio?.masterGainDb ?? 0;
   filters.push(
     tracks.join("") +
-      `amix=inputs=${tracks.length}:normalize=0:dropout_transition=0,volume=${decibelsToGain(passage.audio?.masterGainDb ?? 0)},apad=whole_len=${samples(passage.frameCount)},atrim=start_sample=${samples(range.start)}:end_sample=${samples(range.end)},asetpts=PTS-STARTPTS[mix]`,
+      `amix=inputs=${tracks.length}:normalize=0:dropout_transition=0,volume=${decibelsToGain(masterGainDb)},apad=whole_len=${samples(passage.frameCount)},atrim=start_sample=${samples(range.start)}:end_sample=${samples(range.end)},asetpts=PTS-STARTPTS[mix]`,
   );
   await runProcess(
     "ffmpeg",
@@ -190,7 +227,7 @@ export async function renderPassageAudio(
     path: output,
     sampleRate,
     frameRange: range,
-    masterGainDb: passage.audio?.masterGainDb ?? 0,
+    masterGainDb,
     narrationGainDb: passage.audio?.narrationGainDb ?? 0,
     assets: sounds.length ? passage.audio!.assets : [],
     sounds,
