@@ -1,0 +1,49 @@
+{
+  "version": "pr-43-followup-fix-results-1",
+  "date": "2026-10-07",
+  "reviewedHead": "9b53db303d5f65d0772a5b4881d16528abd33c71",
+  "branch": "codex/pr43-followup-fixes",
+  "review": "https://github.com/xxibcill/still-shift/pull/43#pullrequestreview-5445038219",
+  "delivery": "One finding per commit, one final normal push to the existing PR branch.",
+  "findings": [
+    {
+      "id": "xyz-smooth-handles",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163500",
+      "status": "fixed",
+      "commitSubject": "fix(lab): retain XYZ velocities across Bezier segment edits",
+      "repair": "Materialize preserved smooth spatial handles using the authored XYZ arc-length table; retain the established XY table for two-component tracks.",
+      "red": {
+        "command": "pnpm exec vitest run tests/unit/composition-keys.test.ts --maxWorkers=1",
+        "failed": 2,
+        "passed": 38
+      },
+      "green": {
+        "command": "pnpm exec vitest run tests/unit/composition-keys.test.ts tests/unit/composition-spatial-sample.test.ts tests/unit/composition-spatial-expression-keys.test.ts --maxWorkers=2",
+        "passed": 51,
+        "coverage": "XYZ position and camera POI, smooth flag and interpolation mode, fractional samples outside the edited segment, undo/redo and serialized document validation."
+      }
+    },
+    {
+      "id": "settled-camera-optics",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163510",
+      "status": "pending"
+    },
+    {
+      "id": "affine-effect-space-tolerance",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163530",
+      "status": "pending"
+    },
+    {
+      "id": "spatial-null-effect-space",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163542",
+      "status": "pending"
+    }
+  ],
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "dependencies": "Frozen offline worktree-local pnpm dependencies; isolated Vite/config caches.",
+    "finalGate": "pending",
+    "githubActions": "disabled"
+  }
+}

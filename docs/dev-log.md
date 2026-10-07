@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #43 follow-up repairs in progress (2026-10-07):** isolated
+  `codex/pr43-followup-fixes` from reviewed `9b53db3`. All four findings have
+  inline PR comments. XYZ smooth-handle preservation is repaired; its two
+  regressions fail before repair and 51 related tests pass afterward.
+  Settled camera optics, affine effect-space tolerance, spatial null guides and
+  final verification remain in flight. Delivery uses one finding per commit
+  and one final normal push. [Evidence](./pr-43-followup-fix-results.json).
+
 - **PR #43 conflict integration verified (2026-10-07):** isolated PR head
   `c0c8f5d` integrates `main` at `f1cc8fe0`. CE8 cameras/XYZ/coverage and
   upstream CE6-P/effect/clock/shape/builder/inspector/soundtrack repairs are retained.
@@ -773,6 +781,17 @@ still hold before relying on them.
 _Last updated 2026-10-07 by Codex for PR #43 conflict resolution._
 
 ## Entries
+
+### 2026-10-07 — PR #43 follow-up review repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr43-followup-fixes`, from `9b53db3`.
+- **Scope:** four posted P2 findings, each repaired in a separate commit.
+- **Done:** preserve XYZ smooth spatial velocities across adjacent Bézier edits.
+- **Results:** two new tests fail before repair; 51 focused tests pass afterward,
+  including fractional position/POI samples, both smoothing forms and undo/save.
+- **Next:** camera optics, affine coordinate tolerance, null-guide coordinates,
+  final verification and one final normal push. Actions stay disabled.
+- **Records:** [review/fix evidence](./pr-43-followup-fix-results.json).
 
 ### 2026-10-07 — PR #43 main conflict integration
 

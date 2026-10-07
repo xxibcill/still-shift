@@ -198,12 +198,12 @@ export function smoothKeyVelocity(
     keys.some((key) => key.spatialIn || key.spatialOut)
   ) {
     const segment = side === "in" ? index - 1 : index;
-    const length = spatialTable(
-      keys,
-      keys[segment]!,
-      keys[segment + 1]!,
-      segment,
-    ).total;
+    const a = keys[segment]!,
+      b = keys[segment + 1]!;
+    const length =
+      Array.isArray(a.value) && a.value.length === 3
+        ? spatialTable3(keys, a, b, segment, [0, 0, 0]).total
+        : spatialTable(keys, a, b, segment).total;
     return { spatialSpeed: tangent(keys.map((_, i) => i)) * length };
   }
   if (kind === "scalar")

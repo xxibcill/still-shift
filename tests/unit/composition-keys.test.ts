@@ -446,6 +446,78 @@ it.each(["camera-position", "camera-poi", "spatial-position"] as const)(
     ).toEqual([10, 3]);
   },
 );
+it.each(["position", "pointOfInterest"] as const)(
+  "preserves neighboring XYZ spatial segments when replacing a %s Bézier segment",
+  (property) => {
+    for (const smooth of ["smooth", "interpolation"] as const) {
+      const document = source();
+      const position = {
+        keys: [0, 10, 40, 50].map((z, index) => ({
+          frame: index * 10,
+          value: [0, 0, z] as [number, number, number],
+          ...(index < 3
+            ? { spatialOut: [0, 0, 3] as [number, number, number] }
+            : {}),
+          ...(index > 0
+            ? { spatialIn: [0, 0, -3] as [number, number, number] }
+            : {}),
+          ...(index === 1 || index === 2
+            ? smooth === "smooth"
+              ? { smooth: true }
+              : { interpolation: "smooth" as const }
+            : {}),
+        })),
+      };
+      document.frameCount = 31;
+      document.layers =
+        property === "position"
+          ? [
+              {
+                id: "plane",
+                type: "solid",
+                threeD: true,
+                size: [10, 10],
+                color: "#ffffff",
+                transform: { position },
+              },
+            ]
+          : [{ id: "camera", type: "camera", pointOfInterest: position }];
+      const history = new CompositionDocument(document);
+      const track = compositionTracks(history.document)[0]!;
+      const untouchedFrames = Array.from({ length: 40 }, (_, index) =>
+        index < 20 ? index / 2 : 20.5 + (index - 20) / 2,
+      );
+      const before = untouchedFrames.map((frame) => sampleTrack(track, frame));
+      const selected = sampleTrack(track, 13);
+      history.commit(
+        history.propose("Middle segment Bézier", (draft) =>
+          editSegmentBezier(draft, track, 2, [0.3, 0, 0.7, 1]),
+        )!,
+      );
+      const edited = compositionTracks(history.document)[0]!;
+      for (const [index, frame] of untouchedFrames.entries())
+        for (const axis of [0, 1, 2])
+          expect(sampleTrack(edited, frame)[axis]).toBeCloseTo(
+            before[index]![axis]!,
+            12,
+          );
+      expect(sampleTrack(edited, 13)).not.toEqual(selected);
+      history.commit(history.undo()!);
+      expect(history.document).toEqual(document);
+      history.commit(history.redo()!);
+      const saved = new CompositionDocument(
+        JSON.parse(JSON.stringify(history.document)),
+      );
+      expect(
+        sampleTrack(compositionTracks(saved.document)[0]!, 5)[2],
+      ).toBeCloseTo(3.75, 12);
+      expect(
+        sampleTrack(compositionTracks(saved.document)[0]!, 25)[2],
+      ).toBeCloseTo(46.25, 12);
+    }
+  },
+);
+
 it.each(["smooth", "interpolation"] as const)(
   "preserves the opposite segment when replacing a %s temporal handle",
   (mode) => {
