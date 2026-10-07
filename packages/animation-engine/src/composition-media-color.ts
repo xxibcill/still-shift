@@ -1,7 +1,10 @@
-import type { CompositionMediaColor } from "@still-shift/scene-contract";
+import {
+  COMPOSITION_MEDIA_DECODER_VERSION,
+  type CompositionMediaColor,
+} from "@still-shift/scene-contract";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 
-export const COMPOSITION_MEDIA_DECODER_VERSION = "composition-media-decoder-1";
+export { COMPOSITION_MEDIA_DECODER_VERSION };
 const SIGNATURE = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
 const COLOR_CHUNKS = new Set([
   "cICP",

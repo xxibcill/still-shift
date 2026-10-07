@@ -2,7 +2,7 @@
 
 CE13 is in progress. The contract, source-clock evaluation and visual graph are
 implemented, with actual FFmpeg source probing, SDR conversion and atomic frame-cache
-preparation. Bounded browser readiness, actual audio mixing,
+preparation and bounded browser readiness. Production source/export/Lab hookup, actual audio mixing,
 waveforms and complete production acceptance remain pending. Current proof is in
 [CE13 results](./composition-ce13-results.json). The contract fixture uses placeholder
 hashes and is a structural fixture, not a playable media example.
@@ -59,7 +59,8 @@ live decoded-frame bytes and audio working memory. Defaults are 600 seconds,
 8192 × 8192, 8 GiB of decoded disk cache, 128 MiB of live decoded pictures and
 512 MiB of audio working memory. Decoder and renderer preparation must enforce
 their separate allocation limits and reject an over-budget required frame set.
-Those allocation proofs remain pending; structural limits are already validated.
+Disk, decoded-bitmap and native GPU raster-cache bounds now have focused proof.
+Actual native audio allocation remains pending.
 
 The video probe checks actual source bytes before and after ffprobe, and verifies
 all authored dimensions, rational rate, original frame count and color fields.
@@ -92,3 +93,23 @@ Animated PNG and corrupt chunks reject. A root lock protects cumulative disk
 accounting. Conservative reservations include transient files and manifest bytes;
 private staging publishes atomically and is removed on cancellation or failure.
 Browser CPU/GPU resource allocation and actual audio remain pending.
+
+`loadCompositionResources` accepts the captured `preparedMedia` manifest. Native
+previews call `await preview.prepareFrame(frame)` before `preview.renderFrame(frame)`.
+The same exposure and history graphs identify every required original, including
+mattes, effect inputs, nested scopes and isolated required coverage. The complete
+required set must fit `decodedFrameBytes`; retained unneeded bitmaps can be evicted.
+Every stream is bounded by its pinned byte count, hashed before decoding, and checked
+for canonical PNG layout and dimensions. Serial preparation, abortable readers and
+bitmap cleanup prevent old seeks or disposed previews from publishing readiness.
+Native full-timeline required coverage runs before the first prepared preview draw.
+
+`decodedTextureBytes` separately bounds retained native GPU image raster textures
+(default 128 MiB, maximum 512 MiB). Eviction deletes those textures and framebuffers
+instead of transferring them to the general surface pool. Temporary render/effect
+surfaces keep their existing renderer policies. Encoded download buffers have a
+separate bound based on the pinned frame dimensions and byte count; they are not
+counted as decoded bitmap residency. Prepared manifests allow at most 131,072 frame
+entries, and one disk cache entry at most 262,144, to bound metadata. Native source
+frame-count limits remain unchanged. Source-loader, export-page and Lab integration,
+actual PCM and complete CE13 acceptance are the next work.

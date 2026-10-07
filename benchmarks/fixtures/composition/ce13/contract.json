@@ -11,6 +11,7 @@
     "maxHeight": 8192,
     "decodedCacheBytes": 8589934592,
     "decodedFrameBytes": 134217728,
+    "decodedTextureBytes": 134217728,
     "audioWorkingBytes": 536870912
   },
   "assets": [

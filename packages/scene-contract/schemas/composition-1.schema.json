@@ -38,6 +38,11 @@
           "minimum": 4,
           "maximum": 536870912
         },
+        "decodedTextureBytes": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 536870912
+        },
         "audioWorkingBytes": {
           "type": "integer",
           "minimum": 8,

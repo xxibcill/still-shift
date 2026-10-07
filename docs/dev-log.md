@@ -53,8 +53,10 @@ still hold before relying on them.
   descriptors, post-expression source clocks, picture graph and builders pass all
   2,060 unit tests / 204 files plus static checks (`41c7b98`). Actual video hash,
   CFR PTS, color/coverage and transform checks are verified (`fc23442`). Actual SDR
-  conversion and atomic bounded frame cache pass 23 focused tests and static checks.
-  Browser CPU/GPU readiness, continuous native PCM/waveforms and production/full acceptance remain in
+  conversion/cache are pushed as `ac9f68c`. Bounded CPU/GPU readiness and exact
+  graph/coverage dependencies pass 2,077 unit tests, runtime/media regressions and real
+  native/existing CE7/CE8 browser proofs. Source/export/Lab hookup, native PCM/waveforms
+  and production/full acceptance remain in
   flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
   [Evidence](./composition-ce13-results.json).
 
@@ -270,6 +272,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 bounded native frame readiness
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed cache `ac9f68c`.
+- **Done:** shared exposure/history/matte/effect/coverage frame dependencies, validated
+  prepared manifests, bounded bitmap LRU/streams, stale seek/disposal guards and native
+  GPU cache with actual texture deletion. Native draw requires async preparation.
+- **Results:** 2,077 unit / 46 runtime / 13 media integration tests and static checks pass.
+  Real Canvas/WebGL alpha and color proofs pass; scaled/history frames match exactly,
+  held-frame seek hashes match, CPU/GPU budgets reject and disposal returns to zero.
+- **Regressions:** existing CE7/CE8 browser acceptance, repeats, independent exports,
+  hardware and frozen baselines pass. New fixture/build failures remain in evidence.
+- **Next:** source/export/Lab hookup, continuous PCM/waveforms and native passage audio,
+  then complete production/full acceptance. No CE13 full gate yet.
+- **Records:** [media guide](./composition-media.md), [CE13 evidence](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 actual color conversion and frame cache
 

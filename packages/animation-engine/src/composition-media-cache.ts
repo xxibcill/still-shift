@@ -52,7 +52,7 @@ const Manifest = z
     schemaVersion: z.literal("composition-media-cache-1"),
     key: Hash,
     identity: z.string().max(48 * 1024 * 1024),
-    frames: z.array(Frame).max(864000),
+    frames: z.array(Frame).max(262144),
   })
   .strict();
 type CacheManifest = z.infer<typeof Manifest>;
@@ -347,6 +347,12 @@ export async function prepareCompositionVisualMedia(
   const { asset, signal } = options;
   signal?.throwIfAborted();
   const ordinals = [...new Set(options.ordinals)].sort((a, b) => a - b);
+  if (ordinals.length > 262144)
+    passageError(
+      "comp-media-limit",
+      "Prepared cache metadata exceeds bounded frame-entry count",
+      { path: asset.id },
+    );
   if (
     !ordinals.length ||
     ordinals.some(

@@ -60,12 +60,14 @@ void main() {
 export type Webgl2Backend = RenderBackend<WebglSurface> & {
   readonly target: WebglSurface;
   readonly allocated: number;
+  readonly nativeImageAllocated: number;
   readonly passes: number;
   present(): void;
   dispose(): void;
 };
 
 export type Webgl2BackendOptions = Canvas2dBackendOptions & {
+  nativeImageByteLimit?: number;
   boundedCanvas?: (content: ProviderContent | TextContent) => boolean;
   singleImage?: (content: ProviderContent | TextContent) => boolean;
   stableImages?: (content: ProviderContent | TextContent) => boolean;
@@ -96,6 +98,7 @@ export function createWebgl2Backend(
     raster,
     paint,
     options.images.pngImages,
+    options.nativeImageByteLimit,
   );
   const depthImages = new WebglDepthImages(device, options.images);
   const pngImages = new WebglPngImages(device, raster, options.images);
@@ -485,6 +488,9 @@ export function createWebgl2Backend(
       }
     },
     target,
+    get nativeImageAllocated() {
+      return images.nativeAllocated;
+    },
     get allocated() {
       return device.allocated + depthImages.allocated;
     },
@@ -1041,6 +1047,7 @@ export function createWebgl2Backend(
     },
     present: () => device.present(target),
     dispose() {
+      images.dispose();
       damage.reset();
       readback.dispose();
       isolates.dispose();

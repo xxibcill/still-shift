@@ -4759,6 +4759,20 @@ independent RGB/YUV/alpha ramps, exact sequence pixels, relocation, tamper, conc
 preparation and cancellation. Browser resources, PCM and full acceptance remain pending.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 bounded browser readiness checkpoint (2026-10-07)
+
+Preparation and drawing share exposure/history graph generation, including nested
+surfaces, mattes, effect inputs and isolated required coverage. Complete frame sets
+stay pinned in a bounded decoded-bitmap LRU; encoded fetches verify pinned bytes.
+Stale seeks and disposal cannot publish old images. Native GPU raster caches have
+separate configurable bounds and delete evicted textures instead of pooling them.
+Real Canvas/WebGL alpha/color proofs pass; scaled/history frames match byte for byte
+and held-frame pixels remain seek-independent. CPU peaks at 16 KiB and native GPU at
+30,208 bytes under 32 KiB, returning to zero on disposal in the proof. All 2,077 units,
+46 runtime / 13 media regressions, static checks and existing CE7/CE8 browser acceptance
+pass. Source/export/Lab hookup, PCM/waveforms and full acceptance remain pending.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

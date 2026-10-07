@@ -81,6 +81,11 @@ export const CompositionMediaLimitsSchema = z
       .min(4)
       .max(512 * 1024 * 1024)
       .optional(),
+    decodedTextureBytes: finite
+      .int()
+      .min(4)
+      .max(512 * 1024 * 1024)
+      .optional(),
     audioWorkingBytes: finite
       .int()
       .min(8)
@@ -95,6 +100,7 @@ export const COMPOSITION_MEDIA_DEFAULT_LIMITS = {
   maxHeight: 8192,
   decodedCacheBytes: 8 * 1024 ** 3,
   decodedFrameBytes: 128 * 1024 ** 2,
+  decodedTextureBytes: 128 * 1024 ** 2,
   audioWorkingBytes: 512 * 1024 ** 2,
 } as const;
 
@@ -122,6 +128,9 @@ export function resolveCompositionMediaLimits(
     decodedFrameBytes:
       limits?.decodedFrameBytes ??
       COMPOSITION_MEDIA_DEFAULT_LIMITS.decodedFrameBytes,
+    decodedTextureBytes:
+      limits?.decodedTextureBytes ??
+      COMPOSITION_MEDIA_DEFAULT_LIMITS.decodedTextureBytes,
     audioWorkingBytes:
       limits?.audioWorkingBytes ??
       COMPOSITION_MEDIA_DEFAULT_LIMITS.audioWorkingBytes,
@@ -131,3 +140,36 @@ export function resolveCompositionMediaLimits(
 /** Reserved namespace cannot collide with authored asset IDs (which start with a letter). */
 export const compositionMediaFrameId = (asset: string, frame: number) =>
   `__media:${asset}:${frame}`;
+
+/** Captured prepared frames are separate from editable source descriptors. */
+export const COMPOSITION_MEDIA_DECODER_VERSION =
+  "composition-media-decoder-1" as const;
+export const CompositionPreparedMediaFrameSchema = z
+  .object({
+    id: z.string().min(1).max(256),
+    asset: compositionId,
+    sourceHash: sha256,
+    ordinal: finite.int().min(0).max(863999),
+    sha256,
+    width: finite.int().min(1).max(32768),
+    height: finite.int().min(1).max(32768),
+    byteLength: finite
+      .int()
+      .min(1)
+      .max(2 ** 32),
+  })
+  .strict();
+export const CompositionPreparedMediaSchema = z
+  .object({
+    schemaVersion: z.literal("composition-prepared-media-1"),
+    decoderVersion: z.literal(COMPOSITION_MEDIA_DECODER_VERSION),
+    ffmpegIdentities: z.array(sha256).max(1024),
+    frames: z.array(CompositionPreparedMediaFrameSchema).max(131072),
+  })
+  .strict();
+export type CompositionPreparedMedia = z.infer<
+  typeof CompositionPreparedMediaSchema
+>;
+export type CompositionPreparedMediaFrame = z.infer<
+  typeof CompositionPreparedMediaFrameSchema
+>;

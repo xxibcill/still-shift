@@ -115,6 +115,7 @@ export class WebglPngImages {
     clips: ClipRect[],
     transforms?: Matrix[],
   ) {
+    if (content.media) return false;
     if (clips.length || content.rasterize !== "draw") return false;
     if (
       content.stateFrom !== undefined &&

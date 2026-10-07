@@ -27,89 +27,126 @@ export function uncoveredViewportPixel(
       return [pixel % width, Math.floor(pixel / width)];
   return null;
 }
-/** Render each required layer's actual alpha alone, including source states, effects, masks and mattes. */
+export function hasRequiredCompositionCoverage(comp: Composition) {
+  return [comp, ...(comp.precomps ?? [])].some((scope) =>
+    scope.layers.some((layer) => layer.coverage === "required"),
+  );
+}
+
+/** The same isolated graphs drive readiness and actual coverage validation. */
+export function* compositionRequiredCoverageGraphs(
+  comp: Composition,
+  frame: number,
+  options: EvaluationOptions = {},
+) {
+  const definitions = new Map(
+    (comp.precomps ?? []).map((scope) => [scope.id, scope]),
+  );
+  function* visit(
+    tree: EvaluatedLayerTree,
+    scope: CompositionScope,
+    route: string,
+  ): Generator<{
+    node: string;
+    scope: CompositionScope;
+    graph: ReturnType<typeof buildLayerRenderGraph>;
+  }> {
+    for (const state of tree.layers) {
+      const node = route + state.id;
+      if (state.layer.coverage === "required")
+        yield {
+          node,
+          scope,
+          graph: buildLayerRenderGraph(
+            comp,
+            tree,
+            scope,
+            state.id,
+            route,
+            options,
+          ),
+        };
+      if (state.precomp && state.visible && state.opacity > 0)
+        yield* visit(
+          state.precomp,
+          definitions.get(state.precomp.id)!,
+          node + "/",
+        );
+    }
+  }
+  for (const tree of evaluateCompositionExposure(comp, frame, options))
+    yield* visit(tree, comp, "");
+}
+
+export function createCompositionCoverageValidator<S extends Surface>(
+  comp: Composition,
+  backend: RenderBackend<S>,
+  options: EvaluationOptions = {},
+  severity: "error" | "warning" = "error",
+) {
+  const failed = new Set<string>();
+  return (frame: number): PassageDiagnostic[] => {
+    const diagnostics: PassageDiagnostic[] = [];
+    for (const { node, scope, graph } of compositionRequiredCoverageGraphs(
+      comp,
+      frame,
+      options,
+    )) {
+      if (failed.has(node)) continue;
+      const target = backend.createSurface(scope.width, scope.height);
+      let pixel: [number, number] | null;
+      try {
+        executeGraph(backend, graph, target);
+        pixel = uncoveredViewportPixel(
+          backend.readPixels(target),
+          scope.width,
+          scope.height,
+        );
+      } finally {
+        backend.releaseSurface(target);
+      }
+      if (!pixel) continue;
+      const message = `Required camera coverage on ${node} exposes the owning scope at frame ${frame}, pixel ${pixel[0]},${pixel[1]}`;
+      if (severity === "error")
+        passageError("comp-camera-coverage", message, {
+          node,
+          path: node + ".coverage",
+          frame,
+        });
+      diagnostics.push({
+        code: "comp-camera-coverage",
+        severity,
+        message,
+        node,
+        path: node + ".coverage",
+        frame,
+      });
+      failed.add(node);
+    }
+    return diagnostics;
+  };
+}
+
+/** Render every required layer's actual alpha alone, with its source/effects/matte. */
 export function validateRequiredCompositionCoverage<S extends Surface>(
   comp: Composition,
   backend: RenderBackend<S>,
   options: EvaluationOptions = {},
   severity: "error" | "warning" = "error",
 ): PassageDiagnostic[] {
-  const scopes = [comp, ...(comp.precomps ?? [])];
-  if (
-    !scopes.some((scope) =>
-      scope.layers.some((layer) => layer.coverage === "required"),
-    )
-  )
-    return [];
-  const diagnostics: PassageDiagnostic[] = [],
-    definitions = new Map(
-      (comp.precomps ?? []).map((scope) => [scope.id, scope]),
-    );
-  const failed = new Set<string>();
-  const visit = (
-    tree: EvaluatedLayerTree,
-    scope: CompositionScope,
-    route: string,
-    frame: number,
-  ) => {
-    for (const state of tree.layers) {
-      const node = route + state.id;
-      if (state.layer.coverage === "required" && !failed.has(node)) {
-        const graph = buildLayerRenderGraph(
-          comp,
-          tree,
-          scope,
-          state.id,
-          route,
-          options,
-        );
-        const target = backend.createSurface(scope.width, scope.height);
-        let pixel: [number, number] | null;
-        try {
-          executeGraph(backend, graph, target);
-          pixel = uncoveredViewportPixel(
-            backend.readPixels(target),
-            scope.width,
-            scope.height,
-          );
-        } finally {
-          backend.releaseSurface(target);
-        }
-        if (pixel) {
-          const message = `Required camera coverage on ${node} exposes the owning scope at frame ${frame}, pixel ${pixel[0]},${pixel[1]}`;
-          if (severity === "error")
-            passageError("comp-camera-coverage", message, {
-              node,
-              path: node + ".coverage",
-              frame,
-            });
-          diagnostics.push({
-            code: "comp-camera-coverage",
-            severity,
-            message,
-            node,
-            path: node + ".coverage",
-            frame,
-          });
-          failed.add(node);
-        }
-      }
-      if (state.precomp && state.visible && state.opacity > 0)
-        visit(
-          state.precomp,
-          definitions.get(state.precomp.id)!,
-          node + "/",
-          frame,
-        );
-    }
-  };
+  if (!hasRequiredCompositionCoverage(comp)) return [];
+  const validate = createCompositionCoverageValidator(
+    comp,
+    backend,
+    options,
+    severity,
+  );
+  const diagnostics: PassageDiagnostic[] = [];
   try {
-    for (let frame = 0; frame < comp.frameCount; frame++) {
-      for (const tree of evaluateCompositionExposure(comp, frame, options))
-        visit(tree, comp, "", frame);
-    }
+    for (let frame = 0; frame < comp.frameCount; frame++)
+      diagnostics.push(...validate(frame));
+    return diagnostics;
   } finally {
     backend.endFrame?.(false);
   }
-  return diagnostics;
 }

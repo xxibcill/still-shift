@@ -15,6 +15,8 @@ export const COMPOSITION_DIAGNOSTICS = {
     "A source has nonidentity display rotation or transformation.",
   "comp-media-checksum":
     "Source bytes differ from their pinned media identity.",
+  "comp-media-not-ready":
+    "Prepare native media resources before drawing the frame.",
   "comp-media-provenance":
     "Actual probed media metadata differs from the authored descriptor.",
   "comp-media-rate": "A source rate is not reduced or exceeds 240 fps.",

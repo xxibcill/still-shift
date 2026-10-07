@@ -1099,6 +1099,7 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-media-vfr`                   | Presentation timestamps do not form one quantized rational CFR timeline.                                 |
 | `comp-media-rotation`              | A source has nonidentity display rotation or transformation.                                             |
 | `comp-media-checksum`              | Source bytes differ from their pinned media identity.                                                    |
+| `comp-media-not-ready`             | Prepare native media resources before drawing the frame.                                                 |
 | `comp-media-provenance`            | Actual probed media metadata differs from the authored descriptor.                                       |
 | `comp-media-rate`                  | A source rate is not reduced or exceeds 240 fps.                                                         |
 | `comp-media-color`                 | Source color metadata is unsupported or inconsistent.                                                    |

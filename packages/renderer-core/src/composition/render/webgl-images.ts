@@ -1,3 +1,4 @@
+import { passageError } from "../../passage-diagnostics.ts";
 import type { Matrix } from "../../node-transform.ts";
 import type { Canvas2dBackend } from "./canvas2d.ts";
 import type { ClipRect, ImageContent } from "./graph.ts";
@@ -6,6 +7,7 @@ import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 
 type Raster = {
   key: string;
+  native: boolean;
   surface: WebglSurface;
   left: number;
   top: number;
@@ -17,19 +19,32 @@ type Raster = {
 export class WebglImages {
   private readonly cached = new Map<ImageContent["sources"], Raster>();
   private bytes = 0;
+  private nativeBytes = 0;
   constructor(
     private readonly device: WebglDevice,
     private readonly raster: Canvas2dBackend,
     private readonly paint: WebglPaint,
     private readonly pngImages?: ReadonlySet<string>,
+    private readonly nativeByteLimit = 128 * 1024 * 1024,
   ) {}
 
   private forget(sources: ImageContent["sources"]) {
     const old = this.cached.get(sources);
     if (!old) return;
     this.bytes -= old.surface.width * old.surface.height * 4;
+    if (old.native)
+      this.nativeBytes -= old.surface.width * old.surface.height * 4;
     this.cached.delete(sources);
-    this.device.release(old.surface);
+    if (old.native) this.device.discard(old.surface);
+    else this.device.release(old.surface);
+  }
+
+  dispose() {
+    for (const sources of [...this.cached.keys()]) this.forget(sources);
+  }
+
+  get nativeAllocated() {
+    return this.nativeBytes;
   }
 
   draw(
@@ -84,7 +99,19 @@ export class WebglImages {
           Math.ceil((bottom - top) / 64) * 64,
         ),
         bytes = width * height * 4;
+      const native = !!content.media;
+      if (native && bytes > this.nativeByteLimit)
+        passageError(
+          "comp-media-limit",
+          "Native image raster texture exceeds configured GPU cache bytes",
+          { path: content.media!.asset },
+        );
       if (bytes > 128 * 1024 * 1024) return false;
+      if (native)
+        for (const [sources, cached] of this.cached) {
+          if (this.nativeBytes + bytes <= this.nativeByteLimit) break;
+          if (cached.native) this.forget(sources);
+        }
       while (this.bytes + bytes > 128 * 1024 * 1024 && this.cached.size)
         this.forget(this.cached.keys().next().value!);
       // Preserve device coordinates and sampling spans while dropping unused
@@ -106,12 +133,14 @@ export class WebglImages {
         );
         this.device.uploadRegion(surface, pixels.canvas, left, top);
       } catch (error) {
-        this.device.release(surface);
+        if (native) this.device.discard(surface);
+        else this.device.release(surface);
         throw error;
       } finally {
         this.raster.releaseSurface(pixels);
       }
-      entry = { key, surface, left, top, right, bottom };
+      entry = { key, native, surface, left, top, right, bottom };
+      if (native) this.nativeBytes += bytes;
       this.bytes += bytes;
     }
     this.cached.delete(content.sources);
@@ -120,9 +149,9 @@ export class WebglImages {
     // PNG bytes identify bitmap sampling even when the image is cropped/clipped.
     // Primitive floor rounding compounds at overlapping translucent bitmap edges.
     // Vector sources retain the existing primitive coverage rounding.
-    const bitmap = content.sources.every((source) =>
-      this.pngImages?.has(source.asset),
-    );
+    const bitmap =
+      !!content.media ||
+      content.sources.every((source) => this.pngImages?.has(source.asset));
     this.paint.draw(
       surface,
       dst,
