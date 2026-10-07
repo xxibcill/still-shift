@@ -573,5 +573,12 @@
     "cases": 24,
     "frameChecks": 1248,
     "fullAcceptance": "pending"
+  },
+  "orderedFoundation": {
+    "status": "ordered pipe foundation passed; production parallel export pending",
+    "record": "docs/composition-ce15-parallel-results.json",
+    "relevantFingerprint": "76153085e603bb55ae78f852709a2169f2c22adb9d2812eec99a18a06110d4a6",
+    "runtimeTests": 12,
+    "productionAcceptance": "pending"
   }
 }

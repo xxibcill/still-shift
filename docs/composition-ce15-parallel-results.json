@@ -1,0 +1,104 @@
+{
+  "milestone": "CE15",
+  "date": "2026-10-07",
+  "base": "89c5744",
+  "status": "ordered pipe foundation passed; production parallel export pending",
+  "fingerprint": {
+    "algorithm": "SHA256 of sorted path + NUL + fileSHA256 + newline records",
+    "sha256": "76153085e603bb55ae78f852709a2169f2c22adb9d2812eec99a18a06110d4a6",
+    "files": [
+      {
+        "path": "packages/execution-runtime/src/composition-ordered-frames.ts",
+        "sha256": "ea1c6e5413febbf66740bbb8175e1e8672f5cb2613368ed64e35709bc5f5a687"
+      },
+      {
+        "path": "tests/runtime/composition-ordered-frames.test.ts",
+        "sha256": "c91521362571ae050ec75ff941137c61c93e7a3c380d4ace42c22afb88325033"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/runtime/composition-ordered-frames.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": ["pnpm", "build"],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "packages/execution-runtime/src/composition-ordered-frames.ts",
+        "tests/runtime/composition-ordered-frames.test.ts"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": ["pnpm", "check:boundaries"],
+      "exitCode": 0
+    }
+  ],
+  "runtimeTests": 12,
+  "implemented": {
+    "assignment": "bounded N=1..4 workers, one-frame chunks with absolute frame modulo N ownership; every worker advances by N",
+    "ordering": "one active streaming consumer in global frame order, at most one pending body per worker; no retained complete frame bodies in this class",
+    "failure": "original error or arbitrary abort reason reaches the active reader and every queued worker; failed bodies are destroyed; duplicate/foreign/gap bodies and incomplete consumer/final delivery fail closed",
+    "scope": "stream/ownership foundation only; HTTP browser coordination, transport body bounds and total allocation proof pending"
+  },
+  "rejectedAttempts": [
+    {
+      "log": "/private/tmp/ce15-ordered-red-1.log",
+      "status": "expected red",
+      "error": "new module absent before implementation"
+    },
+    {
+      "log": "/private/tmp/ce15-ordered-focus-1.log",
+      "status": "failed despite 11 assertions passing",
+      "error": "two uncaught deferred destroy errors after closed-state listener cleanup",
+      "repair": "retain error listener until the actual close event"
+    },
+    {
+      "log": "/private/tmp/ce15-ordered-focus-2.log",
+      "status": "failed lint after runtime/build pass",
+      "error": "unused consumed chunk in test",
+      "repair": "assert real buffer chunks"
+    }
+  ],
+  "logs": [
+    {
+      "path": "/private/tmp/ce15-ordered-red-1.log",
+      "sha256": "702285a8a4ce2f37e4bbe5a950c4558fc7485feecc05e45a9defbc2745053085"
+    },
+    {
+      "path": "/private/tmp/ce15-ordered-focus-1.log",
+      "sha256": "5773baea0829b4602f4ff054fca76896bdb6e360e9a66887c4c453ad37f965a0"
+    },
+    {
+      "path": "/private/tmp/ce15-ordered-focus-2.log",
+      "sha256": "13444bfbd09c1e75ef2c23f12348ef2f1124d1481392c030fdbe5abea05359c2"
+    },
+    {
+      "path": "/private/tmp/ce15-ordered-focus-3.log",
+      "sha256": "15944287a644bf5f8c1404900f24165f46ff3273ed4d39abed52c785b659f8d9"
+    }
+  ],
+  "pending": [
+    "production export worker/browser/store wiring and immutable scope capture",
+    "transport and aggregate pixel/asset/provider/native/worker memory bounds",
+    "actual format/chunk/native/coverage/failure/cancellation parity",
+    "actual layer statistics and isolated 120-second >=3x one/four-worker proof",
+    "immutable full CE15 gate and PR; then CE14"
+  ],
+  "fullGate": "not run"
+}

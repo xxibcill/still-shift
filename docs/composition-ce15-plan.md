@@ -94,6 +94,17 @@ needs a complete paint audit. Aggregate allocations, native/spatial coverage,
 parallel production delivery, the two-minute speed proof and full gate remain
 mandatory. [Detailed evidence](./composition-ce15-surface-results.json).
 
+## Accepted ordered-pipe foundation — 2026-10-07
+
+The one-frame chunk receiver passes 12 runtime cases, build, lint and boundaries.
+Four independent producers feed exactly one consumer in absolute frame order,
+with one pending body per worker. Ownership, gaps, duplicates, early consumer
+return and missing final frames fail closed. Original Error and non-Error abort
+reasons reach active and queued workers. The first implementation passed its
+assertions but emitted two uncaught deferred stream errors; retaining the error
+listener through the actual close event fixes the race. This is a pipe foundation,
+not production parallel acceptance. [Evidence](./composition-ce15-parallel-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

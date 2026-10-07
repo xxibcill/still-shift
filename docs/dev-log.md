@@ -56,7 +56,8 @@ still hold before relying on them.
   transfer and 12 protected failures. Public export wiring, built-in preparation
   audit and complete static paint counts remain pending. New Canvas isolation
   and synchronous binary XHR are rejected with actual diagnostics.
-  Global static caching, aggregate memory limits, bounded parallel export,
+  Ordered streaming ownership passes 12 runtime cases; production worker wiring
+  remains in flight. Global static caching, aggregate memory limits, parallel export,
   statistics, the actual two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -290,6 +291,18 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 bounded ordered-pipe foundation
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `89c5744`.
+- **Done:** one-frame chunk ownership and streaming absolute-order delivery,
+  with one pending body per worker and original-error cancellation.
+- **Results:** 12 runtime cases plus build/lint/boundaries pass. Deferred destroy
+  errors in the first attempt are retained and repaired; no failed gate is called passed.
+- **Next:** production browser/store wiring and scope capture, total memory limits,
+  actual parallel parity/statistics/speed proof, full CE15 gate/PR, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [parallel evidence](./composition-ce15-parallel-results.json).
 
 ### 2026-10-07 — CE15 independent surface integration
 
