@@ -231,6 +231,7 @@ export class CompositionRootCache<S extends Surface> {
         this.assertOpen();
       }
       this.entries.set(path, { signature, pixels });
+      retainRenderPixels(pixels.bytes);
       this.counts.set(path, counts);
       this.retainedBytes += bytes;
       this.peakPayloadBytes = Math.max(this.peakPayloadBytes, bytes);
@@ -255,7 +256,13 @@ export class CompositionRootCache<S extends Surface> {
     else delete this.backend.renderRoot;
     if (this.originalPrefix) this.backend.rootPrefix = this.originalPrefix;
     else delete this.backend.rootPrefix;
+    for (const entry of this.entries.values())
+      releaseRenderPixels(entry.pixels.bytes);
     this.entries.clear();
     this.retainedBytes = 0;
   }
 }
+import {
+  retainRenderPixels,
+  releaseRenderPixels,
+} from "../../managed-memory-context.ts";

@@ -1,3 +1,7 @@
+import {
+  allocateRenderPixels,
+  readRenderImageData,
+} from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import { colorEffectChannel } from "./color-effects.ts";
 import {
@@ -189,9 +193,12 @@ export function noiseEffectKernel(
       const amount = scalar(params, "amount");
       if (amount === 0) return input;
       const controls = noiseControls(params),
-        image = input.ctx.getImageData(0, 0, input.width, input.height),
+        image = readRenderImageData(input.ctx, 0, 0, input.width, input.height),
         premultiplied = turbulent
-          ? new Uint8Array(image.data.length)
+          ? allocateRenderPixels(
+              image.data.length * 1,
+              () => new Uint8Array(image.data.length),
+            )
           : undefined;
       if (premultiplied)
         for (let i = 0; i < image.data.length; i += 4) {

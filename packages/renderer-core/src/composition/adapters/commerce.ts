@@ -1,3 +1,4 @@
+import { createRenderCanvas } from "../../managed-memory-context.ts";
 import { compileFamilyEffects } from "./effects.ts";
 import { compileCommerceExposure } from "./exposure.ts";
 import {
@@ -318,7 +319,7 @@ export async function prepareCommerceComposition(
 ): Promise<Composition> {
   const input = CommerceSceneSchema.parse(source);
   const fonts = await loadPreparedFonts(input, assetUrl);
-  const canvas = document.createElement("canvas");
+  const canvas = createRenderCanvas();
   try {
     const context = canvas.getContext("2d")!;
     if (input.typography) {

@@ -1,3 +1,4 @@
+import { createRenderCanvas } from "../../managed-memory-context.ts";
 import { pointBounds, preparedTextBounds } from "./provider-bounds.ts";
 import { z } from "zod";
 import { COMPOSITION_LIMITS } from "@still-shift/scene-contract";
@@ -163,7 +164,7 @@ function prepareText(
         path: `${path}.assets`,
       },
     );
-  const canvas = document.createElement("canvas");
+  const canvas = createRenderCanvas();
   const measurement = canvas.getContext("2d")!;
   const fonts = new Map(resources.fonts);
   let layouts;

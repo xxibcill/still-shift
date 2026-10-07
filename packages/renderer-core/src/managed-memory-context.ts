@@ -1,6 +1,12 @@
 import type { ManagedMemory, MemoryLease } from "./managed-memory.ts";
 
 let active: ManagedMemory | undefined;
+const destroyPixelBacking = (value: object) => {
+  if (value instanceof ArrayBuffer && value.byteLength)
+    (value as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }).transfer(
+      0,
+    );
+};
 
 /** A pinned export page owns exactly one allocator scope through all asynchronous frame uploads. */
 export async function withManagedMemory<T>(
@@ -8,6 +14,11 @@ export async function withManagedMemory<T>(
   work: () => Promise<T>,
 ): Promise<T> {
   if (active) throw Error("Managed render memory scopes cannot overlap");
+  if (
+    typeof (ArrayBuffer.prototype as ArrayBuffer & { transfer?: unknown })
+      .transfer !== "function"
+  )
+    throw Error("Managed render memory requires native ArrayBuffer detachment");
   active = memory;
   try {
     return await work();
@@ -27,8 +38,13 @@ export function allocateRenderPixels<T extends ArrayBuffer | ArrayBufferView>(
   retained = false,
 ): T {
   if (!active) return factory();
-  return active.allocate("pixels", bytes, factory, retained, (value) =>
-    ArrayBuffer.isView(value) ? value.buffer : value,
+  return active.allocate(
+    "pixels",
+    bytes,
+    factory,
+    retained,
+    (value) => (ArrayBuffer.isView(value) ? value.buffer : value),
+    destroyPixelBacking,
   );
 }
 
@@ -124,5 +140,56 @@ export function readRenderImageData(
     () => context.getImageData(x, y, width, height),
     false,
     (image) => image.data.buffer,
+    destroyPixelBacking,
   );
+}
+
+/** Allocate the exact destination and each BYOB receive block before the stream can fill them. */
+export async function readRenderResponsePixels(
+  response: Response,
+  expected: number,
+): Promise<ArrayBuffer> {
+  const memory = active;
+  if (!memory) return response.arrayBuffer();
+  if (!Number.isSafeInteger(expected) || expected < 1 || !response.body)
+    throw Error("Managed response requires an exact positive body size");
+  let pixels: Uint8Array<ArrayBuffer> | undefined;
+  let reader: ReadableStreamBYOBReader | undefined;
+  let count = 0;
+  try {
+    pixels = allocateRenderPixels(expected, () => new Uint8Array(expected));
+    reader = response.body.getReader({ mode: "byob" });
+    for (;;) {
+      const size = Math.min(65536, Math.max(1, expected - count));
+      const block = allocateRenderPixels(size, () => new Uint8Array(size));
+      const original = block.buffer;
+      let owner: ArrayBufferLike = original;
+      try {
+        const part = await reader.read(block);
+        if (part.value) {
+          if (part.value.buffer.byteLength > size)
+            throw Error("Managed BYOB body exceeds its admitted backing store");
+          memory.transfer(original, part.value.buffer);
+          owner = part.value.buffer;
+          if (count + part.value.byteLength > expected)
+            throw Error("Managed response exceeds its exact body size");
+          pixels.set(part.value, count);
+          count += part.value.byteLength;
+        }
+        if (part.done) break;
+      } finally {
+        memory.release(owner);
+      }
+    }
+    if (count !== expected)
+      throw Error("Managed response differs from its exact body size");
+    return pixels.buffer;
+  } catch (error) {
+    releaseRenderPixels(pixels);
+    throw error;
+  } finally {
+    if (reader) await reader.cancel().catch(() => {});
+    else await response.body.cancel().catch(() => {});
+    reader?.releaseLock();
+  }
 }

@@ -5,7 +5,87 @@ import {
   allocateRenderPixels,
   readRenderImageData,
   renderMemory,
+  readRenderResponsePixels,
+  releaseRenderCanvas,
 } from "../../packages/renderer-core/src/managed-memory-context.ts";
+import { createCanvas2dBackend } from "../../packages/renderer-core/src/composition/render/canvas2d.ts";
+
+/** Pooled native surfaces and exposure storage remain charged until their actual release. */
+export async function checkManagedCanvasPool() {
+  const memory = new ManagedMemory({ pixels: 400000, metadata: 8192 });
+  try {
+    return await withManagedMemory(memory, async () => {
+      const backend = createCanvas2dBackend({
+        images: { images: new Map(), sizes: new Map() },
+        drawText: () => {},
+        poolByteLimit: 256,
+      });
+      memory.beginScratch();
+      const first = backend.createSurface(8, 8);
+      const second = backend.createSurface(8, 8);
+      backend.releaseSurface(first);
+      backend.releaseSurface(second);
+      memory.endScratch();
+      if (
+        first.canvas.width !== 0 ||
+        second.canvas.width !== 8 ||
+        memory.statistics.current.pixels !== 256
+      )
+        throw Error(
+          "Managed Canvas pool did not evict and retain actual storage",
+        );
+      memory.beginScratch();
+      const reused = backend.createSurface(8, 8);
+      if (reused !== second) throw Error("Managed Canvas pool changed reuse");
+      backend.releaseSurface(reused);
+      const dropped = backend.createSurface(16, 16);
+      backend.releaseSurface(dropped);
+      memory.endScratch();
+      if (
+        dropped.canvas.width !== 0 ||
+        memory.statistics.current.pixels !== 256
+      )
+        throw Error("Over-pool Canvas retained backing admission");
+      const canvas = createRenderCanvas();
+      canvas.width = canvas.height = 8;
+      const target = backend.wrap(canvas, canvas.getContext("2d")!);
+      memory.beginScratch();
+      backend.accumulateExposure!(target, 4, (sample) => {
+        target.ctx.fillStyle = `rgb(${[0, 255, 127, 64][sample]},20,40)`;
+        target.ctx.fillRect(0, 0, 8, 8);
+      });
+      const actual = backend.readPixels(target);
+      const exposureChannels = actual.length;
+      for (let byte = 0; byte < actual.length; byte++)
+        if (actual[byte] !== [112, 20, 40, 255][byte % 4])
+          throw Error(`Managed exposure changed actual byte ${byte}`);
+      memory.endScratch();
+      if (Number(memory.statistics.current.pixels) !== 1536)
+        throw Error(
+          "Managed exposure did not retain exactly its accumulator and canvases",
+        );
+      backend.dispose();
+      releaseRenderCanvas(canvas);
+      if (
+        Number(second.canvas.width) !== 0 ||
+        Number(memory.statistics.current.pixels) !== 0
+      )
+        throw Error(
+          "Managed backend disposal retained Canvas/exposure storage",
+        );
+      return {
+        status: "passed",
+        exactExposureChannels: exposureChannels,
+        evictedCanvasDestroyed: true,
+        overPoolCanvasDestroyed: true,
+        retainedPoolReused: true,
+        statistics: memory.statistics,
+      };
+    });
+  } finally {
+    memory.dispose();
+  }
+}
 
 /** Actual native admission, exact kernel pixels and explicit scratch destruction. */
 export async function checkManagedMemoryPrimitives() {
@@ -84,6 +164,84 @@ export async function checkManagedMemoryPrimitives() {
       }
       if (!overlapRejected || renderMemory() !== memory)
         throw Error("Allocator page scope ownership changed");
+      memory.beginScratch();
+      const response = await fetch("/_memory_primitives");
+      const received = new Uint8Array(
+        await readRenderResponsePixels(response, 180000),
+      );
+      const responseBytes = received.length;
+      for (let byte = 0; byte < received.length; byte++)
+        if (received[byte] !== (byte * 37) % 251)
+          throw Error(`Managed BYOB changed actual response byte ${byte}`);
+      if (Number(memory.statistics.current.pixels) !== 181024)
+        throw Error("Managed BYOB retained a receive block after copying");
+      memory.endScratch();
+      if (received.byteLength !== 0)
+        throw Error("Managed scratch did not detach actual response storage");
+      const responseFailures = [];
+      for (const size of [179999, 180001, 400000]) {
+        memory.beginScratch();
+        const response = await fetch("/_memory_primitives");
+        const body = response.body!;
+        const getReader = body.getReader;
+        let reads = 0;
+        Object.defineProperty(body, "getReader", {
+          value: (...args: unknown[]) => {
+            reads++;
+            return Reflect.apply(getReader, body, args);
+          },
+        });
+        let rejected = false;
+        try {
+          await readRenderResponsePixels(response, size);
+        } catch (error) {
+          rejected = (
+            size === 400000 ? /aggregate worker quota/ : /exact body size/
+          ).test(String(error));
+        } finally {
+          memory.endScratch();
+        }
+        if (
+          !rejected ||
+          (size === 400000 && reads !== 0) ||
+          Number(memory.statistics.current.pixels) !== 1024 ||
+          memory.statistics.reservations !== 1
+        )
+          throw Error(
+            "Managed response failure changed admission, ownership or original bounds",
+          );
+        responseFailures.push({
+          size,
+          rejected: true,
+          readerAcquisitions: reads,
+        });
+      }
+      memory.beginScratch();
+      let originalFailure: unknown = "not thrown";
+      try {
+        await readRenderResponsePixels(
+          new Response(
+            new ReadableStream({
+              type: "bytes",
+              start(controller) {
+                controller.error(null);
+              },
+            }),
+          ),
+          16,
+        );
+      } catch (error) {
+        originalFailure = error;
+      } finally {
+        memory.endScratch();
+      }
+      if (
+        originalFailure !== null ||
+        Number(memory.statistics.current.pixels) !== 1024
+      )
+        throw Error(
+          "Managed response replaced the original null failure or retained storage",
+        );
       const before = memory.statistics;
       memory.dispose();
       if (
@@ -100,6 +258,10 @@ export async function checkManagedMemoryPrimitives() {
         committedCanvasDestroyed: true,
         retainedBackingStoreAlias: true,
         scopeOverlapRejected: true,
+        exactResponseBytes: responseBytes,
+        scratchResponseDetached: true,
+        responseFailures,
+        originalNullStreamFailurePreserved: true,
         before,
         after: memory.statistics,
       };

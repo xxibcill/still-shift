@@ -1,3 +1,7 @@
+import {
+  allocateRenderPixels,
+  readRenderImageData,
+} from "../../managed-memory-context.ts";
 import { imagePlacement, type Matrix } from "../../node-transform.ts";
 import type { Canvas2dBackend, CanvasImageResources } from "./canvas2d.ts";
 import type { ClipRect, ImageContent } from "./graph.ts";
@@ -74,10 +78,10 @@ export class WebglPngImages {
       // With effective mip scale >= 1/2, three transparent source rows/columns
       // keep native rectangle/clip antialiasing outside all visible filtering.
       const edges = [
-        pixels.ctx.getImageData(0, 0, width, 3),
-        pixels.ctx.getImageData(0, height - 3, width, 3),
-        pixels.ctx.getImageData(0, 0, 3, height),
-        pixels.ctx.getImageData(width - 3, 0, 3, height),
+        readRenderImageData(pixels.ctx, 0, 0, width, 3),
+        readRenderImageData(pixels.ctx, 0, height - 3, width, 3),
+        readRenderImageData(pixels.ctx, 0, 0, 3, height),
+        readRenderImageData(pixels.ctx, width - 3, 0, 3, height),
       ];
       if (
         edges.some(({ data }) =>
@@ -243,7 +247,10 @@ export class WebglPngImages {
       if (this.control) this.device.release(this.control.surface);
       this.control = {
         surface: this.device.surface(length, 1, true),
-        values: new Float32Array(length * 4),
+        values: allocateRenderPixels(
+          length * 4 * 4,
+          () => new Float32Array(length * 4),
+        ),
       };
     }
     const { surface, values } = this.control;

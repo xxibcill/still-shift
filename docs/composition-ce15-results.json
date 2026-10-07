@@ -4,7 +4,7 @@
   "branch": "codex/composition-ce15",
   "base": "aedfc9e",
   "started": "2026-10-07",
-  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics, complete FFmpeg command CPU, global runtime glyph tints and broader sources, managed allocation foundation",
+  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics, complete FFmpeg command CPU, global runtime glyph tints and broader sources, managed allocation foundation, Canvas allocation lifetimes and bounded receive storage",
   "versions": {
     "canvas": "composition-canvas-1.46.0",
     "webgl": "composition-webgl2-0.67.0"
@@ -704,5 +704,30 @@
     "exactNativeChannels": 1024,
     "fullGate": "pending",
     "integration": "pending"
+  },
+  "managedCanvasMemory": {
+    "status": "Canvas resource lifetime and bounded body admission passed; production aggregate budget integration remains pending",
+    "record": "docs/composition-ce15-canvas-memory-results.json",
+    "relevantFingerprint": "305ab9085e60ef3aec784d07c0ced08f25d9cd4588661279aa5997a5e8b8b954",
+    "admissionCacheExposureTests": 37,
+    "managedMemoryTests": 12,
+    "effectAndPoolTests": 90,
+    "typographyRegressionTests": 67,
+    "browserCases": 132,
+    "exactFrameComparisons": 7248,
+    "managedCanvasCases": 12,
+    "managedCanvasFrames": 752,
+    "managedSourceFailureCases": 11,
+    "nativeCanvasAndExposureChannels": 1280,
+    "actualBYOBResponseBytes": 180000,
+    "productionExports": 64,
+    "productionDecodedFrames": 768,
+    "priorAcceptedEncodedBodiesPreserved": 768,
+    "priorAcceptedDecodedFramesPreserved": 768,
+    "glyphPerformanceRatio": 1.2918238984713764,
+    "glyphPerformanceLimit": 1.5,
+    "aggregateIntegration": "pending",
+    "fullGate": "pending",
+    "speedProof": "pending"
   }
 }

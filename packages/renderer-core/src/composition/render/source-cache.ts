@@ -1,3 +1,10 @@
+import {
+  readRenderImageData,
+  retainRenderCanvas,
+  releaseRenderCanvas,
+  releaseRenderPixels,
+  renderMemory,
+} from "../../managed-memory-context.ts";
 import { sha256Hex } from "../../browser-checksum.ts";
 import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
 import {
@@ -91,6 +98,9 @@ export class CompositionSourceCache {
     if (this.preparing)
       throw Error("Composition preparation is already running");
     this.preparing = true;
+    const memory = renderMemory();
+    const ownsScratch = memory && !memory.hasScratch;
+    if (ownsScratch) memory.beginScratch();
     try {
       this.assertOpen();
       const request = error.request;
@@ -131,6 +141,7 @@ export class CompositionSourceCache {
         this.assertOpen();
         const start = performance.now();
         canvas = request.restore(claim.bytes);
+        releaseRenderPixels(claim.bytes);
         counts.restoreMs += performance.now() - start;
         this.active.add(canvas);
         counts.restores++;
@@ -147,7 +158,13 @@ export class CompositionSourceCache {
         const context = canvas.getContext("2d");
         if (!context) throw Error("Canvas 2D is unavailable");
         const pixels = new Uint8Array(
-          context.getImageData(0, 0, request.width, request.height).data.buffer,
+          readRenderImageData(
+            context,
+            0,
+            0,
+            request.width,
+            request.height,
+          ).data.buffer,
         );
         counts.paintAndReadbackMs += performance.now() - start;
         counts.paints++;
@@ -158,21 +175,27 @@ export class CompositionSourceCache {
           { encoding: "rgba8-straight", bytes: pixels },
           checksum,
         );
+        releaseRenderPixels(pixels);
       }
       this.assertOpen();
       if (canvas.width !== request.width || canvas.height !== request.height)
         throw Error("Composition preparation restored dimensions differ");
       this.entries.set(request.signature, canvas);
+      retainRenderCanvas(canvas);
       this.active.delete(canvas);
       this.retainedBytes += bytes;
       this.peakPayloadBytes = Math.max(this.peakPayloadBytes, bytes);
       return true;
     } catch (reason) {
-      for (const canvas of this.active) canvas.width = canvas.height = 0;
+      for (const canvas of this.active) {
+        canvas.width = canvas.height = 0;
+        releaseRenderCanvas(canvas);
+      }
       this.active.clear();
       throw reason;
     } finally {
       this.preparing = false;
+      if (ownsScratch) memory.endScratch();
     }
   }
   get statistics() {
@@ -185,10 +208,15 @@ export class CompositionSourceCache {
   dispose() {
     if (this.closed) return;
     this.closed = true;
-    for (const canvas of this.active) canvas.width = canvas.height = 0;
-    this.active.clear();
-    for (const canvas of this.entries.values())
+    for (const canvas of this.active) {
       canvas.width = canvas.height = 0;
+      releaseRenderCanvas(canvas);
+    }
+    this.active.clear();
+    for (const canvas of this.entries.values()) {
+      canvas.width = canvas.height = 0;
+      releaseRenderCanvas(canvas);
+    }
     this.entries.clear();
     this.retainedBytes = 0;
   }

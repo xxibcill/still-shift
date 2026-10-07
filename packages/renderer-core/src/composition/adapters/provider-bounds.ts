@@ -1,3 +1,4 @@
+import { createRenderCanvas } from "../../managed-memory-context.ts";
 import type { PreparedNode } from "@still-shift/scene-contract";
 import type { Bounds } from "../evaluate/types.ts";
 import type { LoadedFont } from "../../prepared-fonts.ts";
@@ -38,7 +39,7 @@ export function preparedTextBounds(
   font?: LoadedFont,
   layouts?: Map<string, TextLayout>,
 ): Bounds {
-  const canvas = document.createElement("canvas");
+  const canvas = createRenderCanvas();
   const ctx = canvas.getContext("2d")!;
   ctx.font = font
     ? `${font.weight} ${node.fontSize}px "${font.family}"`

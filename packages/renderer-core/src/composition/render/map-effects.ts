@@ -1,3 +1,7 @@
+import {
+  allocateRenderPixels,
+  readRenderImageData,
+} from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
   samplePremultiplied,
@@ -50,7 +54,10 @@ void main(){uvec4 map=mapBytes();ivec2 delta=ivec2(displaced(selectedChannel(map
 const WIPE = `uniform float progress;uniform float softness;uniform float channel;uniform float invert;
 void main(){uvec4 map=mapBytes();uint value=selectedChannel(map,int(channel));if(invert==1.0)value=255u-value;float rank=float(exactDivideMap(value*map.a+255u*(255u-map.a)+127u,255u))/255.0;float coverage=progress==0.0?1.0:progress==1.0?0.0:softness==0.0?step(progress,rank):clamp((rank-progress)/softness+0.5,0.0,1.0);coverage=floor(coverage*255.0+0.5)/255.0;pixel=bytes(texelFetch(source,ivec2(gl_FragCoord.xy),0)*coverage);}`;
 function premultiply(pixels: Uint8ClampedArray): Uint8Array<ArrayBuffer> {
-  const output = new Uint8Array(pixels.length);
+  const output = allocateRenderPixels(
+    pixels.length * 1,
+    () => new Uint8Array(pixels.length),
+  );
   for (let i = 0; i < pixels.length; i += 4) {
     const a = pixels[i + 3]!;
     for (let c = 0; c < 3; c++)
@@ -105,10 +112,10 @@ export function mapEffectKernel(
     renderCanvas(context, input, params) {
       if (neutral(params)) return input;
       const map = context.layers!.get("map")!,
-        image = input.ctx.getImageData(0, 0, input.width, input.height),
+        image = readRenderImageData(input.ctx, 0, 0, input.width, input.height),
         source = premultiply(image.data),
         field = premultiply(
-          map.ctx.getImageData(0, 0, map.width, map.height).data,
+          readRenderImageData(map.ctx, 0, 0, map.width, map.height).data,
         ),
         amount = displace
           ? (params.amount as readonly number[]).map((v) => Math.round(v * 16))

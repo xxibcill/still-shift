@@ -1,3 +1,4 @@
+import { createRenderCanvas } from "../../managed-memory-context.ts";
 import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
 /**
  * The one module that shapes, measures and draws composition text. Every text
@@ -233,7 +234,7 @@ export async function loadCompositionFonts(
   const frames = compositionTextFrames(
     comp,
     loaded,
-    document.createElement("canvas").getContext("2d")!,
+    createRenderCanvas().getContext("2d")!,
   );
   for (const [scope] of scopes(comp)) {
     const scene = typographyScene(
@@ -273,7 +274,7 @@ function compositionTextFrames(
   // Frame discovery consumes shaped layout and measured bounds only. Its
   // temporary raster headers preserve dimensions without painting glyphs.
   const boundsOnly: CanvasPixelSource = ({ width, height }) => {
-    const canvas = document.createElement("canvas");
+    const canvas = createRenderCanvas();
     canvas.width = width;
     canvas.height = height;
     return canvas;

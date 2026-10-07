@@ -1,3 +1,4 @@
+import { createRenderCanvas } from "./managed-memory-context.ts";
 import type { TextStyle } from "../../scene-contract/src/typography.ts";
 import { loadTextStyleFont, type LoadedFont } from "./prepared-fonts.ts";
 import { shapeText, type ShapedLayout } from "./shaped-text.ts";
@@ -80,7 +81,7 @@ export async function loadTextAnimationFonts(
   fonts: Map<string, LoadedFont>,
 ) {
   if (!scene.typography) return;
-  const ctx = document.createElement("canvas").getContext("2d")!;
+  const ctx = createRenderCanvas().getContext("2d")!;
   for (const node of scene.nodes) {
     if (
       node.type !== "text" ||

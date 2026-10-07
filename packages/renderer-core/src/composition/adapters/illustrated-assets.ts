@@ -1,3 +1,7 @@
+import {
+  createRenderCanvas,
+  readRenderImageData,
+} from "../../managed-memory-context.ts";
 import type { IllustratedScene } from "../../prepared-scene.ts";
 import type { TextLayout } from "../../text-layout.ts";
 import type { PreparedTypography } from "../../typography-renderer.ts";
@@ -62,12 +66,12 @@ export async function loadIllustratedImages(
   if (scene.schemaVersion === "story-scene-1" && scene.camera?.cover?.length) {
     validateStoryCameraAlphaCoverage(scene, (id) => {
       const image = images.get(id)!;
-      const probe = document.createElement("canvas");
+      const probe = createRenderCanvas();
       probe.width = image.naturalWidth;
       probe.height = image.naturalHeight;
       const context = probe.getContext("2d", { willReadFrequently: true })!;
       context.drawImage(image, 0, 0);
-      return context.getImageData(0, 0, probe.width, probe.height);
+      return readRenderImageData(context, 0, 0, probe.width, probe.height);
     });
   }
   images.fonts = await loadPreparedFonts(scene, assetUrl);
@@ -82,7 +86,7 @@ export async function loadIllustratedImages(
     // once so adjacent assembly strips share exactly the same deposited pixels.
     images.rasters = new Map(
       entries.map(([id, image]) => {
-        const raster = document.createElement("canvas");
+        const raster = createRenderCanvas();
         raster.width = image.naturalWidth;
         raster.height = image.naturalHeight;
         raster.getContext("2d")!.drawImage(image, 0, 0);
@@ -109,12 +113,13 @@ export async function loadIllustratedImages(
     const top = Math.floor(sy + (bounds[1] / node.height) * sh);
     const right = Math.ceil(sx + ((bounds[0] + bounds[2]) / node.width) * sw);
     const bottom = Math.ceil(sy + ((bounds[1] + bounds[3]) / node.height) * sh);
-    const probe = document.createElement("canvas");
+    const probe = createRenderCanvas();
     probe.width = image.naturalWidth;
     probe.height = image.naturalHeight;
     const context = probe.getContext("2d", { willReadFrequently: true })!;
     context.drawImage(image, 0, 0);
-    const pixels = context.getImageData(
+    const pixels = readRenderImageData(
+      context,
       left,
       top,
       right - left,
@@ -132,12 +137,15 @@ export async function loadIllustratedImages(
   ) {
     const alphaImages = new Map(
       entries.map(([id, image]) => {
-        const probe = document.createElement("canvas");
+        const probe = createRenderCanvas();
         probe.width = image.naturalWidth;
         probe.height = image.naturalHeight;
         const ctx = probe.getContext("2d", { willReadFrequently: true })!;
         ctx.drawImage(image, 0, 0);
-        return [id, ctx.getImageData(0, 0, probe.width, probe.height)] as const;
+        return [
+          id,
+          readRenderImageData(ctx, 0, 0, probe.width, probe.height),
+        ] as const;
       }),
     );
     images.revealValidation = inspectForegroundReveal(scene, alphaImages);

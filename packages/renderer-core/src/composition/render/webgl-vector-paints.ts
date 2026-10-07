@@ -1,3 +1,8 @@
+import {
+  createRenderCanvas,
+  retainRenderCanvas,
+  releaseRenderCanvas,
+} from "../../managed-memory-context.ts";
 import type { Bounds } from "../evaluate/types.ts";
 import { boundsOverlap, unionBounds } from "./webgl-vector-regions.ts";
 import { CanvasPathBounds } from "./webgl-path-bounds.ts";
@@ -141,11 +146,12 @@ export function recordVectorPaints(
           )
             invalidate();
           else {
-            const snapshot = document.createElement("canvas");
+            const snapshot = createRenderCanvas();
             snapshot.width = image.width;
             snapshot.height = image.height;
             snapshot.getContext("2d")!.drawImage(image, 0, 0);
             snapshots.push(snapshot);
+            retainRenderCanvas(snapshot);
             snapshotBytes += bytes;
             recorded = [snapshot, ...args.slice(1)];
           }
@@ -225,7 +231,10 @@ export function recordVectorPaints(
         for (let i = 0; i <= depth; i++) ctx.restore();
         marker = false;
       }
-      for (const canvas of snapshots) canvas.width = canvas.height = 0;
+      for (const canvas of snapshots) {
+        canvas.width = canvas.height = 0;
+        releaseRenderCanvas(canvas);
+      }
     },
     groups(): VectorPaintGroup[] | undefined {
       if (!supported || marks.length > 64) return undefined;

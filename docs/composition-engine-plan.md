@@ -5089,7 +5089,7 @@ decode-back pixel check.
 **Verification:** Format tests, alpha round-trip test, chunk-boundary parity test
 (frames on both sides of a boundary), cancellation during parallel export.
 
-**In progress (2026-10-07):** Codex on `codex/composition-ce15` from completed
+**In progress (2026-10-08):** Codex on `codex/composition-ce15` from completed
 CE13 `aedfc9e`; renderer checkpoint `49e0543` is pushed. All seven explicit output
 profiles pass focused native-depth alpha/color/audio checks, repeat/independent
 encodes, CLI, dimensions and protected publication/source failures. Existing
@@ -5111,8 +5111,12 @@ command CPU and actual process-group reaping pass 23 focused / 20 CLI tests,
 Shared runtime tints, real variable axes/corrections and both state-crossfade inputs
 pass 100 focused / 67 typography tests, 120 audit cases / 6,496 exact comparisons
 and 64 public exports / 768 frames with actual once-global native painting.
-Managed allocation primitives pass nine units / 1,024 exact native channels;
-production resource integration remains pending. Aggregate limits, two-minute speed proof
+Canvas ownership/bounded receive pass 37 admission/cache/exposure, 90 effect/pool
+and 67 typography tests; 132 audit cases / 7,248 frames include twelve managed cases /
+752 exact frames. Native detachment, pool/body/failure cleanup and 64 public exports /
+768 complete bodies/frames match the prior checkpoint. Glyph 1.291824× passes unchanged
+1.5×. Production GPU/assets/capture/Node/metadata integration remains pending.
+Aggregate limits, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),
 [format evidence](./composition-ce15-format-results.json).

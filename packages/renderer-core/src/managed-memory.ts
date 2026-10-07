@@ -14,6 +14,10 @@ export class ManagedMemory {
   private readonly leases = new Set<MemoryLease>();
   private readonly scratch = new Set<MemoryLease>();
   private readonly ownership = new WeakMap<object, MemoryLease>();
+  private readonly resources = new Map<
+    MemoryLease,
+    { value: object; destroy?: (value: object) => void }
+  >();
   private closed = false;
   private scratchActive = false;
 
@@ -64,7 +68,23 @@ export class ManagedMemory {
         this.current[kind] -= size;
         this.leases.delete(lease);
         this.scratch.delete(lease);
-        destroy?.();
+        const resource = this.resources.get(lease);
+        this.resources.delete(lease);
+        if (resource) this.ownership.delete(resource.value);
+        let failed = false;
+        let reason: unknown;
+        try {
+          destroy?.();
+        } catch (error) {
+          failed = true;
+          reason = error;
+        }
+        try {
+          if (resource) resource.destroy?.(resource.value);
+        } catch (error) {
+          if (!failed) throw error;
+        }
+        if (failed) throw reason;
       },
     };
     this.leases.add(lease);
@@ -79,12 +99,13 @@ export class ManagedMemory {
     factory: () => T,
     retained = false,
     identity: (value: T) => object = (value) => value,
+    destroy?: (value: object) => void,
   ): T {
     const lease = this.reserve(kind, bytes, undefined, retained);
     try {
       const value = factory();
       const owner = identity(value);
-      this.adopt(owner, lease);
+      this.adopt(owner, lease, destroy);
       return value;
     } catch (error) {
       lease.release();
@@ -92,12 +113,19 @@ export class ManagedMemory {
     }
   }
 
-  adopt(value: object, lease: MemoryLease): void {
+  adopt(
+    value: object,
+    lease: MemoryLease,
+    destroy?: (value: object) => void,
+  ): void {
     if (!this.leases.has(lease) || !lease.active)
       throw Error("Managed resource reservation has no active owner");
+    if (this.resources.has(lease))
+      throw Error("Managed reservation already has a resource owner");
     if (this.ownership.has(value))
       throw Error("Managed allocation returned an already owned resource");
     this.ownership.set(value, lease);
+    this.resources.set(lease, { value, ...(destroy ? { destroy } : {}) });
   }
 
   retain(value: object): void {
@@ -105,6 +133,19 @@ export class ManagedMemory {
     if (!lease?.active)
       throw Error("Managed retained resource has no admitted owner");
     this.scratch.delete(lease);
+  }
+
+  /** A BYOB byte stream transfers the admitted backing store without allocating a second owner. */
+  transfer(previous: object, next: object): void {
+    const lease = this.ownership.get(previous);
+    if (!lease?.active || !this.leases.has(lease))
+      throw Error("Managed transfer has no active admitted owner");
+    if (previous === next) return;
+    if (this.ownership.has(next))
+      throw Error("Managed transfer target already has an owner");
+    this.ownership.delete(previous);
+    this.ownership.set(next, lease);
+    this.resources.get(lease)!.value = next;
   }
 
   release(value: object): void {

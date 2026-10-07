@@ -1,3 +1,4 @@
+import { createRenderCanvas } from "../../managed-memory-context.ts";
 import {
   COMPOSITION_LIMITS,
   StorySceneSchema,
@@ -367,7 +368,7 @@ export async function prepareStoryComposition(
 ): Promise<Composition> {
   const input = StorySceneSchema.parse(source);
   const fonts = await loadPreparedFonts(input, assetUrl);
-  const canvas = document.createElement("canvas");
+  const canvas = createRenderCanvas();
   try {
     const context = canvas.getContext("2d")!;
     if (input.typography) {

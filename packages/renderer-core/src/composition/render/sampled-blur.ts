@@ -1,3 +1,7 @@
+import {
+  allocateRenderPixels,
+  readRenderImageData,
+} from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 type Params = Readonly<
@@ -140,8 +144,17 @@ export function sampledBlurKernel(
         input.width,
         input.height,
       );
-      const image = input.ctx.getImageData(0, 0, input.width, input.height),
-        premultiplied = new Uint8Array(image.data.length);
+      const image = readRenderImageData(
+          input.ctx,
+          0,
+          0,
+          input.width,
+          input.height,
+        ),
+        premultiplied = allocateRenderPixels(
+          image.data.length * 1,
+          () => new Uint8Array(image.data.length),
+        );
       for (let index = 0; index < image.data.length; index += 4) {
         const alpha = image.data[index + 3]!;
         for (let c = 0; c < 3; c++)

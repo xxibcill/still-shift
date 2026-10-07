@@ -305,6 +305,38 @@ storage is distinct from physical RSS. Aggregate allocation coverage, full area/
 worker matrix, actual 120-second speed proof and final gate remain pending.
 [Detailed evidence](./composition-ce15-memory-foundation-results.json).
 
+## Accepted Canvas allocation and bounded receive checkpoint — 2026-10-08
+
+Canvas factories/backing changes and native reads now reserve declared storage in
+an allocator scope. Pooled/raster owners, source canvases, root captures and exposure
+accumulators retain their admission across frames. Dropped/evicted native canvases
+are destroyed; pixel buffers detach with native `ArrayBuffer.transfer(0)`. Explicit
+strong owners and transfer-aware teardown remove dependence on finalizers or weak
+collection. Failed construction drops scratch before source rendezvous; coverage
+paint/restore targets allocate after their small policy header is discarded.
+
+Exact cache-body destinations and at most 64 KiB BYOB blocks are admitted before
+native receive. Actual 180 KB body bytes match; short/long/quota/null failures release
+all storage and preserve original errors. Native pool eviction/reuse and exposure
+average pass 256 exact channels, alongside the 1,024 original admission channels.
+Eleven managed source failures release every reservation before final disposal.
+
+All 132 audit cases pass 7,248 exact frames. Twelve managed Canvas cases add 752
+comparisons across four pinned pages, both raster policies, animated colours, axes,
+corrections and crossfades; all actual global paint counts remain strict and all
+reservations release. Build/lint/boundaries, 37 admission/cache/exposure, 90 effect/
+pool and 67 typography tests pass. Twelve provider placements and eight original
+fixtures pass; glyph timing is 1.291824× under unchanged 1.5×. Sixty-four public
+exports preserve all 768 complete PNG bodies and decoded frames, also compared to
+the prior accepted tint checkpoint.
+
+The production allocator scope is not enabled yet. GPU, asset/font, capture/upload,
+Node and complete metadata admission remain pending, followed by the full area/
+worker matrix, authentic 120-second speed proof and immutable complete CE15 gate.
+Audit oracle/loaded assets are outside this Canvas scope; declared per-page peaks
+are distinct from actual process RSS and simultaneous aggregate memory.
+[Detailed evidence](./composition-ce15-canvas-memory-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

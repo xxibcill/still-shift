@@ -2,6 +2,7 @@ import type {
   CompositionSurfaceExchange,
   CompositionSurfaceClaim,
 } from "@still-shift/renderer-core";
+import { readRenderResponsePixels } from "@still-shift/renderer-core";
 
 /** Binary bodies are awaited during preparation; graph execution stays synchronous. */
 export function compositionSurfaceExchange(options: {
@@ -49,7 +50,9 @@ export function compositionSurfaceExchange(options: {
           throw Error(
             "Composition surface response storage exceeds its contract",
           );
-        const bytes = new Uint8Array(await response.arrayBuffer());
+        const bytes = new Uint8Array(
+          await readRenderResponsePixels(response, expected),
+        );
         return { kind: "hit", bytes, checksum };
       }
       const claim = (await response.json()) as CompositionSurfaceClaim;

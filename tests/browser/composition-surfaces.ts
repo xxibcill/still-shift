@@ -48,6 +48,15 @@ const server = await createServer({
       name: "composition-surface-acceptance",
       configureServer(server) {
         server.middlewares.use((request, response, next) => {
+          if (request.url === "/_memory_primitives") {
+            const bytes = Buffer.alloc(180000);
+            for (let byte = 0; byte < bytes.length; byte++)
+              bytes[byte] = (byte * 37) % 251;
+            response.setHeader("Content-Type", "application/octet-stream");
+            response.setHeader("Content-Length", bytes.length);
+            response.end(bytes);
+            return;
+          }
           const parts = new URL(
             request.url ?? "/",
             "http://localhost",
@@ -217,15 +226,19 @@ try {
   for (const backend of ["canvas2d", "webgl2"] as const)
     for (const software of [false, true])
       for (const sourceCase of [
-        { animated: false, variant: undefined },
-        { animated: true, variant: undefined },
+        false,
+        ...(backend === "canvas2d" ? [true] : []),
+      ].flatMap((managed) => [
+        { animated: false, variant: undefined, managed },
+        { animated: true, variant: undefined, managed },
         ...COMPOSITION_TINT_VARIANTS.map((variant) => ({
           animated: false,
           variant,
+          managed,
         })),
-      ]) {
-        const { animated, variant } = sourceCase;
-        const id = `sources-${backend}-${software}-${variant ?? animated}`,
+      ])) {
+        const { animated, variant, managed } = sourceCase;
+        const id = `sources-${backend}-${software}-${variant ?? animated}-${managed}`,
           credentials = workers.map(() => randomUUID());
         const store = await CompositionSurfaceStore.create(scratch, {
           workers: 4,
@@ -259,6 +272,7 @@ try {
                   backend,
                   software,
                   animated,
+                  managed,
                   ...(variant ? { variant } : {}),
                   worker,
                   credential: credentials[worker]!,
@@ -269,6 +283,18 @@ try {
             ),
           );
           assert.deepEqual(failures, []);
+          if (managed)
+            for (const outcome of outcomes) {
+              assert.ok("managedMemory" in outcome);
+              assert.ok(outcome.managedMemory);
+              assert.ok(outcome.managedMemory.before.peak.pixels > 0);
+              assert.ok(
+                outcome.managedMemory.before.peak.pixels <=
+                  outcome.managedMemory.before.limits.pixels,
+              );
+              assert.equal(outcome.managedMemory.after.current.pixels, 0);
+              assert.equal(outcome.managedMemory.after.reservations, 0);
+            }
           const totals = (kind: string, field: "paints" | "restores") =>
             outcomes.reduce(
               (sum, result) =>
@@ -384,6 +410,7 @@ try {
             software,
             animated,
             variant,
+            managed,
             statistics: store.statistics,
             outcomes,
           });
@@ -688,6 +715,20 @@ try {
       (await import(url)) as typeof MemoryChecks
     ).checkManagedMemoryPrimitives();
   });
+  const managedCanvasPool = await workers[0]!.page.evaluate(async () => {
+    const url = "/tests/helpers/composition-memory-reference.ts";
+    return (
+      (await import(url)) as typeof MemoryChecks
+    ).checkManagedCanvasPool();
+  });
+  const managedSourceFailures = await workers[0]!.page.evaluate(async () => {
+    const url = "/tests/helpers/composition-source-reference.ts";
+    return (
+      (await import(url)) as typeof SourceChecks
+    ).checkManagedSourceFailures();
+  });
+  assert.equal(managedSourceFailures.reports.length, 11);
+  assert.equal(managedSourceFailures.after.reservations, 0);
   const directory = join(root, "benchmarks/results/composition-ce15-surfaces");
   await mkdir(directory, { recursive: true });
   const result = {
@@ -726,6 +767,8 @@ try {
     nativeRoots,
     protectedRoots,
     memoryPrimitives,
+    managedCanvasPool,
+    managedSourceFailures,
     reports,
   };
   await writeFile(

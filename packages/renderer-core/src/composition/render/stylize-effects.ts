@@ -1,3 +1,7 @@
+import {
+  allocateRenderPixels,
+  readRenderImageData,
+} from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import { colorEffectChannel } from "./color-effects.ts";
 import {
@@ -79,8 +83,19 @@ export function stylizeEffectKernel(
         offset = vignette ? undefined : chromaticOffset(params);
       if (amount === 0 || (offset && offset.every((v) => v === 0)))
         return input;
-      const image = input.ctx.getImageData(0, 0, input.width, input.height),
-        premultiplied = offset ? new Uint8Array(image.data.length) : undefined;
+      const image = readRenderImageData(
+          input.ctx,
+          0,
+          0,
+          input.width,
+          input.height,
+        ),
+        premultiplied = offset
+          ? allocateRenderPixels(
+              image.data.length * 1,
+              () => new Uint8Array(image.data.length),
+            )
+          : undefined;
       if (premultiplied)
         for (let i = 0; i < image.data.length; i += 4) {
           const alpha = image.data[i + 3]!;

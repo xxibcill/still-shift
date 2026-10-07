@@ -1,4 +1,8 @@
 import {
+  allocateRenderPixels,
+  readRenderImageData,
+} from "../../managed-memory-context.ts";
+import {
   gradientControls,
   gradientRank,
   gradientUniforms,
@@ -243,7 +247,10 @@ export function colorEffectKernel(
         });
       } else if (id === "color.curves") {
         // A 256-entry transfer is control data; all image pixels are transformed on the GPU.
-        const bytes = new Uint8Array(256 * 4);
+        const bytes = allocateRenderPixels(
+          256 * 4 * 1,
+          () => new Uint8Array(256 * 4),
+        );
         for (let value = 0; value < 256; value++) {
           const mapped = colorEffectPixel(
             id,
@@ -263,7 +270,13 @@ export function colorEffectKernel(
     },
     renderCanvas(context, input, params: RenderEffect["params"]) {
       const output = context.createSurface(input.width, input.height);
-      const image = input.ctx.getImageData(0, 0, input.width, input.height);
+      const image = readRenderImageData(
+        input.ctx,
+        0,
+        0,
+        input.width,
+        input.height,
+      );
       const gradient =
           id === "color.gradient-ramp" ? gradientControls(params) : undefined,
         table = gradient ? gradientColorTable(params) : undefined;

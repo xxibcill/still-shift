@@ -1,3 +1,8 @@
+import {
+  readRenderImageData,
+  allocateRenderPixels,
+  releaseRenderPixels,
+} from "../../managed-memory-context.ts";
 import type { CompositionBlendMode } from "@still-shift/scene-contract";
 import type { Canvas2dBackend, CanvasSurface } from "./canvas2d.ts";
 import {
@@ -37,12 +42,14 @@ export function installCanvasLinear(
     mode: CompositionBlendMode,
     opacity: number,
   ) => {
-    const output = dst.ctx.getImageData(0, 0, dst.width, dst.height),
+    const output = readRenderImageData(dst.ctx, 0, 0, dst.width, dst.height),
       src = premul(raw.readPixels(source)),
       bytes = premul(output.data);
     const blend = createLinearBlendKernel(mode, opacity);
     for (let i = 0; i < bytes.length; i += 4) blend(src, i, bytes, i, bytes, i);
     write(dst, output);
+    releaseRenderPixels(output.data);
+    releaseRenderPixels(src);
   };
   const stage = (
     dst: CanvasSurface,
@@ -272,7 +279,7 @@ export function installCanvasLinear(
   };
   backend.lerp = (dst, src, coverage, opacity) => {
     if (!active()) return raw.lerp(dst, src, coverage, opacity);
-    const output = dst.ctx.getImageData(0, 0, dst.width, dst.height),
+    const output = readRenderImageData(dst.ctx, 0, 0, dst.width, dst.height),
       bytes = premul(output.data),
       source = premul(raw.readPixels(src)),
       mask = raw.readPixels(coverage),
@@ -289,24 +296,43 @@ export function installCanvasLinear(
         i,
       );
     write(dst, output);
+    releaseRenderPixels(output.data);
+    releaseRenderPixels(source);
+    releaseRenderPixels(mask);
   };
   let accumulation: Uint32Array | undefined;
   backend.accumulateExposure = (target, count, draw) => {
     if (!linear || count === 1)
       return raw.accumulateExposure(target, count, draw);
     const length = target.width * target.height * 4;
-    if (accumulation?.length !== length) accumulation = new Uint32Array(length);
-    else accumulation.fill(0);
-    const words = new Uint32Array(4);
+    if (accumulation?.length !== length) {
+      releaseRenderPixels(accumulation);
+      accumulation = allocateRenderPixels(
+        length * 4,
+        () => new Uint32Array(length),
+        true,
+      );
+    } else accumulation.fill(0);
+    const words = allocateRenderPixels(16, () => new Uint32Array(4));
     let output: ImageData | undefined;
     for (let sample = 0; sample < count; sample++) {
       draw(sample);
-      output = target.ctx.getImageData(0, 0, target.width, target.height);
+      output = readRenderImageData(
+        target.ctx,
+        0,
+        0,
+        target.width,
+        target.height,
+      );
       premul(output.data);
       for (let i = 0; i < length; i += 4) {
         decodeLinearPixel(output.data, i, words);
         for (let c = 0; c < 4; c++)
           accumulation[i + c] = accumulation[i + c]! + words[c]!;
+      }
+      if (sample < count - 1) {
+        releaseRenderPixels(output.data);
+        output = undefined;
       }
     }
     for (let i = 0; i < length; i += 4) {
@@ -315,8 +341,11 @@ export function installCanvasLinear(
       encodeLinearPixel(words, 0, output!.data, i);
     }
     write(target, output!);
+    releaseRenderPixels(output!.data);
+    releaseRenderPixels(words);
   };
   backend.dispose = () => {
+    releaseRenderPixels(accumulation);
     accumulation = undefined;
     raw.dispose();
   };

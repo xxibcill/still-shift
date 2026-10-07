@@ -1,3 +1,7 @@
+import {
+  allocateRenderPixels,
+  readRenderImageData,
+} from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
   PREMULTIPLIED_SAMPLE_SHADER,
@@ -178,8 +182,11 @@ export function warpEffectKernel(
     },
     renderCanvas(context, input, params) {
       const mapping = warpMapping(id, params, input.width, input.height),
-        image = input.ctx.getImageData(0, 0, input.width, input.height),
-        premultiplied = new Uint8Array(image.data.length);
+        image = readRenderImageData(input.ctx, 0, 0, input.width, input.height),
+        premultiplied = allocateRenderPixels(
+          image.data.length * 1,
+          () => new Uint8Array(image.data.length),
+        );
       for (let i = 0; i < image.data.length; i += 4) {
         const alpha = image.data[i + 3]!;
         for (let c = 0; c < 3; c++)

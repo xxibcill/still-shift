@@ -146,3 +146,64 @@ it.each(["scratch", "dispose"])(
     expect(destroyed).toBe(2);
   },
 );
+
+it("transfers one active backing owner without changing admission or retained lifetime", () => {
+  const memory = new ManagedMemory({ pixels: 16, metadata: 8 });
+  memory.beginScratch();
+  const before = memory.allocate("pixels", 16, () => new ArrayBuffer(16));
+  memory.retain(before);
+  const transferred = structuredClone(before, { transfer: [before] });
+  memory.transfer(before, transferred);
+  expect(before.byteLength).toBe(0);
+  expect(memory.statistics.current.pixels).toBe(16);
+  expect(() => memory.retain(before)).toThrow("no admitted owner");
+  memory.endScratch();
+  expect(memory.statistics.current.pixels).toBe(16);
+  memory.release(transferred);
+  expect(memory.statistics.reservations).toBe(0);
+  expect(() => memory.transfer(transferred, new ArrayBuffer(16))).toThrow(
+    "no active admitted owner",
+  );
+});
+
+it("destroys the transferred resource and preserves the first original destructor failure", () => {
+  const memory = new ManagedMemory({ pixels: 16, metadata: 8 });
+  const original = {};
+  const transferred = {};
+  let destroyed: object | undefined;
+  const lease = memory.reserve("pixels", 16, () => {
+    throw null;
+  });
+  memory.adopt(original, lease, (resource) => {
+    destroyed = resource;
+    throw Error("secondary destructor");
+  });
+  memory.transfer(original, transferred);
+  let reason: unknown = "not thrown";
+  try {
+    memory.dispose();
+  } catch (error) {
+    reason = error;
+  }
+  expect(reason).toBe(null);
+  expect(destroyed).toBe(transferred);
+  expect(memory.statistics.reservations).toBe(0);
+});
+
+it("refuses a second adopted owner and transfer into a foreign reservation", () => {
+  const memory = new ManagedMemory({ pixels: 32, metadata: 8 });
+  const first = {},
+    second = {};
+  const lease = memory.reserve("pixels", 16);
+  memory.adopt(first, lease);
+  expect(() => memory.adopt(second, lease)).toThrow(
+    "already has a resource owner",
+  );
+  const other = memory.reserve("pixels", 16);
+  memory.adopt(second, other);
+  expect(() => memory.transfer(first, second)).toThrow("already has an owner");
+  memory.release(first);
+  expect(memory.statistics.current.pixels).toBe(16);
+  memory.release(second);
+  expect(memory.statistics.reservations).toBe(0);
+});

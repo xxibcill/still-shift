@@ -1,3 +1,7 @@
+import {
+  allocateRenderPixels,
+  readRenderImageData,
+} from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
   samplePremultiplied,
@@ -26,7 +30,10 @@ export function blurShadowMask(
   direction: readonly [number, number],
   padding: number,
 ): Uint8Array<ArrayBuffer> {
-  const output = new Uint8Array(input.length);
+  const output = allocateRenderPixels(
+    input.length * 1,
+    () => new Uint8Array(input.length),
+  );
   for (let y = 0; y < h; y++)
     for (let x = 0; x < w; x++) {
       let sum = 0;
@@ -98,7 +105,10 @@ export function shadowEffectKernel(
         mask = context.createSurface(input.width, input.height),
         scratch = context.createSurface(input.width, input.height),
         table = context.createSurface(k.weights.length, 1),
-        data = new Uint8Array(k.weights.length * 4);
+        data = allocateRenderPixels(
+          k.weights.length * 4 * 1,
+          () => new Uint8Array(k.weights.length * 4),
+        );
       for (let i = 0; i < k.weights.length; i++) {
         data[i * 4] = k.weights[i]! & 255;
         data[i * 4 + 1] = k.weights[i]! >>> 8;
@@ -131,8 +141,17 @@ export function shadowEffectKernel(
       const color = params.color as readonly number[],
         opacity = params.opacity as number;
       if (opacity === 0 || color[3] === 0) return input;
-      const image = input.ctx.getImageData(0, 0, input.width, input.height),
-        premultiplied = new Uint8Array(image.data.length),
+      const image = readRenderImageData(
+          input.ctx,
+          0,
+          0,
+          input.width,
+          input.height,
+        ),
+        premultiplied = allocateRenderPixels(
+          image.data.length * 1,
+          () => new Uint8Array(image.data.length),
+        ),
         offset = (params.offset as readonly number[]).map(
           (v) => Math.round(v * 16) / 16,
         ),
@@ -143,7 +162,10 @@ export function shadowEffectKernel(
           premultiplied[i + c] = Math.round((image.data[i + c]! * alpha) / 255);
         premultiplied[i + 3] = alpha;
       }
-      const mask = new Uint8Array(input.width * input.height);
+      const mask = allocateRenderPixels(
+        input.width * input.height * 1,
+        () => new Uint8Array(input.width * input.height),
+      );
       for (let y = 0; y < input.height; y++)
         for (let x = 0; x < input.width; x++) {
           samplePremultiplied(

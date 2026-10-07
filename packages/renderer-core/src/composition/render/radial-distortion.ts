@@ -1,3 +1,7 @@
+import {
+  allocateRenderPixels,
+  readRenderImageData,
+} from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
   samplePremultiplied,
@@ -99,7 +103,10 @@ int scaledDelta(int delta,int factor){int product=delta*factor;uint magnitude=ui
 vec2 radialSource(ivec2 point){ivec2 center=ivec2(centerFixed),delta=point-center;int factor=factorAt(factorIndex(delta));return vec2(center+ivec2(scaledDelta(delta.x,factor),scaledDelta(delta.y,factor)))/16.0;}
 `;
 export function radialControlBytes(c: RadialControls): Uint8Array<ArrayBuffer> {
-  const bytes = new Uint8Array(256 * Math.ceil(c.factors.length / 256) * 4);
+  const bytes = allocateRenderPixels(
+    256 * Math.ceil(c.factors.length / 256) * 4 * 1,
+    () => new Uint8Array(256 * Math.ceil(c.factors.length / 256) * 4),
+  );
   for (let i = 0; i < c.factors.length; i++) {
     const value = c.factors[i]!;
     bytes[i * 4] = value & 255;
@@ -153,8 +160,11 @@ export function radialDistortionKernel(
           input.width,
           input.height,
         ),
-        image = input.ctx.getImageData(0, 0, input.width, input.height),
-        premultiplied = new Uint8Array(image.data.length);
+        image = readRenderImageData(input.ctx, 0, 0, input.width, input.height),
+        premultiplied = allocateRenderPixels(
+          image.data.length * 1,
+          () => new Uint8Array(image.data.length),
+        );
       for (let i = 0; i < image.data.length; i += 4) {
         const a = image.data[i + 3]!;
         for (let c = 0; c < 3; c++)

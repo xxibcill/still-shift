@@ -1,3 +1,8 @@
+import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
+import {
+  withManagedMemory,
+  createRenderCanvas,
+} from "../../packages/renderer-core/src/managed-memory-context.ts";
 import {
   createCompositionPreview,
   createCompositionPreviewAsync,
@@ -14,6 +19,7 @@ import { sha256Hex } from "../../packages/renderer-core/src/browser-checksum.ts"
 export async function checkSharedCompositionSources(options: {
   backend: "canvas2d" | "webgl2";
   software: boolean;
+  managed?: boolean;
   animated: boolean;
   variant?: CompositionTintVariant;
   worker: number;
@@ -44,93 +50,123 @@ export async function checkSharedCompositionSources(options: {
   } finally {
     baseline.dispose();
   }
-  const originalFill = CanvasRenderingContext2D.prototype.fillText,
-    originalStroke = CanvasRenderingContext2D.prototype.strokeText,
-    originalImage = CanvasRenderingContext2D.prototype.drawImage;
-  const paints = { fillText: 0, strokeText: 0, drawImage: 0 };
-  CanvasRenderingContext2D.prototype.fillText = function (
-    ...args: Parameters<typeof originalFill>
-  ) {
-    paints.fillText++;
-    return originalFill.apply(this, args);
-  };
-  CanvasRenderingContext2D.prototype.strokeText = function (
-    ...args: Parameters<typeof originalStroke>
-  ) {
-    paints.strokeText++;
-    return originalStroke.apply(this, args);
-  };
-  CanvasRenderingContext2D.prototype.drawImage = function (
-    this: CanvasRenderingContext2D,
-    ...args: Parameters<typeof originalImage>
-  ) {
-    paints.drawImage++;
-    return originalImage.apply(this, args);
-  } as typeof originalImage;
-  const originalRect = CanvasRenderingContext2D.prototype.fillRect;
-  let nativeTintPaints = 0;
-  CanvasRenderingContext2D.prototype.fillRect = function (
-    ...args: Parameters<typeof originalRect>
-  ) {
-    if (this.globalCompositeOperation === "source-in") nativeTintPaints++;
-    return originalRect.apply(this, args);
-  };
-  let preview;
-  try {
-    preview = await createCompositionPreviewAsync(
-      document.createElement("canvas"),
-      composition,
-      resources,
-      {
-        backend: options.backend,
-        preserveAlpha: true,
-        surfaceCache: {
-          scopeKey: options.scopeKey,
-          byteLimit: 16 * 1024 * 1024,
-          exchange: compositionSurfaceExchange(options),
+  const memory = options.managed
+    ? new ManagedMemory({
+        pixels: 64 * 1024 * 1024,
+        metadata: 16 * 1024 * 1024,
+      })
+    : undefined;
+  const renderCached = async () => {
+    const originalFill = CanvasRenderingContext2D.prototype.fillText,
+      originalStroke = CanvasRenderingContext2D.prototype.strokeText,
+      originalImage = CanvasRenderingContext2D.prototype.drawImage;
+    const paints = { fillText: 0, strokeText: 0, drawImage: 0 };
+    CanvasRenderingContext2D.prototype.fillText = function (
+      ...args: Parameters<typeof originalFill>
+    ) {
+      paints.fillText++;
+      return originalFill.apply(this, args);
+    };
+    CanvasRenderingContext2D.prototype.strokeText = function (
+      ...args: Parameters<typeof originalStroke>
+    ) {
+      paints.strokeText++;
+      return originalStroke.apply(this, args);
+    };
+    CanvasRenderingContext2D.prototype.drawImage = function (
+      this: CanvasRenderingContext2D,
+      ...args: Parameters<typeof originalImage>
+    ) {
+      paints.drawImage++;
+      return originalImage.apply(this, args);
+    } as typeof originalImage;
+    const originalRect = CanvasRenderingContext2D.prototype.fillRect;
+    let nativeTintPaints = 0;
+    CanvasRenderingContext2D.prototype.fillRect = function (
+      ...args: Parameters<typeof originalRect>
+    ) {
+      if (this.globalCompositeOperation === "source-in") nativeTintPaints++;
+      return originalRect.apply(this, args);
+    };
+    let preview;
+    try {
+      preview = await createCompositionPreviewAsync(
+        createRenderCanvas(),
+        composition,
+        resources,
+        {
+          backend: options.backend,
+          preserveAlpha: true,
+          surfaceCache: {
+            scopeKey: options.scopeKey,
+            byteLimit: 16 * 1024 * 1024,
+            exchange: compositionSurfaceExchange(options),
+          },
         },
-      },
-    );
-  } catch (error) {
-    CanvasRenderingContext2D.prototype.fillRect = originalRect;
-    throw error;
-  } finally {
-    CanvasRenderingContext2D.prototype.fillText = originalFill;
-    CanvasRenderingContext2D.prototype.strokeText = originalStroke;
-    CanvasRenderingContext2D.prototype.drawImage = originalImage;
-  }
-  try {
-    const frames = [
-      ...Array.from({ length: composition.frameCount }, (_, frame) => frame),
-      composition.frameCount - 1,
-      Math.floor(composition.frameCount / 2),
-      1,
-      composition.frameCount - 2,
-      0,
-    ];
-    for (const frame of frames) {
-      await preview.prepareFrame(frame);
-      preview.renderFrame(frame);
-      const actual = preview.readPixels(),
-        reference = expected.get(frame)!;
-      for (let byte = 0; byte < actual.length; byte++)
-        if (actual[byte] !== reference[byte])
-          throw Error(
-            `${options.backend}/sources/${options.software}/${frame}: byte ${byte}, ${actual[byte]} instead of ${reference[byte]}`,
-          );
+      );
+    } catch (error) {
+      CanvasRenderingContext2D.prototype.fillRect = originalRect;
+      throw error;
+    } finally {
+      CanvasRenderingContext2D.prototype.fillText = originalFill;
+      CanvasRenderingContext2D.prototype.strokeText = originalStroke;
+      CanvasRenderingContext2D.prototype.drawImage = originalImage;
     }
+    try {
+      const frames = [
+        ...Array.from({ length: composition.frameCount }, (_, frame) => frame),
+        composition.frameCount - 1,
+        Math.floor(composition.frameCount / 2),
+        1,
+        composition.frameCount - 2,
+        0,
+      ];
+      for (const frame of frames) {
+        memory?.beginScratch();
+        try {
+          await preview.prepareFrame(frame);
+          preview.renderFrame(frame);
+          const actual = preview.readPixels(),
+            reference = expected.get(frame)!;
+          for (let byte = 0; byte < actual.length; byte++)
+            if (actual[byte] !== reference[byte])
+              throw Error(
+                `${options.backend}/sources/${options.software}/${frame}: byte ${byte}, ${actual[byte]} instead of ${reference[byte]}`,
+              );
+        } finally {
+          memory?.endScratch();
+        }
+      }
+      return {
+        worker: options.worker,
+        frameChecks: frames.length,
+        preparationPaintCalls: paints,
+        nativeTintPaints,
+        sourceStatistics: preview.sourceCacheStatistics!(),
+        surfaceStatistics: preview.surfaceCacheStatistics!(),
+        rootStatistics: preview.rootCacheStatistics!(),
+      };
+    } finally {
+      CanvasRenderingContext2D.prototype.fillRect = originalRect;
+      preview.dispose();
+    }
+  };
+  if (!memory) return renderCached();
+  try {
+    const result = await withManagedMemory(memory, renderCached);
+    const before = memory.statistics;
+    memory.dispose();
     return {
-      worker: options.worker,
-      frameChecks: frames.length,
-      preparationPaintCalls: paints,
-      nativeTintPaints,
-      sourceStatistics: preview.sourceCacheStatistics!(),
-      surfaceStatistics: preview.surfaceCacheStatistics!(),
-      rootStatistics: preview.rootCacheStatistics!(),
+      ...result,
+      managedMemory: {
+        coverage:
+          "Canvas renderer-owned storage; assets and GPU integration pending",
+        before,
+        after: memory.statistics,
+      },
     };
   } finally {
-    CanvasRenderingContext2D.prototype.fillRect = originalRect;
-    preview.dispose();
+    memory.dispose();
   }
 }
 
@@ -222,7 +258,7 @@ export async function checkSourcePreparationFailures() {
           { kind: "audit", input: { text: "test" }, width: 2, height: 2 },
           () => {
             paints++;
-            canvas = document.createElement("canvas");
+            canvas = createRenderCanvas();
             canvas.width = canvas.height = 2;
             canvas.getContext("2d")!.fillRect(0, 0, 2, 2);
             return canvas;
@@ -278,4 +314,19 @@ export async function checkSourcePreparationFailures() {
     });
   }
   return reports;
+}
+
+export async function checkManagedSourceFailures() {
+  const memory = new ManagedMemory({ pixels: 400000, metadata: 8192 });
+  try {
+    const reports = await withManagedMemory(
+      memory,
+      checkSourcePreparationFailures,
+    );
+    const before = memory.statistics;
+    memory.dispose();
+    return { reports, before, after: memory.statistics };
+  } finally {
+    memory.dispose();
+  }
 }

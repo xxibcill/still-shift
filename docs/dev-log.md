@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE15 in progress (2026-10-07):** `codex/composition-ce15` from completed CE13
+- **CE15 in progress (2026-10-08):** `codex/composition-ce15` from completed CE13
   `aedfc9e`; transparent renderer checkpoint `49e0543` is pushed. Seven explicit
   BT709 output profiles now pass 44 production exports, 14 independent preview
   encodes, native alpha-depth checks, 2 CLI deliveries, 18 dimension cases and 16
@@ -73,9 +73,12 @@ still hold before relying on them.
   Shared runtime tints, real variable axes/corrections and both crossfade inputs
   now pass 100 focused / 67 typography tests, 120 audit cases / 6,496 exact frames
   and 64 public exports / 768 decoded frames with actual once-global native counts.
-  Managed allocation primitives now pass nine units and 1,024 exact native channels,
-  with actual Canvas destruction and rejection before the native setter.
-  Production allocation integration, aggregate memory, the actual
+  Canvas ownership and bounded receive now pass 37 admission/cache/exposure,
+  90 effect/pool and 67 typography tests; 132 audit cases / 7,248 exact frames,
+  including twelve managed cases / 752 frames. Native detachment/pool/body failures
+  release actual storage. All 64 public exports / 768 bodies/frames match the prior
+  accepted checkpoint; glyph ratio 1.291824× remains under unchanged 1.5×.
+  Production GPU/asset/capture/Node/metadata integration, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -309,6 +312,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 Canvas storage and bounded receive checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `4ee356e`.
+- **Done:** explicit Canvas/source/root/pool/exposure owners and native backing
+  destruction; failed-attempt cleanup; pre-admitted 64 KiB BYOB receive blocks.
+- **Results:** build/lint/boundaries, 37 admission/cache/exposure, 90 effect/pool and
+  67 typography tests; 132 audit cases / 7,248 exact frames, including 12 managed
+  cases / 752 frames. Native detach/pool/body/failure checks pass. All 64 public
+  exports / 768 complete bodies and frames match the prior accepted checkpoint.
+  Original provider/typography gates pass; glyph 1.291824× ≤ unchanged 1.5×.
+- **Next:** production allocator remains disabled until GPU/assets/capture/Node and
+  metadata admission are complete. Area/worker, two-minute speed, final CE15 gate/PR
+  and all CE14 remain pending. Full gate not run.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [Canvas admission evidence](./composition-ce15-canvas-memory-results.json).
 
 ### 2026-10-07 — CE15 managed allocation foundation checkpoint
 

@@ -374,6 +374,7 @@ export class CompositionSurfaceCache<S extends Surface> {
           bytes: claim.bytes,
         },
       );
+      releaseRenderPixels(claim.bytes);
       const entry = { signature, surface, users: 0, bytes };
       this.entries.set(path, entry);
       this.owned.set(surface, entry);
@@ -408,6 +409,7 @@ export class CompositionSurfaceCache<S extends Surface> {
       const checksum = "sha256:" + (await sha256Hex(pixels.bytes.buffer));
       this.assertOpen();
       await this.options.exchange.publish(claim.token, pixels, checksum);
+      releaseRenderPixels(pixels.bytes);
       this.assertOpen();
     } finally {
       this.seeding = undefined;
@@ -471,3 +473,4 @@ export class CompositionSurfaceCache<S extends Surface> {
     this.retainedBytes = 0;
   }
 }
+import { releaseRenderPixels } from "../../managed-memory-context.ts";

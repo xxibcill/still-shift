@@ -156,3 +156,4 @@ export {
 } from "./composition/adapters/depth.ts";
 
 export * from "./soundtrack-edits.ts";
+export { readRenderResponsePixels } from "./managed-memory-context.ts";

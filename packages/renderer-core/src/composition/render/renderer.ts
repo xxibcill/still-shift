@@ -1,3 +1,9 @@
+import {
+  createRenderCanvas,
+  readRenderImageData,
+  releaseRenderCanvas,
+  renderMemory,
+} from "../../managed-memory-context.ts";
 import { CompositionRenderStatistics } from "./statistics.ts";
 import { compositionPrefixLayers } from "./prefix.ts";
 import { passageError } from "../../passage-diagnostics.ts";
@@ -313,8 +319,7 @@ export function createCompositionPreview(
   canvas.height = composition.height;
   const kind = options.backend ?? "canvas2d";
   compositionRendererVersion(kind);
-  const measurementCanvas =
-    kind === "webgl2" ? document.createElement("canvas") : canvas;
+  const measurementCanvas = kind === "webgl2" ? createRenderCanvas() : canvas;
   const softwareRaster =
     kind === "canvas2d" && requiresSoftwareFilters(composition);
   const ctx = measurementCanvas.getContext("2d", {
@@ -328,28 +333,41 @@ export function createCompositionPreview(
       throw new Error(`Cover asset is not an image: ${id}`);
     const image = resources.images.get(id);
     if (!image) throw new Error(`Cover image was not loaded: ${id}`);
-    const probe = options.createCanvas
-      ? options.createCanvas(asset.width, asset.height)
-      : document.createElement("canvas");
-    probe.width = asset.width;
-    probe.height = asset.height;
-    const context = probe.getContext("2d", { willReadFrequently: true });
-    if (!context) throw new Error("Canvas 2D is unavailable");
-    const paint = () => {
-      context.drawImage(image, 0, 0);
+    const makeProbe = (width: number, height: number) => {
+      const probe = options.createCanvas
+        ? options.createCanvas(width, height)
+        : createRenderCanvas();
+      probe.width = width;
+      probe.height = height;
+      if (!probe.getContext("2d", { willReadFrequently: true }))
+        throw Error("Canvas 2D is unavailable");
       return probe;
     };
-    const source = options.sourceCanvas
-      ? options.sourceCanvas(
-          {
-            kind: "coverage-asset",
-            input: [asset, context.getContextAttributes()],
-            width: asset.width,
-            height: asset.height,
-          },
-          paint,
-          (pixels) => {
-            context.putImageData(
+    const paint = () => {
+      const probe = makeProbe(asset.width, asset.height);
+      probe.getContext("2d")!.drawImage(image, 0, 0);
+      return probe;
+    };
+    let source: HTMLCanvasElement;
+    if (options.sourceCanvas) {
+      // Only context policy is needed before rendezvous; the original full paint
+      // or restore allocates its own target after a producer/consumer is admitted.
+      const header = makeProbe(1, 1);
+      const policy = header.getContext("2d")!.getContextAttributes();
+      releaseRenderCanvas(header);
+      source = options.sourceCanvas(
+        {
+          kind: "coverage-asset",
+          input: [asset, policy],
+          width: asset.width,
+          height: asset.height,
+        },
+        paint,
+        (pixels) => {
+          const probe = makeProbe(asset.width, asset.height);
+          probe
+            .getContext("2d")!
+            .putImageData(
               new ImageData(
                 new Uint8ClampedArray(
                   pixels.buffer,
@@ -362,13 +380,21 @@ export function createCompositionPreview(
               0,
               0,
             );
-            return probe;
-          },
-        )
-      : paint();
-    return source
-      .getContext("2d")!
-      .getImageData(0, 0, source.width, source.height);
+          return probe;
+        },
+      );
+    } else source = paint();
+    try {
+      return readRenderImageData(
+        source.getContext("2d")!,
+        0,
+        0,
+        source.width,
+        source.height,
+      );
+    } finally {
+      if (!options.sourceCanvas) releaseRenderCanvas(source);
+    }
   };
   validateStoryCompositionCoverage(composition, readAssetPixels);
   validateCinematicCompositionCoverage(composition, readAssetPixels);
@@ -637,8 +663,10 @@ export async function createCompositionPreviewAsync(
   if (!options.surfaceCache)
     return createCompositionPreview(canvas, composition, resources, options);
   const sources = new CompositionSourceCache(options.surfaceCache);
+  const memory = renderMemory();
   try {
     for (;;) {
+      if (memory) memory.beginScratch();
       try {
         const preview = createCompositionPreview(
           canvas,
@@ -659,6 +687,7 @@ export async function createCompositionPreviewAsync(
             },
           },
         );
+        memory?.commitScratch();
         return {
           ...preview,
           sourceCacheStatistics: () => sources.statistics,
@@ -668,6 +697,7 @@ export async function createCompositionPreviewAsync(
           },
         };
       } catch (error) {
+        if (memory?.hasScratch) memory.endScratch();
         if (!(await sources.prepare(error))) throw error;
       }
     }

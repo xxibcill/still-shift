@@ -1,3 +1,4 @@
+import { readRenderImageData } from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 type Params = Readonly<
@@ -120,7 +121,13 @@ export function transitionEffectKernel(
     },
     renderCanvas(context, input, params) {
       const output = context.createSurface(input.width, input.height);
-      const image = input.ctx.getImageData(0, 0, input.width, input.height);
+      const image = readRenderImageData(
+        input.ctx,
+        0,
+        0,
+        input.width,
+        input.height,
+      );
       for (let y = 0; y < input.height; y++)
         for (let x = 0; x < input.width; x++) {
           const index = (y * input.width + x) * 4;

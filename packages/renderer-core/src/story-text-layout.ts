@@ -1,3 +1,4 @@
+import { createRenderCanvas } from "./managed-memory-context.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { LoadedFont } from "./prepared-fonts.ts";
@@ -50,7 +51,7 @@ export function validateStoryTextLayout(
   fonts: Map<string, LoadedFont>,
   options: { validateSafeZones?: boolean } = {},
 ) {
-  const context = document.createElement("canvas").getContext("2d")!;
+  const context = createRenderCanvas().getContext("2d")!;
   for (const node of scene.nodes) {
     if (node.type !== "text" || (!node.textLayout && !node.container)) continue;
     const font = fonts.get(node.fontAsset ?? "");

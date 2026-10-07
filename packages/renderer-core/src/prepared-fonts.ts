@@ -1,3 +1,4 @@
+import { createRenderCanvas } from "./managed-memory-context.ts";
 import type { PreparedScene } from "../../scene-contract/src/prepared.ts";
 import { sha256Hex } from "./browser-checksum.ts";
 
@@ -137,7 +138,7 @@ export async function loadTextStyleFont(
   await face.load();
   document.fonts.add(face);
   if (features.tnum) {
-    const probe = document.createElement("canvas").getContext("2d")!;
+    const probe = createRenderCanvas().getContext("2d")!;
     probe.font = `${source.weight} 100px "${family}"`;
     const widths = Array.from(
       "0123456789",

@@ -1,3 +1,8 @@
+import {
+  createRenderCanvas,
+  retainRenderCanvas,
+  releaseRenderCanvas,
+} from "./managed-memory-context.ts";
 import type { CanvasPixelSource } from "./canvas-pixel-source.ts";
 import { resolveTextEvents } from "./typography-events.ts";
 import { easeMotion } from "./motion-easing.ts";
@@ -107,7 +112,7 @@ export function hasStableTypographyImage(
 const surface = (width: number, height: number, softwareRaster = false) => {
   if (width * height > 32_000_000 || width > 16384 || height > 16384)
     throw new Error("text-raster-budget: text layer exceeds 32 megapixels");
-  const canvas = document.createElement("canvas");
+  const canvas = createRenderCanvas();
   canvas.width = Math.max(1, Math.ceil(width));
   canvas.height = Math.max(1, Math.ceil(height));
   if (softwareRaster) canvas.getContext("2d", { willReadFrequently: true });
@@ -558,8 +563,12 @@ function coloredRaster(
           },
         )
       : paint();
-    if (raster.colors.size >= 16)
-      raster.colors.delete(raster.colors.keys().next().value!);
+    if (raster.colors.size >= 16) {
+      const oldest = raster.colors.keys().next().value!;
+      if (!raster.sourceCanvas) releaseRenderCanvas(raster.colors.get(oldest)!);
+      raster.colors.delete(oldest);
+    }
+    retainRenderCanvas(canvas);
     raster.colors.set(key, canvas);
   }
   return canvas;

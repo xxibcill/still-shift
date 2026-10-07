@@ -1,3 +1,8 @@
+import {
+  allocateRenderPixels,
+  releaseRenderPixels,
+  renderMemory,
+} from "../../managed-memory-context.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
@@ -71,19 +76,37 @@ int gradientRank(vec2 point){if(gradientMode==0.0)return 0;point*=2.0;vec2 point
 float low=dot(pointLow,lowCoefficients)+gradientTranslation.x;float middle=dot(pointHigh,lowCoefficients)+dot(pointLow,middleCoefficients)+gradientTranslation.y+floor(low/1024.0);float high=dot(pointHigh,middleCoefficients)+dot(pointLow,highCoefficients)+gradientTranslation.z+floor(middle/1024.0);float highest=dot(pointHigh,highCoefficients)+gradientTranslation.w+floor(high/1024.0);float remainderHigh=high-floor(high/1024.0)*1024.0,remainderMiddle=middle-floor(middle/1024.0)*1024.0,remainderLow=low-floor(low/1024.0)*1024.0;
 if(highest<0.0)return 0;if(gradientMode==2.0)return highest==0.0&&remainderHigh==0.0&&remainderMiddle==0.0&&remainderLow==0.0?32768:65535;float rank=highest*gradientDivisors.x+floor(remainderHigh*gradientDivisors.y)+floor(remainderMiddle*gradientDivisors.z)+floor(remainderLow*gradientDivisors.w);return int(min(65535.0,rank));}`;
 const tables = new Map<string, Uint8Array<ArrayBuffer>>();
+const scopedTables = new WeakMap<
+  object,
+  Map<string, Uint8Array<ArrayBuffer>>
+>();
 export function gradientColorTable(p: Params): Uint8Array<ArrayBuffer> {
+  const memory = renderMemory();
+  let cache = tables;
+  if (memory) {
+    cache = scopedTables.get(memory) ?? new Map();
+    scopedTables.set(memory, cache);
+  }
   const start = p.startColor as readonly number[],
     end = p.endColor as readonly number[],
     key = JSON.stringify([start, end]);
-  const found = tables.get(key);
+  const found = cache.get(key);
   if (found) return found;
-  const bytes = new Uint8Array(65536 * 4);
+  const bytes = allocateRenderPixels(
+    65536 * 4,
+    () => new Uint8Array(65536 * 4),
+    true,
+  );
   for (let i = 0; i < 65536; i++)
     for (let c = 0; c < 4; c++)
       bytes[i * 4 + c] = Math.round(
         (start[c]! + ((end[c]! - start[c]!) * i) / 65535) * 255,
       );
-  if (tables.size >= 8) tables.delete(tables.keys().next().value!);
-  tables.set(key, bytes);
+  if (cache.size >= 8) {
+    const oldest = cache.keys().next().value!;
+    releaseRenderPixels(cache.get(oldest));
+    cache.delete(oldest);
+  }
+  cache.set(key, bytes);
   return bytes;
 }
