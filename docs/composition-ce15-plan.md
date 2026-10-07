@@ -504,6 +504,27 @@ font structures, pixel checksum metadata, ledger control, Node protocol/results
 and production/aggregate admission remain pending. No speed or full-gate acceptance
 is claimed. [Evidence](./composition-ce15-source-metadata-results.json).
 
+## Accepted retained root metadata checkpoint — 2026-10-08
+
+Root role/path/full-state keys use admitted original canonical serialization and
+native hashes. Retained counter rows own role/path strings; retained entries own
+signature/pixel-envelope records. Duplicate lookup identities release immediately.
+Original operation tuples, Map growth and counter/entry/snapshot copies reserve
+before their factories. Disposal restores backend hooks and releases retained
+owners. Snapshots account for independent row/operation/string capacity.
+
+Build, lint, boundaries and 110 focused tests pass. All 144 audit cases / 8,000
+exact comparisons retain original native counts and protected failures. All 96
+managed source/root page RPC returns prove actual root snapshot ownership before
+acknowledgement and dropped page references afterward; Node copies retain complete
+original counters. Original WebGL, 69 affected typography tests, 12 provider cases /
+60 frames and eight typography fixtures pass. Glyph 1.393665× meets unchanged 1.5
+maximum. All 64 exports preserve 768 complete bodies/frames against `e121eef`.
+
+Surface/provider keys, graph/font/checksum/ledger/Node metadata, actual production/
+aggregate admission, speed and the full gate remain pending. No milestone acceptance
+is claimed. [Evidence](./composition-ce15-root-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

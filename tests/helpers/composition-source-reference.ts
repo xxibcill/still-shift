@@ -16,13 +16,27 @@ import { compositionSourceFixture } from "./composition-source-fixture.ts";
 import { compositionSurfaceExchange } from "../../packages/execution-runtime/src/composition-surface-client.ts";
 import { sha256Hex } from "../../packages/renderer-core/src/browser-checksum.ts";
 let pendingSourceMemory: ManagedMemory | undefined;
+let pendingRootSnapshot: { roots: unknown[] } | undefined;
 export function acknowledgeManagedSourceMemory() {
   const memory = pendingSourceMemory;
   if (!memory) throw Error("No managed source RPC awaits acknowledgement");
   pendingSourceMemory = undefined;
   const before = memory.statistics;
+  const snapshot = pendingRootSnapshot;
+  if (!snapshot) throw Error("No owned root statistics await acknowledgement");
+  const ownedBefore = memory.owns(snapshot),
+    rootsBefore = snapshot.roots.length;
   memory.dispose();
-  return { before, after: memory.statistics };
+  pendingRootSnapshot = undefined;
+  return {
+    before,
+    after: memory.statistics,
+    rootSnapshot: {
+      ownedBefore,
+      rootsBefore,
+      referencesDropped: snapshot.roots.length === 0,
+    },
+  };
 }
 
 export async function checkSharedCompositionSources(options: {
@@ -175,6 +189,7 @@ export async function checkSharedCompositionSources(options: {
     const result = await withManagedMemory(memory, renderCached);
     const before = memory.statistics;
     pendingSourceMemory = memory;
+    pendingRootSnapshot = result.rootStatistics;
     completed = true;
     return {
       ...result,
@@ -182,6 +197,9 @@ export async function checkSharedCompositionSources(options: {
         coverage:
           "Canvas/GPU renderer and verified asset/font admission; production integration pending",
         before,
+        rootSnapshot: undefined as
+          | ReturnType<typeof acknowledgeManagedSourceMemory>["rootSnapshot"]
+          | undefined,
         after: undefined as ManagedMemory["statistics"] | undefined,
       },
     };

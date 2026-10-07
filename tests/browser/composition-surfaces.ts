@@ -369,7 +369,10 @@ try {
           assert.deepEqual(failures, []);
           if (managed) {
             const copiesBefore = outcomes.map((outcome) =>
-              JSON.stringify(outcome.sourceStatistics),
+              JSON.stringify({
+                source: outcome.sourceStatistics,
+                root: outcome.rootStatistics,
+              }),
             );
             const acknowledgements = await Promise.all(
               workers.map(({ page }) =>
@@ -385,8 +388,16 @@ try {
               const outcome = outcomes[worker]!;
               assert.ok("managedMemory" in outcome && outcome.managedMemory);
               outcome.managedMemory.after = acknowledgements[worker]!.after;
+              outcome.managedMemory.rootSnapshot =
+                acknowledgements[worker]!.rootSnapshot;
+              assert.ok(outcome.managedMemory.rootSnapshot.ownedBefore);
+              assert.ok(outcome.managedMemory.rootSnapshot.rootsBefore > 0);
+              assert.ok(outcome.managedMemory.rootSnapshot.referencesDropped);
               assert.equal(
-                JSON.stringify(outcome.sourceStatistics),
+                JSON.stringify({
+                  source: outcome.sourceStatistics,
+                  root: outcome.rootStatistics,
+                }),
                 copiesBefore[worker],
               );
             }
