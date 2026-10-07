@@ -4133,5 +4133,15 @@
     "ffmpeg": "8.0.1",
     "isolation": "Offline frozen worktree-local pnpm dependencies, cloned local virtualenv with local worker, isolated UV and Vite optimizer/config caches."
   },
-  "initialProbeFailure": "The first primitive-blur browser reproduction supplied a placeholder checksum and was correctly rejected by resource loading. Repeated with the actual PNG checksum; both backends confirm the defect. This was probe setup, not an application-test failure."
+  "initialProbeFailure": "The first primitive-blur browser reproduction supplied a placeholder checksum and was correctly rejected by resource loading. Repeated with the actual PNG checksum; both backends confirm the defect. This was probe setup, not an application-test failure.",
+  "delivery": {
+    "pushed": true,
+    "verifiedRemoteReviewCheckpoint": "2f5e1a4f62084a628cd928821e52e7a482ecaa73",
+    "base": "main",
+    "baseSha": "50cbf6332ece7ffafc156645f6a7e4e532d7f986",
+    "mergeable": true,
+    "merged": false,
+    "followupDocumentation": "The commit containing this delivery record changes documentation only."
+  },
+  "githubActionsVerifiedDisabled": true
 }

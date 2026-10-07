@@ -54,8 +54,8 @@ still hold before relying on them.
   36,061 frames match without regeneration. Independent Standards and Spec reviews
   found two open P2 defects: affine primitive-blur scaling and integer-only
   persisted shutter coverage. Both are independently reproduced with real pixels
-  on Canvas/WebGL. Push the verified merge/evidence to PR #45; owner review/merge
-  remain. No full repository gate or CE6-P acceptance is claimed. Owner checkout
+  on Canvas/WebGL. Verified merge/evidence are pushed to PR #45; GitHub confirms
+  the PR is mergeable. Owner review/merge remain. No full repository gate or CE6-P acceptance is claimed. Owner checkout
   stays untouched and Actions disabled.
   [Merge evidence](./pr-45-conflict-resolution-results.json),
   [review findings](./pr-45-review-results.json).
@@ -81,7 +81,7 @@ still hold before relying on them.
   The original review found one Standards usability P2 (receiving-toggle keyboard
   focus) and one Spec P2 (implicit XYZ light Z reference dependencies).
   Current repair progress is tracked above.
-  PR #44 remains open for owner review/merge. No new full repository
+  PR #44 is merged into `main` at `50cbf633`. No new full repository
   gate or performance acceptance is claimed. CE6-P stays deferred and Actions disabled.
   [Resolution](./pr-44-conflict-resolution-results.json),
   [review](./pr-44-review-results.json).
@@ -874,7 +874,8 @@ _Last updated 2026-10-08 by Codex for PR #45 conflict resolution._
   items / 36,061 frames and main baseline bytes match without regeneration.
 - **Review / next:** two independently reproduced P2 findings remain open:
   affine primitive-blur scaling and integer-only persisted shutter coverage.
-  Push verified merge/evidence; owner review/merge remain. No full gate or CE6-P
+  Verified merge/evidence are pushed; GitHub confirms mergeable. Owner review/merge
+  remain. No full gate or CE6-P
   acceptance is claimed; owner checkout is untouched and Actions remain disabled.
 - **Records:** [Merge evidence](./pr-45-conflict-resolution-results.json),
   [independent review](./pr-45-review-results.json).

@@ -73,8 +73,8 @@
         "body": "The persisted coverage gate validates integer frames only, although native exposure renders fractional camera states. Enable a 360-degree, phase-0, two-sample shutter on the threshold-push composition, enable motionBlur on its layers, and author camera viewOffset.x as value + 5000 * sin(frame * 6.283185307179586). Integer coverage passes, but frame 1 samples 0.75 and 1.25, where the background is entirely outside the 1920-pixel viewport. Both real-asset Canvas/WebGL previews load without diagnostics and render only the solid background color. Validate coverage using actual exposure trees as well as required integer states.",
         "spec": {
           "file": "docs/composition-engine-plan.md",
-          "start": 1416,
-          "end": 1417,
+          "start": 1420,
+          "end": 1421,
           "quote": "Keep coverage, source-resolution and framing validations, now evaluated on the composition camera."
         },
         "evidence": {
