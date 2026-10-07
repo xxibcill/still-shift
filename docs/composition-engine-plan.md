@@ -5101,8 +5101,10 @@ exports / 256 decoded frames, 11 protected failures, 63 focused tests and origin
 typography checks. Original-target roots/coverage now pass 2,912 exact audit
 comparisons, exhaustive byte/float storage, 14 protected root cases and the full
 207-export production command / 1,656 decoded frames with 24 live failures.
-Closed prefixes/direct/tints, broader axes/corrections, aggregate limits,
-per-layer statistics, two-minute speed proof
+Closed native prefixes now pass 104 audit cases / 5,408 exact comparisons and
+32 production exports / 256 decoded frames, preserving whole native batches and
+actual once-global eligible native painting. Runtime tints, broader axes/corrections,
+aggregate limits, per-layer statistics, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),
 [format evidence](./composition-ce15-format-results.json).

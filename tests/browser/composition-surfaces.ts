@@ -13,6 +13,7 @@ import {
 } from "@still-shift/execution-runtime";
 import type * as Checks from "../helpers/composition-surface-reference.ts";
 
+import type * as PrefixChecks from "../helpers/composition-prefix-reference.ts";
 import type * as RootChecks from "../helpers/composition-root-reference.ts";
 import type * as SourceChecks from "../helpers/composition-source-reference.ts";
 
@@ -21,6 +22,9 @@ type SurfaceOutcome = Awaited<
 >;
 type SourceOutcome = Awaited<
   ReturnType<typeof SourceChecks.checkSharedCompositionSources>
+>;
+type PrefixOutcome = Awaited<
+  ReturnType<typeof PrefixChecks.checkSharedCompositionPrefixes>
 >;
 type RootOutcome = Awaited<
   ReturnType<typeof RootChecks.checkSharedCompositionRoots>
@@ -423,6 +427,129 @@ try {
             await store.dispose();
           }
         }
+  const prefixes = [];
+  for (const backend of ["canvas2d", "webgl2"] as const)
+    for (const alpha of [false, true])
+      for (const software of [false, true])
+        for (const variant of [
+          "closed",
+          "mixed-batch",
+          "upstream",
+          "late",
+          "changing-provider",
+          "linear",
+        ] as const) {
+          const id = `prefixes-${backend}-${alpha}-${software}-${variant}`;
+          const credentials = workers.map(() => randomUUID());
+          const store = await CompositionSurfaceStore.create(scratch, {
+            workers: 4,
+            byteLimit: 64 * 1024 * 1024,
+          });
+          brokers.set(
+            id,
+            new CompositionSurfaceBroker(store, credentials, (error) => {
+              failures.push(error);
+              void store.dispose(
+                error instanceof Error ? error : Error(String(error)),
+              );
+            }),
+          );
+          try {
+            const scopeKey =
+              "sha256:" +
+              createHash("sha256")
+                .update(JSON.stringify([id, environments[0]]))
+                .digest("hex");
+            const outcomes: PrefixOutcome[] = await Promise.all(
+              workers.map(({ page }, worker) =>
+                page.evaluate(
+                  async (options) => {
+                    const url =
+                      "/tests/helpers/composition-prefix-reference.ts";
+                    return (
+                      (await import(url)) as typeof PrefixChecks
+                    ).checkSharedCompositionPrefixes(options);
+                  },
+                  {
+                    backend,
+                    alpha,
+                    software,
+                    variant,
+                    worker,
+                    credential: credentials[worker]!,
+                    scopeKey,
+                    baseUrl: `/_surface/${id}`,
+                  },
+                ),
+              ),
+            );
+            assert.deepEqual(failures, []);
+            const phases = outcomes.flatMap(
+              (outcome) => outcome.statistics.roots,
+            );
+            assert.equal(
+              store.statistics.publishedSurfaces,
+              phases.reduce((sum, phase) => sum + phase.paints, 0),
+            );
+            assert.equal(
+              store.statistics.hits,
+              phases.reduce((sum, phase) => sum + phase.restores, 0),
+            );
+            const nativePaints = outcomes.reduce(
+              (sum, outcome) => sum + outcome.nativeProviderPaints,
+              0,
+            );
+            const reusable =
+              variant === "closed" ||
+              variant === "late" ||
+              variant === "linear" ||
+              (variant === "mixed-batch" && backend === "canvas2d");
+            if (reusable) {
+              assert.equal(
+                nativePaints,
+                1,
+                "The actual static native provider paints once globally",
+              );
+              assert.ok(
+                phases.some(
+                  (phase) => phase.phase === "prefix" && phase.paints === 1,
+                ),
+              );
+              assert.ok(
+                phases
+                  .filter((phase) => phase.phase === "prefix")
+                  .every((phase) => phase.fallbacks === 0),
+              );
+            } else {
+              assert.ok(
+                nativePaints > 1,
+                "Changing closures and whole mixed batches retain original painting",
+              );
+              if (variant === "mixed-batch")
+                assert.equal(
+                  phases.filter((phase) => phase.phase === "prefix").length,
+                  0,
+                );
+              if (variant === "changing-provider")
+                assert.ok(
+                  phases.some(
+                    (phase) => phase.phase === "prefix" && phase.fallbacks > 0,
+                  ),
+                );
+            }
+            prefixes.push({
+              backend,
+              alpha,
+              software,
+              variant,
+              outcomes,
+              store: store.statistics,
+            });
+          } finally {
+            brokers.delete(id);
+            await store.dispose();
+          }
+        }
   const floating = await workers[0]!.page.evaluate(async () => {
     const url = "/tests/helpers/composition-surface-reference.ts";
     return ((await import(url)) as typeof Checks).checkFloatSurfaceTransfer();
@@ -461,7 +588,8 @@ try {
     surfaceCases: reports.length,
     sourceCases: sources.length,
     rootCases: roots.length,
-    cases: reports.length + sources.length + roots.length,
+    prefixCases: prefixes.length,
+    cases: reports.length + sources.length + roots.length + prefixes.length,
     sourceFrameChecks: sources.reduce(
       (sum, report) =>
         sum +
@@ -471,7 +599,7 @@ try {
         ),
       0,
     ),
-    frameChecks: [...reports, ...sources, ...roots].reduce(
+    frameChecks: [...reports, ...sources, ...roots, ...prefixes].reduce(
       (sum, report) =>
         sum +
         report.outcomes.reduce(
@@ -482,6 +610,7 @@ try {
     ),
     sources,
     roots,
+    prefixes,
     floating,
     nativeStorage,
     protectedPreparation,

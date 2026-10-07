@@ -190,6 +190,31 @@ complete allocation admission, per-layer statistics, actual two-minute speed
 acceptance and the final full gate remain mandatory.
 [Detailed evidence](./composition-ce15-root-results.json).
 
+## Accepted closed-prefix checkpoint — 2026-10-07
+
+Static direct content beneath moving image pixels can now reuse a complete prefix
+in its original target. The shared executor partition keeps every maximal native
+vector/solid batch intact. Restored prefix bytes overwrite the original target,
+then the original suffix continues at that boundary. Full root preparation reuses
+an already prepared prefix. Authored hints select candidates; complete evaluated
+prepared-content and backdrop keys authorize each reuse. Fixed authored provider
+params cannot hide changing actual visual keys.
+
+The expanded audit passes 104 cases / 5,408 exact comparisons, including 48 prefix
+cases / 2,496 frames across both backends, both alpha/raster policies, late visibility,
+linear-sRGB, changing providers/backdrops and whole mixed batches. Actual static
+native provider painting is once global at an existing closed boundary. Mixed
+WebGL vector batches retain their original native grouping. All 53 focused batch,
+graph, exposure, readback and key tests pass. Thirty-two real direct native-glyph
+and rich-provider exports under moving images preserve all encoded PNG bodies and
+256 decoded frames across uncached/one/four/repeated workers. The permanent
+parallel suite includes these cases; its expanded whole command remains pending
+until final acceptance.
+
+Runtime tint and broader preparation coverage, complete allocation/metadata
+admission, per-layer statistics, actual two-minute speed acceptance and the final
+full gate remain mandatory. [Detailed evidence](./composition-ce15-prefix-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

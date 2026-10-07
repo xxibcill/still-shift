@@ -1,3 +1,4 @@
+import { compositionPrefixLayers } from "./prefix.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
@@ -465,6 +466,7 @@ export function createCompositionPreview(
             content.type === "provider"
               ? drawProvider.contentKey(content)
               : text.contentKey(content),
+          compositionPrefixLayers(composition),
         );
       }
       if (!resources.media && !surfaceCache)

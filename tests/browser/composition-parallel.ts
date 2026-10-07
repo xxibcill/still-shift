@@ -21,6 +21,7 @@ import {
 } from "../helpers/composition-parallel-proof.ts";
 import { verifyParallelLifecycle } from "../helpers/composition-parallel-lifecycle.ts";
 import { verifyParallelNativeMedia } from "../helpers/composition-parallel-native.ts";
+import { verifyParallelPrefixes } from "../helpers/composition-parallel-prefixes.ts";
 import { verifyParallelRoots } from "../helpers/composition-parallel-roots.ts";
 import { verifyParallelSources } from "../helpers/composition-parallel-sources.ts";
 
@@ -305,6 +306,7 @@ reports.push({ cli: true, metrics: cli.metrics });
 const native = await verifyParallelNativeMedia(directory, composition);
 const sources = await verifyParallelSources(directory);
 const roots = await verifyParallelRoots(directory);
+const prefixes = await verifyParallelPrefixes(directory);
 const failures = await verifyParallelLifecycle(directory, path);
 const result = {
   status: "passed",
@@ -313,6 +315,7 @@ const result = {
   native,
   sources,
   roots,
+  prefixes,
   failures,
 };
 await writeFile(
@@ -327,6 +330,7 @@ console.log(
     nativeCases: native.length,
     sourceCases: sources.length,
     rootCases: roots.length,
+    prefixCases: prefixes.length,
     failures: failures.length,
   }),
 );

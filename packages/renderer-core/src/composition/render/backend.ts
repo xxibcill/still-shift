@@ -1,3 +1,4 @@
+import { renderBatches } from "./batches.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
 import type { FlatLighting } from "./flat-lighting.ts";
@@ -71,6 +72,8 @@ export interface RenderBackend<S extends Surface = Surface> {
     draw: () => void,
     role: string,
   ): void;
+  /** Restore a complete root prefix and return an original batch boundary. */
+  rootPrefix?(node: SurfaceNode, target: S, role: string): number;
   rootPixels?: {
     identity(target: S): { policy: string; encoding: SurfaceEncoding };
     capture(target: S): SurfacePixels;
@@ -205,9 +208,12 @@ export function executeGraph<S extends Surface>(
   };
   const paintSurface = (node: SurfaceNode, into?: S): S => {
     const dst = into ?? backend.createSurface(node.width, node.height);
-    backend.clear(dst, node.background);
+    const start = into
+      ? (backend.rootPrefix?.(node, dst, options.rootRole ?? "frame") ?? 0)
+      : 0;
+    if (start === 0) backend.clear(dst, node.background);
     try {
-      runOps(node.ops, dst);
+      runOps(node.ops, dst, start);
       return dst;
     } catch (error) {
       if (!into) backend.releaseSurface(dst);
@@ -526,50 +532,16 @@ export function executeGraph<S extends Surface>(
       }
     }
   };
-  const batchable = (op: RenderOp): op is SolidDraw =>
-    op.kind === "draw" &&
-    op.content.type === "solid" &&
-    op.blend === "normal" &&
-    op.clips.length === 0 &&
-    !op.paintBlur;
-  const vector = (op: RenderOp): op is VectorDraw =>
-    op.kind === "draw" &&
-    op.content.type !== "image" &&
-    op.content.type !== "depth-image" &&
-    op.content.type !== "surface" &&
-    op.blend === "normal" &&
-    !op.clips.some((clip) => clip.projection);
-  const runOps = (ops: RenderOp[], dst: S) => {
-    for (let index = 0; index < ops.length; index++) {
-      const op = ops[index]!;
-      if (
-        graph.root.colorSpace !== "linear-srgb" &&
-        backend.drawVectors &&
-        vector(op)
-      ) {
-        const batch = [op];
-        while (index + 1 < ops.length) {
-          const next = ops[index + 1]!;
-          if (!vector(next)) break;
-          batch.push(next);
-          index++;
-        }
-        backend.drawVectors(dst, batch);
-      } else if (
-        graph.root.colorSpace !== "linear-srgb" &&
-        backend.fillRects &&
-        batchable(op)
-      ) {
-        const batch = [op];
-        while (index + 1 < ops.length) {
-          const next = ops[index + 1]!;
-          if (!batchable(next)) break;
-          batch.push(next);
-          index++;
-        }
-        if (batch.length > 1) backend.fillRects(dst, batch);
-        else run(op, dst);
-      } else run(op, dst);
+  const runOps = (ops: RenderOp[], dst: S, start = 0) => {
+    for (const batch of renderBatches(
+      backend,
+      ops,
+      graph.root.colorSpace,
+      start,
+    )) {
+      if (batch.kind === "vectors") backend.drawVectors!(dst, batch.ops);
+      else if (batch.kind === "solids") backend.fillRects!(dst, batch.ops);
+      else run(batch.ops[0], dst);
     }
   };
   if (graph.spatial)

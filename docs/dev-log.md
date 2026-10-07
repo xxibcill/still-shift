@@ -62,8 +62,10 @@ still hold before relying on them.
   focused tests plus original typography checks. Original-target roots and coverage
   now pass 2,912 exact audit frames, exhaustive byte/float storage, 14 root failures,
   207 production exports / 1,656 decoded frames and 24 live failures. Held outline
-  clocks are repaired under strict count checks. Closed prefixes/direct/tints,
-  broader axes/corrections, aggregate memory, per-layer statistics, the actual
+  clocks are repaired under strict count checks. Closed native prefixes now pass
+  104 audit cases / 5,408 exact frames and 32 production exports / 256 decoded
+  frames, with whole original batches and actual once-global native painting.
+  Runtime tints, broader axes/corrections, aggregate memory, per-layer statistics, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -297,6 +299,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 closed native prefix checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `0bc813d`.
+- **Done:** exact root prefixes at whole original vector/solid batch boundaries;
+  full root preparation reuses prepared prefixes. Actual evaluated closure keys
+  guard providers, parents, changing backdrops and late visibility phases.
+- **Results:** 104 browser cases / 5,408 exact frames, including 48 prefix cases;
+  actual native painting is once global at eligible boundaries. Build/lint/boundaries,
+  53 focused tests and 32 production exports / 256 decoded frames pass.
+- **Next:** remaining tint/axis/correction audit, aggregate pixel/metadata limits,
+  per-layer statistics, real two-minute speed proof, whole parallel/final CE15 gate/PR,
+  then all CE14. Mixed native batches keep their existing grouping.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [prefix evidence](./composition-ce15-prefix-results.json).
 
 ### 2026-10-07 — CE15 original-target root checkpoint
 
