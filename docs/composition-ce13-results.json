@@ -5648,12 +5648,103 @@
       ],
       "proofNote": "Focused relevant checks and both mandatory native-passage browser suites pass on the final source fingerprint. Broad all-unit/all-runtime and complete milestone gate were not substituted or repeated for this slice; final complete gate remains pending.",
       "fullGate": false
+    },
+    {
+      "slice": "combined numbered video, animated still, shape and native audio preview acceptance",
+      "sourceFiles": ["tests/browser/composition-audio-authoring.ts"],
+      "sourceFingerprint": "sha256:126f8fdeb302161b419ec52df81698331079b1879a2055db0cb96b4aa430d1d9",
+      "checks": {
+        "build": "pass",
+        "focusedEslint": "pass",
+        "focusedPrettier": "pass",
+        "completeMandatoryCompositionMediaBrowser": "pass"
+      },
+      "actualProof": {
+        "sync": {
+          "samples": 240,
+          "maxFrameDifference": 1,
+          "maxSourceFrameDifference": 0
+        },
+        "webglSync": {
+          "samples": 240,
+          "maxFrameDifference": 1,
+          "maxSourceFrameDifference": 0
+        },
+        "sourcePixels": [
+          {
+            "backend": "webgl2",
+            "exactReverseSeeks": 48
+          },
+          {
+            "backend": "canvas2d",
+            "exactReverseSeeks": 48
+          }
+        ],
+        "combinedMedia": "24 frame-numbered FFV1 frames at12fps; reverse remap; animated still and lower third; matching stereo PCM",
+        "savedRevision": 3,
+        "sampleCount": 96000,
+        "rate": 48000,
+        "channels": 2,
+        "master": "all PCM sample bits exact",
+        "offlineSeek": "frame 6 through distinct last samples exact",
+        "playback": "audio clock; full final interval; seek/pause exact",
+        "gainPanEdit": "waveform changes; undo/redo exact; saved master bits exact",
+        "draftExport": "byte-identical",
+        "fixtureWaveforms": "source/processed/mix",
+        "registeredMaster": "WAV with exact captured checksum",
+        "originalAudioNotServed": true,
+        "sourceWatch": "changed source stops sound and preserves valid pixels; restored source reloads"
+      },
+      "previewDecoderDecision": {
+        "adopted": "canonical FFmpeg-prepared, content-verified PNG frames shared with export",
+        "webCodecs": "not adopted for CE13 preview",
+        "reason": "the canonical path meets the source ordinal/color/alpha/cache parity gate on both backends; a separate WebCodecs decoder has no verified equivalent proof and is outside this implementation",
+        "supportClaim": "no claim about browser availability or universal WebCodecs support"
+      },
+      "failedAttempts": [
+        {
+          "path": "/private/tmp/ce13-combined-preview-browser-draft.log",
+          "sha256": "sha256:c26d4f98deb89ac709285163fd28ff5b966ecdc2288a25b71377c49b75e37743",
+          "reason": "WebGL surface cannot be queried as 2D; use a neutral readback canvas"
+        },
+        {
+          "path": "/private/tmp/ce13-combined-preview-browser-draft2.log",
+          "sha256": "sha256:b944ecbef6ee2f6292833e963124c78efa38f7a6c37697581d6399953d9538cd",
+          "reason": "full-frame background was first/front; fixture now places it last/back"
+        },
+        {
+          "path": "/private/tmp/ce13-combined-preview-browser-draft3.log",
+          "sha256": "sha256:53fd7b7cdc72d61843031f7ad91d9588d1b8c07a4668bd4d405ebb496030357b",
+          "reason": "remap fixture inherited eased keys; explicitly linear keys match the independent linear oracle"
+        },
+        {
+          "path": "/private/tmp/ce13-combined-preview-browser-draft4.log",
+          "sha256": "sha256:77ebbb239134481c5c4fb8e497ca52b634fb9595af30ecbf273c7b18a784c3ce",
+          "reason": "fixture compared before file write while moving media played until invalidation; now compare the actual audio-stop boundary"
+        },
+        {
+          "path": "/private/tmp/ce13-combined-preview-build-draft5.log",
+          "sha256": "sha256:9b9b0e1490713b1e9312a1c51469075fd4f4525fb467f62027c3148efb729a55",
+          "reason": "exactOptionalPropertyTypes rejected an undefined optional picture; assign only with an existing canvas"
+        }
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-combined-preview-build-draft6.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-combined-preview-browser-draft6.log",
+          "sha256": "sha256:b2ac11788d6229ee1538409fb1b980c5449d14a7dd780a56a8a44260f17fa562"
+        }
+      ],
+      "fullGate": false,
+      "proofNote": "All mandatory native-media browser cases passed. Production exports already verify zero source-frame offset and exact master/AAC references. Browser audio-clock sampling remains within the existing one-frame presentation allowance; every presented movie frame has zero remap-source offset. No renderer, tolerance or frozen baseline changed."
     }
   ],
   "fullGates": [],
   "pending": [
-    "remaining combined-media preview acceptance and recorded preview-decoder decision",
-    "complete final local pnpm check",
+    "complete final immutable local pnpm check",
     "publish and attach CE13 PR; continue CE15 then CE14"
   ],
   "policy": {

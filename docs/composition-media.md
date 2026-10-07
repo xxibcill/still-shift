@@ -312,3 +312,13 @@ ffprobe build descriptions plus preparation/assembly helpers invalidate stale re
 All originals/captures are rechecked before publication, and failure/cancellation leaves
 no passage product or private complete/range/assembly artifact. The existing no-native
 encoder arguments, renderer/evaluator/mixer laws and frozen visuals remain unchanged.
+
+Preview decoder policy: CE13 uses the same content-verified canonical FFmpeg PNG
+frames as export, with bounded asynchronous browser bitmap readiness. WebCodecs is
+not adopted for preview in this milestone: a separate browser decoder has no verified
+source-ordinal, color, alpha and seek-history parity proof in this implementation.
+This records the pipeline decision and makes no claim about universal browser support.
+The combined authoring proof checks actual numbered source frames against an independent
+linear reverse-remap calculation on both backends; production exports retain exact
+source mapping and PCM/AAC reference checks. Browser audio-clock scheduling uses its
+existing one-frame presentation allowance while displayed source mapping is exact.

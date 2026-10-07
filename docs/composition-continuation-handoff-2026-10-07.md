@@ -91,8 +91,12 @@ static checks, both complete native-passage browser suites and actual default ex
 with optional Python unavailable. Whole/range/repeat PCM, independent AAC/saved CE16
 filter/ducking/limiter references, last samples, active cancellation and outside-range
 provenance pass. Native cache2 pins full decoder builds without physical filenames;
-assembly reserves 327,684 PCM bytes. Combined video/audio preview proof and decoder
-decision remain, followed by the immutable final gate. No final CE13 gate has run.
+assembly reserves 327,684 PCM bytes. Complete mandatory native-media acceptance now
+also passes with actual numbered video, reverse remap, moving still, lower third and
+matching native stereo audio. Both backends pass 96 exact reverse seeks and 480
+playback observations with zero source-frame offset. Preview/export share verified
+FFmpeg frames; WebCodecs is unadopted without an equivalent parity proof. The complete
+immutable local gate and PR remain pending. No final CE13 gate has run.
 CE15 and CE14 follow in the approved order.
 Private notes contain exact source
 seams and primary references: `/private/tmp/ce13-authority-map-2026-10-07.md`,

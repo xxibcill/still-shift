@@ -14,11 +14,17 @@ import type { Browser } from "playwright";
 import type { Composition } from "@still-shift/scene-contract";
 import {
   loadComposition,
+  probeCompositionVideo,
   renderComposition,
 } from "@still-shift/animation-engine";
+import { runProcess } from "@still-shift/execution-runtime/subprocess";
 import { createProgramPreview } from "../../tools/still-shift-cli/src/composition/preview.ts";
 import { compositionApi } from "../../apps/lab/composition-api.ts";
 import { mediaFloat32Wave } from "../helpers/composition-media-audio.ts";
+import {
+  mediaPngChunk,
+  mediaRgbaPng,
+} from "../helpers/composition-media-png.ts";
 import type * as Playback from "../../packages/renderer-core/src/rendered-audio-playback.ts";
 
 type AudioProofWindow = Window & {
@@ -29,6 +35,7 @@ type AudioProofWindow = Window & {
     offset: number;
     duration: number;
     stopped?: number;
+    pictureWhenStopped?: string;
   }[];
 };
 const checksum = (bytes: Uint8Array) =>
@@ -53,6 +60,74 @@ export async function verifyNativeAudioAuthoring(
   );
   const audioPath = join(directory, "authoring-audio.wav");
   await writeFile(audioPath, source.wav);
+  const digits = [
+    "111101101101111",
+    "010110010010111",
+    "111001111100111",
+    "111001111001111",
+    "101101111001001",
+    "111100111001111",
+    "111100111101111",
+    "111001001001001",
+    "111101111101111",
+    "111101111001111",
+  ];
+  for (let frame = 0; frame < 24; frame++) {
+    const rgba = Buffer.alloc(16 * 16 * 4);
+    for (let pixel = 0; pixel < 16 * 16; pixel++)
+      rgba.set([24 + frame * 8, 40, 80, 255], pixel * 4);
+    // Burn two actual ordinal digits into the source, alongside a pixel-readable frame code.
+    for (const [index, digit] of String(frame)
+      .padStart(2, "0")
+      .split("")
+      .entries())
+      for (let at = 0; at < 15; at++)
+        if (digits[Number(digit)]![at] === "1")
+          rgba.set(
+            [255, 255, 255, 255],
+            ((3 + Math.floor(at / 3)) * 16 + 3 + index * 5 + (at % 3)) * 4,
+          );
+    await writeFile(
+      join(directory, `audio-picture_${String(frame).padStart(2, "0")}.png`),
+      mediaRgbaPng(16, 16, rgba, [mediaPngChunk("sRGB", Buffer.from([0]))]),
+    );
+  }
+  const videoPath = join(directory, "audio-picture.mkv");
+  await runProcess("ffmpeg", [
+    "-v",
+    "error",
+    "-n",
+    "-framerate",
+    "12",
+    "-i",
+    join(directory, "audio-picture_%02d.png"),
+    "-frames:v",
+    "24",
+    "-vf",
+    "setparams=color_primaries=bt709:color_trc=iec61966-2-1:colorspace=gbr:range=full",
+    "-c:v",
+    "ffv1",
+    "-pix_fmt",
+    "gbrap16le",
+    "-color_primaries",
+    "bt709",
+    "-color_trc",
+    "iec61966-2-1",
+    "-colorspace",
+    "0",
+    "-color_range",
+    "pc",
+    videoPath,
+  ]);
+  const video = await probeCompositionVideo(videoPath);
+  const stillPath = join(directory, "audio-still.png"),
+    still = mediaRgbaPng(
+      8,
+      8,
+      Buffer.from(Array.from({ length: 64 }, () => [0, 192, 128, 255]).flat()),
+      [mediaPngChunk("sRGB", Buffer.from([0]))],
+    );
+  await writeFile(stillPath, still);
   const composition: Composition = {
     schemaVersion: "composition-1",
     id: "audio-authoring",
@@ -69,6 +144,25 @@ export async function verifyNativeAudioAuthoring(
         sampleCount,
         sampleRate: 48000,
         channels: 2,
+      },
+      {
+        id: "movie",
+        type: "video",
+        path: videoPath,
+        sha256: checksum(await readFile(videoPath)),
+        width: video.width,
+        height: video.height,
+        frameCount: video.frameCount,
+        frameRate: video.frameRate,
+        color: video.color,
+      },
+      {
+        id: "still",
+        type: "image",
+        path: stillPath,
+        sha256: checksum(still),
+        width: 8,
+        height: 8,
       },
     ],
     layers: [
@@ -101,8 +195,47 @@ export async function verifyNativeAudioAuthoring(
           ],
         },
       },
+      {
+        id: "movie",
+        type: "video",
+        asset: "movie",
+        transform: { position: [0, 0], anchor: [0, 0] },
+        timeRemap: {
+          keys: [
+            { frame: 0, value: 23 / 12, interpolation: "linear" },
+            { frame: 46, value: 0, interpolation: "linear" },
+          ],
+        },
+      },
+      {
+        id: "moving-still",
+        type: "image",
+        size: [8, 8],
+        sources: [{ asset: "still" }],
+        transform: {
+          position: {
+            x: {
+              keys: [
+                { frame: 0, value: 32 },
+                { frame: 47, value: 48 },
+              ],
+            },
+            y: 24,
+          },
+        },
+      },
+      {
+        id: "lower-third",
+        type: "shape",
+        contents: [
+          { id: "box", type: "rect", size: [64, 8], position: [32, 56] },
+          { id: "fill", type: "fill", color: "#102840" },
+        ],
+      },
     ],
   };
+  // Native layers are ordered front to back; keep the full-frame background behind media.
+  composition.layers.push(composition.layers.shift()!);
   const input = join(directory, "audio-authoring.json");
   await writeFile(input, JSON.stringify(composition));
   const app = await createProgramPreview(input, { watch: true });
@@ -144,7 +277,13 @@ export async function verifyNativeAudioAuthoring(
           start(when, offset, duration);
         };
         source.stop = (when) => {
-          if (record) record.stopped = this.currentTime;
+          if (record) {
+            record.stopped = this.currentTime;
+            const canvas = document.getElementById(
+              "preview",
+            ) as HTMLCanvasElement | null;
+            if (canvas) record.pictureWhenStopped = canvas.toDataURL();
+          }
           stop(when);
         };
         return source;
@@ -162,6 +301,64 @@ export async function verifyNativeAudioAuthoring(
       .locator('.audio-waveform-lane[data-key="tone"]')
       .locator("canvas")
       .evaluate((canvas) => (canvas as HTMLCanvasElement).toDataURL());
+  const measureSync = () =>
+    page.evaluate(async () => {
+      const state = window as unknown as AudioProofWindow;
+      let samples = 0,
+        maxFrameDifference = 0,
+        maxSourceFrameDifference = 0;
+      await new Promise<void>((resolve, reject) => {
+        const tick = () => {
+          const start = state.audioStarts[0],
+            context = state.audioContexts.at(-1);
+          if (start && context) {
+            const elapsed = context.currentTime - start.when;
+            if (elapsed >= 0 && elapsed < start.duration) {
+              const frame = Number(
+                (document.getElementById("frame") as HTMLInputElement).value,
+              );
+              maxFrameDifference = Math.max(
+                maxFrameDifference,
+                Math.abs(frame - Math.floor(elapsed * 24)),
+              );
+              const surface = document.createElement("canvas");
+              surface.width = surface.height = 1;
+              const context = surface.getContext("2d")!;
+              context.drawImage(
+                document.getElementById("preview") as HTMLCanvasElement,
+                1,
+                1,
+                1,
+                1,
+                0,
+                0,
+                1,
+                1,
+              );
+              const pixel = context.getImageData(0, 0, 1, 1).data;
+              const actualSource = Math.round((pixel[0]! - 24) / 8),
+                expectedSource = Math.floor((46 - Math.min(46, frame)) / 2);
+              maxSourceFrameDifference = Math.max(
+                maxSourceFrameDifference,
+                Math.abs(actualSource - expectedSource),
+              );
+              if (pixel[1] !== 40 || pixel[2] !== 80 || pixel[3] !== 255)
+                return reject(
+                  new Error(
+                    `Native video source pixel changed: ${Array.from(pixel)}`,
+                  ),
+                );
+              samples++;
+            }
+            if (start.stopped !== undefined) return resolve();
+          }
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+      return { samples, maxFrameDifference, maxSourceFrameDifference };
+    });
+
   let fixtureDirectory: string | undefined;
   let fixtureServer: Awaited<ReturnType<typeof createServer>> | undefined;
   try {
@@ -175,6 +372,54 @@ export async function verifyNativeAudioAuthoring(
         .innerText(),
       /source time · 2.000 s/,
     );
+    const sourcePixels = [];
+    for (const backend of ["webgl2", "canvas2d"]) {
+      await page.locator("#backend").selectOption(backend);
+      await page.waitForFunction(
+        (backend) =>
+          document.getElementById("status")?.dataset.backend === backend &&
+          !document.getElementById("inspector-edit")?.hasAttribute("disabled"),
+        backend,
+      );
+      for (const frame of Array.from(
+        { length: 48 },
+        (_, index) => 47 - index,
+      )) {
+        await page.locator("#frame").fill(String(frame));
+        await page.locator("#frame").dispatchEvent("input");
+        await page.waitForFunction(
+          (frame) =>
+            document
+              .getElementById("time")
+              ?.textContent?.includes(`${frame + 1} / 48`),
+          frame,
+        );
+        const pixel = await page.locator("#preview").evaluate((canvas) => {
+          const surface = document.createElement("canvas");
+          surface.width = surface.height = 1;
+          const context = surface.getContext("2d")!;
+          context.drawImage(
+            canvas as HTMLCanvasElement,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+          );
+          return Array.from(context.getImageData(0, 0, 1, 1).data);
+        });
+        const sourceFrame = Math.floor((46 - Math.min(46, frame)) / 2);
+        assert.deepEqual(
+          pixel,
+          [24 + sourceFrame * 8, 40, 80, 255],
+          `Actual remapped movie/${backend} root frame ${frame}`,
+        );
+      }
+      sourcePixels.push({ backend, exactReverseSeeks: 48 });
+    }
     const exact = await page.evaluate(
       async ({ module, frame }) => {
         const state = window as unknown as AudioProofWindow;
@@ -237,37 +482,15 @@ export async function verifyNativeAudioAuthoring(
     assert.equal(exact.offline, checksum(source.pcm.subarray(12000 * 8)));
     assert.deepEqual(exact.last, [0.0625, -0.125]);
     await page.locator("#play").click();
-    const sync = await page.evaluate(async () => {
-      const state = window as unknown as AudioProofWindow;
-      let samples = 0,
-        maxFrameDifference = 0;
-      await new Promise<void>((resolve) => {
-        const tick = () => {
-          const start = state.audioStarts[0],
-            context = state.audioContexts[0];
-          if (start && context) {
-            const elapsed = context.currentTime - start.when;
-            if (elapsed >= 0 && elapsed < start.duration) {
-              const frame = Number(
-                (document.getElementById("frame") as HTMLInputElement).value,
-              );
-              maxFrameDifference = Math.max(
-                maxFrameDifference,
-                Math.abs(frame - Math.floor(elapsed * 24)),
-              );
-              samples++;
-            }
-            if (start.stopped !== undefined) return resolve();
-          }
-          requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      });
-      return { samples, maxFrameDifference };
-    });
+    const sync = await measureSync();
     assert.ok(
       sync.samples >= 24,
       "observe actual audio-clock/picture presentation across the passage",
+    );
+    assert.equal(
+      sync.maxSourceFrameDifference,
+      0,
+      "actual time-remapped numbered video follows every presented root frame with zero source-frame offset",
     );
     assert.ok(
       sync.maxFrameDifference <= 1,
@@ -328,7 +551,7 @@ export async function verifyNativeAudioAuthoring(
       .click();
     await ready();
     const expected = structuredClone(composition),
-      tone = expected.layers[1]!;
+      tone = expected.layers.find((layer) => layer.id === "tone")!;
     if (
       tone.type !== "audio" ||
       typeof tone.gainDb !== "object" ||
@@ -418,9 +641,7 @@ export async function verifyNativeAudioAuthoring(
     await page.waitForFunction(
       () => (window as unknown as AudioProofWindow).audioStarts.length === 3,
     );
-    const validPicture = await page
-      .locator("#preview")
-      .evaluate((canvas) => (canvas as HTMLCanvasElement).toDataURL());
+
     await writeFile(audioPath, Buffer.concat([source.wav, Buffer.from([0])]));
     await page.waitForFunction(() =>
       document
@@ -434,7 +655,11 @@ export async function verifyNativeAudioAuthoring(
       await page
         .locator("#preview")
         .evaluate((canvas) => (canvas as HTMLCanvasElement).toDataURL()),
-      validPicture,
+      await page.evaluate(
+        () =>
+          (window as unknown as AudioProofWindow).audioStarts.at(-1)!
+            .pictureWhenStopped,
+      ),
     );
     assert.equal(
       await page.evaluate(
@@ -459,8 +684,12 @@ export async function verifyNativeAudioAuthoring(
       join(fixtureRoot, "ce13-audio-authoring-"),
     );
     await copyFile(audioPath, join(fixtureDirectory, "audio.wav"));
+    await copyFile(videoPath, join(fixtureDirectory, "movie.mkv"));
+    await copyFile(stillPath, join(fixtureDirectory, "still.png"));
     const fixture = structuredClone(expected);
     fixture.assets[0]!.path = "audio.wav";
+    fixture.assets[1]!.path = "movie.mkv";
+    fixture.assets[2]!.path = "still.png";
     await writeFile(
       join(fixtureDirectory, "source.json"),
       JSON.stringify(fixture),
@@ -488,9 +717,24 @@ export async function verifyNativeAudioAuthoring(
       fixturePath,
     );
     assert.equal(await page.locator(".audio-waveform-lane").count(), 3);
+    await page.locator("#backend").selectOption("webgl2");
+    await page.waitForFunction(
+      () =>
+        document.getElementById("status")?.dataset.backend === "webgl2" &&
+        !document.getElementById("inspector-edit")?.hasAttribute("disabled"),
+    );
+    await page.locator("#play").click();
+    const webglSync = await measureSync();
+    assert.ok(webglSync.samples >= 24);
+    assert.ok(webglSync.maxFrameDifference <= 1);
+    assert.equal(webglSync.maxSourceFrameDifference, 0);
     assert.deepEqual(errors, []);
     return {
       sync,
+      webglSync,
+      sourcePixels,
+      combinedMedia:
+        "24 frame-numbered FFV1 frames at12fps; reverse remap; animated still and lower third; matching stereo PCM",
       savedRevision,
       sampleCount,
       rate: exact.rate,

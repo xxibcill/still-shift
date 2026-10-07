@@ -4931,6 +4931,23 @@ Earlier fixture/oracle failures remain recorded. Frozen visuals and renderer/eva
 mixer laws remain unchanged; combined preview/decoder decision and the complete final
 CE13 gate remain pending. [Evidence](./composition-ce13-results.json).
 
+### CE13 combined preview and decoder checkpoint (2026-10-07)
+
+The authoring acceptance now combines a real 24-frame numbered FFV1 video at 12 fps,
+explicit linear reverse remap, animated still, lower third and matching 96,000-sample
+stereo PCM. The complete mandatory native-media browser suite passes: both backends
+retain zero source-frame offset through 96 exact reverse seeks and 480 audio-clock
+playback observations. Browser scheduling stays within its existing one-frame
+presentation allowance; production picture/source mapping remains exact. Buffer/offline
+PCM, edits/history/save/reload, byte-identical draft exports and source-change stop/
+retained-picture/restoration all pass. Fixture z-order, implicit easing and surface/
+invalidation timing mistakes are recorded; no product law or tolerance changed.
+Preview uses canonical verified FFmpeg PNGs shared with export. WebCodecs is not adopted
+for this milestone because no equivalent source ordinal/color/alpha parity proof is
+implemented. This is a pipeline decision, with no universal browser-support claim.
+The complete final immutable local `pnpm check` and PR remain pending.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---
