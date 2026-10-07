@@ -1,4 +1,9 @@
 import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+  resizeRenderMetadata,
+} from "../../managed-metadata.ts";
+import {
   createRenderCanvas,
   retainRenderCanvas,
   releaseRenderCanvas,
@@ -82,6 +87,36 @@ export function recordVectorPaints(
     depth = 0;
   const painted = new Set<number>();
   const path = new CanvasPathBounds();
+  let bounds: Set<Bounds>;
+  try {
+    bounds = allocateRenderMetadata<Set<Bounds>>(
+      256,
+      () => new Set(),
+      false,
+      (value) => {
+        for (const rect of value) releaseRenderMetadata(rect);
+        value.clear();
+      },
+    );
+  } catch (error) {
+    path.dispose();
+    throw error;
+  }
+  const keepBounds = (factory: () => Bounds) => {
+    resizeRenderMetadata(bounds, 256 + 40 * (bounds.size + 1));
+    try {
+      const rect = allocateRenderMetadata(64, factory);
+      bounds.add(rect);
+      return rect;
+    } finally {
+      resizeRenderMetadata(bounds, 256 + 40 * bounds.size);
+    }
+  };
+  const clearBounds = () => {
+    for (const rect of bounds) releaseRenderMetadata(rect);
+    bounds.clear();
+    releaseRenderMetadata(bounds);
+  };
   if (marker) {
     let saved = false;
     try {
@@ -95,6 +130,7 @@ export function recordVectorPaints(
         } catch {
           /* Preserve the original setup failure. */
         }
+      clearBounds();
       path.dispose();
       throw error;
     }
@@ -184,12 +220,26 @@ export function recordVectorPaints(
                 target.shadowOffsetX !== 0 ||
                 target.shadowOffsetY !== 0);
             const shadowRight = shadow
-              ? paintBounds(target, name, args, undefined, path.bounds)?.right
+              ? paintBounds(
+                  target,
+                  name,
+                  args,
+                  undefined,
+                  path.bounds,
+                  keepBounds,
+                )?.right
               : undefined;
             const mark: Paint = {
               command: commands.length,
               primitive: name !== "drawImage" && target.filter === "none",
-              bounds: paintBounds(target, name, args, fallback, path.bounds)!,
+              bounds: paintBounds(
+                target,
+                name,
+                args,
+                fallback,
+                path.bounds,
+                keepBounds,
+              )!,
               ...(shadowRight !== undefined && Number.isFinite(shadowRight)
                 ? { shadowRight }
                 : {}),
@@ -250,7 +300,11 @@ export function recordVectorPaints(
           releaseRenderCanvas(canvas);
         }
       } finally {
-        path.dispose();
+        try {
+          clearBounds();
+        } finally {
+          path.dispose();
+        }
       }
     },
     groups(): VectorPaintGroup[] | undefined {
@@ -304,64 +358,87 @@ export function replayVectorPaints(
   ctx: CanvasRenderingContext2D,
   group: VectorPaintGroup,
 ) {
-  const target = ctx as unknown as Record<string, unknown>;
-  let depth = 0;
-  ctx.save();
-  ctx.beginPath();
-  // Move source coverage off-canvas while returning its native shadow in place.
-  const shift =
-    group.shadow === "only"
-      ? ctx.canvas.width + Math.max(0, group.shadowRight!) + 256
-      : 0;
-  if (shift) {
-    ctx.translate(-shift, 0);
-    ctx.shadowOffsetX = shift;
-  }
-  if (group.shadow === "none") ctx.shadowColor = "rgba(0,0,0,0)";
+  const temporary = allocateRenderMetadata(
+    256 + 8 * group.selected.size,
+    () => ({}),
+  );
   try {
-    const end = Math.max(...group.selected);
-    for (let index = 0; index <= end; index++) {
-      const command = group.commands[index]!;
-      if ("property" in command) {
-        target[command.property] =
-          command.property === "shadowOffsetX" && shift
-            ? Number(command.value) + shift
-            : command.property === "shadowColor" && group.shadow === "none"
-              ? "rgba(0,0,0,0)"
-              : command.value;
-        continue;
+    const target = ctx as unknown as Record<string, unknown>;
+    let depth = 0;
+    ctx.save();
+    ctx.beginPath();
+    // Move source coverage off-canvas while returning its native shadow in place.
+    const shift =
+      group.shadow === "only"
+        ? ctx.canvas.width + Math.max(0, group.shadowRight!) + 256
+        : 0;
+    if (shift) {
+      ctx.translate(-shift, 0);
+      ctx.shadowOffsetX = shift;
+    }
+    if (group.shadow === "none") ctx.shadowColor = "rgba(0,0,0,0)";
+    try {
+      const end = Math.max(...group.selected);
+      for (let index = 0; index <= end; index++) {
+        const command = group.commands[index]!;
+        if ("property" in command) {
+          target[command.property] =
+            command.property === "shadowOffsetX" && shift
+              ? Number(command.value) + shift
+              : command.property === "shadowColor" && group.shadow === "none"
+                ? "rgba(0,0,0,0)"
+                : command.value;
+          continue;
+        }
+        if (paints.has(command.method) && !group.selected.has(index)) continue;
+        if (command.method === "save") depth++;
+        if (command.method === "restore") {
+          if (!depth) continue;
+          depth--;
+        }
+        if (shift && command.method === "resetTransform") {
+          ctx.setTransform(1, 0, 0, 1, -shift, 0);
+          continue;
+        }
+        if (shift && command.method === "setTransform") {
+          const current = allocateRenderMetadata<{
+            matrix: DOMMatrix | undefined;
+          }>(
+            320,
+            () => ({
+              matrix:
+                command.args.length === 1
+                  ? DOMMatrix.fromMatrix(command.args[0] as DOMMatrixInit)
+                  : command.args.length
+                    ? new DOMMatrix(command.args as number[])
+                    : new DOMMatrix(),
+            }),
+            false,
+            (value) => {
+              value.matrix = undefined;
+            },
+          );
+          try {
+            current.matrix!.e -= shift;
+            ctx.setTransform(current.matrix!);
+          } finally {
+            releaseRenderMetadata(current);
+          }
+          continue;
+        }
+        Reflect.apply(
+          target[command.method] as (...args: unknown[]) => unknown,
+          ctx,
+          command.args,
+        );
       }
-      if (paints.has(command.method) && !group.selected.has(index)) continue;
-      if (command.method === "save") depth++;
-      if (command.method === "restore") {
-        if (!depth) continue;
-        depth--;
-      }
-      if (shift && command.method === "resetTransform") {
-        ctx.setTransform(1, 0, 0, 1, -shift, 0);
-        continue;
-      }
-      if (shift && command.method === "setTransform") {
-        const matrix =
-          command.args.length === 1
-            ? DOMMatrix.fromMatrix(command.args[0] as DOMMatrixInit)
-            : command.args.length
-              ? new DOMMatrix(command.args as number[])
-              : new DOMMatrix();
-        matrix.e -= shift;
-        ctx.setTransform(matrix);
-        continue;
-      }
-      Reflect.apply(
-        target[command.method] as (...args: unknown[]) => unknown,
-        ctx,
-        command.args,
-      );
+    } finally {
+      while (depth-- > 0) ctx.restore();
+      ctx.restore();
+      ctx.beginPath();
     }
   } finally {
-    while (depth-- > 0) ctx.restore();
-    ctx.restore();
-    ctx.beginPath();
+    releaseRenderMetadata(temporary);
   }
 }
 
@@ -370,101 +447,122 @@ function paintBounds(
   method: string,
   args: unknown[],
   fallback: Bounds | undefined,
-  path?: Bounds,
+  path: Bounds | undefined,
+  keepBounds: (factory: () => Bounds) => Bounds,
 ): Bounds | undefined {
-  let box: Bounds | undefined;
-  const deviceSpace =
-    (method === "fill" || method === "stroke") && !(args[0] instanceof Path2D);
-  const numbers = args as number[];
-  if (deviceSpace) box = path;
-  else if (method === "fillRect" || method === "strokeRect") {
-    const [x, y, width, height] = numbers as [number, number, number, number];
-    box = {
-      left: Math.min(x, x + width),
-      top: Math.min(y, y + height),
-      right: Math.max(x, x + width),
-      bottom: Math.max(y, y + height),
-    };
-  } else if (method === "drawImage") {
-    const image = args[0] as {
-      width: number;
-      height: number;
-      naturalWidth?: number;
-      naturalHeight?: number;
-    };
-    const x = numbers[args.length === 9 ? 5 : 1]!,
-      y = numbers[args.length === 9 ? 6 : 2]!;
-    const width =
-      args.length === 3
-        ? (image.naturalWidth ?? image.width)
-        : numbers[args.length === 9 ? 7 : 3]!;
-    const height =
-      args.length === 3
-        ? (image.naturalHeight ?? image.height)
-        : numbers[args.length === 9 ? 8 : 4]!;
-    box = {
-      left: Math.min(x, x + width),
-      top: Math.min(y, y + height),
-      right: Math.max(x, x + width),
-      bottom: Math.max(y, y + height),
-    };
-  } else if (
-    (method === "fillText" || method === "strokeText") &&
-    args.length === 3
-  ) {
-    const metrics = ctx.measureText(String(args[0])),
-      x = numbers[1]!,
-      y = numbers[2]!;
-    box = {
-      left: x - metrics.actualBoundingBoxLeft,
-      top: y - metrics.actualBoundingBoxAscent,
-      right: x + metrics.actualBoundingBoxRight,
-      bottom: y + metrics.actualBoundingBoxDescent,
-    };
-  }
-  if (!box) return fallback;
-  const matrix = ctx.getTransform();
-  const corners = [
-    [box.left, box.top],
-    [box.right, box.top],
-    [box.right, box.bottom],
-    [box.left, box.bottom],
-  ].map(([x, y]) =>
-    deviceSpace ? { x: x!, y: y! } : matrix.transformPoint({ x: x!, y: y! }),
+  const temporary = allocateRenderMetadata<{
+    corners: (DOMPoint | { x: number; y: number })[] | undefined;
+    matrix: DOMMatrix | undefined;
+  }>(
+    2048,
+    () => ({ corners: undefined, matrix: undefined }),
+    false,
+    (value) => {
+      if (value.corners) value.corners.length = 0;
+      value.corners = undefined;
+      value.matrix = undefined;
+    },
   );
-  const scale = Math.max(
-    1,
-    Math.hypot(matrix.a, matrix.b),
-    Math.hypot(matrix.c, matrix.d),
-  );
-  let padding = 2;
-  if (method.startsWith("stroke"))
-    padding += Math.abs(ctx.lineWidth) * Math.max(1, ctx.miterLimit) * scale;
-  if (ctx.filter !== "none") {
-    const match = /^blur\(([\d.e+-]+)px\)$/.exec(ctx.filter);
-    if (!match) return fallback;
-    padding += Math.abs(Number(match[1])) * scale * 4 + 4;
+  try {
+    let box: Bounds | undefined;
+    const deviceSpace =
+      (method === "fill" || method === "stroke") &&
+      !(args[0] instanceof Path2D);
+    const numbers = args as number[];
+    if (deviceSpace) box = path;
+    else if (method === "fillRect" || method === "strokeRect") {
+      const [x, y, width, height] = numbers as [number, number, number, number];
+      box = {
+        left: Math.min(x, x + width),
+        top: Math.min(y, y + height),
+        right: Math.max(x, x + width),
+        bottom: Math.max(y, y + height),
+      };
+    } else if (method === "drawImage") {
+      const image = args[0] as {
+        width: number;
+        height: number;
+        naturalWidth?: number;
+        naturalHeight?: number;
+      };
+      const x = numbers[args.length === 9 ? 5 : 1]!,
+        y = numbers[args.length === 9 ? 6 : 2]!;
+      const width =
+        args.length === 3
+          ? (image.naturalWidth ?? image.width)
+          : numbers[args.length === 9 ? 7 : 3]!;
+      const height =
+        args.length === 3
+          ? (image.naturalHeight ?? image.height)
+          : numbers[args.length === 9 ? 8 : 4]!;
+      box = {
+        left: Math.min(x, x + width),
+        top: Math.min(y, y + height),
+        right: Math.max(x, x + width),
+        bottom: Math.max(y, y + height),
+      };
+    } else if (
+      (method === "fillText" || method === "strokeText") &&
+      args.length === 3
+    ) {
+      const metrics = ctx.measureText(String(args[0])),
+        x = numbers[1]!,
+        y = numbers[2]!;
+      box = {
+        left: x - metrics.actualBoundingBoxLeft,
+        top: y - metrics.actualBoundingBoxAscent,
+        right: x + metrics.actualBoundingBoxRight,
+        bottom: y + metrics.actualBoundingBoxDescent,
+      };
+    }
+    if (!box) return fallback;
+    const matrix = (temporary.matrix = ctx.getTransform());
+    const corners = (temporary.corners = [
+      [box.left, box.top],
+      [box.right, box.top],
+      [box.right, box.bottom],
+      [box.left, box.bottom],
+    ].map(([x, y]) =>
+      deviceSpace ? { x: x!, y: y! } : matrix.transformPoint({ x: x!, y: y! }),
+    ));
+    const scale = Math.max(
+      1,
+      Math.hypot(matrix.a, matrix.b),
+      Math.hypot(matrix.c, matrix.d),
+    );
+    let padding = 2;
+    if (method.startsWith("stroke"))
+      padding += Math.abs(ctx.lineWidth) * Math.max(1, ctx.miterLimit) * scale;
+    if (ctx.filter !== "none") {
+      const filter = ctx.filter;
+      resizeRenderMetadata(temporary, 2176 + 4 * filter.length);
+      const match = /^blur\(([\d.e+-]+)px\)$/.exec(filter);
+      if (!match) return fallback;
+      padding += Math.abs(Number(match[1])) * scale * 4 + 4;
+    }
+    padding +=
+      Math.abs(ctx.shadowBlur) * 4 +
+      Math.abs(ctx.shadowOffsetX) +
+      Math.abs(ctx.shadowOffsetY);
+    return keepBounds(() => ({
+      left: Math.max(
+        fallback?.left ?? -Infinity,
+        Math.floor(Math.min(...corners.map((p) => p.x)) - padding),
+      ),
+      top: Math.max(
+        fallback?.top ?? -Infinity,
+        Math.floor(Math.min(...corners.map((p) => p.y)) - padding),
+      ),
+      right: Math.min(
+        fallback?.right ?? Infinity,
+        Math.ceil(Math.max(...corners.map((p) => p.x)) + padding),
+      ),
+      bottom: Math.min(
+        fallback?.bottom ?? Infinity,
+        Math.ceil(Math.max(...corners.map((p) => p.y)) + padding),
+      ),
+    }));
+  } finally {
+    releaseRenderMetadata(temporary);
   }
-  padding +=
-    Math.abs(ctx.shadowBlur) * 4 +
-    Math.abs(ctx.shadowOffsetX) +
-    Math.abs(ctx.shadowOffsetY);
-  return {
-    left: Math.max(
-      fallback?.left ?? -Infinity,
-      Math.floor(Math.min(...corners.map((p) => p.x)) - padding),
-    ),
-    top: Math.max(
-      fallback?.top ?? -Infinity,
-      Math.floor(Math.min(...corners.map((p) => p.y)) - padding),
-    ),
-    right: Math.min(
-      fallback?.right ?? Infinity,
-      Math.ceil(Math.max(...corners.map((p) => p.x)) + padding),
-    ),
-    bottom: Math.min(
-      fallback?.bottom ?? Infinity,
-      Math.ceil(Math.max(...corners.map((p) => p.y)) + padding),
-    ),
-  };
 }

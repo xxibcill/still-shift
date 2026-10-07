@@ -171,7 +171,7 @@ it("releases path metadata on recording teardown even when native restore throws
       { left: 0, top: 0, right: 4, bottom: 4 },
       { deferPaints: true },
     );
-    expect(memory.statistics.current.metadata).toBe(256);
+    expect(memory.statistics.current.metadata).toBe(512);
     expect(save).toHaveBeenCalledTimes(1);
     let caught: unknown = "missing";
     try {

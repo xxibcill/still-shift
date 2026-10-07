@@ -786,6 +786,30 @@ missing fixture transforms were repaired; the failed attempt remains recorded.
 Production/aggregate admission, authentic speed and complete gate remain pending.
 [Evidence](./composition-ce15-path-metadata-results.json).
 
+## Accepted paint-bound and replay metadata checkpoint — 2026-10-08
+
+Selected cleanup controls (256 + 40 per result) and original output rectangle (64)
+admit before creation. Original geometry arena (2048) covers local box/metrics/
+matrix/corner/input/native point/coordinate-map producers before native calls;
+filter match/capture data grows before native regex execution (2176 + 4*filter
+length). Actual rectangles survive mark/group/replay consumption until recording
+disposal; borrowed fallback retains its original reference. Explicit cleanup
+clears the selected Set in managed and unmanaged use. Temporary replay controls
+(256 + 8*selected.size) and original conditional native matrix (320) admit before
+creation and remain through native setTransform. Native getters/callbacks, exact
+text/stroke/filter/shadow/clip geometry and replay state stay unchanged.
+
+Build/lint/boundaries and 196 focused tests pass, including eight new paint-bound/
+replay metadata regressions. All 144 audit cases / 8,000 comparisons, 96 actual RPC
+snapshots, 22 moving/blurred and ten stationary native frames, original WebGL,
+69 typography tests, 12 providers / 60 frames and eight fixtures pass; glyph
+1.486755× meets unchanged 1.5 maximum. All 64 exports preserve 768 complete bodies/
+frames against pushed `13482c9`. Initial checks passed; final affected checks were
+rerun after explicit unmanaged Set cleanup. Remaining recording/Proxy/command/mark/
+group/snapshot/prepared clone/argument controls and shared runtime/Node/production
+admission, aggregate memory, authentic speed and full gate remain pending.
+[Evidence](./composition-ce15-paint-bounds-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

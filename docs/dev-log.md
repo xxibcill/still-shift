@@ -91,13 +91,13 @@ still hold before relying on them.
   70 tests, the complete audit, six native complete-body oracles, twelve failure
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
   Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
-  controls, vector/raster/framebuffer/readback and native path metadata now pass
-  188 focused tests, the complete audit, 22 moving/blurred and ten stationary native
-  frames and 96 owned RPC snapshots. Path tuples/native point/union owners survive
-  original consumers; recording admission/native setup failures release actual
-  scratch while preserving original null/math/partial-update behavior.
+  controls, vector/raster/framebuffer/readback/path and selected paint-bound/replay
+  metadata now pass 196 focused tests, the complete audit, 22 moving/blurred and ten
+  stationary native frames and 96 owned RPC snapshots. Actual paint rectangles
+  remain through consumers; original metrics/matrix/point/filter/replay producers
+  pre-admit and selected references clear in managed/unmanaged disposal.
   Original WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
-  bodies/frames pass; glyph 1.417476× meets unchanged 1.5 maximum.
+  bodies/frames pass; glyph 1.486755× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -333,6 +333,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 retained paint bounds and replay matrices
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `13482c9`.
+- **Done:** admit actual paint geometry/result rectangles, filter copies and replay
+  matrices before producers, retain through consumers and clear actual references.
+- **Results:** build/lint/boundaries, 196 focused / 69 typography tests; 144 audit
+  cases / 8,000 comparisons, 96 RPC snapshots, 22 moving/blurred and ten stationary
+  native frames; WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.486755× meets unchanged 1.5; eight new metadata/native-consumer tests pass.
+- **Review:** original text/filter/shadow/matrix/callbacks remain; affected checks
+  reran after actual unmanaged Set cleanup. Recording/group/clone controls pending.
+- **Next:** remaining recording/device/pool/shader/paint/provider/graph/font/helper/
+  ledger/Node controls, production/aggregate admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [paint-bound evidence](./composition-ce15-paint-bounds-metadata-results.json).
 
 ### 2026-10-08 — CE15 path geometry metadata and recording setup cleanup
 
