@@ -15,6 +15,8 @@ import {
 } from "@still-shift/animation-engine";
 import { PassageError } from "@still-shift/renderer-core";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
+import { assertBoundedPassagePreviews } from "../helpers/passage-composition-previews.ts";
+import { passageEventSoundtrack } from "../helpers/passage-event-soundtrack.ts";
 
 const root = await mkdtemp(join(tmpdir(), "still-shift-native-beat-"));
 const backend = process.argv.includes("--webgl") ? "webgl2" : "canvas2d";
@@ -36,13 +38,18 @@ try {
     compositions.reset!.markers![0]!.frame,
   );
   assert.equal(compositions.reset!.layers.at(-1)!.type, "precomp");
-  const render = async (name: string, pictures = compositions) => {
+  const render = async (
+    name: string,
+    pictures = compositions,
+    soundtrackProject?: string,
+  ) => {
     const output = join(root, name);
     await writePreparedPassage(output, passage);
     return renderStoryPassage(output, passage, undefined, {
       renderer: "composition",
       backend,
       compositions: pictures,
+      ...(soundtrackProject ? { soundtrackProject } : {}),
       cacheDirectory,
     });
   };
@@ -81,6 +88,68 @@ try {
     await decodedHash(first.video.path),
     await decodedHash(second.video.path),
   );
+  // CE4a native pictures and CE16 saved audio share the passage assembly path.
+  const soundtrackProject = join(root, "soundtrack.json");
+  const hit = join(root, "hit.wav");
+  await runProcess("ffmpeg", [
+    "-v",
+    "error",
+    "-y",
+    "-f",
+    "lavfi",
+    "-i",
+    "sine=frequency=880:sample_rate=48000:duration=0.25",
+    "-c:a",
+    "pcm_s16le",
+    hit,
+  ]);
+  const savedSoundtrack = passageEventSoundtrack(
+    passage,
+    "reset",
+    "shared-strain",
+  );
+  savedSoundtrack.assets[0]!.path = hit;
+  savedSoundtrack.assets[0]!.sha256 =
+    "sha256:" +
+    createHash("sha256")
+      .update(await readFile(hit))
+      .digest("hex");
+  await writeFile(soundtrackProject, JSON.stringify(savedSoundtrack));
+  const withSoundtrack = await render(
+    "saved-soundtrack",
+    compositions,
+    soundtrackProject,
+  );
+  assert.equal(withSoundtrack.frameCount, first.frameCount);
+  assert.ok(withSoundtrack.cache.every((clip) => clip.reused));
+  assert.ok(
+    withSoundtrack.video.streams.some(
+      (stream) => stream.codec_type === "audio",
+    ),
+  );
+  const level = await runProcess("ffmpeg", [
+    "-v",
+    "info",
+    "-i",
+    withSoundtrack.video.path,
+    "-map",
+    "0:a",
+    "-af",
+    "volumedetect",
+    "-f",
+    "null",
+    "-",
+  ]);
+  const peak = Number(level.stderr.match(/max_volume: (-?[\d.]+) dB/)?.[1]);
+  assert.ok(
+    Number.isFinite(peak) && peak > -60,
+    "Mapped saved event sound must reach the assembled soundtrack",
+  );
+  assert.equal(
+    await decodedHash(withSoundtrack.video.path),
+    await decodedHash(first.video.path),
+    "Saved soundtrack assembly must preserve native composition picture frames",
+  );
   const relocated = JSON.parse(await readFile(picture, "utf8"));
   await mkdir(join(root, "assets"));
   for (const asset of relocated.assets) {
@@ -103,6 +172,21 @@ try {
   );
   const portableRender = await render("portable", portable);
   assert.ok(portableRender.cache.every((clip) => clip.reused));
+  for (const run of ["first", "portable"]) {
+    const current = JSON.parse(
+      await readFile(
+        join(root, run, "scenes", "reset.composition.json"),
+        "utf8",
+      ),
+    );
+    assert.deepEqual(
+      current.assets.map((asset: { path: string }) => asset.path),
+      (run === "first" ? compositions : portable).reset!.assets.map(
+        (asset) => asset.path,
+      ),
+      "Each run's native composition names that run's asset files, even on cache reuse",
+    );
+  }
   assert.ok(first.cache[2]!.key !== first.planSha256);
   const changed = structuredClone(compositions);
   if (changed.reset!.layers[0]!.type !== "solid")
@@ -230,6 +314,11 @@ try {
       );
     }
     assert.deepEqual(errors, []);
+    if (backend === "webgl2")
+      await assertBoundedPassagePreviews(
+        browser,
+        server.resolvedUrls!.local[0]!,
+      );
   } finally {
     await browser.close();
     await server.close();

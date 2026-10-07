@@ -91,6 +91,8 @@ try {
   const cases: { name: string; source: Composition }[] = [
     { name: "overlap-demo", source: await fixture("overlap-demo") },
     { name: "built-ins", source: await fixture("built-ins") },
+    { name: "nested-echo", source: await fixture("nested-echo") },
+    { name: "separated-roving", source: await fixture("separated-roving") },
     {
       name: "auto-orient-boundaries",
       source: {

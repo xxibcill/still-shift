@@ -1,0 +1,197 @@
+{
+  "date": "2026-10-07",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/40",
+  "reviewedHead": "824a6276df2d535958b3c66c97dec1b78936f001",
+  "branch": "codex/pr40-posterized-cut-fix",
+  "delivery": "One finding, one commit, one final normal push to the existing PR head.",
+  "status": "verified for one finding commit and final push",
+  "finding": {
+    "id": "unreachable-posterized-state-cuts",
+    "comment": "https://github.com/xxibcill/still-shift/pull/40#discussion_r4204819931",
+    "reproduction": {
+      "fps": 30,
+      "posterizeFps": 15,
+      "states": "0:A, 1:B, 2:A; B is unreachable",
+      "frame": 2,
+      "incorrectSamples": [2, 2, 2.125, 2.375],
+      "correctSamples": [1.625, 1.875, 2.125, 2.375],
+      "beforeMaximumChannelDelta": 128,
+      "beforeChangedChannelsPerBackend": 120
+    },
+    "change": "Discard posterized state/stateFrom cuts only when adjacent source grids bracket the authored switch and sample the same discrete state. Indexed clocks share the existing sample lookup; ordinary and real switches retain their boundary semantics. Root precision that skips entire grids retains the cut conservatively.",
+    "versions": {
+      "evaluator": "composition-evaluator-34",
+      "canvas2d": "composition-canvas-1.24.5",
+      "webgl2": "composition-webgl2-0.38.5"
+    }
+  },
+  "focused": {
+    "originalRed": {
+      "failed": 3,
+      "passed": 16,
+      "log": "benchmarks/results/pr40-posterized-cut-fix/red.log",
+      "note": "Observed child selected content time rather than the exposure tree base clock."
+    },
+    "precisionRed": {
+      "failed": 2,
+      "passed": 17,
+      "log": "benchmarks/results/pr40-posterized-cut-fix/precision-red.log",
+      "cause": "Initial proposal assumed all preceding content grids remain reachable under extreme stretch."
+    },
+    "green": {
+      "passed": 246,
+      "files": 6,
+      "log": "benchmarks/results/pr40-posterized-cut-fix/green.log"
+    },
+    "coverage": [
+      "incoming and visible outgoing states",
+      "forward/reversed and negative clocks",
+      "indexed content clocks",
+      "real switches that collapse multiple authored keys",
+      "owning precomp FPS",
+      "extreme positive/negative stretch",
+      "repeated/random seeks and input immutability"
+    ]
+  },
+  "browser": {
+    "status": "passed on the final source in the complete gate",
+    "posterizedStateCases": 16,
+    "pixelComparisons": 112,
+    "maximumChannelDelta": 0,
+    "nativeFixtureFrames": 96,
+    "hardwareComparisons": 12,
+    "storedCE7Baselines": "exact",
+    "exports": "Both fixtures/backends repeated MP4, independent preview MP4 and raw/PNG bytes identical; legacy exposure/indexed repeated MP4 checks pass.",
+    "log": "benchmarks/results/pr40-posterized-cut-fix/browser-exposure.log",
+    "finalLog": "benchmarks/results/pr40-posterized-cut-fix/check.log",
+    "nativeReports": [
+      {
+        "fixture": "time-controls",
+        "frames": 48,
+        "reverseFrames": 48,
+        "randomSeeks": 11,
+        "maxDelta": 0,
+        "oracleMaxDelta": 1
+      },
+      {
+        "fixture": "time-controls",
+        "backend": "canvas2d",
+        "frames": 48,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "time-controls",
+        "backend": "webgl2",
+        "frames": 48,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "adaptive",
+        "frames": 48,
+        "reverseFrames": 48,
+        "randomSeeks": 11,
+        "maxDelta": 0,
+        "oracleMaxDelta": 0
+      },
+      {
+        "fixture": "adaptive",
+        "backend": "canvas2d",
+        "frames": 48,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      },
+      {
+        "fixture": "adaptive",
+        "backend": "webgl2",
+        "frames": 48,
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical"
+      }
+    ],
+    "hardwareMaximumChannelDelta": 1
+  },
+  "preflight": {
+    "status": "passed",
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "ffmpeg": "8.0.1",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "depthImports": "worktree-local source verified",
+    "soundtrackRuntime": {
+      "dawdreamer": "0.9.0",
+      "numpy": "2.3.3",
+      "scipy": "1.16.2"
+    },
+    "dependencies": "Independent worktree-local copies of Node, depth and soundtrack environments; local workspace links and separate Vite/uv caches.",
+    "log": "benchmarks/results/pr40-posterized-cut-fix/preflight.log",
+    "entryPoints": "Localized the copied still-shift-depth launcher after its stale absolute shebang caused the first gate failure; direct imports were already local.",
+    "integrationAfterEnvironmentRepair": {
+      "passed": 224,
+      "files": 45,
+      "log": "benchmarks/results/pr40-posterized-cut-fix/integration-environment-check.log"
+    }
+  },
+  "independentReview": {
+    "standards": "passed after precision repair",
+    "spec": "passed after precision repair"
+  },
+  "fullGate": {
+    "status": "passed",
+    "command": "pnpm check",
+    "log": "benchmarks/results/pr40-posterized-cut-fix/check.log",
+    "attempts": [
+      {
+        "attempt": 1,
+        "status": "failed at integration",
+        "sourceUnchanged": true,
+        "seconds": 305.45,
+        "unitTests": 1921,
+        "runtimeTests": 46,
+        "integrationPassed": 222,
+        "integrationFailed": 2,
+        "causes": [
+          "Copied virtualenv entry-point shebang referenced removed pr35 worktree; repaired only the ignored local environment.",
+          "Audio browser integration timed out once; both focused reruns pass unchanged."
+        ],
+        "log": "benchmarks/results/pr40-posterized-cut-fix/check-attempt-1.log",
+        "proof": "benchmarks/results/pr40-posterized-cut-fix/gate-attempt-1-status.json"
+      },
+      {
+        "attempt": 2,
+        "status": "passed",
+        "seconds": 5590.47,
+        "sourceUnchanged": true,
+        "log": "benchmarks/results/pr40-posterized-cut-fix/check.log"
+      }
+    ],
+    "exitCode": 0,
+    "seconds": 5590.47,
+    "testCommands": 56,
+    "unitTests": 1921,
+    "runtimeTests": 46,
+    "integrationTests": 224,
+    "depthTests": 14,
+    "requiredBrowserAndGoldenGroups": 52,
+    "frozenItems": 176,
+    "frozenFrames": 36061,
+    "sourceUnchanged": true,
+    "fingerprint": {
+      "files": 1464,
+      "sha256": "9c42ca78c4ebee5bfc77bb0cff08d7e03ede3f912362f33aca9beb7944fd8fd9"
+    },
+    "proof": "benchmarks/results/pr40-posterized-cut-fix/gate-status.json",
+    "logSha256": "eaeecb3c0fcd1d470ad03727b9f93aaabde67e9c19debbfbb3188e3039769063"
+  },
+  "githubActions": "disabled",
+  "frozenBaselines": "not regenerated",
+  "limitations": "No separate optional serial cost profile or full backend timing matrix is claimed; all acceptance commands included in pnpm check ran without skips."
+}

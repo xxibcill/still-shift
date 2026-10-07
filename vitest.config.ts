@@ -15,6 +15,10 @@ export default defineConfig({
         "./packages/renderer-core/src/passage-compositions.ts",
         import.meta.url,
       ).pathname,
+      "@still-shift/renderer-core/soundtrack": new URL(
+        "./packages/renderer-core/src/soundtrack-edits.ts",
+        import.meta.url,
+      ).pathname,
       "@still-shift/renderer-core": new URL(
         "./packages/renderer-core/src/index.ts",
         import.meta.url,

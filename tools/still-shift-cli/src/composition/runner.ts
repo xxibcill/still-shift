@@ -1,15 +1,20 @@
-import { register } from "node:module";
+import { registerHooks } from "node:module";
+import { subscribe } from "node:diagnostics_channel";
+import { appendFileSync } from "node:fs";
+import { initialize, resolve } from "./trace.ts";
 import { writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 const [input, output, trace] = process.argv.slice(2);
-register(new URL("./trace.ts", import.meta.url), {
-  parentURL: import.meta.url,
-  data: {
-    trace,
-    motion: new URL("../../../../packages/motion-builder/src/", import.meta.url)
-      .href,
-  },
+subscribe("still-shift.motion.asset-read", (path) => {
+  if (typeof path === "string")
+    appendFileSync(trace!, JSON.stringify(path) + "\n");
 });
+initialize({
+  trace: trace!,
+  motion: new URL("../../../../packages/motion-builder/src/", import.meta.url)
+    .href,
+});
+registerHooks({ resolve });
 try {
   const module = await import(pathToFileURL(input!).href);
   let result = await module.default;

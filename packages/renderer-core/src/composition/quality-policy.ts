@@ -3,7 +3,10 @@ import {
   COMPOSITION_LIMITS,
   type Composition,
 } from "@still-shift/scene-contract";
-import type { PassageDiagnostic } from "../passage-diagnostics.ts";
+import {
+  passageError,
+  type PassageDiagnostic,
+} from "../passage-diagnostics.ts";
 import type { EvaluationOptions } from "./evaluate/types.ts";
 
 export const MOTION_LINT_CODES = [
@@ -105,8 +108,10 @@ export function resolveCompositionQualityPolicy(
     (pixelHashes.length !== comp.frameCount ||
       pixelHashes.some((hash) => typeof hash !== "string" || !hash.length))
   )
-    throw new Error(
+    passageError(
+      "comp-lint-pixel-evidence",
       "Pixel evidence requires one nonempty hash per composition frame",
+      { path: "pixelHashes" },
     );
   if (
     pixelChangedCounts &&
@@ -118,11 +123,17 @@ export function resolveCompositionQualityPolicy(
           count > comp.width * comp.height,
       ))
   )
-    throw new Error(
+    passageError(
+      "comp-lint-pixel-evidence",
       "Pixel evidence requires one bounded changed-pixel count per frame",
+      { path: "pixelChangedCounts" },
     );
   if (pixelHashes && pixelChangedCounts)
-    throw new Error("Provide hashes or changed-pixel counts, not both");
+    passageError(
+      "comp-lint-pixel-evidence",
+      "Provide hashes or changed-pixel counts, not both",
+      { path: "pixelChangedCounts" },
+    );
   const pixelSignatures = pixelChangedCounts
     ? pixelChangedCounts.reduce<string[]>((signatures, count, i) => {
         signatures.push(
@@ -133,39 +144,61 @@ export function resolveCompositionQualityPolicy(
         return signatures;
       }, [])
     : pixelHashes;
-  const cuts = new Set([
-    ...(policy.intentionalCuts ?? []),
-    ...(comp.motionBlur?.cuts ?? []),
-    ...(comp.markers ?? [])
-      .filter(
-        (m) =>
-          m.label?.toLowerCase() === "cut" ||
-          m.id === "cut" ||
-          m.id.startsWith("cut-"),
-      )
-      .map((m) => m.frame),
-  ]);
-  if ([...cuts].some((at) => at >= comp.frameCount))
-    throw new Error("Intentional cut outside composition timeline");
+  const declaredCuts = [
+    ...(policy.intentionalCuts ?? []).map((at, i) => ({
+      at,
+      path: `intentionalCuts.${i}`,
+    })),
+    ...(comp.motionBlur?.cuts ?? []).map((at, i) => ({
+      at,
+      path: `motionBlur.cuts.${i}`,
+    })),
+    ...(comp.markers ?? []).flatMap((marker, i) =>
+      marker.label?.toLowerCase() === "cut" ||
+      marker.id === "cut" ||
+      marker.id.startsWith("cut-")
+        ? [{ at: marker.frame, path: `markers.${i}.frame` }]
+        : [],
+    ),
+  ];
+  for (const { at, path } of declaredCuts)
+    if (at >= comp.frameCount)
+      passageError(
+        "comp-lint-cut-range",
+        "Intentional cut outside composition timeline",
+        { path },
+      );
+  const cuts = new Set(declaredCuts.map(({ at }) => at));
   const shots = policy.shots ?? [
     { id: comp.id, start: 0, end: comp.frameCount },
   ];
   const names = new Set<string>();
   shots.forEach((shot, i) => {
-    if (
-      names.has(shot.id) ||
-      shot.end <= shot.start ||
-      shot.end > comp.frameCount ||
-      shot.start !== (i ? shots[i - 1]!.end : 0)
-    )
-      throw new Error(
-        "Shots must have unique ids and partition the complete timeline in order",
+    if (names.has(shot.id))
+      passageError("comp-lint-shot-id", "Shots must have unique ids", {
+        path: `shots.${i}.id`,
+      });
+    if (shot.end <= shot.start || shot.end > comp.frameCount)
+      passageError(
+        "comp-lint-shot-range",
+        "Shot end must follow its start and stay within the composition timeline",
+        { path: `shots.${i}.end` },
+      );
+    if (shot.start !== (i ? shots[i - 1]!.end : 0))
+      passageError(
+        "comp-lint-shot-partition",
+        "Shots must partition the complete timeline in order",
+        { path: `shots.${i}.start` },
       );
     names.add(shot.id);
     if (shot.start > 0) cuts.add(shot.start);
   });
   if (shots.at(-1)!.end !== comp.frameCount)
-    throw new Error("Shots must cover the complete composition timeline");
+    passageError(
+      "comp-lint-shot-partition",
+      "Shots must cover the complete composition timeline",
+      { path: `shots.${shots.length - 1}.end` },
+    );
   return {
     ...policy,
     maxFrozenFrames: policy.maxFrozenFrames ?? 6,

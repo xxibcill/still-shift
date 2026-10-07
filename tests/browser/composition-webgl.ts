@@ -21,6 +21,7 @@ import assert from "node:assert/strict";
 import { resolve } from "node:path";
 import { createServer } from "vite";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
+import type * as Exposure from "../helpers/composition-webgl-exposure.ts";
 import type * as Rational from "../helpers/composition-webgl-float-sum.ts";
 import type * as Checks from "../helpers/composition-webgl-reference.ts";
 import type * as VectorPaints from "../helpers/composition-webgl-vector-paints.ts";
@@ -29,6 +30,7 @@ import type * as Png from "../helpers/composition-webgl-png.ts";
 import type * as Blur from "../helpers/composition-webgl-blur.ts";
 import type * as Performance from "../helpers/composition-webgl-performance.ts";
 import type * as StoryImages from "../helpers/composition-webgl-story-images.ts";
+import type * as DisjointPaints from "../helpers/composition-webgl-disjoint-paints.ts";
 const server = await createServer({
   root: resolve(import.meta.dirname, "../.."),
   configFile: false,
@@ -269,6 +271,23 @@ try {
     ).checkTurbulentQuotients();
   });
   console.log("WebGL turbulent quotient:", JSON.stringify(noiseQuotients));
+  const disjoint = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-disjoint-paints.ts";
+    return (
+      (await import(url)) as typeof DisjointPaints
+    ).checkWebglDisjointPaints();
+  });
+  console.log("WebGL disjoint paint exactness:", disjoint);
+  const exposure = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-exposure.ts";
+    const checks = (await import(url)) as typeof Exposure;
+    return {
+      fusion: checks.checkWebglExposureFusion(),
+      bounded: checks.checkWebglBoundedExposure(),
+      fractional: checks.checkWebglFractionalExposure(),
+    };
+  });
+  console.log("WebGL final exposure sum/resolve exactness:", exposure);
   const blur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-blur.ts";
     return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();

@@ -14,7 +14,7 @@ const words = (value: string) =>
 export function passageGallery(
   output: string,
   passage: PreparedPassage,
-  mode: "prepared" | "silent" | "narrated" | "sound-only",
+  mode: "prepared" | "silent" | "narrated" | "sound-only" | "soundtrack",
 ) {
   const { plan, beats, frameCount } = passage;
   const canvas = beats[0]!.scene;
