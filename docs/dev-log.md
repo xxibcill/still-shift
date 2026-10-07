@@ -43,15 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #45 review repairs in progress (2026-10-08):** both P2 findings are posted
-  inline on `3545055`. The primitive-blur repair keeps positive own/inherited/
-  collapsed blur on local surfaces and advances Canvas/WebGL/export identities to
-  1.42.2 / 0.57.2 / 0.6.7. Original-code regressions fail; 35 focused units and all
-  36 actual Canvas/WebGL pixel pairs pass byte-exactly after repair. The fractional
-  shutter coverage repair and its regressions are in progress. Each finding gets
-  one commit; both are retained locally for one final push after final verification.
-  No full repository or performance gate is claimed. Owner checkout remains
-  untouched and Actions disabled. [Repair evidence](./pr-45-fix-results.json).
+- **PR #45 review repairs verified (2026-10-08):** both P2 findings are posted
+  inline on reviewed `3545055` and repaired one per commit. `a99be1f` retains local
+  primitive-blur scaling; the commit containing this entry validates actual mixed
+  shutter exposure coverage after decoded-asset reload. Final fast checks pass
+  2,385 units; eight affected integrations, camera, all 46 cinematic smoke cases,
+  WebGL exports and exposure checks pass. All 36 new affine pixel pairs are exact;
+  coverage rejects invalid previews/exports on both backends while valid held-layer
+  and retained-preview pixels remain exact. All 176 frozen items / 36,061 frames
+  match without regeneration. Independent repair reviews have no actionable
+  findings. Delivery uses one normal push of both repair commits after this final
+  checkpoint. Owner review/merge remain. No new full repository or performance
+  gate is claimed; owner checkout is untouched and Actions remain disabled.
+  [Repair evidence](./pr-45-fix-results.json).
 
 - **PR #45 conflicts resolved; review complete (2026-10-08):** isolated
   `codex/pr45-conflict-review` integrates `main` at `50cbf633` into CE4c head
@@ -62,8 +66,8 @@ still hold before relying on them.
   integrations, all 46 cinematic smoke cases, native camera/lighting/exports,
   exposure and complete selected focus-handoff checks pass. All 176 frozen items /
   36,061 frames match without regeneration. Independent Standards and Spec reviews
-  found two open P2 defects: affine primitive-blur scaling and integer-only
-  persisted shutter coverage. Both are independently reproduced with real pixels
+  found two P2 defects, repaired in the follow-up above: affine primitive-blur
+  scaling and integer-only persisted shutter coverage. Both are independently reproduced with real pixels
   on Canvas/WebGL. Verified merge/evidence are pushed to PR #45; GitHub confirms
   the PR is mergeable. Owner review/merge remain. No full repository gate or CE6-P acceptance is claimed. Owner checkout
   stays untouched and Actions disabled.
@@ -871,6 +875,21 @@ still hold before relying on them.
 _Last updated 2026-10-08 by Codex for PR #45 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #45 shutter coverage repair and final verification
+
+- **Agent / branch:** Codex on `codex/pr45-conflict-review` (from `a99be1f`).
+- **Scope:** second inline P2 finding, one repair per commit and one final push.
+- **Done:** validate declared background coverage using actual mixed exposure states;
+  retain held-layer clocks, shutter cuts, opacity, focus padding and integer reveal semantics.
+- **Results:** five regressions fail on original code; all 38 focused units pass after repair.
+  Decoded-PNG previews and protected export failures pass on both backends. Final fast
+  checks pass 2,385 units; eight affected integrations, camera/cinematic smoke/export/exposure
+  suites and all 176 frozen items / 36,061 frames pass. No baselines regenerated.
+- **Rejected / do not repeat:** no new full `pnpm check` or family timing matrix for scoped fixes.
+- **Open / next:** both repairs use one final normal push; owner review/merge remain.
+- **Records:** [repair evidence](./pr-45-fix-results.json),
+  [inline findings and disposition](./pr-45-review-results.json).
 
 ### 2026-10-08 — PR #45 local primitive-blur repair
 

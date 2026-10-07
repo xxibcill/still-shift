@@ -3,7 +3,7 @@
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/45",
   "originalHead": "17666eb14cdb302b319177e4d95dce68ddf9767a",
   "integratedBase": "50cbf6332ece7ffafc156645f6a7e4e532d7f986",
-  "status": "conflicts resolved; focused verification and independent review complete; two P2 review findings remain open",
+  "status": "conflicts resolved; original independent review found two P2 defects, both now posted inline and repaired; final repair evidence in docs/pr-45-fix-results.json",
   "fullPnpmCheckRun": false,
   "resolution": {
     "conflictedFiles": [
@@ -4111,14 +4111,16 @@
     }
   },
   "review": {
-    "status": "complete; two P2 findings remain open",
+    "status": "initial review complete; both findings repaired in subsequent focused follow-up",
     "fixedPoint": "50cbf6332ece7ffafc156645f6a7e4e532d7f986",
     "codeCheckpoint": "1b3f98f6b2c3808ca7f07a2cf0985b6dc8545b58",
     "standardsFindings": 1,
     "specFindings": 1,
-    "publishedGitHubCommentsOrReview": false,
+    "publishedGitHubCommentsOrReview": true,
     "evidence": "docs/pr-45-review-results.json",
-    "independentRealAssetPixelProbes": "Both blur-scaling and fractional-shutter coverage reproduced on Canvas/WebGL."
+    "independentRealAssetPixelProbes": "Both blur-scaling and fractional-shutter coverage reproduced on Canvas/WebGL.",
+    "repairEvidence": "docs/pr-45-fix-results.json",
+    "remainingFindings": 0
   },
   "githubActionsEnabled": false,
   "resolvedMergeCommit": "1b3f98f6b2c3808ca7f07a2cf0985b6dc8545b58",

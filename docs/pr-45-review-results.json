@@ -3,7 +3,7 @@
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/45",
   "fixedPoint": "50cbf6332ece7ffafc156645f6a7e4e532d7f986",
   "codeCheckpoint": "1b3f98f6b2c3808ca7f07a2cf0985b6dc8545b58",
-  "status": "both findings posted inline; primitive blur repaired locally, shutter coverage in progress",
+  "status": "both findings posted inline and repaired in separate commits; independent repair reviews have no actionable findings",
   "publishedGitHubCommentsOrReview": true,
   "standards": {
     "findings": [
@@ -59,7 +59,8 @@
           "probeLog": "/private/tmp/pr45-blur-review-proof-corrected.log"
         },
         "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449039",
-        "repairEvidence": "docs/pr-45-fix-results.json"
+        "repairEvidence": "docs/pr-45-fix-results.json",
+        "repairStatus": "fixed"
       }
     ],
     "hardCodingStandardViolations": 0
@@ -144,16 +145,22 @@
           "reproduction": "/private/tmp/pr45-shutter-gap-composition.json"
         },
         "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449051",
-        "repairEvidence": "docs/pr-45-fix-results.json"
+        "repairEvidence": "docs/pr-45-fix-results.json",
+        "repairStatus": "fixed"
       }
     ],
     "scopeCreepFindings": [],
     "excludedCandidate": "Persisting source-density and protected-framing checks after arbitrary native edits was not reported: reference documentation distinguishes initial adaptation validation from the narrower persisted coverage declaration."
   },
-  "scope": "Read-only review of the resolved PR diff. No review finding was repaired in this conflict-resolution task. Pixel reproductions independently verified on both backends; no performance tuning or baseline regeneration.",
+  "scope": "Original review findings and real-pixel reproductions retained. Follow-up repairs and final focused verification are recorded in docs/pr-45-fix-results.json.",
   "findingCounts": {
     "standards": 1,
     "spec": 1
   },
-  "reviewId": 5447731207
+  "reviewId": 5447731207,
+  "remainingFindings": 0,
+  "repairCommits": {
+    "primitiveBlur": "a99be1f7fa3d48c8521f647ffcbbbbfa84fcb157",
+    "shutterCoverage": "commit containing the final repair record"
+  }
 }

@@ -10,6 +10,8 @@ import {
   type RevealImageNode,
 } from "../../reveal-validation.ts";
 import { evaluateComp } from "../evaluate/evaluate.ts";
+import { evaluateCompositionExposure } from "../evaluate/exposure.ts";
+import type { EvaluatedLayerTree } from "../evaluate/types.ts";
 import { projectLocalPoint } from "../evaluate/spatial-geometry.ts";
 
 const id = z.string().regex(/^[a-zA-Z][\w-]*$/);
@@ -104,14 +106,12 @@ export function validateCinematicCompositionCoverage(
         background,
       );
   }
-  let previousFrame = NaN;
-  let tree: ReturnType<typeof evaluateComp>;
-  const project = (node: RevealImageNode, frame: number) => {
-    if (frame !== previousFrame) {
-      tree = evaluateComp(composition, frame);
-      previousFrame = frame;
-    }
-    const state = tree!.layers.find((state) => state.id === node.id);
+  const planeState = (
+    tree: EvaluatedLayerTree,
+    node: RevealImageNode,
+    frame: number,
+  ) => {
+    const state = tree.layers.find((state) => state.id === node.id);
     const matrix = state?.projection?.affineMatrix;
     if (
       !state?.visible ||
@@ -126,11 +126,10 @@ export function validateCinematicCompositionCoverage(
         node.id,
         frame,
       );
-    return { left: matrix[4], top: matrix[5], scale: matrix[0] };
+    return state;
   };
-  for (let frame = 0; frame < composition.frameCount; frame++) {
-    project(cover, frame);
-    const state = tree!.layers.find((state) => state.id === background)!;
+  const checkBackground = (tree: EvaluatedLayerTree, frame: number) => {
+    const state = planeState(tree, cover, frame);
     const a = projectLocalPoint(state.projection!, [left, top])!;
     const b = projectLocalPoint(state.projection!, [
       left + width,
@@ -145,6 +144,12 @@ export function validateCinematicCompositionCoverage(
       b[1] < composition.height + padding - 0.001
     )
       fail("Cinematic camera exposes uncovered background", background, frame);
+  };
+  for (let frame = 0; frame < composition.frameCount; frame++) {
+    checkBackground(evaluateComp(composition, frame), frame);
+    if (composition.motionBlur?.enabled && composition.motionBlur.shutterAngle)
+      for (const exposure of evaluateCompositionExposure(composition, frame))
+        checkBackground(exposure, frame);
   }
   if (!reveal) return;
   if (reveal.settleFrame >= composition.frameCount)
@@ -153,6 +158,16 @@ export function validateCinematicCompositionCoverage(
   const occluders = reveal.occluders.map(node);
   for (const image of [subject, ...occluders])
     for (const source of image.states) pixels(source.asset);
+  let previousFrame = NaN;
+  let tree: EvaluatedLayerTree;
+  const project = (node: RevealImageNode, frame: number) => {
+    if (frame !== previousFrame) {
+      tree = evaluateComp(composition, frame);
+      previousFrame = frame;
+    }
+    const matrix = planeState(tree!, node, frame).projection!.affineMatrix!;
+    return { left: matrix[4], top: matrix[5], scale: matrix[0] };
+  };
   try {
     return inspectProjectedReveal(
       {

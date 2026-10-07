@@ -24,6 +24,7 @@ import {
   cinematicEffectVariants,
   cinematicFocusVariants,
 } from "../helpers/composition-cinematic-effects.ts";
+import { compositionCinematicCoverageAcceptance } from "../helpers/composition-cinematic-coverage-acceptance.ts";
 import { cinematicInspectorAcceptance } from "./cinematic-inspector.ts";
 import {
   cameraHardwarePreview,
@@ -73,6 +74,19 @@ const reports: unknown[] = [],
 let environment: Awaited<ReturnType<typeof probeRenderEnvironment>> | undefined;
 let totalFrames = 0;
 try {
+  const coveragePage = await browser.newPage();
+  try {
+    await coveragePage.addInitScript("window.__name = (fn) => fn;");
+    await coveragePage.goto(server.resolvedUrls!.local[0]!);
+    const coverage = await compositionCinematicCoverageAcceptance(
+      coveragePage,
+      backends as Render.CompositionBackend[],
+    );
+    console.log(`Cinematic coverage: ${JSON.stringify(coverage.reports)}`);
+    reports.push({ id: "cinematic-coverage", reports: coverage.reports });
+  } finally {
+    await coveragePage.close();
+  }
   for (const entry of fixtures) {
     const path = resolve(root, entry.path),
       original = CinematicSceneSchema.parse(
