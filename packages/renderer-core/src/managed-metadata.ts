@@ -60,6 +60,28 @@ export function releaseRenderMetadata(value: object): void {
   metadataLeases.get(value)?.release();
 }
 
+/** Keep normalization copies in the current serializer's temporary ownership. */
+export function copySerializationMetadata<T extends object>(
+  value: object,
+  addedProperties: number,
+  factory: () => T,
+): T {
+  const phase = serialization;
+  if (!phase) return factory();
+  let properties = addedProperties;
+  for (const key in value) if (Object.hasOwn(value, key)) properties++;
+  const lease = phase.memory.reserve("metadata", 64 + properties * 16);
+  try {
+    const result = factory();
+    phase.memory.adopt(result, lease);
+    phase.temporary.push(lease);
+    return result;
+  } catch (error) {
+    lease.release();
+    throw error;
+  }
+}
+
 // JSON unboxes these after the replacer, including the original numeric/string coercion.
 function unboxJsonPrimitive(value: unknown): unknown {
   if (value === null || typeof value !== "object" || Array.isArray(value))

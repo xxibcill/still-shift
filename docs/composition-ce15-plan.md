@@ -478,6 +478,32 @@ actual production admission remain pending. RPC lifetime coverage here does not
 claim complete production transport admission, aggregate memory, speed or full-gate
 acceptance. CE15 completion/PR and all CE14 remain in the approved mission.
 
+## Accepted retained source metadata checkpoint — 2026-10-08
+
+Source-cache canonical key strings and original prepared-state shallow copies now
+reserve metadata before emission/copy. Pending miss keys survive failed preview
+scratch rollback; completed entries retain those owners and duplicate hit keys
+release immediately. Native UTF8/SHA256 inputs, digest backing and original hex
+construction reserve before their producers and detach actual temporary backing.
+Original state Maps/Sets, pending requests, entry/counter rows and independent
+snapshot copies grow or allocate only after their declared capacity is admitted.
+
+Build, lint, boundaries and 99 focused tests pass, including original null errors,
+quota-before-producer, multiple misses, late native completion and disposal during
+preparation. Review repaired a scratch-phase cleanup gap after disposed state.
+All 144 audit cases / 8,000 exact comparisons pass with original native count and
+protected failure checks. The 24 managed source groups / 1,504 comparisons retain
+complete source statistics across 96 actual page RPC returns, then release all
+owned bytes on acknowledgement while Node copies remain intact. Original WebGL,
+69 affected typography tests, 12 provider cases / 60 frames and eight typography
+fixtures pass; glyph 1.467095× meets unchanged 1.5 maximum. All 64 public exports
+preserve 768 complete PNG bodies and decoded frames against pushed `741e976`.
+
+Selected logical source metadata is admitted. Root/Surface/provider keys, graph/
+font structures, pixel checksum metadata, ledger control, Node protocol/results
+and production/aggregate admission remain pending. No speed or full-gate acceptance
+is claimed. [Evidence](./composition-ce15-source-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

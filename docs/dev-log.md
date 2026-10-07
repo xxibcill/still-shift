@@ -90,13 +90,14 @@ still hold before relying on them.
   Glyph 1.383989× meets unchanged 1.5×. Native capture/upload admission now passes
   70 tests, the complete audit, six native complete-body oracles, twelve failure
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
-  Owned submission key/member/row/Map/stack/snapshot metadata now passes 90 focused
-  tests, the complete audit and 22 new native frames with actual RPC acknowledgement.
-  The native WebGL measurement Canvas releases after preparation; post-preview
-  pixels are zero. Original WebGL/typography/provider checks and 64 public exports /
-  768 prior-exact bodies/frames pass; glyph 1.439058× meets unchanged 1.5 maximum.
-  Remaining cache/graph/font/ledger-control/Node metadata integration, actual
-  production admission, aggregate memory, the actual
+  Owned submission and source key/control/counter/snapshot metadata now passes
+  99 focused tests, the complete audit, 22 native submission frames and 96 managed
+  source RPC returns with actual acknowledgement. Preparation after/during disposal
+  ends its scratch phase and preserves original null failures. Original WebGL,
+  69 typography tests, provider checks and 64 exports / 768 prior-exact bodies and
+  frames pass; glyph 1.467095× meets unchanged 1.5 maximum. Remaining Root/Surface/
+  provider/graph/font/checksum/ledger-control/Node metadata and actual production
+  admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -330,6 +331,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 retained source metadata and RPC acknowledgement
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `741e976`.
+- **Done:** owned canonical keys/SHA/normalization, source Map/Set/request/entry/
+  counter/snapshot capacity and real RPC acknowledgement. Repaired preparation
+  phase cleanup when source state is disposed, preserving original null failures.
+- **Results:** build/lint/boundaries, 99 focused / 69 typography tests; complete
+  144-case / 8,000-frame audit, 96 managed RPC returns, original WebGL/provider/
+  typography checks and 64 exports / 768 prior-exact bodies/frames pass. Glyph
+  1.467095× meets unchanged 1.5 maximum.
+- **Next:** remaining cache/graph/font/checksum/ledger/Node metadata, actual
+  production/aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [source metadata evidence](./composition-ce15-source-metadata-results.json).
 
 ### 2026-10-08 — CE15 retained submission metadata and native RPC lifetime
 

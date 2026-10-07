@@ -1,7 +1,81 @@
 import { describe, expect, it } from "vitest";
-import { compositionSurfaceVisualKey } from "../../packages/renderer-core/src/composition/render/surface-cache.ts";
+import {
+  compositionSurfaceVisualKey,
+  compositionSurfaceVisualMetadata,
+} from "../../packages/renderer-core/src/composition/render/surface-cache.ts";
+import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
+import { withManagedMemory } from "../../packages/renderer-core/src/managed-memory-context.ts";
 
 describe("cross-page composition surface identity", () => {
+  it("owns canonical text through explicit retention and preserves original normalization/getter/callback output", async () => {
+    let reads = 0,
+      keys = 0;
+    const content = {
+      type: "provider",
+      layer: { id: "p" },
+      time: 3,
+      sourceTime: 3,
+      get payload() {
+        reads++;
+        return { z: "ไทย", a: [null, true] };
+      },
+      effects: [
+        { effect: "blur.gaussian", params: { radius: 2.01, quality: 3 } },
+      ],
+    };
+    const key = () => {
+      keys++;
+      return "static";
+    };
+    const original = compositionSurfaceVisualKey(content, key);
+    expect(reads).toBe(1);
+    expect(keys).toBe(1);
+    reads = keys = 0;
+    const memory = new ManagedMemory({ pixels: 1, metadata: 65536 });
+    await withManagedMemory(memory, async () => {
+      memory.beginScratch();
+      const text = compositionSurfaceVisualMetadata(content, key);
+      expect(text.value).toBe(original);
+      expect(reads).toBe(1);
+      expect(keys).toBe(1);
+      expect(memory.statistics.reservations).toBe(1);
+      text.retain();
+      memory.endScratch();
+      expect(text.value).toBe(original);
+      text.release();
+      expect(text.value).toBe(undefined);
+      expect(memory.statistics.current.metadata).toBe(0);
+      memory.dispose();
+    });
+  });
+  it("denies prepared normalization before its original spread reads payload getters", async () => {
+    const memory = new ManagedMemory({ pixels: 1, metadata: 256 });
+    let reads = 0,
+      keys = 0;
+    await withManagedMemory(memory, async () => {
+      expect(() =>
+        compositionSurfaceVisualMetadata(
+          {
+            type: "provider",
+            layer: { id: "p" },
+            time: 3,
+            get payload() {
+              reads++;
+              return "original";
+            },
+          },
+          () => {
+            keys++;
+            return "static";
+          },
+        ),
+      ).toThrow("aggregate worker quota");
+      expect(reads).toBe(0);
+      expect(keys).toBe(1);
+      expect(memory.statistics.reservations).toBe(0);
+      memory.dispose();
+    });
+  });
   it("retains full definitions independently of allocation and visit order", () => {
     const state = {
       type: "text",

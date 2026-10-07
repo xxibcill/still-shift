@@ -1,5 +1,6 @@
 import { gaussianBoxWidth } from "./webgl-blur-kernel.ts";
 import type { ProviderContent, TextContent } from "./graph.ts";
+import { copySerializationMetadata } from "../../managed-metadata.ts";
 
 export type PreparedContentKey = (
   content: ProviderContent | TextContent,
@@ -19,15 +20,23 @@ export function preparedVisualState(
   ) {
     const key = contentKey?.(item as ProviderContent | TextContent);
     if (key !== undefined)
-      return { ...record, time: 0, sourceTime: 0, visualKey: key };
+      return copySerializationMetadata(record, 3, () => ({
+        ...record,
+        time: 0,
+        sourceTime: 0,
+        visualKey: key,
+      }));
   }
   if (record.effect === "blur.gaussian" && record.params) {
     const params = record.params as Record<string, unknown>;
     if (typeof params.radius === "number")
-      return {
+      return copySerializationMetadata(record, 0, () => ({
         ...record,
-        params: { ...params, radius: gaussianBoxWidth(params.radius) },
-      };
+        params: copySerializationMetadata(params, 0, () => ({
+          ...params,
+          radius: gaussianBoxWidth(params.radius as number),
+        })),
+      }));
   }
   return item;
 }

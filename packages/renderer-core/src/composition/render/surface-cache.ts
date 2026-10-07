@@ -1,5 +1,9 @@
 import { sha256Hex } from "../../browser-checksum.ts";
 import {
+  serializeRenderMetadata,
+  sortedMetadataObject,
+} from "../../managed-metadata.ts";
+import {
   executeGraph,
   type RenderBackend,
   type Surface,
@@ -64,7 +68,16 @@ export function compositionSurfaceVisualKey(
   value: unknown,
   key?: PreparedContentKey,
 ) {
-  return JSON.stringify(value, (_property, item: unknown) => {
+  return JSON.stringify(value, visualReplacer(key));
+}
+export function compositionSurfaceVisualMetadata(
+  value: unknown,
+  key?: PreparedContentKey,
+) {
+  return serializeRenderMetadata(value, visualReplacer(key));
+}
+function visualReplacer(key?: PreparedContentKey) {
+  return (_property: string, item: unknown) => {
     const normalized = preparedVisualState(item, key);
     if (
       normalized === null ||
@@ -72,12 +85,8 @@ export function compositionSurfaceVisualKey(
       Array.isArray(normalized)
     )
       return normalized;
-    return Object.fromEntries(
-      Object.entries(normalized).sort(([left], [right]) =>
-        left < right ? -1 : left > right ? 1 : 0,
-      ),
-    );
-  });
+    return sortedMetadataObject(normalized);
+  };
 }
 
 function candidatePath(candidate: Candidate) {

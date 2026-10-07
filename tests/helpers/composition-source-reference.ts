@@ -15,6 +15,15 @@ import {
 import { compositionSourceFixture } from "./composition-source-fixture.ts";
 import { compositionSurfaceExchange } from "../../packages/execution-runtime/src/composition-surface-client.ts";
 import { sha256Hex } from "../../packages/renderer-core/src/browser-checksum.ts";
+let pendingSourceMemory: ManagedMemory | undefined;
+export function acknowledgeManagedSourceMemory() {
+  const memory = pendingSourceMemory;
+  if (!memory) throw Error("No managed source RPC awaits acknowledgement");
+  pendingSourceMemory = undefined;
+  const before = memory.statistics;
+  memory.dispose();
+  return { before, after: memory.statistics };
+}
 
 export async function checkSharedCompositionSources(options: {
   backend: "canvas2d" | "webgl2";
@@ -27,6 +36,8 @@ export async function checkSharedCompositionSources(options: {
   scopeKey: string;
   baseUrl: string;
 }) {
+  if (pendingSourceMemory)
+    throw Error("The previous managed source RPC awaits acknowledgement");
   const { composition, svg } = options.variant
     ? await compositionTintFixture(options.software, options.variant)
     : await compositionSourceFixture(options.software, options.animated);
@@ -159,21 +170,23 @@ export async function checkSharedCompositionSources(options: {
     }
   };
   if (!memory) return renderCached();
+  let completed = false;
   try {
     const result = await withManagedMemory(memory, renderCached);
     const before = memory.statistics;
-    memory.dispose();
+    pendingSourceMemory = memory;
+    completed = true;
     return {
       ...result,
       managedMemory: {
         coverage:
           "Canvas/GPU renderer and verified asset/font admission; production integration pending",
         before,
-        after: memory.statistics,
+        after: undefined as ManagedMemory["statistics"] | undefined,
       },
     };
   } finally {
-    memory.dispose();
+    if (!completed) memory.dispose();
   }
 }
 

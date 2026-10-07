@@ -367,7 +367,29 @@ try {
             ),
           );
           assert.deepEqual(failures, []);
-          if (managed)
+          if (managed) {
+            const copiesBefore = outcomes.map((outcome) =>
+              JSON.stringify(outcome.sourceStatistics),
+            );
+            const acknowledgements = await Promise.all(
+              workers.map(({ page }) =>
+                page.evaluate(async () => {
+                  const url = "/tests/helpers/composition-source-reference.ts";
+                  return (
+                    (await import(url)) as typeof SourceChecks
+                  ).acknowledgeManagedSourceMemory();
+                }),
+              ),
+            );
+            for (let worker = 0; worker < outcomes.length; worker++) {
+              const outcome = outcomes[worker]!;
+              assert.ok("managedMemory" in outcome && outcome.managedMemory);
+              outcome.managedMemory.after = acknowledgements[worker]!.after;
+              assert.equal(
+                JSON.stringify(outcome.sourceStatistics),
+                copiesBefore[worker],
+              );
+            }
             for (const outcome of outcomes) {
               assert.ok("managedMemory" in outcome);
               assert.ok(outcome.managedMemory);
@@ -376,9 +398,12 @@ try {
                 outcome.managedMemory.before.peak.pixels <=
                   outcome.managedMemory.before.limits.pixels,
               );
+              assert.ok(outcome.managedMemory.after);
               assert.equal(outcome.managedMemory.after.current.pixels, 0);
+              assert.equal(outcome.managedMemory.after.current.metadata, 0);
               assert.equal(outcome.managedMemory.after.reservations, 0);
             }
+          }
           const totals = (kind: string, field: "paints" | "restores") =>
             outcomes.reduce(
               (sum, result) =>

@@ -6,14 +6,21 @@ import {
   renderMemory,
 } from "../../managed-memory-context.ts";
 import { sha256Hex } from "../../browser-checksum.ts";
+import { hashRenderMetadata } from "../../managed-metadata-hash.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+  resizeRenderMetadata,
+  type ManagedMetadataText,
+} from "../../managed-metadata.ts";
 import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
 import {
-  compositionSurfaceVisualKey,
+  compositionSurfaceVisualMetadata,
   type CompositionSurfaceCacheOptions,
 } from "./surface-cache.ts";
 
 type Request = {
-  signature: string;
+  signature: ManagedMetadataText;
   kind: string;
   width: number;
   height: number;
@@ -29,22 +36,28 @@ class PendingSource {
 
 /** Async rendezvous around unchanged synchronous preparation kernels. */
 export class CompositionSourceCache {
-  private readonly entries = new Map<string, HTMLCanvasElement>();
-  private readonly counts = new Map<
-    string,
-    {
-      paints: number;
-      restores: number;
-      reuses: number;
-      paintAndReadbackMs: number;
-      restoreMs: number;
-    }
-  >();
+  private readonly state: {
+    entries: Map<
+      string,
+      { canvas: HTMLCanvasElement; signature: ManagedMetadataText }
+    >;
+    counts: Map<
+      string,
+      {
+        paints: number;
+        restores: number;
+        reuses: number;
+        paintAndReadbackMs: number;
+        restoreMs: number;
+      }
+    >;
+    active: Set<HTMLCanvasElement>;
+    pending: Set<PendingSource>;
+  };
   private retainedBytes = 0;
   private peakPayloadBytes = 0;
   private closed = false;
   private preparing = false;
-  private readonly active = new Set<HTMLCanvasElement>();
   constructor(private readonly options: CompositionSurfaceCacheOptions) {
     if (
       !/^sha256:[a-f0-9]{64}$/.test(options.scopeKey) ||
@@ -53,18 +66,66 @@ export class CompositionSourceCache {
       options.byteLimit > 128 * 1024 * 1024
     )
       throw Error("Composition preparation cache configuration is invalid");
+    // Class/state controls plus the original two Maps/two Sets; grow before mutation.
+    this.state = allocateRenderMetadata(
+      768,
+      () => ({
+        entries: new Map(),
+        counts: new Map(),
+        active: new Set(),
+        pending: new Set(),
+      }),
+      false,
+      () => this.clear(),
+    );
+  }
+  private resize(
+    entries = this.state.entries.size,
+    counts = this.state.counts.size,
+    active = this.state.active.size,
+    pending = this.state.pending.size,
+  ) {
+    resizeRenderMetadata(
+      this.state,
+      768 + (entries + counts) * 64 + (active + pending) * 40,
+    );
+  }
+  private drop(canvas: HTMLCanvasElement) {
+    releaseRenderCanvas(canvas);
+    if (canvas.width || canvas.height) canvas.width = canvas.height = 0;
+  }
+  private clear() {
+    this.closed = true;
+    for (const pending of this.state.pending) {
+      pending.request.signature.release();
+      releaseRenderMetadata(pending);
+    }
+    this.state.pending.clear();
+    for (const canvas of this.state.active) this.drop(canvas);
+    this.state.active.clear();
+    for (const entry of this.state.entries.values()) {
+      entry.signature.release();
+      this.drop(entry.canvas);
+      releaseRenderMetadata(entry);
+    }
+    this.state.entries.clear();
+    for (const counts of this.state.counts.values())
+      releaseRenderMetadata(counts);
+    this.state.counts.clear();
+    this.retainedBytes = 0;
   }
   readonly read: CanvasPixelSource = (request, paint, restore) => {
     this.assertOpen();
-    const signature = compositionSurfaceVisualKey([
+    const signature = compositionSurfaceVisualMetadata([
       "composition-source-pixels-1",
       this.options.scopeKey,
       request,
     ]);
-    const entry = this.entries.get(signature);
+    const entry = this.state.entries.get(signature.value!);
     if (entry) {
-      this.counts.get(request.kind)!.reuses++;
-      return entry;
+      signature.release();
+      this.state.counts.get(request.kind)!.reuses++;
+      return entry.canvas;
     }
     const bytes = request.width * request.height * 4;
     if (
@@ -73,20 +134,43 @@ export class CompositionSourceCache {
       request.height < 1 ||
       !Number.isInteger(request.width) ||
       !Number.isInteger(request.height) ||
-      this.entries.size >= 4096 ||
+      this.state.entries.size >= 4096 ||
       bytes * 2 + this.retainedBytes > this.options.byteLimit
-    )
+    ) {
+      signature.release();
       throw Error(
         "Composition preparation pixels exceed their local byte/entry bound",
       );
-    throw new PendingSource(this, {
-      signature,
-      kind: request.kind,
-      width: request.width,
-      height: request.height,
-      paint,
-      restore,
-    });
+    }
+    let pending: PendingSource | undefined;
+    try {
+      signature.retain();
+      this.resize(undefined, undefined, undefined, this.state.pending.size + 1);
+      pending = allocateRenderMetadata(
+        256,
+        () =>
+          new PendingSource(this, {
+            signature,
+            kind: request.kind,
+            width: request.width,
+            height: request.height,
+            paint,
+            restore,
+          }),
+        true,
+      );
+      this.state.pending.add(pending);
+    } catch (error) {
+      signature.release();
+      if (pending) releaseRenderMetadata(pending);
+      try {
+        this.resize();
+      } catch {
+        /* Preserve the original admission error. */
+      }
+      throw error;
+    }
+    throw pending;
   };
   private assertOpen() {
     this.options.signal?.throwIfAborted();
@@ -101,29 +185,60 @@ export class CompositionSourceCache {
     const memory = renderMemory();
     const ownsScratch = memory && !memory.hasScratch;
     if (ownsScratch) memory.beginScratch();
+    let identity: ManagedMetadataText | undefined;
+    let retained = false;
+    let failed = false;
     try {
       this.assertOpen();
       const request = error.request;
       const bytes = request.width * request.height * 4;
-      const key =
-        "sha256:" +
-        (await sha256Hex(new TextEncoder().encode(request.signature).buffer));
-      const claim = await this.options.exchange.claim({
-        path: `source:${request.kind}:${key.slice(7)}`,
-        key,
-        width: request.width,
-        height: request.height,
-        encoding: "rgba8-straight",
-      });
+      identity = await hashRenderMetadata(request.signature.value!);
+      const key = identity.value!;
+      const body = allocateRenderMetadata(
+        416 + request.kind.length * 2,
+        () => ({
+          path: `source:${request.kind}:${key.slice(7)}`,
+          key,
+          width: request.width,
+          height: request.height,
+          encoding: "rgba8-straight" as const,
+        }),
+      );
+      let claim: Awaited<
+        ReturnType<CompositionSurfaceCacheOptions["exchange"]["claim"]>
+      >;
+      try {
+        claim = await this.options.exchange.claim(body);
+      } finally {
+        releaseRenderMetadata(body);
+      }
       this.assertOpen();
-      const counts = this.counts.get(request.kind) ?? {
-        paints: 0,
-        restores: 0,
-        reuses: 0,
-        paintAndReadbackMs: 0,
-        restoreMs: 0,
-      };
-      this.counts.set(request.kind, counts);
+      let counts = this.state.counts.get(request.kind);
+      if (!counts) {
+        this.resize(undefined, this.state.counts.size + 1);
+        try {
+          counts = allocateRenderMetadata(
+            144,
+            () => ({
+              paints: 0,
+              restores: 0,
+              reuses: 0,
+              paintAndReadbackMs: 0,
+              restoreMs: 0,
+            }),
+            true,
+          );
+          this.state.counts.set(request.kind, counts);
+        } catch (error) {
+          if (counts) releaseRenderMetadata(counts);
+          try {
+            this.resize();
+          } catch {
+            /* Preserve the original allocation error. */
+          }
+          throw error;
+        }
+      }
       let canvas: HTMLCanvasElement;
       if (claim.kind === "uncached")
         throw Error(
@@ -139,20 +254,22 @@ export class CompositionSourceCache {
             "Composition preparation pixels differ from their checksum or dimensions",
           );
         this.assertOpen();
+        this.resize(undefined, undefined, this.state.active.size + 1);
         const start = performance.now();
         canvas = request.restore(claim.bytes);
         releaseRenderPixels(claim.bytes);
         counts.restoreMs += performance.now() - start;
-        this.active.add(canvas);
+        this.state.active.add(canvas);
         counts.restores++;
       } else {
         if (claim.byteLength !== bytes)
           throw Error(
             "Composition preparation lease has incorrect storage size",
           );
+        this.resize(undefined, undefined, this.state.active.size + 1);
         const start = performance.now();
         canvas = request.paint();
-        this.active.add(canvas);
+        this.state.active.add(canvas);
         if (canvas.width !== request.width || canvas.height !== request.height)
           throw Error("Composition preparation paint dimensions differ");
         const context = canvas.getContext("2d");
@@ -180,44 +297,76 @@ export class CompositionSourceCache {
       this.assertOpen();
       if (canvas.width !== request.width || canvas.height !== request.height)
         throw Error("Composition preparation restored dimensions differ");
-      this.entries.set(request.signature, canvas);
       retainRenderCanvas(canvas);
-      this.active.delete(canvas);
+      this.resize(this.state.entries.size + 1);
+      const entry = allocateRenderMetadata(
+        96,
+        () => ({ canvas, signature: request.signature }),
+        true,
+      );
+      this.state.entries.set(request.signature.value!, entry);
+      retained = true;
+      this.state.active.delete(canvas);
       this.retainedBytes += bytes;
       this.peakPayloadBytes = Math.max(this.peakPayloadBytes, bytes);
       return true;
     } catch (reason) {
-      for (const canvas of this.active) {
-        canvas.width = canvas.height = 0;
-        releaseRenderCanvas(canvas);
+      failed = true;
+      for (const canvas of this.state.active) {
+        try {
+          this.drop(canvas);
+        } catch {
+          /* Preserve the original preparation error. */
+        }
       }
-      this.active.clear();
+      this.state.active.clear();
       throw reason;
     } finally {
+      identity?.release();
+      if (!retained) error.request.signature.release();
+      this.state.pending.delete(error);
+      releaseRenderMetadata(error);
       this.preparing = false;
-      if (ownsScratch) memory.endScratch();
+      if (!failed) this.finishPreparation(ownsScratch === true, memory);
+      else {
+        try {
+          this.finishPreparation(ownsScratch === true, memory);
+        } catch {
+          /* Preserve the original preparation failure. */
+        }
+      }
+    }
+  }
+  private finishPreparation(
+    ownsScratch: boolean,
+    memory: ReturnType<typeof renderMemory>,
+  ) {
+    try {
+      this.resize();
+    } finally {
+      if (ownsScratch && memory?.hasScratch) memory.endScratch();
     }
   }
   get statistics() {
-    return {
-      retainedCanvasBytes: this.retainedBytes,
-      peakPayloadBytes: this.peakPayloadBytes,
-      sources: [...this.counts].map(([kind, counts]) => ({ kind, ...counts })),
-    };
+    return allocateRenderMetadata(
+      192 + this.state.counts.size * 224,
+      () => ({
+        retainedCanvasBytes: this.retainedBytes,
+        peakPayloadBytes: this.peakPayloadBytes,
+        sources: [...this.state.counts].map(([kind, counts]) => ({
+          kind,
+          ...counts,
+        })),
+      }),
+      false,
+      (value) => {
+        value.sources.length = 0;
+      },
+    );
   }
   dispose() {
     if (this.closed) return;
-    this.closed = true;
-    for (const canvas of this.active) {
-      canvas.width = canvas.height = 0;
-      releaseRenderCanvas(canvas);
-    }
-    this.active.clear();
-    for (const canvas of this.entries.values()) {
-      canvas.width = canvas.height = 0;
-      releaseRenderCanvas(canvas);
-    }
-    this.entries.clear();
-    this.retainedBytes = 0;
+    this.clear();
+    releaseRenderMetadata(this.state);
   }
 }
