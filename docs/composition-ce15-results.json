@@ -557,5 +557,13 @@
     "independentPreviewEncodes": 14,
     "originalFailureReasons": 16,
     "completeLocalGate": "pending"
+  },
+  "cacheFoundation": {
+    "status": "foundation-passed; renderer integration pending",
+    "record": "docs/composition-ce15-cache-results.json",
+    "relevantFingerprint": "929c6f4df7c0ee8dafee4db7b56e8e3e6040ffa04384fa82669c8131f885f2e2",
+    "runtimeTests": 10,
+    "compositionAcceptance": "pending",
+    "speedProof": "pending"
   }
 }

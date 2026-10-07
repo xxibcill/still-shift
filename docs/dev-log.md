@@ -51,6 +51,9 @@ still hold before relying on them.
   completion order pass. Build/lint, 39 focused units/runtime tests, 65 affected
   media/CLI tests and existing WebGL export/native-media browser regressions pass.
   Rejected implicit precision/tag/alpha conversions and H264 CRF18 are retained.
+  The bounded surface-store foundation passes 10 runtime cases; renderer
+  integration and whole-export static paint counts remain pending. New Canvas
+  isolation and synchronous binary XHR are rejected with actual diagnostics.
   Global static caching, aggregate memory limits, bounded parallel export,
   statistics, the actual two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
@@ -285,6 +288,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 bounded surface-store foundation
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `62ec321`.
+- **Done:** export-owned immutable surface store, bounded file/chunk reservations,
+  verified raw byte/float32 data, producer leases and original-error cancellation.
+- **Results:** build/lint/boundaries and 10 runtime cases pass; four real renderer
+  processes share one prototype paint with exact bytes and overlapping work.
+- **Rejected:** added Canvas isolation changes pixels by up to two levels;
+  synchronous binary document XHR throws. Use asynchronous preparation.
+- **Next:** actual renderer integration, complete global static paint proof,
+  aggregate memory, parallel delivery/statistics and 120-second 3× proof; final gate,
+  CE15 PR and CE14. No full milestone acceptance is claimed.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [cache evidence](./composition-ce15-cache-results.json).
 
 ### 2026-10-07 — CE15 explicit output profiles checkpoint
 

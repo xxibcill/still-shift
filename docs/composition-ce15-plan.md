@@ -54,6 +54,25 @@ and simple tag rewriting were rejected because they changed alpha or RGB samples
 [Detailed evidence](./composition-ce15-format-results.json) retains the attempts,
 checksums, scoped code fingerprint and actual reports. No CE15 full gate has run.
 
+## Accepted cache store foundation — 2026-10-07
+
+The export-owned immutable surface store passes build, lint, boundaries and 10
+runtime cases: producer/consumer leases, exact byte/float32 storage, foreign and
+duplicate publishers, changed state identity, aggregate reservations, bounded
+chunks, cancellation, original errors and foreign-file retention. Its counters
+measure actual leases, hits, waits and disk bytes. It has no renderer integration
+yet; these counters are not paint counts.
+
+Actual Canvas read/restore is exact across 65,536 source channel/alpha combinations
+and 15 transformed composites. New direct-draw isolation fails nine cases by up
+to two levels and is rejected. Synchronous binary document XHR throws in actual
+Chromium and is rejected. An asynchronous preparation/rendezvous prototype has
+four distinct actual renderer processes, overlapping native Canvas workloads,
+one canonical surface paint and three byte-identical consumers. This establishes
+a small protocol candidate, not composition/parallel acceptance or speedup.
+[Evidence](./composition-ce15-cache-results.json) retains both rejected paths.
+Full static layer/precomp coverage and integration remain mandatory below.
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
