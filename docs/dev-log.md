@@ -91,13 +91,14 @@ still hold before relying on them.
   70 tests, the complete audit, six native complete-body oracles, twelve failure
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
   Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
-  controls, vector/raster/framebuffer/readback/path/paint-bound/replay and recording
-  group metadata now pass 202 focused tests, the complete audit, 22 moving/blurred
-  and ten stationary native frames and 96 owned RPC snapshots. Original group
-  arrays/selected Sets/bounds reserve before producers, survive actual replay/
-  upload and clear at disposal; shared shadow data retains one body.
+  controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
+  group/command/mark/snapshot metadata now pass 210 focused tests, the complete
+  audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
+  snapshots. Original controls/clones pre-admit and survive actual consumers;
+  actual command/array/Set references clear. Two native snapshots preserve 3,072
+  exact RGBA bytes and release after scope/allocator exit; one quota failure passes.
   Original WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
-  bodies/frames pass; glyph 1.495784× meets unchanged 1.5 maximum.
+  bodies/frames pass; glyph 1.416804× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -333,6 +334,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 recording command/mark/snapshot metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `082e38a`.
+- **Done:** admit actual command/mark/painted/snapshot controls and original clones,
+  retain through consumers, clear owned references and release captured native Canvas.
+- **Results:** build/lint/boundaries, 210 focused / 69 typography tests; native 3,072
+  exact RGBA bytes, two real snapshots, scope/allocator cleanup and one quota failure;
+  144 audit cases / 8,000 comparisons, 96 RPC snapshots, 22 moving/blurred and ten
+  stationary native frames, WebGL/providers and 64 prior-exact exports / 768 bodies/
+  frames pass. Glyph 1.416804× meets unchanged 1.5 maximum.
+- **Repair:** first run's updated result quota allowed production; restored the
+  intended one-byte denial before final checks. Original clone/native order stays.
+- **Next:** Proxy/rest-call/wrapper/controller/common helper and remaining runtime/
+  Node controls, production/aggregate admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [recording evidence](./composition-ce15-recording-metadata-results.json).
 
 ### 2026-10-08 — CE15 recording-group result metadata
 

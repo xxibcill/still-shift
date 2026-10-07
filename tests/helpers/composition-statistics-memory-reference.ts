@@ -4,6 +4,8 @@ import {
   withManagedMemory,
   createRenderCanvas,
   releaseRenderCanvas,
+  readRenderImageData,
+  releaseRenderPixels,
 } from "../../packages/renderer-core/src/managed-memory-context.ts";
 import { allocateRenderMetadata } from "../../packages/renderer-core/src/managed-metadata.ts";
 import {
@@ -12,6 +14,11 @@ import {
   type CompositionPreview,
 } from "../../packages/renderer-core/src/index.ts";
 import { withManagedFrame } from "../../packages/execution-runtime/src/composition-frame-capture.ts";
+
+import {
+  recordVectorPaints,
+  replayVectorPaints,
+} from "../../packages/renderer-core/src/composition/render/webgl-vector-paints.ts";
 
 type Snapshot = ReturnType<NonNullable<CompositionPreview["renderStatistics"]>>;
 let pending: { memory: ManagedMemory; snapshot: Snapshot } | undefined;
@@ -132,12 +139,175 @@ async function checkStationaryFrameMemory(backend: "canvas2d" | "webgl2") {
   }
 }
 
+async function checkRecordingSnapshotMemory() {
+  const memory = new ManagedMemory({
+    pixels: 64 * 1024 * 1024,
+    metadata: 4 * 1024 * 1024,
+  });
+  let recording: ReturnType<typeof recordVectorPaints> | undefined;
+  let snapshot: HTMLCanvasElement | undefined;
+  let exactBytes = 0,
+    failures = 0;
+  await withManagedMemory(memory, async () => {
+    const target = createRenderCanvas(),
+      source = createRenderCanvas(),
+      output = createRenderCanvas();
+    for (const canvas of [target, source, output]) {
+      canvas.width = 32;
+      canvas.height = 24;
+    }
+    const image = source.getContext("2d")!;
+    image.fillStyle = "#b739636d";
+    image.fillRect(3, 4, 16, 8);
+    recording = recordVectorPaints(target.getContext("2d")!, {
+      left: 0,
+      top: 0,
+      right: 32,
+      bottom: 24,
+    });
+    recording.context.drawImage(source, 0, 0);
+    const groups = recording.groups()!,
+      command = groups[0]!.commands[0]!;
+    if (!("method" in command))
+      throw Error("Native snapshot command is not a method");
+    snapshot = command.args[0] as HTMLCanvasElement;
+    if (
+      snapshot === source ||
+      !memory.owns(snapshot) ||
+      snapshot.width !== 32 ||
+      snapshot.height !== 24
+    )
+      throw Error("Native snapshot backing is not independently owned");
+    image.clearRect(0, 0, 32, 24);
+    replayVectorPaints(output.getContext("2d")!, groups[0]!);
+    const expected = readRenderImageData(
+        target.getContext("2d")!,
+        0,
+        0,
+        32,
+        24,
+      ),
+      actual = readRenderImageData(output.getContext("2d")!, 0, 0, 32, 24);
+    try {
+      if (actual.data.length !== expected.data.length)
+        throw Error("Native snapshot pixel lengths differ");
+      for (let i = 0; i < actual.data.length; i++)
+        if (actual.data[i] !== expected.data[i])
+          throw Error(`Native snapshot changed pixel byte ${i}`);
+      exactBytes = actual.data.length;
+    } finally {
+      releaseRenderPixels(expected.data);
+      releaseRenderPixels(actual.data);
+    }
+    const before = memory.statistics.current,
+      blocker = memory.reserve(
+        "pixels",
+        memory.limits.pixels - before.pixels - 179999,
+      );
+    try {
+      let failed = false;
+      try {
+        recording.context.drawImage(source, 0, 0);
+      } catch (error) {
+        failed = true;
+        if (
+          !(error instanceof Error) ||
+          !error.message.includes("aggregate worker quota")
+        )
+          throw error;
+        failures++;
+      }
+      if (!failed)
+        throw Error(
+          "Native snapshot pixel quota did not stop its original producer",
+        );
+    } finally {
+      blocker.release();
+    }
+    if (
+      memory.statistics.current.pixels !== before.pixels ||
+      memory.statistics.current.metadata !== before.metadata ||
+      command.args[0] !== snapshot ||
+      snapshot.width !== 32
+    )
+      throw Error("Failed native snapshot changed prior owners");
+    releaseRenderCanvas(target);
+    releaseRenderCanvas(source);
+    releaseRenderCanvas(output);
+  });
+  if (!recording || !snapshot || !memory.owns(snapshot))
+    throw Error("Native recording snapshot was lost after scope exit");
+  recording.dispose();
+  if (
+    snapshot.width ||
+    snapshot.height ||
+    memory.statistics.current.pixels ||
+    memory.statistics.current.metadata ||
+    memory.statistics.reservations
+  )
+    throw Error(
+      "Native snapshot backing/control survived scope-exit recording disposal",
+    );
+  memory.dispose();
+  const second = new ManagedMemory({
+    pixels: 64 * 1024 * 1024,
+    metadata: 4 * 1024 * 1024,
+  });
+  await withManagedMemory(second, async () => {
+    const target = createRenderCanvas(),
+      source = createRenderCanvas();
+    target.width = source.width = 32;
+    target.height = source.height = 24;
+    const recording = recordVectorPaints(target.getContext("2d")!, {
+      left: 0,
+      top: 0,
+      right: 32,
+      bottom: 24,
+    });
+    recording.context.drawImage(source, 0, 0);
+    const groups = recording.groups()!,
+      command = groups[0]!.commands[0]!;
+    if (!("method" in command))
+      throw Error("Native disposal snapshot command missing");
+    const snapshot = command.args[0] as HTMLCanvasElement,
+      selected = groups[0]!.selected,
+      commands = groups[0]!.commands;
+    second.dispose();
+    recording.dispose();
+    if (
+      snapshot.width ||
+      snapshot.height ||
+      groups.length ||
+      selected.size ||
+      commands.length ||
+      second.statistics.current.pixels ||
+      second.statistics.current.metadata ||
+      second.statistics.reservations
+    )
+      throw Error(
+        "Allocator-first native recording snapshot did not release actual references/backing",
+      );
+  });
+  return {
+    status: "passed" as const,
+    exactBytes,
+    protectedFailures: failures,
+    actualSnapshotCopies: 2,
+    disposedAfterScope: true,
+    allocatorFirst: true,
+    after: memory.statistics,
+    allocatorAfter: second.statistics,
+  };
+}
+
 /** The actual page result retains its owned snapshot until the Node caller acknowledges its completed RPC. */
 export async function checkManagedSubmissionMemory(
   backend: "canvas2d" | "webgl2",
 ) {
   if (pending)
     throw Error("A native statistics RPC is still awaiting acknowledgement");
+  const recordingSnapshots =
+    backend === "webgl2" ? await checkRecordingSnapshotMemory() : undefined;
   const stationaryFrames = await checkStationaryFrameMemory(backend);
   const resources = await loadCompositionResources(fixture, (id) => id);
   const baseline = createCompositionPreview(
@@ -213,6 +383,7 @@ export async function checkManagedSubmissionMemory(
         backend,
         frameChecks,
         stationaryFrames,
+        recordingSnapshots,
         exactOriginalNativePixels: true,
         ownedThroughRpc: memory.owns(snapshot),
         beforeRpc: memory.statistics,

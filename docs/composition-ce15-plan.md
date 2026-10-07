@@ -835,6 +835,33 @@ snapshot and shared runtime/Node/production admission, aggregate memory, authent
 speed and complete gate remain pending.
 [Evidence](./composition-ce15-groups-metadata-results.json).
 
+## Accepted recording command/mark/snapshot checkpoint — 2026-10-08
+
+Actual recording state/command/mark/snapshot arrays/painted Set reserve 512 before
+construction. Original marks (104), painted integer entries (40), snapshot slots
+(8), property rows (104 + 2*key length) and method/arg/clone rows (136 + 8*args +
+2*method length + 192 per native Path2D/matrix clone + 32 + 8*length per array copy)
+reserve before original producers. Original snapshot argument copies reserve
+96 + 16\*args before slice/spread and remain through consumption. Original native
+clone/map/Reflect.apply, callback/property/mark/deferred/group order stays. Actual
+owned arrays/Sets/snapshot references clear at disposal, preserving borrowed
+inputs. Captured native snapshot release works after scope exit or allocator-first
+cleanup; partial native/metadata failure restores capacity and preserves null.
+
+Build/lint/boundaries and 210 focused tests pass, including eight recording
+regressions. Real Canvas probe preserves all 3,072 original/replayed RGBA bytes
+through source mutation, releases two actual snapshots after scope/allocator exit
+and preserves prior owners under one native pixel-quota failure. Complete audit
+144/8,000, 96 RPC snapshots, 22 moving/blurred and ten stationary native frames,
+original WebGL, 69 typography tests, 12 providers / 60 frames and eight fixtures
+pass; glyph 1.416804× meets unchanged 1.5 maximum. All 64 exports preserve 768
+complete bodies/frames against pushed `082e38a`. First focused run found an
+updated result-quota fixture that permitted production; repaired to the intended
+one-byte denial before final focused/native checks. Proxy/rest-call arguments/
+method wrappers/controller/common helper and remaining runtime/Node/production/
+aggregate/speed/full-gate admission remain pending.
+[Evidence](./composition-ce15-recording-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

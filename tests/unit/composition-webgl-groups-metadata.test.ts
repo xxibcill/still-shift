@@ -113,6 +113,11 @@ it("keeps original merged bounds and selected commands admitted through actual r
       right: 24,
       bottom: 14,
     });
+    const commands = groups[0]!.commands;
+    const firstCommand = commands[0]!;
+    const args = "method" in firstCommand ? firstCommand.args : undefined;
+    expect(commands).toHaveLength(2);
+    expect(args).toEqual([1, 1, 2, 2]);
     const retained = memory.statistics.current.metadata;
     expect(retained).toBeGreaterThan(before);
     fillRect.mockClear();
@@ -127,6 +132,8 @@ it("keeps original merged bounds and selected commands admitted through actual r
     recording.dispose();
     expect(groups).toHaveLength(0);
     expect(selected.size).toBe(0);
+    expect(commands).toHaveLength(0);
+    expect(args).toHaveLength(0);
     memory.endScratch();
     expect(memory.statistics.current.metadata).toBe(0);
     expect(memory.statistics.reservations).toBe(0);
