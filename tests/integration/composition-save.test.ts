@@ -6,15 +6,19 @@ import {
   stat,
   writeFile,
 } from "node:fs/promises";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
+import { spawn } from "node:child_process";
 import { tmpdir } from "node:os";
 import { expect, it } from "vitest";
+import { createServer } from "vite";
+import { compositionApi } from "../../apps/lab/composition-api.ts";
 import { loadProgram } from "../../tools/still-shift-cli/src/composition/program.ts";
 import {
   saveCompositionDocument,
   sourceHash,
 } from "../../tools/still-shift-cli/src/composition/save.ts";
 import { createProgramPreview } from "../../tools/still-shift-cli/src/composition/preview.ts";
+import { validateComposition } from "../../packages/scene-contract/src/index.ts";
 import type { Composition } from "../../packages/scene-contract/src/index.ts";
 const source: Composition = {
   schemaVersion: "composition-1",
@@ -184,8 +188,220 @@ it("default preview ports allow concurrent fixed-source sessions", async () => {
   ]);
   try {
     expect(new URL(apps[0]!.url).port).not.toBe(new URL(apps[1]!.url).port);
+    const replies = await Promise.all(
+      apps.map((app, index) =>
+        fetch(new URL("/composition/program-save", app.url), {
+          method: "POST",
+          headers: { "x-still-shift-composition": "1" },
+          body: JSON.stringify({
+            revision: app.snapshot()!.revision,
+            sourceSha256: app.snapshot()!.sourceSha256,
+            document: { ...source, name: `Author ${index}` },
+          }),
+        }),
+      ),
+    );
+    expect(replies.map((r) => r.status).sort()).toEqual([200, 409]);
+    const winner = await replies.find((r) => r.status === 200)!.json();
+    expect(JSON.parse(await readFile(input, "utf8"))).toEqual(
+      winner.snapshot.document,
+    );
   } finally {
     await Promise.all(apps.map((app) => app.close()));
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+it("rejects concurrent helper saves before either edit can overwrite the winner", async () => {
+  const root = await mkdtemp(join(tmpdir(), "composition-save-race-")),
+    input = join(root, "source.json"),
+    bytes = Buffer.from(JSON.stringify(source));
+  try {
+    for (let attempt = 0; attempt < 5; attempt++) {
+      await writeFile(input, bytes);
+      const results = await Promise.allSettled(
+        ["Author A", "Author B"].map((name) =>
+          saveCompositionDocument(input, source, sourceHash(bytes), {
+            ...source,
+            name,
+          }),
+        ),
+      );
+      expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
+      const rejected = results.find((r) => r.status === "rejected")!;
+      expect(rejected).toMatchObject({
+        reason: { status: 409, code: "comp-edit-conflict" },
+      });
+      const winner = results.find((r) => r.status === "fulfilled")!;
+      if (winner.status === "fulfilled")
+        expect(JSON.parse(await readFile(input, "utf8"))).toEqual(
+          winner.value.document,
+        );
+    }
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+it("guards one source across separate Node processes", async () => {
+  const root = await mkdtemp(join(tmpdir(), "composition-save-processes-")),
+    input = join(root, "source.json"),
+    bytes = Buffer.from(JSON.stringify(source)),
+    runner = join(root, "save.mts");
+  await writeFile(input, bytes);
+  await writeFile(
+    runner,
+    `
+    import { saveCompositionDocument } from ${JSON.stringify(resolve("tools/still-shift-cli/src/composition/save.ts"))};
+    const [input, base, hash, name] = process.argv.slice(2);
+    console.log("ready");
+    await new Promise(resolve => process.stdin.once("data", resolve));
+    try {
+      const result = await saveCompositionDocument(input, JSON.parse(base), hash, { ...JSON.parse(base), name });
+      console.log(JSON.stringify({ status: 200, name: result.document.name }));
+    } catch (error) { console.log(JSON.stringify({ status: error.status, code: error.code })); }
+  `,
+  );
+  const children = ["Author A", "Author B"].map((name) =>
+    spawn(process.execPath, [
+      "--import",
+      resolve("node_modules/tsx/dist/loader.mjs"),
+      runner,
+      input,
+      bytes.toString(),
+      sourceHash(bytes),
+      name,
+    ]),
+  );
+  try {
+    const ready = children.map(
+      (child) =>
+        new Promise<void>((yes, no) => {
+          child.stdout.once("data", () => yes());
+          child.once("error", no);
+        }),
+    );
+    const results = children.map(
+      (child) =>
+        new Promise<{ status: number; name?: string }>((yes, no) => {
+          let output = "",
+            stderr = "";
+          child.stdout.on("data", (chunk) => {
+            output += chunk.toString();
+          });
+          child.stderr.on("data", (chunk) => {
+            stderr += chunk.toString();
+          });
+          child.once("error", no);
+          child.once("close", (code) =>
+            code === 0
+              ? yes(JSON.parse(output.trim().split("\n").at(-1)!))
+              : no(new Error(stderr)),
+          );
+        }),
+    );
+    await Promise.all(ready);
+    children.forEach((child) => child.stdin.end("save"));
+    const replies = await Promise.all(results);
+    expect(replies.map((r) => r.status).sort()).toEqual([200, 409]);
+    expect(JSON.parse(await readFile(input, "utf8")).name).toBe(
+      replies.find((r) => r.status === 200)!.name,
+    );
+  } finally {
+    children.forEach((child) => child.kill());
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+it("retains native validation diagnostics across source save and both export APIs", async () => {
+  const root = await mkdtemp(join(tmpdir(), "composition-save-diagnostics-")),
+    input = join(root, "source.json");
+  await writeFile(input, JSON.stringify(source));
+  const app = await createProgramPreview(input);
+  const fixtureServer = await createServer({
+    configFile: false,
+    logLevel: "silent",
+    plugins: [compositionApi()],
+    server: { host: "127.0.0.1", port: 0 },
+  });
+  await fixtureServer.listen();
+  const invalid = structuredClone(source);
+  invalid.width = 0;
+  invalid.layers[0]!.transform!.opacity = 2;
+  const expected = validateComposition(invalid);
+  expect(expected.ok).toBe(false);
+  try {
+    const snapshot = app.snapshot()!;
+    for (const route of [
+      "/composition/program-save",
+      "/composition/program-export",
+      "/composition/export?scene=ce2/timing.json",
+    ]) {
+      const fixture = route.includes("?scene=");
+      const response = await fetch(
+        new URL(
+          route,
+          fixture ? fixtureServer.resolvedUrls!.local[0]! : app.url,
+        ),
+        {
+          method: "POST",
+          headers: { "x-still-shift-composition": "1" },
+          body: JSON.stringify(
+            fixture
+              ? { document: invalid, backend: "canvas2d" }
+              : route.endsWith("save")
+                ? {
+                    document: invalid,
+                    revision: snapshot.revision,
+                    sourceSha256: snapshot.sourceSha256,
+                  }
+                : {
+                    document: invalid,
+                    revision: snapshot.revision,
+                    backend: "canvas2d",
+                  },
+          ),
+        },
+      );
+      expect(response.status).toBe(422);
+      expect(response.headers.get("content-type")).toContain(
+        "application/json",
+      );
+      expect(await response.json()).toEqual({
+        diagnostics: expected.diagnostics,
+      });
+    }
+    const unpinned = structuredClone(source);
+    unpinned.layers.push({
+      id: "text",
+      type: "text",
+      text: "Unpinned",
+      fontSize: 12,
+      color: "#ffffff",
+    });
+    const response = await fetch(
+      new URL("/composition/program-save", app.url),
+      {
+        method: "POST",
+        headers: { "x-still-shift-composition": "1" },
+        body: JSON.stringify({
+          document: unpinned,
+          revision: snapshot.revision,
+          sourceSha256: snapshot.sourceSha256,
+        }),
+      },
+    );
+    expect(response.status).toBe(422);
+    expect((await response.json()).diagnostics).toMatchObject([
+      {
+        code: "comp-text-system-font",
+        severity: "error",
+        path: "layers[1].fontAsset",
+      },
+    ]);
+    expect(JSON.parse(await readFile(input, "utf8"))).toEqual(source);
+  } finally {
+    await app.close();
+    await fixtureServer.close();
     await rm(root, { recursive: true, force: true });
   }
 });

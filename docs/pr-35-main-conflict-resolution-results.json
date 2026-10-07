@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-06",
+  "pr": "https://github.com/xxibcill/still-shift/pull/35",
+  "originalHead": "ddaf9d28c5450ac73589e5a675fdbb0e05fd9d6c",
+  "mergedBase": "af08fa3b84d55fc07a33009e923fd67df7a8da5a",
+  "scope": "Merge current main after PR #34 merged into PR #35; preserve native passage work and imported motion-lint fixes.",
+  "conflicts": [
+    {
+      "file": "docs/dev-log.md",
+      "hunks": 3,
+      "resolution": "Retain both Current state and Entries histories; combine update attribution; keep newest dated entries first."
+    }
+  ],
+  "retainedParentEntryCounts": {
+    "HEAD": 72,
+    "origin/main": 63
+  },
+  "codeReview": "The two imported motion-lint modules and two regression files are byte-identical to main; no manually authored runtime change. PR #35 native passage code is unchanged from its original head.",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "chromiumVersion": "151.0.7922.34",
+    "ffmpeg": "8.0.1",
+    "status": "pnpm toolchain:check passes including browser startup; Node imports of story-quality, composition-lint and Lab Vite config pass."
+  },
+  "isolation": "Own frozen-lockfile node_modules, Vite optimizer/config caches and uv Python environment in the managed worktree; separate local hash-pinned soundtrack runtime. Owner checkout untouched.",
+  "checks": [
+    {
+      "command": "pnpm check:fast",
+      "exitCode": 0,
+      "seconds": 41.8,
+      "log": "benchmarks/results/pr35-main-conflict-20261006/fast.log",
+      "sha256": "37a0e8e8ace2de3edd0eda5835dd3853df40948e48a745a8402fb1163f027774",
+      "tail": " \u2713 tests/unit/story-text-reveal.test.ts (2 tests) 1ms\n \u2713 tests/unit/story-exit.test.ts (1 test) 12ms\n \u2713 tests/unit/evaluation-cost.test.ts (1 test) 1ms\n \u2713 tests/unit/evaluation-presets.test.ts (3 tests) 3ms\n \u2713 tests/unit/animation-error.test.ts (2 tests) 3ms\n \u2713 tests/unit/package-scripts.test.ts (2 tests) 2ms\n \u2713 tests/unit/sfx-cli.test.ts (2 tests) 2ms\n \u2713 tests/unit/cli-error.test.ts (1 test) 2ms\n\n Test Files  140 passed (140)\n      Tests  1692 passed (1692)\n   Start at  12:12:52\n   Duration  15.69s (transform 1.91s, setup 0ms, collect 27.00s, tests 16.76s, environment 13ms, prepare 4.62s)\n"
+    },
+    {
+      "command": "pnpm test:runtime",
+      "exitCode": 0,
+      "seconds": 12.54,
+      "log": "benchmarks/results/pr35-main-conflict-20261006/runtime.log",
+      "sha256": "f294af78c1931cb09e69c6293985d0c7ff80cc682b0526d806e5f168dc3ac7c2",
+      "tail": " \u2713 tests/runtime/artifact-publication.test.ts (7 tests) 35ms\n \u2713 tests/runtime/batch-exit.test.ts (4 tests) 167ms\n \u2713 tests/runtime/evaluation-assembly.test.ts (2 tests) 71ms\n \u2713 tests/runtime/subprocess.test.ts (4 tests) 375ms\n \u2713 tests/runtime/composition-baseline-selection.test.ts (3 tests) 2903ms\n   \u2713 composition baseline selection > rejects unknown family before browser rendering  1010ms\n   \u2713 composition baseline selection > rejects partly unknown families before browser rendering  924ms\n   \u2713 composition baseline selection > rejects disjoint fixture and family filters before browser rendering  968ms\n\n Test Files  9 passed (9)\n      Tests  46 passed (46)\n   Start at  12:13:09\n   Duration  12.11s (transform 762ms, setup 0ms, collect 2.55s, tests 8.53s, environment 1ms, prepare 266ms)\n"
+    },
+    {
+      "command": "pnpm exec vitest run tests/integration/composition-lint-cli.test.ts --maxWorkers=2 --no-file-parallelism",
+      "exitCode": 0,
+      "seconds": 2.24,
+      "log": "benchmarks/results/pr35-main-conflict-20261006/lint-cli.log",
+      "sha256": "997465c540d344792d1de31c6e484d69fa19f12283d48a13321b234c533d222f",
+      "tail": "\n RUN  v3.2.4 /Users/jjae/.codex/worktrees/pr35-conflict/still-shift\n\n \u2713 tests/integration/composition-lint-cli.test.ts (16 tests) 164ms\n\n Test Files  1 passed (1)\n      Tests  16 passed (16)\n   Start at  12:13:21\n   Duration  1.81s (transform 785ms, setup 0ms, collect 1.53s, tests 164ms, environment 0ms, prepare 27ms)\n"
+    },
+    {
+      "command": "pnpm test:browser:composition-quality",
+      "exitCode": 0,
+      "seconds": 9.36,
+      "log": "benchmarks/results/pr35-main-conflict-20261006/quality-browser.log",
+      "sha256": "06201dd01a47c336c02264668089067ce870ca35829b9a6972c27df6e72c838e",
+      "tail": "\n> still-shift@0.1.0 test:browser:composition-quality /Users/jjae/.codex/worktrees/pr35-conflict/still-shift\n> node --import tsx tests/browser/composition-quality.ts\n\nLab timeline markers seek correctly; rendered pixel findings displayed.\nLab previews compositions whose motion lint cannot run.\n14 fixtures, inherited timing and matte content have Node/browser parity; clipped coverage matches rendered pixels; independent meaningful pixel motion checks pass on Canvas2D and WebGL2; file lint uses pinned browser."
+    },
+    {
+      "command": "pnpm test:browser:composition-native-passage",
+      "exitCode": 1,
+      "seconds": 31.95,
+      "log": "benchmarks/results/pr35-main-conflict-20261006/native-passage.log",
+      "sha256": "9d606f32f2643553f8f01b2381ea3e81a2ee5294e86b1595b379a20c54b1a27c",
+      "tail": "  code: 'ENOENT',\n  syscall: 'spawn /Users/jjae/.codex/worktrees/pr35-conflict/still-shift/benchmarks/results/composition-ce16/runtime/bin/python',\n  path: '/Users/jjae/.codex/worktrees/pr35-conflict/still-shift/benchmarks/results/composition-ce16/runtime/bin/python',\n  spawnargs: [\n    '-c',\n    \"import json,platform; from importlib.metadata import version; print(json.dumps([platform.python_version(),*[version(x) for x in ['dawdreamer','numpy','scipy']]]))\"\n  ],\n  cmd: \"/Users/jjae/.codex/worktrees/pr35-conflict/still-shift/benchmarks/results/composition-ce16/runtime/bin/python -c import json,platform; from importlib.metadata import version; print(json.dumps([platform.python_version(),*[version(x) for x in ['dawdreamer','numpy','scipy']]]))\",\n  stdout: '',\n  stderr: ''\n}\n\nNode.js v22.23.1\n\u2009ELIFECYCLE\u2009 Command failed with exit code 1."
+    },
+    {
+      "command": "pnpm test:browser:composition-native-passage",
+      "exitCode": 0,
+      "seconds": 63.2,
+      "log": "benchmarks/results/pr35-main-conflict-20261006/native-passage-rerun.log",
+      "sha256": "cc86a6af9b55af625523290056823d37fa77fb1ec35019c16ec0e47c4989dfe0",
+      "tail": "\n> still-shift@0.1.0 test:browser:composition-native-passage /Users/jjae/.codex/worktrees/pr35-conflict/still-shift\n> node --import tsx tests/browser/composition-native-passage.ts\n\n12:16:00 PM [vite] (client) Re-optimizing dependencies because vite config has changed\nPort 5173 is in use, trying another one...\nMixed composition passage (canvas2d): 576 frames, adapted story precomp with native overlay, cue mappings, narration, standalone encoded-beat identity, isolated cache edits, relocated assets, invalid-input diagnostics and Lab pixel/seek checks pass."
+    }
+  ],
+  "verificationAttempts": [
+    "First native-passage run could not spawn the absent separate soundtrack runtime (ENOENT).",
+    "UV_OFFLINE=1 pnpm soundtrack:setup failed because dawdreamer/numpy/scipy pins were absent from the cache.",
+    "pnpm soundtrack:setup installed exact hash-pinned dawdreamer 0.9.0, numpy 2.3.3 and scipy 1.16.2 with Python 3.12.11; imports pass. Unchanged-source native-passage rerun passes."
+  ],
+  "verifiedCodeSha256": {
+    "packages/renderer-core/src/composition/quality-rules.ts": "f77b960a21110a327d3d5e357a486008669d029a7378dfdc49147ff8bda871c5",
+    "packages/renderer-core/src/composition/quality-samples.ts": "49c0fcc69b54e9b20cb1348f2f2240cfb72dd705ceef406b605f8218ecd4c8fc",
+    "tests/unit/composition-quality-joins.test.ts": "d7789b2c3c5dee97c6682eeea3b33157c338f8a1a8c5ec65ae80d6b82e517878",
+    "tests/unit/composition-quality-timing.test.ts": "8f62d649a3080b86ee0b7a175886d10452947608f195ad7aa84d0403ffd518bc"
+  },
+  "remoteRecheck": {
+    "head": "ddaf9d28c5450ac73589e5a675fdbb0e05fd9d6c",
+    "base": "af08fa3b84d55fc07a33009e923fd67df7a8da5a",
+    "status": "Both unchanged before finalization."
+  },
+  "githubActionsEnabled": false,
+  "workflowChanges": [],
+  "notRun": [
+    "Full pnpm check",
+    "Unrelated browser suites and frozen baseline matrices",
+    "Deferred CE6-P strict timing matrices"
+  ],
+  "verificationScope": "Focused conflict-integration evidence. Historical milestone full gates are not a full check on this merge.",
+  "delivery": "One non-force merge commit pushed to the existing codex/composition-ce4a-completion PR branch. PR remains open for owner review and merge."
+}

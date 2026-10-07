@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce9-separated-roving",
+  "name": "Constant speed over independently keyed position axes",
+  "width": 200,
+  "height": 200,
+  "fps": 30,
+  "frameCount": 40,
+  "background": "#0d1117",
+  "assets": [],
+  "layers": [
+    {
+      "id": "hero",
+      "type": "solid",
+      "size": [20, 12],
+      "color": "#58a6ff",
+      "transform": {
+        "position": {
+          "x": {
+            "keys": [
+              { "frame": 0, "value": 30 },
+              { "frame": 8, "value": 150, "interpolation": "linear" },
+              { "frame": 39, "value": 150, "interpolation": "linear" }
+            ]
+          },
+          "y": {
+            "keys": [
+              { "frame": 0, "value": 30 },
+              { "frame": 8, "value": 30, "interpolation": "linear" },
+              { "frame": 39, "value": 150, "interpolation": "linear" }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "behaviours": [
+    { "type": "constant-speed", "target": "hero.transform.position" }
+  ]
+}

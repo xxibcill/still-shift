@@ -1,0 +1,12 @@
+[
+  {
+    "type": "move",
+    "clip": "sfx-pouch-clip",
+    "startSample": 47040
+  },
+  {
+    "type": "gain",
+    "target": "sfx-pouch-clip",
+    "gainDb": -18.122200631740892
+  }
+]

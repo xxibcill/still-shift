@@ -1,0 +1,155 @@
+{
+  "date": "2026-10-06",
+  "pr": "https://github.com/xxibcill/still-shift/pull/37",
+  "reviewHead": "12bfc1db50e892ad788127804d7c601a4f0ab21a",
+  "reviewUrl": "https://github.com/xxibcill/still-shift/pull/37#pullrequestreview-5425113565",
+  "policy": "One finding per commit; one normal push after the final finding commit. GitHub Actions remain disabled.",
+  "environment": {
+    "checkout": "Isolated managed pr37-inspector-fixes worktree; owner checkout untouched.",
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "preflight": "Pinned toolchain including native Chromium launch passes with UV_NO_SYNC=1. Worktree-local copied dependency stores and complete workspace package links match the reviewed snapshot; Vite caches are isolated. Both native and bundled Vite configuration imports pass.",
+    "setupLimitations": "Offline pnpm install lacks an @eslint/js tarball; dependencies are copied from the isolated review runtime. Offline uv sync lacks annotated-doc; an isolated pinned Python environment is available, but unrelated depth packages are not needed by these repair checks."
+  },
+  "findings": [
+    {
+      "id": "R13",
+      "commit": "6f992bc",
+      "title": "Preserve focus after applying numeric edits",
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4192626418",
+      "status": "fixed",
+      "change": "Capture the focused graph Apply button before staging and restore its replacement after acceptance or rejection. Share the existing history/active-control guards with layer controls so another focused control or replaced source is respected.",
+      "regressionBefore": "New pinned browser regression fails: Apply out handle must preserve keyboard focus; actual false.",
+      "verification": [
+        "Focused browser regression passes repeated outgoing, incoming, numeric Bezier and spatial Apply keyboard activation, rejected asset-load focus, and no focus stealing during a paused asset load.",
+        "TypeScript build and affected ESLint pass."
+      ],
+      "logs": [
+        "/private/tmp/pr37-r13-red.log",
+        "/private/tmp/pr37-r13-green.log",
+        "/private/tmp/pr37-r13-build.log",
+        "/private/tmp/pr37-r13-lint.log"
+      ]
+    },
+    {
+      "id": "R14",
+      "commit": "22308f5",
+      "title": "Respect focus moved during a Bezier edit",
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4192626422",
+      "status": "fixed",
+      "change": "Reuse the captured control/history focus guard for asynchronous SVG handle acceptance. Preserve repeated keyboard adjustment while respecting focus moved outside the graph.",
+      "regressionBefore": "New pinned browser assertion fails after a paused asset load: Bezier acceptance must respect moved focus; actual false.",
+      "verification": [
+        "Focused browser regression passes repeated Bezier arrow adjustments and retains the safe-area checkbox focus when loading completes. R13 numeric, rejection and focus-movement checks remain passing.",
+        "TypeScript build and affected ESLint pass."
+      ],
+      "logs": [
+        "/private/tmp/pr37-r14-red.log",
+        "/private/tmp/pr37-r14-green.log",
+        "/private/tmp/pr37-r14-build.log",
+        "/private/tmp/pr37-r14-lint.log"
+      ]
+    },
+    {
+      "id": "R15",
+      "title": "Keep root and precomp scope identities distinct",
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4192626430",
+      "status": "fixed",
+      "change": "Use a top-level scope with no precomp ID (null), distinct from every authored string ID. Propagate it through tracks, layer selection, markers/camera lanes, resolved instance routes and overlays; serialize overlay cache identity as a pair. Precomp labels identify their definition explicitly.",
+      "regressionBefore": "The validated browser regression fails on reviewed 12bfc1d: Selecting the root-named precomp must inspect its own keys; actual 0 instead of 100.",
+      "verification": [
+        "Nested root selection shows its own native keys, markers, 50fps instance routes and overlays; a saved handle edit changes the nested layer while preserving the complete top-level layer. Returning to the top-level selection restores its routes, markers and overlays.",
+        "Two unit regressions cover root and null precomp IDs with matching layer names, distinct structural key paths, inherited route fps and validated edits; 41 affected model tests and TypeScript build pass."
+      ],
+      "logs": [
+        "/private/tmp/pr37-r15-red-valid-final.log",
+        "/private/tmp/pr37-r15-green-valid-final.log",
+        "/private/tmp/pr37-r15-unit.log",
+        "/private/tmp/pr37-r15-build.log"
+      ]
+    }
+  ],
+  "limitations": [
+    "Full pnpm check, unrelated browser groups, Python depth suites and frozen baselines are not rerun for this focused repair slice. No baselines or thresholds are changed."
+  ],
+  "verificationRepairs": [
+    {
+      "failure": "The shared-session suite could not start Vite's bundled configuration because @still-shift/scene-contract was unresolved.",
+      "diagnosis": "The isolated dependency copy omitted tools/still-shift-cli/node_modules. Restored those workspace links and completed pnpm install --frozen-lockfile; versions and lockfile stay unchanged. Bundled configuration preflight passes; rerun the unchanged affected session groups."
+    },
+    {
+      "failure": "The new scope regression initially timed out loading its fixture.",
+      "diagnosis": "The authored precomp used unsupported 12fps. Changed only the fixture to supported 50fps and added native validation before launching its preview."
+    },
+    {
+      "failure": "The scope regression then failed to parse its copied key snippet.",
+      "diagnosis": "The executable timeline wraps keys in two calls. Parse through the final array bracket, then assert its values. The corrected regression reproduces the original wrong-layer failure and passes on the repaired code."
+    }
+  ],
+  "independentReview": {
+    "standards": "No substantive standards findings in the three repairs.",
+    "spec": "No incomplete fixes or new substantive spec findings in focus ownership and distinct scope selection/routes/markers/overlays/saves."
+  },
+  "finalVerification": [
+    {
+      "command": "UV_NO_SYNC=1 pnpm toolchain:check",
+      "status": "passed",
+      "log": "/private/tmp/pr37-fixes-toolchain.log"
+    },
+    {
+      "command": "Native and bundled Vite configuration imports",
+      "status": "passed",
+      "log": "/private/tmp/pr37-fixes-vite-config.log"
+    },
+    {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "testFiles": 147,
+      "unitTests": 1805,
+      "log": "/private/tmp/pr37-final-inspector-fast.log"
+    },
+    {
+      "command": "pnpm exec vitest run tests/integration/composition-preview.test.ts tests/integration/composition-save.test.ts tests/integration/composition-export-owner.test.ts tests/integration/composition-inspector-code.test.ts tests/integration/composition-program-cli.test.ts --maxWorkers=2 --no-file-parallelism",
+      "status": "passed",
+      "testFiles": 5,
+      "tests": 31,
+      "log": "/private/tmp/pr37-final-inspector-integration.log"
+    },
+    {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "tests": 46,
+      "log": "/private/tmp/pr37-final-inspector-runtime.log"
+    },
+    {
+      "command": "pnpm test:browser:composition-inspector",
+      "status": "passed",
+      "coverage": "Complete desktop/phone, watch/history/visibility/save, captured asset ownership, byte-identical MP4 and decoded preview parity acceptance; new numeric/SVG focus and nested-scope key/marker/route/overlay/save regressions.",
+      "log": "/private/tmp/pr37-final-inspector-browser.log"
+    },
+    {
+      "command": "pnpm test:browser:composition-session",
+      "status": "passed",
+      "log": "/private/tmp/pr37-final-inspector-session-retry.log"
+    },
+    {
+      "command": "pnpm test:browser:lab-session",
+      "status": "passed",
+      "log": "/private/tmp/pr37-final-inspector-lab-session.log"
+    },
+    {
+      "command": "pnpm test:browser:composition-program",
+      "status": "passed",
+      "log": "/private/tmp/pr37-final-inspector-program.log"
+    }
+  ],
+  "delivery": {
+    "branch": "codex/pr37-inspector-fixes",
+    "target": "codex/composition-ce11",
+    "status": "All three findings and final affected verification complete; one normal push of the final finding commit delivers all three repairs. Owner review/merge remain separate."
+  }
+}

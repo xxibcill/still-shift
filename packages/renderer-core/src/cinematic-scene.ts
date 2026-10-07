@@ -32,7 +32,8 @@ export type CinematicCoverageReport = {
 };
 
 export class CinematicCoverageError extends PassageError {
-  constructor(readonly report: CinematicCoverageReport) {
+  readonly report: CinematicCoverageReport;
+  constructor(report: CinematicCoverageReport) {
     const gaps = report.gaps
       .map(({ edge, missingPixels }) => `${edge} ${missingPixels.toFixed(2)}px`)
       .join(", ");
@@ -58,6 +59,7 @@ export class CinematicCoverageError extends PassageError {
         ...(report.gaps[0] ? { path: report.gaps[0].edge } : {}),
       },
     ]);
+    this.report = report;
     this.name = "CinematicCoverageError";
   }
 }
@@ -73,7 +75,8 @@ export type CinematicSourceResolutionReport = {
 };
 
 export class CinematicSourceResolutionError extends PassageError {
-  constructor(readonly report: CinematicSourceResolutionReport) {
+  readonly report: CinematicSourceResolutionReport;
+  constructor(report: CinematicSourceResolutionReport) {
     super([
       {
         code: "cinematic-source-resolution",
@@ -84,6 +87,7 @@ export class CinematicSourceResolutionError extends PassageError {
         path: report.assetPath,
       },
     ]);
+    this.report = report;
     this.name = "CinematicSourceResolutionError";
   }
 }

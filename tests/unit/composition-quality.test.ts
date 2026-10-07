@@ -1,10 +1,24 @@
-import { describe, expect, it } from "vitest";
+import {
+  validateComposition,
+  type CompositionLayer,
+} from "@still-shift/scene-contract";
+import { describe, expect, it, vi } from "vitest";
+import {
+  PassageError,
+  passageDiagnostics,
+} from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
 import {
   composition,
   fixtures,
   solid,
 } from "../../benchmarks/fixtures/composition/ce12/fixtures.ts";
+
+import {
+  collapsedMotionComposition,
+  providerReadingComposition,
+  qualityCapacityComposition,
+} from "../helpers/composition-quality-fixtures.ts";
 
 const codes = (input: Parameters<typeof analyzeCompositionQuality>[0]) =>
   analyzeCompositionQuality(input).diagnostics.map((d) => d.code);
@@ -342,4 +356,972 @@ it("checks rotated cover footprints instead of accepting their axis-aligned boun
       coverageLayers: ["cover"],
     }).diagnostics.map((d) => d.code),
   ).toContain("coverage");
+});
+
+it.each([
+  [{ pixelHashes: ["one"] }, "pixelHashes"],
+  [{ pixelChangedCounts: [-1] }, "pixelChangedCounts"],
+  [
+    {
+      pixelHashes: Array(90).fill("same"),
+      pixelChangedCounts: Array(90).fill(0),
+    },
+    "pixelChangedCounts",
+  ],
+])(
+  "preserves structured diagnostics for invalid pixel evidence %j",
+  (policy, path) => {
+    expect(() =>
+      analyzeCompositionQuality(fixtures.stillness.fail, policy),
+    ).toThrow(PassageError);
+    expect(() =>
+      analyzeCompositionQuality(fixtures.stillness.fail, policy),
+    ).toThrow(
+      expect.objectContaining({
+        diagnostics: [
+          expect.objectContaining({
+            code: "comp-lint-pixel-evidence",
+            path,
+            severity: "error",
+          }),
+        ],
+      }),
+    );
+  },
+);
+
+it.each([{ enabled: false }, { inPoint: 90 }, { outPoint: 0 }])(
+  "ignores inactive effects when checking stillness and velocity: %j",
+  (activation) => {
+    const input = composition([
+      solid("subject", {
+        effects: [
+          {
+            id: "sweep",
+            effect: "light.sweep",
+            ...activation,
+            params: {
+              progress: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 20, value: 0.1, interpolation: "linear" },
+                  { frame: 89, value: 1, interpolation: "linear" },
+                ],
+              },
+            },
+          },
+        ],
+      }),
+    ]);
+    const report = analyzeCompositionQuality(input);
+    expect(report.status).toBe("failed");
+    expect(report.diagnostics).toContainEqual(
+      expect.objectContaining({ code: "frozen-run", frames: [1, 89] }),
+    );
+    expect(report.diagnostics.map((d) => d.code)).not.toContain(
+      "velocity-discontinuity",
+    );
+  },
+);
+
+it("counts effect motion only inside its active window", () => {
+  const input = composition([
+    solid("subject", {
+      effects: [
+        {
+          id: "sweep",
+          effect: "light.sweep",
+          inPoint: 20,
+          outPoint: 70,
+          params: {
+            progress: {
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 89, value: 1, interpolation: "linear" },
+              ],
+            },
+          },
+        },
+      ],
+    }),
+  ]);
+  expect(
+    analyzeCompositionQuality(input)
+      .diagnostics.filter((d) => d.code === "frozen-run")
+      .map((d) => d.frames),
+  ).toEqual([
+    [1, 19],
+    [71, 89],
+  ]);
+  const active = structuredClone(input);
+  delete active.layers[0]!.effects![0]!.inPoint;
+  delete active.layers[0]!.effects![0]!.outPoint;
+  expect(codes(active)).not.toContain("frozen-run");
+});
+
+function parentDrivenScene(type: "null" | "group") {
+  const layers: CompositionLayer[] = [];
+  for (let i = 0; i < 4; i++) {
+    const id = `parent-${i}`;
+    const transform = {
+      anchor: [0, 0] as [number, number],
+      position: {
+        keys: [
+          { frame: 0, value: [0, 0] as [number, number] },
+          {
+            frame: 89,
+            value: [200, 0] as [number, number],
+            interpolation: "linear" as const,
+          },
+        ],
+      },
+    };
+    layers.push(
+      type === "group"
+        ? { id, type, size: [640, 360], transform }
+        : { id, type, transform },
+      solid(`child-${i}`, { parent: id }),
+    );
+  }
+  return composition(layers);
+}
+
+it.each(["null", "group"] as const)(
+  "checks timing on contributing %s parents",
+  (type) => {
+    const report = analyzeCompositionQuality(parentDrivenScene(type));
+    for (const code of ["easing-monotony", "co-start"])
+      expect(report.diagnostics).toContainEqual(
+        expect.objectContaining({
+          code,
+          nodes: ["parent-0", "parent-1", "parent-2", "parent-3"],
+        }),
+      );
+  },
+);
+
+it("does not count parent tracks without on-screen descendants", () => {
+  const input = parentDrivenScene("null");
+  for (const layer of input.layers)
+    if (layer.type === "solid") layer.enabled = false;
+  expect(codes(input)).not.toContain("easing-monotony");
+  expect(codes(input)).not.toContain("co-start");
+});
+
+it("counts a shared parent property once rather than once per descendant", () => {
+  const input = parentDrivenScene("null");
+  input.layers = [
+    input.layers[0]!,
+    ...Array.from({ length: 4 }, (_, i) =>
+      solid(`child-${i}`, { parent: "parent-0" }),
+    ),
+  ];
+  expect(codes(input)).not.toContain("easing-monotony");
+  expect(codes(input)).not.toContain("co-start");
+});
+
+it("keeps independent parent tracks in repeated precomp instances", () => {
+  const inner = parentDrivenScene("null");
+  const input = composition(
+    [
+      {
+        id: "one",
+        type: "precomp",
+        comp: "inner",
+        transform: { anchor: [0, 0] },
+      },
+      {
+        id: "two",
+        type: "precomp",
+        comp: "inner",
+        transform: { anchor: [0, 0] },
+      },
+    ],
+    {
+      precomps: [
+        {
+          id: "inner",
+          width: 640,
+          height: 360,
+          frameCount: 90,
+          layers: inner.layers.slice(0, 4),
+        },
+      ],
+    },
+  );
+  const report = analyzeCompositionQuality(input);
+  for (const code of ["easing-monotony", "co-start"])
+    expect(report.diagnostics).toContainEqual(
+      expect.objectContaining({
+        code,
+        nodes: ["one/parent-0", "one/parent-1", "two/parent-0", "two/parent-1"],
+      }),
+    );
+});
+
+it.each([1.025, -1.025])(
+  "finds fractional inherited key joins at stretch %s",
+  (stretch) => {
+    const input = composition(
+      [
+        {
+          id: "parent",
+          type: "null",
+          stretch,
+          ...(stretch < 0 ? { startFrame: 41 } : {}),
+          transform: {
+            position: {
+              keys: [
+                { frame: 0, value: [0, 0] },
+                { frame: 20, value: [20, 0], interpolation: "linear" },
+                { frame: 40, value: [220, 0], interpolation: "linear" },
+              ],
+            },
+          },
+        },
+        solid("child", { parent: "parent" }),
+      ],
+      { frameCount: 42 },
+    );
+    expect(analyzeCompositionQuality(input).diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "velocity-discontinuity",
+        nodes: ["child"],
+        frames: [20, 21],
+      }),
+    );
+  },
+);
+
+it.each(["null", "group"] as const)(
+  "counts parent opacity only when inherited from %s",
+  (type) => {
+    const input = parentDrivenScene(type);
+    for (const layer of input.layers)
+      if (layer.type === type)
+        layer.transform = {
+          anchor: [0, 0],
+          opacity: {
+            keys: [
+              { frame: 0, value: 1 },
+              { frame: 89, value: 0.5, interpolation: "linear" },
+            ],
+          },
+        };
+    const report = codes(input);
+    if (type === "group") {
+      expect(report).toContain("easing-monotony");
+      expect(report).toContain("co-start");
+    } else {
+      expect(report).not.toContain("easing-monotony");
+      expect(report).not.toContain("co-start");
+      expect(report).toContain("frozen-run");
+    }
+  },
+);
+
+it("recognizes staggered varied easing on parents", () => {
+  const input = parentDrivenScene("null");
+  input.layers.forEach((layer, i) => {
+    if (layer.type === "null")
+      layer.transform = {
+        position: {
+          keys: [
+            { frame: i * 3, value: [0, 0] },
+            {
+              frame: 89,
+              value: [200, 0],
+              easing: i % 4 ? "linear" : "smoothstep",
+            },
+          ],
+        },
+      };
+  });
+  expect(codes(input)).not.toContain("easing-monotony");
+  expect(codes(input)).not.toContain("co-start");
+});
+
+it.each([{}, { enabled: false }, { inPoint: 90 }, { outPoint: 0 }])(
+  "checks timing only for active effect tracks: %j",
+  (activation) => {
+    const input = composition(
+      Array.from({ length: 4 }, (_, i) =>
+        solid(`effect-${i}`, {
+          transform: { position: [120, 100] },
+          effects: [
+            {
+              id: "blur",
+              effect: "blur.gaussian",
+              ...activation,
+              params: {
+                radius: {
+                  keys: [
+                    { frame: 0, value: 0 },
+                    { frame: 89, value: 10, interpolation: "linear" },
+                  ],
+                },
+              },
+            },
+          ],
+        }),
+      ),
+    );
+    const report = codes(input);
+    for (const code of ["easing-monotony", "co-start"])
+      if (Object.keys(activation).length) expect(report).not.toContain(code);
+      else expect(report).toContain(code);
+  },
+);
+
+it("recognizes staggered varied easing in effect tracks", () => {
+  const input = composition(
+    Array.from({ length: 4 }, (_, i) =>
+      solid(`effect-${i}`, {
+        effects: [
+          {
+            id: "blur",
+            effect: "blur.gaussian",
+            params: {
+              radius: {
+                keys: [
+                  { frame: i * 5, value: 0 },
+                  {
+                    frame: 89,
+                    value: 10,
+                    easing: i % 2 ? "linear" : "smoothstep",
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      }),
+    ),
+  );
+  expect(codes(input)).not.toContain("easing-monotony");
+  expect(codes(input)).not.toContain("co-start");
+});
+
+it.each([1.025, -1.025])(
+  "finds fractional active effect joins at stretch %s",
+  (stretch) => {
+    const input = composition(
+      [
+        solid("effect", {
+          stretch,
+          ...(stretch < 0 ? { startFrame: 41 } : {}),
+          effects: [
+            {
+              id: "blur",
+              effect: "blur.gaussian",
+              params: {
+                radius: {
+                  keys: [
+                    { frame: 0, value: 0 },
+                    { frame: 20, value: 1, interpolation: "linear" },
+                    { frame: 40, value: 21, interpolation: "linear" },
+                  ],
+                },
+              },
+            },
+          ],
+        }),
+      ],
+      { frameCount: 42 },
+    );
+    expect(analyzeCompositionQuality(input).diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "velocity-discontinuity",
+        nodes: ["effect"],
+        frames: [20, 21],
+      }),
+    );
+  },
+);
+
+function matteDrivenScene(
+  source: "solid" | "group" | "precomp" = "solid",
+  activation: object = {},
+) {
+  const layers: CompositionLayer[] = [];
+  const move = {
+    position: {
+      keys: [
+        { frame: 0, value: [70, 70] as [number, number] },
+        {
+          frame: 89,
+          value: [100, 70] as [number, number],
+          interpolation: "linear" as const,
+        },
+      ],
+    },
+  };
+  for (let i = 0; i < 4; i++) {
+    const id = `matte-${i}`;
+    layers.push(
+      solid(`paint-${i}`, { trackMatte: { layer: id, mode: "alpha" } }),
+    );
+    if (source === "solid")
+      layers.push(solid(id, { ...activation, transform: move }));
+    else if (source === "group")
+      layers.push(
+        {
+          id,
+          type: "group",
+          size: [640, 360],
+          transform: { anchor: [0, 0], position: [0, 0] },
+          ...activation,
+        },
+        solid(`content-${i}`, { parent: id, transform: move }),
+      );
+    else
+      layers.push({
+        id,
+        type: "precomp",
+        comp: "inner",
+        transform: { anchor: [0, 0] },
+        ...activation,
+      });
+  }
+  return composition(
+    layers,
+    source === "precomp"
+      ? {
+          precomps: [
+            {
+              id: "inner",
+              width: 640,
+              height: 360,
+              frameCount: 90,
+              layers: [solid("content", { transform: move })],
+            },
+          ],
+        }
+      : {},
+  );
+}
+
+it.each(["solid", "group", "precomp"] as const)(
+  "checks timing of contributing %s matte content",
+  (source) => {
+    const report = codes(matteDrivenScene(source));
+    expect(report).toContain("easing-monotony");
+    expect(report).toContain("co-start");
+    expect(report).not.toContain("frozen-run");
+  },
+);
+
+it("respects matte visibility semantics and excludes unused/out-of-window matte motion", () => {
+  expect(codes(matteDrivenScene("solid", { enabled: false }))).toContain(
+    "co-start",
+  );
+  expect(codes(matteDrivenScene("solid", { outPoint: 1 }))).not.toContain(
+    "co-start",
+  );
+  const hidden = matteDrivenScene();
+  for (const layer of hidden.layers)
+    if (layer.id.startsWith("paint")) layer.enabled = false;
+  expect(codes(hidden)).not.toContain("co-start");
+});
+
+it("counts a shared matte property only once", () => {
+  const input = matteDrivenScene();
+  input.layers = input.layers.filter(
+    (layer) => !layer.id.startsWith("matte") || layer.id === "matte-0",
+  );
+  for (const layer of input.layers)
+    if (layer.trackMatte) layer.trackMatte.layer = "matte-0";
+  expect(codes(input)).not.toContain("easing-monotony");
+  expect(codes(input)).not.toContain("co-start");
+});
+
+it.each([1, 1.025, -1.025])(
+  "finds contributing matte velocity joins at stretch %s",
+  (stretch) => {
+    const input = composition(
+      [
+        solid("paint", { trackMatte: { layer: "matte", mode: "alpha" } }),
+        solid("matte", {
+          stretch,
+          ...(stretch < 0 ? { startFrame: 41 } : {}),
+          transform: {
+            position: {
+              keys: [
+                { frame: 0, value: [70, 70] },
+                { frame: 20, value: [80, 70], interpolation: "linear" },
+                { frame: 40, value: [180, 70], interpolation: "linear" },
+              ],
+            },
+          },
+        }),
+      ],
+      { frameCount: 42 },
+    );
+    expect(analyzeCompositionQuality(input).diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "velocity-discontinuity",
+        nodes: ["matte"],
+        frames: stretch === 1 ? [20, 20] : [20, 21],
+      }),
+    );
+  },
+);
+
+function pulseScene(at = 20) {
+  return composition([
+    solid("pulse", {
+      transform: {
+        position: {
+          keys: [
+            { frame: 0, value: [80, 80] },
+            { frame: 89, value: [169, 80], interpolation: "linear" },
+          ],
+        },
+        opacity: {
+          keys: [
+            { frame: 0, value: 1 },
+            { frame: at, value: 0.1, interpolation: "hold" },
+            { frame: at + 1, value: 1, interpolation: "hold" },
+          ],
+        },
+        scale: {
+          keys: [
+            { frame: 0, value: [1, 1] },
+            { frame: at, value: [2, 2], interpolation: "hold" },
+            { frame: at + 1, value: [1, 1], interpolation: "hold" },
+          ],
+        },
+      },
+    }),
+  ]);
+}
+
+it.each([1, 20, 88])(
+  "rejects isolated scale and opacity excursions at frame %s",
+  (at) => {
+    const report = analyzeCompositionQuality(pulseScene(at));
+    expect(report.status).toBe("failed");
+    for (const code of ["scale-pop", "opacity-pop"])
+      expect(report.diagnostics).toContainEqual(
+        expect.objectContaining({
+          code,
+          severity: "error",
+          frames: [at - 1, at + 1],
+        }),
+      );
+  },
+);
+
+it("waives declared pulse cuts but still catches undeclared return jumps", () => {
+  const input = pulseScene();
+  const complete = analyzeCompositionQuality(input, {
+    intentionalCuts: [20, 21],
+  });
+  expect(complete.diagnostics.map((d) => d.code)).not.toContain("scale-pop");
+  expect(complete.diagnostics.map((d) => d.code)).not.toContain("opacity-pop");
+  for (const cuts of [[20], [21]]) {
+    const report = analyzeCompositionQuality(input, { intentionalCuts: cuts });
+    for (const code of ["scale-pop", "opacity-pop"])
+      expect(report.diagnostics.map((d) => d.code)).toContain(code);
+  }
+});
+
+it.each([1, 10])(
+  "keeps multi-frame peaks out of isolated-pulse findings (%s frames per slope)",
+  (step) => {
+    const input = composition([
+      solid("peak", {
+        transform: {
+          opacity: {
+            keys: [
+              { frame: 0, value: 0 },
+              { frame: 1 * step, value: 0.5, interpolation: "linear" },
+              { frame: 2 * step, value: 1, interpolation: "linear" },
+              { frame: 3 * step, value: 0.5, interpolation: "linear" },
+              { frame: 4 * step, value: 0, interpolation: "linear" },
+            ],
+          },
+          scale: {
+            keys: [
+              { frame: 0, value: [1, 1] },
+              { frame: 1 * step, value: [1.4, 1.4], interpolation: "linear" },
+              { frame: 2 * step, value: [2, 2], interpolation: "linear" },
+              { frame: 3 * step, value: [1.4, 1.4], interpolation: "linear" },
+              { frame: 4 * step, value: [1, 1], interpolation: "linear" },
+            ],
+          },
+        },
+      }),
+    ]);
+    expect(codes(input)).not.toContain("scale-pop");
+    expect(codes(input)).not.toContain("opacity-pop");
+  },
+);
+
+function groupCoverageScene(
+  size: [number, number],
+  clip = true,
+  transform: object = {},
+) {
+  return composition(
+    [
+      {
+        id: "clip",
+        type: "group",
+        size,
+        clip,
+        transform: { anchor: [0, 0], position: [0, 0], ...transform },
+      },
+      solid("cover", {
+        parent: "clip",
+        size: [640, 360],
+        transform: { anchor: [0, 0], position: [0, 0] },
+      }),
+    ],
+    { frameCount: 3 },
+  );
+}
+
+it.each([true, false])(
+  "checks group coverage clipping only when enabled: %s",
+  (clip) => {
+    const report = analyzeCompositionQuality(
+      groupCoverageScene([100, 100], clip),
+      { coverageLayers: ["cover"] },
+    );
+    expect(report.diagnostics.some((d) => d.code === "coverage")).toBe(clip);
+  },
+);
+
+it("accepts a clipping group that covers the viewport", () => {
+  expect(
+    analyzeCompositionQuality(groupCoverageScene([640, 360]), {
+      coverageLayers: ["cover"],
+    }).diagnostics,
+  ).toEqual([]);
+});
+
+it("rejects rotated clips even when their bounding boxes cover the viewport", () => {
+  const input = groupCoverageScene([640, 360], true, {
+    anchor: [320, 180],
+    position: [320, 180],
+    rotation: 45,
+  });
+  input.layers[1] = solid("cover", {
+    parent: "clip",
+    size: [2000, 2000],
+    transform: { anchor: [1000, 1000], position: [320, 180] },
+  });
+  expect(
+    analyzeCompositionQuality(input, { coverageLayers: ["cover"] }).diagnostics,
+  ).toContainEqual(
+    expect.objectContaining({ code: "coverage", frames: [0, 2] }),
+  );
+});
+
+it.each([false, true])(
+  "respects precomp clipping versus collapsed transforms: %s",
+  (collapseTransforms) => {
+    const input = composition(
+      [
+        {
+          id: "host",
+          type: "precomp",
+          comp: "small",
+          collapseTransforms,
+          transform: { anchor: [0, 0], position: [0, 0] },
+        },
+      ],
+      {
+        frameCount: 3,
+        precomps: [
+          {
+            id: "small",
+            width: 100,
+            height: 100,
+            frameCount: 3,
+            layers: [
+              solid("cover", {
+                size: [640, 360],
+                transform: { anchor: [0, 0], position: [0, 0] },
+              }),
+            ],
+          },
+        ],
+      },
+    );
+    const report = analyzeCompositionQuality(input, {
+      coverageLayers: ["host/cover"],
+    });
+    expect(report.diagnostics.some((d) => d.code === "coverage")).toBe(
+      !collapseTransforms,
+    );
+  },
+);
+
+it("reports the frame range where animated clipping loses coverage", () => {
+  const input = groupCoverageScene([640, 360], true, {
+    scale: {
+      keys: [
+        { frame: 0, value: [1, 1] },
+        { frame: 2, value: [0.5, 0.5], interpolation: "linear" },
+      ],
+    },
+  });
+  expect(
+    analyzeCompositionQuality(input, { coverageLayers: ["cover"] }).diagnostics,
+  ).toContainEqual(
+    expect.objectContaining({ code: "coverage", frames: [1, 2] }),
+  );
+});
+
+describe("provider text reading time", () => {
+  it("does not count hidden provider frames as readable", () => {
+    const report = analyzeCompositionQuality(providerReadingComposition());
+    expect(report.status).toBe("failed");
+    expect(report.diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "reading-time",
+        node: "words",
+        measured: 5 / 30,
+      }),
+    );
+  });
+  it("accepts sufficient consecutive provider reveal", () => {
+    expect(
+      analyzeCompositionQuality(providerReadingComposition(50)).status,
+    ).toBe("passed");
+  });
+  it("applies the reveal threshold to partially revealed provider text", () => {
+    const report = analyzeCompositionQuality(
+      providerReadingComposition(0, 0.5),
+    );
+    expect(report.diagnostics).toContainEqual(
+      expect.objectContaining({ code: "reading-time", measured: 0 }),
+    );
+  });
+});
+
+describe("collapsed precomp paint outside the source footprint", () => {
+  it("includes on-screen child motion even when the source rectangle is off canvas", () => {
+    expect(
+      analyzeCompositionQuality(collapsedMotionComposition()).diagnostics,
+    ).toEqual([]);
+  });
+  it("keeps ordinary precomp clipping", () => {
+    expect(codes(collapsedMotionComposition(false))).toContain("frozen-run");
+  });
+  it.each([
+    { enabled: false },
+    { outPoint: 1 },
+    { transform: { anchor: [0, 0], position: [700, 80], opacity: 0 } },
+  ])("excludes a hidden collapsed host: %j", (extra) => {
+    const input = collapsedMotionComposition();
+    Object.assign(input.layers[0]!, extra);
+    expect(codes(input)).toContain("frozen-run");
+  });
+  it("respects ancestor clipping around collapsed children", () => {
+    const input = collapsedMotionComposition();
+    input.layers[0]!.parent = "clip";
+    input.layers.unshift({
+      id: "clip",
+      type: "group",
+      size: [100, 100],
+      clip: true,
+      transform: { anchor: [0, 0], position: [500, 180] },
+    });
+    expect(codes(input)).toContain("frozen-run");
+  });
+});
+
+it("follows nested collapsed children outside both source rectangles", () => {
+  const input = collapsedMotionComposition();
+  const source = input.precomps![0]!;
+  input.precomps!.push({ ...source, id: "nested" });
+  source.layers = [
+    {
+      id: "nested-host",
+      type: "precomp",
+      comp: "nested",
+      collapseTransforms: true,
+      transform: { anchor: [0, 0] },
+    },
+  ];
+  expect(analyzeCompositionQuality(input).diagnostics).toEqual([]);
+});
+
+it("does not count empty collapsed surfaces or their unused background as motion", () => {
+  const input = collapsedMotionComposition();
+  input.precomps![0]!.background = "#ffffff";
+  input.precomps![0]!.layers[0]!.enabled = false;
+  input.layers[0]!.transform = {
+    anchor: [0, 0],
+    position: {
+      keys: [
+        { frame: 0, value: [50, 80] },
+        { frame: 29, value: [150, 80], interpolation: "linear" },
+      ],
+    },
+  };
+  input.layers.push(solid());
+  expect(codes(input)).toContain("frozen-run");
+});
+
+it("preserves a stable diagnostic when nested sampling exhausts the layer-frame budget", () => {
+  const readSize = Object.getOwnPropertyDescriptor(Map.prototype, "size")!.get!;
+  // Force the capacity boundary without retaining millions of evaluated samples.
+  const size = vi
+    .spyOn(Map.prototype, "size", "get")
+    .mockImplementation(function (this: Map<string, unknown>) {
+      const sample = this.get("subject") as { signature?: unknown } | undefined;
+      return typeof sample?.signature === "string"
+        ? 2_000_001
+        : readSize.call(this);
+    });
+  let failure: unknown;
+  try {
+    analyzeCompositionQuality(fixtures.stillness.fail);
+  } catch (error) {
+    failure = error;
+  } finally {
+    size.mockRestore();
+  }
+  expect(passageDiagnostics(failure)).toEqual([
+    expect.objectContaining({
+      code: "comp-lint-limit",
+      severity: "error",
+      path: "layers",
+    }),
+  ]);
+});
+
+it("rejects a valid composition whose root sampling alone exceeds lint capacity", () => {
+  const input = qualityCapacityComposition();
+  expect(validateComposition(input).ok).toBe(true);
+  expect(() => analyzeCompositionQuality(input)).toThrow(PassageError);
+});
+
+describe("frame-sampled velocity joins", () => {
+  const moving = (
+    keys: {
+      frame: number;
+      value: [number, number];
+      interpolation?: "hold" | "linear";
+    }[],
+    stretch = 1,
+  ) =>
+    composition(
+      [
+        solid("subject", {
+          stretch,
+          ...(stretch < 0 ? { startFrame: 61 } : {}),
+          transform: { position: { keys } },
+        }),
+      ],
+      { frameCount: 60 },
+    );
+  const held = Array.from({ length: 60 }, (_, frame) => ({
+    frame,
+    value: [80 + 4 * frame, 180] as [number, number],
+    interpolation: "hold" as const,
+  }));
+
+  it.each([1, 1.025, -1.025])(
+    "does not report per-frame held samples as velocity joins at stretch %s",
+    (stretch) => {
+      expect(codes(moving(held, stretch))).not.toContain(
+        "velocity-discontinuity",
+      );
+    },
+  );
+
+  it("keeps authored speed joins while reporting held samples as unmeasured", () => {
+    const keys = held.map((key) => ({
+      ...key,
+      value: [
+        80 + 4 * Math.min(key.frame, 30) + 12 * Math.max(0, key.frame - 30),
+        180,
+      ] as [number, number],
+    }));
+    const report = analyzeCompositionQuality(moving(keys));
+    expect(report.diagnostics.map((d) => d.code)).not.toContain(
+      "velocity-discontinuity",
+    );
+    expect(report.limitations).toContain(
+      "Held keyframe steps are frame samples; velocity changes inside held motion are not measured.",
+    );
+    expect(
+      codes(
+        moving([
+          { frame: 0, value: [80, 180] },
+          { frame: 30, value: [200, 180], interpolation: "linear" },
+          { frame: 59, value: [548, 180], interpolation: "linear" },
+        ]),
+      ),
+    ).toContain("velocity-discontinuity");
+  });
+});
+
+describe("framing of clipped content", () => {
+  const framing = (input: Parameters<typeof analyzeCompositionQuality>[0]) =>
+    analyzeCompositionQuality(input)
+      .diagnostics.filter((d) =>
+        ["off-canvas", "outside-safe-area"].includes(d.code),
+      )
+      .map((d) => [d.code, d.node]);
+  const card = (position: [number, number], photo: [number, number]) =>
+    composition([
+      {
+        id: "card",
+        type: "group",
+        size: [200, 120],
+        clip: true,
+        transform: { position },
+      },
+      solid("photo", {
+        parent: "card",
+        size: [640, 360],
+        transform: { position: photo },
+      }),
+    ]);
+
+  it("measures group-clipped content by its painted region", () => {
+    expect(framing(card([320, 180], [100, 60]))).toEqual([]);
+  });
+
+  it("ignores content clipped away entirely", () => {
+    expect(framing(card([320, 180], [2000, 60]))).toEqual([]);
+  });
+
+  it("still reports clipped content outside the safe area or canvas", () => {
+    expect(framing(card([40, 180], [100, 60]))).toContainEqual([
+      "outside-safe-area",
+      "photo",
+    ]);
+    expect(framing(card([-400, 180], [100, 60]))).toContainEqual([
+      "off-canvas",
+      "photo",
+    ]);
+  });
+
+  it("measures ordinary precomp children by the source rectangle", () => {
+    const input = composition([
+      {
+        id: "host",
+        type: "precomp",
+        comp: "inner",
+        transform: { position: [320, 180] },
+      },
+    ]);
+    input.precomps = [
+      {
+        id: "inner",
+        width: 200,
+        height: 120,
+        frameCount: input.frameCount,
+        layers: [solid("photo", { size: [640, 360] })],
+      },
+    ];
+    expect(framing(input)).toEqual([]);
+  });
 });

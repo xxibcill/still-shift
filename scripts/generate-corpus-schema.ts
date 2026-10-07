@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 import {
   CompositionSchema,
+  SoundtrackProjectSchema,
   CorpusManifestSchema,
 } from "@still-shift/scene-contract";
 import { format } from "prettier";
@@ -14,6 +15,14 @@ const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 /** JSON Schemas generated from contracts, for editors and AI agents. */
 const targets = [
+  {
+    schema: SoundtrackProjectSchema,
+    path: "packages/scene-contract/schemas/soundtrack-project-1.schema.json",
+    id: "https://still-shift.local/schemas/soundtrack-project-1.json",
+    title:
+      "Soundtrack project (structure; validateSoundtrackProject checks semantics)",
+    reused: "ref" as const,
+  },
   {
     schema: CorpusManifestSchema,
     path: "benchmarks/corpus-manifest.schema.json",
