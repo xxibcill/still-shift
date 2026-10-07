@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-10-05
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE6 feature work incomplete. WebGL performance acceptance is deferred to a future version (CE6-P, user approved 2026-10-03). Q1 and Q3 decided
+- **Updated:** 2026-10-07
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE6 feature work incomplete. CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -370,7 +370,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
 | CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-performance` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
-| CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
+| CE6-P | WebGL performance acceptance                    | Future | CE6                  | Codex                  | `codex/composition-ce6p-compatible` | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
@@ -419,6 +419,14 @@ completion gates. Family-fixture parity is a CE4 adapter gate after its prerequi
 milestones are complete; it cannot block the backend or camera that the adapter needs.
 
 ### Current-version priority and deferred performance
+
+**Latest owner decision, 2026-10-07:** pause CE6-P and defer remaining performance
+work to an unscheduled future version again. Retain reviewed 0.42.0 / `d4ecdf8`
+and PR #41, its verified corrections/gains and all evidence. The completion goal
+is paused; resume tuning or architecture experiments only on explicit owner
+request. Original 117/current 119 timing misses, native 2× and the complete strict
+audit on 0.42.0 remain open. Acceptance is preserved and CE6-P is not complete.
+No architecture prototype is approved. [Deferral record](./composition-ce6p-plan.md#owner-deferral--2026-10-07).
 
 **Owner decision, 2026-10-03:** defer the remaining WebGL performance work to a
 future version and prioritize other features. CE6-P owns the WebGL **1.25×**
@@ -3250,9 +3258,17 @@ tests, backend parity suite, repeated-export determinism test.
   compatible mechanism on the pinned profile. The owner decision in slice 1
   stands; the requirement remains **open**.
 
+<a id="ce6-p--deferred-webgl-performance-acceptance"></a>
+
 ### CE6-P — Deferred WebGL performance acceptance
 
-- **Status:** `[d]`, user approved 2026-10-03. This supersedes the earlier
+- **Status:** `[d]`, owner paused and deferred again on 2026-10-07 after the
+  isolated 2026-10-05/06 resumption. Reviewed renderer 0.42.0 / `d4ecdf8` remains
+  delivered for review in [PR #41](https://github.com/xxibcill/still-shift/pull/41).
+  Milestone acceptance is incomplete. No future version or restart date is assigned;
+  resume only on explicit owner request. The main feature lane remains independent.
+  [Deferral record](./composition-ce6p-plan.md#owner-deferral--2026-10-07).
+- **Prior deferral:** user approved 2026-10-03. This superseded the earlier
   CE4b-to-CE6 timing ownership decision and the performance slices' requests for
   an immediate rendering-path decision. Optimization and architecture experiments
   are deferred so other feature milestones can proceed.
@@ -3267,12 +3283,73 @@ tests, backend parity suite, repeated-export determinism test.
   variation; none of the original 117 failures is claimed resolved.
   [Performance results](./composition-ce6-performance-results.json) and the
   dated slice records above remain the measured evidence.
-- **Latest implementation:** `ecf9bc6` retains bounded radial light and identity
+- **Prior implementation:** `ecf9bc6` retains bounded radial light and identity
   composites as renderer `composition-webgl2-0.36.0`. Its focused checks are
   recorded in the [development log](./dev-log.md), but its full family audit is
   still pending at this decision. Record any already-started correctness audit
   results without requiring timing closure or starting further tuning. Deferral
   does not establish correctness for unverified changes.
+- **Measured slice (2026-10-06):** reviewed `7a797a9` / renderer 0.40.0 fuses and
+  bounds exposure accumulation. All 852 exactness cases per GPU profile, focused
+  checks and full local gate pass. Four valid brackets show pinned sparse exposure
+  export gains of 2.676–3.962× over fusion alone; broad hardware gains are unproven.
+  Unchanged strict audits complete 195 cases / 40,783 frames and 53 identical
+  repeated MP4 pairs, with 119 timing failures (all original 117 still fail).
+  Four echo tier gaps are inherited from CE7: 2,500 direct byte comparisons are
+  exact and reproduce the original gaps. These gaps still block correctness
+  acceptance; native count-one 2× and family 1.25× targets stay open. The reserved
+  quiet window is released. [Family proof](./composition-ce6p-family-audit.json),
+  [raw timing brackets](./composition-ce6p-exposure-brackets.json).
+- **Research before further trials (2026-10-06):** primary-source/source-path
+  investigation produced a [resolution plan](./composition-ce6p-resolution-plan.md)
+  and [research record](./composition-ce6p-resolution-research.md), with no new
+  workloads or runtime change. Start with count-one feasibility and representative
+  cost attribution; require an eligible mechanism, sufficient removable cost and
+  byte proof before implementation. The inherited echo correction needs an
+  explicit exception to preserving those known failing CE7 bytes. All targets
+  remain unchanged and open.
+- **Resolution execution progress (2026-10-06):** local uncommitted WebGL 0.41.0
+  packs disjoint particle neighborhoods for one instanced exact paint. Selected
+  frames reduce 48–50 paint passes to three. Base/stacked/reversed particle
+  timelines preserve 720 frames plus 780 seeks per profile against 0.40.0; unit,
+  WebGL correctness and repeated stacked export checks pass. Hardware drift is
+  inherited and twelve samples meet the existing perceptual policy. No elapsed
+  timing or failure closure is claimed; authorized quiet-window coordination,
+  count-one cost attribution, strict audits and the final full gate remain.
+  [Execution record](./composition-ce6p-resolution-plan.md#execution-record-2026-10-06),
+  [evidence](./composition-ce6p-disjoint-paints-results.json).
+- **Echo cause and routing (2026-10-06):** a scoped proposal corrects accumulated
+  bitmap/primitive rounding drift in the four inherited echo cases. Their pinned
+  timelines/seeks meet the unchanged near tier; byte-preserved controls and 12
+  perceptual hardware samples pass. Production echo correction still awaits the
+  explicit compatibility decision. All 119 timing misses retain selected-frame
+  graph mappings, including all original 117; costs and closure remain unmeasured.
+  Reviewed native/particle runners pass untimed preflight. Concurrent workloads
+  and pending permission to coordinate other chats still prevent elapsed work.
+  [Echo proposal and evidence](./composition-ce6p-echo-diagnosis-results.json),
+  [routing](./composition-ce6p-route-map-results.json).
+- **Active completion goal and GPU trace (2026-10-06):** the owner requested
+  continuing until unchanged CE6-P acceptance is met. The goal is now blocked
+  after three turns of unanswered compatibility scope and host contention.
+  All 119 failures / 117 originals now have actual untimed GPU operations at
+  476 selected frames, repeated with exact counts and owned pixel hashes.
+  Known-clear copies occur in 100 cases (311 of 1,956 calls); native count-one
+  also has an eligible known-clear copy. This is a concrete hypothesis for the
+  pending cost gate, without an elapsed saving or closure claim. Source/input/
+  asset fingerprints, failed attempts and cleanup retention are reviewed.
+  Quiet-host timing and echo compatibility approval remain pending.
+  [Goal and trace record](./composition-ce6p-resolution-plan.md#active-completion-goal-and-gpu-operation-coverage),
+  [operation evidence](./composition-ce6p-route-map-results.json).
+- **Owner-authorized resumption (2026-10-06):** renderer 0.42.0 retains the tested
+  echo correction and particle candidate. Targeted frames/seeks, four identical
+  MP4 pairs, selected profile agreement and focused local checks pass. Eight
+  uncontended particle sessions show selected gains, but all pinned ratios remain
+  above 1.25×. Native owned-read cost exceeds the diagnostic Canvas half-budget
+  even after optimistically removing render/barrier costs; paint/copy removal
+  alone is rejected as closure. The quiet timing slice is finished. Strict
+  audits, native 2× and the final full local gate remain open.
+  [Resumption record](./composition-ce6p-resolution-plan.md#owner-authorized-resumption--2026-10-06),
+  [cost evidence](./composition-ce6p-cost-results.json).
 - **Verification while deferred:** run local correctness and feature checks.
   Existing strict WebGL family audits remain available with `--webgl
 --keep-going`; they retain and report timing failures. A timing-only nonzero
@@ -3282,8 +3359,8 @@ tests, backend parity suite, repeated-export determinism test.
   approach or explicitly revises acceptance. No CPU/GPU hybrid, default backend
   switch, GPU policy change or baseline regeneration is authorized by this deferral.
 
-**Completion record:** CE6 feature work remains incomplete; performance acceptance
-is deferred to CE6-P rather than completed.
+**Completion record:** CE6 feature work remains independent; CE6-P performance
+acceptance is resumed and remains incomplete. Preserve every original target.
 
 ---
 
@@ -4797,3 +4874,16 @@ baked to one key per integer frame in CE4d; no fractional key frames. Note 3: `c
 with `cameraDepth`. Note 4: no contract change; CE2 accepts fractional evaluation times.
 Note 5: image `rasterize: "natural-size"`. Note 6: no contract change. Note 7: adapter
 rule above, plus a CE2 follow-up. See the [decision log](#decision-log).
+
+#### CE6-P retained 0.42.0 gate and rejected owned-output candidate (2026-10-06)
+
+The full local gate passes all browser groups and 176 frozen baselines / 36,061
+frames on retained renderer 0.42.0. Two uncontended fixed-native diagnostics
+preserve all candidate bytes/ownership but reject fresh-owned-read plus known-clear
+paint: 1.7875 / 1.8125 ms against matched half-Canvas 0.39375 / 0.375 ms. Complete
+allocate+fill alone costs 0.850 / 0.925 ms. No production change follows that
+experiment, and the quiet slice is released. The existing strict failure ledger
+and native 2× remain open; 0.42.0 has not received a repeated full strict audit.
+No compatible closure mechanism is selected, and changing the readback contract
+or acceptance requires an explicit owner decision.
+[Decision/evidence](./composition-ce6p-resolution-plan.md#native-owned-output-decision--2026-10-06).

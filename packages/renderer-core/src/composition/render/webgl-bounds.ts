@@ -13,6 +13,7 @@ type Rect = WebglRect;
 export class WebglBounds {
   private readonly bounds = new WeakMap<WebglSurface, Rect | null>();
   private background: number | undefined;
+  private exactBackground: number | undefined;
   constructor(private readonly root: WebglSurface) {}
   clear(surface: WebglSurface, color: Rgba | null) {
     if (surface === this.root) {
@@ -24,6 +25,14 @@ export class WebglBounds {
         255,
       ]);
       this.background = new Uint32Array(bytes.buffer)[0]!;
+      this.exactBackground = (color ?? [0, 0, 0, 0]).slice(0, 3).every((v) => {
+        const byte = v * alpha * 255;
+        return (
+          byte >= 0 && byte <= 255 && Math.abs(byte - Math.round(byte)) < 1e-6
+        );
+      })
+        ? this.background
+        : undefined;
       this.bounds.set(surface, null);
     } else
       this.bounds.set(
@@ -63,6 +72,10 @@ export class WebglBounds {
   }
   clearColor(surface: WebglSurface) {
     return surface === this.root ? this.background : undefined;
+  }
+  /** Bytes known without relying on framebuffer clear quantization. */
+  exactClearColor(surface: WebglSurface) {
+    return surface === this.root ? this.exactBackground : undefined;
   }
   include(surface: WebglSurface, rect: Rect | null) {
     if (!rect) return;

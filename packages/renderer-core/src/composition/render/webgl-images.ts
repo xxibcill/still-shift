@@ -123,6 +123,9 @@ export class WebglImages {
       dst,
       { left, top, right, bottom },
       content.rasterize === "draw" || clips.length > 0,
+      content.bitmapRounding === true &&
+        !dst.opaque &&
+        (content.rasterize === "draw" || clips.length > 0),
     );
     return true;
   }
