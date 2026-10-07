@@ -4836,6 +4836,27 @@ Bounded mix/waveforms, audio loader/preview/export, native passage mixing, match
 production acceptance and the final full gate remain pending.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 bounded native mix checkpoint (2026-10-07)
+
+Complete native audio now streams through the shared continuous evaluator into one
+48 kHz stereo Float32 master. Fixed source-page buffers are reused on eviction,
+file handles and output blocks are bounded, and PCM-derived waveform storage is
+reserved before allocation. Gain/pan, multiplicative linear/equal-power fades and
+Float32 stage/order rounding match CE16: both independent reference WAVs are
+byte-identical. Actual source/processed-per-route/mix waveform capture permits at most
+1,024 points each and 131,072 total; shared capture validation checks their clocks,
+bindings and headroom. No normalization runs. Full protected-narration validation
+precedes source preparation and the complete mix precedes any export-range selection.
+Visual, source PCM and mix WAV entries share cache locking/disk accounting and atomic
+publication. Hits reverify data/provenance; source races and cancellation reject.
+An actual singleton pingpong proof found floating point terminal drift; Q16 PCM loop
+arithmetic and five fps regressions repair it under evaluator 53. Picture loop behavior
+is unchanged. All 60 focused checks / 6 files, 2,094 units / 208 files and static checks
+pass. The actual 96,000-sample test uses 491,578 / 524,288 PCM working bytes with 24
+loads and 16 reusable evictions. Loader/preview/mux, waveform presentation, native
+passage mixing, matching-audio production acceptance and final full gate remain pending.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

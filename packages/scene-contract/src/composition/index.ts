@@ -15,6 +15,7 @@ export {
 export * from "./layers.ts";
 export * from "./depth-image.ts";
 export * from "./media.ts";
+export * from "./audio.ts";
 export * from "./shapes.ts";
 export * from "./shape-properties.ts";
 export * from "./property-path.ts";

@@ -44,28 +44,19 @@ still hold before relying on them.
 ## Current state
 
 - **CE13 in progress (2026-10-07):** `codex/composition-ce13` from completed CE4d
-  `adf6cea`. Audited merged/attached [CE16 PR #33](https://github.com/xxibcill/still-shift/pull/33)
-  at `65f2ebe4`; its shared contract, saved-project IO, opt-in worker, passage
-  adapter, CLI and timeline retain the current native renderer and beat interfaces.
-  Focused checks pass 88 soundtrack / 46 runtime / 40 passage-CLI tests; real browser
-  playback decodes all 384,000 stereo samples/channel exactly and full/range mux
-  matches independent renders. Integration `3fd8584` is pushed. Native media
-  descriptors, post-expression source clocks, picture graph and builders pass all
-  2,060 unit tests / 204 files plus static checks (`41c7b98`). Actual video hash,
-  CFR PTS, color/coverage and transform checks are verified (`fc23442`). Actual SDR
-  conversion/cache are pushed as `ac9f68c`. Bounded CPU/GPU readiness and exact
-  graph/coverage dependencies pass 2,077 unit tests, runtime/media regressions and real
-  native/existing CE7/CE8 browser proofs (`7f42571`). Source preparation and native
-  production picture export now pass actual video/sequence + animated still/lower-third
-  proofs on Canvas 1.45 / WebGL2 0.66: repeated, independent and raw/PNG MP4s are
-  byte-identical (`9aca1ae`). Native Lab/CLI inspector edits, preparation, seek/playback
-  readiness and draft exports now pass real browser proof, existing authoring regressions,
-  48 focused units / 23 CLI tests and static checks (`917e92c`). Continuous native PCM
-  scope clocks and dependency traversal now pass all 2,089 units / 208 files, static
-  checks and existing CE7 picture acceptance (evaluator 52, `e4f27a2`). Actual streamed
-  48 kHz PCM preparation/cache now passes 25 source/cache/probe tests and static checks.
-  Bounded mix/waveforms, audio loader/preview/export, passage audio and matching audio/video
-  production/full acceptance remain in flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
+  `adf6cea`. Merged/attached [CE16 PR #33](https://github.com/xxibcill/still-shift/pull/33)
+  at `65f2ebe4` is audited and integrated. Native contract, actual video/sequence
+  provenance and SDR conversion, bounded CPU/GPU readiness, production picture export
+  and CLI/Lab authoring are verified on Canvas 1.45 / WebGL2 0.66. Streamed actual
+  48 kHz PCM preparation/cache is pushed as `8161bd7`. Bounded continuous stereo mix
+  and actual source/processed/mix waveforms now pass 60 focused checks, all 2,094
+  units / 208 files and static checks. Both CE16 reference WAVs are byte-identical;
+  actual PCM page buffers use 491,578 / 524,288 bytes with 16 reusable evictions.
+  Q16 loop endpoints are exact after a singleton pingpong repair (evaluator 53).
+  Audio loader/preview/export, waveform presentation, whole-passage audio and
+  matching-audio/video production/full acceptance remain in flight. No final CE13
+  gate has run. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain
+  pending. Historical CE16 reports remain references, not CE13 proof.
   [Evidence](./composition-ce13-results.json).
 
 - **CE4d complete (2026-10-07):**
@@ -280,6 +271,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 bounded PCM mix and actual waveforms
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed PCM cache `8161bd7`.
+- **Done:** complete streamed stereo PCM master, source-page pool, shared clock/controls,
+  CE16 Float32 laws and bounded actual source/processed/mix waveform capture.
+- **Results:** 60 focused checks / 6 files, all 2,094 units / 208 files and static
+  checks pass. Both CE16 reference WAVs are byte-identical. Actual 96,000-sample page
+  pool uses 491,578 / 524,288 working bytes, 24 loads and 16 buffer-reusing evictions.
+- **Repairs:** an actual singleton pingpong proof exposed a one-sample terminal error;
+  audio loops now use Q16 PCM arithmetic, with five fps regressions and evaluator 53.
+  The race fixture now edits bytes in place instead of truncating the source.
+- **Next:** audio loader/preview, waveform lanes, transactional export mux, native
+  whole-passage PCM, matching-audio production acceptance and complete final gate.
+- **Records:** [media guide](./composition-media.md), [CE13 evidence](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 streamed native PCM preparation
 

@@ -1,4 +1,5 @@
 import type { CompositionLayer } from "@still-shift/scene-contract";
+import { mediaSamplePosition } from "./media-clock.ts";
 import {
   passageError,
   type PassageDiagnostic,
@@ -77,11 +78,13 @@ export function loopedAudioPrecompTime(
   layer: Precomp,
 ): number {
   if (!layer.loop) return sourceFrame;
-  const last = frameCount - fps / 48000;
-  const period = layer.loop === "cycle" ? frameCount : 2 * last;
+  const sampleCount = (frameCount * 48000) / fps;
+  const last = sampleCount - 1;
+  const period = layer.loop === "cycle" ? sampleCount : 2 * last;
+  const rawSample = (sourceFrame * 48000) / fps;
   if (
     layer.loopCount !== undefined &&
-    (sourceFrame < 0 || sourceFrame >= period * layer.loopCount)
+    (rawSample < 0 || rawSample >= period * layer.loopCount)
   )
     return frameCount;
   if (!Number.isFinite(sourceFrame) || Math.abs(sourceFrame) > 2 ** 40)
@@ -90,13 +93,14 @@ export function loopedAudioPrecompTime(
       "Audio loop source time must be within ±2^40 frames",
       { node: layer.id, path: `${layer.id}.loop` },
     );
-  const remainder = sourceFrame % period;
+  const sample = mediaSamplePosition(rawSample, 16);
+  if (layer.loopCount !== undefined && sample >= period * layer.loopCount)
+    return frameCount;
+  const remainder = sample % period;
   const phase = remainder < 0 ? remainder + period : remainder;
-  return layer.loop === "cycle"
-    ? phase
-    : phase <= last
-      ? phase
-      : period - phase;
+  const mapped =
+    layer.loop === "cycle" ? phase : phase <= last ? phase : period - phase;
+  return (mapped * fps) / 48000;
 }
 
 /** Source-frame pair after FPS/remap mapping. CE13 supplies the decoded frame images. */

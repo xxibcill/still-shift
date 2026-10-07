@@ -1,6 +1,4 @@
-import { createHash } from "node:crypto";
-import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { resolve } from "node:path";
 import {
   CompositionPreparedMediaSchema,
   type Composition,
@@ -10,9 +8,11 @@ import { compositionMediaFrameDependencies } from "../../renderer-core/src/compo
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { prepareCompositionVisualMedia } from "./composition-media-cache.ts";
 import { COMPOSITION_MEDIA_DECODER_VERSION } from "./composition-media-color.ts";
+import {
+  compositionMediaCacheDirectory,
+  compositionMediaMappingIdentity,
+} from "./composition-media-cache-storage.ts";
 
-const checksum = (value: string) =>
-  "sha256:" + createHash("sha256").update(value).digest("hex");
 export type CompositionMediaPreparationOptions = {
   cacheDirectory?: string;
   signal?: AbortSignal | undefined;
@@ -22,20 +22,6 @@ export type CompositionMediaPreparation = {
   assetPaths: Record<string, string>;
   sourceAssetPaths: Record<string, { path: string; manifestPath?: string }>;
 };
-function mappingIdentity(composition: Composition) {
-  return checksum(
-    JSON.stringify({
-      ...composition,
-      assets: composition.assets.map((asset) => {
-        const record = { ...asset } as Record<string, unknown>;
-        delete record.path;
-        delete record.manifestPath;
-        delete record.firstFrame;
-        return record;
-      }),
-    }),
-  );
-}
 /** Capture the source originals needed by the complete immutable document. */
 export async function prepareCompositionMedia(
   composition: Composition,
@@ -99,15 +85,8 @@ export async function prepareCompositionMedia(
           }
       }
     }
-  const cacheDirectory =
-    options.cacheDirectory ??
-    process.env.STILL_SHIFT_COMPOSITION_MEDIA_CACHE ??
-    join(
-      tmpdir(),
-      "still-shift-composition-media",
-      checksum(resolve(process.cwd())).slice(7),
-    );
-  const mappingHash = mappingIdentity(composition);
+  const cacheDirectory = compositionMediaCacheDirectory(options.cacheDirectory);
+  const mappingHash = compositionMediaMappingIdentity(composition);
   const prepared: CompositionPreparedMedia = {
     schemaVersion: "composition-prepared-media-1",
     decoderVersion: COMPOSITION_MEDIA_DECODER_VERSION,

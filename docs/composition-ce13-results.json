@@ -4513,12 +4513,173 @@
           "sha256": "sha256:feb8069d3a6e132088986bd9678fff73ee6c40aa70828c6abe37ff3683eb6221"
         }
       ],
+      "fullGate": false,
+      "checkpoint": "8161bd7"
+    },
+    {
+      "slice": "bounded continuous native PCM mixing and actual waveform capture",
+      "sourceFingerprint": "sha256:3e2bf4e9801ad61741b5391c7f51bb9b343c9d4e98774f74d5c169772949504f",
+      "sourceFiles": [
+        "packages/animation-engine/src/composition-audio-mix.ts",
+        "packages/animation-engine/src/composition-audio-pcm.ts",
+        "packages/animation-engine/src/composition-media-audio.ts",
+        "packages/animation-engine/src/composition-media-cache-storage.ts",
+        "packages/animation-engine/src/composition-media.ts",
+        "packages/animation-engine/src/index.ts",
+        "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+        "packages/renderer-core/src/composition/evaluate/media-clock.ts",
+        "packages/renderer-core/src/composition/evaluate/media.ts",
+        "packages/renderer-core/src/composition/evaluate/time-controls.ts",
+        "packages/scene-contract/src/composition/audio.ts",
+        "packages/scene-contract/src/composition/index.ts",
+        "tests/integration/composition-audio-mix.test.ts",
+        "tests/unit/composition-audio-clock.test.ts"
+      ],
+      "checks": {
+        "build": "pass",
+        "schema": "pass",
+        "boundaries": "pass",
+        "lint": "pass",
+        "format": "pass",
+        "focused": {
+          "exitCode": 0,
+          "passed": 60,
+          "files": 6,
+          "seconds": 12.47
+        },
+        "unit": {
+          "exitCode": 0,
+          "passed": 2094,
+          "files": 208,
+          "seconds": 17.4
+        }
+      },
+      "versions": {
+        "evaluator": "composition-evaluator-53",
+        "audioDecoder": "composition-audio-decoder-1",
+        "audioMixer": "composition-audio-mixer-1"
+      },
+      "implemented": [
+        "shared continuous audio sample evaluation with source trim, Q16 interpolation, keyed/driven/expressed gain/pan and inherited visibility/routes",
+        "mono duplication, stereo preservation, centre unity, constant-power pan/hard-pan exact silence and CE16 Float32 stage rounding",
+        "multiplicative overlapping linear or equal-power fades in the local clip clock",
+        "authored instance order Float32 sum, actual final headroom/overs with no normalization",
+        "fixed reusable 4096-sample source-page pool and bounded file handles/output blocks; source buffers reuse on LRU eviction without relying on GC",
+        "actual source, processed per-route and complete mix waveforms: at most1024 points per waveform and131072 total; PCM-derived waveform storage reservation included",
+        "shared composition-prepared-audio-1 contract checks counts/channels/routes/source identity/waveform headroom",
+        "whole-document/protected narration validation before preparation; complete PCM master precedes range selection",
+        "shared visual/audio cache lock, cumulative reservation, atomic mix WAV publication, verified hits, original/source-PCM rechecks and active cancellation cleanup",
+        "mix cache identity includes actual evaluator53, mixer/decoder versions, authored mapping and source/FFmpeg proof; physical paths excluded",
+        "audio cycle/pingpong arithmetic now runs on shared Q16 PCM sample clock; picture loop code unchanged"
+      ],
+      "proofs": [
+        {
+          "proof": "native-ce16-pcm-laws",
+          "curve": "linear",
+          "worstAbsoluteSampleDelta": 0,
+          "byteIdentical": true,
+          "samples": 8000
+        },
+        {
+          "proof": "native-ce16-pcm-laws",
+          "curve": "equal-power",
+          "worstAbsoluteSampleDelta": 0,
+          "byteIdentical": true,
+          "samples": 8000
+        },
+        {
+          "proof": "native-pcm-page-pool",
+          "reservedBytes": 524288,
+          "peakPcmBytes": 491578,
+          "sourcePageLoads": 24,
+          "sourcePageEvictions": 16,
+          "samples": 96000
+        }
+      ],
+      "actualMediaProofs": [
+        "all8,000 trimmed stereo narration samples exactly match source bits including final sample",
+        "source/processed/mix peaks independently reduced from actual PCM",
+        "linear and equal-power gain/pan/fade reference WAVs byte-identical to existing CE16 worker laws using only ordinary depth Python NumPy, without optional GPL backend",
+        "24/25/30/50/60fps nested protected origins/final samples/silence exact",
+        "fractional source interpolation across page boundaries and authorized trim endpoint",
+        "full singleton PCM cycle/pingpong periods and exact finite terminal silence",
+        "normalized driver/expression gain/pan and held keyed gain at PCM boundaries",
+        "Float32 non-associative authored sum order and actual final headroom",
+        "independent repeated WAV/metadata byte equality, relocation hits and concurrent one-miss/one-hit publication",
+        "disabled processed waveform allzero; real page-pool eviction under configured byte limit",
+        "midstream cancellation, in-place source-PCM race and mix payload tamper reject without publication"
+      ],
+      "failedAttempts": [
+        {
+          "exitCode": 1,
+          "kind": "race fixture diagnostic",
+          "passed": 21,
+          "failed": 1,
+          "detail": "Whole-file write temporarily truncated the PCM, correctly causing provenance rejection before checksum. Repaired fixture to mutate four bytes in place for a precise checksum-race proof."
+        },
+        {
+          "exitCode": 1,
+          "kind": "actual singleton pingpong terminal",
+          "passed": 53,
+          "failed": 1,
+          "detail": "Floating point frame comparison replayed samplezero at exact terminal. Repaired audio loop arithmetic to Q16 PCM samples and added five fps unit endpoint regressions; evaluator53 invalidates dependent caches."
+        }
+      ],
+      "reviewRepairs": [
+        "centralized actual audio decoder literal in shared contract and fact/header-aware finite PCM verification",
+        "shared physical-path-independent mapping/cache-directory helpers preserve existing picture identities",
+        "mix identity explicitly pins evaluator version",
+        "fixed source buffers reuse on eviction; all source handles close on disposal"
+      ],
+      "pending": [
+        "audio loader, Lab/CLI preview and waveform presentation",
+        "transactional native audio export mux and native whole-passage PCM",
+        "complete matching-audio/video acceptance and final local full gate"
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-audio-mix-build-draft.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-mix-build-tests-draft.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-mix-focused-draft.log",
+          "sha256": "sha256:7ffd7317e0e21c41692e075c23cb38bd251094821ced54a758fd5f6a2b20acb4"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-mix-focused-rerun.log",
+          "sha256": "sha256:7cd0c73e603b015fdf6fffe3839a7a94366004b39b23927c3c6bb7ac2cddeae1"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-mix-static-draft.log",
+          "sha256": "sha256:ae3f2762aede074795598a6916cd4f1cf48e64c862403c04cf9c0740b0276402"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-mix-focused-final.log",
+          "sha256": "sha256:9ef3294abde65077456a72e94c3b2789c37d05da30a4bc6820f846b42fa2e39a"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-mix-static-final.log",
+          "sha256": "sha256:403d4930fe2d7fa45fe57b3526444db6902734590e945f80de49c633ff6a3de7"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-mix-focused-repaired.log",
+          "sha256": "sha256:bcc25443ce1c2206d4121958bbc782ec7a1eb2add02fc3ec0bfc11bf8f20c787"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-mix-static-units-repaired.log",
+          "sha256": "sha256:7fed05432a6155e58960977d727a2cd7111262e4d83b48ad56dfb9ddd8607d37"
+        }
+      ],
       "fullGate": false
     }
   ],
   "fullGates": [],
   "pending": [
-    "bounded native PCM mix/waveforms, audio loader/preview/export and native passage mixing",
+    "native audio loader/preview/export and waveform presentation; native whole-passage mixing",
     "native audio protection, mixing and waveforms",
     "real Lab and export acceptance",
     "complete final local pnpm check",

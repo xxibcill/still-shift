@@ -183,3 +183,33 @@ stages publish atomically; cancellation kills/reaps the active decoder before cl
 Every hit revalidates the original hash, manifest and finite cached PCM/hash/count.
 Actual PCM preparation is verified. Bounded mixing, source/processed waveforms, native
 audio loading/preview/mux and passage audio are the next work.
+
+`prepareCompositionAudio` prepares the complete 48 kHz stereo Float32 WAV master and
+the immutable `composition-prepared-audio-1` capture. Whole-document validation runs
+before source decoding, including protected narration. Mono duplicates to stereo;
+stereo retains its channels. Source sampling uses Q16 linear interpolation within the
+authorized trim. Shared keys/drivers/expressions determine normalized gain/pan at every
+output sample. Fades multiply in the local clip clock: linear or quarter-sine
+equal-power. CE16 centre-unity/constant-power pan and Float32 product/sum order apply.
+The final mix is not normalized; actual peak dBFS and frames above full scale are reported.
+
+Source PCM pages use fixed 4,096-sample buffers and reuse them on LRU eviction, with
+at most 32 open source handles. Output streams in bounded blocks. The PCM reservation
+also covers source verification buffers and PCM-derived waveform arrays/copies.
+Source, processed-per-instance and mix waveforms come from actual samples, with at
+most 1,024 peak bins per waveform and 131,072 total. Source bins follow the decoded
+source clock; processed/mix bins follow the complete output clock. Disabled processed
+waveforms are silent. The configured working limit rejects before mix allocation.
+
+Audio loop arithmetic now uses the shared Q16 PCM clock. Finite singleton pingpong
+ends on its exact terminal sample at 24/25/30/50/60 fps (evaluator 53); picture loop
+behavior remains unchanged. Mix keys pin the actual evaluator, mixer/decoder versions,
+source PCM/FFmpeg identities and authored mapping, excluding physical source paths.
+The mixed WAV shares cumulative cache locking/reservation and atomic publication with
+picture/source PCM. Hits reverify its full header/count/finite PCM/hash; originals and
+source PCM reverify after mixing to reject races. Cancellation removes new output.
+
+Both CE16 gain/pan/linear and equal-power fade reference WAVs match byte-for-byte.
+The actual 96,000-sample bounded test uses 491,578 / 524,288 PCM working bytes, with 24
+page loads and 16 reusable evictions. Full native mixing and waveform metadata are
+verified; audio loader/preview/mux, waveform presentation and passage audio remain pending.

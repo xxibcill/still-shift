@@ -240,3 +240,30 @@ it("rejects fractional, negative and nonfinite output sample indices", () => {
     evaluateCompositionAudio(comp, 0, { scopeTimes: { host: 0 } }),
   ).toThrow("scope clocks");
 });
+
+it.each([24, 25, 30, 50, 60] as const)(
+  "ends singleton PCM pingpong on the exact quantized terminal sample at %i fps",
+  (fps) => {
+    const comp = document(fps);
+    const audio = comp.layers[0]!;
+    if (audio.type !== "audio") throw Error("Expected audio");
+    audio.sourceStartSample = 0;
+    audio.sourceEndSample = 48000 / fps;
+    comp.layers = [
+      {
+        id: "host",
+        type: "precomp",
+        comp: "one",
+        loop: "pingpong",
+        loopCount: 1,
+      },
+    ];
+    comp.precomps = [
+      { id: "one", width: 64, height: 48, fps, frameCount: 1, layers: [audio] },
+    ];
+    const period = 2 * (48000 / fps - 1);
+    expect(evaluateCompositionAudio(comp, period - 1)[0]!.sourceSample).toBe(1);
+    expect(evaluateCompositionAudio(comp, period)).toEqual([]);
+    expect(evaluateCompositionAudio(comp, period + 1)).toEqual([]);
+  },
+);

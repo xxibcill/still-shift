@@ -57,3 +57,5 @@ export * from "./composition-media-cache.ts";
 export * from "./composition-media.ts";
 
 export * from "./composition-media-audio.ts";
+
+export * from "./composition-audio-mix.ts";

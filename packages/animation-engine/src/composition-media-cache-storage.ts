@@ -1,9 +1,43 @@
 import { lstat, readdir } from "node:fs/promises";
-import { join } from "node:path";
+import { createHash } from "node:crypto";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
-import { AnimationEngineError } from "@still-shift/scene-contract";
+import {
+  AnimationEngineError,
+  type Composition,
+} from "@still-shift/scene-contract";
 import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
+
+const checksum = (value: string) =>
+  "sha256:" + createHash("sha256").update(value).digest("hex");
+export function compositionMediaCacheDirectory(directory?: string) {
+  return (
+    directory ??
+    process.env.STILL_SHIFT_COMPOSITION_MEDIA_CACHE ??
+    join(
+      tmpdir(),
+      "still-shift-composition-media",
+      checksum(resolve(process.cwd())).slice(7),
+    )
+  );
+}
+/** Relocated physical source files do not change the authored clock/mix identity. */
+export function compositionMediaMappingIdentity(composition: Composition) {
+  return checksum(
+    JSON.stringify({
+      ...composition,
+      assets: composition.assets.map((asset) => {
+        const record = { ...asset } as Record<string, unknown>;
+        delete record.path;
+        delete record.manifestPath;
+        delete record.firstFrame;
+        return record;
+      }),
+    }),
+  );
+}
 
 export async function compositionMediaCacheLock(
   root: string,

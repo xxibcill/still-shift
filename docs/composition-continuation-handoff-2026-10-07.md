@@ -70,7 +70,11 @@ draft exports are pushed as `917e92c` with real browser proof and authoring regr
 Continuous audio scope/dependency clocks now pass all 2,089 units / 208 files, static
 checks and existing CE7 picture acceptance (evaluator52, `e4f27a2`). Actual streamed
 48 kHz PCM preparation/cache passes 25 source/cache/probe tests and static checks.
-Bounded mix/waveforms, native audio loader/preview/export, passage mixing and matching-audio acceptance remain pending;
+Bounded continuous mix and actual waveform metadata now pass 60 focused checks /
+all 2,094 units / static checks, including byte-identical CE16 reference WAVs and
+491,578 / 524,288 PCM bytes with 16 reusable page evictions. A singleton terminal
+repair uses Q16 PCM arithmetic and evaluator53. Native audio loader/preview/export,
+waveform presentation, passage mixing and matching-audio acceptance remain pending;
 no final CE13 gate has run.
 CE15 and CE14 remain in flight.
 Private notes contain exact source

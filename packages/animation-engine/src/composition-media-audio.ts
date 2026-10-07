@@ -13,6 +13,7 @@ import {
 import { join, resolve } from "node:path";
 import { z } from "zod";
 import {
+  COMPOSITION_AUDIO_DECODER_VERSION,
   resolveCompositionMediaLimits,
   type CompositionAsset,
   type CompositionMediaLimits,
@@ -28,7 +29,7 @@ import {
   parseMediaRational,
 } from "./composition-media-probe.ts";
 
-export const COMPOSITION_AUDIO_DECODER_VERSION = "composition-audio-decoder-1";
+export { COMPOSITION_AUDIO_DECODER_VERSION } from "@still-shift/scene-contract";
 type AudioAsset = Extract<CompositionAsset, { type: "audio" }>;
 type Options = {
   asset: AudioAsset;
@@ -373,7 +374,9 @@ async function decodeAudio(
 /** Verify the immutable cache without allocating the complete source PCM. */
 export async function verifyCompositionAudioPcm(
   path: string,
-  expected: Pick<PreparedCompositionAudioSource, "byteLength" | "sha256">,
+  expected: Pick<PreparedCompositionAudioSource, "byteLength" | "sha256"> & {
+    header?: Uint8Array;
+  },
   signal?: AbortSignal,
 ) {
   signal?.throwIfAborted();
@@ -384,14 +387,32 @@ export async function verifyCompositionAudioPcm(
     passageError("comp-media-provenance", "Prepared PCM byte count differs", {
       path,
     });
-  const inspection = new PcmInspection(expected.byteLength, path);
+  const header = expected.header;
+  let prefix = 0;
+  const digest = createHash("sha256");
+  const inspection = new PcmInspection(
+    expected.byteLength - (header?.length ?? 0),
+    path,
+  );
   for await (const chunk of createReadStream(path, {
     highWaterMark: STREAM_BYTES,
     signal,
-  }))
-    inspection.accept(chunk as Buffer);
+  })) {
+    const bytes = chunk as Buffer;
+    digest.update(bytes);
+    const count = header ? Math.min(header.length - prefix, bytes.length) : 0;
+    for (let at = 0; at < count; at++)
+      if (bytes[at] !== header![prefix + at])
+        passageError(
+          "comp-media-provenance",
+          "Prepared PCM WAV header differs",
+          { path },
+        );
+    prefix += count;
+    inspection.accept(bytes.subarray(count));
+  }
   const actual = inspection.finish();
-  if (actual.sha256 !== expected.sha256)
+  if ("sha256:" + digest.digest("hex") !== expected.sha256)
     passageError("comp-media-checksum", "Prepared audio PCM was modified", {
       path,
     });
