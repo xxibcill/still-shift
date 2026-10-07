@@ -2,8 +2,9 @@
 
 CE13 is in progress. The contract, source-clock evaluation and visual graph are
 implemented, with actual FFmpeg source probing, SDR conversion and atomic frame-cache
-preparation and bounded browser readiness. Production source/export/Lab hookup, actual audio mixing, waveform capture and preview
-are verified. Whole-passage audio integration and complete final acceptance remain pending. Current proof is in
+preparation and bounded browser readiness. Production source/export/Lab hookup, actual
+audio mixing, waveform capture and preview are verified. Whole-passage audio integration
+and complete final acceptance remain pending. Current proof is in
 [CE13 results](./composition-ce13-results.json). The contract fixture uses placeholder
 hashes and is a structural fixture, not a playable media example.
 
