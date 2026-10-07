@@ -717,6 +717,30 @@ keys, retained graphs, font/checksum/ledger/Node metadata, actual production/
 aggregate admission, speed and full-gate acceptance remain pending.
 [Evidence](./composition-ce15-vector-geometry-metadata-results.json).
 
+## Accepted framebuffer bounds metadata checkpoint — 2026-10-08
+
+Original weak-map/state/cleanup controls reserve before creation (512 base + 80
+per weak-map/cleanup slot pair). Bounds entries/rectangles reserve 160 before
+original production, retain across scratch and release after replacement/surface
+release/final disposal. Cleanup tracks values without adding strong surface keys;
+declarations for vanished weak keys remain conservative until explicit cleanup.
+Original inline bounds records, color arrays/temporary views (512), transform
+arrays/records (896) and temporary fill/row views (128) admit before creation and
+remain owned through original consumers. Original native color/transform/union/
+clamping/readback operators and placement remain unchanged.
+
+Build, lint, boundaries and 175 focused tests pass, including six framebuffer
+metadata regressions. All 144 audit cases / 8,000 comparisons, 96 actual RPC
+snapshots, 22 moving/blurred and ten stationary native frames pass. Original WebGL,
+69 typography tests, 12 provider cases / 60 frames and eight fixtures pass; glyph
+1.421648× meets unchanged 1.5 maximum. All 64 exports preserve 768 complete bodies/
+frames against pushed `3f27971`. First focused/native attempts pass.
+
+Recording/replay, remaining device/pool/shader/paint controls, provider keys,
+retained graphs, font/checksum/pixel-view/ledger/Node metadata, actual production/
+aggregate admission, speed and full-gate acceptance remain pending.
+[Evidence](./composition-ce15-webgl-bounds-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

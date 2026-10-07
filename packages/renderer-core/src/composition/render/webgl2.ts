@@ -1173,6 +1173,7 @@ export function createWebgl2Backend(
       pngImages.dispose();
       depthImages.dispose();
       raster.dispose();
+      bounds.dispose();
       device.dispose();
       keys.dispose();
     },

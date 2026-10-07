@@ -91,14 +91,14 @@ still hold before relying on them.
   70 tests, the complete audit, six native complete-body oracles, twelve failure
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
   Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
-  controls, raster parts/calls and vector extent/region geometry now pass 169
-  focused tests, the complete audit, 22 moving/blurred and ten stationary native
-  frames and 96 owned RPC snapshots. Original geometry factories pre-admit;
-  temporary bounds remain owned through actual consumption, then clear while
-  retained part bounds remain independent. Original WebGL/provider checks,
-  69 typography tests and 64 exports / 768 prior-exact bodies/frames pass; glyph
-  1.443902× meets unchanged 1.5 maximum. Recording/other WebGL and provider/graph/font/
-  checksum/ledger-control/Node metadata, production admission, aggregate memory, the actual
+  controls, vector geometry/raster parts and framebuffer bounds/color/transforms
+  now pass 175 focused tests, the complete audit, 22 moving/blurred and ten
+  stationary native frames and 96 owned RPC snapshots. Weak-key/retained rectangle
+  cleanup, original temporary producers/consumers and native pixel/math/null
+  behavior pass. Original WebGL/provider checks, 69 typography tests and 64 exports /
+  768 prior-exact bodies/frames pass; glyph 1.421648× meets unchanged 1.5 maximum.
+  Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
+  Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -332,6 +332,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 framebuffer bounds/color/transform metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `3f27971`.
+- **Done:** admitted weak-map/rectangle controls, replacement/surface/final cleanup,
+  original color/transform arrays and temporary native read-view consumers.
+- **Results:** build/lint/boundaries, 175 focused / 69 typography tests; complete
+  144-case / 8,000-comparison audit, 22 moving/blurred and ten stationary native
+  frames, 96 actual RPC snapshots and original WebGL/provider checks pass. All 64
+  exports / 768 bodies/frames match prior output; glyph 1.421648× meets unchanged 1.5.
+- **Review:** preserve weak keys, native color/math/row placement and original null
+  failures; replaced entries do not accumulate, allocator-first cleanup passes.
+- **Next:** recording/device/pool/shader/paint/provider/graph/font/pixel-view/ledger/
+  Node metadata, production/aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [framebuffer metadata evidence](./composition-ce15-webgl-bounds-metadata-results.json).
 
 ### 2026-10-08 — CE15 vector extent/region geometry ownership
 
