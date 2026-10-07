@@ -83,6 +83,11 @@ export const SAMPLE_OFFSETS: Record<1 | 4 | 16, readonly [number, number][]> = {
   ],
 };
 
+/** Keep authored quality while a point emitter uses one hard-coverage sample. */
+export function shadowSampleOffsets(light: Experiment["light"]) {
+  return SAMPLE_OFFSETS[light.radius === 0 ? 1 : light.samples];
+}
+
 export function validateExperiment(scene: Experiment): void {
   const fail = (message: string): never => {
     throw new Error(`shadow-prototype-input: ${message}`);
@@ -250,8 +255,9 @@ export function directVisibility(
     .sort(
       (a, b) => a.order - b.order || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
     );
+  const offsets = shadowSampleOffsets(scene.light);
   let sum = 0;
-  for (const [x, y] of SAMPLE_OFFSETS[scene.light.samples]) {
+  for (const [x, y] of offsets) {
     const emitter = addScaled(
       scene.light.position,
       [x, y, 0],
@@ -262,7 +268,7 @@ export function directVisibility(
       transmission *= 1 - blockerAlpha(receiverPoint, emitter, caster);
     sum += transmission;
   }
-  return sum / scene.light.samples;
+  return sum / offsets.length;
 }
 
 /** Visibility shades CE8-L's direct term only. Inputs/outputs are premultiplied linear. */

@@ -70,13 +70,16 @@ still hold before relying on them.
 
 - **CE8-L-F preparation (2026-10-06):** isolated branch
   `codex/composition-ce8lf-prototype` from CE7 `0e48388`. Candidate flat-alpha
-  shadow specification, CPU/geometry oracle and isolated shader pass 14 analytic
+  shadow specification, CPU/geometry oracle and isolated shader pass 15 analytic
   tests, 96 frozen poses, independent repeats and 12 hardware cases exactly.
   PR #39's review fixes allow a receiver self entry while retaining duplicate-caster
   rejection, and reject float32-ill-conditioned bases before CPU/GPU rendering.
   The 2026-10-07 conditioning-margin repair rejects nonzero-determinant inaccurate
   shears; five supported near-limit 64² alpha controls pass both profiles and
   independent software repeats within the unchanged one-byte tolerance.
+  The radius-zero repair uses one effective center sample in both CPU and shader
+  paths while preserving authored quality. All three sample-count settings retain
+  exact CPU bytes and per-profile RGBA/PNG equality, including independent repeats.
   Toolchain/static checks pass;
   [PR #39](https://github.com/xxibcill/still-shift/pull/39) is open and attached.
   Preparation is complete; CE8/CE8-L and owner policy/budget decisions precede
@@ -85,7 +88,8 @@ still hold before relying on them.
   [preparation evidence](./composition-ce8lf-results.json),
   [self-entry fix evidence](./pr-39-self-entry-fix-results.json),
   [Gram conditioning fix evidence](./pr-39-gram-fix-results.json),
-  [conditioning-margin fix evidence](./pr-39-conditioning-margin-fix-results.json).
+  [conditioning-margin fix evidence](./pr-39-conditioning-margin-fix-results.json),
+  [radius-zero fix evidence](./pr-39-zero-radius-fix-results.json).
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -601,6 +605,23 @@ _Last updated 2026-10-07 by Codex for PR #39 CE7 base refresh; both histories re
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — PR #39 quality-independent radius-zero shadows
+
+- **Agent / branch:** Codex on isolated `codex/pr39-zero-radius-fix`, from `cf38a439`.
+- **Finding:** [P2 radius-zero quality changes](https://github.com/xxibcill/still-shift/pull/39#discussion_r4204571866)
+  reproduced one-byte changes in both the CPU reference and pinned software shader.
+- **Done:** share effective sample selection between CPU and shader construction;
+  point emitters use one center sample and retain the authored sample-count option.
+- **Results:** new regression failed before repair; 15 analytic tests, toolchain,
+  build, schema, boundaries and focused lint/format pass. Complete prototype GPU
+  verification retains all 96 frozen poses, seek/repeat/hardware, maximum-input
+  and conditioned-shear checks. Radius-zero RGBA/PNG are exact across qualities
+  within each profile and independent software repeats; frozen references are unchanged.
+- **Delivery:** one finding commit and one final normal push to the existing PR branch.
+- **Open / next:** owner review/merge; full repository/native/export acceptance,
+  production precision and owner quality/budget choices remain deferred. Actions stay disabled.
+- **Records:** [fix evidence](./pr-39-zero-radius-fix-results.json).
 
 ### 2026-10-07 — PR #39 conservative shadow-plane conditioning margin
 

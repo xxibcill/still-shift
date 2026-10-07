@@ -14,6 +14,7 @@ import {
   nearCollinearFixture,
   plane,
   unstableShearFixture,
+  zeroRadiusFixture,
 } from "../../scripts/composition/cast-shadow-prototype/fixtures.ts";
 
 import {
@@ -68,6 +69,19 @@ describe("isolated cast-shadow candidate", () => {
     expect(alphaAt(alpha, 0.5, 0.5)).toBe(0.5);
     expect(alphaAt(alpha, 0, 0.5)).toBe(0.5);
     expect(alphaAt(alpha, -0.1, 0.5)).toBe(0);
+  });
+
+  it("keeps radius-zero hard bytes identical across authored sample counts", () => {
+    const scene = zeroRadiusFixture();
+    const hard = referencePixels(scene);
+    expect(hard[(32 * 64 + 32) * 4]).toBe(227);
+    for (const samples of [1, 4, 16] as const) {
+      scene.light.samples = samples;
+      expect(referencePixels(scene)).toEqual(hard);
+      const input = shaderInput(scene, 64);
+      expect(input.scene.light.samples).toBe(samples);
+      expect(scene.light.samples).toBe(samples);
+    }
   });
 
   it("handles nonuniform/mirrored bases, grazing rays and offscreen casters", () => {

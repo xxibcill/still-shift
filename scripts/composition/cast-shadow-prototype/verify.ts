@@ -17,6 +17,7 @@ import {
   maximumInputFixture,
   nearCollinearFixture,
   unstableShearFixture,
+  zeroRadiusFixture,
 } from "./fixtures.ts";
 
 const hash = (pixels: number[] | Buffer) =>
@@ -77,6 +78,8 @@ const controlCases = [
     pixels: referencePixels(scene),
   })),
 ];
+const zeroRadiusScene = zeroRadiusFixture();
+const zeroRadiusReference = referencePixels(zeroRadiusScene);
 const rejectedInputs = [
   { id: "near-collinear", scene: nearCollinearFixture() },
   { id: "unstable-shear", scene: unstableShearFixture() },
@@ -200,6 +203,52 @@ async function probe(profile: RenderBrowserProfile, repeat: boolean) {
         maxDelta: delta,
       });
     }
+    const zeroRadius: {
+      samples: number;
+      maxDelta: number;
+      center: number;
+    }[] = [];
+    let hardDigest: { rgba: string; png: string } | undefined;
+    for (const samples of [1, 4, 16] as const) {
+      const scene = structuredClone(zeroRadiusScene);
+      scene.light.samples = samples;
+      assert.deepEqual(
+        referencePixels(scene),
+        zeroRadiusReference,
+        `radius-zero CPU bytes changed with ${samples} samples`,
+      );
+      const result = await page.evaluate(
+        drawVisibility,
+        shaderInput(scene, SIDE),
+      );
+      const delta = Math.max(
+        ...result.pixels.map((value, index) =>
+          Math.abs(value - zeroRadiusReference[index]!),
+        ),
+      );
+      assert.ok(delta <= 1, `radius-zero CPU delta ${delta} exceeds 1`);
+      const digest = {
+        rgba: hash(result.pixels),
+        png: hash(Buffer.from(result.png.split(",")[1]!, "base64")),
+      };
+      if (hardDigest)
+        assert.deepEqual(
+          digest,
+          hardDigest,
+          `${profile} radius-zero bytes changed with ${samples} samples`,
+        );
+      else hardDigest = digest;
+      const id = `zero-radius-${samples}`;
+      if (profile === "pinned") {
+        if (repeat) assert.deepEqual(digest, pinnedHashes.get(id));
+        else pinnedHashes.set(id, digest);
+      }
+      zeroRadius.push({
+        samples,
+        maxDelta: delta,
+        center: result.pixels[(32 * SIDE + 32) * 4]!,
+      });
+    }
     return {
       environment,
       draws,
@@ -211,6 +260,7 @@ async function probe(profile: RenderBrowserProfile, repeat: boolean) {
         maxDelta: controls[0]!.maxDelta,
       },
       conditionedShears: controls.slice(1),
+      zeroRadius,
       result: "pass",
       repeat,
     };

@@ -1,6 +1,6 @@
 import {
   LIMITS,
-  SAMPLE_OFFSETS,
+  shadowSampleOffsets,
   validateExperiment,
   type Experiment,
 } from "./model.ts";
@@ -83,7 +83,7 @@ export function shaderInput(scene: Experiment, side: number) {
     scene,
     side,
     casters,
-    offsets: SAMPLE_OFFSETS[scene.light.samples],
+    offsets: shadowSampleOffsets(scene.light),
     vertex: VERTEX,
     fragment: FRAGMENT,
     textureSide: LIMITS.textureSide,
@@ -126,7 +126,7 @@ export function drawVisibility(input: ReturnType<typeof shaderInput>) {
     vec3("receiverV", scene.receiver.v);
     vec3("light", scene.light.position);
     gl.uniform1i(location("casterCount"), casters.length);
-    gl.uniform1i(location("sampleCount"), scene.light.samples);
+    gl.uniform1i(location("sampleCount"), offsets.length);
     gl.uniform1i(location("side"), side);
     gl.uniform1f(location("radius"), scene.light.radius);
     gl.uniform2fv(location("offsets[0]"), offsets.flat());

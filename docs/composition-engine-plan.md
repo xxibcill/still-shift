@@ -3441,6 +3441,17 @@ maximum inputs remain byte exact. No complete `pnpm check`, native shadow export
 or production integration acceptance is claimed; existing prerequisites and owner
 policy/budget decisions remain. [Resolution evidence](./pr-39-conflict-resolution-2026-10-07.json).
 
+**PR #39 radius-zero correction (2026-10-07):** shared CPU/shader sample selection
+uses one center sample for a zero-radius emitter while retaining the authored
+quality option. A rounding-boundary regression failed before repair; 15 analytic
+tests and focused static gates pass. All 96 frozen poses, seek draws, independent
+repeats, hardware probes, maximum inputs and conditioned-shear controls retain
+their assertions. The new hard-shadow control requires exact RGBA/PNG across
+1/4/16 authored samples within each profile and independent software repeats.
+Frozen references and production sources are unchanged; no full repository,
+native shadow export, performance or production integration acceptance was run.
+[Fix evidence](./pr-39-zero-radius-fix-results.json).
+
 ---
 
 ## CE9 — Expressions and motion behaviours

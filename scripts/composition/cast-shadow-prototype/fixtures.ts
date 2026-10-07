@@ -120,6 +120,15 @@ export function maximumInputFixture(): Experiment {
   return scene;
 }
 
+/** A rounding-boundary control for quality-independent radius-zero coverage. */
+export function zeroRadiusFixture(): Experiment {
+  const scene = experiment();
+  scene.receiver.origin = [-4.0625, -4.0625, 20];
+  scene.casters[0]!.alpha.pixels = [55];
+  scene.casters[0]!.opacity = 0.5;
+  return scene;
+}
+
 /** Small coordinates whose Gram determinant cancels to zero in float32. */
 export function nearCollinearFixture(): Experiment {
   const scene = experiment();

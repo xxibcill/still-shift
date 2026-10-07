@@ -18,6 +18,9 @@ CE8-L-F integration after CE8 and CE8-L. Read the
   Near-collinear and inaccurate nonzero-determinant shears must fail preflight
   before constructing shader input. Five supported near-limit/full-resolution
   shear controls are compared on both profiles and repeated software.
+  A radius-zero rounding control requires exact RGBA/PNG equality across all
+  three authored sample counts within each profile and independent software repeats.
+  CPU and GPU use one effective center sample while retaining the authored quality.
 
 Run from the repository root with its own installed dependencies:
 
