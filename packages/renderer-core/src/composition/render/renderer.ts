@@ -42,6 +42,8 @@ import type { Bounds } from "../evaluate/types.ts";
 import { createCanvas2dBackend, requiresSoftwareFilters } from "./canvas2d.ts";
 import {
   renderCompositionExposure,
+  createCompositionFrameCache,
+  releaseCompositionFrameCache,
   type CompositionFrameCache,
 } from "./exposure.ts";
 import {
@@ -493,14 +495,14 @@ export function createCompositionPreview(
     present: () => void,
   ): CompositionPreview {
     // The GPU backend retains bounded readback bytes; graph reuse skips identical draws.
-    const cache: CompositionFrameCache | undefined =
-      kind === "webgl2" ? {} : undefined;
+    let cache: CompositionFrameCache | undefined;
     let coverageDiagnostics: PassageDiagnostic[] = [];
     let initialization: Promise<void> | undefined;
     let preparedFrame: number | undefined;
     let surfaceCache: CompositionSurfaceCache<S> | undefined;
     let rootCache: CompositionRootCache<S> | undefined;
     try {
+      if (kind === "webgl2") cache = createCompositionFrameCache();
       if (options.surfaceCache) {
         surfaceCache = new CompositionSurfaceCache(
           backend,
@@ -529,6 +531,7 @@ export function createCompositionPreview(
           options.coverageSeverity ?? "error",
         );
     } catch (error) {
+      if (cache) releaseCompositionFrameCache(cache);
       backend.dispose();
       statistics?.dispose();
       throw error;
@@ -657,10 +660,7 @@ export function createCompositionPreview(
           : report;
       },
       dispose() {
-        if (cache) {
-          cache.root = undefined;
-          cache.key = undefined;
-        }
+        if (cache) releaseCompositionFrameCache(cache);
         rootCache?.dispose();
         surfaceCache?.dispose();
         text.dispose();

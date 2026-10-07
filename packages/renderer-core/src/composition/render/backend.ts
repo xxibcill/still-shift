@@ -16,6 +16,7 @@ import type {
   TrackMatte,
 } from "@still-shift/scene-contract";
 import type { Matrix } from "../../node-transform.ts";
+import type { ManagedMetadataText } from "../../managed-metadata.ts";
 import type { Rgba } from "../evaluate/types.ts";
 import type {
   ClipRect,
@@ -66,6 +67,8 @@ export interface RenderBackend<S extends Surface = Surface> {
   endFrame?(completed: boolean): void;
   /** Optional canonical pixel identity for retained backend content. */
   frameKey?(root: SurfaceNode): string;
+  /** An explicitly owned canonical key, retained only while its frame is cached. */
+  frameMetadataKey?(root: SurfaceNode): ManagedMetadataText;
   /** Cache an immutable isolate; the caller releases the returned surface normally. */
   renderIsolate?(op: IsolateOp, like: S, draw: () => S): S;
   /** Retain an existing independent precomp/local surface without adding isolation. */

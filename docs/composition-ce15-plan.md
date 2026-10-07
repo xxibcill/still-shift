@@ -599,6 +599,28 @@ Other frame/damage/vector/provider keys, graph/font/checksum/ledger/Node metadat
 actual production/aggregate admission, speed and full-gate acceptance remain pending.
 [Evidence](./composition-ce15-webgl-key-metadata-results.json).
 
+## Accepted retained frame-key metadata checkpoint — 2026-10-08
+
+Original WebGL visual keys now have explicit owned output through the exposure
+consumer. Comparison keys release immediately after comparison. A successful
+stationary frame retains only its first key across scratch cleanup; replacement,
+moving exposure, failed draw and preview disposal release the old key. The cache
+control reserves 192 declared bytes before construction and clears its references
+on disposal. Legacy string keys and structural comparisons retain original behavior.
+
+Build, lint, boundaries and 137 focused tests pass, including seven frame ownership
+regressions. The complete 144-case / 8,000-comparison audit, 96 real RPC snapshots,
+22 native moving/blurred frames and ten additional stationary native frames pass.
+WebGL retains one draw / four exact reuses; both backends have constant admitted
+metadata across frames and zero storage/reservations after actual preview disposal.
+Original WebGL, 69 typography tests, 12 provider cases / 60 frames and eight fixtures
+pass; glyph 1.483363× meets unchanged 1.5 maximum. All 64 exports preserve 768 complete
+bodies/frames against pushed `22654d6`. Initial fixture typing and unchanged glyph-timing failures are retained; only the failed timing command was rerun in isolation.
+
+Damage/vector/provider keys, retained graphs, font/checksum/ledger/Node metadata,
+actual production/aggregate admission, speed and full-gate acceptance remain pending.
+[Evidence](./composition-ce15-frame-key-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

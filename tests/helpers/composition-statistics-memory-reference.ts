@@ -52,12 +52,93 @@ const fixture: Composition = {
   ],
 };
 
+async function checkStationaryFrameMemory(backend: "canvas2d" | "webgl2") {
+  const stationary = structuredClone(fixture);
+  stationary.layers[0]!.transform!.position = [8.35, 6.25];
+  const resources = await loadCompositionResources(stationary, (id) => id);
+  const baseline = createCompositionPreview(
+    document.createElement("canvas"),
+    stationary,
+    resources,
+    { backend, preserveAlpha: true },
+  );
+  let expected: Uint8ClampedArray;
+  try {
+    baseline.renderFrame(0);
+    expected = baseline.readPixels().slice();
+  } finally {
+    baseline.dispose();
+  }
+  const memory = new ManagedMemory({
+    pixels: 64 * 1024 * 1024,
+    metadata: 4 * 1024 * 1024,
+  });
+  try {
+    return await withManagedMemory(memory, async () => {
+      const canvas = createRenderCanvas();
+      memory.beginScratch();
+      const preview = createCompositionPreview(canvas, stationary, resources, {
+        backend,
+        preserveAlpha: true,
+      });
+      memory.commitScratch();
+      let reused = 0,
+        frames = 0,
+        retainedMetadata = 0;
+      try {
+        for (const frame of [0, 1, 7, 3, 0]) {
+          await withManagedFrame(async () => {
+            const report = preview.renderFrame(frame);
+            const expectedSamples = backend === "webgl2" && frames > 0 ? 0 : 1;
+            if (report.samples !== expectedSamples)
+              throw Error("Native stationary frame changed its reuse behavior");
+            if (report.samples === 0) reused++;
+            const pixels = preview.readPixels();
+            if (pixels.length !== expected.length)
+              throw Error("Native stationary frame length differs");
+            for (let byte = 0; byte < pixels.length; byte++)
+              if (pixels[byte] !== expected[byte])
+                throw Error(
+                  `Native stationary frame ${frame} byte ${byte} differs`,
+                );
+            frames++;
+          });
+          if (frames === 1)
+            retainedMetadata = memory.statistics.current.metadata;
+          if (memory.statistics.current.metadata !== retainedMetadata)
+            throw Error(
+              "Native stationary frame retained replacement or comparison metadata",
+            );
+        }
+      } finally {
+        preview.dispose();
+        releaseRenderCanvas(canvas);
+      }
+      const after = memory.statistics;
+      if (after.current.metadata || after.current.pixels || after.reservations)
+        throw Error(
+          "Native stationary preview retained storage after disposal",
+        );
+      return {
+        frames,
+        reused,
+        retainedMetadata,
+        exactOriginalNativePixels: true,
+        after,
+      };
+    });
+  } finally {
+    memory.dispose();
+  }
+}
+
 /** The actual page result retains its owned snapshot until the Node caller acknowledges its completed RPC. */
 export async function checkManagedSubmissionMemory(
   backend: "canvas2d" | "webgl2",
 ) {
   if (pending)
     throw Error("A native statistics RPC is still awaiting acknowledgement");
+  const stationaryFrames = await checkStationaryFrameMemory(backend);
   const resources = await loadCompositionResources(fixture, (id) => id);
   const baseline = createCompositionPreview(
     document.createElement("canvas"),
@@ -131,6 +212,7 @@ export async function checkManagedSubmissionMemory(
         status: "passed" as const,
         backend,
         frameChecks,
+        stationaryFrames,
         exactOriginalNativePixels: true,
         ownedThroughRpc: memory.owns(snapshot),
         beforeRpc: memory.statistics,

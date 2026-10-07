@@ -532,6 +532,7 @@ export function createWebgl2Backend(
       }
     },
     frameKey: (root) => keys.of(root),
+    frameMetadataKey: (root) => keys.metadata(root),
     beginFrame(root) {
       const next = (root.colorSpace ?? options.colorSpace) === "linear-srgb";
       if (next !== linear) {

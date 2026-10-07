@@ -91,13 +91,13 @@ still hold before relying on them.
   70 tests, the complete audit, six native complete-body oracles, twelve failure
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
   Owned submission/source/root/surface metadata, cache checksums and WebGL
-  definition/isolate keys/controls now pass 130 focused tests, the complete audit,
-  22 native submission frames and 96 owned RPC snapshots. Retained keys, reusable
-  flush/final close, LRU ownership through eviction, quota/null cleanup and all
-  original native count/failure checks pass. Original WebGL/provider checks,
-  69 typography tests and 64 exports / 768 prior-exact bodies/frames pass; glyph
-  1.429766× meets unchanged 1.5 maximum. Other frame/damage/vector/provider/graph/font/
-  checksum/ledger-control/Node metadata, production admission, aggregate memory, the actual
+  definition/isolate/frame keys/controls now pass 137 focused tests, the complete
+  audit, 22 moving/blurred native frames, ten stationary native frames and 96
+  owned RPC snapshots. Original retained keys, quota/null cleanup and frame reuse
+  pass; both stationary previews dispose with zero storage/reservations. Original
+  WebGL/provider checks, 69 typography tests and 64 exports / 768 prior-exact bodies/
+  frames pass; glyph 1.483363× meets unchanged 1.5 maximum. Other damage/vector/provider/
+  graph/font/checksum/ledger-control/Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -331,6 +331,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 retained frame keys and cache control
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `22654d6`.
+- **Done:** original owned frame/comparison keys, retained replacement/invalidation,
+  192-byte cache control and actual preview/allocator disposal.
+- **Results:** build/lint/boundaries, 137 focused / 69 typography tests; complete
+  144-case / 8,000-comparison audit, 22 moving/blurred native frames, ten stationary
+  native frames and 96 real RPC snapshots pass. WebGL has four exact stationary
+  reuses; disposal leaves zero storage. All 64 exports / 768 bodies/frames match
+  prior output; glyph 1.483363× meets unchanged 1.5 maximum.
+- **Review:** repaired fixture transform opacity typing; retained first unchanged
+  glyph-timing failure and reran only that command in isolation before exports.
+- **Next:** damage/vector/provider/graph/font/ledger/Node metadata, production/
+  aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [frame-key metadata evidence](./composition-ce15-frame-key-metadata-results.json).
 
 ### 2026-10-08 — CE15 WebGL definition/isolate metadata and LRU lifetime
 

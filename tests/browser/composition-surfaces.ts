@@ -909,6 +909,12 @@ try {
     );
     assert.equal(report.status, "passed");
     assert.equal(report.frameChecks, 11);
+    assert.equal(report.stationaryFrames.frames, 5);
+    assert.equal(report.stationaryFrames.reused, backend === "webgl2" ? 4 : 0);
+    assert.equal(report.stationaryFrames.exactOriginalNativePixels, true);
+    assert.equal(report.stationaryFrames.after.current.metadata, 0);
+    assert.equal(report.stationaryFrames.after.current.pixels, 0);
+    assert.equal(report.stationaryFrames.after.reservations, 0);
     assert.equal(report.ownedThroughRpc, true);
     assert.equal(report.beforeRpc.current.pixels, 0);
     assert.ok(report.beforeRpc.current.metadata > 0);
