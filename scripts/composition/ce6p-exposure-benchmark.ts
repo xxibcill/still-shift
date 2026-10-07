@@ -1,3 +1,4 @@
+import { snapshotBenchmarkSources } from "./ce6p-sources.ts";
 import { findCompetingWorkloads } from "./ce6p-workloads.ts";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -62,12 +63,7 @@ const candidateKernel = candidateRef
 const candidateBounds = candidateRef
   ? refSource(candidateRef, boundsPath)!
   : await readFile(join(root, boundsPath), "utf8");
-const sharedHelpers = await Promise.all(
-  helperPaths.map(async (path) => ({
-    path,
-    source: await readFile(join(root, path), "utf8"),
-  })),
-);
+const sharedSources = await snapshotBenchmarkSources(root, [output]);
 const workingTreeRef = execFileSync("git", ["rev-parse", "HEAD"], {
   cwd: root,
   encoding: "utf8",
@@ -79,6 +75,52 @@ const workingTreeChanges = execFileSync("git", ["status", "--short"], {
 const digest = (source: string) =>
   createHash("sha256").update(source).digest("hex");
 const runs: unknown[] = [];
+
+const saveReport = async () => {
+  await mkdir(dirname(output), { recursive: true });
+  await writeFile(
+    output,
+    JSON.stringify(
+      {
+        baselineRef,
+        candidateRef: candidateRef || "working-tree",
+        workingTreeRef,
+        workingTreeChanges,
+        sharedHelperSha256: Object.fromEntries(
+          helperPaths.map((path) => [path, sharedSources.sha256[path]]),
+        ),
+        sharedSourceSha256: Object.fromEntries(
+          Object.entries(sharedSources.sha256).filter(
+            ([path]) => ![rendererPath, kernelPath, boundsPath].includes(path),
+          ),
+        ),
+        baselineBoundsSha256: digest(baselineBounds),
+        candidateBoundsSha256: digest(candidateBounds),
+        baselineKernelSha256: baselineKernel ? digest(baselineKernel) : null,
+        baselineSourceSha256: digest(baseline),
+        candidateSourceSha256: digest(candidate),
+        candidateKernelSha256: candidateKernel ? digest(candidateKernel) : null,
+        method:
+          "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; renderer/kernel/bounds selected consistently from refs; snapshotted repository browser modules and dependency-manifest hashes; source drift checks before setup, before timing and after timing; original CE7 export-cost method; separate RAF preview diagnostic; startup/end workload checks and 2-second overlap polling (invalid runs retained and rejected)",
+        runs,
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+};
+
+const assertStableSources = async (variant: string, phase: string) => {
+  const sourceChanges = await sharedSources
+    .changedPaths()
+    .catch((error) => [`Source inspection failed: ${String(error)}`]);
+  if (!sourceChanges.length) return;
+  runs.push({ variant, phase, timingValid: false, sourceChanges });
+  await saveReport();
+  throw new Error(
+    `Benchmark sources changed during ${phase}; retained attempt is invalid`,
+  );
+};
 
 const competingWorkloads = () =>
   findCompetingWorkloads(
@@ -92,6 +134,7 @@ for (const variant of [
   "candidate",
   "baseline",
 ] as const) {
+  await assertStableSources(variant, "preflight");
   const competing = competingWorkloads();
   if (competing.length)
     throw new Error(
@@ -101,6 +144,8 @@ for (const variant of [
   let server: ViteDevServer | undefined;
   let browser: Browser | undefined;
   let overlap: string[] = [];
+  let phase = "setup";
+  const attemptStart = runs.length;
   const monitor = setInterval(() => {
     try {
       const workload = competingWorkloads();
@@ -110,6 +155,17 @@ for (const variant of [
     }
   }, 2000);
   try {
+    const selectedSources = new Map([
+      [join(root, rendererPath), variant === "baseline" ? baseline : candidate],
+      [
+        join(root, kernelPath),
+        variant === "baseline" ? baselineKernel : candidateKernel,
+      ],
+      [
+        join(root, boundsPath),
+        variant === "baseline" ? baselineBounds : candidateBounds,
+      ],
+    ]);
     server = await createServer({
       root,
       cacheDir: cache,
@@ -119,16 +175,7 @@ for (const variant of [
         {
           name: "ce6p-selected-renderer",
           enforce: "pre",
-          load(id) {
-            if (id === join(root, rendererPath))
-              return variant === "baseline" ? baseline : candidate;
-            if (id === join(root, kernelPath))
-              return variant === "baseline" ? baselineKernel : candidateKernel;
-            if (id === join(root, boundsPath))
-              return variant === "baseline" ? baselineBounds : candidateBounds;
-            return sharedHelpers.find(({ path }) => id === join(root, path))
-              ?.source;
-          },
+          load: (id) => sharedSources.load(id, selectedSources),
         },
       ],
       server: { host: "127.0.0.1", port: 0 },
@@ -146,6 +193,8 @@ for (const variant of [
     });
     if (overlap.length || competingWorkloads().length)
       throw new Error("Competing verification began during benchmark setup");
+    await assertStableSources(variant, "setup");
+    phase = "timing";
     const exportCosts = await page.evaluate(async () => {
       const url = "/tests/helpers/composition-exposure-reference.ts";
       return ((await import(url)) as typeof ExportCost).measureExposureFrames();
@@ -158,50 +207,49 @@ for (const variant of [
     });
     clearInterval(monitor);
     const contention = overlap.length ? overlap : competingWorkloads();
+    const sourceChanges = await sharedSources
+      .changedPaths()
+      .catch((error) => [`Source inspection failed: ${String(error)}`]);
     runs.push({
       variant,
       rendererVersion,
       environment,
       exportCosts,
       previewCosts,
-      timingValid: contention.length === 0,
+      timingValid: contention.length === 0 && sourceChanges.length === 0,
+      sourceChanges,
       overlap: contention,
     });
-    await mkdir(dirname(output), { recursive: true });
-    await writeFile(
-      output,
-      JSON.stringify(
-        {
-          baselineRef,
-          candidateRef: candidateRef || "working-tree",
-          workingTreeRef,
-          workingTreeChanges,
-          sharedHelperSha256: Object.fromEntries(
-            sharedHelpers.map(({ path, source }) => [path, digest(source)]),
-          ),
-          baselineBoundsSha256: digest(baselineBounds),
-          candidateBoundsSha256: digest(candidateBounds),
-          baselineKernelSha256: baselineKernel ? digest(baselineKernel) : null,
-          baselineSourceSha256: digest(baseline),
-          candidateSourceSha256: digest(candidate),
-          candidateKernelSha256: candidateKernel
-            ? digest(candidateKernel)
-            : null,
-          method:
-            "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; renderer/kernel/bounds selected consistently from refs; snapshotted shared workload helpers; original CE7 export-cost method; separate RAF preview diagnostic; startup/end workload checks and 2-second overlap polling (invalid runs retained and rejected)",
-          runs,
-        },
-        null,
-        2,
-      ) + "\n",
-    );
+    await saveReport();
     if (contention.length)
       throw new Error(
         `Competing verification began during timing; retained run ${runs.length} is invalid`,
       );
+    if (sourceChanges.length)
+      throw new Error(
+        `Benchmark sources changed during timing; retained run ${runs.length} is invalid`,
+      );
     console.log(
       `${variant} ${rendererVersion}: retained run ${runs.length} at ${output}`,
     );
+  } catch (error) {
+    if (runs.length === attemptStart) {
+      const sourceChanges = await sharedSources
+        .changedPaths()
+        .catch((inspectionError) => [
+          `Source inspection failed: ${String(inspectionError)}`,
+        ]);
+      runs.push({
+        variant,
+        phase,
+        timingValid: false,
+        sourceChanges,
+        overlap,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      await saveReport();
+    }
+    throw error;
   } finally {
     clearInterval(monitor);
     try {

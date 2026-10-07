@@ -28,16 +28,100 @@
       "buildExit": 0,
       "buildLog": "/private/tmp/pr41-finding1-build.log",
       "buildLogSha256": "0d479f0efb612dd8bdb70686ac598d4b0e49f2b3b12a60ad963d0ad3de64bd63"
-    }
+    },
+    "commit": "81238bb"
   },
   "finding2": {
     "comment": "https://github.com/xxibcill/still-shift/pull/41#discussion_r4207021547",
-    "status": "pending"
+    "status": "fixed",
+    "behavior": "Eagerly snapshot tracked/untracked repository JS/TS/JSON/CSS modules; record their hashes and dependency-manifest hashes; historical renderer/kernel/bounds override frozen shared modules. Canonical paths and raw imports are preserved. Source drift or inspection errors before setup, before timing and after timing invalidate and retain the attempt. Import/setup/timing errors are saved before rethrowing without duplicate drift records.",
+    "red": {
+      "testsFailed": 5,
+      "log": "/private/tmp/pr41-sources-red.log",
+      "logSha256": "305dcdeba169b4c4f197e80f6652a32b4e60d735fe3d47416648e81377fe87b5"
+    },
+    "canonicalPathRepair": {
+      "testsFailed": 1,
+      "testsPassed": 19,
+      "log": "/private/tmp/pr41-sources-green.log",
+      "reason": "Vite canonicalizes macOS temporary symlink aliases; snapshot root now uses realpath.",
+      "logSha256": "ba5850439a2e402a8bc057737527aee034fb4d15d8b767acf0197e3a47772b55"
+    },
+    "retentionRed": {
+      "testsFailed": 2,
+      "testsPassed": 1,
+      "log": "/private/tmp/pr41-retention-red.log",
+      "logSha256": "24bd659f21cbbf00d761b3d1032c4a49754152bd79e3904f3982f03975f970ed"
+    },
+    "green": {
+      "testsPassed": 24,
+      "files": 3,
+      "log": "/private/tmp/pr41-final-regressions.log",
+      "logSha256": "3b6ebed3d1d43f8cf4b96e506e4551e82e17cff0d555bd910b4b170777fda6a3"
+    },
+    "checks": {
+      "finalFast": {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "unitTests": 1960,
+        "unitFiles": 160,
+        "log": "/private/tmp/pr41-final-fast.log",
+        "logSha256": "6f8fa7437fe002389f23452363df7c484cdab34d7fe3d0581929d9fc6464f4af"
+      },
+      "initialFastFailure": {
+        "command": "pnpm check:fast",
+        "exitCode": 1,
+        "log": "/private/tmp/pr41-final-fast-attempt1.log",
+        "reason": "New mocked-runner test used a type annotation import() forbidden by consistent-type-imports; repaired with a type-only namespace import.",
+        "logSha256": "8aa3406e08cc7e1c145ce1a92aa12e10f45e98ecb7849113acc5640e5bdc7e97"
+      },
+      "initialFocusedLintFailure": {
+        "exitCode": 1,
+        "log": "/private/tmp/pr41-final-lint.log",
+        "reason": "Same type-only import rule; final fast gate validates the repaired file.",
+        "logSha256": "6764ec68130d3a8cb4229c5ede272917b83abd58bd91d0e58781a6924f6a6a36"
+      }
+    },
+    "sourceSnapshotScope": "Repository module sources and dependency manifests; installed dependencies remain provided by the frozen offline install. Diagnostic solid workload uses no external media assets."
   },
   "limitations": [
     "No renderer/fixture/acceptance changes.",
     "No new full pnpm check, timing bracket or strict family audit claimed.",
     "CE6-P performance completion remains owner-deferred.",
     "GitHub Actions remain disabled."
-  ]
+  ],
+  "snapshotBrowser": {
+    "log": "/private/tmp/pr41-snapshot-browser.log",
+    "profile": "chromium-software-2",
+    "browserVersion": "151.0.7922.34",
+    "fingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+    "rendererVersions": [
+      "composition-webgl2-0.42.1",
+      "composition-webgl2-0.38.1"
+    ],
+    "exposureCases": 852,
+    "disjointCases": 24,
+    "disjointMaxDelta": 0,
+    "sharedFilesAtSmoke": 1275,
+    "sourceDrift": false,
+    "timingMeasurements": false,
+    "logSha256": "b3b2b18714d50f56f9b20119f7e9663f59fa9d8cd528c81e778c1bc2bffceaf3"
+  },
+  "implementationReview": {
+    "standards": "clear",
+    "spec": "clear after repairing invalid-attempt retention"
+  },
+  "delivery": {
+    "findingCommits": 2,
+    "pushPolicy": "One final normal push to codex/composition-ce6p-compatible after both finding commits."
+  },
+  "finalCodeSha256": {
+    "scripts/composition/ce6p-exposure-benchmark.ts": "2ed2b0ca2e8698c7119dcb1497a634e97258f0bc1ac0e07062bab23eb4c1a864",
+    "scripts/composition/ce6p-sources.ts": "1a985b5adec9383aa59cd41f2add6a4e8790dd8dba31ef036a6a504ed1a41762",
+    "scripts/composition/ce6p-workloads.ts": "89ef214f1d005b4b8ee6d300b4136144dee793b538046797749bcf10f601f447",
+    "tests/unit/composition-ce6p-benchmark.test.ts": "8e8b64e445fcddb5f007c936eeaf28fd426e385ec2b3801695d1273acff35d92",
+    "tests/unit/composition-ce6p-sources.test.ts": "86e9fb96acf265ce0589537f8fe2b4defbb6f1b8123b830c5c8c1aca5106dee1",
+    "tests/unit/composition-ce6p-workloads.test.ts": "87235c13dc7d4d6fdcb18e9e23ba2099f8ea746255ecb9433b24ca16a5de627d"
+  },
+  "docsOnlyAfterFast": "Result metadata and development log updated and individually format-checked; final source-file hashes remain unchanged."
 }

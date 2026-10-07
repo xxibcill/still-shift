@@ -43,13 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #41 benchmark review repairs (2026-10-07):** isolated `codex/pr41-benchmark-fixes`
-  from reviewed `4e3c32b`; both P2 findings are posted inline. Direct composition
-  workload detection and own-PID exclusion pass 13 focused regressions, lint and
-  build; five red cases reproduce the original gaps. Shared-source freezing is
-  next. Commit each finding separately, then push once after final verification.
-  CE6-P remains owner-deferred; no performance acceptance is resumed.
-  [Evidence](./pr-41-benchmark-fix-results.json).
+- **PR #41 benchmark review repairs complete (2026-10-07):** isolated
+  `codex/pr41-benchmark-fixes` from reviewed `4e3c32b`; both P2 findings are inline.
+  Workload/PID guard `81238bb` and shared-source freezing are verified for separate
+  finding commits and one final normal push. All 24 focused regressions, lint,
+  build and both review axes pass; final fast gate passes 1,960 units. Pinned
+  snapshot-loader proof preserves 852
+  exposure cases, 24 exact particle cases and current/historical renderer imports.
+  Invalid source setup/timing attempts are retained. CE6-P remains owner-deferred;
+  no timing bracket, strict family audit or complete full gate is claimed.
+  Owner review/merge remain. [Evidence](./pr-41-benchmark-fix-results.json).
 
 - **PR #41 conflict resolution (2026-10-07):** isolated PR head `e5f4992`
   integrates `main` at `fb785772`, preserving CE6-P echo/particle/exposure changes
@@ -677,6 +680,21 @@ _Last updated 2026-10-07 by Codex for PR #41 conflict resolution._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — PR #41 immutable benchmark sources repair
+
+- **Agent / branch:** Codex on isolated `codex/pr41-benchmark-fixes`, after `81238bb`.
+- **Scope:** second inline P2 finding; immutable shared runtime and source provenance.
+- **Done:** freeze repository browser modules, retain all shared source/manifest hashes,
+  preserve selected historical sources and reject/retain drift or setup/timing failures.
+- **Results:** all 24 focused regressions, lint/build and independent review axes pass.
+  Pinned loader smoke passes 852 exposure and 24 exact particle cases plus both renderer
+  versions. Retain the original shallow-source failures, canonical-path repair and two
+  missing-report failures. Final fast gate passes 1,960 units / 160 files; the initial
+  test type-import lint failure and its repair are retained in the evidence.
+- **Open / next:** two finding commits and one final normal push; owner review/merge.
+  No renderer changes, timing measurements, strict audit or full gate; CE6-P stays deferred.
+- **Records:** [review/fix evidence](./pr-41-benchmark-fix-results.json).
 
 ### 2026-10-07 — PR #41 benchmark workload guard repair
 
