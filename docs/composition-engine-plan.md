@@ -5105,8 +5105,10 @@ Closed native prefixes now pass 104 audit cases / 5,408 exact comparisons and
 32 production exports / 256 decoded frames, preserving whole native batches and
 actual once-global eligible native painting. Actual submission spans, nested exclusive
 phase/type totals and per-frame manifest values pass 57 tests, the pixel audit,
-32 prefix exports and ten coverage/nested/original/cached exports. FFmpeg's existing
-transcode CPU scope is explicit. Whole-process CPU, runtime tints, broader axes/
+32 prefix exports and ten coverage/nested/original/cached exports. Complete FFmpeg
+command CPU and actual process-group reaping pass 23 focused / 20 CLI tests,
+56 original-baseline exports / 448 frames and 24 live failures with actual process IDs.
+Runtime tints, broader axes/
 corrections, aggregate limits, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),

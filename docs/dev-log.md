@@ -67,8 +67,10 @@ still hold before relying on them.
   frames, with whole original batches and actual once-global native painting.
   Actual submission phase/type spans now pass 57 tests, the complete pixel audit,
   32 prefix exports and ten coverage/nested/original/cached exports. Mixed overhead
-  retains its original membership; FFmpeg transcode CPU scope is explicit.
-  Whole-process CPU, runtime tints, broader axes/corrections, aggregate memory, the actual
+  retains its original membership. Complete FFmpeg command CPU and actual timer/
+  encoder group reaping now pass 23 focused / 20 CLI tests, 56 baseline-parity
+  exports / 448 frames and 24 protected live failures with observed process IDs.
+  Runtime tints, broader axes/corrections, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -302,6 +304,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 complete FFmpeg command CPU checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `2422641`.
+- **Done:** complete FFmpeg child user/system CPU with truthful resolution; actual
+  export-owned timer/encoder process-group termination and reaping.
+- **Results:** build/lint/boundaries, 23 focused tests and 20 CLI tests pass;
+  56 original-baseline exports / 448 decoded frames and 24 protected live failures
+  preserve complete media/audio parity and verify actual timer/encoder exit.
+- **Rejected:** already-exited groups must accept ESRCH. Incorrect CLI runner and
+  sandbox listener failure are retained; proper local-browser CLI rerun passed.
+- **Next:** runtime tints/axes/corrections, aggregate pixel/metadata admission,
+  real two-minute speed, final CE15 gates/PR and all CE14. Full gate not run.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [CPU/lifecycle evidence](./composition-ce15-cpu-results.json).
 
 ### 2026-10-07 — CE15 actual submission statistics checkpoint
 

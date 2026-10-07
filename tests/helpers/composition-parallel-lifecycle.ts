@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import assert from "node:assert/strict";
 import { readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -44,6 +45,19 @@ export async function verifyParallelLifecycle(
     foreign?: { path: string; bytes: Buffer },
   ) {
     const pages: Page[] = [];
+    const encoderIds = new Set<number>();
+    const processRows = () =>
+      execFileSync("ps", ["-axo", "pid=,args="], {
+        encoding: "utf8",
+        maxBuffer: 4 * 1024 * 1024,
+      })
+        .split("\n")
+        .flatMap((line) => {
+          const parsed = line.trim().match(/^(\d+)\s+(.+)$/);
+          return parsed
+            ? [{ pid: Number(parsed[1]), command: parsed[2]! }]
+            : [];
+        });
     const profile = compositionOutputProfile(options.format ?? "png8");
     const prefix = `parallel-failure-${name}`;
     const outputPath = join(
@@ -62,11 +76,26 @@ export async function verifyParallelLifecycle(
         outputPath,
         verifyWorker: async (page, worker) => {
           pages[worker] = page;
+          for (const row of processRows())
+            if (
+              row.command.includes(prefix) &&
+              /(?:^|\s|\/)ffmpeg(?:\s|$)/.test(row.command)
+            )
+              encoderIds.add(row.pid);
           await verifyWorker?.(page, worker);
         },
       }),
       predicate,
       name,
+    );
+    assert.ok(
+      encoderIds.size >= 2,
+      `${name}: actual timer and FFmpeg child observed`,
+    );
+    assert.deepEqual(
+      processRows().filter((row) => encoderIds.has(row.pid)),
+      [],
+      `${name}: actual timer/FFmpeg processes reaped`,
     );
     assert.equal(pages.length, 4);
     assert.ok(
@@ -86,6 +115,8 @@ export async function verifyParallelLifecycle(
       name,
       pinnedBrowsers: pages.length,
       browsersClosed: true,
+      encoderProcessIds: [...encoderIds],
+      encodersReaped: true,
       publication: "none",
       stageCleanup: true,
       ...(foreign ? { foreignDestinationPreserved: true } : {}),

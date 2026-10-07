@@ -240,6 +240,25 @@ whole-process measurement, complete allocation/metadata admission, remaining
 preparation coverage, actual two-minute speed proof and final gates remain pending.
 [Detailed evidence](./composition-ce15-statistics-results.json).
 
+## Accepted complete FFmpeg CPU checkpoint — 2026-10-07
+
+Opted worker exports now measure the complete FFmpeg command with POSIX child
+user/system CPU, including its startup, file opening and cleanup. Metrics retain
+explicit scope and the reference Mac's actual 10 ms reporting resolution. The
+existing transcode-only measurement remains separate. The timer and FFmpeg child
+share an export-owned process group; cancellation terminates both and waits for
+actual group disappearance before returning. Default exports keep direct FFmpeg.
+
+Eight real parser/process cases, 23 focused tests and all 20 CLI tests pass.
+Fifty-six exports across seven formats, both backends/transports and one/four
+workers retain the prior accepted complete encoded, decoded-frame and audio
+bodies (448 frames). Twenty-four live failures observe actual timer/FFmpeg IDs
+and prove both exited, browsers closed, private stages removed and foreign files
+preserved. The first prototype's already-exited-group ESRCH and the initial CLI
+runner/sandbox errors are retained. Complete CE15 acceptance, memory admission,
+remaining preparation coverage and actual two-minute speed proof are pending.
+[Detailed evidence](./composition-ce15-cpu-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

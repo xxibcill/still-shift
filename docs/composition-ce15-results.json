@@ -4,7 +4,7 @@
   "branch": "codex/composition-ce15",
   "base": "aedfc9e",
   "started": "2026-10-07",
-  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics",
+  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics, complete FFmpeg command CPU",
   "versions": {
     "canvas": "composition-canvas-1.46.0",
     "webgl": "composition-webgl2-0.67.0"
@@ -658,6 +658,19 @@
     "prefixDecodedFrames": 256,
     "coverageNestedOriginalCachedProductionExports": 10,
     "coverageNestedDecodedFrames": 80,
+    "fullGate": "pending",
+    "speedProof": "pending"
+  },
+  "wholeFfmpegCpu": {
+    "status": "complete FFmpeg command CPU and actual process-group lifecycle passed; full CE15 acceptance pending",
+    "record": "docs/composition-ce15-cpu-results.json",
+    "relevantFingerprint": "c4fb660e1c52a1c2949f70611fb574538502898d65ced5e2c4367920498b08b2",
+    "ffmpegRuntimeCases": 8,
+    "allFocusedTests": 23,
+    "cliTests": 20,
+    "productionExports": 56,
+    "decodedFrames": 448,
+    "protectedLiveFailures": 24,
     "fullGate": "pending",
     "speedProof": "pending"
   }

@@ -1,4 +1,8 @@
-import { spawn } from "node:child_process";
+import {
+  spawnFfmpeg,
+  ffmpegProcessUsage,
+  type FfmpegProcessUsage,
+} from "./ffmpeg-process.ts";
 import { createReadStream } from "node:fs";
 import { mkdir, mkdtemp, rm, stat, writeFile } from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
@@ -134,6 +138,10 @@ export type ExportMetrics = {
   frameUploadP95Ms: number;
   ffmpegCpuMs: number;
   ffmpegCpuScope: "ffmpeg-transcode-user-plus-system";
+  ffmpegProcessUsage?: FfmpegProcessUsage & {
+    timingProcessId: number;
+    processGroupReaped: true;
+  };
   encodePathWallMs: number;
   validationWallMs: number;
   totalWallMs: number;
@@ -812,8 +820,7 @@ export const exportScene = async (
     : undefined;
   if (outputArtifacts) temporaryPath = outputArtifacts.temporaryPath;
   const encoderName = request.encoder ?? "libx264";
-  const encoder = spawn(
-    "ffmpeg",
+  const encoderProcess = spawnFfmpeg(
     profile
       ? compositionOutputArguments(profile, {
           ...scene.canvas,
@@ -830,10 +837,9 @@ export const exportScene = async (
           transport,
           audioInput,
         ),
-    {
-      stdio: ["pipe", "ignore", "pipe"],
-    },
+    workOptions !== undefined,
   );
+  const encoder = encoderProcess.child;
   // Write callbacks report pipe failures; consume the corresponding stream event
   // so cleanup preserves the original browser/encoder error instead of crashing.
   encoder.stdin?.on("error", () => undefined);
@@ -882,7 +888,7 @@ export const exportScene = async (
   let workMetrics: ExportMetrics["work"];
   let viteCacheDirectory: string | undefined;
   const abort = () => {
-    encoder.kill("SIGKILL");
+    encoderProcess.kill();
     void outputInput?.dispose().catch(() => undefined);
     void browser?.close().catch(() => undefined);
     for (const workerBrowser of browsers)
@@ -903,7 +909,7 @@ export const exportScene = async (
   const failWork = (reason: unknown) => {
     if (!workFailure) workFailure = { reason };
     orderedFrames?.fail(workFailure.reason);
-    encoder.kill("SIGKILL");
+    encoderProcess.kill();
     for (const workerBrowser of browsers)
       void workerBrowser.close().catch(() => undefined);
     void surfaceStore
@@ -1197,6 +1203,7 @@ export const exportScene = async (
     if (outputInput) await outputInput.finish();
     else encoder.stdin?.end();
     await encoderClosed;
+    await encoderProcess.reap();
     await sampleMemory();
     const validationStart = performance.now();
     if (outputArtifacts) await outputArtifacts.verify();
@@ -1308,6 +1315,15 @@ export const exportScene = async (
       frameUploadP95Ms: browserResult.frameUploadP95Ms,
       ffmpegCpuMs: ffmpegCpuTimeMs(encoderError),
       ffmpegCpuScope: "ffmpeg-transcode-user-plus-system",
+      ...(workOptions
+        ? {
+            ffmpegProcessUsage: {
+              ...ffmpegProcessUsage(encoderError),
+              timingProcessId: encoder.pid!,
+              processGroupReaped: true as const,
+            },
+          }
+        : {}),
       encodePathWallMs: performance.now() - encodePathStart,
       validationWallMs,
       totalWallMs: performance.now() - start,
@@ -1411,7 +1427,7 @@ export const exportScene = async (
     published = true;
     return metrics;
   } catch (error) {
-    encoder.kill("SIGKILL");
+    encoderProcess.kill();
     request.signal?.throwIfAborted();
     assertWorkActive();
     if (orderedFrames?.hasFailed) throw orderedFrames.failureReason;
@@ -1421,6 +1437,11 @@ export const exportScene = async (
     clearInterval(memoryMonitor);
     // The writer must exit before removing files it might still create.
     await encoderReaped;
+    try {
+      await encoderProcess.reap();
+    } catch (error) {
+      process.stderr.write(`Export encoder reaping failed: ${String(error)}\n`);
+    }
     const cleanup = await Promise.allSettled([
       published ? null : memorySample,
       ...browsers.map((workerBrowser) => workerBrowser.close()),

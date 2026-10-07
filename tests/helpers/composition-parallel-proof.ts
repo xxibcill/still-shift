@@ -102,6 +102,17 @@ export function verifyParallelMetrics(
   expectedPaints?: number,
 ) {
   assert.equal(metrics.ffmpegCpuScope, "ffmpeg-transcode-user-plus-system");
+  const processUsage = metrics.ffmpegProcessUsage;
+  assert.ok(processUsage);
+  assert.equal(processUsage.scope, "posix-time-child-user-plus-system");
+  assert.ok(
+    Number.isInteger(processUsage.timingProcessId) &&
+      processUsage.timingProcessId > 0,
+  );
+  assert.equal(processUsage.processGroupReaped, true);
+  assert.equal(processUsage.cpuMs, processUsage.userMs + processUsage.systemMs);
+  assert.ok(Number.isFinite(processUsage.cpuMs) && processUsage.cpuMs >= 0);
+  assert.ok(processUsage.reportedResolutionMs > 0);
   const work = metrics.work;
   assert.ok(work);
   assert.equal(work.version, "composition-render-work-1");
