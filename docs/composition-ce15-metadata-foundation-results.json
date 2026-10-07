@@ -1,0 +1,569 @@
+{
+  "milestone": "CE15",
+  "date": "2026-10-08",
+  "base": "08911d8",
+  "status": "metadata serialization foundation passed; cache/Node/production integration remains pending",
+  "fingerprint": {
+    "algorithm": "SHA256 of sorted path + NUL + fileSHA256 + newline records",
+    "sha256": "ef828b031ce6c366ec891b0d4b4f0eb7c4e5346fc36015635360ae8182254954",
+    "files": [
+      {
+        "path": "package.json",
+        "sha256": "f0bafa128968ad898e1a32524cc267378825d07017879cb02da12faa7479fd1e"
+      },
+      {
+        "path": "packages/animation-engine/src/composition-media-cache.ts",
+        "sha256": "775ed15b60ab8369408371c7b7ae810b9e01ada267646e7885d30892161e0dff"
+      },
+      {
+        "path": "packages/animation-engine/src/composition-media-color.ts",
+        "sha256": "267e1d7ba035050c57e5a014e2f1cf50a98221a1d4ba61c2a6933539d59f01ea"
+      },
+      {
+        "path": "packages/animation-engine/src/composition-render.ts",
+        "sha256": "e2e36eda2b8b61a98f3152ab5cee006c387fabecd05f15f287e82917146c5860"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-frame-capture.ts",
+        "sha256": "9fbb4591072bbdc0a6f606e0676539b8ae952b39b2dbb9a071c28ad336584e98"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-ordered-frames.ts",
+        "sha256": "ea1c6e5413febbf66740bbb8175e1e8672f5cb2613368ed64e35709bc5f5a687"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output-artifacts.ts",
+        "sha256": "672dc0896a01724024241e88380c493eeb06aca3607ee6dc960adb4d0798c3b1"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output-audio.ts",
+        "sha256": "12470c51a9b00978d41e0c185f8a30d1af011222e115483243c1e608c6840d50"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output-input.ts",
+        "sha256": "65f907522698ecb8027b4c46cf02ec6443c5149ea523b44409c686e9e65f0851"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output.ts",
+        "sha256": "196a94cbc8c1f0bba3d91b3bf8dd9dfa1b51f7d5282ab93b3b5d7e5bec3b9f1e"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-surface-broker.ts",
+        "sha256": "adb25fe3c8ebab22dccdb0a86aa61602cc14eacc53241aa1aa81bf75b5a46f87"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-surface-client.ts",
+        "sha256": "36858e0eeb00a273daa888ab39c8876c6d758d2acdd75f55d405d1cf8396368d"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-surface-store.ts",
+        "sha256": "102baa4ed5966bc6659a65d7bd14f2a56abac844b8ed1d13d2812cb657ce6440"
+      },
+      {
+        "path": "packages/execution-runtime/src/export-browser-worker.ts",
+        "sha256": "41c6fb293bff3bf4ddfc3a3808464d6d60ac464c4a85dadd58bfb84e5758ff60"
+      },
+      {
+        "path": "packages/execution-runtime/src/export-page.ts",
+        "sha256": "1c69381bfcebb4cc4a0023c09eb5f7ec46e482e809ca6218a6d76db8f6e028b3"
+      },
+      {
+        "path": "packages/execution-runtime/src/export-worker.ts",
+        "sha256": "5590d7dda1f264cf4e68feae1b49f0e6e7aba5c4053fd34c72ea6c566770e81f"
+      },
+      {
+        "path": "packages/execution-runtime/src/ffmpeg-process.ts",
+        "sha256": "4e27482d2ce4309b8f2a1e3342fd051de05cead90e2d1227e2de32a3acad6ace"
+      },
+      {
+        "path": "packages/renderer-core/src/canvas-pixel-source.ts",
+        "sha256": "c7f495bcadd178c3a11f63583b6ffb4f961307dda50208e07858885178fdb5bf"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/adapters/commerce-providers.ts",
+        "sha256": "91edf5ce716eb67aa076431c4d9a0511188b880d1ff1862251c966ec66e24dfb"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/adapters/commerce.ts",
+        "sha256": "e6b0b5c057ab25ba38b2f25225af29e108a7f0327134667c17c696cbebaa2229"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/adapters/illustrated-assets.ts",
+        "sha256": "51a7179e4dbcd944329bdb0032ba92bb7fc8c5c4f54699d78fea6af69ae3b484"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/adapters/numeric-typography.ts",
+        "sha256": "6ab242fa310c7375ddbeac9910ea38b84fb15276827c76e2b88b9741bbbcd6ee"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/adapters/provider-bounds.ts",
+        "sha256": "64a1b52139dae5f0e371db7c69c83c017916b0ecb3bb1e678397f38857a11b89"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/adapters/story.ts",
+        "sha256": "ad0f395401ba56f068f745a638d75c2527a6725ca462190cfdceb05178e68d6f"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/backend.ts",
+        "sha256": "3785bb3e83d4ef5579c1cd4dc306274e3d01e30b1eda8ead493dfdcf5f19d4b1"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/batches.ts",
+        "sha256": "505ed4dd5a90f4408ba720a763cc4ee36c48546b1078db808af31a7995a8ddb7"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/canvas-linear.ts",
+        "sha256": "46e7147050d7f57b86ebba3b0d8d78439b605b0d4df89b0c9245c07e7f3a9246"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/canvas2d.ts",
+        "sha256": "155a36a9cbfeefbc3d7c873d9f4311531aa5902f166069cec52a1070246f3c43"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/color-effects.ts",
+        "sha256": "b17676aeb733c520f130077f7b924dffb410d41928531588e8aaec2f5c5104cf"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/gradient-controls.ts",
+        "sha256": "114188f4bce48aa953af3a26419cfbef675b888494b7bbd29a4c29b659596870"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/index.ts",
+        "sha256": "2221b2c5291377f36903d228d81d202adec07146c2f31920e2fe200e3efa321b"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/linear-color.ts",
+        "sha256": "32fe1c46419c47f7f8c4f34b057b436d21e32bf4fd4648e64b0084cec88afb05"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/map-effects.ts",
+        "sha256": "cdd45340c0a1df73ec1a034c517bd517d830b27cbc04a3907a0699ae69b36ebc"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/media-resources.ts",
+        "sha256": "aa5f9aaef1ca6811864f5e83258ec6985b1d31cdce76988e63e9e9a7c7c0f960"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/noise-effects.ts",
+        "sha256": "34e65661c4c93de7262f74cf60435e8831ab46c8fc16c510a447776ba84bd137"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/prefix.ts",
+        "sha256": "e5bdf609ad61968189dfecc5d328b226430f2558463da911496e1180959507ea"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/providers.ts",
+        "sha256": "30fc19d44b704fff6274f18d5984291507a3237377cd7bde64f4d1bdf4dc354d"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/radial-distortion.ts",
+        "sha256": "c7f6b0b376369ba874a1f077c73e350d911c31e7548bd322f1ad6401bbf81a53"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/renderer.ts",
+        "sha256": "6c4c14badfe3a3ee92d1acd8a5939ef555c7e18e9721e73f0c3beb85a369ffd3"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/required-coverage.ts",
+        "sha256": "5e400986469f0859bc1e21e4dc97a40ab215a1227f34076b755e1142d0e2e8c3"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/root-cache.ts",
+        "sha256": "3c31ae1927a6b2b10e7077bee1927a6f967136b3c84470cf5b3312b4f3af972a"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/sampled-blur.ts",
+        "sha256": "9ac5efba2eda183b4e099b2505ec74808f559f500b3de049efc76efd8d0c4ac9"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/shadow-effects.ts",
+        "sha256": "707025c5c670692b6f59d9fad9b804519c39e4ac4ac16abe8209c50495b3bec2"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/source-cache.ts",
+        "sha256": "64d52a5cf55ace7a77d174d291f742ee9a4cdd7a055422adc4468cac59c6c19f"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/source-preparation.ts",
+        "sha256": "d8253eafcb8d8cf1ceb68ca83bb575c1ba95c297e81dab135fd7366760b2d89f"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/statistics.ts",
+        "sha256": "26fb369f3cb40a446afeab7e369ab2e28d167c7fcda962d8e87c5c94c35b3281"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/stylize-effects.ts",
+        "sha256": "1396c5934175fe6f74e07857763b7acf956e1b77845a09abba51f5409f916926"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/surface-cache.ts",
+        "sha256": "ba0e187d3243c9b18eba5e3047a371ddbb6155871f82056c379048211de9757a"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/text-clock.ts",
+        "sha256": "81b36ed9c497e4bede6d11041d0bbe5032710db51978a0692895a643a8cdcdcd"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/text.ts",
+        "sha256": "f9d34973f2507f1e8b445339b5495187ba0b5c63117bc6e8f9d9732f63ba7620"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/transition-effects.ts",
+        "sha256": "376d4095229318d076b53ebf43136fddace47f78bdcc596f208de054bc36e70b"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/warp-effects.ts",
+        "sha256": "8e3b195ef1f4dd4844e5797252c71af7f9beeead38e9819e0cafd4f4fae91f3c"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-bounds.ts",
+        "sha256": "e85f4272e3b75ccfcff9acb1e920dac082735e3536caeb028b6b26c454ae5be1"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-box-blur.ts",
+        "sha256": "5dbcb11f9367d250f97b08072aa798e49ee37f169ca227584cec0270825dac37"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-depth-image.ts",
+        "sha256": "8ed690e2f8dfa281bc7ee12234a03fc67f974ffc58a838b2224d4628544c5459"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-device.ts",
+        "sha256": "7d913ef17ddfde45feed2a1dca86024af481b71e2dc4740ecfaeb7ad4f550ce0"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-effects.ts",
+        "sha256": "5dc25debf7c54d037321fda6c7edc233c453fe086a89dba2a57dcee7a793ea53"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-png-images.ts",
+        "sha256": "ee10f48fcd37ecc8fb8d863fa80ee4ec461404f84224355ad9809062f78f10ab"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-readback.ts",
+        "sha256": "429c81fcfe8c1db29e1a0131c6ff38001253a4afec643e6341a46f1d61a3bba3"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-vector-paints.ts",
+        "sha256": "6e1f0f1fabe38de387b7b47233f033076fdc728ee0ceb321d2099a6b6357f0fe"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-vectors.ts",
+        "sha256": "4a9696af580ff3bd3665b9dc5ca9f3c9b9f09bf3a7e250e85395ae175559d0d6"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-visual-key.ts",
+        "sha256": "bd4a294167db9778c8f70758327453762c84d34800118a1167efe9ffbfeea929"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl2.ts",
+        "sha256": "8f8e027ebc8f2343b7eaf6392e8f0321655eda06b28f9df355f8771901ee9f67"
+      },
+      {
+        "path": "packages/renderer-core/src/index.ts",
+        "sha256": "d42ad480e6d0926b5eac44f0fa017f795947824e02062e50a5a04cf938fe3d70"
+      },
+      {
+        "path": "packages/renderer-core/src/managed-memory-context.ts",
+        "sha256": "410e585f294f0ebe5fee65013606c4a90afba4f84c89ec80037d3a2920c1d4d3"
+      },
+      {
+        "path": "packages/renderer-core/src/managed-memory.ts",
+        "sha256": "1d14fff358b5257e6ae94ed9ea773cb6712ddb77818d3c21ec3af521257ac2f1"
+      },
+      {
+        "path": "packages/renderer-core/src/managed-metadata.ts",
+        "sha256": "cdfe0f4656f40ed3f1505cb8c0a250357a90ec14c066dbf0a1ca1a3cb6cb7aa6"
+      },
+      {
+        "path": "packages/renderer-core/src/managed-resources.ts",
+        "sha256": "0b253443ca5af23ed72977902d0fde8589c88aeb4c9396acf9c1b1c11c62b44f"
+      },
+      {
+        "path": "packages/renderer-core/src/prepared-fonts.ts",
+        "sha256": "08941425fd0832602a92955e1c0c08064aac0798fab6aac9a842dab342b4972e"
+      },
+      {
+        "path": "packages/renderer-core/src/story-text-layout.ts",
+        "sha256": "9a0505819135c04018dad3bb3121298f969ae6a79aa1b8ca5311162fc3bb5fe9"
+      },
+      {
+        "path": "packages/renderer-core/src/typography-axes.ts",
+        "sha256": "3736daea99c1efb238832f3c3eb6be227d8752efbd8f71c62a3c9f236dbba8f6"
+      },
+      {
+        "path": "packages/renderer-core/src/typography-renderer.ts",
+        "sha256": "252c3b14899c249a1a8f4cf3801aa4c65ff08c6659c465cd92b71fce40ade322"
+      },
+      {
+        "path": "packages/scene-contract/src/composition/media.ts",
+        "sha256": "144820324928bfd128fc3785dfed08dfae32b9c247bba3003f2f7f5262002feb"
+      },
+      {
+        "path": "packages/scene-contract/src/composition/validate-media.ts",
+        "sha256": "2a34b98f8ab5f4a637366436456e371f0a45749f4a392c998a6b79c018ddedf1"
+      },
+      {
+        "path": "tests/browser/composition-output.ts",
+        "sha256": "f40e9480c7a689b7e7af7a023c571cefea04864e90b69676d4bcc7a39357acf8"
+      },
+      {
+        "path": "tests/browser/composition-parallel.ts",
+        "sha256": "99cabca4b10a66995d32916c0caca9f622bb16c199e28dd50cdd920b5ae326bf"
+      },
+      {
+        "path": "tests/browser/composition-surfaces.ts",
+        "sha256": "e9fe5a1ffddca4d35bfd76da4a9a135a319849f119f15780e8da5b943b3ed88b"
+      },
+      {
+        "path": "tests/helpers/composition-capture-memory-reference.ts",
+        "sha256": "b59295ca01f37ba9b6922a3dad321ac13e1a060bb725846eb5b9215e1d647c4c"
+      },
+      {
+        "path": "tests/helpers/composition-memory-reference.ts",
+        "sha256": "c967e769b270e871efd0688ea6b958bb1ed76fa335aaad303714103399f13080"
+      },
+      {
+        "path": "tests/helpers/composition-output-lifecycle.ts",
+        "sha256": "72ac91e812c09fcf6130435acb63222d6a2737054f5f4a425cf44e0a2191ee82"
+      },
+      {
+        "path": "tests/helpers/composition-output-preview.ts",
+        "sha256": "3b8127ee1cc4d6d86372fb4519ec92560e3f83d1165d6c1fe4e56bd107ef8de9"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-lifecycle.ts",
+        "sha256": "22b0fdf295b701cf4590528fed2aa1fc2c3c47bc46588ef1b7595a3f174d5f24"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-native.ts",
+        "sha256": "8d7d7d84defa66782011be1d13abb7ad641a390307763acaafa0847d1d5d7386"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-prefixes.ts",
+        "sha256": "7851a5cc813a2f440084ab0a6fadfbb55ef9af2a9522e40240dba5ca937c76a3"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-proof.ts",
+        "sha256": "7181cf6b7a7b56cb0ca5e3637861e980c4b17bfc41692d757f3cefde1b0cd8f8"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-roots.ts",
+        "sha256": "a63b5510ef6af9f587afd36843109b97ad51797df804e9cab30cad35a9d7ecd3"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-sources.ts",
+        "sha256": "71b211535e38fc13a0756eadd581661951bdc0641ddadc91ecb92e0fc7ac80f9"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-tints.ts",
+        "sha256": "90b236134209838bb771c294689a24a103e55e8c14ba0b8b86a3359006852e01"
+      },
+      {
+        "path": "tests/helpers/composition-prefix-reference.ts",
+        "sha256": "6add6a9ee6e4f0ee5bdfb32b215d0a0344134c218ad2b5c16942bb09546fe3aa"
+      },
+      {
+        "path": "tests/helpers/composition-resource-memory-reference.ts",
+        "sha256": "71aeeefa66d2085b081c9cfae134db026572ed1ba5aa06ce436adea4d3a8aa9c"
+      },
+      {
+        "path": "tests/helpers/composition-root-reference.ts",
+        "sha256": "82dbab04ae49839c25c5a51b093da551d32e7a58ec6ce67f0993fb2bf7bbc53f"
+      },
+      {
+        "path": "tests/helpers/composition-source-fixture.ts",
+        "sha256": "70b1a1825f8c54403cd3610272a3f08f93a94ef520c2540c1cb2fdb9255d20ab"
+      },
+      {
+        "path": "tests/helpers/composition-source-reference.ts",
+        "sha256": "2fb890bc2635b147ec23a20078016026e7432eef794feb2a247090b2b7de44c3"
+      },
+      {
+        "path": "tests/helpers/composition-surface-reference.ts",
+        "sha256": "c4fa5cfc966c81cdc6deda0e8add2775514de1d3e8f7226ce53981006cf6e3ce"
+      },
+      {
+        "path": "tests/helpers/composition-tint-fixture.ts",
+        "sha256": "2d00f502576c13d469e87c16d5a50024b8e3ecf222fd1a885eb2f8d5152a48fd"
+      },
+      {
+        "path": "tests/integration/composition-program-cli.test.ts",
+        "sha256": "f5e74435b573f423e7ca381683d4f66d87838960db3f85af414edfc46a92d958"
+      },
+      {
+        "path": "tests/runtime/composition-ffmpeg-process.test.ts",
+        "sha256": "a0f3b51c112aa9e5c5a46637cbd072bdf27ff7f170059c68f3130c9e245ab9d1"
+      },
+      {
+        "path": "tests/runtime/composition-ordered-frames.test.ts",
+        "sha256": "c91521362571ae050ec75ff941137c61c93e7a3c380d4ace42c22afb88325033"
+      },
+      {
+        "path": "tests/runtime/composition-output-artifacts.test.ts",
+        "sha256": "b604e4d2ae55497c1a534235faa30771f8baa3b645169948728a0a95b0de2668"
+      },
+      {
+        "path": "tests/runtime/composition-surface-store.test.ts",
+        "sha256": "fac1c46fa0020bdb46bc8a8b398e13fd276d708a88627fc914e02aa918389ffe"
+      },
+      {
+        "path": "tests/unit/composition-frame-capture.test.ts",
+        "sha256": "1dc3cc6a2a39a0ecd3b78dcc2c4975d23d98292048808ee55f3792345acf9e27"
+      },
+      {
+        "path": "tests/unit/composition-media-color.test.ts",
+        "sha256": "e1cd32e61d57304a28a2a629126454c585d2e6efdfdaa809790555e33ffe2b49"
+      },
+      {
+        "path": "tests/unit/composition-media-resources.test.ts",
+        "sha256": "8d784615801c061f02f85608780b59c47032bd6b7d4f6cc9789b769d4aaee807"
+      },
+      {
+        "path": "tests/unit/composition-output-input.test.ts",
+        "sha256": "9516438b86fa637f075075e41f89066136a44eef87ca10b47caac33e3852af06"
+      },
+      {
+        "path": "tests/unit/composition-output-profile.test.ts",
+        "sha256": "9ba8ed83bba90403fd28724609c3c9ffd30222cf5aedd3d5532d7d31b72bb02f"
+      },
+      {
+        "path": "tests/unit/composition-prefix.test.ts",
+        "sha256": "f4519487046c937f300357747b1d641d5521fd45cb5ad9f480ca6bb351443a8a"
+      },
+      {
+        "path": "tests/unit/composition-source-preparation.test.ts",
+        "sha256": "253711a769cfaad1547c79e6742d2ed0aece1d67c0cc9fb826d22fdbb766d7ec"
+      },
+      {
+        "path": "tests/unit/composition-statistics.test.ts",
+        "sha256": "2ef0f8df7797eccca326b73bce8e25c018e1c3f27117d0947dca39bb8db6d50a"
+      },
+      {
+        "path": "tests/unit/composition-surface-key.test.ts",
+        "sha256": "f06d21adc2dab5bda65e72066e6ba8e0dfa353c4d6add19adb23b950cf789a33"
+      },
+      {
+        "path": "tests/unit/composition-text-clock.test.ts",
+        "sha256": "71b89091ebbfc04238f3a38f000cdea25a944b682b472d0a84a7b7366f0820d3"
+      },
+      {
+        "path": "tests/unit/composition-webgl-readback.test.ts",
+        "sha256": "480744f1e4f97790f95f59e71c5f149caa23b54b770126e4ae9caf611e25b18b"
+      },
+      {
+        "path": "tests/unit/managed-memory.test.ts",
+        "sha256": "38183fdcfed103ccf7eb0a3d4119c694bfae74fca9ebe627dd0dbd63518f4fc3"
+      },
+      {
+        "path": "tests/unit/managed-metadata.test.ts",
+        "sha256": "440689bb185f46ee4bb2368b347d51ab10f3395beb7da49d646f0b8647772d34"
+      },
+      {
+        "path": "tests/unit/managed-resources.test.ts",
+        "sha256": "562cbd472985b374408ec1cdb3743ea4a2b7da57864260918192aa99e394b9cd"
+      },
+      {
+        "path": "tools/still-shift-cli/src/cli.ts",
+        "sha256": "77d9f9178f877935956ebbbbdd15a287b1fc99c949c26faf2ea35aa89e612df9"
+      },
+      {
+        "path": "tools/still-shift-cli/src/composition/commands.ts",
+        "sha256": "9a08c33f81a8dbe04635ebc75df15bd370a4db6abe51cac923c86487b20d1acb"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": ["pnpm", "build"],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "packages/renderer-core/src/managed-metadata.ts",
+        "tests/unit/managed-metadata.test.ts"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": ["pnpm", "check:boundaries"],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/managed-memory.test.ts",
+        "tests/unit/composition-exposure.test.ts",
+        "tests/unit/composition-webgl-readback.test.ts",
+        "tests/unit/composition-surface-key.test.ts",
+        "tests/unit/composition-depth-image.test.ts",
+        "tests/unit/managed-resources.test.ts",
+        "tests/unit/composition-frame-capture.test.ts",
+        "tests/unit/managed-metadata.test.ts",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "counts": {
+    "admissionCacheExposureDepthCaptureMetadataTests": 78,
+    "metadataSerializationTests": 8
+  },
+  "implemented": {
+    "output": "Reserve text-controller capacity and worst-case UTF16 JSON output incrementally before each native value emission. Shrink the completed owned text to 128 control bytes plus two bytes per UTF16 code unit; release undefined output. Preserve native escapes, omission, holes, numeric spelling, toJSON, original replacer receiver/calls and boxed primitive coercion. Borrowed getters/toJSON/coercion outputs are caller-owned inputs; their private allocations are not controlled by this serializer.",
+    "sorting": "Reserve shallow entry tuple/pointer/result-object capacity before original Object.entries/sort/Object.fromEntries. Ordinary enumerable data/getter records are supported; additional enumeration for capacity discovery is not an equivalence guarantee for arbitrary Proxy traps. Temporary sort owners release after complete native serialization, including original null/errors.",
+    "lifetime": "Explicit text owner has retain/release and clears its owned reference on disposal. Nested synchronous serialization restores the enclosing allocator and temporary collection. Quota failures unwind every started controller/sort reservation.",
+    "scope": "Declared logical UTF16 output and shallow-copy capacity, not private VM string-builder/codec/driver heap or process RSS. This foundation is unused by production caches or transport at this checkpoint. No cache/provider/graph/control metadata completeness is claimed."
+  },
+  "rejectedAttempts": [
+    {
+      "log": "/private/tmp/ce15-metadata-memory-compile-1.log",
+      "reason": "Sparse-array fixture violated no-sparse-arrays; replaced with explicit deletion while preserving the actual native hole."
+    },
+    {
+      "review": "cycle fixture",
+      "reason": "The existing sorted cloning replacer creates fresh object identities; ordinary native cycle behavior is tested without that replacer."
+    },
+    {
+      "review": "boxed primitive sizing",
+      "reason": "Treating a native boxed String as a four-byte object shell bypassed output capacity. Original native coercion now runs once before primitive admission."
+    },
+    {
+      "log": "/private/tmp/ce15-metadata-memory-compile-3.log",
+      "reason": "Numeric wrapper coercion required an explicit unknown-to-number type assertion to preserve native unary conversion."
+    }
+  ],
+  "fullGate": "not run",
+  "speedProof": "not measured",
+  "pending": [
+    "wire actual retained cache keys/rows/members/snapshots and graph/font metadata",
+    "Node stream/control/result/parse/serialization admission",
+    "production allocator through RPC acknowledgement",
+    "aggregate area/fps/workers acceptance and authentic 120-second speed proof",
+    "expanded whole parallel command, immutable full CE15 gate and PR, then CE14"
+  ],
+  "logs": [
+    {
+      "path": "/private/tmp/ce15-metadata-memory-compile-1.log",
+      "sha256": "9712d08dee35e38dc3823d5a1b5aadbbb8d8d3a2c32c287964336a4e1c9736c9"
+    },
+    {
+      "path": "/private/tmp/ce15-metadata-memory-compile-2.log",
+      "sha256": "bf3fd1eaa1106667a86f63c0a9d5b779d1cf39ada9712089487157be08a6a193"
+    },
+    {
+      "path": "/private/tmp/ce15-metadata-memory-compile-3.log",
+      "sha256": "5ea09cde13df01a02df18996671069af7f841320a552818a82cab873acce59b6"
+    },
+    {
+      "path": "/private/tmp/ce15-metadata-memory-compile-4.log",
+      "sha256": "da8db9ffc1ae1b23ee4355f4ed1f27fa49dfb4d7eca52b3bcbe1ff0510e31cf6"
+    }
+  ]
+}

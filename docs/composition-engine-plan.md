@@ -5126,8 +5126,10 @@ commands. Managed cases load assets/fonts within their scopes; exact public body
 frame parity and borrowed/late native cleanup pass. Glyph 1.383989× ≤ 1.5×.
 Native capture/upload admission now passes 70 tests, the complete audit, six
 native complete-body oracles, twelve failure cases, original media/WebGL export
-commands and 64 prior-exact public exports / 768 bodies and frames. Node, metadata
-and actual production admission remain pending.
+commands and 64 prior-exact public exports / 768 bodies and frames. Owned metadata
+serialization now passes 78 focused tests, including exact native output/coercion
+and explicit lifetime/error checks. Cache/graph/font/Node metadata and actual
+production admission remain pending.
 Aggregate limits, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),

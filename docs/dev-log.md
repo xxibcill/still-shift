@@ -90,7 +90,10 @@ still hold before relying on them.
   Glyph 1.383989× meets unchanged 1.5×. Native capture/upload admission now passes
   70 tests, the complete audit, six native complete-body oracles, twelve failure
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
-  Node, metadata integration, actual production admission, aggregate memory, the actual
+  Owned metadata serialization now passes 78 focused tests with exact native text,
+  callback/coercion counts, pre-emission quota and retained/error cleanup checks.
+  Cache/graph/font/Node metadata integration, actual production admission, aggregate
+  memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -324,6 +327,19 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 owned metadata serialization foundation
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `08911d8`.
+- **Done:** pre-emission UTF16 output admission, admitted original shallow sorting,
+  native boxed coercion, retained text ownership and nested/error cleanup.
+- **Results:** build/lint/boundaries and 78 focused tests, including eight metadata
+  cases, pass. Native output, callback counts, quota denial and null errors pass.
+- **Limits / next:** ordinary records are covered; arbitrary Proxy traps/private VM
+  allocations are not. Cache/graph/font/Node integration and actual production
+  admission, aggregate/area/workers, speed/full CE15 gate/PR and all CE14 remain.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [metadata foundation evidence](./composition-ce15-metadata-foundation-results.json).
 
 ### 2026-10-08 — CE15 native capture/upload ownership checkpoint
 

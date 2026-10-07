@@ -4,7 +4,7 @@
   "branch": "codex/composition-ce15",
   "base": "aedfc9e",
   "started": "2026-10-07",
-  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics, complete FFmpeg command CPU, global runtime glyph tints and broader sources, managed allocation foundation, Canvas allocation lifetimes and bounded receive storage, GPU storage admission and explicit native resource lifetime, verified asset/font/media admission and native decoder lifetime, native capture and complete upload ownership",
+  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics, complete FFmpeg command CPU, global runtime glyph tints and broader sources, managed allocation foundation, Canvas allocation lifetimes and bounded receive storage, GPU storage admission and explicit native resource lifetime, verified asset/font/media admission and native decoder lifetime, native capture and complete upload ownership, owned metadata serialization foundation",
   "versions": {
     "canvas": "composition-canvas-1.46.0",
     "webgl": "composition-webgl2-0.67.0"
@@ -814,6 +814,16 @@
     "priorAcceptedEncodedBodiesPreserved": 768,
     "priorAcceptedDecodedFramesPreserved": 768,
     "aggregateIntegration": "pending",
+    "fullGate": "pending",
+    "speedProof": "pending"
+  },
+  "managedMetadataFoundation": {
+    "status": "metadata serialization foundation passed; cache/Node/production integration remains pending",
+    "record": "docs/composition-ce15-metadata-foundation-results.json",
+    "relevantFingerprint": "ef828b031ce6c366ec891b0d4b4f0eb7c4e5346fc36015635360ae8182254954",
+    "admissionCacheExposureDepthCaptureMetadataTests": 78,
+    "metadataSerializationTests": 8,
+    "productionIntegration": "pending",
     "fullGate": "pending",
     "speedProof": "pending"
   }

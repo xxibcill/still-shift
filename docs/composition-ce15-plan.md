@@ -427,6 +427,28 @@ memory and physical RSS. Production scope stays disabled until Node and complete
 metadata integration, then aggregate/area/worker checks, authentic 120-second speed
 acceptance and the immutable complete local gate.
 
+## Accepted metadata serialization foundation — 2026-10-08
+
+Native JSON output now has an explicit owned text record. Worst-case UTF16 output
+is admitted before each original native value emission; completion shrinks to the
+actual text size. Original omission, holes, escapes, numeric spelling, toJSON,
+replacer calls/receivers and boxed primitive coercion are preserved. Temporary
+canonical-sort tuples/arrays/objects are admitted before their original copies.
+Retained output crosses scratch boundaries explicitly; original null/errors and
+quota failures release started ownership. Nested serialization restores its parent.
+
+Build, lint, boundaries and 78 focused tests, including eight new metadata tests,
+pass. Sparse-fixture lint, native cycle-fixture semantics and boxed primitive sizing
+repairs are retained in [the evidence](./composition-ce15-metadata-foundation-results.json).
+Capacity discovery assumes ordinary enumerable records; arbitrary Proxy trap
+semantics are not covered. Borrowed callback-produced data and private VM builder
+storage remain separate from declared output/shallow-copy capacity.
+
+This foundation is not yet wired to caches or Node. Retained key/row/member/snapshot,
+graph/font, transport/stream/result and actual production admission remain pending,
+along with aggregate/area/worker checks, authentic two-minute speed acceptance,
+the complete immutable gate and CE15 PR before CE14.
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
