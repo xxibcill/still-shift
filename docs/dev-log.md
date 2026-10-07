@@ -62,8 +62,9 @@ still hold before relying on them.
   readiness and draft exports now pass real browser proof, existing authoring regressions,
   48 focused units / 23 CLI tests and static checks (`917e92c`). Continuous native PCM
   scope clocks and dependency traversal now pass all 2,089 units / 208 files, static
-  checks and existing CE7 picture acceptance (evaluator 52). Actual PCM decode/mix,
-  audio loader/preview/export, waveforms, passage audio and matching audio/video
+  checks and existing CE7 picture acceptance (evaluator 52, `e4f27a2`). Actual streamed
+  48 kHz PCM preparation/cache now passes 25 source/cache/probe tests and static checks.
+  Bounded mix/waveforms, audio loader/preview/export, passage audio and matching audio/video
   production/full acceptance remain in flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
   [Evidence](./composition-ce13-results.json).
 
@@ -279,6 +280,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 streamed native PCM preparation
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed audio clocks `e4f27a2`.
+- **Done:** actual mono/stereo stream probe, streamed 48 kHz Float32 decode, finite/count
+  validation and atomic cache publication share the existing picture lock/disk accounting.
+  PCM memory is reserved before allocation and source/cache hashes verify on every hit.
+- **Results:** 25 focused source/cache/probe tests / 4 files and static checks pass.
+  Exact mono/stereo source bits, resampling, relocation, tamper, simultaneous misses,
+  cumulative picture/audio budget and actively writing decoder cancellation pass.
+- **Review:** completed the storage extraction rename and added a late cancellation
+  guard plus unconditional lock release. No failed gate or frozen reference change.
+- **Next:** bounded mixing/waveforms, audio loader/preview/export, native passage audio,
+  matching-audio production acceptance and the complete final local gate.
+- **Records:** [media guide](./composition-media.md), [CE13 evidence](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 continuous native audio clocks
 

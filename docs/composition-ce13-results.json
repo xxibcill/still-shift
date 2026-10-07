@@ -4436,12 +4436,89 @@
           "sha256": "sha256:11d597c5d62bfde9b5c7f01f4dab8d887c30a027d243f1d84c61eb9d759fe9d5"
         }
       ],
+      "fullGate": false,
+      "checkpoint": "e4f27a2"
+    },
+    {
+      "slice": "streamed actual native audio PCM preparation and shared cache storage",
+      "sourceFingerprint": "sha256:5cd1d553a67e6b25e305932dcea19dce81f1f3b49c30bd7e3282a61a264aabec",
+      "sourceFiles": [
+        "packages/animation-engine/src/composition-media-audio.ts",
+        "packages/animation-engine/src/composition-media-cache-storage.ts",
+        "packages/animation-engine/src/composition-media-cache.ts",
+        "packages/animation-engine/src/index.ts",
+        "tests/integration/composition-media-audio.test.ts"
+      ],
+      "checks": {
+        "build": "pass",
+        "schema": "pass",
+        "boundaries": "pass",
+        "lint": "pass",
+        "format": "pass",
+        "focused": {
+          "exitCode": 0,
+          "passed": 25,
+          "files": 4
+        }
+      },
+      "implemented": [
+        "actual single mono/stereo stream probe and source SHA before/after preparation",
+        "actual 48 kHz interleaved Float32 decode with exact decoded sample count and channel verification",
+        "streamed finite-sample and SHA validation including split floats, bounded queues and partial file writes",
+        "256 KiB plus 4 byte conservative PCM buffer reservation before allocation; actual peak PCM buffers recorded separately from decoder RSS/non-PCM metadata",
+        "actual FFmpeg version identity and source provenance key exclude physical paths and authored asset ID",
+        "shared visual/audio artifact lock and cumulative disk reservation, private stage and atomic publication",
+        "every hit revalidates original identity, manifest and finite cached PCM/hash/byte count",
+        "cancel kills/reaps active FFmpeg before cleanup and removes newly published/staged entries"
+      ],
+      "actualMediaProofs": [
+        "mono/stereo 5,003-sample Float32 WAV sources preserve all PCM bits exactly",
+        "4,410 mono samples at44.1kHz produce verified4,800 samples at48kHz identical to independent decode",
+        "under/overruns, channel mismatch, multiple actual streams and NaN/positive-negative Infinity reject without publication",
+        "finite PCM tamper, manifest tamper and changed original reject",
+        "real sequence/picture cache shares cumulative disk bytes with audio",
+        "concurrent misses yield one publication and one verified hit",
+        "cancel observed after actual source.f32 writes; no stage/publication remains immediately or after decoder reaping",
+        "early cancellation creates no cache directory"
+      ],
+      "reviewRepairs": [
+        "completed one missed cacheSize rename during shared storage extraction before the first build",
+        "final return rechecks cancellation after cumulative size read; cleanup always releases the lock"
+      ],
+      "failedAttempts": [],
+      "pending": [
+        "bounded native PCM mixer and source/processed/mix waveform metadata",
+        "native audio loader, preview and transactional export mux",
+        "native passage audio and complete matching-audio/full acceptance"
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-audio-cache-build-draft.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-cache-focused-draft.log",
+          "sha256": "sha256:79b30b8b245240907c5b26fb0dff4923ebda9c2fe54bfe79d9aaaf6c45b2f8ce"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-cache-static-draft.log",
+          "sha256": "sha256:9ae222d23c589865b0a6e6bb4741d2d7010c1a71afb23ddc63ecc84f0711c340"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-cache-format-draft.log",
+          "sha256": "sha256:29da73cb6614de5f405b0d7dfa3f4fa5220b569c0c63c7cbdde6a2b17f7a3145"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-cache-focused-final.log",
+          "sha256": "sha256:feb8069d3a6e132088986bd9678fff73ee6c40aa70828c6abe37ff3683eb6221"
+        }
+      ],
       "fullGate": false
     }
   ],
   "fullGates": [],
   "pending": [
-    "actual bounded PCM decode/mix, native audio loader/preview/export and waveforms; native passage mixing",
+    "bounded native PCM mix/waveforms, audio loader/preview/export and native passage mixing",
     "native audio protection, mixing and waveforms",
     "real Lab and export acceptance",
     "complete final local pnpm check",

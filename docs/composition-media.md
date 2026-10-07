@@ -162,3 +162,24 @@ reject in this API; authored ordinary source remap remains supported. Protected
 narration rejects baked `sampleTimes` on voice and ancestors, even when disabled, in
 addition to the previously prohibited source-clock changes. The evaluator is version 52. Continuous clock/dependency correctness is verified; actual PCM decode/mix,
 waveforms, native passage mixing and matching-audio delivery remain pending.
+
+`prepareCompositionAudioSource` verifies the actual single mono/stereo source stream
+and decodes interleaved 48 kHz Float32 PCM to disk. The descriptor count names actual
+decoded samples, including resampling from supported 8–384 kHz sources. Decoded sample
+ordinal zero is the source clock; embedded video audio requires its own audio asset.
+Source SHA verifies before/after preparation. The key includes actual stream provenance,
+decoded format/count/channels, decoder version and the full FFmpeg version identity;
+physical relocation and asset ID do not change it.
+
+The decoder checks every finite sample, count and hash while streaming. It reserves
+256 KiB plus 4 bytes of Node PCM working buffers before allocation and records their
+peak separately from FFmpeg process RSS and non-PCM metadata. `audioWorkingBytes` can
+reject that reservation; configured duration and cumulative cache bytes also apply.
+Mono sources retain one channel in cache; stereo retains two. Duplication occurs later
+in the mixer. Under/overruns and nonfinite samples reject without publishing.
+
+Picture and audio cache entries share one lock and cumulative disk accounting. Private
+stages publish atomically; cancellation kills/reaps the active decoder before cleanup.
+Every hit revalidates the original hash, manifest and finite cached PCM/hash/count.
+Actual PCM preparation is verified. Bounded mixing, source/processed waveforms, native
+audio loading/preview/mux and passage audio are the next work.

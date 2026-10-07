@@ -4819,6 +4819,23 @@ verified as the sole digest difference. Actual decode/mix, audio loading/export,
 waveforms, native passage mixing and complete full acceptance remain pending.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 actual PCM preparation checkpoint (2026-10-07)
+
+Actual audio bytes now verify against the authored SHA before/after probe and decode.
+One actual mono/stereo stream is decoded to interleaved 48 kHz Float32 PCM; original
+sample ordinal zero is explicit. Actual decoded count/channels and every finite sample
+verify before atomic publication. PCM preparation is streamed with a conservative
+256 KiB + 4 byte working-buffer reservation; its reported peak excludes FFmpeg RSS and
+non-PCM metadata. Actual FFmpeg identity, source provenance and output profile form
+the key without physical paths. Visual and audio entries share the same root lock and
+cumulative disk accounting. Cache hits reverify original bytes, manifest and finite
+payload hash/count. Active decoder cancellation kills/reaps before cleanup. All 25
+focused source/cache/probe tests and static checks pass, including exact mono/stereo
+bits, real resampling, relocation, malformed sources, tampering and concurrent misses.
+Bounded mix/waveforms, audio loader/preview/export, native passage mixing, matching-audio
+production acceptance and the final full gate remain pending.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

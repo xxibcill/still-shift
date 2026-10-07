@@ -3,23 +3,19 @@ import {
   lstat,
   mkdir,
   readFile,
-  readdir,
   rename,
   rm,
   writeFile,
 } from "node:fs/promises";
 import { join, resolve } from "node:path";
-import { setTimeout as delay } from "node:timers/promises";
 import { z } from "zod";
 import {
-  AnimationEngineError,
   CompositionSequenceManifestSchema,
   compositionMediaFrameId,
   resolveCompositionMediaLimits,
   type CompositionMediaLimits,
   type CompositionVisualMediaAsset,
 } from "@still-shift/scene-contract";
-import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import {
@@ -32,6 +28,11 @@ import {
   inspectCompositionPng,
   tagCompositionSrgbPng,
 } from "./composition-media-color.ts";
+
+import {
+  compositionMediaCacheLock,
+  compositionMediaCacheSize,
+} from "./composition-media-cache-storage.ts";
 
 const hash = (value: string | Uint8Array) =>
   "sha256:" + createHash("sha256").update(value).digest("hex");
@@ -259,46 +260,6 @@ async function sourceIdentity(options: Options) {
   };
 }
 
-async function cacheLock(root: string, signal?: AbortSignal) {
-  const deadline = performance.now() + 180_000;
-  for (;;) {
-    signal?.throwIfAborted();
-    try {
-      return await acquireArtifactLock(join(root, ".media.lock"), root);
-    } catch (error) {
-      if (
-        !(error instanceof AnimationEngineError) ||
-        error.code !== "RENDER_FAILED" ||
-        error.message !== "Batch output directory is already in use"
-      )
-        throw error;
-      if (performance.now() >= deadline)
-        passageError(
-          "comp-media-limit",
-          "Timed out waiting for media cache preparation",
-          { path: root },
-        );
-      await delay(100, undefined, { signal });
-    }
-  }
-}
-async function cacheSize(root: string): Promise<number> {
-  let bytes = 0;
-  for (const entry of await readdir(root, { withFileTypes: true })) {
-    if (entry.name === ".media.lock" || entry.name === ".media.lock.recovery")
-      continue;
-    const path = join(root, entry.name);
-    if (entry.isDirectory()) bytes += await cacheSize(path);
-    else if (entry.isFile()) bytes += (await lstat(path)).size;
-    else
-      passageError(
-        "comp-media-format",
-        "Cache may only contain regular entries",
-        { path },
-      );
-  }
-  return bytes;
-}
 async function readCachedFrames(
   directory: string,
   manifest: CacheManifest,
@@ -406,12 +367,12 @@ export async function prepareCompositionVisualMedia(
   const root = resolve(options.cacheDirectory),
     directory = join(root, key.slice(7));
   await mkdir(root, { recursive: true });
-  const release = await cacheLock(root, signal);
+  const release = await compositionMediaCacheLock(root, signal);
   let stage: string | undefined;
   let published = false;
   try {
     signal?.throwIfAborted();
-    const priorBytes = await cacheSize(root);
+    const priorBytes = await compositionMediaCacheSize(root);
     if (priorBytes > limits.decodedCacheBytes)
       passageError(
         "comp-media-limit",
@@ -581,7 +542,10 @@ export async function prepareCompositionVisualMedia(
       await readCachedFrames(stage, manifest, ordinals, asset);
       await inspected.verify();
       signal?.throwIfAborted();
-      if (priorBytes + (await cacheSize(stage)) > limits.decodedCacheBytes)
+      if (
+        priorBytes + (await compositionMediaCacheSize(stage)) >
+        limits.decodedCacheBytes
+      )
         passageError(
           "comp-media-limit",
           "Actual prepared bytes exceed cumulative media cache bound",
@@ -607,7 +571,7 @@ export async function prepareCompositionVisualMedia(
       ffmpegIdentity,
       sourceProvenance: inspected.provenance,
       cacheHit,
-      cacheBytes: await cacheSize(root),
+      cacheBytes: await compositionMediaCacheSize(root),
       frames,
       assetPaths: Object.fromEntries(
         frames.map((frame) => [
