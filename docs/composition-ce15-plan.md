@@ -525,6 +525,30 @@ Surface/provider keys, graph/font/checksum/ledger/Node metadata, actual producti
 aggregate admission, speed and the full gate remain pending. No milestone acceptance
 is claimed. [Evidence](./composition-ce15-root-metadata-results.json).
 
+## Accepted retained independent-surface metadata checkpoint — 2026-10-08
+
+Independent-surface path/full-state keys and original hashes now have explicit
+owners. Entries retain those keys across native per-frame scratch cleanup;
+duplicate and uncached keys release immediately. Original Map growth, counter/
+entry records and restoration envelopes reserve before native producers. Seeding
+controls and original graph/op/content/matrix/array containers reserve before
+target production. Active/visited Sets, candidates and effect-input arrays admit
+capacity before allocation/mutation and release after success, failure or cycles.
+
+Build, lint, boundaries and 114 focused tests pass, including exact canonical
+hashes, repeated uncached cleanup, null errors, dependency cycles and quota denial
+before restoration. All 144 audit cases / 8,000 exact comparisons preserve original
+native count and protected-failure checks. All 96 managed source/root/surface RPC
+returns keep actual surface snapshots owned until acknowledgement, then drop page
+references with zero owned bytes; complete Node counters stay intact. Original
+WebGL, 69 typography tests, 12 provider cases / 60 frames and eight fixtures pass.
+Glyph 1.343124× meets unchanged 1.5 maximum. All 64 exports preserve 768 complete
+bodies and frames against pushed `c37f797`.
+
+Provider/WebGL keys, evaluated graph/font/checksum/ledger/Node metadata, actual
+production/aggregate admission, speed and full-gate acceptance remain pending.
+[Evidence](./composition-ce15-surface-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -372,6 +372,7 @@ try {
               JSON.stringify({
                 source: outcome.sourceStatistics,
                 root: outcome.rootStatistics,
+                surface: outcome.surfaceStatistics,
               }),
             );
             const acknowledgements = await Promise.all(
@@ -393,10 +394,20 @@ try {
               assert.ok(outcome.managedMemory.rootSnapshot.ownedBefore);
               assert.ok(outcome.managedMemory.rootSnapshot.rootsBefore > 0);
               assert.ok(outcome.managedMemory.rootSnapshot.referencesDropped);
+              outcome.managedMemory.surfaceSnapshot =
+                acknowledgements[worker]!.surfaceSnapshot;
+              assert.ok(outcome.managedMemory.surfaceSnapshot.ownedBefore);
+              assert.ok(
+                outcome.managedMemory.surfaceSnapshot.surfacesBefore > 0,
+              );
+              assert.ok(
+                outcome.managedMemory.surfaceSnapshot.referencesDropped,
+              );
               assert.equal(
                 JSON.stringify({
                   source: outcome.sourceStatistics,
                   root: outcome.rootStatistics,
+                  surface: outcome.surfaceStatistics,
                 }),
                 copiesBefore[worker],
               );

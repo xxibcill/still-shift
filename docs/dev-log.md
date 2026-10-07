@@ -90,13 +90,13 @@ still hold before relying on them.
   Glyph 1.383989× meets unchanged 1.5×. Native capture/upload admission now passes
   70 tests, the complete audit, six native complete-body oracles, twelve failure
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
-  Owned submission/source/root key/control/counter/snapshot metadata now passes
-  110 focused tests, the complete audit, 22 native submission frames and 96 owned
-  source/root RPC snapshots with actual acknowledgement. Original WebGL/provider
-  checks, 69 typography tests and 64 exports / 768 prior-exact bodies and frames
-  pass; glyph 1.393665× meets unchanged 1.5 maximum. Remaining Surface/provider/graph/
-  font/checksum/ledger-control/Node metadata and actual production admission,
-  aggregate memory, the actual
+  Owned submission/source/root/surface key/control/counter/snapshot metadata now
+  passes 114 focused tests, the complete audit, 22 native submission frames and 96
+  owned source/root/surface RPC snapshots with actual acknowledgement. Traversal,
+  seeding, dependency cycles and quota-before-restoration regressions pass. Original
+  WebGL/provider checks, 69 typography tests and 64 exports / 768 prior-exact bodies/
+  frames pass; glyph 1.343124× meets unchanged 1.5 maximum. Provider/WebGL/graph/font/
+  checksum/ledger-control/Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -330,6 +330,20 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 independent-surface metadata and native RPC lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `c37f797`.
+- **Done:** owned original candidate keys/hashes, Maps/counters/entries, traversal
+  Sets/input arrays, seed controls/graph containers and independent snapshots.
+- **Results:** build/lint/boundaries, 114 focused / 69 typography tests; complete
+  144-case / 8,000-frame audit, 96 owned surface RPC snapshots and original WebGL/
+  provider/typography checks pass. All 64 exports / 768 bodies/frames match the
+  prior checkpoint; glyph 1.343124× meets unchanged 1.5 maximum.
+- **Next:** provider/WebGL/graph/font/checksum/ledger/Node metadata, production/
+  aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [surface metadata evidence](./composition-ce15-surface-metadata-results.json).
 
 ### 2026-10-08 — CE15 retained root metadata and RPC lifetime
 

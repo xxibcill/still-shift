@@ -1,7 +1,12 @@
 import { sha256Hex } from "../../browser-checksum.ts";
+import { hashRenderMetadata } from "../../managed-metadata-hash.ts";
 import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+  resizeRenderMetadata,
   serializeRenderMetadata,
   sortedMetadataObject,
+  type ManagedMetadataText,
 } from "../../managed-metadata.ts";
 import {
   executeGraph,
@@ -52,7 +57,19 @@ type Candidate = {
   colorSpace: "srgb" | "linear-srgb";
   value: SurfaceNode | IsolateOp;
 };
-type Entry<S> = { signature: string; surface: S; users: number; bytes: number };
+type Entry<S> = {
+  path: ManagedMetadataText;
+  signature: ManagedMetadataText;
+  surface: S;
+  users: number;
+  bytes: number;
+  released: boolean;
+};
+type CandidateIdentity = {
+  path: ManagedMetadataText;
+  signature: ManagedMetadataText;
+  retained: boolean;
+};
 type SurfaceCounts = {
   kind: Candidate["kind"];
   name: string;
@@ -90,7 +107,7 @@ function visualReplacer(key?: PreparedContentKey) {
 }
 
 function candidatePath(candidate: Candidate) {
-  return JSON.stringify([
+  return serializeRenderMetadata([
     candidate.kind,
     candidate.name,
     candidate.width,
@@ -101,29 +118,49 @@ function candidatePath(candidate: Candidate) {
 function candidateState(candidate: Candidate) {
   if (candidate.kind === "surface") return candidate.value;
   const op = candidate.value as IsolateOp;
-  return [op.ops, op.effects, op.masks, op.matte, op.lighting ?? null];
+  return allocateRenderMetadata(80, () => [
+    op.ops,
+    op.effects,
+    op.masks,
+    op.matte,
+    op.lighting ?? null,
+  ]);
 }
 
 /** Dependency-first order prevents pages from holding a parent lease while awaiting a child. */
 function* independentSurfaces(graph: RenderGraph): Generator<Candidate> {
-  const visited = new Set<object>(),
-    active = new Set<object>();
+  const state = allocateRenderMetadata(
+    384,
+    () => ({ visited: new Set<object>(), active: new Set<object>() }),
+    false,
+    (value) => {
+      value.visited.clear();
+      value.active.clear();
+    },
+  );
+  const { visited, active } = state;
+  let capacity = 384;
+  const add = (set: Set<object>, value: object) => {
+    capacity = Math.max(capacity, 384 + 40 * (visited.size + active.size + 1));
+    resizeRenderMetadata(state, capacity);
+    set.add(value);
+  };
   const colorSpace = graph.root.colorSpace ?? "srgb";
   function* surface(node: SurfaceNode): Generator<Candidate> {
     if (active.has(node)) throw Error("Composition surface dependency cycle");
     if (visited.has(node)) return;
-    active.add(node);
+    add(active, node);
     yield* operations(node.ops, node.width, node.height);
     active.delete(node);
-    visited.add(node);
-    yield {
-      kind: "surface",
+    add(visited, node);
+    yield allocateRenderMetadata(160, () => ({
+      kind: "surface" as const,
       name: node.id,
       width: node.width,
       height: node.height,
       colorSpace,
       value: node,
-    };
+    }));
   }
   function* operations(
     ops: RenderOp[],
@@ -131,7 +168,7 @@ function* independentSurfaces(graph: RenderGraph): Generator<Candidate> {
     height: number,
   ): Generator<Candidate> {
     if (active.has(ops)) throw Error("Composition operation dependency cycle");
-    active.add(ops);
+    add(active, ops);
     try {
       for (const op of ops) {
         if (op.kind === "draw") {
@@ -147,32 +184,49 @@ function* independentSurfaces(graph: RenderGraph): Generator<Candidate> {
           op.kind === "project" ? width + (op.focusPadding ?? 0) * 2 : width;
         const effectHeight =
           op.kind === "project" ? height + (op.focusPadding ?? 0) * 2 : height;
-        for (const effect of op.effects)
-          for (const input of Object.values(effect.layerInputs ?? {}))
-            yield* operations(input, effectWidth, effectHeight);
+        for (const effect of op.effects) {
+          let count = 0;
+          for (const property in effect.layerInputs)
+            if (Object.hasOwn(effect.layerInputs!, property)) count++;
+          const inputs = allocateRenderMetadata(32 + count * 8, () =>
+            Object.values(effect.layerInputs ?? {}),
+          );
+          try {
+            for (const input of inputs)
+              yield* operations(input, effectWidth, effectHeight);
+          } finally {
+            releaseRenderMetadata(inputs);
+          }
+        }
         if (op.matte) yield* operations(op.matte.ops, width, height);
         if (op.kind === "isolate")
-          yield {
-            kind: "isolate",
+          yield allocateRenderMetadata(160, () => ({
+            kind: "isolate" as const,
             name: op.layer,
             width,
             height,
             colorSpace,
             value: op,
-          };
+          }));
       }
     } finally {
       active.delete(ops);
     }
   }
-  yield* operations(graph.root.ops, graph.root.width, graph.root.height);
+  try {
+    yield* operations(graph.root.ops, graph.root.width, graph.root.height);
+  } finally {
+    releaseRenderMetadata(state);
+  }
 }
 
 /** Shares only existing independent surfaces. Ordinary direct drawing retains its native boundaries. */
 export class CompositionSurfaceCache<S extends Surface> {
-  private readonly entries = new Map<string, Entry<S>>();
-  private readonly owned = new Map<S, Entry<S>>();
-  private readonly counts = new Map<string, SurfaceCounts>();
+  private readonly state: {
+    entries: Map<string, Entry<S>>;
+    owned: Map<S, Entry<S>>;
+    counts: Map<string, SurfaceCounts>;
+  };
   private readonly release: (surface: S) => void;
   private readonly renderIsolate: RenderBackend<S>["renderIsolate"];
   private seeding:
@@ -204,34 +258,48 @@ export class CompositionSurfaceCache<S extends Surface> {
       throw Error("Composition surface cache configuration is invalid");
     this.release = backend.releaseSurface.bind(backend);
     this.renderIsolate = backend.renderIsolate?.bind(backend);
-    backend.renderIsolate = (op, like, draw) =>
-      this.render(
-        {
-          kind: "isolate",
-          name: op.layer,
-          width: like.width,
-          height: like.height,
-          colorSpace,
-          value: op,
-        },
-        draw,
-        () => this.renderIsolate?.(op, like, draw) ?? draw(),
-      );
-    backend.renderSurface = (node, draw) =>
-      this.render(
-        {
-          kind: "surface",
-          name: node.id,
-          width: node.width,
-          height: node.height,
-          colorSpace: node.colorSpace ?? colorSpace,
-          value: node,
-        },
-        draw,
-        draw,
-      );
+    this.state = allocateRenderMetadata(
+      768,
+      () => ({ entries: new Map(), owned: new Map(), counts: new Map() }),
+      false,
+      () => this.clear(),
+    );
+    backend.renderIsolate = (op, like, draw) => {
+      const candidate = allocateRenderMetadata(160, () => ({
+        kind: "isolate" as const,
+        name: op.layer,
+        width: like.width,
+        height: like.height,
+        colorSpace,
+        value: op,
+      }));
+      try {
+        return this.render(
+          candidate,
+          draw,
+          () => this.renderIsolate?.(op, like, draw) ?? draw(),
+        );
+      } finally {
+        releaseRenderMetadata(candidate);
+      }
+    };
+    backend.renderSurface = (node, draw) => {
+      const candidate = allocateRenderMetadata(160, () => ({
+        kind: "surface" as const,
+        name: node.id,
+        width: node.width,
+        height: node.height,
+        colorSpace: node.colorSpace ?? colorSpace,
+        value: node,
+      }));
+      try {
+        return this.render(candidate, draw, draw);
+      } finally {
+        releaseRenderMetadata(candidate);
+      }
+    };
     backend.releaseSurface = (surface) => {
-      const entry = this.owned.get(surface);
+      const entry = this.state.owned.get(surface);
       if (!entry) return this.release(surface);
       if (entry.users === 0)
         throw Error("Composition retained surface released twice");
@@ -240,70 +308,184 @@ export class CompositionSurfaceCache<S extends Surface> {
   }
 
   get statistics() {
-    return {
-      independentSurfacePaints: this.paints,
-      surfaceRestores: this.restores,
-      surfaceReuses: this.reuse,
-      retainedBytes: this.retainedBytes,
-      peakTransferBytes: this.peakTransferBytes,
-      paintAndReadbackMs: this.paintAndReadbackMs,
-      surfaces: [...this.counts.values()].map((counts) => ({ ...counts })),
-    };
+    let bytes = 320;
+    for (const counts of this.state.counts.values())
+      bytes += 192 + 2 * (counts.kind.length + counts.name.length);
+    return allocateRenderMetadata(
+      bytes,
+      () => ({
+        independentSurfacePaints: this.paints,
+        surfaceRestores: this.restores,
+        surfaceReuses: this.reuse,
+        retainedBytes: this.retainedBytes,
+        peakTransferBytes: this.peakTransferBytes,
+        paintAndReadbackMs: this.paintAndReadbackMs,
+        surfaces: [...this.state.counts.values()].map((counts) => ({
+          ...counts,
+        })),
+      }),
+      false,
+      (value) => {
+        value.surfaces.length = 0;
+      },
+    );
   }
   private assertOpen() {
     this.options.signal?.throwIfAborted();
     if (this.closed) throw Error("Composition surface cache is disposed");
   }
   private signature(candidate: Candidate) {
-    return compositionSurfaceVisualKey(
-      [
+    const path = candidatePath(candidate);
+    let state: ReturnType<typeof candidateState> | undefined;
+    let input: unknown[] | undefined;
+    try {
+      state = candidateState(candidate);
+      input = allocateRenderMetadata(80, () => [
         this.options.scopeKey,
         this.backend.version,
         this.backend.surfaceEncoding,
-        candidatePath(candidate),
-        candidateState(candidate),
-      ],
-      this.contentKey,
+        path.value,
+        state,
+      ]);
+      return compositionSurfaceVisualMetadata(input, this.contentKey);
+    } finally {
+      path.release();
+      if (input) releaseRenderMetadata(input);
+      if (candidate.kind === "isolate" && state) releaseRenderMetadata(state);
+    }
+  }
+  private identity(candidate: Candidate): CandidateIdentity {
+    const path = candidatePath(candidate);
+    let signature: ManagedMetadataText | undefined;
+    try {
+      signature = this.signature(candidate);
+      return allocateRenderMetadata(128, () => ({
+        path,
+        signature: signature!,
+        retained: false,
+      }));
+    } catch (error) {
+      path.release();
+      signature?.release();
+      throw error;
+    }
+  }
+  private releaseIdentity(identity: CandidateIdentity) {
+    if (!identity.retained) {
+      identity.path.release();
+      identity.signature.release();
+    }
+    releaseRenderMetadata(identity);
+  }
+  private resize(
+    entries = this.state.entries.size,
+    owned = this.state.owned.size,
+    counts = this.state.counts.size,
+  ) {
+    resizeRenderMetadata(this.state, 768 + (entries + owned + counts) * 64);
+  }
+  private destroyEntry(entry: Entry<S>) {
+    if (entry.released) return;
+    entry.released = true;
+    try {
+      this.release(entry.surface);
+    } finally {
+      entry.path.release();
+      entry.signature.release();
+    }
+  }
+  private store(
+    candidate: Candidate,
+    identity: CandidateIdentity,
+    producer: () => S,
+    mode: "paint" | "restore",
+  ) {
+    this.resize(
+      this.state.entries.size + 1,
+      this.state.owned.size + 1,
+      this.state.counts.size + 1,
     );
+    let counts: SurfaceCounts | undefined, entry: Entry<S> | undefined;
+    try {
+      counts = allocateRenderMetadata(
+        192 + 2 * (candidate.kind.length + candidate.name.length),
+        () => ({
+          kind: candidate.kind,
+          name: candidate.name,
+          paints: mode === "paint" ? 1 : 0,
+          restores: mode === "restore" ? 1 : 0,
+          reuses: 0,
+        }),
+        true,
+      );
+      entry = allocateRenderMetadata(
+        160,
+        () => ({
+          path: identity.path,
+          signature: identity.signature,
+          surface: producer(),
+          users: mode === "paint" ? 1 : 0,
+          bytes:
+            candidate.width *
+            candidate.height *
+            (this.backend.surfaceEncoding === "rgba32f-premultiplied" ? 16 : 4),
+          released: false,
+        }),
+        true,
+        (value) => this.destroyEntry(value),
+      );
+      identity.path.retain();
+      identity.signature.retain();
+      const path = identity.path.value!;
+      this.state.entries.set(path, entry);
+      this.state.owned.set(entry.surface, entry);
+      this.state.counts.set(path, counts);
+      identity.retained = true;
+      this.retainedBytes += entry.bytes;
+      if (mode === "paint") this.paints++;
+      else this.restores++;
+      return entry;
+    } catch (error) {
+      if (entry) {
+        try {
+          this.destroyEntry(entry);
+        } catch {
+          /* Preserve the producer/admission failure. */
+        }
+        releaseRenderMetadata(entry);
+      }
+      if (counts) releaseRenderMetadata(counts);
+      try {
+        this.resize();
+      } catch {
+        /* Preserve the producer/admission failure. */
+      }
+      throw error;
+    }
   }
   private render(candidate: Candidate, draw: () => S, fallback: () => S) {
     this.assertOpen();
-    const path = candidatePath(candidate),
-      signature = this.signature(candidate);
-    const entry = this.entries.get(path);
-    if (entry?.signature === signature) {
-      entry.users++;
-      this.reuse++;
-      this.counts.get(path)!.reuses++;
-      return entry.surface;
+    const identity = this.identity(candidate);
+    try {
+      const path = identity.path.value!,
+        signature = identity.signature.value!;
+      const entry = this.state.entries.get(path);
+      if (entry?.signature.value === signature) {
+        entry.users++;
+        this.reuse++;
+        this.state.counts.get(path)!.reuses++;
+        return entry.surface;
+      }
+      if (this.seeding?.path !== path || this.seeding.signature !== signature)
+        return fallback();
+      if (this.seeding.entry)
+        throw Error("Composition surface seed rendered twice");
+      const captured = this.store(candidate, identity, draw, "paint");
+      this.seeding.entry = captured;
+      return captured.surface;
+    } finally {
+      this.releaseIdentity(identity);
     }
-    if (this.seeding?.path !== path || this.seeding.signature !== signature)
-      return fallback();
-    if (this.seeding.entry)
-      throw Error("Composition surface seed rendered twice");
-    const surface = draw();
-    const captured = {
-      signature,
-      surface,
-      users: 1,
-      bytes:
-        candidate.width *
-        candidate.height *
-        (this.backend.surfaceEncoding === "rgba32f-premultiplied" ? 16 : 4),
-    };
-    this.entries.set(path, captured);
-    this.owned.set(surface, captured);
-    this.seeding.entry = captured;
-    this.retainedBytes += captured.bytes;
-    this.paints++;
-    this.counts.set(path, {
-      kind: candidate.kind,
-      name: candidate.name,
-      paints: 1,
-      restores: 0,
-      reuses: 0,
-    });
-    return surface;
   }
 
   async prepare(graph: RenderGraph) {
@@ -320,8 +502,13 @@ export class CompositionSurfaceCache<S extends Surface> {
             !!this.backend.project && !!this.backend.applyProjectiveClips,
           validateSurface: this.backend.validateSpatialSurface,
         });
-      for (const candidate of independentSurfaces(graph))
-        await this.prepareCandidate(candidate);
+      for (const candidate of independentSurfaces(graph)) {
+        try {
+          await this.prepareCandidate(candidate);
+        } finally {
+          releaseRenderMetadata(candidate);
+        }
+      }
     } finally {
       this.preparing = false;
     }
@@ -329,157 +516,189 @@ export class CompositionSurfaceCache<S extends Surface> {
 
   private async prepareCandidate(candidate: Candidate) {
     this.assertOpen();
-    const path = candidatePath(candidate),
-      signature = this.signature(candidate);
-    if (this.entries.get(path)?.signature === signature) return;
-    const bytes =
-      candidate.width *
-      candidate.height *
-      (this.backend.surfaceEncoding === "rgba32f-premultiplied" ? 16 : 4);
-    if (
-      !this.entries.has(path) &&
-      this.retainedBytes + bytes > this.options.byteLimit
-    )
-      throw Error(
-        "Composition retained surfaces exceed the worker memory budget",
-      );
-    const identity = {
-      path:
-        "sha256:" + (await sha256Hex(new TextEncoder().encode(path).buffer)),
-      key:
-        "sha256:" +
-        (await sha256Hex(new TextEncoder().encode(signature).buffer)),
-      width: candidate.width,
-      height: candidate.height,
-      encoding: this.backend.surfaceEncoding!,
-    };
-    const claim = await this.options.exchange.claim(identity);
-    this.assertOpen();
-    if (claim.kind === "uncached") return;
-    if (
-      this.entries.has(path) ||
-      this.retainedBytes + bytes > this.options.byteLimit
-    )
-      throw Error(
-        "Composition retained surfaces exceed the worker memory budget",
-      );
-    if (claim.kind === "hit") {
+    const originalIdentity = this.identity(candidate);
+    let pathHash: ManagedMetadataText | undefined,
+      signatureHash: ManagedMetadataText | undefined;
+    let identity: CompositionSurfaceIdentity | undefined;
+    try {
+      const path = originalIdentity.path.value!,
+        signature = originalIdentity.signature.value!;
+      if (this.state.entries.get(path)?.signature.value === signature) return;
+      const bytes =
+        candidate.width *
+        candidate.height *
+        (this.backend.surfaceEncoding === "rgba32f-premultiplied" ? 16 : 4);
       if (
-        claim.bytes.byteOffset !== 0 ||
-        claim.bytes.buffer.byteLength !== bytes ||
-        claim.bytes.byteLength !== bytes ||
-        "sha256:" + (await sha256Hex(claim.bytes.buffer)) !== claim.checksum
+        !this.state.entries.has(path) &&
+        this.retainedBytes + bytes > this.options.byteLimit
       )
         throw Error(
-          "Composition retained surface bytes differ from their checksum or dimensions",
+          "Composition retained surfaces exceed the worker memory budget",
         );
+      pathHash = await hashRenderMetadata(path);
+      signatureHash = await hashRenderMetadata(signature);
+      identity = allocateRenderMetadata(128, () => ({
+        path: pathHash!.value!,
+        key: signatureHash!.value!,
+        width: candidate.width,
+        height: candidate.height,
+        encoding: this.backend.surfaceEncoding!,
+      }));
+      const claim = await this.options.exchange.claim(identity);
       this.assertOpen();
-      this.peakTransferBytes = Math.max(this.peakTransferBytes, bytes);
-      const surface = this.backend.restoreSurface!(
-        candidate.width,
-        candidate.height,
-        {
-          encoding: identity.encoding,
-          bytes: claim.bytes,
-        },
-      );
-      releaseRenderPixels(claim.bytes);
-      const entry = { signature, surface, users: 0, bytes };
-      this.entries.set(path, entry);
-      this.owned.set(surface, entry);
-      this.retainedBytes += bytes;
-      this.restores++;
-      this.counts.set(path, {
-        kind: candidate.kind,
-        name: candidate.name,
-        paints: 0,
-        restores: 1,
-        reuses: 0,
-      });
-      return;
-    }
-    if (claim.byteLength !== bytes)
-      throw Error("Composition cache lease has incorrect storage size");
-    const start = performance.now();
-    const seed = { path, signature } as NonNullable<typeof this.seeding>;
-    this.seeding = seed;
-    try {
-      this.seed(candidate);
-      if (!seed.entry || seed.entry.users !== 0)
-        throw Error("Composition surface seed was not released");
-      const pixels = this.backend.captureSurface!(seed.entry.surface);
+      if (claim.kind === "uncached") return;
       if (
-        pixels.encoding !== identity.encoding ||
-        pixels.bytes.byteLength !== bytes
+        this.state.entries.has(path) ||
+        this.retainedBytes + bytes > this.options.byteLimit
       )
-        throw Error("Composition cache seed storage differs from its identity");
-      this.paintAndReadbackMs += performance.now() - start;
-      this.peakTransferBytes = Math.max(this.peakTransferBytes, bytes);
-      const checksum = "sha256:" + (await sha256Hex(pixels.bytes.buffer));
-      this.assertOpen();
-      await this.options.exchange.publish(claim.token, pixels, checksum);
-      releaseRenderPixels(pixels.bytes);
-      this.assertOpen();
+        throw Error(
+          "Composition retained surfaces exceed the worker memory budget",
+        );
+      if (claim.kind === "hit") {
+        if (
+          claim.bytes.byteOffset !== 0 ||
+          claim.bytes.buffer.byteLength !== bytes ||
+          claim.bytes.byteLength !== bytes ||
+          "sha256:" + (await sha256Hex(claim.bytes.buffer)) !== claim.checksum
+        )
+          throw Error(
+            "Composition retained surface bytes differ from their checksum or dimensions",
+          );
+        this.assertOpen();
+        this.peakTransferBytes = Math.max(this.peakTransferBytes, bytes);
+        const pixels = allocateRenderMetadata(64, () => ({
+          encoding: identity!.encoding,
+          bytes: claim.bytes,
+        }));
+        try {
+          this.store(
+            candidate,
+            originalIdentity,
+            () =>
+              this.backend.restoreSurface!(
+                candidate.width,
+                candidate.height,
+                pixels,
+              ),
+            "restore",
+          );
+        } finally {
+          releaseRenderMetadata(pixels);
+        }
+        releaseRenderPixels(claim.bytes);
+        return;
+      }
+      if (claim.byteLength !== bytes)
+        throw Error("Composition cache lease has incorrect storage size");
+      const start = performance.now();
+      const seed = allocateRenderMetadata(
+        128,
+        () => ({ path, signature }) as NonNullable<typeof this.seeding>,
+      );
+      this.seeding = seed;
+      try {
+        this.seed(candidate);
+        if (!seed.entry || seed.entry.users !== 0)
+          throw Error("Composition surface seed was not released");
+        const pixels = this.backend.captureSurface!(seed.entry.surface);
+        if (
+          pixels.encoding !== identity.encoding ||
+          pixels.bytes.byteLength !== bytes
+        )
+          throw Error(
+            "Composition cache seed storage differs from its identity",
+          );
+        this.paintAndReadbackMs += performance.now() - start;
+        this.peakTransferBytes = Math.max(this.peakTransferBytes, bytes);
+        const checksum = "sha256:" + (await sha256Hex(pixels.bytes.buffer));
+        this.assertOpen();
+        await this.options.exchange.publish(claim.token, pixels, checksum);
+        releaseRenderPixels(pixels.bytes);
+        this.assertOpen();
+      } finally {
+        this.seeding = undefined;
+        releaseRenderMetadata(seed);
+      }
     } finally {
-      this.seeding = undefined;
+      if (identity) releaseRenderMetadata(identity);
+      pathHash?.release();
+      signatureHash?.release();
+      this.releaseIdentity(originalIdentity);
     }
   }
 
   private seed(candidate: Candidate) {
-    const target = this.backend.createSurface(
-      candidate.width,
-      candidate.height,
+    // Fixed seed graph/op/content/matrix and three array headers/slots, before native production.
+    const holder = allocateRenderMetadata(
+      1024,
+      () => ({ graph: undefined as RenderGraph | undefined }),
+      false,
+      (value) => {
+        value.graph = undefined;
+      },
     );
-    const op: RenderOp =
-      candidate.kind === "isolate"
-        ? {
-            ...(candidate.value as IsolateOp),
-            opacity: 1,
-            blend: "normal",
-            clips: [],
-          }
-        : {
-            kind: "draw",
-            layer: candidate.name,
-            content: {
-              type: "surface",
-              surface: candidate.value as SurfaceNode,
-            },
-            matrix: [...IDENTITY],
-            transforms: [],
-            opacity: 1,
-            blend: "normal",
-            clips: [],
-          };
+    let target: S | undefined;
     try {
-      executeGraph(
-        this.backend,
-        {
-          root: {
-            id: "cache-preparation",
-            width: candidate.width,
-            height: candidate.height,
-            background: null,
-            colorSpace: this.colorSpace,
-            ops: [op],
-          },
-          culled: [],
+      target = this.backend.createSurface(candidate.width, candidate.height);
+      const op: RenderOp =
+        candidate.kind === "isolate"
+          ? {
+              ...(candidate.value as IsolateOp),
+              opacity: 1,
+              blend: "normal",
+              clips: [],
+            }
+          : {
+              kind: "draw",
+              layer: candidate.name,
+              content: {
+                type: "surface",
+                surface: candidate.value as SurfaceNode,
+              },
+              matrix: [...IDENTITY],
+              transforms: [],
+              opacity: 1,
+              blend: "normal",
+              clips: [],
+            };
+      holder.graph = {
+        root: {
+          id: "cache-preparation",
+          width: candidate.width,
+          height: candidate.height,
+          background: null,
+          colorSpace: this.colorSpace,
+          ops: [op],
         },
-        target,
-        { lifecycle: false, statisticsPhase: "preparation" },
-      );
+        culled: [],
+      };
+      executeGraph(this.backend, holder.graph, target, {
+        lifecycle: false,
+        statisticsPhase: "preparation",
+      });
     } finally {
-      this.backend.releaseSurface(target);
+      releaseRenderMetadata(holder);
+      if (target) this.backend.releaseSurface(target);
     }
   }
 
-  dispose() {
+  private clear() {
     if (this.closed) return;
     this.closed = true;
-    for (const entry of this.entries.values()) this.release(entry.surface);
-    this.entries.clear();
-    this.owned.clear();
+    for (const entry of this.state.entries.values()) {
+      this.destroyEntry(entry);
+      releaseRenderMetadata(entry);
+    }
+    this.state.entries.clear();
+    this.state.owned.clear();
+    for (const counts of this.state.counts.values())
+      releaseRenderMetadata(counts);
+    this.state.counts.clear();
     this.retainedBytes = 0;
+  }
+  dispose() {
+    this.clear();
+    releaseRenderMetadata(this.state);
   }
 }
 import { releaseRenderPixels } from "../../managed-memory-context.ts";

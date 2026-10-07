@@ -17,6 +17,7 @@ import { compositionSurfaceExchange } from "../../packages/execution-runtime/src
 import { sha256Hex } from "../../packages/renderer-core/src/browser-checksum.ts";
 let pendingSourceMemory: ManagedMemory | undefined;
 let pendingRootSnapshot: { roots: unknown[] } | undefined;
+let pendingSurfaceSnapshot: { surfaces: unknown[] } | undefined;
 export function acknowledgeManagedSourceMemory() {
   const memory = pendingSourceMemory;
   if (!memory) throw Error("No managed source RPC awaits acknowledgement");
@@ -24,10 +25,16 @@ export function acknowledgeManagedSourceMemory() {
   const before = memory.statistics;
   const snapshot = pendingRootSnapshot;
   if (!snapshot) throw Error("No owned root statistics await acknowledgement");
+  const surface = pendingSurfaceSnapshot;
+  if (!surface)
+    throw Error("No owned surface statistics await acknowledgement");
   const ownedBefore = memory.owns(snapshot),
     rootsBefore = snapshot.roots.length;
+  const surfaceOwnedBefore = memory.owns(surface),
+    surfacesBefore = surface.surfaces.length;
   memory.dispose();
   pendingRootSnapshot = undefined;
+  pendingSurfaceSnapshot = undefined;
   return {
     before,
     after: memory.statistics,
@@ -35,6 +42,11 @@ export function acknowledgeManagedSourceMemory() {
       ownedBefore,
       rootsBefore,
       referencesDropped: snapshot.roots.length === 0,
+    },
+    surfaceSnapshot: {
+      ownedBefore: surfaceOwnedBefore,
+      surfacesBefore,
+      referencesDropped: surface.surfaces.length === 0,
     },
   };
 }
@@ -190,6 +202,7 @@ export async function checkSharedCompositionSources(options: {
     const before = memory.statistics;
     pendingSourceMemory = memory;
     pendingRootSnapshot = result.rootStatistics;
+    pendingSurfaceSnapshot = result.surfaceStatistics;
     completed = true;
     return {
       ...result,
@@ -199,6 +212,9 @@ export async function checkSharedCompositionSources(options: {
         before,
         rootSnapshot: undefined as
           | ReturnType<typeof acknowledgeManagedSourceMemory>["rootSnapshot"]
+          | undefined,
+        surfaceSnapshot: undefined as
+          | ReturnType<typeof acknowledgeManagedSourceMemory>["surfaceSnapshot"]
           | undefined,
         after: undefined as ManagedMemory["statistics"] | undefined,
       },
