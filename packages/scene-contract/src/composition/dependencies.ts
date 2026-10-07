@@ -1,5 +1,6 @@
 import type { Composition, CompositionScope } from "./composition.ts";
 import {
+  implicitAnchorDependencies,
   layerNodeOf,
   segmentKey,
   segmentsOverlap,
@@ -7,7 +8,11 @@ import {
 } from "./expressions.ts";
 import type { CompositionLayer } from "./layers.ts";
 import type { IssueReporter } from "./primitives.ts";
-import type { PropertyPath, PropertyPathSegment } from "./property-path.ts";
+import {
+  parsePropertyPath,
+  type PropertyPath,
+  type PropertyPathSegment,
+} from "./property-path.ts";
 import {
   isResolvedProperty,
   precompsById,
@@ -151,6 +156,7 @@ function driverProperty(comp: Composition, path: string) {
     node,
     scope: resolved.scope,
     layerId: resolved.layer.id,
+    segments: (parsePropertyPath(resolved.path) as PropertyPath).segments,
     timeNode:
       resolved.layer.type === "precomp" && resolved.path.endsWith(".timeRemap")
         ? `${node}.timeRemap`
@@ -257,6 +263,25 @@ function addExpressionDependencies(
     targets.set(node, list);
   }
   const readNodes = new Set<string>();
+  const referenceWrites = new Map<string, boolean[]>();
+  const markReference = (node: string, segments: PropertyPathSegment[]) => {
+    if (segments[0]!.name !== "constraintReference") return;
+    const axes = referenceWrites.get(node) ?? [false, false];
+    const axis = segments[1]?.name;
+    if (axis !== "y") axes[0] = true;
+    if (axis !== "x") axes[1] = true;
+    referenceWrites.set(node, axes);
+  };
+  for (const expression of expressions)
+    markReference(
+      layerNodeOf(expression.target.path),
+      expression.target.path.segments,
+    );
+  for (const driver of comp.drivers ?? []) {
+    const property = driverProperty(comp, driver.target);
+    if (property) markReference(property.node, property.segments);
+  }
+  // Periodic writers can be inactive at a read time, so they do not remove the edge.
   const readNode = (path: PropertyPath, layer: CompositionLayer) => {
     const node = layerNodeOf(path);
     if (layer.type === "precomp" && path.segments[0]!.name === "timeRemap")
@@ -267,6 +292,12 @@ function addExpressionDependencies(
     const prefix = path.scope.length ? `${path.scope.join("/")}/` : "";
     addDependency(graph, name, `${node}@stage`, []);
     if (prefix) addDependency(graph, `${node}@stage`, `${prefix}comp.time`, []);
+    for (const segments of implicitAnchorDependencies(
+      layer,
+      path.segments,
+      referenceWrites.get(node) ?? [],
+    ))
+      addDependency(graph, name, readNode({ ...path, segments }, layer), []);
     for (const target of targets.get(node) ?? []) {
       const source = `${node}#${segmentKey(target.segments)}`;
       if (source !== name && segmentsOverlap(target.segments, path.segments))

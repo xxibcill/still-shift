@@ -94,7 +94,7 @@ export const COMPOSITION_DIAGNOSTICS = {
   "comp-metadata-size": "Metadata serialises to more than 64 KiB.",
   "comp-json-size": "An opaque JSON payload serialises to more than 64 KiB.",
   "comp-json-depth":
-    "An opaque JSON payload nests more than 64 container levels below its root.",
+    "A JSON payload exceeds its payload-specific container-depth bound below its root.",
   "comp-metadata-depth":
     "Metadata nests more than 64 container levels below its root.",
   "comp-driver-source":

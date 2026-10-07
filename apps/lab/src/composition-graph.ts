@@ -3,7 +3,11 @@ import {
   evaluateProperty,
   type EvaluationOptions,
 } from "../../../packages/renderer-core/src/composition/evaluate/index.ts";
-export type GraphPoint = { frame: number; value: number[]; speed: number[] };
+import {
+  sampleCurveGraph,
+  type GraphPoint,
+} from "./composition-graph-sample.ts";
+export type { GraphPoint } from "./composition-graph-sample.ts";
 const numeric = (value: unknown): number[] =>
   typeof value === "number"
     ? [value]
@@ -19,21 +23,7 @@ export function resolvedGraph(
     count = Math.min(120, Math.max(2, document.frameCount));
   const sample = (frame: number) =>
     numeric(evaluateProperty(document, path, frame, options));
-  return Array.from({ length: count }, (_, index) => {
-    const frame = (index * end) / (count - 1),
-      left = Math.max(0, frame - 0.01),
-      right = Math.min(end, frame + 0.01),
-      value = sample(frame),
-      a = sample(left),
-      b = sample(right);
-    return {
-      frame,
-      value,
-      speed: value.map((_, axis) =>
-        right > left ? (b[axis]! - a[axis]!) / (right - left) : 0,
-      ),
-    };
-  });
+  return sampleCurveGraph(sample, { start: 0, end, count });
 }
 export function curveGraph(points: GraphPoint[], title: string): SVGSVGElement {
   const namespace = "http://www.w3.org/2000/svg";
