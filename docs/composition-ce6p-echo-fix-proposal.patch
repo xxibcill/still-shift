@@ -1,0 +1,86 @@
+--- a/packages/renderer-core/src/composition/render/graph.ts
++++ b/packages/renderer-core/src/composition/render/graph.ts
+@@ -61,6 +61,8 @@
+   height: number;
+   fit: "contain" | "cover" | "stretch";
+   rasterize: "draw" | "natural-size";
++  /** Echo history stacking uses bitmap source-over on transparent targets. */
++  bitmapRounding?: true;
+   sources: ImageLayer["sources"];
+   state: number;
+   stateFrom?: number;
+@@ -200,6 +202,21 @@
+     projected.left >= frame.viewport.width ||
+     projected.top >= frame.viewport.height
+   );
++}
++
++/** Tag echo content only; matte images retain their own composition semantics. */
++function echoImageOps(ops: RenderOp[]): RenderOp[] {
++  return ops.map((op) => {
++    if (op.kind === "isolate") return { ...op, ops: echoImageOps(op.ops) };
++    if (op.kind !== "draw") return op;
++    if (op.content.type === "image")
++      return { ...op, content: { ...op.content, bitmapRounding: true } };
++    if (op.content.type === "surface")
++      return { ...op, content: { ...op.content, surface: {
++        ...op.content.surface, ops: echoImageOps(op.content.surface.ops),
++      } } };
++    return op;
++  });
+ }
+
+ class GraphBuilder {
+@@ -653,7 +670,7 @@
+         {
+           kind: "isolate",
+           layer: key,
+-          ops: [
++          ops: echoImageOps([
+             ...this.echoOps(scope, state, frame, echo),
+             ...this.layerOps(scope, state, frame, {
+               ...options,
+@@ -661,7 +678,7 @@
+               blend: "normal",
+               cull: false,
+             }),
+-          ],
++          ]),
+           effects,
+           masks,
+           matte,
+--- a/packages/renderer-core/src/composition/render/webgl-images.ts
++++ b/packages/renderer-core/src/composition/render/webgl-images.ts
+@@ -123,6 +123,8 @@
+       dst,
+       { left, top, right, bottom },
+       content.rasterize === "draw" || clips.length > 0,
++      content.bitmapRounding === true && !dst.opaque &&
++        (content.rasterize === "draw" || clips.length > 0),
+     );
+     return true;
+   }
+--- a/packages/renderer-core/src/composition/render/webgl-paint.ts
++++ b/packages/renderer-core/src/composition/render/webgl-paint.ts
+@@ -109,10 +109,11 @@
+     dst: WebglSurface,
+     rect: Bounds,
+     primitive = true,
++    bitmapRounding = false,
+   ) {
+     const active = this.device.drawRegion(dst, rect);
+     if (!active) return;
+-    if (!primitive && !dst.floating) {
++    if (!primitive && !dst.floating && !bitmapRounding) {
+       const gl = this.device.gl;
+       gl.enable(gl.BLEND);
+       gl.blendEquation(gl.FUNC_ADD);
+@@ -148,7 +149,7 @@
+           origin: [rect.left, rect.top],
+           backdropOrigin: dst.screen ? [active.left, active.top] : [0, 0],
+           region: [rect.left, rect.top, rect.right, rect.bottom],
+-          primitive: primitive ? 1 : 0,
++          primitive: primitive && !bitmapRounding ? 1 : 0,
+         },
+         false,
+         dst.screen ? active : previous ? unionBounds(previous, rect) : rect,

@@ -1,0 +1,8 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/44",
+  "originalHead": "e1bd4bc5ac7566bf2316504cffb8348205e60c69",
+  "integratedBase": "e97dacbced3c23507c88b2a62eeaf221a850c3d5",
+  "status": "resolved locally; focused verification in flight; not yet pushed",
+  "fullPnpmCheckRun": false
+}

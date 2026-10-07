@@ -1,0 +1,171 @@
+{
+  "date": "2026-10-06",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/37",
+  "headBranch": "codex/composition-ce11",
+  "baseBranch": "main",
+  "originalHead": "7fac583c6cccdf982034a4b67e078ecb6fa2e4ac",
+  "integratedBase": "54782d74deebe53dc6845638f3df4f1c3389e267",
+  "strategy": "Merge current main without rewriting the shared PR branch. Isolated managed worktree; normal HEAD push to the existing PR branch.",
+  "resolution": {
+    "conflicts": [
+      "apps/lab/src/composition.ts",
+      "docs/dev-log.md",
+      "package.json"
+    ],
+    "composition": "Preserve CE11 transactional renderer/document/asset ownership, inspector and draft retention. Integrate main advisory lint diagnostics into the session-ready callback; lint-capacity errors retain the valid preview and disable lint through load/save/export/watch-error completion.",
+    "scripts": "Retain soundtrack, native inspector and shared-session scripts and test-aggregate groups from both branches.",
+    "log": "Preserve all 118 original dated entry titles and both Current state histories; add this session and sort Entries by date. Other existing headings remain.",
+    "regression": "Existing capacity browser check now replaces both normalized composition and source document, then explicitly reloads source. Renderer switches preserve the draft.",
+    "reference": "Preserve main saved-soundtrack guidance in the generator source notes so schema:check and generated reference agree."
+  },
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "dependencies": "Fresh worktree-local pnpm install --frozen-lockfile --offline; separate uv sync --frozen environment and UV_CACHE_DIR=/private/tmp/pr37-conflict-uv-cache. No owner node_modules or Vite caches shared.",
+    "preflight": "Pinned toolchain including Chromium launch, Python depth module imports and native Vite configuration import pass. Soundtrack dawdreamer/numpy/scipy imports pass after separate pinned soundtrack:setup."
+  },
+  "initialFailures": [
+    {
+      "command": "pnpm check:fast",
+      "reason": "Composition reference was stale after the automatic documentation merge. Saved soundtrack guidance existed in generated output but not generator source notes. Added it to notes and regenerated; schema checks pass."
+    },
+    {
+      "command": "pnpm test:browser:soundtrack",
+      "status": "failed",
+      "reason": "Separate soundtrack Python runtime was omitted from setup. Audio request returned 400 and the preview wait hit its unchanged 120000ms timeout. Installed pinned requirements with pnpm soundtrack:setup, verified imports, and reran unchanged suite successfully."
+    }
+  ],
+  "verification": {
+    "fast": {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitTests": 1803,
+      "testFiles": 147,
+      "qualification": "Ran before the final one-line watch-error lint availability guard. Final schema, affected formatting, lint and build pass after that guard; browser acceptance runs on final code."
+    },
+    "runtime": {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "tests": 46
+    },
+    "integration": {
+      "command": "pnpm exec vitest run tests/integration/composition-preview.test.ts tests/integration/composition-save.test.ts tests/integration/composition-export-owner.test.ts tests/integration/composition-inspector-code.test.ts tests/integration/composition-program.test.ts tests/integration/composition-program-cli.test.ts tests/integration/composition-lint-cli.test.ts --maxWorkers=2 --no-file-parallelism",
+      "status": "passed",
+      "tests": 60,
+      "files": 7
+    },
+    "finalStatic": {
+      "checks": [
+        "schema:check",
+        "affected Prettier checks",
+        "lint:ts",
+        "build"
+      ],
+      "status": "passed"
+    },
+    "browser": {
+      "status": "passed",
+      "groups": [
+        "composition-program",
+        "composition-inspector",
+        "composition-session",
+        "lab-session",
+        "composition-builder",
+        "soundtrack"
+      ],
+      "retainedAssets": "Included by composition-inspector; captured export bytes, stale save/rejected reload, asset revision eviction and lease cleanup pass.",
+      "inspector": "Desktop/phone, graph handles, keyboard focus, visibility/history, lossless saves, backend retention, MP4 byte identity and decoded preview parity pass.",
+      "builder": "192 frames per Canvas/WebGL backend with zero pixel delta, seven backward seeks each and identical TypeScript/JSON MP4 exports.",
+      "soundtrack": "Exact native PCM, real saved edits, playback/seek/clear and full/range passage mux pass on unchanged retry."
+    },
+    "fullPnpmCheck": "not rerun",
+    "frozenBaselines": "not rerun or regenerated",
+    "policy": "No pixel thresholds, timing assertions or test budgets changed. GitHub Actions remain disabled (permissions API enabled=false)."
+  },
+  "logs": [
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-browser-composition-builder.log",
+      "sha256": "57077ff72a064e9e7ec42b3e52e1d48ba7543bd13cd1e96f179d46cfe42b8ecc"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-browser-composition-inspector.log",
+      "sha256": "b21e4edea85d4c8d8b415817007a00467e9a9cef0f1b082ec1e501a4155c1d8e"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-browser-composition-program.log",
+      "sha256": "a29b9d39173317b2c0543dd41b2906f47b716c9830c12031eb28c380be00693d"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-browser-composition-session.log",
+      "sha256": "9c557febe8fc6dd417a706f88b78e3a42f7d017109bf91a78ca7927be04cff44"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-browser-lab-session.log",
+      "sha256": "c57c9a33203b46d02712bde4b6e760e20eb59c067f1006f27cbddddd055c7378"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-browser-soundtrack-retry.log",
+      "sha256": "a0a8f5077caea40fefc41634c91aa99109273c9a1f969133f08375f4b17e6bef"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-browser-soundtrack.log",
+      "sha256": "e56317dc848bdee51caed5be7f2ba00fd35ec874d36a05fd244f69ee1254158e"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-fast.log",
+      "sha256": "f655c7de761955cc1edd552a0075de35ef8a0cafb1d1f83126470ab0348c1f27"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-final-static.log",
+      "sha256": "27915889671f18e59f2a73fd131f1552d88a064bc35eb8cedd9f886d32a02f44"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-install.log",
+      "sha256": "74db4def447b03a015bdb589eec8b0063a356bd714f7268576589b47a8a772bb"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-integration.log",
+      "sha256": "ad2c71e2c7c076f854bd5d4f8376b475fd022ff9064428b4bd0f74a54b8c4129"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-runtime.log",
+      "sha256": "197c9141a054bf4003c43e5af0de53763143e021ea2ba339567decb3845c78a5"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-schema-generate.log",
+      "sha256": "ec05a4cdf99441f94b9818dd6b93a930049925a0fbccdeb497d09db867be95fa"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-soundtrack-preflight.log",
+      "sha256": "eaf0e774ec2260d49e949b76fc69c94e32a1614da7be4819ddd3d57930e0a1f7"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-soundtrack-setup.log",
+      "sha256": "f8dabaf47d7cde9e4140db9fb27f43a6a7a7c2c0fd1807662633bf6bf9f9c424"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-toolchain.log",
+      "sha256": "81163f37e1ff6b1706a03923068a764a8463ec8e070b22b03720dd97a7f1dd61"
+    },
+    {
+      "path": "benchmarks/results/pr37-main-conflict-20261006/pr37-conflict-uv-sync.log",
+      "sha256": "6db5cfeddbe65c3d393c9ba9008c38c869baea4e072103a5a575a0107c315596"
+    }
+  ],
+  "localArtifacts": "benchmarks/results/pr37-main-conflict-20261006/artifacts",
+  "delivery": "One normal push after committing the merge; no PR merge. Final remote mergeability is confirmed after delivery.",
+  "review": {
+    "scriptUnion": "Every script from both parents retained; both complete test-aggregate sets are subsets of the final aggregate.",
+    "logUnion": "Every dated entry title from either parent retained exactly once; 119 dated entries after adding this session.",
+    "unmergedPaths": 0,
+    "productionFingerprints": {
+      "apps/lab/src/composition.ts": "4b373342d5e4c1b448766b42cb96980447f5a896521fbe58094d55b09b953353",
+      "package.json": "944f9125a993ee42e0e6374ece75c617039ff8869b0f8858ea9221b18f43a33f",
+      "tests/browser/composition-program.ts": "d5bf7c815b2b2b0524bb84998b8ac9f87cefb3e651a4485fc2bd589fda2cf86a"
+    }
+  }
+}

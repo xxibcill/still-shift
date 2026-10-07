@@ -28,6 +28,44 @@ export function layerContentTime(
   return time;
 }
 
+/** Map a content switch to a scope frame that actually reaches its posterized grid. */
+export function layerContentCut(
+  layer: CompositionLayer,
+  contentFrame: number,
+  scopeFps: number,
+): number {
+  const stretch = layer.stretch ?? 1,
+    start = layer.startFrame ?? 0;
+  if (layer.posterizeFps === undefined) return contentFrame * stretch + start;
+  const source =
+    (Math.ceil((contentFrame * layer.posterizeFps) / scopeFps) * scopeFps) /
+    layer.posterizeFps;
+  let before = source * stretch + start;
+  // Inverting a grid can round onto either side of its switch. Bracket it
+  // using the same clock, including precision lost to start/stretch cancellation.
+  let distance = Math.max(
+    Number.MIN_VALUE,
+    Number.EPSILON *
+      Math.max(Math.abs(before), Math.abs(start), Math.abs(source * stretch)),
+  );
+  let after = before;
+  while (layerContentTime(layer, before, scopeFps) >= contentFrame) {
+    before -= Math.sign(stretch) * distance;
+    distance *= 2;
+  }
+  while (layerContentTime(layer, after, scopeFps) < contentFrame) {
+    after += Math.sign(stretch) * distance;
+    distance *= 2;
+  }
+  for (;;) {
+    const middle = before + (after - before) / 2;
+    if (middle === before || middle === after) return after;
+    if (layerContentTime(layer, middle, scopeFps) >= contentFrame)
+      after = middle;
+    else before = middle;
+  }
+}
+
 /** Unlimited loops extend through negative time; finite loops have fixed terminal holds. */
 export function loopedPrecompTime(
   sourceFrame: number,

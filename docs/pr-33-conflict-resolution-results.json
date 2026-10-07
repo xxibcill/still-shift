@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-05",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/33",
+  "startingHead": "039c1d5d8ba3d92084eb6fb42ab93a3d8c4fceaa",
+  "mergedMain": "b32dcfad68307dffcd7c6ffd8ffcbc21bd96fac8",
+  "strategy": "Merge main into the PR branch; no rebase or force push.",
+  "conflicts": [
+    {
+      "file": "docs/dev-log.md",
+      "resolution": "Retain CE16 and CE9 history and current records; order dated entries and record the merged PR #32 dependency."
+    }
+  ],
+  "sourceResolution": "Source, fixtures and tests merged automatically; no manual implementation changes.",
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "checks": [
+      {
+        "command": "pnpm toolchain:check",
+        "exitCode": 0
+      },
+      {
+        "command": "pnpm check:soundtrack",
+        "exitCode": 0,
+        "unitTests": 1505,
+        "runtimeTests": 46,
+        "commandAudioIntegrationTests": 34,
+        "depthTests": 14,
+        "staticChecks": [
+          "schema:check",
+          "check:boundaries",
+          "format:check:ts",
+          "lint:ts",
+          "build"
+        ],
+        "soundtrackPythonChecks": ["ruff check", "ruff format --check"],
+        "log": "/private/tmp/pr33-conflict-check.log",
+        "logSha256": "83a2f04fb2a6a7c49c4c1d62ed0c27f2c2f7b1ef281e97be7af966c80cf1c07a"
+      },
+      {
+        "command": "git diff --check",
+        "exitCode": 0
+      }
+    ],
+    "history": "All 26 PR-head and 22 main historical entry titles retained.",
+    "githubActionsEnabled": false,
+    "workflowChanges": [],
+    "environment": {
+      "dependencies": "Isolated frozen-lockfile offline pnpm installation.",
+      "depthAndRuff": "Ignored symlink to the existing CE16 .venv; UV_NO_SYNC=1.",
+      "soundtrackPython": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/runtime/bin/python",
+      "uvCache": "/private/tmp/pr33-conflict-uv-cache"
+    },
+    "notRerun": [
+      "Browser matrix",
+      "Frozen CE0 baselines",
+      "Listening or human audiovisual QA"
+    ]
+  },
+  "delivery": "Merge commit pushed to codex/composition-ce16; PR review/merge remains an owner decision."
+}

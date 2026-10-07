@@ -19,6 +19,22 @@ void main() {
   uv = p;
   gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
 }`;
+const RECTANGLES_VERTEX = `#version 300 es
+precision highp float;
+precision highp int;
+uniform sampler2D coverage;
+uniform vec2 destinationSize;
+out vec2 uv;
+flat out vec4 rectangleOrigin;
+void main() {
+  const vec2 corners[6]=vec2[6](vec2(0.0),vec2(1.0,0.0),vec2(0.0,1.0),vec2(0.0,1.0),vec2(1.0,0.0),vec2(1.0));
+  vec4 rect=texelFetch(coverage,ivec2(0,gl_InstanceID),0);
+  vec2 atlas=texelFetch(coverage,ivec2(1,gl_InstanceID),0).xy;
+  vec2 point=mix(rect.xy,rect.zw,corners[gl_VertexID]);
+  rectangleOrigin=vec4(rect.xy,atlas);
+  uv=point/destinationSize;
+  gl_Position=vec4(uv*2.0-1.0,0.0,1.0);
+}`;
 export const FRAGMENT_HEADER = `#version 300 es
 precision highp float;
 precision highp int;
@@ -351,6 +367,7 @@ export class WebglDevice {
     uniforms: Record<string, UniformValue> = {},
     blended = false,
     clip?: Bounds | null,
+    rectangles?: number,
   ) {
     if (target?.screen) clip = this.screenRegion(clip);
     if (clip === null) return;
@@ -369,7 +386,8 @@ export class WebglDevice {
       body =
         body.replace("void main()", "void shade()") +
         "\nvoid main() { shade(); pixel.a = 1.0; }";
-    let program = this.programs.get(body);
+    const programKey = rectangles === undefined ? body : `rectangles:${body}`;
+    let program = this.programs.get(programKey);
     if (!program) {
       const compile = (type: number, source: string) => {
         const shader = gl.createShader(type)!;
@@ -382,11 +400,18 @@ export class WebglDevice {
         }
         return shader;
       };
+      const vertexSource =
+        rectangles === undefined ? VERTEX : RECTANGLES_VERTEX;
       const vertex = compile(
         gl.VERTEX_SHADER,
         target?.screen
-          ? VERTEX.replace("uv = p;", "uv = vec2(p.x, 1.0-p.y);")
-          : VERTEX,
+          ? rectangles === undefined
+            ? vertexSource.replace("uv = p;", "uv = vec2(p.x, 1.0-p.y);")
+            : vertexSource.replace(
+                "gl_Position=vec4(uv*2.0-1.0,0.0,1.0);",
+                "gl_Position=vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,0.0,1.0);",
+              )
+          : vertexSource,
       );
       const fragment = compile(gl.FRAGMENT_SHADER, FRAGMENT_HEADER + body);
       const handle = gl.createProgram()!;
@@ -417,7 +442,7 @@ export class WebglDevice {
         gl.deleteProgram(this.programs.get(oldest)!.handle);
         this.programs.delete(oldest);
       }
-      this.programs.set(body, program);
+      this.programs.set(programKey, program);
     }
     if (
       target &&
@@ -465,7 +490,8 @@ export class WebglDevice {
       );
     }
     try {
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      if (rectangles === undefined) gl.drawArrays(gl.TRIANGLES, 0, 3);
+      else gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, rectangles);
     } finally {
       if (clip) gl.disable(gl.SCISSOR_TEST);
     }

@@ -34,6 +34,7 @@ import {
 } from "../../../packages/renderer-core/src/story-vertical.ts";
 import {
   passageDiagnostics,
+  PassageError,
   type PassageDiagnostic,
 } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
 import { evaluatePreparedNode } from "../../../packages/renderer-core/src/prepared-scene.ts";
@@ -76,7 +77,10 @@ const errors = (error: unknown, failedEdit?: FailedEdit) => {
   host.replaceChildren();
   for (const diagnostic of passageDiagnostics(error)) {
     const label = [
+      diagnostic.code,
       diagnostic.beat,
+      diagnostic.sourcePath,
+      diagnostic.path,
       diagnostic.node,
       diagnostic.event,
       diagnostic.message,
@@ -116,9 +120,9 @@ function installPreviews(ready: ReadyBeat[]) {
     formatSelect.value = first.height > first.width ? "vertical" : "landscape";
   slider.max = String(editor!.passage.frameCount - 1);
   frame = Math.min(frame, editor!.passage.frameCount - 1);
+  const selectedNode = nodeSelect.value;
   renderControls();
-  renderVerticalOverrideEditor();
-  renderMotionInspector();
+  renderInspector(selectedNode);
   show(frame);
   el("status").textContent =
     `${editor!.passage.plan.title} · ${editor!.passage.beats.length} beats · ${editor!.passage.frameCount} frames · ${editor!.passage.plan.fps} fps`;
@@ -399,7 +403,7 @@ function renderControls() {
   refreshVerticalDiagnostics();
   controls.renderControls(editor!, templates, verticalDiagnostics);
 }
-function renderInspector() {
+function renderInspector(selectedNode = nodeSelect.value) {
   controls.renderInspector(editor!, templates);
   const native = previews[Number(beatSelect.value)]?.nativeComposition;
   if (native)
@@ -411,6 +415,8 @@ function renderInspector() {
         return option;
       }),
     );
+  if ([...nodeSelect.options].some((option) => option.value === selectedNode))
+    nodeSelect.value = selectedNode;
   renderVerticalOverrideEditor();
   renderMotionInspector();
 }
@@ -588,6 +594,8 @@ async function loadPacket(
   frame = 0;
   beatSelect.value = "0";
   audio.setNarration();
+  audio.clearSoundtrack();
+  el("soundtrack-status").textContent = "Passage audio";
   narrationRequest++;
   el<HTMLInputElement>("narration").value = "";
   installPreviews(ready);
@@ -607,12 +615,7 @@ async function loadPath() {
     );
     const packet = await response.json();
     if (request !== loadRequest) return;
-    if (!response.ok)
-      throw new Error(
-        packet.diagnostics
-          .map((d: { message: string }) => d.message)
-          .join("\n"),
-      );
+    if (!response.ok) throw new PassageError(packet.diagnostics);
     await loadPacket(packet, request);
   } catch (error) {
     if (request !== loadRequest) return;
@@ -684,12 +687,7 @@ openWorkspace.onchange = async () => {
       });
       const prepared = await response.json();
       if (request !== loadRequest) return;
-      if (!response.ok)
-        throw new Error(
-          prepared.diagnostics
-            .map((d: { message: string }) => d.message)
-            .join("\n"),
-        );
+      if (!response.ok) throw new PassageError(prepared.diagnostics);
       await loadPacket(prepared, request);
     }
   } catch (error) {
@@ -855,6 +853,7 @@ el("play").onclick = async () => {
         editor.passage,
         frame,
         el<HTMLInputElement>("sound-effects-enabled").checked,
+        compositions,
       ))
     )
       return;
@@ -912,3 +911,57 @@ window.passageLab = {
 const requestedPlan = new URLSearchParams(location.search).get("plan");
 if (requestedPlan) el<HTMLInputElement>("plan-path").value = requestedPlan;
 await loadPath();
+
+let soundtrackRequest = 0;
+el("soundtrack-load").onclick = async () => {
+  if (!editor) return;
+  stop();
+  const request = ++soundtrackRequest;
+  const owner = editor,
+    path = el<HTMLInputElement>("soundtrack-project").value;
+  try {
+    const loaded = await fetch(
+      "/soundtrack-api/project?path=" + encodeURIComponent(path),
+    );
+    const packet = await loaded.json();
+    if (!loaded.ok) throw new Error(packet.error?.message);
+    validatePassageCompositions(owner.passage, compositions, packet.project);
+    const rendering = await fetch("/soundtrack-api/render", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        project: path,
+        revision: packet.project.revision,
+      }),
+    });
+    const result = await rendering.json();
+    if (!rendering.ok) throw new Error(result.error?.message);
+    const response = await fetch(
+      "/soundtrack-api/audio?project=" +
+        encodeURIComponent(path) +
+        "&output=" +
+        encodeURIComponent(result.output),
+    );
+    if (!response.ok) throw new Error("Saved revision changed; render again");
+    const bytes = await response.arrayBuffer();
+    if (editor !== owner || request !== soundtrackRequest) return;
+    const attached = await audio.setSoundtrack(
+      packet.project,
+      bytes,
+      result.manifest.files.master.sha256,
+      owner.passage,
+      compositions,
+    );
+    if (!attached || editor !== owner || request !== soundtrackRequest) return;
+    el("soundtrack-status").textContent =
+      "Rendered soundtrack revision " + packet.project.revision + " · full mix";
+  } catch (error) {
+    if (editor === owner && request === soundtrackRequest) errors(error);
+  }
+};
+el("soundtrack-clear").onclick = () => {
+  soundtrackRequest++;
+  stop();
+  audio.clearSoundtrack();
+  el("soundtrack-status").textContent = "Passage audio";
+};

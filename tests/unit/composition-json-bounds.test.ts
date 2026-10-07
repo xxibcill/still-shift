@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   COMPOSITION_LIMITS,
+  EXPRESSION_LIMITS,
   validateComposition,
 } from "@still-shift/scene-contract";
 
@@ -9,6 +10,7 @@ const cases = [
     field: "expression AST",
     path: 'expressions["node.x"].ast',
     offset: 0,
+    depth: EXPRESSION_LIMITS.maxJsonDepth,
     // A bounded AST then has to match its parsed source.
     next: "comp-expression-mismatch",
     input: (payload: unknown) => ({
@@ -101,7 +103,9 @@ for (const entry of cases) {
       });
     });
     it("accepts the depth boundary and rejects the next container", () => {
-      const depth = COMPOSITION_LIMITS.maxJsonDepth - entry.offset;
+      const depth =
+        ("depth" in entry ? entry.depth : COMPOSITION_LIMITS.maxJsonDepth) -
+        entry.offset;
       expect(
         validateComposition(composition(entry.input({ note: nested(depth) }))),
       ).toMatchObject({

@@ -1,0 +1,352 @@
+{
+  "date": "2026-10-06",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/38",
+  "reviewedHead": "eb17b1fd2c02a5da9e12f2528018ee61e78697da",
+  "branch": "codex/pr38-follow-path-fix",
+  "finding": {
+    "priority": "P2",
+    "title": "Flatten follow-path contours after applying the world transform",
+    "inlineComment": "https://github.com/xxibcill/still-shift/pull/38#discussion_r4193023747",
+    "status": "fixed",
+    "before": {
+      "validComposition": true,
+      "ellipseSize": [0.1, 0.1],
+      "worldScale": [1000, 1000],
+      "worldPosition": [100, 100],
+      "progress": 0.125,
+      "actualFollower": [125, 125],
+      "expectedFollower": [135.35533905932738, 135.35533905932738],
+      "errorPixels": 14.644660940672626
+    },
+    "change": "Transform the cubic path into world coordinates with the shared bounded transform helper before flattening at the existing 0.25-unit tolerance. Evaluator and both renderer identities advance.",
+    "regression": "Two validated fixtures cover source-layer and ancestor scaling. Independent radius-50 cubic-circle expectations cover all four quadrant midpoints, tangent orientation, forward/reverse seeks and authored-input immutability. Both fixtures failed before the repair."
+  },
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "isolation": "Managed worktree, separate dependency copy with optimizer/config caches removed, separate Python venv and UV_CACHE_DIR. Pinned toolchain/Chromium startup and depth imports pass.",
+    "actionsEnabled": false
+  },
+  "codeSha256": {
+    "packages/renderer-core/src/composition/evaluate/constraints.ts": "a6e005bf23039dba28e6155cb0873b76326259b4205cda4c56165354ec01eff8",
+    "packages/renderer-core/src/composition/evaluate/evaluate.ts": "bb7b77a18c310f545a3f7e613db9837d1a889eb55452694f7c817f7fbe0a6dac",
+    "packages/renderer-core/src/composition/render/version.ts": "a458b8624d35c5c3edd92995ff66f17f4288c70fef6459bad67198e2abdf078f",
+    "packages/renderer-core/src/composition/render/webgl2.ts": "dd0d821fae288a0b6188e87dbf88c4296000511098c2f68014ce4837a49bb6b6",
+    "tests/unit/composition-shape-evaluator.test.ts": "9df04b410c47417fd0ae5120baa9a50fb8358f09116fd97e43b0be3ad0bb91d5"
+  },
+  "verification": [
+    {
+      "command": "pnpm exec vitest run tests/unit/composition-shape-evaluator.test.ts --maxWorkers=1",
+      "phase": "before repair",
+      "status": "expected failure",
+      "testsFailed": 2,
+      "testsPassed": 9,
+      "log": "benchmarks/results/pr38-follow-path-fix-20261006/regression-before.log"
+    },
+    {
+      "command": "pnpm exec vitest run tests/unit/composition-shape-{evaluator,contract,authoring,compiler,geometry,operators}.test.ts --maxWorkers=2",
+      "phase": "after repair, before expanding quadrant/seek assertions",
+      "status": "passed",
+      "tests": 67,
+      "files": 6,
+      "log": "benchmarks/results/pr38-follow-path-fix-20261006/focused-after.log"
+    },
+    {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitTests": 1871,
+      "files": 153,
+      "includes": [
+        "generated schemas",
+        "package boundaries",
+        "repository formatting",
+        "TypeScript lint",
+        "type checking",
+        "all unit tests"
+      ],
+      "log": "benchmarks/results/pr38-follow-path-fix-20261006/fast.log"
+    },
+    {
+      "command": "pnpm test:browser:composition-shapes",
+      "status": "passed",
+      "details": {
+        "shapeAcceptance": [
+          {
+            "fixture": "reference-sheet",
+            "frames": 48,
+            "reverseFrames": 48,
+            "maxDelta": 2,
+            "minPsnr": 66.690249204446
+          },
+          {
+            "fixture": "animation",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 1,
+            "minPsnr": 74.95529650432465
+          },
+          {
+            "backend": "canvas2d",
+            "exportedFrames": 96,
+            "independentMp4": "byte-identical",
+            "transport": "byte-identical"
+          },
+          {
+            "backend": "webgl2",
+            "exportedFrames": 96,
+            "independentMp4": "byte-identical",
+            "transport": "byte-identical"
+          },
+          {
+            "fixture": "core",
+            "frames": 48,
+            "reverseFrames": 48,
+            "maxDelta": 0,
+            "minPsnr": 999
+          },
+          {
+            "legacyConnectors": [
+              {
+                "style": "plain",
+                "frames": 48,
+                "maxDelta": 0
+              },
+              {
+                "style": "ink",
+                "frames": 48,
+                "maxDelta": 0
+              },
+              {
+                "style": "brush",
+                "frames": 48,
+                "maxDelta": 0
+              }
+            ]
+          },
+          {
+            "hardwarePreview": {
+              "environments": [
+                {
+                  "profile": "chromium-software-2",
+                  "browserVersion": "151.0.7922.34",
+                  "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                  "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                  "platform": "darwin",
+                  "arch": "arm64"
+                },
+                {
+                  "profile": "hardware",
+                  "browserVersion": "151.0.7922.34",
+                  "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                  "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                  "platform": "darwin",
+                  "arch": "arm64"
+                }
+              ],
+              "tier": "unchanged perceptual hardware policy",
+              "comparisons": 18,
+              "reports": [
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "canvas2d",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "canvas2d",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "webgl2",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "webgl2",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "canvas2d",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "canvas2d",
+                  "frame": 95,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "webgl2",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "webgl2",
+                  "frame": 95,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "canvas2d",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "canvas2d",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "webgl2",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "webgl2",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                }
+              ]
+            }
+          },
+          {
+            "geometryOverflow": "both exports reject with comp-shape-work-limit; no output published"
+          }
+        ],
+        "inspector": "passed",
+        "baseline": "exact"
+      },
+      "log": "benchmarks/results/pr38-follow-path-fix-20261006/shapes.log"
+    },
+    {
+      "command": "pnpm test:browser:composition-evaluator",
+      "status": "passed",
+      "fixtures": 5,
+      "sampleFramesPerFixture": 9,
+      "maxNumericError": 5.684341886080802e-14,
+      "timingVisibilityReverseSeeks": "exact",
+      "log": "benchmarks/results/pr38-follow-path-fix-20261006/browser-evaluator.log"
+    }
+  ],
+  "baselinePolicy": {
+    "fixtureSources": "unchanged",
+    "allStoredVisualFiles": "unchanged",
+    "shapeBaselineComparison": "exact",
+    "nearAndHardwareTiers": "unchanged",
+    "fullPnpmCheck": "not rerun for this focused review repair",
+    "ce0FullRerun": "not run"
+  },
+  "delivery": "One finding commit, followed by one normal push to codex/composition-ce5; owner review and merge remain pending.",
+  "outputIdentity": {
+    "evaluator": "composition-evaluator-31",
+    "canvas": "composition-canvas-1.23.6",
+    "webgl": "composition-webgl2-0.37.6"
+  }
+}

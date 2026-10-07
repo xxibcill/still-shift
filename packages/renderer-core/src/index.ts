@@ -140,3 +140,5 @@ export {
   type CompositionEffectPlugin,
   type GpuEffectContext,
 } from "./composition/render/effect-plugins.ts";
+
+export * from "./soundtrack-edits.ts";

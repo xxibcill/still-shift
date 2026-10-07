@@ -5,7 +5,7 @@ import type {
 import { passageError } from "../../passage-diagnostics.ts";
 import { sampleCamera } from "./camera.ts";
 import { localBounds } from "./geometry.ts";
-import { effectBounds } from "./effects.ts";
+import { effectBounds, primitiveBlurEffect } from "./effects.ts";
 import {
   affineMatrix4,
   cameraGeometry,
@@ -264,7 +264,12 @@ export function projectSpatialScope(
     const bounds = localBounds(comp, scope, state, options);
     if (!bounds) continue;
     const path = [...route, state.id].join("/");
-    const expanded = effectBounds(bounds, state.effects, {
+    const paintBlur = primitiveBlurEffect(state, byId);
+    const boundsEffects = state.effects.filter(
+      (effect) => effect.effect !== "blur.primitive",
+    );
+    if (paintBlur) boundsEffects.unshift(paintBlur);
+    const expanded = effectBounds(bounds, boundsEffects, {
       node: state.id,
       path,
       frame: rootFrame,

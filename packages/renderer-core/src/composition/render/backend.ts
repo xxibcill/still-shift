@@ -158,8 +158,8 @@ export function executeGraph<S extends Surface>(
 ): void {
   const surface = (node: SurfaceNode, into?: S): S => {
     const dst = into ?? backend.createSurface(node.width, node.height);
-    backend.clear(dst, node.background);
     try {
+      backend.clear(dst, node.background);
       runOps(node.ops, dst);
       return dst;
     } catch (error) {

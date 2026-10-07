@@ -1,9 +1,63 @@
+import {
+  resolveSoundtrackAnchors,
+  frameToSoundtrackSample,
+  validateSoundtrackNarration,
+} from "../../../packages/renderer-core/src/soundtrack-edits.ts";
+import type { SoundtrackProject } from "../../../packages/scene-contract/src/soundtrack-project.ts";
 import type { CompiledStoryPassage } from "../../../packages/renderer-core/src/story-passage.ts";
 import { schedulePassageAudio } from "../../../packages/renderer-core/src/passage-audio-playback.ts";
 import { sha256Hex } from "../../../packages/renderer-core/src/browser-checksum.ts";
+import {
+  validatePassageCompositions,
+  type PassageCompositions,
+} from "../../../packages/renderer-core/src/passage-compositions.ts";
 
 export class PassageAudioPlayer {
   private context?: AudioContext;
+  private soundtrack:
+    | { project: SoundtrackProject; buffer: AudioBuffer }
+    | undefined;
+  clearSoundtrack() {
+    this.stop();
+    this.soundtrack = undefined;
+  }
+  async setSoundtrack(
+    project: SoundtrackProject,
+    bytes: ArrayBuffer,
+    sha256: string,
+    passage: CompiledStoryPassage,
+    compositions: PassageCompositions = {},
+  ) {
+    this.stop();
+    const ticket = this.generation;
+    const snapshot = resolveSoundtrackAnchors(project, {
+      ...passage,
+      fps: passage.plan.fps,
+    });
+    validatePassageCompositions(passage, compositions, snapshot);
+    validateSoundtrackNarration(snapshot, {
+      fps: passage.plan.fps,
+      sourceStartFrame: passage.plan.sourceStartFrame,
+      endFrameExclusive: passage.endFrameExclusive,
+      ...(passage.plan.narration
+        ? { sha256: passage.plan.narration.sha256 }
+        : {}),
+    });
+    if ("sha256:" + (await sha256Hex(bytes)) !== sha256)
+      throw new Error("Rendered soundtrack checksum differs");
+    if (ticket !== this.generation) return false;
+    const buffer = await this.getContext().decodeAudioData(bytes);
+    if (ticket !== this.generation) return false;
+    if (
+      buffer.sampleRate !== 48000 ||
+      buffer.numberOfChannels !== 2 ||
+      buffer.length !== snapshot.durationSamples
+    )
+      throw new Error("Soundtrack preview must be full-length 48 kHz stereo");
+    this.soundtrack = { project: snapshot, buffer };
+    return true;
+  }
+
   private cache = new Map<string, AudioBuffer>();
   private voice: { sha256: string; buffer: AudioBuffer } | undefined;
   private playback: ReturnType<typeof schedulePassageAudio> | undefined;
@@ -83,7 +137,10 @@ export class PassageAudioPlayer {
     passage: CompiledStoryPassage,
     frame: number,
     soundEffects: boolean,
+    compositions: PassageCompositions = {},
   ) {
+    if (!Number.isInteger(frame) || frame < 0 || frame >= passage.frameCount)
+      throw new Error("Playback must start at a frame inside the passage");
     this.stop();
     const ticket = this.generation;
     const context = this.getContext();
@@ -98,6 +155,46 @@ export class PassageAudioPlayer {
         this.cache.get(asset.sha256)!,
       ]),
     );
+    if (this.soundtrack) {
+      validatePassageCompositions(
+        passage,
+        compositions,
+        this.soundtrack.project,
+      );
+      resolveSoundtrackAnchors(this.soundtrack.project, {
+        ...passage,
+        fps: passage.plan.fps,
+      });
+      validateSoundtrackNarration(this.soundtrack.project, {
+        fps: passage.plan.fps,
+        sourceStartFrame: passage.plan.sourceStartFrame,
+        endFrameExclusive: passage.endFrameExclusive,
+        ...(passage.plan.narration
+          ? { sha256: passage.plan.narration.sha256 }
+          : {}),
+      });
+      const source = context.createBufferSource();
+      source.buffer = this.soundtrack.buffer;
+      source.connect(context.destination);
+      const startSample = frameToSoundtrackSample(frame, this.fps);
+      const endSample = frameToSoundtrackSample(passage.frameCount, this.fps);
+      source.start(
+        this.started,
+        startSample / 48000,
+        (endSample - startSample) / 48000,
+      );
+      this.playback = {
+        stop: () => {
+          try {
+            source.stop();
+          } catch {
+            /* Already stopped. */
+          }
+          source.disconnect();
+        },
+      };
+      return true;
+    }
     this.playback = schedulePassageAudio(
       context,
       passage,
