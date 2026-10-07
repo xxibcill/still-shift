@@ -3,6 +3,283 @@
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/44",
   "originalHead": "e1bd4bc5ac7566bf2316504cffb8348205e60c69",
   "integratedBase": "e97dacbced3c23507c88b2a62eeaf221a850c3d5",
-  "status": "resolved locally; focused verification in flight; not yet pushed",
-  "fullPnpmCheckRun": false
+  "status": "conflicts resolved locally; lighting/camera/static verification passed; export/baselines running; not yet pushed",
+  "fullPnpmCheckRun": false,
+  "resolvedMergeCommit": "548b5c7bab32f04e3b3738e8c3a8a5c8e3ec1d19",
+  "headBranch": "codex/composition-ce8-lighting",
+  "baseBranch": "main",
+  "resolution": {
+    "conflictedFiles": [
+      "apps/lab/src/composition-keys.ts",
+      "docs/composition-engine-plan.md",
+      "docs/dev-log.md",
+      "package.json",
+      "packages/execution-runtime/src/export-worker.ts",
+      "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+      "packages/renderer-core/src/composition/render/version.ts",
+      "packages/renderer-core/src/composition/render/webgl2.ts"
+    ],
+    "behavior": "Combine bounded scoped lights with all main camera/XYZ, effect, exposure, soundtrack, builder and inspector repairs. Preserve separated XYZ tracks and smooth velocities through main\u2019s shared track collector. Preserve settled camera validation and projected spatial null effect coordinates. Retain every mandatory test command and both documentation histories.",
+    "integrationRepair": "Light key editor recognizes main\u2019s null root scope rather than the earlier literal root string. Native light key editing, undo/redo/save pass.",
+    "versions": {
+      "evaluator": "composition-evaluator-49",
+      "canvas": "composition-canvas-1.41.1",
+      "webgl": "composition-webgl2-0.56.1",
+      "export": "chromium-ffmpeg-0.6.5"
+    }
+  },
+  "verification": {
+    "scope": "Focused follow-up verification. Original milestone/full-gate evidence remains historical; no new complete pnpm check or performance acceptance is claimed.",
+    "checks": [
+      {
+        "label": "toolchain",
+        "command": ["pnpm", "toolchain:check"],
+        "exitCode": 0,
+        "seconds": 2.43,
+        "log": "/private/tmp/pr44-toolchain.log",
+        "logSha256": "27f2d7439394df87ce8bc9d3a276fc8c5754021399a98ca4383b80896c458637"
+      },
+      {
+        "label": "vite-config",
+        "command": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "const {loadConfigFromFile}=await import(\"vite\"); await loadConfigFromFile({command:\"serve\",mode:\"development\"},\"apps/lab/vite.config.ts\"); console.log(\"Native Vite config imports passed\");"
+        ],
+        "exitCode": 0,
+        "seconds": 1.2,
+        "log": "/private/tmp/pr44-vite-config.log",
+        "logSha256": "e900665a5494d0fc73dacad5cadbe5b2bd1cfbd8bd4757b086b13047846063a8"
+      },
+      {
+        "label": "python-imports",
+        "command": [
+          ".venv/bin/python",
+          "-c",
+          "import sys, numpy, cv2, torch, PIL, still_shift_depth; print(sys.version); print(still_shift_depth.__file__)"
+        ],
+        "exitCode": 0,
+        "seconds": 26.13,
+        "log": "/private/tmp/pr44-python-imports.log",
+        "logSha256": "ca0349b1b6dc394742b3bc12fd5cbbc8f501417ba6a8617e9b26ddd949bef06b"
+      },
+      {
+        "label": "focused",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-lighting-model.test.ts",
+          "tests/unit/composition-lighting-integration.test.ts",
+          "tests/unit/composition-lighting-fixtures.test.ts",
+          "tests/unit/motion-builder-lighting.test.ts",
+          "tests/unit/composition-keys.test.ts",
+          "tests/unit/composition-camera-expression-dependencies.test.ts",
+          "tests/unit/composition-spatial-effect-space.test.ts",
+          "tests/unit/composition-webgl-cache.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 2.58,
+        "log": "/private/tmp/pr44-focused.log",
+        "logSha256": "e4a550646b069eed67894b922de0025d53a0db9fe96988e89d33e5f02fe18c68"
+      },
+      {
+        "label": "fast",
+        "command": ["pnpm", "check:fast"],
+        "exitCode": 0,
+        "seconds": 43.18,
+        "log": "/private/tmp/pr44-fast.log",
+        "logSha256": "f773e1c42290654d3ac10a8d983a3c766ea565d0d8cf5035d8c3494cebabea7b"
+      },
+      {
+        "label": "examples",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/integration/composition-examples.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "exitCode": 0,
+        "seconds": 9.89,
+        "log": "/private/tmp/pr44-examples.log",
+        "logSha256": "0185278af62df26388f826d7b9da5bf08712cb5ae8f8de08d9aac4d040a761a2"
+      },
+      {
+        "label": "lighting",
+        "command": ["pnpm", "test:browser:composition-lighting"],
+        "exitCode": 0,
+        "seconds": 109.93,
+        "log": "/private/tmp/pr44-lighting.log",
+        "logSha256": "be5728f93908990db143f0270596899c6c837c7abd3e86012c517b8c2ef74b25"
+      },
+      {
+        "label": "final-static",
+        "command": ["pnpm", "build"],
+        "exitCode": 0,
+        "seconds": 13.07,
+        "log": "/private/tmp/pr44-final-static.log",
+        "logSha256": "b8a845b712b2c16819c0973efa38049bcace5f4276f0e00140964365fe05c333"
+      },
+      {
+        "label": "final-inspector-lint",
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "apps/lab/src/composition-inspector.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 1.26,
+        "log": "/private/tmp/pr44-final-inspector-lint.log",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "runtime",
+        "command": ["pnpm", "test:runtime"],
+        "exitCode": 0,
+        "seconds": 19.44,
+        "log": "/private/tmp/pr44-runtime.log",
+        "logSha256": "2c823395603d0cda379b2d046d9532058ef802f9d3e2c9953874605f3e3dc5ad"
+      },
+      {
+        "label": "camera",
+        "command": ["pnpm", "test:browser:composition-camera"],
+        "exitCode": 0,
+        "seconds": 95.03,
+        "log": "/private/tmp/pr44-camera.log",
+        "logSha256": "5bc8196240f7b1c44453b5937831c251a8d5b0bf68a4481f8f2d086253055981"
+      },
+      {
+        "label": "webgl-export",
+        "command": ["pnpm", "test:browser:composition-webgl-export"],
+        "exitCode": 0,
+        "seconds": 30.31,
+        "log": "/private/tmp/pr44-webgl-export.log",
+        "logSha256": "ba8954e0e6d68e2293aeef0a0f3c0460cfd564f5dc911b61745d4109ad968c29"
+      }
+    ],
+    "lighting": {
+      "cases": 15,
+      "forward": 480,
+      "reverse": 480,
+      "seeks": 135,
+      "transparentFrames": 416,
+      "maxAlphaDelta": 0,
+      "maxOracleDelta": 1,
+      "exportCases": 15,
+      "failures": [
+        {
+          "name": "activation",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        },
+        {
+          "name": "later-shutter",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        },
+        {
+          "name": "named-input",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        },
+        {
+          "name": "matte",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        }
+      ],
+      "hardwareTiers": {
+        "exact": 43,
+        "near": 2
+      },
+      "inspector": {
+        "receiverToggle": "source/undo/redo/save",
+        "lightTracks": ["XYZ", "color", "intensity", "innerCone"],
+        "intensityEdit": 0.75,
+        "errors": []
+      },
+      "baseline": "exact"
+    },
+    "sourceFingerprint": {
+      "files": 1765,
+      "sha256": "585714b8d318ee1f5aec7d9a8baf8e0cc15ecb6eeefed93c9d6046022c64f1aa",
+      "head": "548b5c7bab32f04e3b3738e8c3a8a5c8e3ec1d19",
+      "uncommittedSource": "apps/lab/src/composition-inspector.ts: null root-scope merge repair"
+    }
+  },
+  "mergeAudit": {
+    "e97dacbced3c23507c88b2a62eeaf221a850c3d5": {
+      "count": 516,
+      "modified": ["benchmarks/fixtures/composition/ce8/README.md"],
+      "logHeadings": 228,
+      "missingHeadings": [],
+      "testCommands": 57,
+      "missingCommands": []
+    },
+    "e1bd4bc5ac7566bf2316504cffb8348205e60c69": {
+      "count": 567,
+      "modified": [
+        "tests/visual/composition-effect-catalogue/README.md",
+        "tests/visual/composition-shapes/README.md",
+        "tests/visual/composition-shapes/darwin-arm64.json",
+        "tests/visual/composition-shapes/reference-sheet-0.png",
+        "tests/visual/composition-shapes/reference-sheet-24.png",
+        "tests/visual/composition-shapes/reference-sheet-47.png"
+      ],
+      "logHeadings": 105,
+      "missingHeadings": [],
+      "testCommands": 57,
+      "missingCommands": []
+    }
+  },
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "ffmpeg": "8.0.1",
+    "isolation": "Frozen offline worktree-local pnpm; cloned worktree-local Python virtualenv and isolated UV cache; independent Vite optimizer/config caches and native lighting/camera temporary caches.",
+    "initialPreflightFailure": "Missing prior UV cache path; first isolated offline toolchain run could not resolve hatchling. Cloned the verified PR43 follow-up cache and rebuilt this checkout\u2019s editable package; pinned preflight and imports then passed."
+  },
+  "review": {
+    "status": "in progress on resolved merge; working-tree null root repair verified",
+    "standards": "No hard documented-policy violation. Receive light keyboard focus is being reproduced.",
+    "spec": "Implicit XYZ light constraint-reference Z dependency finding reproduced; final details pending."
+  },
+  "githubActionsEnabled": false
 }

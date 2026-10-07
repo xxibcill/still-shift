@@ -47,9 +47,10 @@ still hold before relying on them.
   checkout integrates `main` at `e97dacbc` into lighting head `e1bd4bc`.
   Eight conflicts combine bounded lighting with all upstream camera, XYZ editing,
   effect, exposure, soundtrack and inspector fixes. Cache identities advance to
-  E49 / Canvas 1.41.1 / WebGL 0.56.1 / export 0.6.5. Local focused verification
-  is in flight; no new full repository gate is claimed. Review follows the
-  resolved checkpoint. CE6-P stays deferred and Actions disabled.
+  E49 / Canvas 1.41.1 / WebGL 0.56.1 / export 0.6.5. Fast checks pass 2,313 units, 112 focused regressions and 46 runtime tests; native
+  lighting/camera hashes, alpha, seeks, exports/hardware and real inspector pass.
+  Export compatibility and frozen baselines are in flight. No new full repository
+  gate is claimed. Review is underway on the resolved checkpoint. CE6-P stays deferred and Actions disabled.
   [Evidence](./pr-44-conflict-resolution-results.json).
 
 - **PR #43 follow-up repairs verified (2026-10-08):** isolated
@@ -819,8 +820,10 @@ _Last updated 2026-10-08 by Codex for PR #43 review repairs._
 - **Scope / done:** integrate `main` at `e97dacbc`; combine all eight conflicts,
   preserving lighting, camera/XYZ controls, effects/exposure and soundtrack commands.
   Both documentation histories and frozen fixtures are retained.
-- **Results:** local focused verification is in flight; no complete `pnpm check`
-  is claimed. Combined evaluator/Canvas/WebGL/export versions advance cache identity.
+- **Results:** fast checks (2,313 unit), 112 focused regressions and 46 runtime
+  tests pass. Native lighting/camera, alpha, seeks, export/hardware and real
+  inspector pass; root light-key controls retain the upstream null-scope model.
+  No complete `pnpm check` is claimed; export/baseline checks remain in flight.
 - **Open / next:** finish focused checks, normally push the merge and review
   the resolved diff. Owner checkout and other PR heads remain untouched.
 - **Records:** [resolution evidence](./pr-44-conflict-resolution-results.json).

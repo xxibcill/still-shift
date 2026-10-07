@@ -430,7 +430,7 @@ export function createCompositionInspector(options: {
     area.append(choose);
     const key = current.keys[index]!;
     const ownerScope =
-      current.scope === "root"
+      current.scope === null
         ? history!.document
         : history!.document.precomps?.find(
             (scope) => scope.id === current.scope,
