@@ -28,6 +28,7 @@ import {
   type PropertyPathSegment,
 } from "@still-shift/scene-contract";
 import { AUTO_ORIENT_LOOKAROUND_FRAMES } from "./evaluate/evaluate.ts";
+import { layerContentTime } from "./evaluate/time-controls.ts";
 import {
   evaluateComp,
   evaluateProperty,
@@ -332,8 +333,11 @@ function echoProperties(
     ) {
       if (current !== layer && current.type !== "group") continue;
       if (!current.effects?.length) continue;
-      const time =
-        (scopeTime(route) - (current.startFrame ?? 0)) / (current.stretch ?? 1);
+      const time = layerContentTime(
+        current,
+        scopeTime(route),
+        scope.fps ?? source.fps,
+      );
       const blur = current.effects?.find(
         (effect) =>
           effect.enabled !== false &&

@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #40 clock review fixes in progress (2026-10-07):** isolated
+  `codex/pr40-clock-fixes` from reviewed `e907d16`. Both findings are posted
+  inline. Echo baking now uses the shared held/posterized content clock to select
+  inherited blur history; four regressions fail before the repair and all 98
+  focused tests pass after it, with build/lint/boundaries passing. One finding
+  is committed per slice; explicit loop-clock overrides and final acceptance
+  remain. Publication waits for the final commit; no blocker or owner decision.
+  No complete new full gate or baseline regeneration is claimed; Actions stay disabled.
+  [Evidence](./pr-40-clock-fix-results.json).
+
 - **PR #40 conflict repair verified (2026-10-07):** isolated
   `codex/pr40-conflict-repair` combines CE7 `48fe4cc` with current CE5 `d3093bd`
   without rewriting published history. CE7 clock/cut fixes, upstream scaled
@@ -582,6 +592,18 @@ _Last updated 2026-10-07 by Codex for PR #40 conflict repair; both histories ret
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — PR #40 echo bake content-clock repair
+
+- **Agent / branch:** Codex on `codex/pr40-clock-fixes` from `e907d16`.
+- **Scope:** First of two inline clock-integration findings on PR #40.
+- **Done:** Use the evaluator's content clock and owning FPS for historical blur dependencies.
+- **Results:** Four regressions fail before repair; 98 focused tests, build, changed-file
+  lint and package boundaries pass after it. Compatible echo graphs stay exact.
+- **Open / next:** Fix explicit loop overrides separately, then final focused acceptance
+  and one normal push to the existing PR. No full gate or baseline regeneration claimed.
+- **Records:** [Fix evidence](./pr-40-clock-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/40#discussion_r4203762759).
 
 ### 2026-10-07 — Resolve PR #40 against current CE5
 

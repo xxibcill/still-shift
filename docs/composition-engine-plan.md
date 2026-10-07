@@ -3373,6 +3373,18 @@ or full timing-matrix run is claimed; historical gates remain scoped to their sn
 Normal publication targets the existing PR #40 head; owner review/merge remain.
 [Resolution evidence](./pr-40-conflict-resolution-results.json).
 
+### CE7 PR #40 clock integration review repairs (2026-10-07)
+
+Both new findings are inline on PR #40 and will be repaired in separate commits
+from reviewed `e907d16`. Echo bake dependency selection now uses the same
+held/posterized content clock and owning FPS as rendering. Four regressions
+failed before repair; 98 focused tests and build/lint/boundaries pass afterward.
+Incompatible inherited blur history is rejected with `comp-bake-time`, while
+active positive content blur retains compatible original/baked graph parity.
+Explicit source-clock override precedence and final acceptance remain pending;
+no new full gate or baseline regeneration is claimed.
+[Fix evidence](./pr-40-clock-fix-results.json).
+
 ---
 
 ## CE8 — 2.5D layers and unified camera

@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-07",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/40",
+  "reviewedHead": "e907d1683d99796e8efe27342cc3150d550dab7c",
+  "branch": "codex/pr40-clock-fixes",
+  "delivery": "One finding per commit; one normal push to the existing PR head after final verification.",
+  "status": "in-progress",
+  "findings": [
+    {
+      "id": "content-clock-echo-bake",
+      "comment": "https://github.com/xxibcill/still-shift/pull/40#discussion_r4203762759",
+      "status": "fixed",
+      "commitSubject": "fix(composition): preserve content clocks in echo baking",
+      "change": "Select historical primitive-blur dependencies using the shared layerContentTime and the owning scope FPS, including group ancestors. Incompatible inherited history returns comp-bake-time; compatible positive content blur still suppresses unused inherited history.",
+      "reproduction": {
+        "frame": 16,
+        "controls": ["holdFrame: 2", "posterizeFps: 1"],
+        "sourceGhostRadius": 32,
+        "incorrectBakedGhostRadius": 30,
+        "backends": ["canvas2d", "webgl2"],
+        "changedRgbaChannels": 9444,
+        "maximumChannelDelta": 2,
+        "withoutControl": "exact original/baked pixels"
+      },
+      "regressions": {
+        "red": {
+          "failed": 4,
+          "existingPassed": 49,
+          "log": "benchmarks/results/pr40-clock-fixes/first-red.log"
+        },
+        "green": {
+          "tests": 98,
+          "files": 6,
+          "log": "benchmarks/results/pr40-clock-fixes/first-green.log"
+        },
+        "coverage": [
+          "held and posterized inactive overrides reject incompatible inherited blur history",
+          "held and posterized active overrides preserve compatible echo graphs on random/reverse seeks",
+          "input remains unchanged on bake rejection"
+        ]
+      },
+      "checks": {
+        "build": "passed",
+        "changedFileLint": "passed",
+        "boundaries": "passed"
+      }
+    },
+    {
+      "id": "explicit-loop-clock-override",
+      "comment": "https://github.com/xxibcill/still-shift/pull/40#discussion_r4203762768",
+      "status": "pending"
+    }
+  ],
+  "finalVerification": {
+    "status": "pending",
+    "fullGate": "No complete pnpm check on this code claimed; historical full gates retain their recorded snapshots."
+  },
+  "frozenBaselines": "not regenerated",
+  "githubActions": "disabled"
+}
