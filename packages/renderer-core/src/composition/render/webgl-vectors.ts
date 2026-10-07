@@ -1,4 +1,8 @@
 import {
+  renderMembers,
+  type CompositionRenderStatistics,
+} from "./statistics.ts";
+import {
   recordVectorPaints,
   replayVectorPaints,
 } from "./webgl-vector-paints.ts";
@@ -45,6 +49,7 @@ export class WebglVectors {
     private readonly boundedCanvas?: (
       content: ProviderContent | TextContent,
     ) => boolean,
+    private readonly statistics?: CompositionRenderStatistics,
   ) {}
 
   private forget(id: string) {
@@ -187,23 +192,32 @@ export class WebglVectors {
           op.transforms,
           op.paintBlur,
         ] as const;
-        if (c.type === "solid")
-          this.raster.fillRect(
-            painting,
-            op.matrix,
-            c.width,
-            c.height,
-            c.color,
-            op.opacity,
-            "normal",
-            op.clips,
-            op.transforms,
-            op.paintBlur,
+        const paint = () => {
+          if (c.type === "solid")
+            this.raster.fillRect(
+              painting,
+              op.matrix,
+              c.width,
+              c.height,
+              c.color,
+              op.opacity,
+              "normal",
+              op.clips,
+              op.transforms,
+              op.paintBlur,
+            );
+          else if (c.type === "shape")
+            this.raster.drawShape(painting, c, ...args);
+          else if (c.type === "text")
+            this.raster.drawText(painting, c, ...args);
+          else this.raster.drawProvider(painting, c, ...args);
+        };
+        if (this.statistics)
+          this.statistics.measure(
+            { stage: "native-content", members: renderMembers([op]) },
+            paint,
           );
-        else if (c.type === "shape")
-          this.raster.drawShape(painting, c, ...args);
-        else if (c.type === "text") this.raster.drawText(painting, c, ...args);
-        else this.raster.drawProvider(painting, c, ...args);
+        else paint();
       }
       let groups = recording?.groups();
       if (

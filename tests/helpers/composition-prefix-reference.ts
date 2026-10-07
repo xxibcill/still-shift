@@ -164,6 +164,7 @@ export async function checkSharedCompositionPrefixes(options: {
       backend: options.backend,
       preserveAlpha: options.alpha,
       providers,
+      collectStatistics: true,
       surfaceCache: {
         scopeKey: options.scopeKey,
         byteLimit: 16 * 1024 * 1024,
@@ -190,6 +191,7 @@ export async function checkSharedCompositionPrefixes(options: {
       worker: options.worker,
       frameChecks: frames.length,
       nativeProviderPaints: draws,
+      submissionStatistics: preview.renderStatistics!(),
       statistics: preview.rootCacheStatistics!(),
       independent: preview.surfaceCacheStatistics!(),
     };

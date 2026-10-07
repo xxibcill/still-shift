@@ -1,3 +1,7 @@
+import {
+  renderMembers,
+  type CompositionRenderStatistics,
+} from "./statistics.ts";
 import { renderBatches } from "./batches.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
@@ -55,6 +59,7 @@ export type SurfacePixels = {
  */
 export interface RenderBackend<S extends Surface = Surface> {
   readonly version: string;
+  statistics?: CompositionRenderStatistics;
   applyLighting?(surface: S, lighting: FlatLighting): void;
   /** Optional retained-frame lifecycle; effects and exposure may request a full repaint. */
   beginFrame?(root: SurfaceNode): void;
@@ -199,7 +204,11 @@ export function executeGraph<S extends Surface>(
   backend: RenderBackend<S>,
   graph: RenderGraph,
   target: S,
-  options: { lifecycle?: boolean; rootRole?: string } = {},
+  options: {
+    lifecycle?: boolean;
+    rootRole?: string;
+    statisticsPhase?: string;
+  } = {},
 ): void {
   const surface = (node: SurfaceNode, into?: S): S => {
     if (!into && backend.renderSurface)
@@ -539,9 +548,21 @@ export function executeGraph<S extends Surface>(
       graph.root.colorSpace,
       start,
     )) {
-      if (batch.kind === "vectors") backend.drawVectors!(dst, batch.ops);
-      else if (batch.kind === "solids") backend.fillRects!(dst, batch.ops);
-      else run(batch.ops[0], dst);
+      const paint = () => {
+        if (batch.kind === "vectors") backend.drawVectors!(dst, batch.ops);
+        else if (batch.kind === "solids") backend.fillRects!(dst, batch.ops);
+        else run(batch.ops[0], dst);
+      };
+      if (backend.statistics)
+        backend.statistics.measure(
+          {
+            stage:
+              batch.kind === "single" ? "operation" : batch.kind + "-batch",
+            members: renderMembers(batch.ops),
+          },
+          paint,
+        );
+      else paint();
     }
   };
   if (graph.spatial)
@@ -557,9 +578,26 @@ export function executeGraph<S extends Surface>(
     const draw = () => {
       surface(graph.root, target);
     };
-    if (backend.renderRoot)
-      backend.renderRoot(graph.root, target, draw, options.rootRole ?? "frame");
-    else draw();
+    const paint = () => {
+      if (backend.renderRoot)
+        backend.renderRoot(
+          graph.root,
+          target,
+          draw,
+          options.rootRole ?? "frame",
+        );
+      else draw();
+    };
+    if (backend.statistics)
+      backend.statistics.measure(
+        {
+          stage: "graph",
+          phase: options.statisticsPhase ?? "frame",
+          members: [],
+        },
+        paint,
+      );
+    else paint();
     completed = true;
   } finally {
     if (options.lifecycle !== false) backend.endFrame?.(completed);

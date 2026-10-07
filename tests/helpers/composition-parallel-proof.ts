@@ -101,6 +101,7 @@ export function verifyParallelMetrics(
   cacheStatic: boolean,
   expectedPaints?: number,
 ) {
+  assert.equal(metrics.ffmpegCpuScope, "ffmpeg-transcode-user-plus-system");
   const work = metrics.work;
   assert.ok(work);
   assert.equal(work.version, "composition-render-work-1");
@@ -130,6 +131,38 @@ export function verifyParallelMetrics(
       assert.ok(Number.isFinite(frame.uploadMs) && frame.uploadMs >= 0);
     }
   }
+  const submission = work.submissionStatistics;
+  assert.equal(submission.scope, "synchronous-submission-wall-time");
+  assert.ok(submission.byLayerType.length > 0);
+  for (const row of submission.byLayerType) {
+    assert.ok(
+      Number.isFinite(row.submissionWallMs) && row.submissionWallMs >= 0,
+    );
+    assert.equal(
+      row.submissionWallMsPerOutputFrame,
+      row.submissionWallMs / metrics.frameCount,
+    );
+    const measured: {
+      phase: string;
+      type: string;
+      calls: number;
+      submissionWallMs: number;
+    }[] = work.workersDetail
+      .flatMap((worker) => worker.result.renderStatistics!.byLayerType)
+      .filter((item) => item.phase === row.phase && item.type === row.type);
+    assert.equal(
+      row.submissionWallMs,
+      measured.reduce((sum, item) => sum + item.submissionWallMs, 0),
+    );
+    assert.equal(
+      row.calls,
+      measured.reduce((sum, item) => sum + item.calls, 0),
+    );
+  }
+  assert.equal(
+    submission.totalSubmissionWallMs,
+    submission.byLayerType.reduce((sum, row) => sum + row.submissionWallMs, 0),
+  );
   const frames = work.workersDetail.flatMap((worker) => worker.result.frames);
   assert.equal(frames.length, metrics.frameCount);
   for (const [field, average, p95] of [

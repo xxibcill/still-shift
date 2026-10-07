@@ -1,3 +1,4 @@
+import { CompositionRenderStatistics } from "./statistics.ts";
 import { compositionPrefixLayers } from "./prefix.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
@@ -268,6 +269,7 @@ export type CompositionFrameReport = {
 };
 
 export type CompositionPreview = {
+  renderStatistics?: () => CompositionRenderStatistics["statistics"];
   sourceCacheStatistics?: () => CompositionSourceCache["statistics"];
   readonly backend: CompositionBackend;
   readonly rendererVersion: string;
@@ -300,6 +302,7 @@ export function createCompositionPreview(
     preserveAlpha?: boolean;
     surfaceCache?: CompositionSurfaceCacheOptions;
     sourceCanvas?: CanvasPixelSource;
+    collectStatistics?: boolean;
   } = {},
 ): CompositionPreview {
   const validation = validateComposition(composition);
@@ -384,7 +387,11 @@ export function createCompositionPreview(
     },
     [...BUILTIN_PROVIDERS, ...(options.providers ?? [])],
   );
+  const statistics = options.collectStatistics
+    ? new CompositionRenderStatistics()
+    : undefined;
   const backendOptions = {
+    ...(statistics ? { statistics } : {}),
     nativeImageByteLimit: resolveCompositionMediaLimits(composition.mediaLimits)
       .decodedTextureBytes,
     ...(composition.colorSpace ? { colorSpace: composition.colorSpace } : {}),
@@ -485,6 +492,7 @@ export function createCompositionPreview(
       rendererVersion: backend.version,
       readPixels: () => backend.readPixels(target),
       textBounds: text.bounds,
+      ...(statistics ? { renderStatistics: () => statistics.statistics } : {}),
       ...(surfaceCache
         ? { surfaceCacheStatistics: () => surfaceCache.statistics }
         : {}),

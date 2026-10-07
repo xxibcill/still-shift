@@ -25,6 +25,9 @@ export type BrowserExportResult = {
     sourceStatistics?: ReturnType<
       NonNullable<CompositionPreview["sourceCacheStatistics"]>
     >;
+    renderStatistics?: ReturnType<
+      NonNullable<CompositionPreview["renderStatistics"]>
+    >;
     rootStatistics?: ReturnType<
       NonNullable<CompositionPreview["rootCacheStatistics"]>
     >;
@@ -217,6 +220,7 @@ const exportComposition = async (
       : createCompositionPreview
   )(canvas, scene.composition, resources, {
     backend: scene.backend ?? "canvas2d",
+    collectStatistics: output?.work !== undefined,
     ...(output ? { preserveAlpha: output.preserveAlpha } : {}),
     ...(output?.work?.surfaceCache
       ? {
@@ -241,6 +245,9 @@ const exportComposition = async (
   let sourceStatistics: NonNullable<
     BrowserExportResult["work"]
   >["sourceStatistics"];
+  let renderStatistics: NonNullable<
+    BrowserExportResult["work"]
+  >["renderStatistics"];
   let rootStatistics: NonNullable<
     BrowserExportResult["work"]
   >["rootStatistics"];
@@ -258,6 +265,7 @@ const exportComposition = async (
       cacheStatistics = preview.surfaceCacheStatistics?.();
       sourceStatistics = preview.sourceCacheStatistics?.();
       rootStatistics = preview.rootCacheStatistics?.();
+      renderStatistics = preview.renderStatistics?.();
       preview.dispose();
     },
     canvas,
@@ -273,6 +281,8 @@ const exportComposition = async (
     result.work.cacheStatistics = cacheStatistics;
   if (result.work && sourceStatistics)
     result.work.sourceStatistics = sourceStatistics;
+  if (result.work && renderStatistics)
+    result.work.renderStatistics = renderStatistics;
   if (result.work && rootStatistics)
     result.work.rootStatistics = rootStatistics;
   return result;

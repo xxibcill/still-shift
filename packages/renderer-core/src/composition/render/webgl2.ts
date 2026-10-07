@@ -149,6 +149,7 @@ export function createWebgl2Backend(
     options.singleImage,
     options.stableImages,
     options.boundedCanvas,
+    options.statistics,
   );
   const isolates = new WebglIsolates(keys, (surface) => {
     bounds.release(surface);
@@ -421,6 +422,7 @@ export function createWebgl2Backend(
 
   const backend: Webgl2Backend = {
     version: COMPOSITION_WEBGL_RENDERER_VERSION,
+    ...(options.statistics ? { statistics: options.statistics } : {}),
     surfaceEncoding: "rgba8-premultiplied",
     rootPixels: {
       identity: (target) => ({

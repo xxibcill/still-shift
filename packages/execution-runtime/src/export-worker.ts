@@ -133,6 +133,7 @@ export type ExportMetrics = {
   frameUploadAverageMs: number;
   frameUploadP95Ms: number;
   ffmpegCpuMs: number;
+  ffmpegCpuScope: "ffmpeg-transcode-user-plus-system";
   encodePathWallMs: number;
   validationWallMs: number;
   totalWallMs: number;
@@ -157,6 +158,17 @@ export type ExportMetrics = {
     scopeKey: string;
     orderedFrames: CompositionOrderedFrames["statistics"];
     surfaceStore?: CompositionSurfaceStore["statistics"];
+    submissionStatistics: {
+      scope: "synchronous-submission-wall-time";
+      totalSubmissionWallMs: number;
+      byLayerType: {
+        phase: string;
+        type: string;
+        calls: number;
+        submissionWallMs: number;
+        submissionWallMsPerOutputFrame: number;
+      }[];
+    };
     workersDetail: {
       worker: number;
       environment: RenderEnvironment;
@@ -1113,6 +1125,29 @@ export const exportScene = async (
       orderedFrames!.finish();
       frameState.nextIndex = orderedFrames!.statistics.deliveredFrames;
       browserResult = summarizeExportWorkers(results);
+      const submissionTypes = new Map<
+        string,
+        { phase: string; type: string; calls: number; submissionWallMs: number }
+      >();
+      for (const result of results) {
+        const measured = result.work?.renderStatistics;
+        if (!measured || measured.scope !== "synchronous-submission-wall-time")
+          throw Error(
+            "Composition worker omitted actual submission statistics",
+          );
+        for (const row of measured.byLayerType) {
+          const key = JSON.stringify([row.phase, row.type]);
+          const combined = submissionTypes.get(key) ?? {
+            phase: row.phase,
+            type: row.type,
+            calls: 0,
+            submissionWallMs: 0,
+          };
+          combined.calls += row.calls;
+          combined.submissionWallMs += row.submissionWallMs;
+          submissionTypes.set(key, combined);
+        }
+      }
       workMetrics = {
         version: "composition-render-work-1",
         workers: workOptions.workers,
@@ -1121,6 +1156,18 @@ export const exportScene = async (
         scopeKey,
         orderedFrames: orderedFrames!.statistics,
         ...(surfaceStore ? { surfaceStore: surfaceStore.statistics } : {}),
+        submissionStatistics: {
+          scope: "synchronous-submission-wall-time",
+          totalSubmissionWallMs: [...submissionTypes.values()].reduce(
+            (sum, row) => sum + row.submissionWallMs,
+            0,
+          ),
+          byLayerType: [...submissionTypes.values()].map((row) => ({
+            ...row,
+            submissionWallMsPerOutputFrame:
+              row.submissionWallMs / scene.timeline.frameCount,
+          })),
+        },
         workersDetail: workers.map((worker, index) => {
           const result = results[index]!.work;
           if (!result || result.worker !== index)
@@ -1260,6 +1307,7 @@ export const exportScene = async (
       frameUploadAverageMs: browserResult.frameUploadAverageMs,
       frameUploadP95Ms: browserResult.frameUploadP95Ms,
       ffmpegCpuMs: ffmpegCpuTimeMs(encoderError),
+      ffmpegCpuScope: "ffmpeg-transcode-user-plus-system",
       encodePathWallMs: performance.now() - encodePathStart,
       validationWallMs,
       totalWallMs: performance.now() - start,

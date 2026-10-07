@@ -1,3 +1,4 @@
+import type { CompositionRenderStatistics } from "./statistics.ts";
 import { installCanvasLinear } from "./canvas-linear.ts";
 import { cssColor } from "./canvas-color.ts";
 import { drawShapes } from "./draw-shapes.ts";
@@ -109,6 +110,7 @@ const matrixScale = (m: Matrix) =>
   Math.sqrt(Math.abs(m[0] * m[3] - m[1] * m[2]));
 
 export type Canvas2dBackendOptions = {
+  statistics?: CompositionRenderStatistics;
   colorSpace?: "srgb" | "linear-srgb";
   images: CanvasImageResources;
   drawText: CanvasTextDrawer;
@@ -207,6 +209,7 @@ export function createCanvas2dBackend(
 
   const backend: Canvas2dBackend = {
     version: COMPOSITION_RENDERER_VERSION,
+    ...(options.statistics ? { statistics: options.statistics } : {}),
     surfaceEncoding: "rgba8-straight",
     rootPixels: {
       identity: (target) => ({

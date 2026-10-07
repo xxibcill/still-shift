@@ -1,3 +1,4 @@
+import { renderMembers } from "./statistics.ts";
 import { compositionRootPrefix } from "./prefix.ts";
 import { sha256Hex } from "../../browser-checksum.ts";
 import {
@@ -107,7 +108,14 @@ export class CompositionRootCache<S extends Surface> {
     const entry = this.entries.get(path);
     if (path === this.seedPath || entry?.signature !== signature) return false;
     const start = performance.now();
-    this.backend.rootPixels!.restore(target, entry.pixels);
+    const restore = () =>
+      this.backend.rootPixels!.restore(target, entry.pixels);
+    if (this.backend.statistics)
+      this.backend.statistics.measure(
+        { stage: "cache-copy", members: renderMembers(node.ops) },
+        restore,
+      );
+    else restore();
     const counts = this.counts.get(path)!;
     counts.copyMs += performance.now() - start;
     counts.copies++;
@@ -201,7 +209,10 @@ export class CompositionRootCache<S extends Surface> {
         this.backend.rootPixels!.reset();
         const start = performance.now();
         this.seedPath = path;
-        executeGraph(this.backend, graph, target, { rootRole: purpose });
+        executeGraph(this.backend, graph, target, {
+          rootRole: purpose,
+          statisticsPhase: "preparation",
+        });
         pixels = this.backend.rootPixels!.capture(target);
         if (
           pixels.encoding !== identity.encoding ||

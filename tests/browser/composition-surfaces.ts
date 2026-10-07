@@ -484,6 +484,40 @@ try {
               ),
             );
             assert.deepEqual(failures, []);
+            for (const outcome of outcomes) {
+              const measured = outcome.submissionStatistics;
+              assert.equal(measured.scope, "synchronous-submission-wall-time");
+              assert.ok(measured.spans.some((span) => span.phase === "frame"));
+
+              assert.ok(
+                measured.spans.some((span) =>
+                  span.members.some((member) => member.layer === "moving"),
+                ),
+              );
+              assert.ok(
+                measured.spans.every(
+                  (span) =>
+                    span.inclusiveMs >= span.exclusiveMs &&
+                    span.exclusiveMs >= 0 &&
+                    span.failures === 0,
+                ),
+              );
+              assert.ok(
+                Math.abs(
+                  measured.byLayerType.reduce(
+                    (sum, row) => sum + row.submissionWallMs,
+                    0,
+                  ) - measured.exclusiveMs,
+                ) < 1e-6,
+              );
+            }
+            assert.ok(
+              outcomes.some((outcome) =>
+                outcome.submissionStatistics.spans.some(
+                  (span) => span.phase === "preparation",
+                ),
+              ),
+            );
             const phases = outcomes.flatMap(
               (outcome) => outcome.statistics.roots,
             );

@@ -215,6 +215,31 @@ Runtime tint and broader preparation coverage, complete allocation/metadata
 admission, per-layer statistics, actual two-minute speed acceptance and the final
 full gate remain mandatory. [Detailed evidence](./composition-ce15-prefix-results.json).
 
+## Accepted submission-statistics checkpoint — 2026-10-07
+
+Opted workers now record actual synchronous submission wall-time spans for graph,
+operation, original native batch/content and cache-copy calls. Nested exclusive
+time avoids double counting; each span retains exact layer/type membership.
+Shared mixed-batch overhead has its own row. Per-phase/type manifest totals combine
+actual worker values and divide by output frame count. Preparation and coverage
+remain separate from ordinary frame submission. These spans measure API/recording
+wall time; GPU completion and process CPU are not inferred from them.
+
+All 57 focused tests and 104 browser cases / 5,408 exact comparisons pass. The 48
+prefix cases check actual phases, membership and exclusive aggregation. Thirty-two
+prefix exports retain complete PNG bodies and 256 decoded frames. Ten additional
+exports verify required coverage, nested blur, original/cached one/four-worker
+paths, complete PNG bodies / 80 decoded frames and exact manifest aggregation.
+The first audit assertion wrongly required preparation painting in each consumer;
+actual consumer pixels are restored. The corrected whole audit passes.
+
+`ffmpegCpuScope` now states the existing transcode user+system measurement. Pinned
+[FFmpeg 8.0.1 source](https://github.com/FFmpeg/FFmpeg/blob/n8.0.1/fftools/ffmpeg.c#L853-L946)
+confirms that this excludes startup/file opening and final cleanup. A verified
+whole-process measurement, complete allocation/metadata admission, remaining
+preparation coverage, actual two-minute speed proof and final gates remain pending.
+[Detailed evidence](./composition-ce15-statistics-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

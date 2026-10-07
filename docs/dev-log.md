@@ -65,7 +65,10 @@ still hold before relying on them.
   clocks are repaired under strict count checks. Closed native prefixes now pass
   104 audit cases / 5,408 exact frames and 32 production exports / 256 decoded
   frames, with whole original batches and actual once-global native painting.
-  Runtime tints, broader axes/corrections, aggregate memory, per-layer statistics, the actual
+  Actual submission phase/type spans now pass 57 tests, the complete pixel audit,
+  32 prefix exports and ten coverage/nested/original/cached exports. Mixed overhead
+  retains its original membership; FFmpeg transcode CPU scope is explicit.
+  Whole-process CPU, runtime tints, broader axes/corrections, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -299,6 +302,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 actual submission statistics checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `014c228`.
+- **Done:** measured graph/operation/native-content/cache-copy spans, exact batch
+  membership, nested exclusive phase/type totals and actual ms per output frame.
+  FFmpeg's existing transcode CPU scope is explicit; whole-process scope is pending.
+- **Results:** build/lint/boundaries, 57 focused tests and 104 audit cases / 5,408
+  exact frames; 32 prefix exports / 256 frames plus ten coverage/nested/original/
+  cached exports / 80 frames pass with exact measured manifest aggregation.
+- **Rejected:** a consumer does not have a preparation paint span; audit actual
+  global ownership instead of inventing consumer painting. Full audit rerun passed.
+- **Next:** whole FFmpeg process CPU, remaining tints/axes/corrections, complete
+  aggregate pixel/metadata limits, real two-minute speed, final CE15 gates/PR and CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [statistics evidence](./composition-ce15-statistics-results.json).
 
 ### 2026-10-07 — CE15 closed native prefix checkpoint
 

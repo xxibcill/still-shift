@@ -455,7 +455,7 @@ export class CompositionSurfaceCache<S extends Surface> {
           culled: [],
         },
         target,
-        { lifecycle: false },
+        { lifecycle: false, statisticsPhase: "preparation" },
       );
     } finally {
       this.backend.releaseSurface(target);
