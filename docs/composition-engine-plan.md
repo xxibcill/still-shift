@@ -4747,6 +4747,18 @@ fixtures reject VFR gaps, rotation, non-square pixels, unknown color and limits.
 All 12 focused tests and static checks pass; actual SDR conversion, frame cache,
 PCM, browser and full acceptance remain pending. [Evidence](./composition-ce13-results.json).
 
+### CE13 actual color and cache checkpoint (2026-10-07)
+
+FFmpeg selects original presentation ordinals and converts actual source SDR samples
+through a 16-bit intermediate to canonical sRGB RGBA8, with linear alpha and truthful
+PNG tags. Sequence originals all verify, including unselected files. Content/decoder/
+mapping keys exclude physical paths. Root locking, conservative cumulative reservations,
+verified cache hits, atomic publication and cancellation cleanup are implemented.
+All 23 focused tests and static checks pass, including burnt-in 30000/1001 frame numbers,
+independent RGB/YUV/alpha ramps, exact sequence pixels, relocation, tamper, concurrent
+preparation and cancellation. Browser resources, PCM and full acceptance remain pending.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

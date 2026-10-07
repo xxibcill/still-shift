@@ -59,7 +59,8 @@ PR33 is attached. Fresh pinned focused checks pass 88 soundtrack / 46 runtime /
 and temporary lock-format attempts remain in [CE13 results](./composition-ce13-results.json).
 CE13 contract/source-clock/graph/builder checks now pass all 2,060 unit tests /
 204 files plus static checks (`41c7b98`). Actual video provenance/CFR/color/rotation
-checks pass 12 focused tests and static checks. SDR conversion/cache, continuous native PCM,
+checks are pushed as `fc23442`. Actual SDR conversion and atomic bounded frame cache
+pass 23 focused tests / 4 files and all static checks. Browser CPU/GPU readiness, native PCM,
 waveform and production acceptance remain pending; no final CE13 gate has run.
 CE15 and CE14 remain in flight.
 Private notes contain exact source

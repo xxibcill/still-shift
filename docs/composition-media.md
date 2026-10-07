@@ -1,8 +1,8 @@
 # Native composition media
 
 CE13 is in progress. The contract, source-clock evaluation and visual graph are
-implemented, with actual FFmpeg source provenance/CFR probing; SDR conversion,
-frame-cache preparation, bounded browser readiness, actual audio mixing,
+implemented, with actual FFmpeg source probing, SDR conversion and atomic frame-cache
+preparation. Bounded browser readiness, actual audio mixing,
 waveforms and complete production acceptance remain pending. Current proof is in
 [CE13 results](./composition-ce13-results.json). The contract fixture uses placeholder
 hashes and is a structural fixture, not a playable media example.
@@ -68,4 +68,27 @@ lasts longer. Original presentation timestamps remain integer strings. An exact
 BigInt quantizer-phase intersection proves one constant-rate timeline; alternating
 41/42 ms ticks can be valid, while VFR gaps reject. Nonidentity rotation/display
 matrices and known non-square pixels require prior normalization. Actual color
-metadata must be supported; conversion into canonical sRGB remains the next slice.
+metadata must be supported. Prepared pixels are converted into canonical sRGB RGBA8.
+
+`prepareCompositionVisualMedia` takes required **original** frame ordinals and a
+private cache directory. Video selection uses FFmpeg frame ordinal `n`, with no
+browser video seeking. Source SHA, verified rational timing and color, selected
+ordinals, optional mapping SHA, decoder version and actual FFmpeg runtime identity
+form the key; relocated physical paths do not. Prepared PNG hashes, byte counts,
+dimensions and canonical layout verify on every hit. Modified entries reject.
+
+Source range/matrix is converted to full RGB. BT.709 transfer is decoded and then
+encoded with the sRGB piecewise curve in a 16-bit intermediate before RGBA8
+quantization. Alpha stays linear. Independent real-media ramps verify a maximum
+one code value RGB/alpha error and two code values for limited YUV neutral samples.
+Prepared PNGs carry an sRGB chunk after conversion, with competing tags removed.
+
+Sequence PNGs follow [PNG Third Edition color priority](https://www.w3.org/TR/png-3/):
+cICP, ICC, sRGB, then legacy gamma/chromaticities. Supported authoritative cICP is
+`[1, 13, 0, 1]`; standalone ICC or legacy-only tags require prior normalization.
+Untagged PNGs use the authored sRGB descriptor and explicitly record that authority.
+All original hashes and dimensions verify even when only a subset is selected.
+Animated PNG and corrupt chunks reject. A root lock protects cumulative disk
+accounting. Conservative reservations include transient files and manifest bytes;
+private staging publishes atomically and is removed on cancellation or failure.
+Browser CPU/GPU resource allocation and actual audio remain pending.

@@ -425,12 +425,148 @@
           "sha256": "sha256:11d597c5d62bfde9b5c7f01f4dab8d887c30a027d243f1d84c61eb9d759fe9d5"
         }
       ],
+      "fullGate": false,
+      "checkpoint": "fc23442"
+    },
+    {
+      "slice": "actual SDR conversion and atomic bounded original-frame cache",
+      "sourceFingerprint": "sha256:7e9da71ab5d58beda97f614028d203fa6b592948ac7090ffe1e34adfcab4e283",
+      "sourceFiles": [
+        "packages/animation-engine/src/composition-media-cache.ts",
+        "packages/animation-engine/src/composition-media-color.ts",
+        "packages/animation-engine/src/index.ts",
+        "tests/helpers/composition-media-png.ts",
+        "tests/unit/composition-media-color.test.ts",
+        "tests/integration/composition-media-cache.test.ts"
+      ],
+      "decoderVersion": "composition-media-decoder-1",
+      "checks": {
+        "build": "pass",
+        "schema": "pass",
+        "boundaries": "pass",
+        "lint": "pass",
+        "format": "pass",
+        "focused": {
+          "exitCode": 0,
+          "passed": 23,
+          "files": 4,
+          "seconds": 3.6
+        }
+      },
+      "implemented": [
+        "original-ordinal FFmpeg selection with exact rational source provenance",
+        "actual 16-bit intermediate BT.709 transfer/range/matrix conversion to canonical sRGB RGBA8",
+        "alpha remains linear; truthful sRGB-only prepared PNG tags",
+        "PNG CRC/header/animation validation and Third Edition color-authority priority",
+        "all sequence originals hashed and sized, including unselected frames",
+        "relocation-independent content/decoder/mapping keys; cache source and prepared byte verification",
+        "single cache-root lock with conservative cumulative disk reservation and actual byte accounting",
+        "private staging, atomic publication, cancellation/failure cleanup"
+      ],
+      "actualFixtureProof": {
+        "burntInFrameNumbers": {
+          "sourceRate": "30000/1001",
+          "originalCount": 16,
+          "selectedOrdinals": [0, 7, 15],
+          "maxCodeError": 1,
+          "relocationHit": true,
+          "mappingChangeMiss": true
+        },
+        "rgbTransferRamp": {
+          "source": "RGBA16 / BT.709 transfer",
+          "independentSrgbMaxCodeError": 1,
+          "linearAlphaMaxCodeError": 1
+        },
+        "limitedYuvNeutralRamp": {
+          "source": "limited BT.709 YUV444",
+          "independentSrgbMaxCodeError": 2
+        },
+        "sequence": {
+          "firstFrame": 37,
+          "selectedOrdinals": [0, 2],
+          "exactRgba8": true,
+          "unselectedTamperRejected": true,
+          "untaggedAuthorityExplicit": true
+        },
+        "cachePixelAndManifestTamperRejected": true,
+        "concurrentMissHit": [false, true],
+        "cancelledStageAndPartialPublicationAbsent": true,
+        "configuredLiveFrameAndCumulativeReservationRejected": true
+      },
+      "failedAttempts": [
+        {
+          "exitCode": 2,
+          "kind": "build",
+          "detail": "An explicit undefined optional limits property failed exactOptionalPropertyTypes. Changed to conditional presence; no tests ran."
+        },
+        {
+          "exitCode": 1,
+          "kind": "sandbox process identity",
+          "passed": 3,
+          "failed": 8,
+          "detail": "Existing artifact-lock helper uses ps for process identity, denied inside the sandbox. Authorized isolated rerun using pinned Python passed all 11 tests."
+        },
+        {
+          "exitCode": 1,
+          "kind": "lint",
+          "detail": "Two deliberately excluded probe byte fields were destructured into unused variables. Retained these stable source metadata fields; final lint and affected regressions pass."
+        }
+      ],
+      "research": [
+        {
+          "url": "https://www.w3.org/TR/png-3/",
+          "use": "cICP > ICC > sRGB > gamma/chromaticity priority; alpha is linear"
+        },
+        {
+          "url": "https://www.ffmpeg.org/ffmpeg-filters.html",
+          "use": "scale matrix/range and per-component lutrgb 16-bit transfer"
+        }
+      ],
+      "pending": [
+        "exact exposure/history required-frame collection and bounded browser CPU/GPU readiness",
+        "continuous native audio PCM/mix and waveform lanes",
+        "real Lab/export/passage acceptance and final full gate"
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-media-cache-build-draft.log",
+          "sha256": "sha256:187f2f4b6072ab9a8b474cca0fde9a163fc5fd9419ef574de001cd487ecc3e99"
+        },
+        {
+          "path": "/private/tmp/ce13-media-cache-build-rerun.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-media-cache-focused-draft.log",
+          "sha256": "sha256:22bacf23f5a12a3fe59d403c80b54cbce0a6430e7c3d1571b4f5268db6cae742"
+        },
+        {
+          "path": "/private/tmp/ce13-media-cache-focused-rerun.log",
+          "sha256": "sha256:055b57482290ab4ea554dcc612fe4e8d87ddd7c5a70d7065e75247a700b41505"
+        },
+        {
+          "path": "/private/tmp/ce13-media-cache-lint-draft.log",
+          "sha256": "sha256:0b98d619da38e6107141443f9d3be99555ace82527742c8d1d62808fd2b850d3"
+        },
+        {
+          "path": "/private/tmp/ce13-media-cache-build-final.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-media-cache-focused-final.log",
+          "sha256": "sha256:df6c525f8835b70057db5e305a59dc547b9b6c5380511b0d013e91e733fafdb4"
+        },
+        {
+          "path": "/private/tmp/ce13-media-cache-static-final.log",
+          "sha256": "sha256:11d597c5d62bfde9b5c7f01f4dab8d887c30a027d243f1d84c61eb9d759fe9d5"
+        }
+      ],
       "fullGate": false
     }
   ],
   "fullGates": [],
   "pending": [
-    "actual SDR conversion and bounded decoded frame cache; continuous native audio clocks and PCM",
+    "bounded async browser readiness, exact required frames and GPU allocation; continuous native audio PCM",
     "native audio protection, mixing and waveforms",
     "real Lab and export acceptance",
     "complete final local pnpm check",

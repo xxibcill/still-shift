@@ -52,8 +52,9 @@ still hold before relying on them.
   matches independent renders. Integration `3fd8584` is pushed. Native media
   descriptors, post-expression source clocks, picture graph and builders pass all
   2,060 unit tests / 204 files plus static checks (`41c7b98`). Actual video hash,
-  CFR PTS, color/coverage and transform checks pass 12 focused tests. SDR conversion/cache preparation,
-  continuous nested PCM clocks, waveforms and production/full acceptance remain in
+  CFR PTS, color/coverage and transform checks are verified (`fc23442`). Actual SDR
+  conversion and atomic bounded frame cache pass 23 focused tests and static checks.
+  Browser CPU/GPU readiness, continuous native PCM/waveforms and production/full acceptance remain in
   flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
   [Evidence](./composition-ce13-results.json).
 
@@ -269,6 +270,20 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 actual color conversion and frame cache
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed probe `fc23442`.
+- **Done:** original-frame FFmpeg preparation, 16-bit transfer/range conversion into
+  truthful sRGB RGBA8 PNGs; pinned sequence originals and color authority; bounded,
+  locked, atomic cache with relocation reuse, source/tamper verification and cancellation.
+- **Results:** 23 focused tests / 4 files and all static checks pass. Burnt-in frame
+  numbers at 30000/1001 and independent RGB/YUV/alpha ramps pass; sequence pixels are exact.
+- **Rejected:** optional-property build and unused-variable lint failures are repaired;
+  sandbox lock-helper denial required the authorized isolated test environment.
+- **Next:** exact exposure/history resource sets, bounded CPU/GPU browser readiness,
+  native PCM/waveforms and production/full acceptance. No CE13 full gate yet.
+- **Records:** [media guide](./composition-media.md), [CE13 evidence](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 actual source provenance and CFR probe
 

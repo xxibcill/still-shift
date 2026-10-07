@@ -51,3 +51,5 @@ export * from "./soundtrack-render.ts";
 export * from "./composition-media-probe.ts";
 
 export * from "./soundtrack-passage.ts";
+
+export * from "./composition-media-cache.ts";
