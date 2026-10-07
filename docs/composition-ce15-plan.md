@@ -810,6 +810,31 @@ group/snapshot/prepared clone/argument controls and shared runtime/Node/producti
 admission, aggregate memory, authentic speed and full gate remain pending.
 [Evidence](./composition-ce15-paint-bounds-metadata-results.json).
 
+## Accepted recording-group metadata checkpoint — 2026-10-08
+
+Actual group-result cleanup Set reserves 128 + 40 per result slot before creation.
+Original working/output arrays, rows/marks/unions, selected Sets/maps, shadow copies
+and iterator/spread controls reserve 512 + 1536 per actual recorded mark before
+group factories. This derives from original producers (up to 1000 per mark plus
+512 root/control), with existing 64-mark policy unchanged. Working arrays clear
+after flatMap; retained capacity becomes 256 + 136 per output group + 128 per
+unique selected Set + 40 per selected command + 64 per fresh union bounds. Shared
+shadow Set/bounds and borrowed fallback/owned paint rectangles retain one body.
+Every actual result array/selected Set survives replay/raster upload and clears
+at recording or allocator disposal. Original grouping/clip/shadow/native order,
+empty/unsupported behavior and null failures remain unchanged.
+
+Build/lint/boundaries and 202 focused tests pass, including six group admission/
+consumer/cleanup regressions. All 144 audit cases / 8,000 comparisons, 96 actual
+RPC snapshots, 22 moving/blurred and ten stationary native frames pass. Original
+WebGL, 69 typography tests, 12 providers / 60 frames and eight fixtures pass;
+glyph 1.495784× meets unchanged 1.5. All 64 exports preserve 768 complete bodies/
+frames against pushed `ce72950`. First lint found unused copied fixture type/
+counter; removed before final checks. Recording command/mark/argument/clone/Proxy/
+snapshot and shared runtime/Node/production admission, aggregate memory, authentic
+speed and complete gate remain pending.
+[Evidence](./composition-ce15-groups-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

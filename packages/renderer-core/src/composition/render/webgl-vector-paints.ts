@@ -29,6 +29,25 @@ export type VectorPaintGroup = {
   shadow?: "only" | "none";
   shadowRight?: number;
 };
+type GroupLifetime = {
+  working: { marks: Paint[]; bounds: Bounds }[] | undefined;
+  output: VectorPaintGroup[] | undefined;
+};
+function clearWorkingGroups(value: GroupLifetime) {
+  if (value.working) {
+    for (const group of value.working) group.marks.length = 0;
+    value.working.length = 0;
+  }
+  value.working = undefined;
+}
+function clearGroupLifetime(value: GroupLifetime) {
+  clearWorkingGroups(value);
+  if (value.output) {
+    for (const group of value.output) group.selected.clear();
+    value.output.length = 0;
+  }
+  value.output = undefined;
+}
 const paints = new Set([
   "fill",
   "stroke",
@@ -87,7 +106,8 @@ export function recordVectorPaints(
     depth = 0;
   const painted = new Set<number>();
   const path = new CanvasPathBounds();
-  let bounds: Set<Bounds>;
+  let bounds: Set<Bounds> | undefined;
+  let groupResults: Set<GroupLifetime> | undefined;
   try {
     bounds = allocateRenderMetadata<Set<Bounds>>(
       256,
@@ -98,24 +118,39 @@ export function recordVectorPaints(
         value.clear();
       },
     );
+    groupResults = allocateRenderMetadata<Set<GroupLifetime>>(
+      128,
+      () => new Set(),
+      false,
+      (value) => {
+        for (const result of value) releaseRenderMetadata(result);
+        value.clear();
+      },
+    );
   } catch (error) {
+    if (bounds) releaseRenderMetadata(bounds);
     path.dispose();
     throw error;
   }
+  const retainedBounds = bounds;
+  const retainedGroups = groupResults;
   const keepBounds = (factory: () => Bounds) => {
-    resizeRenderMetadata(bounds, 256 + 40 * (bounds.size + 1));
+    resizeRenderMetadata(retainedBounds, 256 + 40 * (retainedBounds.size + 1));
     try {
       const rect = allocateRenderMetadata(64, factory);
-      bounds.add(rect);
+      retainedBounds.add(rect);
       return rect;
     } finally {
-      resizeRenderMetadata(bounds, 256 + 40 * bounds.size);
+      resizeRenderMetadata(retainedBounds, 256 + 40 * retainedBounds.size);
     }
   };
   const clearBounds = () => {
-    for (const rect of bounds) releaseRenderMetadata(rect);
-    bounds.clear();
-    releaseRenderMetadata(bounds);
+    for (const rect of retainedBounds) releaseRenderMetadata(rect);
+    retainedBounds.clear();
+    releaseRenderMetadata(retainedBounds);
+    for (const result of retainedGroups) releaseRenderMetadata(result);
+    retainedGroups.clear();
+    releaseRenderMetadata(retainedGroups);
   };
   if (marker) {
     let saved = false;
@@ -309,46 +344,96 @@ export function recordVectorPaints(
     },
     groups(): VectorPaintGroup[] | undefined {
       if (!supported || marks.length > 64) return undefined;
-      const groups: { marks: Paint[]; bounds: Bounds }[] = [];
-      for (const mark of marks) {
-        const previous = groups.at(-1);
-        if (
-          previous &&
-          previous.marks[0]!.primitive === mark.primitive &&
-          (previous.marks[0]!.shadowRight === undefined) ===
-            (mark.shadowRight === undefined) &&
-          previous.marks.every(
-            (prior) => !boundsOverlap(prior.bounds, mark.bounds),
-          )
-        ) {
-          previous.marks.push(mark);
-          previous.bounds = unionBounds(previous.bounds, mark.bounds);
-        } else groups.push({ marks: [mark], bounds: mark.bounds });
-      }
-      const clipped = commands.some(
-        (command) => "method" in command && command.method === "clip",
+      resizeRenderMetadata(
+        retainedGroups,
+        128 + 40 * (retainedGroups.size + 1),
       );
-      return groups.flatMap((group): VectorPaintGroup[] => {
-        const base: VectorPaintGroup = {
-          commands,
-          selected: new Set(group.marks.map((mark) => mark.command)),
-          primitive: group.marks[0]!.primitive,
-          bounds: group.bounds,
-        };
-        if (
-          clipped ||
-          group.marks.some((mark) => mark.shadowRight === undefined)
-        )
-          return [base];
-        // Canvas composites shadow and source separately over the destination.
-        const shadowRight = Math.max(
-          ...group.marks.map((mark) => mark.shadowRight!),
+      let lifetime: GroupLifetime | undefined,
+        committed = false,
+        failed = false;
+      try {
+        lifetime = allocateRenderMetadata<GroupLifetime>(
+          512 + 1536 * marks.length,
+          () => ({ working: undefined, output: undefined }),
+          false,
+          clearGroupLifetime,
         );
-        return [
-          { ...base, shadow: "only", shadowRight },
-          { ...base, shadow: "none" },
-        ];
-      });
+        const groups = (lifetime.working = [] as {
+          marks: Paint[];
+          bounds: Bounds;
+        }[]);
+
+        for (const mark of marks) {
+          const previous = groups.at(-1);
+          if (
+            previous &&
+            previous.marks[0]!.primitive === mark.primitive &&
+            (previous.marks[0]!.shadowRight === undefined) ===
+              (mark.shadowRight === undefined) &&
+            previous.marks.every(
+              (prior) => !boundsOverlap(prior.bounds, mark.bounds),
+            )
+          ) {
+            previous.marks.push(mark);
+            previous.bounds = unionBounds(previous.bounds, mark.bounds);
+          } else groups.push({ marks: [mark], bounds: mark.bounds });
+        }
+        const clipped = commands.some(
+          (command) => "method" in command && command.method === "clip",
+        );
+        const output = (lifetime.output = groups.flatMap(
+          (group): VectorPaintGroup[] => {
+            const base: VectorPaintGroup = {
+              commands,
+              selected: new Set(group.marks.map((mark) => mark.command)),
+              primitive: group.marks[0]!.primitive,
+              bounds: group.bounds,
+            };
+            if (
+              clipped ||
+              group.marks.some((mark) => mark.shadowRight === undefined)
+            )
+              return [base];
+            // Canvas composites shadow and source separately over the destination.
+            const shadowRight = Math.max(
+              ...group.marks.map((mark) => mark.shadowRight!),
+            );
+            return [
+              { ...base, shadow: "only", shadowRight },
+              { ...base, shadow: "none" },
+            ];
+          },
+        ));
+        clearWorkingGroups(lifetime);
+        let bytes = 256 + 136 * output.length;
+        for (const group of output) {
+          // Shadow pairs share the original selected Set and bounds, with one owner.
+          if (group.shadow === "none") continue;
+          bytes += 128 + 40 * group.selected.size;
+          if (group.bounds !== fallback && !retainedBounds.has(group.bounds))
+            bytes += 64;
+        }
+        resizeRenderMetadata(lifetime, bytes);
+        retainedGroups.add(lifetime);
+        committed = true;
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        if (lifetime && !committed) releaseRenderMetadata(lifetime);
+        if (!failed)
+          resizeRenderMetadata(retainedGroups, 128 + 40 * retainedGroups.size);
+        else
+          try {
+            resizeRenderMetadata(
+              retainedGroups,
+              128 + 40 * retainedGroups.size,
+            );
+          } catch {
+            /* Preserve the original grouping failure. */
+          }
+      }
     },
   };
 }
