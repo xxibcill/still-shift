@@ -1,3 +1,4 @@
+import type { CompiledShapes } from "../shapes/types.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import type { EvaluatedEffect } from "../evaluate/effects.ts";
 import { evaluateComp } from "../evaluate/evaluate.ts";
@@ -90,7 +91,9 @@ export type ProviderContent = {
   stateFrom?: number;
   stateMix?: number;
 };
+export type ShapeContent = { type: "shape"; shapes: CompiledShapes };
 export type LayerContent =
+  | ShapeContent
   | SolidContent
   | ImageContent
   | TextContent
@@ -434,6 +437,10 @@ class GraphBuilder {
   ): LayerContent | null {
     const layer = state.layer;
     switch (layer.type) {
+      case "shape":
+        return state.shapes?.draws.length
+          ? { type: "shape", shapes: state.shapes }
+          : null;
       case "provider":
         return {
           type: "provider",

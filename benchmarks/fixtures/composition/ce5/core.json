@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "shape-core",
+  "width": 320,
+  "height": 180,
+  "fps": 24,
+  "frameCount": 48,
+  "background": "#25313b",
+  "assets": [],
+  "layers": [
+    {
+      "id": "connector",
+      "type": "shape",
+      "transform": { "position": [40, 90] },
+      "contents": [
+        {
+          "id": "line",
+          "type": "path",
+          "path": {
+            "closed": false,
+            "vertices": [
+              [0, 0],
+              [100, 0],
+              [200, 20]
+            ],
+            "outTangents": [
+              [20, -30],
+              [20, 30],
+              [0, 0]
+            ],
+            "inTangents": [
+              [0, 0],
+              [-20, -30],
+              [-20, 0]
+            ]
+          }
+        },
+        {
+          "id": "paint",
+          "type": "stroke",
+          "width": 10,
+          "color": "#eec344",
+          "style": "brush"
+        },
+        {
+          "id": "trim",
+          "type": "trim-paths",
+          "end": {
+            "keys": [
+              { "frame": 0, "value": 0 },
+              { "frame": 36, "value": 1, "interpolation": "linear" }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -43,6 +43,64 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #38 follow-path review fix complete (2026-10-06):** isolated
+  `codex/pr38-follow-path-fix` from `eb17b1f`. The P2 finding is posted inline;
+  cubic contours now transform into world coordinates before flattening, fixing
+  14.64-pixel drift under source-layer or ancestor scaling. Two regressions cover
+  all quadrants, tangent orientation, reverse seeks and input immutability.
+  Fast checks pass 1,871 unit tests; native shape hashes, independent exports,
+  inspector and 18 exact hardware comparisons pass. Node/browser evaluator
+  parity passes. Fixtures, frozen baselines and tolerances are unchanged.
+  Delivery uses one finding commit and one final normal push to the existing PR.
+  Owner review/merge remain; no blocker or pending owner decision. No full
+  `pnpm check` or CE0 rerun; Actions remain disabled.
+  [Evidence](./pr-38-follow-path-fix-results.json).
+
+- **PR #38 main conflicts resolved (2026-10-06):** isolated
+  `codex/pr38-main-conflicts` combines CE5 `3d0da6a` with main `bdf8f6a`.
+  Native shape review fixes, main expression/lint/inspector fixes and soundtrack
+  integration are retained. All 56 test groups and both development histories
+  survive; combined evaluation uses version 30. Fast checks pass 1,869 unit tests;
+  46 runtime, 65 affected integration, 14 depth and ten browser groups pass.
+  Native shape hashes, 300 exact cap comparisons, 18 exact hardware comparisons,
+  independent exports and both 576-frame native passages pass unchanged policy.
+  No full `pnpm check` or frozen CE0 rerun; no visual baseline is regenerated.
+  Owner review/merge remain; no blocker. Actions remain disabled.
+  [Evidence](./pr-38-main-conflict-resolution-results.json).
+
+- **PR #38 review fixes complete (2026-10-06):** isolated
+  `codex/pr38-shape-review-fixes` from `2b1c6e5`. Both P2 findings are posted
+  inline and repaired in separate commits. Smooth zig-zag retains cubic handles;
+  square caps receive conservative bounds for culling and raster preparation.
+  Fast checks pass 1,623 unit tests; all 65 focused shape tests and 300 exact
+  direct-Canvas pixel comparisons pass. Native hashes/seeks, independent exports,
+  inspector and 18 exact hardware comparisons pass. Independent standards/spec
+  review finds no new defects. Only reference cell 13 changes for smooth zig-zag;
+  fixture sources, animation/core and frozen CE0 baselines stay unchanged.
+  Delivery uses two finding commits and one final normal push to the existing PR.
+  Owner review/merge remain; no blocker. Full `pnpm check` was not rerun and
+  GitHub Actions remain disabled. [Fix evidence](./pr-38-fix-results.json).
+
+- **PR #38 base integration verified (2026-10-06):** CE11 `00d5fba` is merged
+  into CE5 in an isolated managed worktree without rewriting shared history.
+  CE5 native shapes and the CE11/CE10 review fixes are retained; narrow save
+  imports preserve native Vite config loading. Final fast checks pass 1,618 unit
+  tests; 46 runtime, 47 focused composition integration and 14 depth tests pass.
+  Inspector, shapes/hardware/MP4, sessions, builder/watch/export, evaluator and
+  typography acceptance pass, as do 176 frozen items / 36,061 frames unchanged.
+  Full `pnpm check` was not rerun; initial failures remain recorded. Owner review
+  and merge remain pending. No implementation blocker or owner checkout changes;
+  GitHub Actions remain disabled. [Resolution evidence](./pr-38-conflict-resolution-results.json).
+
+- **CE5 complete (2026-10-05):** `codex/composition-ce5`, runtime `4908cbe`.
+  Native shapes, authoring/baking/inspector, reference/animation/MP4 acceptance and
+  complete `pnpm check` pass: 1,569 unit, 46 runtime, 139 integration, 14 depth,
+  all browser groups and 176 frozen baselines / 36,061 frames. Native stored hashes
+  and reverse seeks pass; legacy connectors, actual CE4a brush conversion and all
+  18 Apple hardware comparisons are exact. Failed attempts/repairs are retained.
+  [PR #38](https://github.com/xxibcill/still-shift/pull/38) is open and attached; begin CE7 on a new branch.
+  No owner decision is pending. [Evidence](./composition-ce5-results.json).
+
 - **PR #37 inspector repairs complete (2026-10-06):** isolated
   `codex/pr37-inspector-fixes` from reviewed `12bfc1d`; all three findings are
   posted inline. R13 numeric Apply focus (`6f992bc`) and R14 asynchronous handle
@@ -431,7 +489,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-06 by Codex for PR #35 main integration; both histories retained._
+_Last updated 2026-10-06 by Codex for the PR #38 follow-path review fix; both histories retained._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -489,6 +547,85 @@ _Last updated 2026-10-06 by Codex for PR #35 main integration; both histories re
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-06 — Repair PR #38 scaled follow-path contours
+
+- **Agent / branch:** Codex on isolated `codex/pr38-follow-path-fix`, from `eb17b1f`.
+- **Done:** post the sole P2 finding inline; transform cubics before world-arc-length
+  flattening using shared geometry budgets; advance evaluator and renderer identities.
+- **Results:** both layer/ancestor-scale regressions fail before repair and pass after.
+  Final fast checks pass 1,871 unit tests; native hashes/seeks, independent MP4/raw/PNG
+  exports, inspector and 18 exact hardware comparisons pass. Evaluator Node/browser
+  parity passes five fixtures × nine frames with numeric error below 6e-14.
+- **Next:** one finding commit and one final normal push to PR #38; owner review/merge
+  remain. No full gate/CE0 rerun, baseline regeneration or tolerance change. No blocker.
+  Owner checkout changes are preserved; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-38-follow-path-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/38#discussion_r4193023747).
+
+### 2026-10-06 — Resolve PR #38 against main
+
+- **Agent / branch:** Codex in isolated `pr38-conflicts`, from CE5 `3d0da6a`.
+- **Done:** merge main `bdf8f6a`; retain shape and soundtrack test aggregates,
+  assign evaluator version 30 and preserve both development histories.
+  Main expression, lint, inspector scope/focus and soundtrack fixes survive.
+- **Results:** fast checks: 1,869 unit; 46 runtime, 65 affected integration,
+  14 depth and ten browser groups pass. Shape hashes, 300 exact cap comparisons,
+  18 exact hardware comparisons, independent exports and both 576-frame passages pass.
+  Code and fixture fingerprints are unchanged throughout acceptance.
+- **Next:** normal push to existing PR #38; owner review/merge remain. Full gate
+  and frozen CE0 were not rerun; no baseline/tolerance changes. Actions stay disabled.
+  Owner checkout edits remain untouched; isolated verification evidence is preserved.
+- **Records:** [Main conflict evidence](./pr-38-main-conflict-resolution-results.json).
+
+### 2026-10-06 — Repair PR #38 square-cap bounds and close both findings
+
+- **Agent / branch:** Codex on isolated `codex/pr38-shape-review-fixes`.
+- **Done:** retain square-cap tangent/normal coverage alongside miter coverage;
+  add solid/gradient bounds, edge-culling and independent pixel regressions.
+  Prior finding commit `335ff23` repairs smooth zig-zag; this is the second finding commit.
+- **Results:** fast checks pass 1,623 unit tests; 65 focused shape tests and 300
+  exact direct-Canvas comparisons cover both backends, all viewport edges, joins,
+  color changes and reverse seeks. Final native hashes, exports, inspector and 18
+  exact hardware comparisons pass. Independent standards/spec review is clear.
+- **Retained failures:** pre-fix tests reproduce clipping/culling; initial browser
+  oracles needed actual gradient paint and normal miter-limit coverage. Corrected
+  test assumptions preserve exact pixels and low-limit geometry coverage.
+- **Next:** deliver both finding commits with one normal push to PR #38; owner
+  review/merge remain. No full `pnpm check` rerun or additional baseline regeneration.
+  Primary checkout changes are untouched; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-38-fix-results.json), [inline review](https://github.com/xxibcill/still-shift/pull/38#pullrequestreview-5424533811).
+
+### 2026-10-06 — Repair PR #38 smooth zig-zag sampling
+
+- **Agent / branch:** Codex on isolated `codex/pr38-shape-review-fixes`, from `2b1c6e5`.
+- **Done:** posted both review findings inline; preserve smooth zig-zag mode without
+  overwriting animated polystar counts; add regressions and bump output identities.
+- **Results:** fast checks pass all 1,620 unit tests; 62 focused shape tests and native shape acceptance pass,
+  including inspector, independent/repeated transports and 18 exact hardware comparisons.
+  Previous corner hashes reproduce exactly; every corrected reference pixel stays in
+  cell 13. Source fixtures, animation/core and frozen CE0 baselines are unchanged.
+- **Retained failure:** initial fast check linted a temporary review probe; moved
+  probes outside the disposable verification snapshot. Production code was unaffected.
+- **Next:** finish square-cap bounds in its own commit, then push both commits once.
+  Full `pnpm check` was not rerun; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-38-fix-results.json), [inline review](https://github.com/xxibcill/still-shift/pull/38#pullrequestreview-5424533811).
+
+### 2026-10-06 — Resolve CE5 PR #38 against the advancing CE11 base
+
+- **Agent / branch:** Codex in isolated `pr38-ce5-conflicts`, targeting `codex/composition-ce5`.
+- **Done:** first merge `f615017` integrates CE11 `4946e9d`; a second merge
+  integrates advanced `00d5fba`. Both sides' log histories and feature fixes survive.
+  Equivalent save imports resolve to the public lock entrypoint and narrow diagnostics.
+- **Results:** final fast checks (1,618 unit), 46 runtime, 47 focused integration,
+  14 depth, affected browser acceptance and all 176 frozen items / 36,061 frames pass.
+  Native hashes, reverse seeks, 18 hardware comparisons and both-backend exports pass.
+- **Retained failure:** initial integration config loading failed; broad save imports
+  were narrowed. A temporary unrelated constructor probe was reverted. No full
+  `pnpm check` rerun or baseline regeneration is claimed; Actions remain disabled.
+- **Next:** owner review and merge of the existing PR; delivery uses a normal push.
+- **Records:** [Resolution evidence](./pr-38-conflict-resolution-results.json),
+  [CE5 acceptance](./composition-ce5-results.json), [CE11/CE10 merge evidence](./pr-37-merge-results.json).
 
 ### 2026-10-06 — PR #37 R15: Separate top-level and precomp scope identity
 
@@ -670,6 +807,151 @@ _Last updated 2026-10-06 by Codex for PR #35 main integration; both histories re
 - **Open / next:** owner review and merge; full gate and baseline matrices not rerun.
 - **Records:** [fix evidence](./pr-35-current-head-fix-results.json),
   [review](https://github.com/xxibcill/still-shift/pull/35#pullrequestreview-5418458083).
+
+### 2026-10-05 — Complete CE5 native shapes and full local acceptance
+
+- **Agent / branch:** Codex on `codex/composition-ce5`; runtime `4908cbe`.
+- **Done:** bounded cubic shape trees, four paints, all nine ordered operators,
+  aligned morphs, native ink/brush, bounds/constraints, builder/baking/inspector.
+- **Results:** complete local `pnpm check` passes: 1,569 unit, 46 runtime,
+  139 integration and 14 depth tests, all browser groups and 176 frozen baselines /
+  36,061 frames. New reference/animation baselines and reverse seeks pass unchanged;
+  144 legacy connector frames and actual 24-frame CE4a brush conversion are exact.
+  All 18 Apple hardware comparisons are exact; independent MP4/transport pairs
+  and inspector acceptance pass. Initial failures/repairs remain recorded.
+- **PR / next:** [PR #38](https://github.com/xxibcill/still-shift/pull/38) is open and attached; create CE7’s branch. No owner decision
+  is pending. Existing CE0 baselines were not regenerated; Actions remain disabled.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
+
+### 2026-10-05 — Remove unused CE5 shape-budget allocation
+
+- **Agent / branch:** Codex on `codex/composition-ce5`.
+- **Repaired:** ordinary compositions avoid unused shape-location wrappers;
+  native geometry and follow-path diagnostics retain shared accounting/locations.
+- **Results:** 126 focused evaluator/expression/shape tests, build and lint pass.
+  Serial A/B composition times improve in both paired runs with exact pixels;
+  the complete strict Canvas story matrix and required exports pass.
+- **Retained failure:** full gate at `8efe1ab` stopped on story-visibility timing
+  1.25094× over 1.25×, with exact pixels; unchanged focused rerun passed 1.22145×.
+  No threshold, baseline, output arithmetic or output version changed.
+- **Next:** checkpoint the measured guard and restart the complete local gate.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
+
+### 2026-10-05 — Repair CE5 hardware native paint preparation
+
+- **Agent / branch:** Codex on `codex/composition-ce5`.
+- **Done:** native cubic/nib paints use CPU preparation on hardware previews;
+  WebGL texture composition stays on GPU. Added 18 actual-hardware comparisons.
+- **Results:** all 18 are pixel-exact on Apple M5 Pro. Stored native baselines,
+  144 legacy connector frames, inspector and independent MP4/transport pass;
+  1,569 unit tests and static checks pass. Actual CE4a brush connector conversion
+  is exact for all 24 forward/reverse frames on both backends.
+- **Rejected:** hardware Canvas animation/95 had PSNR 39.82 dB before repair;
+  retained failure and superseded isolated full-gate logs. No baseline rewritten.
+- **Next:** restart complete local gate, frozen CE0 verification and CE5 PR.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
+
+### 2026-10-05 — Repair CE5 full-gate example inventory
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `df3374a`.
+- **Repaired:** CE5 adds the ninth native example; the integration inventory and
+  generated/user guidance still said eight. Updated all three to nine.
+- **Results:** initial full gate passes static checks, 1,569 unit, 46 runtime and
+  138 integration tests; the inventory assertion is its sole failure. Targeted
+  example validation passes. Full gate must restart from this checkpoint.
+- **Records:** [CE5 evidence](./composition-ce5-results.json); initial log retained.
+
+### 2026-10-05 — Verify CE5 native reference, connector and export acceptance
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `48ba291`.
+- **Done:** 31-cell reference and new CE5 baselines; 96-frame morph/trim/wiggle,
+  native inspector edits/save and independent both-backend MP4 checks.
+- **Results:** 1,569 unit tests/static checks pass; 32-case / 224-frame probe meets
+  unchanged near tier. All 144 legacy connector/nib frames are exact. Full native
+  forward/reverse hashes match; independent MP4 and both transports are identical.
+- **Repaired:** ink winding mismatch; retained legacy nib arithmetic with bounded
+  sampling; export browser boundary now preserves overflow diagnostic locations.
+- **Rejected:** initial module-load timeout and failed comparison/test inputs are
+  retained. Only new CE5 baselines were written; frozen CE0 baselines unchanged.
+- **Next:** full local `pnpm check`, milestone closeout/PR, then CE7 branch.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
+
+### 2026-10-05 — Complete CE5 native authoring checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `8c868dd`.
+- **Done:** nested builder selectors/defaults, native drawOn, expression baking,
+  inspector tracks/cubic overlays and a native example. Parent operators now update
+  painted child bindings; repeat copies retain nested paint references.
+- **Results:** 1,568 unit tests, static checks and the 22-case browser probe pass.
+- **Repaired:** optional vector animation omitted its other axis; both defaults now
+  survive component authoring. Five native authoring regressions pass.
+- **Next:** complete reference fixtures/baselines, animated sequences, independent
+  MP4/inspector acceptance and full local gate. CE5 remains in progress.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
+
+### 2026-10-05 — Connect CE5 native shape evaluation and rendering
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `822ad9a`.
+- **Done:** native shape properties/drivers/expressions, shared evaluation budget,
+  constraint bounds/follow-path, Canvas/WebGL shape dispatch, gradients/dashes and
+  ink/brush geometry with retained reveal coordinates; availability/versions updated.
+- **Results:** all 1,562 unit tests and build/lint/schema/boundaries/format pass.
+  Browser: 22 cases / 154 sampled frames meet unchanged near tier (max Δ2,
+  minimum PSNR 58.24 dB); connector/nibs and both-backend reverse seeks are exact.
+- **Rejected:** exploratory exact cross-backend assertion fails at antialias/gradient
+  rounding. Measurements retained; no exact parity repair or full-gate pass claimed.
+- **Next:** bake/builder/inspector, complete reference/baselines and MP4 acceptance,
+  then full local gate and CE5 PR. Existing CE0 baselines have not been regenerated.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
+
+### 2026-10-05 — Add CE5 typed sampling and paint compilation
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `f09c765`.
+- **Done:** explicit sampled shape state, upstream bindings/reverse paint order,
+  nested paint transforms, repeater paint/geometry copies and conservative bounds.
+  Individual trim keeps repeated source IDs attached to their own paint bindings.
+- **Results:** 12 compiler/sampling checks and all 1,556 unit tests pass; build,
+  lint, boundaries and owned formatting pass. Empty-copy/reference work is bounded.
+- **Next:** native evaluator/session budget, both backends and authoring integration;
+  shape availability remains gated and full browser/export acceptance is pending.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
+
+### 2026-10-05 — Add CE5 bounded shape operators
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `d1d7106`.
+- **Done:** trim/source spans, repeater transforms/order/opacity, quantized Boolean
+  geometry and offsets, corner rounding and four deterministic deformations.
+- **Results:** 17 analytic operator tests and all 1,544 unit tests pass; build,
+  boundaries, schema, owned formatting and lint pass after type-import repairs.
+- **Choices:** native linear twist falloff, signed open parallel offsets and
+  multi-operand XOR are explicit native semantics; AE pixel parity is not claimed.
+- **Next:** paint compiler, evaluator/global work budget and native rendering;
+  browser/export and full milestone gate have not run for this checkpoint.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
+
+### 2026-10-05 — Add CE5 cubic geometry and morph correspondence
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, after `13669d4`.
+- **Done:** exact cubic bounds, bounded flattening, native primitives/corner fillets,
+  shared budget API and closed-path vertex/tangent alignment. Rich legacy morphs
+  render through native geometry; existing point-only arithmetic is preserved.
+- **Results:** build/lint, schema/boundaries and all 1,527 unit tests pass, including
+  11 analytic geometry/morph checks. Native evaluator/renderer versions updated.
+- **Next:** operators, paint compilation and native frame-budget/render integration,
+  then authoring and milestone browser/baseline/export acceptance.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
+
+### 2026-10-05 — Start CE5 with native shape contracts
+
+- **Agent / branch:** Codex on `codex/composition-ce5`, from CE11 `a0c56df` /
+  [PR #37](https://github.com/xxibcill/still-shift/pull/37).
+- **Done:** typed groups, primitives, paints and operators; bounded 2D animations,
+  nested native property locator and pinned Boost-licensed polygon library.
+- **Results:** build/lint and all 1,516 unit tests pass, including 40 focused checks;
+  generated JSON schema updated. Initial diagnostic expectations/lint repairs retained.
+- **Next:** native geometry and rendering, authoring integration and full acceptance.
+  Runtime shape layers remain unavailable until the native renderer is connected.
+- **Records:** [CE5 evidence](./composition-ce5-results.json).
 
 ### 2026-10-05 — PR #37 R10: Guard fixture export asset reads
 

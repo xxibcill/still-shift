@@ -3,6 +3,7 @@ import { PoseAnchorSchema } from "../character-actions.ts";
 import { TextContainerSchema } from "../story-acting.ts";
 import { PoseRegistrationSchema } from "../story-acting.ts";
 import { compositionTypographyFields } from "./typography.ts";
+import { ShapeContentsSchema } from "./shapes.ts";
 import {
   AnimatableColorSchema,
   AnimatableDiscreteSchema,
@@ -331,12 +332,12 @@ export const AdjustmentLayerSchema = z
   })
   .strict();
 
-/** Shape contents are defined in CE5. */
+/** Native vector contents; JSON preflight precedes recursive shape validation. */
 export const ShapeLayerSchema = z
   .object({
     ...layerBase,
     type: z.literal("shape"),
-    contents: boundedJson(z.array(z.json()).max(L.maxPathVertices)),
+    contents: boundedJson(ShapeContentsSchema),
   })
   .strict();
 
@@ -389,7 +390,6 @@ export type TrackMatte = z.infer<typeof TrackMatteSchema>;
 export const UNAVAILABLE_LAYER_TYPES: Partial<
   Record<CompositionLayerType, string>
 > = {
-  shape: "CE5",
   camera: "CE8",
   light: "a later plan (Q6)",
   video: "CE13",

@@ -682,6 +682,99 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 
 Blend modes: `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`, `color-dodge`, `color-burn`, `hard-light`, `soft-light`, `difference`, `exclusion`, `hue`, `saturation`, `color`, `luminosity`, `add`.
 
+## Generated native shape fields
+
+Native selectors use authored IDs: `diagram.contents[group].contents[path].path`,
+`diagram.contents[group].transform.position.x` and
+`diagram.contents[paint].stops[stop].color`. Vector components are x/y; colour
+components are r/g/b/a. The `transform` rows apply to groups and the
+`repeater-transform` rows to repeaters. Stop fields apply to gradient stops.
+
+| Content type         | Property         | Type   | Default     | Range            |
+| -------------------- | ---------------- | ------ | ----------- | ---------------- |
+| `transform`          | `anchor`         | vec2   | `[0,0]`     | -1000000–1000000 |
+| `transform`          | `position`       | vec2   | `[0,0]`     | -1000000–1000000 |
+| `transform`          | `scale`          | vec2   | `[1,1]`     | -1000–1000       |
+| `transform`          | `rotation`       | scalar | `0`         | -1000000–1000000 |
+| `transform`          | `skewX`          | scalar | `0`         | -85–85           |
+| `transform`          | `skewY`          | scalar | `0`         | -85–85           |
+| `transform`          | `opacity`        | scalar | `1`         | 0–1              |
+| `repeater-transform` | `anchor`         | vec2   | `[0,0]`     | -1000000–1000000 |
+| `repeater-transform` | `position`       | vec2   | `[0,0]`     | -1000000–1000000 |
+| `repeater-transform` | `scale`          | vec2   | `[1,1]`     | -1000–1000       |
+| `repeater-transform` | `rotation`       | scalar | `0`         | -1000000–1000000 |
+| `repeater-transform` | `skewX`          | scalar | `0`         | -85–85           |
+| `repeater-transform` | `skewY`          | scalar | `0`         | -85–85           |
+| `stop`               | `offset`         | scalar | `0`         | 0–1              |
+| `stop`               | `color`          | color  | `"#ffffff"` | —                |
+| `rect`               | `position`       | vec2   | `[0,0]`     | -1000000–1000000 |
+| `rect`               | `size`           | vec2   | `[0,0]`     | 0–1000000        |
+| `rect`               | `roundness`      | scalar | `0`         | 0–1000000        |
+| `ellipse`            | `position`       | vec2   | `[0,0]`     | -1000000–1000000 |
+| `ellipse`            | `size`           | vec2   | `[0,0]`     | 0–1000000        |
+| `polystar`           | `position`       | vec2   | `[0,0]`     | -1000000–1000000 |
+| `polystar`           | `rotation`       | scalar | `0`         | -1000000–1000000 |
+| `polystar`           | `points`         | scalar | `5`         | 2–256            |
+| `polystar`           | `outerRadius`    | scalar | `0`         | 0–1000000        |
+| `polystar`           | `innerRadius`    | scalar | `0`         | 0–1000000        |
+| `polystar`           | `outerRoundness` | scalar | `0`         | 0–1              |
+| `polystar`           | `innerRoundness` | scalar | `0`         | 0–1              |
+| `path`               | `path`           | path   | required    | —                |
+| `fill`               | `color`          | color  | `"#ffffff"` | —                |
+| `fill`               | `opacity`        | scalar | `1`         | 0–1              |
+| `stroke`             | `color`          | color  | `"#ffffff"` | —                |
+| `stroke`             | `opacity`        | scalar | `1`         | 0–1              |
+| `stroke`             | `width`          | scalar | `1`         | 0–1000000        |
+| `stroke`             | `dashOffset`     | scalar | `0`         | -1000000–1000000 |
+| `stroke`             | `pinch`          | scalar | `0`         | 0–1              |
+| `stroke`             | `pinchAt`        | scalar | `0.5`       | 0–1              |
+| `stroke`             | `pinchWidth`     | scalar | `0.15`      | 0.001–1          |
+| `gradient-fill`      | `opacity`        | scalar | `1`         | 0–1              |
+| `gradient-fill`      | `start`          | vec2   | `[0,0]`     | -1000000–1000000 |
+| `gradient-fill`      | `end`            | vec2   | `[0,0]`     | -1000000–1000000 |
+| `gradient-stroke`    | `opacity`        | scalar | `1`         | 0–1              |
+| `gradient-stroke`    | `start`          | vec2   | `[0,0]`     | -1000000–1000000 |
+| `gradient-stroke`    | `end`            | vec2   | `[0,0]`     | -1000000–1000000 |
+| `gradient-stroke`    | `width`          | scalar | `1`         | 0–1000000        |
+| `gradient-stroke`    | `dashOffset`     | scalar | `0`         | -1000000–1000000 |
+| `gradient-stroke`    | `pinch`          | scalar | `0`         | 0–1              |
+| `gradient-stroke`    | `pinchAt`        | scalar | `0.5`       | 0–1              |
+| `gradient-stroke`    | `pinchWidth`     | scalar | `0.15`      | 0.001–1          |
+| `trim-paths`         | `start`          | scalar | `0`         | 0–1              |
+| `trim-paths`         | `end`            | scalar | `1`         | 0–1              |
+| `trim-paths`         | `offset`         | scalar | `0`         | -1000000–1000000 |
+| `repeater`           | `copies`         | scalar | `0`         | 0–256            |
+| `repeater`           | `offset`         | scalar | `0`         | -1000000–1000000 |
+| `repeater`           | `startOpacity`   | scalar | `1`         | 0–1              |
+| `repeater`           | `endOpacity`     | scalar | `1`         | 0–1              |
+| `offset-path`        | `amount`         | scalar | `0`         | -1000000–1000000 |
+| `round-corners`      | `radius`         | scalar | `0`         | 0–1000000        |
+| `wiggle-paths`       | `size`           | scalar | `0`         | 0–1000000        |
+| `wiggle-paths`       | `detail`         | scalar | `1`         | 0–64             |
+| `wiggle-paths`       | `frequency`      | scalar | `1`         | 0–100            |
+| `wiggle-paths`       | `evolution`      | scalar | `0`         | -1000000–1000000 |
+| `zig-zag`            | `size`           | scalar | `0`         | 0–1000000        |
+| `zig-zag`            | `ridges`         | scalar | `1`         | 0–128            |
+| `pucker-bloat`       | `amount`         | scalar | `0`         | -1–1             |
+| `twist`              | `angle`          | scalar | `0`         | -1000000–1000000 |
+| `twist`              | `center`         | vec2   | `[0,0]`     | -1000000–1000000 |
+
+Native geometry limits:
+
+| Limit                    | Value      |
+| ------------------------ | ---------- |
+| `contents`               | 256        |
+| `depth`                  | 16         |
+| `stops`                  | 16         |
+| `copies`                 | 256        |
+| `paths`                  | 4096       |
+| `generatedVertices`      | 262144     |
+| `flattenTolerance`       | 0.25       |
+| `flattenDepth`           | 12         |
+| `polygonScale`           | 1024       |
+| `polygonVertices`        | 1024       |
+| `maxGeneratedCoordinate` | 1000000000 |
+
 ## Generated intent registry
 
 Motion intents: `settle`, `press`, `recoil`, `handoff`, `breathe`, `draw-on`, `land`.
@@ -820,6 +913,22 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-path-property`               | A path names no property of its layer.                                                                |
 | `comp-path-type`                   | A driver or periodic motion targets a non-scalar property.                                            |
 | `comp-path-readonly`               | A path that can only be read is used as a target.                                                     |
+| `comp-shape-id`                    | Shape content or gradient stop IDs are not unique in their collection.                                |
+| `comp-shape-limit`                 | A native shape tree exceeds its content or nesting limits.                                            |
+| `comp-shape-value`                 | A sampled native shape value is not finite.                                                           |
+| `comp-shape-range`                 | A generated primitive has invalid dimensions or point counts.                                         |
+| `comp-shape-work-limit`            | Generated geometry or reference copies exceed the shared evaluation budget.                           |
+| `comp-shape-coordinate`            | Generated coordinates exceed their finite coordinate envelope.                                        |
+| `comp-shape-flatten-limit`         | Cubic flattening cannot meet its fixed tolerance within the depth limit.                              |
+| `comp-shape-polygon-limit`         | A polygon operation exceeds its input-vertex complexity limit.                                        |
+| `comp-shape-polygon-coordinate`    | Quantized polygon coordinates are not safe integers.                                                  |
+| `comp-shape-polygon`               | The pinned polygon library rejected an operation.                                                     |
+| `comp-shape-repeater-range`        | Repeater copies exceed their supported range.                                                         |
+| `comp-shape-repeater-scale`        | A repeated scale power is undefined or not finite.                                                    |
+| `comp-shape-repeater-transform`    | A repeated transform is not finite.                                                                   |
+| `comp-shape-dash-precision`        | Nib dash spacing is below the available coordinate precision.                                         |
+| `comp-shape-follow-empty`          | A follow-path source has no contour or zero arc length.                                               |
+| `comp-constraint-path`             | A follow-path source is not a native shape layer.                                                     |
 | `comp-feature-unavailable`         | A contract feature whose implementation milestone has not landed.                                     |
 | `comp-provider-bounds`             | Provider bounds have non-positive width or height.                                                    |
 | `comp-provider-unavailable`        | A versioned content provider is not registered in this renderer.                                      |
@@ -848,6 +957,73 @@ a structural schema, then semantic rules (references, cycles, limits). The CE1 m
 defines and validates the format. CE2 evaluates it without drawing; the CE3 render
 graph and Canvas 2D backend [render](#rendering-a-composition) the evaluated state.
 
+## Native shape contents (CE5)
+
+A `shape` layer owns an ordered `contents` tree. Primitives are `rect`, `ellipse`,
+`polystar` (`kind: star | polygon`) and open/closed cubic `path`; `group` gives
+children their own 2D transform and opacity. Rectangle/ellipse coordinates are
+centred on their `position`. Paths store vertex coordinates and relative incoming/
+outgoing tangent offsets. Keyed paths require matching vertex counts and closure;
+`firstVertex` aligns closed paths before interpolation. Zero-size primitives produce
+no geometry. Polystar point counts round to the nearest integer, bounded to 2–256.
+
+Paints are `fill`, `stroke`, `gradient-fill` and `gradient-stroke`. Fills support
+`nonzero` or `evenodd`. Strokes support butt/round/square caps, miter/round/bevel
+joins, a miter limit, static nonnegative dash arrays and animated dash offset.
+An odd dash array repeats twice; a zero-total array is solid. Gradient kind is
+`linear` or `radial`; endpoints, opacity, stop offsets and whole colours animate.
+Equal-offset stops retain authored order. Coincident endpoints use the last stop.
+Stroke `style: ink | brush` reuses the established nib profiles and declared path
+ID, retaining the original full path coordinates when trimmed. Plain strokes use
+native cubic traces. Brush cuts reveal the wash and backdrop.
+
+Native shape paints use CPU Canvas preparation in both pinned and hardware previews
+so cubic strokes and nib edges follow the same raster path. WebGL composites their
+prepared textures on the GPU. Hardware acceptance compares first, middle and last
+frames on both backends using the unchanged perceptual policy.
+
+Contents and operators are processed top to bottom; paints draw bottom to top.
+A paint binds upstream geometry, so subsequent operators update the geometry it
+paints. A parent operator also reaches a painted child group. A child paint keeps
+its own coordinate system, transform and opacity; an outer paint consumes child
+geometry in parent coordinates. A repeater after a paint copies the paint and its
+coordinates; a repeater before a paint creates compound geometry for that paint.
+
+| Operator        | Native semantics                                                                                                                                                                                                                                                                       |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `trim-paths`    | Normalized start/end are sorted; equal endpoints are empty and a full interval is unchanged. Offset is degrees. Closed paths wrap; open paths clamp. `simultaneous` trims each contour separately; `individual` trims their combined authored-order length.                            |
+| `repeater`      | Copies support fractional final-copy opacity and a signed offset. Transform powers use position, anchor, scale, rotation and skews; invalid fractional negative-scale powers fail. `above` or `below` controls copy order; default is `below`. Start/end opacity varies across copies. |
+| `merge-paths`   | `union`, top operand minus the rest (`subtract`), intersection of every operand, or XOR fold (`exclude`). Empty operands remain meaningful. Clipping preserves hole winding.                                                                                                           |
+| `offset-path`   | Closed contours grow/shrink with miter, round or bevel joins. Open contours shift along their signed left normal, with joined corners; they do not become filled stroke outlines.                                                                                                      |
+| `round-corners` | Circular fillets on flattened corners; open endpoints remain unchanged.                                                                                                                                                                                                                |
+| `wiggle-paths`  | Seeded offsets from the declared path ID, frequency, evolution and local layer seconds. Detail controls uniform arc-length samples; optional smooth handles.                                                                                                                           |
+| `zig-zag`       | Alternating normal offsets along each original cubic, with corner or smooth points; open endpoints remain unchanged.                                                                                                                                                                   |
+| `pucker-bloat`  | Positive amount moves vertices toward their mean and absolute control points outward; negative amount reverses it.                                                                                                                                                                     |
+| `twist`         | Positive clockwise rotation, strongest at the centre and falling linearly to zero at the furthest sampled radius. This is an explicit native falloff.                                                                                                                                  |
+
+Polygon clipping and closed offsetting use pinned `clipper2-ts` 2.0.1-18,
+[Boost Software License 1.0](https://github.com/countertype/clipper2-ts/blob/main/LICENSE),
+a TypeScript port of [Clipper2](https://github.com/AngusJohnson/Clipper2). Input
+coordinates quantize to 1/1,024 units, with at most 1,024 polygon vertices per
+operation. Curves flatten at fixed 0.25-unit tolerance and maximum depth 12;
+geometry work has explicit path/vertex/coordinate caps. Nib segment lookups also
+consume work so complex marks cannot create unbounded sampling. These native
+choices do not claim pixel parity with unpublished AE deformation formulas.
+
+Shape bounds include cubic extrema and conservative stroke, square-cap and miter coverage. Attach,
+contact and safe-area constraints use them. `follow-path` reads the first compiled
+contour in world arc length; an empty contour reports `comp-shape-follow-empty`.
+Work/coordinate failures report a stable diagnostic with layer and frame; export
+fails without publishing an output.
+
+The [reference sheet](../benchmarks/fixtures/composition/ce5/reference-sheet.json)
+and [animated trim/morph fixture](../benchmarks/fixtures/composition/ce5/animation.json)
+have their own [stored baseline](../tests/visual/composition-shapes/README.md).
+The baseline includes all full-frame hashes on both backends and exact reverse
+seeks; Canvas/WebGL comparisons use the unchanged near tier. Existing CE0 baselines
+remain frozen. See the [native builder example](../examples/composition/09-native-shapes.ts)
+for ID-based animation and `presets.drawOn` on a painted group.
+
 ## Evaluating a frame
 
 ```ts
@@ -861,7 +1037,7 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-23`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-29`.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -925,9 +1101,16 @@ over a deterministic 128-subdivision cubic arc-length table, matching the existi
 spatial-path semantics. Nonspatial grouped vectors interpolate per component.
 Scalar temporal speeds are property units per frame, including pixels, degrees,
 scale factors and normalized colour channels when driven by scalar signals.
-Grouped vector/colour `speed` remains rejected. A future explicit velocity tuple must
-match the property's dimensions and units; spatial speed needs a distinct scalar
-in arc-length pixels per frame. These authoring extensions are deferred to CE9.
+Grouped vector/colour `speed` is a tuple matching the property's dimensions and
+units. Spatial keys instead use scalar `spatialSpeed` in arc-length pixels per frame.
+
+Closed Bézier values may set `firstVertex` to align their morph correspondence.
+Sampling rotates vertices and both tangent arrays together before interpolation;
+every key still needs the same vertex count. Open paths use `firstVertex: 0` or omit
+it. Legacy `pathMorphs` retain their `points` keys and additionally accept `closed`,
+`inTangents`, `outTangents` and `firstVertex` per key, with up to 1,024 matched points.
+Rich legacy curves use the native Bézier sampler and fixed 0.25-unit flattening;
+unchanged point-only keys retain their original interpolation arithmetic.
 
 Bounds are geometric axis-aligned screen bounds before masks, expanded conservatively for supported effects; solids and
 image placement boxes are exact. Supply measured text bounds without invoking font

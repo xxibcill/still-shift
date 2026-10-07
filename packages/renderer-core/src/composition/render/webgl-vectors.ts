@@ -62,7 +62,9 @@ export class WebglVectors {
       const box =
         c.type === "solid"
           ? { left: 0, top: 0, right: c.width, bottom: c.height }
-          : this.contentBounds?.(c);
+          : c.type === "shape"
+            ? c.shapes.bounds
+            : this.contentBounds?.(c);
       if (!box)
         return { left: 0, top: 0, right: dst.width, bottom: dst.height };
       const world = new DOMMatrix();
@@ -112,7 +114,9 @@ export class WebglVectors {
     // Custom drawers retain full dimensions unless they explicitly opt in.
     const bounded = ops.every(
       ({ content }) =>
-        content.type === "solid" || this.boundedCanvas?.(content),
+        content.type === "solid" ||
+        content.type === "shape" ||
+        this.boundedCanvas?.(content),
     );
     const rasterWidth = bounded
       ? Math.min(dst.width, Math.ceil((rect.right + 63) / 256) * 256)
@@ -120,8 +124,12 @@ export class WebglVectors {
     const rasterHeight = bounded
       ? Math.min(dst.height, Math.ceil((rect.bottom + 63) / 256) * 256)
       : dst.height;
-    // Hardware Canvas blur differs from the pinned CPU filter at small radii.
-    const rasterMode = ops.some((op) => op.paintBlur) ? "software" : undefined;
+    // Native cubic strokes and Canvas filters differ on the hardware raster path.
+    const rasterMode = ops.some(
+      (op) => op.paintBlur || op.content.type === "shape",
+    )
+      ? "software"
+      : undefined;
     const pixels = this.raster.createSurface(
       rasterWidth,
       rasterHeight,
@@ -129,12 +137,16 @@ export class WebglVectors {
     );
     // draw() separates overlapping coverage before batching paints over a backdrop.
     const imageOnly = ops.every(
-      ({ content }) => content.type !== "solid" && this.singleImage?.(content),
+      ({ content }) =>
+        content.type !== "solid" &&
+        content.type !== "shape" &&
+        this.singleImage?.(content),
     );
     const content = ops.length === 1 ? ops[0]!.content : undefined;
     const stableImages =
       !!content &&
       content.type !== "solid" &&
+      content.type !== "shape" &&
       content.stateFrom === undefined &&
       this.stableImages?.(content) === true;
     const recording =
@@ -188,6 +200,8 @@ export class WebglVectors {
             op.transforms,
             op.paintBlur,
           );
+        else if (c.type === "shape")
+          this.raster.drawShape(painting, c, ...args);
         else if (c.type === "text") this.raster.drawText(painting, c, ...args);
         else this.raster.drawProvider(painting, c, ...args);
       }

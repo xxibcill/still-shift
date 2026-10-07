@@ -41,8 +41,49 @@ with an AI model, cut out products, or invent missing illustration layers.
 The `composition-1` format supports pure frame and property evaluation in Node
 and browsers through `evaluateComp` and `evaluateProperty` from
 `@still-shift/renderer-core`. Use it to inspect animated transforms, visibility,
-colours, masks, constraints and precomp timing before rendering. Fractional frame
+colours, native shape contents, masks, constraints and precomp timing before rendering. Fractional frame
 times and seeking backwards produce deterministic state.
+
+For a closed Bézier morph, set `firstVertex` on each keyed value to align matching
+vertices and their incoming/outgoing tangents. All keys need equal vertex counts;
+open paths use 0 or omit the field. Existing scene `pathMorphs` keep `points` and
+can also provide `closed`, `inTangents`, `outTangents` and `firstVertex` on each key.
+
+Native `shape` layers contain ordered `contents`: groups with their own transforms,
+rectangles, ellipses, stars/polygons and open or closed cubic paths. Add fills,
+strokes or linear/radial gradient paints after the paths they paint. Geometry
+operators run in authored order; paints run from bottom to top. A repeater before
+a paint makes compound geometry; one below a paint repeats the painted result,
+including its local gradient. Use `order: "below"` (the native default) or `"above"`
+for overlapping copies. Fractional copies fade the final copy.
+
+Animate native fields by ID, including nested routes such as
+`shape.contents[group].contents[path].path`, `shape.contents[rect].size.x` and
+`shape.contents[gradient].stops[accent].color`. Shape coordinates and transforms
+are 2D. Ink and brush are native stroke styles; trims keep their source coordinates
+and brush identity. Brush `pinch`, `pinchAt` and `pinchWidth` control its width
+profile. Plain strokes support caps, joins and dash offsets; nib strokes also
+support dash reveals in original stroke coordinates.
+
+Trim start/end use 0–1 and offset uses degrees. Closed paths wrap; open paths clamp.
+`simultaneous` trims each contour; `individual` uses their combined ordered arc
+length. Merge subtracts underlying operands from the topmost operand; intersection
+uses every operand and native `exclude` folds XOR. Polygon operations quantize to
+1/1024 local unit and accept at most 1,024 total input vertices. Closed positive
+offsets expand contours; open offsets create a signed parallel path, with positive
+amounts following the left normal. They keep open topology.
+
+Wiggle depends only on its seed, source ID and layer-local time. Zigzag ridges use
+arc length within each original cubic. Positive pucker pulls vertices toward their
+mean while moving controls outward. Native twist uses linear radial falloff:
+`angle * (1 - distance / maxRadius)`, with the outer radius fixed. These documented
+native choices do not claim unmeasured After Effects pixel equivalence.
+
+Generated geometry shares a 262,144-point work budget and 4,096-path work budget
+across nested instances and historical reads within one evaluation. Cubics flatten
+at 0.25 local unit tolerance and depth 12. Excess work or invalid coordinates reports
+a diagnostic and fails export. Follow-path constraints use the source shape's first
+compiled contour, measured in world arc length; empty sources report a diagnostic.
 
 To render a composition to MP4:
 
@@ -55,7 +96,7 @@ checked. The command prints a result with the renderer and evaluator versions, t
 output checksum and timing metrics, and writes `out.mp4.scene.json` and
 `out.mp4.result.json` beside the video. Precomps, blend modes, track mattes, masks,
 adjustment layers and typography text render today, along with the delivered native
-effect catalogue and shutter motion blur. Richer shapes and 3D layers arrive in later
+effect catalogue and shutter motion blur. Native shapes are available; 3D layers arrive in later
 milestones. Transparent backgrounds show black in MP4.
 
 To try the CE4a story adapter, compile
@@ -94,6 +135,23 @@ and animated blur, stroke and trim. See the [commerce adapter reference](./compo
 for provider details and input limits. CE4b is complete under the approved milestone
 split; CE6-P retains the unchanged 1.25× render/readback timing target, deferred
 to a future version.
+
+### Native vector shapes
+
+Use `shape.native(id, { contents })` for cubic paths, rectangles, ellipses and
+polystars, four paint types and nine path operators. The
+[native shape example](../examples/composition/09-native-shapes.ts) draws a brush
+connector and animates a gradient star. `presets.drawOn` appends a trim operator
+that also reaches paths inside painted groups. Animate nested fields by their
+stable IDs, for example `contents[diagram].contents[line].path` or
+`contents[paint].stops[edge].color`. The inspector exposes their keys and outlines;
+`comp bake` supports their expressions and separated vector axes.
+
+Paths use local coordinates. Supply a numeric anchor for native shapes when you
+need a particular pivot; their contents do not have one declared rectangular size.
+`shape.rect` retains the simple solid-layer convenience API. Native shape details,
+operator order, geometry limits and polygon-library licence are in the
+[generated reference](./composition-reference.md).
 
 ### Expressions and behaviours
 
@@ -185,7 +243,7 @@ TypeScript program.
 
 Import typed layers, properties and timelines from `@still-shift/motion`, and export
 the composition as the program's default export. The CLI accepts `.ts`, `.mts`,
-`.cts` and native `.json` inputs. Start with the eight small programs in
+`.cts` and native `.json` inputs. Start with the nine small programs in
 [`examples/composition`](../examples/composition), or the
 [197-line Unequal Margins program](../examples/composition/unequal-margins/program.ts).
 

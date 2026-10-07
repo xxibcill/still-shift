@@ -12,6 +12,7 @@ import {
   implicitAnchorDependencies,
   isResolvedProperty,
   layerNodeOf,
+  locateShapeProperty,
   parsePropertyPath,
   resolvePropertyPath,
   segmentKey,
@@ -80,6 +81,12 @@ const ROOT_LENGTH: Record<string, number> = {
 };
 
 function propertyRoot(segments: PropertyPathSegment[]) {
+  if (segments[0]!.name === "contents") {
+    const last = segments.at(-1)!;
+    return last.index === undefined && COMPONENTS.has(last.name)
+      ? segments.slice(0, -1)
+      : segments;
+  }
   const length = ROOT_LENGTH[segments[0]!.name] ?? 1;
   return segments.slice(0, length);
 }
@@ -513,6 +520,17 @@ function write(
   const [head, next] = segments;
   const target = layer as Record<string, unknown>;
   switch (head!.name) {
+    case "contents": {
+      if (layer.type !== "shape") return;
+      const location = locateShapeProperty(layer.contents, segments)!;
+      let parent = target;
+      for (const part of location.jsonPath.slice(0, -1)) {
+        if (parent[part] === undefined) parent[part] = {};
+        parent = parent[part] as Record<string, unknown>;
+      }
+      parent[location.jsonPath.at(-1)!] = value;
+      return;
+    }
     case "transform":
       target.transform = { ...(layer.transform ?? {}), [next!.name]: value };
       return;

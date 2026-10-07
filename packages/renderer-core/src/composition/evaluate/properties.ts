@@ -1,4 +1,7 @@
-import type { PropertyPathSegment } from "@still-shift/scene-contract";
+import {
+  locateShapeProperty,
+  type PropertyPathSegment,
+} from "@still-shift/scene-contract";
 import type { EvaluatedLayer, PropertyValue } from "./types.ts";
 
 const vectorAxis = { x: 0, y: 1 } as const;
@@ -6,6 +9,15 @@ const colorAxis = { r: 0, g: 1, b: 2, a: 3 } as const;
 
 function container(state: EvaluatedLayer, segments: PropertyPathSegment[]) {
   const [head, next, component] = segments;
+  if (head!.name === "contents") {
+    const location = locateShapeProperty(state.contents!, segments)!;
+    if (location.component !== undefined)
+      return {
+        object: location.owner[location.key] as number[],
+        key: location.component,
+      };
+    return { object: location.owner, key: location.key };
+  }
   if (head!.name === "transform") {
     const key = next!.name as keyof EvaluatedLayer["transform"];
     if (component)

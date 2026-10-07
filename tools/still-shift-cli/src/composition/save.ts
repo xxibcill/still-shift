@@ -9,7 +9,7 @@ import {
   writeFile,
 } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
-import { acquireArtifactLock } from "@still-shift/execution-runtime";
+import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
 import {
   PassageError,
   passageDiagnostics,

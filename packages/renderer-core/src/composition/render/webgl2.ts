@@ -24,7 +24,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.36.3" as const;
+  "composition-webgl2-0.37.6" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -182,11 +182,12 @@ export function createWebgl2Backend(
     paint: (surface: CanvasSurface) => void,
     primitive = false,
     paintBlur = 0,
+    software = false,
   ) {
     const pixels = raster.createSurface(
       dst.width,
       dst.height,
-      paintBlur ? "software" : undefined,
+      paintBlur || software ? "software" : undefined,
     );
     const source = device.surface(dst.width, dst.height);
     try {
@@ -402,6 +403,38 @@ export function createWebgl2Backend(
           ),
         false,
         paintBlur,
+      );
+    },
+    drawShape(
+      dst,
+      content,
+      matrix,
+      opacity,
+      mode,
+      clips,
+      transforms,
+      paintBlur,
+    ) {
+      const rect = content.shapes.bounds;
+      if (paintBlur || !rect) bounds.full(dst);
+      else bounds.transform(dst, rect, matrix);
+      draw(
+        dst,
+        mode,
+        (pixels) =>
+          raster.drawShape(
+            pixels,
+            content,
+            matrix,
+            opacity,
+            "normal",
+            clips,
+            transforms,
+            paintBlur,
+          ),
+        false,
+        paintBlur,
+        true,
       );
     },
     drawProvider(

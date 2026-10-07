@@ -13,6 +13,8 @@ export {
   type Keyed,
 } from "./keys.ts";
 export * from "./layers.ts";
+export * from "./shapes.ts";
+export * from "./shape-properties.ts";
 export * from "./property-path.ts";
 export * from "./composition.ts";
 export * from "./resolve.ts";

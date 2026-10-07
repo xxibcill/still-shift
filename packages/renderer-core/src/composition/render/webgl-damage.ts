@@ -44,16 +44,18 @@ export class WebglDamage {
     if (op.paintBlur) return undefined;
     const c = op.content;
     const box =
-      c.type === "provider" || c.type === "text"
-        ? this.contentBounds?.(c)
-        : c.type === "surface"
-          ? {
-              left: 0,
-              top: 0,
-              right: c.surface.width,
-              bottom: c.surface.height,
-            }
-          : { left: 0, top: 0, right: c.width, bottom: c.height };
+      c.type === "shape"
+        ? (c.shapes.bounds ?? undefined)
+        : c.type === "provider" || c.type === "text"
+          ? this.contentBounds?.(c)
+          : c.type === "surface"
+            ? {
+                left: 0,
+                top: 0,
+                right: c.surface.width,
+                bottom: c.surface.height,
+              }
+            : { left: 0, top: 0, right: c.width, bottom: c.height };
     if (!box) return undefined;
     const [a, b, cx, d, tx, ty] = op.matrix;
     const points = [

@@ -213,6 +213,12 @@ export const AnimatableDiscreteSchema = z.union([
 export const BezierPathSchema = z
   .object({
     closed: z.boolean(),
+    /** Source vertex used as index zero for a closed path's morph correspondence. */
+    firstVertex: finite
+      .int()
+      .min(0)
+      .max(COMPOSITION_LIMITS.maxPathVertices - 1)
+      .optional(),
     vertices: z.array(vec2).min(2).max(COMPOSITION_LIMITS.maxPathVertices),
     inTangents: z
       .array(vec2)
@@ -226,6 +232,15 @@ export const BezierPathSchema = z
   .strict()
   .superRefine((path, ctx) => {
     const fail = reporter(ctx);
+    if (
+      (path.firstVertex ?? 0) >= path.vertices.length ||
+      (!path.closed && (path.firstVertex ?? 0) !== 0)
+    )
+      fail(
+        "comp-path-first-vertex",
+        ["firstVertex"],
+        "firstVertex must name a vertex of a closed path; open paths use 0",
+      );
     for (const side of ["inTangents", "outTangents"] as const)
       if (path[side] && path[side].length !== path.vertices.length)
         fail(

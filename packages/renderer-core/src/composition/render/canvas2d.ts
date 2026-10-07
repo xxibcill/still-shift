@@ -1,3 +1,5 @@
+import { cssColor } from "./canvas-color.ts";
+import { drawShapes } from "./draw-shapes.ts";
 import { applyCanvasEffects } from "./effects.ts";
 import type {
   BezierPath,
@@ -6,7 +8,6 @@ import type {
   Composition,
 } from "@still-shift/scene-contract";
 import { imagePlacement, type Matrix } from "../../node-transform.ts";
-import type { Rgba } from "../evaluate/types.ts";
 import type { RenderBackend } from "./backend.ts";
 import type {
   ClipRect,
@@ -34,11 +35,13 @@ export type CanvasImageResources = {
   pngImages?: ReadonlySet<string>;
 };
 
-/** CPU glyph preparation and Canvas filters must use the same raster path. */
+/** Native cubic/nib paints and Canvas filters use CPU preparation on hardware previews too. */
 export function requiresSoftwareFilters(composition: Composition): boolean {
   return [composition, ...(composition.precomps ?? [])].some((scope) =>
-    scope.layers.some((layer) =>
-      layer.effects?.some((effect) => effect.effect === "blur.primitive"),
+    scope.layers.some(
+      (layer) =>
+        layer.type === "shape" ||
+        layer.effects?.some((effect) => effect.effect === "blur.primitive"),
     ),
   );
 }
@@ -69,14 +72,7 @@ const COMPOSITE: Record<CompositionBlendMode, GlobalCompositeOperation> = {
   add: "lighter",
 };
 
-const byte = (v: number) =>
-  Math.round(Math.max(0, Math.min(1, v)) * 255)
-    .toString(16)
-    .padStart(2, "0");
-/** `#RRGGBB`, or `#RRGGBBAA` when translucent, matching legacy hex fills. */
-export function cssColor([r, g, b, a]: Rgba): string {
-  return `#${byte(r)}${byte(g)}${byte(b)}${a < 1 ? byte(a) : ""}`;
-}
+export { cssColor } from "./canvas-color.ts";
 
 export function bezierPath2D(path: BezierPath): Path2D {
   const p = new Path2D(),
@@ -422,6 +418,31 @@ export function createCanvas2dBackend(
         (ctx, state) =>
           options.drawText(ctx, { ...content, state: state ?? content.state }),
       );
+    },
+    drawShape(
+      dst,
+      content,
+      matrix,
+      opacity,
+      blend,
+      clips,
+      transforms,
+      paintBlur,
+    ) {
+      const ctx = begin(
+        dst,
+        matrix,
+        opacity,
+        blend,
+        clips,
+        transforms,
+        paintBlur,
+      );
+      try {
+        drawShapes(ctx, content.shapes);
+      } finally {
+        ctx.restore();
+      }
     },
     drawProvider(
       dst,

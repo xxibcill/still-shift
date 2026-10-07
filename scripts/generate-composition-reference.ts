@@ -21,6 +21,8 @@ import {
   EXPRESSION_LIMITS,
   STORY_MOTION_PRESETS,
   TEXT_INTENT_PRESETS,
+  shapeFields,
+  SHAPE_LIMITS,
 } from "@still-shift/scene-contract";
 import { presets } from "@still-shift/motion";
 type Schema = {
@@ -113,7 +115,7 @@ ${example}
 
 Use exactly one of \`frames\` or \`seconds\` for the composition duration. Allowed fps: ${CompositionFpsSchema.options.map((item) => item.value).join(", ")}. Composition frame counts are positive integers; animation durations are nonnegative integers, and \`{ seconds: n }\` durations use \`Math.round(n * fps)\`. Markers use composition frames. Author keys before the composition's last boundary.
 
-- Delivered layers: solid, image, text, group, null, precomp, adjustment and registered providers. Native shapes/operators, 3D cameras/lights and video/audio layers are reserved for later milestones; schema presence does not imply a renderer is available. Rectangles use \`shape.rect\` or \`solid\` now.
+- Delivered layers: solid, image, text, shape, group, null, precomp, adjustment and registered providers. Native shapes include cubic primitives/paths, four paints and all nine operators on Canvas/WebGL. 3D cameras/lights and video/audio layers remain reserved for later milestones. Plain builder \`shape.rect\` retains its solid-layer output; native authoring uses a shape contents tree.
 - Layers added first are in front; later-added layers paint behind them. Put full-frame backdrop layers last, or use the composition background. For a delayed fade-in, start the layer at \`.opacity(0)\` (or gate visibility with \`inPoint\`); \`.from(0)\` sets the placed animation segment, rather than hiding an already-visible layer before that segment.
 - Set transforms with \`.at(x,y)\`, \`.anchor("center" | "bottom" | ...)\`, \`.scale(x,y)\`, \`.rotate(degrees)\`, \`.opacity(value)\`, \`.parent(layer)\`, and native fields with \`.with(options)\`. Text without an explicit ID gets deterministic \`text\`, \`text-2\`, ... IDs.
 - Add the actual layer object to \`c\` before animating it. Animate \`.x\`, \`.y\`, \`.position\`, \`.scaleX\`, \`.scaleY\`, \`.rotation\`, \`.alpha\` or \`.property(path)\` via \`.from(value).to(value,duration,easing)\`, \`.by(delta,duration,easing)\` and \`.keys([{frame,value,...}])\`. \`.opacity\` is the static setter; \`.alpha\` is the animation property.
@@ -124,7 +126,7 @@ Use exactly one of \`frames\` or \`seconds\` for the composition duration. Allow
     .map(code)
     .join(
       ", ",
-    )}; call \`presets.settle(layer,duration,{amount:8,property:"y"})\` inside a timeline. These emit staged additive drivers/carriers. \`drawOn\` currently requires a \`story.path@1.0.0\` provider. Text recipes: ${Object.keys(presets.text).map(code).join(", ")}; \`presets.text.emphasize(title,12,{manner:"highlight"})\`. Correction requires \`replacement\`; qualification requires a smaller text layer and a \`target\` claim. Retype/count require two states; count also requires numeric states and a style with tabular figures. Presets need a positive duration ending within the composition.
+    )}; call \`presets.settle(layer,duration,{amount:8,property:"y"})\` inside a timeline. These emit staged additive drivers/carriers. \`drawOn\` adds native trim keys to a shape layer and also supports the legacy \`story.path@1.0.0\` provider. Text recipes: ${Object.keys(presets.text).map(code).join(", ")}; \`presets.text.emphasize(title,12,{manner:"highlight"})\`. Correction requires \`replacement\`; qualification requires a smaller text layer and a \`target\` claim. Retype/count require two states; count also requires numeric states and a style with tabular figures. Presets need a positive duration ending within the composition.
 - Pin images/fonts using \`imageAsset\` and \`fontAsset\` from \`@still-shift/motion/node\`, for example \`await imageAsset("art","./art.svg",{relativeTo:import.meta.url})\`. These read real bytes, dimensions and SHA-256. \`image("hero",asset)\` registers its image automatically; pass fonts in \`comp({assets:[font],...})\` and \`text("Title",{fontAsset:font.id,...})\`. For a repository-local font use \`assets/story-motion/fonts/plex-sans-semibold.ttf\` with weight \`"600"\`. Browser callers supply precomputed asset descriptors. Authored system fonts are errors; do not fabricate hashes.
 - Reused precomps are separate instances. Target instance paths such as \`instance("left","child").path("x")\`; nested definitions cannot silently carry root-only drivers/camera/expressions. Parent and matte references name layers in the same scope.
 - Runtime expressions use the constrained text syntax via the expr tagged template, or \`ref("left/child.x")\`. Builder TypeScript runs once; arbitrary JavaScript does not run per frame. Read the linked generated reference for property paths, expression grammar, built-ins, masks/effects and diagnostics when needed.
@@ -135,7 +137,7 @@ ${commands}
 
 Validate after authoring and fix located diagnostics before rendering. CLI accepts \`.json\`, \`.ts\`, \`.mts\` and \`.cts\`; JSON export rebases pinned asset paths to its output folder. Output writes refuse to overwrite existing files. Watch preview retains the last valid pixels/frame on an invalid rebuild. Lint reports motion craft separately from schema validity; use its findings to improve the clip. Verification runs locally using pnpm.
 
-Read [the generated composition reference](../../docs/composition-reference.md) for contract details and advanced operations. See [eight small programs](../../examples/composition/) and [the 197-line Unequal Margins program](../../examples/composition/unequal-margins/program.ts) for concrete authoring patterns.
+Read [the generated composition reference](../../docs/composition-reference.md) for contract details and advanced operations. See [nine small programs](../../examples/composition/) and [the 197-line Unequal Margins program](../../examples/composition/unequal-margins/program.ts) for concrete authoring patterns.
 `;
 }
 async function reference(root: string): Promise<string> {
@@ -234,6 +236,58 @@ ${table(["Function", "Overloads", "Behavior"], builtins)}
 ${table(["Effect", "Property", "Type", "Default", "Range"], effects)}
 
 Blend modes: ${COMPOSITION_BLEND_MODES.map(code).join(", ")}.
+
+## Generated native shape fields
+
+Native selectors use authored IDs: \`diagram.contents[group].contents[path].path\`,
+\`diagram.contents[group].transform.position.x\` and
+\`diagram.contents[paint].stops[stop].color\`. Vector components are x/y; colour
+components are r/g/b/a. The \`transform\` rows apply to groups and the
+\`repeater-transform\` rows to repeaters. Stop fields apply to gradient stops.
+
+${table(
+  ["Content type", "Property", "Type", "Default", "Range"],
+  [
+    "transform",
+    "repeater-transform",
+    "stop",
+    "rect",
+    "ellipse",
+    "polystar",
+    "path",
+    "fill",
+    "stroke",
+    "gradient-fill",
+    "gradient-stroke",
+    "trim-paths",
+    "repeater",
+    "offset-path",
+    "round-corners",
+    "wiggle-paths",
+    "zig-zag",
+    "pucker-bloat",
+    "twist",
+  ].flatMap((type) =>
+    Object.entries(shapeFields(type)).map(([name, field]) => [
+      code(type),
+      code(name),
+      field.type,
+      field.default === undefined
+        ? "required"
+        : code(JSON.stringify(field.default)),
+      field.type === "scalar" || field.type === "vec2"
+        ? `${field.min}–${field.max}`
+        : "—",
+    ]),
+  ),
+)}
+
+Native geometry limits:
+
+${table(
+  ["Limit", "Value"],
+  Object.entries(SHAPE_LIMITS).map(([name, value]) => [code(name), value]),
+)}
 
 ## Generated intent registry
 

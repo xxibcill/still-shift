@@ -42,6 +42,8 @@ export type CompiledComposition = {
   expressions: Map<string, ExpressionBinding[]>;
   /** Expressions or path auto-orient may read layers' pre-constraint stage values. */
   stageReads: boolean;
+  /** Native shape geometry or a follow-path diagnostic needs located work budgets. */
+  shapeWork: boolean;
   paths: Map<string, PropertyPath>;
   /** Static per-scope selections, so time-shifted evaluations stay cheap. */
   solo: Map<CompositionScope, Set<string> | null>;
@@ -84,6 +86,13 @@ export function compileComposition(comp: Composition): CompiledComposition {
     periodic: new Map(),
     expressions: new Map(),
     stageReads: false,
+    shapeWork: scopes.some(
+      (scope) =>
+        scope.layers.some((layer) => layer.type === "shape") ||
+        scope.constraints?.some(
+          (constraint) => constraint.type === "follow-path",
+        ),
+    ),
     paths: new Map(),
     solo: new Map(),
     mattes: new Map(),

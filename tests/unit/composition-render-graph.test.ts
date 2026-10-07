@@ -167,6 +167,7 @@ describe("render graph", () => {
         drawImage: () => {},
         drawText: () => {},
         drawProvider: () => {},
+        drawShape: () => {},
         composite: () => {
           calls.push("composite");
         },

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "composition-1",
+  "fps": 24,
+  "frameCount": 96,
+  "assets": [],
+  "background": "#25313b",
+  "id": "shape-animation",
+  "width": 320,
+  "height": 180,
+  "layers": [
+    {
+      "id": "morph",
+      "type": "shape",
+      "transform": {
+        "position": [80, 80]
+      },
+      "contents": [
+        {
+          "id": "path",
+          "type": "path",
+          "path": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": {
+                  "closed": true,
+                  "vertices": [
+                    [-40, -40],
+                    [40, -40],
+                    [40, 40],
+                    [-40, 40]
+                  ]
+                }
+              },
+              {
+                "frame": 95,
+                "value": {
+                  "closed": true,
+                  "firstVertex": 1,
+                  "vertices": [
+                    [0, -50],
+                    [50, 0],
+                    [0, 50],
+                    [-50, 0]
+                  ],
+                  "outTangents": [
+                    [20, 0],
+                    [0, 20],
+                    [-20, 0],
+                    [0, -20]
+                  ],
+                  "inTangents": [
+                    [-20, 0],
+                    [0, -20],
+                    [20, 0],
+                    [0, 20]
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "paint",
+          "type": "stroke",
+          "color": "#26e5cc",
+          "width": 6,
+          "cap": "round"
+        },
+        {
+          "id": "trim",
+          "type": "trim-paths",
+          "end": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 95,
+                "value": 1
+              }
+            ]
+          },
+          "offset": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 95,
+                "value": 360
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "wiggle",
+      "type": "shape",
+      "transform": {
+        "position": [220, 80]
+      },
+      "contents": [
+        {
+          "id": "star",
+          "type": "polystar",
+          "kind": "star",
+          "points": 5,
+          "innerRadius": 18,
+          "outerRadius": 40
+        },
+        {
+          "id": "paint",
+          "type": "fill",
+          "color": "#eec344"
+        },
+        {
+          "id": "wiggle",
+          "type": "wiggle-paths",
+          "size": 7,
+          "frequency": 2,
+          "detail": 2,
+          "seed": 42
+        }
+      ]
+    }
+  ]
+}

@@ -4,8 +4,36 @@ import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 import type { SpatialPath } from "../../scene-contract/src/motion-craft.ts";
 import { sampleCurve } from "./curve.ts";
 import { easeMotion } from "./motion-easing.ts";
+import { path as sampleBezierPath } from "./composition/evaluate/sample.ts";
+import { flattenBezier } from "./composition/shapes/path.ts";
+import type { BezierPath, Keyed } from "@still-shift/scene-contract";
 
 type Point = [number, number];
+type Morph = NonNullable<StoryRenderScene["pathMorphs"]>[number];
+const richMorphs = new WeakMap<Morph, Keyed<BezierPath>>();
+
+function richMorphPath(morph: Morph, frame: number, fps: number): Point[] {
+  let value = richMorphs.get(morph);
+  if (!value) {
+    value = {
+      keys: morph.keys.map((key) => ({
+        frame: key.frame,
+        ...(key.easing !== undefined ? { easing: key.easing } : {}),
+        value: {
+          closed: key.closed ?? false,
+          vertices: key.points,
+          ...(key.firstVertex !== undefined
+            ? { firstVertex: key.firstVertex }
+            : {}),
+          ...(key.inTangents ? { inTangents: key.inTangents } : {}),
+          ...(key.outTangents ? { outTangents: key.outTangents } : {}),
+        },
+      })),
+    };
+    richMorphs.set(morph, value);
+  }
+  return flattenBezier(sampleBezierPath(value, frame, fps));
+}
 export function interpolateColor(a: string, b: string, t: number) {
   if (t <= 0) return a;
   if (t >= 1) return b;
@@ -212,6 +240,16 @@ export function sampleMotionPath(
       ],
     };
   if (morph) {
+    if (
+      morph.keys.some(
+        (key) =>
+          key.closed !== undefined ||
+          key.firstVertex !== undefined ||
+          key.inTangents ||
+          key.outTangents,
+      )
+    )
+      return { ...result, points: richMorphPath(morph, frame, fps) };
     const end = morph.keys.findIndex((k) => k.frame > frame);
     if (end === 0) result = { ...result, points: morph.keys[0]!.points };
     else if (end < 0) result = { ...result, points: morph.keys.at(-1)!.points };

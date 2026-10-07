@@ -1,3 +1,4 @@
+import { locateShapeProperty } from "./shape-properties.ts";
 import { compositionEffectDefinition } from "./effects.ts";
 import type { Composition, CompositionScope } from "./composition.ts";
 import type { CompositionLayer } from "./layers.ts";
@@ -166,8 +167,15 @@ function resolveSegments(
       const type = definition.properties[next.name]!.type;
       return component(type, type === "color" ? COLOR_COMPONENTS : [], rest);
     }
-    case "contents":
-      return unavailable(text, "CE5");
+    case "contents": {
+      const property =
+        layer.type === "shape"
+          ? locateShapeProperty(layer.contents, segments)
+          : undefined;
+      return property
+        ? { type: property.type }
+        : missing(text, "a native shape property");
+    }
     default:
       return missing(text, "a property");
   }

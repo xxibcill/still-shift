@@ -1,0 +1,754 @@
+{
+  "milestone": "CE5",
+  "status": "complete",
+  "date": "2026-10-05",
+  "branch": "codex/composition-ce5",
+  "base": "a0c56df",
+  "slices": [
+    {
+      "name": "Bounded native shape contract and shared property locator",
+      "status": "checkpoint",
+      "changes": [
+        "Typed recursive groups, 2D transforms, four primitive families, four paint kinds and all nine operator kinds.",
+        "Total 256 contents / 16-level tree, 16 gradient stops, stable unique sibling/stop IDs, and explicit animation/default descriptors.",
+        "Nested shape/gradient ID locator serves authored and sampled trees; opaque metadata remains inaccessible.",
+        "Pinned clipper2-ts 2.0.1-18 as renderer dependency for future Boolean/offset geometry. Native shape rendering stays feature-unavailable until its renderer slice.",
+        "Reject inherited/prototype field names in native selectors; shared default descriptors are immutable."
+      ],
+      "verification": {
+        "build": "passed",
+        "changedFileLint": "passed",
+        "focusedTests": 40,
+        "fullUnitTests": 1516,
+        "unitFiles": 137,
+        "schemaGeneration": "passed",
+        "boundaries": "passed",
+        "schemaCheck": "passed",
+        "ownedFormat": "passed"
+      },
+      "initialRepairs": [
+        "Three JSON-boundary assertions expected comp-schema-type; newly strict shape discriminants correctly produce comp-schema-union. Depth/byte/cycle/UTF-8 assertions remain intact.",
+        "Two type-only schema locals failed unused-vars lint; remove the common schema local and export the reusable leaf schema."
+      ],
+      "logs": "benchmarks/results/composition-ce5-verification"
+    },
+    {
+      "name": "Native cubic math, primitives and rich morph correspondence",
+      "status": "checkpoint",
+      "changes": [
+        "Exact cubic extrema; fixed 0.25-unit flattening with depth 12 and explicit path/vertex/coordinate diagnostics.",
+        "Shared geometry budget API supports 262144 generated-point work / 4096 path work / \u00b11000000000 generated coordinates; native evaluator wiring follows the engine slice.",
+        "Cubic ellipse and rounded rect construction, polygon/star variants and clamped circular corner fillets. Polystar counts round to nearest integer at sampling.",
+        "Closed-path firstVertex rotates vertices and both tangent arrays before native sampling; open paths use 0.",
+        "Extend legacy PathMorphSchema to 1024 matched points, optional closed/tangent/alignment fields and actual rich rendering through native sampler/flattening; point-only arithmetic stays unchanged.",
+        "Evaluator and native renderer versions bumped; user/reference guidance documents alignment and corrects stale grouped-speed wording."
+      ],
+      "verification": {
+        "build": "passed",
+        "changedFileLint": "passed",
+        "geometryTests": 11,
+        "fullUnitTests": 1527,
+        "unitFiles": 138,
+        "boundaries": "passed",
+        "schemaGeneration": "passed",
+        "schemaCheck": "passed"
+      },
+      "versions": {
+        "evaluator": "composition-evaluator-24",
+        "canvas": "composition-canvas-1.22.8",
+        "webgl": "composition-webgl2-0.36.4"
+      },
+      "logs": "benchmarks/results/composition-ce5-verification",
+      "pending": [
+        "Operators, paint compiler and global native frame-budget integration",
+        "Native shape render/authoring/browser/baseline/export acceptance"
+      ]
+    },
+    {
+      "name": "Bounded trim, repeat, Boolean, offset and seeded deformation kernels",
+      "status": "checkpoint",
+      "changes": [
+        "Arc-length trim with closed wrap/open clamp, accumulated versus simultaneous contours and retained nib source spans remapped under anisotropic transforms.",
+        "Repeater anchor/scale powers, signed offsets, fractional copies, opacity ramps and above/below order; undefined scale powers fail with diagnostic locations.",
+        "Clipper2 Boolean modes retain holes and empty operands, topmost subtraction, all-operand intersection and native XOR parity. Quantization is 1/1024 unit with 1024 total input vertices per polygon operation.",
+        "Signed open parallel offsets retain topology; closed offsets expand/contract with miter/round/bevel joins and bounded round work.",
+        "Round-corner fillets, vertex/control pucker-bloat, center-to-edge linear twist falloff with interior samples, pure seeded/time-based wiggle and per-original-cubic arc-length zigzag.",
+        "Zero operators retain geometry; invalid complexity/generated work fails explicitly. Native frame-wide budget/compiler wiring remains pending."
+      ],
+      "verification": {
+        "operatorTests": 17,
+        "fullUnitTests": 1544,
+        "unitFiles": 139,
+        "build": "passed",
+        "changedFileLint": "passed after five type-only import fixes",
+        "boundaries": "passed",
+        "schemaCheck": "passed",
+        "ownedFileFormatting": "passed",
+        "browserAndFullGate": "not run for this kernel checkpoint"
+      },
+      "logs": "benchmarks/results/composition-ce5-verification",
+      "sources": [
+        "https://helpx.adobe.com/after-effects/desktop/drawing-painting-and-paths/shapes-and-shape-attributes/shape-attributes-paint-operations-path.html",
+        "https://helpx.adobe.com/after-effects/desktop/drawing-painting-and-paths/shapes-and-shape-attributes/use-offset-paths.html",
+        "https://raw.githubusercontent.com/airbnb/lottie-web/master/player/js/utils/shapes/PuckerAndBloatModifier.js"
+      ],
+      "nativeChoices": [
+        "Twist angle*(1-distance/maxRadius); unpublished AE falloff parity is not claimed.",
+        "Open offsets use a signed parallel path, not a stroked outline.",
+        "Exclude folds XOR across all operands; no multi-operand AE pixel parity claim."
+      ]
+    },
+    {
+      "name": "Typed shape sampling and native paint compiler",
+      "status": "checkpoint",
+      "changes": [
+        "Sample only the native animated-field registry and static shape controls, keeping opaque metadata out of evaluated state. Bound/clamp numeric fields and reject nonfinite inputs. Reserve path sampling work before cloning vertex arrays.",
+        "Capture upstream geometry bindings, apply ordered path operators and paint bottom-to-top. Groups retain independent paint transforms/opacity; outer paints consume transformed geometry with their own stroke width.",
+        "Repeater clones geometry and paint references together, preserving painted-copy gradients versus compound coordinates and above/below order; fractional copy opacity is applied once.",
+        "Individual trim retains binding provenance even when repeater copies share declared IDs. Merge clears consumed sources to avoid double painting.",
+        "Conservative cubic/stroke bounds, collapsed/tiny transform handling and aggregate geometry/reference-copy budgets. Full native evaluator/backend integration follows."
+      ],
+      "verification": {
+        "compilerAndSamplingTests": 12,
+        "fullUnitTests": 1556,
+        "unitFiles": 140,
+        "build": "passed",
+        "changedFileLint": "passed after two type-only import fixes",
+        "boundaries": "passed",
+        "ownedFileFormatting": "passed",
+        "browserAndFullGate": "not run for this compiler checkpoint"
+      },
+      "logs": "benchmarks/results/composition-ce5-verification"
+    },
+    {
+      "name": "Native evaluator/session budget, constraints and Canvas/WebGL rendering",
+      "status": "checkpoint",
+      "changes": [
+        "Shape layers available through native evaluated contents and immutable draw descriptions; explicit property routes integrate drivers, expressions and own-key loop helpers. Nested instances and historical reads share bounded shape work per evaluation.",
+        "Pre-constraint shape history copies are bounded; cubic/stroke bounds feed culling and attach/contact/safe-area constraints. Follow-path uses the first compiled contour in world arc length and optional tangent orientation; empty/non-shape sources have stable diagnostics.",
+        "Native Canvas cubic traces preserve open strokes; fills/strokes/linear/radial gradients, caps/joins/dashes and brush/ink nibs are wired. Gradient equal-offset order stays authored; degenerate endpoints use the last stop.",
+        "WebGL vector coverage, graph dispatch, damage and visual keys include native shape geometry/paint state. Empty shapes generate no draw.",
+        "Nib geometry reuses existing helpers with optional cached arc-length samplers; legacy defaults retain their arithmetic. Trim/repeat retain source coordinates/declared brush IDs; native nib dashes are bounded.",
+        "Updated generated reference/skill and user guidance; native browser test is part of pnpm test and therefore pnpm check."
+      ],
+      "verification": {
+        "fullUnitTests": 1562,
+        "unitFiles": 141,
+        "newEvaluatorNibChecks": 7,
+        "build": "passed",
+        "changedFileLint": "passed",
+        "boundaries": "passed",
+        "schemaGenerationAndCheck": "passed",
+        "ownedFileFormatting": "passed",
+        "browserCases": 22,
+        "browserSampleFrames": 154,
+        "crossBackendTier": "unchanged near: maximum channel delta 2 and PSNR >=50 dB",
+        "measuredMaxChannelDelta": 2,
+        "minimumPsnrDb": 58.23621659265477,
+        "exactCases": ["native connector", "ink stroke", "brush stroke"],
+        "reverseSeeks": "exact on both Canvas/WebGL",
+        "fullGateAndFrozenBaselines": "not run for this runtime checkpoint"
+      },
+      "versions": {
+        "evaluator": "composition-evaluator-25",
+        "canvas": "composition-canvas-1.23.0",
+        "webgl": "composition-webgl2-0.37.0"
+      },
+      "failuresAndRepairs": [
+        "Initial unit gate failed two stale expectations: available-layer fixture coverage lacked shapes and a solid contents selector still expected unavailable. Added native fixture and corrected missing-property diagnostic.",
+        "Initial new evaluator tests used incorrect graph arguments/expression forms/constant signal keys and exact equality for cached arc-length floating arithmetic; corrected test inputs and bounded numeric equality.",
+        "Browser evaluate transport instantiated recursive Composition too deeply in TypeScript; serialize JSON across the browser boundary.",
+        "Exploratory exact cross-backend probe failed up to delta2 in gradients and delta1 in antialiasing; retained the measurements. Existing near-tier metrics pass at >=58.24dB; this is not reported as an exact parity repair. Connector/nib/seek exact assertions remain."
+      ],
+      "logs": "benchmarks/results/composition-ce5-verification"
+    },
+    {
+      "name": "Native authoring, baking, inspector tracks and painted-group operators",
+      "status": "checkpoint",
+      "changes": [
+        "Builder ID selectors preserve contents/stops arrays; missing vector components initialize both axes from registry defaults, including optional group transforms. Color-component keys and whole/component conflicts remain rejected.",
+        "Native drawOn appends a unique trim after painted groups. Nested expressions bake into their correct vector/color roots.",
+        "Inspector discovers explicit native fields, separated axes and gradient stops while leaving metadata opaque; native cubic outlines use already-compiled geometry.",
+        "Painted group references stay shared through parent operators; repeater clones binding trees and nested paints together. Group binding visits reserve work.",
+        "Native builder example, user guidance and generated reference/skill updated."
+      ],
+      "verification": {
+        "fullUnitTests": 1568,
+        "unitFiles": 142,
+        "focusedAuthoringAndCompilerTests": 18,
+        "build": "passed",
+        "lint": "passed",
+        "schema": "passed",
+        "boundaries": "passed",
+        "nativeBrowserCases": 22,
+        "sampleFrames": 154,
+        "tier": "unchanged near; connector/nibs/reverse exact"
+      },
+      "failuresAndRepairs": [
+        "Initial authoring tests failed 3 cases because animating one optional vector axis omitted the other axis. Writer now initializes both default axes before splitting; all five authoring tests pass."
+      ],
+      "versions": {
+        "evaluator": "composition-evaluator-26",
+        "canvas": "composition-canvas-1.23.1",
+        "webgl": "composition-webgl2-0.37.1"
+      }
+    },
+    {
+      "name": "Complete native reference, animation, legacy connector, inspector and export acceptance",
+      "status": "checkpoint",
+      "changes": [
+        "31-cell reference sheet covers every primitive, four paint types, all nine operators/four Boolean modes, grouping, holes, dashes and degenerate cases. New CE5 baseline stores 384 full-frame hashes across three fixtures and both backends, plus sampled PNGs; CE0 unchanged.",
+        "96-frame aligned cubic morph/animated trim/seeded wiggle verified forward and reverse. 32-case sampled backend matrix contains 224 frames.",
+        "48-frame plain/ink/brush legacy connector comparisons are pixel-exact. Ink now uses legacy nonzero winding, while brush keeps evenodd cuts. Nib samplers cache lengths and preserve legacy arithmetic, charging segment visits to work budget.",
+        "Native inspector selector/outline/temporal handle edits, undo/redo and source save pass.",
+        "Both backends export 96 frames with byte-identical independent preview encoding and PNG/raw transports. Geometry overflow publishes nothing and retains stable code/node/frame through export; runtime worker version bumped.",
+        "Generated native field/limit tables and full operator semantics/licensing/reference documentation."
+      ],
+      "verification": {
+        "fullUnitTests": 1569,
+        "unitFiles": 142,
+        "static": "build/lint/schema/boundaries/owned formatting passed",
+        "sampleMatrix": {
+          "cases": 32,
+          "frames": 224,
+          "maxDelta": 2,
+          "minimumPsnrDb": 57.223400814603835
+        },
+        "nativeAcceptance": {
+          "environment": {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "reports": [
+            {
+              "fixture": "reference-sheet",
+              "frames": 48,
+              "reverseFrames": 48,
+              "maxDelta": 2,
+              "minPsnr": 66.66822753610552
+            },
+            {
+              "fixture": "animation",
+              "frames": 96,
+              "reverseFrames": 96,
+              "maxDelta": 1,
+              "minPsnr": 74.95529650432465
+            },
+            {
+              "backend": "canvas2d",
+              "exportedFrames": 96,
+              "independentMp4": "byte-identical",
+              "transport": "byte-identical"
+            },
+            {
+              "backend": "webgl2",
+              "exportedFrames": 96,
+              "independentMp4": "byte-identical",
+              "transport": "byte-identical"
+            },
+            {
+              "fixture": "core",
+              "frames": 48,
+              "reverseFrames": 48,
+              "maxDelta": 0,
+              "minPsnr": 999
+            },
+            {
+              "legacyConnectors": [
+                {
+                  "style": "plain",
+                  "frames": 48,
+                  "maxDelta": 0
+                },
+                {
+                  "style": "ink",
+                  "frames": 48,
+                  "maxDelta": 0
+                },
+                {
+                  "style": "brush",
+                  "frames": 48,
+                  "maxDelta": 0
+                }
+              ]
+            },
+            {
+              "geometryOverflow": "both exports reject with comp-shape-work-limit; no output published"
+            }
+          ],
+          "inspector": "passed",
+          "baseline": "exact"
+        },
+        "fullGate": "pending"
+      },
+      "failuresAndRepairs": [
+        "Initial export page load timed out. Isolated module diagnostic loaded successfully and subsequent independent exports passed without timeout changes; no confirmed cause.",
+        "Initial legacy reference used linear reveal instead of the authored curve; corrected to sampled native reveal.",
+        "Ink/29 differed at six channels (maximum delta16) despite exact geometry. Diagnostic proved native direct draw matches preview; nonzero/ evenodd fill mismatch was the cause. Corrected ink winding; all 144 legacy frames now exact.",
+        "Cached nib sampler now preserves legacy multiplication/division/subtraction order with bounded visits. New sampler overflow test initially matched error code in its message; corrected to message while other checks assert structured code.",
+        "Negative export initially lost custom PassageError fields at Playwright boundary. Explicit diagnostic result now preserves code/node/frame/path before rejecting and cleanup."
+      ],
+      "versions": {
+        "evaluator": "composition-evaluator-27",
+        "canvas": "composition-canvas-1.23.2",
+        "webgl": "composition-webgl2-0.37.2",
+        "export": "chromium-ffmpeg-0.6.1"
+      }
+    },
+    {
+      "name": "Hardware native paint preparation and actual story connector parity",
+      "status": "checkpoint",
+      "changes": [
+        "CPU Canvas preparation for native cubic/nib paints on hardware previews; WebGL retains GPU texture compositing. Legacy compositions without shape layers keep their existing preparation path.",
+        "Permanent first/middle/last hardware comparison for all three CE5 fixtures and both backends, using unchanged perceptual thresholds and a separate Vite cache.",
+        "Existing CE4a providers.json brush fixture converted in memory to native path/trim/brush content and verified across every forward/reverse frame."
+      ],
+      "verification": {
+        "fullUnitTests": 1569,
+        "unitFiles": 142,
+        "static": "build/lint/schema/boundaries/owned formatting passed",
+        "nativeAcceptance": "Stored native baseline exact; 32-case matrix unchanged near; 144 legacy frames exact; inspector and independent MP4/transport passed",
+        "hardwarePreview": {
+          "environments": [
+            {
+              "profile": "chromium-software-2",
+              "browserVersion": "151.0.7922.34",
+              "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+              "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+              "platform": "darwin",
+              "arch": "arm64"
+            },
+            {
+              "profile": "hardware",
+              "browserVersion": "151.0.7922.34",
+              "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+              "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+              "platform": "darwin",
+              "arch": "arm64"
+            }
+          ],
+          "tier": "unchanged perceptual hardware policy",
+          "comparisons": 18,
+          "reports": [
+            {
+              "fixture": "reference-sheet",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "reference-sheet",
+              "backend": "canvas2d",
+              "frame": 24,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "reference-sheet",
+              "backend": "canvas2d",
+              "frame": 47,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "reference-sheet",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "reference-sheet",
+              "backend": "webgl2",
+              "frame": 24,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "reference-sheet",
+              "backend": "webgl2",
+              "frame": 47,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "canvas2d",
+              "frame": 48,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "canvas2d",
+              "frame": 95,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "webgl2",
+              "frame": 48,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "animation",
+              "backend": "webgl2",
+              "frame": 95,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "canvas2d",
+              "frame": 24,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "canvas2d",
+              "frame": 47,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "webgl2",
+              "frame": 24,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "core",
+              "backend": "webgl2",
+              "frame": 47,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            }
+          ]
+        },
+        "storyConnector": {
+          "source": "benchmarks/fixtures/composition/ce4a/providers.json",
+          "sourceSha256": "a9c5bc2efcfe6682f71768af2d94596bcb6c8a5f4cb247602c78ed60b1ddbdda",
+          "framesPerBackend": 24,
+          "reverseFramesPerBackend": 24,
+          "maxDelta": 0,
+          "record": "benchmarks/results/composition-ce5-verification/story-connector-native.json"
+        }
+      },
+      "failuresAndRepairs": [
+        "Initial hardware probe hit a dynamic module fetch failure; isolated Vite cache removed shared-cache contention without timeout changes.",
+        "Actual hardware Canvas animation frame 95 failed unchanged perceptual policy: max channel delta85, PSNR39.815597727883436dB, SSIM0.9971814882404676. Native CPU preparation repaired all18 comparisons to exact pixels; no baseline regeneration.",
+        "Stopped only the isolated cb19611 full-gate job after the new hardware finding. It had passed1569 unit/46 runtime/139 integration/14 depth and browser groups through story/continuous; it did not complete the frozen CE0 gate. Complete verification must restart."
+      ],
+      "versions": {
+        "evaluator": "composition-evaluator-27",
+        "canvas": "composition-canvas-1.23.3",
+        "webgl": "composition-webgl2-0.37.3",
+        "export": "chromium-ffmpeg-0.6.1"
+      },
+      "logs": "benchmarks/results/composition-ce5-verification"
+    },
+    {
+      "name": "Avoid unused shape-budget location allocation in ordinary compositions",
+      "status": "checkpoint",
+      "changes": [
+        "Compiled scope flag detects native shapes or follow-path diagnostics. Ordinary pictures reuse the shared empty geometry budget without creating unused located wrappers for every layer stage and constraint call.",
+        "Native shape/follow-path location and global work accounting use the existing path; numerical evaluation and output versions are unchanged."
+      ],
+      "verification": {
+        "focusedUnitTests": 126,
+        "files": 3,
+        "build": "passed",
+        "changedFileLint": "passed",
+        "serialBracketMethod": "Existing composition-story-fixtures --only component/story-visibility --profile, alternating A/B twice, pinned Canvas, 192 frames at1920x1080/24fps; no competing test workloads",
+        "brackets": [
+          {
+            "run": "A1",
+            "candidate": false,
+            "report": {
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "ratio": 1.2287361863990869,
+              "legacyMs": 208.0999999642372,
+              "compositionMs": 255.70000034570694,
+              "legacyRenderMs": 8.000000059604645,
+              "compositionRenderMs": 63.80000048875809,
+              "evaluationMs": 5.400000095367432,
+              "graphMs": 0.8999999165534973
+            },
+            "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-budget-A1.log"
+          },
+          {
+            "run": "B1",
+            "candidate": true,
+            "report": {
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "ratio": 1.0564057716373787,
+              "legacyMs": 228.70000004768372,
+              "compositionMs": 241.60000002384186,
+              "legacyRenderMs": 12.199999928474426,
+              "compositionRenderMs": 45.200000405311584,
+              "evaluationMs": 4.199999988079071,
+              "graphMs": 1.600000023841858
+            },
+            "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-budget-B1.log"
+          },
+          {
+            "run": "A2",
+            "candidate": false,
+            "report": {
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "ratio": 1.1477218199418193,
+              "legacyMs": 208.5000001192093,
+              "compositionMs": 239.29999959468842,
+              "legacyRenderMs": 9.199999809265137,
+              "compositionRenderMs": 47.50000011920929,
+              "evaluationMs": 4.199999988079071,
+              "graphMs": 1.2000000476837158
+            },
+            "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-budget-A2.log"
+          },
+          {
+            "run": "B2",
+            "candidate": true,
+            "report": {
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "ratio": 1.0858895689783226,
+              "legacyMs": 211.90000027418137,
+              "compositionMs": 230.0999999642372,
+              "legacyRenderMs": 11.099999904632568,
+              "compositionRenderMs": 39.10000026226044,
+              "evaluationMs": 4.1999998688697815,
+              "graphMs": 1.0000001192092896
+            },
+            "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-budget-B2.log"
+          }
+        ],
+        "completeStrictStoryMatrix": {
+          "cases": 69,
+          "maximumChannelDelta": 2,
+          "maximumRatio": 1.1625523943461569,
+          "threshold": 1.25,
+          "exports": "All required repeated exports/relocation/overwrite checks passed",
+          "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-budget-story-matrix.log"
+        },
+        "fullGate": "pending fresh complete verification at checkpoint"
+      },
+      "failureAndRepairs": [
+        "Full pnpm check at8efe1ab failed only component/story-visibility timing1.2509398526493185 over unchanged1.25; pixels passed. Unchanged focused rerun passed1.221448465567854.",
+        "Measured unused-location guard: candidate composition time241.6/230.1ms versus paired baseline255.7/239.3ms, all pixel-exact. Evaluation-only microtiming was4.2/4.2ms versus5.4/4.2ms, so no broad evaluation speed claim. Complete strict matrix passes at retained threshold."
+      ]
+    }
+  ],
+  "polygonLibrary": {
+    "package": "clipper2-ts",
+    "version": "2.0.1-18",
+    "license": "BSL-1.0 (Boost Software License 1.0)",
+    "source": "https://github.com/countertype/clipper2-ts",
+    "upstream": "https://github.com/AngusJohnson/Clipper2",
+    "integrity": "sha512-WuRO1ZHzyYTVHY78r4wVWVydvQ+1lx9qZ+DeZa/8zhvrxIgCVzElJ6lwSMGtUUKFPefhvfJsHZ5C9RNkgisCOQ=="
+  },
+  "pending": [],
+  "verificationAttempts": [
+    {
+      "command": "pnpm check",
+      "snapshot": "/private/tmp/still-shift-ce5-check-df3374a",
+      "commit": "df3374a",
+      "status": "failed",
+      "passed": [
+        "pinned toolchain",
+        "schema",
+        "boundaries",
+        "whole-snapshot format/lint/build",
+        "1569 unit tests",
+        "46 runtime tests",
+        "138 integration tests"
+      ],
+      "failure": "Composition example inventory still asserted eight after CE5 introduced ninth native example. Updated test and generated/user guidance to nine; full gate restart required.",
+      "log": "benchmarks/results/composition-ce5-verification/ce5-full-df3374a-initial-failed.log"
+    },
+    {
+      "command": "pnpm check",
+      "snapshot": "/private/tmp/still-shift-ce5-check-cb19611",
+      "commit": "cb19611",
+      "status": "superseded",
+      "passed": [
+        "static checks",
+        "1569 unit",
+        "46 runtime",
+        "139 integration",
+        "14 depth",
+        "browser groups through story continuous"
+      ],
+      "reason": "Intentionally stopped own isolated gate after separate hardware acceptance exposed native Canvas stroke parity failure; repaired and complete gate restart required. Frozen CE0 gate had not completed.",
+      "log": "benchmarks/results/composition-ce5-verification/ce5-full-cb19611.log"
+    },
+    {
+      "command": "pnpm check",
+      "snapshot": "/private/tmp/still-shift-ce5-check-8efe1ab",
+      "commit": "8efe1ab",
+      "status": "failed",
+      "passed": [
+        "static checks",
+        "1569 unit",
+        "46 runtime",
+        "139 integration",
+        "14 depth",
+        "browser suites through native shape/hardware/export acceptance and Canvas/WebGL mixed native passages",
+        "story matrix cases before visibility timing assertion"
+      ],
+      "failure": {
+        "case": "component/story-visibility",
+        "ratio": 1.2509398526493185,
+        "threshold": 1.25,
+        "pixelFailures": []
+      },
+      "repair": "Remove unused shape-budget location allocation, measured serial A/B and complete unchanged strict story matrix. Full gate restart required; no complete gate success claimed.",
+      "log": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce5-verification/ce5-full-8efe1ab.log"
+    },
+    {
+      "command": "pnpm check",
+      "commit": "4908cbe",
+      "status": "passed",
+      "log": "benchmarks/results/composition-ce5-verification/ce5-full-4908cbe.log"
+    }
+  ],
+  "runtimeCommit": "4908cbe",
+  "verification": {
+    "command": "pnpm check",
+    "status": "passed",
+    "runtimeCommit": "4908cbe",
+    "snapshot": "/private/tmp/still-shift-ce5-check-4908cbe",
+    "log": "benchmarks/results/composition-ce5-verification/ce5-full-4908cbe.log",
+    "toolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "playwright": "1.62.1",
+      "chromiumRevision": "1234",
+      "ffmpeg": "8.0.1"
+    },
+    "tests": {
+      "unit": 1569,
+      "runtime": 46,
+      "integration": 139,
+      "depth": 14
+    },
+    "browserSuites": "All groups in the full pnpm test chain, including native shape reference/animation, hardware, legacy nib, inspector and export acceptance",
+    "baselines": {
+      "items": 176,
+      "frames": 36061,
+      "regenerated": false
+    },
+    "environment": "Clean tracked snapshot with local Vite caches and warmed isolated Python environment; owner edits, processes and primary environment preserved.",
+    "strictCanvasStoryMatrix": {
+      "cases": 69,
+      "frames": 14086,
+      "maximumRatio": 1.1692931113003404,
+      "maximumChannelDelta": 2
+    },
+    "strictCanvasCommerceMatrix": {
+      "cases": 127,
+      "frames": 28200,
+      "maximumRatio": 1.1774898520382384,
+      "maximumChannelDelta": 1
+    },
+    "strictCanvasTypographyMatrix": {
+      "cases": 20,
+      "frames": 3367,
+      "maximumRatio": 1.1061797795207975,
+      "maximumChannelDelta": 2
+    }
+  },
+  "versions": {
+    "evaluator": "composition-evaluator-27",
+    "canvas": "composition-canvas-1.23.3",
+    "webgl": "composition-webgl2-0.37.3",
+    "export": "chromium-ffmpeg-0.6.1"
+  },
+  "pullRequest": {
+    "url": "https://github.com/xxibcill/still-shift/pull/38",
+    "base": "codex/composition-ce11",
+    "head": "codex/composition-ce5",
+    "status": "open-and-attached"
+  }
+}

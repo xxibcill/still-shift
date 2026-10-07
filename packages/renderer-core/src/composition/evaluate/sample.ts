@@ -323,7 +323,20 @@ export function path(
   time: number,
   fps: number,
 ): BezierPath {
-  if (!isKeyed(value)) return structuredClone(value);
+  if (!isKeyed(value)) {
+    const start = value.firstVertex ?? 0;
+    if (!start) return structuredClone(value);
+    const rotated = (points: Point[]) =>
+      points.map(
+        (_, index) => [...points[(index + start) % points.length]!] as Point,
+      );
+    return {
+      closed: value.closed,
+      vertices: rotated(value.vertices),
+      ...(value.inTangents ? { inTangents: rotated(value.inTangents) } : {}),
+      ...(value.outTangents ? { outTangents: rotated(value.outTangents) } : {}),
+    };
+  }
   const first = value.keys[0]!.value as BezierPath;
   const points = (field: "vertices" | "inTangents" | "outTangents") =>
     first.vertices.map(
@@ -333,7 +346,12 @@ export function path(
             value,
             value.keys,
             `${field}${vertex}.${axis}`,
-            (k) => (k.value as BezierPath)[field]?.[vertex]?.[axis] ?? 0,
+            (k) => {
+              const keyPath = k.value as BezierPath;
+              const aligned =
+                (vertex + (keyPath.firstVertex ?? 0)) % keyPath.vertices.length;
+              return keyPath[field]?.[aligned]?.[axis] ?? 0;
+            },
             time,
             fps,
           ),

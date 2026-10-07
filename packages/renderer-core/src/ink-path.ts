@@ -3,22 +3,24 @@ import { pathLength, pointOnPath } from "./prepared-scene.ts";
 
 /** A fixed nib profile; width never exceeds the path's declared clearance envelope. */
 export function inkStrokeOutline(
-  path: PreparedPath,
+  path: Pick<PreparedPath, "points" | "lineWidth">,
   start: number,
   end: number,
+  sampler?: (progress: number) => [number, number],
 ): [number, number][] {
   start = Math.max(0, Math.min(1, start));
   end = Math.max(0, Math.min(1, end));
   const length = pathLength(path.points);
+  const sample = sampler ?? ((progress: number) => pointOnPath(path, progress));
   if (end <= start || length === 0) return [];
   const count = Math.max(8, Math.ceil((end - start) * 96));
   const left: [number, number][] = [],
     right: [number, number][] = [];
   for (let i = 0; i <= count; i++) {
     const progress = start + ((end - start) * i) / count;
-    const point = pointOnPath(path, progress);
-    const before = pointOnPath(path, Math.max(0, progress - 0.001));
-    const after = pointOnPath(path, Math.min(1, progress + 0.001));
+    const point = sample(progress);
+    const before = sample(Math.max(0, progress - 0.001));
+    const after = sample(Math.min(1, progress + 0.001));
     const dx = after[0] - before[0],
       dy = after[1] - before[1];
     const tangent = Math.hypot(dx, dy) || 1;
