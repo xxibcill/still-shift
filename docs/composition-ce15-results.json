@@ -1,0 +1,545 @@
+{
+  "milestone": "CE15",
+  "status": "in-progress",
+  "branch": "codex/composition-ce15",
+  "base": "aedfc9e",
+  "started": "2026-10-07",
+  "checkpoint": "transparent composition renderer and exact drawing-buffer capture",
+  "versions": {
+    "canvas": "composition-canvas-1.46.0",
+    "webgl": "composition-webgl2-0.67.0"
+  },
+  "focusedVerification": {
+    "status": "passed",
+    "snapshot": "/private/tmp/still-shift-ce15-development-draft1",
+    "relevantFiles": [
+      "package.json",
+      "packages/renderer-core/src/composition/render/renderer.ts",
+      "packages/renderer-core/src/composition/render/version.ts",
+      "packages/renderer-core/src/composition/render/webgl-bounds.ts",
+      "packages/renderer-core/src/composition/render/webgl-device.ts",
+      "packages/renderer-core/src/composition/render/webgl-readback.ts",
+      "packages/renderer-core/src/composition/render/webgl2.ts",
+      "packages/renderer-core/src/composition/render/webgl-rgba.ts",
+      "tests/unit/composition-webgl-readback.test.ts",
+      "tests/helpers/composition-alpha-reference.ts",
+      "tests/browser/composition-alpha.ts"
+    ],
+    "relevantFingerprint": "d06503a706de9667134ff0e385a89737a1bdda671f67c4a1fe61aada125b3118",
+    "staticAndWebgl": {
+      "status": "passed",
+      "completed": [
+        ["pnpm", "build"],
+        ["pnpm", "schema:check"],
+        ["pnpm", "check:boundaries"],
+        [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/renderer-core/src/composition/render/renderer.ts",
+          "packages/renderer-core/src/composition/render/version.ts",
+          "packages/renderer-core/src/composition/render/webgl-bounds.ts",
+          "packages/renderer-core/src/composition/render/webgl-device.ts",
+          "packages/renderer-core/src/composition/render/webgl-readback.ts",
+          "packages/renderer-core/src/composition/render/webgl2.ts",
+          "packages/renderer-core/src/composition/render/webgl-rgba.ts",
+          "tests/helpers/composition-alpha-reference.ts",
+          "tests/browser/composition-alpha.ts",
+          "tests/unit/composition-webgl-readback.test.ts"
+        ],
+        ["pnpm", "test:browser:composition-alpha"],
+        ["pnpm", "test:browser:composition-webgl"]
+      ],
+      "seconds": 359.2121234999504,
+      "log": "/private/tmp/ce15-alpha-regressions.log"
+    },
+    "units": {
+      "status": "passed",
+      "files": 2,
+      "tests": 19,
+      "log": "/private/tmp/ce15-alpha-readback-units-final.log"
+    },
+    "alpha": {
+      "status": "passed",
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "cases": 38,
+      "reports": [
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": null,
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": null,
+          "preserveAlpha": true,
+          "alpha": 0
+        },
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": null,
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": null,
+          "preserveAlpha": true,
+          "alpha": 0
+        },
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": "#cc663300",
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": "#cc663300",
+          "preserveAlpha": true,
+          "alpha": 0
+        },
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": "#cc663380",
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": "#cc663380",
+          "preserveAlpha": true,
+          "alpha": 128
+        },
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": "#ffffff80",
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": "#ffffff80",
+          "preserveAlpha": true,
+          "alpha": 128
+        },
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": "#224466",
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "canvas2d",
+          "background": "#224466",
+          "preserveAlpha": true,
+          "alpha": 255
+        },
+        {
+          "kind": "moving",
+          "backend": "canvas2d",
+          "frames": 8,
+          "partialAlphaPixels": 332,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "colored",
+          "backend": "canvas2d",
+          "frames": 8,
+          "partialAlphaPixels": 332,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "gaussian",
+          "backend": "canvas2d",
+          "frames": 8,
+          "partialAlphaPixels": 1666,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "matte",
+          "backend": "canvas2d",
+          "frames": 8,
+          "partialAlphaPixels": 292,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "exposure",
+          "backend": "canvas2d",
+          "frames": 8,
+          "partialAlphaPixels": 504,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "linear",
+          "backend": "canvas2d",
+          "frames": 8,
+          "partialAlphaPixels": 332,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "precomp",
+          "backend": "canvas2d",
+          "frames": 8,
+          "partialAlphaPixels": 332,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": null,
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": null,
+          "preserveAlpha": true,
+          "alpha": 0
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": null,
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": null,
+          "preserveAlpha": true,
+          "alpha": 0
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": "#cc663300",
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": "#cc663300",
+          "preserveAlpha": true,
+          "alpha": 0
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": "#cc663380",
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": "#cc663380",
+          "preserveAlpha": true,
+          "alpha": 128
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": "#ffffff80",
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": "#ffffff80",
+          "preserveAlpha": true,
+          "alpha": 128
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": "#224466",
+          "preserveAlpha": false,
+          "alpha": 255
+        },
+        {
+          "kind": "clear",
+          "backend": "webgl2",
+          "background": "#224466",
+          "preserveAlpha": true,
+          "alpha": 255
+        },
+        {
+          "kind": "moving",
+          "backend": "webgl2",
+          "frames": 8,
+          "partialAlphaPixels": 332,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "colored",
+          "backend": "webgl2",
+          "frames": 8,
+          "partialAlphaPixels": 332,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "gaussian",
+          "backend": "webgl2",
+          "frames": 8,
+          "partialAlphaPixels": 1666,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "matte",
+          "backend": "webgl2",
+          "frames": 8,
+          "partialAlphaPixels": 292,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "exposure",
+          "backend": "webgl2",
+          "frames": 8,
+          "partialAlphaPixels": 504,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "linear",
+          "backend": "webgl2",
+          "frames": 8,
+          "partialAlphaPixels": 332,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        },
+        {
+          "kind": "precomp",
+          "backend": "webgl2",
+          "frames": 8,
+          "partialAlphaPixels": 332,
+          "freshReads": "exact",
+          "reverseReads": "exact",
+          "png": "exact"
+        }
+      ],
+      "quantization": {
+        "validPairs": 32895,
+        "nearestUpMismatches": 291,
+        "nearestEvenMismatches": 139,
+        "drawingBufferMismatches": 0,
+        "zeroAlphaPairs": 256,
+        "candidateMismatches": {
+          "normalizedDivision": 184,
+          "normalizedMultiply": 0,
+          "normalizedDivisionWide": 304,
+          "normalizedMultiplyWide": 101,
+          "byteScale": 152,
+          "reciprocalByte": 189,
+          "fraction": 139,
+          "fixedScale": 324
+        },
+        "examples": [
+          {
+            "alpha": 6,
+            "value": 1,
+            "actual": 42,
+            "nearestUp": 43,
+            "nearestEven": 42
+          },
+          {
+            "alpha": 6,
+            "value": 5,
+            "actual": 212,
+            "nearestUp": 213,
+            "nearestEven": 212
+          },
+          {
+            "alpha": 12,
+            "value": 2,
+            "actual": 42,
+            "nearestUp": 43,
+            "nearestEven": 42
+          },
+          {
+            "alpha": 12,
+            "value": 10,
+            "actual": 212,
+            "nearestUp": 213,
+            "nearestEven": 212
+          },
+          {
+            "alpha": 18,
+            "value": 3,
+            "actual": 42,
+            "nearestUp": 43,
+            "nearestEven": 42
+          },
+          {
+            "alpha": 24,
+            "value": 4,
+            "actual": 42,
+            "nearestUp": 43,
+            "nearestEven": 42
+          },
+          {
+            "alpha": 24,
+            "value": 20,
+            "actual": 212,
+            "nearestUp": 213,
+            "nearestEven": 212
+          },
+          {
+            "alpha": 30,
+            "value": 1,
+            "actual": 8,
+            "nearestUp": 9,
+            "nearestEven": 8
+          },
+          {
+            "alpha": 30,
+            "value": 5,
+            "actual": 42,
+            "nearestUp": 43,
+            "nearestEven": 42
+          },
+          {
+            "alpha": 30,
+            "value": 7,
+            "actual": 59,
+            "nearestUp": 60,
+            "nearestEven": 60
+          },
+          {
+            "alpha": 30,
+            "value": 9,
+            "actual": 76,
+            "nearestUp": 77,
+            "nearestEven": 76
+          },
+          {
+            "alpha": 30,
+            "value": 11,
+            "actual": 93,
+            "nearestUp": 94,
+            "nearestEven": 94
+          }
+        ]
+      }
+    },
+    "logs": [
+      {
+        "path": "/private/tmp/ce15-alpha-preflight.log",
+        "sha256": "4b9b434291902f1e223412f4cda5f6c5b3700c56f974fea68b8dafa7ef9c28ac"
+      },
+      {
+        "path": "/private/tmp/ce15-alpha-regressions.log",
+        "sha256": "e8aac8c71f617df207d82356a919a48662808d4fdd8f83620ccfae157b8b462e"
+      },
+      {
+        "path": "/private/tmp/ce15-alpha-readback-units-final.log",
+        "sha256": "9603b4e06741c66fe442eba99ed38638eb6df523e4e0973b7781b0a313a08afd"
+      },
+      {
+        "path": "/private/tmp/ce15-alpha-quantization-models.log",
+        "sha256": "dd9cd00f741ed27454de3ffe16992307b1e0fa0d4c60fe6def4c49d349cae6c8"
+      }
+    ]
+  },
+  "retainedAttempts": [
+    {
+      "path": "/private/tmp/ce15-alpha-regressions-initial-type.log",
+      "result": "failed",
+      "reason": "test fixture union needed solid-layer narrowing; repaired test typing"
+    },
+    {
+      "path": "/private/tmp/ce15-alpha-regressions-canvas-png-oracle.log",
+      "result": "failed",
+      "reason": "colored transparent WebGL byte 42 differed from preview 43"
+    },
+    {
+      "path": "/private/tmp/ce15-alpha-regressions-independent-png-oracle.log",
+      "result": "failed",
+      "reason": "independent FFmpeg decoding confirmed the actual PNG mismatch"
+    },
+    {
+      "path": "/private/tmp/ce15-alpha-readback-units-incorrect-literal.log",
+      "result": "failed",
+      "reason": "new alpha30/value15 unit literal expected128; exhaustive actual PNG proof established127; corrected literal"
+    }
+  ],
+  "conversionDecision": {
+    "scope": "transparent WebGL screen full and damage-region readback only",
+    "method": "normalized float32 multiply, reciprocal alpha, multiply and scale, followed by Uint8Clamped nearest-even conversion",
+    "actualValidPairs": 32895,
+    "actualZeroAlphaPairs": 256,
+    "mismatches": 0,
+    "rejected": {
+      "mathematicalNearestUp": 291,
+      "mathematicalNearestEven": 139
+    },
+    "opaqueAndOffscreenConversion": "unchanged",
+    "authority": "actual independent PNG decode under the pinned renderer; no claim about an unverified Chromium source revision"
+  },
+  "fullGates": [],
+  "pending": [
+    "first Q4 profiles together: ProRes4444 alpha, PNG8/16, H264 and HEVC10 with actual BT709 conversion and decode-back",
+    "ProRes422HQ and VP9 alpha",
+    "60fps and actual per-profile size limits",
+    "once-per-export global static layer/precomp cache with actual paint counters",
+    "bounded parallel export, boundary identity and cancellation",
+    "render statistics and isolated actual 120-second one/four-worker >=3x end-to-end proof",
+    "implementation review and complete final local pnpm check",
+    "create and attach CE15 PR; continue CE14"
+  ],
+  "policy": {
+    "githubActions": false,
+    "merge": false,
+    "subagents": false,
+    "ce5XQ9": "pending",
+    "ownerWork": "preserved with scoped plan/log staging"
+  }
+}

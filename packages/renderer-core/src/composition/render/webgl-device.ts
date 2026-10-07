@@ -81,9 +81,12 @@ export class WebglDevice {
       : result;
   }
 
-  constructor(readonly canvas: HTMLCanvasElement) {
+  constructor(
+    readonly canvas: HTMLCanvasElement,
+    preserveAlpha = false,
+  ) {
     const gl = canvas.getContext("webgl2", {
-      alpha: false,
+      alpha: preserveAlpha,
       antialias: false,
       depth: false,
       stencil: false,
@@ -371,7 +374,7 @@ export class WebglDevice {
         body
           .replaceAll("gl_FragCoord", "pixelPosition")
           .replace("void main()", "void shade()") +
-        `\nvoid main() { pixelPosition=vec4(gl_FragCoord.x,${target.height}.0-gl_FragCoord.y,gl_FragCoord.zw); shade(); ${blended ? "" : "pixel.a=1.0;"} }`;
+        `\nvoid main() { pixelPosition=vec4(gl_FragCoord.x,${target.height}.0-gl_FragCoord.y,gl_FragCoord.zw); shade(); ${blended || !target.opaque ? "" : "pixel.a=1.0;"} }`;
     } else if (target?.opaque && !blended)
       body =
         body.replace("void main()", "void shade()") +

@@ -8,7 +8,9 @@ export class WebglReadback {
     private readonly width: number,
     private readonly height: number,
     private readonly readFull: () => Uint8ClampedArray,
-    private readonly readRegion: (region: Bounds) => Uint8Array,
+    private readonly readRegion: (
+      region: Bounds,
+    ) => Uint8Array | Uint8ClampedArray,
     private readonly limit = 64 * 1024 * 1024,
     private readonly regionRows: "top-down" | "bottom-up" = "top-down",
   ) {}

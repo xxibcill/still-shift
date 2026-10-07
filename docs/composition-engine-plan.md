@@ -378,7 +378,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE12  | Motion linting                                 | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   | Codex                  | `codex/composition-ce13`            | `[x]`  | [evidence](./composition-ce13-results.json)                                        |
 | CE14  | Mesh warp and puppet pins                      | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
-| CE15  | Output formats, caching and parallel rendering | D      | CE3                        |                        |                                     | `[ ]`  |                                                                                    |
+| CE15  | Output formats, caching and parallel rendering | D      | CE3                        | Codex                  | `codex/composition-ce15`            | `[~]`  | [Focused alpha proof](./composition-ce15-results.json)                             |
 
 ### Phases and parallel work
 
@@ -5088,6 +5088,12 @@ decode-back pixel check.
 
 **Verification:** Format tests, alpha round-trip test, chunk-boundary parity test
 (frames on both sides of a boundary), cancellation during parallel export.
+
+**In progress (2026-10-07):** Codex on `codex/composition-ce15` from completed
+CE13 `aedfc9e`. Opt-in transparent renderer roots and exact PNG drawing-buffer
+reads pass focused acceptance. Export formats, global cache/parallel acceptance,
+statistics, the two-minute speed proof and final local gate remain pending.
+[Delivery plan](./composition-ce15-plan.md), [current evidence](./composition-ce15-results.json).
 
 **Completion record:** _to be filled in._
 

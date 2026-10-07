@@ -43,6 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE15 in progress (2026-10-07):** `codex/composition-ce15` from completed CE13
+  `aedfc9e`. Canvas 1.46 / WebGL2 0.67 add opt-in transparent roots and exact PNG
+  drawing-buffer readback while retaining the opaque default and offscreen law.
+  All 38 actual alpha cases, 32,895 valid byte/alpha pairs, 256 zero-alpha pairs,
+  19 focused units, static checks and the complete original WebGL suite pass.
+  Retained failed diagnostics explain the normalized float32 conversion. Formats,
+  global static caching, bounded parallel export, statistics, actual two-minute
+  speed proof and the final full gate remain in flight. No owner decision blocks
+  CE15 → CE14. CE5-X/Q9 and separate CE6-P remain pending.
+  [Plan](./composition-ce15-plan.md), [evidence](./composition-ce15-results.json).
+
 - **CE13 complete; PR #48 delivered (2026-10-07):** `codex/composition-ce13`
   from CE4d `adf6cea`, verified `01fbca2`. Audited merged CE16 PR #33 is integrated.
   Native CFR video/sequences/audio, bounded SDR/PCM resources, waveforms/playback,
@@ -271,6 +282,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 transparent renderer checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from CE13 `aedfc9e`.
+- **Done:** opt-in Canvas/WebGL alpha roots; exact full and incremental transparent
+  drawing-buffer reads; original opaque and offscreen paths retained.
+- **Results:** 38 actual alpha cases, 32,895 valid channel/alpha pairs and 256
+  zero-alpha pairs match independent PNG decoding exactly. Static checks, 19 units
+  and the complete original WebGL suite pass in the isolated pinned checkout.
+- **Retained diagnostics:** mathematical rounding failed actual PNG bytes;
+  normalized float32 matches every valid pair. Failed checks are recorded.
+- **Next:** all first Q4 formats together, then remaining formats, global caching,
+  bounded parallel export and final full gate. CE15 remains incomplete; CE14 follows.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [results](./composition-ce15-results.json).
 
 ### 2026-10-07 — CE13 complete native media acceptance
 

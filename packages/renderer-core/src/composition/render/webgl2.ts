@@ -15,6 +15,10 @@ import { blurKernelLength } from "./webgl-blur-kernel.ts";
 import { WebglPaint } from "./webgl-paint.ts";
 import { WebglDamage } from "./webgl-damage.ts";
 import { WebglReadback } from "./webgl-readback.ts";
+import {
+  unpremultiplyRgba,
+  unpremultiplyDrawingBufferRgba,
+} from "./webgl-rgba.ts";
 import { WebglVisualKey, type PreparedContentKey } from "./webgl-visual-key.ts";
 import { WebglIsolates } from "./webgl-isolates.ts";
 import { WebglVectors } from "./webgl-vectors.ts";
@@ -39,7 +43,7 @@ import { blendShader } from "./webgl-blend.ts";
 import { FLAT_LIGHTING_SHADER, flatLightingUniforms } from "./flat-lighting.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.66.0" as const;
+  "composition-webgl2-0.67.0" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -67,6 +71,7 @@ export type Webgl2Backend = RenderBackend<WebglSurface> & {
 };
 
 export type Webgl2BackendOptions = Canvas2dBackendOptions & {
+  preserveAlpha?: boolean;
   nativeImageByteLimit?: number;
   boundedCanvas?: (content: ProviderContent | TextContent) => boolean;
   singleImage?: (content: ProviderContent | TextContent) => boolean;
@@ -82,13 +87,20 @@ export function createWebgl2Backend(
   canvas: HTMLCanvasElement,
   options: Webgl2BackendOptions,
 ): Webgl2Backend {
-  const device = new WebglDevice(canvas);
+  const preserveAlpha = options.preserveAlpha === true;
+  const device = new WebglDevice(canvas, preserveAlpha);
   const raster = createCanvas2dBackend({
     ...options,
     colorSpace: "srgb",
     poolByteLimit: 128 * 1024 * 1024,
   });
-  const target = device.surface(canvas.width, canvas.height, false, true, true);
+  const target = device.surface(
+    canvas.width,
+    canvas.height,
+    false,
+    !preserveAlpha,
+    true,
+  );
   const gl = device.gl;
   const bounds = new WebglBounds(target);
   const effects = new WebglEffects(device, raster, bounds);
@@ -108,15 +120,17 @@ export function createWebgl2Backend(
     target.width,
     target.height,
     () => readSurface(target),
-    (rect) =>
-      device.readRegion(
+    (rect) => {
+      const pixels = device.readRegion(
         target,
         rect.left,
         rect.top,
         rect.right - rect.left,
         rect.bottom - rect.top,
         "native",
-      ),
+      );
+      return target.opaque ? pixels : unpremultiplyDrawingBufferRgba(pixels);
+    },
     undefined,
     "bottom-up",
   );
@@ -162,16 +176,8 @@ export function createWebgl2Backend(
     if (region) return region;
     const pixels = device.read(surface);
     if (surface.opaque) return new Uint8ClampedArray(pixels.buffer);
-    const result = new Uint8ClampedArray(pixels.length);
-    for (let i = 0; i < pixels.length; i += 4) {
-      const a = pixels[i + 3]!;
-      for (let channel = 0; channel < 3; channel++)
-        result[i + channel] = a
-          ? Math.round((pixels[i + channel]! * 255) / a)
-          : 0;
-      result[i + 3] = a;
-    }
-    return result;
+    if (surface.screen) return unpremultiplyDrawingBufferRgba(pixels);
+    return unpremultiplyRgba(pixels);
   }
 
   function replace(

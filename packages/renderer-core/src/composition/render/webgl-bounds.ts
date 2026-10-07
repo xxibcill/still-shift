@@ -21,7 +21,7 @@ export class WebglBounds {
         ...(color ?? [0, 0, 0, 0])
           .slice(0, 3)
           .map((v) => Math.round(Math.max(0, Math.min(1, v * alpha)) * 255)),
-        255,
+        surface.opaque ? 255 : Math.round(alpha * 255),
       ]);
       this.background = new Uint32Array(bytes.buffer)[0]!;
       this.bounds.set(surface, null);
@@ -123,7 +123,11 @@ export class WebglBounds {
     });
   }
   read(device: WebglDevice, surface: WebglSurface) {
-    if (surface !== this.root || this.background === undefined)
+    if (
+      !surface.opaque ||
+      surface !== this.root ||
+      this.background === undefined
+    )
       return undefined;
     const rect = this.snapshot(surface);
     if (

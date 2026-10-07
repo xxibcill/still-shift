@@ -272,8 +272,7 @@ export type CompositionPreview = {
 /**
  * Render with the selected backend (Canvas 2D by default). Preview and export
  * share the evaluator, graph, prepared content and exposure sampling.
- * The canvas is opaque: transparent backgrounds show black until alpha output
- * formats arrive (CE15).
+ * The default canvas is opaque. Alpha-capable exports opt into a transparent root.
  */
 export function createCompositionPreview(
   canvas: HTMLCanvasElement,
@@ -284,6 +283,8 @@ export function createCompositionPreview(
     createCanvas?: (width: number, height: number) => HTMLCanvasElement;
     providers?: readonly CanvasContentProvider[];
     coverageSeverity?: "error" | "warning";
+    /** Carry the authored background alpha; opaque preview remains the default. */
+    preserveAlpha?: boolean;
   } = {},
 ): CompositionPreview {
   const validation = validateComposition(composition);
@@ -297,7 +298,7 @@ export function createCompositionPreview(
   const softwareRaster =
     kind === "canvas2d" && requiresSoftwareFilters(composition);
   const ctx = measurementCanvas.getContext("2d", {
-    alpha: false,
+    alpha: options.preserveAlpha === true,
     ...(softwareRaster ? { willReadFrequently: true } : {}),
   });
   if (!ctx) throw new Error("Canvas 2D is unavailable");
@@ -357,6 +358,7 @@ export function createCompositionPreview(
   if (kind === "webgl2") {
     const backend = createWebgl2Backend(canvas, {
       ...backendOptions,
+      preserveAlpha: options.preserveAlpha === true,
       boundedCanvas: (content) =>
         content.type === "text" || drawProvider.boundedCanvas(content),
       singleImage: (content) =>
