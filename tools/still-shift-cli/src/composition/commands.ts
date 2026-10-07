@@ -281,9 +281,21 @@ export async function runCompositionCommand(
           "backend",
           "format",
           "transport",
+          "workers",
+          "cache-static",
         ]),
         input = requireArgument(values, "input");
       const backend = backendOption(values);
+      const workers = values.get("workers");
+      if (workers !== undefined && !/^[1-4]$/.test(workers))
+        programError(
+          "comp-program-option",
+          "--workers must be 1, 2, 3 or 4",
+          "workers",
+        );
+      const cacheStatic = values.has("cache-static")
+        ? booleanOption(values, "cache-static")
+        : undefined;
       const format = values.get("format");
       if (
         format !== undefined &&
@@ -313,6 +325,8 @@ export async function runCompositionCommand(
           outputPath: requireArgument(values, "output"),
           backend,
           ...(format ? { format: format as CompositionOutputFormat } : {}),
+          ...(workers ? { workers: Number(workers) as 1 | 2 | 3 | 4 } : {}),
+          ...(cacheStatic === undefined ? {} : { cacheStatic }),
           ...(transport
             ? { transport: transport as "png_pipe" | "raw_rgba" | "jpeg_pipe" }
             : {}),

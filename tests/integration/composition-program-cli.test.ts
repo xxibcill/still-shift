@@ -11,6 +11,7 @@ import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import { afterEach, expect, it } from "vitest";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
+import { renderComposition } from "@still-shift/animation-engine";
 import { loadProgram } from "../../tools/still-shift-cli/src/composition/program.ts";
 import { comp, image } from "@still-shift/motion";
 import type { Composition } from "@still-shift/scene-contract";
@@ -127,6 +128,59 @@ it("preserves render usage and scene exit codes while unreadable input remains a
   expect(
     (await run(["render", "--input", script, "--output", output])).code,
   ).toBe(1);
+});
+it.each([
+  ["workers", "0"],
+  ["workers", "5"],
+  ["workers", "1.5"],
+  ["workers", "01"],
+  ["workers", "NaN"],
+  ["cache-static", "yes"],
+  ["cache-static", "1"],
+])(
+  "rejects invalid --%s %s before reading a composition",
+  async (option, value) => {
+    const result = await run([
+      "render",
+      "--input",
+      "missing.json",
+      "--output",
+      "unused.mp4",
+      `--${option}`,
+      value,
+    ]);
+    expect(result.code).toBe(2);
+    expect(result.stdout).toBe("");
+    expect(JSON.parse(result.stderr)).toMatchObject({
+      status: "failed",
+      diagnostics: [{ code: "comp-program-option", path: option }],
+    });
+  },
+);
+it.each([0, 5, 1.5, Number.NaN])(
+  "rejects invalid public worker count %s before loading media",
+  async (workers) => {
+    await expect(
+      renderComposition({
+        compositionPath: "missing.json",
+        outputPath: "unused.mp4",
+        workers: workers as 1,
+      }),
+    ).rejects.toMatchObject({
+      code: "SCENE_INVALID",
+      message:
+        "Composition workers must be 1..4 and cacheStatic must be boolean",
+    });
+  },
+);
+it("rejects a nonboolean cache option before loading media", async () => {
+  await expect(
+    renderComposition({
+      compositionPath: "missing.json",
+      outputPath: "unused.mp4",
+      cacheStatic: "yes" as unknown as boolean,
+    }),
+  ).rejects.toMatchObject({ code: "SCENE_INVALID" });
 });
 it("validates, normalizes, bakes and lints a TypeScript program through public CLI commands", async () => {
   const root = await directory(),

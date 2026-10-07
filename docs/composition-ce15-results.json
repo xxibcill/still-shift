@@ -4,7 +4,7 @@
   "branch": "codex/composition-ce15",
   "base": "aedfc9e",
   "started": "2026-10-07",
-  "checkpoint": "transparent renderer and all seven explicit output profiles",
+  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle",
   "versions": {
     "canvas": "composition-canvas-1.46.0",
     "webgl": "composition-webgl2-0.67.0"
@@ -528,7 +528,6 @@
   "pending": [
     "aggregate pixel/worker memory limit and full area matrix",
     "global static layer/precomp cache including preflight and late visibility",
-    "bounded independent parallel workers and complete boundary/lifecycle acceptance",
     "per-layer statistics and actual 120-second \u22653\u00d7 one/four-worker end-to-end proof",
     "final implementation review and immutable complete local pnpm check",
     "CE15 PR creation/attachment; then complete CE14"
@@ -559,7 +558,7 @@
     "completeLocalGate": "pending"
   },
   "cacheFoundation": {
-    "status": "foundation-passed; renderer integration pending",
+    "status": "foundation and existing independent renderer/export integration passed; full static acceptance pending",
     "record": "docs/composition-ce15-cache-results.json",
     "relevantFingerprint": "929c6f4df7c0ee8dafee4db7b56e8e3e6040ffa04384fa82669c8131f885f2e2",
     "runtimeTests": 10,
@@ -579,6 +578,18 @@
     "record": "docs/composition-ce15-parallel-results.json",
     "relevantFingerprint": "76153085e603bb55ae78f852709a2169f2c22adb9d2812eec99a18a06110d4a6",
     "runtimeTests": 12,
-    "productionAcceptance": "pending"
+    "productionAcceptance": "parity/lifecycle passed; full cache/memory/statistics/speed acceptance pending"
+  },
+  "productionParallel": {
+    "status": "production parallel parity/lifecycle passed; full CE15 cache/memory/statistics/speed acceptance pending",
+    "record": "docs/composition-ce15-parallel-results.json",
+    "relevantFingerprint": "c1dd048c164f633aebde1e664054d4f7c88f924ae60119f64bf7b8b3e0b60101",
+    "successfulExports": 111,
+    "nativeCases": 8,
+    "protectedFailures": 24,
+    "focusedTests": 32,
+    "browserSeconds": 181.14023083401844,
+    "fullGate": "pending",
+    "speedProof": "pending"
   }
 }

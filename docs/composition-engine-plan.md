@@ -5077,7 +5077,7 @@ targets), flip detection, pixel tests on both backends.
 - [ ] Frame rates up to 60 fps; arbitrary sizes within limits.
 - [ ] Per-layer and per-precomp caching: static subtrees render once per export and are
       reused, keyed by content hash, backend version and evaluated state.
-- [ ] Parallel chunked export: split the frame range across N browser pages, encode
+- [x] Parallel chunked export: split the frame range across N browser pages, encode
       chunks and concatenate losslessly (or pipe in order); integrate with the existing
       transactional publication and cancellation.
 - [ ] Render statistics in the result manifest (ms/frame per layer type, cache hits).
@@ -5093,8 +5093,11 @@ decode-back pixel check.
 CE13 `aedfc9e`; renderer checkpoint `49e0543` is pushed. All seven explicit output
 profiles pass focused native-depth alpha/color/audio checks, repeat/independent
 encodes, CLI, dimensions and protected publication/source failures. Existing
-media/WebGL export regressions pass. Aggregate limits, global cache/parallel
-acceptance, statistics, two-minute speed proof and final local gate remain pending.
+media/WebGL export regressions pass. Public/CLI parallel export now passes 111
+successful exports, eight native timing cases, 24 live failures and complete
+media/frame/audio parity; 32 focused tests and existing format/legacy suites pass.
+Global static/preparation paint counts, aggregate limits, per-layer statistics,
+two-minute speed proof and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),
 [format evidence](./composition-ce15-format-results.json).
 

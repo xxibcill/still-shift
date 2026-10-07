@@ -86,8 +86,9 @@ body/lease sizes, memory admission and original cancellation reasons. Build,
 lint, boundaries, 32 key/exposure units and existing alpha/exposure/WebGL-export
 browser regressions pass. The new browser check joins the mandatory local gate.
 
-This is partial integration. Public export scope capture and worker wiring remain
-pending. Direct draws keep their original boundaries; static direct layers over
+This integration retains existing independent surfaces. Public export scope capture
+and worker parity/lifecycle are accepted below. Direct draws keep their original
+boundaries; static direct layers over
 changing backdrops still need an exact strategy. One custom-provider source paints
 once, but provider preparation occurs in each page; built-in source preparation
 needs a complete paint audit. Aggregate allocations, native/spatial coverage,
@@ -105,15 +106,41 @@ assertions but emitted two uncaught deferred stream errors; retaining the error
 listener through the actual close event fixes the race. This is a pipe foundation,
 not production parallel acceptance. [Evidence](./composition-ce15-parallel-results.json).
 
+## Accepted production worker checkpoint — 2026-10-07
+
+Public `workers: 1..4` / CLI `--workers` and `cacheStatic` / `--cache-static` opt
+into independent pinned browsers and one bounded absolute-order encoder pipe.
+The private cache scope captures authored/verified sources, prepared native maps,
+renderer environment, format, transport and alpha. Metrics record actual renderer
+and GPU process IDs, frame indices, render/upload timings and independent cache
+ownership. Process IDs are not GPU timing evidence.
+
+The mandatory parallel browser check passes in 181.14 seconds: 111 successful
+exports at 60 fps, 28 format/backend/transport combinations, all worker counts,
+cached/uncached and implicit-worker options, legacy MP4 and real CLI. Complete
+encoded bodies, all 888 decoded successful frames and complete audio match. Eight
+native cases cover 12 fps video/sequences, reversing remap, blending, exposure cuts,
+echo and repeated exports. Twenty-four live failures protect frame-zero aborts,
+original/null reasons, worker diagnostics/browser exit, malformed uploads, source
+mutation and a concurrent foreign destination. All browsers close and stages are
+removed; the foreign file survives. Thirty-two focused tests, build/lint/boundaries
+and the existing format/legacy export browser suites pass. The first source-mutation
+assertion expected the wrong guard wording; production's original earlier rejection
+is retained and the complete mandatory command passes on rerun.
+
+Static independent precomps paint once globally. Complete direct/root/prefix and
+built-in preparation counts, total allocation admission, per-layer timing, the
+actual two-minute 3× proof and final full gate remain mandatory.
+[Detailed production evidence](./composition-ce15-parallel-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
 2. Retain static layer and precomp surfaces once per export globally. Include
    coverage preflight painting, late visibility, nested effects/mattes, actual
    ownership counters, bounded memory and cached/uncached pixel equality.
-3. Add bounded independent browser workers feeding one ordered encoder. Preserve
-   absolute source time, cancellation and transactional publication. Verify
-   boundary frames, repeat bytes, concurrent errors and foreign-file retention.
+3. Keep accepted worker/format/native/boundary/lifecycle parity while completing
+   the remaining global cache, allocation and statistics work.
 4. Record actual per-layer submission/render timings, cache hits and owned bytes.
    Measure a real two-minute export end-to-end with one and four workers under the
    same profile and cache policy, without competing workloads. Require identical

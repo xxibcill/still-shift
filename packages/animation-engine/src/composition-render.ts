@@ -75,8 +75,22 @@ export async function renderComposition(request: {
   backend?: CompositionBackend;
   cacheDirectory?: string;
   format?: ExportRequest["format"];
+  workers?: ExportRequest["workers"];
+  cacheStatic?: boolean;
 }): Promise<CompositionRenderResult> {
   request.signal?.throwIfAborted();
+  if (
+    (request.workers !== undefined &&
+      (!Number.isInteger(request.workers) ||
+        request.workers < 1 ||
+        request.workers > 4)) ||
+    (request.cacheStatic !== undefined &&
+      typeof request.cacheStatic !== "boolean")
+  )
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      "Composition workers must be 1..4 and cacheStatic must be boolean",
+    );
   const loaded = await loadComposition(
     request.compositionPath,
     request.backend,
@@ -152,9 +166,15 @@ export async function renderComposition(request: {
     outputPath,
     sceneManifestContents: manifestBytes,
     transport: request.transport ?? "png_pipe",
-    ...(request.format
+    ...(request.workers === undefined ? {} : { workers: request.workers }),
+    ...(request.cacheStatic === undefined
+      ? {}
+      : { cacheStatic: request.cacheStatic }),
+    ...(request.format ||
+    request.workers !== undefined ||
+    request.cacheStatic !== undefined
       ? {
-          format: request.format,
+          ...(request.format ? { format: request.format } : {}),
           expectedSourceChecksum: loaded.sourceChecksum,
           validateSources: async () => {
             const verified = await readCompositionSource(

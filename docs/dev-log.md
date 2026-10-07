@@ -53,12 +53,12 @@ still hold before relying on them.
   Rejected implicit precision/tag/alpha conversions and H264 CRF18 are retained.
   Surface-store foundation `5b20c86` is pushed. The opt-in renderer integration
   passes 24 four-page cases / 1,248 exact frame comparisons, native byte/float
-  transfer and 12 protected failures. Public export wiring, built-in preparation
-  audit and complete static paint counts remain pending. New Canvas isolation
-  and synchronous binary XHR are rejected with actual diagnostics.
-  Ordered streaming ownership passes 12 runtime cases; production worker wiring
-  remains in flight. Global static caching, aggregate memory limits, parallel export,
-  statistics, the actual two-minute speed proof and final full gate remain in
+  transfer and 12 protected failures. Public/CLI parallel export now passes 111
+  successful exports, eight native timing cases, 24 live failures and complete
+  media/frame/audio parity; all worker counts, old format/legacy suites, 32 focused
+  tests and build/lint/boundaries pass. New Canvas isolation and synchronous binary
+  XHR remain rejected. Global static/preparation paint counts, aggregate memory,
+  per-layer statistics, the actual two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
   [format evidence](./composition-ce15-format-results.json).
@@ -291,6 +291,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 production parallel worker checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `8ae2aa7`.
+- **Done:** public/CLI worker/cache options, independent pinned browsers, immutable
+  export scope and one bounded absolute-order encoder pipe with actual work metrics.
+- **Results:** mandatory browser check passes in 181.14s: 111 successful exports,
+  eight native timing cases, 24 protected live failures and complete media/frame/audio
+  parity; 32 focused tests, build/lint/boundaries and old format/legacy exports pass.
+- **Rejected:** early-source guard wording mismatch was a test error; its original
+  production rejection is preserved. Sandbox/compile/probe attempts remain recorded.
+- **Next:** complete static/preparation paint audit, aggregate limits, per-layer timing,
+  actual two-minute speed proof, full CE15 gate/PR, then all CE14. No speed claim yet.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [parallel evidence](./composition-ce15-parallel-results.json).
 
 ### 2026-10-07 — CE15 bounded ordered-pipe foundation
 
