@@ -1409,7 +1409,11 @@ frames, 46 independent preview encodes, 138 production exports, 138 actual hardw
 comparisons and real inspector edits/undo/save/reload. The full Canvas matrices
 pass unchanged pixels and the 1.25 timing limit; WebGL timing retains CE6-P's
 existing deferral. All tracked visual references are unchanged.
-[Implementation evidence](./composition-ce4c-results.json). [PR #45](https://github.com/xxibcill/still-shift/pull/45) is open and attached against CE8-L.
+[Implementation evidence](./composition-ce4c-results.json). [PR #45](https://github.com/xxibcill/still-shift/pull/45) now targets `main`.
+The focused conflict-resolution verification and two open review findings are
+recorded in [merge evidence](./pr-45-conflict-resolution-results.json) and
+[review findings](./pr-45-review-results.json); the original full gate above remains
+historical.
 
 - [x] Map depth planes to 3D layers and the cinematic camera (including dolly zoom,
       curved approach and focus handoff) to the CE8 camera.

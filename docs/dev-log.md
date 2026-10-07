@@ -43,14 +43,22 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #45 conflict resolution and review in progress (2026-10-08):** isolated
-  `codex/pr45-conflict-review` integrates current `main` at `50cbf633` into
-  CE4c head `17666eb`. All nine conflicts combine cinematic camera framing,
-  focus and depth-plane behavior with main's reviewed camera/XYZ, lighting,
-  echo/effect and soundtrack fixes. Mandatory test commands and both development
-  histories are retained. Focused verification and independent Standards/Spec
-  review are pending; no new full `pnpm check` is claimed. Actions remain disabled.
-  [Evidence](./pr-45-conflict-resolution-results.json).
+- **PR #45 conflicts resolved; review complete (2026-10-08):** isolated
+  `codex/pr45-conflict-review` integrates `main` at `50cbf633` into CE4c head
+  `17666eb` with merge `1b3f98f`. All nine conflicts preserve cinematic/native
+  behavior and main's reviewed spatial, lighting, echo/effect and soundtrack
+  fixes. Both development histories, all 59 mandatory commands and main visual
+  baseline bytes survive. Fast checks pass 2,371 units; 46 runtime / eight affected
+  integrations, all 46 cinematic smoke cases, native camera/lighting/exports,
+  exposure and complete selected focus-handoff checks pass. All 176 frozen items /
+  36,061 frames match without regeneration. Independent Standards and Spec reviews
+  found two open P2 defects: affine primitive-blur scaling and integer-only
+  persisted shutter coverage. Both are independently reproduced with real pixels
+  on Canvas/WebGL. Push the verified merge/evidence to PR #45; owner review/merge
+  remain. No full repository gate or CE6-P acceptance is claimed. Owner checkout
+  stays untouched and Actions disabled.
+  [Merge evidence](./pr-45-conflict-resolution-results.json),
+  [review findings](./pr-45-review-results.json).
 
 - **PR #44 review repairs verified (2026-10-08):** both P2 findings are posted
   inline on reviewed `5b233c8` and repaired one per commit: `009ae7d` resolves
@@ -59,7 +67,7 @@ still hold before relying on them.
   respects deliberately moved focus. Final fast checks pass 2,322 units; lighting,
   inspector and WebGL exports pass; all 176 frozen items / 36,061 frames match
   without regeneration. Independent Standards and Spec audits have no remaining
-  findings. One normal push follows the second commit; owner review/merge remain.
+  findings. Both repairs are merged into `main` at `50cbf633` through PR #44.
   No new full `pnpm check` or performance gate is claimed. Owner checkout is
   untouched and Actions remain disabled. [Repair evidence](./pr-44-fix-results.json).
 
@@ -854,17 +862,22 @@ _Last updated 2026-10-08 by Codex for PR #45 conflict resolution._
 
 ## Entries
 
-### 2026-10-08 — PR #45 main conflict integration
+### 2026-10-08 — PR #45 main conflict integration and independent review
 
 - **Agent / branch:** Codex on isolated `codex/pr45-conflict-review` from `17666eb`.
-- **Done:** combine nine conflicts with `main` at `50cbf633`; preserve settled
-  camera optics, shared XYZ/view-offset key discovery, bitmap echo rounding,
-  clipping, every test command and both development histories. Advance combined
-  evaluator/Canvas/WebGL/export identities to 51 / 1.42.1 / 0.57.1 / 0.6.6.
-- **Results / next:** focused verification and independent review are in progress;
-  no new full gate or performance acceptance is claimed. Push the verified merge
-  to the existing PR; owner review/merge remain. Owner checkout stays untouched.
-- **Records:** [Merge evidence](./pr-45-conflict-resolution-results.json).
+- **Done:** merge `1b3f98f` combines nine conflicts with `main` at `50cbf633`;
+  keep settled optics, shared XYZ/view-offset tracks, clipping/echo rounding,
+  both development histories and all 59 mandatory commands. Combined evaluator /
+  Canvas / WebGL / export identities are 51 / 1.42.1 / 0.57.1 / 0.6.6.
+- **Results:** 2,371 units, 46 runtime, eight affected integrations and scoped
+  cinematic/camera/lighting/export/exposure/inspector checks pass. All 176 frozen
+  items / 36,061 frames and main baseline bytes match without regeneration.
+- **Review / next:** two independently reproduced P2 findings remain open:
+  affine primitive-blur scaling and integer-only persisted shutter coverage.
+  Push verified merge/evidence; owner review/merge remain. No full gate or CE6-P
+  acceptance is claimed; owner checkout is untouched and Actions remain disabled.
+- **Records:** [Merge evidence](./pr-45-conflict-resolution-results.json),
+  [independent review](./pr-45-review-results.json).
 
 ### 2026-10-08 — PR #44 receiving-toggle focus repair and final verification
 

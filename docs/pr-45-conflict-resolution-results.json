@@ -3,7 +3,7 @@
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/45",
   "originalHead": "17666eb14cdb302b319177e4d95dce68ddf9767a",
   "integratedBase": "50cbf6332ece7ffafc156645f6a7e4e532d7f986",
-  "status": "conflicts resolved locally; focused verification and independent review in progress",
+  "status": "conflicts resolved; focused verification and independent review complete; two P2 review findings remain open",
   "fullPnpmCheckRun": false,
   "resolution": {
     "conflictedFiles": [
@@ -46,20 +46,4092 @@
       "missingHeadings": [],
       "baselineFiles": 144,
       "modifiedNonMarkdownBaselines": []
-    }
+    },
+    "allParentDevelopmentLogHeadingsRetainedExactlyOnce": true,
+    "clarification": "All non-Markdown main visual artifacts remain exact. Four older-head shape baseline artifacts changed only by inheriting main PR42 fixes byte-for-byte; no baseline regeneration. All 59 combined mandatory test commands remain present."
   },
   "verification": {
     "scope": "Focused conflict-repair checks. Parent full gates remain historical; no new full gate or performance acceptance.",
-    "checks": [],
+    "checks": [
+      {
+        "label": "format-merge",
+        "command": [
+          "pnpm",
+          "exec",
+          "prettier",
+          "--write",
+          "apps/lab/src/composition-keys.ts",
+          "docs/dev-log.md",
+          "docs/pr-45-conflict-resolution-results.json",
+          "package.json",
+          "packages/execution-runtime/src/export-worker.ts",
+          "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+          "packages/renderer-core/src/composition/evaluate/spatial-state.ts",
+          "packages/renderer-core/src/composition/render/graph.ts",
+          "packages/renderer-core/src/composition/render/version.ts",
+          "packages/renderer-core/src/composition/render/webgl2.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 1.33,
+        "log": "/private/tmp/pr45-format-merge.log",
+        "logSha256": "1bbb220baa64036e96700f82cf612376a70f8e262c945a0fe31c1a784dcc0e9b"
+      },
+      {
+        "label": "toolchain",
+        "command": ["pnpm", "toolchain:check"],
+        "exitCode": 0,
+        "seconds": 2.18,
+        "log": "/private/tmp/pr45-toolchain.log",
+        "logSha256": "ffe221f62d78ceeeac918a1749c1c4e5f54973777954360ea7efbbb9393b1f9c"
+      },
+      {
+        "label": "vite-config",
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "--input-type=module",
+          "-e",
+          "await import('./apps/lab/vite.config.ts'); console.log('Native Vite config import passed');"
+        ],
+        "exitCode": 0,
+        "seconds": 4.09,
+        "log": "/private/tmp/pr45-vite-config.log",
+        "logSha256": "1822795edf72627f090f19b2ab909cbb3279f3b1d1dabf71402a7a7e61b41d06"
+      },
+      {
+        "label": "fast",
+        "command": ["pnpm", "check:fast"],
+        "exitCode": 0,
+        "seconds": 49.63,
+        "log": "/private/tmp/pr45-fast.log",
+        "logSha256": "28859704d8f30b0e1ab8632c06bc68d20177b543675b763fc9d65473cc0401b3"
+      },
+      {
+        "label": "python-imports",
+        "command": [
+          ".venv/bin/python",
+          "-c",
+          "import sys, numpy, cv2, PIL, torch, torchvision, transformers, still_shift_depth; print(sys.version); print(still_shift_depth.__file__); print('Python module imports passed')"
+        ],
+        "exitCode": 0,
+        "seconds": 66.81,
+        "log": "/private/tmp/pr45-python-imports.log",
+        "logSha256": "f56f52560d4425fbfd742ebcfdc423599c19c534277335747b1c4e6ed77d7bfb"
+      },
+      {
+        "label": "blur-review-proof",
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "/private/tmp/pr45-blur-proof.mts"
+        ],
+        "exitCode": 1,
+        "seconds": 1.84,
+        "log": "/private/tmp/pr45-blur-review-proof.log",
+        "logSha256": "5d41a428680427893b18eb5add9b8cf5f96ba7ef13953123f98862c35fb10d41"
+      },
+      {
+        "label": "runtime",
+        "command": ["pnpm", "test:runtime"],
+        "exitCode": 0,
+        "seconds": 13.45,
+        "log": "/private/tmp/pr45-runtime.log",
+        "logSha256": "003146c1475efd0d1b8ae2a4f99e93716035979665d10e2c6cfebd55e7869fe4"
+      },
+      {
+        "label": "integration",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/integration/composition-program-cli.test.ts",
+          "tests/integration/composition-examples.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "exitCode": 0,
+        "seconds": 15.37,
+        "log": "/private/tmp/pr45-integration.log",
+        "logSha256": "7242f5c4678b8a952f356f4c7c93ff77972a2dfcd17a2512ef8c1e1a95b5a4e5"
+      },
+      {
+        "label": "blur-review-proof-corrected",
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "/private/tmp/pr45-blur-proof.mts"
+        ],
+        "exitCode": 0,
+        "seconds": 1.92,
+        "log": "/private/tmp/pr45-blur-review-proof-corrected.log",
+        "logSha256": "0a1a027aba47b4563e6ef3c6e823837f22006921ccfb0e6b88a6fe082e5166ea"
+      },
+      {
+        "label": "cinematic-smoke",
+        "command": [
+          "pnpm",
+          "test:browser:composition-cinematic-adapter",
+          "--smoke"
+        ],
+        "exitCode": 0,
+        "seconds": 49.5,
+        "log": "/private/tmp/pr45-cinematic-smoke.log",
+        "logSha256": "91bd4ee16630e1cce87382c5dd2ae78256216b7f7401cf7710cbc41b8aff13a5"
+      },
+      {
+        "label": "camera",
+        "command": ["pnpm", "test:browser:composition-camera"],
+        "exitCode": 0,
+        "seconds": 84.69,
+        "log": "/private/tmp/pr45-camera.log",
+        "logSha256": "083961757383e15afc166c7fa8f3da7e655fae9eb02b5aed622c17c7f65622c9"
+      },
+      {
+        "label": "shutter-review-proof",
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "/private/tmp/pr45-shutter-proof.mts"
+        ],
+        "exitCode": 0,
+        "seconds": 2.07,
+        "log": "/private/tmp/pr45-shutter-review-proof.log",
+        "logSha256": "cc1ac751f1dab64f3dc1f2d18aa8a68a75cd420331b7415f0a6f901d2a69e044"
+      },
+      {
+        "label": "lighting",
+        "command": ["pnpm", "test:browser:composition-lighting"],
+        "exitCode": 0,
+        "seconds": 129.03,
+        "log": "/private/tmp/pr45-lighting.log",
+        "logSha256": "d302c63d6c70ee7e05534fde0f2f199c5fbb466813c739ece0bdbcc452f4af1c"
+      },
+      {
+        "label": "webgl-export",
+        "command": ["pnpm", "test:browser:composition-webgl-export"],
+        "exitCode": 0,
+        "seconds": 36.12,
+        "log": "/private/tmp/pr45-webgl-export.log",
+        "logSha256": "9969634d8d186d24234694a838c98869ce17fe190a3aa3422d5c391f6f7c571b"
+      },
+      {
+        "label": "exposure",
+        "command": ["pnpm", "test:browser:composition-exposure"],
+        "exitCode": 0,
+        "seconds": 21.4,
+        "log": "/private/tmp/pr45-exposure.log",
+        "logSha256": "b7741a9238ccfa960b732f651c3789da8a52cf02b84e32ac88640791d3749f2f"
+      },
+      {
+        "label": "format-review",
+        "command": [
+          "pnpm",
+          "exec",
+          "prettier",
+          "--write",
+          "docs/pr-45-review-results.json"
+        ],
+        "exitCode": 0,
+        "seconds": 0.22,
+        "log": "/private/tmp/pr45-format-review.log",
+        "logSha256": "ccc653ef0c039a601da3e58d810d0245313379fe4249ad95eb957e015747acbf"
+      },
+      {
+        "label": "cinematic-focus",
+        "command": [
+          "pnpm",
+          "test:browser:composition-cinematic-adapter",
+          "--only",
+          "focus-handoff"
+        ],
+        "exitCode": 0,
+        "seconds": 279.1,
+        "log": "/private/tmp/pr45-cinematic-focus.log",
+        "logSha256": "c6c4920c5afbd88f348be6994293fa4eb25b99336d2d06fa4da9f35c63fe70c5"
+      },
+      {
+        "label": "baselines",
+        "command": ["pnpm", "test:browser:composition-baselines"],
+        "exitCode": 0,
+        "seconds": 296.74,
+        "log": "/private/tmp/pr45-baselines.log",
+        "logSha256": "972e017a9e141cce7acc631f554daa44cac56e9ed4b698aea0c7b0f13ba8332a"
+      }
+    ],
     "notRun": [
       "full pnpm check",
-      "complete browser and timing matrices"
-    ]
+      "complete integration suite",
+      "Python/depth suites beyond preflight",
+      "unaffected browser groups",
+      "full cinematic and other family timing matrices",
+      "CE6-P performance audit"
+    ],
+    "sourceFingerprint": {
+      "files": 1729,
+      "sha256": "607fb2a1f737f1da8d99a2404fed3100073a2e69f40f87f6780afa0c8a6b0674",
+      "codeCheckpoint": "1b3f98f6b2c3808ca7f07a2cf0985b6dc8545b58",
+      "scope": "All tracked non-documentation files: code, fixtures, baseline assets, toolchain and lockfiles."
+    },
+    "sourceUnchangedAfterAcceptance": true,
+    "counts": {
+      "unit": 2371,
+      "runtime": 46,
+      "affectedIntegration": 8,
+      "cinematicSmokeFixtures": 15,
+      "cinematicSmokeBackendCases": 46,
+      "cinematicSmokeForwardFrames": 230,
+      "cinematicSmokeReverseFrames": 230,
+      "frozenItems": 176,
+      "frozenFrames": 36061
+    },
+    "camera": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "reports": [
+        {
+          "fixture": "affine",
+          "backend": "canvas2d",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "affine",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "affine",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "affine",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "perspective",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "perspective",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "checker-perspective",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "checker-perspective",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "clipping",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "clipping",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "content",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "content",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "parents",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "parents",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "focus",
+          "backend": "canvas2d",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "focus",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "focus",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "focus",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "group-mask",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "group-mask",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "scopes",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "scopes",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "exposure",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "exposure",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        }
+      ],
+      "failures": [
+        {
+          "fixture": "coverage",
+          "backend": "canvas2d",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 16, pixel 52,37",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 16
+            }
+          ]
+        },
+        {
+          "fixture": "masked",
+          "backend": "canvas2d",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 48,32",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "fixture": "matted",
+          "backend": "canvas2d",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 52,37",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "fixture": "coverage",
+          "backend": "webgl2",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 16, pixel 52,37",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 16
+            }
+          ]
+        },
+        {
+          "fixture": "masked",
+          "backend": "webgl2",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 48,32",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "fixture": "matted",
+          "backend": "webgl2",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 52,37",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "fixture": "unsupported",
+          "exposure": false,
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "True perspective requires the composition WebGL2 backend; Canvas supports affine camera projection",
+              "node": "plane"
+            }
+          ],
+          "previousFrame": "unchanged"
+        },
+        {
+          "fixture": "unsupported",
+          "exposure": true,
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "True perspective requires the composition WebGL2 backend; Canvas supports affine camera projection",
+              "node": "plane"
+            }
+          ],
+          "previousFrame": "unchanged"
+        }
+      ],
+      "hardware": {
+        "environments": [
+          {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          {
+            "profile": "hardware",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+            "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+            "platform": "darwin",
+            "arch": "arm64"
+          }
+        ],
+        "policy": "unchanged perceptual hardware policy",
+        "reports": [
+          {
+            "fixture": "affine",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "affine",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "affine",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "affine",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "affine",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "affine",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "perspective",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "perspective",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "perspective",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "checker-perspective",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "checker-perspective",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "checker-perspective",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "clipping",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "clipping",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "clipping",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "parents",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "parents",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "parents",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "group-mask",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "near",
+            "maxChannelDelta": 1,
+            "differingChannels": 18,
+            "psnr": 81.24410313171703,
+            "ssim": 0.9999992848435189
+          },
+          {
+            "fixture": "group-mask",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "near",
+            "maxChannelDelta": 1,
+            "differingChannels": 19,
+            "psnr": 81.00929217322181,
+            "ssim": 0.9999998660699676
+          },
+          {
+            "fixture": "group-mask",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "near",
+            "maxChannelDelta": 1,
+            "differingChannels": 16,
+            "psnr": 81.75562835619084,
+            "ssim": 0.9999997817435156
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          }
+        ]
+      },
+      "groupBlur": [
+        {
+          "backend": "canvas2d",
+          "childRadius": "inherited",
+          "left": 40,
+          "collapsed": false,
+          "halo": 115,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "childRadius": "inherited",
+          "left": 40,
+          "collapsed": true,
+          "halo": 115,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "childRadius": "inherited",
+          "left": 102,
+          "collapsed": false,
+          "halo": 75,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "childRadius": "inherited",
+          "left": 102,
+          "collapsed": true,
+          "halo": 75,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "childRadius": 0,
+          "left": 40,
+          "collapsed": false,
+          "halo": 115,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "childRadius": 0,
+          "left": 40,
+          "collapsed": true,
+          "halo": 115,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "childRadius": 0,
+          "left": 102,
+          "collapsed": false,
+          "halo": 75,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "childRadius": 0,
+          "left": 102,
+          "collapsed": true,
+          "halo": 75,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "childRadius": 2,
+          "left": 40,
+          "collapsed": false,
+          "halo": 105,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "childRadius": 2,
+          "left": 40,
+          "collapsed": true,
+          "halo": 105,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "childRadius": 2,
+          "left": 102,
+          "collapsed": false,
+          "halo": 32,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "childRadius": 2,
+          "left": 102,
+          "collapsed": true,
+          "halo": 32,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": "inherited",
+          "left": 40,
+          "collapsed": false,
+          "halo": 115,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": "inherited",
+          "left": 40,
+          "collapsed": true,
+          "halo": 115,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": "inherited",
+          "left": 102,
+          "collapsed": false,
+          "halo": 75,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": "inherited",
+          "left": 102,
+          "collapsed": true,
+          "halo": 75,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": 0,
+          "left": 40,
+          "collapsed": false,
+          "halo": 115,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": 0,
+          "left": 40,
+          "collapsed": true,
+          "halo": 115,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": 0,
+          "left": 102,
+          "collapsed": false,
+          "halo": 75,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": 0,
+          "left": 102,
+          "collapsed": true,
+          "halo": 75,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": 2,
+          "left": 40,
+          "collapsed": false,
+          "halo": 105,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": 2,
+          "left": 40,
+          "collapsed": true,
+          "halo": 105,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": 2,
+          "left": 102,
+          "collapsed": false,
+          "halo": 32,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "backend": "webgl2",
+          "childRadius": 2,
+          "left": 102,
+          "collapsed": true,
+          "halo": 32,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        }
+      ],
+      "effectSpace": [
+        {
+          "name": "affine",
+          "backend": "canvas2d",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "affine",
+          "backend": "canvas2d",
+          "frame": 5,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "affine",
+          "backend": "canvas2d",
+          "frame": 23,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "affine",
+          "backend": "canvas2d",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "affine",
+          "backend": "webgl2",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "affine",
+          "backend": "webgl2",
+          "frame": 5,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "affine",
+          "backend": "webgl2",
+          "frame": 23,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "affine",
+          "backend": "webgl2",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "compound",
+          "backend": "webgl2",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "compound",
+          "backend": "webgl2",
+          "frame": 5,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "compound",
+          "backend": "webgl2",
+          "frame": 23,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "compound",
+          "backend": "webgl2",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "perspective",
+          "backend": "webgl2",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "perspective",
+          "backend": "webgl2",
+          "frame": 5,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "perspective",
+          "backend": "webgl2",
+          "frame": 23,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "perspective",
+          "backend": "webgl2",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "inherited",
+          "backend": "webgl2",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "inherited",
+          "backend": "webgl2",
+          "frame": 5,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "inherited",
+          "backend": "webgl2",
+          "frame": 23,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "inherited",
+          "backend": "webgl2",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "nested",
+          "backend": "canvas2d",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "nested",
+          "backend": "canvas2d",
+          "frame": 5,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "nested",
+          "backend": "canvas2d",
+          "frame": 23,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "nested",
+          "backend": "canvas2d",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "nested",
+          "backend": "webgl2",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "nested",
+          "backend": "webgl2",
+          "frame": 5,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "nested",
+          "backend": "webgl2",
+          "frame": 23,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        },
+        {
+          "name": "nested",
+          "backend": "webgl2",
+          "frame": 0,
+          "metrics": {
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": null,
+            "ssim": 1
+          }
+        }
+      ],
+      "ancestorCoverage": [
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "nested-mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "nested-mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "matte",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 80,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "matte",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 80,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "effect",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 0,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "effect",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 0,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "sibling",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "sibling",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "full-matte",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "named-input",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "required-group",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on group exposes the owning scope at frame 1, pixel 40,40",
+              "node": "group",
+              "path": "group.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "required-group",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on group exposes the owning scope at frame 1, pixel 40,40",
+              "node": "group",
+              "path": "group.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "exposure-mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "exposure-mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "echo-out-point",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": false,
+          "kind": "echo-opacity",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "nested-mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "nested-mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "matte",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 80,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "matte",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 80,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "effect",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 0,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "effect",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 0,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "sibling",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "sibling",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "full-matte",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "named-input",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "required-group",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on group exposes the owning scope at frame 1, pixel 40,40",
+              "node": "group",
+              "path": "group.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "required-group",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on group exposes the owning scope at frame 1, pixel 40,40",
+              "node": "group",
+              "path": "group.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "exposure-mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "exposure-mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "echo-out-point",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "canvas2d",
+          "threeD": true,
+          "kind": "echo-opacity",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "nested-mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "nested-mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "matte",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 80,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "matte",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 80,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "effect",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 0,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "effect",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 0,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "sibling",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "sibling",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "full-matte",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "named-input",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "required-group",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on group exposes the owning scope at frame 1, pixel 40,40",
+              "node": "group",
+              "path": "group.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "required-group",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on group exposes the owning scope at frame 1, pixel 40,40",
+              "node": "group",
+              "path": "group.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "exposure-mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "exposure-mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "echo-out-point",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "webgl2",
+          "threeD": false,
+          "kind": "echo-opacity",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "nested-mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "nested-mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "matte",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 80,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "matte",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 80,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "effect",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 0,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "effect",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 1, pixel 0,0",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "sibling",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "sibling",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "full-matte",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "named-input",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "required-group",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on group exposes the owning scope at frame 1, pixel 40,40",
+              "node": "group",
+              "path": "group.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "required-group",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on group exposes the owning scope at frame 1, pixel 40,40",
+              "node": "group",
+              "path": "group.coverage",
+              "frame": 1
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "exposure-mask",
+          "severity": "error",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "exposure-mask",
+          "severity": "warning",
+          "accepted": false,
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "warning",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 40,40",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "echo-out-point",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        },
+        {
+          "backend": "webgl2",
+          "threeD": true,
+          "kind": "echo-opacity",
+          "severity": "error",
+          "accepted": true,
+          "diagnostics": []
+        }
+      ],
+      "inspector": {
+        "status": "passed",
+        "checks": [
+          "native xyz track",
+          "POI tangent edit",
+          "actual world frustum",
+          "scoped camera at selected frame",
+          "undo/redo",
+          "lossless native source save"
+        ]
+      },
+      "xyInspector": [
+        {
+          "mode": "camera-position",
+          "status": "passed",
+          "dimensions": 2,
+          "checks": ["XY tangent edit", "undo/redo", "lossless save"]
+        },
+        {
+          "mode": "camera-poi",
+          "status": "passed",
+          "dimensions": 2,
+          "checks": ["XY tangent edit", "undo/redo", "lossless save"]
+        },
+        {
+          "mode": "spatial-position",
+          "status": "passed",
+          "dimensions": 2,
+          "checks": ["XY tangent edit", "undo/redo", "lossless save"]
+        }
+      ],
+      "baseline": "exact"
+    },
+    "lighting": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "reports": [
+        {
+          "fixture": "ambient",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 393216,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "ambient",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "ambient",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "point",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 0,
+            "oracleMaxDelta": 1,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "point",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 1,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "point",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "spot",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 0,
+            "oracleMaxDelta": 1,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "spot",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 1,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "spot",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "overlap",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 3520,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "overlap",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "overlap",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "content",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 24599,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "content",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "content",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "scopes",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 9693,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "scopes",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "scopes",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "unlit",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 0,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "unlit",
+          "backend": "canvas2d",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "exact"
+        },
+        {
+          "fixture": "unlit",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "unlit",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "exact"
+        },
+        {
+          "fixture": "unlit",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "disabled",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 0,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "disabled",
+          "backend": "canvas2d",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "exact"
+        },
+        {
+          "fixture": "disabled",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "disabled",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "exact"
+        },
+        {
+          "fixture": "disabled",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "zero",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 393216,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "zero",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "zero",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "exposure",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 4068,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "exposure",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "exposure",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "focus",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 53071,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "focus",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "focus",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "effects",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 35328,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "effects",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "effects",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "mirror",
+          "transparentRgba": {
+            "frames": 32,
+            "maxAlphaDelta": 0,
+            "partialAlphaPixels": 0,
+            "oracleMaxDelta": 0,
+            "output": "offscreen straight RGBA; CPU comparison in premultiplied bytes"
+          }
+        },
+        {
+          "fixture": "mirror",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0,
+          "alpha": "exact across all frames",
+          "unlitIdentity": "not applicable"
+        },
+        {
+          "fixture": "mirror",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        }
+      ],
+      "dependencies": [
+        {
+          "lightType": "ambient",
+          "lightFirst": false,
+          "previewFrames": 40,
+          "pixelParity": "exact against explicit XYZ",
+          "exports": 4,
+          "exportFrames": 32,
+          "exportParity": "byte-identical implicit/explicit/repeat/raw"
+        },
+        {
+          "lightType": "ambient",
+          "lightFirst": true,
+          "previewFrames": 40,
+          "pixelParity": "exact against explicit XYZ",
+          "exports": 4,
+          "exportFrames": 32,
+          "exportParity": "byte-identical implicit/explicit/repeat/raw"
+        },
+        {
+          "lightType": "point",
+          "lightFirst": false,
+          "previewFrames": 40,
+          "pixelParity": "exact against explicit XYZ",
+          "exports": 4,
+          "exportFrames": 32,
+          "exportParity": "byte-identical implicit/explicit/repeat/raw"
+        },
+        {
+          "lightType": "point",
+          "lightFirst": true,
+          "previewFrames": 40,
+          "pixelParity": "exact against explicit XYZ",
+          "exports": 4,
+          "exportFrames": 32,
+          "exportParity": "byte-identical implicit/explicit/repeat/raw"
+        },
+        {
+          "lightType": "spot",
+          "lightFirst": false,
+          "previewFrames": 40,
+          "pixelParity": "exact against explicit XYZ",
+          "exports": 4,
+          "exportFrames": 32,
+          "exportParity": "byte-identical implicit/explicit/repeat/raw"
+        },
+        {
+          "lightType": "spot",
+          "lightFirst": true,
+          "previewFrames": 40,
+          "pixelParity": "exact against explicit XYZ",
+          "exports": 4,
+          "exportFrames": 32,
+          "exportParity": "byte-identical implicit/explicit/repeat/raw"
+        }
+      ],
+      "failures": [
+        {
+          "name": "activation",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        },
+        {
+          "name": "later-shutter",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        },
+        {
+          "name": "named-input",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        },
+        {
+          "name": "matte",
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "Flat-surface lighting requires the composition WebGL2 backend",
+              "node": "plane"
+            }
+          ],
+          "previousFrameUnchanged": true
+        }
+      ],
+      "legacy": {
+        "source": "story-motion-continuous/access-constraint.json",
+        "reports": [
+          {
+            "backend": "canvas2d",
+            "frames": 4,
+            "identity": "byte-identical",
+            "hashes": {
+              "0": "1835183e716a8528a5685881b11a88ef31a82ea8815ce80ac262c0b683963527",
+              "96": "a9ae353eaf91321c69543568e6334c60a27b02b1abce0a2349343792f7815581",
+              "191": "520767eb33e8430fa90a12ba632645c425f3f4b790e421ee4de4fc09fb3bb114"
+            }
+          },
+          {
+            "backend": "webgl2",
+            "frames": 4,
+            "identity": "byte-identical",
+            "hashes": {
+              "0": "1835183e716a8528a5685881b11a88ef31a82ea8815ce80ac262c0b683963527",
+              "96": "f60961b576115e45b0682044d596d7a35be8a0b5fcd039b3da11b6b71e75c5f1",
+              "191": "06c55ac7793d4cae28eccd8d3005193c8ec2040799738819e5466419a8c09b35"
+            }
+          }
+        ]
+      },
+      "hardware": {
+        "environments": [
+          {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          {
+            "profile": "hardware",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+            "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+            "platform": "darwin",
+            "arch": "arm64"
+          }
+        ],
+        "policy": "unchanged perceptual hardware policy",
+        "reports": [
+          {
+            "fixture": "ambient",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "ambient",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "ambient",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "point",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "point",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "point",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "spot",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "spot",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "near",
+            "maxChannelDelta": 1,
+            "differingChannels": 1,
+            "psnr": 93.79682818275009,
+            "ssim": 0.9999999978596394
+          },
+          {
+            "fixture": "spot",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "near",
+            "maxChannelDelta": 1,
+            "differingChannels": 1,
+            "psnr": 93.79682818275009,
+            "ssim": 0.9999999978067234
+          },
+          {
+            "fixture": "overlap",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "overlap",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "overlap",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "unlit",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "disabled",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "zero",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "zero",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "zero",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "effects",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "effects",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "effects",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "mirror",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "mirror",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "mirror",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          }
+        ]
+      },
+      "inspector": {
+        "receiverToggle": "source/undo/redo/save",
+        "lightTracks": ["XYZ", "color", "intensity", "innerCone"],
+        "intensityEdit": 0.75,
+        "focus": {
+          "acceptedToggles": 4,
+          "rejectedToggle": "focus retained",
+          "movedFocus": "not stolen",
+          "errors": []
+        },
+        "errors": []
+      },
+      "baseline": "exact"
+    },
+    "cinematicFocus": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "reports": [
+        {
+          "id": "cinematic/focus-handoff",
+          "backend": "canvas2d",
+          "frames": 96,
+          "reverseFrames": 96,
+          "maxDelta": 1,
+          "minPsnr": 113.0589660411409,
+          "failures": [],
+          "errors": [],
+          "previewChecksum": "a0a3641e4f810523977281f1f4bd26f22833e1a2b91b18aa4ae5f682bd823f30",
+          "ratio": 1.0167302478364517,
+          "timings": [
+            {
+              "legacyMs": 2175.699999809265,
+              "compositionMs": 2212.100000023842,
+              "ratio": 1.0167302478364517,
+              "cycles": 1,
+              "frames": 96
+            },
+            {
+              "legacyMs": 2157.7000002861023,
+              "compositionMs": 2177.799999833107,
+              "ratio": 1.0093154745999626,
+              "cycles": 1,
+              "frames": 96
+            },
+            {
+              "legacyMs": 2166.6999999284744,
+              "compositionMs": 2224.399999976158,
+              "ratio": 1.0266303595558168,
+              "cycles": 1,
+              "frames": 96
+            }
+          ]
+        },
+        {
+          "id": "cinematic/focus-handoff",
+          "backend": "webgl2",
+          "frames": 96,
+          "reverseFrames": 96,
+          "maxDelta": 1,
+          "minPsnr": 113.0589660411409,
+          "failures": [],
+          "errors": [],
+          "previewChecksum": "a0a3641e4f810523977281f1f4bd26f22833e1a2b91b18aa4ae5f682bd823f30",
+          "ratio": 1.0879778029344072,
+          "timings": [
+            {
+              "legacyMs": 2097.999999523163,
+              "compositionMs": 2265.700000524521,
+              "ratio": 1.0799332702762026,
+              "cycles": 1,
+              "frames": 96
+            },
+            {
+              "legacyMs": 2090.2999992370605,
+              "compositionMs": 2274.20000064373,
+              "ratio": 1.0879778029344072,
+              "cycles": 1,
+              "frames": 96
+            },
+            {
+              "legacyMs": 2153.4999998807907,
+              "compositionMs": 2407.899999976158,
+              "ratio": 1.1181332714694452,
+              "cycles": 1,
+              "frames": 96
+            }
+          ]
+        },
+        {
+          "id": "cinematic/focus-handoff/close-gap",
+          "backend": "canvas2d",
+          "frames": 96,
+          "reverseFrames": 96,
+          "maxDelta": 1,
+          "minPsnr": 116.06926599778072,
+          "failures": [],
+          "errors": [],
+          "previewChecksum": "fe7345e7dd5c523f3b031e56065861ba49091f5a270133279ae3c914a2b0ea58",
+          "ratio": 1.0132397265550035,
+          "timings": [
+            {
+              "legacyMs": 2603.100000023842,
+              "compositionMs": 2649.100000023842,
+              "ratio": 1.0176712381389799,
+              "cycles": 1,
+              "frames": 96
+            },
+            {
+              "legacyMs": 2653.0000001192093,
+              "compositionMs": 2664.9999998807907,
+              "ratio": 1.004523181214113,
+              "cycles": 1,
+              "frames": 96
+            },
+            {
+              "legacyMs": 2620.900000333786,
+              "compositionMs": 2655.599999666214,
+              "ratio": 1.0132397265550035,
+              "cycles": 1,
+              "frames": 96
+            }
+          ]
+        },
+        {
+          "id": "cinematic/focus-handoff/close-gap",
+          "backend": "webgl2",
+          "frames": 96,
+          "reverseFrames": 96,
+          "maxDelta": 1,
+          "minPsnr": 116.06926599778072,
+          "failures": [],
+          "errors": [],
+          "previewChecksum": "fe7345e7dd5c523f3b031e56065861ba49091f5a270133279ae3c914a2b0ea58",
+          "ratio": 0.9838448435241429,
+          "timings": [
+            {
+              "legacyMs": 2406.8999993801117,
+              "compositionMs": 2306.6000007390976,
+              "ratio": 0.95832814048492,
+              "cycles": 1,
+              "frames": 96
+            },
+            {
+              "legacyMs": 2407.9000005722046,
+              "compositionMs": 2368.9999992847443,
+              "ratio": 0.9838448435241429,
+              "cycles": 1,
+              "frames": 96
+            },
+            {
+              "legacyMs": 2534.800000190735,
+              "compositionMs": 2552.899999976158,
+              "ratio": 1.0071406027237104,
+              "cycles": 1,
+              "frames": 96
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "id": "cinematic/focus-handoff",
+          "backend": "canvas2d",
+          "frames": 96,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical",
+          "relocatedAssets": "pass",
+          "overwriteProtection": "pass"
+        },
+        {
+          "id": "cinematic/focus-handoff",
+          "backend": "webgl2",
+          "frames": 96,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical",
+          "relocatedAssets": "pass",
+          "overwriteProtection": "pass"
+        },
+        {
+          "id": "cinematic/focus-handoff/close-gap",
+          "backend": "canvas2d",
+          "frames": 96,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical",
+          "relocatedAssets": "pass",
+          "overwriteProtection": "pass"
+        },
+        {
+          "id": "cinematic/focus-handoff/close-gap",
+          "backend": "webgl2",
+          "frames": 96,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical",
+          "relocatedAssets": "pass",
+          "overwriteProtection": "pass"
+        }
+      ],
+      "hardware": {
+        "environments": [
+          {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          {
+            "profile": "hardware",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+            "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+            "platform": "darwin",
+            "arch": "arm64"
+          }
+        ],
+        "policy": "unchanged perceptual hardware policy",
+        "reports": [
+          {
+            "fixture": "cinematic/focus-handoff",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "cinematic/focus-handoff",
+            "backend": "canvas2d",
+            "frame": 48,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "cinematic/focus-handoff",
+            "backend": "canvas2d",
+            "frame": 95,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "cinematic/focus-handoff",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "perceptual",
+            "maxChannelDelta": 10,
+            "differingChannels": 869327,
+            "psnr": 55.349305131432445,
+            "ssim": 0.9995614190402443
+          },
+          {
+            "fixture": "cinematic/focus-handoff",
+            "backend": "webgl2",
+            "frame": 48,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "cinematic/focus-handoff",
+            "backend": "webgl2",
+            "frame": 95,
+            "tier": "perceptual",
+            "maxChannelDelta": 11,
+            "differingChannels": 126728,
+            "psnr": 62.14963467748235,
+            "ssim": 0.9999346040668486
+          },
+          {
+            "fixture": "cinematic/focus-handoff/close-gap",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "cinematic/focus-handoff/close-gap",
+            "backend": "canvas2d",
+            "frame": 48,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "cinematic/focus-handoff/close-gap",
+            "backend": "canvas2d",
+            "frame": 95,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "cinematic/focus-handoff/close-gap",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "perceptual",
+            "maxChannelDelta": 10,
+            "differingChannels": 869327,
+            "psnr": 55.349305131432445,
+            "ssim": 0.9995614190402443
+          },
+          {
+            "fixture": "cinematic/focus-handoff/close-gap",
+            "backend": "webgl2",
+            "frame": 48,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "cinematic/focus-handoff/close-gap",
+            "backend": "webgl2",
+            "frame": 95,
+            "tier": "perceptual",
+            "maxChannelDelta": 12,
+            "differingChannels": 126677,
+            "psnr": 62.16341187519622,
+            "ssim": 0.9999303106964479
+          }
+        ]
+      },
+      "inspector": {
+        "status": "passed",
+        "checks": [
+          "xy framing temporal-handle edit",
+          "actual camera frustum",
+          "undo/redo pixels",
+          "native Gaussian controls preserved",
+          "JSON save/reload pixels",
+          "both backends"
+        ]
+      },
+      "policy": {
+        "pixels": "unchanged CE0 near tiers",
+        "state": "0.001 pixel, unit all-frame",
+        "canvasTiming": 1.25,
+        "webglTiming": "CE6-P deferred; measured unchanged method"
+      }
+    }
   },
   "review": {
-    "status": "pending",
+    "status": "complete; two P2 findings remain open",
     "fixedPoint": "50cbf6332ece7ffafc156645f6a7e4e532d7f986",
-    "spec": "docs/composition-engine-plan.md CE4c Cinematic; docs/composition-reference.md; PR #45 body"
+    "codeCheckpoint": "1b3f98f6b2c3808ca7f07a2cf0985b6dc8545b58",
+    "standardsFindings": 1,
+    "specFindings": 1,
+    "publishedGitHubCommentsOrReview": false,
+    "evidence": "docs/pr-45-review-results.json",
+    "independentRealAssetPixelProbes": "Both blur-scaling and fractional-shutter coverage reproduced on Canvas/WebGL."
   },
-  "githubActionsEnabled": false
+  "githubActionsEnabled": false,
+  "resolvedMergeCommit": "1b3f98f6b2c3808ca7f07a2cf0985b6dc8545b58",
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "chromium": "151.0.7922.34",
+    "ffmpeg": "8.0.1",
+    "isolation": "Offline frozen worktree-local pnpm dependencies, cloned local virtualenv with local worker, isolated UV and Vite optimizer/config caches."
+  },
+  "initialProbeFailure": "The first primitive-blur browser reproduction supplied a placeholder checksum and was correctly rejected by resource loading. Repeated with the actual PNG checksum; both backends confirm the defect. This was probe setup, not an application-test failure."
 }
