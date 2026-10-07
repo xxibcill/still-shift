@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-07",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/41",
+  "reviewedHead": "4e3c32b6d2a7503dfb59e2b32641990d5b07fa1b",
+  "scope": "Two diagnostic benchmark review findings; one finding per commit; final push only.",
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "dependencies": "Offline frozen worktree-local install; independent Vite/Vitest caches."
+  },
+  "finding1": {
+    "comment": "https://github.com/xxibcill/still-shift/pull/41#discussion_r4207020831",
+    "status": "fixed",
+    "behavior": "Detect direct node/tsx composition commands and unit/browser/integration/runtime workloads, excluding only this process PID.",
+    "red": {
+      "testsFailed": 5,
+      "testsPassed": 8,
+      "log": "/private/tmp/pr41-workloads-red.log",
+      "logSha256": "96568acea402c295c86f83ba1bb8a078b8daa21b84c4f81c3ec9070a6e2df635"
+    },
+    "green": {
+      "testsPassed": 13,
+      "log": "/private/tmp/pr41-workloads-green.log",
+      "logSha256": "e7b7a2cc859df95bb2eada67847c97984de97fbcf15886da86511d7c1efeb95d"
+    },
+    "checks": {
+      "focusedLintExit": 0,
+      "buildExit": 0,
+      "buildLog": "/private/tmp/pr41-finding1-build.log",
+      "buildLogSha256": "0d479f0efb612dd8bdb70686ac598d4b0e49f2b3b12a60ad963d0ad3de64bd63"
+    }
+  },
+  "finding2": {
+    "comment": "https://github.com/xxibcill/still-shift/pull/41#discussion_r4207021547",
+    "status": "pending"
+  },
+  "limitations": [
+    "No renderer/fixture/acceptance changes.",
+    "No new full pnpm check, timing bracket or strict family audit claimed.",
+    "CE6-P performance completion remains owner-deferred.",
+    "GitHub Actions remain disabled."
+  ]
+}

@@ -1,3 +1,4 @@
+import { findCompetingWorkloads } from "./ce6p-workloads.ts";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
@@ -79,24 +80,11 @@ const digest = (source: string) =>
   createHash("sha256").update(source).digest("hex");
 const runs: unknown[] = [];
 
-const competingWorkloads = () => {
-  const processes = execFileSync("ps", ["-axo", "pid,command"], {
-    encoding: "utf8",
-  });
-  return processes.split("\n").filter((line) => {
-    const match = /^\s*\d+\s+(\S+)\s+(.*)$/.exec(line);
-    if (!match) return false;
-    const executable = match[1]!.split("/").at(-1);
-    const args = match[2]!;
-    // Treat every package-manager invocation as competing: custom scripts,
-    // optional `run` and filters can all launch a verification workload.
-    if (executable === "pnpm" || executable === "vitest") return true;
-    if (executable !== "node" && executable !== "tsx") return false;
-    return /(?:^|[/\s])pnpm(?:\.[cm]?js)?(?:\s|$)|vitest|tests\/(?:browser|integration|runtime)\//.test(
-      args,
-    );
-  });
-};
+const competingWorkloads = () =>
+  findCompetingWorkloads(
+    execFileSync("ps", ["-axo", "pid,command"], { encoding: "utf8" }),
+    process.pid,
+  );
 
 for (const variant of [
   "baseline",

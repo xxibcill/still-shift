@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #41 benchmark review repairs (2026-10-07):** isolated `codex/pr41-benchmark-fixes`
+  from reviewed `4e3c32b`; both P2 findings are posted inline. Direct composition
+  workload detection and own-PID exclusion pass 13 focused regressions, lint and
+  build; five red cases reproduce the original gaps. Shared-source freezing is
+  next. Commit each finding separately, then push once after final verification.
+  CE6-P remains owner-deferred; no performance acceptance is resumed.
+  [Evidence](./pr-41-benchmark-fix-results.json).
+
 - **PR #41 conflict resolution (2026-10-07):** isolated PR head `e5f4992`
   integrates `main` at `fb785772`, preserving CE6-P echo/particle/exposure changes
   and upstream CE7 clock/state repairs. WebGL 0.42.1 separates combined caches.
@@ -669,6 +677,17 @@ _Last updated 2026-10-07 by Codex for PR #41 conflict resolution._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — PR #41 benchmark workload guard repair
+
+- **Agent / branch:** Codex on isolated `codex/pr41-benchmark-fixes`, from `4e3c32b`.
+- **Scope:** first of two posted inline P2 findings; direct composition workloads.
+- **Done:** extract the process classifier, detect direct Node/tsx composition commands
+  and ignore only the current PID while retaining package-manager/test detection.
+- **Results:** five tests fail before repair; all 13 focused regressions, lint and build pass.
+- **Open / next:** freeze shared sources for finding two, verify, commit separately and
+  perform one final normal push to PR #41. CE6-P timing work remains deferred.
+- **Records:** [review/fix evidence](./pr-41-benchmark-fix-results.json).
 
 ### 2026-10-07 — PR #41 merge conflict resolution
 
