@@ -92,13 +92,13 @@ still hold before relying on them.
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
   Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
   controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
-  group/command/mark/snapshot/call-input metadata now pass 215 focused tests, the
-  complete audit, 22 moving/blurred and ten stationary native frames and 96 owned
-  RPC snapshots. Explicit copied call arrays admit before Array.from and survive
-  original consumers, then clear; original detached/native/query/null behavior
-  passes. Native snapshots and original WebGL/providers, 69 typography tests and
-  64 exports / 768 prior-exact bodies/frames pass; glyph 1.413681× meets the
-  unchanged 1.5 maximum.
+  group/command/mark/snapshot/call-input/controller/wrapper metadata now pass 221
+  focused tests, the complete audit, 22 moving/blurred and ten stationary native
+  frames and 96 owned RPC snapshots. Selected Proxy/controller and each original
+  fresh wrapper pre-admit; original detached/native/query/null behavior passes.
+  Late controller failure unwinds actual native save and prior metadata owners.
+  Native snapshots, original WebGL/providers, 69 typography tests and 64 exports /
+  768 prior-exact bodies/frames pass; glyph 1.424679× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -334,6 +334,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 recording controller and method wrappers
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `3d94d35`.
+- **Done:** admit selected Proxy/handler/controller closures and each original fresh
+  method wrapper; retain capacity through disposal. Late controller failure unwinds
+  prior native save/path/bounds/groups/state while preserving original errors.
+- **Results:** build/lint/boundaries, 221 focused / 69 typography tests; final full
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.424679× meets unchanged 1.5 maximum.
+- **Repair:** first native snapshot fixture omitted its new failed-call wrapper
+  from prior-owner baseline; capture actual wrapper before baseline, then retain
+  original pixel-quota/native failure checks. Failed attempt retained.
+- **Next:** query/helper and remaining runtime/Node controls, production/aggregate
+  admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [controller evidence](./composition-ce15-recording-controls-metadata-results.json).
 
 ### 2026-10-08 — CE15 method call-input admission
 

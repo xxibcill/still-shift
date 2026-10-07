@@ -121,7 +121,7 @@ it("denies original text metrics and matrices before their native producers", as
       recording = recordVectorPaints(ctx, fallback);
     const blocker = memory.reserve(
       "metadata",
-      limits.metadata - 1152 - 168 - 104 - 2047,
+      limits.metadata - 3072 - 256 - 168 - 104 - 2047,
     );
     expect(() => recording.context.fillText("hello", 10, 10)).toThrow(
       "metadata",
@@ -130,14 +130,14 @@ it("denies original text metrics and matrices before their native producers", as
     expect(getTransform).not.toHaveBeenCalled();
     expect(fillText).not.toHaveBeenCalled();
     blocker.release();
-    expect(memory.statistics.current.metadata).toBe(1152);
+    expect(memory.statistics.current.metadata).toBe(3328);
     recording.dispose();
     memory.dispose();
     expect(memory.statistics.current.metadata).toBe(0);
   });
 });
 it("admits retained result bounds before original point coordinate maps while rolling back failed entry capacity", async () => {
-  const memory = new ManagedMemory({ pixels: 1, metadata: 3583 });
+  const memory = new ManagedMemory({ pixels: 1, metadata: 5759 });
   await withManagedMemory(memory, async () => {
     const { ctx, matrix, getTransform, fillRect } = setup(),
       x = vi.fn(() => 1),
@@ -156,7 +156,7 @@ it("admits retained result bounds before original point coordinate maps while ro
     expect(x).not.toHaveBeenCalled();
     expect(y).not.toHaveBeenCalled();
     expect(fillRect).not.toHaveBeenCalled();
-    expect(memory.statistics.current.metadata).toBe(1152);
+    expect(memory.statistics.current.metadata).toBe(3328);
     recording.dispose();
     memory.dispose();
     expect(memory.statistics.reservations).toBe(0);
@@ -197,7 +197,7 @@ it("preserves null native matrix failures and releases incomplete paint-bound ar
     }
     expect(caught).toBeNull();
     expect(fillRect).not.toHaveBeenCalled();
-    expect(memory.statistics.current.metadata).toBe(1152);
+    expect(memory.statistics.current.metadata).toBe(3328);
     recording.dispose();
     memory.dispose();
     expect(memory.statistics.reservations).toBe(0);
@@ -223,7 +223,7 @@ it("keeps native blur padding and borrows the original fallback for unsupported 
     unsupported.context.fillRect(10, 10, 1, 1);
     expect(unsupported.groups()![0]!.bounds).toBe(fallback);
     expect(memory.owns(fallback)).toBe(false);
-    expect(memory.statistics.current.metadata).toBeGreaterThan(1152);
+    expect(memory.statistics.current.metadata).toBeGreaterThan(3328);
     memory.dispose();
     unsupported.dispose();
     expect(memory.statistics.reservations).toBe(0);

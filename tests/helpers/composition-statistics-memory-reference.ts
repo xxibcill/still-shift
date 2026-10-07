@@ -199,6 +199,8 @@ async function checkRecordingSnapshotMemory() {
       releaseRenderPixels(expected.data);
       releaseRenderPixels(actual.data);
     }
+    // A method lookup now owns a wrapper; include it among the prior owners.
+    const drawSnapshot = recording.context.drawImage;
     const before = memory.statistics.current,
       blocker = memory.reserve(
         "pixels",
@@ -207,7 +209,7 @@ async function checkRecordingSnapshotMemory() {
     try {
       let failed = false;
       try {
-        recording.context.drawImage(source, 0, 0);
+        drawSnapshot(source, 0, 0);
       } catch (error) {
         failed = true;
         if (

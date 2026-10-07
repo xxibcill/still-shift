@@ -30,6 +30,9 @@ export type VectorPaintGroup = {
   shadow?: "only" | "none";
   shadowRight?: number;
 };
+// State containers: 512. Eleven closures: 1,408; shared scope: 256;
+// Proxy/handler/returned controller: 64 + 64 + 128.
+const recordingControlBytes = 2432;
 type RecordingState = {
   commands: Command[];
   marks: Paint[];
@@ -133,14 +136,14 @@ export function recordVectorPaints(
   options: { stableImages?: boolean; deferPaints?: boolean } = {},
 ) {
   const state = allocateRenderMetadata<RecordingState>(
-    512,
+    recordingControlBytes,
     () => ({
       commands: [],
       marks: [],
       painted: new Set(),
       snapshots: [],
       managedSnapshots: renderMemory() !== undefined,
-      bytes: 512,
+      bytes: recordingControlBytes,
     }),
     false,
     clearRecordingState,
@@ -230,379 +233,422 @@ export function recordVectorPaints(
         throw error;
       }
     }
-    const render = () => {
-      if (!deferred) return;
-      deferred = false;
-      for (let i = 0; i < depth; i++) ctx.restore();
-      ctx.restore();
-      ctx.save();
-      ctx.beginPath();
-      const target = ctx as unknown as Record<string, unknown>;
-      for (const [index, command] of commands.entries()) {
-        if (painted.has(index)) continue;
-        if ("property" in command) target[command.property] = command.value;
-        else
-          Reflect.apply(
-            target[command.method] as (...args: unknown[]) => unknown,
-            ctx,
-            command.args,
-          );
-      }
-    };
-    const invalidate = () => {
-      render();
-      supported = false;
-    };
-    let snapshotBytes = 0;
-    const context = new Proxy(ctx, {
-      get(target, property) {
-        if (property === "canvas" && options.deferPaints) invalidate();
-        const value = Reflect.get(target, property, target);
-        if (typeof value !== "function") return value;
-        return {
-          invoke() {
-            // Rest parameters allocate before admission; borrow the VM call input instead.
-            // eslint-disable-next-line prefer-rest-params
-            const received = arguments;
-            const length =
-              typeof property === "string"
-                ? property.length
-                : (property.description?.length ?? 0) + 8;
-            const call = allocateRenderMetadata<{
-              args: unknown[] | undefined;
-            }>(
-              128 + 8 * received.length + 2 * length,
-              () => ({ args: Array.from(received) as unknown[] }),
-              false,
-              (entry) => {
-                if (entry.args) entry.args.length = 0;
-                entry.args = undefined;
-              },
+    try {
+      const render = () => {
+        if (!deferred) return;
+        deferred = false;
+        for (let i = 0; i < depth; i++) ctx.restore();
+        ctx.restore();
+        ctx.save();
+        ctx.beginPath();
+        const target = ctx as unknown as Record<string, unknown>;
+        for (const [index, command] of commands.entries()) {
+          if (painted.has(index)) continue;
+          if ("property" in command) target[command.property] = command.value;
+          else
+            Reflect.apply(
+              target[command.method] as (...args: unknown[]) => unknown,
+              ctx,
+              command.args,
             );
-            const args = call.args!;
-            let swapped: { values: unknown[] | undefined } | undefined;
-            try {
-              const name = String(property);
-              if (marker && name === "restore" && depth === 0) return;
-              if (!paints.has(name) && !queries.has(name) && !states.has(name))
-                invalidate();
-              if (name === "drawImage" && args[0] === target.canvas)
-                invalidate();
-              path.record(target, name, args);
-              let recorded = args;
-              if (
-                name === "drawImage" &&
-                !(args[0] instanceof HTMLCanvasElement) &&
-                !(args[0] instanceof HTMLImageElement) &&
-                !(args[0] instanceof ImageBitmap)
-              )
-                invalidate();
-              if (
-                name === "drawImage" &&
-                args[0] instanceof HTMLCanvasElement &&
-                !options.stableImages &&
-                supported
-              ) {
-                const image = args[0];
-                const bytes = image.width * image.height * 4;
-                if (
-                  snapshotBytes + bytes > 32 * 1024 * 1024 ||
-                  marks.length >= 64 ||
-                  image === target.canvas
-                )
-                  invalidate();
-                else {
-                  const before = state.bytes;
-                  grow(8);
-                  let snapshot: HTMLCanvasElement | undefined;
-                  try {
-                    snapshot = createRenderCanvas();
-                    snapshot.width = image.width;
-                    snapshot.height = image.height;
-                    snapshot.getContext("2d")!.drawImage(image, 0, 0);
-                    snapshots.push(snapshot);
-                    retainRenderCanvas(snapshot);
-                  } catch (error) {
-                    if (snapshot && snapshots.at(-1) === snapshot)
-                      snapshots.pop();
-                    try {
-                      if (snapshot)
-                        releaseSnapshot(snapshot, state.managedSnapshots);
-                      rollback(before);
-                    } catch {
-                      /* Preserve the original snapshot failure. */
-                    }
-                    throw error;
-                  }
-                  snapshotBytes += bytes;
-                  const copied = snapshot;
-                  swapped = allocateRenderMetadata<{
-                    values: unknown[] | undefined;
-                  }>(
-                    96 + 16 * args.length,
-                    () => ({ values: [copied, ...args.slice(1)] }),
-                    false,
-                    (value) => {
-                      if (value.values) value.values.length = 0;
-                      value.values = undefined;
-                    },
-                  );
-                  recorded = swapped.values!;
-                }
-              }
-              if (commands.length >= 65536 || marks.length >= 64) invalidate();
-              if (!queries.has(name) && supported) {
-                if (paints.has(name)) {
+        }
+      };
+      const invalidate = () => {
+        render();
+        supported = false;
+      };
+      let snapshotBytes = 0;
+      const context = new Proxy(ctx, {
+        get(target, property) {
+          if (property === "canvas" && options.deferPaints) invalidate();
+          const value = Reflect.get(target, property, target);
+          if (typeof value !== "function") return value;
+          const before = state.bytes;
+          // Function 128 + captured bindings 64 + temporary method object 40 + margin 24.
+          grow(256);
+          try {
+            return {
+              invoke() {
+                // Rest parameters allocate before admission; borrow the VM call input instead.
+                // eslint-disable-next-line prefer-rest-params
+                const received = arguments;
+                const length =
+                  typeof property === "string"
+                    ? property.length
+                    : (property.description?.length ?? 0) + 8;
+                const call = allocateRenderMetadata<{
+                  args: unknown[] | undefined;
+                }>(
+                  128 + 8 * received.length + 2 * length,
+                  () => ({ args: Array.from(received) as unknown[] }),
+                  false,
+                  (entry) => {
+                    if (entry.args) entry.args.length = 0;
+                    entry.args = undefined;
+                  },
+                );
+                const args = call.args!;
+                let swapped: { values: unknown[] | undefined } | undefined;
+                try {
+                  const name = String(property);
+                  if (marker && name === "restore" && depth === 0) return;
                   if (
-                    target.globalCompositeOperation !== "source-over" ||
-                    typeof target.fillStyle !== "string" ||
-                    typeof target.strokeStyle !== "string"
+                    !paints.has(name) &&
+                    !queries.has(name) &&
+                    !states.has(name)
                   )
                     invalidate();
-                  const shadow =
-                    target.filter === "none" &&
-                    (target.shadowBlur !== 0 ||
-                      target.shadowOffsetX !== 0 ||
-                      target.shadowOffsetY !== 0);
-                  const shadowRight = shadow
-                    ? paintBounds(
-                        target,
-                        name,
-                        args,
-                        undefined,
-                        path.bounds,
-                        keepBounds,
-                      )?.right
-                    : undefined;
-                  const before = state.bytes;
-                  grow(104);
-                  let mark: Paint;
-                  try {
-                    mark = {
-                      command: commands.length,
-                      primitive:
-                        name !== "drawImage" && target.filter === "none",
-                      bounds: paintBounds(
-                        target,
-                        name,
-                        args,
-                        fallback,
-                        path.bounds,
-                        keepBounds,
-                      )!,
-                      ...(shadowRight !== undefined &&
-                      Number.isFinite(shadowRight)
-                        ? { shadowRight }
-                        : {}),
-                    };
+                  if (name === "drawImage" && args[0] === target.canvas)
+                    invalidate();
+                  path.record(target, name, args);
+                  let recorded = args;
+                  if (
+                    name === "drawImage" &&
+                    !(args[0] instanceof HTMLCanvasElement) &&
+                    !(args[0] instanceof HTMLImageElement) &&
+                    !(args[0] instanceof ImageBitmap)
+                  )
+                    invalidate();
+                  if (
+                    name === "drawImage" &&
+                    args[0] instanceof HTMLCanvasElement &&
+                    !options.stableImages &&
+                    supported
+                  ) {
+                    const image = args[0];
+                    const bytes = image.width * image.height * 4;
                     if (
-                      options.deferPaints &&
-                      supported &&
-                      marks.length &&
-                      (marks[0]!.primitive !== mark.primitive ||
-                        marks.some((prior) =>
-                          boundsOverlap(prior.bounds, mark.bounds),
-                        ))
+                      snapshotBytes + bytes > 32 * 1024 * 1024 ||
+                      marks.length >= 64 ||
+                      image === target.canvas
                     )
-                      deferred = true;
-                    marks.push(mark);
-                  } catch (error) {
-                    try {
-                      rollback(before);
-                    } catch {
-                      /* Preserve the original mark failure. */
+                      invalidate();
+                    else {
+                      const before = state.bytes;
+                      grow(8);
+                      let snapshot: HTMLCanvasElement | undefined;
+                      try {
+                        snapshot = createRenderCanvas();
+                        snapshot.width = image.width;
+                        snapshot.height = image.height;
+                        snapshot.getContext("2d")!.drawImage(image, 0, 0);
+                        snapshots.push(snapshot);
+                        retainRenderCanvas(snapshot);
+                      } catch (error) {
+                        if (snapshot && snapshots.at(-1) === snapshot)
+                          snapshots.pop();
+                        try {
+                          if (snapshot)
+                            releaseSnapshot(snapshot, state.managedSnapshots);
+                          rollback(before);
+                        } catch {
+                          /* Preserve the original snapshot failure. */
+                        }
+                        throw error;
+                      }
+                      snapshotBytes += bytes;
+                      const copied = snapshot;
+                      swapped = allocateRenderMetadata<{
+                        values: unknown[] | undefined;
+                      }>(
+                        96 + 16 * args.length,
+                        () => ({ values: [copied, ...args.slice(1)] }),
+                        false,
+                        (value) => {
+                          if (value.values) value.values.length = 0;
+                          value.values = undefined;
+                        },
+                      );
+                      recorded = swapped.values!;
                     }
-                    throw error;
                   }
-                }
-                const before = state.bytes;
-                grow(commandCapacity(name, recorded));
-                try {
-                  commands.push({
-                    method: name,
-                    args: recorded.map((arg) =>
-                      arg instanceof Path2D
-                        ? new Path2D(arg)
-                        : arg instanceof DOMMatrixReadOnly
-                          ? DOMMatrix.fromMatrix(arg)
-                          : Array.isArray(arg)
-                            ? [...arg]
-                            : arg,
-                    ),
-                  });
-                } catch (error) {
-                  try {
-                    rollback(before);
-                  } catch {
-                    /* Preserve the original command failure. */
+                  if (commands.length >= 65536 || marks.length >= 64)
+                    invalidate();
+                  if (!queries.has(name) && supported) {
+                    if (paints.has(name)) {
+                      if (
+                        target.globalCompositeOperation !== "source-over" ||
+                        typeof target.fillStyle !== "string" ||
+                        typeof target.strokeStyle !== "string"
+                      )
+                        invalidate();
+                      const shadow =
+                        target.filter === "none" &&
+                        (target.shadowBlur !== 0 ||
+                          target.shadowOffsetX !== 0 ||
+                          target.shadowOffsetY !== 0);
+                      const shadowRight = shadow
+                        ? paintBounds(
+                            target,
+                            name,
+                            args,
+                            undefined,
+                            path.bounds,
+                            keepBounds,
+                          )?.right
+                        : undefined;
+                      const before = state.bytes;
+                      grow(104);
+                      let mark: Paint;
+                      try {
+                        mark = {
+                          command: commands.length,
+                          primitive:
+                            name !== "drawImage" && target.filter === "none",
+                          bounds: paintBounds(
+                            target,
+                            name,
+                            args,
+                            fallback,
+                            path.bounds,
+                            keepBounds,
+                          )!,
+                          ...(shadowRight !== undefined &&
+                          Number.isFinite(shadowRight)
+                            ? { shadowRight }
+                            : {}),
+                        };
+                        if (
+                          options.deferPaints &&
+                          supported &&
+                          marks.length &&
+                          (marks[0]!.primitive !== mark.primitive ||
+                            marks.some((prior) =>
+                              boundsOverlap(prior.bounds, mark.bounds),
+                            ))
+                        )
+                          deferred = true;
+                        marks.push(mark);
+                      } catch (error) {
+                        try {
+                          rollback(before);
+                        } catch {
+                          /* Preserve the original mark failure. */
+                        }
+                        throw error;
+                      }
+                    }
+                    const before = state.bytes;
+                    grow(commandCapacity(name, recorded));
+                    try {
+                      commands.push({
+                        method: name,
+                        args: recorded.map((arg) =>
+                          arg instanceof Path2D
+                            ? new Path2D(arg)
+                            : arg instanceof DOMMatrixReadOnly
+                              ? DOMMatrix.fromMatrix(arg)
+                              : Array.isArray(arg)
+                                ? [...arg]
+                                : arg,
+                        ),
+                      });
+                    } catch (error) {
+                      try {
+                        rollback(before);
+                      } catch {
+                        /* Preserve the original command failure. */
+                      }
+                      throw error;
+                    }
                   }
-                  throw error;
+                  if (deferred && paints.has(name)) return;
+                  if (supported && paints.has(name)) {
+                    const index = commands.length - 1;
+                    if (!painted.has(index)) grow(40);
+                    painted.add(index);
+                  }
+                  if (marker && name === "save") depth++;
+                  if (marker && name === "restore") depth--;
+                  const result = Reflect.apply(value, target, args);
+                  if (name === "reset") {
+                    depth = 0;
+                    marker = false;
+                  }
+                  return result;
+                } finally {
+                  if (swapped) releaseRenderMetadata(swapped);
+                  releaseRenderMetadata(call);
                 }
-              }
-              if (deferred && paints.has(name)) return;
-              if (supported && paints.has(name)) {
-                const index = commands.length - 1;
-                if (!painted.has(index)) grow(40);
-                painted.add(index);
-              }
-              if (marker && name === "save") depth++;
-              if (marker && name === "restore") depth--;
-              const result = Reflect.apply(value, target, args);
-              if (name === "reset") {
-                depth = 0;
-                marker = false;
-              }
-              return result;
-            } finally {
-              if (swapped) releaseRenderMetadata(swapped);
-              releaseRenderMetadata(call);
-            }
-          },
-        }.invoke;
-      },
-      set(target, property, value) {
-        if (commands.length >= 65536) invalidate();
-        if (supported) {
-          const before = state.bytes;
-          const length =
-            typeof property === "string"
-              ? property.length
-              : (property.description?.length ?? 0) + 8;
-          grow(104 + 2 * length);
-          try {
-            commands.push({ property: String(property), value });
+              },
+            }.invoke;
           } catch (error) {
             try {
               rollback(before);
             } catch {
-              /* Preserve the original property failure. */
+              /* Preserve the original wrapper failure. */
             }
             throw error;
           }
-        }
-        return Reflect.set(target, property, value, target);
-      },
-    });
-    return {
-      context,
-      render,
-      firstGroupOnly: () => deferred,
-      dispose() {
-        try {
-          if (marker) {
-            for (let i = 0; i <= depth; i++) ctx.restore();
-            marker = false;
-          }
-        } finally {
-          try {
-            clearBounds();
-          } finally {
+        },
+        set(target, property, value) {
+          if (commands.length >= 65536) invalidate();
+          if (supported) {
+            const before = state.bytes;
+            const length =
+              typeof property === "string"
+                ? property.length
+                : (property.description?.length ?? 0) + 8;
+            grow(104 + 2 * length);
             try {
-              path.dispose();
-            } finally {
-              clearRecordingState(state);
-              releaseRenderMetadata(state);
+              commands.push({ property: String(property), value });
+            } catch (error) {
+              try {
+                rollback(before);
+              } catch {
+                /* Preserve the original property failure. */
+              }
+              throw error;
             }
           }
-        }
-      },
-      groups(): VectorPaintGroup[] | undefined {
-        if (!supported || marks.length > 64) return undefined;
-        resizeRenderMetadata(
-          retainedGroups,
-          128 + 40 * (retainedGroups.size + 1),
-        );
-        let lifetime: GroupLifetime | undefined,
-          committed = false,
-          failed = false;
-        try {
-          lifetime = allocateRenderMetadata<GroupLifetime>(
-            512 + 1536 * marks.length,
-            () => ({ working: undefined, output: undefined }),
-            false,
-            clearGroupLifetime,
-          );
-          const groups = (lifetime.working = [] as {
-            marks: Paint[];
-            bounds: Bounds;
-          }[]);
-
-          for (const mark of marks) {
-            const previous = groups.at(-1);
-            if (
-              previous &&
-              previous.marks[0]!.primitive === mark.primitive &&
-              (previous.marks[0]!.shadowRight === undefined) ===
-                (mark.shadowRight === undefined) &&
-              previous.marks.every(
-                (prior) => !boundsOverlap(prior.bounds, mark.bounds),
-              )
-            ) {
-              previous.marks.push(mark);
-              previous.bounds = unionBounds(previous.bounds, mark.bounds);
-            } else groups.push({ marks: [mark], bounds: mark.bounds });
-          }
-          const clipped = commands.some(
-            (command) => "method" in command && command.method === "clip",
-          );
-          const output = (lifetime.output = groups.flatMap(
-            (group): VectorPaintGroup[] => {
-              const base: VectorPaintGroup = {
-                commands,
-                selected: new Set(group.marks.map((mark) => mark.command)),
-                primitive: group.marks[0]!.primitive,
-                bounds: group.bounds,
-              };
-              if (
-                clipped ||
-                group.marks.some((mark) => mark.shadowRight === undefined)
-              )
-                return [base];
-              // Canvas composites shadow and source separately over the destination.
-              const shadowRight = Math.max(
-                ...group.marks.map((mark) => mark.shadowRight!),
-              );
-              return [
-                { ...base, shadow: "only", shadowRight },
-                { ...base, shadow: "none" },
-              ];
-            },
-          ));
-          clearWorkingGroups(lifetime);
-          let bytes = 256 + 136 * output.length;
-          for (const group of output) {
-            // Shadow pairs share the original selected Set and bounds, with one owner.
-            if (group.shadow === "none") continue;
-            bytes += 128 + 40 * group.selected.size;
-            if (group.bounds !== fallback && !retainedBounds.has(group.bounds))
-              bytes += 64;
-          }
-          resizeRenderMetadata(lifetime, bytes);
-          retainedGroups.add(lifetime);
-          committed = true;
-          return output;
-        } catch (error) {
-          failed = true;
-          throw error;
-        } finally {
-          if (lifetime && !committed) releaseRenderMetadata(lifetime);
-          if (!failed)
-            resizeRenderMetadata(
-              retainedGroups,
-              128 + 40 * retainedGroups.size,
-            );
-          else
+          return Reflect.set(target, property, value, target);
+        },
+      });
+      return {
+        context,
+        render,
+        firstGroupOnly: () => deferred,
+        dispose() {
+          try {
+            if (marker) {
+              for (let i = 0; i <= depth; i++) ctx.restore();
+              marker = false;
+            }
+          } finally {
             try {
+              clearBounds();
+            } finally {
+              try {
+                path.dispose();
+              } finally {
+                clearRecordingState(state);
+                releaseRenderMetadata(state);
+              }
+            }
+          }
+        },
+        groups(): VectorPaintGroup[] | undefined {
+          if (!supported || marks.length > 64) return undefined;
+          resizeRenderMetadata(
+            retainedGroups,
+            128 + 40 * (retainedGroups.size + 1),
+          );
+          let lifetime: GroupLifetime | undefined,
+            committed = false,
+            failed = false;
+          try {
+            lifetime = allocateRenderMetadata<GroupLifetime>(
+              512 + 1536 * marks.length,
+              () => ({ working: undefined, output: undefined }),
+              false,
+              clearGroupLifetime,
+            );
+            const groups = (lifetime.working = [] as {
+              marks: Paint[];
+              bounds: Bounds;
+            }[]);
+
+            for (const mark of marks) {
+              const previous = groups.at(-1);
+              if (
+                previous &&
+                previous.marks[0]!.primitive === mark.primitive &&
+                (previous.marks[0]!.shadowRight === undefined) ===
+                  (mark.shadowRight === undefined) &&
+                previous.marks.every(
+                  (prior) => !boundsOverlap(prior.bounds, mark.bounds),
+                )
+              ) {
+                previous.marks.push(mark);
+                previous.bounds = unionBounds(previous.bounds, mark.bounds);
+              } else groups.push({ marks: [mark], bounds: mark.bounds });
+            }
+            const clipped = commands.some(
+              (command) => "method" in command && command.method === "clip",
+            );
+            const output = (lifetime.output = groups.flatMap(
+              (group): VectorPaintGroup[] => {
+                const base: VectorPaintGroup = {
+                  commands,
+                  selected: new Set(group.marks.map((mark) => mark.command)),
+                  primitive: group.marks[0]!.primitive,
+                  bounds: group.bounds,
+                };
+                if (
+                  clipped ||
+                  group.marks.some((mark) => mark.shadowRight === undefined)
+                )
+                  return [base];
+                // Canvas composites shadow and source separately over the destination.
+                const shadowRight = Math.max(
+                  ...group.marks.map((mark) => mark.shadowRight!),
+                );
+                return [
+                  { ...base, shadow: "only", shadowRight },
+                  { ...base, shadow: "none" },
+                ];
+              },
+            ));
+            clearWorkingGroups(lifetime);
+            let bytes = 256 + 136 * output.length;
+            for (const group of output) {
+              // Shadow pairs share the original selected Set and bounds, with one owner.
+              if (group.shadow === "none") continue;
+              bytes += 128 + 40 * group.selected.size;
+              if (
+                group.bounds !== fallback &&
+                !retainedBounds.has(group.bounds)
+              )
+                bytes += 64;
+            }
+            resizeRenderMetadata(lifetime, bytes);
+            retainedGroups.add(lifetime);
+            committed = true;
+            return output;
+          } catch (error) {
+            failed = true;
+            throw error;
+          } finally {
+            if (lifetime && !committed) releaseRenderMetadata(lifetime);
+            if (!failed)
               resizeRenderMetadata(
                 retainedGroups,
                 128 + 40 * retainedGroups.size,
               );
-            } catch {
-              /* Preserve the original grouping failure. */
-            }
+            else
+              try {
+                resizeRenderMetadata(
+                  retainedGroups,
+                  128 + 40 * retainedGroups.size,
+                );
+              } catch {
+                /* Preserve the original grouping failure. */
+              }
+          }
+        },
+      };
+    } catch (error) {
+      // A late Proxy/controller factory failure must release prior native setup too.
+      try {
+        if (marker) {
+          for (let i = 0; i <= depth; i++) ctx.restore();
+          marker = false;
         }
-      },
-    };
+      } catch {
+        /* Preserve the original controller failure. */
+      }
+      try {
+        clearBounds();
+      } catch {
+        /* Preserve the original controller failure. */
+      }
+      try {
+        path.dispose();
+      } catch {
+        /* Preserve the original controller failure. */
+      }
+      throw error;
+    }
   } catch (error) {
     try {
       clearRecordingState(state);

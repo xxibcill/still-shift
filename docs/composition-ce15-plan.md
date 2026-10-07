@@ -885,6 +885,31 @@ wrappers, Proxy/handler/controller/common helpers and variable query results,
 remaining runtime/Node/production/aggregate admission, speed and full gate are
 pending. [Evidence](./composition-ce15-call-arguments-metadata-results.json).
 
+## Accepted recording controller/wrapper checkpoint — 2026-10-08
+
+Initial recording ownership is 2,432: prior state 512, eleven closures 1,408,
+shared scope 256, Proxy/handler 64 each and returned controller 128. Reserve before
+these original factories. Each original fresh method lookup grows actual owner
+256 before wrapper construction (function 128, bindings 64, temporary method
+object 40, margin 24); retain this capacity through recording disposal even for
+early-GC wrappers. Original Reflect.get runs once; nonfunctions do not charge.
+Fresh identity, zero function length, nonconstructibility, detached native binding
+and original render/callback/property/deferred/clone/native order remain. Late
+Proxy/controller failure releases native save and prior actual owners, preserving
+the original error over cleanup failure. Six regressions cover these boundaries.
+
+Build/lint/boundaries and 221 focused tests pass. First native audit found the
+snapshot fixture's baseline omitted the new failed-call wrapper; final fixture
+creates that actual wrapper before baseline and invokes it under the identical
+native pixel quota. Failed evidence is retained. Final complete audit 144/8,000,
+96 RPC snapshots, 22 moving/blurred and ten stationary native frames, two real
+snapshots / 3,072 exact bytes / one protected failure, original WebGL, 69 typography
+tests and provider fixtures pass. Glyph 1.424679× meets unchanged 1.5 maximum;
+64 exports preserve 768 complete bodies/frames against pushed `3d94d35`. Variable
+query-result/helper and remaining runtime/Node/production/aggregate admission,
+speed and full gate remain pending.
+[Evidence](./composition-ce15-recording-controls-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

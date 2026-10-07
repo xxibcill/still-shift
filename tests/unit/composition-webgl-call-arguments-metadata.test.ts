@@ -92,7 +92,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 it("denies actual call-array capacity before original array construction, path bookkeeping or native paint", async () => {
-  const memory = new ManagedMemory({ pixels: 1, metadata: 1327 });
+  const memory = new ManagedMemory({ pixels: 1, metadata: 3503 });
   await withManagedMemory(memory, async () => {
     const { ctx, fillRect, getTransform } = setup(),
       recording = recordVectorPaints(ctx, fallback),
@@ -101,7 +101,7 @@ it("denies actual call-array capacity before original array construction, path b
     expect(copy).not.toHaveBeenCalled();
     expect(getTransform).not.toHaveBeenCalled();
     expect(fillRect).not.toHaveBeenCalled();
-    expect(memory.statistics.current.metadata).toBe(1152);
+    expect(memory.statistics.current.metadata).toBe(3328);
     recording.dispose();
     memory.dispose();
     expect(memory.statistics.reservations).toBe(0);
@@ -142,7 +142,7 @@ it("admits before native array-from failure and releases the call controller whi
     }
     expect(caught).toBeNull();
     expect(fillRect).not.toHaveBeenCalled();
-    expect(memory.statistics.current.metadata).toBe(1152);
+    expect(memory.statistics.current.metadata).toBe(3328);
     copy.mockRestore();
     recording.context.fillRect(1, 2, 3, 4);
     expect(fillRect).toHaveBeenCalledTimes(1);
@@ -161,7 +161,7 @@ it("preserves native query output and drops its temporary input array after cons
     expect(metrics.actualBoundingBoxLeft).toBe(2);
     expect(measureText).toHaveBeenCalledWith("hello");
     expect(measureText).toHaveBeenCalledTimes(1);
-    expect(memory.statistics.current.metadata).toBe(before);
+    expect(memory.statistics.current.metadata).toBe(before + 256);
     expect(recording.groups()).toEqual([]);
     recording.dispose();
     memory.dispose();

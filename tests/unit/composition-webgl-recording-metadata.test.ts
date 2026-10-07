@@ -95,7 +95,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 it("admits recording state before native marker setup and rolls back failed path/control construction", async () => {
-  const memory = new ManagedMemory({ pixels: 1, metadata: 511 });
+  const memory = new ManagedMemory({ pixels: 1, metadata: 2431 });
   await withManagedMemory(memory, async () => {
     const { ctx, save } = setup();
     expect(() =>
@@ -105,7 +105,7 @@ it("admits recording state before native marker setup and rolls back failed path
     expect(memory.statistics.current.metadata).toBe(0);
     memory.dispose();
   });
-  const small = new ManagedMemory({ pixels: 1, metadata: 767 });
+  const small = new ManagedMemory({ pixels: 1, metadata: 2687 });
   await withManagedMemory(small, async () => {
     const { ctx, save } = setup();
     expect(() =>
@@ -118,7 +118,7 @@ it("admits recording state before native marker setup and rolls back failed path
   });
 });
 it("admits original shallow argument-array copies before their iterator and native consumer", async () => {
-  const memory = new ManagedMemory({ pixels: 1, metadata: 1531 });
+  const memory = new ManagedMemory({ pixels: 1, metadata: 3707 });
   await withManagedMemory(memory, async () => {
     const { ctx, raw } = setup(),
       setLineDash = vi.fn();
@@ -130,14 +130,14 @@ it("admits original shallow argument-array copies before their iterator and nati
     expect(() => recording.context.setLineDash(values)).toThrow("metadata");
     expect(iterator).not.toHaveBeenCalled();
     expect(setLineDash).not.toHaveBeenCalled();
-    expect(memory.statistics.current.metadata).toBe(1152);
+    expect(memory.statistics.current.metadata).toBe(3328);
     recording.dispose();
     memory.dispose();
     expect(memory.statistics.reservations).toBe(0);
   });
 });
 it("admits original native matrix clone capacity before fromMatrix", async () => {
-  const memory = new ManagedMemory({ pixels: 1, metadata: 1671 });
+  const memory = new ManagedMemory({ pixels: 1, metadata: 3847 });
   await withManagedMemory(memory, async () => {
     const { ctx, setTransform } = setup(),
       source = new Matrix(),
@@ -148,7 +148,7 @@ it("admits original native matrix clone capacity before fromMatrix", async () =>
     ).toThrow("metadata");
     expect(clone).not.toHaveBeenCalled();
     expect(setTransform).not.toHaveBeenCalled();
-    expect(memory.statistics.current.metadata).toBe(1152);
+    expect(memory.statistics.current.metadata).toBe(3328);
     recording.dispose();
     memory.dispose();
     expect(memory.statistics.current.metadata).toBe(0);
@@ -214,7 +214,7 @@ it("rolls back original null clone failure before native setTransform and preser
     }
     expect(caught).toBeNull();
     expect(setTransform).not.toHaveBeenCalled();
-    expect(memory.statistics.current.metadata).toBe(1152);
+    expect(memory.statistics.current.metadata).toBe(3328);
     clone.mockRestore();
     recording.context.setTransform(source as unknown as DOMMatrix);
     expect(setTransform).toHaveBeenCalledTimes(1);
@@ -224,7 +224,7 @@ it("rolls back original null clone failure before native setTransform and preser
   });
 });
 it("admits property-command fields before native assignment and leaves borrowed property values untouched", async () => {
-  const memory = new ManagedMemory({ pixels: 1, metadata: 1277 });
+  const memory = new ManagedMemory({ pixels: 1, metadata: 3197 });
   await withManagedMemory(memory, async () => {
     const { ctx, raw } = setup(),
       setter = vi.fn();
@@ -234,7 +234,7 @@ it("admits property-command fields before native assignment and leaves borrowed 
       recording.context.globalAlpha = 0.5;
     }).toThrow("metadata");
     expect(setter).not.toHaveBeenCalled();
-    expect(memory.statistics.current.metadata).toBe(1152);
+    expect(memory.statistics.current.metadata).toBe(3072);
     recording.dispose();
     memory.dispose();
     expect(memory.statistics.current.metadata).toBe(0);
