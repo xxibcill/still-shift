@@ -4964,6 +4964,20 @@ frozen visual, PCM law or output version changed. A fresh immutable complete loc
 `pnpm check` is required before milestone completion/PR.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 synchronous still preview repair (2026-10-07)
+
+The second complete local gate at `dd2627b` passed static checks and 26 mandatory
+commands, including 2,103 unit / 46 runtime / 247 integration / 14 Python depth tests,
+then stopped at Commerce's exact backward-seek comparison. Still-only family previews
+exposed an always-async readiness hook, so an input event captured the previous frame
+before the requested frame appeared. No-media readiness now returns synchronously;
+native media preserves its async initialization/coverage/preparation and stale guards.
+Actual H03 immediate and backward capture, both backend readiness, complete native-media
+and session suites and all 21 Commerce fixtures / 126 parity frames / 21 exact backward
+seeks pass. Both failed complete logs are retained. No assertion, tolerance, frozen byte
+or output version changed. Fresh immutable complete local `pnpm check` remains required.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

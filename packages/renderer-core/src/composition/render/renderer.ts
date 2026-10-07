@@ -263,7 +263,8 @@ export type CompositionPreview = {
   readPixels(): Uint8ClampedArray;
   /** Measured local text bounds per state, as supplied to the evaluator. */
   textBounds: Record<string, Bounds[]>;
-  prepareFrame(frame: number): Promise<void>;
+  /** Still-only frames are ready synchronously; native media returns its loading promise. */
+  prepareFrame(frame: number): Promise<void> | void;
   renderFrame(frame: number): CompositionFrameReport;
   dispose(): void;
 };
@@ -407,7 +408,7 @@ export function createCompositionPreview(
       rendererVersion: backend.version,
       readPixels: () => backend.readPixels(target),
       textBounds: text.bounds,
-      async prepareFrame(frame) {
+      prepareFrame(frame) {
         if (!resources.media) return;
         if (!initialization)
           initialization = (async () => {
@@ -430,8 +431,9 @@ export function createCompositionPreview(
               backend.endFrame?.(false);
             }
           })();
-        await initialization;
-        await resources.media.prepareFrame(frame, { textBounds: text.bounds });
+        return initialization.then(() =>
+          resources.media!.prepareFrame(frame, { textBounds: text.bounds }),
+        );
       },
       renderFrame(frame) {
         resources.media?.assertReady(frame);

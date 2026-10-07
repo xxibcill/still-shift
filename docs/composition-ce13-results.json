@@ -5805,6 +5805,60 @@
         "CE13 PR publication/attachment; continue CE15 then CE14"
       ],
       "proofNote": "Focused actual source/audio/Lab regressions pass after the failed first full gate. No acceptance suite, timeout, tolerance, frozen baseline, audio law or output version changed. The failed gate is retained; focused repairs do not replace full acceptance."
+    },
+    {
+      "slice": "synchronous still-only preview readiness after second complete-gate failure",
+      "sourceFiles": [
+        "apps/lab/src/preview-session.ts",
+        "packages/renderer-core/src/composition/render/renderer.ts",
+        "tests/browser/composition-media.ts"
+      ],
+      "sourceFingerprint": "sha256:177788da36d6b7a682166ab68a452b3d2309773b5c905e737db8acff3b78a72b",
+      "checks": {
+        "build": "pass",
+        "boundaries": "pass",
+        "focusedEslint": "pass",
+        "format": "pass",
+        "actualCommerceSynchronousProbe": "pass",
+        "completeNativeMediaBrowser": "pass",
+        "completeCompositionSessionBrowser": "pass",
+        "completeCommerceBrowser": {
+          "fixtures": 21,
+          "parityFrames": 126,
+          "backwardSeeks": 21,
+          "result": "pass"
+        }
+      },
+      "implemented": [
+        "prepareFrame returns void synchronously for frames without native media, preserving existing same-event presentation",
+        "native media retains its initialization/coverage and frame preparation promise; original stale seek, failed-frame and playback guards remain",
+        "both actual render backends explicitly verify synchronous readiness without native media"
+      ],
+      "actualProofs": [
+        "actual H03 input event presents immediately; same-frame settled capture matches, and backward seek restores exact bytes",
+        "all existing native video/sequence exports, combined reverse video/audio clocks and actual authoring/source-change recovery pass",
+        "pending initial frames, out-of-order seeks, failed-frame retention, audio resources and disposal pass",
+        "all 21 Commerce fixtures / 126 decoded export parity frames / 21 exact backward seeks and upload/export/layout checks pass"
+      ],
+      "failedAttempts": [
+        {
+          "path": "/private/tmp/ce13-seek-probe-before.log",
+          "sha256": "sha256:501fae9fc925498bf3d03cee55a8689f7a602ea33dbf52ed08d15e7f4a2622d6",
+          "reason": "actual H03 immediately captured its previous frame; the later capture showed the requested frame"
+        }
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-sync-readiness-focused.log",
+          "sha256": "sha256:31df6f4902437e438e4a1b3a7973584de19f3ff8a0f5420a1de55eea3ddc0358"
+        }
+      ],
+      "fullGate": false,
+      "pending": [
+        "fresh immutable complete pnpm check",
+        "publish/attach CE13 PR, then CE15 and CE14"
+      ],
+      "proofNote": "The failed second full gate passed all static checks and 26 mandatory commands, then stopped at exact Commerce backward seek. Its complete log remains retained. No acceptance assertion, pixel/timing tolerance, frozen baseline, output version or asynchronous native-media guard was weakened."
     }
   ],
   "fullGates": [
@@ -5862,6 +5916,125 @@
       ],
       "repair": "explicit PCM fields, narrow Lab/runtime imports, pure evaluator version module, and exact executable-file preflight; complete rerun required",
       "notReached": ["depth tests", "all mandatory browser commands"],
+      "fullAcceptancePassed": false
+    },
+    {
+      "head": "dd2627becb43ff0917628f86b131820d3610b5fa",
+      "path": "/private/tmp/still-shift-ce13-check-dd2627b",
+      "archiveSha256": "88621d98384bc3b6432b5cbeed7c9ffe0a44db95feaf225133a5e4a59b5769d2",
+      "trackedFingerprint": "6e270e8db9508338bf17d4e1d134d1f788f831bdfc11cf3695f8dd9697ff138e",
+      "trackedFileCount": 2065,
+      "source": "git archive exact HEAD; no owner overlays",
+      "privateCaches": [
+        "node_modules/.vite",
+        "node_modules/.vite-temp",
+        ".venv",
+        ".hf-cache",
+        ".depth-cache"
+      ],
+      "optionalBackend": "/private/tmp/ce13-soundtrack-runtime-draft1",
+      "optionalBackendPython": "/private/tmp/ce13-soundtrack-runtime-draft1/bin/python",
+      "uvCache": "/private/tmp/ce13-check-uv-cache-dd2627b",
+      "command": "pnpm check",
+      "startedAt": "2026-10-07T03:34:17.315453+00:00",
+      "status": "failed",
+      "log": "/private/tmp/ce13-full-check-dd2627b.log",
+      "requiredTestCommands": 63,
+      "exitCode": 1,
+      "seconds": 940.4614749170141,
+      "completedAt": "2026-10-07T03:49:57.704327+00:00",
+      "logSha256": "c81bac72e26edf3027a1bc20ae594450e65a25721ef67a9059d8ade933c34170",
+      "failedStage": "test:browser:commerce",
+      "passedRequiredTestCommands": [
+        "test:unit",
+        "test:runtime",
+        "test:integration",
+        "test:depth",
+        "test:browser:soundtrack",
+        "test:browser:composition-media",
+        "test:browser:depth",
+        "test:browser:vertical-image",
+        "test:browser:export",
+        "test:golden",
+        "test:browser:cli",
+        "test:browser:batch",
+        "test:browser:illustrated",
+        "test:browser:illustrated:vertical",
+        "test:browser:cinematic",
+        "test:browser:cinematic:vertical",
+        "test:browser:threshold",
+        "test:browser:dolly",
+        "test:browser:lateral",
+        "test:browser:reveal",
+        "test:browser:story",
+        "test:browser:story:activity",
+        "test:browser:story:continuous",
+        "test:browser:passage:authoring",
+        "test:browser:lab-session",
+        "test:browser:composition-session"
+      ],
+      "passedRequiredTestCommandCount": 26,
+      "passedBeforeFailure": {
+        "staticChecks": true,
+        "unit": {
+          "files": 209,
+          "tests": 2103,
+          "seconds": 17.83
+        },
+        "runtime": {
+          "files": 9,
+          "tests": 46,
+          "seconds": 10.5
+        },
+        "integration": {
+          "files": 49,
+          "tests": 247,
+          "seconds": 216.53
+        },
+        "pythonDepthTests": 14
+      },
+      "causes": [
+        "still-only illustrated/native family previews exposed an always-async prepareFrame hook; Commerce synchronous seek captured the previous frame before the microtask presented the requested frame"
+      ],
+      "repair": "synchronous void readiness when no native media exists; native media retains asynchronous loading, complete coverage and stale-frame guards",
+      "notReached": [
+        "test:browser:commerce-components",
+        "test:browser:commerce-effects",
+        "test:browser:commerce-spatial",
+        "test:browser:reusable-components",
+        "test:browser:reusable-package",
+        "test:browser:reusable-behavior-package",
+        "test:browser:reusable-timing-package",
+        "test:browser:typography",
+        "test:browser:typography:fixtures",
+        "test:browser:composition-evaluator",
+        "test:browser:composition-expressions",
+        "test:browser:composition-quality",
+        "test:browser:composition",
+        "test:browser:composition-webgl",
+        "test:browser:composition-camera",
+        "test:browser:composition-lighting",
+        "test:browser:composition-shapes",
+        "test:browser:composition-webgl-export",
+        "test:browser:composition-exposure",
+        "test:browser:composition-effects",
+        "test:browser:composition-story-adapter",
+        "test:browser:composition-native-passage",
+        "test:browser:composition-native-passage:webgl",
+        "test:browser:composition-passage",
+        "test:browser:composition-story-fixtures",
+        "test:browser:composition-commerce-adapter",
+        "test:browser:composition-cinematic-adapter",
+        "test:browser:composition-typography-adapter",
+        "test:browser:composition-provider-typography",
+        "test:browser:composition-program",
+        "test:browser:composition-inspector",
+        "test:browser:composition-builder",
+        "test:browser:composition-depth",
+        "test:browser:composition-legacy-adapter",
+        "test:browser:composition-family-defaults",
+        "test:browser:composition-baselines"
+      ],
       "fullAcceptancePassed": false
     }
   ],

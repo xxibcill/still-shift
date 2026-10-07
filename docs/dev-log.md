@@ -44,21 +44,22 @@ still hold before relying on them.
 ## Current state
 
 - **CE13 in progress (2026-10-07):** `codex/composition-ce13` from completed CE4d
-  `adf6cea`; merged/attached [CE16 PR #33](https://github.com/xxibcill/still-shift/pull/33)
-  at `65f2ebe4` is audited and integrated. Native sources, bounded SDR/PCM resources,
-  matching exports, Lab waveforms/playback and complete native passage audio pass
-  focused acceptance. Passage `8536def` and combined preview `b88f196` are pushed.
-  Both backends pass 96 exact reverse seeks and 480 playback observations with zero
-  source-frame offset. Preview/export share canonical FFmpeg frames; WebCodecs is
-  unadopted without equivalent parity proof. The first full gate at `b88f196` failed
-  after 2,103 units / 46 runtime tests: an optional Python executable-path mistake and
-  native Node/Vite loading of new/broad parameter-property modules. Explicit PCM
-  fields, narrow imports, pure evaluator identity and exact executable preflight now
-  pass native startup, build/boundaries/style and all 114 affected tests / 12 files.
-  Canvas 1.45 / WebGL2 0.66 / evaluator 53 / mixer 2 / export worker 0.6.7 and frozen
-  visuals remain unchanged. Fresh complete CE13 `pnpm check` and PR are pending;
-  the failed gate remains recorded. Continue CE13 → CE15 → CE14. CE5-X/Q9 and separate
-  CE6-P remain pending. [Evidence](./composition-ce13-results.json).
+  `adf6cea`; audited merged [CE16 PR #33](https://github.com/xxibcill/still-shift/pull/33)
+  is integrated. Native sources, bounded SDR/PCM resources, matching exports,
+  Lab waveforms/playback and complete native passage audio pass focused acceptance.
+  Combined preview `b88f196` and native-loader repair `dd2627b` are pushed. Both
+  backends pass 96 exact reverse seeks and 480 playback observations with zero
+  source-frame offset. Preview/export share verified FFmpeg frames; WebCodecs is
+  unadopted without equivalent parity proof. Two complete failed gates are retained:
+  the first exposed loader/optional-Python setup; the second passed static checks,
+  2,103 units / 46 runtime / 247 integration / 14 depth tests and 26 mandatory commands
+  before Commerce's synchronous seek captured a stale still-only frame. Synchronous
+  no-media readiness now passes actual H03 capture, both backend readiness, complete
+  native-media/session and all 21 Commerce fixtures / 126 parity frames / 21 exact
+  backward seeks. Native loading/stale guards, frozen visuals and output versions
+  remain unchanged. Fresh immutable complete `pnpm check` and CE13 PR are pending.
+  Continue CE13 → CE15 → CE14. CE5-X/Q9 and separate CE6-P remain pending.
+  [Evidence](./composition-ce13-results.json).
 
 - **CE4d complete (2026-10-07):**
   `codex/composition-ce4d` from CE4c `17666eb`. Native production defaults and old
@@ -272,6 +273,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 synchronous still preview repair
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed `dd2627b`.
+- **Done:** still-only readiness returns synchronously; native media retains its
+  async preparation, coverage and stale-seek guards. Both actual backends test readiness.
+- **Results:** build/boundaries/style, actual H03 immediate/backward capture, complete
+  native-media/session suites and 21 Commerce fixtures / 126 parity frames / 21
+  exact backward seeks pass, with existing source/export/authoring/layout checks.
+- **Failed gate:** `dd2627b` exited1 after 940.46s; static checks and 26 mandatory
+  commands passed, including 2,103 units / 46 runtime / 247 integration / 14 depth.
+  An always-async no-media hook delayed presentation until after synchronous capture.
+- **Next:** fresh immutable complete local gate and CE13 PR, then CE15 → CE14.
+  No tolerance, frozen byte, media guard or output version changed.
+- **Records:** [both failed gates and focused repair](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 native-loader repair after first gate
 

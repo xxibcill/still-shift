@@ -117,3 +117,12 @@ CE16 source paths and opt-in GPL backend boundaries are in the authority map.
 CE15 retains actual >=3× two-minute 4-worker speedup and all format/alpha decode-back
 checks. CE14 needs deterministic alpha topology, pin/constraint solver and both
 backend/flip-free demo acceptance. Do not weaken or substitute these gates.
+
+The second complete CE13 gate (`dd2627b`) passed static checks and 26 mandatory commands
+(2,103 unit / 46 runtime / 247 integration / 14 depth tests), then failed Commerce's
+exact backward seek. An always-async no-media readiness hook delayed still presentation.
+Synchronous still-only readiness now passes real H03 capture, both backend readiness,
+complete native-media/session and all 21 Commerce fixtures / 126 parity frames / 21
+exact backward seeks. Preserve both failed logs. No assertion, tolerance, frozen byte
+or native async guard changed. Commit this repair, create a fresh immutable snapshot
+and complete the full local gate before the CE13 PR; continue CE15 then CE14.

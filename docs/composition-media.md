@@ -327,3 +327,8 @@ Node export verification reads the pure evaluator identity and diagnostic module
 loading browser renderer implementations. The Lab config imports only the composition
 source/media/audio preparation modules. This keeps native Node22 strip-only config
 loading valid; PCM inspection uses ordinary fields and retains its sample/buffer laws.
+
+Still-only previews retain synchronous seek presentation: `prepareFrame` returns void
+when no native media needs preparation. Native video/sequence previews return their
+loading promise and retain coverage, stale-seek and failed-frame guards. Callers may
+`await` either result, or present immediately when readiness is void.

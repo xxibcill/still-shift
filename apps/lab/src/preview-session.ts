@@ -8,7 +8,7 @@ type DisabledControl =
   | HTMLSelectElement
   | HTMLFieldSetElement;
 type PreviewRenderer = {
-  prepareFrame?(frame: number): Promise<void>;
+  prepareFrame?(frame: number): Promise<void> | void;
   renderFrame(frame: number): unknown;
   dispose(): void;
 };

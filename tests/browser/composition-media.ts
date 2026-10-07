@@ -149,6 +149,22 @@ try {
       const assetUrl = (id: string) =>
         "/native-frame?id=" + encodeURIComponent(id);
       const cases: unknown[] = [];
+      for (const backend of ["canvas2d", "webgl2"] as const) {
+        const document: Composition = { ...comp, assets: [], layers: [] };
+        const resources = await m.loadCompositionResources(document, assetUrl);
+        const preview = m.createCompositionPreview(
+          window.document.createElement("canvas"),
+          document,
+          resources,
+          { backend },
+        );
+        for (const frame of [0, 3, 0]) {
+          if (preview.prepareFrame(frame) !== undefined)
+            throw new Error("Still-only readiness must remain synchronous");
+          preview.renderFrame(frame);
+        }
+        preview.dispose();
+      }
       for (const colorSpace of ["srgb", "linear-srgb"] as const)
         for (const backend of ["canvas2d", "webgl2"] as const) {
           const document = { ...comp, colorSpace };
