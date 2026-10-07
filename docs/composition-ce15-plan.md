@@ -575,6 +575,30 @@ Other checksum text, provider/WebGL/graph/font/ledger/Node metadata, actual prod
 aggregate admission, speed and full-gate acceptance remain pending.
 [Evidence](./composition-ce15-checksum-metadata-results.json).
 
+## Accepted WebGL definition/isolate metadata checkpoint — 2026-10-08
+
+Original definition identities admit WeakMap/state/entry capacity before creation
+or sequence mutation. Isolate IDs, signature arrays/output, Map growth and entry
+controls reserve before original draw. Retained entries own their ID/signature
+across frame cleanup; duplicate/fallback keys release. Original LRU tuple arrays
+remain admitted through actual eviction consumption, then drop their references.
+Original reusable between-frame dispose/flush semantics are preserved; separate
+final close releases control owners and preserves first discard errors, including
+null, while visiting all entries.
+
+Build, lint, boundaries and 130 focused tests pass, including six meaningful
+metadata regressions for exact identities, sequence quota, retention/reusable flush,
+producer denial, null cleanup and actual LRU consumer lifetime. All 144 audit cases /
+8,000 exact comparisons, original protected failures, 96 managed RPC snapshots and
+22 native moving/blurred submission frames pass. Original WebGL, 69 typography
+tests, 12 provider cases / 60 frames and eight fixtures pass; glyph 1.429766× meets
+unchanged 1.5 maximum. All 64 exports preserve 768 complete bodies/frames against
+pushed `32c8edb`. Initial typing/lint and intermediate-browser evidence is retained.
+
+Other frame/damage/vector/provider keys, graph/font/checksum/ledger/Node metadata,
+actual production/aggregate admission, speed and full-gate acceptance remain pending.
+[Evidence](./composition-ce15-webgl-key-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -1166,12 +1166,13 @@ export function createWebgl2Backend(
       images.dispose();
       damage.reset();
       readback.dispose();
-      isolates.dispose();
+      isolates.close();
       vectors.dispose();
       pngImages.dispose();
       depthImages.dispose();
       raster.dispose();
       device.dispose();
+      keys.dispose();
     },
   };
   return backend;

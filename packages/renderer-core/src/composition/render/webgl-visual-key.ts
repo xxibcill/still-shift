@@ -1,6 +1,12 @@
 import { gaussianBoxWidth } from "./webgl-blur-kernel.ts";
 import type { ProviderContent, TextContent } from "./graph.ts";
-import { copySerializationMetadata } from "../../managed-metadata.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+  resizeRenderMetadata,
+  serializeRenderMetadata,
+  copySerializationMetadata,
+} from "../../managed-metadata.ts";
 
 export type PreparedContentKey = (
   content: ProviderContent | TextContent,
@@ -42,26 +48,53 @@ export function preparedVisualState(
 }
 
 /** Immutable definitions get identities; every evaluated drawing value remains in the key. */
+type DefinitionState = {
+  definitions: WeakMap<object, number> | undefined;
+  sequence: number;
+};
 export class WebglVisualKey {
-  private readonly definitions = new WeakMap<object, number>();
-  private sequence = 0;
-  constructor(private readonly contentKey?: PreparedContentKey) {}
+  private readonly state: DefinitionState;
+  constructor(private readonly contentKey?: PreparedContentKey) {
+    this.state = allocateRenderMetadata<DefinitionState>(
+      256,
+      () => ({ definitions: new WeakMap(), sequence: 0 }),
+      false,
+      (value) => {
+        value.definitions = undefined;
+        value.sequence = 0;
+      },
+    );
+  }
 
   private identity(definition: object) {
-    let id = this.definitions.get(definition);
+    const definitions = this.state.definitions;
+    if (!definitions) throw Error("WebGL visual definitions are disposed");
+    let id = definitions.get(definition);
     if (id === undefined) {
-      id = this.sequence++;
-      this.definitions.set(definition, id);
+      resizeRenderMetadata(this.state, 256 + 40 * (this.state.sequence + 1));
+      id = this.state.sequence++;
+      definitions.set(definition, id);
     }
     return id;
   }
 
   of(value: unknown): string {
-    return JSON.stringify(value, (property, item: unknown) => {
+    return JSON.stringify(value, this.replacer());
+  }
+  metadata(value: unknown) {
+    return serializeRenderMetadata(value, this.replacer());
+  }
+  private replacer() {
+    return (property: string, item: unknown) => {
       if (item === null || typeof item !== "object") return item;
       if (property === "layer" || property === "sources")
         return this.identity(item);
       return preparedVisualState(item, this.contentKey);
-    });
+    };
+  }
+  dispose() {
+    this.state.definitions = undefined;
+    this.state.sequence = 0;
+    releaseRenderMetadata(this.state);
   }
 }
