@@ -51,7 +51,8 @@ still hold before relying on them.
   playback decodes all 384,000 stereo samples/channel exactly and full/range mux
   matches independent renders. Integration `3fd8584` is pushed. Native media
   descriptors, post-expression source clocks, picture graph and builders pass all
-  2,060 unit tests / 204 files plus static checks. Actual FFmpeg/color/cache preparation,
+  2,060 unit tests / 204 files plus static checks (`41c7b98`). Actual video hash,
+  CFR PTS, color/coverage and transform checks pass 12 focused tests. SDR conversion/cache preparation,
   continuous nested PCM clocks, waveforms and production/full acceptance remain in
   flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
   [Evidence](./composition-ce13-results.json).
@@ -268,6 +269,20 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 actual source provenance and CFR probe
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed clocks `41c7b98`.
+- **Done:** streaming hashes, original integer PTS and exact rational CFR proof;
+  actual dimensions/color/coverage and authored metadata checks; rotation, VFR and
+  non-square pixels reject before preparation.
+- **Results:** 12 focused tests / 2 files and build/schema/boundaries/lint/format pass.
+  Real FFmpeg fixtures cover longer container audio, VFR, rotation, limits and hashes.
+- **Rejected:** missing synthetic frame color tags were fixed in the fixture;
+  unknown-color rejection stays. Initial test-table build failure is also recorded.
+- **Next:** actual SDR conversion, atomic bounded frame cache and browser readiness,
+  then continuous native PCM/waveforms and production acceptance. Full gate pending.
+- **Records:** [media guide](./composition-media.md), [CE13 evidence](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 native media contract and evaluated source clocks
 

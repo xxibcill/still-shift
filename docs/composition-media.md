@@ -1,7 +1,8 @@
 # Native composition media
 
 CE13 is in progress. The contract, source-clock evaluation and visual graph are
-implemented; FFmpeg preparation, bounded browser readiness, actual audio mixing,
+implemented, with actual FFmpeg source provenance/CFR probing; SDR conversion,
+frame-cache preparation, bounded browser readiness, actual audio mixing,
 waveforms and complete production acceptance remain pending. Current proof is in
 [CE13 results](./composition-ce13-results.json). The contract fixture uses placeholder
 hashes and is a structural fixture, not a playable media example.
@@ -59,3 +60,12 @@ live decoded-frame bytes and audio working memory. Defaults are 600 seconds,
 512 MiB of audio working memory. Decoder and renderer preparation must enforce
 their separate allocation limits and reject an over-budget required frame set.
 Those allocation proofs remain pending; structural limits are already validated.
+
+The video probe checks actual source bytes before and after ffprobe, and verifies
+all authored dimensions, rational rate, original frame count and color fields.
+Picture duration is frame count divided by source rate, even if container audio
+lasts longer. Original presentation timestamps remain integer strings. An exact
+BigInt quantizer-phase intersection proves one constant-rate timeline; alternating
+41/42 ms ticks can be valid, while VFR gaps reject. Nonidentity rotation/display
+matrices and known non-square pixels require prior normalization. Actual color
+metadata must be supported; conversion into canonical sRGB remains the next slice.

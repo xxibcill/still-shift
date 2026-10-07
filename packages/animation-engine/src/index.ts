@@ -48,5 +48,6 @@ export {
 export * from "./soundtrack-project-io.ts";
 
 export * from "./soundtrack-render.ts";
+export * from "./composition-media-probe.ts";
 
 export * from "./soundtrack-passage.ts";

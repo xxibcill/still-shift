@@ -4738,6 +4738,15 @@ and all 2,060 unit tests / 204 files pass. Actual decoding/color conversion, bou
 browser resources, continuous native PCM/waveforms and complete acceptance remain
 pending. [Contract](./composition-media.md), [evidence](./composition-ce13-results.json).
 
+### CE13 actual source-probe checkpoint (2026-10-07)
+
+The actual file is hashed before/after ffprobe. Original integer presentation
+PTS must match one exact rational CFR quantizer; picture coverage excludes longer
+container audio. Authored dimensions/rate/count/color are verified. Real FFmpeg
+fixtures reject VFR gaps, rotation, non-square pixels, unknown color and limits.
+All 12 focused tests and static checks pass; actual SDR conversion, frame cache,
+PCM, browser and full acceptance remain pending. [Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

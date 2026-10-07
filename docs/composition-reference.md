@@ -1095,6 +1095,11 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 
 | Code                               | Meaning                                                                                                  |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `comp-media-format`                | A native source has unsupported streams or file structure.                                               |
+| `comp-media-vfr`                   | Presentation timestamps do not form one quantized rational CFR timeline.                                 |
+| `comp-media-rotation`              | A source has nonidentity display rotation or transformation.                                             |
+| `comp-media-checksum`              | Source bytes differ from their pinned media identity.                                                    |
+| `comp-media-provenance`            | Actual probed media metadata differs from the authored descriptor.                                       |
 | `comp-media-rate`                  | A source rate is not reduced or exceeds 240 fps.                                                         |
 | `comp-media-color`                 | Source color metadata is unsupported or inconsistent.                                                    |
 | `comp-media-limit`                 | Media exceeds a configured source or decoded-resource limit.                                             |
