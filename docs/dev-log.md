@@ -87,8 +87,10 @@ still hold before relying on them.
   8,000-frame audit, 15 native resource failures and all original provider, typography,
   media, illustrated and story commands. Managed cases load assets/fonts inside
   their scopes; borrowed faces, late cleanup and exact public body/frame parity pass.
-  Glyph 1.383989× meets unchanged 1.5×. Capture/upload, Node, metadata integration,
-  actual production admission, aggregate memory, the actual
+  Glyph 1.383989× meets unchanged 1.5×. Native capture/upload admission now passes
+  70 tests, the complete audit, six native complete-body oracles, twelve failure
+  cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
+  Node, metadata integration, actual production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -322,6 +324,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 native capture/upload ownership checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `6fa605e`.
+- **Done:** native raw/encoded admission, exact capture kernels and frame scratch
+  through complete upload acknowledgement; failed/late producer cleanup.
+- **Results:** build/lint/boundaries and 70 admission/frame-lifetime tests; all
+  144 audit cases / 8,000 exact frames, including 24 managed cases / 1,504 frames.
+  Six original-native capture/body oracles and twelve protected failure cases pass.
+  Complete original media/WebGL export commands and all 64 public exports / 768
+  prior-exact complete PNG bodies and decoded frames pass.
+- **Next:** Node and metadata admission; production allocator, aggregate/area/worker
+  proof, authentic two-minute speed, CE15 gate/PR and all CE14. Production scope is
+  still disabled; no full gate or speed acceptance claimed.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [capture admission evidence](./composition-ce15-capture-memory-results.json).
 
 ### 2026-10-08 — CE15 verified asset/font/media ownership checkpoint
 

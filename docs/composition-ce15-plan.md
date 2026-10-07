@@ -400,6 +400,33 @@ RSS. Production admission is still disabled pending capture/upload, Node and
 complete metadata integration, then aggregate/area/worker checks, the authentic
 120-second speed proof and immutable complete gate.
 
+## Accepted native capture/upload ownership checkpoint — 2026-10-08
+
+Native raw readbacks now admit their original RGBA8 destination before allocation;
+Canvas temporary ImageData detaches after the original row reversal. PNG/JPEG
+reserve a conservative encoded capacity before the original native toBlob call,
+then shrink to the completed body size. Frame scratch spans original preparation,
+render, capture and the complete upload acknowledgement. Raw storage detaches and
+encoded ownership releases at acknowledgement; failures preserve original reasons,
+including null. Late native completion cannot return an expired allocator owner.
+
+Build, lint, boundaries and 70 admission/frame-lifetime tests pass. All 144 audit
+cases / 8,000 frame comparisons pass, including 24 managed asset/font/Canvas/GPU
+cases / 1,504 frames and all prior native resource checks. Six actual Canvas/WebGL
+raw/PNG/JPEG captures match direct original native complete-body size/SHA256 oracles;
+actual HTTP uploads retain ownership through acknowledgement. Twelve native failure
+cases cover quota before producer invocation, native zero-size encode, original
+null acknowledgement and late completion. Complete original native media and WebGL
+export commands pass. All 64 public exports preserve 768 PNG bodies and decoded
+frames against the previous accepted resource checkpoint.
+
+Strict native-observer typing and captured-allocator validation repairs are kept in
+[the evidence](./composition-ce15-capture-memory-results.json). Logical Blob ownership
+and declared capture capacity remain distinct from codec/network/driver/VM private
+memory and physical RSS. Production scope stays disabled until Node and complete
+metadata integration, then aggregate/area/worker checks, authentic 120-second speed
+acceptance and the immutable complete local gate.
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

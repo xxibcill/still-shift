@@ -169,6 +169,13 @@ export function releaseRenderStorage<T extends object>(
   else destroy(value);
 }
 
+/** A bounded native producer can shrink its reserved capacity to its completed body size. */
+export function resizeRenderStorage(value: object, bytes: number): void {
+  const lease = storageLeases.get(value);
+  if (lease) lease.resize(bytes);
+  else if (active) throw Error("Managed native storage has no admitted owner");
+}
+
 /** Canvas backing changes are admitted before the native setter changes its allocation. */
 export function createRenderCanvas(): HTMLCanvasElement {
   const memory = active;

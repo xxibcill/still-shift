@@ -11,7 +11,8 @@ import {
 } from "@still-shift/renderer-core";
 import { compositionSurfaceExchange } from "./composition-surface-client.ts";
 import type { ExportableScene } from "./export-worker.ts";
-import { assertNever, type FrameTransport } from "./transport.ts";
+import type { FrameTransport } from "./transport.ts";
+import { captureFrame, withManagedFrame } from "./composition-frame-capture.ts";
 
 export type BrowserExportResult = {
   frameRenderAverageMs: number;
@@ -75,62 +76,6 @@ const summarizeTimings = (timings: number[]) => {
       timings.reduce((total, value) => total + value, 0) / timings.length,
     p95Ms: timings[Math.ceil(timings.length * 0.95) - 1]!,
   };
-};
-
-const captureBlob = (
-  canvas: HTMLCanvasElement,
-  mimeType: string,
-  quality?: number,
-): Promise<Blob> =>
-  new Promise((accept, reject) => {
-    canvas.toBlob(
-      (blob) =>
-        blob
-          ? accept(blob)
-          : reject(new Error(`${mimeType} frame capture failed`)),
-      mimeType,
-      quality,
-    );
-  });
-
-const captureFrame = (
-  canvas: HTMLCanvasElement,
-  gl: WebGL2RenderingContext | null,
-  transport: FrameTransport,
-): Promise<ArrayBuffer | Blob> => {
-  switch (transport) {
-    case "raw_rgba": {
-      const pixels = new Uint8Array(canvas.width * canvas.height * 4);
-      if (gl)
-        gl.readPixels(
-          0,
-          0,
-          canvas.width,
-          canvas.height,
-          gl.RGBA,
-          gl.UNSIGNED_BYTE,
-          pixels,
-        );
-      else {
-        const rgba = canvas
-          .getContext("2d")!
-          .getImageData(0, 0, canvas.width, canvas.height).data;
-        const rowBytes = canvas.width * 4;
-        for (let y = 0; y < canvas.height; y++)
-          pixels.set(
-            rgba.subarray(y * rowBytes, (y + 1) * rowBytes),
-            (canvas.height - 1 - y) * rowBytes,
-          );
-      }
-      return Promise.resolve(pixels.buffer as ArrayBuffer);
-    }
-    case "png_pipe":
-      return captureBlob(canvas, "image/png");
-    case "jpeg_pipe":
-      return captureBlob(canvas, "image/jpeg", 0.95);
-    default:
-      return assertNever(transport);
-  }
 };
 
 const isComposition = (scene: ExportableScene): scene is CompositionScene =>
@@ -308,38 +253,40 @@ const renderFrames = async (
       frameIndex < frameCount;
       frameIndex += work?.workers ?? 1
     ) {
-      const frameStart = performance.now();
-      const readiness = renderFrame(frameIndex);
-      if (readiness) await readiness;
-      const frameBytes = await (capture
-        ? capture()
-        : captureFrame(canvas, gl, transport));
-      timings.push(performance.now() - frameStart);
-      const uploadStart = performance.now();
-      const response = await fetch("/_export/frame", {
-        method: "POST",
-        headers: {
-          "x-frame-index": String(frameIndex),
-          ...(work
-            ? {
-                "x-export-worker": String(work.worker),
-                "x-export-credential": work.credential,
-              }
-            : {}),
-        },
-        body: frameBytes,
-      });
-      if (!response.ok)
-        throw new Error(
-          `Frame ${frameIndex} upload failed: ${await response.text()}`,
-        );
-      uploadTimings.push(performance.now() - uploadStart);
-      if (work)
-        frames.push({
-          index: frameIndex,
-          renderMs: timings.at(-1)!,
-          uploadMs: uploadTimings.at(-1)!,
+      await withManagedFrame(async () => {
+        const frameStart = performance.now();
+        const readiness = renderFrame(frameIndex);
+        if (readiness) await readiness;
+        const frameBytes = await (capture
+          ? capture()
+          : captureFrame(canvas, gl, transport));
+        timings.push(performance.now() - frameStart);
+        const uploadStart = performance.now();
+        const response = await fetch("/_export/frame", {
+          method: "POST",
+          headers: {
+            "x-frame-index": String(frameIndex),
+            ...(work
+              ? {
+                  "x-export-worker": String(work.worker),
+                  "x-export-credential": work.credential,
+                }
+              : {}),
+          },
+          body: frameBytes,
         });
+        if (!response.ok)
+          throw new Error(
+            `Frame ${frameIndex} upload failed: ${await response.text()}`,
+          );
+        uploadTimings.push(performance.now() - uploadStart);
+        if (work)
+          frames.push({
+            index: frameIndex,
+            renderMs: timings.at(-1)!,
+            uploadMs: uploadTimings.at(-1)!,
+          });
+      });
     }
   } finally {
     dispose();

@@ -22,6 +22,7 @@ import {
   mediaRgbaPng,
   mediaPngChunk,
 } from "../helpers/composition-media-png.ts";
+import type * as CaptureChecks from "../helpers/composition-capture-memory-reference.ts";
 import type * as ResourceChecks from "../helpers/composition-resource-memory-reference.ts";
 import type * as MemoryChecks from "../helpers/composition-memory-reference.ts";
 
@@ -91,6 +92,40 @@ const server = await createServer({
               response.setHeader("Content-Length", bytes.length);
             else response.setHeader("Transfer-Encoding", "chunked");
             response.end(bytes);
+            return;
+          }
+          if (resourceUrl.pathname === "/_memory_frame_capture") {
+            const size = Number(request.headers["content-length"]);
+            if (
+              request.method !== "POST" ||
+              !Number.isSafeInteger(size) ||
+              size < 1 ||
+              size > 2 * 1024 * 1024
+            ) {
+              response.statusCode = 400;
+              response.end();
+              return;
+            }
+            void (async () => {
+              const hash = createHash("sha256");
+              let received = 0;
+              for await (const chunk of request) {
+                received += chunk.length;
+                if (received > size)
+                  throw Error("Capture test upload exceeds its size");
+                hash.update(chunk);
+              }
+              if (received !== size)
+                throw Error("Capture test upload is incomplete");
+              response.setHeader("x-capture-bytes", received);
+              response.setHeader("x-capture-sha256", hash.digest("hex"));
+              response.statusCode = resourceUrl.searchParams.has("fail")
+                ? 503
+                : 204;
+              response.end();
+            })().catch((error: unknown) => {
+              response.destroy(error instanceof Error ? error : undefined);
+            });
             return;
           }
           if (request.url === "/_memory_primitives") {
@@ -796,6 +831,14 @@ try {
     },
   );
   assert.equal(managedResources.status, "passed");
+  const managedCaptures = await workers[0]!.page.evaluate(async () => {
+    const url = "/tests/helpers/composition-capture-memory-reference.ts";
+    return (
+      (await import(url)) as typeof CaptureChecks
+    ).checkManagedFrameCaptures();
+  });
+  assert.equal(managedCaptures.nativeCaptures, 6);
+  assert.equal(managedCaptures.failures.length, 12);
   const managedSourceFailures = await workers[0]!.page.evaluate(async () => {
     const url = "/tests/helpers/composition-source-reference.ts";
     return (
@@ -847,6 +890,7 @@ try {
     managedDepthStorage,
     managedPngStorage,
     managedResources,
+    managedCaptures,
     managedSourceFailures,
     reports,
   };
