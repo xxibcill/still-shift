@@ -6,9 +6,12 @@ import {
   builderSource,
   BuilderError,
   at,
+  seq,
   nullLayer,
+  type AnimationKey,
 } from "@still-shift/motion";
 import { evaluateComp, evaluateProperty } from "@still-shift/renderer-core";
+import { sourceLocation } from "../../packages/motion-builder/src/source.ts";
 const options = { width: 64, height: 64, fps: 24 as const, frames: 24 };
 const box = () => solid("box", { size: [10, 10], color: "#223344" });
 const path = {
@@ -19,6 +22,81 @@ const path = {
     [10, 10],
   ] as [number, number][],
 };
+it.each([
+  ["body", "body-title"],
+  ["caption", "caption2"],
+  ["size", "body"],
+  ["body-title", "body"],
+])("locates invalid style %s/%s at its own call", (first, invalid) => {
+  let expectedCall;
+  try {
+    comp(options, (c) => {
+      c.textStyle(first, { size: 48 });
+      expectedCall = sourceLocation();
+      c.textStyle(invalid, { size: 0 });
+    });
+    expect.fail("invalid style must fail");
+  } catch (error) {
+    expect(error).toBeInstanceOf(BuilderError);
+    expect((error as BuilderError).code).toBe("comp-schema-range");
+    expect((error as BuilderError).location).toMatchObject({
+      file: expectedCall!.file,
+      line: expectedCall!.line + 1,
+    });
+  }
+});
+it("preserves static scalar state before a delayed explicit from segment", () => {
+  const result = comp({ ...options, frames: 48 }, (c) => {
+    const n = c.add(box().at(5, 0));
+    c.timeline(at(12, n.x.from(40).to(50, 10)));
+  });
+  for (const [frame, value] of [
+    [0, 5],
+    [11, 5],
+    [12, 40],
+    [17, 45],
+    [22, 50],
+    [0, 5],
+  ])
+    expect(evaluateProperty(result, "box.transform.position.x", frame!)).toBe(
+      value,
+    );
+});
+it("preserves static vector and by values before delayed from segments", () => {
+  const result = comp({ ...options, frames: 48 }, (c) => {
+    const n = c.add(box().at(5, 7).rotate(3));
+    c.timeline(
+      at(12, n.position.from([40, 60]).to([50, 80], 10)),
+      at(12, n.rotation.from(20).by(10, 10)),
+    );
+  });
+  expect(evaluateProperty(result, "box.transform.position", 11)).toEqual([
+    5, 7,
+  ]);
+  expect(evaluateProperty(result, "box.transform.position", 12)).toEqual([
+    40, 60,
+  ]);
+  expect(evaluateProperty(result, "box.transform.position", 17)).toEqual([
+    45, 70,
+  ]);
+  expect(evaluateProperty(result, "box.transform.rotation", 11)).toBe(3);
+  expect(evaluateProperty(result, "box.transform.rotation", 12)).toBe(20);
+  expect(evaluateProperty(result, "box.transform.rotation", 22)).toBe(30);
+});
+it.each([0, 1])(
+  "retains authored opacity %s before a delayed fade-in",
+  (opacity) => {
+    const result = comp({ ...options, frames: 48 }, (c) => {
+      const n = c.add(box().opacity(opacity));
+      c.timeline(at(12, n.fadeIn(12)));
+    });
+    expect(evaluateProperty(result, "box.transform.opacity", 0)).toBe(opacity);
+    expect(evaluateProperty(result, "box.transform.opacity", 11)).toBe(opacity);
+    expect(evaluateProperty(result, "box.transform.opacity", 12)).toBe(0);
+    expect(evaluateProperty(result, "box.transform.opacity", 18)).toBe(0.5);
+    expect(evaluateProperty(result, "box.transform.opacity", 24)).toBe(1);
+  },
+);
 it("maps emitted keys to animation calls and retains them through nested reuse", () => {
   let call;
   const child = comp({ ...options, id: "child" }, (c) => {
@@ -264,5 +342,171 @@ it("locates invalid timeline clip duration at the property animation call", () =
     expect.fail();
   } catch (error) {
     expect(error).toMatchObject({ code: "comp-builder-time", location });
+  }
+});
+
+it("preserves the outgoing temporal handle at a shared clip boundary", () => {
+  const incoming = { ease: 0.2, speed: 0 };
+  const outgoing = { ease: 0.7, speed: 0 };
+  const result = comp(options, (c) => {
+    const n = c.add(box());
+    c.timeline(
+      seq(
+        n.x.keys([
+          { frame: 0, value: 0 },
+          { frame: 10, value: 10, in: incoming },
+        ]),
+        n.x.keys([
+          { frame: 0, value: 10, out: outgoing },
+          { frame: 10, value: 20, in: incoming },
+        ]),
+      ),
+    );
+  });
+  const position = result.layers[0]!.transform!.position;
+  expect(position).toMatchObject({
+    x: {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 10, value: 10, in: incoming, out: outgoing },
+        { frame: 20, value: 20, in: incoming },
+      ],
+    },
+  });
+  expect(evaluateProperty(result, "box.x", 12)).toBeCloseTo(
+    10.30288335775443,
+    10,
+  );
+});
+
+it("preserves each side of a spatial join when keyed clips are sequenced", () => {
+  const result = comp(options, (c) => {
+    const n = c.add(box());
+    c.timeline(
+      seq(
+        n.position.keys([
+          { frame: 0, value: [0, 0] },
+          { frame: 10, value: [10, 0], spatialIn: [-4, 3] },
+        ]),
+        n.position.keys([
+          { frame: 0, value: [10, 0], spatialOut: [0, 12] },
+          { frame: 10, value: [20, 0], spatialIn: [0, 12] },
+        ]),
+      ),
+    );
+  });
+  expect(result.layers[0]!.transform!.position).toMatchObject({
+    keys: [
+      { frame: 0, value: [0, 0] },
+      { frame: 10, value: [10, 0], spatialIn: [-4, 3], spatialOut: [0, 12] },
+      { frame: 20, value: [20, 0], spatialIn: [0, 12] },
+    ],
+  });
+  const atMidpoint = evaluateProperty(
+    result,
+    "box.transform.position",
+    15,
+  ) as number[];
+  expect(atMidpoint[1]).toBeGreaterThan(8);
+});
+
+it.each([
+  [{ out: { ease: 2 } }, ".out.ease"],
+  [{ out: { ease: 0.5, speed: [Infinity, 0] } }, ".out.speed"],
+  [{ spatialOut: [Infinity, 0] }, ".spatialOut"],
+] satisfies [Partial<AnimationKey<number[]>>, string][])(
+  "locates merged outgoing handle errors at the second keyed clip (%s)",
+  (fields, suffix) => {
+    let call;
+    try {
+      comp(options, (c) => {
+        const n = c.add(box());
+        const first = n.position.keys([
+          { frame: 0, value: [0, 0] },
+          { frame: 10, value: [10, 0] },
+        ]);
+        const second = n.position.keys([
+          { frame: 0, value: [10, 0], ...structuredClone(fields) },
+          { frame: 10, value: [20, 0] },
+        ]);
+        call = second.value.location;
+        c.timeline(seq(first, second));
+      });
+      expect.fail("invalid outgoing metadata must fail");
+    } catch (error) {
+      expect(error).toBeInstanceOf(BuilderError);
+      expect((error as BuilderError).message).toContain(`keys[1]${suffix}`);
+      expect((error as BuilderError).location).toEqual(call);
+    }
+  },
+);
+
+it("keeps incoming, outgoing and key-value call sites distinct through nested reuse", () => {
+  let firstCall, secondCall;
+  const child = comp({ ...options, id: "child" }, (c) => {
+    const n = c.add(box());
+    const first = n.position.keys([
+      { frame: 0, value: [0, 0] },
+      { frame: 10, value: [10, 0], in: { ease: 0.3 }, spatialIn: [-4, 3] },
+    ]);
+    const second = n.position.keys([
+      { frame: 0, value: [10, 0], out: { ease: 0.7 }, spatialOut: [0, 12] },
+      { frame: 10, value: [20, 0] },
+    ]);
+    firstCall = first.value.location;
+    secondCall = second.value.location;
+    c.timeline(seq(first, second));
+  });
+  const middle = comp({ ...options, id: "middle" }, (c) =>
+    c.add(precomp("host", child)),
+  );
+  const outer = comp(options, (c) => {
+    c.add(precomp("left", middle));
+    c.add(precomp("right", middle));
+  });
+  const childIndex = outer.precomps!.findIndex((p) => p.id === "child");
+  for (const [composition, prefix] of [
+    [child, ""],
+    [outer, `precomps[${childIndex}].`],
+  ] as const) {
+    const key = `${prefix}layers[0].transform.position.keys[1]`;
+    for (const suffix of ["", ".value", ".in.ease", ".spatialIn[0]"])
+      expect(builderSource(composition, key + suffix)).toEqual(firstCall);
+    for (const suffix of [".out", ".out.ease", ".spatialOut[0]"])
+      expect(builderSource(composition, key + suffix)).toEqual(secondCall);
+    expect(
+      builderSource(
+        composition,
+        `${prefix}layers[0].transform.position.keys[2].value`,
+      ),
+    ).toEqual(secondCall);
+  }
+});
+
+it("locates invalid incoming metadata at the first clip after a join", () => {
+  let call;
+  try {
+    comp(options, (c) => {
+      const n = c.add(box());
+      const first = n.x.keys([
+        { frame: 0, value: 0 },
+        { frame: 10, value: 10, in: { ease: 2 } },
+      ]);
+      call = first.value.location;
+      c.timeline(
+        seq(
+          first,
+          n.x.keys([
+            { frame: 0, value: 10, out: { ease: 0.7 } },
+            { frame: 10, value: 20 },
+          ]),
+        ),
+      );
+    });
+    expect.fail("invalid incoming metadata must fail");
+  } catch (error) {
+    expect(error).toBeInstanceOf(BuilderError);
+    expect((error as BuilderError).message).toContain("keys[1].in.ease");
+    expect((error as BuilderError).location).toEqual(call);
   }
 });

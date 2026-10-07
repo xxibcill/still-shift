@@ -1,5 +1,6 @@
 import { behaviourExpressions } from "./behaviours.ts";
 import type { Composition } from "./composition.ts";
+import type { CompositionLayer } from "./layers.ts";
 import {
   jsonEqual,
   parseExpression,
@@ -96,6 +97,24 @@ export function segmentsOverlap(
   for (let i = 0; i < length; i++)
     if (a[i]!.name !== b[i]!.name || a[i]!.index !== b[i]!.index) return false;
   return true;
+}
+
+/** Unwritten reference axes inherit the corresponding expression-stage anchor. */
+export function implicitAnchorDependencies(
+  layer: CompositionLayer,
+  segments: readonly PropertyPathSegment[],
+  writtenAxes: readonly boolean[],
+): PropertyPathSegment[][] {
+  if (
+    layer.constraintReference !== undefined ||
+    segments[0]?.name !== "constraintReference"
+  )
+    return [];
+  return ["x", "y"].flatMap((axis, i) =>
+    !writtenAxes[i] && (!segments[1] || segments[1].name === axis)
+      ? [[{ name: "transform" }, { name: "anchor" }, { name: axis }]]
+      : [],
+  );
 }
 
 export const layerNodeOf = (path: PropertyPath) =>

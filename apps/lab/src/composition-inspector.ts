@@ -17,6 +17,7 @@ import {
   editTemporalHandle,
   trackGraph,
   type KeyTrack,
+  type CompositionScope,
 } from "./composition-keys.ts";
 import { curveGraph, resolvedGraph } from "./composition-graph.ts";
 import {
@@ -40,7 +41,7 @@ const button = (text: string, action: () => void) => {
   return node;
 };
 export type InspectorSelection = {
-  scope: string;
+  scope: CompositionScope;
   layer: string;
   path: JsonPath;
 };
@@ -69,6 +70,7 @@ export function createCompositionInspector(options: {
     label: string,
     change: (document: Composition) => void,
   ) {
+    const restoreFocus = restoreGraphButtonFocus();
     try {
       const proposal = history?.propose(label, change);
       if (!proposal) return true;
@@ -81,7 +83,46 @@ export function createCompositionInspector(options: {
     } catch (error) {
       report(error);
       return false;
+    } finally {
+      restoreFocus();
     }
+  }
+  function restoreControlFocus(
+    control: Element,
+    replacement: () => HTMLElement | SVGElement | undefined,
+  ) {
+    const focused = document.activeElement === control,
+      owner = history;
+    return () => {
+      if (
+        !focused ||
+        history !== owner ||
+        (document.activeElement !== document.body &&
+          document.activeElement !== control)
+      )
+        return;
+      replacement()?.focus();
+    };
+  }
+  function restoreLayerFocus(control: HTMLButtonElement) {
+    const identity = control.dataset.layerControl;
+    return restoreControlFocus(control, () =>
+      Array.from(
+        element("layer-stack").querySelectorAll<HTMLButtonElement>("button"),
+      ).find((candidate) => candidate.dataset.layerControl === identity),
+    );
+  }
+  function restoreGraphButtonFocus() {
+    const control = document.activeElement,
+      area = element("curve-controls");
+    if (!(control instanceof HTMLButtonElement) || !area.contains(control))
+      return () => {};
+    const name = control.textContent;
+    return restoreControlFocus(control, () =>
+      Array.from(area.querySelectorAll<HTMLButtonElement>("button")).find(
+        (candidate) => candidate.textContent === name,
+      ),
+    );
   }
   function viewDocument(document = history!.document) {
     const draft = structuredClone(document);
@@ -98,7 +139,7 @@ export function createCompositionInspector(options: {
     if (!history) return;
     const document = history.document;
     for (const entry of [
-      { scope: "root", value: document, path: [] as JsonPath },
+      { scope: null, value: document, path: [] as JsonPath },
       ...(document.precomps ?? []).map((value, index) => ({
         scope: value.id,
         value,
@@ -107,7 +148,7 @@ export function createCompositionInspector(options: {
     ]) {
       const title = documentNode(
         "p",
-        `${entry.scope} · ${entry.value.fps ?? document.fps} fps${entry.scope === "root" ? "" : " · shared definition; instance fps shown in graph"}`,
+        `${entry.scope === null ? "root" : `precomp ${entry.scope}`} · ${entry.value.fps ?? document.fps} fps${entry.scope === null ? "" : " · shared definition; instance fps shown in graph"}`,
       );
       title.className = "scope-label";
       stack.append(title);
@@ -119,13 +160,16 @@ export function createCompositionInspector(options: {
         row.className = "layer-row";
         row.dataset.layer = layer.id;
         const pick = button(layer.name ?? layer.id, () => {
+          const restoreFocus = restoreLayerFocus(pick);
           selected = { scope: entry.scope, layer: layer.id, path };
           track = tracks.find(
             (t) => t.scope === entry.scope && t.owner === layer.id,
           );
           options.selected(selected);
           refresh(history!);
+          restoreFocus();
         });
+        pick.dataset.layerControl = JSON.stringify([path, "select"]);
         pick.setAttribute(
           "aria-pressed",
           String(
@@ -164,7 +208,8 @@ export function createCompositionInspector(options: {
                 ? "Unsolo"
                 : "Solo",
             () => {
-              const previous = visibility.get(key);
+              const restoreFocus = restoreLayerFocus(toggle),
+                previous = visibility.get(key);
               visibility.set(key, { ...visibility.get(key), [mode]: !state });
               void options.view(viewDocument()).then((ok) => {
                 if (ok) {
@@ -176,9 +221,11 @@ export function createCompositionInspector(options: {
                   else visibility.delete(key);
                   layerRows();
                 }
+                restoreFocus();
               });
             },
           );
+          toggle.dataset.layerControl = JSON.stringify([path, mode]);
           toggle.setAttribute(
             "aria-pressed",
             String(mode === "solo" ? state : !state),
@@ -192,16 +239,16 @@ export function createCompositionInspector(options: {
   function keyLanes() {
     lane.replaceChildren();
     if (!history) return;
-    const scope = selected?.scope ?? "root",
+    const scope = selected?.scope ?? null,
       owner = selected?.layer;
     const scopeDocument =
-      scope === "root"
+      scope === null
         ? history.document
         : history.document.precomps?.find((p) => p.id === scope);
     for (const marker of scopeDocument?.markers ?? [])
       lane.append(
         button(`Marker ${marker.id} · ${marker.frame}`, () => {
-          if (scope === "root") options.seek(marker.frame);
+          if (scope === null) options.seek(marker.frame);
           else
             message.textContent =
               "Nested marker uses its composition clock; choose an instance to seek root time.";
@@ -238,7 +285,7 @@ export function createCompositionInspector(options: {
       row.append(strip);
       lane.append(row);
     }
-    if (history.document.camera2d && scope === "root")
+    if (history.document.camera2d && scope === null)
       lane.append(
         documentNode(
           "p",
@@ -255,7 +302,12 @@ export function createCompositionInspector(options: {
   }
   function graph(index = keyIndex) {
     const area = element("curve-controls"),
-      chart = element("curve-graph");
+      chart = element("curve-graph"),
+      code = element<HTMLTextAreaElement>("edited-keys"),
+      copy = element<HTMLButtonElement>("copy-keys");
+    code.value = "";
+    copy.disabled = true;
+    copy.onclick = null;
     area.replaceChildren();
     chart.replaceChildren();
     element("resolved-graph").replaceChildren();
@@ -280,6 +332,16 @@ export function createCompositionInspector(options: {
     element("curve-title").textContent = current.label;
     element("curve-clock").textContent =
       `Authored local key frames · ${current.fps} fps · speed in units/frame${current.spatial ? " · spatial path" : ""}. Resolved expressions, constraints and motion additions are visible in the preview.`;
+    code.value = editedKeysCode(current);
+    copy.disabled = false;
+    copy.onclick = () => {
+      void navigator.clipboard
+        .writeText(code.value)
+        .then(() => {
+          message.textContent = "Edited keys copied as code.";
+        })
+        .catch(report);
+    };
     const points = trackGraph(current),
       all = points.flatMap((p) => [...p.value, ...p.speed]);
     if (!all.length) {
@@ -304,8 +366,11 @@ export function createCompositionInspector(options: {
       );
       instance.value = rootPath!;
       instance.onchange = () => {
+        const focused = document.activeElement === instance;
         rootPath = instance.value;
         graph();
+        if (focused)
+          resolved.querySelector<HTMLSelectElement>("select")?.focus();
       };
       resolved.append(instance);
       try {
@@ -337,7 +402,11 @@ export function createCompositionInspector(options: {
       choose.add(new Option(`Key ${i + 1} · frame ${key.frame}`, String(i))),
     );
     choose.value = String(index);
-    choose.onchange = () => graph(Number(choose.value));
+    choose.onchange = () => {
+      const focused = document.activeElement === choose;
+      graph(Number(choose.value));
+      if (focused) area.querySelector<HTMLSelectElement>("#edit-key")?.focus();
+    };
     area.append(choose);
     const key = current.keys[index]!;
     if (current.kind === "camera")
@@ -445,6 +514,7 @@ export function createCompositionInspector(options: {
             fill: "#e6c989",
             tabindex: 0,
             role: "button",
+            "data-bezier-handle": i,
             "aria-label": `Bézier ${i ? "end" : "start"} handle; arrow keys move x, Shift arrow keys move y`,
           }),
         );
@@ -469,10 +539,21 @@ export function createCompositionInspector(options: {
             .map((v) => Number(v.toFixed(4)))
             .join(",");
         }
-        function apply() {
-          void submit("Drag segment Bézier handle", (d) =>
+        async function apply(focusedHandle?: number) {
+          const restoreFocus =
+            focusedHandle === undefined
+              ? () => {}
+              : restoreControlFocus(
+                  handles[focusedHandle]!,
+                  () =>
+                    area.querySelector<SVGElement>(
+                      `[data-bezier-handle="${focusedHandle}"]`,
+                    ) ?? undefined,
+                );
+          const accepted = await submit("Drag segment Bézier handle", (d) =>
             editSegmentBezier(d, current, index, values),
           );
+          if (accepted) restoreFocus();
         }
         handles.forEach((handle, i) => {
           let dragging = false;
@@ -510,7 +591,7 @@ export function createCompositionInspector(options: {
           handle.addEventListener("pointerup", () => {
             if (dragging && !fieldset.disabled) {
               dragging = false;
-              apply();
+              void apply();
             }
           });
           handle.addEventListener("pointercancel", () => {
@@ -537,7 +618,7 @@ export function createCompositionInspector(options: {
               Math.min(keyboard.shiftKey ? 3 : 1, values[axis]! + delta),
             );
             redraw();
-            apply();
+            void apply(i);
           });
         });
         redraw();
@@ -567,16 +648,6 @@ export function createCompositionInspector(options: {
           }),
         );
       }
-    const code = element<HTMLTextAreaElement>("edited-keys");
-    code.value = editedKeysCode(current);
-    element<HTMLButtonElement>("copy-keys").onclick = () => {
-      void navigator.clipboard
-        .writeText(code.value)
-        .then(() => {
-          message.textContent = "Edited keys copied as code.";
-        })
-        .catch(report);
-    };
   }
   function refresh(next: CompositionDocument) {
     history = next;

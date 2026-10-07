@@ -4,6 +4,7 @@ import { compileShapes } from "../shapes/compile.ts";
 import { sampleEffects, clampEffects, effectBounds } from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
+  implicitAnchorDependencies,
   SIZED_LAYER_TYPES,
   type Composition,
   type CompositionLayer,
@@ -87,7 +88,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-29";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-34";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -326,19 +327,27 @@ function baseState(
 
 class Evaluation {
   readonly root: Context;
+  readonly compiled: CompiledComposition;
+  readonly time: number;
+  readonly options: EvaluationOptions;
+  private readonly session: Session;
   private count = 0;
   private readonly cameras = new Map<number, ReturnType<typeof cameraMatrix>>();
   constructor(
-    readonly compiled: CompiledComposition,
-    readonly time: number,
-    readonly options: EvaluationOptions,
-    private readonly session: Session = {
+    compiled: CompiledComposition,
+    time: number,
+    options: EvaluationOptions,
+    session: Session = {
       history: new Map(),
       signals: new Map(),
       shapes: new ShapeGeometryBudget({ frame: time }),
       steps: 0,
     },
   ) {
+    this.compiled = compiled;
+    this.time = time;
+    this.options = options;
+    this.session = session;
     this.root = context(compiled, compiled.comp, time, compiled.comp.fps);
   }
 
@@ -461,23 +470,18 @@ class Evaluation {
       });
     const scope = this.compiled.scopes.get(host.comp)!;
     const remappedTime = yield* this.clock(ctx, host);
-    const sourceTime = loopedPrecompTime(remappedTime, scope.frameCount, host, {
-      node: host.id,
-      path: `${this.bindings(ctx, host.id)}.loop`,
-      frame: this.time,
-    });
     const route = [...ctx.route, host.id];
+    const sourceTime =
+      scopeTimeOverride(this.options.scopeTimes, route.join("/")) ??
+      loopedPrecompTime(remappedTime, scope.frameCount, host, {
+        node: host.id,
+        path: `${this.bindings(ctx, host.id)}.loop`,
+        frame: this.time,
+      });
     const next = context(
       this.compiled,
       scope,
-      Math.max(
-        0,
-        Math.min(
-          scope.frameCount - 1,
-          scopeTimeOverride(this.options.scopeTimes, route.join("/")) ??
-            sourceTime,
-        ),
-      ),
+      Math.max(0, Math.min(scope.frameCount - 1, sourceTime)),
       scope.fps ?? this.compiled.comp.fps,
       route,
     );
@@ -792,12 +796,19 @@ class Evaluation {
       yield* this.motion(ctx, fresh);
       return copy(readProperty(fresh, segments));
     }
-    if (!stage.sealed)
+    if (!stage.sealed) {
+      for (const anchor of implicitAnchorDependencies(
+        layer,
+        segments,
+        this.writesReference(ctx, stage.state),
+      ))
+        yield* this.readStage(ctx, layer, anchor);
       for (const binding of this.compiled.expressions.get(
         this.bindings(ctx, layer.id),
       ) ?? [])
         if (!binding.clock && overlaps(binding.segments, segments))
           yield* this.applied(ctx, layer, binding);
+    }
     return copy(readProperty(stage.sealed ?? stage.state, segments));
   }
 

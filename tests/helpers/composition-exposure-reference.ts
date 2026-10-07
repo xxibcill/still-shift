@@ -315,6 +315,125 @@ export function checkReversedContentCutFrames() {
   return results;
 }
 
+/** An unreachable temporary state must paint exactly like its constant state. */
+export function checkPosterizedStateCutFrames() {
+  const images = new Map(
+    ["#d87047", "#479fa4"].map((color, index) => {
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = 16;
+      const ctx = canvas.getContext("2d")!;
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, 16, 16);
+      return [`image${index}`, canvas] as const;
+    }),
+  );
+  const results = [];
+  for (const backend of ["canvas2d", "webgl2"] as const)
+    for (const channel of ["state", "stateFrom"] as const)
+      for (const reverse of [false, true])
+        for (const indexed of [false, true]) {
+          const image: Extract<CompositionLayer, { type: "image" }> = {
+            id: "image",
+            type: "image",
+            size: [16, 16],
+            sources: [{ asset: "image0" }, { asset: "image1" }],
+            transform: { anchor: [0, 0], position: [4, 4] },
+            posterizeFps: 15,
+            motionBlur: false,
+            state: channel === "state" ? 0 : 1,
+            ...(channel === "stateFrom" ? { stateFrom: 0, stateMix: 0.5 } : {}),
+            ...(reverse ? { startFrame: 4, stretch: -1 } : {}),
+            ...(indexed ? { sampleTimes: [0, 1, 2] } : {}),
+          };
+          image[channel] = {
+            keys: [
+              { frame: 0, value: 0 },
+              { frame: 1, value: 1 },
+              { frame: 2, value: 0 },
+            ],
+          };
+          const comp: Composition = {
+            schemaVersion: "composition-1",
+            id: "posterized-cut",
+            width: 160,
+            height: 80,
+            fps: 30,
+            frameCount: 12,
+            background: "#26313b",
+            assets: [...images.keys()].map((id) => ({
+              id,
+              type: "image",
+              width: 16,
+              height: 16,
+              path: `${id}.png`,
+              sha256: `sha256:${"0".repeat(64)}`,
+            })),
+            motionBlur: {
+              enabled: true,
+              shutterAngle: 360,
+              shutterPhase: 0,
+              samples: 4,
+            },
+            layers: [
+              image,
+              {
+                id: "moving",
+                type: "solid",
+                size: [10, 10],
+                color: "#ffffff",
+                motionBlur: true,
+                transform: {
+                  anchor: [0, 0],
+                  position: {
+                    x: {
+                      keys: [
+                        { frame: 0, value: 10 },
+                        { frame: 11, value: 120, interpolation: "linear" },
+                      ],
+                    },
+                    y: 40,
+                  },
+                },
+              },
+            ],
+          };
+          const constant = structuredClone(comp);
+          (constant.layers[0] as typeof image)[channel] = 0;
+          const resources = { images, fonts: new Map() };
+          const previews = [comp, constant].map((doc) =>
+            createCompositionPreview(
+              document.createElement("canvas"),
+              doc,
+              resources,
+              { backend },
+            ),
+          );
+          const frames = [2, 1, 3, 2, 10, 4, 2];
+          let maxDelta = 0;
+          try {
+            for (const frame of frames) {
+              previews.forEach((preview) => preview.renderFrame(frame));
+              const [actual, expected] = previews.map((preview) =>
+                preview.readPixels(),
+              );
+              for (let i = 0; i < actual!.length; i++)
+                maxDelta = Math.max(
+                  maxDelta,
+                  Math.abs(actual![i]! - expected![i]!),
+                );
+            }
+          } finally {
+            previews.forEach((preview) => preview.dispose());
+          }
+          results.push({
+            id: `exposure/posterized-cut/${backend}/${channel}/${reverse ? "reversed" : "forward"}/${indexed ? "indexed" : "ordinary"}`,
+            frames: frames.length,
+            maxDelta,
+          });
+        }
+  return results;
+}
+
 export function measureExposureFrames() {
   const results = [];
   for (const backend of ["canvas2d", "webgl2"] as const)

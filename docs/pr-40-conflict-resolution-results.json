@@ -1,0 +1,264 @@
+{
+  "date": "2026-10-07",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/40",
+  "originalHead": "48fe4ccccbc998d3107e853f9f699c7746ba015e",
+  "integratedBase": "d3093bd30a66671d78465c9c5702bccef74430c5",
+  "headBranch": "codex/composition-ce7",
+  "baseBranch": "codex/composition-ce5",
+  "repairBranch": "codex/pr40-conflict-repair",
+  "status": "verified",
+  "resolution": {
+    "conflictedFiles": [
+      "docs/dev-log.md",
+      "packages/renderer-core/src/composition/render/version.ts",
+      "packages/renderer-core/src/composition/render/webgl2.ts"
+    ],
+    "developmentLog": "Retain all 145 original dated entries exactly once; preserve both Current state histories and sort Entries by date.",
+    "versions": {
+      "evaluator": "composition-evaluator-32",
+      "canvas": "composition-canvas-1.24.4",
+      "webgl": "composition-webgl2-0.38.4"
+    },
+    "behavior": "Keep CE7 local clocks, loops, adaptive and cut-safe exposure, both PR #40 review fixes, plus upstream world-coordinate follow-path, expression dependencies, normalized AST bounds, baking/lint, inspector and soundtrack repairs.",
+    "scripts": "All scripts and all 56 mandatory test commands from both parents retained.",
+    "assets": "Every fixture and visual asset matches one parent byte-for-byte; no frozen reference regenerated.",
+    "necessaryRepair": {
+      "file": "packages/renderer-core/src/cinematic-scene.ts",
+      "reason": "Node strip-only loading of the externalized passage evaluator reaches shape nib -> prepared-scene -> cinematic error classes. Five Lab integration suites fail on constructor parameter properties.",
+      "change": "Declare both readonly report fields explicitly and assign immediately after super(), preserving reports, diagnostics and rendering arithmetic.",
+      "regression": "Native bare-Node Vite loader and all 29 previously blocked integration tests plus 6 existing cinematic diagnostic tests pass.",
+      "failedLog": "benchmarks/results/pr40-conflict-20261007/integration.log",
+      "passingLog": "benchmarks/results/pr40-conflict-20261007/loader-regressions.log"
+    }
+  },
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "dependencies": "Worktree-local offline frozen pnpm install; worktree-local depth venv rebuilt to local sources; separate copied pinned soundtrack runtime; isolated Vite optimizer/config paths and UV cache.",
+    "soundtrackPython": "/private/tmp/pr40-soundtrack-runtime-20261007/bin/python",
+    "soundtrackRuntime": {
+      "python": "3.12.11",
+      "dawdreamer": "0.9.0",
+      "numpy": "2.3.3",
+      "scipy": "1.16.2"
+    }
+  },
+  "fingerprint": {
+    "algorithm": "sha256 of sorted tracked path, NUL and file SHA256; excluding prose docs, AGENTS.md, ROADMAP.md and README.md",
+    "files": 1464,
+    "sha256": "9d786fe85e47bed5c18a8af9d39b481b0cfe8cb974b35d5eb2911501216d96fd",
+    "verifiedAfterAllAcceptance": true
+  },
+  "verification": {
+    "schema": "passed",
+    "boundaries": "passed",
+    "format": "Passed final repository TypeScript/prose/JSON formatting after record updates; Python format passed separately.",
+    "lint": "passed",
+    "build": "passed",
+    "focusedUnit": {
+      "status": "passed",
+      "files": 7,
+      "tests": 151,
+      "log": "benchmarks/results/pr40-conflict-20261007/focused-unit.log"
+    },
+    "runtimeAndBrowser": "All required focused conflict-repair acceptance passed; 14 browser groups and source fingerprint verified.",
+    "fullCheck": "No full pnpm check on combined tree claimed; historical parent gates remain tied to their original snapshots.",
+    "preflight": {
+      "toolchain": "passed including actual Chromium startup",
+      "python": "isolated pinned depth and soundtrack imports passed",
+      "vite": "native Vite config loader passed after repair; bare and tsx modes verified",
+      "unsupportedProbe": "Initial bare config exposed the real loader issue; initial unrelated soundfile import removed because the pinned soundtrack worker requires NumPy/SciPy/DawDreamer."
+    },
+    "fast": {
+      "command": "pnpm check:fast",
+      "status": "passed on final code",
+      "unitTests": 1907,
+      "files": 156,
+      "log": "benchmarks/results/pr40-conflict-20261007/fast-final.log"
+    },
+    "runtime": {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "tests": 46,
+      "files": 9,
+      "log": "benchmarks/results/pr40-conflict-20261007/runtime.log",
+      "note": "Cinematic compatibility repair does not touch runtime lock/process/cache code or fixtures."
+    },
+    "integration": {
+      "command": "pnpm test:integration",
+      "status": "passed on final code",
+      "tests": 224,
+      "files": 45,
+      "log": "benchmarks/results/pr40-conflict-20261007/integration-final.log",
+      "initialFailure": {
+        "testsPassed": 195,
+        "skippedFromFailedSetup": 29,
+        "failedSuites": 5,
+        "cause": "Externalized shape evaluator reaches cinematic constructor parameter properties; repaired with explicit report fields.",
+        "log": "benchmarks/results/pr40-conflict-20261007/integration.log"
+      }
+    },
+    "depth": {
+      "command": "pnpm test:depth",
+      "status": "passed",
+      "tests": 14,
+      "log": "benchmarks/results/pr40-conflict-20261007/depth.log"
+    },
+    "pythonLint": "passed",
+    "pythonFormat": "passed",
+    "nativeCE7": {
+      "status": "passed",
+      "frames": 96,
+      "reverseFrames": 96,
+      "randomSeeksPerFixture": 11,
+      "backendMaximumChannelDelta": 0,
+      "analyticMaximumChannelDelta": 1,
+      "hardwareComparisons": 12,
+      "hardwareMaximumChannelDelta": 1,
+      "storedBaselines": "exact",
+      "exports": "Both fixtures/backends repeated MP4, independent preview MP4 and raw/PNG bytes are identical; both legacy 60-frame exposure/indexed MP4 checks pass."
+    },
+    "browserGroups": [
+      {
+        "name": "composition-evaluator",
+        "command": ["pnpm", "test:browser:composition-evaluator"],
+        "exitCode": 0,
+        "seconds": 1.8,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-evaluator.log",
+        "logSha256": "65b2d24b870d044bbec4baaa6dee1bfbdd1552074e1d8a7eb16db15fb8553554"
+      },
+      {
+        "name": "composition-expressions",
+        "command": ["pnpm", "test:browser:composition-expressions"],
+        "exitCode": 0,
+        "seconds": 12.77,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-expressions.log",
+        "logSha256": "83a8c4211cb6ae2aadad95f40c01771509220c56731a9d3e99cb1f366bf9ea61"
+      },
+      {
+        "name": "composition-quality",
+        "command": ["pnpm", "test:browser:composition-quality"],
+        "exitCode": 0,
+        "seconds": 8.84,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-quality.log",
+        "logSha256": "22499d9767955f60b8d2ddafc78e22355a3062857c488a18368211cc0af3bb6d"
+      },
+      {
+        "name": "composition-exposure",
+        "command": ["pnpm", "test:browser:composition-exposure"],
+        "exitCode": 0,
+        "seconds": 20.83,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-exposure.log",
+        "logSha256": "5f0cc5b15941d9dab3e4c5e990d13ac7e4be8ad9378cdce0f0db4ff318c4f6c6"
+      },
+      {
+        "name": "composition-shapes",
+        "command": ["pnpm", "test:browser:composition-shapes"],
+        "exitCode": 0,
+        "seconds": 15.74,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-shapes.log",
+        "logSha256": "8c83243983f0bf90a83c6ab7160767ebed5539eb629d01eb7deaa9e8d2904d4a"
+      },
+      {
+        "name": "composition-native-passage",
+        "command": ["pnpm", "test:browser:composition-native-passage"],
+        "exitCode": 0,
+        "seconds": 53.63,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-native-passage.log",
+        "logSha256": "e65918bc9af7781e9035ebfcd6d68c4c8796a6a6ace693b32afe3b8bb390e827"
+      },
+      {
+        "name": "composition-native-passage:webgl",
+        "command": ["pnpm", "test:browser:composition-native-passage:webgl"],
+        "exitCode": 0,
+        "seconds": 102.43,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-native-passage-webgl.log",
+        "logSha256": "67b780fbfea0287db1d6d898edf2eab8b4ea72672ec544232f2b67406978286d"
+      },
+      {
+        "name": "composition-program",
+        "command": ["pnpm", "test:browser:composition-program"],
+        "exitCode": 0,
+        "seconds": 12.22,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-program.log",
+        "logSha256": "6dff6972d15fb0422a342fad5f82ec4810f4ee5ff9839f8a0dbda0feea9c7a19"
+      },
+      {
+        "name": "composition-inspector",
+        "command": ["pnpm", "test:browser:composition-inspector"],
+        "exitCode": 0,
+        "seconds": 15.56,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-inspector.log",
+        "logSha256": "f21683e828064c09382784e43f017266ea122446d3da6130c83c685af01ada4f"
+      },
+      {
+        "name": "soundtrack",
+        "command": ["pnpm", "test:browser:soundtrack"],
+        "exitCode": 0,
+        "seconds": 18.01,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-soundtrack.log",
+        "logSha256": "5dbc7b12b9e0b399299e0e1f8021b75120ca47de09a700666dd3b522351299c3"
+      },
+      {
+        "name": "composition-session",
+        "command": ["pnpm", "test:browser:composition-session"],
+        "exitCode": 0,
+        "seconds": 1.8,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-session.log",
+        "logSha256": "2049c001a936d131188bfe3ae71d13ae3af9c45a419e783d05c7bd3fd5b0e5ff"
+      },
+      {
+        "name": "lab-session",
+        "command": ["pnpm", "test:browser:lab-session"],
+        "exitCode": 0,
+        "seconds": 6.07,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-lab-session.log",
+        "logSha256": "358ae6bbd326395fa008f903248a32698b766e7207787f366eacaefee8a0d1f3"
+      },
+      {
+        "name": "composition-provider-typography",
+        "command": ["pnpm", "test:browser:composition-provider-typography"],
+        "exitCode": 0,
+        "seconds": 8.89,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-provider-typography.log",
+        "logSha256": "1f14194e30890f816374ac37f253f55f0018be835b4f9d8b53d101a63b4efdd2"
+      },
+      {
+        "name": "composition-baselines",
+        "command": ["pnpm", "test:browser:composition-baselines"],
+        "exitCode": 0,
+        "seconds": 291.8,
+        "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-baselines.log",
+        "logSha256": "c43537afbf99c4104df99ebec56f3dc76f8af46c518453b3fc9c36f1696f8ebf"
+      }
+    ],
+    "frozenBaselines": {
+      "command": "pnpm test:browser:composition-baselines",
+      "status": "passed",
+      "items": 176,
+      "frames": 36061,
+      "comparison": "every frame hash exact; no regeneration",
+      "seconds": 285.38,
+      "log": "benchmarks/results/pr40-conflict-20261007/browser-composition-baselines.log"
+    },
+    "notRun": [
+      "Complete pnpm check on the combined tree",
+      "Serial sample-cost profiling",
+      "Full strict family timing matrices"
+    ],
+    "scope": "Conflict integration with existing focused commands. No focused subset is reported as a complete pnpm check, and historical full gates stay tied to their recorded snapshots. Existing frozen references, timing/pixel assertions and repeat-export requirements are preserved.",
+    "finalFormatLog": "benchmarks/results/pr40-conflict-20261007/final-format-check.log"
+  },
+  "githubActions": "disabled",
+  "delivery": "Verified merge prepared for normal fast-forward push to the existing codex/composition-ce7 branch. No force push, PR retarget, merge/close or owner-checkout changes.",
+  "upstreamRefresh": {
+    "head": "48fe4ccccbc998d3107e853f9f699c7746ba015e",
+    "base": "d3093bd30a66671d78465c9c5702bccef74430c5",
+    "status": "Both live branch tips unchanged after acceptance; PR remains open on its original head/base; Actions disabled."
+  }
+}

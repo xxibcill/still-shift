@@ -123,3 +123,12 @@ The sound-only action-range proof and its delivery slice contain 77 video frames
 After adding optional ElevenLabs generation, `pnpm check:fast` passed with 456 unit tests. The affected integration/runtime suites passed 58 tests across generation, audio, Lab, portable workspace, cache and publication. An additional CLI success-path integration test verifies the public generation command with a simulated provider. No live paid API call was made because this server had no `ELEVENLABS_API_KEY` configured.
 
 The subsequent [narration timing importer](narration-timing.md) adds a new 36-second [parcel story](../assets/parcel-story/README.md) with a real ElevenLabs door-knock asset. That asset was generated through the connected service; it does not establish live verification of the app's API-key route. The new story uses measured voice timing to anchor both animation and SFX. Current checks pass 466 unit tests and 62 affected integration/runtime tests.
+
+## Optional programmable soundtrack (CE16)
+
+For named tracks/buses, clip automation, built-in filtering and explicit
+narration-aware BGM ducking, author an opt-in `soundtrack-project-1` file. The
+[command and timeline guide](./soundtrack-project.md) covers setup, shared edits,
+rendered-mix preview, passage export and portable packages. Old `passage-audio-1`
+plans keep the scheduling and FFmpeg behavior described above. No project is
+migrated on load or export.

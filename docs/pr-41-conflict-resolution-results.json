@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-07",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/41",
+  "originalHead": "e5f49929fa140fb4b2776ed22d83ebe41d9f7f4b",
+  "integratedBase": "fb785772634ff13223b5f8c88ff091011149323a",
+  "headBranch": "codex/composition-ce6p-compatible",
+  "baseBranch": "main",
+  "status": "verified for conflict-resolution merge and normal push",
+  "resolution": {
+    "conflictedFiles": [
+      "docs/dev-log.md",
+      "packages/renderer-core/src/composition/render/webgl2.ts"
+    ],
+    "developmentLog": "All 169 unique dated entries from both parents retained exactly once, sorted by date; new entry and Current state updated.",
+    "webglRendererVersion": "composition-webgl2-0.42.1",
+    "behavior": "Keep the PR exposure fusion/bounds, scoped echo bitmap rounding and disjoint particle GPU paint; integrate main clock/cut/baking fixes and all upstream code.",
+    "codePreservation": "All tracked code, config and assets match a parent byte-for-byte except webgl2.ts, which retains the PR implementation with a fresh combined cache version.",
+    "assets": "All 431 tracked fixtures and visual reference files match main byte-for-byte; no fixture/reference regenerated."
+  },
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "dependencies": "Offline frozen worktree-local pnpm install; worktree-local depth venv and cloned isolated UV cache. Worktree-local Vite optimizer/config caches; exposure runners use unique temporary caches."
+  },
+  "fingerprint": {
+    "algorithm": "SHA256 over sorted tracked non-doc paths, NUL, binary SHA256 of each file; excludes AGENTS.md, README.md, ROADMAP.md",
+    "files": 1480,
+    "sha256": "cbc10cf346964b71111571af9004d5b2c3bc5f1f4b86cd6f23e3312f59365675"
+  },
+  "verification": {
+    "checks": [
+      {
+        "command": "pnpm toolchain:check",
+        "exitCode": 0,
+        "log": "/private/tmp/pr41-conflict-preflight.log",
+        "logSha256": "3f81e977624026b7364c1dc166912784c4aa8311cc368d900d6e99633a3e0846"
+      },
+      {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "log": "/private/tmp/pr41-conflict-fast-final.log",
+        "logSha256": "bf4c4af1a1176fcb89f3aba0055b6b7cda3e1368d17a8c780bd949d01a1edb1e"
+      },
+      {
+        "command": "pnpm exec vitest run tests/integration/composition-*.test.ts tests/integration/passage-compositions.test.ts --maxWorkers=2 --no-file-parallelism",
+        "exitCode": 0,
+        "log": "/private/tmp/pr41-conflict-integration.log",
+        "logSha256": "dc27d7c9eb07398e489dc2485a1224eb7c6c5f34f0cf733e309352d7cc141457"
+      },
+      {
+        "command": "pnpm test:browser:composition-webgl",
+        "exitCode": 0,
+        "log": "/private/tmp/pr41-conflict-webgl.log",
+        "logSha256": "34d3c946155aa3df3df016654091f1c8e8f5c6344aad368b297bd2d061eb139f"
+      },
+      {
+        "command": "pnpm test:browser:composition-exposure",
+        "exitCode": 0,
+        "log": "/private/tmp/pr41-conflict-exposure.log",
+        "logSha256": "4f7edcebc3aaf7257c9ddf931639f9640e7a364f653c94892103bf149ecc8ea9"
+      },
+      {
+        "command": "pnpm exec tsx tests/browser/composition-webgl-exposure.ts --hardware",
+        "exitCode": 0,
+        "log": "/private/tmp/pr41-conflict-hardware-exposure.log",
+        "logSha256": "ef1c071a9a5f5ef8bd47798b5c8ba761038ef2e5d28647b5e5dea269fcdcf839"
+      },
+      {
+        "command": "pnpm test:browser:composition-webgl-export",
+        "exitCode": 0,
+        "log": "/private/tmp/pr41-conflict-webgl-export.log",
+        "logSha256": "9d45fd961bf30017b84fdfec5891963d735e68c8278a4d4957b4ca24ddaa57d4"
+      }
+    ],
+    "unitTests": 1936,
+    "unitFiles": 157,
+    "integrationTests": 66,
+    "integrationFiles": 11,
+    "disjointPaints": {
+      "exactCases": 24,
+      "independentClips": 3,
+      "maxDelta": 0
+    },
+    "gpuExposure": {
+      "casesPerProfile": 852,
+      "profiles": ["pinned", "hardware"],
+      "fusion": 201,
+      "bounded": 462,
+      "fractional": 189
+    },
+    "nativeExposure": "Both backends: forward/reversed and ordinary/indexed posterized-state cases pass exact pixels; time-control/adaptive fixtures pass 96 forward and 96 reverse frames plus random seeks; four backend/fixture repeated/independent-preview/raw-PNG comparisons pass; 12 hardware comparisons pass; CE7 stored baselines exact. Legacy exposure and indexed 60-frame MP4 pairs byte-identical.",
+    "webglExports": "echo 60, generators 60, exposure 60, providers 24 frames; CLI, repeated MP4, raw/PNG, encoded preview, Lab switching and overwrite protection pass.",
+    "fullCheck": "No new full pnpm check claimed on combined tree. Historical parent gates remain bound to their original snapshots.",
+    "performance": "No timing profiling or strict family audit run. CE6-P remains owner-paused/deferred and incomplete; no timing acceptance or threshold changes.",
+    "initialFormattingFailure": {
+      "command": "pnpm check:fast",
+      "exitCode": 1,
+      "cause": "Concatenated development log required Prettier formatting; corrected before final fast gate.",
+      "log": "/private/tmp/pr41-conflict-fast.log"
+    },
+    "gitHubActions": {
+      "enabled": false,
+      "workflowChanges": false
+    }
+  }
+}
