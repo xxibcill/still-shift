@@ -47,8 +47,14 @@ export function renderCompositionExposure<S extends Surface>(
   options: RenderGraphOptions = {},
   cache?: CompositionFrameCache,
 ) {
+  const sampleFrames = compositionExposureFrames(comp, frame, options);
   const graphs = function* () {
-    for (const tree of evaluateCompositionExposure(comp, frame, options))
+    for (const tree of evaluateCompositionExposure(
+      comp,
+      frame,
+      options,
+      sampleFrames,
+    ))
       yield {
         graph: buildRenderGraph(comp, tree, options),
         diagnostics: tree.diagnostics,
@@ -95,7 +101,7 @@ export function renderCompositionExposure<S extends Surface>(
     cache.root = undefined;
     cache.key = undefined;
   }
-  const samples = compositionExposureFrames(comp, frame).length;
+  const samples = sampleFrames.length;
   const rendered = graphs();
   const diagnostics: PassageDiagnostic[] = [];
   const culled = new Set<string>();

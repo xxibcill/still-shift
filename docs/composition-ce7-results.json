@@ -1,0 +1,404 @@
+{
+  "milestone": "CE7",
+  "status": "complete",
+  "branch": "codex/composition-ce7",
+  "base": "edb958a",
+  "slices": [
+    {
+      "name": "Layer-local clocks and precomp loops",
+      "status": "checkpoint",
+      "changes": [
+        "Static bounded posterizeFps/holdFrame control local keyed/content clocks before sample-table lookup; visibility and documented root-bound inputs retain their clocks.",
+        "Signed cycle/pingpong and finite counts wrap final source remaps before clamping; reused instances remain independent; excessive modulo clocks retain root-frame/route diagnostics.",
+        "Existing single hold remap key freezes keyed source content; visual frameBlending declaration and sourceFramePair kernel are reserved for CE13 decode/render integration."
+      ],
+      "verification": {
+        "focusedUnitTests": 250,
+        "build": "passed",
+        "changedFileLint": "passed",
+        "generatedSchema": "passed",
+        "log": "benchmarks/results/composition-ce7-verification/ce7-clock-focused.log"
+      },
+      "limitations": [
+        "Root-global expressions/drivers/periodic motion and scope constraints retain documented clocks; no complete AE procedural posterization parity claimed.",
+        "Exposure-cut integration, adaptive blur, full native acceptance, serial costs and full pnpm check remain pending.",
+        "Video/sequence rendering remains unavailable until CE13."
+      ]
+    },
+    {
+      "name": "Adaptive exposure and controlled clock cuts",
+      "status": "checkpoint",
+      "changes": [
+        "Optional deterministic velocity-based reduction for provable static 2D translations; fixed sampling retains operation order. Complex inputs and key/source edges use the configured cap.",
+        "Renderer plans one sample array for both graph passes and accumulation. Static pixels sample the phased shutter center.",
+        "Held/stepped/reversed state and effect cuts map into owning scope time; cycle raw clocks stay on the base cycle before child cuts, finite terminal holds remain fixed.",
+        "Explicit scope-clock lookup ignores inherited object properties; constructor/toString instance regressions pass."
+      ],
+      "verification": {
+        "focusedUnitTests": 266,
+        "files": 7,
+        "build": "passed",
+        "changedFileLint": "passed",
+        "generatedSchema": "passed",
+        "log": "benchmarks/results/composition-ce7-verification/ce7-exposure-focused.log"
+      },
+      "initialFindings": [
+        "Draft short-motion test used unsupported fractional keyframes; equivalent integer keys with stretch now exercise a short segment.",
+        "Unused destructuring variables removed; metadata stays opaque during eligibility inspection."
+      ],
+      "remaining": [
+        "Native browser oracle/baselines and seeking",
+        "Actual hardware preview and repeated exports",
+        "Serial 1080p sample-cost measurement",
+        "Complete local pnpm check/frozen CE0 and PR"
+      ]
+    },
+    {
+      "name": "Native time-control acceptance and serial exposure costs",
+      "status": "checkpoint",
+      "verification": {
+        "fixtureFrames": 96,
+        "forwardBackendHashes": 192,
+        "reverseBackendFrames": 192,
+        "randomBackendSeeks": 44,
+        "analyticOracleMaxDelta": 1,
+        "backendMaxDelta": 0,
+        "hardwareComparisons": 12,
+        "hardwareMaxDelta": 1,
+        "independentPreviewExports": "both fixtures and both backends byte-identical",
+        "repeatedRawPngExports": "both fixtures and both backends byte-identical",
+        "oldExposureOracles": "all exact",
+        "oldExposureExports": "both 60-frame fixtures byte-identical",
+        "baseline": "tests/visual/composition-time-controls/darwin-arm64.json",
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "nativeLog": "benchmarks/results/composition-ce7-verification/ce7-native-profile.log",
+        "build": "passed",
+        "changedFileLint": "passed",
+        "generatedSchema": "passed",
+        "boundaries": "passed"
+      },
+      "initialFinding": "First new oracle assertion rejected a cached stationary WebGL graph reporting zero new draws. The existing stationary-cache contract is now accepted only for an expected single sample, while pixels must still satisfy the unchanged oracle threshold. No runtime or threshold repair was needed.",
+      "cost": {
+        "profile": "serial pinned software render plus complete RGBA readback, 1920x1080@30",
+        "cold": "initialization plus first frame",
+        "warmFrames": 3,
+        "measuredFrames": 5,
+        "timings": [
+          {
+            "backend": "canvas2d",
+            "samples": 1,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 2,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              0.5999999642372131, 0.800000011920929, 0.699999988079071,
+              0.800000011920929, 0.800000011920929
+            ],
+            "medianMs": 0.800000011920929,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "canvas2d",
+            "samples": 2,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 33,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              28.100000023841858, 28.899999976158142, 31.19999998807907,
+              27.900000035762787, 29.399999976158142
+            ],
+            "medianMs": 28.899999976158142,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "canvas2d",
+            "samples": 4,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 55.39999997615814,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              53.90000003576279, 50.39999997615814, 51.69999998807907,
+              54.90000003576279, 50.19999998807907
+            ],
+            "medianMs": 51.69999998807907,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "canvas2d",
+            "samples": 8,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 99.59999996423721,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              96.19999998807907, 99.40000003576279, 95.19999998807907,
+              92.10000002384186, 94.89999997615814
+            ],
+            "medianMs": 95.19999998807907,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "canvas2d",
+            "samples": 16,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 191.69999998807907,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              176.30000001192093, 173.69999998807907, 179.60000002384186,
+              182.69999998807907, 186.5
+            ],
+            "medianMs": 179.60000002384186,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "canvas2d",
+            "samples": 32,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 368.5,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              339.2000000476837, 347.0999999642372, 365.80000001192093,
+              340.10000002384186, 355.89999997615814
+            ],
+            "medianMs": 347.0999999642372,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "canvas2d",
+            "samples": 64,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 664.0999999642372,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              658.8999999761581, 659.8000000119209, 662.6999999880791,
+              666.7000000476837, 673.6999999880791
+            ],
+            "medianMs": 662.6999999880791,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "webgl2",
+            "samples": 1,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 60.40000003576279,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              1.399999976158142, 1.4000000357627869, 1.5, 1.5, 1.399999976158142
+            ],
+            "medianMs": 1.4000000357627869,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "webgl2",
+            "samples": 2,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 70.5,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              18.100000023841858, 17, 16.100000023841858, 15.199999988079071,
+              15.300000011920929
+            ],
+            "medianMs": 16.100000023841858,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "webgl2",
+            "samples": 4,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 82.5,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              27.100000023841858, 27, 25.80000001192093, 27.599999964237213,
+              26.100000023841858
+            ],
+            "medianMs": 27,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "webgl2",
+            "samples": 8,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 104.40000003576279,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              49.30000001192093, 48.30000001192093, 47.09999996423721, 47.5, 47
+            ],
+            "medianMs": 47.5,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "webgl2",
+            "samples": 16,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 146.39999997615814,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              91.19999998807907, 91, 90.60000002384186, 91.30000001192093,
+              91.30000001192093
+            ],
+            "medianMs": 91.19999998807907,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "webgl2",
+            "samples": 32,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 235.30000001192093,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              194.30000001192093, 187.39999997615814, 180.70000004768372,
+              179.0999999642372, 183.60000002384186
+            ],
+            "medianMs": 183.60000002384186,
+            "method": "serial render plus complete RGBA readback"
+          },
+          {
+            "backend": "webgl2",
+            "samples": 64,
+            "width": 1920,
+            "height": 1080,
+            "fps": 30,
+            "coldMs": 418.39999997615814,
+            "warmFrames": 3,
+            "measuredFrames": 5,
+            "timingsMs": [
+              366.5, 360.60000002384186, 358, 352.0999999642372,
+              352.30000001192093
+            ],
+            "medianMs": 358,
+            "method": "serial render plus complete RGBA readback"
+          }
+        ],
+        "record": "benchmarks/results/composition-ce7-verification/sample-cost.json"
+      },
+      "review": "Representative stored frames 12/24/47 and adaptive24 inspected: stepped/held rows, cycle boundary/terminal holds and opt-out row are as authored.",
+      "remaining": ["Full local pnpm check/frozen CE0", "Milestone PR"]
+    }
+  ],
+  "pending": [],
+  "verificationAttempts": [
+    {
+      "command": "focused unit selection",
+      "status": "failed",
+      "tests": 165,
+      "failures": 3,
+      "reasons": [
+        "New test expected zero anchor instead of the existing sized-layer center default. Explicit zero anchor now isolates parent/content timing.",
+        "New test confused baked key index with the public authored sample time; assertion now checks index2, source time4 and sampled keyed value2.",
+        "Every-field fixture coverage needed the newly added CE7 fields; actual time-controls fixture now participates instead of exempting fields."
+      ],
+      "selectionRepair": "Final selection uses existing composition-evaluate.test.ts and includes its85 tests.",
+      "log": "benchmarks/results/composition-ce7-verification/ce7-clock-focused-initial-failed.log"
+    },
+    {
+      "command": "focused unit selection",
+      "status": "passed",
+      "tests": 250,
+      "files": 5,
+      "log": "benchmarks/results/composition-ce7-verification/ce7-clock-focused.log"
+    }
+  ],
+  "versions": {
+    "evaluator": "composition-evaluator-29",
+    "canvas": "composition-canvas-1.24.1",
+    "webgl": "composition-webgl2-0.38.1"
+  },
+  "completed": "2026-10-06",
+  "implementation": "0e48388",
+  "fullVerification": {
+    "command": "pnpm check",
+    "status": "passed",
+    "exitCode": 0,
+    "snapshot": "/private/tmp/still-shift-ce7-check-0e48388",
+    "unitTests": 1600,
+    "runtimeTests": 46,
+    "integrationTests": 139,
+    "depthTests": 14,
+    "browserGroups": "all required groups passed",
+    "frozenBaselines": 176,
+    "frozenFrames": 36061,
+    "regeneratedFrozenBaselines": false,
+    "log": "benchmarks/results/composition-ce7-verification/ce7-full-0e48388.log",
+    "preflight": "pinned toolchain, private Python package, own Vite caches/browser imports and both backend startup passed",
+    "nativeTimeControlAcceptance": "stored CE7 hashes, independent oracle, reverse/random seeks, hardware and independent/repeated exports passed within unchanged thresholds",
+    "canvasMatrices": {
+      "story": {
+        "cases": 69,
+        "frames": 14086,
+        "maxRatio": 1.1757761252275207,
+        "maxDelta": 2,
+        "tier": "existing Canvas pixel/timing policy"
+      },
+      "commerce": {
+        "cases": 127,
+        "frames": 28200,
+        "maxRatio": 1.1751287681540208,
+        "maxDelta": 1,
+        "tier": "existing Canvas pixel/timing policy"
+      },
+      "typography": {
+        "cases": 20,
+        "frames": 3367,
+        "maxRatio": 1.184144509539858,
+        "maxDelta": 2,
+        "tier": "existing Canvas pixel/timing policy"
+      }
+    }
+  },
+  "delivery": {
+    "pr": "https://github.com/xxibcill/still-shift/pull/40",
+    "nextMilestone": "CE6 current-version completion on a new branch",
+    "merge": "not performed",
+    "attached": true
+  },
+  "conditionalHandoffs": {
+    "CE13": "Validated hold/linear frame blending and deterministic sourceFramePair kernel are ready; decoded video/sequence rendering follows CE13.",
+    "clockSemantics": "Layer-local keyed/content clocks are stepped/held. Documented root-global procedural inputs remain live; no complete AE procedural posterization equivalence is claimed.",
+    "CE6-P": "Future GPU speed requirements remain deferred; existing current Canvas timing assertions were preserved."
+  }
+}

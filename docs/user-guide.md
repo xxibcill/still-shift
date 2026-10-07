@@ -85,6 +85,27 @@ at 0.25 local unit tolerance and depth 12. Excess work or invalid coordinates re
 a diagnostic and fails export. Follow-path constraints use the source shape's first
 compiled contour, measured in world arc length; empty sources report a diagnostic.
 
+Set `motionBlur.adaptive: true` to reduce shutter samples for simple moving native
+artwork. `samples` remains the upper cap. Selection uses screen motion, including
+nested host transforms, and remains repeatable when seeking backwards. Complex
+content retains the configured count; static content has zero blur. The default
+fixed sampling stays unchanged.
+
+To step keyed content, set `posterizeFps: 12` on a layer or precomp host. The rate
+uses local seconds at the owning scope's FPS, after start/stretch. To hold keyed
+content at a fractional local frame, set `holdFrame: 7.5`; this takes precedence.
+Builder authors use `.with({ posterizeFps: 12 })` or `.with({ holdFrame: 7.5 })`.
+Visibility and parent clocks remain live. Root-bound expression `frame` also
+remains live; `value` reads the stepped/held keyed input.
+
+Precomp `loop: "cycle"` or `"pingpong"` wraps its final source remap. Omit
+`loopCount` for signed unlimited loops, or set an integer count to hold the
+terminal frame after that many periods. Each reused instance has its own clock.
+Freeze keyed source content with a single hold key in `timeRemap`. Native
+video/sequence `frameBlending` is reserved for CE13 media decoding; it does not
+enable media rendering yet. See the [reference](./composition-reference.md) for
+units, bounds and the distinction between local and global procedural clocks.
+
 To render a composition to MP4:
 
 ```bash

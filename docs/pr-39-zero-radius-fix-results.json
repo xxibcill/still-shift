@@ -1,0 +1,724 @@
+{
+  "schemaVersion": "pr-review-fix-evidence-1",
+  "date": "2026-10-07",
+  "pr": "https://github.com/xxibcill/still-shift/pull/39",
+  "reviewedHead": "cf38a439bcd8e55c8dba3cb7a0c392be8cd839d7",
+  "finding": {
+    "priority": "P2",
+    "title": "Normalize zero-radius lights to one effective sample",
+    "comment": "https://github.com/xxibcill/still-shift/pull/39#discussion_r4204571866",
+    "fix": "Shared shadowSampleOffsets selects the center table for radius zero. CPU averaging and GPU sampleCount use the effective table length; the authored scene.light.samples is not mutated. Positive-radius quadrature and GLSL are unchanged.",
+    "reproduction": {
+      "receiverOrigin": [-4.0625, -4.0625, 20],
+      "casterAlpha": [55],
+      "casterOpacity": 0.5,
+      "radius": 0,
+      "side": 64,
+      "pixel": [32, 32],
+      "samples": [1, 4, 16],
+      "before": {
+        "cpuBytes": [227, 227, 228],
+        "pinnedShaderBytes": [228, 228, 227],
+        "hardwareShaderBytes": [227, 227, 227]
+      },
+      "after": {
+        "cpuBytes": [227, 227, 227],
+        "pinnedShaderBytes": [228, 228, 228],
+        "hardwareShaderBytes": [227, 227, 227]
+      }
+    },
+    "redRuns": [
+      "Added 64-square cross-quality unit regression fails before repair with CPU 228 instead of 227 for 16 samples; existing 14 tests pass.",
+      "Added prototype browser regression fails before repair: radius-zero CPU bytes changed with 16 samples. The independent pre-fix review probe also reproduced the shader quality change."
+    ],
+    "greenRun": "All 15 analytic tests pass. Complete GPU verifier requires exact RGBA and PNG identity across authored 1/4/16 sample counts within pinned/hardware profiles, plus independent pinned repeats. CPU exact equality and original authored options are checked."
+  },
+  "checks": {
+    "toolchain": "pnpm toolchain:check passed: Node 22.23.1, pnpm 10.29.3, private Python 3.12.11, uv 0.7.12, Playwright 1.62.1 / Chromium revision 1234 / version 151.0.7922.34, FFmpeg/ffprobe 8.0.1.",
+    "imports": "Prototype model/fixtures/shader and render-browser modules import successfully.",
+    "analytic": "pnpm exec vitest run tests/unit/cast-shadow-prototype.test.ts --maxWorkers=1 --no-file-parallelism passed: 15 tests.",
+    "build": "pnpm build passed.",
+    "schema": "pnpm schema:check passed.",
+    "boundaries": "pnpm check:boundaries passed.",
+    "lint": "pnpm exec eslint scripts/composition/cast-shadow-prototype tests/unit/cast-shadow-prototype.test.ts passed.",
+    "format": "Focused Prettier and git diff --check pass for changed code and records.",
+    "browser": "Complete isolated verify.ts passed: 96 unchanged frozen poses, 288 seek draws, 96 independent pixel/PNG repeats, 12 hardware comparisons, exact maximum-input checks, five supported-shear controls and all zero-radius quality comparisons on three profiles.",
+    "frozenReferences": "No tracked frozen reference was changed.",
+    "productionIsolation": "Packages, apps, schemas, manifests and lockfiles are unchanged from reviewed head. GLSL source strings and explicit quadrature tables are unchanged.",
+    "fullRepositoryGate": "NOT RUN: isolated prototype correction. Native production integration, real shadow export, quality and 1080p performance acceptance remain deferred. The preceding read-only review passed the unchanged production CE7 browser/export suite; this is not claimed as a final-code rerun.",
+    "actions": "No GitHub Actions files or settings changed; all verification ran locally."
+  },
+  "isolation": "Managed worktree from exact reviewed head. Private APFS clones of dependency trees with rewritten local command wrappers; independent Vite optimizer/config caches. Private Python 3.12.11 venv, UV_NO_SYNC=1 and task-specific UV cache. Prototype verifier serves no Vite app.",
+  "codeSha256": {
+    "scripts/composition/cast-shadow-prototype/model.ts": "57ebbcf780162c8cadbc9d3b6e5dc92524a1b4c4f1d31d7927b3dead615d2f91",
+    "scripts/composition/cast-shadow-prototype/shader.ts": "cb0061a45c7182bf2d34d75786d9155ef74c241bda5c6d15dd884bfdae79f716",
+    "scripts/composition/cast-shadow-prototype/fixtures.ts": "39683378a7c9d6641b36d78ca82fb4a725a30c6888e5047dbade4accf9dd5550",
+    "scripts/composition/cast-shadow-prototype/verify.ts": "34bf6792ea4a75afa94a63ff9b97af195051176e29a209c69cd856905f1e16f8",
+    "tests/unit/cast-shadow-prototype.test.ts": "6d14d39a68dd3c555ae77a5704b91687d9a055c01b98a3c58281ef63ff13fff0"
+  },
+  "browser": {
+    "model": "flat-alpha-shadow-candidate-1",
+    "scope": "isolated direct-visibility shader; not production assets, CE7 integration or MP4 export",
+    "dimensions": [64, 64],
+    "node": "22.23.1",
+    "sourceHashes": [
+      {
+        "name": "model.ts",
+        "hash": "57ebbcf780162c8cadbc9d3b6e5dc92524a1b4c4f1d31d7927b3dead615d2f91"
+      },
+      {
+        "name": "fixtures.ts",
+        "hash": "39683378a7c9d6641b36d78ca82fb4a725a30c6888e5047dbade4accf9dd5550"
+      },
+      {
+        "name": "reference.ts",
+        "hash": "d20e525e9cf58a6594a8604b06dc1746c1ef044dadcb7b6c17e594b16be5d5bc"
+      },
+      {
+        "name": "shader.ts",
+        "hash": "cb0061a45c7182bf2d34d75786d9155ef74c241bda5c6d15dd884bfdae79f716"
+      },
+      {
+        "name": "verify.ts",
+        "hash": "34bf6792ea4a75afa94a63ff9b97af195051176e29a209c69cd856905f1e16f8"
+      }
+    ],
+    "inputHash": "d581feec5c1b59eb18028cfbf1039864445033a0402f34928cf363ac41f3438c",
+    "maximumInputHash": "8edc340244028af6689c833351e0c5b69d644a198a55ea56e1c719e3130309e9",
+    "rejectedInputs": [
+      {
+        "id": "near-collinear",
+        "hash": "5e71460f25bf5395eca8bab7a4e6c1fb8e6e1db703d372e3580a840442a73b5f",
+        "diagnostic": "shadow-prototype-input: ill-conditioned plane",
+        "result": "pass"
+      },
+      {
+        "id": "unstable-shear",
+        "hash": "4c2c9525c35863949b5342a52b8f798ef51a7688ecba54f07f53498a6db449bc",
+        "diagnostic": "shadow-prototype-input: ill-conditioned plane",
+        "result": "pass"
+      }
+    ],
+    "referenceCount": 96,
+    "toleranceBytes": 1,
+    "pinned": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 288,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "conditionedShears": [
+        {
+          "id": "conditioned-shear-0.805",
+          "inputHash": "d5d9dc61de9bf10b04123241989b4bd2f1e02fb90b53eaafe4295c7762995bc4",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-0.82",
+          "inputHash": "b066c7b8a8d15fee83710e6311d276dd1c59933a054b4c9dd04e70e65f4b4ff5",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-1",
+          "inputHash": "b13f7097f4b3b214e8a366ce8a513de536cc5aa4ff51b8df158449846aacd97f",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-2",
+          "inputHash": "af7b96142ad158db11815c08e8102766d2125e8090228a657c311c21f597c073",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-8",
+          "inputHash": "c3f234edac7325b2334a4063ab2ecb3a1ab0c351466f603b12051b379e6b77d3",
+          "maxDelta": 0
+        }
+      ],
+      "zeroRadius": [
+        {
+          "samples": 1,
+          "maxDelta": 1,
+          "center": 228
+        },
+        {
+          "samples": 4,
+          "maxDelta": 1,
+          "center": 228
+        },
+        {
+          "samples": 16,
+          "maxDelta": 1,
+          "center": 228
+        }
+      ],
+      "result": "pass",
+      "repeat": false
+    },
+    "repeated": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 96,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "conditionedShears": [
+        {
+          "id": "conditioned-shear-0.805",
+          "inputHash": "d5d9dc61de9bf10b04123241989b4bd2f1e02fb90b53eaafe4295c7762995bc4",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-0.82",
+          "inputHash": "b066c7b8a8d15fee83710e6311d276dd1c59933a054b4c9dd04e70e65f4b4ff5",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-1",
+          "inputHash": "b13f7097f4b3b214e8a366ce8a513de536cc5aa4ff51b8df158449846aacd97f",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-2",
+          "inputHash": "af7b96142ad158db11815c08e8102766d2125e8090228a657c311c21f597c073",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-8",
+          "inputHash": "c3f234edac7325b2334a4063ab2ecb3a1ab0c351466f603b12051b379e6b77d3",
+          "maxDelta": 0
+        }
+      ],
+      "zeroRadius": [
+        {
+          "samples": 1,
+          "maxDelta": 1,
+          "center": 228
+        },
+        {
+          "samples": 4,
+          "maxDelta": 1,
+          "center": 228
+        },
+        {
+          "samples": 16,
+          "maxDelta": 1,
+          "center": 228
+        }
+      ],
+      "result": "pass",
+      "repeat": true
+    },
+    "hardware": {
+      "environment": {
+        "profile": "hardware",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+        "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 12,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "conditionedShears": [
+        {
+          "id": "conditioned-shear-0.805",
+          "inputHash": "d5d9dc61de9bf10b04123241989b4bd2f1e02fb90b53eaafe4295c7762995bc4",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-0.82",
+          "inputHash": "b066c7b8a8d15fee83710e6311d276dd1c59933a054b4c9dd04e70e65f4b4ff5",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-1",
+          "inputHash": "b13f7097f4b3b214e8a366ce8a513de536cc5aa4ff51b8df158449846aacd97f",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-2",
+          "inputHash": "af7b96142ad158db11815c08e8102766d2125e8090228a657c311c21f597c073",
+          "maxDelta": 1
+        },
+        {
+          "id": "conditioned-shear-8",
+          "inputHash": "c3f234edac7325b2334a4063ab2ecb3a1ab0c351466f603b12051b379e6b77d3",
+          "maxDelta": 0
+        }
+      ],
+      "zeroRadius": [
+        {
+          "samples": 1,
+          "maxDelta": 0,
+          "center": 227
+        },
+        {
+          "samples": 4,
+          "maxDelta": 0,
+          "center": 227
+        },
+        {
+          "samples": 16,
+          "maxDelta": 0,
+          "center": 227
+        }
+      ],
+      "result": "pass",
+      "repeat": false
+    },
+    "pinnedHashes": {
+      "hard/0": {
+        "rgba": "a4e53079bb580e08b0d2fb88b9991e0296210b91ccf2ffdc4f129dd7c501f37a",
+        "png": "8454af326a45f15bf9643d71b8b70083408c8da59c923c929711782c47f0911a"
+      },
+      "hard/1": {
+        "rgba": "6f2afa79ddb23a6294172df124d0527a8acb22d53ccd1b92fa16d2185030267e",
+        "png": "64445540abf4db74afd1214820076124dac6acc6e210a880c14a7bfe80069c52"
+      },
+      "hard/2": {
+        "rgba": "435885108e26e03465e9a09a9ae511b683d4dd37c73ce80ccefc5922bd0f4cc7",
+        "png": "d20f8062b97bca26436afc125818ad617828b3aed333c46496b0a3e9ff00af0a"
+      },
+      "hard/3": {
+        "rgba": "72bdd1fb1213757fd3b45da6f779cce56cb4a8808ce6e6951b8f7f36eb9cc173",
+        "png": "06413be44ff96a43c699dcbfd5692a998be994ed268ab769268ddfc23c407116"
+      },
+      "hard/4": {
+        "rgba": "72bdd1fb1213757fd3b45da6f779cce56cb4a8808ce6e6951b8f7f36eb9cc173",
+        "png": "06413be44ff96a43c699dcbfd5692a998be994ed268ab769268ddfc23c407116"
+      },
+      "hard/5": {
+        "rgba": "435885108e26e03465e9a09a9ae511b683d4dd37c73ce80ccefc5922bd0f4cc7",
+        "png": "d20f8062b97bca26436afc125818ad617828b3aed333c46496b0a3e9ff00af0a"
+      },
+      "hard/6": {
+        "rgba": "6f2afa79ddb23a6294172df124d0527a8acb22d53ccd1b92fa16d2185030267e",
+        "png": "64445540abf4db74afd1214820076124dac6acc6e210a880c14a7bfe80069c52"
+      },
+      "hard/7": {
+        "rgba": "a4e53079bb580e08b0d2fb88b9991e0296210b91ccf2ffdc4f129dd7c501f37a",
+        "png": "8454af326a45f15bf9643d71b8b70083408c8da59c923c929711782c47f0911a"
+      },
+      "soft-four/0": {
+        "rgba": "ee0831f67d4e15927737fe2ff38ff033e688a1dbe4571ce5318f1dbe27daf375",
+        "png": "f7a81bc8aec9979a9c00f33e0716eaff8eed9be05fcae1169229974b26e1a13c"
+      },
+      "soft-four/1": {
+        "rgba": "3cbc516a54a87d06d80fc3b2d98aa5f0a683fc551137b9aef0b2b855b85f63cb",
+        "png": "afa4b7110f7c9d5f068e4e968c4d66dc1ad1fdc30b3ecc0919b230d941aab200"
+      },
+      "soft-four/2": {
+        "rgba": "4579160b3fbee5ae15a78ea173d30c12ae8189beb5cf4674f86f1d3cfbf7dd8e",
+        "png": "e5f14aa24b71bb34ecd083f5882811c7f723a1e0dffa47dbcc74922ac21d7182"
+      },
+      "soft-four/3": {
+        "rgba": "924e3c6db8dc59858dd6a2d971d2c0a68eef509e5146c89d805ea12da10eb396",
+        "png": "1c9f034c5a83e3e1b52473039ee9b49c74ee10247cf2114d763a4010da15f5e0"
+      },
+      "soft-four/4": {
+        "rgba": "924e3c6db8dc59858dd6a2d971d2c0a68eef509e5146c89d805ea12da10eb396",
+        "png": "1c9f034c5a83e3e1b52473039ee9b49c74ee10247cf2114d763a4010da15f5e0"
+      },
+      "soft-four/5": {
+        "rgba": "4579160b3fbee5ae15a78ea173d30c12ae8189beb5cf4674f86f1d3cfbf7dd8e",
+        "png": "e5f14aa24b71bb34ecd083f5882811c7f723a1e0dffa47dbcc74922ac21d7182"
+      },
+      "soft-four/6": {
+        "rgba": "3cbc516a54a87d06d80fc3b2d98aa5f0a683fc551137b9aef0b2b855b85f63cb",
+        "png": "afa4b7110f7c9d5f068e4e968c4d66dc1ad1fdc30b3ecc0919b230d941aab200"
+      },
+      "soft-four/7": {
+        "rgba": "ee0831f67d4e15927737fe2ff38ff033e688a1dbe4571ce5318f1dbe27daf375",
+        "png": "f7a81bc8aec9979a9c00f33e0716eaff8eed9be05fcae1169229974b26e1a13c"
+      },
+      "soft-sixteen/0": {
+        "rgba": "d2f351b9957919845809bb8d343c245926bf9f051ce2070adafe6219704d604a",
+        "png": "b2a63426fd7756a301142c24c544a5d4d7fce6009633209cbf1bc4671e6112ae"
+      },
+      "soft-sixteen/1": {
+        "rgba": "dcf6da244ab5ee74a2379706d1fb4c07e5441fe45acfef65c233b999c3213621",
+        "png": "a1cbe62a80e83db31ed3c586629d50c337352fa1c81a4116ea9faaf418e67a27"
+      },
+      "soft-sixteen/2": {
+        "rgba": "45d442d5502914c5600a52cff4e4d2ff2971daaf175ebf9dbf37323331afb928",
+        "png": "51b10b052e4ffeab9c5761a7b4110760ac5dfea66f7b48f19457deb8c51eeaed"
+      },
+      "soft-sixteen/3": {
+        "rgba": "fb74b9dda593f94daf654cedba7cd83a98f4ef5ac25894bf06bd4c44c82bbf19",
+        "png": "2ab4adff7726bdd5097b4b80bc7cdbebb7ee88c4d3cedda30f339f9ee96209ff"
+      },
+      "soft-sixteen/4": {
+        "rgba": "fb74b9dda593f94daf654cedba7cd83a98f4ef5ac25894bf06bd4c44c82bbf19",
+        "png": "2ab4adff7726bdd5097b4b80bc7cdbebb7ee88c4d3cedda30f339f9ee96209ff"
+      },
+      "soft-sixteen/5": {
+        "rgba": "45d442d5502914c5600a52cff4e4d2ff2971daaf175ebf9dbf37323331afb928",
+        "png": "51b10b052e4ffeab9c5761a7b4110760ac5dfea66f7b48f19457deb8c51eeaed"
+      },
+      "soft-sixteen/6": {
+        "rgba": "dcf6da244ab5ee74a2379706d1fb4c07e5441fe45acfef65c233b999c3213621",
+        "png": "a1cbe62a80e83db31ed3c586629d50c337352fa1c81a4116ea9faaf418e67a27"
+      },
+      "soft-sixteen/7": {
+        "rgba": "d2f351b9957919845809bb8d343c245926bf9f051ce2070adafe6219704d604a",
+        "png": "b2a63426fd7756a301142c24c544a5d4d7fce6009633209cbf1bc4671e6112ae"
+      },
+      "alpha-hole/0": {
+        "rgba": "82e99f4a10bf2a458c3d7c168508834cac62561687315ac1785a8e67fcfd8897",
+        "png": "be08e2ce705d4c6620d5b974f3b2cf70c16d55ad10d18f4bfe0487315a29e721"
+      },
+      "alpha-hole/1": {
+        "rgba": "2caa7180b171f102b0771ba121c81ab93af09d63f826aab3ed9f3c41a3cd3654",
+        "png": "efe29d1fde083441e71305ab1387ad06530462e9db3b5f83f083358ad98f1291"
+      },
+      "alpha-hole/2": {
+        "rgba": "c325aa5581cf0b473c3a475dc158e190dfd4410096d14ae87dddf56495299469",
+        "png": "af034112b69155a459f75e7226749f47724c0105c03eaa35bf0bc4eeea619eec"
+      },
+      "alpha-hole/3": {
+        "rgba": "283d6ac4481a87f45ca2237b44a52482617c34862f831955c3f4d5ad9317a305",
+        "png": "7e5aaec5837f554625f67ee083eb47496504bb83e7ab517a6ba3905d6c14c5ae"
+      },
+      "alpha-hole/4": {
+        "rgba": "283d6ac4481a87f45ca2237b44a52482617c34862f831955c3f4d5ad9317a305",
+        "png": "7e5aaec5837f554625f67ee083eb47496504bb83e7ab517a6ba3905d6c14c5ae"
+      },
+      "alpha-hole/5": {
+        "rgba": "c325aa5581cf0b473c3a475dc158e190dfd4410096d14ae87dddf56495299469",
+        "png": "af034112b69155a459f75e7226749f47724c0105c03eaa35bf0bc4eeea619eec"
+      },
+      "alpha-hole/6": {
+        "rgba": "2caa7180b171f102b0771ba121c81ab93af09d63f826aab3ed9f3c41a3cd3654",
+        "png": "efe29d1fde083441e71305ab1387ad06530462e9db3b5f83f083358ad98f1291"
+      },
+      "alpha-hole/7": {
+        "rgba": "82e99f4a10bf2a458c3d7c168508834cac62561687315ac1785a8e67fcfd8897",
+        "png": "be08e2ce705d4c6620d5b974f3b2cf70c16d55ad10d18f4bfe0487315a29e721"
+      },
+      "translucent-overlap/0": {
+        "rgba": "5aa4372b38fd0c74c85262d3c4d953a7d6776c9779275bacd743f576e8a8f09e",
+        "png": "321a1c2f4a755b54a1215ceb6838c7c40a53fd84684e4889226f7d9a29098407"
+      },
+      "translucent-overlap/1": {
+        "rgba": "b25c64621caf59a630fc21902c045ace11748c4bccf8127d1f5ac5517cd763b3",
+        "png": "9054ac93a0704704aff7e63bbe7fd54aea58174a0971f2d2efc036b920230edc"
+      },
+      "translucent-overlap/2": {
+        "rgba": "4678af179aa6a6310dc846fa89a91714e3a28453d1b8da63fe0fa1e38a410f5f",
+        "png": "7e1665bfb8bd0143dd6b9b583e5663b57215ce823a1497635dac28fde9239eb4"
+      },
+      "translucent-overlap/3": {
+        "rgba": "7cf6a876b79fbdc44b929915995e2c0bddec3f8685f252a96c6d78e7bbc3ca70",
+        "png": "fe027a6d792d3c6ea3ef5b8b678abb180692b164073272c83b3c58d2cc95cdd7"
+      },
+      "translucent-overlap/4": {
+        "rgba": "7cf6a876b79fbdc44b929915995e2c0bddec3f8685f252a96c6d78e7bbc3ca70",
+        "png": "fe027a6d792d3c6ea3ef5b8b678abb180692b164073272c83b3c58d2cc95cdd7"
+      },
+      "translucent-overlap/5": {
+        "rgba": "4678af179aa6a6310dc846fa89a91714e3a28453d1b8da63fe0fa1e38a410f5f",
+        "png": "7e1665bfb8bd0143dd6b9b583e5663b57215ce823a1497635dac28fde9239eb4"
+      },
+      "translucent-overlap/6": {
+        "rgba": "b25c64621caf59a630fc21902c045ace11748c4bccf8127d1f5ac5517cd763b3",
+        "png": "9054ac93a0704704aff7e63bbe7fd54aea58174a0971f2d2efc036b920230edc"
+      },
+      "translucent-overlap/7": {
+        "rgba": "5aa4372b38fd0c74c85262d3c4d953a7d6776c9779275bacd743f576e8a8f09e",
+        "png": "321a1c2f4a755b54a1215ceb6838c7c40a53fd84684e4889226f7d9a29098407"
+      },
+      "tilted-mirrored/0": {
+        "rgba": "62ef2fce45c1264ff3a06b9ee9d15eaf8dd3bbb45fd1d234a15845d9e5ce9338",
+        "png": "96b7db60e4413057bd4b3d89915d7f8f5a58586a593b37f339c7b58fe4c951d6"
+      },
+      "tilted-mirrored/1": {
+        "rgba": "5b673cbc7f23b11c1453bf65fddcbe0b87fac47e0fbb81b34601772b1e27357d",
+        "png": "873bb74651db13a1c31aae7437d05a888ff8f978948ad5dcf0549437fbc8ab1a"
+      },
+      "tilted-mirrored/2": {
+        "rgba": "346d2560eef7255e5ad06692aba781e5585e7e033ee6cf2d3414d400799b576e",
+        "png": "b3dacd7f52fbabf258498de9aefdfd770b957c60783adc631c2074621b63c000"
+      },
+      "tilted-mirrored/3": {
+        "rgba": "024d433253e05f60a1bd2c6a571b0b421ca3921007af95104f709447abd36521",
+        "png": "8fae61028b9d05abab05e69288609d7d3c21d03a3a8639113f1d0fc3e2372b39"
+      },
+      "tilted-mirrored/4": {
+        "rgba": "024d433253e05f60a1bd2c6a571b0b421ca3921007af95104f709447abd36521",
+        "png": "8fae61028b9d05abab05e69288609d7d3c21d03a3a8639113f1d0fc3e2372b39"
+      },
+      "tilted-mirrored/5": {
+        "rgba": "346d2560eef7255e5ad06692aba781e5585e7e033ee6cf2d3414d400799b576e",
+        "png": "b3dacd7f52fbabf258498de9aefdfd770b957c60783adc631c2074621b63c000"
+      },
+      "tilted-mirrored/6": {
+        "rgba": "5b673cbc7f23b11c1453bf65fddcbe0b87fac47e0fbb81b34601772b1e27357d",
+        "png": "873bb74651db13a1c31aae7437d05a888ff8f978948ad5dcf0549437fbc8ab1a"
+      },
+      "tilted-mirrored/7": {
+        "rgba": "62ef2fce45c1264ff3a06b9ee9d15eaf8dd3bbb45fd1d234a15845d9e5ce9338",
+        "png": "96b7db60e4413057bd4b3d89915d7f8f5a58586a593b37f339c7b58fe4c951d6"
+      },
+      "offscreen/0": {
+        "rgba": "a4e53079bb580e08b0d2fb88b9991e0296210b91ccf2ffdc4f129dd7c501f37a",
+        "png": "8454af326a45f15bf9643d71b8b70083408c8da59c923c929711782c47f0911a"
+      },
+      "offscreen/1": {
+        "rgba": "6f2afa79ddb23a6294172df124d0527a8acb22d53ccd1b92fa16d2185030267e",
+        "png": "64445540abf4db74afd1214820076124dac6acc6e210a880c14a7bfe80069c52"
+      },
+      "offscreen/2": {
+        "rgba": "435885108e26e03465e9a09a9ae511b683d4dd37c73ce80ccefc5922bd0f4cc7",
+        "png": "d20f8062b97bca26436afc125818ad617828b3aed333c46496b0a3e9ff00af0a"
+      },
+      "offscreen/3": {
+        "rgba": "72bdd1fb1213757fd3b45da6f779cce56cb4a8808ce6e6951b8f7f36eb9cc173",
+        "png": "06413be44ff96a43c699dcbfd5692a998be994ed268ab769268ddfc23c407116"
+      },
+      "offscreen/4": {
+        "rgba": "72bdd1fb1213757fd3b45da6f779cce56cb4a8808ce6e6951b8f7f36eb9cc173",
+        "png": "06413be44ff96a43c699dcbfd5692a998be994ed268ab769268ddfc23c407116"
+      },
+      "offscreen/5": {
+        "rgba": "435885108e26e03465e9a09a9ae511b683d4dd37c73ce80ccefc5922bd0f4cc7",
+        "png": "d20f8062b97bca26436afc125818ad617828b3aed333c46496b0a3e9ff00af0a"
+      },
+      "offscreen/6": {
+        "rgba": "6f2afa79ddb23a6294172df124d0527a8acb22d53ccd1b92fa16d2185030267e",
+        "png": "64445540abf4db74afd1214820076124dac6acc6e210a880c14a7bfe80069c52"
+      },
+      "offscreen/7": {
+        "rgba": "a4e53079bb580e08b0d2fb88b9991e0296210b91ccf2ffdc4f129dd7c501f37a",
+        "png": "8454af326a45f15bf9643d71b8b70083408c8da59c923c929711782c47f0911a"
+      },
+      "precomp-isolation/0": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "precomp-isolation/1": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "precomp-isolation/2": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "precomp-isolation/3": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "precomp-isolation/4": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "precomp-isolation/5": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "precomp-isolation/6": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "precomp-isolation/7": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "disabled/0": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "disabled/1": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "disabled/2": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "disabled/3": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "disabled/4": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "disabled/5": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "disabled/6": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "disabled/7": {
+        "rgba": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee",
+        "png": "85f7fc7310a1235c2caf57807b20f6d7c60a31d3b95633ca99fc5a002790e929"
+      },
+      "solid-hard/0": {
+        "rgba": "4473fbc1b9273f4aae5f60cc7f2c3defae96f263f6f5b8a46f94fedf43c17ede",
+        "png": "32a881fbc6599e31a8b16a4b1311215c66b46a6fd59300fe153c4e5512500141"
+      },
+      "solid-hard/1": {
+        "rgba": "2f06c127eb77e03184785f184535833a14fd40ce9b58ea3b2040f8ccdea545cb",
+        "png": "5ffdf3456176b5bed2ddc1820a59631dad653933cd940cc69eb13cc05db62402"
+      },
+      "solid-hard/2": {
+        "rgba": "e052e8b630ac2aba2d2b89b52cdd3e6c6892c4377458b32475aff1132dd7edfd",
+        "png": "ac69289e833840ed739f43028a872f723f5ceedf929a5d5466cf25566617ea8f"
+      },
+      "solid-hard/3": {
+        "rgba": "8b5b8f9cf57db6ad4afcb94ec31aa504aa0a0d8aef0e160a295582925fef7aa6",
+        "png": "df7b257b19a9b7a6a6d2091e8a66ed0b63cb531874bef4a3940a80054836a7fc"
+      },
+      "solid-hard/4": {
+        "rgba": "8b5b8f9cf57db6ad4afcb94ec31aa504aa0a0d8aef0e160a295582925fef7aa6",
+        "png": "df7b257b19a9b7a6a6d2091e8a66ed0b63cb531874bef4a3940a80054836a7fc"
+      },
+      "solid-hard/5": {
+        "rgba": "e052e8b630ac2aba2d2b89b52cdd3e6c6892c4377458b32475aff1132dd7edfd",
+        "png": "ac69289e833840ed739f43028a872f723f5ceedf929a5d5466cf25566617ea8f"
+      },
+      "solid-hard/6": {
+        "rgba": "2f06c127eb77e03184785f184535833a14fd40ce9b58ea3b2040f8ccdea545cb",
+        "png": "5ffdf3456176b5bed2ddc1820a59631dad653933cd940cc69eb13cc05db62402"
+      },
+      "solid-hard/7": {
+        "rgba": "4473fbc1b9273f4aae5f60cc7f2c3defae96f263f6f5b8a46f94fedf43c17ede",
+        "png": "32a881fbc6599e31a8b16a4b1311215c66b46a6fd59300fe153c4e5512500141"
+      },
+      "solid-soft-four/0": {
+        "rgba": "f38fe54b87c5926b2ac4775604167c311c0d0490cad6f72c56b5d892ffc62a24",
+        "png": "1d4455d52c191decb134cf566d123d5d9537459ff36ff943fef8e581f2f5a002"
+      },
+      "solid-soft-four/1": {
+        "rgba": "69735f85285c0b97e38405fea1f37356fd4d00c02a59632bc4919f4eb8985d27",
+        "png": "fd2653ae819184945346b88ca0576c0dafef85429b9584566494bd344fea0dcd"
+      },
+      "solid-soft-four/2": {
+        "rgba": "ec17e98dd981a2e72c58c27aa58aeb3bd5404079e2d8d3b5cf1d30b0bbbd2b48",
+        "png": "7f6fc69c200ef492bc95f343caba9d546dd970949cdb22a4d603b8a8672c8c7f"
+      },
+      "solid-soft-four/3": {
+        "rgba": "9487d369ae39aa447f486052af332a9f2c5d8ea7985e94b0f36b061ab5d69790",
+        "png": "e11802327c4e57ceb385568c89ccba0b574cd8c74e2d26328185bee447a133a5"
+      },
+      "solid-soft-four/4": {
+        "rgba": "9487d369ae39aa447f486052af332a9f2c5d8ea7985e94b0f36b061ab5d69790",
+        "png": "e11802327c4e57ceb385568c89ccba0b574cd8c74e2d26328185bee447a133a5"
+      },
+      "solid-soft-four/5": {
+        "rgba": "ec17e98dd981a2e72c58c27aa58aeb3bd5404079e2d8d3b5cf1d30b0bbbd2b48",
+        "png": "7f6fc69c200ef492bc95f343caba9d546dd970949cdb22a4d603b8a8672c8c7f"
+      },
+      "solid-soft-four/6": {
+        "rgba": "69735f85285c0b97e38405fea1f37356fd4d00c02a59632bc4919f4eb8985d27",
+        "png": "fd2653ae819184945346b88ca0576c0dafef85429b9584566494bd344fea0dcd"
+      },
+      "solid-soft-four/7": {
+        "rgba": "f38fe54b87c5926b2ac4775604167c311c0d0490cad6f72c56b5d892ffc62a24",
+        "png": "1d4455d52c191decb134cf566d123d5d9537459ff36ff943fef8e581f2f5a002"
+      },
+      "solid-soft-sixteen/0": {
+        "rgba": "fdb043c7ba9c1959ca6e9cdde19ca2f95dea880d9782b6e92861c388f551a49b",
+        "png": "8e81b1b109fa84cfe3df80f5ff5042467901ca9186a7862c7d1577ff6f60487f"
+      },
+      "solid-soft-sixteen/1": {
+        "rgba": "cb95bee911e0732e83800edcc69012f5a27a02ffe170207b75058373fea06563",
+        "png": "1e7851bf37d9cd44da0b36ec2824716686d7e863c9434a046c156b549a9f9ca3"
+      },
+      "solid-soft-sixteen/2": {
+        "rgba": "bbc9910a34223ba7278e839e968e2f18209708f360f86b2dd55f9f25681d9c2e",
+        "png": "3e9c4bef36bf30a813ebcb45179ab59c9a82bd2163c25f96b69fbc616175af2a"
+      },
+      "solid-soft-sixteen/3": {
+        "rgba": "bdcfc021792fc14a187023a4b90b7634996c87c9ee604bfca2c36f11f01e6a62",
+        "png": "bbcc6e22a98cda96a7ccf5ce43ab2d5b1f85093f6e317f976b1e3fb3a34f59c1"
+      },
+      "solid-soft-sixteen/4": {
+        "rgba": "bdcfc021792fc14a187023a4b90b7634996c87c9ee604bfca2c36f11f01e6a62",
+        "png": "bbcc6e22a98cda96a7ccf5ce43ab2d5b1f85093f6e317f976b1e3fb3a34f59c1"
+      },
+      "solid-soft-sixteen/5": {
+        "rgba": "bbc9910a34223ba7278e839e968e2f18209708f360f86b2dd55f9f25681d9c2e",
+        "png": "3e9c4bef36bf30a813ebcb45179ab59c9a82bd2163c25f96b69fbc616175af2a"
+      },
+      "solid-soft-sixteen/6": {
+        "rgba": "cb95bee911e0732e83800edcc69012f5a27a02ffe170207b75058373fea06563",
+        "png": "1e7851bf37d9cd44da0b36ec2824716686d7e863c9434a046c156b549a9f9ca3"
+      },
+      "solid-soft-sixteen/7": {
+        "rgba": "fdb043c7ba9c1959ca6e9cdde19ca2f95dea880d9782b6e92861c388f551a49b",
+        "png": "8e81b1b109fa84cfe3df80f5ff5042467901ca9186a7862c7d1577ff6f60487f"
+      },
+      "maximum-input": {
+        "rgba": "15bdb7a2844a0ed5ef490419ea5abafa2025b961e02e152da3e5ef20b94946eb",
+        "png": "778d86610c48fe94d971f4371f7dd2a5dc95ae97482ff55c43198c5bdcf41288"
+      },
+      "conditioned-shear-0.805": {
+        "rgba": "641c5566d23343884825521a80ef88ac44801e949d1c395ebab564e12062ffe5",
+        "png": "531df516ef0e1a92e1f9b52994071bc9d26b257ee18b891613c815271dfb0e28"
+      },
+      "conditioned-shear-0.82": {
+        "rgba": "de0a58f0a3769c9ec044341ff7623188dd3f4db83780494e953ce8b1800949d2",
+        "png": "617df4115d0406b8b4c6a3e7da77fcc9bd3d9eea195b0f6e708493d43afdcace"
+      },
+      "conditioned-shear-1": {
+        "rgba": "58c42bd8fc5f2b7b9a7b49b04492b828079502a923840be4350aac8b9a471fd2",
+        "png": "5d04a0916928d7d9b44a62938e95eb8f7683d3d07a3c044dbe58507d0e62feca"
+      },
+      "conditioned-shear-2": {
+        "rgba": "e947cbcfd6b49568883f806737aad8dcc8864fcfc5cf7186ecd9c9de4b02aedc",
+        "png": "0242b2290c49268331cc647bf143f5af13ed2fd73fcad98a4c72243f03453cf6"
+      },
+      "conditioned-shear-8": {
+        "rgba": "36f02f533aea1a701480f384483b8d983c23a230236889fd357635e70571829d",
+        "png": "c0cddd89bf00d609ed3acd2d378ef979e5f476e912f3d8dcb7f65b582ed8841d"
+      },
+      "zero-radius-1": {
+        "rgba": "1318b1a9598fb748ef57a35443f7c72fd01d895e024637a41611d600f284e470",
+        "png": "2ef07123ab82d543e03faec2de4b315f3050eb32184f3d4604c8cce891665d42"
+      },
+      "zero-radius-4": {
+        "rgba": "1318b1a9598fb748ef57a35443f7c72fd01d895e024637a41611d600f284e470",
+        "png": "2ef07123ab82d543e03faec2de4b315f3050eb32184f3d4604c8cce891665d42"
+      },
+      "zero-radius-16": {
+        "rgba": "1318b1a9598fb748ef57a35443f7c72fd01d895e024637a41611d600f284e470",
+        "png": "2ef07123ab82d543e03faec2de4b315f3050eb32184f3d4604c8cce891665d42"
+      }
+    },
+    "performanceMeasured": false
+  },
+  "delivery": {
+    "method": "One finding commit and one final normal fast-forward push to the existing codex/composition-ce8lf-prototype PR head. No force push, retarget, PR merge or owner checkout changes.",
+    "ownerReviewMerge": "pending"
+  }
+}

@@ -371,7 +371,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-performance` | `[~]`  | [CE6 performance slice 1](#ce6-performance-slice-1-exact-effect-work-2026-10-03)   |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
-| CE7   | Motion blur and time controls                   | B      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
@@ -3295,13 +3295,13 @@ in AE.
 - [x] Composition-level motion blur (shutter angle 0–720, phase, 2–64 samples) with
       per-layer opt-in, evaluated by deterministic subframe sampling of the evaluator
       and accumulation on the backend.
-- [ ] Adaptive sample count by screen-space velocity (cap by setting) — optional, must
+- [x] Adaptive sample count by screen-space velocity (cap by setting) — optional, must
       stay deterministic.
-- [ ] Replace the commerce-only motion-blur effect with this mechanism (keep an alias).
-- [ ] Posterize time (per layer and per precomp), frame blending (for CE13 media), hold
+- [x] Replace the commerce-only motion-blur effect with this mechanism (keep an alias).
+- [x] Posterize time (per layer and per precomp), frame blending (for CE13 media), hold
       frames.
-- [ ] Loop helpers for precomps: `loop: "cycle" | "pingpong"` with count.
-- [ ] Freeze frame (time remap with a single hold key).
+- [x] Loop helpers for precomps: `loop: "cycle" | "pingpong"` with count.
+- [x] Freeze frame (time remap with a single hold key).
 
 **Acceptance:** A fast-moving layer shows correct blur length for its velocity and
 shutter angle; blur is zero for a stationary layer; nested precomps inherit blur
@@ -3320,7 +3320,58 @@ This delivers the CE4a prerequisite only. Adaptive samples and the remaining tim
 controls above stay open until the CE7 milestone branch.
 [Evidence](./composition-ce4a-completion-results.json).
 
-**Completion record:** _to be filled in._
+**Completion record (2026-10-06):** complete on `codex/composition-ce7`, code
+`0e48388`. Local posterization/holds, cycle/ping-pong/counts, single-key freeze and
+cut-safe exposure are delivered. Optional adaptation uses deterministic screen
+velocity for provable translations, with the configured cap for complex content
+and key/source boundaries; fixed sampling retains its existing arithmetic.
+The commerce motion-blur alias and its cut/overlap variants pass compatibility.
+
+The complete local `pnpm check` passes 1,600 unit, 46 runtime, 139 integration,
+14 depth, every required browser group and all 176 frozen baselines / 36,061 frames
+without regeneration. All 69 story / 14,086 frames, 127 commerce / 28,200 frames and
+20 typography / 3,367 frames pass existing Canvas pixel/timing assertions. Native
+96-frame acceptance passes independent analytic pixels, stored CE7 hashes,
+forward/reverse/random seeks, 12 actual hardware comparisons and independent/
+repeated exports on both backends. Serial 1080p costs for all seven sample counts
+are recorded. Initial focused failures and the cache-report assertion repair remain
+in the evidence; no thresholds or frozen baselines were changed.
+
+Frame blending is validated with deterministic hold/linear source-frame-pair
+arithmetic; decoded media rendering follows CE13. Root-global procedural clocks
+retain documented semantics alongside layer-local controls. [PR #40](https://github.com/xxibcill/still-shift/pull/40) is open
+and attached, based on CE5; CE6 begins on a new branch. [Evidence](./composition-ce7-results.json).
+
+### PR #40 review corrections (2026-10-06)
+
+Boundary correction `4c7266a` aligns posterized state/effect cuts with the actual
+floored content clock on both sides of floating-point inversion, including reversed
+start/stretch transforms. The separate outgoing-state correction checks visibility
+at the reachable posterized frame or baked index before suppressing a cut.
+Three boundary and two outgoing-state regressions failed before their repairs;
+50 focused tests, build, changed-file lint and independent review pass.
+Full local `pnpm check` passes 1,605 unit, 46 runtime, 139 integration, 14 depth,
+all required browser suites and 176 unchanged frozen baselines / 36,061 frames.
+Final-code CE7 native pixels, seeks, stored hashes, 12 hardware comparisons and
+both backend exports pass. The initial cold-import protocol timeouts and complete
+successful retry are retained in [review-fix evidence](./pr-40-fix-results.json).
+
+### CE7 PR #40 current base integration (2026-10-07)
+
+Current CE5 `d3093bd` is merged into CE7 `48fe4cc` with published history preserved.
+CE7 clocks, loops and adaptive/cut-safe exposure remain beside upstream scaled
+follow-path, expression, bake/lint, inspector and soundtrack fixes. New evaluator
+32 / Canvas 1.24.4 / WebGL2 0.38.4 identify the combined caches. Explicit cinematic
+error report fields restore the externalized evaluator's native Node/Vite loading.
+
+Final fast checks pass 1,907 units; 46 runtime, 224 integration, 14 depth and all 14
+focused browser groups pass. CE7 stored/analytic pixels, forward/reverse/random seeks,
+12 hardware comparisons and repeated/independent/raw exports retain their assertions.
+All 176 frozen items / 36,061 frames remain exact. The initial five-suite loader failure
+and repair are retained. No complete combined `pnpm check`, new serial cost profile
+or full timing-matrix run is claimed; historical gates remain scoped to their snapshots.
+Normal publication targets the existing PR #40 head; owner review/merge remain.
+[Resolution evidence](./pr-40-conflict-resolution-results.json).
 
 ---
 
@@ -3357,6 +3408,49 @@ CE8 completion does not require CE4c.
 DOF blur amount vs focus distance, coverage-check regression tests.
 
 **Completion record:** _to be filled in._
+
+---
+
+### CE8-L-F cast-shadow preparation (2026-10-06)
+
+Owner resumed **bounded inter-layer cast shadows** for independent design and
+prototypes, from CE7 `0e48388` on `codex/composition-ce8lf-prototype`. Production
+integration follows delivered CE8 and CE8-L. The main lane's CE8-L plan scopes
+ambient/point/spot lights on flat opted-in planes; this base has neither milestone.
+This preparation does not mark CE8, CE8-L or CE8-L-F complete, enable the reserved
+light contract, or resume realistic surface shading. See the
+[candidate specification](./composition-ce8lf-cast-shadow-spec.md) and
+[preparation evidence](./composition-ce8lf-results.json) for explicit alpha assets,
+candidate flags, geometry, bounded budgets, fixtures and integration decisions.
+
+**Preparation delivered (2026-10-06):** [draft PR #39](https://github.com/xxibcill/still-shift/pull/39)
+contains the reviewable specification and isolated CPU/shader/geometry prototypes.
+Nine analytic tests and 96 frozen poses pass; pinned seeking/independent PNG
+repeats and 12 hardware probes are exact. Proposed budgets and visible soft-shadow
+banding remain owner decisions. Production integration and its full acceptance
+remain outstanding; no CE8-L-F milestone completion is claimed.
+
+**PR #39 base refresh (2026-10-07):** merge verified CE7 `e907d16` while
+retaining the candidate and both prototype review fixes. The development log
+retains all 149 parent entries exactly once; manual resolution is documentation-only.
+Production code/configuration matches the new base; prototype source and frozen
+inputs match original head `82e3a92`. Focused 24 tests, complete fast checks
+(1,919 units), repository/Python format and lint pass. All 96 frozen poses,
+288 seek draws, 96 independent pixel/PNG repeats, 12 hardware comparisons and
+maximum inputs remain byte exact. No complete `pnpm check`, native shadow export
+or production integration acceptance is claimed; existing prerequisites and owner
+policy/budget decisions remain. [Resolution evidence](./pr-39-conflict-resolution-2026-10-07.json).
+
+**PR #39 radius-zero correction (2026-10-07):** shared CPU/shader sample selection
+uses one center sample for a zero-radius emitter while retaining the authored
+quality option. A rounding-boundary regression failed before repair; 15 analytic
+tests and focused static gates pass. All 96 frozen poses, seek draws, independent
+repeats, hardware probes, maximum inputs and conditioned-shear controls retain
+their assertions. The new hard-shadow control requires exact RGBA/PNG across
+1/4/16 authored samples within each profile and independent software repeats.
+Frozen references and production sources are unchanged; no full repository,
+native shadow export, performance or production integration acceptance was run.
+[Fix evidence](./pr-39-zero-radius-fix-results.json).
 
 ---
 

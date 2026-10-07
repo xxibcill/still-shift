@@ -1,14 +1,21 @@
 import type * as ExposureTests from "../helpers/composition-exposure-reference.ts";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { renderComposition } from "@still-shift/animation-engine";
 import assert from "node:assert/strict";
 import { resolve, join } from "node:path";
 import { createServer } from "vite";
-import { launchRenderBrowser } from "@still-shift/execution-runtime";
+import {
+  launchRenderBrowser,
+  probeRenderEnvironment,
+} from "@still-shift/execution-runtime";
+import { runTimeControlAcceptance } from "./time-control-acceptance.ts";
 
+const root = resolve(import.meta.dirname, "../..");
+const cache = await mkdtemp(join(tmpdir(), "ce7-exposure-vite-"));
 const server = await createServer({
-  root: resolve(import.meta.dirname, "../.."),
+  root,
+  cacheDir: cache,
   configFile: false,
   logLevel: "error",
   server: { host: "127.0.0.1", port: 0 },
@@ -35,6 +42,11 @@ try {
   for (const result of results)
     console.log("Native motion blur:", JSON.stringify(result));
   for (const result of results) assert.equal(result.maxDelta, 0, result.id);
+  await runTimeControlAcceptance(
+    page,
+    root,
+    join(root, "benchmarks/results/composition-ce7-verification"),
+  );
   if (process.argv.includes("--profile")) {
     const timings = await page.evaluate(async () => {
       const url = "/tests/helpers/composition-exposure-reference.ts";
@@ -45,10 +57,22 @@ try {
     });
     for (const timing of timings)
       console.log("Native exposure cost:", JSON.stringify(timing));
+    await writeFile(
+      join(
+        root,
+        "benchmarks/results/composition-ce7-verification/sample-cost.json",
+      ),
+      JSON.stringify(
+        { environment: await probeRenderEnvironment(page), timings },
+        null,
+        2,
+      ) + "\n",
+    );
   }
 } finally {
   await browser.close();
   await server.close();
+  await rm(cache, { recursive: true, force: true });
 }
 
 const output = await mkdtemp(join(tmpdir(), "still-shift-exposure-"));

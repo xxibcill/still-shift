@@ -317,62 +317,84 @@ export function checkReversedContentCutFrames() {
 
 export function measureExposureFrames() {
   const results = [];
-  for (const samples of [1, 2, 8, 16, 32, 64]) {
-    const comp: Composition = {
-      schemaVersion: "composition-1",
-      id: "exposure-cost",
-      width: 1920,
-      height: 1080,
-      fps: 30,
-      frameCount: 60,
-      background: "#26313b",
-      assets: [],
-      motionBlur: {
-        enabled: samples > 1,
-        shutterAngle: 360,
-        shutterPhase: 0,
-        samples: Math.max(2, samples),
-      },
-      layers: [
-        {
-          id: "moving",
-          type: "solid",
-          size: [400, 300],
-          color: "#d87047",
-          motionBlur: true,
-          transform: {
-            anchor: [0, 0],
-            position: {
-              x: {
-                keys: [
-                  { frame: 0, value: 100 },
-                  { frame: 59, value: 1400, interpolation: "linear" },
-                ],
-              },
-              y: 300,
-            },
-            opacity: 0.6,
-          },
+  for (const backend of ["canvas2d", "webgl2"] as const)
+    for (const samples of [1, 2, 4, 8, 16, 32, 64]) {
+      const comp: Composition = {
+        schemaVersion: "composition-1",
+        id: "exposure-cost",
+        width: 1920,
+        height: 1080,
+        fps: 30,
+        frameCount: 60,
+        background: "#26313b",
+        assets: [],
+        motionBlur: {
+          enabled: samples > 1,
+          shutterAngle: 360,
+          shutterPhase: 0,
+          samples: Math.max(2, samples),
         },
-      ],
-    };
-    const canvas = document.createElement("canvas");
-    const preview = createCompositionPreview(canvas, comp, {
-      images: new Map(),
-      fonts: new Map(),
-    });
-    const timings: number[] = [];
-    for (let frame = 20; frame < 28; frame++) {
-      const start = performance.now();
-      preview.renderFrame(frame);
-      canvas.getContext("2d")!.getImageData(0, 0, 1920, 1080);
-      if (frame >= 23) timings.push(performance.now() - start);
+        layers: [
+          {
+            id: "moving",
+            type: "solid",
+            size: [400, 300],
+            color: "#d87047",
+            motionBlur: true,
+            transform: {
+              anchor: [0, 0],
+              position: {
+                x: {
+                  keys: [
+                    { frame: 0, value: 100 },
+                    { frame: 59, value: 1400, interpolation: "linear" },
+                  ],
+                },
+                y: 300,
+              },
+              opacity: 0.6,
+            },
+          },
+        ],
+      };
+      const canvas = document.createElement("canvas");
+      const coldStart = performance.now();
+      const preview = createCompositionPreview(
+        canvas,
+        comp,
+        {
+          images: new Map(),
+          fonts: new Map(),
+        },
+        { backend },
+      );
+      preview.renderFrame(20);
+      preview.readPixels();
+      const coldMs = performance.now() - coldStart;
+      const timings: number[] = [];
+      for (let frame = 21; frame < 29; frame++) {
+        const start = performance.now();
+        preview.renderFrame(frame);
+        preview.readPixels();
+        if (frame >= 24) timings.push(performance.now() - start);
+      }
+      const sorted = [...timings].sort((a, b) => a - b);
+      results.push({
+        backend,
+        samples,
+        width: 1920,
+        height: 1080,
+        fps: 30,
+        coldMs,
+        warmFrames: 3,
+        measuredFrames: 5,
+        timingsMs: timings,
+        medianMs: sorted[2]!,
+        method: "serial render plus complete RGBA readback",
+      });
+      preview.dispose();
+      canvas.width = canvas.height = 0;
     }
-    timings.sort((a, b) => a - b);
-    results.push({ samples, width: 1920, height: 1080, medianMs: timings[2]! });
-    preview.dispose();
-    canvas.width = canvas.height = 0;
-  }
   return results;
 }
 
