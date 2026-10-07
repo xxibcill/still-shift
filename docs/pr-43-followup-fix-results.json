@@ -11,6 +11,7 @@
       "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163500",
       "status": "fixed",
       "commitSubject": "fix(lab): retain XYZ velocities across Bezier segment edits",
+      "commit": "d4bb362",
       "repair": "Materialize preserved smooth spatial handles using the authored XYZ arc-length table; retain the established XY table for two-component tracks.",
       "red": {
         "command": "pnpm exec vitest run tests/unit/composition-keys.test.ts --maxWorkers=1",
@@ -26,7 +27,20 @@
     {
       "id": "settled-camera-optics",
       "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163510",
-      "status": "pending"
+      "status": "fixed",
+      "commitSubject": "fix(composition): validate camera optics after writers settle",
+      "repair": "Validate independent controls at every sample/write while deferring the derived zoom domain until camera expressions and motion writers settle. Preserve immediate finite/positive secondary values and final optical bounds. Advance evaluator cache identity to 48.",
+      "red": {
+        "command": "pnpm exec vitest run tests/unit/composition-camera-expression-dependencies.test.ts --maxWorkers=1",
+        "failed": 3,
+        "passed": 6
+      },
+      "green": {
+        "command": "pnpm exec vitest run tests/unit/composition-camera-expression-dependencies.test.ts tests/unit/composition-spatial-state.test.ts tests/unit/composition-spatial-properties.test.ts tests/unit/composition-spatial-scope.test.ts tests/unit/composition-spatial-integration.test.ts tests/unit/composition-expressions.test.ts --maxWorkers=2",
+        "passed": 86,
+        "coverage": "Expression insertion/layer order, root/precomp scopes, fractional/reverse reads, keyed-stage driver replacement, final derived bounds, independent control bounds and existing optical feedback cycles."
+      },
+      "attempts": "Initial test draft needed a second signal key and a case-insensitive diagnostic assertion; corrected fixtures were rerun against original production code before repair."
     },
     {
       "id": "affine-effect-space-tolerance",

@@ -47,7 +47,9 @@ still hold before relying on them.
   `codex/pr43-followup-fixes` from reviewed `9b53db3`. All four findings have
   inline PR comments. XYZ smooth-handle preservation is repaired; its two
   regressions fail before repair and 51 related tests pass afterward.
-  Settled camera optics, affine effect-space tolerance, spatial null guides and
+  Settled camera optics are also repaired: three regressions fail before repair
+  and 86 related tests pass afterward; evaluator identity advances to 48.
+  Affine effect-space tolerance, spatial null guides and
   final verification remain in flight. Delivery uses one finding per commit
   and one final normal push. [Evidence](./pr-43-followup-fix-results.json).
 
@@ -786,10 +788,15 @@ _Last updated 2026-10-07 by Codex for PR #43 conflict resolution._
 
 - **Agent / branch:** Codex on isolated `codex/pr43-followup-fixes`, from `9b53db3`.
 - **Scope:** four posted P2 findings, each repaired in a separate commit.
-- **Done:** preserve XYZ smooth spatial velocities across adjacent Bézier edits.
+- **Done:** preserve XYZ smooth spatial velocities across adjacent Bézier edits;
+  validate secondary camera optics after their expression/motion writers settle.
 - **Results:** two new tests fail before repair; 51 focused tests pass afterward,
   including fractional position/POI samples, both smoothing forms and undo/save.
-- **Next:** camera optics, affine coordinate tolerance, null-guide coordinates,
+  Three optics regressions fail before repair; 86 related tests pass afterward,
+  retaining final bounds, independent control validation and nested readers.
+- **Attempts:** corrected the camera test draft's signal key count and diagnostic
+  case before rerunning its failing original-code evidence.
+- **Next:** affine coordinate tolerance, null-guide coordinates,
   final verification and one final normal push. Actions stay disabled.
 - **Records:** [review/fix evidence](./pr-43-followup-fix-results.json).
 

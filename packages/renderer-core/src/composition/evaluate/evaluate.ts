@@ -66,6 +66,7 @@ import {
   sampleSpatialTransform,
   sampleCameraControls,
   refreshCameraControls,
+  type CameraValidationPhase,
 } from "./spatial-state.ts";
 import {
   layerMatrix3d,
@@ -105,7 +106,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-47";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-48";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -317,10 +318,13 @@ function baseState(
   }
   if (layer.type === "camera") {
     try {
-      state.camera = sampleCameraControls(layer, time, fps, [
-        ctx.scope.width,
-        ctx.scope.height,
-      ]);
+      state.camera = sampleCameraControls(
+        layer,
+        time,
+        fps,
+        [ctx.scope.width, ctx.scope.height],
+        "intermediate",
+      );
     } catch (error) {
       passageError(
         "comp-camera-settings",
@@ -683,11 +687,15 @@ class Evaluation {
   }
 
   /** Clamp written values and keep an unauthored constraint reference on the anchor. */
-  private normalize(ctx: Context, state: EvaluatedLayer) {
+  private normalize(
+    ctx: Context,
+    state: EvaluatedLayer,
+    phase: CameraValidationPhase = "intermediate",
+  ) {
     state.transform.opacity = unit(state.transform.opacity);
     if (state.camera) {
       try {
-        refreshCameraControls(state.camera, ctx.scope.width);
+        refreshCameraControls(state.camera, ctx.scope.width, phase);
       } catch (error) {
         passageError(
           "comp-camera-settings",
@@ -1353,6 +1361,7 @@ class Evaluation {
         this.bindings(ctx, layer.id),
       ) ?? [])
         if (!binding.clock) yield* this.applied(ctx, layer, binding);
+    if (state.camera) this.normalize(ctx, state, "settled");
     if (layer.type === "precomp")
       state.timeRemap = yield* this.clock(ctx, layer);
     if (state.contents)
