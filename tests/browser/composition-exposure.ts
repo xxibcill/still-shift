@@ -32,11 +32,13 @@ try {
       checkExposureFrames,
       checkSampleClockFrames,
       checkReversedContentCutFrames,
+      checkPosterizedStateCutFrames,
     } = (await import(url)) as typeof ExposureTests;
     return [
       ...checkExposureFrames(),
       ...checkSampleClockFrames(),
       ...checkReversedContentCutFrames(),
+      ...checkPosterizedStateCutFrames(),
     ];
   });
   for (const result of results)

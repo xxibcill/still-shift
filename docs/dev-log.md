@@ -43,6 +43,34 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #40 posterized-state review repair complete (2026-10-07):** isolated
+  `codex/pr40-posterized-cut-fix` from reviewed `824a627`; one inline P2 finding.
+  Unreachable temporary states preserve unrelated motion blur; real cuts survive
+  indexed/reversed clocks and root precision that skips source grids. Evaluator 34 /
+  Canvas 1.24.5 / WebGL2 0.38.5 separate corrected output. All 246 focused tests and
+  both independent reviews pass. Final full local `pnpm check` passes 1,921 unit,
+  46 runtime, 224 integration, 14 depth, all required browser groups and 176 exact
+  frozen items / 36,061 frames. New both-backend regressions pass 112 exact pixel
+  comparisons; final source fingerprint is unchanged. The first gate failure and
+  isolated virtualenv launcher repair are retained. Delivery uses one finding
+  commit and one final normal push. Owner review/merge remain; no implementation
+  blocker. Actions stay disabled. [Evidence](./pr-40-posterized-cut-fix-results.json).
+
+- **PR #40 clock review fixes complete (2026-10-07):** isolated
+  `codex/pr40-clock-fixes` from reviewed `e907d16`. Both findings are inline;
+  echo bake history now uses held/posterized content clocks, and explicit instance
+  overrides precede unused loop validation while raw remaps remain intact.
+  Evaluator 33 separates changed caches. Seven new regressions fail before their
+  repairs; final fast checks pass 1,914 units and all 41 affected integrations pass.
+  Native exposure/expression/quality acceptance, 12 hardware comparisons,
+  independent/repeated exports and 176 frozen items / 36,061 frames pass unchanged.
+  New browser proof rejects incompatible bakes and preserves 144 compatible pixel
+  observations exactly. Independent review and final source fingerprint pass.
+  Delivery uses two finding commits and one normal push to the existing PR head.
+  Owner review/merge remain; no implementation blocker. No complete new full gate,
+  serial profile or strict timing matrix is claimed; Actions stay disabled.
+  [Evidence](./pr-40-clock-fix-results.json).
+
 - **PR #40 conflict repair verified (2026-10-07):** isolated
   `codex/pr40-conflict-repair` combines CE7 `48fe4cc` with current CE5 `d3093bd`
   without rewriting published history. CE7 clock/cut fixes, upstream scaled
@@ -547,7 +575,7 @@ still hold before relying on them.
   [Fix evidence](./pr-32-fix-results.json).
   [Review evidence](./pr-32-review-results.json).
 
-_Last updated 2026-10-07 by Codex for PR #39 CE7 base refresh; both histories retained._
+_Last updated 2026-10-07 by Codex for the verified PR #40 posterized-state cut repair._
 
 - **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
   PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
@@ -606,6 +634,50 @@ _Last updated 2026-10-07 by Codex for PR #39 CE7 base refresh; both histories re
 
 ## Entries
 
+### 2026-10-07 — PR #40 unreachable posterized-state cuts
+
+- **Agent / branch:** Codex on `codex/pr40-posterized-cut-fix` from `824a627`.
+- **Scope:** One inline P2 finding; preserve motion blur when posterization skips temporary states.
+- **Done:** Reachable discrete-state comparison with conservative precision handling;
+  evaluator/backend versions and unit/both-backend pixel regressions updated.
+- **Results:** 246 focused tests and both independent reviews pass. Full local
+  `pnpm check` passes 1,921 unit, 46 runtime, 224 integration, 14 depth and all browser
+  groups; 112 new pixel comparisons and 176 frozen items / 36,061 frames are exact.
+  Final source fingerprint is unchanged; first gate failure and environment repair retained.
+- **Rejected / do not repeat:** Comparing a theoretical prior grid without proving it
+  brackets the authored switch loses real cuts under extreme stretch.
+- **Open / next:** Owner review/merge; delivery uses one finding commit and one final normal push.
+- **Records:** [Fix evidence](./pr-40-posterized-cut-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/40#discussion_r4204819931).
+
+### 2026-10-07 — PR #40 explicit loop overrides and final acceptance
+
+- **Agent / branch:** Codex on `codex/pr40-clock-fixes` after first fix `3afebc9`.
+- **Scope:** Second inline finding; lazy instance overrides retain raw remaps and source clamps.
+- **Done:** Three red regressions repaired; evaluator identity advances to 33.
+- **Results:** 101 focused tests, full fast gate / 1,914 units, 41 integrations,
+  native exposure/expression/quality and 176 frozen items / 36,061 frames pass.
+  Twelve hardware comparisons and repeated/independent exports retain all assertions.
+  Held/posterized compatible pixels are exact across 144 observations; incompatible
+  history is rejected. Both independent reviews and the code fingerprint pass.
+- **Rejected / do not repeat:** Optional bare-native config loading hits an existing
+  ElevenLabs parameter property; configured Vite loading passes. No unrelated repair.
+- **Open / next:** One finding per commit and one final normal push; owner review/merge remain.
+  Full `pnpm check`, Python/depth, serial profiles and strict timing matrices were not rerun.
+- **Records:** [Fix evidence](./pr-40-clock-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/40#discussion_r4203762768).
+
+### 2026-10-07 — PR #40 echo bake content-clock repair
+
+- **Agent / branch:** Codex on `codex/pr40-clock-fixes` from `e907d16`.
+- **Scope:** First of two inline clock-integration findings on PR #40.
+- **Done:** Use the evaluator's content clock and owning FPS for historical blur dependencies.
+- **Results:** Four regressions fail before repair; 98 focused tests, build, changed-file
+  lint and package boundaries pass after it. Compatible echo graphs stay exact.
+- **Open / next:** Fix explicit loop overrides separately, then final focused acceptance
+  and one normal push to the existing PR. No full gate or baseline regeneration claimed.
+- **Records:** [Fix evidence](./pr-40-clock-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/40#discussion_r4203762759).
 ### 2026-10-07 — PR #39 quality-independent radius-zero shadows
 
 - **Agent / branch:** Codex on isolated `codex/pr39-zero-radius-fix`, from `cf38a439`.

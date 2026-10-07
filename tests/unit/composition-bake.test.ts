@@ -702,6 +702,101 @@ describe("comp bake", () => {
     },
   );
 
+  const contentClockEcho = (control: object, window: object) =>
+    valid(
+      base({
+        frameCount: 30,
+        layers: [{ id: "host", type: "precomp", comp: "clip" }],
+        precomps: [
+          {
+            id: "clip",
+            width: 200,
+            height: 200,
+            frameCount: 30,
+            layers: [
+              {
+                id: "carrier",
+                type: "group",
+                size: [200, 200],
+                effects: [
+                  {
+                    id: "blur",
+                    effect: "blur.primitive",
+                    params: { radius: 1 },
+                  },
+                ],
+              },
+              solid("hero", {
+                ...control,
+                parent: "carrier",
+                inPoint: 15,
+                effects: [
+                  {
+                    id: "echo",
+                    effect: "time.echo",
+                    params: { count: 1, spacing: 1, decay: 0.5 },
+                  },
+                  {
+                    id: "ownBlur",
+                    effect: "blur.primitive",
+                    params: { radius: 5 },
+                    ...window,
+                  },
+                ],
+              }),
+            ],
+          },
+        ],
+        expressions: {
+          "host/carrier.effects[blur].radius": { source: "frame * 2" },
+        },
+      }),
+    );
+
+  it.each([{ holdFrame: 2 }, { posterizeFps: 1 }])(
+    "rejects incompatible inherited blur history at the content clock (%j)",
+    (control) => {
+      const doc = contentClockEcho(control, { inPoint: 10, outPoint: 30 });
+      const before = structuredClone(doc);
+      expect(
+        evaluateComp(doc, 16).layers[0]!.precomp!.layers[1]!.effects[1]!
+          .enabled,
+      ).toBe(false);
+      expect(bakeExpressions(doc)).toMatchObject({
+        ok: false,
+        diagnostics: [
+          expect.objectContaining({
+            code: "comp-bake-time",
+            path: 'expressions["host/carrier.effects[blur].radius"]',
+          }),
+        ],
+      });
+      expect(doc).toEqual(before);
+    },
+  );
+
+  it.each([{ holdFrame: 2 }, { posterizeFps: 1 }])(
+    "preserves compatible echo graphs when content blur overrides inherited blur (%j)",
+    (control) => {
+      const doc = contentClockEcho(control, { inPoint: 0, outPoint: 10 });
+      expect(
+        evaluateComp(doc, 16).layers[0]!.precomp!.layers[1]!.effects[1]!
+          .enabled,
+      ).toBe(true);
+      const baked = bakeExpressions(doc);
+      expect(baked.ok).toBe(true);
+      if (!baked.ok) return;
+      expect(baked.diagnostics).toEqual([]);
+      for (const frame of [16, 29, 15, 0, 20, 16])
+        expect(
+          buildRenderGraph(
+            baked.composition,
+            evaluateComp(baked.composition, frame),
+          ),
+        ).toEqual(buildRenderGraph(doc, evaluateComp(doc, frame)));
+    },
+  );
+
   it("does not sample inherited blur overridden by a fixed positive primitive blur", async () => {
     const doc = await fixture("nested-echo");
     const clip = doc.precomps![0]!;

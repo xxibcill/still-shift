@@ -14,7 +14,7 @@ import {
   scopeTimeOverride,
 } from "./time-controls.ts";
 import { adaptiveExposureSamples } from "./adaptive.ts";
-import { scalar } from "./sample.ts";
+import { discrete, scalar } from "./sample.ts";
 import { compositionSampleIndex } from "./sample-clock.ts";
 import type { EvaluatedLayerTree, EvaluationOptions } from "./types.ts";
 
@@ -92,6 +92,22 @@ function cutsFor(
                 : layer.sampleTimes
                   ? compositionSampleIndex(layer.sampleTimes, sourceTime)
                   : sourceTime;
+            if (sourceTime !== undefined) {
+              // Recover the grid index before stepping back to avoid cancellation
+              // around zero and rounding the preceding sample onto a state key.
+              const grid = Math.round((sourceTime * layer.posterizeFps!) / fps);
+              const previousTime = ((grid - 1) * fps) / layer.posterizeFps!;
+              const previousKeyTime = layer.sampleTimes
+                ? compositionSampleIndex(layer.sampleTimes, previousTime)
+                : previousTime;
+              // Root precision can skip entire grids under extreme stretch.
+              // Only discard a switch bracketed by the adjacent source grids.
+              if (
+                previousTime < time &&
+                discrete(state, previousKeyTime) === discrete(state, keyTime)
+              )
+                continue;
+            }
             // Resetting an invisible outgoing state does not interrupt a fade.
             // Keep cuts conservatively when a procedural modifier can reveal it.
             if (

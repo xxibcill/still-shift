@@ -88,7 +88,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-32";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-34";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -470,23 +470,18 @@ class Evaluation {
       });
     const scope = this.compiled.scopes.get(host.comp)!;
     const remappedTime = yield* this.clock(ctx, host);
-    const sourceTime = loopedPrecompTime(remappedTime, scope.frameCount, host, {
-      node: host.id,
-      path: `${this.bindings(ctx, host.id)}.loop`,
-      frame: this.time,
-    });
     const route = [...ctx.route, host.id];
+    const sourceTime =
+      scopeTimeOverride(this.options.scopeTimes, route.join("/")) ??
+      loopedPrecompTime(remappedTime, scope.frameCount, host, {
+        node: host.id,
+        path: `${this.bindings(ctx, host.id)}.loop`,
+        frame: this.time,
+      });
     const next = context(
       this.compiled,
       scope,
-      Math.max(
-        0,
-        Math.min(
-          scope.frameCount - 1,
-          scopeTimeOverride(this.options.scopeTimes, route.join("/")) ??
-            sourceTime,
-        ),
-      ),
+      Math.max(0, Math.min(scope.frameCount - 1, sourceTime)),
       scope.fps ?? this.compiled.comp.fps,
       route,
     );
