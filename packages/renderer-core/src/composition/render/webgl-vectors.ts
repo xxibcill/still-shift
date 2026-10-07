@@ -255,13 +255,7 @@ export class WebglVectors {
       content.type !== "shape" &&
       content.stateFrom === undefined &&
       this.stableImages?.(content) === true;
-    const recording =
-      this.paintOver.hasBackdrop(dst) && !imageOnly
-        ? recordVectorPaints(pixels.ctx, rect, {
-            stableImages,
-            deferPaints: true,
-          })
-        : undefined;
+    let recording: ReturnType<typeof recordVectorPaints> | undefined;
     let painting = pixels;
     let parts: RasterPart[] | undefined;
     const upload = (
@@ -285,12 +279,20 @@ export class WebglVectors {
       this.device.uploadRegion(surface, canvas, box.left, box.top);
     };
     try {
+      recording =
+        this.paintOver.hasBackdrop(dst) && !imageOnly
+          ? recordVectorPaints(pixels.ctx, rect, {
+              stableImages,
+              deferPaints: true,
+            })
+          : undefined;
       if (recording) {
+        const context = recording.context;
         let fields = 1;
         for (const field in pixels) if (Object.hasOwn(pixels, field)) fields++;
         painting = allocateRenderMetadata(
           64 + 16 * fields,
-          () => ({ ...pixels, ctx: recording.context }),
+          () => ({ ...pixels, ctx: context }),
           false,
           (value) => {
             for (const field in value)
@@ -414,8 +416,11 @@ export class WebglVectors {
       throw error;
     } finally {
       if (painting !== pixels) releaseRenderMetadata(painting);
-      recording?.dispose();
-      this.raster.releaseSurface(pixels);
+      try {
+        recording?.dispose();
+      } finally {
+        this.raster.releaseSurface(pixels);
+      }
     }
   }
 

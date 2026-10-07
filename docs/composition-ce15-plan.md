@@ -763,6 +763,29 @@ pool/shader/paint/provider/graph/font/Node metadata, complete production/aggrega
 admission, speed and full-gate acceptance remain pending.
 [Evidence](./composition-ce15-readback-metadata-results.json).
 
+## Accepted path metadata checkpoint — 2026-10-08
+
+Actual state/current bounds reserve 256 before state creation. Original coordinate
+tuples and native matrix reserve 320 + 80 per original point (1..4) before original
+argument getters/math/matrix factories. Original input/native point/point box/union
+reserve 384 before native transformPoint; admission remains through union
+consumption, then temporary arrays/native references clear. Original native call
+counts, transform/math/partial update order, conservative arcs/ellipses and unknown
+arcTo/nonfinite behavior stay unchanged. Recording setup now releases path and
+existing raster scratch on admission/native failure; teardown releases path even
+if native restore fails. Remaining recording/Proxy/mark/group/replay/paintBounds
+and shared runtime controls remain pending.
+
+Build/lint/boundaries and 188 focused tests pass, including seven path/recording
+metadata regressions. All 144 audit cases / 8,000 comparisons, 96 actual RPC
+snapshots, 22 moving/blurred and ten stationary native frames pass. Original WebGL,
+69 typography tests, 12 provider cases / 60 frames and eight fixtures pass; glyph
+1.417476× meets unchanged 1.5. All 64 exports preserve 768 complete encoded bodies/
+decoded frames against pushed `970ab69`. First compile's closure narrowing and
+missing fixture transforms were repaired; the failed attempt remains recorded.
+Production/aggregate admission, authentic speed and complete gate remain pending.
+[Evidence](./composition-ce15-path-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

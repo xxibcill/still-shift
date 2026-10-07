@@ -81,9 +81,23 @@ export function recordVectorPaints(
   let marker = options.deferPaints === true,
     depth = 0;
   const painted = new Set<number>();
+  const path = new CanvasPathBounds();
   if (marker) {
-    ctx.save();
-    ctx.beginPath();
+    let saved = false;
+    try {
+      ctx.save();
+      saved = true;
+      ctx.beginPath();
+    } catch (error) {
+      if (saved)
+        try {
+          ctx.restore();
+        } catch {
+          /* Preserve the original setup failure. */
+        }
+      path.dispose();
+      throw error;
+    }
   }
   const render = () => {
     if (!deferred) return;
@@ -110,7 +124,6 @@ export function recordVectorPaints(
   };
   const snapshots: HTMLCanvasElement[] = [];
   let snapshotBytes = 0;
-  const path = new CanvasPathBounds();
   const context = new Proxy(ctx, {
     get(target, property) {
       if (property === "canvas" && options.deferPaints) invalidate();
@@ -227,13 +240,17 @@ export function recordVectorPaints(
     render,
     firstGroupOnly: () => deferred,
     dispose() {
-      if (marker) {
-        for (let i = 0; i <= depth; i++) ctx.restore();
-        marker = false;
-      }
-      for (const canvas of snapshots) {
-        canvas.width = canvas.height = 0;
-        releaseRenderCanvas(canvas);
+      try {
+        if (marker) {
+          for (let i = 0; i <= depth; i++) ctx.restore();
+          marker = false;
+        }
+        for (const canvas of snapshots) {
+          canvas.width = canvas.height = 0;
+          releaseRenderCanvas(canvas);
+        }
+      } finally {
+        path.dispose();
       }
     },
     groups(): VectorPaintGroup[] | undefined {
