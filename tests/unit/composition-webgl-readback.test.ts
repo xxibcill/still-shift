@@ -127,7 +127,7 @@ describe("incremental GPU readback", () => {
 });
 
 it("retains only the native full read, detaches completed patches and returned scratch, then disposes the cache", async () => {
-  const memory = new ManagedMemory({ pixels: 64, metadata: 8 });
+  const memory = new ManagedMemory({ pixels: 64, metadata: 512 });
   await withManagedMemory(memory, async () => {
     let full: Uint8ClampedArray | undefined, patch: Uint8Array | undefined;
     const cache = new WebglReadback(
@@ -170,7 +170,7 @@ it("retains only the native full read, detaches completed patches and returned s
   memory.dispose();
 });
 it("fails capture admission without altering retained native pixels", async () => {
-  const memory = new ManagedMemory({ pixels: 16, metadata: 8 });
+  const memory = new ManagedMemory({ pixels: 16, metadata: 512 });
   await withManagedMemory(memory, async () => {
     const cache = new WebglReadback(
       2,

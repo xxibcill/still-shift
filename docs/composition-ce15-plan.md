@@ -741,6 +741,28 @@ retained graphs, font/checksum/pixel-view/ledger/Node metadata, actual productio
 aggregate admission, speed and full-gate acceptance remain pending.
 [Evidence](./composition-ce15-webgl-bounds-metadata-results.json).
 
+## Accepted readback metadata checkpoint — 2026-10-08
+
+Actual state (192), original clamped bounds (64), retained pending holder/union
+(128) and temporary borrowed row views (128) reserve before original producers.
+Pending rectangles survive scratch until original region/row consumption,
+replacement or unknown update. Captured allocator cleanup detaches retained
+framebuffer storage after active scope exit and allocator-first disposal.
+Original native row order, full-update precedence, 64MiB cache policy, independent
+returned slices and pixel ownership remain unchanged. Two existing pixel-quota
+fixtures retain their pixel limits and receive 512 bytes for actual metadata;
+six new regressions independently verify metadata quotas and actual cleanup.
+
+Build, lint, boundaries and 181 focused tests pass. The 144-case / 8,000-comparison
+audit, 96 actual RPC snapshots, 22 moving/blurred and ten stationary native frames,
+original WebGL, 69 typography tests, 12 provider cases / 60 frames and eight
+fixtures pass. Glyph 1.455446× meets unchanged 1.5 maximum. All 64 public exports
+preserve 768 complete encoded bodies/decoded frames against pushed `7ab58ce`.
+Remaining class/helper/ledger and returned pixel-view controls, recording/device/
+pool/shader/paint/provider/graph/font/Node metadata, complete production/aggregate
+admission, speed and full-gate acceptance remain pending.
+[Evidence](./composition-ce15-readback-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
