@@ -73,6 +73,27 @@ a small protocol candidate, not composition/parallel acceptance or speedup.
 [Evidence](./composition-ce15-cache-results.json) retains both rejected paths.
 Full static layer/precomp coverage and integration remain mandatory below.
 
+## Accepted independent surface integration — 2026-10-07
+
+The opt-in preview cache and real authenticated disk-backed exchange pass 24
+Canvas/WebGL cases and 1,248 exact cached/uncached frame comparisons across four
+pages. Existing independent isolates and precomps paint once globally, including
+late visibility, required-coverage preflight, nested mattes, effect inputs, history
+and exposure. Changing evaluated states use the original drawing path. Native
+storage tests cover all 65,536 channel/alpha pixels on each backend and exact
+float32 producer/consumer transfer. Twelve preparation failures protect hashes,
+body/lease sizes, memory admission and original cancellation reasons. Build,
+lint, boundaries, 32 key/exposure units and existing alpha/exposure/WebGL-export
+browser regressions pass. The new browser check joins the mandatory local gate.
+
+This is partial integration. Public export scope capture and worker wiring remain
+pending. Direct draws keep their original boundaries; static direct layers over
+changing backdrops still need an exact strategy. One custom-provider source paints
+once, but provider preparation occurs in each page; built-in source preparation
+needs a complete paint audit. Aggregate allocations, native/spatial coverage,
+parallel production delivery, the two-minute speed proof and full gate remain
+mandatory. [Detailed evidence](./composition-ce15-surface-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

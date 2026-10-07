@@ -421,6 +421,47 @@ export function createWebgl2Backend(
 
   const backend: Webgl2Backend = {
     version: COMPOSITION_WEBGL_RENDERER_VERSION,
+    surfaceEncoding: "rgba8-premultiplied",
+    captureSurface(surface) {
+      if (surface.screen)
+        throw Error(
+          "Retained WebGL surfaces must be independent offscreen targets",
+        );
+      return surface.floating
+        ? {
+            encoding: "rgba32f-premultiplied",
+            bytes: new Uint8Array(device.readFloats(surface).buffer),
+          }
+        : { encoding: "rgba8-premultiplied", bytes: device.read(surface) };
+    },
+    restoreSurface(width, height, pixels) {
+      const floating = pixels.encoding === "rgba32f-premultiplied";
+      if (
+        !["rgba8-premultiplied", "rgba32f-premultiplied"].includes(
+          pixels.encoding,
+        ) ||
+        pixels.bytes.byteLength !== width * height * (floating ? 16 : 4)
+      )
+        throw Error("WebGL retained surface storage differs from its contract");
+      const surface = device.surface(width, height, floating);
+      try {
+        if (floating)
+          device.uploadFloats(
+            surface,
+            new Float32Array(
+              pixels.bytes.buffer,
+              pixels.bytes.byteOffset,
+              pixels.bytes.byteLength / 4,
+            ),
+          );
+        else device.uploadBytes(surface, pixels.bytes);
+        bounds.full(surface);
+        return surface;
+      } catch (error) {
+        device.release(surface);
+        throw error;
+      }
+    },
     frameKey: (root) => keys.of(root),
     beginFrame(root) {
       const next = (root.colorSpace ?? options.colorSpace) === "linear-srgb";

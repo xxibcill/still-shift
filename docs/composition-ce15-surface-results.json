@@ -1,0 +1,3120 @@
+{
+  "milestone": "CE15",
+  "date": "2026-10-07",
+  "base": "5b20c86",
+  "status": "existing independent surface integration passed; complete export cache acceptance pending",
+  "fingerprint": {
+    "algorithm": "SHA256 of sorted path + NUL + fileSHA256 + newline records",
+    "sha256": "9068285cc2adadd8327f02e2530281d871f8360c377c3d2643096bd2b14602cf",
+    "files": [
+      {
+        "path": "package.json",
+        "sha256": "5830c9818aaa2ed94674687c0a82b7f25d9551e1f9e98e3c88ececf31fdd9876"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-surface-broker.ts",
+        "sha256": "adb25fe3c8ebab22dccdb0a86aa61602cc14eacc53241aa1aa81bf75b5a46f87"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-surface-client.ts",
+        "sha256": "a202e1a84ee42ad5d226bb2c95b71b7547129a418c52ca598e7493c267267ad0"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/backend.ts",
+        "sha256": "f245d990fb3705f7af16cda7b9541f27d361f6c60ad8265d2166c02ad9c529ff"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/canvas2d.ts",
+        "sha256": "eb74ebba8840255bb4dd41e54dacb10cc89aeed0d91b58044ccd2adbc0ab4f5c"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/index.ts",
+        "sha256": "01fe889d9c323cc716dde279a99364fb009fc7c93ddc54ba2660138f48b8f0a4"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/renderer.ts",
+        "sha256": "a0543c3fab247280d17f0df6d3bef54eba7f6161fb5d1eb5c9624e51ffe17793"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/surface-cache.ts",
+        "sha256": "9da1bbec55ff3ee01885e9986b4e3d551e1a650f3ee5c468bc4d59200e9745c0"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-device.ts",
+        "sha256": "9ea54afd6127cb47182844dd4347133e40a19f2a8ade64fe5cf1142586c8e025"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-visual-key.ts",
+        "sha256": "bd4a294167db9778c8f70758327453762c84d34800118a1167efe9ffbfeea929"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl2.ts",
+        "sha256": "4f06c59ebce818fa9a2a0747540fc2804efc2f71ca20d9e53acab855551a746e"
+      },
+      {
+        "path": "tests/browser/composition-surfaces.ts",
+        "sha256": "ae14ac9498abf26c83400941ea6c0ecbd82805bb9b444ad4d75fb9f2cc9f1343"
+      },
+      {
+        "path": "tests/helpers/composition-surface-reference.ts",
+        "sha256": "4c2573d231e971c27dac304cd3daea00e16f763e2de783b2d19ea4152cd28ee8"
+      },
+      {
+        "path": "tests/unit/composition-surface-key.test.ts",
+        "sha256": "f06d21adc2dab5bda65e72066e6ba8e0dfa353c4d6add19adb23b950cf789a33"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": ["pnpm", "build"],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "packages/renderer-core/src/composition/render/backend.ts",
+        "packages/renderer-core/src/composition/render/canvas2d.ts",
+        "packages/renderer-core/src/composition/render/webgl-device.ts",
+        "packages/renderer-core/src/composition/render/webgl2.ts",
+        "packages/renderer-core/src/composition/render/webgl-visual-key.ts",
+        "packages/renderer-core/src/composition/render/surface-cache.ts",
+        "packages/renderer-core/src/composition/render/renderer.ts",
+        "packages/renderer-core/src/composition/render/index.ts",
+        "tests/unit/composition-surface-key.test.ts",
+        "packages/execution-runtime/src/composition-surface-broker.ts",
+        "packages/execution-runtime/src/composition-surface-client.ts",
+        "tests/helpers/composition-surface-reference.ts",
+        "tests/browser/composition-surfaces.ts"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": ["pnpm", "check:boundaries"],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/composition-surface-key.test.ts",
+        "tests/unit/composition-keys.test.ts",
+        "tests/unit/composition-exposure.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "unitTests": 32,
+  "browser": {
+    "exitCode": 0,
+    "seconds": 15.392943250015378,
+    "log": "/private/tmp/ce15-surface-browser-3.log"
+  },
+  "regressions": [
+    {
+      "command": ["pnpm", "test:browser:composition-alpha"],
+      "exitCode": 0,
+      "seconds": 7.879548874916509
+    },
+    {
+      "command": ["pnpm", "test:browser:composition-exposure"],
+      "exitCode": 0,
+      "seconds": 20.165663916966878
+    },
+    {
+      "command": ["pnpm", "test:browser:composition-webgl-export"],
+      "exitCode": 0,
+      "seconds": 31.326907833106816
+    }
+  ],
+  "acceptance": {
+    "status": "passed",
+    "environments": [
+      {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      }
+    ],
+    "cases": 24,
+    "frameChecks": 1248,
+    "floating": {
+      "pixels": 256,
+      "bytes": 4096
+    },
+    "nativeStorage": [
+      {
+        "kind": "canvas2d",
+        "pixels": 65536,
+        "bytes": 262144
+      },
+      {
+        "kind": "webgl2",
+        "pixels": 65536,
+        "bytes": 262144
+      }
+    ],
+    "protectedPreparation": {
+      "cases": 12
+    },
+    "reports": [
+      {
+        "backend": "canvas2d",
+        "variant": "isolate",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.30000007152557373,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 13
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "variant": "nested",
+        "statistics": {
+          "leasesGranted": 2,
+          "hits": 6,
+          "waits": 6,
+          "publishedSurfaces": 2,
+          "reservedDiskBytes": 6144,
+          "writtenDiskBytes": 6144,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 2,
+              "surfaceRestores": 0,
+              "surfaceReuses": 14,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.40000009536743164,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "host/static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 1
+                },
+                {
+                  "kind": "surface",
+                  "name": "inside",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 13,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "host/static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "surface",
+                  "name": "inside",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 13,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "host/static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "surface",
+                  "name": "inside",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 13,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "host/static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "surface",
+                  "name": "inside",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "variant": "late",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [0, 0, 0, 0],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 7,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 7
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [0, 0, 0, 0],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 7,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.3999999761581421,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 7
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [0, 0, 0, 0],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 7,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 7
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [0, 0, 0, 0],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 7,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 7
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "variant": "coverage",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 21,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.20000004768371582,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 21
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 21,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 21
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 21,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 21
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 21,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 21
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "variant": "matte",
+        "statistics": {
+          "leasesGranted": 2,
+          "hits": 6,
+          "waits": 6,
+          "publishedSurfaces": 2,
+          "reservedDiskBytes": 6144,
+          "writtenDiskBytes": 6144,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 2,
+              "surfaceRestores": 0,
+              "surfaceReuses": 14,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.30000007152557373,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 1
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 13,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 13,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 13,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "variant": "effect-input",
+        "statistics": {
+          "leasesGranted": 2,
+          "hits": 6,
+          "waits": 6,
+          "publishedSurfaces": 2,
+          "reservedDiskBytes": 6144,
+          "writtenDiskBytes": 6144,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 2,
+              "surfaceRestores": 0,
+              "surfaceReuses": 27,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.49999988079071045,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 14
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 26,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 26,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 26,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "variant": "history",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 52
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.10000002384185791,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 52
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 52
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 52
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "variant": "exposure",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 52
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 52
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.19999992847442627,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 52
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 52
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "variant": "linear",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.19999992847442627,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "variant": "provider",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 1,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 1,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 1,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 1,
+            "providerPreparations": 1,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.19999992847442627,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 13
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "variant": "shape",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.20000004768371582,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 13,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 13
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "variant": "dynamic",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 1
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 2,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 2
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 2,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0.10000002384185791,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 2
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 2,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 2
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 2,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 2
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "isolate",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 136.19999992847443,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "nested",
+        "statistics": {
+          "leasesGranted": 2,
+          "hits": 6,
+          "waits": 6,
+          "publishedSurfaces": 2,
+          "reservedDiskBytes": 6144,
+          "writtenDiskBytes": 6144,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 2,
+              "surfaceRestores": 0,
+              "surfaceReuses": 13,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 137.60000014305115,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "host/static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 1
+                },
+                {
+                  "kind": "surface",
+                  "name": "inside",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 12,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "host/static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "surface",
+                  "name": "inside",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 12,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "host/static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "surface",
+                  "name": "inside",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 12,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "host/static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "surface",
+                  "name": "inside",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "late",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [0, 0, 0, 0],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 6,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 131,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 6
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [0, 0, 0, 0],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 6,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 6
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [0, 0, 0, 0],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 6,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 6
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [0, 0, 0, 0],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 6,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 6
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "coverage",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 20,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 20
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 20,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 34.60000002384186,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 20
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 20,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 20
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 20,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 20
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "matte",
+        "statistics": {
+          "leasesGranted": 2,
+          "hits": 6,
+          "waits": 6,
+          "publishedSurfaces": 2,
+          "reservedDiskBytes": 6144,
+          "writtenDiskBytes": 6144,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 2,
+              "surfaceRestores": 0,
+              "surfaceReuses": 13,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 167.40000009536743,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 1
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 12,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 12,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 12,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 0
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "effect-input",
+        "statistics": {
+          "leasesGranted": 2,
+          "hits": 6,
+          "waits": 6,
+          "publishedSurfaces": 2,
+          "reservedDiskBytes": 6144,
+          "writtenDiskBytes": 6144,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 2,
+              "surfaceRestores": 0,
+              "surfaceReuses": 25,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 202.89999997615814,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 13
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 24,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 24,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 2,
+              "surfaceReuses": 24,
+              "retainedBytes": 6144,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "map",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                },
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "history",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 48,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 48
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 48,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 129.5,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 48
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 48,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 48
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 48,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 48
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "exposure",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 52
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 132.39999997615814,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 52
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 52
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 52,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 52
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "linear",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 155.69999992847443,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "provider",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 1,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 1,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 1,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 1,
+            "providerPreparations": 1,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 161.60000002384186,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 12
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "shape",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 0
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 140,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 12,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 12
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "variant": "dynamic",
+        "statistics": {
+          "leasesGranted": 1,
+          "hits": 3,
+          "waits": 3,
+          "publishedSurfaces": 1,
+          "reservedDiskBytes": 3072,
+          "writtenDiskBytes": 3072,
+          "dynamicPaths": 1
+        },
+        "outcomes": [
+          {
+            "worker": 0,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 2,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 2
+                }
+              ]
+            }
+          },
+          {
+            "worker": 1,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 2,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 2
+                }
+              ]
+            }
+          },
+          {
+            "worker": 2,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 0,
+              "surfaceRestores": 1,
+              "surfaceReuses": 2,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 0,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 0,
+                  "restores": 1,
+                  "reuses": 2
+                }
+              ]
+            }
+          },
+          {
+            "worker": 3,
+            "frameChecks": 13,
+            "lateBefore": [],
+            "providerDrawCalls": 0,
+            "providerPreparations": 0,
+            "statistics": {
+              "independentSurfacePaints": 1,
+              "surfaceRestores": 0,
+              "surfaceReuses": 2,
+              "retainedBytes": 3072,
+              "peakTransferBytes": 3072,
+              "paintAndReadbackMs": 127,
+              "surfaces": [
+                {
+                  "kind": "isolate",
+                  "name": "static",
+                  "paints": 1,
+                  "restores": 0,
+                  "reuses": 2
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "implemented": {
+    "scope": "opt-in createCompositionPreview surfaceCache API and authenticated export-owned HTTP exchange; public production export not connected yet",
+    "preparation": "dependency-first asynchronous actual graph preparation, including full required-coverage traversal; unchanged synchronous effects/matte/history kernels draw canonical surfaces",
+    "boundaries": "retain only existing independent isolate/precomp/project-local targets; direct Canvas draws preserve original native compositing",
+    "identity": "full sorted authored definitions, evaluated values, actual prepared content keys, source hashes/ordinals, backend/storage/color and caller-supplied captured scope hash; no page-local object IDs",
+    "precision": "native straight Canvas RGBA8, premultiplied WebGL RGBA8 and exact offscreen RGBA32F; restored WebGL bounds conservatively include the full texture",
+    "ownership": "consumer reference counts, per-worker retained-byte bound checked before claiming new storage, verified body hashes, opaque worker credentials, original AbortSignal reasons",
+    "counters": "actual independent-surface producer hooks, restores/reuses, retained bytes and surface payload peak; seeding timing includes synchronous drawing and readback, not asynchronous GPU timing",
+    "staticProof": "all static independent surfaces in the fixture paint once globally across four real pages, including coverage and late visibility; actual custom-provider source draw count is one while its preparation count is four",
+    "dynamicProof": "first source state stays immutable; different evaluated transform states use the original draw path; cached/uncached frames remain exact"
+  },
+  "rejectedAttempts": [
+    {
+      "log": "/private/tmp/ce15-surface-renderer-focus-2.log",
+      "failure": "recursive Playwright outcome type inference",
+      "repair": "explicit outcome type"
+    },
+    {
+      "log": "/private/tmp/ce15-surface-renderer-focus-3.log",
+      "failure": "type-only import lint rule",
+      "repair": "import type"
+    },
+    {
+      "log": "/private/tmp/ce15-surface-renderer-focus-4.log",
+      "failure": "redundant named type modifier within import type",
+      "repair": "remove redundant modifier"
+    },
+    {
+      "log": "/private/tmp/ce15-surface-renderer-focus-6.log",
+      "failure": "union backend methods inferred incompatible surface intersections in native storage test",
+      "repair": "shared RenderBackend<Surface> test interface"
+    }
+  ],
+  "logs": [
+    {
+      "path": "/private/tmp/ce15-surface-renderer-focus-1.log",
+      "sha256": "ab6aed06abb8c831b503602243c5bf19df8a31d9e8c7e49600f176b55c147036"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-renderer-focus-2.log",
+      "sha256": "992fcd07ac51d60aa616ebfeb6be1b16bd211f5e09dedecdd5f7dea656064d11"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-renderer-focus-3.log",
+      "sha256": "bf4d0b80bd0052ff87f11bdbbd52288665e8d26ae0bcfae2bff46db0dff641e6"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-renderer-focus-4.log",
+      "sha256": "74eda31a38a30eacf33470f7b31b00c911ea8f3a071064b244ecd20f1b45f2d5"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-renderer-focus-5.log",
+      "sha256": "39d560483bd25cd984016bf2431213f06857ef7183938dcb3352e363e6998f72"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-renderer-focus-6.log",
+      "sha256": "432b3ba17b0052f1232119bead857a3f46b8f83cc9068ed6d3c23236a0624d9f"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-renderer-focus-7.log",
+      "sha256": "c1b4d51ec5f604cca8cb56d2537a211730b139db68eb77af8c9e8d82e938e5ad"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-renderer-focus-8.log",
+      "sha256": "0960c22dd49b5701f8c7bbd2a6c6bb4f3894a6126c55b4d69d2d29277c069793"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-browser-1.log",
+      "sha256": "0a94de7e6e59a5bb7fac6e1e957e3d35640038812a395aded25c0972be44d54b"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-browser-2.log",
+      "sha256": "67d76f8d7a4038fce2c0f956450daf95339be72f82670aa3fae6a8fcd76798c6"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-browser-3.log",
+      "sha256": "702fde7c1d99db1eec3837966fefac09c28ea88047cb4fcc6cc6d1cd4eaa28eb"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-regressions-1.log",
+      "sha256": "abd67b033efe25d05469c9b2a669dc17c987c5d651cae2995864b90eb44d1d98"
+    }
+  ],
+  "limits": [
+    "partial cache integration, not full CE15 static-cache acceptance",
+    "public renderComposition export scope capture and broker connection still pending",
+    "static direct layer over a changing backdrop cannot gain a new isolation boundary; exact strategy still pending",
+    "built-in provider/text/native preparation paint audit and complete native/spatial cache fixture coverage pending",
+    "worker cache byte cap is not a complete aggregate allocation proof; final pixel/worker bounds still pending",
+    "no parallel production export, whole-export layer timing acceptance, 120-second speed proof, full gate or CE15 PR"
+  ],
+  "fullGate": "not run"
+}

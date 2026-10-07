@@ -207,6 +207,44 @@ export function createCanvas2dBackend(
 
   const backend: Canvas2dBackend = {
     version: COMPOSITION_RENDERER_VERSION,
+    surfaceEncoding: "rgba8-straight",
+    captureSurface(surface) {
+      return {
+        encoding: "rgba8-straight",
+        bytes: new Uint8Array(
+          surface.ctx.getImageData(
+            0,
+            0,
+            surface.width,
+            surface.height,
+          ).data.buffer,
+        ),
+      };
+    },
+    restoreSurface(width, height, pixels) {
+      if (
+        pixels.encoding !== "rgba8-straight" ||
+        pixels.bytes.byteLength !== width * height * 4
+      )
+        throw Error(
+          "Canvas retained surface storage differs from its contract",
+        );
+      const surface = backend.createSurface(width, height);
+      surface.ctx.putImageData(
+        new ImageData(
+          new Uint8ClampedArray(
+            pixels.bytes.buffer,
+            pixels.bytes.byteOffset,
+            pixels.bytes.byteLength,
+          ),
+          width,
+          height,
+        ),
+        0,
+        0,
+      );
+      return surface;
+    },
     get allocated() {
       return allocated;
     },

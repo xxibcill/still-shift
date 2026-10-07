@@ -75,3 +75,9 @@ export type {
 export * from "./graphs.ts";
 
 export * from "./media-resources.ts";
+export {
+  type CompositionSurfaceCacheOptions,
+  type CompositionSurfaceExchange,
+  type CompositionSurfaceIdentity,
+  type CompositionSurfaceClaim,
+} from "./surface-cache.ts";

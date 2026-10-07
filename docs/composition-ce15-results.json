@@ -565,5 +565,13 @@
     "runtimeTests": 10,
     "compositionAcceptance": "pending",
     "speedProof": "pending"
+  },
+  "surfaceIntegration": {
+    "status": "existing independent surface integration passed; complete export cache acceptance pending",
+    "record": "docs/composition-ce15-surface-results.json",
+    "relevantFingerprint": "9068285cc2adadd8327f02e2530281d871f8360c377c3d2643096bd2b14602cf",
+    "cases": 24,
+    "frameChecks": 1248,
+    "fullAcceptance": "pending"
   }
 }

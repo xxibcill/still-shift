@@ -30,6 +30,11 @@ import {
 } from "./text.ts";
 import { COMPOSITION_RENDERER_VERSION } from "./version.ts";
 import {
+  CompositionSurfaceCache,
+  type CompositionSurfaceCacheOptions,
+} from "./surface-cache.ts";
+import { compositionRenderGraphs } from "./graphs.ts";
+import {
   prepareCompositionProviders,
   loadProviderFonts,
   type CanvasContentProvider,
@@ -44,6 +49,7 @@ import {
   hasRequiredCompositionCoverage,
   createCompositionCoverageValidator,
   validateRequiredCompositionCoverage,
+  compositionRequiredCoverageGraphs,
 } from "./required-coverage.ts";
 import { validateStoryCompositionCoverage } from "../adapters/story-coverage.ts";
 import { validateCinematicCompositionCoverage } from "../adapters/cinematic-coverage.ts";
@@ -265,6 +271,7 @@ export type CompositionPreview = {
   textBounds: Record<string, Bounds[]>;
   /** Still-only frames are ready synchronously; native media returns its loading promise. */
   prepareFrame(frame: number): Promise<void> | void;
+  surfaceCacheStatistics?(): CompositionSurfaceCache<Surface>["statistics"];
   renderFrame(frame: number): CompositionFrameReport;
   dispose(): void;
 };
@@ -285,6 +292,7 @@ export function createCompositionPreview(
     coverageSeverity?: "error" | "warning";
     /** Carry the authored background alpha; opaque preview remains the default. */
     preserveAlpha?: boolean;
+    surfaceCache?: CompositionSurfaceCacheOptions;
   } = {},
 ): CompositionPreview {
   const validation = validateComposition(composition);
@@ -393,8 +401,20 @@ export function createCompositionPreview(
       kind === "webgl2" ? {} : undefined;
     let coverageDiagnostics: PassageDiagnostic[] = [];
     let initialization: Promise<void> | undefined;
+    let preparedFrame: number | undefined;
+    let surfaceCache: CompositionSurfaceCache<S> | undefined;
     try {
-      if (!resources.media)
+      if (options.surfaceCache)
+        surfaceCache = new CompositionSurfaceCache(
+          backend,
+          options.surfaceCache,
+          (content) =>
+            content.type === "provider"
+              ? drawProvider.contentKey(content)
+              : text.contentKey(content),
+          composition.colorSpace ?? "srgb",
+        );
+      if (!resources.media && !surfaceCache)
         coverageDiagnostics = validateRequiredCompositionCoverage(
           composition,
           backend,
@@ -410,8 +430,17 @@ export function createCompositionPreview(
       rendererVersion: backend.version,
       readPixels: () => backend.readPixels(target),
       textBounds: text.bounds,
+      ...(surfaceCache
+        ? { surfaceCacheStatistics: () => surfaceCache.statistics }
+        : {}),
       prepareFrame(frame) {
-        if (!resources.media) return;
+        if (
+          !Number.isInteger(frame) ||
+          frame < 0 ||
+          frame >= composition.frameCount
+        )
+          throw Error("Frame index outside composition timeline");
+        if (!resources.media && !surfaceCache) return;
         if (!initialization)
           initialization = (async () => {
             if (!hasRequiredCompositionCoverage(composition)) return;
@@ -423,21 +452,42 @@ export function createCompositionPreview(
             );
             try {
               for (let at = 0; at < composition.frameCount; at++) {
-                await resources.media!.prepareFrame(at, {
+                await resources.media?.prepareFrame(at, {
                   textBounds: text.bounds,
                   cull: false,
                 });
+                if (surfaceCache)
+                  for (const { graph } of compositionRequiredCoverageGraphs(
+                    composition,
+                    at,
+                    { textBounds: text.bounds },
+                  ))
+                    await surfaceCache.prepare(graph);
                 coverageDiagnostics.push(...validate(at));
               }
             } finally {
               backend.endFrame?.(false);
             }
           })();
-        return initialization.then(() =>
-          resources.media!.prepareFrame(frame, { textBounds: text.bounds }),
-        );
+        return initialization.then(async () => {
+          await resources.media?.prepareFrame(frame, {
+            textBounds: text.bounds,
+          });
+          if (surfaceCache)
+            for (const { graph } of compositionRenderGraphs(
+              composition,
+              frame,
+              { textBounds: text.bounds },
+            ))
+              await surfaceCache.prepare(graph);
+          preparedFrame = frame;
+        });
       },
       renderFrame(frame) {
+        if (surfaceCache && preparedFrame !== frame)
+          throw Error(
+            "Prepare the absolute composition frame before using retained surfaces",
+          );
         resources.media?.assertReady(frame);
         if (
           !Number.isInteger(frame) ||
@@ -468,6 +518,7 @@ export function createCompositionPreview(
           cache.root = undefined;
           cache.key = undefined;
         }
+        surfaceCache?.dispose();
         backend.dispose();
         resources.media?.dispose();
         canvas.width = composition.width;

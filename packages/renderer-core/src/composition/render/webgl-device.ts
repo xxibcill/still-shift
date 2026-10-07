@@ -549,6 +549,34 @@ export class WebglDevice {
     return this.readRegion(surface, 0, 0, surface.width, surface.height);
   }
 
+  /** Exact offscreen storage, including floating effect intermediates. */
+  readFloats(surface: WebglSurface) {
+    if (!surface.floating || surface.screen)
+      throw Error("Float readback requires an offscreen RGBA32F surface");
+    const gl = this.gl;
+    const previous = gl.getParameter(
+      gl.READ_FRAMEBUFFER_BINDING,
+    ) as WebGLFramebuffer | null;
+    const pixels = new Float32Array(surface.width * surface.height * 4);
+    try {
+      gl.bindFramebuffer(gl.READ_FRAMEBUFFER, surface.framebuffer);
+      gl.readPixels(
+        0,
+        0,
+        surface.width,
+        surface.height,
+        gl.RGBA,
+        gl.FLOAT,
+        pixels,
+      );
+      if (gl.getError() !== gl.NO_ERROR)
+        throw Error("RGBA32F surface readback failed");
+      return pixels;
+    } finally {
+      gl.bindFramebuffer(gl.READ_FRAMEBUFFER, previous);
+    }
+  }
+
   readRegion(
     surface: WebglSurface,
     x: number,

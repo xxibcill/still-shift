@@ -51,9 +51,11 @@ still hold before relying on them.
   completion order pass. Build/lint, 39 focused units/runtime tests, 65 affected
   media/CLI tests and existing WebGL export/native-media browser regressions pass.
   Rejected implicit precision/tag/alpha conversions and H264 CRF18 are retained.
-  The bounded surface-store foundation passes 10 runtime cases; renderer
-  integration and whole-export static paint counts remain pending. New Canvas
-  isolation and synchronous binary XHR are rejected with actual diagnostics.
+  Surface-store foundation `5b20c86` is pushed. The opt-in renderer integration
+  passes 24 four-page cases / 1,248 exact frame comparisons, native byte/float
+  transfer and 12 protected failures. Public export wiring, built-in preparation
+  audit and complete static paint counts remain pending. New Canvas isolation
+  and synchronous binary XHR are rejected with actual diagnostics.
   Global static caching, aggregate memory limits, bounded parallel export,
   statistics, the actual two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
@@ -288,6 +290,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 independent surface integration
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `5b20c86`.
+- **Done:** asynchronous dependency preparation, native surface transfer and
+  authenticated disk-backed sharing through the opt-in preview cache.
+- **Results:** 24 cases / 1,248 exact frame comparisons across four pages; each
+  static independent surface paints once globally. Float storage and 12 protected
+  failures pass, plus build/lint/boundaries, 32 units and affected browser regressions.
+- **Scope:** direct compositing boundaries remain exact. Public export wiring,
+  built-in preparation paint audit and full static/aggregate acceptance are pending.
+- **Next:** bounded ordered workers and production scope capture/statistics;
+  complete cache/size/speed proof and final gate, CE15 PR, then all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [surface evidence](./composition-ce15-surface-results.json).
 
 ### 2026-10-07 — CE15 bounded surface-store foundation
 

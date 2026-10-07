@@ -5,6 +5,33 @@ export type PreparedContentKey = (
   content: ProviderContent | TextContent,
 ) => string | undefined;
 
+export function preparedVisualState(
+  item: unknown,
+  contentKey?: PreparedContentKey,
+): unknown {
+  if (item === null || typeof item !== "object") return item;
+  const record = item as Record<string, unknown>;
+  if (
+    (record.type === "provider" || record.type === "text") &&
+    typeof record.layer === "object" &&
+    record.layer !== null &&
+    typeof record.time === "number"
+  ) {
+    const key = contentKey?.(item as ProviderContent | TextContent);
+    if (key !== undefined)
+      return { ...record, time: 0, sourceTime: 0, visualKey: key };
+  }
+  if (record.effect === "blur.gaussian" && record.params) {
+    const params = record.params as Record<string, unknown>;
+    if (typeof params.radius === "number")
+      return {
+        ...record,
+        params: { ...params, radius: gaussianBoxWidth(params.radius) },
+      };
+  }
+  return item;
+}
+
 /** Immutable definitions get identities; every evaluated drawing value remains in the key. */
 export class WebglVisualKey {
   private readonly definitions = new WeakMap<object, number>();
@@ -25,21 +52,7 @@ export class WebglVisualKey {
       if (item === null || typeof item !== "object") return item;
       if (property === "layer" || property === "sources")
         return this.identity(item);
-      const record = item as Record<string, unknown>;
-      if (record.type === "provider" || record.type === "text") {
-        const key = this.contentKey?.(item as ProviderContent | TextContent);
-        if (key !== undefined)
-          return { ...record, time: 0, sourceTime: 0, visualKey: key };
-      }
-      if (record.effect === "blur.gaussian" && record.params) {
-        const params = record.params as Record<string, unknown>;
-        if (typeof params.radius === "number")
-          return {
-            ...record,
-            params: { ...params, radius: gaussianBoxWidth(params.radius) },
-          };
-      }
-      return item;
+      return preparedVisualState(item, this.contentKey);
     });
   }
 }

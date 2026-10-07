@@ -39,6 +39,15 @@ export type VectorDraw = DrawOp & {
 /** A premultiplied RGBA render target owned by a backend. */
 export type Surface = { readonly width: number; readonly height: number };
 
+export type SurfaceEncoding =
+  | "rgba8-straight"
+  | "rgba8-premultiplied"
+  | "rgba32f-premultiplied";
+export type SurfacePixels = {
+  encoding: SurfaceEncoding;
+  bytes: Uint8Array<ArrayBuffer>;
+};
+
 /**
  * Drawing primitives a composition backend implements. The render graph and its
  * executor are shared, so the CE6 WebGL2 backend only has to provide these.
@@ -53,6 +62,11 @@ export interface RenderBackend<S extends Surface = Surface> {
   frameKey?(root: SurfaceNode): string;
   /** Cache an immutable isolate; the caller releases the returned surface normally. */
   renderIsolate?(op: IsolateOp, like: S, draw: () => S): S;
+  /** Retain an existing independent precomp/local surface without adding isolation. */
+  renderSurface?(node: SurfaceNode, draw: () => S): S;
+  surfaceEncoding?: SurfaceEncoding;
+  captureSurface?(surface: S): SurfacePixels;
+  restoreSurface?(width: number, height: number, pixels: SurfacePixels): S;
   /** A cleared, transparent surface, usually from a pool. */
   createSurface(width: number, height: number): S;
   releaseSurface(surface: S): void;
@@ -169,8 +183,14 @@ export function executeGraph<S extends Surface>(
   backend: RenderBackend<S>,
   graph: RenderGraph,
   target: S,
+  options: { lifecycle?: boolean } = {},
 ): void {
   const surface = (node: SurfaceNode, into?: S): S => {
+    if (!into && backend.renderSurface)
+      return backend.renderSurface(node, () => paintSurface(node));
+    return paintSurface(node, into);
+  };
+  const paintSurface = (node: SurfaceNode, into?: S): S => {
     const dst = into ?? backend.createSurface(node.width, node.height);
     backend.clear(dst, node.background);
     try {
@@ -548,10 +568,10 @@ export function executeGraph<S extends Surface>(
     });
   let completed = false;
   try {
-    backend.beginFrame?.(graph.root);
+    if (options.lifecycle !== false) backend.beginFrame?.(graph.root);
     surface(graph.root, target);
     completed = true;
   } finally {
-    backend.endFrame?.(completed);
+    if (options.lifecycle !== false) backend.endFrame?.(completed);
   }
 }
