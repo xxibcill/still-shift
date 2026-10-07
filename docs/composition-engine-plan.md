@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-10-07
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE5, CE6, CE7, CE8, CE8-L, CE10 and CE11 complete (2026-10-06). CE4c complete (2026-10-06); CE4d complete (2026-10-07). WebGL performance acceptance is deferred to a future version (CE6-P, user approved 2026-10-03). Q1 and Q3 decided
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE5, CE6, CE7, CE8, CE8-L, CE10 and CE11 complete (2026-10-06). CE4c complete (2026-10-06); CE4d and CE13 complete (2026-10-07). WebGL performance acceptance is deferred to a future version (CE6-P, user approved 2026-10-03). Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q6 open; Q7 decided 2026-10-05 and migration complete 2026-10-07.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -376,7 +376,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE10  | TypeScript builder API and CLI                 | C      | CE3, CE4a, CE9, CE12       | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
 | CE11  | Lab composition inspector and graph editor     | C      | CE3, CE10                  | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
 | CE12  | Motion linting                                 | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
-| CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   |                        |                                     | `[~]`  |                                                                                    |
+| CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   | Codex                  | `codex/composition-ce13`            | `[x]`  | [evidence](./composition-ce13-results.json)                                        |
 | CE14  | Mesh warp and puppet pins                      | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
 | CE15  | Output formats, caching and parallel rendering | D      | CE3                        |                        |                                     | `[ ]`  |                                                                                    |
 
@@ -4700,20 +4700,20 @@ See the CE12 and CE4a completion records above for verification evidence.
 **Outcome:** Compositions mix supplied video clips (including AI-generated ones),
 image sequences and sound with stills and graphics.
 
-- [ ] Video layer: SHA-256-pinned file, source frame rate and duration probed with
+- [x] Video layer: SHA-256-pinned file, source frame rate and duration probed with
       ffprobe, time remap/stretch, frame blending from CE7, trimming by in/out.
-- [ ] Deterministic decoding: pre-decode the frames each composition needs with FFmpeg
+- [x] Deterministic decoding: pre-decode the frames each composition needs with FFmpeg
       into a content-addressed cache (keyed by file hash, time mapping, size and pixel
       format) and load them as image frames in the browser. Do not use `<video>`
       element seeking for export. Record whether WebCodecs is acceptable for preview.
-- [ ] Image-sequence layer (`frame_%04d.png` with explicit count and rate).
-- [ ] Audio layers: gain/pan (Animatable), fades, time remap, mixed with the existing
+- [x] Image-sequence layer (`frame_%04d.png` with explicit count and rate).
+- [x] Audio layers: gain/pan (Animatable), fades, time remap, mixed with the existing
       [passage audio](./passage-audio.md) pipeline in FFmpeg; waveform data for CE11.
-- [ ] Colour handling: detect source colour metadata and convert to the composition
+- [x] Colour handling: detect source colour metadata and convert to the composition
       space; reject unsupported inputs with a diagnostic.
-- [ ] Limits: maximum duration, resolution and total decoded-cache size, configurable.
+- [x] Limits: maximum duration, resolution and total decoded-cache size, configurable.
 
-- [ ] Complete CE11's audio waveform lane using decoded native audio source data.
+- [x] Complete CE11's audio waveform lane using decoded native audio source data.
 
 **Acceptance:** A composition combining a video clip with time remap, a still with
 motion and a lower-third shape layer exports with correct sync (± 0 frames) and
@@ -4722,12 +4722,11 @@ matching audio.
 **Verification:** Frame-accurate tests on a synthetic video with burnt-in frame numbers,
 variable-frame-rate rejection or conversion tests, cache reuse tests, audio sync test.
 
-**In progress (2026-10-07):** Codex on `codex/composition-ce13` from CE4d
+**Start record (2026-10-07):** Codex on `codex/composition-ce13` from CE4d
 `adf6cea`. Merged CE16 PR #33 / `65f2ebe4` is audited and attached; its soundtrack
 contract, IO, worker, passage, CLI and optional timeline are reused through scoped
 integration. Fresh checks pass 88 soundtrack / 46 runtime / 40 passage-CLI tests and
-real browser playback/full-range mux. Native media implementation and final full
-acceptance remain pending. Historical CE16 reports are references only. [Current evidence](./composition-ce13-results.json).
+real browser playback/full-range mux. Native media implementation and full acceptance were pending at this start checkpoint. Historical CE16 reports are references only. [Current evidence](./composition-ce13-results.json).
 
 ### CE13 contract and source-clock checkpoint (2026-10-07)
 
@@ -5004,7 +5003,37 @@ Source, tests, fixtures, baselines and assertions remain unchanged. The failed g
 is retained; the serial passes do not replace a fresh complete local `pnpm check`.
 [Evidence](./composition-ce13-results.json).
 
-**Completion record:** _to be filled in._
+### CE13 completion record (2026-10-07)
+
+- **Owner / branch:** Codex on `codex/composition-ce13`, from CE4d `adf6cea`.
+  Final verified source `01fbca2`; audited merged CE16 PR #33 is integrated.
+- **Delivered:** SHA-pinned CFR video and numbered PNG sequences, rational source
+  clocks, trims/remap/blending, actual SDR conversion, bounded verified frame/PCM
+  caches, shared Canvas/WebGL loading/export, native gain/pan/fades and waveforms.
+  Lab audio-clock playback preserves actual source frames, edits/history/saves and
+  draft export; still-only seeks retain synchronous presentation.
+- **Audio integration:** full 48 kHz stereo masters mix before range selection,
+  including outgoing tails and matching native narration without double counting.
+  Protected narration retains its original clock. The private saved CE16 adapter
+  preserves filters, ducking and limiting; default native audio needs no optional DSP.
+  Original-source verification, active cancellation and transactional publication protect
+  final picture/audio/scene/result products.
+- **Acceptance:** actual numbered reverse-remapped video, moving still, lower third
+  and audio pass both backends: 96 exact reverse seeks / 480 playback observations
+  have zero source-frame offset. All stereo samples, final samples, repeated/independent/
+  raw-PNG exports and independent decoded AAC references pass. Preview and export use
+  verified FFmpeg frames; WebCodecs is unadopted without equivalent parity proof.
+- **Complete verification:** immutable `01fbca2` passes pinned local `pnpm check`
+  in 12825.81s, all 63 mandatory commands, 2,103 unit / 46 runtime / 247
+  integration / 14 Python depth tests, every browser/export group, 176 actual family
+  defaults and 176 frozen items / 36,061 frames. Four Canvas family matrices retain
+  1.25× timing policy; all 141 prior visual reference files and the complete tracked
+  snapshot remain exact. Three failed complete gates, the interrupted third attempt and repair diagnostics are retained.
+- **Policy / next:** Actions remain disabled; no tolerance, frozen baseline or native
+  media guard was weakened. Publish/attach the CE13 PR against CE4d PR #47, then start
+  CE15 followed by CE14 on new branches. CE5-X/Q9 and separate CE6-P remain pending.
+- **Evidence:** [complete results](./composition-ce13-results.json),
+  [native media contract](./composition-media.md).
 
 ---
 

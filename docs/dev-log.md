@@ -43,28 +43,25 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE13 in progress (2026-10-07):** `codex/composition-ce13` from completed CE4d
-  `adf6cea`; audited merged [CE16 PR #33](https://github.com/xxibcill/still-shift/pull/33)
-  is integrated. Native sources, bounded SDR/PCM resources, matching exports,
-  Lab waveforms/playback and complete native passage audio pass focused acceptance.
-  Combined preview `b88f196` and native-loader repair `dd2627b` are pushed. Both
-  backends pass 96 exact reverse seeks and 480 playback observations with zero
-  source-frame offset. Preview/export share verified FFmpeg frames; WebCodecs is
-  unadopted without equivalent parity proof. Two complete failed gates are retained:
-  the first exposed loader/optional-Python setup; the second passed static checks,
-  2,103 units / 46 runtime / 247 integration / 14 depth tests and 26 mandatory commands
-  before Commerce's synchronous seek captured a stale still-only frame. Synchronous
-  no-media readiness now passes actual H03 capture, both backend readiness, complete
-  native-media/session and all 21 Commerce fixtures / 126 parity frames / 21 exact
-  backward seeks. Native loading/stale guards, frozen visuals and output versions
-  remain unchanged. Fresh immutable complete `pnpm check` and CE13 PR are pending.
-  Continue CE13 → CE15 → CE14. CE5-X/Q9 and separate CE6-P remain pending.
-  [Evidence](./composition-ce13-results.json).
+- **CE13 complete; PR delivery pending (2026-10-07):** `codex/composition-ce13`
+  from CE4d `adf6cea`, verified `01fbca2`. Audited merged CE16 PR #33 is integrated.
+  Native CFR video/sequences/audio, bounded SDR/PCM resources, waveforms/playback,
+  matching exports and complete passage masters are delivered. Both backends pass
+  96 exact reverse seeks / 480 playback observations with zero source-frame offset.
+  Preview/export share verified FFmpeg frames; WebCodecs remains unadopted without
+  equivalent parity proof. Complete pinned local `pnpm check` passes in 12825.81s:
+  all 63 mandatory commands, 2,103 unit / 46 runtime / 247 integration / 14 depth tests,
+  176 actual defaults and 176 frozen items / 36,061 frames; all four Canvas matrices
+  pass unchanged 1.25× policy. All 141 prior visual files and tracked snapshot bytes
+  remain exact. Three failed gates, the interrupted third attempt and loader/readiness repairs are retained.
+  Canvas 1.45 / WebGL2 0.66 / evaluator 53 / mixer 2 / export 0.6.7 remain current. Publish/attach
+  CE13 PR, then CE15 → CE14 on new branches. No gate remains active. CE5-X/Q9 and
+  separate CE6-P remain pending. [Evidence](./composition-ce13-results.json).
 
 - **CE4d complete (2026-10-07):**
   `codex/composition-ce4d` from CE4c `17666eb`. Native production defaults and old
-  painter retirement are complete. Canvas 1.44 / WebGL2 0.65 / image-plane shader
-  0.4 / depth adapter 0.1 / pipeline 0.13 are current. Immutable `ae2e1f0` passes
+  painter retirement are complete. Its closeout used Canvas 1.44 / WebGL2 0.65 /
+  image-plane shader 0.4 / depth adapter 0.1 / pipeline 0.13. Immutable `ae2e1f0` passes
   complete pinned local `pnpm check` in 11705.18 seconds: 2,005 unit / 46 runtime /
   143 integration / 14 Python tests, all 61 required commands, all browser gates,
   all 176 actual family defaults and 176 frozen items / 36,061 frames. Four Canvas
@@ -73,7 +70,7 @@ still hold before relying on them.
   Lab pending seeks, cache relocation and fresh zipper QA pass. Both prior failed
   gates and rejected diagnostics remain in the [evidence](./composition-ce4d-results.json).
   [PR #47](https://github.com/xxibcill/still-shift/pull/47) is open and attached against CE4c.
-  Continue CE13 → CE15 → CE14 with CE16 audit/reuse.
+  CE13 and its CE16 integration are complete; continue CE15 → CE14.
   CE5-X/Q9 remains pending; CE6-P retains WebGL timing work. No verification job
   remains active and no owner decision blocks the approved order.
   [Continuation](./composition-continuation-handoff-2026-10-07.md).
@@ -273,6 +270,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 complete native media acceptance
+
+- **Agent / branch:** Codex on `codex/composition-ce13`, verified `01fbca2`.
+- **Done:** native CFR video/sequences/audio, actual SDR/PCM preparation, bounded
+  browser resources, Lab waveforms/playback and full passage audio integration.
+- **Results:** complete pinned local `pnpm check` passes in 12825.81s, all 63
+  commands, 2,103/46/247/14 tests, 176 actual defaults/frozen items and four strict
+  Canvas matrices. Numbered video/audio proof passes 96 reverse seeks and 480
+  playback observations with zero source-frame offset. Frozen bytes remain exact.
+- **Retained attempts:** three failed gates, the interrupted third attempt and
+  loader/readiness diagnostics remain in results; no acceptance waiver.
+- **Next:** publish/attach CE13 PR, then CE15 → CE14. CE5-X/Q9 and CE6-P pending.
+- **Records:** [results](./composition-ce13-results.json),
+  [plan](./composition-engine-plan.md#ce13-completion-record-2026-10-07).
 
 ### 2026-10-07 — CE13 synchronous still preview repair
 
