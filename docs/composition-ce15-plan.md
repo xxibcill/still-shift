@@ -910,6 +910,31 @@ query-result/helper and remaining runtime/Node/production/aggregate admission,
 speed and full gate remain pending.
 [Evidence](./composition-ce15-recording-controls-metadata-results.json).
 
+## Accepted device state/native surface checkpoint — 2026-10-08
+
+Actual device state/Map/Set/context-options/VAO controls reserve 1,024 before their
+original producers. Actual native Surface/texture/framebuffer/Surface construction
+reserves metadata control arena 1,024 and original Set slot 40 before production;
+original pixel backing admission and all native parameters/clear/operators remain.
+Original pool reuse keeps the same charged native Surface. Captured actual owners
+release texture/framebuffer/controls after scope exit or allocator-first cleanup;
+Set slot history stays conservatively charged until device disposal. Final cleanup
+visits all actual handles and clears pooled arrays/maps/sets even when native
+cleanup throws null. Incomplete native construction completes framebuffer cleanup
+even if texture destruction fails, preserving the original null.
+
+Build/lint/boundaries and 232 focused tests pass, including eleven device regressions.
+First 230-test pass was followed by review repair and tenth failure regression,
+then compile2. First native audit caught premature texture deletion at scratch cleanup;
+retain actual device/Surface controls and add eleventh regression, then final
+compile3 and native attempt2. Failed native attempt1 is retained. Complete audit 144/8,000, 96 RPC snapshots, 22 moving/blurred
+and ten stationary native frames, actual snapshots, original WebGL, 69 typography
+tests and provider fixtures pass. Glyph 1.384365× meets unchanged 1.5 maximum;
+64 exports preserve 768 complete bodies/frames against pushed `0b73555`. Dynamic
+pool/shader/uniform/dirty/solid/clip/pass/read/swap metadata, helper/remaining runtime/
+Node/production/aggregate admission, speed and full gate remain pending.
+[Evidence](./composition-ce15-device-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

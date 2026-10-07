@@ -92,13 +92,13 @@ still hold before relying on them.
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
   Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
   controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
-  group/command/mark/snapshot/call-input/controller/wrapper metadata now pass 221
-  focused tests, the complete audit, 22 moving/blurred and ten stationary native
-  frames and 96 owned RPC snapshots. Selected Proxy/controller and each original
-  fresh wrapper pre-admit; original detached/native/query/null behavior passes.
-  Late controller failure unwinds actual native save and prior metadata owners.
-  Native snapshots, original WebGL/providers, 69 typography tests and 64 exports /
-  768 prior-exact bodies/frames pass; glyph 1.424679× meets unchanged 1.5 maximum.
+  group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface
+  metadata now pass 232 focused tests, the complete audit, 22 moving/blurred and ten
+  stationary native frames and 96 owned RPC snapshots. Actual device containers/
+  VAO/Surface/framebuffer controls pre-admit and stay through native reuse, then
+  release after scope/allocator exit; original native/null behavior passes. Native
+  snapshots, original WebGL/providers, 69 typography tests and 64 exports / 768
+  prior-exact bodies/frames pass; glyph 1.384365× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -334,6 +334,26 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 WebGL device and native surface controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `0b73555`.
+- **Done:** admit actual device containers/context-options/VAO and Surface/framebuffer
+  controls before producers; retain across scratch and native pool reuse and clear actual owners
+  after scope/allocator exit. Native cleanup visits all handles over null failures.
+- **Results:** build/lint/boundaries, 232 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.384365× meets unchanged 1.5 maximum.
+- **Review repair:** protect incomplete texture/framebuffer cleanup so secondary
+  destructor failure cannot hide original null or prevent framebuffer release;
+  tenth regression; first native audit then caught scratch-owned controls deleting
+  retained texture. Explicitly retain device/Surface controls, add eleventh scratch
+  regression and pass compile3/native2. Failed audit retained.
+- **Next:** dynamic pool/shader/dirty/solid/clip/pass/read/swap metadata, helper and
+  remaining runtime/Node controls, production/aggregate admission, speed/gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [device evidence](./composition-ce15-device-metadata-results.json).
 
 ### 2026-10-08 — CE15 recording controller and method wrappers
 
