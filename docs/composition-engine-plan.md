@@ -4895,6 +4895,21 @@ replaced by the actual returned revision/document check; the combined pass retur
 Whole-passage native PCM/path routing, remaining acceptance and final local gate are
 pending. [Evidence](./composition-ce13-results.json).
 
+### CE13 native passage binding checkpoint (2026-10-07)
+
+Native beat references now retain original video/sequence/audio bindings and absolute
+sequence manifest paths independently of browser rendering resources. Optional source
+authorization checks every actual original PNG and its manifest before preparation;
+private cache/AbortSignal options propagate and original cancellation reasons survive.
+One bounded filename formatter drives decoding and authorization; contract two-digit
+padding widths also work in CLI original-source watching. All 35 relevant regressions
+/ 5 files and static checks pass, including six actual-media reference/authorization/
+embedded video-PCM/padding/watch/cancellation cases. Source JSON and pixel/PCM laws are
+unchanged; decoder versions remain 1. Whole-passage native PCM, matching-audio passage
+transactions/production proof and the complete final gate remain pending. Broad unit/
+runtime/full gate were not repeated for this path-only slice.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

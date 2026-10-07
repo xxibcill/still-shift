@@ -84,8 +84,10 @@ complete native-media/preview-session browser suites. Actual stereo buffer/offli
 samples are exact through the last sample; A/V remains within one frame through two
 seconds and the final audio interval completes. Gain/pan edits/history/save/reload,
 byte-identical draft exports, source-change cancellation/restoration and stale audio
-ownership pass. Whole-passage native PCM/path routing and final acceptance remain
-pending; no final CE13 gate has run.
+ownership pass. Native passage original path/manifest/all-PNG authorization now passes 35 focused
+checks / 5 files and static checks, including actual embedded video/PCM and `%010d`
+source decode/watch. Whole-passage PCM and final acceptance remain pending; no final
+CE13 gate has run.
 CE15 and CE14 remain in flight.
 Private notes contain exact source
 seams and primary references: `/private/tmp/ce13-authority-map-2026-10-07.md`,

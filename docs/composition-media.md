@@ -265,3 +265,15 @@ from frame six preserves the remaining samples through the distinct final values
 Real picture/audio time stays within one frame across two seconds and playback keeps
 the complete final interval. Gain/pan/waveform edit/undo/redo/save/reload, byte-identical
 draft exports, both registered APIs and changed-source stop/restoration pass.
+
+Native passage reference loading keeps original audio/video paths and sequence
+pattern/manifest bindings separately from captured browser PNG/WAV resources. Static
+image/font bindings still use their resolved original paths. An optional authorizer
+checks each sequence manifest and every actual numbered original PNG before media
+preparation; it receives real files rather than a nonexistent pattern filename.
+Private-cache and AbortSignal options propagate through this loader.
+
+Numbered PNG decoding and authorization share the contract's bounded `%01d`…`%099d`
+padding rules. Two-digit widths such as `%010d` now decode and trigger CLI original
+source watching correctly. The source-frame ordinal and pixel/sample laws remain
+unchanged. Native whole-passage audio assembly remains in progress.

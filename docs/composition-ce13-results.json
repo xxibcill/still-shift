@@ -5457,11 +5457,79 @@
       ],
       "fullGate": false,
       "checkpoint": "edda35b"
+    },
+    {
+      "slice": "native passage original bindings and pre-decode authorization",
+      "sourceFingerprint": "sha256:f82086fc7ac427a56b57c86fa420fb904d73b9f3ee07e124d4a2f8ffd3833b88",
+      "sourceFiles": [
+        "packages/animation-engine/src/composition-media-cache.ts",
+        "packages/animation-engine/src/composition-media-sequence.ts",
+        "packages/animation-engine/src/passage-compositions.ts",
+        "tests/integration/passage-native-media.test.ts",
+        "tools/still-shift-cli/src/composition/preview.ts"
+      ],
+      "checks": {
+        "build": "pass",
+        "schema": "pass",
+        "boundaries": "pass",
+        "lint": "pass",
+        "format": "pass",
+        "focused": {
+          "exitCode": 0,
+          "passed": 35,
+          "files": 5,
+          "seconds": 12.18
+        },
+        "newActualNativeMediaCases": 6
+      },
+      "implemented": [
+        "passage native assets retain original video/sequence/audio paths from mediaSourcePaths; still/font bindings continue to use captured static asset paths",
+        "sequence manifest absolute binding preserved independently of captured PNG resources",
+        "optional path authorizer checks each manifest and every actual original numbered PNG before readCompositionSource prepares media",
+        "optional source-preparation options propagate private cache and AbortSignal; cancellation retains its original reason rather than wrapping it as source failure",
+        "one bounded numbered-frame formatter shared by source decoding and passage path authorization",
+        "contract two-digit padding widths now work in actual sequence decoding and CLI original-file watching; existing pixel/PCM mapping laws and decoder versions unchanged"
+      ],
+      "actualProofs": [
+        "real relative sequence/manifest/audio/still references retain canonical original paths and source JSON unchanged",
+        "authorizer can realpath every registered source and never receives a nonexistent numbered pattern",
+        "denied manifest or middle original PNG stops before later audio/static assets and before source preparation",
+        "actual FFV1 video plus explicitly declared embedded stereo PCM retain the same original container path",
+        "actual %010d sequence preparation and source-watch tamper rejection/restoration pass",
+        "early cancelled references perform no read/authorization; original rejection reason retained"
+      ],
+      "failedAttempts": [
+        {
+          "path": "/private/tmp/ce13-passage-path-build-draft.log",
+          "sha256": "sha256:512d0dc9e697113eb123258d42ed4f017d256d4e4211536b82bdcd77050089fa",
+          "reason": "new fixture used an image shorthand; repaired to native size/sources schema"
+        }
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-passage-path-build-draft2.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-passage-path-focused-draft.log",
+          "sha256": "sha256:41bc039622ac8875a64224826f2b2a028aa1bdbe5cab5f32f765c6fa8cb69155"
+        },
+        {
+          "path": "/private/tmp/ce13-passage-path-static-draft.log",
+          "sha256": "sha256:ea99195d685ef5da417c6ae50681cbdc56865536ca48f1daaf1d21a5a7a2830c"
+        }
+      ],
+      "pending": [
+        "complete native beat PCM into whole-passage mixer before selected range trim",
+        "matching-audio passage transactions/production proof and complete final CE13 gate"
+      ],
+      "proofNote": "Relevant actual source/cache/preview/authorizing regressions and native passage units pass. Broad units/runtime and complete milestone gate were not repeated for this path-only slice; required final gate remains pending.",
+      "fullGate": false
     }
   ],
   "fullGates": [],
   "pending": [
-    "native whole-passage PCM mixing before selected range trim and original media path routing",
+    "native whole-passage PCM mixing before selected range trim",
     "remaining combined-media and whole-passage production acceptance plus preview-decoder decision",
     "complete final local pnpm check",
     "publish and attach CE13 PR; continue CE15 then CE14"

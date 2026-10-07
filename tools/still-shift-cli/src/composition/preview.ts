@@ -113,7 +113,7 @@ export async function createProgramPreview(
         if (asset.type === "sequence") {
           const pattern = asset.path
             .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-            .replace(/%0[1-9]d/, "[0-9]+");
+            .replace(/%0[1-9]\d?d/, "[0-9]+");
           sequencePatterns.set(asset.id, new RegExp(`^${pattern}$`));
           server.watcher.add(dirname(asset.path));
         }

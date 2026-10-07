@@ -1,3 +1,4 @@
+import { compositionSequenceFramePath } from "./composition-media-sequence.ts";
 import { createHash, randomUUID } from "node:crypto";
 import {
   lstat,
@@ -195,19 +196,8 @@ async function sourceIdentity(options: Options) {
       "Sequence manifest count differs from descriptor",
       { path: manifestPath },
     );
-  const pattern = /^(.*)%0([1-9])d(.*\.png)$/.exec(source);
-  if (!pattern || source.match(/%/g)?.length !== 1)
-    passageError(
-      "comp-media-format",
-      "Sequence requires one bounded numbered PNG pattern",
-      { path: source },
-    );
-  const paths = Array.from(
-    { length: asset.frameCount },
-    (_, ordinal) =>
-      pattern[1]! +
-      String(asset.firstFrame + ordinal).padStart(Number(pattern[2]), "0") +
-      pattern[3]!,
+  const paths = Array.from({ length: asset.frameCount }, (_, ordinal) =>
+    compositionSequenceFramePath(source, asset.firstFrame + ordinal),
   );
   const authorities = new Set<string>();
   const verify = async () => {
