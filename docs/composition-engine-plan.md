@@ -4950,7 +4950,7 @@ The complete final immutable local `pnpm check` and PR remain pending.
 
 ### CE13 native-loader repair after first gate (2026-10-07)
 
-The first complete local gate at `b88f196` exited1 in integration after static checks,
+The first complete local gate at `b88f196` exited 1 in integration after static checks,
 2,103 unit tests / 209 files and 46 runtime tests / 9 files passed. The runner passed
 an optional environment directory instead of its Python executable. Vite config startup
 also exposed a new PCM parameter property and broad module imports under Node22's
@@ -4989,6 +4989,19 @@ and a worst ratio of 1.113 under the unchanged 1.25 policy; its remaining cases 
 later required commands did not complete. No terminal exit code is available, so this
 attempt is interrupted and incomplete. A fresh complete local gate is required;
 partial commands are not substituted for full acceptance. Source and tests are unchanged.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 fourth gate timing diagnostic (2026-10-07)
+
+The immutable `b8f18e2` full gate exited 1 after 1770.03 seconds at the existing
+typography glyph timing check: reported 1.55× versus its unchanged 1.5 limit. Static
+checks and 35 required commands passed, including complete native media, Commerce
+21 fixtures / 126 parity frames and all relocated reusable packages. The same
+unchanged source previously measured 1.469× and then passed four isolated complete
+serial fixture runs at 1.376–1.414×. All eight fixtures and every captured PNG are
+exact across those diagnostics. No cause is claimed for the timing variation.
+Source, tests, fixtures, baselines and assertions remain unchanged. The failed gate
+is retained; the serial passes do not replace a fresh complete local `pnpm check`.
 [Evidence](./composition-ce13-results.json).
 
 **Completion record:** _to be filled in._

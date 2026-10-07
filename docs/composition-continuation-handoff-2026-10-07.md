@@ -134,3 +134,11 @@ have exact pixels and worst ratio1.113. The gate has no terminal result and rema
 Commerce/later commands are unverified. Preserve its original log/status and separate
 interruption audit. Run the complete unchanged gate from a fresh committed snapshot;
 do not skip or manually combine the partial evidence. Source/tests are unchanged.
+
+The fourth CE13 complete gate (`b8f18e2`) failed at the glyph timing assertion after
+1770.03s and 35 completed commands (reported 1.55×, unchanged 1.5 limit). The same source
+passed all eight typography fixtures in four isolated serial runs at 1.376–1.414×;
+captured PNGs match exactly across all runs. No source/test/fixture/assertion changed,
+and no cause is claimed for the variation. Preserve the failed gate; the focused
+passes do not replace full acceptance. Run the complete local gate from a fresh
+checkpoint snapshot, then deliver CE13 PR and continue CE15 → CE14.

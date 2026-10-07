@@ -5859,6 +5859,79 @@
         "publish/attach CE13 PR, then CE15 and CE14"
       ],
       "proofNote": "The failed second full gate passed all static checks and 26 mandatory commands, then stopped at exact Commerce backward seek. Its complete log remains retained. No acceptance assertion, pixel/timing tolerance, frozen baseline, output version or asynchronous native-media guard was weakened."
+    },
+    {
+      "slice": "unchanged serial typography timing diagnostic after fourth complete-gate attempt",
+      "sourceCheckpoint": "b8f18e2e0d6046320e04bec18c304d83efdc0d35",
+      "sourceChanged": false,
+      "testsChanged": false,
+      "fixturesChanged": false,
+      "existingPerformanceLimit": 1.5,
+      "runs": [
+        {
+          "attempt": 1,
+          "result": "pass",
+          "performanceRatio": 1.4128065406180879,
+          "fixtures": 8,
+          "pixelFiles": 64,
+          "log": {
+            "path": "/private/tmp/ce13-typography-fixture-diagnostic1.log",
+            "sha256": "sha256:0d6f48f56e4c7d591aa783f5b45e61b9ad79f9a74e8f92ae92e8f274431e392d"
+          },
+          "report": {
+            "path": "/private/tmp/ce13-typography-fixture-diagnostic1/acceptance.json",
+            "sha256": "sha256:8a26fb64d3a37457c274548519fbcaee69b3d8cfa6a602e07ffa1fa906c34465"
+          }
+        },
+        {
+          "attempt": 2,
+          "result": "pass",
+          "performanceRatio": 1.3761467898508493,
+          "fixtures": 8,
+          "pixelFiles": 64,
+          "log": {
+            "path": "/private/tmp/ce13-typography-fixture-diagnostic2.log",
+            "sha256": "sha256:47a8bca02b2deb4cb2f9334d802f6f45194fbdf54aa98ead517dc604598b20c8"
+          },
+          "report": {
+            "path": "/private/tmp/ce13-typography-fixture-diagnostic2/acceptance.json",
+            "sha256": "sha256:6015933e0a7d8fcd91cdf1bd357cc2c5f39f63ac3d9a8365ffebab6383829616"
+          }
+        },
+        {
+          "attempt": 3,
+          "result": "pass",
+          "performanceRatio": 1.4140401162623268,
+          "fixtures": 8,
+          "pixelFiles": 64,
+          "log": {
+            "path": "/private/tmp/ce13-typography-fixture-diagnostic3.log",
+            "sha256": "sha256:6a017dce550ff457f6884203f5fe9d0b9bacf0fc4e3da3cbf53a48006337fb69"
+          },
+          "report": {
+            "path": "/private/tmp/ce13-typography-fixture-diagnostic3/acceptance.json",
+            "sha256": "sha256:268d058cfee2b862d4fa65f63c9cdd4e5d59dce1d1f2833f85b458b41d8eaa8c"
+          }
+        },
+        {
+          "attempt": 4,
+          "result": "pass",
+          "performanceRatio": 1.3958904122653073,
+          "fixtures": 8,
+          "pixelFiles": 64,
+          "log": {
+            "path": "/private/tmp/ce13-typography-fixture-diagnostic4.log",
+            "sha256": "sha256:8f51fc2256738084922104b04bf6a87c3a7adb530445e04d93a9da7c39250e5e"
+          },
+          "report": {
+            "path": "/private/tmp/ce13-typography-fixture-diagnostic4/acceptance.json",
+            "sha256": "sha256:924c46f696866d90b549b47a7f66179c14410107fc598eda189972ff0d73a8d6"
+          }
+        }
+      ],
+      "identicalPixelFilesAcrossAllRuns": 64,
+      "fullGate": false,
+      "note": "All eight fixture checks run in each isolated serial diagnostic with the original seven-round median measurement and 1.5 assertion. These passes do not substitute for complete acceptance. The fourth full gate remains failed; a fresh complete gate is required."
     }
   ],
   "fullGates": [
@@ -6156,6 +6229,123 @@
           "seconds": 217.42
         },
         "pythonDepthTests": 14
+      }
+    },
+    {
+      "head": "b8f18e2e0d6046320e04bec18c304d83efdc0d35",
+      "path": "/private/tmp/still-shift-ce13-check-b8f18e2",
+      "archiveSha256": "e4621684fe013f573c8901c477fd3a7a7453026e6abbd413a8798d5f522a1546",
+      "trackedFingerprint": "5dce9e9999427f1bf635723fe59fe4976ccf7990bcbec325bb856b2920f97d45",
+      "trackedFileCount": 2065,
+      "source": "git archive exact HEAD; no owner overlays",
+      "privateCaches": [
+        "node_modules/.vite",
+        "node_modules/.vite-temp",
+        ".venv",
+        ".hf-cache",
+        ".depth-cache"
+      ],
+      "optionalBackend": "/private/tmp/ce13-soundtrack-runtime-draft1",
+      "optionalBackendPython": "/private/tmp/ce13-soundtrack-runtime-draft1/bin/python",
+      "uvCache": "/private/tmp/ce13-check-uv-cache-b8f18e2",
+      "command": "pnpm check",
+      "startedAt": "2026-10-07T05:11:47.424362+00:00",
+      "status": "failed",
+      "log": "/private/tmp/ce13-full-check-b8f18e2.log",
+      "requiredTestCommands": 63,
+      "exitCode": 1,
+      "seconds": 1770.0314137079986,
+      "completedAt": "2026-10-07T05:41:17.476693+00:00",
+      "logSha256": "a38cb6f191ddf5330bef109ffd236c1062e06e76c863de699e7b4e4b364c2db7",
+      "failedStage": "test:browser:typography:fixtures",
+      "passedRequiredTestCommands": [
+        "test:unit",
+        "test:runtime",
+        "test:integration",
+        "test:depth",
+        "test:browser:soundtrack",
+        "test:browser:composition-media",
+        "test:browser:depth",
+        "test:browser:vertical-image",
+        "test:browser:export",
+        "test:golden",
+        "test:browser:cli",
+        "test:browser:batch",
+        "test:browser:illustrated",
+        "test:browser:illustrated:vertical",
+        "test:browser:cinematic",
+        "test:browser:cinematic:vertical",
+        "test:browser:threshold",
+        "test:browser:dolly",
+        "test:browser:lateral",
+        "test:browser:reveal",
+        "test:browser:story",
+        "test:browser:story:activity",
+        "test:browser:story:continuous",
+        "test:browser:passage:authoring",
+        "test:browser:lab-session",
+        "test:browser:composition-session",
+        "test:browser:commerce",
+        "test:browser:commerce-components",
+        "test:browser:commerce-effects",
+        "test:browser:commerce-spatial",
+        "test:browser:reusable-components",
+        "test:browser:reusable-package",
+        "test:browser:reusable-behavior-package",
+        "test:browser:reusable-timing-package",
+        "test:browser:typography"
+      ],
+      "passedRequiredTestCommandCount": 35,
+      "reportedGlyphPerformanceRatio": 1.55,
+      "exactFailedRatio": null,
+      "existingGlyphPerformanceLimit": 1.5,
+      "notReached": [
+        "test:browser:composition-evaluator",
+        "test:browser:composition-expressions",
+        "test:browser:composition-quality",
+        "test:browser:composition",
+        "test:browser:composition-webgl",
+        "test:browser:composition-camera",
+        "test:browser:composition-lighting",
+        "test:browser:composition-shapes",
+        "test:browser:composition-webgl-export",
+        "test:browser:composition-exposure",
+        "test:browser:composition-effects",
+        "test:browser:composition-story-adapter",
+        "test:browser:composition-native-passage",
+        "test:browser:composition-native-passage:webgl",
+        "test:browser:composition-passage",
+        "test:browser:composition-story-fixtures",
+        "test:browser:composition-commerce-adapter",
+        "test:browser:composition-cinematic-adapter",
+        "test:browser:composition-typography-adapter",
+        "test:browser:composition-provider-typography",
+        "test:browser:composition-program",
+        "test:browser:composition-inspector",
+        "test:browser:composition-builder",
+        "test:browser:composition-depth",
+        "test:browser:composition-legacy-adapter",
+        "test:browser:composition-family-defaults",
+        "test:browser:composition-baselines"
+      ],
+      "fullAcceptancePassed": false,
+      "diagnosis": "The same unchanged source passed this fixture at 1.468699837800167 in the interrupted third gate and at 1.3761467898508493 to 1.4140401162623268 in four isolated complete serial reruns. This establishes observed timing variation; no cause is claimed or threshold relaxed.",
+      "trackedFingerprintAfterFailureAndDiagnostics": "5dce9e9999427f1bf635723fe59fe4976ccf7990bcbec325bb856b2920f97d45",
+      "passedBeforeFailure": {
+        "staticChecks": true,
+        "unit": 2103,
+        "runtime": 46,
+        "integration": 247,
+        "pythonDepthTests": 14,
+        "commerce": {
+          "fixtures": 21,
+          "parityFrames": 126
+        },
+        "relocatedReusablePackages": {
+          "ordinaryFrames": 576,
+          "behaviorFrames": 768,
+          "timingFrames": 576
+        }
       }
     }
   ],
