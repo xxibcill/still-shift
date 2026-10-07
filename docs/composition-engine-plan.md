@@ -372,7 +372,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
 | CE6-P | WebGL performance acceptance                    | Future | CE6                  | Codex                  | `codex/composition-ce6p-compatible` | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
-| CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        |                        |                                     | `[ ]`  |                                                                                    |
+| CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        | Codex                  | `codex/composition-ce8`             | `[x]`  | [evidence](./composition-ce8-results.json)                                         |
 | CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
 | CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
 | CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
@@ -3749,23 +3749,23 @@ or full backend timing matrix is claimed. [Fix evidence](./pr-40-posterized-cut-
 **Outcome:** One camera model serves every composition, replacing the separate story
 and cinematic cameras.
 
-- [ ] 3D layer flag: position z, orientation, X/Y/Z rotation, scale z, depth sorting by
+- [x] 3D layer flag: position z, orientation, X/Y/Z rotation, scale z, depth sorting by
       camera-space z with a stable tie-breaker (layer order), 2D layers composited in
       stacking order between 3D groups as AE does.
-- [ ] Camera layer: one-node or two-node (point of interest), zoom/focal length with
+- [x] Camera layer: one-node or two-node (point of interest), zoom/focal length with
       film size, depth of field (focus distance, aperture, blur level) using CE6 lens
       blur, auto-orient toward POI.
-- [ ] Perspective projection of image, solid, text and shape layers. Draw as projective
+- [x] Perspective projection of image, solid, text and shape layers. Draw as projective
       quads on WebGL2; Canvas 2D reference supports affine-only camera moves and reports
       `comp-feature-backend` for true perspective.
-- [ ] Camera shake as a behaviour (CE9) and the existing story jolts mapped to it.
-- [ ] Generalise cinematic coverage checks: warn/fail when any frame exposes the
+- [x] Camera shake as a behaviour (CE9) and the existing story jolts mapped to it.
+- [x] Generalise cinematic coverage checks: warn/fail when any frame exposes the
       composition background through the camera frustum on a layer marked
       `coverage: "required"`.
-- [ ] Optional lights (point, spot, ambient) are **not** in this milestone; record them
+- [x] Optional lights (point, spot, ambient) are **not** in this milestone; record them
       as a follow-up if needed.
 
-- [ ] Complete CE11's camera-frustum inspector overlay using real evaluated cameras.
+- [x] Complete CE11's camera-frustum inspector overlay using real evaluated cameras.
 
 **Acceptance:** Native-composition test scenes demonstrate correct perspective and
 parallax from z depth, depth sorting, depth of field, camera shake and affine 2D
@@ -3776,7 +3776,179 @@ CE8 completion does not require CE4c.
 **Verification:** Projection unit tests against hand-computed points, depth-sort tests,
 DOF blur amount vs focus distance, coverage-check regression tests.
 
-**Completion record:** _to be filled in._
+### CE8 camera/geometry checkpoint (2026-10-06)
+
+`codex/composition-ce8` begins from CE6 `2f1a99c` / [PR #42](https://github.com/xxibcill/still-shift/pull/42).
+The first authored slice adds bounded camera optics/POI and coverage fields,
+4x4 transforms, camera bases, true plane homographies, near/far polygon clipping
+and a declared bounded circle of confusion. Analytic tests use independent
+hand-computed projection and parenting points. No tests, formatter or build have
+run during the coordinated CE6-P quiet window; this checkpoint is unverified.
+Runtime availability remains gated while xyz evaluation and shared projective
+rendering are pending. [Evidence](./composition-ce8-results.json).
+
+Opt-in xyz keyed/separated/spatial sampling is now authored with full 3D arc
+lengths and fallback-sensitive cache keys; its fractional/reverse/shared-cache
+tests remain unexecuted during the same quiet window.
+
+XYZ expression own-key sampling/loops/roving and typed camera/spatial authoring
+paths are also authored, with independent cases pending execution after release.
+
+Shared xyz/camera sampling, explicit optical defaults and runtime control checks
+are authored; their analytic default/clock/optics cases remain unexecuted.
+
+Evaluated xyz/camera property state, sealed stage copies, optical refresh and
+spatial parent world matrices are authored in evaluator source version 45; native
+availability, scope projection, backend integration and verification remain open.
+
+Scoped camera selection after world transforms, native POI/orientation and legacy
+story-jolt input, true projection/bounds/depth/focus state and actual world frustum
+corners are authored; independent scope/switch/focus cases remain unexecuted.
+
+Stable camera-depth ordering within drawable 3D runs preserves 2D barriers,
+authored ties and group ownership; regression cases remain unexecuted.
+
+Camera-facing orientation and bounded local/effect → GPU homography → focus/matte
+rendering, projective group clips/named inputs and transactional capability checks
+are authored in WebGL2 source version 0.55.0. Native validation stays gated and
+verification remains deferred; limitations are explicit in the evidence record.
+
+Native camera/3D activation, optical writer/cycle rules, explicit 2D-constraint
+limits, z-aware path orientation, isolated all-frame required-layer alpha checks
+and xyz/POI/optical track editing are authored but unverified. Canvas source
+version 1.40.0 and export worker 0.6.2 identify the new spatial behavior.
+
+Actual projective inspection and quality geometry, real world-space camera
+frustum insets and bounded focus overscan are authored. Required-layer alpha
+checks now include actual shutter samples. Analytic/track/footprint cases remain
+unexecuted during CE6-P's quiet window; native acceptance and full verification follow.
+
+Source review retains parent mirror axes through camera-facing orientation and
+updates exact optional capture state/graph summaries/constraint diagnostics.
+The additional mirror regression remains unexecuted during the quiet window.
+
+Projected group masks now rasterize bounded local path/feather support before
+actual camera projection, then perform global inversion and mask combination.
+POI tangent editing and mask analytic/integration/backend rejection cases are
+authored; all checks remain deferred. Git reported auto packing at the prior
+checkpoint; no process remained at 00:57 UTC, and later Git calls use gc.auto=0.
+
+Ten native camera scenes and independent ray/plane/affine reference code are
+authored, with seek/hash/hardware/export checks, alpha failure cases and serial
+1080p cost measurement. The native camera browser group joins the local gate.
+No check has run and no baseline is generated; acceptance remains pending.
+
+Camera builder constructors preserve scoped optical defaults; xyz static setters
+and z tracks, a native example and real inspector edit/frustum/save checks are
+authored. Authoring reference/guidance source is updated; generated outputs and
+all source/native/full checks remain pending until the quiet window is released.
+
+Source review adds implicit secondary-optics expression dependencies and cycle
+validation, declares primary focal expressions before film writes, and authors
+reverse-order/driver regressions. Surface callback optional typing and camera
+switch field names are repaired; all checks remain deferred until release.
+
+Final camera-basis source review rejects singular transforms before POI fallback
+and adds normalized scale/roll cases. CE6-P explicitly released its quiet window
+at 01:24 UTC; isolated focused checks begin with no CE8 acceptance claimed yet.
+
+Focused pinned verification now passes toolchain/schema/type/lint/boundaries,
+139 affected units and 384 camera browser frames. Independent affine, perspective,
+checker and clipping references are exact. Eight expected source-alpha/backend
+failures and the real POI/xyz/frustum/undo/save inspector flow pass. Initial
+syntax/type/unit/inventory, affine edge and checker quantizer failures are retained
+in CE8 evidence with their repairs. Native hardware/exports/stored hashes, serial
+cost evidence and the complete final-code local gate remain pending.
+
+All 1,840 unit tests pass. The first native run passed 384 forward, 384 reverse
+frames, 108 seeks, 36 production/repeat/raw exports and 12 independent preview
+exports, then rejected Canvas hardware affine PSNR 39.84 under the unchanged 40
+threshold. Native CPU raster reference/bitmap coverage repairs now pass all 36
+hardware comparisons at maximum channel delta one. The committed repaired source
+still needs complete native repeat/cost and the final local gate; no frozen
+legacy baseline or acceptance threshold changed.
+
+Committed repaired native correctness/export/failure/inspector/hardware checks
+pass, and the new CE8-only baseline contains 384 hashes and 36 sample PNGs.
+The optional profiling phase rejected its one-sample configured blur count;
+configuration now keeps blur disabled with a schema-valid count and asserts the
+actual exposure count. A successful native profile repeat and the final complete
+local gate remain pending; the failed command is retained as incomplete evidence.
+
+Complete native acceptance on final code `5effcf3` now exits zero: 384 forward,
+384 reverse frames, 108 seeks, exact stored hashes and independent oracle pixels,
+36 production/repeat/raw exports and 12 independent preview exports byte-identical.
+Eight expected failures and inspector checks pass. All 36 actual hardware checks
+pass unchanged policy (33 exact, three mask cases near; maximum channel delta one).
+Six serial 1080p cost cases retain cold/two-warmup/five-measure records and actual
+exposure counts: medians 12.3 / 61.3 ms for one plane, 77.1 / 319.4 ms for eight,
+618.8 / 2,556.3 ms for 64 at one/four samples. This is measured feature cost, not a
+real-time claim; CE6-P remains separate. The complete final-code gate and milestone
+PR are pending, with no frozen legacy regeneration.
+
+The first complete-gate attempt on `3665326` is retained as failed/incomplete:
+1,840 units, 46 runtime and 138 integration tests passed; a stale example inventory
+expected nine after CE8 added a tenth. The strict inventory is repaired and its
+focused test compiles/validates all ten programs and pinned assets. Runtime and
+native correctness/hardware/cost fingerprints are unchanged. The complete gate
+will repeat on the committed test repair; no later suite was skipped or claimed.
+
+The second complete gate on `3b277d5` is failed/incomplete: all unit/runtime/
+integration/depth checks and preceding browser groups passed, then calibration-pan
+passed pixels (delta one) but measured 1.285× above the unchanged 1.25 timing limit.
+The remaining matrices and frozen-baseline stages did not run. Compiled spatial
+and reference-writer inventories avoid per-frame scans; root binding IDs avoid
+allocation. Pinned isolated calibration now passes at 1.227×; 146 focused units
+and build pass. Timing varies, so the complete committed-code gate must repeat;
+no policy relaxation or manually resumed pass is claimed.
+
+**Completion record (2026-10-06):** Complete on `codex/composition-ce8`, final code `16262ec`, from CE6 `2f1a99c`.
+Scoped one/two-node cameras, XYZ parenting and orientation, stable depth runs,
+projective image/solid/text/shape planes, clipping, camera-facing geometry,
+bounded focus blur, actual alpha coverage and inspector frusta are delivered.
+Canvas remains an affine camera reference; true perspective requires WebGL2.
+Precomps remain flattened and geometric constraints retain their 2D scope.
+
+Complete pinned local `pnpm check` passes 1,841 unit, 46 runtime, 139 integration,
+14 depth tests, every required browser group and all 176 frozen baselines /
+36,061 frames without regeneration. All full Canvas family matrices pass unchanged
+pixel/timing policy. Native acceptance retains 384 forward, 384 reverse frames /
+108 seeks, exact stored hashes and independent affine/ray references, expected
+coverage/backend failures, real inspector edits, repeated/independent exports and
+actual hardware comparisons. Serial final-code 1080p costs are refreshed separately
+with cold/two-warmup/five-measure rows and verified exposure sample counts;
+these are bounded-feature costs, with CE6-P performance targets still separate.
+Initial correctness/hardware/fixture failures and both incomplete full gates remain
+in the evidence. Compiled spatial/reference inventories and root binding IDs keep
+ordinary scopes cheap without changing pixels or acceptance policy.
+
+Evaluator E45, Canvas 1.40.0, WebGL2 0.55.0 and composition export 0.6.2 identify
+the new capability. Native Canvas references and affine bitmap coverage use pinned
+CPU raster preparation. CE11's real camera-frustum follow-through is complete;
+audio waveform follow-through remains CE13. Cinematic family camera parity follows
+in CE4c. [PR #43](https://github.com/xxibcill/still-shift/pull/43) is open and attached against CE6; begin CE8-L on a new branch.
+[Evidence](./composition-ce8-results.json).
+
+### PR #43 review follow-up (2026-10-08)
+
+Four inline P2 findings have separate repairs from reviewed `9b53db3`: retain XYZ
+smooth velocities during Bézier edits; settle camera writers before validating
+derived optics; tolerate machine-scale affine roundoff; and project spatial null
+guides through their own scope's camera/world transform. Genuine projective effect
+relations and invalid final/independent optical controls still reject. Evaluator,
+Canvas, WebGL and export cache identities are 48 / 1.40.5 / 0.55.4 / 0.6.4.
+
+Independent Standards and Spec reviews have no findings. Original-code regressions
+fail for each finding; focused suites pass and 28 Canvas/WebGL guide comparisons
+and reverse seeks are exact. One complete pinned local `pnpm check` passes 2,265
+unit, 46 runtime, 224 integration and 14 depth tests, all 57 required commands,
+full Canvas family pixel/timing policy and 176 frozen items / 36,061 frames without
+regeneration. Native camera hashes, repeat/independent exports, inspector edits and
+36 hardware comparisons pass unchanged policy. The source fingerprint is unchanged
+through the 98.5-minute gate. The four repairs use one final normal push to existing
+PR #43, which integrates `main` after #42 merged. Owner review/merge remain; CE6-P
+stays separate and GitHub Actions disabled.
+[Repair evidence](./pr-43-followup-fix-results.json).
 
 ---
 

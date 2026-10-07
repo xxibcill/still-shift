@@ -44,8 +44,12 @@ export type CompiledComposition = {
   expressions: Map<string, ExpressionBinding[]>;
   /** Expressions or path auto-orient may read layers' pre-constraint stage values. */
   stageReads: boolean;
+  /** Only compositions with reference writers need per-frame axis binding checks. */
+  referenceWrites: boolean;
   /** Native shape geometry or a follow-path diagnostic needs located work budgets. */
   shapeWork: boolean;
+  /** Ordinary 2D scopes do not allocate spatial world/camera geometry. */
+  spatialScopes: Set<CompositionScope>;
   paths: Map<string, PropertyPath>;
   /** Static per-scope selections, so time-shifted evaluations stay cheap. */
   solo: Map<CompositionScope, Set<string> | null>;
@@ -53,7 +57,7 @@ export type CompiledComposition = {
 };
 const compiled = new WeakMap<Composition, CompiledComposition>();
 export const layerKey = (scope: readonly string[], id: string) =>
-  [...scope, id].join("/");
+  scope.length ? [...scope, id].join("/") : id;
 
 export function resolvedPath(
   compiled: CompiledComposition,
@@ -90,6 +94,7 @@ export function compileComposition(comp: Composition): CompiledComposition {
     periodic: new Map(),
     expressions: new Map(),
     stageReads: false,
+    referenceWrites: false,
     shapeWork: scopes.some(
       (scope) =>
         scope.layers.some((layer) => layer.type === "shape") ||
@@ -98,6 +103,13 @@ export function compileComposition(comp: Composition): CompiledComposition {
         ),
     ),
     paths: new Map(),
+    spatialScopes: new Set(
+      scopes.filter((scope) =>
+        scope.layers.some(
+          (layer) => layer.threeD === true || layer.type === "camera",
+        ),
+      ),
+    ),
     solo: new Map(),
     mattes: new Map(),
   };
@@ -105,6 +117,8 @@ export function compileComposition(comp: Composition): CompiledComposition {
     map: Map<string, T[]>,
     binding: T,
   ) => {
+    if (binding.path.segments[0]!.name === "constraintReference")
+      result.referenceWrites = true;
     const key = layerKey(binding.path.scope, binding.path.layer);
     const bindings = map.get(key) ?? [];
     bindings.push(binding);

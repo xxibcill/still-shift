@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8-content",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "background": "#000000",
+  "assets": [
+    {
+      "id": "checker",
+      "type": "image",
+      "path": "checker.png",
+      "sha256": "sha256:adf2c15720830a9d2258acf36260af6029a6563619712a0148b3c0a3802d9fe9",
+      "width": 48,
+      "height": 40
+    },
+    {
+      "id": "plex",
+      "type": "font",
+      "path": "../../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "weight": "600"
+    }
+  ],
+  "layers": [
+    {
+      "id": "camera",
+      "type": "camera"
+    },
+    {
+      "id": "image",
+      "type": "image",
+      "size": [48, 40],
+      "sources": [
+        {
+          "asset": "checker"
+        }
+      ],
+      "threeD": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [14, 15, 0],
+        "rotationY": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": -25
+            },
+            {
+              "frame": 31,
+              "value": 25,
+              "interpolation": "linear"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "text",
+      "type": "text",
+      "text": "XYZ",
+      "fontAsset": "plex",
+      "fontSize": 22,
+      "color": "#ffffff",
+      "threeD": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [66, 20, 0],
+        "rotationX": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": -18
+            },
+            {
+              "frame": 31,
+              "value": 18,
+              "interpolation": "linear"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shape",
+      "type": "shape",
+      "contents": [
+        {
+          "id": "line",
+          "type": "path",
+          "path": {
+            "closed": false,
+            "vertices": [
+              [0, 0],
+              [100, 0],
+              [200, 20]
+            ],
+            "outTangents": [
+              [20, -30],
+              [20, 30],
+              [0, 0]
+            ],
+            "inTangents": [
+              [0, 0],
+              [-20, -30],
+              [-20, 0]
+            ]
+          }
+        },
+        {
+          "id": "paint",
+          "type": "stroke",
+          "width": 10,
+          "color": "#eec344",
+          "style": "brush"
+        },
+        {
+          "id": "trim",
+          "type": "trim-paths",
+          "end": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 36,
+                "value": 1,
+                "interpolation": "linear"
+              }
+            ]
+          }
+        }
+      ],
+      "threeD": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [42, 64, 50],
+        "scale": [0.15, 0.15, 1],
+        "rotationY": 25
+      }
+    }
+  ]
+}

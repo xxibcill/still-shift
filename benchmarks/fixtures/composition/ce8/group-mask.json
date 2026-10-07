@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8-group-mask",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "background": "#000000",
+  "assets": [],
+  "layers": [
+    {
+      "id": "camera",
+      "type": "camera"
+    },
+    {
+      "id": "group",
+      "type": "group",
+      "size": [64, 48],
+      "clip": true,
+      "threeD": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [30, 24, 0],
+        "rotationY": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 31,
+              "value": 40,
+              "interpolation": "linear"
+            }
+          ]
+        }
+      },
+      "masks": [
+        {
+          "id": "cut",
+          "mode": "subtract",
+          "inverted": true,
+          "feather": 2,
+          "opacity": 0.8,
+          "path": {
+            "closed": true,
+            "vertices": [
+              [0, 0],
+              [54, 0],
+              [54, 42],
+              [0, 42]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "inside",
+      "type": "solid",
+      "size": [80, 65],
+      "color": "#eb8d55",
+      "threeD": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [0, 0, 0]
+      },
+      "parent": "group"
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import {
   type CompiledExpression,
 } from "./expressions.ts";
 import type { CompositionLayer } from "./layers.ts";
+import { cameraOpticalDependencies } from "./camera-dependencies.ts";
 import type { IssueReporter } from "./primitives.ts";
 import {
   parsePropertyPath,
@@ -263,13 +264,36 @@ function addExpressionDependencies(
     targets.set(node, list);
   }
   const readNodes = new Set<string>();
+  const motionOptics = new Map<string, string[]>();
+  if (
+    [comp, ...(comp.precomps ?? [])].some((scope) =>
+      scope.layers.some((layer) => layer.type === "camera"),
+    )
+  )
+    for (const text of [
+      ...(comp.drivers ?? []).map((driver) => driver.target),
+      ...(comp.periodic ?? []).map(
+        (motion) => motion.target ?? `${motion.node}.${motion.property}`,
+      ),
+    ]) {
+      const resolved = resolvePropertyPath(comp, text);
+      if (!isResolvedProperty(resolved) || resolved.layer?.type !== "camera")
+        continue;
+      const node = [...resolved.scope, resolved.layer.id].join("/"),
+        names = motionOptics.get(node) ?? [];
+      names.push(resolved.path.slice(resolved.path.lastIndexOf(".") + 1));
+      motionOptics.set(node, names);
+    }
   const referenceWrites = new Map<string, boolean[]>();
   const markReference = (node: string, segments: PropertyPathSegment[]) => {
     if (segments[0]!.name !== "constraintReference") return;
-    const axes = referenceWrites.get(node) ?? [false, false];
+    const axes = referenceWrites.get(node) ?? [false, false, false];
     const axis = segments[1]?.name;
-    if (axis !== "y") axes[0] = true;
-    if (axis !== "x") axes[1] = true;
+    if (axis === undefined) axes.fill(true);
+    else {
+      const index = ["x", "y", "z"].indexOf(axis);
+      if (index >= 0) axes[index] = true;
+    }
     referenceWrites.set(node, axes);
   };
   for (const expression of expressions)
@@ -298,9 +322,21 @@ function addExpressionDependencies(
       referenceWrites.get(node) ?? [],
     ))
       addDependency(graph, name, readNode({ ...path, segments }, layer), []);
-    for (const target of targets.get(node) ?? []) {
+    const writers = targets.get(node) ?? [],
+      optics =
+        layer.type === "camera"
+          ? cameraOpticalDependencies(layer, path.segments[0]!.name, [
+              ...writers.map((target) => target.segments[0]!.name),
+              ...(motionOptics.get(node) ?? []),
+            ])
+          : [];
+    for (const target of writers) {
       const source = `${node}#${segmentKey(target.segments)}`;
-      if (source !== name && segmentsOverlap(target.segments, path.segments))
+      if (
+        source !== name &&
+        (segmentsOverlap(target.segments, path.segments) ||
+          optics.includes(target.segments[0]!.name))
+      )
         addDependency(graph, name, source, target.origin, true);
     }
     return name;

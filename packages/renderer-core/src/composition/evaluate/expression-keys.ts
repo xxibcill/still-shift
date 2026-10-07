@@ -16,7 +16,8 @@ import {
 } from "@still-shift/scene-contract";
 import type { Point } from "../../node-transform.ts";
 import { passageError } from "../../passage-diagnostics.ts";
-import { color, scalar, vector } from "./sample.ts";
+import { color, scalar, vector, vector3 } from "./sample.ts";
+import type { Point3 } from "./spatial-geometry.ts";
 import { lerp, zip, type ExpressionValue } from "./expression-math.ts";
 
 type Raw = unknown;
@@ -26,8 +27,15 @@ export type OwnCurve = {
   sample: (time: number) => number | number[];
   /** Joint 2D keys with optional spatial tangents, for `rove()`. */
   joint?: Keyed<Point>;
+  /** Opt-in xyz keys, including an implicit z for authored xy position/scale keys. */
+  joint3?: { value: Keyed<Point3>; fallback: Point3 };
   /** Separate dimensions define a path through their independently eased samples. */
-  separated?: { owner: object; fps: number };
+  separated?: {
+    owner: object;
+    fps: number;
+    dimensions: 2 | 3;
+    fallbackZ: number;
+  };
 };
 
 const VECTOR_AXIS: Record<string, number> = { x: 0, y: 1, z: 2 };
@@ -61,6 +69,8 @@ export function ownCurve(
   let raw: Raw;
   let kind: "scalar" | "vector" | "color" = "scalar";
   let axis: string | undefined;
+  let spatial = false;
+  let fallbackZ = 0;
   switch (head!.name) {
     case "contents": {
       if (layer.type !== "shape") return undefined;
@@ -82,15 +92,24 @@ export function ownCurve(
         layer.transform?.[
           next!.name as keyof NonNullable<CompositionLayer["transform"]>
         ];
-      if (["anchor", "position", "scale"].includes(next!.name)) {
+      if (["anchor", "position", "scale", "orientation"].includes(next!.name)) {
         kind = "vector";
         axis = last?.name;
+        spatial = layer.threeD === true || layer.type === "camera";
+        fallbackZ = next!.name === "scale" ? 1 : 0;
       }
+      break;
+    case "pointOfInterest":
+      raw = layer.type === "camera" ? layer.pointOfInterest : undefined;
+      kind = "vector";
+      axis = next?.name;
+      spatial = true;
       break;
     case "constraintReference":
       raw = layer.constraintReference;
       kind = "vector";
       axis = next?.name;
+      spatial = layer.threeD === true || layer.type === "camera";
       break;
     case "color":
       raw = "color" in layer ? layer.color : undefined;
@@ -140,14 +159,33 @@ export function ownCurve(
         axis === undefined ? undefined : COLOR_AXIS[axis],
       ),
     };
+  const fallback: Point3 = [0, 0, fallbackZ];
   const sample = component(
-    (time) => vector(raw, time, fps, [0, 0]),
+    (time) =>
+      spatial
+        ? vector3(raw, time, fps, fallback)
+        : vector(raw, time, fps, [0, 0]),
     axis === undefined ? undefined : VECTOR_AXIS[axis],
   );
   if (axis !== undefined) return { frames, sample };
+  if (spatial && isKeyed(raw))
+    return {
+      frames,
+      sample,
+      joint3: { value: raw as Keyed<Point3>, fallback },
+    };
   return isKeyed(raw)
     ? { frames, sample, joint: raw as Keyed<Point> }
-    : { frames, sample, separated: { owner: raw as object, fps } };
+    : {
+        frames,
+        sample,
+        separated: {
+          owner: raw as object,
+          fps,
+          dimensions: spatial ? 3 : 2,
+          fallbackZ,
+        },
+      };
 }
 
 const mod = (a: number, b: number) => ((a % b) + b) % b;
@@ -315,14 +353,57 @@ function roveTable(keys: Keyed<Point>["keys"]) {
   return { points, lengths };
 }
 const roveTables = new WeakMap<object, ReturnType<typeof roveTable>>();
+const roveTables3 = new WeakMap<
+  object,
+  Map<number, { points: Point3[]; lengths: number[] }>
+>();
+function roveTable3(joint: NonNullable<OwnCurve["joint3"]>) {
+  let tables = roveTables3.get(joint.value);
+  if (!tables) roveTables3.set(joint.value, (tables = new Map()));
+  const cached = tables.get(joint.fallback[2]);
+  if (cached) return cached;
+  const points: Point3[] = [],
+    lengths: number[] = [];
+  joint.value.keys.slice(0, -1).forEach((key, index) => {
+    const end = joint.value.keys[index + 1]!;
+    const out = (key.spatialOut as number[] | undefined) ?? [0, 0, 0];
+    const incoming = (end.spatialIn as number[] | undefined) ?? [0, 0, 0];
+    for (let i = index ? 1 : 0; i <= 128; i++) {
+      const t = i / 128;
+      points.push(
+        [0, 1, 2].map((axis) => {
+          const a = key.value[axis] ?? joint.fallback[axis]!;
+          const b = end.value[axis] ?? joint.fallback[axis]!;
+          return (
+            (1 - t) ** 3 * a +
+            3 * (1 - t) ** 2 * t * (a + (out[axis] ?? 0)) +
+            3 * (1 - t) * t ** 2 * (b + (incoming[axis] ?? 0)) +
+            t ** 3 * b
+          );
+        }) as Point3,
+      );
+    }
+  });
+  points.forEach((point, index) =>
+    lengths.push(
+      index
+        ? lengths[index - 1]! +
+            Math.hypot(
+              ...point.map((value, axis) => value - points[index - 1]![axis]!),
+            )
+        : 0,
+    ),
+  );
+  const table = { points, lengths };
+  tables.set(joint.fallback[2], table);
+  return table;
+}
 const separatedRoveTables = new WeakMap<
   object,
-  Map<number, ReturnType<typeof roveTable>>
+  Map<string, { points: number[][]; lengths: number[] }>
 >();
 const ROVE_SUBDIVISIONS = 128;
 const SPRING_SAMPLES_PER_PERIOD = 512;
-const MAX_SEPARATED_ROVE_POINTS =
-  2 * COMPOSITION_LIMITS.maxKeys * ROVE_SUBDIVISIONS + 1;
 
 /** Natural spring frequency bounds oscillation speed, including damped responses. */
 function springRate(raw: unknown, start: number) {
@@ -355,13 +436,14 @@ function springRate(raw: unknown, start: number) {
 }
 
 function separatedSubdivisions(curve: OwnCurve) {
-  const { owner, fps } = curve.separated!;
-  const axes = owner as { x: unknown; y: unknown };
+  const { owner, fps, dimensions } = curve.separated!;
+  const axes = owner as { x: unknown; y: unknown; z?: unknown };
   const subdivisions = curve.frames.slice(0, -1).map((start, index) => {
     const duration = curve.frames[index + 1]! - start;
     const frequency = Math.max(
       springRate(axes.x, start),
       springRate(axes.y, start),
+      dimensions === 3 ? springRate(axes.z, start) : 0,
     );
     return Math.max(
       ROVE_SUBDIVISIONS,
@@ -372,10 +454,12 @@ function separatedSubdivisions(curve: OwnCurve) {
     );
   });
   const points = 1 + subdivisions.reduce((total, count) => total + count, 0);
-  if (points > MAX_SEPARATED_ROVE_POINTS)
+  const maxPoints =
+    dimensions * COMPOSITION_LIMITS.maxKeys * ROVE_SUBDIVISIONS + 1;
+  if (points > maxPoints)
     passageError(
       "comp-expression-value",
-      `rove(): resolving this separated path requires ${points.toLocaleString("en-US")} points; at most ${MAX_SEPARATED_ROVE_POINTS.toLocaleString("en-US")} are allowed`,
+      `rove(): resolving this separated path requires ${points.toLocaleString("en-US")} points; at most ${maxPoints.toLocaleString("en-US")} are allowed`,
       { path: "expressions" },
     );
   return subdivisions;
@@ -384,18 +468,18 @@ function separatedSubdivisions(curve: OwnCurve) {
 /** Sample each interval in the union of separate key times, retaining axis easing. */
 function separatedRoveTable(curve: OwnCurve) {
   const subdivisions = separatedSubdivisions(curve);
-  const points: Point[] = [];
+  const points: number[][] = [];
   const lengths: number[] = [];
   curve.frames.slice(0, -1).forEach((start, index) => {
     const duration = curve.frames[index + 1]! - start;
     const count = subdivisions[index]!;
     for (let i = index ? 1 : 0; i <= count; i++) {
-      const point = curve.sample(start + (duration * i) / count) as Point;
+      const point = curve.sample(start + (duration * i) / count) as number[];
       const previous = points.at(-1);
       lengths.push(
         previous
           ? lengths.at(-1)! +
-              Math.hypot(point[0] - previous[0], point[1] - previous[1])
+              Math.hypot(...point.map((axis, i) => axis - previous[i]!))
           : 0,
       );
       points.push(point);
@@ -405,6 +489,7 @@ function separatedRoveTable(curve: OwnCurve) {
 }
 
 function rovingPath(curve: OwnCurve) {
+  if (curve.joint3) return roveTable3(curve.joint3);
   if (curve.joint) {
     let table = roveTables.get(curve.joint);
     if (!table)
@@ -412,11 +497,12 @@ function rovingPath(curve: OwnCurve) {
     return table;
   }
   if (!curve.separated) return undefined;
-  const { owner, fps } = curve.separated;
+  const { owner, fps, dimensions, fallbackZ } = curve.separated;
+  const key = `${fps}/${dimensions}/${fallbackZ}`;
   let tables = separatedRoveTables.get(owner);
   if (!tables) separatedRoveTables.set(owner, (tables = new Map()));
-  let table = tables.get(fps);
-  if (!table) tables.set(fps, (table = separatedRoveTable(curve)));
+  let table = tables.get(key);
+  if (!table) tables.set(key, (table = separatedRoveTable(curve)));
   return table;
 }
 

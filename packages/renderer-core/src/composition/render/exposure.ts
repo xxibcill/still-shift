@@ -1,8 +1,10 @@
 import type { Composition } from "@still-shift/scene-contract";
+import { compileComposition } from "../evaluate/compile.ts";
 import {
   compositionExposureFrames,
   evaluateCompositionExposure,
 } from "../evaluate/exposure.ts";
+import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
 import type { PassageDiagnostic } from "../../passage-diagnostics.ts";
 import {
   buildRenderGraph,
@@ -73,6 +75,14 @@ export function renderCompositionExposure<S extends Surface>(
       stationary = false;
       break;
     }
+  // All spatial shutter samples must pass before accumulation can touch the retained frame.
+  if (compileComposition(comp).spatialScopes.size)
+    for (const candidate of graphs())
+      if (candidate.graph.spatial)
+        requireSpatialCapabilities(candidate.graph.root, {
+          projective: !!backend.project && !!backend.applyProjectiveClips,
+          validateSurface: backend.validateSpatialSurface,
+        });
   if (stationary) {
     const reused =
       cache?.root !== undefined &&

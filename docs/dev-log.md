@@ -43,6 +43,33 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #43 follow-up repairs verified (2026-10-08):** isolated
+  `codex/pr43-followup-fixes` from reviewed `9b53db3`. All four findings have
+  inline PR comments and separate repairs: XYZ smooth handles, settled camera
+  optics, affine roundoff and spatial null-guide coordinates. Independent
+  Standards and Spec reviews have no findings. Complete pinned local `pnpm check`
+  passes 2,265 unit / 46 runtime / 224 integration / 14 depth tests, all 57
+  required commands, full Canvas family pixel/timing checks and 176 frozen
+  items / 36,061 frames without regeneration. All 28 guide pixel comparisons
+  and reverse seeks are exact; 36 hardware comparisons pass unchanged policy.
+  The source fingerprint stays exact through the 98.5-minute gate. Cache identities
+  are E48 / 1.40.5 / 0.55.4 / export 0.6.4. Delivery uses four finding-specific
+  commits and one final normal push; owner review/merge remain. CE6-P stays
+  owner-deferred and Actions disabled. [Evidence](./pr-43-followup-fix-results.json).
+
+- **PR #43 conflict integration verified (2026-10-07):** isolated PR head
+  `c0c8f5d` integrates `main` at `f1cc8fe0`. CE8 cameras/XYZ/coverage and
+  upstream CE6-P/effect/clock/shape/builder/inspector/soundtrack repairs are retained.
+  Combined evaluator/Canvas/WebGL identities are 47 / 1.40.3 / 0.55.2.
+  Complete fast checks pass 2,247 units; 46 runtime / 224 integration tests,
+  native camera/XY inspector/hardware/coverage, affected renderer/quality/inspector
+  browsers and all 176 frozen items / 36,061 frames pass unchanged assertions.
+  All 57 required commands, 516 fixture/visual files and 228 log headings remain.
+  No new full `pnpm check` is claimed; parent gates remain historical.
+  Conflict resolution is complete; owner review/merge remain.
+  CE6-P performance remains owner-deferred; GitHub Actions stay disabled.
+  [Evidence](./pr-43-conflict-resolution-results.json).
+
 - **PR #42 follow-up fixes verified (2026-10-07):** isolated
   `codex/pr42-followup-fixes` from reviewed `b2f2048`. Both inline P2 findings
   have separate fixes: immutable normalized plugin descriptors and hidden-source
@@ -51,7 +78,7 @@ still hold before relying on them.
   40 exact Canvas/WebGL cases, renderer/export/exposure groups, native catalogue
   hashes/seeks/repeated and independent exports, 36 hardware comparisons and all
   176 frozen items / 36,061 frames pass. Renderer identities are 1.40.2 / 0.54.2.
-  One final normal push delivers both finding commits; owner review/merge remain.
+  Both findings are integrated through merged PR #42 in `main` at `f1cc8fe0`.
   Full `pnpm check` was not rerun; parent gates remain historical and CE6-P stays
   owner-deferred. Frozen references and thresholds remain intact.
   [Evidence](./pr-42-followup-fix-results.json).
@@ -64,8 +91,8 @@ still hold before relying on them.
   tests, ten focused renderer/export/inspector browser groups, native effect
   catalogue and all 176 frozen items / 36,061 frames pass unchanged assertions.
   No new full `pnpm check` is claimed; parent gates stay historical.
-  CE6-P performance remains owner-deferred. Resolution is complete; PR review
-  and merge remain pending.
+  CE6-P performance remains owner-deferred. Integrated through merged PR #42
+  in `main` at `f1cc8fe0`.
   [Evidence](./pr-42-conflict-resolution-results.json).
 
 - **PR #42 review fixes validated (2026-10-06):** `codex/pr42-review-fixes`
@@ -78,8 +105,32 @@ still hold before relying on them.
   seeks, repeated/independent exports and 36 hardware comparisons pass.
   Original reference files and thresholds remain intact; corrected Canvas transition
   coverage uses a separate versioned exact oracle. Earlier failures and timing
-  controls are retained in the evidence. Owner review and merge remain.
+  controls are retained in the evidence. Integrated through merged PR #42 in `main`.
   [Evidence](./pr-42-fix-results.json).
+
+- **PR #43 review fixes complete (2026-10-06):** `codex/pr43-fixes` from CE8
+  `9d8f33a`. Three findings are posted inline; inherited projected primitive blur
+  is repaired in `e16d962`, authored XY tangents in `c36c686`, and ancestor-group
+  required coverage in the final finding commit. Delivery uses one commit per finding.
+  Full pinned `pnpm check` passes 1,851 unit / 46 runtime / 139 integration /
+  14 depth tests, every required browser suite and 176 frozen baselines / 36,061 frames.
+  Camera acceptance includes 24 exact blur comparisons, 72 ancestor-coverage cases,
+  three XY inspector flows, XYZ controls and 36 hardware comparisons.
+  Baselines are unchanged; GitHub Actions are verified disabled. No implementation
+  blocker remains; PR #43 owner review/merge remain. Earlier CE8 gate evidence is historical.
+  [Fix evidence](./pr-43-fix-results.json).
+
+- **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
+  final code `16262ec`. Scoped cameras, XYZ transforms, projective planes,
+  stable depth, focus blur, actual coverage and real inspector frusta are delivered.
+  Full pinned `pnpm check` passes 1,841 unit / 46 runtime / 139 integration /
+  14 depth tests, all required browser groups and 176 frozen baselines / 36,061
+  frames. Full Canvas family matrices pass unchanged pixel/timing policy.
+  Final-code native correctness, exports, seeking and hardware checks pass;
+  serial 1080p costs are refreshed. Earlier failures remain in the evidence.
+  [PR #43](https://github.com/xxibcill/still-shift/pull/43) targets `main`; conflict integration is tracked above. CE8-L follows.
+  CE6-P targets remain separate.
+  No owner decision is pending. [Evidence](./composition-ce8-results.json).
 
 - **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
   CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
@@ -89,7 +140,7 @@ still hold before relying on them.
   36,061 frames; all three full Canvas family matrices pass unchanged policy.
   Native software/hash/seek/independent and repeated exports pass; 36 hardware
   comparisons pass their perceptual policy, and all 78 serial 1080p costs are recorded.
-  [PR #42](https://github.com/xxibcill/still-shift/pull/42) targets `main`; conflict integration is tracked above. CE8 follows on its separate branch.
+  [PR #42](https://github.com/xxibcill/still-shift/pull/42) is merged into `main` at `f1cc8fe0`; CE8 integration is tracked above.
   CE6-P targets remain separate; no owner decision is pending.
   [Evidence](./composition-ce6-completion-results.json).
 
@@ -215,6 +266,11 @@ still hold before relying on them.
   [Gram conditioning fix evidence](./pr-39-gram-fix-results.json),
   [conditioning-margin fix evidence](./pr-39-conditioning-margin-fix-results.json),
   [radius-zero fix evidence](./pr-39-zero-radius-fix-results.json).
+
+- **Verification quiet window released (2026-10-06):** CE6-P's timed brackets,
+  unchanged strict family audits, required exports and CE7 byte comparisons are
+  terminal. Explicit release at 01:24 UTC permits planned CE8 verification.
+  No checkout, policy or frozen baseline is changed by this coordination.
 
 - **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
   Local holds/posterization, source loops, freeze remap, deterministic adaptive
@@ -364,7 +420,7 @@ still hold before relying on them.
   Full `pnpm check` passes: 1,510 unit, 46 runtime, 139 integration and 14 depth
   tests, all browser suites and 176 frozen baselines / 36,061 frames. Initial failures
   and repairs are retained. [PR #37](https://github.com/xxibcill/still-shift/pull/37) is open and attached; begin CE5 on a new branch. Native camera
-  frusta and audio waveforms follow CE8/CE13. [Evidence](./composition-ce11-results.json).
+  frusta are complete in CE8; audio waveforms follow CE13. [Evidence](./composition-ce11-results.json).
 
 - **PR #36 current-head fixes verified (2026-10-06):** isolated
   `codex/pr36-current-review-fixes` from `8be5fc7`; three findings posted inline.
@@ -728,9 +784,57 @@ still hold before relying on them.
   must not use TypeScript constructor parameter properties: Node's strip-only mode
   rejects them and five Lab integration suites fail.
 
-_Last updated 2026-10-07 by Codex for PR #42 conflict resolution._
+_Last updated 2026-10-08 by Codex for PR #43 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #43 null-guide repair and final verification
+
+- **Agent / branch:** Codex on isolated `codex/pr43-followup-fixes`, from `9b53db3`.
+- **Done:** project spatial null guides from their evaluated world transform and
+  owning camera; complete the fourth finding-specific repair commit.
+- **Results:** five original-code regressions fail before repair; 49 related tests
+  pass afterward, and 28 Canvas/WebGL guide comparisons/reverse seeks are exact.
+  Complete pinned local `pnpm check` passes 2,265 units, 46 runtime, 224 integration,
+  14 depth tests, all required browser groups and 176 frozen items / 36,061 frames.
+  Full Canvas family pixel/timing policy and the source fingerprint remain intact.
+- **Review:** independent Standards and Spec reviews have no findings.
+- **Next:** owner review/merge of PR #43; all four repairs use one final normal
+  push. CE6-P remains separate and Actions stay disabled.
+- **Records:** [repair evidence](./pr-43-followup-fix-results.json) and
+  [plan follow-up](./composition-engine-plan.md#pr-43-review-follow-up-2026-10-08).
+
+### 2026-10-07 — PR #43 follow-up review repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr43-followup-fixes`, from `9b53db3`.
+- **Scope:** four posted P2 findings, each repaired in a separate commit.
+- **Done:** preserve XYZ smooth spatial velocities across adjacent Bézier edits;
+  validate secondary camera optics after their expression/motion writers settle.
+  Accept machine-roundoff affine effect coordinates while rejecting real perspective.
+  Project spatial null guides through their own scope's camera and world transform.
+- **Results:** original-code regressions fail for all four findings; focused groups
+  pass 51 / 86 / 32 / 49 tests. All 28 Canvas/WebGL coordinate comparisons and
+  reverse seeks are exact. Independent Standards and Spec reviews have no findings.
+- **Attempts:** corrected signal/anchor fixtures and browser preview frames;
+  controls require visible effect paint. Detailed attempts remain in the evidence.
+- **Next:** finish full local verification and one final normal push. Frozen
+  references, thresholds and all 57 required commands remain; Actions stay disabled.
+- **Records:** [review/fix evidence](./pr-43-followup-fix-results.json).
+
+### 2026-10-07 — PR #43 main conflict integration
+
+- **Agent / branch:** Codex on isolated PR head `c0c8f5d`, integrating `main` `f1cc8fe0`.
+- **Done:** retain cameras/XYZ/ancestor coverage with all upstream renderer,
+  clocks, shape, builder, inspector, quality and soundtrack fixes; advance caches.
+- **Results:** fast checks pass 2,247 units; 46 runtime / 224 integration tests,
+  native camera acceptance, nine affected browser groups and 176 frozen baselines /
+  36,061 frames pass. Fifteen new integration regressions retain Z tracks/dependencies,
+  roving, projected scale/reflections and orientation timing. Source fingerprint stays exact.
+- **Attempts:** initial formatting stop and late orientation finding are retained;
+  final complete fast checks reran after repairs. No full `pnpm check` is claimed.
+- **Next:** owner review/merge of the updated existing PR branch.
+  CE6-P performance stays deferred and Actions disabled.
+- **Records:** [resolution evidence](./pr-43-conflict-resolution-results.json).
 
 ### 2026-10-07 — PR #42 hidden-source echo history repair
 
@@ -1538,6 +1642,337 @@ _Last updated 2026-10-07 by Codex for PR #42 conflict resolution._
 - **Next:** one commit each for nested failure cleanup and transition coverage;
   complete final local verification, then push the three commits together.
 - **Records:** [PR #42 fix evidence](./pr-42-fix-results.json).
+
+### 2026-10-06 — PR #43 ancestor-group coverage fix
+
+- **Agent / branch:** Codex on `codex/pr43-fixes`, after XY fix `c36c686`.
+- **Done:** required alpha retains ancestor masks, mattes, effects and echo;
+  unrelated siblings cannot hide holes, and captured source groups remain intact.
+- **Results:** 35 focused units and 72 coverage cases pass. Final full pinned
+  `pnpm check` passes 1,851 unit / 46 runtime / 139 integration / 14 depth,
+  every required browser suite and all 176 frozen baselines / 36,061 frames.
+- **Rejected / repaired:** current-child visibility prematurely bypassed ancestor
+  echo; out-point/zero-opacity regressions now pass. Initial full gate stopped on
+  a copied Python CLI's stale shebang; isolated environment repair and full rerun pass.
+- **Open / next:** owner review/merge of PR #43. One finding per commit;
+  push after the final commit. Baselines unchanged; GitHub Actions verified disabled.
+- **Records:** [Fix evidence](./pr-43-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759936).
+
+### 2026-10-06 — PR #43 XY spatial tangent fix
+
+- **Agent / branch:** Codex on `codex/pr43-fixes`, after blur fix `e16d962`.
+- **Done:** authored XY keys retain two-component tangents on cameras and 3D
+  artwork; valid XYZ editing stays three-dimensional.
+- **Results:** 14 focused units and all three real XY inspector edit/undo/redo/save
+  flows pass; build and changed-file lint pass. Original key values stay XY.
+- **Open / next:** ancestor-group required coverage, final local verification and
+  one push remain. GitHub Actions stay disabled.
+- **Records:** [Fix evidence](./pr-43-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759928).
+
+### 2026-10-06 — PR #43 inherited projected blur fix
+
+- **Agent / branch:** Codex on `codex/pr43-fixes` from CE8 `9d8f33a`.
+- **Done:** shared positive primitive-blur inheritance expands actual local
+  projection support; collapsed affine precomps preserve outer-scope painting.
+  Evaluator/Canvas/WebGL/export identities identify the changed pixels.
+- **Results:** 20 focused units and 24 exact identity-camera pixel comparisons;
+  pinned toolchain/imports, build and changed-file lint pass. Baselines unchanged.
+- **Open / next:** fix XY tangent editing and ancestor-group coverage separately;
+  final local verification and one push remain. GitHub Actions stay disabled.
+- **Records:** [Fix evidence](./pr-43-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759920).
+
+### 2026-10-06 — CE8 camera milestone complete
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, final code `16262ec`.
+- **Done:** native camera/XYZ/plane/coverage/inspector capability; compiled ordinary
+  scope fast paths retain implicit-reference writers and exposure preflight.
+- **Results:** complete gate passes 1,841 units, 46 runtime, 139 integration,
+  14 depth tests, every browser group and 176 frozen baselines / 36,061 frames.
+  Full Canvas matrices, native oracles/hashes/seeks/exports/hardware pass unchanged
+  policies; final-code serial 1080p costs refreshed without competing workloads.
+- **Limits:** Canvas affine-only; flat precomps and 2D constraints; CPU raster
+  boundaries and non-real-time high-plane costs documented. CE6-P remains separate.
+- **Next:** [PR #43](https://github.com/xxibcill/still-shift/pull/43) is open and attached; CE8-L and remaining approved milestones follow.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 ordinary-scope hot-path checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `3b277d5`.
+- **Failure:** second full gate passed unit/runtime/integration/depth and preceding
+  browser groups, then calibration-pan pixels passed but timing was 1.285× > 1.25.
+  Remaining family matrices and frozen-baseline stages did not execute.
+- **Repair:** compiled spatial/reference-writer inventories avoid repeated scans;
+  root binding IDs avoid allocation. Existing writer windows/axes are retained.
+- **Focused result:** pinned isolated calibration passes at 1.227×, delta one;
+  146 focused units and build pass. Timing variability remains documented.
+- **Next:** repeat complete gate on committed code; milestone PR remains pending.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 final-gate example inventory repair
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `3665326`.
+- **Failure:** full gate passed 1,840 units and 46 runtime tests, then stopped
+  at one stale integration inventory: nine expected examples, ten present.
+  Other 138 integration tests passed; later suites did not execute.
+- **Repair / focused result:** strict inventory now requires ten; all ten
+  programs compile and validate pinned assets in the focused integration test.
+  Runtime code and complete native acceptance/cost evidence are unchanged.
+- **Next:** complete final-code gate repeat; no incomplete pass claimed.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 native acceptance checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, final code `5effcf3`.
+- **Results:** complete native acceptance with profile exits zero: 384 forward,
+  384 reverse frames / 108 seeks, exact stored hashes and independent oracles;
+  36 production/repeat/raw exports and 12 independent preview MP4s identical.
+  All eight expected failures, inspector checks and 36 actual hardware comparisons
+  pass; maximum channel delta one. Six serial 1080p cost cases recorded.
+- **Limits:** costs range 12.3 ms (one plane / one sample) to 2,556.3 ms (64 / four),
+  without a real-time claim. CE6-P remains separate; no frozen regeneration.
+- **Next:** full pinned final-code local gate, milestone PR, then CE8-L.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 native baseline and cost fixture checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `23ba343`.
+- **Done:** new CE8-only baseline (384 hashes / 36 PNGs); corrected the optional
+  one-sample cost fixture to use disabled blur with schema-valid configuration.
+  Actual one/four exposure counts are asserted. Four native PNGs inspected.
+- **Results:** committed repaired native correctness/export/inspector/hardware
+  checks pass. Optional cost phase then rejected samples=1; failure retained.
+  No complete command or final gate pass is claimed yet.
+- **Next:** complete native profile repeat, final gate, milestone PR then CE8-L.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 hardware raster checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `f9385cc`.
+- **Done:** native Canvas 3D references and GPU affine bitmap coverage use pinned
+  CPU raster preparation. Ordinary 2D selection is unchanged; true perspective
+  and GPU composition remain GPU operations. Sampling/raster domains documented.
+- **Results:** all 1,840 units pass. First native run passed all frames/seeks and
+  36 production/repeat/raw plus 12 independent exports, then failed hardware
+  Canvas affine PSNR 39.84 against unchanged 40. Repaired hardware: all 36
+  comparisons pass, maximum channel delta one.
+- **Next:** committed-source native repeat/cost, full gate, CE8 PR then CE8-L.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 focused verification checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `a73841f`.
+- **Done:** format/generated schema/reference/skill and type/test repairs;
+  corrected camera-facing columns, native affine bitmap coverage and projective
+  quantizer boundary handling, preserving legacy placement and pixel tolerances.
+- **Results:** pinned toolchain, schema, build, lint and boundaries pass;
+  139 affected units and 384 native browser frames pass. Independent affine,
+  perspective/checker/clipping pixels are exact; eight expected failures and
+  real inspector tangent/frustum/undo/save checks pass.
+- **Rejected:** initial build/unit/inventory and raster/precision failures retained
+  in evidence. Initial all-unit run: 1,839 pass / one inventory failure, repaired.
+- **Next:** repaired all-unit run; native hardware/exports/cost; full final gate and PR.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 camera basis checkpoint and verification release
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `6e28b42`.
+- **Repair:** singular camera world transforms fail before POI fallback;
+  scale/roll analytic cases and basis semantics are authored.
+- **Coordination:** CE6-P explicitly released the reserved quiet window at
+  01:24 UTC after its timing/audit/export/provenance workload became terminal.
+- **Verification:** no CE8 check run yet; pinned isolated focused checks start now.
+- **Next:** repair focused findings, native acceptance, full gate and milestone PR.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 derived optics source review checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `0779c31`.
+- **Repair:** derived focal/zoom reads include primary optic and film expression
+  dependencies; validation rejects implicit optical feedback. Primary focal
+  expressions settle before film writes, including motion-selected modes.
+- **Authored:** reverse-order/driver/cycle regressions; surface callback optional
+  typing and camera-switch fixture field names corrected by source review.
+- **Verification:** unexecuted; coordinated CE6-P quiet window remains active.
+- **Next:** focused checks, native acceptance and the complete local gate.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 builder and inspector source checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `a2c302e`.
+- **Repair:** camera constructors retain the scope-based default rather than the
+  2D origin. XYZ static setters and z tracks preserve ordinary 2D tuples.
+- **Authored:** native camera example, guidance source/notes and real inspector
+  checks for POI edits, world frustum corners, undo/redo and source saving.
+- **Verification:** unexecuted during CE6-P quiet window; schema/reference/skill
+  generation remains pending. Lighting availability remains CE8-L.
+- **Next:** focused repair, native acceptance and complete local gate after release.
+- **Records:** [CE8 evidence](./composition-ce8-results.json),
+  [camera example](../examples/composition/10-native-camera.ts).
+
+### 2026-10-06 — CE8 native acceptance source checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `2e26ae4`.
+- **Authored:** ten native scenes, pinned checker/alpha-hole/font resources,
+  independent ray/plane and affine references, all-frame seek/hash checks,
+  hardware comparisons, repeated/raw/independent exports and coverage failures.
+  The native browser group joins the local gate; serial 1080p costs are opt-in.
+- **Verification:** none run, no baseline generated; CE6-P quiet window remains
+  active. Source fixtures and test code do not constitute acceptance evidence.
+- **Next:** focused repair, real inspector flow, native acceptance and full gate.
+- **Records:** [CE8 evidence](./composition-ce8-results.json),
+  [native scene guide](../benchmarks/fixtures/composition/ce8/README.md).
+
+### 2026-10-06 — CE8 projected group mask checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after `1bf1b93`.
+- **Scope:** local mask bounds/support project through the actual group plane;
+  inversion/combination follows projection. Surface/backend preflight, analytic
+  coverage cases and camera POI tangent editing are authored.
+- **Verification:** unexecuted; CE6-P quiet window remains active. Git reported
+  background auto packing at the previous commit; process inspection at 00:57 UTC
+  found none remaining. Further Git calls disable automatic packing per command.
+- **Next:** independent native acceptance and focused/full checks after release.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 mirror and typed integration review checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after inspection `c17af4d`.
+- **Review repair:** camera-facing orientation uses an absolute-scale parent basis,
+  retaining authored mirror axes in the artwork plane; an explicit regression is
+  authored. Capture frames omit absent optional state and graph summaries include
+  the new operation; the old unavailable-3D case now tests 2D-constraint rejection.
+- **Verification:** source review only; no formatter/build/test/matrix/export ran.
+  The CE6-P quiet window remains active.
+- **Next:** projective group masks and independent native acceptance after release.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 projected inspection and focus overscan checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after native activation `93b92b2`.
+- **Authored:** actual homographic anchors/paths/tangents and nested inspection;
+  camera inset from evaluated world-space near/focus corners; projected quality
+  bounds, scale, velocity and signatures, with owning-scope coverage semantics.
+- **Review repair:** focus uses bounded screen overscan before lens blur and crop,
+  preserving offscreen artwork; required coverage checks actual shutter samples.
+- **Verification:** analytic/track/allocation cases are authored but unexecuted.
+  The CE6-P quiet window still holds builds, formatters, tests, matrices and exports.
+- **Next:** focused checks after release, then independent native acceptance/full gate.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 native activation and coverage checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after projective path `c95eb8e`.
+- **Authored:** native validation/activation, deterministic 3D path orientation and
+  camera-writer rules; actual required-layer alpha across active scope frames,
+  optional warning policy and preflight of all spatial exposure samples.
+- **Authoring:** xyz/orientation/POI/optics tracks and dimensional tangent edits;
+  native integration/shake/order/validation cases are authored but unexecuted.
+- **Limits:** constraints retain their explicit 2D geometry and reject spatial
+  target/reference ancestry; light availability remains CE8-L.
+- **Verification:** no formatter/build/test/matrix/export ran; CE6-P holds the lane.
+- **Next:** genuine projective inspector/quality geometry, focused checks after release.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 projective rendering checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after stable order `20f6dd9`.
+- **Authored:** camera-facing orientation retaining anchors/linear geometry; bounded
+  local artwork → GPU homography → focus lens blur → scope matte/composite path,
+  projective clips and named inputs; nested capability checks precede target writes.
+- **Review:** unbounded local effect domains and focus support are explicit;
+  perspective collapse/echo/cross-plane coordinate limits have structured errors.
+- **Verification:** analytic and transactional cases are authored but unexecuted.
+  Builds, formatters, tests, matrices and exports remain held for CE6-P.
+- **Next:** native validation, genuine camera/plane inspection and coverage acceptance.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 stable 3D order checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after scoped camera `62c04fa`.
+- **Authored:** stable camera-depth ordering within drawable 3D runs, retaining
+  authored ties, 2D barriers and group ownership; anchor depth survives empty bounds.
+- **Verification:** ordering regressions are authored but unexecuted. No formatter,
+  build, test, browser matrix or export ran during the active CE6-P quiet window.
+- **Next:** billboard orientation and projective rendering, coverage and inspection.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 scoped camera/projection checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after evaluated state `50ac556`.
+- **Authored:** active scoped camera selection after world transforms, native
+  orientation/parent-space POI, local defaults and legacy story-jolt camera input;
+  actual homography/bounds/depth/focus state and world-space frustum corners.
+- **Review:** one-node geometry must omit the default POI; camera selection reuses
+  the scope map. Independent switch/solo/parent/scope/jolt/focus cases are authored.
+- **Verification:** no test, formatter, build, browser matrix or export has run;
+  the CE6-P quiet window remains active. Native availability is still gated.
+- **Next:** billboard orientation, ordered projective graph/backend, real camera
+  inspection and coverage; focused verification after release before acceptance.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 evaluated spatial state checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after sampling `179d903`.
+- **Authored:** actual xyz values/property writes, sealed camera/POI/orientation
+  copies, primary optic refresh, spatial-scope parent world matrices and structured
+  optical/world diagnostics; evaluator source version 45. Ordinary 2D scopes
+  retain their affine path; native camera/3D availability remains gated.
+- **Verification:** component/copy/optical refresh cases are authored but unrun;
+  the CE6-P reservation still holds builds, formatters, tests, matrices and exports.
+- **Next:** scope camera projection and shared graph/backend integration, followed
+  by focused checks after release before claiming any slice verified.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 shared camera sampling checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after expression/path `e7221a4`.
+- **Authored:** shared xyz/camera defaults and keyed sampling, one/two-node/POI
+  selection, focal/film conversion, optical range/clip-order checks and explicit
+  ambiguous-control rejection. Camera sampling uses the supplied layer clock.
+- **Verification:** exact-default/fractional/optics cases are authored but unrun;
+  builds, formatters, tests, browser matrices and exports remain held for CE6-P.
+- **Next:** evaluated state/parent matrices/scope cameras, then shared projective
+  rendering; verify all authored slices when the release arrives.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 spatial expression/path checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, after sampler `0f83ff2`.
+- **Authored:** xyz own-key curves/loop offsets/full-distance roving; implicit-z
+  scale defaults; typed camera optics/POI and spatial transform/reference paths.
+  Existing 2D expression roving arithmetic is unchanged.
+- **Verification:** independent interpolation/loop/roving/path cases are authored
+  but unexecuted; the CE6-P quiet window still holds all verification workloads.
+- **Next:** connect evaluated spatial/camera values, parent world matrices and
+  scope camera selection; verify authored slices after the release message.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 xyz sampling checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`; preceding checkpoint `88dd444`.
+- **Authored:** opt-in static/grouped/separated xyz sampling, three-dimensional
+  spatial arc lengths/speed handles, and explicit implicit-z/cache defaults.
+  The existing 2D sampler and its arithmetic are unchanged.
+- **Verification:** analytic fractional/reverse/shared-cache cases are authored;
+  no test, formatter or build ran during the coordinated CE6-P quiet window.
+- **Next:** focused verification after release; integrate xyz property reads,
+  expressions/baking and scope camera evaluation before projective rendering.
+- **Records:** [CE8 evidence](./composition-ce8-results.json).
+
+### 2026-10-06 — CE8 camera contract and analytic geometry checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce8`, from CE6 `2f1a99c`.
+- **Authored:** bounded camera optics, parent-space POI and required coverage;
+  pure 4x4 transforms, camera bases, inverse homography, near/far polygon clipping
+  and capped lens circle of confusion; independent hand-computed test cases.
+- **Verification:** not run or formatted yet; preserve the coordinated CE6-P
+  machine reservation until its release. No runtime availability is claimed.
+- **Next:** verify this slice after release, then xyz sampling/property paths and
+  evaluator/graph/backend integration. CE8-L follows CE8 as approved.
+- **Records:** [CE8 evidence](./composition-ce8-results.json), [CE6 PR #42](https://github.com/xxibcill/still-shift/pull/42).
 
 ### 2026-10-06 — CE6 complete local verification
 

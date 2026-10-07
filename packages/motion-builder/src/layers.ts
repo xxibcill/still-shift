@@ -51,20 +51,23 @@ export class Layer<K extends Kind = Kind> {
       );
     this.draft = draft;
     this.location = location;
-    this.draft.transform = {
-      anchor: [0, 0],
-      position: [0, 0],
-      scale: [1, 1],
-      rotation: 0,
-      opacity: 1,
-      ...draft.transform,
-    };
+    this.draft.transform =
+      draft.type === "camera"
+        ? { ...draft.transform }
+        : {
+            anchor: [0, 0],
+            position: [0, 0],
+            scale: [1, 1],
+            rotation: 0,
+            opacity: 1,
+            ...draft.transform,
+          };
   }
   get id(): string {
     return this.draft.id;
   }
-  at(x: number, y: number): this {
-    this.draft.transform!.position = [x, y];
+  at(x: number, y: number, z?: number): this {
+    this.draft.transform!.position = z === undefined ? [x, y] : [x, y, z];
     return this;
   }
   anchor(x: number | NamedAnchor, y?: number): this {
@@ -90,8 +93,8 @@ export class Layer<K extends Kind = Kind> {
     }
     return this;
   }
-  scale(x: number, y = x): this {
-    this.draft.transform!.scale = [x, y];
+  scale(x: number, y = x, z?: number): this {
+    this.draft.transform!.scale = z === undefined ? [x, y] : [x, y, z];
     return this;
   }
   rotate(degrees: number): this {
@@ -128,6 +131,9 @@ export class Layer<K extends Kind = Kind> {
   }
   get y(): Property<number> {
     return this.property("transform.position.y");
+  }
+  get z(): Property<number> {
+    return this.property("transform.position.z");
   }
   get position(): Property<number[]> {
     return this.property("transform.position");

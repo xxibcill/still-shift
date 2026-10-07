@@ -41,6 +41,7 @@ export function collectCompositionTextFrames(
         else if (op.content.type === "surface")
           visitOps(op.content.surface.ops);
       } else {
+        if (op.kind === "project") visitOps(op.surface.ops);
         if (op.kind === "isolate") visitOps(op.ops);
         if (op.kind === "adjust")
           for (const sample of op.history ?? []) visitOps(sample.ops);

@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8-parents",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "background": "#000000",
+  "assets": [],
+  "layers": [
+    {
+      "id": "rig",
+      "type": "null",
+      "threeD": true,
+      "transform": {
+        "position": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": [0, 0, 0]
+            },
+            {
+              "frame": 31,
+              "value": [9, 3, 20],
+              "interpolation": "linear"
+            }
+          ]
+        },
+        "orientation": [3, 8, 0]
+      }
+    },
+    {
+      "id": "camera-a",
+      "type": "camera",
+      "parent": "rig",
+      "model": "two-node",
+      "pointOfInterest": {
+        "keys": [
+          {
+            "frame": 0,
+            "value": [64, 48, 0]
+          },
+          {
+            "frame": 31,
+            "value": [78, 44, 15],
+            "interpolation": "linear"
+          }
+        ]
+      },
+      "outPoint": 16
+    },
+    {
+      "id": "camera-b",
+      "type": "camera",
+      "model": "one-node",
+      "focalLength": 36,
+      "filmSize": 36,
+      "transform": {
+        "position": [64, 48, -128],
+        "rotationY": -8
+      },
+      "inPoint": 16
+    },
+    {
+      "id": "mirror",
+      "type": "null",
+      "threeD": true,
+      "transform": {
+        "position": [82, 45, 12],
+        "scale": [-1, 1, 1],
+        "autoOrient": "camera"
+      }
+    },
+    {
+      "id": "child",
+      "type": "solid",
+      "size": [48, 40],
+      "color": "#eb8d55",
+      "threeD": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [0, 0, 0]
+      },
+      "parent": "mirror"
+    },
+    {
+      "id": "aimed",
+      "type": "solid",
+      "size": [48, 40],
+      "color": "#ffffff",
+      "threeD": true,
+      "transform": {
+        "position": [30, 60, 20],
+        "autoOrient": "camera",
+        "rotation": 15
+      }
+    }
+  ]
+}

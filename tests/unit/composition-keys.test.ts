@@ -261,6 +261,263 @@ it("does not interpret provider parameters as native key properties", () => {
   expect(history.document.layers[1]).toEqual(document.layers[1]);
 });
 
+it("discovers and samples native xyz/POI/optical tracks without truncating z", () => {
+  const doc: Composition = {
+    schemaVersion: "composition-1",
+    id: "main",
+    width: 100,
+    height: 100,
+    fps: 24,
+    frameCount: 24,
+    assets: [],
+    layers: [
+      {
+        id: "camera",
+        type: "camera",
+        model: "two-node",
+        pointOfInterest: {
+          keys: [
+            { frame: 0, value: [50, 50, 0] },
+            { frame: 20, value: [50, 50, 100], interpolation: "linear" },
+          ],
+        },
+        zoom: {
+          keys: [
+            { frame: 0, value: 100 },
+            { frame: 20, value: 200, interpolation: "linear" },
+          ],
+        },
+        transform: {
+          position: {
+            x: 50,
+            y: 50,
+            z: {
+              keys: [
+                { frame: 0, value: -100 },
+                { frame: 20, value: -200, interpolation: "linear" },
+              ],
+            },
+          },
+          orientation: {
+            keys: [
+              { frame: 0, value: [0, 0, 0] },
+              { frame: 20, value: [10, 20, 30], interpolation: "linear" },
+            ],
+          },
+        },
+      },
+    ],
+  };
+  const tracks = compositionTracks(doc);
+  expect(tracks.map((track) => track.property)).toEqual([
+    "transform.position.z",
+    "transform.orientation",
+    "pointOfInterest",
+    "zoom",
+  ]);
+  expect(
+    sampleTrack(
+      tracks.find((track) => track.property === "pointOfInterest")!,
+      10,
+    ),
+  ).toEqual([50, 50, 50]);
+  const orientation = tracks.find(
+    (track) => track.property === "transform.orientation",
+  )!;
+  expect(sampleTrack(orientation, 10)).toEqual([5, 10, 15]);
+  expect(() =>
+    editSpatialTangent(doc, orientation, 0, "spatialOut", [1, 2]),
+  ).toThrow("3 tangent components");
+});
+
+it("discovers separated camera POI and spatial constraint-reference z channels", () => {
+  const doc = source(),
+    z = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 20, value: 10, interpolation: "linear" as const },
+      ],
+    };
+  doc.layers = [
+    {
+      id: "camera",
+      type: "camera",
+      pointOfInterest: { x: 32, y: 32, z },
+    },
+    {
+      id: "plane",
+      type: "solid",
+      threeD: true,
+      size: [8, 8],
+      color: "#ffffff",
+      constraintReference: { x: 0, y: 0, z: structuredClone(z) },
+    },
+  ];
+  const history = new CompositionDocument(doc),
+    tracks = compositionTracks(history.document).filter(
+      (track) => track.scope === null,
+    );
+  expect(tracks.map((track) => track.property)).toEqual([
+    "pointOfInterest.z",
+    "constraintReference.z",
+  ]);
+  expect(tracks.map((track) => sampleTrack(track, 10))).toEqual([[5], [5]]);
+  expect(tracks.map((track) => resolvedTrackRoutes(doc, track))).toEqual([
+    [{ path: "camera.pointOfInterest.z", fps: 24 }],
+    [{ path: "plane.constraintReference.z", fps: 24 }],
+  ]);
+  history.commit(
+    history.propose("Reference z out", (draft) =>
+      editTemporalHandle(draft, tracks[1]!, 0, "out", 0.6, 2),
+    )!,
+  );
+  const edited = compositionTracks(history.document).find(
+    (track) => track.id === tracks[1]!.id,
+  )!;
+  expect(edited.keys[0]!.out).toEqual({ ease: 0.6, speed: 2 });
+  expect(history.document.layers[0]).toEqual(doc.layers[0]);
+  expect(history.document.layers[1]!.constraintReference).toMatchObject({
+    x: 0,
+    y: 0,
+  });
+  history.commit(history.undo()!);
+  expect(history.document).toEqual(doc);
+  history.commit(history.redo()!);
+  expect(
+    compositionTracks(history.document).find((track) => track.id === edited.id)!
+      .keys,
+  ).toEqual(edited.keys);
+});
+
+it.each(["camera-position", "camera-poi", "spatial-position"] as const)(
+  "edits authored XY tangents without promoting %s keys",
+  (mode) => {
+    const doc = source(),
+      position = {
+        keys: [
+          {
+            frame: 0,
+            value: [32, 32] as [number, number],
+            spatialOut: [1, 2] as [number, number],
+          },
+          { frame: 23, value: [40, 36] as [number, number] },
+        ],
+      };
+    doc.layers =
+      mode === "camera-poi"
+        ? [{ id: "camera", type: "camera", pointOfInterest: position }]
+        : mode === "camera-position"
+          ? [{ id: "camera", type: "camera", transform: { position } }]
+          : [
+              {
+                id: "plane",
+                type: "solid",
+                threeD: true,
+                size: [8, 8],
+                color: "#ffffff",
+                transform: { position },
+              },
+            ];
+    const history = new CompositionDocument(doc),
+      track = compositionTracks(history.document)[0]!;
+    expect(track.dimensions ?? 2).toBe(2);
+    history.commit(
+      history.propose("XY tangent", (draft) =>
+        editSpatialTangent(draft, track, 0, "spatialOut", [10, 3]),
+      )!,
+    );
+    const edited = compositionTracks(history.document)[0]!;
+    expect(edited.keys[0]!.spatialOut).toEqual([10, 3]);
+    expect(edited.keys[0]!.value).toEqual([32, 32]);
+    expect(sampleTrack(edited, 10)).toHaveLength(2);
+    expect(() =>
+      history.propose("Wrong XYZ tangent", (draft) =>
+        editSpatialTangent(draft, edited, 0, "spatialOut", [10, 3, 0]),
+      ),
+    ).toThrow("2 tangent components");
+    history.commit(history.undo()!);
+    expect(compositionTracks(history.document)[0]!.keys[0]!.spatialOut).toEqual(
+      [1, 2],
+    );
+    history.commit(history.redo()!);
+    expect(
+      compositionTracks(JSON.parse(JSON.stringify(history.document)))[0]!
+        .keys[0]!.spatialOut,
+    ).toEqual([10, 3]);
+  },
+);
+it.each(["position", "pointOfInterest"] as const)(
+  "preserves neighboring XYZ spatial segments when replacing a %s Bézier segment",
+  (property) => {
+    for (const smooth of ["smooth", "interpolation"] as const) {
+      const document = source();
+      const position = {
+        keys: [0, 10, 40, 50].map((z, index) => ({
+          frame: index * 10,
+          value: [0, 0, z] as [number, number, number],
+          ...(index < 3
+            ? { spatialOut: [0, 0, 3] as [number, number, number] }
+            : {}),
+          ...(index > 0
+            ? { spatialIn: [0, 0, -3] as [number, number, number] }
+            : {}),
+          ...(index === 1 || index === 2
+            ? smooth === "smooth"
+              ? { smooth: true }
+              : { interpolation: "smooth" as const }
+            : {}),
+        })),
+      };
+      document.frameCount = 31;
+      document.layers =
+        property === "position"
+          ? [
+              {
+                id: "plane",
+                type: "solid",
+                threeD: true,
+                size: [10, 10],
+                color: "#ffffff",
+                transform: { position },
+              },
+            ]
+          : [{ id: "camera", type: "camera", pointOfInterest: position }];
+      const history = new CompositionDocument(document);
+      const track = compositionTracks(history.document)[0]!;
+      const untouchedFrames = Array.from({ length: 40 }, (_, index) =>
+        index < 20 ? index / 2 : 20.5 + (index - 20) / 2,
+      );
+      const before = untouchedFrames.map((frame) => sampleTrack(track, frame));
+      const selected = sampleTrack(track, 13);
+      history.commit(
+        history.propose("Middle segment Bézier", (draft) =>
+          editSegmentBezier(draft, track, 2, [0.3, 0, 0.7, 1]),
+        )!,
+      );
+      const edited = compositionTracks(history.document)[0]!;
+      for (const [index, frame] of untouchedFrames.entries())
+        for (const axis of [0, 1, 2])
+          expect(sampleTrack(edited, frame)[axis]).toBeCloseTo(
+            before[index]![axis]!,
+            12,
+          );
+      expect(sampleTrack(edited, 13)).not.toEqual(selected);
+      history.commit(history.undo()!);
+      expect(history.document).toEqual(document);
+      history.commit(history.redo()!);
+      const saved = new CompositionDocument(
+        JSON.parse(JSON.stringify(history.document)),
+      );
+      expect(
+        sampleTrack(compositionTracks(saved.document)[0]!, 5)[2],
+      ).toBeCloseTo(3.75, 12);
+      expect(
+        sampleTrack(compositionTracks(saved.document)[0]!, 25)[2],
+      ).toBeCloseTo(46.25, 12);
+    }
+  },
+);
+
 it.each(["smooth", "interpolation"] as const)(
   "preserves the opposite segment when replacing a %s temporal handle",
   (mode) => {

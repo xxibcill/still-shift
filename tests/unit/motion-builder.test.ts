@@ -6,7 +6,7 @@ import {
   text,
   precomp,
   nullLayer,
-  camera,
+  light,
   seq,
   par,
   at,
@@ -223,9 +223,9 @@ describe("composition builder", () => {
     ).not.toThrow();
     try {
       comp(options, (c) => {
-        c.add(camera("future"));
+        c.add(light("future"));
       });
-      expect.fail("camera is unavailable");
+      expect.fail("lighting is unavailable before CE8-L");
     } catch (error) {
       expect(error).toBeInstanceOf(BuilderError);
       expect((error as BuilderError).code).toBe("comp-feature-unavailable");

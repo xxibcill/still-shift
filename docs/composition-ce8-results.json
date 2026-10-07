@@ -1,0 +1,2766 @@
+{
+  "milestone": "CE8",
+  "status": "complete",
+  "branch": "codex/composition-ce8",
+  "base": "2f1a99c",
+  "started": "2026-10-06",
+  "slices": [
+    {
+      "name": "Camera contract and pure spatial geometry",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Bounded optics, parent-space point of interest and coverage declaration",
+        "Column-major 4x4 transforms with documented orientation/rotation order",
+        "Orthonormal one/two-node camera geometry and real inverse plane homography",
+        "Near/far clipping before projected bounds and explicit singular-plane handling",
+        "Declared inverse-depth focus blur capped at 128 screen pixels"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window reserves builds, formatters, tests, browser matrices and exports until release",
+        "analyticCases": "Authored independent projection, parallax, parent/anchor/rotation, inverse homography, clipping, singular camera and focus cases; not yet executed"
+      },
+      "runtimeAvailability": "Camera and 3D validation remain gated pending complete evaluator/render integration",
+      "implementation": "88dd444"
+    },
+    {
+      "name": "Opt-in xyz sampling",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Static, grouped and separated xyz values with explicit implicit-z defaults",
+        "Deterministic 128-subdivision full-xyz spatial arc length and spatial-speed handles",
+        "Component temporal handles and fallback-sensitive cache identity",
+        "Established 2D sampler and arithmetic are unchanged"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored constant/grouped/separated/fractional, pure-z spatial motion, reverse/random sampling, shared keyed position/scale defaults and unchanged xy checks"
+      },
+      "implementation": "0f83ff2"
+    },
+    {
+      "name": "Spatial expression own keys and authoring paths",
+      "status": "authored-verification-deferred",
+      "features": [
+        "XYZ own-key curves, loop offsets and full-distance roving with implicit z defaults",
+        "Camera orientation and point-of-interest keyed reads",
+        "Typed camera optics/POI paths and spatial transform/reference components",
+        "Established 2D expression roving table is unchanged"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored independent XYZ interpolation, loop offset, pure-z roving, implicit-scale z and camera path typing/rejections"
+      },
+      "pending": "Connect evaluated xyz/camera values and live render availability before native scene verification",
+      "implementation": "e7221a4"
+    },
+    {
+      "name": "Shared native spatial/camera sampling state",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Shared xyz transforms and layer-space reference sampling in the supplied keyed clock",
+        "Camera position/anchor/orientation/scale defaults with z=0 identity setup",
+        "One/two-node selection, parent-space POI and horizontal film/focal conversion",
+        "Declared optical controls and runtime range/clip-order checks",
+        "Reject ambiguous zoom/focal controls and ignored one-node POI"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored exact camera defaults, fractional xyz motion, implicit scale z, keyed focus, focal conversion and runtime settings failures"
+      },
+      "implementation": "179d903"
+    },
+    {
+      "name": "Evaluated spatial values and parent world integration",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Actual xyz evaluated transforms/reference values with typed 3D state",
+        "Camera state property reads/writes and primary optical control refresh",
+        "Deep-copy camera POI/orientation in sealed expression stages",
+        "Spatial-scope flags and complete parent world matrices without 4x4 allocation in ordinary 2D scopes",
+        "Structured sampled optical/non-finite world diagnostics with owning node/frame",
+        "Camera/light layers remain non-drawing dependencies"
+      ],
+      "versions": {
+        "evaluator": "composition-evaluator-45",
+        "status": "source checkpoint unverified"
+      },
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored xyz component writes, copied expression results, camera POI/primary optical writes and secondary optic refresh"
+      },
+      "pending": "Scope camera projection, native availability/validation, graph/backend integration and verification",
+      "implementation": "50ac556"
+    },
+    {
+      "name": "Scope camera selection and genuine projection hooks",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Resolve optics after parent world state, using the highest active scoped camera",
+        "Native one-node orientation or parent-space two-node POI; solo does not suppress optics",
+        "Scope-local defaults and legacy story curves/jolts feed the same camera geometry",
+        "Genuine plane homographies, camera-depth/focus blur and expanded projected bounds",
+        "Actual world-space frustum corners for the upcoming inspector integration"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored camera switch boundaries, solo optics, one-node orientation, parent-space POI, nested default camera, cubic story jolt, receiver focus and world frustum points"
+      },
+      "sourceReviewRepairs": [
+        "Do not spread the always-populated sampled POI into a one-node camera geometry call",
+        "Reuse the scope layer map for active-camera parent checks rather than allocating one per candidate"
+      ],
+      "pending": "Native availability/validation, billboard orientation, stable 3D-run ordering, graph/backend/quality/inspector integration and verification",
+      "implementation": "62c04fa"
+    },
+    {
+      "name": "Stable scope-local 3D painter order",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Sort each contiguous drawable 3D run by camera-space depth",
+        "Preserve 2D barriers, authored depth ties and group ownership",
+        "Assign finite anchor depth before empty-bound filtering"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored near/far painter order, 2D barriers, depth ties/source immutability and invalid-depth rejection"
+      },
+      "pending": "Billboard orientation, native projective graph/backend/quality/inspector integration and verification",
+      "implementation": "20f6dd9"
+    },
+    {
+      "name": "Camera-facing orientation and bounded projective rendering",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Spherical camera-facing world orientation preserves authored linear geometry and world anchors",
+        "Local artwork/effects/masks precede homography projection; focus lens blur and scope matte follow",
+        "Bounded local surfaces, inverse-homography GPU sampling and near/far clipping",
+        "Projective group clips and local captures of named layer inputs",
+        "Complete spatial graph capability checks precede retained-target mutation",
+        "Native availability remains gated until integration and verification"
+      ],
+      "versions": {
+        "evaluator": "composition-evaluate-0.45.0",
+        "webgl2": "composition-webgl2-0.55.0"
+      },
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "analyticCases": "Authored billboard basis/anchor/mirror/shear, negative local origins, outer placement, bounded allocation and transactional nested Canvas capability checks"
+      },
+      "declaredLimits": [
+        "Perspective precomps remain flat and cannot collapseTransforms",
+        "Native time.echo uses a scope-space adjustment or flat precomp",
+        "Cross-plane layer-space effect coordinates require an affine relation",
+        "Unbounded local effect generators use the declared artwork domain"
+      ],
+      "sourceReviewRepairs": [
+        "Handle null/unbounded effect bounds explicitly rather than passing them to plane projection",
+        "Conservative focus bounds include screen-space lens support",
+        "Release intermediate surfaces after local rendering or allocation failures"
+      ],
+      "pending": "Native validation activation, honest projective inspector/coverage and analytic/pixel/export acceptance",
+      "implementation": "c95eb8e"
+    },
+    {
+      "name": "Native activation, all-frame alpha coverage and spatial authoring",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Enable native cameras and explicit 3D with bounded optics, writer conflicts and camera-parent feedback validation",
+        "Keep 2D constraints explicit: spatial targets/reference ancestry return comp-3d-constraint",
+        "3D path auto-orient includes z direction",
+        "Validate actual isolated required-layer alpha throughout each active owning scope; error by default with optional warning policy",
+        "Preflight every spatial exposure sample before retained-target accumulation",
+        "XYZ/orientation/POI/optical tracks and dimensional tangent editing use the native sampler"
+      ],
+      "versions": {
+        "evaluator": "composition-evaluate-0.45.0",
+        "canvas": "composition-canvas-1.40.0",
+        "webgl2": "composition-webgl2-0.55.0",
+        "export": "chromium-ffmpeg-0.6.2"
+      },
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "cases": "Authored native evaluation/graph integration, writer/POI/cycle validation, 3D parenting/path orientation, seeded shake, local-effect/focus ordering and shared alpha threshold"
+      },
+      "sourceReviewRepairs": [
+        "Derived focal length in zoom mode is positive/finite rather than incorrectly restricted as an authored primary optic",
+        "Camera constraint-reference dimensionality agrees with sampling and property paths",
+        "Exclude camera/light/null/adjustment/audio layers from image-input and coverage semantics"
+      ],
+      "pending": "Projective quality/inspector geometry, focused verification after release, native pixels/seeks/hardware/MP4/cost and full gate",
+      "implementation": "93b92b2"
+    },
+    {
+      "name": "Actual projective inspection, quality sampling and focus overscan",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Inspector anchors/flattened paths/spatial tangents/nested flat-precomp geometry use actual homographies",
+        "Camera inset uses evaluated world-space near/focus frustum corners and camera position",
+        "Quality bounds, tangent scale, velocity and visible signatures follow true projected geometry",
+        "Native required coverage uses owning scope dimensions and evaluates actual shutter samples",
+        "Bounded screen-space focus overscan preserves offscreen artwork before lens blur and crop/matte"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "cases": "Authored actual world frustum/vertical inset/outer projection, homographic tangents/horizons/z signatures, native key tracks and padded focus allocation"
+      },
+      "sourceReviewRepairs": [
+        "Do not transform cubic controls affinely for perspective paths",
+        "Keep scope-local required coverage semantics for nested precomps",
+        "Preflight padded focus dimensions and preserve source depth while shifting screen placement"
+      ],
+      "pending": "Focused checks after CE6-P release; independent native pixel/seek/hash/hardware/MP4/1080p acceptance and the full local gate",
+      "implementation": "c17af4d"
+    },
+    {
+      "name": "Source-review mirror and typed integration repairs",
+      "status": "authored-verification-deferred",
+      "sourceReviewRepairs": [
+        "Camera-facing baselines use an absolute-scale parent chain so authored mirror axes remain in the artwork plane instead of migrating to depth",
+        "Named-input capture frames omit optional localCapture rather than assigning undefined under exactOptionalPropertyTypes",
+        "Existing render-graph summaries recognize projective operations; the old 3D-unavailable case now tests explicit 2D constraint rejection"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "cases": "Additional parent-horizontal-mirror regression authored; all source checks remain pending"
+      },
+      "pending": "Projective group masks, independent native acceptance and full gate after release",
+      "implementation": "1bf1b93"
+    },
+    {
+      "name": "Projected group mask coverage",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Bounded local Bezier mask raster with expansion/feather support, then actual plane projection",
+        "Apply global inversion and mask combination after projective coverage",
+        "Preflight projected mask surface/backend limits before painting",
+        "Expose camera point-of-interest tangent editing"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "Coordinated CE6-P quiet window remains active",
+        "cases": "Analytic mask support/placement/clipping, graph integration and Canvas rejection cases authored"
+      },
+      "coordinationEvent": {
+        "event": "Git commit 1bf1b93 reported background auto packing",
+        "checkedAt": "2026-10-06 00:57:02 UTC",
+        "remainingProcesses": "None found by process inspection",
+        "mitigation": "Subsequent Git commands use gc.auto=0; no formatter/build/test/matrix/export ran"
+      },
+      "pending": "Independent camera acceptance and focused/full verification after release",
+      "implementation": "2e26ae4"
+    },
+    {
+      "name": "Native camera acceptance preparation",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Ten native 32-frame camera scenes with pinned checker/alpha-hole images and font",
+        "Independent ray/plane oracle for solid and image projection/clipping; independent affine parallax/depth-order reference",
+        "Forward/reverse/random hashes, fresh hardware comparisons and repeated/raw/independent preview exports",
+        "Actual alpha failures for later image states, masks and mattes; Canvas perspective rejection preserves prior frame including exposure",
+        "Opt-in serial cold/warm 1080p costs for 1/8/64 planes and 1/4 samples",
+        "Native camera browser group added to the existing complete local test chain"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "CE6-P quiet window remains active",
+        "baselines": "No hashes, PNG baselines, metrics or exports have been generated"
+      },
+      "pending": "Focused diagnostics/repair, real inspector flow, native acceptance and complete local gate after release",
+      "implementation": "a2c302e"
+    },
+    {
+      "name": "Native camera builder and inspector authoring",
+      "status": "authored-verification-deferred",
+      "sourceReviewRepair": "Camera constructors no longer inject the 2D origin over the scope-based camera default",
+      "features": [
+        "Optional xyz static position/scale setters and z animation property preserve ordinary 2D tuples",
+        "Native camera example and generated-guidance source/reference notes updated",
+        "Real CLI preview inspector acceptance for POI tangents, evaluated frustum world corners, undo/redo and source save",
+        "Existing future-availability test now targets lighting, which follows CE8-L"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "CE6-P quiet window remains active",
+        "generatedDocs": "Schema/reference/skill generation is pending until release; only their source guidance was edited"
+      },
+      "pending": "Focused type/schema/lint/unit and native acceptance repair, then complete gate",
+      "implementation": "0779c31"
+    },
+    {
+      "name": "Derived optics dependency review repairs",
+      "status": "authored-verification-deferred",
+      "features": [
+        "Secondary focal/zoom expression reads apply primary-control and film-size dependencies",
+        "Validation graph includes implicit optical dependencies and rejects feedback cycles",
+        "Focal expression primacy is established before film writes to prevent insertion-order drift",
+        "Driver-selected optical modes and ordinary 2D expression paths remain distinct"
+      ],
+      "sourceReviewRepairs": [
+        "Allow explicitly absent optional backend surface callbacks under exactOptionalPropertyTypes",
+        "Correct camera-switch fixture inPoint/outPoint field names"
+      ],
+      "verification": {
+        "status": "not run",
+        "reason": "CE6-P quiet window remains active",
+        "cases": "Reverse author order, both secondary optics, driven focal/film and implicit cycle cases authored"
+      },
+      "pending": "Focused checks and complete native/full acceptance after release",
+      "implementation": "6e28b42"
+    },
+    {
+      "name": "Camera basis review and verification release",
+      "status": "authored-awaiting-focused-verification",
+      "features": [
+        "Reject singular camera world transforms even when POI fallback could construct a viewing basis",
+        "Declare camera forward/down orthonormalization and scale-independent optics"
+      ],
+      "verification": {
+        "status": "not run yet",
+        "cases": "Zero-axis camera and scaled/rolled camera analytic regressions authored"
+      },
+      "coordination": {
+        "quietWindow": "released",
+        "at": "2026-10-06 01:24 UTC",
+        "authority": "Explicit CE6-P release after all reserved timing/audit/export/provenance workloads terminal"
+      },
+      "pending": "Pinned isolated schema/type/lint/unit/native acceptance and full gate",
+      "implementation": "a73841f"
+    },
+    {
+      "name": "Focused verification and raster/precision repairs",
+      "status": "focused-pass-full-acceptance-pending",
+      "repairs": [
+        "Format CE8 source and generate schema/reference/authoring skill",
+        "Repair type errors and malformed failure runner",
+        "Correct camera-facing matrix column indexing",
+        "Preserve implicit camera defaults and valid expression/fixture grammar in regressions",
+        "Include native camera fields and XYZ transforms in every-field inventory",
+        "Use local bitmap coverage for native affine GPU placement while preserving legacy placement",
+        "Declare 1e-4 quantizer-unit tie bias in native projective bilinear sampling to bound float32 boundary drift"
+      ],
+      "verification": {
+        "environment": "Pinned Node 22.23.1 / pnpm 10.29.3 / Python 3.12.11 / Chromium 1234; isolated /private/tmp/still-shift-ce8-check-a73841f",
+        "passed": [
+          "toolchain",
+          "schema generation/check",
+          "format",
+          "type build",
+          "TypeScript lint",
+          "package boundaries",
+          "139 affected inventory/integration unit tests",
+          "native camera focused browser",
+          "all 1840 units / 187 files after inventory repair"
+        ],
+        "browser": {
+          "scenes": 10,
+          "backendCases": 12,
+          "forwardFrames": 384,
+          "independentOracleMaximumDelta": 0,
+          "oracleScenes": [
+            "affine Canvas/WebGL",
+            "perspective",
+            "checker-perspective",
+            "clipping"
+          ],
+          "expectedFailures": 8,
+          "inspector": [
+            "xyz",
+            "POI tangents",
+            "world frustum",
+            "scope camera",
+            "undo/redo",
+            "lossless source save"
+          ]
+        },
+        "failuresRetained": [
+          {
+            "run": "initial build",
+            "result": "syntax then type errors; repaired"
+          },
+          {
+            "run": "initial focused unit",
+            "result": "9 failures then one floating point assertion; repaired without pixel policy changes"
+          },
+          {
+            "run": "all-unit initial",
+            "result": "1839 pass / 1 missing new-field inventory; repaired"
+          },
+          {
+            "run": "affine initial reference",
+            "result": "Canvas delta 53; reference now models declared local raster placement"
+          },
+          {
+            "run": "affine WebGL",
+            "result": "delta 52; native bitmap coverage repair yields exact pixels"
+          },
+          {
+            "run": "checker frame 16",
+            "result": "delta 3 at a weight boundary; declared quantizer tie handling yields exact pixels"
+          }
+        ],
+        "pending": [
+          "all-unit repaired run",
+          "native stored hashes/exports/hardware",
+          "serial 1080p cost",
+          "full final-code local gate"
+        ]
+      },
+      "implementation": "f9385cc"
+    },
+    {
+      "name": "Hardware raster-domain repair",
+      "status": "hardware-pass-native-repeat-and-full-gate-pending",
+      "features": [
+        "Native 3D Canvas documents select pinned CPU raster preparation; ordinary 2D selection is unchanged",
+        "Native WebGL affine bitmap coverage uses CPU Canvas preparation while composition/true perspective remain GPU operations",
+        "Document the sampling tie bias and raster domains; finish formatting repaired code"
+      ],
+      "verification": {
+        "nativeFirstAttempt": {
+          "commit": "f9385cc",
+          "passed": "All ten scenes / twelve backend cases: 384 forward and 384 reverse frames, 108 random seeks, 36 production/repeat/raw exports and 12 independent preview MP4 comparisons",
+          "failed": "First hardware affine Canvas case: delta 50, PSNR 39.84310988320909, SSIM 0.999002094713508; unchanged perceptual policy rejects PSNR below 40",
+          "cost": "Not run because hardware assertion failed"
+        },
+        "hardwareRepair": {
+          "source": "f9385cc plus native raster-domain changes in canvas2d.ts and webgl2.ts",
+          "command": "node --import tsx tests/browser/ce8-hardware.mts (private focused helper)",
+          "result": {
+            "environments": [
+              {
+                "profile": "chromium-software-2",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                "platform": "darwin",
+                "arch": "arm64"
+              },
+              {
+                "profile": "hardware",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                "platform": "darwin",
+                "arch": "arm64"
+              }
+            ],
+            "policy": "unchanged perceptual hardware policy",
+            "reports": [
+              {
+                "fixture": "affine",
+                "backend": "canvas2d",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "canvas2d",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "canvas2d",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "perspective",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "perspective",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "perspective",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "checker-perspective",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "checker-perspective",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "checker-perspective",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "clipping",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "clipping",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "clipping",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "content",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "content",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "content",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "parents",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "parents",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "parents",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "canvas2d",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "canvas2d",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "canvas2d",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "group-mask",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "near",
+                "maxChannelDelta": 1,
+                "differingChannels": 18,
+                "psnr": 81.24410313171703,
+                "ssim": 0.9999992848435189
+              },
+              {
+                "fixture": "group-mask",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "near",
+                "maxChannelDelta": 1,
+                "differingChannels": 19,
+                "psnr": 81.00929217322181,
+                "ssim": 0.9999998660699676
+              },
+              {
+                "fixture": "group-mask",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "near",
+                "maxChannelDelta": 1,
+                "differingChannels": 16,
+                "psnr": 81.75562835619084,
+                "ssim": 0.9999997817435156
+              },
+              {
+                "fixture": "scopes",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "scopes",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "scopes",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "exposure",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "exposure",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "exposure",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              }
+            ]
+          }
+        },
+        "pending": [
+          "Repeat complete native acceptance at committed repaired source",
+          "Serial 1080p costs",
+          "Complete final-code local gate"
+        ]
+      },
+      "implementation": "23ba343"
+    },
+    {
+      "name": "Native baseline and profiler fixture checkpoint",
+      "status": "native-correctness-pass-cost-repair-and-full-gate-pending",
+      "features": [
+        "Add only new CE8 baseline: 384 all-frame hashes and 36 sample PNGs",
+        "One-sample cost uses disabled blur with schema-valid configured sample count two",
+        "Assert each measured actual exposure count equals the intended one or four samples"
+      ],
+      "verification": {
+        "command": "pnpm test:browser:composition-camera --write-ce8-baseline --profile",
+        "commit": "23ba343",
+        "passed": "All native frame/seek/reference/export/failure/inspector checks and 36 hardware comparisons; baseline created after correctness checks",
+        "failed": "Optional profile phase rejected configured samples=1; motion blur schema minimum is 2 even when disabled",
+        "repair": "samples=Math.max(2,samples), retain enabled=samples>1 and assert actual sample counts",
+        "baseline": "tests/visual/composition-camera/darwin-arm64.json; separate native scope, no legacy regeneration",
+        "visualInspection": [
+          "parents/content/group-mask/focus mid-frame sample PNGs inspected"
+        ],
+        "pending": [
+          "Successful complete native acceptance with profile on committed repair",
+          "Final local pnpm check"
+        ]
+      },
+      "implementation": "5effcf3"
+    },
+    {
+      "name": "Complete native acceptance and serial cost checkpoint",
+      "status": "native-complete-full-gate-pending",
+      "verification": {
+        "commit": "5effcf3",
+        "command": "pnpm test:browser:composition-camera --profile",
+        "snapshot": "/private/tmp/still-shift-ce8-check-5effcf3",
+        "exitCode": 0,
+        "log": "/private/tmp/ce8-native-5effcf3.log",
+        "native": {
+          "environment": {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "reports": [
+            {
+              "fixture": "affine",
+              "backend": "canvas2d",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "affine",
+              "backend": "canvas2d",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            },
+            {
+              "fixture": "affine",
+              "backend": "webgl2",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "affine",
+              "backend": "webgl2",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            },
+            {
+              "fixture": "perspective",
+              "backend": "webgl2",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "perspective",
+              "backend": "webgl2",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            },
+            {
+              "fixture": "checker-perspective",
+              "backend": "webgl2",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "checker-perspective",
+              "backend": "webgl2",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            },
+            {
+              "fixture": "clipping",
+              "backend": "webgl2",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "clipping",
+              "backend": "webgl2",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            },
+            {
+              "fixture": "content",
+              "backend": "webgl2",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "content",
+              "backend": "webgl2",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            },
+            {
+              "fixture": "parents",
+              "backend": "webgl2",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "parents",
+              "backend": "webgl2",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            },
+            {
+              "fixture": "focus",
+              "backend": "canvas2d",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "focus",
+              "backend": "canvas2d",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            },
+            {
+              "fixture": "focus",
+              "backend": "webgl2",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "focus",
+              "backend": "webgl2",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            },
+            {
+              "fixture": "group-mask",
+              "backend": "webgl2",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "group-mask",
+              "backend": "webgl2",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            },
+            {
+              "fixture": "scopes",
+              "backend": "webgl2",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "scopes",
+              "backend": "webgl2",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            },
+            {
+              "fixture": "exposure",
+              "backend": "webgl2",
+              "forward": 32,
+              "reverse": 32,
+              "seeks": 9,
+              "oracleMaxDelta": 0
+            },
+            {
+              "fixture": "exposure",
+              "backend": "webgl2",
+              "frames": 32,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical"
+            }
+          ],
+          "failures": [
+            {
+              "fixture": "coverage",
+              "backend": "canvas2d",
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Required camera coverage on cover exposes the owning scope at frame 16, pixel 52,37",
+                  "node": "cover",
+                  "path": "cover.coverage",
+                  "frame": 16
+                }
+              ]
+            },
+            {
+              "fixture": "masked",
+              "backend": "canvas2d",
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 48,32",
+                  "node": "cover",
+                  "path": "cover.coverage",
+                  "frame": 0
+                }
+              ]
+            },
+            {
+              "fixture": "matted",
+              "backend": "canvas2d",
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 52,37",
+                  "node": "cover",
+                  "path": "cover.coverage",
+                  "frame": 0
+                }
+              ]
+            },
+            {
+              "fixture": "coverage",
+              "backend": "webgl2",
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Required camera coverage on cover exposes the owning scope at frame 16, pixel 52,37",
+                  "node": "cover",
+                  "path": "cover.coverage",
+                  "frame": 16
+                }
+              ]
+            },
+            {
+              "fixture": "masked",
+              "backend": "webgl2",
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 48,32",
+                  "node": "cover",
+                  "path": "cover.coverage",
+                  "frame": 0
+                }
+              ]
+            },
+            {
+              "fixture": "matted",
+              "backend": "webgl2",
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 52,37",
+                  "node": "cover",
+                  "path": "cover.coverage",
+                  "frame": 0
+                }
+              ]
+            },
+            {
+              "fixture": "unsupported",
+              "exposure": false,
+              "diagnostics": [
+                {
+                  "code": "comp-feature-backend",
+                  "severity": "error",
+                  "message": "True perspective requires the composition WebGL2 backend; Canvas supports affine camera projection",
+                  "node": "plane"
+                }
+              ],
+              "previousFrame": "unchanged"
+            },
+            {
+              "fixture": "unsupported",
+              "exposure": true,
+              "diagnostics": [
+                {
+                  "code": "comp-feature-backend",
+                  "severity": "error",
+                  "message": "True perspective requires the composition WebGL2 backend; Canvas supports affine camera projection",
+                  "node": "plane"
+                }
+              ],
+              "previousFrame": "unchanged"
+            }
+          ],
+          "hardware": {
+            "environments": [
+              {
+                "profile": "chromium-software-2",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                "platform": "darwin",
+                "arch": "arm64"
+              },
+              {
+                "profile": "hardware",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                "platform": "darwin",
+                "arch": "arm64"
+              }
+            ],
+            "policy": "unchanged perceptual hardware policy",
+            "reports": [
+              {
+                "fixture": "affine",
+                "backend": "canvas2d",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "canvas2d",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "canvas2d",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "affine",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "perspective",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "perspective",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "perspective",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "checker-perspective",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "checker-perspective",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "checker-perspective",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "clipping",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "clipping",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "clipping",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "content",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "content",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "content",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "parents",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "parents",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "parents",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "canvas2d",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "canvas2d",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "canvas2d",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "focus",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "group-mask",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "near",
+                "maxChannelDelta": 1,
+                "differingChannels": 18,
+                "psnr": 81.24410313171703,
+                "ssim": 0.9999992848435189
+              },
+              {
+                "fixture": "group-mask",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "near",
+                "maxChannelDelta": 1,
+                "differingChannels": 19,
+                "psnr": 81.00929217322181,
+                "ssim": 0.9999998660699676
+              },
+              {
+                "fixture": "group-mask",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "near",
+                "maxChannelDelta": 1,
+                "differingChannels": 16,
+                "psnr": 81.75562835619084,
+                "ssim": 0.9999997817435156
+              },
+              {
+                "fixture": "scopes",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "scopes",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "scopes",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "exposure",
+                "backend": "webgl2",
+                "frame": 0,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "exposure",
+                "backend": "webgl2",
+                "frame": 16,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              },
+              {
+                "fixture": "exposure",
+                "backend": "webgl2",
+                "frame": 31,
+                "tier": "exact",
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": 999,
+                "ssim": 1
+              }
+            ]
+          },
+          "inspector": {
+            "status": "passed",
+            "checks": [
+              "native xyz track",
+              "POI tangent edit",
+              "actual world frustum",
+              "scoped camera at selected frame",
+              "undo/redo",
+              "lossless native source save"
+            ]
+          },
+          "baseline": "exact"
+        },
+        "serialCosts": {
+          "environment": {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "timings": [
+            {
+              "layers": 1,
+              "shutterSamples": 1,
+              "cold": 127.10000002384186,
+              "warmups": [13.099999964237213, 12.300000011920929],
+              "measured": [
+                13.199999988079071, 12.300000011920929, 11, 11.600000023841858,
+                12.899999976158142
+              ],
+              "median": 12.300000011920929,
+              "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+            },
+            {
+              "layers": 1,
+              "shutterSamples": 4,
+              "cold": 203.79999995231628,
+              "warmups": [61.700000047683716, 61.19999998807907],
+              "measured": [
+                59.89999997615814, 61.30000001192093, 61.39999997615814,
+                61.30000001192093, 63.69999998807907
+              ],
+              "median": 61.30000001192093,
+              "actualSampleCounts": [4, 4, 4, 4, 4, 4, 4, 4]
+            },
+            {
+              "layers": 8,
+              "shutterSamples": 1,
+              "cold": 190.60000002384186,
+              "warmups": [77.09999996423721, 77.60000002384186],
+              "measured": [
+                75.09999996423721, 77.40000003576279, 79.69999998807907,
+                77.10000002384186, 75.5
+              ],
+              "median": 77.10000002384186,
+              "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+            },
+            {
+              "layers": 8,
+              "shutterSamples": 4,
+              "cold": 463.69999998807907,
+              "warmups": [316.80000001192093, 317.39999997615814],
+              "measured": [
+                318.39999997615814, 317.10000002384186, 319.39999997615814,
+                320.4000000357628, 320.39999997615814
+              ],
+              "median": 319.39999997615814,
+              "actualSampleCounts": [4, 4, 4, 4, 4, 4, 4, 4]
+            },
+            {
+              "layers": 64,
+              "shutterSamples": 1,
+              "cold": 722.8999999761581,
+              "warmups": [600, 597.8999999761581],
+              "measured": [
+                605.3000000119209, 609.4000000357628, 618.7999999523163, 622.5,
+                657.7000000476837
+              ],
+              "median": 618.7999999523163,
+              "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+            },
+            {
+              "layers": 64,
+              "shutterSamples": 4,
+              "cold": 2599.800000011921,
+              "warmups": [2463.699999988079, 2502.600000023842],
+              "measured": [
+                2514.5, 2549.399999976158, 2556.300000011921, 2580, 2598
+              ],
+              "median": 2556.300000011921,
+              "actualSampleCounts": [4, 4, 4, 4, 4, 4, 4, 4]
+            }
+          ]
+        }
+      },
+      "limits": [
+        "Canvas camera reference and local affine bitmap coverage use pinned CPU raster preparation",
+        "True perspective requires WebGL2; precomps remain flattened, constraints remain 2D",
+        "Serial 64-plane/four-sample 1080p median 2556.3ms is measured feature cost, not a real-time performance claim; CE6-P remains separate"
+      ],
+      "pending": "Full final-code local pnpm check, CE8 PR, then CE8-L new branch",
+      "implementation": "3665326"
+    },
+    {
+      "name": "Final-gate example inventory repair",
+      "status": "focused-pass-full-gate-repeat-pending",
+      "features": [
+        "Include the tenth native camera example in the strict integration inventory"
+      ],
+      "verification": {
+        "command": "pnpm exec vitest run tests/integration/composition-examples.test.ts --maxWorkers=2 --no-file-parallelism",
+        "result": "1 test pass; all ten programs compile and pinned assets validate",
+        "log": "/private/tmp/ce8-examples-repair.log",
+        "runtimeChange": "none; native correctness/hardware/cost fingerprints remain valid"
+      },
+      "pending": "Repeat complete pnpm check on committed final test repair",
+      "implementation": "3b277d5"
+    },
+    {
+      "name": "Ordinary-scope binding and spatial preflight inventories",
+      "status": "focused-pass-full-gate-pending",
+      "features": [
+        "Reuse compiled spatial scopes instead of scanning every layer on every exposure",
+        "Return root layer IDs without allocating and joining scope arrays",
+        "Compile whether reference writers exist; preserve all existing per-axis/window checks when present"
+      ],
+      "verification": {
+        "pinnedBefore": {
+          "ratio": 1.267322673937132,
+          "evaluationMs": 32.69999998807907,
+          "log": "/private/tmp/ce8-calibration-pan-profile-pinned-3b277d5.log"
+        },
+        "pinnedIsolatedAfter": {
+          "ratio": 1.2270138315289159,
+          "evaluationMs": 30.19999998807907,
+          "maxDelta": 1,
+          "log": "/private/tmp/ce8-calibration-pan-reference-inventory-trial.log"
+        },
+        "focused": "146 unit tests across six files; root/nested 2D/3D implicit anchors, driver/expression/periodic reference writers and inactive windows, exposure and spatial capability regressions",
+        "failedTestDrafts": [
+          "Signal fixture needed two keys",
+          "Periodic oracle originally used root time instead of time minus start; corrected sample to start+quarter-period"
+        ],
+        "limitations": [
+          "Timing varies; no claimed causal reduction from a single measurement",
+          "One root-binding diagnostic accidentally ran in primary checkout; repeated isolated and excluded from acceptance",
+          "Initial exploratory profile used Node 24; excluded from acceptance"
+        ]
+      },
+      "pending": "Full final-code pnpm check repeat; preserve unchanged limits and frozen baselines",
+      "implementation": "16262ec"
+    }
+  ],
+  "pending": [],
+  "githubActions": "prohibited/disabled",
+  "runtimeCheckpoint": "16262ec",
+  "fullGateAttempts": [
+    {
+      "checkpoint": "3665326",
+      "runtimeCheckpoint": "5effcf3",
+      "command": "pnpm check",
+      "snapshot": "/private/tmp/still-shift-ce8-check-3665326",
+      "log": "/private/tmp/ce8-full-3665326.log",
+      "status": "failed-incomplete",
+      "passed": {
+        "units": 1840,
+        "unitFiles": 187,
+        "runtime": 46,
+        "runtimeFiles": 9,
+        "integrationPassed": 138
+      },
+      "failure": "composition-examples.test.ts expected nine examples after native CE8 added a tenth; 1 failed / 138 passed integration, no later suites executed",
+      "repair": "Inventory now requires ten; focused integration compiles all ten and validates pinned assets (pass)"
+    },
+    {
+      "checkpoint": "3b277d5",
+      "command": "pnpm check",
+      "snapshot": "/private/tmp/still-shift-ce8-check-3b277d5",
+      "log": "/private/tmp/ce8-full-3b277d5.log",
+      "status": "failed-incomplete",
+      "passed": {
+        "unit": 1840,
+        "runtime": 46,
+        "integration": 139,
+        "depth": 14,
+        "browser": "All preceding groups through native passage and authoring, including native camera acceptance"
+      },
+      "failure": {
+        "case": "story/calibration-pan",
+        "ratio": 1.2851135401459304,
+        "limit": 1.25,
+        "maxDelta": 1,
+        "minPsnr": 82.7247284862714
+      },
+      "notRun": "Remaining story cases, commerce/typography matrices, later provider/builder/inspector/frozen stages"
+    },
+    {
+      "checkpoint": "16262ec",
+      "runtimeCheckpoint": "16262ec",
+      "command": "pnpm check",
+      "status": "passed",
+      "exitCode": 0,
+      "snapshot": "/private/tmp/still-shift-ce8-check-16262ec",
+      "log": "benchmarks/results/composition-ce8-verification/ce8-full-16262ec.log",
+      "unitTests": 1841,
+      "runtimeTests": 46,
+      "integrationTests": 139,
+      "depthTests": 14,
+      "requiredTestScripts": [
+        "test:unit",
+        "test:runtime",
+        "test:integration",
+        "test:depth",
+        "test:browser:depth",
+        "test:browser:vertical-image",
+        "test:browser:export",
+        "test:golden",
+        "test:browser:cli",
+        "test:browser:batch",
+        "test:browser:illustrated",
+        "test:browser:illustrated:vertical",
+        "test:browser:cinematic",
+        "test:browser:cinematic:vertical",
+        "test:browser:threshold",
+        "test:browser:dolly",
+        "test:browser:lateral",
+        "test:browser:reveal",
+        "test:browser:story",
+        "test:browser:story:activity",
+        "test:browser:story:continuous",
+        "test:browser:passage:authoring",
+        "test:browser:lab-session",
+        "test:browser:composition-session",
+        "test:browser:commerce",
+        "test:browser:commerce-components",
+        "test:browser:commerce-effects",
+        "test:browser:commerce-spatial",
+        "test:browser:reusable-components",
+        "test:browser:reusable-package",
+        "test:browser:reusable-behavior-package",
+        "test:browser:reusable-timing-package",
+        "test:browser:typography",
+        "test:browser:typography:fixtures",
+        "test:browser:composition-evaluator",
+        "test:browser:composition-expressions",
+        "test:browser:composition-quality",
+        "test:browser:composition",
+        "test:browser:composition-webgl",
+        "test:browser:composition-camera",
+        "test:browser:composition-shapes",
+        "test:browser:composition-webgl-export",
+        "test:browser:composition-exposure",
+        "test:browser:composition-effects",
+        "test:browser:composition-story-adapter",
+        "test:browser:composition-native-passage",
+        "test:browser:composition-native-passage:webgl",
+        "test:browser:composition-passage",
+        "test:browser:composition-story-fixtures",
+        "test:browser:composition-commerce-adapter",
+        "test:browser:composition-typography-adapter",
+        "test:browser:composition-provider-typography",
+        "test:browser:composition-program",
+        "test:browser:composition-inspector",
+        "test:browser:composition-builder",
+        "test:browser:composition-baselines"
+      ],
+      "frozenBaselines": 176,
+      "frozenFrames": 36061,
+      "regeneratedFrozenBaselines": false,
+      "unchangedVisualFiles": 95,
+      "canvasMatrices": {
+        "story": {
+          "cases": 69,
+          "frames": 14086,
+          "maxRatio": 1.2107263525651448,
+          "maxDelta": 2,
+          "policy": "existing Canvas near pixels and 1.25 timing ratio"
+        },
+        "commerce": {
+          "cases": 127,
+          "frames": 28200,
+          "maxRatio": 1.142056879062518,
+          "maxDelta": 1,
+          "policy": "existing Canvas near pixels and 1.25 timing ratio"
+        },
+        "typography": {
+          "cases": 20,
+          "frames": 3367,
+          "maxRatio": 1.0912087886003232,
+          "maxDelta": 2,
+          "policy": "existing Canvas near pixels and 1.25 timing ratio"
+        }
+      }
+    }
+  ],
+  "completed": "2026-10-06",
+  "implementation": "16262ec",
+  "fullVerification": {
+    "checkpoint": "16262ec",
+    "runtimeCheckpoint": "16262ec",
+    "command": "pnpm check",
+    "status": "passed",
+    "exitCode": 0,
+    "snapshot": "/private/tmp/still-shift-ce8-check-16262ec",
+    "log": "benchmarks/results/composition-ce8-verification/ce8-full-16262ec.log",
+    "unitTests": 1841,
+    "runtimeTests": 46,
+    "integrationTests": 139,
+    "depthTests": 14,
+    "requiredTestScripts": [
+      "test:unit",
+      "test:runtime",
+      "test:integration",
+      "test:depth",
+      "test:browser:depth",
+      "test:browser:vertical-image",
+      "test:browser:export",
+      "test:golden",
+      "test:browser:cli",
+      "test:browser:batch",
+      "test:browser:illustrated",
+      "test:browser:illustrated:vertical",
+      "test:browser:cinematic",
+      "test:browser:cinematic:vertical",
+      "test:browser:threshold",
+      "test:browser:dolly",
+      "test:browser:lateral",
+      "test:browser:reveal",
+      "test:browser:story",
+      "test:browser:story:activity",
+      "test:browser:story:continuous",
+      "test:browser:passage:authoring",
+      "test:browser:lab-session",
+      "test:browser:composition-session",
+      "test:browser:commerce",
+      "test:browser:commerce-components",
+      "test:browser:commerce-effects",
+      "test:browser:commerce-spatial",
+      "test:browser:reusable-components",
+      "test:browser:reusable-package",
+      "test:browser:reusable-behavior-package",
+      "test:browser:reusable-timing-package",
+      "test:browser:typography",
+      "test:browser:typography:fixtures",
+      "test:browser:composition-evaluator",
+      "test:browser:composition-expressions",
+      "test:browser:composition-quality",
+      "test:browser:composition",
+      "test:browser:composition-webgl",
+      "test:browser:composition-camera",
+      "test:browser:composition-shapes",
+      "test:browser:composition-webgl-export",
+      "test:browser:composition-exposure",
+      "test:browser:composition-effects",
+      "test:browser:composition-story-adapter",
+      "test:browser:composition-native-passage",
+      "test:browser:composition-native-passage:webgl",
+      "test:browser:composition-passage",
+      "test:browser:composition-story-fixtures",
+      "test:browser:composition-commerce-adapter",
+      "test:browser:composition-typography-adapter",
+      "test:browser:composition-provider-typography",
+      "test:browser:composition-program",
+      "test:browser:composition-inspector",
+      "test:browser:composition-builder",
+      "test:browser:composition-baselines"
+    ],
+    "frozenBaselines": 176,
+    "frozenFrames": 36061,
+    "regeneratedFrozenBaselines": false,
+    "unchangedVisualFiles": 95,
+    "canvasMatrices": {
+      "story": {
+        "cases": 69,
+        "frames": 14086,
+        "maxRatio": 1.2107263525651448,
+        "maxDelta": 2,
+        "policy": "existing Canvas near pixels and 1.25 timing ratio"
+      },
+      "commerce": {
+        "cases": 127,
+        "frames": 28200,
+        "maxRatio": 1.142056879062518,
+        "maxDelta": 1,
+        "policy": "existing Canvas near pixels and 1.25 timing ratio"
+      },
+      "typography": {
+        "cases": 20,
+        "frames": 3367,
+        "maxRatio": 1.0912087886003232,
+        "maxDelta": 2,
+        "policy": "existing Canvas near pixels and 1.25 timing ratio"
+      }
+    },
+    "nativeCatalogue": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "reports": [
+        {
+          "fixture": "affine",
+          "backend": "canvas2d",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "affine",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "affine",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "affine",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "perspective",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "perspective",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "checker-perspective",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "checker-perspective",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "clipping",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "clipping",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "content",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "content",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "parents",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "parents",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "focus",
+          "backend": "canvas2d",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "focus",
+          "backend": "canvas2d",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "focus",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "focus",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "group-mask",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "group-mask",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "scopes",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "scopes",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "exposure",
+          "backend": "webgl2",
+          "forward": 32,
+          "reverse": 32,
+          "seeks": 9,
+          "oracleMaxDelta": 0
+        },
+        {
+          "fixture": "exposure",
+          "backend": "webgl2",
+          "frames": 32,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        }
+      ],
+      "failures": [
+        {
+          "fixture": "coverage",
+          "backend": "canvas2d",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 16, pixel 52,37",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 16
+            }
+          ]
+        },
+        {
+          "fixture": "masked",
+          "backend": "canvas2d",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 48,32",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "fixture": "matted",
+          "backend": "canvas2d",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 52,37",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "fixture": "coverage",
+          "backend": "webgl2",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 16, pixel 52,37",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 16
+            }
+          ]
+        },
+        {
+          "fixture": "masked",
+          "backend": "webgl2",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 48,32",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "fixture": "matted",
+          "backend": "webgl2",
+          "diagnostics": [
+            {
+              "code": "comp-camera-coverage",
+              "severity": "error",
+              "message": "Required camera coverage on cover exposes the owning scope at frame 0, pixel 52,37",
+              "node": "cover",
+              "path": "cover.coverage",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "fixture": "unsupported",
+          "exposure": false,
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "True perspective requires the composition WebGL2 backend; Canvas supports affine camera projection",
+              "node": "plane"
+            }
+          ],
+          "previousFrame": "unchanged"
+        },
+        {
+          "fixture": "unsupported",
+          "exposure": true,
+          "diagnostics": [
+            {
+              "code": "comp-feature-backend",
+              "severity": "error",
+              "message": "True perspective requires the composition WebGL2 backend; Canvas supports affine camera projection",
+              "node": "plane"
+            }
+          ],
+          "previousFrame": "unchanged"
+        }
+      ],
+      "hardware": {
+        "environments": [
+          {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          {
+            "profile": "hardware",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+            "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+            "platform": "darwin",
+            "arch": "arm64"
+          }
+        ],
+        "policy": "unchanged perceptual hardware policy",
+        "reports": [
+          {
+            "fixture": "affine",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "affine",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "affine",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "affine",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "affine",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "affine",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "perspective",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "perspective",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "perspective",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "checker-perspective",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "checker-perspective",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "checker-perspective",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "clipping",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "clipping",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "clipping",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "content",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "parents",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "parents",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "parents",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "canvas2d",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "canvas2d",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "focus",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "group-mask",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "near",
+            "maxChannelDelta": 1,
+            "differingChannels": 18,
+            "psnr": 81.24410313171703,
+            "ssim": 0.9999992848435189
+          },
+          {
+            "fixture": "group-mask",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "near",
+            "maxChannelDelta": 1,
+            "differingChannels": 19,
+            "psnr": 81.00929217322181,
+            "ssim": 0.9999998660699676
+          },
+          {
+            "fixture": "group-mask",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "near",
+            "maxChannelDelta": 1,
+            "differingChannels": 16,
+            "psnr": 81.75562835619084,
+            "ssim": 0.9999997817435156
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "scopes",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 16,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "exposure",
+            "backend": "webgl2",
+            "frame": 31,
+            "tier": "exact",
+            "maxChannelDelta": 0,
+            "differingChannels": 0,
+            "psnr": 999,
+            "ssim": 1
+          }
+        ]
+      },
+      "inspector": {
+        "status": "passed",
+        "checks": [
+          "native xyz track",
+          "POI tangent edit",
+          "actual world frustum",
+          "scoped camera at selected frame",
+          "undo/redo",
+          "lossless native source save"
+        ]
+      },
+      "baseline": "exact"
+    },
+    "serialCosts": {
+      "checkpoint": "16262ec",
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "timings": [
+        {
+          "layers": 1,
+          "shutterSamples": 1,
+          "cold": 143.70000004768372,
+          "warmups": [15.399999976158142, 13.699999988079071],
+          "measured": [
+            11.699999988079071, 12.5, 12.900000035762787, 11.5,
+            12.399999976158142
+          ],
+          "median": 12.399999976158142,
+          "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+        },
+        {
+          "layers": 1,
+          "shutterSamples": 4,
+          "cold": 215,
+          "warmups": [59.69999998807907, 59.39999997615814],
+          "measured": [
+            59.5, 60.40000003576279, 58.5, 57.89999997615814, 57.40000003576279
+          ],
+          "median": 58.5,
+          "actualSampleCounts": [4, 4, 4, 4, 4, 4, 4, 4]
+        },
+        {
+          "layers": 8,
+          "shutterSamples": 1,
+          "cold": 182,
+          "warmups": [75.80000001192093, 75.80000001192093],
+          "measured": [
+            73.09999996423721, 74.30000001192093, 72, 72.40000003576279,
+            76.69999998807907
+          ],
+          "median": 73.09999996423721,
+          "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+        },
+        {
+          "layers": 8,
+          "shutterSamples": 4,
+          "cold": 475.30000001192093,
+          "warmups": [314.60000002384186, 313],
+          "measured": [
+            309.7999999523163, 324.5, 322.30000001192093, 344.5, 478.5
+          ],
+          "median": 324.5,
+          "actualSampleCounts": [4, 4, 4, 4, 4, 4, 4, 4]
+        },
+        {
+          "layers": 64,
+          "shutterSamples": 1,
+          "cold": 911.1999999880791,
+          "warmups": [711.4000000357628, 649.8999999761581],
+          "measured": [
+            601.6999999880791, 583.7000000476837, 582.1999999880791,
+            580.3999999761581, 582
+          ],
+          "median": 582.1999999880791,
+          "actualSampleCounts": [1, 1, 1, 1, 1, 1, 1, 1]
+        },
+        {
+          "layers": 64,
+          "shutterSamples": 4,
+          "cold": 2516.699999988079,
+          "warmups": [2354.300000011921, 2395.5],
+          "measured": [
+            2363.699999988079, 2385.300000011921, 2576.899999976158,
+            2426.899999976158, 2435.2000000476837
+          ],
+          "median": 2426.899999976158,
+          "actualSampleCounts": [4, 4, 4, 4, 4, 4, 4, 4]
+        }
+      ]
+    }
+  },
+  "versions": {
+    "evaluator": "composition-evaluator-45",
+    "canvas": "composition-canvas-1.40.0",
+    "webgl": "composition-webgl2-0.55.0",
+    "export": "chromium-ffmpeg-0.6.2"
+  },
+  "delivery": {
+    "branch": "codex/composition-ce8",
+    "base": "codex/composition-ce6-completion",
+    "pullRequest": "https://github.com/xxibcill/still-shift/pull/43",
+    "next": "CE8-L, CE4c, CE4d, CE13, CE15 and CE14 on separate branches"
+  }
+}

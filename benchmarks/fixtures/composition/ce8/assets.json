@@ -1,0 +1,25 @@
+{
+  "checker": {
+    "id": "checker",
+    "type": "image",
+    "path": "checker.png",
+    "sha256": "sha256:adf2c15720830a9d2258acf36260af6029a6563619712a0148b3c0a3802d9fe9",
+    "width": 48,
+    "height": 40
+  },
+  "hole": {
+    "id": "hole",
+    "type": "image",
+    "path": "alpha-hole.png",
+    "sha256": "sha256:ea99546716887ae7bacefdb0f1488abce955fecf86913cc207719eee55e39e68",
+    "width": 48,
+    "height": 40
+  },
+  "font": {
+    "id": "plex",
+    "type": "font",
+    "path": "../../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+    "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+    "weight": "600"
+  }
+}

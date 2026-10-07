@@ -12,6 +12,18 @@ import type {
   EvaluatedLayerTree,
   EvaluationOptions,
 } from "./evaluate/types.ts";
+import {
+  affineHomography,
+  inverseHomography,
+  multiplyHomographies,
+  type Homography,
+} from "./evaluate/spatial-geometry.ts";
+import {
+  homographicBounds,
+  homographicScale,
+  homographicVelocityPoints,
+  normalizedHomography,
+} from "./projective-quality.ts";
 import { passageError } from "../passage-diagnostics.ts";
 import { typographyClock } from "./render/text-clock.ts";
 
@@ -39,6 +51,9 @@ export type CompositionQualitySample = {
   signature: string;
   textClock?: number;
   scale: [number, number];
+  homography?: Homography;
+  velocityPoints?: number[];
+  ownerViewport?: { width: number; height: number };
 };
 export type CompositionQualityFrame = {
   signature: string;
@@ -133,6 +148,7 @@ export function compositionQualityFrame(
     sourcePath: string,
     scopeAncestors: readonly string[],
     painting: boolean,
+    baseHomography?: Homography,
   ) => {
     const byId = new Map(scope.layers.map((s) => [s.id, s]));
     const matteIds = new Set(
@@ -148,7 +164,19 @@ export function compositionQualityFrame(
       const id = route + state.id,
         layer = state.layer;
       const matrix = multiplyMatrix(base, state.screenMatrix);
-      const bounds = state.bounds ? projectBounds(state.bounds, base) : null;
+      const homography =
+        state.projection || baseHomography
+          ? multiplyHomographies(
+              baseHomography ?? affineHomography(base),
+              state.projection?.homography ??
+                affineHomography(state.screenMatrix),
+            )
+          : undefined;
+      const bounds = state.bounds
+        ? baseHomography
+          ? homographicBounds(state.bounds, baseHomography, viewport)
+          : projectBounds(state.bounds, base)
+        : null;
       let clipping = clip;
       const ancestors = [...scopeAncestors];
       const scaleSigns: [number, number] = [1, 1];
@@ -162,7 +190,9 @@ export function compositionQualityFrame(
         if (parent.layer.type === "group" && parent.layer.clip && parent.bounds)
           clipping = intersectBounds(
             clipping,
-            projectBounds(parent.bounds, base),
+            baseHomography
+              ? homographicBounds(parent.bounds, baseHomography, viewport)
+              : projectBounds(parent.bounds, base),
           );
         parent = parent.layer.parent
           ? byId.get(parent.layer.parent)
@@ -180,7 +210,10 @@ export function compositionQualityFrame(
         painting &&
         state.drawable &&
         opacity > 1e-8 &&
-        Math.abs(determinant) > 1e-12 &&
+        (homography
+          ? !!inverseHomography(homography) &&
+            (!state.projection || !!state.projection.bounds)
+          : Math.abs(determinant) > 1e-12) &&
         (state.reveal ?? 1) > 0;
       const onScreen =
         visible &&
@@ -231,10 +264,30 @@ export function compositionQualityFrame(
         visible,
         onScreen,
         contributesPaint: onScreen,
-        scale: [
-          Math.hypot(matrix[0], matrix[1]) * scaleSigns[0],
-          Math.hypot(matrix[2], matrix[3]) * scaleSigns[1],
-        ],
+        scale: homography
+          ? (homographicScale(homography, [
+              state.transform.anchor[0],
+              state.transform.anchor[1],
+            ]).map((value, index) => value * scaleSigns[index]!) as [
+              number,
+              number,
+            ])
+          : [
+              Math.hypot(matrix[0], matrix[1]) * scaleSigns[0],
+              Math.hypot(matrix[2], matrix[3]) * scaleSigns[1],
+            ],
+        ...(homography
+          ? {
+              homography,
+              velocityPoints: homographicVelocityPoints(homography, [
+                state.transform.anchor[0],
+                state.transform.anchor[1],
+              ]),
+            }
+          : {}),
+        ...(state.layer.coverage === "required"
+          ? { ownerViewport: { width: scope.width, height: scope.height } }
+          : {}),
         ...(text?.text ? { text: text.text } : {}),
         ...(text?.role ? { role: text.role } : {}),
         ...(clock === undefined ? {} : { textClock: clock }),
@@ -252,6 +305,9 @@ export function compositionQualityFrame(
           effects,
           content,
           clock,
+          ...(homography
+            ? [normalizedHomography(homography), state.focusBlur ?? 0]
+            : []),
         ]),
       };
       layers.set(id, sample);
@@ -279,6 +335,7 @@ export function compositionQualityFrame(
           `precomps.${childIndex}`,
           [id, ...ancestors],
           paintChildren,
+          homography,
         );
         if (collapsed) {
           const children = [...layers.values()].filter((child) =>
@@ -456,7 +513,7 @@ export function qualityTrackSignature(
   path: string,
 ) {
   if (
-    /^(?:transform\.(?:anchor|position|scale)|constraintReference)\.[xy]$/.test(
+    /^(?:transform\.(?:anchor|position|scale|orientation)|constraintReference)\.[xyz]$/.test(
       path,
     )
   )

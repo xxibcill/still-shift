@@ -290,7 +290,9 @@ draft. **Reset view** restores accepted draft visibility. Saving applies current
 view visibility; MP4 export renders the current visible draft. Bounds/anchors,
 instance motion paths/tangents and 5% safe-area guides use a separate SVG surface
 and never enter render output. Diagnostic jumps use root composition frames.
-Real camera-frustum and source-backed waveform overlays follow CE8 and CE13.
+Native CE8 cameras show actual near/focus-plane world corners in an X/Z inset
+(or X/Y for a vertical camera). XYZ and POI tracks expose three-component tangent
+edits. Source-backed waveform overlays follow CE13.
 
 Fixed JSON previews offer **Save JSON source**, guarded by source revision and
 byte hash. Saves preserve raw native fields, metadata, source asset paths and file
@@ -807,23 +809,24 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 
 ### Fields on every layer
 
-| Field                                 | Notes                                                                                                                                   |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`, `type`                          | Required. `type` selects the fields below.                                                                                              |
-| `name`                                | Display name.                                                                                                                           |
-| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                              |
-| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                                    |
-| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                               |
-| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                                     |
-| `transform`                           | See [transform](#transform).                                                                                                            |
-| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.                      |
-| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                                      |
-| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                                   |
-| `masks`                               | See [masks](#masks).                                                                                                                    |
-| `effects`                             | `{ id, effect, enabled?, space?, inputs?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time. |
-| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                          |
-| `threeD`, `motionBlur`                | `threeD` arrives in CE8; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants).                         |
-| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                                 |
+| Field                                 | Notes                                                                                                                                            |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `id`, `type`                          | Required. `type` selects the fields below.                                                                                                       |
+| `name`                                | Display name.                                                                                                                                    |
+| `inPoint`, `outPoint`                 | Composition frames, `[in, out)`. Default `0` and the scope's `frameCount`.                                                                       |
+| `startFrame`, `stretch`               | Layer time 0 and time stretch. Defaults `0` and `1`.                                                                                             |
+| `parent`                              | Layer id in the same scope. Position, rotation, scale and skew inherit; opacity does not.                                                        |
+| `enabled`, `solo`, `guide`            | Visibility switches; guides never render in export.                                                                                              |
+| `transform`                           | See [transform](#transform).                                                                                                                     |
+| `constraintReference`                 | Animatable layer-space vector, defaulting to the transform anchor. Constraints can move it without moving artwork.                               |
+| `blendMode`                           | See [blend modes](#blend-modes). Default `normal`.                                                                                               |
+| `trackMatte`                          | `{ layer, mode }`; see [track mattes](#track-mattes).                                                                                            |
+| `masks`                               | See [masks](#masks).                                                                                                                             |
+| `effects`                             | `{ id, effect, enabled?, space?, inputs?, inPoint?, outPoint?, params? }[]`. Ordered registry effects; active intervals use layer time.          |
+| `cameraDepth`                         | 0–2, unparented root layers only; see [2D camera](#2d-camera).                                                                                   |
+| `coverage`                            | `required` validates opaque viewport coverage on all frames/shutter samples; `optional` is the default.                                          |
+| `threeD`, `motionBlur`                | `threeD` enables native xyz planes and camera projection; `motionBlur` opts into exposure sampling (groups and precomps pass it to descendants). |
+| `qualification`, `source`, `metadata` | Evidence and provenance carried through from story scenes and adapters.                                                                          |
 
 ### Layer types
 
@@ -838,12 +841,72 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 | `precomp`                    | `comp` (precomp id); `collapseTransforms`; `timeRemap` (animatable precomp frame).                                                                                                                                                                                                                                                                                                                                         | CE1       |
 | `adjustment`                 | `size` (default: composition size). Applies its effects to the layers below.                                                                                                                                                                                                                                                                                                                                               | CE1       |
 | `shape`                      | `contents`.                                                                                                                                                                                                                                                                                                                                                                                                                | CE5       |
-| `camera`                     | —                                                                                                                                                                                                                                                                                                                                                                                                                          | CE8       |
-| `light`                      | —                                                                                                                                                                                                                                                                                                                                                                                                                          | Q6        |
+| `camera`                     | `model`, `pointOfInterest`, `zoom` or `focalLength`, `filmSize`, clips and focus controls; see native camera below.                                                                                                                                                                                                                                                                                                        | CE8       |
+| `light`                      | —                                                                                                                                                                                                                                                                                                                                                                                                                          | CE8-L     |
 | `video`, `sequence`, `audio` | `asset`; `timeRemap`.                                                                                                                                                                                                                                                                                                                                                                                                      | CE13      |
 
 Layers of an unavailable type validate structurally and then fail with
 `comp-feature-unavailable`, so agents learn which milestone provides them.
+
+### Native camera and xyz planes (CE8)
+
+Set `threeD: true` on an image, solid, text, shape or flat precomp. Position,
+anchor and scale accept xyz grouped/separated keys; orientation, rotationX,
+rotationY and rotation (z) use degrees. Local transform order is position,
+orientation Z/Y/X, rotation Z/Y/X, xy skew, scale, then negative anchor; parent
+matrices multiply the complete xyz transform. Camera-depth sorting runs within
+contiguous 3D artwork groups, with authored ties and 2D stacking barriers.
+`autoOrient: "camera"` faces the active camera while retaining authored mirrors;
+`autoOrient: "path"` uses the xyz path tangent.
+
+A scope selects its highest active camera after parent transforms. Camera layers
+are implicitly spatial and remain optical dependencies under solo. With none,
+a scope containing 3D artwork gets a default camera: position
+`[width/2,height/2,-width]`, zoom `width`, looking along positive z. A one-node
+camera uses its orientation; a two-node camera aims at parent-space
+`pointOfInterest`. Authored POI implies two-node unless a model is explicit.
+Coincident POI, singular camera bases and camera-facing parent feedback fail.
+Camera basis vectors are orthonormal: transformed positive z selects the one-node
+forward direction, transformed positive y supplies down/roll, and their cross
+product supplies right. Scale magnitudes do not change optical zoom.
+
+Author either `zoom` (pixels, 0.001–1,000,000) or `focalLength` (millimetres,
+0.001–10,000). `zoom = focalLength * width / filmSize`; film size defaults to
+36 mm. The two primary controls cannot both be authored or driven. Default near
+and far clips are 0.01 and 10,000,000 world pixels. Clip order must remain valid.
+Two-node POI and numeric optics accept native keyed/driver/expression clocks.
+
+Enable `depthOfField`, with focus distance in world pixels, aperture diameter in
+millimetres (default 0) and blur level (default 1). The declared screen radius is
+`min(128, aperture * zoom / (2 * filmSize) * abs(1 - focusDistance/depth) * blurLevel)`.
+Zero aperture/blur is an exact identity. Focus blur follows local artwork/effects
+and projective placement, with screen overscan, then matte/opacity/blending.
+
+WebGL2 uses actual plane homographies and near/far clipping. True perspective
+uses four quarter-pixel coverage samples and RGBA8 premultiplied bilinear weights
+quantized to 1/16, with a 1e-4 quantizer-unit tie bias to bound float32 boundary
+drift. Native 3D documents use pinned CPU Canvas raster preparation for the affine
+reference and local bitmap coverage; WebGL perspective placement remains on the GPU.
+Canvas supports affine planes and fails true perspective with
+`comp-feature-backend` before changing the previous complete frame. A projected
+precomp is a flat surface with its own camera; perspective `collapseTransforms`
+fails. Group masks/clips project local coverage; perspective group layer-space
+effects need a flat precomp. Projected `time.echo` belongs on a scope adjustment
+or inside a flat precomp. Cross-plane layer-space effects require an affine
+coordinate relation. Existing geometric constraints are explicitly 2D and reject
+spatial participants with `comp-3d-constraint`.
+
+`coverage: "required"` requires every viewport pixel of the layer's own scope to
+have alpha at least 254/255 on every root frame and actual shutter sample. Image
+states, interior transparency, masks, mattes and effects are included. Failures
+identify the owning layer, frame and first exposed pixel; previews can choose
+`coverageSeverity: "warning"`. Optional layers do not trigger this check.
+Local surfaces have an 8192-pixel axis and 128 MiB RGBA8 budget plus actual GPU
+texture limits; violations fail before painting. Native lighting follows CE8-L.
+
+Use [the native camera program](../examples/composition/10-native-camera.ts) and
+[the acceptance scenes](../benchmarks/fixtures/composition/ce8/README.md) for
+concrete authored setups. Runtime acceptance is pending in the CE8 evidence record.
 
 ### Transform
 
@@ -858,7 +921,9 @@ Layers of an unavailable type validate structurally and then fail with
 | `rotationX`, `rotationY`, `orientation` | 3D only                              | CE8                                                                                    |
 | `autoOrient`                            | `off`, `path`, `camera` (CE8)        | `off`                                                                                  |
 
-Three-component vectors require `threeD`.
+Three-component transform vectors require `threeD`, except camera transforms
+which are implicitly spatial. Scale z defaults to 1; other missing z components
+default to 0. Cameras use the separate scope-based position default below.
 
 `autoOrient: "path"` (CE9) adds the clockwise direction of travel of the layer's
 position (see `heading()` in [expressions](#expressions-ce9)) to its rotation after
@@ -887,7 +952,8 @@ At most 32 per layer. How masks combine: [rendering](#mask-rendering).
 
 ## 2D camera
 
-`camera2d` carries the story camera until the CE8 camera replaces it:
+`camera2d` retains the established story camera in 2D scopes; spatial scopes map
+its curves and bounded jolts into the native camera geometry:
 `keys` (`{ frame, x, y, zoom }`, at least two), `easeIn`, `easeOut`, `startTangent`,
 `endTangent` and `jolts`. The curve is the story camera's monotone cubic, so adapted
 story scenes keep their motion exactly. It moves each unparented root layer by its
@@ -1178,11 +1244,10 @@ path diagnostics; completed milestones are not promised as future availability.
 Features that are in the contract but not yet implemented fail with
 `comp-feature-unavailable`; the message names the milestone.
 
-| Feature                                                      | Milestone |
-| ------------------------------------------------------------ | --------- |
-| 3D layers, camera layers, 3D rotation, auto-orient to camera | CE8       |
-| Video, image-sequence and audio layers and assets            | CE13      |
-| Light layers                                                 | Q6        |
+| Feature                                           | Milestone |
+| ------------------------------------------------- | --------- |
+| Video, image-sequence and audio layers and assets | CE13      |
+| Light layers                                      | CE8-L     |
 
 ## Limits
 

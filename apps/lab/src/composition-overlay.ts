@@ -1,4 +1,19 @@
-import { pathCubics } from "../../../packages/renderer-core/src/composition/shapes/path.ts";
+import {
+  cameraFrustumOverlay,
+  overlayHomographyPoint,
+  spatialOverlayPoint,
+} from "./composition-spatial-overlay.ts";
+import {
+  affineHomography,
+  multiplyHomographies,
+  worldPoint,
+  projectWorldPoint,
+  type Homography,
+} from "../../../packages/renderer-core/src/composition/evaluate/spatial-geometry.ts";
+import {
+  flattenBezier,
+  pathCubics,
+} from "../../../packages/renderer-core/src/composition/shapes/path.ts";
 import type { Composition } from "../../../packages/scene-contract/src/index.ts";
 import {
   evaluateComp,
@@ -23,23 +38,40 @@ type Located = {
   outer: Matrix;
   route: string;
   scope: CompositionScope;
+  tree: EvaluatedLayerTree;
+  homography?: Homography;
+  outerHomography?: Homography;
 };
 function locate(
   tree: EvaluatedLayerTree,
   matrix = identity,
   route = "root",
+  outerHomography?: Homography,
 ): Located[] {
   return tree.layers.flatMap((state) => {
-    const item = {
+    const homography =
+      state.projection || outerHomography
+        ? multiplyHomographies(
+            outerHomography ?? affineHomography(matrix),
+            state.projection?.homography ??
+              affineHomography(state.screenMatrix),
+          )
+        : undefined;
+    const item: Located = {
       state,
       matrix: multiplyMatrix(matrix, state.screenMatrix),
       outer: matrix,
       route: `${route}/${state.id}`,
       scope: route === "root" ? null : tree.id,
+      tree,
+      ...(homography ? { homography } : {}),
+      ...(outerHomography ? { outerHomography } : {}),
     };
     return [
       item,
-      ...(state.precomp ? locate(state.precomp, item.matrix, item.route) : []),
+      ...(state.precomp
+        ? locate(state.precomp, item.matrix, item.route, item.homography)
+        : []),
     ];
   });
 }
@@ -108,7 +140,13 @@ export function createCompositionOverlay() {
     }
     for (const item of items.filter(matches)) {
       const { state, matrix, outer } = item;
-      if (bounds.checked && state.visible) {
+      const project = (point: Point) =>
+        spatialOverlayPoint(state, matrix, outer, item.outerHomography, point);
+      if (
+        bounds.checked &&
+        state.visible &&
+        !["camera", "light"].includes(state.layer.type)
+      ) {
         if (state.bounds) {
           const b = state.bounds,
             corners = [
@@ -119,7 +157,13 @@ export function createCompositionOverlay() {
             ] as Point[];
           add("polygon", {
             points: corners
-              .map((p) => transformPoint(outer, p).join(","))
+              .map((p) =>
+                item.outerHomography
+                  ? overlayHomographyPoint(item.outerHomography, p)
+                  : transformPoint(outer, p),
+              )
+              .filter((p): p is Point => !!p)
+              .map((p) => p.join(","))
               .join(" "),
             fill: "none",
             stroke: "#afc5a1",
@@ -128,20 +172,45 @@ export function createCompositionOverlay() {
             "data-layer": item.route,
           });
         }
-        const anchor = transformPoint(matrix, state.transform.anchor);
-        add("circle", {
-          cx: anchor[0],
-          cy: anchor[1],
-          r: Math.max(2, composition.width / 160),
-          fill: "none",
-          stroke: "#e6c989",
-          "data-overlay": "anchor",
-          "data-layer": item.route,
-        });
+        const anchor = project([
+          state.transform.anchor[0],
+          state.transform.anchor[1],
+        ]);
+        if (anchor)
+          add("circle", {
+            cx: anchor[0],
+            cy: anchor[1],
+            r: Math.max(2, composition.width / 160),
+            fill: "none",
+            stroke: "#e6c989",
+            "data-overlay": "anchor",
+            "data-layer": item.route,
+          });
       }
       if (paths.checked && selected) {
         for (const path of state.shapes?.paths ?? []) {
           if (!path.vertices.length) continue;
+          if (item.homography) {
+            let d = "",
+              connected = false;
+            for (const local of flattenBezier(path)) {
+              const point = project(local);
+              if (point) {
+                d += `${connected ? " L" : " M"} ${point.join(" ")}`;
+                connected = true;
+              } else connected = false;
+            }
+            if (d)
+              add("path", {
+                d,
+                fill: "none",
+                stroke: "#c5b7dd",
+                "stroke-width": 1,
+                "data-overlay": "shape-path",
+                "data-layer": item.route,
+              });
+            continue;
+          }
           const start = transformPoint(matrix, path.vertices[0]!);
           let d = `M ${start.join(" ")}`;
           for (const cubic of pathCubics(path))
@@ -161,6 +230,56 @@ export function createCompositionOverlay() {
         }
         const raw = state.layer.transform?.position;
         if (isKeyed(raw)) {
+          if (state.projection && state.worldMatrix3d && item.tree.camera) {
+            const byId = new Map(
+              item.tree.layers.map((state) => [state.id, state]),
+            );
+            const parent = state.layer.parent
+              ? byId.get(state.layer.parent)?.worldMatrix3d
+              : undefined;
+            const screen = (point: number[]) => {
+              const world = parent
+                ? worldPoint(parent, [point[0]!, point[1]!, point[2] ?? 0])
+                : ([point[0]!, point[1]!, point[2] ?? 0] as [
+                    number,
+                    number,
+                    number,
+                  ]);
+              const local = projectWorldPoint(item.tree.camera!, world);
+              return local
+                ? item.outerHomography
+                  ? overlayHomographyPoint(item.outerHomography, local)
+                  : transformPoint(outer, local)
+                : null;
+            };
+            for (const key of raw.keys)
+              for (const side of ["spatialIn", "spatialOut"] as const) {
+                const tangent = (
+                  key as unknown as {
+                    spatialIn?: number[];
+                    spatialOut?: number[];
+                  }
+                )[side];
+                if (!tangent) continue;
+                const value = key.value as number[],
+                  a = screen(value),
+                  b = screen(
+                    [0, 1, 2].map(
+                      (axis) => (value[axis] ?? 0) + (tangent[axis] ?? 0),
+                    ),
+                  );
+                if (a && b)
+                  add("line", {
+                    x1: a[0],
+                    y1: a[1],
+                    x2: b[0],
+                    y2: b[1],
+                    stroke: "#e8a4bd",
+                    "data-overlay": "spatial-tangent",
+                  });
+              }
+            continue;
+          }
           try {
             const parent = multiplyMatrix(
               matrix,
@@ -199,6 +318,58 @@ export function createCompositionOverlay() {
         }
       }
     }
+    if (bounds.checked) {
+      const shown = new Set<EvaluatedLayerTree>();
+      for (const item of items.filter(matches)) {
+        const camera = item.tree.camera;
+        if (!camera || shown.has(item.tree)) continue;
+        shown.add(item.tree);
+        const frustum = cameraFrustumOverlay(
+          camera,
+          composition.width,
+          composition.height,
+        );
+        for (const [name, points, world] of [
+          ["near", frustum.nearPoints, frustum.near],
+          ["focus", frustum.focusPoints, frustum.focus],
+        ] as const)
+          add("polygon", {
+            points: points.map((p) => p.join(",")).join(" "),
+            fill: "none",
+            stroke: "#8acbd0",
+            "stroke-width": 1,
+            "data-overlay": "camera-frustum",
+            "data-plane": name,
+            "data-camera": camera.id ?? "default",
+            "data-world-corners": JSON.stringify(world),
+          });
+        for (const point of frustum.focusPoints)
+          add("line", {
+            x1: frustum.position[0],
+            y1: frustum.position[1],
+            x2: point[0],
+            y2: point[1],
+            stroke: "#8acbd0",
+            "stroke-width": 0.7,
+            "data-overlay": "camera-ray",
+          });
+        add("circle", {
+          cx: frustum.position[0],
+          cy: frustum.position[1],
+          r: 2,
+          fill: "#8acbd0",
+          "data-overlay": "camera-position",
+        });
+        add("text", {
+          x: frustum.label[0],
+          y: frustum.label[1],
+          fill: "#8acbd0",
+          "font-size": Math.max(4, composition.width / 100),
+          "data-overlay": "camera-label",
+        }).textContent =
+          `${camera.id ?? "Default camera"} · ${frustum.axes} · focus ${camera.focusDistance}`;
+      }
+    }
     if (paths.checked && selected) {
       const selection = JSON.stringify([selected.scope, selected.layer]);
       if (
@@ -216,7 +387,14 @@ export function createCompositionOverlay() {
             ),
           ).filter(matches)) {
             const list = points.get(item.route) ?? [];
-            list.push(transformPoint(item.matrix, item.state.transform.anchor));
+            const anchor = spatialOverlayPoint(
+              item.state,
+              item.matrix,
+              item.outer,
+              item.outerHomography,
+              [item.state.transform.anchor[0], item.state.transform.anchor[1]],
+            );
+            if (anchor) list.push(anchor);
             points.set(item.route, list);
           }
         cached = { composition, selection, points };

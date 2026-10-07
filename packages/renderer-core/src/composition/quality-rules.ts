@@ -1,4 +1,9 @@
 import type { Composition } from "@still-shift/scene-contract";
+import {
+  homographicPoint,
+  affineViewportCovered,
+  normalizedHomography,
+} from "./projective-quality.ts";
 import { boundaryVelocityJump } from "../camera-sampling.ts";
 import {
   lintSeverity,
@@ -77,6 +82,44 @@ function coversViewport(
   const layer = sample.state.layer;
   const extent = size ?? ("size" in layer ? layer.size : undefined);
   if (!extent) return false;
+  if (sample.homography) {
+    const h = sample.homography;
+    const [a, b, c, d, e, f, g, j, k] = h;
+    const inverse = [
+      e * k - f * j,
+      c * j - b * k,
+      b * f - c * e,
+      f * g - d * k,
+      a * k - c * g,
+      c * d - a * f,
+      d * j - e * g,
+      b * g - a * j,
+      a * e - b * d,
+    ] as typeof h;
+    const divisor = a * inverse[0] + b * inverse[3] + c * inverse[6];
+    if (Math.abs(divisor) < 1e-12) return false;
+    return [
+      [0, 0],
+      [width, 0],
+      [width, height],
+      [0, height],
+    ].every((point) => {
+      const local = homographicPoint(inverse, point as [number, number]);
+      if (
+        !local ||
+        local[0] < -1e-6 ||
+        local[1] < -1e-6 ||
+        local[0] > extent[0] + 1e-6 ||
+        local[1] > extent[1] + 1e-6
+      )
+        return false;
+      const plane = sample.state.projection;
+      if (!plane) return true;
+      const depth =
+        plane.depth[0] * local[0] + plane.depth[1] * local[1] + plane.depth[2];
+      return depth >= plane.nearClip && depth <= plane.farClip;
+    });
+  }
   const [a, b, c, d, e, f] = sample.matrix;
   const determinant = a * d - b * c;
   if (Math.abs(determinant) < 1e-12) return false;
@@ -132,7 +175,72 @@ export function compositionFramingFindings(
     for (const sample of frame.layers.values()) {
       // Framing measures the painted region after group and precomp clipping.
       const b = sample.clippedBounds;
-      if (sample.visible && b && hasArea(b) && !coverage.has(sample.id)) {
+      if (sample.state.layer.coverage === "required" && sample.ownerViewport) {
+        const state = sample.state,
+          { width, height } = sample.ownerViewport;
+        const bounds =
+          state.projection?.localBounds ??
+          ("size" in state.layer && state.layer.size
+            ? {
+                left: 0,
+                top: 0,
+                right: state.layer.size[0],
+                bottom: state.layer.size[1],
+              }
+            : null);
+        let covered = !!bounds;
+        if (state.projection) {
+          const plane = state.projection;
+          covered =
+            !!plane.inverse &&
+            [
+              [0, 0],
+              [width, 0],
+              [width, height],
+              [0, height],
+            ].every((point) => {
+              const local =
+                plane.inverse &&
+                homographicPoint(plane.inverse, point as [number, number]);
+              if (!local || !bounds) return false;
+              const depth =
+                plane.depth[0] * local[0] +
+                plane.depth[1] * local[1] +
+                plane.depth[2];
+              return (
+                local[0] >= bounds.left - 1e-6 &&
+                local[0] <= bounds.right + 1e-6 &&
+                local[1] >= bounds.top - 1e-6 &&
+                local[1] <= bounds.bottom + 1e-6 &&
+                depth >= plane.nearClip &&
+                depth <= plane.farClip
+              );
+            });
+        } else
+          covered =
+            !!bounds &&
+            affineViewportCovered(state.screenMatrix, bounds, width, height);
+        if (
+          !state.visible ||
+          Math.round(state.opacity * (state.color?.[3] ?? 1) * 255) < 254 ||
+          !covered
+        )
+          add(
+            "coverage",
+            sample,
+            [at, at],
+            1,
+            "Required layer does not conservatively cover its owning camera viewport; rendered alpha verification checks source holes.",
+            sample.path + ".coverage",
+          );
+      }
+      if (
+        sample.visible &&
+        b &&
+        hasArea(b) &&
+        !coverage.has(sample.id) &&
+        sample.state.layer.coverage !== "required"
+      ) {
         if (
           b.right <= 0 ||
           b.bottom <= 0 ||
@@ -230,9 +338,23 @@ const scaleDelta = (
   a: CompositionQualitySample,
   b: CompositionQualitySample,
 ) => {
+  if (a.homography && b.homography) {
+    const current = normalizedHomography(a.homography);
+    const previous = normalizedHomography(b.homography);
+    if (
+      current.every(
+        (value, i) =>
+          Math.abs(value - previous[i]!) <=
+          1e-10 * Math.max(1, Math.abs(value), Math.abs(previous[i]!)),
+      )
+    )
+      return 0;
+  }
   // Reflections can cancel across rotated parent/child axes. Translation does
   // not change scale; compare the effective linear transform before its signs.
   if (
+    !a.homography &&
+    !b.homography &&
     a.matrix
       .slice(0, 4)
       .every(
@@ -411,7 +533,7 @@ export function compositionTimingFindings(
           end: visible.at(-1)!.at,
           easing: easingSignature(a, b),
           path: `${sample.path}.${track.path}`,
-          property: `${sample.id}:${track.path.replace(/\.[xy]$/, "")}`,
+          property: `${sample.id}:${track.path.replace(/\.[xyz]$/, "")}`,
         });
       }
     }
@@ -525,9 +647,11 @@ function joinFrames(
 }
 function velocityValues(sample: CompositionQualitySample) {
   return [
-    sample.matrix[4],
-    sample.matrix[5],
-    ...sample.matrix.slice(0, 4).map((n) => n * 100),
+    ...(sample.velocityPoints ?? [
+      sample.matrix[4],
+      sample.matrix[5],
+      ...sample.matrix.slice(0, 4).map((n) => n * 100),
+    ]),
     sample.opacity * 100,
     (sample.state.reveal ?? 1) * 100,
     ...(sample.state.color ?? []).map((n) => n * 100),

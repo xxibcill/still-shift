@@ -1,6 +1,9 @@
 import type { CompiledShapes } from "../shapes/types.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
-import type { EvaluatedEffect } from "../evaluate/effects.ts";
+import {
+  primitiveBlurEffect,
+  type EvaluatedEffect,
+} from "../evaluate/effects.ts";
 import { evaluateComp } from "../evaluate/evaluate.ts";
 import type {
   BezierPath,
@@ -20,6 +23,23 @@ import type {
 } from "../evaluate/types.ts";
 import { cameraMatrix } from "../evaluate/camera.ts";
 import { projectBounds } from "../evaluate/geometry.ts";
+import { projectedMaskGeometry, type ProjectedMask } from "./projected-mask.ts";
+import { passageError } from "../../passage-diagnostics.ts";
+import {
+  localSurfaceBounds,
+  planePlacement,
+  affineCoordinateMatrix,
+  type ProjectivePlacement,
+} from "./projective-placement.ts";
+import {
+  affineHomography,
+  inverseHomography,
+  multiplyHomographies,
+  projectPlane,
+  planeHomography,
+  type Homography,
+} from "../evaluate/spatial-geometry.ts";
+import { spatialStackOrder } from "./spatial-order.ts";
 
 export type RenderEffect = EvaluatedEffect & {
   placement?: { matrix: Matrix; transforms: Matrix[] };
@@ -36,6 +56,7 @@ export type ClipRect = {
   transforms?: Matrix[];
   width: number;
   height: number;
+  projection?: ProjectivePlacement;
 };
 
 export type MaskOp = {
@@ -49,6 +70,7 @@ export type MaskOp = {
   /** Layer space to surface space. */
   matrix: Matrix;
   transforms?: Matrix[];
+  projected?: ProjectedMask;
 };
 
 export type SolidContent = {
@@ -166,11 +188,13 @@ function backdropAt(
       const op = ops[i]!;
       if (op === target) return { ops: ops.slice(0, i), background };
       const nested =
-        op.kind === "isolate"
-          ? visit(op.ops, null)
-          : op.kind === "draw" && op.content.type === "surface"
-            ? backdropAt(op.content.surface, target)
-            : undefined;
+        op.kind === "project"
+          ? backdropAt(op.surface, target)
+          : op.kind === "isolate"
+            ? visit(op.ops, null)
+            : op.kind === "draw" && op.content.type === "surface"
+              ? backdropAt(op.content.surface, target)
+              : undefined;
       if (nested) return nested;
     }
     return undefined;
@@ -184,7 +208,20 @@ export type MatteOp = {
   /** Ops that draw the matte layer with its own transform, opacity, masks and matte. */
   ops: RenderOp[];
 };
-export type RenderOp = DrawOp | IsolateOp | AdjustOp;
+/** Local artwork and its effects precede projection; focus blur and matte follow it. */
+export type ProjectOp = {
+  kind: "project";
+  layer: string;
+  surface: SurfaceNode;
+  placement: ProjectivePlacement;
+  focusPadding?: number;
+  effects: RenderEffect[];
+  matte: MatteOp | null;
+  opacity: number;
+  blend: CompositionBlendMode;
+  clips: ClipRect[];
+};
+export type RenderOp = DrawOp | IsolateOp | AdjustOp | ProjectOp;
 
 /** One composition scope rendered into its own surface. */
 export type SurfaceNode = {
@@ -200,6 +237,7 @@ export type RenderGraph = {
   root: SurfaceNode;
   /** Layer keys skipped because their bounds miss the surface they draw into. */
   culled: string[];
+  spatial?: true;
 };
 export type RenderGraphOptions = EvaluationOptions & {
   /** Preparation must discover offscreen glyph samples before final bounds exist. */
@@ -221,6 +259,8 @@ type Frame = {
   /** Scoped layer key whose ordinary visibility is ignored during capture. */
   captureSource?: string;
   background: Rgba | null;
+  localCapture?: { inverse: Homography; origin: [number, number] };
+  coverageLayers?: ReadonlySet<string>;
 };
 type Scope = {
   tree: EvaluatedLayerTree;
@@ -269,6 +309,7 @@ function echoImageOps(ops: RenderOp[]): RenderOp[] {
 
 class GraphBuilder {
   readonly culled: string[] = [];
+  spatial = false;
   private readonly cameras = new Map<string, Matrix>();
   private readonly history = new Map<string, Scope>();
   private readonly exposures = new WeakMap<EvaluatedLayerTree, Scope>();
@@ -314,6 +355,67 @@ class GraphBuilder {
         ...(captureSource ? { captureSource } : {}),
         ...(this.options.cull === false ? { cull: false } : {}),
       }),
+    };
+  }
+
+  coverageSurface(
+    tree: EvaluatedLayerTree,
+    def: CompositionScope,
+    id: string,
+    prefix: string,
+  ): SurfaceNode {
+    const state = tree.layers.find((state) => state.id === id)!;
+    const scope = this.scope(
+      tree,
+      def,
+      state.layer.type === "group" ? id : undefined,
+    );
+    const coverageLayers = new Set([id]);
+    if (state.layer.type === "group")
+      for (const candidate of tree.layers)
+        for (
+          let parent = candidate.layer.parent;
+          parent;
+          parent = scope.byId.get(parent)!.layer.parent
+        )
+          if (parent === id) {
+            coverageLayers.add(candidate.id);
+            break;
+          }
+    for (
+      let parent = state.layer.parent;
+      parent;
+      parent = scope.byId.get(parent)!.layer.parent
+    )
+      coverageLayers.add(parent);
+    let root = state;
+    for (
+      let owner = scope.owners.get(root.id);
+      owner;
+      owner = scope.owners.get(root.id)
+    )
+      root = scope.byId.get(owner)!;
+    const ops =
+      root.visible && root.opacity > 0
+        ? this.layerOps(scope, root, {
+            coverageLayers,
+            matrix: IDENTITY,
+            transforms: [],
+            opacity: 1,
+            clips: [],
+            viewport: { width: tree.width, height: tree.height },
+            prefix,
+            background: null,
+            cull: false,
+          })
+        : [];
+    return {
+      id: tree.id,
+      width: tree.width,
+      height: tree.height,
+      background: null,
+      ops,
+      ...(this.comp.colorSpace ? { colorSpace: this.comp.colorSpace } : {}),
     };
   }
 
@@ -437,11 +539,22 @@ class GraphBuilder {
         sourceScope = this.scope(scope.tree, scope.def, id);
       this.inputDepth++;
       try {
-        layerInputs[slot] = this.layerOps(
+        let captureFrame = frame;
+        if (frame.localCapture) {
+          captureFrame = {
+            ...frame,
+            matrix: IDENTITY,
+            transforms: [],
+            clips: [],
+            viewport: { width: scope.tree.width, height: scope.tree.height },
+          };
+          delete captureFrame.localCapture;
+        }
+        const captured = this.layerOps(
           sourceScope,
           source,
           {
-            ...frame,
+            ...captureFrame,
             opacity: 1,
             background: null,
             captureSource: frame.prefix + id,
@@ -450,6 +563,45 @@ class GraphBuilder {
           },
           { blend: "normal", cull: false, seen: new Set([...seen, id]) },
         );
+        if (frame.localCapture) {
+          const { inverse: ownerInverse, origin } = frame.localCapture;
+          const h = multiplyHomographies(
+            [1, 0, -origin[0], 0, 1, -origin[1], 0, 0, 1],
+            ownerInverse,
+          );
+          const inverse = inverseHomography(h)!;
+          const affineMatrix: Matrix | null =
+            h[6] === 0 && h[7] === 0
+              ? [
+                  h[0] / h[8],
+                  h[3] / h[8],
+                  h[1] / h[8],
+                  h[4] / h[8],
+                  h[2] / h[8],
+                  h[5] / h[8],
+                ]
+              : null;
+          this.spatial = true;
+          layerInputs[slot] = [
+            {
+              kind: "project",
+              layer: frame.prefix + id,
+              surface: {
+                id: id + ":input",
+                width: scope.tree.width,
+                height: scope.tree.height,
+                background: null,
+                ops: captured,
+              },
+              placement: { homography: h, inverse, affineMatrix, bounds: null },
+              effects: [],
+              matte: null,
+              opacity: 1,
+              blend: "normal",
+              clips: [],
+            },
+          ];
+        } else layerInputs[slot] = captured;
       } finally {
         this.inputDepth--;
       }
@@ -458,15 +610,41 @@ class GraphBuilder {
   }
   private scopeLayers(scope: Scope, frame: Frame, owner?: string): RenderOp[] {
     const ops: RenderOp[] = [];
+    const layers = scope.tree.camera
+      ? spatialStackOrder(
+          scope.tree.layers.filter(
+            (state) =>
+              scope.owners.get(state.id) === owner &&
+              ((frame.sourceGroup
+                ? this.sourceVisible(scope, state, frame.sourceGroup) &&
+                  !["null", "group", "camera", "light"].includes(
+                    state.layer.type,
+                  ) &&
+                  !scope.matteSources.has(state.id)
+                : state.drawable) ||
+                ((frame.sourceGroup
+                  ? this.sourceVisible(scope, state, frame.sourceGroup)
+                  : state.visible) &&
+                  scope.containers.has(state.id) &&
+                  !scope.matteSources.has(state.id))),
+          ),
+        )
+      : scope.tree.layers;
     // layers[0] is the top layer, so paint from the end of the list.
-    for (let i = scope.tree.layers.length - 1; i >= 0; i--) {
+    for (let i = layers.length - 1; i >= 0; i--) {
       if (this.reachedHistoryTarget) break;
-      const state = scope.tree.layers[i]!;
+      const state = layers[i]!;
+      if (
+        frame.coverageLayers &&
+        !frame.captureSource &&
+        !frame.coverageLayers.has(state.id)
+      )
+        continue;
       if (scope.owners.get(state.id) !== owner) continue;
       if (
         (frame.sourceGroup
           ? this.sourceVisible(scope, state, frame.sourceGroup) &&
-            !["null", "group"].includes(state.layer.type) &&
+            !["null", "group", "camera", "light"].includes(state.layer.type) &&
             !scope.matteSources.has(state.id)
           : state.drawable) ||
         ((frame.sourceGroup
@@ -500,13 +678,44 @@ class GraphBuilder {
       parent = scope.byId.get(parent)!.layer.parent
     ) {
       const ancestor = scope.byId.get(parent)!;
-      if (ancestor.layer.type === "group" && ancestor.layer.clip)
+      if (ancestor.layer.type === "group" && ancestor.layer.clip) {
+        if (
+          ancestor.projection &&
+          ancestor.worldMatrix3d &&
+          scope.tree.camera
+        ) {
+          const plane = projectPlane(
+            ancestor.worldMatrix3d,
+            scope.tree.camera,
+            {
+              left: 0,
+              top: 0,
+              right: ancestor.layer.size[0],
+              bottom: ancestor.layer.size[1],
+            },
+          );
+          const projection = planePlacement(plane, frame.matrix, [0, 0]);
+          // A wholly clipped ancestor covers nothing.
+          if (!projection)
+            clips.push({ matrix: [0, 0, 0, 0, 0, 0], width: 0, height: 0 });
+          else {
+            this.spatial = true;
+            clips.push({
+              matrix: projection.affineMatrix ?? IDENTITY,
+              width: ancestor.layer.size[0],
+              height: ancestor.layer.size[1],
+              projection,
+            });
+          }
+          continue;
+        }
         clips.push({
           matrix: multiplyMatrix(frame.matrix, ancestor.screenMatrix),
           transforms: this.transforms(scope, ancestor, frame),
           width: ancestor.layer.size[0],
           height: ancestor.layer.size[1],
         });
+      }
     }
     return [...frame.clips, ...clips.reverse()];
   }
@@ -517,6 +726,8 @@ class GraphBuilder {
     frame: Frame,
   ): Matrix[] {
     scope = this.exposureScope(scope, state);
+    if (state.projection?.affineMatrix)
+      return [...frame.transforms, state.projection.affineMatrix];
     const local: Matrix[] = [];
     let root = state;
     for (;;) {
@@ -689,21 +900,8 @@ class GraphBuilder {
   /** A positive paint blur overrides inherited group blur; zero retains it. */
   private paintBlur(scope: Scope, state: EvaluatedLayer, frame: Frame): number {
     scope = this.exposureScope(scope, state);
-    for (
-      let current: EvaluatedLayer | undefined = state;
-      current;
-      current = current.layer.parent
-        ? scope.byId.get(current.layer.parent)
-        : undefined
-    ) {
-      if (current !== state && current.layer.type !== "group") continue;
-      const blur = current.effects.find(
-        (effect) => effect.enabled && effect.effect === "blur.primitive",
-      );
-      if (blur && (blur.params.radius as number) > 0)
-        return blur.params.radius as number;
-    }
-    return frame.paintBlur ?? 0;
+    const blur = primitiveBlurEffect(state, scope.byId);
+    return blur ? (blur.params.radius as number) : (frame.paintBlur ?? 0);
   }
 
   /** Historical input is painted before current input and this frame's pixel stack/matte. */
@@ -872,6 +1070,189 @@ class GraphBuilder {
     return samples;
   }
 
+  private projectedLayer(
+    scope: Scope,
+    state: EvaluatedLayer,
+    frame: Frame,
+    options: {
+      blend?: CompositionBlendMode;
+      seen?: Set<string>;
+      cull?: boolean;
+      raw?: boolean;
+    },
+    opacity: number,
+    blend: CompositionBlendMode,
+    paintBlur: number,
+  ): RenderOp[] {
+    const key = frame.prefix + state.id,
+      layer = state.layer;
+    let plane = state.projection!;
+    if (
+      paintBlur &&
+      !primitiveBlurEffect(state, this.exposureScope(scope, state).byId)
+    ) {
+      // Collapsed precomps can inherit paint from a different composition scope.
+      const margin = paintBlur * 3 + 2,
+        bounds = plane.localBounds;
+      plane = projectPlane(
+        state.worldMatrix3d!,
+        this.exposureScope(scope, state).tree.camera!,
+        {
+          left: bounds.left - margin,
+          top: bounds.top - margin,
+          right: bounds.right + margin,
+          bottom: bounds.bottom + margin,
+        },
+      );
+    }
+    if (!plane.inverse || !plane.bounds) return [];
+    const inverse = plane.inverse;
+    if (layer.type === "precomp" && layer.collapseTransforms)
+      passageError(
+        "comp-3d-collapse",
+        "A projected precomp must be a flat surface; collapseTransforms requires an affine 2D parent",
+        { node: key, frame: this.time },
+      );
+    if (
+      !options.raw &&
+      state.effects.some(
+        (effect) => effect.enabled && effect.effect === "time.echo",
+      )
+    )
+      passageError(
+        "comp-3d-effect",
+        "time.echo on a projected layer requires a scope-space adjustment or flat precomp",
+        { node: key, frame: this.time },
+      );
+    const content = this.content(scope, state, frame);
+    if (!content) return [];
+    const raster = localSurfaceBounds(plane.localBounds, key);
+    const placement = planePlacement(plane, frame.matrix, raster.origin);
+    if (!placement) return [];
+    const matrix: Matrix = [1, 0, 0, 1, -raster.origin[0], -raster.origin[1]],
+      transforms = [matrix];
+    const seen = options.seen ?? new Set([layer.id]);
+    const localFrame: Frame = {
+      ...frame,
+      matrix,
+      transforms,
+      clips: [],
+      opacity: 1,
+      background: null,
+      viewport: { width: raster.width, height: raster.height },
+      cull: false,
+      localCapture: { inverse, origin: raster.origin },
+    };
+    const effects: RenderEffect[] = (options.raw ? [] : state.effects)
+      .filter(
+        (effect) =>
+          effect.enabled &&
+          effect.effect !== "time.echo" &&
+          effect.effect !== "blur.primitive",
+      )
+      .map((effect) => {
+        const captured = this.effectInputs(
+          this.exposureScope(scope, state),
+          effect,
+          localFrame,
+          seen,
+        );
+        if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
+          return captured;
+        let effectMatrix = matrix;
+        if (effect.space && effect.space !== state.id) {
+          const sourceScope = this.exposureScope(scope, state);
+          const source = sourceScope.byId.get(effect.space)!;
+          const sourceHomography =
+            source.projection?.homography ??
+            (source.spatialWorld &&
+            source.worldMatrix3d &&
+            sourceScope.tree.camera
+              ? planeHomography(source.worldMatrix3d, sourceScope.tree.camera)
+              : affineHomography(source.screenMatrix));
+          const h = multiplyHomographies(
+            affineHomography(matrix),
+            multiplyHomographies(inverse, sourceHomography),
+          );
+          const affine = affineCoordinateMatrix(h);
+          if (!affine)
+            passageError(
+              "comp-3d-effect-space",
+              "A layer-space effect requires an affine relation between the source and projected owner planes",
+              { node: key, frame: this.time, path: effect.id },
+            );
+          effectMatrix = affine;
+        }
+        return {
+          ...captured,
+          placement: { matrix: effectMatrix, transforms: [effectMatrix] },
+        };
+      });
+    const masks = options.raw ? [] : this.masks(state, matrix, transforms);
+    const draw: DrawOp = {
+      kind: "draw",
+      layer: key,
+      content,
+      matrix,
+      transforms,
+      opacity: 1,
+      blend: "normal",
+      clips: [],
+      ...(paintBlur ? { paintBlur } : {}),
+    };
+    const localOps: RenderOp[] =
+      effects.length || masks.length
+        ? [
+            {
+              kind: "isolate",
+              layer: key,
+              ops: [draw],
+              effects,
+              masks,
+              matte: null,
+              opacity: 1,
+              blend: "normal",
+              clips: [],
+            },
+          ]
+        : [draw];
+    const focus: RenderEffect[] = state.focusBlur
+      ? [
+          {
+            id: "camera-focus",
+            effect: "blur.lens",
+            version: compositionEffectDefinition("blur.lens")!.version,
+            enabled: true,
+            params: { radius: state.focusBlur, samples: 32 },
+          },
+        ]
+      : [];
+    this.spatial = true;
+    return [
+      {
+        kind: "project",
+        layer: key,
+        surface: {
+          id: key + ":local",
+          width: raster.width,
+          height: raster.height,
+          background: null,
+          ...(this.comp.colorSpace ? { colorSpace: this.comp.colorSpace } : {}),
+          ops: localOps,
+        },
+        placement,
+        ...(state.focusBlur
+          ? { focusPadding: Math.ceil(state.focusBlur) + 2 }
+          : {}),
+        effects: focus,
+        matte: options.raw ? null : this.matte(scope, state, frame, seen),
+        opacity,
+        blend,
+        clips: this.groupClips(scope, state, frame),
+      },
+    ];
+  }
+
   layerOps(
     scope: Scope,
     state: EvaluatedLayer,
@@ -903,8 +1284,40 @@ class GraphBuilder {
       this.culled.push(key);
       return [];
     }
+    if (state.projection && layer.type !== "group")
+      return this.projectedLayer(
+        scope,
+        state,
+        frame,
+        options,
+        opacity,
+        blend,
+        paintBlur,
+      );
     const clips = this.groupClips(scope, state, frame);
     const masks = options.raw ? [] : this.masks(state, matrix, transforms);
+    if (
+      layer.type === "group" &&
+      state.projection &&
+      !state.projection.affineMatrix &&
+      state.worldMatrix3d
+    ) {
+      const camera = this.exposureScope(scope, state).tree.camera!;
+      for (const mask of masks) {
+        const evaluated = state.masks.find((value) => value.id === mask.id)!;
+        Object.assign(
+          mask,
+          projectedMaskGeometry(
+            evaluated,
+            state.worldMatrix3d,
+            camera,
+            frame.matrix,
+            key,
+          ),
+        );
+        this.spatial = true;
+      }
+    }
     const echo =
       !options.raw && !this.historical
         ? state.effects.find(
@@ -934,6 +1347,16 @@ class GraphBuilder {
         );
         if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
           return effect;
+        if (
+          layer.type === "group" &&
+          state.projection &&
+          !state.projection.affineMatrix
+        )
+          passageError(
+            "comp-3d-effect-space",
+            "Perspective group layer-space effects require a flat precomp; group pixel effects use scope space",
+            { node: key, path: effect.id, frame: this.time },
+          );
         const source = effect.space ? scope.byId.get(effect.space)! : state;
         return {
           ...effect,
@@ -1093,8 +1516,28 @@ export function buildRenderGraph(
   options: RenderGraphOptions = {},
 ): RenderGraph {
   const builder = new GraphBuilder(comp, tree.time, options);
+  const root = builder.surface(tree, comp, "");
   return {
-    root: builder.surface(tree, comp, ""),
+    root,
     culled: builder.culled,
+    ...(builder.spatial ? { spatial: true as const } : {}),
+  };
+}
+
+/** Actual isolated coverage in the owning scope; no background can hide alpha holes. */
+export function buildLayerRenderGraph(
+  comp: Composition,
+  tree: EvaluatedLayerTree,
+  scope: CompositionScope,
+  id: string,
+  prefix: string,
+  options: RenderGraphOptions = {},
+): RenderGraph {
+  const builder = new GraphBuilder(comp, tree.time, options);
+  const root = builder.coverageSurface(tree, scope, id, prefix);
+  return {
+    root,
+    culled: builder.culled,
+    ...(builder.spatial ? { spatial: true as const } : {}),
   };
 }

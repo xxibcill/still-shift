@@ -1,0 +1,673 @@
+{
+  "version": "pr-43-fix-results-1",
+  "date": "2026-10-06",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/43",
+  "reviewHead": "9d8f33a31cc4d096b8235fbe679c5ef7e20202cf",
+  "delivery": "One commit per finding; push only after final commit.",
+  "status": "All three findings fixed; full local pnpm check passed on final code.",
+  "environment": {
+    "profile": "chromium-software-2",
+    "browserVersion": "151.0.7922.34",
+    "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+    "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "preflight": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "toolchain": "passed",
+    "pythonImports": "passed from isolated worktree .venv and depth-worker source",
+    "cacheIsolation": "Private node_modules Vite caches and temporary per-browser cacheDir; package dependencies linked read-only. Python environment copied with independent files.",
+    "setupRepairs": [
+      "Copied Python editable path referenced an old checkout; pointed only the isolated .venv at this worktree source.",
+      "Initial regression assumed group isolation; primitive-only groups flatten, so assertion now inspects the actual projected draw.",
+      "Copied depth-worker CLI shebang referenced an archived worktree. Full attempt 1 stopped with one integration failure; rebased only the isolated CLI entrypoint, then reproduced a passing focused test. Source code unchanged."
+    ],
+    "pythonCli": "passed after rebasing only copied entrypoint; failing Lab fallback integration test passes"
+  },
+  "fixes": [
+    {
+      "finding": 1,
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759920",
+      "summary": "Retain inherited primitive blur in evaluated/projected bounds, including zero inheritance, local override and collapsed affine precomp scope inheritance.",
+      "redProof": "On review head, absent/zero child radius allocates 10 pixels rather than required 44; positive local radius already passes.",
+      "checks": {
+        "focusedUnits": {
+          "status": "passed",
+          "tests": 20
+        },
+        "pixelComparisons": {
+          "status": "passed",
+          "cases": 24,
+          "maximumChannelDelta": 0,
+          "casesDetail": [
+            {
+              "backend": "canvas2d",
+              "childRadius": "inherited",
+              "left": 40,
+              "collapsed": false,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": "inherited",
+              "left": 40,
+              "collapsed": true,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": "inherited",
+              "left": 102,
+              "collapsed": false,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": "inherited",
+              "left": 102,
+              "collapsed": true,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 0,
+              "left": 40,
+              "collapsed": false,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 0,
+              "left": 40,
+              "collapsed": true,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 0,
+              "left": 102,
+              "collapsed": false,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 0,
+              "left": 102,
+              "collapsed": true,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 2,
+              "left": 40,
+              "collapsed": false,
+              "halo": 105,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 2,
+              "left": 40,
+              "collapsed": true,
+              "halo": 105,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 2,
+              "left": 102,
+              "collapsed": false,
+              "halo": 32,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "canvas2d",
+              "childRadius": 2,
+              "left": 102,
+              "collapsed": true,
+              "halo": 32,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": "inherited",
+              "left": 40,
+              "collapsed": false,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": "inherited",
+              "left": 40,
+              "collapsed": true,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": "inherited",
+              "left": 102,
+              "collapsed": false,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": "inherited",
+              "left": 102,
+              "collapsed": true,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 0,
+              "left": 40,
+              "collapsed": false,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 0,
+              "left": 40,
+              "collapsed": true,
+              "halo": 115,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 0,
+              "left": 102,
+              "collapsed": false,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 0,
+              "left": 102,
+              "collapsed": true,
+              "halo": 75,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 2,
+              "left": 40,
+              "collapsed": false,
+              "halo": 105,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 2,
+              "left": 40,
+              "collapsed": true,
+              "halo": 105,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 2,
+              "left": 102,
+              "collapsed": false,
+              "halo": 32,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            },
+            {
+              "backend": "webgl2",
+              "childRadius": 2,
+              "left": 102,
+              "collapsed": true,
+              "halo": 32,
+              "metrics": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              }
+            }
+          ]
+        },
+        "build": "passed",
+        "changedFileLint": "passed",
+        "diffCheck": "passed"
+      },
+      "runtimeIdentity": {
+        "evaluator": "composition-evaluator-46",
+        "canvas": "composition-canvas-1.40.1",
+        "webgl2": "composition-webgl2-0.55.1",
+        "export": "chromium-ffmpeg-0.6.3"
+      },
+      "commit": "e16d962"
+    },
+    {
+      "finding": 2,
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759928",
+      "summary": "Derive spatial tangent dimensionality from authored key values; preserve valid XY camera position, POI and spatial artwork paths without promoting keys.",
+      "redProof": "All three XY proposal regressions fail with dimensions=3 on the preceding checkpoint.",
+      "checks": {
+        "focusedUnits": {
+          "status": "passed",
+          "tests": 14
+        },
+        "realInspector": [
+          {
+            "mode": "camera-position",
+            "status": "passed",
+            "dimensions": 2,
+            "checks": ["XY tangent edit", "undo/redo", "lossless save"]
+          },
+          {
+            "mode": "camera-poi",
+            "status": "passed",
+            "dimensions": 2,
+            "checks": ["XY tangent edit", "undo/redo", "lossless save"]
+          },
+          {
+            "mode": "spatial-position",
+            "status": "passed",
+            "dimensions": 2,
+            "checks": ["XY tangent edit", "undo/redo", "lossless save"]
+          }
+        ],
+        "build": "passed",
+        "changedFileLint": "passed",
+        "diffCheck": "passed"
+      },
+      "commit": "c36c686"
+    },
+    {
+      "finding": 3,
+      "priority": "P1",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759936",
+      "summary": "Validate required alpha after ancestor group masks, mattes and effects, including historical echo, while excluding unrelated siblings and preserving source captures.",
+      "redProof": "The required child bypassed its ancestor isolation on review head. Before the history repair, out-point and zero-opacity child regressions produced an empty coverage graph despite an opaque ancestor echo.",
+      "checks": {
+        "focusedUnits": {
+          "status": "passed",
+          "tests": 35
+        },
+        "browser": {
+          "status": "passed",
+          "cases": 72,
+          "backends": ["canvas2d", "webgl2"],
+          "childDimensions": ["2D", "3D"],
+          "negativeCases": [
+            "mask",
+            "nested-mask",
+            "matte",
+            "effect",
+            "sibling",
+            "required-group",
+            "exposure-mask"
+          ],
+          "positiveCases": [
+            "full-matte",
+            "named-input",
+            "echo-out-point",
+            "echo-opacity"
+          ],
+          "severity": "Both error and warning checked for failures; successful cases have no diagnostics.",
+          "clocks": "Every root frame and enabled shutter sample; positive cases also render the later frame."
+        },
+        "build": "passed",
+        "changedFileLint": "passed",
+        "diffCheck": "passed"
+      },
+      "implementationReview": "Standards and Spec reviews found no remaining actionable concerns; the ancestor-history concern was reproduced and repaired before the full gate."
+    }
+  ],
+  "finalVerification": {
+    "status": "passed",
+    "fullPnpmCheck": {
+      "attempt": 2,
+      "status": "passed",
+      "exitCode": 0,
+      "startUtc": "2026-10-06T08:15:27.147499+00:00",
+      "endUtc": "2026-10-06T10:08:29.620561+00:00",
+      "elapsedMinutes": 113.04,
+      "command": "UV_NO_SYNC=1 PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm check",
+      "reviewHead": "9d8f33a31cc4d096b8235fbe679c5ef7e20202cf",
+      "parentCommit": "c36c6861243b305fc9745cd2ba4f48c76951658c",
+      "codeDiffSha256": "ada866449937f98de963ff03344a2225cbb3062f9afab562468c9e6a3141c99c",
+      "log": "benchmarks/results/pr43-fixes/full-check.log",
+      "logSha256": "422b1c92aca031272ff5ce6e434c3a3fde867704010eca94a2784e6f999b53ae",
+      "counts": {
+        "unit": 1851,
+        "runtime": 46,
+        "integration": 139,
+        "depth": 14,
+        "frozenBaselineItems": 176,
+        "frozenBaselineFrames": 36061
+      },
+      "requiredTestCommands": [
+        "test",
+        "test:unit",
+        "test:runtime",
+        "test:integration",
+        "test:depth",
+        "test:browser:depth",
+        "test:browser:vertical-image",
+        "test:browser:export",
+        "test:golden",
+        "test:browser:cli",
+        "test:browser:batch",
+        "test:browser:illustrated",
+        "test:browser:illustrated:vertical",
+        "test:browser:cinematic",
+        "test:browser:cinematic:vertical",
+        "test:browser:threshold",
+        "test:browser:dolly",
+        "test:browser:lateral",
+        "test:browser:reveal",
+        "test:browser:story",
+        "test:browser:story:activity",
+        "test:browser:story:continuous",
+        "test:browser:passage:authoring",
+        "test:browser:lab-session",
+        "test:browser:composition-session",
+        "test:browser:commerce",
+        "test:browser:commerce-components",
+        "test:browser:commerce-effects",
+        "test:browser:commerce-spatial",
+        "test:browser:reusable-components",
+        "test:browser:reusable-package",
+        "test:browser:reusable-behavior-package",
+        "test:browser:reusable-timing-package",
+        "test:browser:typography",
+        "test:browser:typography:fixtures",
+        "test:browser:composition-evaluator",
+        "test:browser:composition-expressions",
+        "test:browser:composition-quality",
+        "test:browser:composition",
+        "test:browser:composition-webgl",
+        "test:browser:composition-camera",
+        "test:browser:composition-shapes",
+        "test:browser:composition-webgl-export",
+        "test:browser:composition-exposure",
+        "test:browser:composition-effects",
+        "test:browser:composition-story-adapter",
+        "test:browser:composition-native-passage",
+        "test:browser:composition-native-passage:webgl",
+        "test:browser:composition-passage",
+        "test:browser:composition-story-fixtures",
+        "test:browser:composition-commerce-adapter",
+        "test:browser:composition-typography-adapter",
+        "test:browser:composition-provider-typography",
+        "test:browser:composition-program",
+        "test:browser:composition-inspector",
+        "test:browser:composition-builder",
+        "test:browser:composition-baselines"
+      ],
+      "baselines": "All exact; none regenerated. Pixel and timing policies unchanged.",
+      "hostActivity": "An unrelated untimed CE4c diagnostic was observed during later browser acceptance. Required gate assertions were retained; no standalone timing benchmark or native cost profile is claimed."
+    },
+    "baselines": "No baseline regenerated.",
+    "focusedRegressionSummary": {
+      "blurComparisons": 24,
+      "maximumBlurChannelDelta": 0,
+      "xyInspectorFlows": 3,
+      "coverageCases": 72,
+      "status": "passed"
+    },
+    "attempts": [
+      {
+        "attempt": 1,
+        "status": "failed: environment setup",
+        "startUtc": "2026-10-06T08:08:57.003589+00:00",
+        "codeDiffSha256": "ada866449937f98de963ff03344a2225cbb3062f9afab562468c9e6a3141c99c",
+        "passed": [
+          "toolchain",
+          "schema",
+          "boundaries",
+          "format",
+          "lint",
+          "build",
+          "1851 unit tests",
+          "46 runtime tests",
+          "138 of 139 integration tests"
+        ],
+        "failure": "lab-fallback expected INPUT_DECODE_FAILED but got DEPTH_PREPARATION_FAILED because isolated depth CLI shebang pointed at an archived checkout.",
+        "log": "benchmarks/results/pr43-fixes/full-check-attempt-1.log",
+        "repair": "Isolated environment entrypoint rebased; CLI startup and focused integration test pass. No code changed."
+      },
+      {
+        "attempt": 2,
+        "status": "passed",
+        "exitCode": 0,
+        "startUtc": "2026-10-06T08:15:27.147499+00:00",
+        "endUtc": "2026-10-06T10:08:29.620561+00:00",
+        "elapsedMinutes": 113.04,
+        "command": "UV_NO_SYNC=1 PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm check",
+        "reviewHead": "9d8f33a31cc4d096b8235fbe679c5ef7e20202cf",
+        "parentCommit": "c36c6861243b305fc9745cd2ba4f48c76951658c",
+        "codeDiffSha256": "ada866449937f98de963ff03344a2225cbb3062f9afab562468c9e6a3141c99c",
+        "log": "benchmarks/results/pr43-fixes/full-check.log",
+        "logSha256": "422b1c92aca031272ff5ce6e434c3a3fde867704010eca94a2784e6f999b53ae",
+        "counts": {
+          "unit": 1851,
+          "runtime": 46,
+          "integration": 139,
+          "depth": 14,
+          "frozenBaselineItems": 176,
+          "frozenBaselineFrames": 36061
+        },
+        "requiredTestCommands": [
+          "test",
+          "test:unit",
+          "test:runtime",
+          "test:integration",
+          "test:depth",
+          "test:browser:depth",
+          "test:browser:vertical-image",
+          "test:browser:export",
+          "test:golden",
+          "test:browser:cli",
+          "test:browser:batch",
+          "test:browser:illustrated",
+          "test:browser:illustrated:vertical",
+          "test:browser:cinematic",
+          "test:browser:cinematic:vertical",
+          "test:browser:threshold",
+          "test:browser:dolly",
+          "test:browser:lateral",
+          "test:browser:reveal",
+          "test:browser:story",
+          "test:browser:story:activity",
+          "test:browser:story:continuous",
+          "test:browser:passage:authoring",
+          "test:browser:lab-session",
+          "test:browser:composition-session",
+          "test:browser:commerce",
+          "test:browser:commerce-components",
+          "test:browser:commerce-effects",
+          "test:browser:commerce-spatial",
+          "test:browser:reusable-components",
+          "test:browser:reusable-package",
+          "test:browser:reusable-behavior-package",
+          "test:browser:reusable-timing-package",
+          "test:browser:typography",
+          "test:browser:typography:fixtures",
+          "test:browser:composition-evaluator",
+          "test:browser:composition-expressions",
+          "test:browser:composition-quality",
+          "test:browser:composition",
+          "test:browser:composition-webgl",
+          "test:browser:composition-camera",
+          "test:browser:composition-shapes",
+          "test:browser:composition-webgl-export",
+          "test:browser:composition-exposure",
+          "test:browser:composition-effects",
+          "test:browser:composition-story-adapter",
+          "test:browser:composition-native-passage",
+          "test:browser:composition-native-passage:webgl",
+          "test:browser:composition-passage",
+          "test:browser:composition-story-fixtures",
+          "test:browser:composition-commerce-adapter",
+          "test:browser:composition-typography-adapter",
+          "test:browser:composition-provider-typography",
+          "test:browser:composition-program",
+          "test:browser:composition-inspector",
+          "test:browser:composition-builder",
+          "test:browser:composition-baselines"
+        ],
+        "baselines": "All exact; none regenerated. Pixel and timing policies unchanged.",
+        "hostActivity": "An unrelated untimed CE4c diagnostic was observed during later browser acceptance. Required gate assertions were retained; no standalone timing benchmark or native cost profile is claimed."
+      }
+    ],
+    "githubActions": {
+      "enabled": false,
+      "verifiedWith": "gh api repos/xxibcill/still-shift/actions/permissions --jq .enabled",
+      "workflowsAdded": false
+    },
+    "nativeCameraAcceptance": {
+      "status": "passed",
+      "artifact": "benchmarks/results/composition-ce8-verification/native-acceptance.json",
+      "sha256": "55cb4cc92911631fd724e8af1573fadee198fbb50c65d95c8fb845be1d152222",
+      "softwareFixtureReports": 24,
+      "expectedDiagnosticCases": 8,
+      "hardwareComparisons": 36,
+      "groupBlurComparisons": 24,
+      "maximumBlurChannelDelta": 0,
+      "ancestorCoverageCases": 72,
+      "xyInspectorFlows": 3,
+      "xyzInspector": "passed",
+      "storedBaseline": "exact"
+    },
+    "finalCodeFingerprintUnchanged": "Verified after full gate; documentation-only evidence updates follow."
+  }
+}

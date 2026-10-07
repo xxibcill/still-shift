@@ -90,19 +90,39 @@ function resolveSegments(
 
   switch (head.name) {
     case "constraintReference":
-      return component("vec2", COMPONENTS.vec2, segments.slice(1));
+      return layer.threeD || layer.type === "camera"
+        ? component("vec3", COMPONENTS.vec3, segments.slice(1))
+        : component("vec2", COMPONENTS.vec2, segments.slice(1));
     case "transform": {
       if (!next || indexed(next)) return missing(text, "a transform property");
       if (TRANSFORM_SCALARS.has(next.name))
         return component("scalar", [], rest);
       if (TRANSFORM_VECTORS.has(next.name)) {
-        const type = layer.threeD ? "vec3" : "vec2";
+        const type = layer.threeD || layer.type === "camera" ? "vec3" : "vec2";
         return component(type, COMPONENTS[type], rest);
       }
-      if (["rotationX", "rotationY", "orientation"].includes(next.name))
-        return unavailable(text, "CE8");
+      if (["rotationX", "rotationY", "orientation"].includes(next.name)) {
+        if (!layer.threeD && layer.type !== "camera")
+          return unavailable(text, "CE8");
+        return next.name === "orientation"
+          ? component("vec3", COMPONENTS.vec3, rest)
+          : component("scalar", [], rest);
+      }
       return missing(text, "a transform property");
     }
+    case "pointOfInterest":
+      return layer.type === "camera"
+        ? component("vec3", COMPONENTS.vec3, segments.slice(1))
+        : missing(text, "a camera property");
+    case "zoom":
+    case "focalLength":
+    case "filmSize":
+    case "focusDistance":
+    case "aperture":
+    case "blurLevel":
+      return layer.type === "camera"
+        ? component("scalar", [], segments.slice(1))
+        : missing(text, "a camera property");
     case "color":
       if (layer.type !== "solid" && layer.type !== "text")
         return missing(text, `a property of a ${layer.type} layer`);

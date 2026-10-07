@@ -29,6 +29,7 @@ import {
   type CanvasContentProvider,
 } from "./providers.ts";
 import { STORY_CONTENT_PROVIDERS } from "../adapters/story-providers.ts";
+import { validateRequiredCompositionCoverage } from "./required-coverage.ts";
 import { validateStoryCompositionCoverage } from "../adapters/story-coverage.ts";
 import { COMMERCE_CONTENT_PROVIDERS } from "../adapters/commerce-providers.ts";
 import { APPEARANCE_PROVIDERS } from "../adapters/appearance-providers.ts";
@@ -226,6 +227,7 @@ export function createCompositionPreview(
     backend?: CompositionBackend;
     createCanvas?: (width: number, height: number) => HTMLCanvasElement;
     providers?: readonly CanvasContentProvider[];
+    coverageSeverity?: "error" | "warning";
   } = {},
 ): CompositionPreview {
   const validation = validateComposition(composition);
@@ -316,6 +318,18 @@ export function createCompositionPreview(
     // The GPU backend retains bounded readback bytes; graph reuse skips identical draws.
     const cache: CompositionFrameCache | undefined =
       kind === "webgl2" ? {} : undefined;
+    let coverageDiagnostics: PassageDiagnostic[];
+    try {
+      coverageDiagnostics = validateRequiredCompositionCoverage(
+        composition,
+        backend,
+        { textBounds: text.bounds },
+        options.coverageSeverity ?? "error",
+      );
+    } catch (error) {
+      backend.dispose();
+      throw error;
+    }
     return {
       backend: kind,
       rendererVersion: backend.version,
@@ -339,7 +353,12 @@ export function createCompositionPreview(
           cache,
         );
         if (report.samples > 0) present();
-        return report;
+        return coverageDiagnostics.length
+          ? {
+              ...report,
+              diagnostics: [...report.diagnostics, ...coverageDiagnostics],
+            }
+          : report;
       },
       dispose() {
         if (cache) {

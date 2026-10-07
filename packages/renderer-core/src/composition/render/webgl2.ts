@@ -4,6 +4,12 @@ import {
   linearTransferBytes,
   LINEAR_LERP_SHADER,
 } from "./linear-color.ts";
+import { passageError } from "../../passage-diagnostics.ts";
+import {
+  PROJECTIVE_SHADER,
+  PROJECTIVE_CLIP_SHADER,
+  projectionUniforms,
+} from "./webgl-projective.ts";
 import { blurPadding } from "./webgl-blur-padding.ts";
 import { accumulateWebglExposure } from "./webgl-exposure.ts";
 import { blurKernelLength } from "./webgl-blur-kernel.ts";
@@ -32,7 +38,7 @@ import { WebglDevice, type WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.54.2" as const;
+  "composition-webgl2-0.55.4" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -235,22 +241,48 @@ export function createWebgl2Backend(
     matrix: Matrix,
     clips: ClipRect[],
     transforms?: Matrix[],
+    localRasterCoverage = false,
   ) {
     const coverage = device.surface(dst.width, dst.height);
-    const pixels = raster.createSurface(dst.width, dst.height);
+    const pixels = raster.createSurface(
+      dst.width,
+      dst.height,
+      localRasterCoverage ? "software" : undefined,
+    );
     const output = device.surface(dst.width, dst.height);
     try {
-      raster.fillRect(
-        pixels,
-        matrix,
-        src.width,
-        src.height,
-        [1, 1, 1, 1],
-        1,
-        "normal",
-        clips,
-        transforms,
+      const affineClips = clips.filter(
+        (clip) => !clip.projection || clip.projection.affineMatrix,
       );
+      if (localRasterCoverage) {
+        const local = raster.createSurface(src.width, src.height, "software");
+        try {
+          raster.clear(local, [1, 1, 1, 1]);
+          raster.composite(
+            local,
+            pixels,
+            "normal",
+            1,
+            matrix,
+            affineClips,
+            transforms,
+          );
+        } finally {
+          raster.releaseSurface(local);
+        }
+      } else {
+        raster.fillRect(
+          pixels,
+          matrix,
+          src.width,
+          src.height,
+          [1, 1, 1, 1],
+          1,
+          "normal",
+          affineClips,
+          transforms,
+        );
+      }
       device.upload(coverage, pixels.canvas);
       const transform = new DOMMatrix();
       if (transforms)
@@ -283,11 +315,23 @@ export function createWebgl2Backend(
         ],
         size: [src.width, src.height],
       });
+      projectiveClips(output, clips);
       return output;
     } finally {
       device.release(coverage);
       raster.releaseSurface(pixels);
     }
+  }
+
+  function projectiveClips(surface: WebglSurface, clips: ClipRect[]) {
+    for (const clip of clips)
+      if (clip.projection && !clip.projection.affineMatrix)
+        replace(
+          surface,
+          PROJECTIVE_CLIP_SHADER,
+          [surface],
+          projectionUniforms(clip.projection, clip.width, clip.height),
+        );
   }
 
   function blurredPlacement(
@@ -667,7 +711,9 @@ export function createWebgl2Backend(
                 [1, 1, 1, 1],
                 1,
                 "normal",
-                clips,
+                clips.filter(
+                  (clip) => !clip.projection || clip.projection.affineMatrix,
+                ),
               );
               device.upload(coverage, pixels.canvas);
               replace(
@@ -680,6 +726,7 @@ export function createWebgl2Backend(
               device.release(coverage);
             }
           }
+          projectiveClips(source, clips);
           blend(source, dst, mode, opacity);
         } finally {
           device.release(source);
@@ -705,6 +752,49 @@ export function createWebgl2Backend(
         }
       }
     },
+    validateSpatialSurface(width, height, node) {
+      const maximum = device.gl.getParameter(
+        device.gl.MAX_TEXTURE_SIZE,
+      ) as number;
+      if (width > maximum || height > maximum)
+        passageError(
+          "comp-feature-backend",
+          `The local projected surface exceeds this WebGL2 device's ${maximum}-pixel texture limit`,
+          { node },
+        );
+    },
+    project(src, dst, placement) {
+      if (placement.affineMatrix) {
+        const source = placed(
+          src,
+          dst,
+          placement.affineMatrix,
+          [],
+          undefined,
+          true,
+        );
+        try {
+          blend(source, dst, "normal", 1);
+        } finally {
+          device.release(source);
+        }
+      } else
+        device.pass(
+          PROJECTIVE_SHADER,
+          dst,
+          [src],
+          projectionUniforms(placement, src.width, src.height),
+        );
+      if (placement.bounds)
+        bounds.include(dst, {
+          left: placement.bounds.left - 2,
+          top: placement.bounds.top - 2,
+          right: placement.bounds.right + 2,
+          bottom: placement.bounds.bottom + 2,
+        });
+      else bounds.full(dst);
+    },
+    applyProjectiveClips: projectiveClips,
     applyEffects: (target, stack, layers) => {
       effects.apply(target, stack, layers);
     },
@@ -717,28 +807,67 @@ export function createWebgl2Backend(
         if (masks[0]?.mode === "subtract" || masks[0]?.mode === "intersect")
           device.clear(combined, [1, 1, 1, 1]);
         for (const mask of masks) {
-          const sigma =
-            (mask.feather / 2) *
-            Math.sqrt(
-              Math.abs(
-                mask.matrix[0] * mask.matrix[3] -
-                  mask.matrix[1] * mask.matrix[2],
-              ),
+          let bakedOpacity = false;
+          if (mask.projected) {
+            const local = device.surface(
+              mask.projected.width,
+              mask.projected.height,
             );
-          // Preserve the raster filter's combined opacity/blur rounding when a
-          // transformed feather enters the rescaled Gaussian domain.
-          const bakedOpacity = sigma > 135;
-          raster.clear(pixels, [1, 1, 1, 1]);
-          raster.applyMask(pixels, [
-            {
-              ...mask,
-              mode: "intersect",
-              opacity: bakedOpacity ? mask.opacity : 1,
-              feather: 0,
-            },
-          ]);
-          device.upload(coverage, pixels.canvas);
-          if (mask.feather > 0) effects.blur(coverage, sigma);
+            let rasterMask: CanvasSurface | undefined;
+            try {
+              rasterMask = raster.createSurface(
+                mask.projected.width,
+                mask.projected.height,
+              );
+              raster.clear(rasterMask, [1, 1, 1, 1]);
+              raster.applyMask(rasterMask, [
+                {
+                  ...mask,
+                  mode: "intersect",
+                  inverted: false,
+                  opacity: 1,
+                  feather: 0,
+                },
+              ]);
+              device.upload(local, rasterMask.canvas);
+              if (mask.feather > 0) effects.blur(local, mask.feather / 2);
+              device.clear(coverage);
+              if (mask.projected.placement)
+                backend.project!(local, coverage, mask.projected.placement);
+              if (mask.inverted)
+                replace(
+                  coverage,
+                  "void main(){float alpha=1.0-texture(source,uv).a;pixel=bytes(vec4(alpha));}",
+                  [coverage],
+                );
+            } finally {
+              if (rasterMask) raster.releaseSurface(rasterMask);
+              device.release(local);
+            }
+          } else {
+            const sigma =
+              (mask.feather / 2) *
+              Math.sqrt(
+                Math.abs(
+                  mask.matrix[0] * mask.matrix[3] -
+                    mask.matrix[1] * mask.matrix[2],
+                ),
+              );
+            // Preserve the raster filter's combined opacity/blur rounding when a
+            // transformed feather enters the rescaled Gaussian domain.
+            bakedOpacity = sigma > 135;
+            raster.clear(pixels, [1, 1, 1, 1]);
+            raster.applyMask(pixels, [
+              {
+                ...mask,
+                mode: "intersect",
+                opacity: bakedOpacity ? mask.opacity : 1,
+                feather: 0,
+              },
+            ]);
+            device.upload(coverage, pixels.canvas);
+            if (mask.feather > 0) effects.blur(coverage, sigma);
+          }
           const formula =
             mask.mode === "add"
               ? "s+d*(1.0-s.a)"

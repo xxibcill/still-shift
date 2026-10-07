@@ -36,11 +36,12 @@ export type CanvasImageResources = {
   pngImages?: ReadonlySet<string>;
 };
 
-/** Native cubic/nib paints and Canvas filters use CPU preparation on hardware previews too. */
+/** Native camera references, cubic/nib paints and Canvas filters use pinned CPU raster preparation. */
 export function requiresSoftwareFilters(composition: Composition): boolean {
   return [composition, ...(composition.precomps ?? [])].some((scope) =>
     scope.layers.some(
       (layer) =>
+        layer.threeD === true ||
         layer.type === "shape" ||
         layer.effects?.some((effect) => effect.effect === "blur.primitive"),
     ),

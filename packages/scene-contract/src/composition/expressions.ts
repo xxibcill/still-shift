@@ -110,7 +110,9 @@ export function implicitAnchorDependencies(
     segments[0]?.name !== "constraintReference"
   )
     return [];
-  return ["x", "y"].flatMap((axis, i) =>
+  const axes =
+    layer.threeD || layer.type === "camera" ? ["x", "y", "z"] : ["x", "y"];
+  return axes.flatMap((axis, i) =>
     !writtenAxes[i] && (!segments[1] || segments[1].name === axis)
       ? [[{ name: "transform" }, { name: "anchor" }, { name: axis }]]
       : [],

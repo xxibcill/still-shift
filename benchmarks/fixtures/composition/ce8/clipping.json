@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "ce8-clipping",
+  "width": 128,
+  "height": 96,
+  "fps": 24,
+  "frameCount": 32,
+  "background": "#000000",
+  "assets": [],
+  "layers": [
+    {
+      "id": "camera",
+      "type": "camera",
+      "nearClip": 8,
+      "farClip": 30
+    },
+    {
+      "id": "plane",
+      "type": "solid",
+      "size": [48, 40],
+      "color": "#ffffff",
+      "threeD": true,
+      "transform": {
+        "anchor": [0, 0, 0],
+        "position": [46, 24, -105],
+        "rotationY": 55
+      }
+    }
+  ]
+}
