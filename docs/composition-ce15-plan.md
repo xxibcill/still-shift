@@ -160,6 +160,36 @@ remain mandatory. The permanent parallel browser suite includes the 32 new expor
 its expanded whole command will run at final acceptance. Prior failed fixtures and
 the redundant-paint finding remain in the [evidence](./composition-ce15-source-results.json).
 
+## Accepted original-target root checkpoint — 2026-10-07
+
+The cache now retains complete root pixels in their original native target policy.
+Canvas restores exact native bytes; WebGL overwrites the target through an
+unblended texel copy. Coverage has its own layer/alpha-target identity and keeps
+all original validation at the unchanged threshold. Ordered operation identities
+retain late visibility phases. Changing evaluated states use the original painter.
+
+All 24 new static/coverage/late root cases pass across both backends, both alpha
+contexts and raster policies. Native provider calls agree with once-global root
+ownership; the 56-case audit passes 2,912 exact frame comparisons. Six exhaustive
+RGBA8 transfers / 393,216 pixels and 256 float pixels pass exactly. Fourteen root
+failure cases protect hashes, sizes, budgets, original reasons, paint/capture errors
+and cancellation during asynchronous hashing. No invalid restoration occurs.
+
+The expanded mandatory parallel command passes 207 successful production exports
+and 1,656 decoded frames, including 64 new static/coverage/late native-glyph root
+exports and 32 preparation exports. Complete media/PNG/audio bodies, all seven
+formats, native remap/exposure/history and 24 protected live failures pass. Forty-five
+graph/readback tests, 67 typography tests and original provider/typography browser
+fixtures pass. The first expanded production run failed its no-fallback assertion:
+constant outline endpoints still advanced a conservative clock. Held gate semantics
+are repaired while weights, selectors, masks and moving intervals remain live;
+the full command passes after focused native root verification.
+
+Closed static prefixes, the remaining direct/tint and broader source audit,
+complete allocation admission, per-layer statistics, actual two-minute speed
+acceptance and the final full gate remain mandatory.
+[Detailed evidence](./composition-ce15-root-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

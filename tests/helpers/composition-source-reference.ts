@@ -103,6 +103,7 @@ export async function checkSharedCompositionSources(options: {
       preparationPaintCalls: paints,
       sourceStatistics: preview.sourceCacheStatistics!(),
       surfaceStatistics: preview.surfaceCacheStatistics!(),
+      rootStatistics: preview.rootCacheStatistics!(),
     };
   } finally {
     preview.dispose();

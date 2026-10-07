@@ -64,6 +64,19 @@ export interface RenderBackend<S extends Surface = Surface> {
   renderIsolate?(op: IsolateOp, like: S, draw: () => S): S;
   /** Retain an existing independent precomp/local surface without adding isolation. */
   renderSurface?(node: SurfaceNode, draw: () => S): S;
+  /** Overwrite the original root target from exact retained pixels, without compositing. */
+  renderRoot?(
+    node: SurfaceNode,
+    target: S,
+    draw: () => void,
+    role: string,
+  ): void;
+  rootPixels?: {
+    identity(target: S): { policy: string; encoding: SurfaceEncoding };
+    capture(target: S): SurfacePixels;
+    restore(target: S, pixels: SurfacePixels): void;
+    reset(): void;
+  };
   surfaceEncoding?: SurfaceEncoding;
   captureSurface?(surface: S): SurfacePixels;
   restoreSurface?(width: number, height: number, pixels: SurfacePixels): S;
@@ -183,7 +196,7 @@ export function executeGraph<S extends Surface>(
   backend: RenderBackend<S>,
   graph: RenderGraph,
   target: S,
-  options: { lifecycle?: boolean } = {},
+  options: { lifecycle?: boolean; rootRole?: string } = {},
 ): void {
   const surface = (node: SurfaceNode, into?: S): S => {
     if (!into && backend.renderSurface)
@@ -569,7 +582,12 @@ export function executeGraph<S extends Surface>(
   let completed = false;
   try {
     if (options.lifecycle !== false) backend.beginFrame?.(graph.root);
-    surface(graph.root, target);
+    const draw = () => {
+      surface(graph.root, target);
+    };
+    if (backend.renderRoot)
+      backend.renderRoot(graph.root, target, draw, options.rootRole ?? "frame");
+    else draw();
     completed = true;
   } finally {
     if (options.lifecycle !== false) backend.endFrame?.(completed);

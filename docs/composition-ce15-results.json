@@ -4,7 +4,7 @@
   "branch": "codex/composition-ce15",
   "base": "aedfc9e",
   "started": "2026-10-07",
-  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources",
+  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots",
   "versions": {
     "canvas": "composition-canvas-1.46.0",
     "webgl": "composition-webgl2-0.67.0"
@@ -606,5 +606,29 @@
     "providerTypographyFrames": 60,
     "typographyFixtures": 8,
     "fullGate": "pending"
+  },
+  "rootRetention": {
+    "status": "original-target root retention and production parity/lifecycle passed; full CE15 acceptance pending",
+    "record": "docs/composition-ce15-root-results.json",
+    "relevantFingerprint": "bc3fcec2eebf1825485978c0de963691a5b8ea23a3014082901b7494b65e8410",
+    "rootBrowserCases": 24,
+    "allBrowserCases": 56,
+    "rootFrameComparisons": 1248,
+    "allFrameComparisons": 2912,
+    "nativeRgba8Pixels": 393216,
+    "nativeFloatPixels": 256,
+    "protectedRootFailures": 14,
+    "protectedSourceFailures": 11,
+    "protectedIndependentFailures": 12,
+    "productionRootCases": 16,
+    "productionRootExports": 64,
+    "productionSourceExports": 32,
+    "allSuccessfulProductionExports": 207,
+    "decodedSuccessfulProductionFrames": 1656,
+    "productionLiveFailures": 24,
+    "graphExposureReadbackUnitTests": 45,
+    "typographyUnitTests": 67,
+    "fullGate": "pending",
+    "speedProof": "pending"
   }
 }

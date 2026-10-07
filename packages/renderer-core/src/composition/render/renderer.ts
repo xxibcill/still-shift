@@ -14,6 +14,7 @@ import {
 import { sha256Hex } from "../../browser-checksum.ts";
 import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
 import { CompositionSourceCache } from "./source-cache.ts";
+import { CompositionRootCache } from "./root-cache.ts";
 import {
   PassageError,
   type PassageDiagnostic,
@@ -275,6 +276,7 @@ export type CompositionPreview = {
   /** Still-only frames are ready synchronously; native media returns its loading promise. */
   prepareFrame(frame: number): Promise<void> | void;
   surfaceCacheStatistics?(): CompositionSurfaceCache<Surface>["statistics"];
+  rootCacheStatistics?(): CompositionRootCache<Surface>["statistics"];
   renderFrame(frame: number): CompositionFrameReport;
   dispose(): void;
 };
@@ -444,8 +446,9 @@ export function createCompositionPreview(
     let initialization: Promise<void> | undefined;
     let preparedFrame: number | undefined;
     let surfaceCache: CompositionSurfaceCache<S> | undefined;
+    let rootCache: CompositionRootCache<S> | undefined;
     try {
-      if (options.surfaceCache)
+      if (options.surfaceCache) {
         surfaceCache = new CompositionSurfaceCache(
           backend,
           options.surfaceCache,
@@ -455,6 +458,15 @@ export function createCompositionPreview(
               : text.contentKey(content),
           composition.colorSpace ?? "srgb",
         );
+        rootCache = new CompositionRootCache(
+          backend,
+          options.surfaceCache,
+          (content) =>
+            content.type === "provider"
+              ? drawProvider.contentKey(content)
+              : text.contentKey(content),
+        );
+      }
       if (!resources.media && !surfaceCache)
         coverageDiagnostics = validateRequiredCompositionCoverage(
           composition,
@@ -474,6 +486,7 @@ export function createCompositionPreview(
       ...(surfaceCache
         ? { surfaceCacheStatistics: () => surfaceCache.statistics }
         : {}),
+      ...(rootCache ? { rootCacheStatistics: () => rootCache.statistics } : {}),
       prepareFrame(frame) {
         if (
           !Number.isInteger(frame) ||
@@ -498,12 +511,29 @@ export function createCompositionPreview(
                   cull: false,
                 });
                 if (surfaceCache)
-                  for (const { graph } of compositionRequiredCoverageGraphs(
-                    composition,
-                    at,
-                    { textBounds: text.bounds },
-                  ))
+                  for (const {
+                    graph,
+                    node,
+                  } of compositionRequiredCoverageGraphs(composition, at, {
+                    textBounds: text.bounds,
+                  })) {
                     await surfaceCache.prepare(graph);
+                    if (rootCache) {
+                      const target = backend.createSurface(
+                        graph.root.width,
+                        graph.root.height,
+                      );
+                      try {
+                        await rootCache.prepare(
+                          graph,
+                          target,
+                          "coverage:" + node,
+                        );
+                      } finally {
+                        backend.releaseSurface(target);
+                      }
+                    }
+                  }
                 coverageDiagnostics.push(...validate(at));
               }
             } finally {
@@ -519,8 +549,10 @@ export function createCompositionPreview(
               composition,
               frame,
               { textBounds: text.bounds },
-            ))
+            )) {
               await surfaceCache.prepare(graph);
+              await rootCache?.prepare(graph, target);
+            }
           preparedFrame = frame;
         });
       },
@@ -559,6 +591,7 @@ export function createCompositionPreview(
           cache.root = undefined;
           cache.key = undefined;
         }
+        rootCache?.dispose();
         surfaceCache?.dispose();
         backend.dispose();
         resources.media?.dispose();

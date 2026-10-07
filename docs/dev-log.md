@@ -59,7 +59,10 @@ still hold before relying on them.
   tests and build/lint/boundaries pass. New Canvas isolation and synchronous binary
   XHR remain rejected. Native preparation sources now pass 1,664 exact audit
   frames, 32 production exports / 256 decoded frames, 11 protected failures and 63
-  focused tests plus original typography checks. Direct/root/prefix, runtime tints,
+  focused tests plus original typography checks. Original-target roots and coverage
+  now pass 2,912 exact audit frames, exhaustive byte/float storage, 14 root failures,
+  207 production exports / 1,656 decoded frames and 24 live failures. Held outline
+  clocks are repaired under strict count checks. Closed prefixes/direct/tints,
   broader axes/corrections, aggregate memory, per-layer statistics, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
@@ -294,6 +297,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 original-target root checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `cf1139a`.
+- **Done:** exact native root/coverage pixels, visibility phases, held typography
+  gates and actual root paint/restore/copy/fallback counters; native boundaries stay intact.
+- **Results:** 56 browser cases / 2,912 exact frames, 393,216 byte + 256 float pixels,
+  14 protected root cases; full parallel command passes 207 exports / 1,656 decoded
+  frames and 24 live failures. Build/lint/boundaries, 45 graph/readback and 67
+  typography tests plus original provider/typography fixtures pass.
+- **Rejected:** fixed outline endpoints advanced their clock and triggered seven
+  fallbacks; preserve strict count checks, fix actual gate semantics and rerun fully.
+- **Next:** closed prefixes/direct/tints, broader source audit, aggregate limits,
+  per-layer timing, actual two-minute speed proof, full CE15 gate/PR, then all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [root evidence](./composition-ce15-root-results.json).
 
 ### 2026-10-07 — CE15 native preparation source checkpoint
 

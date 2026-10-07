@@ -21,6 +21,7 @@ import {
 } from "../helpers/composition-parallel-proof.ts";
 import { verifyParallelLifecycle } from "../helpers/composition-parallel-lifecycle.ts";
 import { verifyParallelNativeMedia } from "../helpers/composition-parallel-native.ts";
+import { verifyParallelRoots } from "../helpers/composition-parallel-roots.ts";
 import { verifyParallelSources } from "../helpers/composition-parallel-sources.ts";
 
 const directory = await mkdtemp(join(tmpdir(), "ce15-parallel-"));
@@ -303,6 +304,7 @@ assert.deepEqual(
 reports.push({ cli: true, metrics: cli.metrics });
 const native = await verifyParallelNativeMedia(directory, composition);
 const sources = await verifyParallelSources(directory);
+const roots = await verifyParallelRoots(directory);
 const failures = await verifyParallelLifecycle(directory, path);
 const result = {
   status: "passed",
@@ -310,6 +312,7 @@ const result = {
   formats: reports,
   native,
   sources,
+  roots,
   failures,
 };
 await writeFile(
@@ -323,6 +326,7 @@ console.log(
     exports: reports.length,
     nativeCases: native.length,
     sourceCases: sources.length,
+    rootCases: roots.length,
     failures: failures.length,
   }),
 );

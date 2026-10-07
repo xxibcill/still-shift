@@ -96,7 +96,7 @@ export function createCompositionCoverageValidator<S extends Surface>(
       const target = backend.createSurface(scope.width, scope.height);
       let pixel: [number, number] | null;
       try {
-        executeGraph(backend, graph, target);
+        executeGraph(backend, graph, target, { rootRole: "coverage:" + node });
         pixel = uncoveredViewportPixel(
           backend.readPixels(target),
           scope.width,

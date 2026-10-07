@@ -25,6 +25,9 @@ export type BrowserExportResult = {
     sourceStatistics?: ReturnType<
       NonNullable<CompositionPreview["sourceCacheStatistics"]>
     >;
+    rootStatistics?: ReturnType<
+      NonNullable<CompositionPreview["rootCacheStatistics"]>
+    >;
     cacheStatistics?: ReturnType<
       NonNullable<CompositionPreview["surfaceCacheStatistics"]>
     >;
@@ -238,6 +241,9 @@ const exportComposition = async (
   let sourceStatistics: NonNullable<
     BrowserExportResult["work"]
   >["sourceStatistics"];
+  let rootStatistics: NonNullable<
+    BrowserExportResult["work"]
+  >["rootStatistics"];
   const result = await renderFrames(
     scene.timeline.frameCount,
     resources.media || output?.work?.surfaceCache
@@ -251,6 +257,7 @@ const exportComposition = async (
     () => {
       cacheStatistics = preview.surfaceCacheStatistics?.();
       sourceStatistics = preview.sourceCacheStatistics?.();
+      rootStatistics = preview.rootCacheStatistics?.();
       preview.dispose();
     },
     canvas,
@@ -266,6 +273,8 @@ const exportComposition = async (
     result.work.cacheStatistics = cacheStatistics;
   if (result.work && sourceStatistics)
     result.work.sourceStatistics = sourceStatistics;
+  if (result.work && rootStatistics)
+    result.work.rootStatistics = rootStatistics;
   return result;
 };
 

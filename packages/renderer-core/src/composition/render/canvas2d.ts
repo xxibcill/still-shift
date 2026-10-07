@@ -208,6 +208,37 @@ export function createCanvas2dBackend(
   const backend: Canvas2dBackend = {
     version: COMPOSITION_RENDERER_VERSION,
     surfaceEncoding: "rgba8-straight",
+    rootPixels: {
+      identity: (target) => ({
+        policy: JSON.stringify([
+          target.ctx.getContextAttributes(),
+          target.rasterMode ?? "default",
+        ]),
+        encoding: "rgba8-straight",
+      }),
+      capture: (target) => backend.captureSurface!(target),
+      restore(target, pixels) {
+        if (
+          pixels.encoding !== "rgba8-straight" ||
+          pixels.bytes.byteLength !== target.width * target.height * 4
+        )
+          throw Error("Canvas root pixels differ from their target contract");
+        target.ctx.putImageData(
+          new ImageData(
+            new Uint8ClampedArray(
+              pixels.bytes.buffer,
+              pixels.bytes.byteOffset,
+              pixels.bytes.byteLength,
+            ),
+            target.width,
+            target.height,
+          ),
+          0,
+          0,
+        );
+      },
+      reset() {},
+    },
     captureSurface(surface) {
       return {
         encoding: "rgba8-straight",

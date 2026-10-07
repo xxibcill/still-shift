@@ -282,6 +282,7 @@ export async function checkSharedCompositionSurfaces(options: {
       providerDrawCalls,
       providerPreparations,
       statistics: preview.surfaceCacheStatistics!(),
+      rootStatistics: preview.rootCacheStatistics!(),
     };
   } finally {
     preview.dispose();

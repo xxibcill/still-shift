@@ -5098,8 +5098,11 @@ successful exports, eight native timing cases, 24 live failures and complete
 media/frame/audio parity; 32 focused tests and existing format/legacy suites pass.
 Native preparation sources pass 1,664 exact audit comparisons, 32 production
 exports / 256 decoded frames, 11 protected failures, 63 focused tests and original
-typography checks. Direct/root/prefix and runtime tint paint coverage, broader
-axes/corrections, aggregate limits, per-layer statistics, two-minute speed proof
+typography checks. Original-target roots/coverage now pass 2,912 exact audit
+comparisons, exhaustive byte/float storage, 14 protected root cases and the full
+207-export production command / 1,656 decoded frames with 24 live failures.
+Closed prefixes/direct/tints, broader axes/corrections, aggregate limits,
+per-layer statistics, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),
 [format evidence](./composition-ce15-format-results.json).

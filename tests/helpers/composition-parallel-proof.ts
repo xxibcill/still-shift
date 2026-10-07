@@ -143,7 +143,6 @@ export function verifyParallelMetrics(
   if (cacheStatic) {
     assert.ok(work.surfaceStore);
     if (expectedPaints !== undefined) {
-      assert.equal(work.surfaceStore.publishedSurfaces, expectedPaints);
       assert.equal(
         work.workersDetail.reduce(
           (sum, worker) =>
@@ -154,6 +153,23 @@ export function verifyParallelMetrics(
         expectedPaints,
       );
     }
+    assert.equal(
+      work.surfaceStore.publishedSurfaces,
+      work.workersDetail.reduce(
+        (sum, worker) =>
+          sum +
+          (worker.result.cacheStatistics?.independentSurfacePaints ?? 0) +
+          (worker.result.sourceStatistics?.sources.reduce(
+            (sum, source) => sum + source.paints,
+            0,
+          ) ?? 0) +
+          (worker.result.rootStatistics?.roots.reduce(
+            (sum, root) => sum + root.paints,
+            0,
+          ) ?? 0),
+        0,
+      ),
+    );
   } else {
     assert.equal(work.surfaceStore, undefined);
     assert.ok(

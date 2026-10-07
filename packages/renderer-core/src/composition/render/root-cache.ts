@@ -1,0 +1,200 @@
+import { sha256Hex } from "../../browser-checksum.ts";
+import {
+  executeGraph,
+  type RenderBackend,
+  type Surface,
+  type SurfacePixels,
+} from "./backend.ts";
+import type { RenderGraph, SurfaceNode } from "./graph.ts";
+import {
+  compositionSurfaceVisualKey,
+  type CompositionSurfaceCacheOptions,
+} from "./surface-cache.ts";
+import type { PreparedContentKey } from "./webgl-visual-key.ts";
+
+type Entry = { signature: string; pixels: SurfacePixels };
+type Counts = {
+  role: string;
+  name: string;
+  paints: number;
+  restores: number;
+  copies: number;
+  fallbacks: number;
+  paintAndReadbackMs: number;
+  copyMs: number;
+};
+
+/** Retains the first complete root state in its original native target policy. */
+export class CompositionRootCache<S extends Surface> {
+  private readonly entries = new Map<string, Entry>();
+  private readonly counts = new Map<string, Counts>();
+  private retainedBytes = 0;
+  private peakPayloadBytes = 0;
+  private preparing = false;
+  private closed = false;
+  private readonly original: RenderBackend<S>["renderRoot"];
+  constructor(
+    private readonly backend: RenderBackend<S>,
+    private readonly options: CompositionSurfaceCacheOptions,
+    private readonly contentKey?: PreparedContentKey,
+  ) {
+    if (
+      !backend.rootPixels ||
+      !/^sha256:[a-f0-9]{64}$/.test(options.scopeKey) ||
+      !Number.isSafeInteger(options.byteLimit) ||
+      options.byteLimit < 1 ||
+      options.byteLimit > 128 * 1024 * 1024
+    )
+      throw Error("Composition root cache configuration is invalid");
+    this.original = backend.renderRoot?.bind(backend);
+    backend.renderRoot = (node, target, draw, role) => {
+      this.assertOpen();
+      const { path, signature } = this.identity(node, target, role);
+      const entry = this.entries.get(path);
+      if (!this.preparing && entry?.signature === signature) {
+        const start = performance.now();
+        backend.rootPixels!.restore(target, entry.pixels);
+        const counts = this.counts.get(path)!;
+        counts.copyMs += performance.now() - start;
+        counts.copies++;
+      } else {
+        if (!this.preparing) {
+          const counts = this.counts.get(path);
+          if (counts) counts.fallbacks++;
+        }
+        if (this.original) this.original(node, target, draw, role);
+        else draw();
+      }
+    };
+  }
+  private assertOpen() {
+    this.options.signal?.throwIfAborted();
+    if (this.closed) throw Error("Composition root cache is disposed");
+  }
+  private identity(node: SurfaceNode, target: S, purpose: string) {
+    const { policy, encoding } = this.backend.rootPixels!.identity(target);
+    const role = compositionSurfaceVisualKey([purpose, policy]);
+    const path = compositionSurfaceVisualKey([
+      "original-root",
+      node.id,
+      node.width,
+      node.height,
+      role,
+      encoding,
+      node.ops.map((op) => [op.kind, op.layer]),
+    ]);
+    const signature = compositionSurfaceVisualKey(
+      [this.options.scopeKey, this.backend.version, path, node],
+      this.contentKey,
+    );
+    return { role, path, signature, encoding };
+  }
+  async prepare(graph: RenderGraph, target: S, purpose = "frame") {
+    this.assertOpen();
+    if (this.preparing)
+      throw Error("Composition root preparation must be sequential");
+    const { role, path, signature, encoding } = this.identity(
+      graph.root,
+      target,
+      purpose,
+    );
+    if (this.entries.has(path)) return;
+    const bytes =
+      target.width *
+      target.height *
+      (encoding === "rgba32f-premultiplied" ? 16 : 4);
+    if (
+      !Number.isSafeInteger(bytes) ||
+      bytes < 1 ||
+      this.entries.size >= 4096 ||
+      this.retainedBytes + bytes * 2 > this.options.byteLimit
+    )
+      throw Error("Composition root pixels exceed the worker byte/entry bound");
+    this.preparing = true;
+    try {
+      const identity = {
+        path:
+          "root:" + (await sha256Hex(new TextEncoder().encode(path).buffer)),
+        key:
+          "sha256:" +
+          (await sha256Hex(new TextEncoder().encode(signature).buffer)),
+        width: target.width,
+        height: target.height,
+        encoding,
+      };
+      this.assertOpen();
+      const claim = await this.options.exchange.claim(identity);
+      this.assertOpen();
+      const counts: Counts = this.counts.get(path) ?? {
+        role,
+        name: graph.root.id,
+        paints: 0,
+        restores: 0,
+        copies: 0,
+        fallbacks: 0,
+        paintAndReadbackMs: 0,
+        copyMs: 0,
+      };
+      this.counts.set(path, counts);
+      if (claim.kind === "uncached") return;
+      let pixels: SurfacePixels;
+      if (claim.kind === "hit") {
+        if (
+          claim.bytes.byteLength !== bytes ||
+          claim.bytes.byteOffset !== 0 ||
+          claim.bytes.buffer.byteLength !== bytes ||
+          "sha256:" + (await sha256Hex(claim.bytes.buffer)) !== claim.checksum
+        )
+          throw Error(
+            "Composition root pixels differ from their checksum or dimensions",
+          );
+        this.assertOpen();
+        pixels = { encoding: identity.encoding, bytes: claim.bytes };
+        counts.restores++;
+      } else {
+        if (claim.byteLength !== bytes)
+          throw Error("Composition root lease has incorrect storage size");
+        this.backend.rootPixels!.reset();
+        const start = performance.now();
+        executeGraph(this.backend, graph, target, { rootRole: purpose });
+        pixels = this.backend.rootPixels!.capture(target);
+        if (
+          pixels.encoding !== identity.encoding ||
+          pixels.bytes.byteLength !== bytes ||
+          pixels.bytes.byteOffset !== 0 ||
+          pixels.bytes.buffer.byteLength !== bytes
+        )
+          throw Error(
+            "Composition root paint storage differs from its identity",
+          );
+        counts.paintAndReadbackMs += performance.now() - start;
+        counts.paints++;
+        const checksum = "sha256:" + (await sha256Hex(pixels.bytes.buffer));
+        this.assertOpen();
+        await this.options.exchange.publish(claim.token, pixels, checksum);
+        this.assertOpen();
+      }
+      this.entries.set(path, { signature, pixels });
+      this.counts.set(path, counts);
+      this.retainedBytes += bytes;
+      this.peakPayloadBytes = Math.max(this.peakPayloadBytes, bytes);
+    } finally {
+      this.preparing = false;
+    }
+  }
+  get statistics() {
+    return {
+      retainedBytes: this.retainedBytes,
+      peakPayloadBytes: this.peakPayloadBytes,
+      roots: [...this.counts.values()].map((counts) => ({ ...counts })),
+    };
+  }
+  dispose() {
+    if (this.closed) return;
+    this.closed = true;
+    if (this.original) this.backend.renderRoot = this.original;
+    else delete this.backend.renderRoot;
+    this.entries.clear();
+    this.retainedBytes = 0;
+  }
+}

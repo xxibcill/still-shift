@@ -82,7 +82,12 @@ export async function verifyParallelSources(directory: string) {
             }
             const independent = work.workersDetail.reduce(
               (sum, worker) =>
-                sum + worker.result.cacheStatistics!.independentSurfacePaints,
+                sum +
+                worker.result.cacheStatistics!.independentSurfacePaints +
+                worker.result.rootStatistics!.roots.reduce(
+                  (sum, root) => sum + root.paints,
+                  0,
+                ),
               0,
             );
             assert.equal(

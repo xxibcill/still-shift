@@ -422,6 +422,67 @@ export function createWebgl2Backend(
   const backend: Webgl2Backend = {
     version: COMPOSITION_WEBGL_RENDERER_VERSION,
     surfaceEncoding: "rgba8-premultiplied",
+    rootPixels: {
+      identity: (target) => ({
+        policy: JSON.stringify([target.screen, target.opaque, target.floating]),
+        encoding: target.floating
+          ? "rgba32f-premultiplied"
+          : "rgba8-premultiplied",
+      }),
+      capture: (target) =>
+        target.floating
+          ? {
+              encoding: "rgba32f-premultiplied",
+              bytes: new Uint8Array(device.readFloats(target).buffer),
+            }
+          : { encoding: "rgba8-premultiplied", bytes: device.read(target) },
+      restore(target, pixels) {
+        const expected = target.floating
+          ? "rgba32f-premultiplied"
+          : "rgba8-premultiplied";
+        if (
+          pixels.encoding !== expected ||
+          pixels.bytes.byteLength !==
+            target.width * target.height * (target.floating ? 16 : 4)
+        )
+          throw Error("WebGL root pixels differ from their target contract");
+        damage.reset();
+        device.setFrameClip();
+        if (target.screen) {
+          const source = backend.restoreSurface!(
+            target.width,
+            target.height,
+            pixels,
+          );
+          const blended = gl.isEnabled(gl.BLEND);
+          try {
+            gl.disable(gl.BLEND);
+            device.pass(
+              "void main(){pixel=texelFetch(source,ivec2(gl_FragCoord.xy),0);}",
+              target,
+              [source],
+            );
+          } finally {
+            if (blended) gl.enable(gl.BLEND);
+            backend.releaseSurface(source);
+          }
+        } else if (target.floating)
+          device.uploadFloats(
+            target,
+            new Float32Array(
+              pixels.bytes.buffer,
+              pixels.bytes.byteOffset,
+              pixels.bytes.byteLength / 4,
+            ),
+          );
+        else device.uploadBytes(target, pixels.bytes);
+        bounds.full(target);
+      },
+      reset() {
+        damage.reset();
+        device.setFrameClip();
+      },
+    },
     captureSurface(surface) {
       if (surface.screen)
         throw Error(
