@@ -3375,14 +3375,26 @@ Normal publication targets the existing PR #40 head; owner review/merge remain.
 
 ### CE7 PR #40 clock integration review repairs (2026-10-07)
 
-Both new findings are inline on PR #40 and will be repaired in separate commits
-from reviewed `e907d16`. Echo bake dependency selection now uses the same
-held/posterized content clock and owning FPS as rendering. Four regressions
-failed before repair; 98 focused tests and build/lint/boundaries pass afterward.
-Incompatible inherited blur history is rejected with `comp-bake-time`, while
-active positive content blur retains compatible original/baked graph parity.
-Explicit source-clock override precedence and final acceptance remain pending;
-no new full gate or baseline regeneration is claimed.
+Both new findings are inline on PR #40 and repaired in separate commits from
+reviewed `e907d16`. Echo bake dependency selection uses the shared held/posterized
+content clock and owning FPS, retaining group ancestry and compatible positive
+blur overrides. Incompatible inherited history returns `comp-bake-time`.
+Explicit instance clocks now precede unused loop mapping/validation while raw
+host remaps and ordinary source clamps remain unchanged. Evaluator 33 separates
+passage/export caches; backend versions and frozen assets are unchanged.
+
+Four bake and three loop regressions fail before their repairs; 101 focused tests
+pass afterward. Final fast checks pass 1,914 units and 41 affected integrations.
+Native exposure, expression/bake parity and quality pass, including 12 hardware
+comparisons and independent/repeated/raw exports. All 176 frozen items / 36,061
+frames remain exact. New browser proof rejects both incompatible content clocks
+and preserves 144 compatible original/baked pixel observations exactly on both
+backends. Independent standards/spec review and final source fingerprint pass.
+
+Delivery uses one finding per commit and one final normal push to the existing
+PR head; owner review/merge remain separate. No complete new `pnpm check`, Python
+suite, serial cost profile or strict timing-matrix run is claimed. Historical
+full gates retain their original snapshots; no baseline or tolerance is changed.
 [Fix evidence](./pr-40-clock-fix-results.json).
 
 ---
