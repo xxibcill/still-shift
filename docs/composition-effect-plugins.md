@@ -238,6 +238,8 @@ plugin contexts expose `layers`, a read-only map of owned source snapshots with
 the target’s dimensions. References retain source transforms, opacity, masks,
 matte and effects at the matching scope/exposure clock. Hidden groups/precomps
 can supply content without changing ordinary composition visibility.
+Captured echo history uses the same visibility override as the current source;
+source in/out points and descendant visibility still apply to each historical sample.
 
 Missing or undeclared slots and cycles through inputs/mattes/groups fail with
 `comp-effect-layer` or `comp-effect-cycle`. Null and adjustment layers are not

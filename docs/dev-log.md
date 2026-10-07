@@ -43,14 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #42 follow-up fixes in progress (2026-10-07):** isolated
-  `codex/pr42-followup-fixes` from reviewed `b2f2048`. Both P2 findings are inline.
-  Normalized plugin registration now preserves declared input slots after caller
-  mutation on both backends; 30 focused tests, build and focused lint pass.
-  Hidden-source echo history remains in flight. One finding per commit and one
-  final push are requested; final affected verification remains pending.
-  The Python environment is isolated and pinned; an incomplete offline cache
-  was repaired with frozen sync. CE6-P stays owner-deferred.
+- **PR #42 follow-up fixes verified (2026-10-07):** isolated
+  `codex/pr42-followup-fixes` from reviewed `b2f2048`. Both inline P2 findings
+  have separate fixes: immutable normalized plugin descriptors and hidden-source
+  echo history, including descendant windows and remapped clocks. Independent
+  Standards and Spec reviews have no findings. Fast checks pass 2,093 units;
+  40 exact Canvas/WebGL cases, renderer/export/exposure groups, native catalogue
+  hashes/seeks/repeated and independent exports, 36 hardware comparisons and all
+  176 frozen items / 36,061 frames pass. Renderer identities are 1.40.2 / 0.54.2.
+  One final normal push delivers both finding commits; owner review/merge remain.
+  Full `pnpm check` was not rerun; parent gates remain historical and CE6-P stays
+  owner-deferred. Frozen references and thresholds remain intact.
   [Evidence](./pr-42-followup-fix-results.json).
 
 - **PR #42 conflict integration (2026-10-07):** isolated PR head `f000d8d`
@@ -729,6 +732,19 @@ _Last updated 2026-10-07 by Codex for PR #42 conflict resolution._
 
 ## Entries
 
+### 2026-10-07 — PR #42 hidden-source echo history repair
+
+- **Agent / branch:** Codex on isolated `codex/pr42-followup-fixes`, after `6e33664`.
+- **Scope:** second inline P2 finding; preserve the captured source's own echo.
+- **Done:** apply scoped capture visibility to historical source paints and group
+  descendants while retaining in/out points; separate corrected renderer caches.
+- **Results:** ten regressions fail before repair; 59 focused tests pass afterward.
+  Final fast gate passes 2,093 units; 40 exact backend cases / 160 renders, catalogue,
+  hardware/export/exposure checks and 176 frozen items / 36,061 frames pass.
+  Independent Standards and Spec review have no findings; full gate was not rerun.
+- **Next:** one normal push delivers both finding commits; owner review/merge remain.
+- **Records:** [review/fix evidence](./pr-42-followup-fix-results.json).
+
 ### 2026-10-07 — PR #42 normalized plugin registration repair
 
 - **Agent / branch:** Codex on isolated `codex/pr42-followup-fixes`, from `b2f2048`.
@@ -736,8 +752,8 @@ _Last updated 2026-10-07 by Codex for PR #42 conflict resolution._
 - **Done:** renderer input snapshots follow the immutable normalized registration.
 - **Results:** both new regressions fail before repair and pass afterward; all 30
   focused plugin/input/contract tests, build and focused lint pass.
-- **Next:** preserve hidden-source echo history, verify, commit separately and push
-  both finding commits together. Final affected gates remain pending.
+- **Next:** the separate echo repair and final evidence are recorded above;
+  both finding commits share one final normal push. Owner review/merge remain.
 - **Records:** [review/fix evidence](./pr-42-followup-fix-results.json).
 
 ### 2026-10-07 — PR #42 main conflict resolution

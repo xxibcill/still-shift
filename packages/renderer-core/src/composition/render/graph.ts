@@ -218,6 +218,7 @@ type Frame = {
   cull?: boolean;
   paintBlur?: number;
   sourceGroup?: string;
+  /** Scoped layer key whose ordinary visibility is ignored during capture. */
   captureSource?: string;
   background: Rgba | null;
 };
@@ -443,7 +444,7 @@ class GraphBuilder {
             ...frame,
             opacity: 1,
             background: null,
-            captureSource: id,
+            captureSource: frame.prefix + id,
             cull: false,
             ...(source.layer.type === "group" ? { sourceGroup: id } : {}),
           },
@@ -595,7 +596,7 @@ class GraphBuilder {
               ...frame,
               opacity: 1,
               background: null,
-              captureSource: matte.layer,
+              captureSource: frame.prefix + matte.layer,
               ...(layer.type === "group" ? { sourceGroup: layer.id } : {}),
             },
             {
@@ -747,8 +748,14 @@ class GraphBuilder {
         this.history.set(key, sample);
       }
       const prior = sample.byId.get(state.id)!;
+      const visible =
+        frame.captureSource === frame.prefix + state.id ||
+        (frame.sourceGroup
+          ? this.sourceVisible(sample, prior, frame.sourceGroup)
+          : prior.visible) ||
+        sample.matteSources.has(state.id);
       if (
-        (!prior.visible && !sample.matteSources.has(state.id)) ||
+        !visible ||
         time < (prior.layer.inPoint ?? 0) ||
         time >= (prior.layer.outPoint ?? scope.def.frameCount) ||
         (skipUnchanged &&
