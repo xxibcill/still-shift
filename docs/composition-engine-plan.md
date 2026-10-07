@@ -5127,15 +5127,15 @@ frame parity and borrowed/late native cleanup pass. Glyph 1.383989× ≤ 1.5×.
 Native capture/upload admission now passes 70 tests, the complete audit, six
 native complete-body oracles, twelve failure cases, original media/WebGL export
 commands and 64 prior-exact public exports / 768 bodies and frames. Owned submission/
-source/root/surface metadata, cache checksums, WebGL keys/controls and actual raster
-parts/bounds/calls now pass 165 focused tests, the complete audit, 22 moving/blurred
-and ten stationary native frames and 96 owned RPC snapshots. Part admission precedes
-GPU production; actual retained arrays, independent bounds, scratch-denial/null
-cleanup and original native operators pass. Original WebGL/provider checks and 69
-typography tests pass; glyph 1.421648× meets unchanged 1.5 maximum. All 64 exports /
-768 bodies and frames retain prior exact output. Vector extent/region/recording,
-provider/graph/font/checksum/ledger-control/Node metadata and production admission
-remain pending.
+source/root/surface metadata, cache checksums, WebGL keys/controls, raster parts/calls
+and vector extent/region geometry now pass 169 focused tests, the complete audit,
+22 moving/blurred and ten stationary native frames and 96 owned RPC snapshots.
+Original geometry factories pre-admit; bounds remain owned through actual consumer
+then clear while retained part bounds stay independent. Original WebGL/provider
+checks and 69 typography tests pass; glyph 1.443902× meets unchanged 1.5 maximum.
+All 64 exports / 768 bodies and frames retain prior exact output. Recording/other
+WebGL and provider/graph/font/checksum/ledger-control/Node metadata and production
+admission remain pending.
 Aggregate limits, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),

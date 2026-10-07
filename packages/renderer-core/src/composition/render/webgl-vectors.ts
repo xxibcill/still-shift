@@ -19,6 +19,7 @@ import type { VectorDraw } from "./backend.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import type { WebglVisualKey } from "./webgl-visual-key.ts";
 
+import { renderMemory } from "../../managed-memory-context.ts";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
@@ -29,6 +30,33 @@ import {
 
 type RasterPart = { surface: WebglSurface; rect: Bounds; primitive: boolean };
 type Raster = { key: string; parts: RasterPart[] };
+type Geometry = {
+  boxes: Bounds[] | undefined;
+  regions: ReturnType<typeof vectorRegions> | undefined;
+  painted: Bounds | null;
+};
+function geometryCapacity(ops: VectorDraw[]): number {
+  if (!renderMemory()) return 0;
+  let matrices = 0;
+  for (const op of ops) matrices += op.transforms?.length ?? 1;
+  const count = ops.length;
+  // Per extent: input/fallback arrays, corner/coordinate arrays, inline/output
+  // bounds, one DOMMatrix and four input points/DOMPoints (<= 1616 bytes).
+  // Each authored transform contributes a 192-byte DOMMatrix wrapper/value.
+  // Region records/unions/indices/splice arrays and batching add <= 584 bytes per operation;
+  // worst-case merged indices and overlap slices add 8*count*(count-1).
+  return 640 + 2200 * count + 192 * matrices + 8 * count * (count - 1);
+}
+function clearGeometry(value: Geometry): void {
+  if (value.boxes) value.boxes.length = 0;
+  value.boxes = undefined;
+  if (value.regions) {
+    for (const region of value.regions) region.indices.length = 0;
+    value.regions.length = 0;
+  }
+  value.regions = undefined;
+  value.painted = null;
+}
 type OwnedRaster = {
   entry: Raster | undefined;
   id: ManagedMetadataText;
@@ -391,33 +419,56 @@ export class WebglVectors {
     }
   }
 
-  draw(dst: WebglSurface, ops: VectorDraw[]): Bounds | null {
-    const boxes = ops.map((op) => this.extent([op], dst));
-    const backdrop = this.paintOver.hasBackdrop(dst);
-    let painted: Bounds | null = null;
-    const draw = (indices: number[], region: Bounds) => {
-      const bounds = this.drawBatch(
-        dst,
-        indices.map((index) => ops[index]!),
-        region,
-      );
-      if (bounds) painted = painted ? unionBounds(painted, bounds) : bounds;
-    };
-    for (const region of vectorRegions(boxes)) {
-      const overlap =
-        backdrop &&
-        region.indices.some((index, position) =>
-          region.indices
-            .slice(position + 1)
-            .some((other) => boundsOverlap(boxes[index]!, boxes[other]!)),
+  /** Consume synchronously to release geometry after the backend copies its bounds. */
+  draw(
+    dst: WebglSurface,
+    ops: VectorDraw[],
+    consume?: (bounds: Bounds | null) => void,
+  ): Bounds | null {
+    const geometry = allocateRenderMetadata<Geometry>(
+      geometryCapacity(ops),
+      () => ({ boxes: undefined, regions: undefined, painted: null }),
+      false,
+      clearGeometry,
+    );
+    let failed = false;
+    try {
+      const boxes = (geometry.boxes = ops.map((op) => this.extent([op], dst)));
+      const backdrop = this.paintOver.hasBackdrop(dst);
+      let painted: Bounds | null = null;
+      const draw = (indices: number[], region: Bounds) => {
+        const bounds = this.drawBatch(
+          dst,
+          indices.map((index) => ops[index]!),
+          region,
         );
-      // Rounding source-over is not associative. Overlapping primitives must
-      // reach the actual GPU backdrop individually, in their original order.
-      if (overlap)
-        for (const index of region.indices) draw([index], boxes[index]!);
-      else draw(region.indices, region.bounds);
+        if (bounds) painted = painted ? unionBounds(painted, bounds) : bounds;
+      };
+      const regions = (geometry.regions = vectorRegions(boxes));
+      for (const region of regions) {
+        const overlap =
+          backdrop &&
+          region.indices.some((index, position) =>
+            region.indices
+              .slice(position + 1)
+              .some((other) => boundsOverlap(boxes[index]!, boxes[other]!)),
+          );
+        // Rounding source-over is not associative. Overlapping primitives must
+        // reach the actual GPU backdrop individually, in their original order.
+        if (overlap)
+          for (const index of region.indices) draw([index], boxes[index]!);
+        else draw(region.indices, region.bounds);
+      }
+      geometry.painted = painted;
+      consume?.(painted);
+      return painted;
+    } catch (error) {
+      failed = true;
+      throw error;
+    } finally {
+      // Without a consumer, an active frame scratch owns the returned bounds.
+      if (failed || consume) releaseRenderMetadata(geometry);
     }
-    return painted;
   }
 
   private drawBatch(

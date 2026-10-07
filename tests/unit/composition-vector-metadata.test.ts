@@ -65,6 +65,13 @@ function harness() {
   };
   return { cache, keys, release, drawMany, paint, state };
 }
+function consumeVectorBounds(
+  cache: WebglVectors,
+  dst: WebglSurface,
+  ops: VectorDraw[],
+) {
+  return cache.draw(dst, ops, () => {});
+}
 const limits = { pixels: 1, metadata: 65536 };
 it("retains exact native vector IDs/signatures and the actual Map key owner through repeated hits", async () => {
   const memory = new ManagedMemory(limits);
@@ -76,7 +83,7 @@ it("retains exact native vector IDs/signatures and the actual Map key owner thro
       owner: { id: ManagedMetadataText; key: ManagedMetadataText } | undefined;
     for (let n = 0; n < 4; n++) {
       memory.beginScratch();
-      expect(cache.draw(dst, ops)).toEqual(box);
+      expect(consumeVectorBounds(cache, dst, ops)).toEqual(box);
       memory.endScratch();
       const id = JSON.stringify([
         dst.width,
@@ -100,7 +107,7 @@ it("retains exact native vector IDs/signatures and the actual Map key owner thro
     expect(paint).toHaveBeenCalledTimes(1);
     const previous = owner!;
     memory.beginScratch();
-    cache.draw(dst, [op("box", 0.5)]);
+    consumeVectorBounds(cache, dst, [op("box", 0.5)]);
     memory.endScratch();
     expect(previous.key.value).toBeUndefined();
     expect(previous.id.value).toBeUndefined();
@@ -144,7 +151,7 @@ it("rolls back vector Map capacity and temporary keys after an original null ras
     });
     let caught: unknown = "missing";
     try {
-      cache.draw(surface(), [op()]);
+      consumeVectorBounds(cache, surface(), [op()]);
     } catch (error) {
       caught = error;
     }
@@ -166,14 +173,14 @@ it("preserves a complete retained raster after a null drawing failure and reuses
     });
     let caught: unknown = "missing";
     try {
-      cache.draw(surface(), [op()]);
+      consumeVectorBounds(cache, surface(), [op()]);
     } catch (error) {
       caught = error;
     }
     expect(caught).toBeNull();
     expect(state.state.cached.size).toBe(1);
     memory.beginScratch();
-    expect(cache.draw(surface(), [op()])).toEqual(box);
+    expect(consumeVectorBounds(cache, surface(), [op()])).toEqual(box);
     memory.endScratch();
     expect(paint).toHaveBeenCalledTimes(1);
     cache.dispose();
@@ -187,8 +194,8 @@ it("visits all vector entries and releases their keys while preserving the first
   const memory = new ManagedMemory(limits);
   await withManagedMemory(memory, async () => {
     const { cache, keys, release, state } = harness();
-    cache.draw(surface(), [op("first")]);
-    cache.draw(surface(), [op("second")]);
+    consumeVectorBounds(cache, surface(), [op("first")]);
+    consumeVectorBounds(cache, surface(), [op("second")]);
     const entries = [...state.state.cached.values()];
     release.mockImplementationOnce(() => {
       throw null;
@@ -223,11 +230,11 @@ it("cleans non-retained vector keys after the original byte policy and remains s
     paint.mockImplementationOnce((_dst, _ops, rect) => [
       { surface: surface(8192, 8192), rect, primitive: false },
     ]);
-    expect(cache.draw(surface(), [op()])).toEqual(box);
+    expect(consumeVectorBounds(cache, surface(), [op()])).toEqual(box);
     expect(state.state.cached.size).toBe(0);
     expect(release).toHaveBeenCalledTimes(1);
     expect(memory.statistics.current.metadata).toBe(512);
-    cache.draw(surface(), [op()]);
+    consumeVectorBounds(cache, surface(), [op()]);
     const entry = [...state.state.cached.values()][0]!;
     memory.dispose();
     expect(entry.id.value).toBeUndefined();
@@ -237,7 +244,9 @@ it("cleans non-retained vector keys after the original byte policy and remains s
     cache.dispose();
     keys.dispose();
     expect(memory.statistics.reservations).toBe(0);
-    expect(() => cache.draw(surface(), [op()])).toThrow("disposed");
+    expect(() => consumeVectorBounds(cache, surface(), [op()])).toThrow(
+      "disposed",
+    );
   });
 });
 
@@ -310,7 +319,7 @@ it("retains the actual RasterPart container and independent bounds through frame
       release,
     } = nativePartHarness();
     memory.beginScratch();
-    cache.draw(surface(), [op()]);
+    consumeVectorBounds(cache, surface(), [op()]);
     memory.endScratch();
     const parts = [...state.state.cached.values()][0]!.entry!.parts;
     expect(memory.owns(parts)).toBe(true);
@@ -323,7 +332,7 @@ it("retains the actual RasterPart container and independent bounds through frame
     expect(releaseSurface).toHaveBeenCalledTimes(1);
     const before = memory.statistics.current.metadata;
     memory.beginScratch();
-    cache.draw(surface(), [op()]);
+    consumeVectorBounds(cache, surface(), [op()]);
     memory.endScratch();
     expect(memory.statistics.current.metadata).toBe(before);
     expect(nativeSurface).toHaveBeenCalledTimes(1);
@@ -360,7 +369,9 @@ it("releases an already-created raster scratch surface when part-container admis
         height: 24,
       };
     });
-    expect(() => cache.draw(surface(), [op()])).toThrow("metadata");
+    expect(() => consumeVectorBounds(cache, surface(), [op()])).toThrow(
+      "metadata",
+    );
     expect(releaseSurface).toHaveBeenCalledTimes(1);
     expect(nativeSurface).not.toHaveBeenCalled();
     expect(fillRect).not.toHaveBeenCalled();
@@ -384,7 +395,9 @@ it("admits part records and their bounds before GPU production, cleaning args an
         limits.metadata - memory.statistics.current.metadata,
       );
     });
-    expect(() => cache.draw(surface(), [op()])).toThrow("metadata");
+    expect(() => consumeVectorBounds(cache, surface(), [op()])).toThrow(
+      "metadata",
+    );
     expect(fillRect).toHaveBeenCalledTimes(1);
     expect(nativeSurface).not.toHaveBeenCalled();
     expect(releaseSurface).toHaveBeenCalledTimes(1);
@@ -413,7 +426,7 @@ it("drops actual part and call-argument references while preserving a null uploa
     });
     let caught: unknown = "missing";
     try {
-      cache.draw(surface(), [op()]);
+      consumeVectorBounds(cache, surface(), [op()]);
     } catch (error) {
       caught = error;
     }
@@ -426,6 +439,98 @@ it("drops actual part and call-argument references while preserving a null uploa
     expect(memory.statistics.reservations).toBe(2);
     cache.dispose();
     keys.dispose();
+    memory.dispose();
+  });
+});
+it("denies extent and region geometry before the original root map and native geometry callbacks", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 512 });
+  await withManagedMemory(memory, async () => {
+    const { cache, keys, paint } = harness(),
+      ops = [op()],
+      map = vi.spyOn(ops, "map");
+    expect(() => consumeVectorBounds(cache, surface(), ops)).toThrow(
+      "metadata",
+    );
+    expect(map).not.toHaveBeenCalled();
+    expect(paint).not.toHaveBeenCalled();
+    expect(memory.statistics.current.metadata).toBe(512);
+    cache.dispose();
+    keys.dispose();
+    memory.dispose();
+  });
+});
+it("keeps geometry admitted through the synchronous bounds consumer and releases it afterward", async () => {
+  const memory = new ManagedMemory(limits);
+  await withManagedMemory(memory, async () => {
+    const { cache, keys, state, nativeSurface } = nativePartHarness();
+    let current = 0,
+      reservations = 0,
+      calls = 0;
+    cache.draw(surface(), [op()], (region) => {
+      expect(region).toEqual(box);
+      expect(nativeSurface).toHaveBeenCalledTimes(1);
+      expect(
+        [...state.state.cached.values()][0]!.entry!.parts[0]!.rect,
+      ).toEqual(box);
+      current = memory.statistics.current.metadata;
+      reservations = memory.statistics.reservations;
+      calls++;
+    });
+    expect(calls).toBe(1);
+    expect(memory.statistics.current.metadata).toBeLessThan(current);
+    expect(memory.statistics.reservations).toBe(reservations - 1);
+    const retained = memory.statistics.current.metadata;
+    consumeVectorBounds(cache, surface(), [op()]);
+    expect(memory.statistics.current.metadata).toBe(retained);
+    expect(nativeSurface).toHaveBeenCalledTimes(1);
+    cache.dispose();
+    keys.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
+    memory.dispose();
+  });
+});
+it("lets frame scratch keep an unconsumed result while cached part bounds survive geometry cleanup", async () => {
+  const memory = new ManagedMemory(limits);
+  await withManagedMemory(memory, async () => {
+    const { cache, keys, state } = nativePartHarness();
+    memory.beginScratch();
+    expect(cache.draw(surface(), [op()])).toEqual(box);
+    const current = memory.statistics.current.metadata,
+      reservations = memory.statistics.reservations;
+    const parts = [...state.state.cached.values()][0]!.entry!.parts;
+    memory.endScratch();
+    expect(memory.statistics.current.metadata).toBeLessThan(current);
+    expect(memory.statistics.reservations).toBe(reservations - 1);
+    expect(memory.owns(parts)).toBe(true);
+    expect(parts[0]!.rect).toEqual(box);
+    expect(parts[0]!.rect).not.toBe(box);
+    cache.dispose();
+    keys.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
+    memory.dispose();
+  });
+});
+it("preserves an original null bounds-consumer failure and releases only temporary geometry", async () => {
+  const memory = new ManagedMemory(limits);
+  await withManagedMemory(memory, async () => {
+    const { cache, keys, state, nativeSurface } = nativePartHarness();
+    let caught: unknown = "missing";
+    try {
+      cache.draw(surface(), [op()], () => {
+        throw null;
+      });
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBeNull();
+    expect(state.state.cached.size).toBe(1);
+    const before = memory.statistics.current.metadata;
+    consumeVectorBounds(cache, surface(), [op()]);
+    expect(memory.statistics.current.metadata).toBe(before);
+    expect(nativeSurface).toHaveBeenCalledTimes(1);
+    cache.dispose();
+    keys.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
     memory.dispose();
   });
 });

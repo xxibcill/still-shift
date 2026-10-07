@@ -693,6 +693,30 @@ Vector extent/region/recording and other WebGL bounds/device/pool/shader/paint
 controls, provider keys, retained graphs, font/checksum/ledger/Node metadata, actual
 production/aggregate admission, speed and full-gate acceptance remain pending. [Evidence](./composition-ce15-vector-parts-metadata-results.json).
 
+## Accepted vector geometry metadata checkpoint — 2026-10-08
+
+Original root maps, extent matrices/points/corners/coordinate arrays and bounds,
+region/union/merge/index/splice/slice/batching structures reserve before creation.
+Actual operation/transform counts supply concrete per-producer bounds, including
+worst-case merged index copies and overlap slices; original math/native callbacks/
+grouping/draw order remain unchanged. The actual backend consumes final bounds
+synchronously, makes its original framebuffer-bounds copy, then clears temporary
+geometry. Unconsumed results remain frame-scratch-owned; retained RasterPart bounds
+stay independent. Quota denial precedes native producers and null consumer failure
+releases temporary geometry while preserving completed original cache entries.
+
+Build, lint, boundaries and 169 focused tests pass, including four new geometry
+quota/consumer/scratch/null regressions and three original region cases. All 144
+audit cases / 8,000 comparisons, 96 actual RPC snapshots, 22 moving/blurred and ten
+stationary native frames pass. Original WebGL, 69 typography tests, 12 provider
+cases / 60 frames and eight fixtures pass; glyph 1.443902× meets unchanged 1.5 maximum.
+All 64 exports preserve 768 complete bodies/frames against pushed `90b1339`.
+
+Recording/replay and other WebGL bounds/device/pool/shader/paint controls, provider
+keys, retained graphs, font/checksum/ledger/Node metadata, actual production/
+aggregate admission, speed and full-gate acceptance remain pending.
+[Evidence](./composition-ce15-vector-geometry-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

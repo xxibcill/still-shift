@@ -552,7 +552,7 @@ export function createWebgl2Backend(
     renderIsolate: (op, like, draw) => isolates.render(op, like, draw),
     drawVectors: (dst, ops) => {
       if (!linear) {
-        bounds.include(dst, vectors.draw(dst, ops));
+        vectors.draw(dst, ops, (region) => bounds.include(dst, region));
         return;
       }
       for (const op of ops) {
