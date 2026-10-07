@@ -60,8 +60,11 @@ still hold before relying on them.
   proofs on Canvas 1.45 / WebGL2 0.66: repeated, independent and raw/PNG MP4s are
   byte-identical (`9aca1ae`). Native Lab/CLI inspector edits, preparation, seek/playback
   readiness and draft exports now pass real browser proof, existing authoring regressions,
-  48 focused units / 23 CLI tests and static checks. Native PCM/waveforms, passage audio
-  and matching audio/video production/full acceptance remain in flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
+  48 focused units / 23 CLI tests and static checks (`917e92c`). Continuous native PCM
+  scope clocks and dependency traversal now pass all 2,089 units / 208 files, static
+  checks and existing CE7 picture acceptance (evaluator 52). Actual PCM decode/mix,
+  audio loader/preview/export, waveforms, passage audio and matching audio/video
+  production/full acceptance remain in flight. Historical CE16 reports remain references, not CE13 proof. Continue CE13 → CE15 → CE14; CE5-X/Q9 and separate CE6-P work remain pending.
   [Evidence](./composition-ce13-results.json).
 
 - **CE4d complete (2026-10-07):**
@@ -276,6 +279,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 continuous native audio clocks
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed authoring `917e92c`.
+- **Done:** shared audio/dependency traversal and continuous 48 kHz nested clocks,
+  full-duration cycles/PCM pingpong, visibility/routes and output-sample guards.
+  Protected voice and ancestors reject baked sample clocks; evaluator 52.
+- **Results:** all 2,089 unit tests / 208 files and static checks pass. Exact source
+  boundaries and last nested samples pass at 24/25/30/50/60 fps. Existing CE7 picture
+  baselines, independent/repeated/raw exports and hardware policy remain exact/pass.
+- **Repairs:** fixture size and stale WebGL 0.65 batch digest expectation repaired;
+  independent calculation proves the intentional 0.66 identity change only.
+- **Next:** actual bounded PCM decode/mix, audio loader/preview/export, waveform lanes,
+  native passage audio, then matching-audio and final full acceptance.
+- **Records:** [media guide](./composition-media.md), [CE13 evidence](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 native authoring readiness and drafts
 

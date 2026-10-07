@@ -84,6 +84,7 @@ import { naturalMediaSeconds, sampledCompositionMedia } from "./media.ts";
 import {
   layerContentTime,
   loopedPrecompTime,
+  loopedAudioPrecompTime,
   scopeTimeOverride,
 } from "./time-controls.ts";
 import {
@@ -112,7 +113,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-51";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-52";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -185,6 +186,45 @@ const COMPONENT: Record<string, number> = {
 type Numeric = number | number[];
 /** An expression-stage value with its layer time and key time (sample index if baked). */
 export type StageSample = { value: Numeric; time: number; keyTime: number };
+export type EvaluatedCompositionAudio = {
+  key: string;
+  layer: Extract<CompositionLayer, { type: "audio" }>;
+  sourceSample: number;
+  clipSample: number;
+  gainDb: number;
+  pan: number;
+};
+const audioScopeCache = new WeakMap<
+  CompiledComposition,
+  Set<CompositionScope>
+>();
+function audioScopes(compiled: CompiledComposition) {
+  let scopes = audioScopeCache.get(compiled);
+  if (scopes) return scopes;
+  scopes = new Set(
+    [...compiled.scopes.values()].filter((scope) =>
+      scope.layers.some((layer) => layer.type === "audio"),
+    ),
+  );
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const scope of compiled.scopes.values())
+      if (
+        !scopes.has(scope) &&
+        scope.layers.some(
+          (layer) =>
+            layer.type === "precomp" &&
+            scopes!.has(compiled.scopes.get(layer.comp)!),
+        )
+      ) {
+        scopes.add(scope);
+        changed = true;
+      }
+  }
+  audioScopeCache.set(compiled, scopes);
+  return scopes;
+}
 const copy = (value: PropertyValue | Numeric): Numeric =>
   Array.isArray(value) ? [...(value as number[])] : (value as Numeric);
 
@@ -416,6 +456,7 @@ class Evaluation {
       shapes: new ShapeGeometryBudget({ frame: time }),
       steps: 0,
     },
+    private readonly audioClock = false,
   ) {
     this.root = context(compiled, compiled.comp, time, compiled.comp.fps);
   }
@@ -524,6 +565,7 @@ class Evaluation {
         time,
         this.options,
         this.session,
+        this.audioClock,
       );
       history.set(time, evaluation);
     }
@@ -539,23 +581,27 @@ class Evaluation {
       });
     const scope = this.compiled.scopes.get(host.comp)!;
     const remappedTime = yield* this.clock(ctx, host);
-    const sourceTime = loopedPrecompTime(remappedTime, scope.frameCount, host, {
-      node: host.id,
-      path: `${this.bindings(ctx, host.id)}.loop`,
-      frame: this.time,
-    });
+    const sourceTime = this.audioClock
+      ? loopedAudioPrecompTime(
+          remappedTime,
+          scope.frameCount,
+          scope.fps ?? this.compiled.comp.fps,
+          host,
+        )
+      : loopedPrecompTime(remappedTime, scope.frameCount, host, {
+          node: host.id,
+          path: `${this.bindings(ctx, host.id)}.loop`,
+          frame: this.time,
+        });
     const route = [...ctx.route, host.id];
+    const clock =
+      scopeTimeOverride(this.options.scopeTimes, route.join("/")) ?? sourceTime;
     const next = context(
       this.compiled,
       scope,
-      Math.max(
-        0,
-        Math.min(
-          scope.frameCount - 1,
-          scopeTimeOverride(this.options.scopeTimes, route.join("/")) ??
-            sourceTime,
-        ),
-      ),
+      this.audioClock
+        ? clock
+        : Math.max(0, Math.min(scope.frameCount - 1, clock)),
       scope.fps ?? this.compiled.comp.fps,
       route,
     );
@@ -1631,6 +1677,39 @@ class Evaluation {
       );
     return tree;
   }
+
+  /** Evaluate audible instances and their actual dependencies, without the picture tree. */
+  audio(ctx = this.root): EvaluatedCompositionAudio[] {
+    const scopes = audioScopes(this.compiled);
+    if (
+      !scopes.has(ctx.scope) ||
+      ctx.time < 0 ||
+      ctx.time >= ctx.scope.frameCount
+    )
+      return [];
+    const result: EvaluatedCompositionAudio[] = [];
+    for (const layer of ctx.scope.layers) {
+      if (layer.type === "audio") {
+        const state = this.evaluate(ctx, layer);
+        if (state.visible)
+          result.push({
+            key: this.bindings(ctx, layer.id),
+            layer,
+            sourceSample: state.media!.sourceSample!,
+            clipSample: state.media!.clipSample!,
+            gainDb: state.gainDb!,
+            pan: state.pan!,
+          });
+      } else if (
+        layer.type === "precomp" &&
+        scopes.has(this.compiled.scopes.get(layer.comp)!)
+      ) {
+        if (this.evaluate(ctx, layer).visible)
+          result.push(...this.audio(this.run(this.child(ctx, layer))));
+      }
+    }
+    return result;
+  }
 }
 
 function overlaps(a: PropertyPathSegment[], b: PropertyPathSegment[]) {
@@ -1722,7 +1801,12 @@ const AUTO_ORIENT_POSITION: PropertyPathSegment[] = [
   { name: "transform" },
   { name: "position" },
 ];
-function session(comp: Composition, time: number, options: EvaluationOptions) {
+function session(
+  comp: Composition,
+  time: number,
+  options: EvaluationOptions,
+  audioClock = false,
+) {
   if (
     [time, ...Object.values(options.scopeTimes ?? {})].some(
       (value) =>
@@ -1735,7 +1819,34 @@ function session(comp: Composition, time: number, options: EvaluationOptions) {
       `Evaluation time must be finite and within ±${COMPOSITION_LIMITS.maxKeyFrame} frames`,
       { path: "time" },
     );
-  return new Evaluation(compileComposition(comp), time, options);
+  return new Evaluation(
+    compileComposition(comp),
+    time,
+    options,
+    undefined,
+    audioClock,
+  );
+}
+
+/** Continuous 48 kHz sample evaluation; picture scope clamping remains unchanged. */
+export function evaluateCompositionAudio(
+  comp: Composition,
+  sample: number,
+  options: EvaluationOptions = {},
+): EvaluatedCompositionAudio[] {
+  if (options.scopeTimes !== undefined)
+    passageError(
+      "comp-media-time",
+      "Audio output cannot override scope clocks",
+      { path: "scopeTimes" },
+    );
+  if (!Number.isSafeInteger(sample) || sample < 0)
+    passageError(
+      "comp-media-time",
+      "Audio output sample must be a nonnegative safe integer",
+      { path: "sample" },
+    );
+  return session(comp, (sample * comp.fps) / 48000, options, true).audio();
 }
 
 /**

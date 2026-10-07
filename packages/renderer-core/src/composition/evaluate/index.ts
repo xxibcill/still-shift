@@ -4,6 +4,8 @@ export {
 } from "./exposure.ts";
 export {
   evaluateComp,
+  evaluateCompositionAudio,
+  type EvaluatedCompositionAudio,
   evaluateProperty,
   evaluateStageProperty,
   evaluateStageProperties,

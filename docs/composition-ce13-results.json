@@ -3975,12 +3975,473 @@
           "sha256": "sha256:7472b365f16350e8f20da913df39f4abbaf8ab32a421fd8414c3eac31b7441dd"
         }
       ],
+      "fullGate": false,
+      "checkpoint": "917e92c"
+    },
+    {
+      "slice": "continuous native PCM clock projection through shared evaluation",
+      "sourceFingerprint": "sha256:eb68bfc0a71d3283ac58697b7f768b92b282570725c1ea2f90ad0731f9d71dff",
+      "sourceFiles": [
+        "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+        "packages/renderer-core/src/composition/evaluate/index.ts",
+        "packages/renderer-core/src/composition/evaluate/time-controls.ts",
+        "packages/scene-contract/src/composition/validate-media.ts",
+        "tests/unit/batch-identity.test.ts",
+        "tests/unit/composition-audio-clock.test.ts"
+      ],
+      "checks": {
+        "build": "pass",
+        "schema": "pass",
+        "boundaries": "pass",
+        "lint": "pass",
+        "format": "pass",
+        "unit": {
+          "exitCode": 0,
+          "passed": 2089,
+          "files": 208,
+          "seconds": 17.56
+        },
+        "focused": {
+          "passed": 42,
+          "files": 3,
+          "seconds": 0.781
+        }
+      },
+      "implemented": [
+        "audio-only traversal visits audible scopes/instances and actual channel dependencies",
+        "shared keyed, driven and expression stages normalize gain/pan/source mapping",
+        "continuous nested PCM clocks preserve the final source sample; picture clamps remain unchanged",
+        "exact integer output/source sample boundaries at24/25/30/50/60fps",
+        "audio singleton/full-duration cycles and last-PCM-sample pingpong reflection; finite loops end in silence",
+        "distinct instance routes and inherited group/precomp visibility",
+        "protected narration rejects baked sampleTimes on voice or ancestors, including disabled voices, before range selection",
+        "audio sample API rejects fractional/negative/nonfinite indices and scope clock overrides",
+        "evaluator52 cache identity; intentional WebGL0.66 batch digest expectation update"
+      ],
+      "existingPictureBrowserRegression": {
+        "reports": [
+          {
+            "fixture": "time-controls",
+            "frames": 48,
+            "reverseFrames": 48,
+            "randomSeeks": 11,
+            "maxDelta": 0,
+            "oracleMaxDelta": 1,
+            "sampleCounts": {
+              "0": 8,
+              "1": 8,
+              "2": 8,
+              "3": 8,
+              "4": 8,
+              "5": 8,
+              "6": 8,
+              "7": 8,
+              "8": 8,
+              "9": 8,
+              "10": 8,
+              "11": 8,
+              "12": 8,
+              "13": 8,
+              "14": 8,
+              "15": 8,
+              "16": 8,
+              "17": 8,
+              "18": 8,
+              "19": 8,
+              "20": 8,
+              "21": 8,
+              "22": 8,
+              "23": 8,
+              "24": 8,
+              "25": 8,
+              "26": 8,
+              "27": 8,
+              "28": 8,
+              "29": 8,
+              "30": 8,
+              "31": 8,
+              "32": 8,
+              "33": 8,
+              "34": 8,
+              "35": 8,
+              "36": 8,
+              "37": 8,
+              "38": 8,
+              "39": 8,
+              "40": 8,
+              "41": 8,
+              "42": 8,
+              "43": 8,
+              "44": 8,
+              "45": 8,
+              "46": 8,
+              "47": 8
+            }
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "canvas2d",
+            "frames": 48,
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "webgl2",
+            "frames": 48,
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          },
+          {
+            "fixture": "adaptive",
+            "frames": 48,
+            "reverseFrames": 48,
+            "randomSeeks": 11,
+            "maxDelta": 0,
+            "oracleMaxDelta": 0,
+            "sampleCounts": {
+              "0": 16,
+              "1": 3,
+              "2": 3,
+              "3": 3,
+              "4": 3,
+              "5": 3,
+              "6": 3,
+              "7": 3,
+              "8": 3,
+              "9": 3,
+              "10": 3,
+              "11": 3,
+              "12": 3,
+              "13": 3,
+              "14": 3,
+              "15": 3,
+              "16": 3,
+              "17": 3,
+              "18": 3,
+              "19": 3,
+              "20": 3,
+              "21": 3,
+              "22": 3,
+              "23": 3,
+              "24": 3,
+              "25": 3,
+              "26": 3,
+              "27": 3,
+              "28": 3,
+              "29": 3,
+              "30": 3,
+              "31": 3,
+              "32": 3,
+              "33": 3,
+              "34": 3,
+              "35": 3,
+              "36": 3,
+              "37": 3,
+              "38": 3,
+              "39": 3,
+              "40": 3,
+              "41": 3,
+              "42": 3,
+              "43": 3,
+              "44": 3,
+              "45": 3,
+              "46": 3,
+              "47": 1
+            }
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "canvas2d",
+            "frames": 48,
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "webgl2",
+            "frames": 48,
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical"
+          }
+        ],
+        "hardware": {
+          "environments": [
+            {
+              "profile": "chromium-software-2",
+              "browserVersion": "151.0.7922.34",
+              "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+              "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+              "platform": "darwin",
+              "arch": "arm64"
+            },
+            {
+              "profile": "hardware",
+              "browserVersion": "151.0.7922.34",
+              "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+              "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+              "platform": "darwin",
+              "arch": "arm64"
+            }
+          ],
+          "tier": "unchanged perceptual hardware policy",
+          "comparisons": 12,
+          "reports": [
+            {
+              "fixture": "time-controls",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "near",
+              "maxDelta": 1,
+              "psnr": 81.93291602579515,
+              "ssim": 0.9999996703088253
+            },
+            {
+              "fixture": "time-controls",
+              "backend": "canvas2d",
+              "frame": 24,
+              "tier": "near",
+              "maxDelta": 1,
+              "psnr": 81.93291602579515,
+              "ssim": 0.999999861996413
+            },
+            {
+              "fixture": "time-controls",
+              "backend": "canvas2d",
+              "frame": 47,
+              "tier": "near",
+              "maxDelta": 1,
+              "psnr": 84.94321598243496,
+              "ssim": 0.9999999004438144
+            },
+            {
+              "fixture": "time-controls",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "near",
+              "maxDelta": 1,
+              "psnr": 81.93291602579515,
+              "ssim": 0.9999996703088253
+            },
+            {
+              "fixture": "time-controls",
+              "backend": "webgl2",
+              "frame": 24,
+              "tier": "near",
+              "maxDelta": 1,
+              "psnr": 81.93291602579515,
+              "ssim": 0.999999861996413
+            },
+            {
+              "fixture": "time-controls",
+              "backend": "webgl2",
+              "frame": 47,
+              "tier": "near",
+              "maxDelta": 1,
+              "psnr": 84.94321598243496,
+              "ssim": 0.9999999004438144
+            },
+            {
+              "fixture": "adaptive",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "adaptive",
+              "backend": "canvas2d",
+              "frame": 24,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "adaptive",
+              "backend": "canvas2d",
+              "frame": 47,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "adaptive",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "adaptive",
+              "backend": "webgl2",
+              "frame": 24,
+              "tier": "near",
+              "maxDelta": 1,
+              "psnr": 87.95351593907478,
+              "ssim": 0.9999999930858892
+            },
+            {
+              "fixture": "adaptive",
+              "backend": "webgl2",
+              "frame": 47,
+              "tier": "exact",
+              "maxDelta": 0,
+              "psnr": 999,
+              "ssim": 1
+            }
+          ]
+        },
+        "baseline": "exact"
+      },
+      "pictureRegressionNote": "Existing CE7 browser proof ran before the final audio-only scopeTimes rejection; final build/all units/static checks reran after that guard. Picture evaluator paths did not change in the guard. Final CE13 full gate remains pending.",
+      "serialCpuDesignProfileBeforeFinalGuard": [
+        {
+          "kind": "keys",
+          "samples": 96000,
+          "seconds": 0.07759875,
+          "checksum": 4607952000
+        },
+        {
+          "kind": "expressions",
+          "samples": 96000,
+          "seconds": 0.136945333,
+          "checksum": 4607952000
+        }
+      ],
+      "rendererIdentityProof": [
+        {
+          "data": {
+            "engineVersion": "0.10",
+            "pipelineVersion": "animation-pipeline-0.13.0",
+            "rendererVersion": "composition-webgl2-0.65.0",
+            "depthAdapterVersion": "depth-composition-0.1.0",
+            "shaderVersion": "composition-image-plane-0.4.0",
+            "depthAdapter": "fake",
+            "request": {
+              "inputPath": "/tmp/source.png",
+              "outputPath": "/tmp/output.mp4",
+              "durationMs": 5000,
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "preset": "slow_push",
+              "intensity": "standard",
+              "seed": 1842
+            }
+          },
+          "checksum": "sha256:0be89d90883a0d75689a411d25b87d7b378fd9c34899e56e413a0ead83cb8ca3"
+        },
+        {
+          "data": {
+            "engineVersion": "0.10",
+            "pipelineVersion": "animation-pipeline-0.13.0",
+            "rendererVersion": "composition-webgl2-0.66.0",
+            "depthAdapterVersion": "depth-composition-0.1.0",
+            "shaderVersion": "composition-image-plane-0.4.0",
+            "depthAdapter": "fake",
+            "request": {
+              "inputPath": "/tmp/source.png",
+              "outputPath": "/tmp/output.mp4",
+              "durationMs": 5000,
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "preset": "slow_push",
+              "intensity": "standard",
+              "seed": 1842
+            }
+          },
+          "checksum": "sha256:3944cb2d7242e1aeef5fe771add2b3c314e7d3807ce5f014e6cb2ddfdbd8439b"
+        }
+      ],
+      "failedAttempts": [
+        {
+          "exitCode": 2,
+          "kind": "new clock fixture build",
+          "detail": "Group fixture omitted required size; repaired before tests ran."
+        },
+        {
+          "exitCode": 1,
+          "kind": "broad unit cache identity expectation",
+          "passed": 2088,
+          "failed": 1,
+          "detail": "Literal batch metadata digest still used WebGL0.65. Independent same-request calculation proves only renderer0.66 changes it; updated intentional identity expectation. All frozen visual references remain untouched."
+        }
+      ],
+      "reviewRepairs": [
+        "reject internal scopeTimes overrides in the public output-sample API, so protected voice cannot bypass authored clock validation"
+      ],
+      "pending": [
+        "actual bounded PCM decoding/mixing and native audio source integration",
+        "source/processed waveforms and native passage mixing",
+        "complete matching-audio production acceptance and final full gate"
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-audio-clock-build-draft.log",
+          "sha256": "sha256:bc2950d8633914a59dbf38104e0c85c0d00a4db49428185c93134a73ded84b72"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-clock-build-rerun.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-clock-focused-draft.log",
+          "sha256": "sha256:8c8081c16aa2047befdfa5157e5bd6e8cc8083b31fce1f037e59ac9029b72e9b"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-clock-profile-draft.log",
+          "sha256": "sha256:bce1eaa06a56c13fbbbbde324e52b710becf34b6b56c75b1a70586c1cb50b0fd"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-clock-units-final.log",
+          "sha256": "sha256:d79b3ce357551cfa9d6b72d4d29aec0f6f67382d3f2c7ffaf5a98127203604af"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-clock-units-final-rerun.log",
+          "sha256": "sha256:f1f095b5745d97918fbd1637ea213b68953c66fab783b94d740e2eb5ad6cba1e"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-clock-static-final.log",
+          "sha256": "sha256:11d597c5d62bfde9b5c7f01f4dab8d887c30a027d243f1d84c61eb9d759fe9d5"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-clock-exposure-final.log",
+          "sha256": "sha256:53ef63fe8def79cacc16ece1b2210605eeacd04a2ba7993d5db48236da050adc"
+        },
+        {
+          "path": "/private/tmp/ce13-renderer-identity-version-proof.log",
+          "sha256": "sha256:0c177e0cf8589cde7a9a43c5a076e4afab131acc98ed2dd9cc4ff235a94c99df"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-clock-build-final.log",
+          "sha256": "sha256:42907be277087ad5e40175977a1b5cde7157c3a0609a7e8ba30447466f64e7f0"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-clock-units-final-guard.log",
+          "sha256": "sha256:72588237cff4dde6f947ddd038865b71553f22d943cac5b8b4644b6ff7be858b"
+        },
+        {
+          "path": "/private/tmp/ce13-audio-clock-static-final-guard.log",
+          "sha256": "sha256:11d597c5d62bfde9b5c7f01f4dab8d887c30a027d243f1d84c61eb9d759fe9d5"
+        }
+      ],
       "fullGate": false
     }
   ],
   "fullGates": [],
   "pending": [
-    "continuous native PCM/source and processed waveforms; native passage mixing",
+    "actual bounded PCM decode/mix, native audio loader/preview/export and waveforms; native passage mixing",
     "native audio protection, mixing and waveforms",
     "real Lab and export acceptance",
     "complete final local pnpm check",

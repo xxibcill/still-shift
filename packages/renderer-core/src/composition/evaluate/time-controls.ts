@@ -69,6 +69,36 @@ export function loopedPrecompTime(
 
 export type SourceFramePair = { first: number; second: number; mix: number };
 
+/** PCM scopes run through their final sample; finite loops end in silence. */
+export function loopedAudioPrecompTime(
+  sourceFrame: number,
+  frameCount: number,
+  fps: number,
+  layer: Precomp,
+): number {
+  if (!layer.loop) return sourceFrame;
+  const last = frameCount - fps / 48000;
+  const period = layer.loop === "cycle" ? frameCount : 2 * last;
+  if (
+    layer.loopCount !== undefined &&
+    (sourceFrame < 0 || sourceFrame >= period * layer.loopCount)
+  )
+    return frameCount;
+  if (!Number.isFinite(sourceFrame) || Math.abs(sourceFrame) > 2 ** 40)
+    passageError(
+      "comp-evaluation-time",
+      "Audio loop source time must be within ±2^40 frames",
+      { node: layer.id, path: `${layer.id}.loop` },
+    );
+  const remainder = sourceFrame % period;
+  const phase = remainder < 0 ? remainder + period : remainder;
+  return layer.loop === "cycle"
+    ? phase
+    : phase <= last
+      ? phase
+      : period - phase;
+}
+
 /** Source-frame pair after FPS/remap mapping. CE13 supplies the decoded frame images. */
 export function sourceFramePair(
   sourceFrame: number,

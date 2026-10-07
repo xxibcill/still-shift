@@ -4803,6 +4803,22 @@ browser suites pass. Continuous PCM/waveforms, native passage mixing and matchin
 audio/video plus the final full gate remain pending.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 continuous audio clock checkpoint (2026-10-07)
+
+The shared evaluator projects audio instances and their actual dependencies at integer
+48 kHz output samples. Nested audio scopes retain the final PCM sample without the
+picture frameCount-1 clamp; picture evaluation remains unchanged. Audio loops cover
+the complete source scope (including singletons), pingpong reflects at its final PCM
+sample and finite loops end in silence. Keys/drivers/expressions, visibility and
+instance routes remain shared. Protected narration and its ancestors also reject baked
+sampleTimes; output-sample evaluation rejects scope clock overrides. Evaluator 52,
+all 2,089 units / 208 files and static checks pass; CE7 picture acceptance remains
+exact with independent/repeated/raw exports and unchanged hardware policy. The literal
+batch identity expectation now reflects the earlier WebGL 0.66 bump, independently
+verified as the sole digest difference. Actual decode/mix, audio loading/export,
+waveforms, native passage mixing and complete full acceptance remain pending.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

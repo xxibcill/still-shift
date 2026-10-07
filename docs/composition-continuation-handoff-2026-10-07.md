@@ -66,8 +66,10 @@ browser proofs (`7f42571`). Source preparation and actual video/sequence product
 picture exports are pushed as `9aca1ae` and pass both backends with animated still/
 lower third; repeated, independent and raw/PNG MP4s match (Canvas1.45/WebGL0.66).
 Native Lab/CLI inspector edits, preparation/seek/playback readiness, saved reload and
-draft exports now pass real browser proof and authoring regressions. Native PCM/
-waveforms, native passage mixing and matching audio production acceptance remain pending;
+draft exports are pushed as `917e92c` with real browser proof and authoring regressions.
+Continuous audio scope/dependency clocks now pass all 2,089 units / 208 files, static
+checks and existing CE7 picture acceptance (evaluator52). Actual PCM decode/mix, native
+audio loader/preview/export, waveforms, passage mixing and matching-audio acceptance remain pending;
 no final CE13 gate has run.
 CE15 and CE14 remain in flight.
 Private notes contain exact source

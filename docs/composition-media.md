@@ -147,3 +147,18 @@ step and guards restart/pause generations. Still-only renderers remain synchrono
 Native inspector source-clock keys expose Media key value editing. Real edit/undo/redo,
 save/reload, backend switching and draft-export checks are verified; actual native PCM
 and source/processed waveform lanes are the next work.
+
+`evaluateCompositionAudio(composition, outputSample)` evaluates audio instances at
+integer 48 kHz output samples through shared keyed, driven and expression stages. It
+visits audio scopes, precomp hosts and their actual property dependencies instead of
+rendering the picture tree per sample. Nested PCM continues through the last sample
+of the scope; ordinary picture evaluation keeps its existing frameCount-1 clamp.
+Audio cycle loops cover the full scope duration, including singleton scopes. Audio
+pingpong reflects at the final 48 kHz sample, and finite audio loops end in silence.
+The established picture loop/terminal-hold behavior stays unchanged.
+
+Output samples must be nonnegative safe integers. Internal `scopeTimes` overrides
+reject in this API; authored ordinary source remap remains supported. Protected
+narration rejects baked `sampleTimes` on voice and ancestors, even when disabled, in
+addition to the previously prohibited source-clock changes. The evaluator is version 52. Continuous clock/dependency correctness is verified; actual PCM decode/mix,
+waveforms, native passage mixing and matching-audio delivery remain pending.

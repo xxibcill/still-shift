@@ -129,6 +129,7 @@ const changedClock = (layer: CompositionLayer) =>
   (layer.stretch !== undefined && layer.stretch !== 1) ||
   layer.holdFrame !== undefined ||
   layer.posterizeFps !== undefined ||
+  layer.sampleTimes !== undefined ||
   ("timeRemap" in layer && layer.timeRemap !== undefined) ||
   (layer.type === "precomp" && layer.loop !== undefined);
 
