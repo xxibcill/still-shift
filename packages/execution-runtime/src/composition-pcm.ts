@@ -2,7 +2,7 @@ export { compositionAudioWavHeader as compositionPcmWavHeader } from "@still-shi
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
 import { lstat } from "node:fs/promises";
-import { passageError } from "@still-shift/renderer-core";
+import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 
 const STREAM_BYTES = 64 * 1024;
 export const PCM_WORKING_RESERVATION = STREAM_BYTES * 4 + 4;
@@ -14,10 +14,12 @@ export class PcmInspection {
   bytes = 0;
   remainder = 0;
   peakBytes = 4;
-  constructor(
-    readonly expectedBytes: number,
-    readonly path: string,
-  ) {}
+  readonly expectedBytes: number;
+  readonly path: string;
+  constructor(expectedBytes: number, path: string) {
+    this.expectedBytes = expectedBytes;
+    this.path = path;
+  }
   accept(chunk: Buffer, queuedBytes = 0) {
     this.peakBytes = Math.max(this.peakBytes, chunk.length + queuedBytes + 4);
     if (

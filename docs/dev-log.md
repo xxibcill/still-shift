@@ -45,20 +45,20 @@ still hold before relying on them.
 
 - **CE13 in progress (2026-10-07):** `codex/composition-ce13` from completed CE4d
   `adf6cea`; merged/attached [CE16 PR #33](https://github.com/xxibcill/still-shift/pull/33)
-  at `65f2ebe4` is audited and integrated. Native original provenance, SDR/CPU/GPU
-  readiness, matching picture/audio exports, bounded Lab playback/waveforms and complete
-  native passage PCM now pass focused acceptance. Passage checkpoint `8536def` is pushed:
-  72 relevant tests, both native-passage browser suites, exact root/range/repeat PCM,
-  nested protected voice and saved CE16 filters/ducking/limiting pass. Default exports
-  work without optional Python; assembly reserves 327,684 PCM bytes. Combined preview
-  now passes all mandatory native-media browser cases: 96 exact numbered-video reverse
-  seeks and 480 playback observations show zero source-frame offset on both backends.
-  Canonical FFmpeg frames serve preview/export; WebCodecs remains unadopted with no
-  verified equivalent decoder proof. Canvas 1.45 / WebGL2 0.66 / evaluator 53 / mixer 2 /
-  export worker 0.6.7 and frozen visuals remain current. The complete final immutable
-  CE13 `pnpm check` and PR remain pending; no final CE13 gate has run. Continue
-  CE13 → CE15 → CE14. CE5-X/Q9 and separate CE6-P remain pending.
-  [Evidence](./composition-ce13-results.json).
+  at `65f2ebe4` is audited and integrated. Native sources, bounded SDR/PCM resources,
+  matching exports, Lab waveforms/playback and complete native passage audio pass
+  focused acceptance. Passage `8536def` and combined preview `b88f196` are pushed.
+  Both backends pass 96 exact reverse seeks and 480 playback observations with zero
+  source-frame offset. Preview/export share canonical FFmpeg frames; WebCodecs is
+  unadopted without equivalent parity proof. The first full gate at `b88f196` failed
+  after 2,103 units / 46 runtime tests: an optional Python executable-path mistake and
+  native Node/Vite loading of new/broad parameter-property modules. Explicit PCM
+  fields, narrow imports, pure evaluator identity and exact executable preflight now
+  pass native startup, build/boundaries/style and all 114 affected tests / 12 files.
+  Canvas 1.45 / WebGL2 0.66 / evaluator 53 / mixer 2 / export worker 0.6.7 and frozen
+  visuals remain unchanged. Fresh complete CE13 `pnpm check` and PR are pending;
+  the failed gate remains recorded. Continue CE13 → CE15 → CE14. CE5-X/Q9 and separate
+  CE6-P remain pending. [Evidence](./composition-ce13-results.json).
 
 - **CE4d complete (2026-10-07):**
   `codex/composition-ce4d` from CE4c `17666eb`. Native production defaults and old
@@ -272,6 +272,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE13 native-loader repair after first gate
+
+- **Agent / branch:** Codex on `codex/composition-ce13` after pushed `b88f196`.
+- **Done:** PCM verifier fields and narrow Lab/runtime imports preserve Node native
+  config loading; evaluator53 identity is pure and retains existing re-exports.
+  The local runner now checks the exact optional `bin/python` executable.
+- **Results:** native startup, build, boundaries/style and all 114 affected tests /
+  12 files pass, including all 25 previously skipped Lab cases and saved/native DSP.
+- **Failed gate:** complete `b88f196` attempt exited1 after 204.39s. Static checks,
+  2,103 units / 46 runtime passed; integration exposed a directory-as-executable
+  runner mistake and unsupported parameter-property loading. Browser gates were not reached.
+- **Rejected:** focused repair is not complete acceptance; no checks, timeouts,
+  frozen visuals, PCM laws or output versions changed.
+- **Next:** fresh immutable full local gate and CE13 PR, then CE15 → CE14.
+- **Records:** [complete failed log and repair proof](./composition-ce13-results.json).
 
 ### 2026-10-07 — CE13 combined media preview acceptance
 

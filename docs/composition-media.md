@@ -322,3 +322,8 @@ The combined authoring proof checks actual numbered source frames against an ind
 linear reverse-remap calculation on both backends; production exports retain exact
 source mapping and PCM/AAC reference checks. Browser audio-clock scheduling uses its
 existing one-frame presentation allowance while displayed source mapping is exact.
+
+Node export verification reads the pure evaluator identity and diagnostic module without
+loading browser renderer implementations. The Lab config imports only the composition
+source/media/audio preparation modules. This keeps native Node22 strip-only config
+loading valid; PCM inspection uses ordinary fields and retains its sample/buffer laws.

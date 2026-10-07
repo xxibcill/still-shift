@@ -11,11 +11,9 @@ import {
   editableDocument,
 } from "../../tools/still-shift-cli/src/composition/save.ts";
 import { validateComposition } from "../../packages/scene-contract/src/index.ts";
-import {
-  readCompositionSource,
-  prepareCompositionMedia,
-  prepareCompositionAudio,
-} from "../../packages/animation-engine/src/index.ts";
+import { readCompositionSource } from "../../packages/animation-engine/src/composition-source.ts";
+import { prepareCompositionMedia } from "../../packages/animation-engine/src/composition-media.ts";
+import { prepareCompositionAudio } from "../../packages/animation-engine/src/composition-audio-mix.ts";
 import {
   captureCompositionAssets,
   capturedMediaComposition,

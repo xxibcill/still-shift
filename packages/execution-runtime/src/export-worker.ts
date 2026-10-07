@@ -16,10 +16,8 @@ import type {
   IllustratedScene,
   PassageDiagnostic,
 } from "@still-shift/renderer-core";
-import {
-  passageError,
-  COMPOSITION_EVALUATOR_VERSION,
-} from "@still-shift/renderer-core";
+import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
+import { COMPOSITION_EVALUATOR_VERSION } from "../../renderer-core/src/composition/evaluate/version.ts";
 import {
   AnimationEngineError,
   CompositionPreparedAudioSchema,

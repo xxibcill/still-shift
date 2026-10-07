@@ -4948,6 +4948,22 @@ implemented. This is a pipeline decision, with no universal browser-support clai
 The complete final immutable local `pnpm check` and PR remain pending.
 [Evidence](./composition-ce13-results.json).
 
+### CE13 native-loader repair after first gate (2026-10-07)
+
+The first complete local gate at `b88f196` exited1 in integration after static checks,
+2,103 unit tests / 209 files and 46 runtime tests / 9 files passed. The runner passed
+an optional environment directory instead of its Python executable. Vite config startup
+also exposed a new PCM parameter property and broad module imports under Node22's
+native strip-only loader. Ordinary PCM fields, narrow Lab/runtime imports and a pure
+re-exported evaluator identity now pass actual native config startup without tsx.
+The exact optional executable path is verified before starting the next gate. All
+114 affected tests / 12 files pass, including the 25 Lab tests previously skipped by
+startup failure and actual saved/native audio DSP/export proofs. The failed gate and
+intermediate loader diagnostics remain in the evidence. No suite, timeout, tolerance,
+frozen visual, PCM law or output version changed. A fresh immutable complete local
+`pnpm check` is required before milestone completion/PR.
+[Evidence](./composition-ce13-results.json).
+
 **Completion record:** _to be filled in._
 
 ---

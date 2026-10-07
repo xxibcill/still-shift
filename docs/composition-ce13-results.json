@@ -5740,9 +5740,131 @@
       ],
       "fullGate": false,
       "proofNote": "All mandatory native-media browser cases passed. Production exports already verify zero source-frame offset and exact master/AAC references. Browser audio-clock sampling remains within the existing one-frame presentation allowance; every presented movie frame has zero remap-source offset. No renderer, tolerance or frozen baseline changed."
+    },
+    {
+      "slice": "native Node/Vite startup and repaired complete-gate runner",
+      "sourceFiles": [
+        "apps/lab/composition-api.ts",
+        "packages/execution-runtime/src/composition-pcm.ts",
+        "packages/execution-runtime/src/export-worker.ts",
+        "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+        "packages/renderer-core/src/composition/evaluate/version.ts"
+      ],
+      "sourceFingerprint": "sha256:f967f35ab156a2585a46b9e9b56d4d7fa41f5e97e705fede90ab82535c69ca41",
+      "checks": {
+        "nativeStripOnlyLabConfigStartup": "pass without tsx preload",
+        "build": "pass",
+        "boundaries": "pass",
+        "focusedEslint": "pass",
+        "focused": {
+          "exitCode": 0,
+          "passed": 114,
+          "files": 12,
+          "seconds": 105.77
+        }
+      },
+      "implemented": [
+        "PCM verifier constructor uses ordinary readonly fields with unchanged sample/buffer laws",
+        "Lab composition API imports only source/media/audio preparation modules instead of the complete animation barrel",
+        "Node export/PCM verification import narrow diagnostic and pure evaluator-version modules, without loading browser renderers",
+        "evaluator identity has one pure source and is re-exported through existing entrypoints; evaluator53 and output versions remain unchanged",
+        "verification runner checks and executes the exact optional bin/python file before launching any complete gate"
+      ],
+      "actualProofs": [
+        "all 25 Lab tests previously skipped by native config startup now run and pass, including passage authoring, narration import, sound cues and acting",
+        "all 33 saved soundtrack lifecycle/DSP tests pass with the correct Python executable",
+        "both native passage backend exports, saved DSP/narration filtering/ducking/limiter, complete/range/repeat PCM and actual source/mixer regressions pass",
+        "runtime identity continues to include the complete renderer source tree, including the new pure version module"
+      ],
+      "failedAttempts": [
+        {
+          "path": "/private/tmp/ce13-native-loader-repair-focused-draft.log",
+          "sha256": "sha256:bee9faf481a78c8717c5669a5abd59c74e00d4a00df3799fbf43ca8592907540",
+          "reason": "explicit PCM fields exposed the broad renderer barrel loader path"
+        },
+        {
+          "path": "/private/tmp/ce13-native-loader-repair-focused-draft2.log",
+          "sha256": "sha256:bee9faf481a78c8717c5669a5abd59c74e00d4a00df3799fbf43ca8592907540",
+          "reason": "narrow runtime imports alone left Lab animation barrel pulling the renderer"
+        },
+        {
+          "path": "/private/tmp/ce13-native-loader-repair-vitest-draft.log",
+          "sha256": "sha256:a171f433892a99d0a7ad28c4fdd4c342d4fd1659ae1a36d3871b07e10af07683",
+          "reason": "actual required Vitest Lab startup reproduced the remaining broad Lab barrel path"
+        }
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/ce13-native-loader-repair-focused-draft3.log",
+          "sha256": "sha256:d7dd537a4fc16b8e51c84f8a54fc3ea1a44f1a88cddcfe8c6031d470150c99cf"
+        }
+      ],
+      "fullGate": false,
+      "pending": [
+        "fresh immutable complete pnpm check",
+        "CE13 PR publication/attachment; continue CE15 then CE14"
+      ],
+      "proofNote": "Focused actual source/audio/Lab regressions pass after the failed first full gate. No acceptance suite, timeout, tolerance, frozen baseline, audio law or output version changed. The failed gate is retained; focused repairs do not replace full acceptance."
     }
   ],
-  "fullGates": [],
+  "fullGates": [
+    {
+      "head": "b88f1964e98b2bedd27bb568ae9a0e75918511f6",
+      "path": "/private/tmp/still-shift-ce13-check-b88f196",
+      "archiveSha256": "f218ce5dd3d28e174620131b7abfc2bf3bdc62d1e2889bcd7370f2d13deba177",
+      "trackedFingerprint": "5209db5e504489badc5dc6cfd306579baabfb267b1bd8562e7ec576b45e9f58a",
+      "trackedFileCount": 2064,
+      "source": "git archive exact HEAD; no owner overlays",
+      "privateCaches": [
+        "node_modules/.vite",
+        "node_modules/.vite-temp",
+        ".venv",
+        ".hf-cache",
+        ".depth-cache"
+      ],
+      "optionalBackend": "/private/tmp/ce13-soundtrack-runtime-draft1",
+      "uvCache": "/private/tmp/ce13-check-uv-cache-b88f196",
+      "command": "pnpm check",
+      "startedAt": "2026-10-07T03:21:33.904054+00:00",
+      "status": "failed",
+      "log": "/private/tmp/ce13-full-check-b88f196.log",
+      "requiredTestCommands": 63,
+      "exitCode": 1,
+      "seconds": 204.391136249993,
+      "completedAt": "2026-10-07T03:24:58.295919+00:00",
+      "logSha256": "e7feb3ecb91dce0d171ed962caffb79fb6d47a80258c0d36e96af05b6de44679",
+      "failedStage": "test:integration",
+      "passedBeforeFailure": {
+        "staticChecks": true,
+        "unit": {
+          "files": 209,
+          "tests": 2103,
+          "seconds": 18.01
+        },
+        "runtime": {
+          "files": 9,
+          "tests": 46,
+          "seconds": 11.06
+        }
+      },
+      "integration": {
+        "files": 49,
+        "failedFiles": 9,
+        "passedFiles": 40,
+        "failedTests": 36,
+        "passedTests": 186,
+        "setupSkippedTests": 25,
+        "seconds": 154.09
+      },
+      "causes": [
+        "runner passed the optional soundtrack environment directory rather than its bin/python executable",
+        "new PCM constructor used a parameter property unsupported by Node native strip-only loading; broad Lab/runtime barrel imports also pulled renderer parameter properties into Vite config startup"
+      ],
+      "repair": "explicit PCM fields, narrow Lab/runtime imports, pure evaluator version module, and exact executable-file preflight; complete rerun required",
+      "notReached": ["depth tests", "all mandatory browser commands"],
+      "fullAcceptancePassed": false
+    }
+  ],
   "pending": [
     "complete final immutable local pnpm check",
     "publish and attach CE13 PR; continue CE15 then CE14"

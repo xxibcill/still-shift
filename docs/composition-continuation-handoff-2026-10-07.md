@@ -96,7 +96,14 @@ also passes with actual numbered video, reverse remap, moving still, lower third
 matching native stereo audio. Both backends pass 96 exact reverse seeks and 480
 playback observations with zero source-frame offset. Preview/export share verified
 FFmpeg frames; WebCodecs is unadopted without an equivalent parity proof. The complete
-immutable local gate and PR remain pending. No final CE13 gate has run.
+immutable local gate and PR remain pending. The first complete `b88f196` attempt failed
+in integration after static checks, 2,103 units and 46 runtime checks passed. Its
+optional Python path incorrectly named an environment directory; native Node config
+startup also rejected new/broad parameter-property modules. Explicit PCM fields,
+narrow Lab/runtime imports, a pure evaluator identity and exact executable preflight
+now pass native startup and all 114 affected tests / 12 files. All 25 formerly skipped
+Lab cases run and pass. Retain the failed logs; create a fresh checkpoint snapshot and
+run the complete local gate from the beginning. No code laws or output versions changed.
 CE15 and CE14 follow in the approved order.
 Private notes contain exact source
 seams and primary references: `/private/tmp/ce13-authority-map-2026-10-07.md`,
