@@ -1,7 +1,10 @@
 import type { Composition } from "@still-shift/scene-contract";
 import { analyzeCompositionStillness } from "./story-continuous-quality.ts";
 import { analyzeCompositionTypography } from "./typography-quality.ts";
-import { sampleCompositionQuality } from "./composition/quality-samples.ts";
+import {
+  layerQualityTracks,
+  sampleCompositionQuality,
+} from "./composition/quality-samples.ts";
 import {
   compositionFramingFindings,
   compositionPopFindings,
@@ -373,6 +376,19 @@ export function analyzeCompositionQuality(
       )
       .map((layer) => layer.id),
   );
+  const heldMotion = [comp, ...(comp.precomps ?? [])].some((scope) =>
+    scope.layers.some((layer) =>
+      layerQualityTracks(layer).some((track) =>
+        track.keys.some(
+          (key, i) =>
+            i > 0 &&
+            (key.step || key.interpolation === "hold") &&
+            JSON.stringify(key.value) !==
+              JSON.stringify(track.keys[i - 1]!.value),
+        ),
+      ),
+    ),
+  );
   const limitations = [
     ...(!resolved.pixelHashes
       ? [
@@ -387,6 +403,11 @@ export function analyzeCompositionQuality(
     ...(opaqueProviders.length
       ? [
           `Opaque provider content cannot be inferred from state: ${opaqueProviders.join(", ")}. Use rendered pixel checks.`,
+        ]
+      : []),
+    ...(heldMotion
+      ? [
+          "Held keyframe steps are frame samples; velocity changes inside held motion are not measured.",
         ]
       : []),
     "Coverage lint measures geometry; image alpha and arbitrary mask coverage require the renderer's asset coverage validation.",

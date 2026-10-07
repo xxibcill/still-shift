@@ -566,3 +566,83 @@ describe("render graph", () => {
     ]);
   });
 });
+
+it.each(["clear", "effect"])(
+  "releases nested input surfaces after repeated %s failures",
+  (stage) => {
+    const doc = comp(
+      [
+        solid("owner", {
+          effects: [
+            {
+              id: "wipe",
+              effect: "transition.gradient-wipe",
+              inputs: { map: "map" },
+            },
+          ],
+        }),
+        { id: "map", type: "precomp", comp: "nested", enabled: false },
+      ],
+      {
+        precomps: [
+          {
+            id: "nested",
+            width: 16,
+            height: 16,
+            frameCount: 60,
+            layers: [
+              solid("source", {
+                size: [16, 16],
+                transform: { anchor: [0, 0], position: [0, 0] },
+                effects: [{ id: "invert", effect: "color.invert" }],
+              }),
+            ],
+          },
+        ],
+      },
+    );
+    const live = new Set<Surface>();
+    const failure = new Error("input callback failure");
+    const backend: RenderBackend = {
+      version: "failure-test",
+      createSurface: (width, height) => {
+        const surface = { width, height };
+        live.add(surface);
+        return surface;
+      },
+      releaseSurface: (surface) => {
+        expect(live.delete(surface)).toBe(true);
+      },
+      clear: (surface) => {
+        if (stage === "clear" && surface.width === 16) throw failure;
+      },
+      fillRect: () => {},
+      drawImage: () => {},
+      drawText: () => {},
+      drawProvider: () => {},
+      drawShape: () => {},
+      composite: () => {},
+      applyMask: () => {},
+      applyMatte: () => {},
+      lerp: () => {},
+      applyEffects: (_surface, effects) => {
+        if (
+          stage === "effect" &&
+          effects.some((effect) => effect.effect === "color.invert")
+        )
+          throw failure;
+      },
+      readPixels: () => new Uint8ClampedArray(),
+      accumulateExposure: () => {
+        throw Error("Unexpected exposure");
+      },
+    };
+    const captured = graph(doc);
+    for (let attempt = 0; attempt < 3; attempt++) {
+      expect(() =>
+        executeGraph(backend, captured, { width: 200, height: 100 }),
+      ).toThrow(failure);
+      expect(live.size).toBe(0);
+    }
+  },
+);

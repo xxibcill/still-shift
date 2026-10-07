@@ -65,6 +65,8 @@ export {
   resolveNarrationWord,
   resolveTextEvents,
   compileTextEvents,
+  TextEventError,
   type TextEventScene,
   type ResolvedTextEvent,
 } from "./typography-events.ts";
+export * from "./soundtrack-project.ts";

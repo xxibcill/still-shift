@@ -9,6 +9,7 @@ import {
 } from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
+  implicitAnchorDependencies,
   SIZED_LAYER_TYPES,
   cameraOpticalDependencies,
   type Composition,
@@ -65,6 +66,7 @@ import {
   sampleSpatialTransform,
   sampleCameraControls,
   refreshCameraControls,
+  type CameraValidationPhase,
 } from "./spatial-state.ts";
 import {
   layerMatrix3d,
@@ -105,7 +107,7 @@ import type {
   PropertyValue,
 } from "./types.ts";
 
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-47";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-51";
 export const AUTO_ORIENT_LOOKAROUND_FRAMES = 64;
 const order = ["action", "response", "current", "carrier"] as const;
 /** Keyed and motion-craft values of one layer, before constraints (CE9 expression stage). */
@@ -317,10 +319,13 @@ function baseState(
   }
   if (layer.type === "camera") {
     try {
-      state.camera = sampleCameraControls(layer, time, fps, [
-        ctx.scope.width,
-        ctx.scope.height,
-      ]);
+      state.camera = sampleCameraControls(
+        layer,
+        time,
+        fps,
+        [ctx.scope.width, ctx.scope.height],
+        "intermediate",
+      );
     } catch (error) {
       passageError(
         "comp-camera-settings",
@@ -378,19 +383,27 @@ function baseState(
 
 class Evaluation {
   readonly root: Context;
+  readonly compiled: CompiledComposition;
+  readonly time: number;
+  readonly options: EvaluationOptions;
+  private readonly session: Session;
   private count = 0;
   private readonly cameras = new Map<number, ReturnType<typeof cameraMatrix>>();
   constructor(
-    readonly compiled: CompiledComposition,
-    readonly time: number,
-    readonly options: EvaluationOptions,
-    private readonly session: Session = {
+    compiled: CompiledComposition,
+    time: number,
+    options: EvaluationOptions,
+    session: Session = {
       history: new Map(),
       signals: new Map(),
       shapes: new ShapeGeometryBudget({ frame: time }),
       steps: 0,
     },
   ) {
+    this.compiled = compiled;
+    this.time = time;
+    this.options = options;
+    this.session = session;
     this.root = context(compiled, compiled.comp, time, compiled.comp.fps);
   }
 
@@ -513,23 +526,18 @@ class Evaluation {
       });
     const scope = this.compiled.scopes.get(host.comp)!;
     const remappedTime = yield* this.clock(ctx, host);
-    const sourceTime = loopedPrecompTime(remappedTime, scope.frameCount, host, {
-      node: host.id,
-      path: `${this.bindings(ctx, host.id)}.loop`,
-      frame: this.time,
-    });
     const route = [...ctx.route, host.id];
+    const sourceTime =
+      scopeTimeOverride(this.options.scopeTimes, route.join("/")) ??
+      loopedPrecompTime(remappedTime, scope.frameCount, host, {
+        node: host.id,
+        path: `${this.bindings(ctx, host.id)}.loop`,
+        frame: this.time,
+      });
     const next = context(
       this.compiled,
       scope,
-      Math.max(
-        0,
-        Math.min(
-          scope.frameCount - 1,
-          scopeTimeOverride(this.options.scopeTimes, route.join("/")) ??
-            sourceTime,
-        ),
-      ),
+      Math.max(0, Math.min(scope.frameCount - 1, sourceTime)),
       scope.fps ?? this.compiled.comp.fps,
       route,
     );
@@ -685,7 +693,11 @@ class Evaluation {
   }
 
   /** Clamp written values and keep an unauthored constraint reference on the anchor. */
-  private normalize(ctx: Context, state: EvaluatedLayer) {
+  private normalize(
+    ctx: Context,
+    state: EvaluatedLayer,
+    phase: CameraValidationPhase = "intermediate",
+  ) {
     state.transform.opacity = unit(state.transform.opacity);
     if (state.light) {
       try {
@@ -704,7 +716,7 @@ class Evaluation {
     }
     if (state.camera) {
       try {
-        refreshCameraControls(state.camera, ctx.scope.width);
+        refreshCameraControls(state.camera, ctx.scope.width, phase);
       } catch (error) {
         passageError(
           "comp-camera-settings",
@@ -895,6 +907,12 @@ class Evaluation {
       return copy(readProperty(fresh, segments));
     }
     if (!stage.sealed) {
+      for (const anchor of implicitAnchorDependencies(
+        layer,
+        segments,
+        this.writesReference(ctx, stage.state),
+      ))
+        yield* this.readStage(ctx, layer, anchor);
       const bindings =
           this.compiled.expressions.get(this.bindings(ctx, layer.id)) ?? [],
         optics =
@@ -1364,6 +1382,7 @@ class Evaluation {
         this.bindings(ctx, layer.id),
       ) ?? [])
         if (!binding.clock) yield* this.applied(ctx, layer, binding);
+    if (state.camera) this.normalize(ctx, state, "settled");
     if (layer.type === "precomp")
       state.timeRemap = yield* this.clock(ctx, layer);
     if (state.contents)

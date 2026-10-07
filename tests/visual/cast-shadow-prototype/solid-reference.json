@@ -1,0 +1,102 @@
+{
+  "model": "flat-alpha-shadow-candidate-1",
+  "side": 64,
+  "cases": [
+    {
+      "id": "solid-hard/0",
+      "hash": "4473fbc1b9273f4aae5f60cc7f2c3defae96f263f6f5b8a46f94fedf43c17ede"
+    },
+    {
+      "id": "solid-hard/1",
+      "hash": "2f06c127eb77e03184785f184535833a14fd40ce9b58ea3b2040f8ccdea545cb"
+    },
+    {
+      "id": "solid-hard/2",
+      "hash": "e052e8b630ac2aba2d2b89b52cdd3e6c6892c4377458b32475aff1132dd7edfd"
+    },
+    {
+      "id": "solid-hard/3",
+      "hash": "8b5b8f9cf57db6ad4afcb94ec31aa504aa0a0d8aef0e160a295582925fef7aa6"
+    },
+    {
+      "id": "solid-hard/4",
+      "hash": "8b5b8f9cf57db6ad4afcb94ec31aa504aa0a0d8aef0e160a295582925fef7aa6"
+    },
+    {
+      "id": "solid-hard/5",
+      "hash": "e052e8b630ac2aba2d2b89b52cdd3e6c6892c4377458b32475aff1132dd7edfd"
+    },
+    {
+      "id": "solid-hard/6",
+      "hash": "2f06c127eb77e03184785f184535833a14fd40ce9b58ea3b2040f8ccdea545cb"
+    },
+    {
+      "id": "solid-hard/7",
+      "hash": "4473fbc1b9273f4aae5f60cc7f2c3defae96f263f6f5b8a46f94fedf43c17ede"
+    },
+    {
+      "id": "solid-soft-four/0",
+      "hash": "f38fe54b87c5926b2ac4775604167c311c0d0490cad6f72c56b5d892ffc62a24"
+    },
+    {
+      "id": "solid-soft-four/1",
+      "hash": "69735f85285c0b97e38405fea1f37356fd4d00c02a59632bc4919f4eb8985d27"
+    },
+    {
+      "id": "solid-soft-four/2",
+      "hash": "ec17e98dd981a2e72c58c27aa58aeb3bd5404079e2d8d3b5cf1d30b0bbbd2b48"
+    },
+    {
+      "id": "solid-soft-four/3",
+      "hash": "9487d369ae39aa447f486052af332a9f2c5d8ea7985e94b0f36b061ab5d69790"
+    },
+    {
+      "id": "solid-soft-four/4",
+      "hash": "9487d369ae39aa447f486052af332a9f2c5d8ea7985e94b0f36b061ab5d69790"
+    },
+    {
+      "id": "solid-soft-four/5",
+      "hash": "ec17e98dd981a2e72c58c27aa58aeb3bd5404079e2d8d3b5cf1d30b0bbbd2b48"
+    },
+    {
+      "id": "solid-soft-four/6",
+      "hash": "69735f85285c0b97e38405fea1f37356fd4d00c02a59632bc4919f4eb8985d27"
+    },
+    {
+      "id": "solid-soft-four/7",
+      "hash": "f38fe54b87c5926b2ac4775604167c311c0d0490cad6f72c56b5d892ffc62a24"
+    },
+    {
+      "id": "solid-soft-sixteen/0",
+      "hash": "fdb043c7ba9c1959ca6e9cdde19ca2f95dea880d9782b6e92861c388f551a49b"
+    },
+    {
+      "id": "solid-soft-sixteen/1",
+      "hash": "cb95bee911e0732e83800edcc69012f5a27a02ffe170207b75058373fea06563"
+    },
+    {
+      "id": "solid-soft-sixteen/2",
+      "hash": "bbc9910a34223ba7278e839e968e2f18209708f360f86b2dd55f9f25681d9c2e"
+    },
+    {
+      "id": "solid-soft-sixteen/3",
+      "hash": "bdcfc021792fc14a187023a4b90b7634996c87c9ee604bfca2c36f11f01e6a62"
+    },
+    {
+      "id": "solid-soft-sixteen/4",
+      "hash": "bdcfc021792fc14a187023a4b90b7634996c87c9ee604bfca2c36f11f01e6a62"
+    },
+    {
+      "id": "solid-soft-sixteen/5",
+      "hash": "bbc9910a34223ba7278e839e968e2f18209708f360f86b2dd55f9f25681d9c2e"
+    },
+    {
+      "id": "solid-soft-sixteen/6",
+      "hash": "cb95bee911e0732e83800edcc69012f5a27a02ffe170207b75058373fea06563"
+    },
+    {
+      "id": "solid-soft-sixteen/7",
+      "hash": "fdb043c7ba9c1959ca6e9cdde19ca2f95dea880d9782b6e92861c388f551a49b"
+    }
+  ]
+}

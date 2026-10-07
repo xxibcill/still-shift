@@ -6,6 +6,7 @@ import { launchRenderBrowser } from "@still-shift/execution-runtime";
 import type { Composition } from "@still-shift/scene-contract";
 import { shapeCases } from "../../scripts/composition/shape-fixtures.ts";
 import { runShapeAcceptance } from "./shape-acceptance.ts";
+import { verifySquareCapCoverage } from "./shape-cap-regressions.ts";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 
 const root = resolve(import.meta.dirname, "../.."),
@@ -29,6 +30,8 @@ try {
   const page = await browser.newPage();
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
+  const capRegressions = await verifySquareCapCoverage(page);
+  console.log(JSON.stringify({ squareCapCoverage: capRegressions }));
   const result = await page.evaluate(
     async ({
       coreJson,

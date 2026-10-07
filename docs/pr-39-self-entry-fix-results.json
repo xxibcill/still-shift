@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "pr-review-fix-evidence-1",
+  "date": "2026-10-06",
+  "pr": "https://github.com/xxibcill/still-shift/pull/39",
+  "reviewedHead": "344cb8e147f1fef1b8d6ba036a68b8af7bb5b438",
+  "finding": {
+    "priority": "P2",
+    "title": "Preflight rejects the receiver self entry",
+    "comment": "https://github.com/xxibcill/still-shift/pull/39#discussion_r4191535608",
+    "fix": "Enforce scoped identity uniqueness within the caster list; validate the receiver and every caster while allowing one caster to share the receiver identity.",
+    "regressions": [
+      "A shared or copied receiver self entry preserves the visibility of other casters.",
+      "A self-only caster list renders opaque white visibility through validated referencePixels.",
+      "Duplicate caster identities, including duplicate self entries, still fail preflight."
+    ],
+    "redRun": "The new self-entry regression failed with shadow-prototype-input: invalid/duplicate identity on the reviewed model; 10 other tests passed.",
+    "greenRun": "11 analytic tests passed after the fix."
+  },
+  "checks": {
+    "toolchain": "pnpm toolchain:check passed with a private Python venv and UV_NO_SYNC=1; Node 22.23.1, pnpm 10.29.3, Python 3.12.11, uv 0.7.12, Playwright 1.62.1, Chromium revision 1234/version 151.0.7922.34, FFmpeg/ffprobe 8.0.1.",
+    "analytic": "pnpm exec vitest run tests/unit/cast-shadow-prototype.test.ts --maxWorkers=1 --no-file-parallelism passed: 11 tests.",
+    "build": "pnpm build passed.",
+    "schema": "pnpm schema:check passed.",
+    "boundaries": "pnpm check:boundaries passed.",
+    "lint": "pnpm exec eslint scripts/composition/cast-shadow-prototype tests/unit/cast-shadow-prototype.test.ts passed.",
+    "format": "Focused Prettier checks passed for changed code and review records.",
+    "browser": "node --import tsx scripts/composition/cast-shadow-prototype/verify.ts passed.",
+    "fullRepositoryGate": "NOT RUN: focused correction to the isolated prototype; production sources, schemas and frozen references are unchanged. Production milestone integration and its full acceptance gate remain outstanding.",
+    "actions": "No GitHub Actions workflows or settings changed; verification ran locally."
+  },
+  "isolation": "Managed worktree with physically copied private root/workspace node_modules, independent Vite caches and private Python venv; prototype runner serves no Vite app and uses no optimizer/config cache.",
+  "browser": {
+    "model": "flat-alpha-shadow-candidate-1",
+    "dimensions": [64, 64],
+    "sourceHashes": [
+      {
+        "name": "model.ts",
+        "hash": "1c90d539dcfab3f8c84ddb938a4ab5351c0974f21f786272304f22e6ee8bf277"
+      },
+      {
+        "name": "fixtures.ts",
+        "hash": "956b42cda825b46b1b9044568d543a53c1c32290ae1574f5b175a9a09435ddc4"
+      },
+      {
+        "name": "reference.ts",
+        "hash": "d20e525e9cf58a6594a8604b06dc1746c1ef044dadcb7b6c17e594b16be5d5bc"
+      },
+      {
+        "name": "shader.ts",
+        "hash": "5b60c82e479427274c049a4bdad2b62c80533f15aa385c79d8c70dec2072e65c"
+      },
+      {
+        "name": "verify.ts",
+        "hash": "accb7ade047f366c81b64252ba58ebf419a8fe6dc8bf47670f37dfdf2f3fbc33"
+      }
+    ],
+    "inputHash": "d581feec5c1b59eb18028cfbf1039864445033a0402f34928cf363ac41f3438c",
+    "maximumInputHash": "8edc340244028af6689c833351e0c5b69d644a198a55ea56e1c719e3130309e9",
+    "referenceCount": 96,
+    "toleranceBytes": 1,
+    "pinned": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 288,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "result": "pass",
+      "repeat": false
+    },
+    "repeated": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 96,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "result": "pass",
+      "repeat": true
+    },
+    "hardware": {
+      "environment": {
+        "profile": "hardware",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+        "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 12,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "result": "pass",
+      "repeat": false
+    },
+    "performanceMeasured": false
+  },
+  "testSourceSha256": "96a9276bcd4d8caa5c741fde9d1db4bdcb63cfe49643b6448419b75a9415227f",
+  "frozenReferenceSha256": {
+    "tests/visual/cast-shadow-prototype/reference.json": "a4fbe1464063792d432417739b475ecb33e5544c82a972e33a4ab9e17339d9c0",
+    "tests/visual/cast-shadow-prototype/solid-reference.json": "d099c8c3afcc294c60ad11bbd52dcab840514c2dd21f1919b41e56fa63432f22"
+  },
+  "pending": [
+    "Native CE8/CE8-L integration, real exports, owner policy/budget decisions and production acceptance remain as recorded in the candidate specification."
+  ]
+}

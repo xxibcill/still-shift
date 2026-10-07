@@ -147,3 +147,137 @@ export async function cameraInspectorAcceptance(browser: Browser) {
     await rm(directory, { recursive: true, force: true });
   }
 }
+
+/** Valid XY camera and artwork curves retain their authored handle dimension through the real editor. */
+export async function cameraXyInspectorAcceptance(browser: Browser) {
+  const directory = await mkdtemp(join(tmpdir(), "ce8-camera-xy-inspector-")),
+    page = await browser.newPage({ viewport: { width: 1280, height: 900 } }),
+    errors: string[] = [],
+    reports = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  try {
+    for (const mode of [
+      "camera-position",
+      "camera-poi",
+      "spatial-position",
+    ] as const) {
+      const input = join(directory, `${mode}.json`),
+        position = {
+          keys: [
+            {
+              frame: 0,
+              value: [64, 48] as [number, number],
+              spatialOut: [1, 2] as [number, number],
+            },
+            {
+              frame: 31,
+              value: [76, 45] as [number, number],
+              interpolation: "linear" as const,
+            },
+          ],
+        },
+        camera = {
+          id: "camera",
+          type: "camera" as const,
+          ...(mode === "camera-position" ? { transform: { position } } : {}),
+          ...(mode === "camera-poi" ? { pointOfInterest: position } : {}),
+        },
+        doc: Composition = {
+          schemaVersion: "composition-1",
+          id: mode,
+          width: 128,
+          height: 96,
+          fps: 24,
+          frameCount: 32,
+          assets: [],
+          layers: [
+            camera,
+            {
+              id: "plane",
+              type: "solid",
+              threeD: true,
+              size: [48, 40],
+              color: "#ffffff",
+              ...(mode === "spatial-position"
+                ? { transform: { position } }
+                : {}),
+            },
+          ],
+        };
+      await writeFile(input, JSON.stringify(doc, null, 2) + "\n");
+      const app = await createProgramPreview(input, { watch: false });
+      try {
+        await page.goto(app.url);
+        await page.waitForFunction(
+          () => document.getElementById("status")?.dataset.revision === "1",
+        );
+        await page.locator("#backend").selectOption("webgl2");
+        await page.waitForFunction(
+          () => document.getElementById("status")?.dataset.backend === "webgl2",
+        );
+        const owner = mode === "spatial-position" ? "plane" : "camera",
+          property =
+            mode === "camera-poi" ? "pointOfInterest" : "transform.position";
+        await page.locator(`[data-layer="${owner}"] > button`).first().click();
+        await page
+          .locator("#key-lanes button")
+          .filter({ hasText: property })
+          .first()
+          .click();
+        assert.equal(
+          await page.getByLabel("spatialOut", { exact: true }).inputValue(),
+          "1,2",
+        );
+        await page.getByLabel("spatialOut", { exact: true }).fill("10,3");
+        await page
+          .getByRole("button", { name: "Apply spatialOut", exact: true })
+          .click();
+        await page.waitForFunction(
+          () =>
+            document.getElementById("document-state")?.textContent ===
+            "Unsaved motion edits",
+        );
+        await page.locator("#undo").click();
+        assert.equal(
+          await page.getByLabel("spatialOut", { exact: true }).inputValue(),
+          "1,2",
+        );
+        await page.locator("#redo").click();
+        assert.equal(
+          await page.getByLabel("spatialOut", { exact: true }).inputValue(),
+          "10,3",
+        );
+        await page.locator("#save-document").click();
+        await page.waitForFunction(
+          () =>
+            document.getElementById("status")?.textContent ===
+            "JSON source saved.",
+        );
+        const saved = JSON.parse(await readFile(input, "utf8")),
+          layer = saved.layers.find(
+            (layer: { id: string }) => layer.id === owner,
+          ),
+          keys =
+            mode === "camera-poi"
+              ? layer.pointOfInterest.keys
+              : layer.transform.position.keys;
+        assert.deepEqual(keys[0].value, [64, 48]);
+        assert.deepEqual(keys[0].spatialOut, [10, 3]);
+        assert.deepEqual(keys[1], position.keys[1]);
+        reports.push({
+          mode,
+          status: "passed",
+          dimensions: 2,
+          checks: ["XY tangent edit", "undo/redo", "lossless save"],
+        });
+      } finally {
+        await app.close();
+      }
+    }
+    assert.deepEqual(errors, []);
+    return reports;
+  } finally {
+    await page.close();
+    await rm(directory, { recursive: true, force: true });
+  }
+}

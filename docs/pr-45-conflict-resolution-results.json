@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/45",
+  "originalHead": "17666eb14cdb302b319177e4d95dce68ddf9767a",
+  "integratedBase": "50cbf6332ece7ffafc156645f6a7e4e532d7f986",
+  "status": "conflicts resolved locally; focused verification and independent review in progress",
+  "fullPnpmCheckRun": false,
+  "resolution": {
+    "conflictedFiles": [
+      "apps/lab/src/composition-keys.ts",
+      "docs/dev-log.md",
+      "package.json",
+      "packages/execution-runtime/src/export-worker.ts",
+      "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+      "packages/renderer-core/src/composition/evaluate/spatial-state.ts",
+      "packages/renderer-core/src/composition/render/graph.ts",
+      "packages/renderer-core/src/composition/render/version.ts",
+      "packages/renderer-core/src/composition/render/webgl2.ts"
+    ],
+    "behavior": "Preserve CE4c cinematic cameras, view offsets, Gaussian focus, depth planes and clipping alongside main review repairs: shared XYZ track collection, settled optical validation, bitmap echo rounding, implicit light dependencies, projected null effect coordinates and soundtrack commands. Preserve all parent test commands and development log entries.",
+    "versions": {
+      "evaluator": "composition-evaluator-51",
+      "canvas": "composition-canvas-1.42.1",
+      "webgl": "composition-webgl2-0.57.1",
+      "export": "chromium-ffmpeg-0.6.6"
+    }
+  },
+  "mergeAudit": {
+    "17666eb14cdb302b319177e4d95dce68ddf9767a": {
+      "testCommands": 58,
+      "missingCommands": [],
+      "logHeadings": 124,
+      "missingHeadings": [],
+      "baselineFiles": 141,
+      "modifiedNonMarkdownBaselines": [
+        "tests/visual/composition-shapes/darwin-arm64.json",
+        "tests/visual/composition-shapes/reference-sheet-0.png",
+        "tests/visual/composition-shapes/reference-sheet-24.png",
+        "tests/visual/composition-shapes/reference-sheet-47.png"
+      ]
+    },
+    "50cbf6332ece7ffafc156645f6a7e4e532d7f986": {
+      "testCommands": 58,
+      "missingCommands": [],
+      "logHeadings": 242,
+      "missingHeadings": [],
+      "baselineFiles": 144,
+      "modifiedNonMarkdownBaselines": []
+    }
+  },
+  "verification": {
+    "scope": "Focused conflict-repair checks. Parent full gates remain historical; no new full gate or performance acceptance.",
+    "checks": [],
+    "notRun": [
+      "full pnpm check",
+      "complete browser and timing matrices"
+    ]
+  },
+  "review": {
+    "status": "pending",
+    "fixedPoint": "50cbf6332ece7ffafc156645f6a7e4e532d7f986",
+    "spec": "docs/composition-engine-plan.md CE4c Cinematic; docs/composition-reference.md; PR #45 body"
+  },
+  "githubActionsEnabled": false
+}

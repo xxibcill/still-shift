@@ -3,7 +3,11 @@ import type {
   Composition,
   CompositionLayer,
 } from "@still-shift/scene-contract";
-import { evaluateCompositionExposure } from "../../packages/renderer-core/src/composition/evaluate/exposure.ts";
+import { evaluateComp } from "../../packages/renderer-core/src/composition/evaluate/evaluate.ts";
+import {
+  compositionExposureFrames,
+  evaluateCompositionExposure,
+} from "../../packages/renderer-core/src/composition/evaluate/exposure.ts";
 
 const text = (): Extract<CompositionLayer, { type: "text" }> => ({
   id: "switch",
@@ -65,6 +69,273 @@ describe("time-control exposure cuts", () => {
     expect(states(doc, 12.4)).toEqual([0, 0, 0, 0]);
     expect(states(doc, 12.5)).toEqual([1, 1, 1, 1]);
     expect(states(doc, 12.6)).toEqual([1, 1, 1, 1]);
+  });
+  it.each(["state", "stateFrom"] as const)(
+    "does not cut unrelated motion for skipped posterized %s changes",
+    (channel) => {
+      for (const { startFrame, stretch, keyStart, cut } of [
+        { startFrame: 0, stretch: 1, keyStart: 0, cut: 2 },
+        { startFrame: 4, stretch: -1, keyStart: 0, cut: 2 },
+        { startFrame: 4, stretch: 1, keyStart: -2, cut: 4 },
+        { startFrame: 4, stretch: -1, keyStart: -2, cut: 4 },
+      ]) {
+        for (const indexed of [false, true]) {
+          const doc = fixture();
+          const layer = doc.layers[0] as ReturnType<typeof text>;
+          Object.assign(layer, {
+            motionBlur: false,
+            posterizeFps: 15,
+            state: 0,
+            ...(channel === "stateFrom" ? { stateMix: 0 } : {}),
+            startFrame,
+            stretch,
+            ...(indexed
+              ? { sampleTimes: [keyStart, keyStart + 1, keyStart + 2] }
+              : {}),
+          });
+          layer[channel] = {
+            keys: [
+              { frame: indexed ? 0 : keyStart, value: 0 },
+              { frame: indexed ? 1 : keyStart + 1, value: 1 },
+              { frame: indexed ? 2 : keyStart + 2, value: 0 },
+            ],
+          };
+          doc.layers.push({
+            id: "moving",
+            type: "solid",
+            size: [10, 10],
+            color: "#ffffff",
+            motionBlur: true,
+            transform: {
+              anchor: [0, 0],
+              position: {
+                x: {
+                  keys: [
+                    { frame: 0, value: 0 },
+                    { frame: 29, value: 290, interpolation: "linear" },
+                  ],
+                },
+                y: 40,
+              },
+            },
+          });
+          const before = structuredClone(doc);
+          const constant = structuredClone(doc);
+          (constant.layers[0] as ReturnType<typeof text>)[channel] = 0;
+          for (const frame of [cut, cut - 0.1, cut + 0.1, 8, cut]) {
+            expect(evaluateComp(doc, frame).layers[0]![channel]).toBe(0);
+            expect(compositionExposureFrames(doc, frame)).toEqual(
+              compositionExposureFrames(constant, frame),
+            );
+            const positions = (comp: Composition) =>
+              [...evaluateCompositionExposure(comp, frame)].map(
+                (tree) => tree.layers[1]!.screenMatrix[4],
+              );
+            expect(positions(doc)).toEqual(positions(constant));
+            if (frame === cut)
+              expect(
+                Math.max(...positions(doc)) - Math.min(...positions(doc)),
+              ).toBe(7.5);
+          }
+          expect(doc).toEqual(before);
+        }
+      }
+    },
+  );
+  it.each(["state", "stateFrom"] as const)(
+    "retains real %s switches when posterization collapses several keys",
+    (channel) => {
+      for (const reverse of [false, true]) {
+        for (const indexed of [false, true]) {
+          const doc = fixture();
+          const layer = doc.layers[0] as ReturnType<typeof text>;
+          Object.assign(layer, {
+            posterizeFps: 15,
+            states: ["A", "B", "C"],
+            state: 0,
+            ...(channel === "stateFrom" ? { stateMix: 0 } : {}),
+            ...(reverse ? { startFrame: 4, stretch: -1 } : {}),
+            ...(indexed ? { sampleTimes: [0, 1, 2] } : {}),
+          });
+          layer[channel] = {
+            keys: [
+              { frame: 0, value: 0 },
+              { frame: 1, value: 1 },
+              { frame: 2, value: 2 },
+            ],
+          };
+          for (const frame of [2, 1.9, 2.1, 2]) {
+            const current = evaluateComp(doc, frame).layers[0]![channel];
+            expect(
+              [...evaluateCompositionExposure(doc, frame)].map(
+                (tree) => tree.layers[0]![channel],
+              ),
+            ).toEqual(Array(4).fill(current));
+          }
+        }
+      }
+    },
+  );
+  it("ignores skipped child-state cuts using the owning precomp FPS", () => {
+    const doc = nested();
+    doc.fps = 60;
+    doc.precomps![0]!.fps = 30;
+    const layer = doc.precomps![0]!.layers[0] as ReturnType<typeof text>;
+    layer.posterizeFps = 15;
+    layer.state = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 1, value: 1 },
+        { frame: 2, value: 0 },
+      ],
+    };
+    const constant = structuredClone(doc);
+    (constant.precomps![0]!.layers[0] as ReturnType<typeof text>).state = 0;
+    for (const frame of [4, 3.9, 4.1, 8, 4]) {
+      const clocks = (comp: Composition) =>
+        [...evaluateCompositionExposure(comp, frame)].map(
+          (tree) => tree.layers[0]!.precomp!.layers[0]!.time,
+        );
+      expect(clocks(doc)).toEqual(clocks(constant));
+      expect(states(doc, frame)).toEqual([0, 0, 0, 0]);
+    }
+  });
+  it.each([1e-16, -1e-16])(
+    "keeps a real switch when root precision skips several content grids (stretch=%s)",
+    (stretch) => {
+      const doc = fixture();
+      Object.assign(doc.layers[0]!, {
+        posterizeFps: 15,
+        startFrame: 10,
+        stretch,
+      });
+      expect(evaluateComp(doc, 10).layers[0]!.state).toBe(0);
+      expect(states(doc, 10)).toEqual([0, 0, 0, 0]);
+    },
+  );
+  it("keeps rounded posterized cuts on the selected side at integer export frames", () => {
+    for (const [startFrame, stretch, frame] of [
+      [0, 1, 11],
+      [24, -1, 13],
+      [5, 2, 27],
+      [27, -2, 5],
+    ]) {
+      const doc = fixture();
+      doc.fps = 24;
+      const layer = doc.layers[0] as ReturnType<typeof text>;
+      Object.assign(layer, { posterizeFps: 11, startFrame, stretch });
+      layer.state = {
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 9, value: 1 },
+        ],
+      };
+      expect(evaluateComp(doc, frame!).layers[0]!.state).toBe(1);
+      expect(states(doc, frame!)).toEqual([1, 1, 1, 1]);
+    }
+  });
+  it("finds a rounded switch that is already reachable before its nominal cut", () => {
+    const doc = fixture();
+    doc.fps = 24;
+    doc.frameCount = 240;
+    const layer = doc.layers[0] as ReturnType<typeof text>;
+    Object.assign(layer, { posterizeFps: 13, stretch: 13 });
+    layer.state = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 15, value: 1 },
+      ],
+    };
+    expect(evaluateComp(doc, 216).layers[0]!.state).toBe(1);
+    expect(states(doc, 216)).toEqual([1, 1, 1, 1]);
+  });
+  it("keeps rounded nested posterized state and effect cuts on the selected grid", () => {
+    const doc = nested();
+    doc.fps = 24;
+    const layer = doc.precomps![0]!.layers[0] as ReturnType<typeof text>;
+    layer.posterizeFps = 11;
+    layer.state = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 9, value: 1 },
+      ],
+    };
+    layer.effects = [
+      {
+        id: "blur",
+        effect: "blur.gaussian",
+        inPoint: 9,
+        params: { radius: 1 },
+      },
+    ];
+    expect(states(doc, 11)).toEqual([1, 1, 1, 1]);
+    expect(
+      [...evaluateCompositionExposure(doc, 11)].every(
+        (tree) => tree.layers[0]!.precomp!.layers[0]!.effects[0]!.enabled,
+      ),
+    ).toBe(true);
+  });
+  it("cuts visible outgoing-state resets at their reachable posterized clock", () => {
+    for (const reverse of [false, true]) {
+      const doc = fixture();
+      const layer = doc.layers[0] as ReturnType<typeof text>;
+      Object.assign(layer, {
+        posterizeFps: 12,
+        state: 2,
+        states: ["A", "B", "C"],
+        ...(reverse ? { startFrame: 25, stretch: -1 } : {}),
+      });
+      layer.stateFrom = {
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 11, value: 1 },
+        ],
+      };
+      layer.stateMix = {
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 11, value: 1, interpolation: "linear" },
+          { frame: 12, value: 0, interpolation: "linear" },
+        ],
+      };
+      for (const frame of [12.4, 12.5, 12.6]) {
+        const base = evaluateComp(doc, frame).layers[0]!;
+        expect(
+          [...evaluateCompositionExposure(doc, frame)].map(
+            (tree) => tree.layers[0]!.stateFrom,
+          ),
+        ).toEqual(Array(4).fill(base.stateFrom));
+      }
+    }
+  });
+  it("checks outgoing-state visibility at the reachable baked sample index", () => {
+    const doc = fixture();
+    const layer = doc.layers[0] as ReturnType<typeof text>;
+    Object.assign(layer, {
+      posterizeFps: 12,
+      sampleTimes: [0, 11, 12.5],
+      state: 2,
+      states: ["A", "B", "C"],
+    });
+    layer.stateFrom = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 1, value: 1 },
+      ],
+    };
+    layer.stateMix = {
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 1, value: 1, interpolation: "linear" },
+        { frame: 2, value: 0, interpolation: "linear" },
+      ],
+    };
+    expect(evaluateComp(doc, 12.5).layers[0]!.stateMix).toBe(0);
+    expect(
+      [...evaluateCompositionExposure(doc, 12.5)].map(
+        (tree) => tree.layers[0]!.stateFrom,
+      ),
+    ).toEqual([1, 1, 1, 1]);
   });
   it("preserves inclusive-before behavior for a reversed posterized clock", () => {
     const doc = fixture();

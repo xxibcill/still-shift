@@ -1,0 +1,214 @@
+{
+  "date": "2026-10-06",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/35",
+  "startingHead": "91f9c54b16f1d182dbcb28594adca30a4a6c9390",
+  "mergedBase": "f870fcec5d4a39dcd9c0c75f6d6422404a0bee70",
+  "baseBranch": "codex/composition-ce12",
+  "headBranch": "codex/composition-ce4a-completion",
+  "strategy": "Merge the current remote base into the existing PR head without rebasing or force pushing.",
+  "conflicts": {
+    "package.json": "Retain all commands and every distinct test group, including native passage and soundtrack suites.",
+    "packages/animation-engine/src/index.ts": "Retain native passage loader/validator and soundtrack IO/render/passage exports.",
+    "packages/renderer-core/src/index.ts": "Retain native passage and soundtrack edits exports.",
+    "packages/renderer-core/package.json": "Retain both narrow passage-compositions and soundtrack entrypoints.",
+    "vitest.config.ts": "Retain both narrow aliases before the renderer-core root alias.",
+    "packages/animation-engine/src/story-passage-render.ts": "Preserve native validation/renderer/backend options and identities alongside saved soundtrack validation/revision/runtime identity and rendering.",
+    "scripts/prepare-story-passage.ts": "Forward native beat maps, renderer/backend and saved soundtrack options together; preserve prepare-only validation and audio-mode exclusivity.",
+    "docs/composition-reference.md": "Retain CE4a native picture/exposure guidance and CE16 soundtrack authority.",
+    "docs/user-guide.md": "Retain native passage and saved soundtrack instructions.",
+    "docs/dev-log.md": "Retain every historical title from both parents and update the current handoff."
+  },
+  "automaticMergeReview": "Lab saved soundtrack controls coexist with native inspector/preview fixes. Base expression/bake/quality repairs retain CE4a fractional shutter sampling. No policies, frozen baselines or algorithms weakened.",
+  "regression": "Both native-passage backends render a saved soundtrack project, require an audio stream and complete picture-cache reuse, and compare decoded video hashes to the native passage without saved audio.",
+  "verification": {
+    "toolchain": "Node 22.23.1, pnpm 10.29.3, Python 3.12.11, uv 0.7.12, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1; toolchain check and browser startup passed.",
+    "environment": "Separate frozen-lockfile offline pnpm install and local Vite optimizer/config caches. Own pinned Python venv/launcher imports local depth source and read-only installed packages; UV_NO_SYNC=1 and isolated uv cache. Existing pinned CE16 Python runtime selected explicitly; NumPy/DawDreamer/SciPy imports passed.",
+    "checks": [
+      {
+        "command": "pnpm exec vitest run tests/integration/export-transaction.test.ts tests/integration/story-workspace.test.ts --maxWorkers=1 --no-file-parallelism",
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-integration-rerun.log",
+        "exitCode": 1,
+        "status": "failed attempt; retained",
+        "testsFailed": 2,
+        "testsPassed": 18,
+        "sha256": "0cd2ae8484f8ee06b3b8337d2ddc0487063f61b38c6941521e22e5f9b37c8f4e",
+        "summary": "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[2/2]\u23af\n\n\n Test Files  1 failed | 1 passed (2)\n      Tests  2 failed | 18 passed (20)\n   Start at  11:26:36\n   Duration  89.65s (transform 1.57s, setup 0ms, collect 3.85s, tests 85.37s, environment 0ms, prepare 104ms)\n"
+      },
+      {
+        "command": "pnpm soundtrack:lint",
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-soundtrack-lint-rerun.log",
+        "exitCode": 0,
+        "status": "passed",
+        "sha256": "8eb6bdaf6cf276e4f2d07aae8d67b3484455dffdf5553676c381f90b2d391e23",
+        "summary": "\n> still-shift@0.1.0 soundtrack:lint /Users/jjae/.codex/worktrees/pr35-ce4a-conflicts/still-shift\n> uv run --no-sync ruff check scripts/soundtrack packages/animation-engine/src/soundtrack-worker.py && uv run --no-sync ruff format --check scripts/soundtrack packages/animation-engine/src/soundtrack-worker.py\n\nAll checks passed!\n5 files already formatted"
+      },
+      {
+        "command": "pnpm build",
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-build.log",
+        "exitCode": 0,
+        "status": "passed",
+        "sha256": "2fd6b989205d078cb3441aa4aaa07c8028b574dae4e6521c0154bf68812de609",
+        "summary": "\n> still-shift@0.1.0 build /Users/jjae/.codex/worktrees/pr35-ce4a-conflicts/still-shift\n> tsc --noEmit\n"
+      },
+      {
+        "command": "pnpm soundtrack:lint",
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-soundtrack-lint.log",
+        "exitCode": 2,
+        "status": "failed attempt; retained",
+        "sha256": "bbd8f0bf6146dac8bcc5b00c02ef5c76724dffc596a0ed64cf0d1cffda46844e",
+        "summary": "\n> still-shift@0.1.0 soundtrack:lint /Users/jjae/.codex/worktrees/pr35-ce4a-conflicts/still-shift\n> uv run --no-sync ruff check scripts/soundtrack packages/animation-engine/src/soundtrack-worker.py && uv run --no-sync ruff format --check scripts/soundtrack packages/animation-engine/src/soundtrack-worker.py\n\nerror: Failed to spawn: `ruff`\n  Caused by: No such file or directory (os error 2)\n\u2009ELIFECYCLE\u2009 Command failed with exit code 2."
+      },
+      {
+        "command": "pnpm test:depth",
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-depth.log",
+        "exitCode": 0,
+        "status": "passed",
+        "sha256": "1e5941c06d90a26587c2c9943a33cf1482edd6dd59e4252b53593f768eda32a8",
+        "summary": "> still-shift@0.1.0 test:depth /Users/jjae/.codex/worktrees/pr35-ce4a-conflicts/still-shift\n> uv run --no-sync python -m unittest discover -s services/depth-worker/tests -p 'test_*.py'\n\n..............\n----------------------------------------------------------------------\nRan 14 tests in 0.544s\n\nOK"
+      },
+      {
+        "command": "pnpm test:integration",
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-integration.log",
+        "exitCode": 1,
+        "status": "failed attempt; retained",
+        "testsFailed": 2,
+        "testsPassed": 174,
+        "sha256": "16a6ddf13e25a9a90ec64eedf51fff3675091bd3760c452467bc1a15ba1d26ab",
+        "summary": "\n\n Test Files  2 failed | 35 passed (37)\n      Tests  2 failed | 174 passed (176)\n   Start at  11:21:19\n   Duration  293.56s (transform 1.18s, setup 0ms, collect 18.13s, tests 269.60s, environment 6ms, prepare 1.44s)\n\n\u2009ELIFECYCLE\u2009 Command failed with exit code 1."
+      },
+      {
+        "command": "pnpm test:runtime",
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-runtime.log",
+        "exitCode": 0,
+        "status": "passed",
+        "testsPassed": 46,
+        "sha256": "7f6d48c9c7034ead90b5a43630b79b85932538f1aa58ef65cd9e328a738401ff",
+        "summary": "   \u2713 composition baseline selection > rejects partly unknown families before browser rendering  915ms\n   \u2713 composition baseline selection > rejects disjoint fixture and family filters before browser rendering  957ms\n\n Test Files  9 passed (9)\n      Tests  46 passed (46)\n   Start at  11:21:05\n   Duration  13.45s (transform 895ms, setup 0ms, collect 3.04s, tests 9.31s, environment 1ms, prepare 291ms)\n"
+      },
+      {
+        "command": "pnpm check:fast",
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-fast.log",
+        "exitCode": 0,
+        "status": "passed",
+        "testsPassed": 1680,
+        "sha256": "38b15c012de9935f4d2b4431aecc24f9a2f402beef885fcfa73a8d660556e84d",
+        "summary": " \u2713 tests/unit/sfx-cli.test.ts (2 tests) 2ms\n \u2713 tests/unit/cli-error.test.ts (1 test) 1ms\n\n Test Files  140 passed (140)\n      Tests  1680 passed (1680)\n   Start at  11:21:05\n   Duration  15.55s (transform 2.19s, setup 0ms, collect 27.21s, tests 16.77s, environment 12ms, prepare 4.32s)\n"
+      },
+      {
+        "command": "pnpm test:browser:composition-native-passage",
+        "exitCode": 0,
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-test-browser-composition-native-passage.log",
+        "seconds": 67.39,
+        "status": "passed",
+        "sha256": "3f1912a28a8745a0f2d68679af25dceebee23f708ad6e2a1f1f8b7442b851437",
+        "summary": "> still-shift@0.1.0 test:browser:composition-native-passage /Users/jjae/.codex/worktrees/pr35-ce4a-conflicts/still-shift\n> node --import tsx tests/browser/composition-native-passage.ts\n\n11:22:48 AM [vite] (client) Re-optimizing dependencies because vite config has changed\nPort 5173 is in use, trying another one...\nPort 5174 is in use, trying another one...\nPort 5175 is in use, trying another one...\nMixed composition passage (canvas2d): 576 frames, adapted story precomp with native overlay, cue mappings, narration, standalone encoded-beat identity, isolated cache edits, relocated assets, invalid-input diagnostics and Lab pixel/seek checks pass."
+      },
+      {
+        "command": "pnpm test:browser:composition-native-passage:webgl",
+        "exitCode": 0,
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-test-browser-composition-native-passage-webgl.log",
+        "seconds": 126.17,
+        "status": "passed",
+        "sha256": "92641746fc3a10912f654a54bc7814f1b6b78e752d4e21c9d45359cf8f564991",
+        "summary": "> node --import tsx tests/browser/composition-native-passage.ts --webgl\n\n11:24:47 AM [vite] (client) Re-optimizing dependencies because vite config has changed\nPort 5173 is in use, trying another one...\nPort 5174 is in use, trying another one...\nPort 5175 is in use, trying another one...\nBounded WebGL passage previews: {\"beats\":20,\"edits\":8,\"peakActive\":4,\"remaining\":0,\"contextsCreated\":20}; all beat pixels, backward seeks, overlapping edits and failed-preparation cleanup pass.\nMixed composition passage (webgl2): 576 frames, adapted story precomp with native overlay, cue mappings, narration, standalone encoded-beat identity, isolated cache edits, relocated assets, invalid-input diagnostics and Lab pixel/seek checks pass."
+      },
+      {
+        "command": "pnpm test:browser:composition-passage",
+        "exitCode": 1,
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-test-browser-composition-passage.log",
+        "seconds": 94.11,
+        "status": "failed attempt; retained",
+        "sha256": "d49e19cfc0a2e92c479731e4501d96848bebad5fe0402654c1066c9756bcd7c3",
+        "summary": "    at async renderStoryPassage (/Users/jjae/.codex/worktrees/pr35-ce4a-conflicts/still-shift/packages/animation-engine/src/story-passage-render.ts:638:20)\n    at async <anonymous> (/Users/jjae/.codex/worktrees/pr35-ce4a-conflicts/still-shift/tests/browser/passage-authoring.ts:150:24) {\n  log: [],\n  name: 'TimeoutError'\n}\n\nNode.js v22.23.1\n\u2009ELIFECYCLE\u2009 Command failed with exit code 1."
+      },
+      {
+        "command": "pnpm test:browser:composition-quality",
+        "exitCode": 1,
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-test-browser-composition-quality.log",
+        "seconds": 11.1,
+        "status": "failed attempt; retained",
+        "sha256": "c8c555afb79ee856f4fe15be44a030e9ab8b2da31eca312943bc52e0ff3436b3",
+        "summary": "page.evaluate: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:5174/packages/renderer-core/src/index.ts\n    at lintCompositionFile (/Users/jjae/.codex/worktrees/pr35-ce4a-conflicts/still-shift/packages/animation-engine/src/composition-lint.ts:70:31)\n    at async <anonymous> (/Users/jjae/.codex/worktrees/pr35-ce4a-conflicts/still-shift/tests/browser/composition-quality.ts:733:21) {\n  log: []\n}\n\nNode.js v22.23.1\n\u2009ELIFECYCLE\u2009 Command failed with exit code 1."
+      },
+      {
+        "command": "pnpm test:browser:composition-expressions",
+        "exitCode": 0,
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-test-browser-composition-expressions.log",
+        "seconds": 15.51,
+        "status": "passed",
+        "sha256": "3b764a94212c61c249c215d4944b83e2fffa6849ef605bf9bdb6b36817e10c08",
+        "summary": "- nested-echo canvas2d: 40 expression frames equal their baked keys and random seeks\n- nested-echo webgl2: 40 expression frames equal their baked keys and random seeks\n- separated-roving canvas2d: 40 expression frames equal their baked keys and random seeks\n- separated-roving webgl2: 40 expression frames equal their baked keys and random seeks\n- auto-orient-boundaries canvas2d: 40 expression frames equal their baked keys and random seeks\n- auto-orient-boundaries webgl2: 40 expression frames equal their baked keys and random seeks\n- canvas2d export: repeated and baked MP4s are byte-identical (sha256:d50cf\u2026)\n- webgl2 export: repeated and baked MP4s are byte-identical (sha256:d50cf\u2026)"
+      },
+      {
+        "command": "pnpm test:browser:soundtrack",
+        "exitCode": 0,
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-test-browser-soundtrack.log",
+        "seconds": 24.13,
+        "status": "passed",
+        "sha256": "8d6e8723b7bea335f362da7f1ee0db0e9bca49d630ebbdf47c1166be602e84e0",
+        "summary": "> node --import tsx tests/browser/soundtrack.ts\n\n11:26:59 AM [vite] (client) Re-optimizing dependencies because vite config has changed\nPort 5173 is in use, trying another one...\nFailed to load resource: the server responded with a status of 400 (Bad Request)\nFailed to load resource: the server responded with a status of 400 (Bad Request)\nReal editor, exact native PCM and passage attachment passed.\nCE16 browser verification passed: real saved edits, exact native PCM, playback/seek/clear, passage full/range mux. Artifacts: /Users/jjae/.codex/worktrees/pr35-ce4a-conflicts/still-shift/benchmarks/results/composition-ce16/browser-weisnT"
+      },
+      {
+        "command": "pnpm test:browser:composition-baselines",
+        "exitCode": 0,
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-test-browser-composition-baselines.log",
+        "seconds": 335.79,
+        "status": "passed",
+        "sha256": "a2adef62af4576c72aaf9040983b64ad12f7a4e68e14cf7ac665693ba049e792",
+        "summary": "legacy/chronicle-reveal                               168f   1336ms ok\nlegacy/resource-flow                                  168f    942ms ok\nlegacy/access-pressure                                168f    925ms ok\nlegacy/comparison-build                               168f   1061ms ok\nlegacy/pose-prop-change                               168f    982ms ok\nlegacy/crisis-fracture                                168f   1020ms ok\nlegacy/vertical-chronicle-reveal                      168f   1181ms ok\n176 items, 36061 frames in 328.15s"
+      },
+      {
+        "command": "pnpm test:browser:composition-quality",
+        "exitCode": 0,
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-quality-rerun.log",
+        "seconds": 9.91,
+        "status": "passed",
+        "sha256": "2e645d524d05bf4146ae82b827fc831cf778fcc70a96863bb92e059afa3df6f6",
+        "summary": "\n> still-shift@0.1.0 test:browser:composition-quality /Users/jjae/.codex/worktrees/pr35-ce4a-conflicts/still-shift\n> node --import tsx tests/browser/composition-quality.ts\n\nLab timeline markers seek correctly; rendered pixel findings displayed.\nLab previews compositions whose motion lint cannot run.\n14 fixtures, inherited timing and matte content have Node/browser parity; clipped coverage matches rendered pixels; independent meaningful pixel motion checks pass on Canvas2D and WebGL2; file lint uses pinned browser."
+      },
+      {
+        "command": "pnpm test:browser:composition-passage",
+        "exitCode": 0,
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-passage-rerun.log",
+        "seconds": 90.17,
+        "status": "passed",
+        "sha256": "856aed99a88f4916c27f7a00235094053a262fa7e5b7bccaca13ccc856d02d50",
+        "summary": "> node --import tsx tests/browser/passage-authoring.ts --composition\n\nAuthoring verification artifacts: /var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-authoring-ikFbys\nEncoded checks passed: exact frames, cache reuse, isolated edit, range export, cancellation/resume, audio reuse.\n11:34:29 AM [vite] (client) Re-optimizing dependencies because vite config has changed\nPort 5173 is in use, trying another one...\nPort 5174 is in use, trying another one...\nPassage authoring QA passed: 9 frame comparisons; browser editing, recovery, playback and phone layout. Artifacts: /var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-authoring-ikFbys"
+      },
+      {
+        "command": "pnpm exec vitest run tests/integration/story-workspace.test.ts --maxWorkers=1 --no-file-parallelism",
+        "exitCode": 0,
+        "log": "benchmarks/results/pr35-conflict-20261006/pr35-conflict-workspace-serial-rerun.log",
+        "seconds": 17.04,
+        "status": "passed",
+        "testsPassed": 16,
+        "sha256": "69ded11a047fc5826f2e627ea6d9b319d1758093eef0f91e733850926bef5a87",
+        "summary": "   \u2713 portable story workspaces > rejects absolute dependencies even when their JSON checksum is updated  711ms\n   \u2713 portable story workspaces > does not overwrite an existing directory or publish an incomplete package  566ms\n\n Test Files  1 passed (1)\n      Tests  16 passed (16)\n   Start at  11:34:39\n   Duration  16.38s (transform 1.22s, setup 0ms, collect 2.40s, tests 13.80s, environment 0ms, prepare 47ms)\n"
+      }
+    ],
+    "baseRecheck": {
+      "head": "91f9c54b16f1d182dbcb28594adca30a4a6c9390",
+      "base": "f870fcec5d4a39dcd9c0c75f6d6422404a0bee70",
+      "result": "Fetched again before finalizing; both remote branches unchanged."
+    },
+    "additionalChecks": [
+      {
+        "command": "pnpm lint && pnpm format:check",
+        "exitCode": 0
+      },
+      "git diff --check; no unresolved index entries"
+    ],
+    "retryOutcome": "All originally failing cases and both affected browser suites pass on unchanged serial reruns. Integration aggregate itself was not repeated.",
+    "initialFailures": "Initial integration: 174 passed and two 30-second timeouts. First focused rerun: export cases passed, workspace timeouts moved to two other cases. Initial passage authoring timed out during export module startup; quality lint failed to fetch a browser module. Original isolated venv lacked Ruff; its own launcher was added. All failures/logs are retained; serial retries do not change source, timeouts, baselines or policies.",
+    "retention": "All scripts and test groups from both parents retained without duplicate pnpm test groups. All 37 head and 63 base development-log entry titles retained.",
+    "githubActionsEnabled": false,
+    "workflowChanges": [],
+    "notRun": [
+      "Full pnpm check and unrelated browser aggregate",
+      "Strict deferred CE6-P timing matrices",
+      "Human listening/audiovisual QA"
+    ],
+    "scope": "Focused conflict-integration and frozen baseline evidence; earlier full milestone gates are historical evidence, not a full pnpm check on this merge."
+  },
+  "delivery": "One merge commit to the existing PR head after fetching and checking the remote head/base; PR stays open for owner review/merge."
+}

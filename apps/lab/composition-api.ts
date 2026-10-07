@@ -5,6 +5,7 @@ import { exportCompositionDraft } from "../../tools/still-shift-cli/src/composit
 import {
   CompositionSaveError,
   readEditRequest,
+  sendCompositionEditError,
 } from "../../tools/still-shift-cli/src/composition/save.ts";
 import type { Composition } from "../../packages/scene-contract/src/index.ts";
 import type { Plugin } from "vite";
@@ -134,23 +135,23 @@ export const compositionApi = (): Plugin => {
                 "comp-edit-busy",
                 "A composition export is already running",
               );
-            const base = JSON.parse(text) as Composition,
-              assets = new Map<string, { bytes: Buffer; type: string }>();
-            for (const asset of base.assets) {
-              const path = resolve(dirname(scene), asset.path);
-              if (!inside(root, path) || !types[extname(path)])
-                throw new CompositionSaveError(
-                  422,
-                  "comp-edit-asset",
-                  "Unknown registered fixture asset",
-                );
-              assets.set(asset.id, {
-                bytes: await readFile(path),
-                type: types[extname(path)]!,
-              });
-            }
             exporting = true;
             try {
+              const base = JSON.parse(text) as Composition,
+                assets = new Map<string, { bytes: Buffer; type: string }>();
+              for (const asset of base.assets) {
+                const path = resolve(dirname(scene), asset.path);
+                if (!inside(root, path) || !types[extname(path)])
+                  throw new CompositionSaveError(
+                    422,
+                    "comp-edit-asset",
+                    "Unknown registered fixture asset",
+                  );
+                assets.set(asset.id, {
+                  bytes: await readFile(path),
+                  type: types[extname(path)]!,
+                });
+              }
               await exportCompositionDraft(
                 body.document,
                 base,
@@ -174,6 +175,10 @@ export const compositionApi = (): Plugin => {
             return send(response, 404, "Unknown composition asset");
           send(response, 200, await readFile(path), types[extname(path)]);
         })().catch((error: unknown) => {
+          if (url.pathname === "/composition/export") {
+            sendCompositionEditError(response, error);
+            return;
+          }
           if (!response.headersSent && !response.destroyed)
             send(
               response,

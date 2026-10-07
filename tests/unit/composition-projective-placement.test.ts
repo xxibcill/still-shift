@@ -3,12 +3,14 @@ import {
   localSurfaceBounds,
   planePlacement,
   offsetPlacement,
+  affineCoordinateMatrix,
 } from "../../packages/renderer-core/src/composition/render/projective-placement.ts";
 import {
   cameraGeometry,
   layerMatrix3d,
   projectPlane,
   type SpatialTransform,
+  type Homography,
 } from "../../packages/renderer-core/src/composition/evaluate/spatial-geometry.ts";
 const transform: SpatialTransform = {
   anchor: [0, 0, 0],
@@ -26,6 +28,23 @@ const camera = cameraGeometry({
   height: 100,
   zoom: 100,
   world: layerMatrix3d({ ...transform, position: [50, 50, -100] }),
+});
+it("recognizes affine coordinate relations independently of homography scale", () => {
+  const h: Homography = [1, 0, 8, 0, 1, -2, 0, Number.EPSILON / 8, 1];
+  for (const scale of [1, -1, 1e-12, -1e12]) {
+    const matrix = affineCoordinateMatrix(
+      h.map((value) => value * scale) as Homography,
+    )!;
+    expect(matrix).not.toBeNull();
+    for (const [index, value] of [1, 0, 0, 1, 8, -2].entries())
+      expect(matrix[index]).toBeCloseTo(value, 12);
+  }
+  for (const perspective of [1e-8, 0.01])
+    expect(
+      affineCoordinateMatrix([1, 0, 0, 0, 1, 0, perspective, 0, 1]),
+    ).toBeNull();
+  expect(affineCoordinateMatrix([1, 0, 0, 0, 1, 0, 0, 0, 0])).toBeNull();
+  expect(affineCoordinateMatrix([Infinity, 0, 0, 0, 1, 0, 0, 0, 1])).toBeNull();
 });
 it("maps negative artwork origins and outer precomp placement through the actual homography", () => {
   const plane = projectPlane(

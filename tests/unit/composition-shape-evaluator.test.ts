@@ -45,6 +45,33 @@ function failed(run: () => unknown) {
 }
 
 describe("native shape evaluation and property integration", () => {
+  it("keeps square-cap coverage visible when the centerline is offscreen", () => {
+    const doc = comp([
+      {
+        id: "path",
+        type: "path",
+        path: {
+          closed: false,
+          vertices: [
+            [75, 25],
+            [100, 50],
+          ],
+        },
+      },
+      {
+        id: "stroke",
+        type: "stroke",
+        width: 20,
+        color: "#ff0000",
+        cap: "square",
+        join: "round",
+      },
+    ]);
+    doc.width = 64;
+    const graph = buildRenderGraph(doc, evaluateComp(doc, 0));
+    expect(graph.culled).toEqual([]);
+    expect(graph.root.ops).toHaveLength(1);
+  });
   it("accepts empty shapes and samples cubic bounds, culling and immutable source", () => {
     expect(validateComposition(comp([])).ok).toBe(true);
     const doc = comp([rect, fill]);
@@ -216,6 +243,75 @@ describe("native shape evaluation and property integration", () => {
       frame: 36,
     });
   });
+  it.each(["layer", "ancestor"] as const)(
+    "keeps a scaled curved follower on its rendered contour through the %s transform",
+    (scaleOwner) => {
+      const doc = comp([
+        { id: "ellipse", type: "ellipse", size: [0.1, 0.1] },
+        { id: "stroke", type: "stroke", width: 0.002, color: "#ff0000" },
+      ]);
+      const placement = {
+        position: [100, 100] as [number, number],
+        scale: [1000, 1000] as [number, number],
+      };
+      if (scaleOwner === "layer") doc.layers[0]!.transform = placement;
+      else {
+        doc.layers[0]!.parent = "source-parent";
+        doc.layers.push({
+          id: "source-parent",
+          type: "null",
+          transform: placement,
+        });
+      }
+      doc.layers.push({
+        id: "target",
+        type: "solid",
+        size: [2, 2],
+        color: "#ffffff",
+      });
+      doc.signals = [
+        {
+          id: "progress",
+          keys: [
+            { frame: 0, value: 0.125 },
+            { frame: 1, value: 0.375 },
+            { frame: 2, value: 0.625 },
+            { frame: 3, value: 0.875 },
+          ],
+        },
+      ];
+      doc.constraints = [
+        {
+          type: "follow-path",
+          target: "target",
+          path: "shape",
+          progress: "progress",
+          orient: "tangent",
+        },
+      ];
+      expect(validateComposition(doc).ok).toBe(true);
+      const before = JSON.stringify(doc);
+      for (const frame of [0, 1, 2, 3, 2, 1, 0]) {
+        const target = evaluateComp(doc, frame).layers.find(
+          (layer) => layer.id === "target",
+        )!;
+        const point = transformPoint(
+          target.worldMatrix,
+          target.constraintReference,
+        );
+        const degrees = 45 + frame * 90;
+        const radians = (degrees * Math.PI) / 180;
+        // Each key lands halfway through a quarter of the radius-50 cubic circle.
+        expect(point[0]).toBeCloseTo(100 + 50 * Math.cos(radians), 6);
+        expect(point[1]).toBeCloseTo(100 + 50 * Math.sin(radians), 6);
+        expect(target.transform.rotation).toBeCloseTo(
+          ((degrees + 270) % 360) - 180,
+          6,
+        );
+      }
+      expect(JSON.stringify(doc)).toBe(before);
+    },
+  );
   it("follows the first transformed contour by world arc length and compensates target parenting", () => {
     const doc = comp([
       {

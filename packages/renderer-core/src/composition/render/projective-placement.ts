@@ -19,6 +19,21 @@ export type ProjectivePlacement = {
   farClip?: number;
   bounds: Bounds | null;
 };
+/** Coordinate relations can acquire machine-roundoff perspective terms during inversion. */
+export function affineCoordinateMatrix(h: Homography): Matrix | null {
+  if (!h.every(Number.isFinite) || h[8] === 0) return null;
+  const tolerance = Number.EPSILON * 32 * Math.abs(h[8]);
+  if (Math.abs(h[6]) > tolerance || Math.abs(h[7]) > tolerance) return null;
+  const matrix: Matrix = [
+    h[0] / h[8],
+    h[3] / h[8],
+    h[1] / h[8],
+    h[4] / h[8],
+    h[2] / h[8],
+    h[5] / h[8],
+  ];
+  return matrix.every(Number.isFinite) ? matrix : null;
+}
 export function planePlacement(
   plane: ProjectedPlane,
   outer: Matrix,
