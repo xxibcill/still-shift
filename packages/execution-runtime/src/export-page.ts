@@ -18,12 +18,18 @@ export type BrowserExportResult = {
   gpuRenderer: string;
 };
 
+export type BrowserCompositionOutput = {
+  preserveAlpha: boolean;
+  canonicalCapture: true;
+};
+
 declare global {
   interface Window {
     runStillShiftExport?: (
       scene: ExportableScene,
       hasDepth: boolean,
       transport: FrameTransport,
+      output?: BrowserCompositionOutput,
     ) => Promise<BrowserExportResult>;
   }
 }
@@ -103,8 +109,10 @@ const captureFrame = (
 const isComposition = (scene: ExportableScene): scene is CompositionScene =>
   "schemaVersion" in scene && scene.schemaVersion === "composition-scene-1";
 
-window.runStillShiftExport = async (scene, hasDepth, transport) => {
-  if (isComposition(scene)) return exportComposition(scene, transport);
+window.runStillShiftExport = async (scene, hasDepth, transport, output) => {
+  if (isComposition(scene)) return exportComposition(scene, transport, output);
+  if (output)
+    throw Error("Composition output profiles require a composition scene");
   const illustrated = "recipe" in scene;
   const source = illustrated ? null : await loadImage("/_export/source");
   const depth =
@@ -157,6 +165,7 @@ window.runStillShiftExport = async (scene, hasDepth, transport) => {
 const exportComposition = async (
   scene: CompositionScene,
   transport: FrameTransport,
+  output?: BrowserCompositionOutput,
 ): Promise<BrowserExportResult> => {
   assertCompositionEffectVersions(scene);
   const resources = await loadCompositionResources(
@@ -170,7 +179,10 @@ const exportComposition = async (
     canvas,
     scene.composition,
     resources,
-    { backend: scene.backend ?? "canvas2d" },
+    {
+      backend: scene.backend ?? "canvas2d",
+      ...(output ? { preserveAlpha: output.preserveAlpha } : {}),
+    },
   );
   const gl = preview.backend === "webgl2" ? canvas.getContext("webgl2") : null;
   const info = gl?.getExtension("WEBGL_debug_renderer_info");
@@ -192,6 +204,9 @@ const exportComposition = async (
     gl,
     transport,
     `${renderer} ${preview.rendererVersion}`,
+    output?.canonicalCapture && transport === "raw_rgba"
+      ? () => Promise.resolve(preview.readPixels().buffer as ArrayBuffer)
+      : undefined,
   );
 };
 
@@ -203,6 +218,7 @@ const renderFrames = async (
   gl: WebGL2RenderingContext | null,
   transport: FrameTransport,
   gpuRenderer: string,
+  capture?: () => Promise<ArrayBuffer | Blob>,
 ): Promise<BrowserExportResult> => {
   const timings: number[] = [];
   const uploadTimings: number[] = [];
@@ -211,7 +227,9 @@ const renderFrames = async (
       const frameStart = performance.now();
       const readiness = renderFrame(frameIndex);
       if (readiness) await readiness;
-      const frameBytes = await captureFrame(canvas, gl, transport);
+      const frameBytes = await (capture
+        ? capture()
+        : captureFrame(canvas, gl, transport));
       timings.push(performance.now() - frameStart);
       const uploadStart = performance.now();
       const response = await fetch("/_export/frame", {

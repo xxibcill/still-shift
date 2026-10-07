@@ -10,6 +10,18 @@ import {
 } from "../helpers/composition-media-png.ts";
 const pixels = Buffer.from([255, 0, 0, 128]);
 const png = (chunks: Buffer[]) => mediaRgbaPng(1, 1, pixels, chunks);
+it("accepts BT.709 PNG only with matching authored cICP transfer and preserves color priority", () => {
+  const bt709 = mediaPngChunk("cICP", Buffer.from([1, 1, 0, 1]));
+  const srgb = mediaPngChunk("cICP", Buffer.from([1, 13, 0, 1]));
+  const lower = mediaPngChunk("sRGB", Buffer.from([0]));
+  expect(
+    inspectCompositionPng(png([bt709, lower]), "bt709").colorAuthority,
+  ).toBe("cICP");
+  expect(() => inspectCompositionPng(png([bt709]))).toThrow(/cICP/);
+  expect(() => inspectCompositionPng(png([srgb]), "bt709")).toThrow(/cICP/);
+  expect(() => inspectCompositionPng(png([lower]), "bt709")).toThrow(/cICP/);
+  expect(() => inspectCompositionPng(png([]), "bt709")).toThrow(/cICP/);
+});
 it("honors PNG color priority and rejects unsupported authoritative ICC/HDR metadata", () => {
   const icc = mediaPngChunk("iCCP", Buffer.from("unsupported profile"));
   const srgb = mediaPngChunk("sRGB", Buffer.from([0]));

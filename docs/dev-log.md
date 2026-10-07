@@ -44,15 +44,18 @@ still hold before relying on them.
 ## Current state
 
 - **CE15 in progress (2026-10-07):** `codex/composition-ce15` from completed CE13
-  `aedfc9e`. Canvas 1.46 / WebGL2 0.67 add opt-in transparent roots and exact PNG
-  drawing-buffer readback while retaining the opaque default and offscreen law.
-  All 38 actual alpha cases, 32,895 valid byte/alpha pairs, 256 zero-alpha pairs,
-  19 focused units, static checks and the complete original WebGL suite pass.
-  Retained failed diagnostics explain the normalized float32 conversion. Formats,
-  global static caching, bounded parallel export, statistics, actual two-minute
-  speed proof and the final full gate remain in flight. No owner decision blocks
-  CE15 → CE14. CE5-X/Q9 and separate CE6-P remain pending.
-  [Plan](./composition-ce15-plan.md), [evidence](./composition-ce15-results.json).
+  `aedfc9e`; transparent renderer checkpoint `49e0543` is pushed. Seven explicit
+  BT709 output profiles now pass 44 production exports, 14 independent preview
+  encodes, native alpha-depth checks, 2 CLI deliveries, 18 dimension cases and 16
+  protected failures. PNG8/16 reimport, complete PCM, AAC/Opus clocks and sequence
+  completion order pass. Build/lint, 39 focused units/runtime tests, 65 affected
+  media/CLI tests and existing WebGL export/native-media browser regressions pass.
+  Rejected implicit precision/tag/alpha conversions and H264 CRF18 are retained.
+  Global static caching, aggregate memory limits, bounded parallel export,
+  statistics, the actual two-minute speed proof and final full gate remain in
+  flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
+  pending. [Plan](./composition-ce15-plan.md),
+  [format evidence](./composition-ce15-format-results.json).
 
 - **CE13 complete; PR #48 delivered (2026-10-07):** `codex/composition-ce13`
   from CE4d `adf6cea`, verified `01fbca2`. Audited merged CE16 PR #33 is integrated.
@@ -282,6 +285,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 explicit output profiles checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from `49e0543`.
+- **Done:** seven BT709 profiles, preserved native alpha, PCM companions,
+  source revalidation and protected completion publication; CLI format/transport.
+- **Results:** 44 production / 14 independent preview encodes, 18 dimension cases,
+  16 failure cases, 39 focused and 65 affected tests; legacy browser regressions pass.
+  All existing thresholds remain unchanged; no CE15 full gate has run.
+- **Rejected:** implicit precision expansion, tag-only reimport, scaled alpha and
+  explicit H264 CRF18; corrected source-alpha extraction and CRF16 pass.
+- **Next:** aggregate memory limits, global static cache, parallel workers,
+  statistics and actual 120-second 3× speed proof, then full gate/PR and CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [format evidence](./composition-ce15-format-results.json).
 
 ### 2026-10-07 — CE15 transparent renderer checkpoint
 

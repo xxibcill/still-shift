@@ -4,7 +4,7 @@
   "branch": "codex/composition-ce15",
   "base": "aedfc9e",
   "started": "2026-10-07",
-  "checkpoint": "transparent composition renderer and exact drawing-buffer capture",
+  "checkpoint": "transparent renderer and all seven explicit output profiles",
   "versions": {
     "canvas": "composition-canvas-1.46.0",
     "webgl": "composition-webgl2-0.67.0"
@@ -526,14 +526,12 @@
   },
   "fullGates": [],
   "pending": [
-    "first Q4 profiles together: ProRes4444 alpha, PNG8/16, H264 and HEVC10 with actual BT709 conversion and decode-back",
-    "ProRes422HQ and VP9 alpha",
-    "60fps and actual per-profile size limits",
-    "once-per-export global static layer/precomp cache with actual paint counters",
-    "bounded parallel export, boundary identity and cancellation",
-    "render statistics and isolated actual 120-second one/four-worker >=3x end-to-end proof",
-    "implementation review and complete final local pnpm check",
-    "create and attach CE15 PR; continue CE14"
+    "aggregate pixel/worker memory limit and full area matrix",
+    "global static layer/precomp cache including preflight and late visibility",
+    "bounded independent parallel workers and complete boundary/lifecycle acceptance",
+    "per-layer statistics and actual 120-second \u22653\u00d7 one/four-worker end-to-end proof",
+    "final implementation review and immutable complete local pnpm check",
+    "CE15 PR creation/attachment; then complete CE14"
   ],
   "policy": {
     "githubActions": false,
@@ -541,5 +539,23 @@
     "subagents": false,
     "ce5XQ9": "pending",
     "ownerWork": "preserved with scoped plan/log staging"
+  },
+  "formatCheckpoint": {
+    "status": "focused-acceptance-passed",
+    "record": "docs/composition-ce15-format-results.json",
+    "relevantFingerprint": "3d430f99abea45df8fd862c0d49c5d01a71130e4a192ca7a69291cd65aed90bf",
+    "formats": [
+      "prores4444",
+      "png8",
+      "png16",
+      "h264",
+      "hevc10",
+      "prores422hq",
+      "vp9alpha"
+    ],
+    "productionSuccesses": 44,
+    "independentPreviewEncodes": 14,
+    "originalFailureReasons": 16,
+    "completeLocalGate": "pending"
   }
 }

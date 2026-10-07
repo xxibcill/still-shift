@@ -6,6 +6,7 @@ import { availableParallelism, cpus, tmpdir } from "node:os";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { createHash, randomUUID } from "node:crypto";
+import type { Writable } from "node:stream";
 
 import { chromium, type Browser } from "playwright";
 import { createServer, type Plugin, type ViteDevServer } from "vite";
@@ -36,6 +37,21 @@ import { assertNever, type FrameTransport } from "./transport.ts";
 import { publishArtifacts } from "./artifact-publication.ts";
 import { runProcess } from "./subprocess.ts";
 import {
+  compositionOutputProfile,
+  compositionOutputArguments,
+  compositionOutputCodecArguments,
+  validateCompositionOutput,
+  type CompositionOutputFormat,
+} from "./composition-output.ts";
+import { compositionOutputInput } from "./composition-output-input.ts";
+import { prepareCompositionOutputArtifacts } from "./composition-output-artifacts.ts";
+import { verifyCompositionOutputAudio } from "./composition-output-audio.ts";
+export type { CompositionOutputFormat } from "./composition-output.ts";
+export {
+  COMPOSITION_OUTPUT_FORMATS,
+  COMPOSITION_OUTPUT_VERSION,
+} from "./composition-output.ts";
+import {
   assertPinnedRenderEnvironment,
   launchRenderBrowser,
   probeRenderEnvironment,
@@ -49,6 +65,7 @@ export type ExportableScene =
   | CompositionScene;
 
 const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.7";
+const COMPOSITION_EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.7.0";
 
 export type ExportAudioInput = {
   path: string;
@@ -70,8 +87,13 @@ export type ExportRequest = {
   sceneManifestContents?: string;
   resultManifestContents?: (metrics: ExportMetrics) => string | Promise<string>;
   validateResult?: (metrics: ExportMetrics) => void | Promise<void>;
+  /** Recheck pinned source assets immediately before publication. */
+  validateSources?: () => Promise<void>;
   encoder?: "libx264" | "h264_videotoolbox";
   transport?: FrameTransport;
+  /** Opt into a BT.709 composition delivery profile; omission retains legacy MP4. */
+  format?: CompositionOutputFormat;
+  expectedSourceChecksum?: string;
   /**
    * Verification hook only. Export always requires the pinned profile; any other
    * value makes it fail with `export-renderer-mismatch` before rendering.
@@ -80,7 +102,9 @@ export type ExportRequest = {
 };
 
 export type ExportMetrics = {
-  version: typeof EXPORT_WORKER_VERSION;
+  version:
+    | typeof EXPORT_WORKER_VERSION
+    | typeof COMPOSITION_EXPORT_WORKER_VERSION;
   sceneManifestPath: string;
   sceneChecksum: string;
   sourceChecksum: string;
@@ -115,7 +139,31 @@ export type ExportMetrics = {
     sampleCount: number;
     sampleRate: 48000;
     channels: 2;
-    codec: "aac";
+    codec: "aac" | "pcm_f32le" | "opus";
+    decodedSampleCount?: number;
+    decodedChecksum?: string;
+  };
+  output?: {
+    version: "composition-output-1";
+    format: CompositionOutputFormat;
+    alpha: boolean;
+    renderSourceBitDepth: 8;
+    encoderInputBitDepth: 8 | 10 | 16;
+    encodedBitDepth: 8 | 10 | 12 | 16;
+    color: {
+      primaries: "bt709";
+      transfer: "bt709";
+      matrix: "bt709" | "gbr";
+      range: "pc" | "tv";
+    };
+    sequence?: {
+      pattern: string;
+      manifestPath: string;
+      firstFrame: 0;
+      frames: string[];
+      audioPath?: string;
+      audioChecksum?: string;
+    };
   };
 };
 
@@ -290,14 +338,15 @@ const sampleProcessTreeRssBytes = async (
 
 const readBodyToEncoder = async (
   request: IncomingMessage,
-  encoder: ReturnType<typeof spawn>,
+  stdin: Writable,
   expectedBytes: number | null,
+  maxFrameBytes: number,
 ): Promise<void> => {
   const contentLength = Number(request.headers["content-length"]);
   if (
     !Number.isSafeInteger(contentLength) ||
     contentLength <= 0 ||
-    contentLength > 50_000_000 ||
+    contentLength > maxFrameBytes ||
     (expectedBytes !== null && contentLength !== expectedBytes)
   )
     throw new Error("Frame byte count differs from the transport contract");
@@ -307,11 +356,12 @@ const readBodyToEncoder = async (
     bytes += chunk.length;
     if (bytes > contentLength)
       throw new Error("Frame upload exceeded the expected byte count");
-    const stdin = encoder.stdin;
-    if (!stdin) throw new Error("FFmpeg input stream is unavailable");
-    await new Promise<void>((accept, reject) => {
-      stdin.write(chunk, (error) => (error ? reject(error) : accept()));
-    });
+    for (let offset = 0; offset < chunk.length; offset += 65536)
+      await new Promise<void>((accept, reject) => {
+        stdin.write(chunk.subarray(offset, offset + 65536), (error) =>
+          error ? reject(error) : accept(),
+        );
+      });
   }
   if (bytes !== contentLength)
     throw new Error("Frame upload ended before the expected byte count");
@@ -342,9 +392,10 @@ const sendAsset = async (
 
 const assetPlugin = (
   request: ExportRequest,
-  encoder: ReturnType<typeof spawn>,
+  encoderInput: Writable,
   expectedBytes: number | null,
-  frameState: { nextIndex: number; error: Error | null },
+  maxFrameBytes: number,
+  frameState: { nextIndex: number; pending: boolean; error: Error | null },
 ): Plugin => ({
   name: "still-shift-export-assets",
   configureServer(server) {
@@ -392,20 +443,38 @@ const assetPlugin = (
         response.end("POST required");
         return;
       }
-      const index = Number(incoming.headers["x-frame-index"]);
-      if (frameState.error || index !== frameState.nextIndex) {
+      const indexHeader = incoming.headers["x-frame-index"];
+      const index =
+        typeof indexHeader === "string" && /^(0|[1-9]\d*)$/.test(indexHeader)
+          ? Number(indexHeader)
+          : NaN;
+      if (
+        frameState.error ||
+        frameState.pending ||
+        !Number.isSafeInteger(index) ||
+        index < 0 ||
+        index >= request.scene.timeline.frameCount ||
+        index !== frameState.nextIndex
+      ) {
         response.statusCode = 409;
         response.end("Frame order mismatch");
         return;
       }
-      void readBodyToEncoder(incoming, encoder, expectedBytes)
+      frameState.pending = true;
+      void readBodyToEncoder(
+        incoming,
+        encoderInput,
+        expectedBytes,
+        maxFrameBytes,
+      )
         .then(() => {
           frameState.nextIndex += 1;
+          frameState.pending = false;
           response.statusCode = 204;
           response.end();
         })
         .catch((error: unknown) => {
-          frameState.error =
+          frameState.error ??=
             error instanceof Error ? error : new Error(String(error));
           response.statusCode = 500;
           response.end(frameState.error.message);
@@ -483,6 +552,34 @@ export const exportScene = async (
   const projectRoot = request.runtime?.projectRoot ?? defaultBrowserProjectRoot;
   const start = performance.now();
   const { scene } = request;
+  const profile =
+    request.format === undefined
+      ? undefined
+      : compositionOutputProfile(request.format);
+  const transport = request.transport ?? "png_pipe";
+  if (profile) {
+    if (!("composition" in scene))
+      throw Error("Output formats require a composition scene");
+    if (request.encoder && request.encoder !== "libx264")
+      throw Error(
+        "Composition output profiles require their pinned software encoder",
+      );
+    validateCompositionOutput(
+      profile,
+      scene.canvas.width,
+      scene.canvas.height,
+      transport,
+    );
+  }
+  const capturedSourceChecksum = profile
+    ? await fileChecksum(request.sourcePath, request.signal)
+    : undefined;
+  if (
+    profile &&
+    request.expectedSourceChecksum &&
+    capturedSourceChecksum !== request.expectedSourceChecksum
+  )
+    throw Error("Composition source changed before output preparation");
   const audioInput = request.audioInput;
   const nativeAudio =
     "composition" in scene &&
@@ -561,7 +658,7 @@ export const exportScene = async (
   const sceneManifestPath = `${outputPath}.scene.json`;
   const resultPath = `${outputPath}.result.json`;
   const exportId = randomUUID();
-  const temporaryPath = resolve(
+  let temporaryPath = resolve(
     dirname(outputPath),
     `.${basename(outputPath)}.${exportId}.tmp.mp4`,
   );
@@ -591,11 +688,35 @@ export const exportScene = async (
   const ffmpegVersion = (
     await runProcess("ffmpeg", ["-version"], { signal: request.signal })
   ).stdout.split("\n")[0]!;
+  const outputArtifacts = profile
+    ? await prepareCompositionOutputArtifacts(
+        profile,
+        outputPath,
+        { ...scene.canvas, ...scene.timeline },
+        audioInput,
+        request.signal,
+      )
+    : undefined;
+  if (outputArtifacts) temporaryPath = outputArtifacts.temporaryPath;
   const encoderName = request.encoder ?? "libx264";
-  const transport = request.transport ?? "png_pipe";
   const encoder = spawn(
     "ffmpeg",
-    ffmpegArguments(scene, temporaryPath, encoderName, transport, audioInput),
+    profile
+      ? compositionOutputArguments(profile, {
+          ...scene.canvas,
+          ...scene.timeline,
+          outputPath: temporaryPath,
+          ...(audioInput && profile.container !== "image2"
+            ? { audioPath: audioInput.path }
+            : {}),
+        })
+      : ffmpegArguments(
+          scene,
+          temporaryPath,
+          encoderName,
+          transport,
+          audioInput,
+        ),
     {
       stdio: ["pipe", "ignore", "pipe"],
     },
@@ -605,7 +726,7 @@ export const exportScene = async (
   encoder.stdin?.on("error", () => undefined);
   let encoderError = "";
   encoder.stderr?.on("data", (chunk: Buffer) => {
-    encoderError += chunk.toString();
+    encoderError = (encoderError + chunk.toString()).slice(-65536);
   });
   const encoderClosed = new Promise<void>((accept, reject) => {
     encoder.on("error", reject);
@@ -619,7 +740,21 @@ export const exportScene = async (
     encoder.once("close", () => accept()),
   );
   encoderClosed.catch(() => undefined);
-  const frameState = { nextIndex: 0, error: null as Error | null };
+  const frameState = {
+    nextIndex: 0,
+    pending: false,
+    error: null as Error | null,
+  };
+  const outputInput = profile
+    ? compositionOutputInput(
+        profile,
+        transport,
+        scene.canvas.width * scene.canvas.height * 4,
+        scene.timeline.frameCount,
+        encoder.stdin!,
+        request.signal,
+      )
+    : undefined;
   const expectedBytes =
     transport === "raw_rgba"
       ? scene.canvas.width * scene.canvas.height * 4
@@ -629,6 +764,7 @@ export const exportScene = async (
   let viteCacheDirectory: string | undefined;
   const abort = () => {
     encoder.kill("SIGKILL");
+    void outputInput?.dispose().catch(() => undefined);
     void browser?.close().catch(() => undefined);
   };
   request.signal?.addEventListener("abort", abort, { once: true });
@@ -667,7 +803,19 @@ export const exportScene = async (
       configFile: false,
       cacheDir: viteCacheDirectory,
       logLevel: "silent",
-      plugins: [assetPlugin(request, encoder, expectedBytes, frameState)],
+      plugins: [
+        assetPlugin(
+          request,
+          outputInput?.input ?? encoder.stdin!,
+          expectedBytes,
+          profile
+            ? scene.canvas.width * scene.canvas.height * 4 +
+                scene.canvas.height +
+                1048576
+            : 50_000_000,
+          frameState,
+        ),
+      ],
       server: {
         host: "127.0.0.1",
         port: 0,
@@ -717,7 +865,7 @@ export const exportScene = async (
     assertPinnedRenderEnvironment(renderEnvironment);
     encodePathStart = performance.now();
     const outcome = await page.evaluate(
-      async ({ scene, hasDepth, transport }) => {
+      async ({ scene, hasDepth, transport, output }) => {
         try {
           return {
             ok: true as const,
@@ -725,6 +873,7 @@ export const exportScene = async (
               scene,
               hasDepth,
               transport,
+              output,
             ),
           };
         } catch (error) {
@@ -740,6 +889,9 @@ export const exportScene = async (
         scene: scene as PreviewScene,
         hasDepth: request.depthPath !== null,
         transport,
+        output: profile
+          ? { preserveAlpha: profile.alpha, canonicalCapture: true as const }
+          : undefined,
       },
     );
     if (!outcome.ok) {
@@ -762,12 +914,23 @@ export const exportScene = async (
     if (frameState.error) throw frameState.error;
     if (frameState.nextIndex !== scene.timeline.frameCount)
       throw new Error("Not all frames reached the encoder");
-    encoder.stdin?.end();
+    if (outputInput) await outputInput.finish();
+    else encoder.stdin?.end();
     await encoderClosed;
     await sampleMemory();
     const validationStart = performance.now();
-    await verifyOutput(temporaryPath, scene, request.signal);
-    if (audioInput) {
+    if (outputArtifacts) await outputArtifacts.verify();
+    else await verifyOutput(temporaryPath, scene, request.signal);
+    const profileAudio =
+      audioInput && profile && profile.container !== "image2"
+        ? await verifyCompositionOutputAudio(
+            temporaryPath,
+            audioInput,
+            profile,
+            request.signal,
+          )
+        : undefined;
+    if (audioInput && !profile) {
       const probe = await runProcess(
         "ffprobe",
         [
@@ -806,6 +969,8 @@ export const exportScene = async (
         throw new Error(
           "FFprobe validation failed for muxed native audio clock",
         );
+    }
+    if (audioInput) {
       await verifyCompositionAudioPcm(
         audioInput.path,
         {
@@ -816,12 +981,19 @@ export const exportScene = async (
       );
     }
     const validationWallMs = performance.now() - validationStart;
-    const outputBytes = (await stat(temporaryPath)).size;
-    const outputChecksum = await fileChecksum(temporaryPath, request.signal);
+    const summary = outputArtifacts
+      ? await outputArtifacts.summarize()
+      : {
+          outputBytes: (await stat(temporaryPath)).size,
+          outputChecksum: await fileChecksum(temporaryPath, request.signal),
+        };
+    const { outputBytes, outputChecksum } = summary;
     const sourceChecksum = await fileChecksum(
       request.sourcePath,
       request.signal,
     );
+    if (profile && sourceChecksum !== capturedSourceChecksum)
+      throw Error("Composition source changed during output rendering");
     const depthChecksum = request.depthPath
       ? await fileChecksum(request.depthPath, request.signal)
       : null;
@@ -837,7 +1009,9 @@ export const exportScene = async (
     const sceneChecksum = contentChecksum(serializedScene);
     await writeFile(temporaryScenePath, serializedScene, { flag: "wx" });
     const metrics: ExportMetrics = {
-      version: EXPORT_WORKER_VERSION,
+      version: profile
+        ? COMPOSITION_EXPORT_WORKER_VERSION
+        : EXPORT_WORKER_VERSION,
       sceneManifestPath,
       sceneChecksum,
       sourceChecksum,
@@ -865,7 +1039,10 @@ export const exportScene = async (
       gpuRenderer: browserResult.gpuRenderer,
       renderEnvironment,
       ffmpegVersion,
-      ffmpegCodec: codecArguments(encoderName).join(" "),
+      ffmpegCodec: (profile
+        ? compositionOutputCodecArguments(profile)
+        : codecArguments(encoderName)
+      ).join(" "),
       frameTransport: transport,
       ...(audioInput
         ? {
@@ -874,7 +1051,40 @@ export const exportScene = async (
               sampleCount: audioInput.sampleCount,
               sampleRate: 48000 as const,
               channels: 2 as const,
-              codec: "aac" as const,
+              codec:
+                profile?.audioCodec === "libopus"
+                  ? ("opus" as const)
+                  : (profile?.audioCodec ?? ("aac" as const)),
+              ...(profileAudio && "decodedSampleCount" in profileAudio
+                ? {
+                    decodedSampleCount: profileAudio.decodedSampleCount,
+                    decodedChecksum: profileAudio.decodedChecksum,
+                  }
+                : {}),
+            },
+          }
+        : {}),
+      ...(profile
+        ? {
+            output: {
+              version: profile.version,
+              format: profile.format,
+              alpha: profile.alpha,
+              renderSourceBitDepth: 8 as const,
+              encoderInputBitDepth: profile.bitDepth,
+              encodedBitDepth: profile.encodedBitDepth,
+              color: {
+                primaries: "bt709" as const,
+                transfer: "bt709" as const,
+                matrix:
+                  profile.matrix === "rgb"
+                    ? ("gbr" as const)
+                    : ("bt709" as const),
+                range: profile.range,
+              },
+              ...("sequence" in summary && summary.sequence
+                ? { sequence: summary.sequence }
+                : {}),
             },
           }
         : {}),
@@ -894,14 +1104,24 @@ export const exportScene = async (
     await server.close();
     server = undefined;
     request.signal?.throwIfAborted();
+    if (profile) {
+      await request.validateSources?.();
+      if (
+        (await fileChecksum(request.sourcePath, request.signal)) !==
+        capturedSourceChecksum
+      )
+        throw Error("Composition source changed before output publication");
+    }
+    const metadata = [
+      { staged: temporaryScenePath, destination: sceneManifestPath },
+      ...(request.resultManifestContents
+        ? [{ staged: temporaryResultPath, destination: resultPath }]
+        : []),
+    ];
     await publishArtifacts(
-      [
-        { staged: temporaryScenePath, destination: sceneManifestPath },
-        ...(request.resultManifestContents
-          ? [{ staged: temporaryResultPath, destination: resultPath }]
-          : []),
-        { staged: temporaryPath, destination: outputPath },
-      ],
+      outputArtifacts
+        ? outputArtifacts.publications(metadata)
+        : [...metadata, { staged: temporaryPath, destination: outputPath }],
       request.signal,
     );
     published = true;
@@ -918,6 +1138,8 @@ export const exportScene = async (
     const cleanup = await Promise.allSettled([
       published ? null : memorySample,
       published ? null : browser?.close(),
+      outputInput?.dispose(),
+      outputArtifacts?.dispose(),
       (async () => {
         try {
           await server?.close();

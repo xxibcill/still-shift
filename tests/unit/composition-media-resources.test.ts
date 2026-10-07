@@ -2,6 +2,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { createHash } from "node:crypto";
 import {
   CompositionSchema,
+  COMPOSITION_MEDIA_DECODER_VERSION,
   compositionMediaFrameId,
   defineCompositionEffect,
   registerCompositionEffectDefinition,
@@ -54,7 +55,7 @@ const png = mediaRgbaPng(16, 16, Buffer.alloc(16 * 16 * 4, 255), [
 ]);
 const manifest = (): CompositionPreparedMedia => ({
   schemaVersion: "composition-prepared-media-1",
-  decoderVersion: "composition-media-decoder-1",
+  decoderVersion: COMPOSITION_MEDIA_DECODER_VERSION,
   ffmpegIdentities: [sourceHash],
   frames: Array.from({ length: 8 }, (_, ordinal) => ({
     id: compositionMediaFrameId("clip", ordinal),
@@ -174,6 +175,12 @@ it("includes disabled effect sources, mattes, nested scopes and isolated require
   }
 });
 it("rejects frame identity/source/dimension mismatch and duplicate captured IDs", () => {
+  expect(() =>
+    validateCompositionPreparedMedia(fixture(), {
+      ...manifest(),
+      decoderVersion: "composition-media-decoder-1",
+    } as unknown as CompositionPreparedMedia),
+  ).toThrow(/manifest|contract/i);
   const c = fixture(),
     m = manifest();
   expect(validateCompositionPreparedMedia(c, m).size).toBe(8);

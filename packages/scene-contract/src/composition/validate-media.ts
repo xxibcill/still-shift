@@ -61,13 +61,12 @@ export function checkMediaAssets(comp: Composition, fail: IssueReporter) {
     if (
       asset.type === "sequence" &&
       (!/^(?:[^%]*\/)?[^/%]*%0[1-9]\d?d[^/%]*\.png$/.test(asset.path) ||
-        asset.color.matrix !== "gbr" ||
-        asset.color.transfer !== "iec61966-2-1")
+        asset.color.matrix !== "gbr")
     )
       fail(
         "comp-media-sequence",
         [...path, "path"],
-        "Sequences require one numbered PNG pattern and sRGB full-range RGB metadata",
+        "Sequences require one numbered PNG pattern and full-range RGB metadata with a supported transfer",
       );
   });
 }

@@ -99,7 +99,10 @@ export type CompositionPngInfo = {
   colorAuthority: "cICP" | "sRGB" | "authored-untagged-srgb";
 };
 /** PNG Third Edition priority: cICP, ICC, sRGB, then legacy gamma/chromaticities. */
-export function inspectCompositionPng(bytes: Buffer): CompositionPngInfo {
+export function inspectCompositionPng(
+  bytes: Buffer,
+  transfer: CompositionMediaColor["transfer"] = "iec61966-2-1",
+): CompositionPngInfo {
   const chunks = pngChunks(bytes);
   const header = chunks[0]!.data;
   const width = header.readUInt32BE(0),
@@ -128,14 +131,22 @@ export function inspectCompositionPng(bytes: Buffer): CompositionPngInfo {
     );
   const cicp = chunks.find((chunk) => chunk.type === "cICP");
   if (cicp) {
-    if (!cicp.data.equals(Buffer.from([1, 13, 0, 1])))
+    if (
+      !cicp.data.equals(Buffer.from([1, transfer === "bt709" ? 1 : 13, 0, 1]))
+    )
       passageError(
         "comp-media-color",
-        "Sequence PNG cICP must declare full-range sRGB / BT.709 primaries",
+        `Sequence PNG cICP must declare full-range ${transfer} RGB / BT.709 primaries`,
         { path: "cICP" },
       );
     return { width, height, bitDepth, colorType, colorAuthority: "cICP" };
   }
+  if (transfer === "bt709")
+    passageError(
+      "comp-media-color",
+      "BT.709 sequence PNG requires matching cICP transfer authority",
+      { path: "cICP" },
+    );
   if (chunks.some((chunk) => chunk.type === "iCCP"))
     passageError(
       "comp-media-color",
@@ -199,4 +210,17 @@ export function compositionMediaColorFilter(
   }
   filters.push(`scale=flags=${flags}:sws_dither=none`, "format=rgba");
   return filters.join(",");
+}
+
+/** BT.709 PNG alpha is copied from source samples before any RGB precision conversion. */
+export function compositionSequenceColorFilter(
+  color: CompositionMediaColor,
+  bitDepth: number,
+): string {
+  const input = bitDepth === 16 ? "rgba64le" : "rgba";
+  const rgb = compositionMediaColorFilter(color).replace(
+    /format=rgba$/,
+    "format=rgb24",
+  );
+  return `format=${input},split[color][alpha];[alpha]alphaextract,format=gray[mask];[color]${rgb}[rgb];[rgb][mask]alphamerge,format=rgba`;
 }

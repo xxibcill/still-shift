@@ -143,7 +143,7 @@ export const compositionMediaFrameId = (asset: string, frame: number) =>
 
 /** Captured prepared frames are separate from editable source descriptors. */
 export const COMPOSITION_MEDIA_DECODER_VERSION =
-  "composition-media-decoder-1" as const;
+  "composition-media-decoder-2" as const;
 export const CompositionPreparedMediaFrameSchema = z
   .object({
     id: z.string().min(1).max(256),

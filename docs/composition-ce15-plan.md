@@ -2,7 +2,7 @@
 
 Codex is working on `codex/composition-ce15` from completed CE13 `aedfc9e`.
 CE13 PR #48 is open and attached. CE15 remains in progress; its first focused
-checkpoint establishes transparent renderer output before format integration.
+renderer checkpoint and all seven explicit delivery profiles pass focused acceptance.
 
 ## Accepted renderer checkpoint — 2026-10-07
 
@@ -24,24 +24,50 @@ boundaries, changed-file lint, 19 readback/exposure units and the complete origi
 WebGL regression suite pass. Earlier failed diagnostics remain in the
 [results](./composition-ce15-results.json). No full gate has run for CE15 yet.
 
+## Accepted format checkpoint — 2026-10-07
+
+Explicit `format` / CLI `--format` selects ProRes4444, PNG8, PNG16, H264,
+HEVC10, ProRes422HQ or VP9 alpha. Omission retains the legacy MP4 path.
+All profiles perform actual sRGB-to-BT709 RGB conversion, preserve linear alpha
+where supported and verify actual metadata, frame counts and complete decoding.
+PNG sequences use `%06d.png`, a final hash manifest and the exact captured PCM WAV
+companion. MOV carries exact PCM; MP4 uses the exact 48 kHz AAC edit-list clock; WebM
+verifies the actual decoded Opus sample count. Renderer source precision remains 8-bit;
+the manifest distinguishes codec input depth from verified output depth.
+
+The mandatory format test passes 28 backend/transport exports, 14 independent
+preview encodes, 2 real CLI exports, 18 dimension cases and 16 protected failures.
+There are 44 successful production exports; all repeat and independent media bytes
+match. Every authored alpha value is checked on every actual frame, including
+native PNG16/ProRes12/VP9 alpha decoding and complete PNG sequence reimport.
+Actual 17 × 19 exports pass where supported; both maximum 8192-pixel axes pass PNG on
+both backends. H264/HEVC reject odd dimensions. Full large-area/worker limits remain
+pending. Six native sequence transaction tests verify completion order, original
+abort reasons, cleanup and concurrent foreign-file retention. This is a per-file
+transaction, not a crash-atomic bundle.
+
+Build, lint, 39 focused unit/runtime tests, 65 affected media/CLI tests, schema,
+boundaries and both existing composition WebGL-export/native-media browser suites
+pass. H264 CRF18 exceeded the unchanged four-level gray check; the explicit
+profile now uses CRF16 while legacy encoding retains 18. Direct precision conversion
+and simple tag rewriting were rejected because they changed alpha or RGB samples.
+[Detailed evidence](./composition-ce15-format-results.json) retains the attempts,
+checksums, scoped code fingerprint and actual reports. No CE15 full gate has run.
+
 ## Remaining implementation and acceptance
 
-1. Deliver the first Q4 profiles together: ProRes 4444 alpha, PNG8/16, H.264 and
-   HEVC10. Apply actual sRGB-to-BT.709 RGB conversion with linear alpha; verify
-   color metadata, dimensions, frame clocks, actual decoded pixels and audio.
-2. Add ProRes 422 HQ and VP9 alpha, including alpha-aware decoding and protected
-   audio clocks. Prove 60fps and actual arbitrary-size limits for each codec.
-3. Retain static layer and precomp surfaces once per export globally. Include
+1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
+2. Retain static layer and precomp surfaces once per export globally. Include
    coverage preflight painting, late visibility, nested effects/mattes, actual
    ownership counters, bounded memory and cached/uncached pixel equality.
-4. Add bounded independent browser workers feeding one ordered encoder. Preserve
+3. Add bounded independent browser workers feeding one ordered encoder. Preserve
    absolute source time, cancellation and transactional publication. Verify
    boundary frames, repeat bytes, concurrent errors and foreign-file retention.
-5. Record actual per-layer submission/render timings, cache hits and owned bytes.
+4. Record actual per-layer submission/render timings, cache hits and owned bytes.
    Measure a real two-minute export end-to-end with one and four workers under the
    same profile and cache policy, without competing workloads. Require identical
-   output and at least 3x speedup.
-6. Review implementation, run affected checks, then run the complete pinned local
+   output and at least 3× speedup.
+5. Review implementation, run affected checks, then run the complete pinned local
    `pnpm check` on an immutable final checkpoint. Create and attach the CE15 PR,
    then continue all CE14 work on a new branch.
 

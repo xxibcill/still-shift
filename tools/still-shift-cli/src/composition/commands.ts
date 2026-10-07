@@ -28,6 +28,10 @@ import { parseNamedArguments, requireArgument } from "../named-options.ts";
 import { loadProgram } from "./program.ts";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { withProgramFile, writeComposition } from "./files.ts";
+import {
+  COMPOSITION_OUTPUT_FORMATS,
+  type CompositionOutputFormat,
+} from "@still-shift/execution-runtime/export";
 export type CompositionIo = {
   stdout: (text: string) => void;
   stderr: (text: string) => void;
@@ -275,15 +279,43 @@ export async function runCompositionCommand(
           "input",
           "output",
           "backend",
+          "format",
+          "transport",
         ]),
         input = requireArgument(values, "input");
       const backend = backendOption(values);
+      const format = values.get("format");
+      if (
+        format !== undefined &&
+        !COMPOSITION_OUTPUT_FORMATS.includes(format as CompositionOutputFormat)
+      )
+        programError(
+          "comp-program-option",
+          `--format must be ${COMPOSITION_OUTPUT_FORMATS.join(", ")}`,
+          "format",
+        );
+      const transport = values.get("transport");
+      if (
+        transport !== undefined &&
+        transport !== "png_pipe" &&
+        transport !== "raw_rgba" &&
+        transport !== "jpeg_pipe"
+      )
+        programError(
+          "comp-program-option",
+          "--transport must be png_pipe, raw_rgba or jpeg_pipe",
+          "transport",
+        );
       const program = await loadProgram(input);
       const result = await withProgramFile(program, input, (path) =>
         renderComposition({
           compositionPath: path,
           outputPath: requireArgument(values, "output"),
           backend,
+          ...(format ? { format: format as CompositionOutputFormat } : {}),
+          ...(transport
+            ? { transport: transport as "png_pipe" | "raw_rgba" | "jpeg_pipe" }
+            : {}),
         }),
       );
       io.stdout(json(result));

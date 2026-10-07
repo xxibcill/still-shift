@@ -378,7 +378,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE12  | Motion linting                                 | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   | Codex                  | `codex/composition-ce13`            | `[x]`  | [evidence](./composition-ce13-results.json)                                        |
 | CE14  | Mesh warp and puppet pins                      | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
-| CE15  | Output formats, caching and parallel rendering | D      | CE3                        | Codex                  | `codex/composition-ce15`            | `[~]`  | [Focused alpha proof](./composition-ce15-results.json)                             |
+| CE15  | Output formats, caching and parallel rendering | D      | CE3                        | Codex                  | `codex/composition-ce15`            | `[~]`  | [Format/alpha proof](./composition-ce15-results.json)                              |
 
 ### Phases and parallel work
 
@@ -5068,12 +5068,12 @@ targets), flip detection, pixel tests on both backends.
 
 **Outcome:** Output fits professional pipelines, and long compositions render quickly.
 
-- [ ] Transparent composition backgrounds carried through export.
-- [ ] First formats (Q4: both audiences, delivered together): ProRes 4444 with alpha
+- [x] Transparent composition backgrounds carried through export.
+- [x] First formats (Q4: both audiences, delivered together): ProRes 4444 with alpha
       and PNG sequence (8/16-bit) for editors; H.264 and HEVC 10-bit for social
       delivery. All tagged BT.709. Extend the ffprobe verification in
       `export-worker.ts` per format.
-- [ ] Then ProRes 422 HQ and WebM VP9 with alpha.
+- [x] Then ProRes 422 HQ and WebM VP9 with alpha.
 - [ ] Frame rates up to 60 fps; arbitrary sizes within limits.
 - [ ] Per-layer and per-precomp caching: static subtrees render once per export and are
       reused, keyed by content hash, backend version and evaluated state.
@@ -5090,10 +5090,13 @@ decode-back pixel check.
 (frames on both sides of a boundary), cancellation during parallel export.
 
 **In progress (2026-10-07):** Codex on `codex/composition-ce15` from completed
-CE13 `aedfc9e`. Opt-in transparent renderer roots and exact PNG drawing-buffer
-reads pass focused acceptance. Export formats, global cache/parallel acceptance,
-statistics, the two-minute speed proof and final local gate remain pending.
-[Delivery plan](./composition-ce15-plan.md), [current evidence](./composition-ce15-results.json).
+CE13 `aedfc9e`; renderer checkpoint `49e0543` is pushed. All seven explicit output
+profiles pass focused native-depth alpha/color/audio checks, repeat/independent
+encodes, CLI, dimensions and protected publication/source failures. Existing
+media/WebGL export regressions pass. Aggregate limits, global cache/parallel
+acceptance, statistics, two-minute speed proof and final local gate remain pending.
+[Delivery plan](./composition-ce15-plan.md),
+[format evidence](./composition-ce15-format-results.json).
 
 **Completion record:** _to be filled in._
 

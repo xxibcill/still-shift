@@ -26,6 +26,7 @@ import {
 import {
   COMPOSITION_MEDIA_DECODER_VERSION,
   compositionMediaColorFilter,
+  compositionSequenceColorFilter,
   inspectCompositionPng,
   tagCompositionSrgbPng,
 } from "./composition-media-color.ts";
@@ -139,13 +140,11 @@ async function sourceIdentity(options: Options) {
   const source = resolve(options.sourceDirectory, asset.path);
   if (
     asset.type === "sequence" &&
-    (asset.color.transfer !== "iec61966-2-1" ||
-      asset.color.matrix !== "gbr" ||
-      asset.color.range !== "pc")
+    (asset.color.matrix !== "gbr" || asset.color.range !== "pc")
   )
     passageError(
       "comp-media-color",
-      "Sequence descriptors require full-range sRGB RGB",
+      "Sequence descriptors require full-range RGB with a supported authored transfer",
       { path: asset.id },
     );
   if (asset.type === "video") {
@@ -220,7 +219,7 @@ async function sourceIdentity(options: Options) {
           "Original sequence frame differs from its manifest",
           { path },
         );
-      const info = inspectCompositionPng(png);
+      const info = inspectCompositionPng(png, asset.color.transfer);
       if (info.width !== asset.width || info.height !== asset.height)
         passageError(
           "comp-media-provenance",
@@ -492,7 +491,12 @@ export async function prepareCompositionVisualMedia(
             inspected.sequencePaths![ordinal]!,
             asset.width * asset.height * 8 + 1024 * 1024,
           );
-          await writeFile(input, tagCompositionSrgbPng(original));
+          await writeFile(
+            input,
+            asset.color.transfer === "bt709"
+              ? original
+              : tagCompositionSrgbPng(original),
+          );
           await decodeFrames(
             [
               "-v",
@@ -502,7 +506,9 @@ export async function prepareCompositionVisualMedia(
               "-i",
               input,
               "-vf",
-              "format=rgba",
+              asset.color.transfer === "bt709"
+                ? compositionSequenceColorFilter(asset.color, original[24]!)
+                : "format=rgba",
               "-frames:v",
               "1",
               "-threads",
