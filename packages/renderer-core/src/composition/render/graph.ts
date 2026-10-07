@@ -1138,6 +1138,7 @@ class GraphBuilder {
       content.type === "image" &&
       content.rasterize === "natural-size" &&
       plane.affineMatrix &&
+      !paintBlur &&
       (options.raw ||
         (!state.masks.length &&
           !state.effects.some(
@@ -1150,8 +1151,7 @@ class GraphBuilder {
       (!focus ||
         (camera?.blurModel === "gaussian" &&
           content.fit === "stretch" &&
-          !content.sources.some((source) => source.registration))) &&
-      (!focus || !paintBlur)
+          !content.sources.some((source) => source.registration)))
     ) {
       const placement = planePlacement(plane, frame.matrix, [0, 0]);
       if (!placement?.affineMatrix) return [];
@@ -1169,7 +1169,7 @@ class GraphBuilder {
         opacity: matte ? 1 : opacity,
         blend: matte ? "normal" : blend,
         clips: matte ? [] : clips,
-        ...(focus || paintBlur ? { paintBlur: focus || paintBlur } : {}),
+        ...(focus ? { paintBlur: focus } : {}),
       };
       this.spatial = true;
       return matte

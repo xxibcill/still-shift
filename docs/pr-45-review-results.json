@@ -3,8 +3,8 @@
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/45",
   "fixedPoint": "50cbf6332ece7ffafc156645f6a7e4e532d7f986",
   "codeCheckpoint": "1b3f98f6b2c3808ca7f07a2cf0985b6dc8545b58",
-  "status": "independent Standards and Spec review complete; two P2 findings remain open",
-  "publishedGitHubCommentsOrReview": false,
+  "status": "both findings posted inline; primitive blur repaired locally, shutter coverage in progress",
+  "publishedGitHubCommentsOrReview": true,
   "standards": {
     "findings": [
       {
@@ -57,7 +57,9 @@
           "primitiveBlurMaxDelta": 80,
           "backends": ["canvas2d", "webgl2"],
           "probeLog": "/private/tmp/pr45-blur-review-proof-corrected.log"
-        }
+        },
+        "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449039",
+        "repairEvidence": "docs/pr-45-fix-results.json"
       }
     ],
     "hardCodingStandardViolations": 0
@@ -140,7 +142,9 @@
           ],
           "probeLog": "/private/tmp/pr45-shutter-review-proof.log",
           "reproduction": "/private/tmp/pr45-shutter-gap-composition.json"
-        }
+        },
+        "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449051",
+        "repairEvidence": "docs/pr-45-fix-results.json"
       }
     ],
     "scopeCreepFindings": [],
@@ -150,5 +154,6 @@
   "findingCounts": {
     "standards": 1,
     "spec": 1
-  }
+  },
+  "reviewId": 5447731207
 }

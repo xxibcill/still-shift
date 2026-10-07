@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #45 review repairs in progress (2026-10-08):** both P2 findings are posted
+  inline on `3545055`. The primitive-blur repair keeps positive own/inherited/
+  collapsed blur on local surfaces and advances Canvas/WebGL/export identities to
+  1.42.2 / 0.57.2 / 0.6.7. Original-code regressions fail; 35 focused units and all
+  36 actual Canvas/WebGL pixel pairs pass byte-exactly after repair. The fractional
+  shutter coverage repair and its regressions are in progress. Each finding gets
+  one commit; both are retained locally for one final push after final verification.
+  No full repository or performance gate is claimed. Owner checkout remains
+  untouched and Actions disabled. [Repair evidence](./pr-45-fix-results.json).
+
 - **PR #45 conflicts resolved; review complete (2026-10-08):** isolated
   `codex/pr45-conflict-review` integrates `main` at `50cbf633` into CE4c head
   `17666eb` with merge `1b3f98f`. All nine conflicts preserve cinematic/native
@@ -858,9 +868,24 @@ still hold before relying on them.
   must not use TypeScript constructor parameter properties: Node's strip-only mode
   rejects them and five Lab integration suites fail.
 
-_Last updated 2026-10-08 by Codex for PR #45 conflict resolution._
+_Last updated 2026-10-08 by Codex for PR #45 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #45 local primitive-blur repair
+
+- **Agent / branch:** Codex on isolated `codex/pr45-conflict-review` from `3545055`.
+- **Done:** post both findings inline; keep positive own/inherited/collapsed
+  primitive blur on its local surface before projection. Zero/disabled blur keeps
+  the direct image path. Canvas/WebGL/export identities are 1.42.2 / 0.57.2 / 0.6.7.
+- **Results:** four original-code unit failures and a real-pixel delta of 82 are
+  reproduced before repair. After repair, 35 focused units and all 36 actual
+  Canvas/WebGL pairs pass exactly across uniform/nonuniform/rotated placement.
+  Pinned toolchain/imports, focused formatting and lint pass.
+- **Open / next:** coverage repair, final focused verification and a single final
+  push remain. This commit repairs only the first finding. No full gate or Actions.
+- **Records:** [Repair evidence](./pr-45-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449039).
 
 ### 2026-10-08 — PR #45 main conflict integration and independent review
 

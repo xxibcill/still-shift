@@ -1,0 +1,657 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/45",
+  "originalReviewedHead": "354505509d0a3592f2899aa8f8aeac2e71e03879",
+  "status": "first finding repaired and locally verified; second finding in progress; both commits await one final push",
+  "fullPnpmCheckRun": false,
+  "githubActionsEnabled": false,
+  "review": {
+    "reviewId": 5447731207,
+    "commentsPosted": true,
+    "comments": [
+      "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449039",
+      "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449051"
+    ]
+  },
+  "findings": [
+    {
+      "id": "primitive-blur",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449039",
+      "status": "fixed in the commit containing this record",
+      "change": "Require zero computed primitive painting blur before the direct affine image path. Positive own/inherited/collapsed blur paints on its local surface before projection; zero/disabled retain direct drawing.",
+      "versions": {
+        "canvas": "composition-canvas-1.42.2",
+        "webgl": "composition-webgl2-0.57.2",
+        "export": "chromium-ffmpeg-0.6.7"
+      },
+      "red": {
+        "checkpoint": "354505509d0a3592f2899aa8f8aeac2e71e03879",
+        "command": "node --import tsx /private/tmp/pr45-affine-blur.mts",
+        "node": "22.23.1",
+        "exitCode": 1,
+        "firstFailingCase": "canvas2d/2x/image/4",
+        "previousNoBlurControl": "passed",
+        "metrics": {
+          "maxChannelDelta": 82,
+          "differingChannels": 7424,
+          "psnr": 25.964774569077903,
+          "ssim": 0.9164679028350413
+        }
+      },
+      "green": {
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "caseCount": 36,
+        "reports": [
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          }
+        ]
+      },
+      "focusedUnitTests": 35
+    },
+    {
+      "id": "shutter-coverage",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449051",
+      "status": "implementation and failing regressions in progress"
+    }
+  ],
+  "verification": {
+    "scope": "Focused PR repair verification; no new full repository or performance gate.",
+    "checks": [
+      {
+        "label": "blur-red",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-affine-image.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 1,
+        "seconds": 1.09,
+        "log": "/private/tmp/pr45-fix-blur-red.log",
+        "logSha256": "904bb1c0fb43d771623918b82418db4e9351daff934d828578970f2d95a9258c"
+      },
+      {
+        "label": "blur-red-valid",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-affine-image.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 1,
+        "seconds": 0.99,
+        "log": "/private/tmp/pr45-fix-blur-red-valid.log",
+        "logSha256": "067b8e9799705796016b0362d655978718f34adff97adbbf8a0ae21163add288"
+      },
+      {
+        "label": "blur-green",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-affine-image.test.ts",
+          "tests/unit/composition-spatial-capabilities.test.ts",
+          "tests/unit/composition-spatial-effect-space.test.ts",
+          "tests/unit/composition-webgl-cache.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 1.23,
+        "log": "/private/tmp/pr45-fix-blur-green.log",
+        "logSha256": "75401aae3e54333ea3e7f0d8befe0eeebd928fe610fb1e871d3686bc2cfc5abb"
+      },
+      {
+        "label": "affine-blur-green",
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "/private/tmp/pr45-affine-blur.mts"
+        ],
+        "exitCode": 0,
+        "seconds": 2.94,
+        "log": "/private/tmp/pr45-fix-affine-blur-green.log",
+        "logSha256": "621a7c93e6880bf7450eb8560ecb7b195ef76b988243b4ad39a8429a12365358"
+      },
+      {
+        "label": "coverage-red",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-cinematic-coverage.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 1,
+        "seconds": 0.94,
+        "log": "/private/tmp/pr45-fix-coverage-red.log",
+        "logSha256": "3e0afe0b5920988ad7cb1bed37088d2987bc08ff2bb5664c0b7bb0db57f79400"
+      },
+      {
+        "label": "toolchain",
+        "command": ["pnpm", "toolchain:check"],
+        "exitCode": 0,
+        "seconds": 0.63,
+        "log": "/private/tmp/pr45-fix-toolchain.log",
+        "logSha256": "24bd2d2c1d59c4208bae734016d58e4d8e0f07784720eae27dc3f6fa8aeef27e"
+      },
+      {
+        "label": "vite-config",
+        "command": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "const {loadConfigFromFile}=await import(\"vite\"); await loadConfigFromFile({command:\"serve\",mode:\"development\"},\"apps/lab/vite.config.ts\"); console.log(\"Native Vite config imports passed\");"
+        ],
+        "exitCode": 0,
+        "seconds": 0.61,
+        "log": "/private/tmp/pr45-fix-vite-config.log",
+        "logSha256": "e900665a5494d0fc73dacad5cadbe5b2bd1cfbd8bd4757b086b13047846063a8"
+      },
+      {
+        "label": "blur-format",
+        "command": [
+          "pnpm",
+          "exec",
+          "prettier",
+          "--write",
+          "packages/renderer-core/src/composition/render/graph.ts",
+          "packages/renderer-core/src/composition/render/version.ts",
+          "packages/renderer-core/src/composition/render/webgl2.ts",
+          "packages/execution-runtime/src/export-worker.ts",
+          "tests/unit/composition-affine-image.test.ts",
+          "tests/helpers/composition-affine-blur-reference.ts",
+          "tests/browser/composition-camera.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 0.38,
+        "log": "/private/tmp/pr45-fix-blur-format.log",
+        "logSha256": "18543a4dc973e3d65fdb50e2a15f5f4c802aae42eaf1c6daec716ec8379f6b6d"
+      },
+      {
+        "label": "blur-lint",
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/renderer-core/src/composition/render/graph.ts",
+          "packages/renderer-core/src/composition/render/version.ts",
+          "packages/renderer-core/src/composition/render/webgl2.ts",
+          "packages/execution-runtime/src/export-worker.ts",
+          "tests/unit/composition-affine-image.test.ts",
+          "tests/helpers/composition-affine-blur-reference.ts",
+          "tests/browser/composition-camera.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 0.8,
+        "log": "/private/tmp/pr45-fix-blur-lint.log",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "coverage-green",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-cinematic-coverage.test.ts",
+          "tests/unit/foreground-reveal.test.ts",
+          "tests/unit/composition-cinematic-adapter.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 1.92,
+        "log": "/private/tmp/pr45-fix-coverage-green.log",
+        "logSha256": "ee85f4227498daf1b8253968a9858fdabe6a9109e1126e43c571a55eb7b01cf2"
+      }
+    ],
+    "notRun": ["full pnpm check", "full family timing matrices"]
+  },
+  "delivery": {
+    "policy": "One finding per commit, one normal push only after the second/final commit.",
+    "pushed": false
+  }
+}
