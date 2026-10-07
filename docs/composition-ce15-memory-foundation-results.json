@@ -1,0 +1,488 @@
+{
+  "milestone": "CE15",
+  "date": "2026-10-07",
+  "base": "bffaf8a",
+  "status": "managed allocation foundation passed; production allocation integration remains pending",
+  "fingerprint": {
+    "algorithm": "SHA256 of sorted path + NUL + fileSHA256 + newline records",
+    "sha256": "225a9db9f5b1aecf4fe82eef77eeed781f50b8c9a61241ac38f8c9d6990e9215",
+    "files": [
+      {
+        "path": "package.json",
+        "sha256": "f0bafa128968ad898e1a32524cc267378825d07017879cb02da12faa7479fd1e"
+      },
+      {
+        "path": "packages/animation-engine/src/composition-media-cache.ts",
+        "sha256": "775ed15b60ab8369408371c7b7ae810b9e01ada267646e7885d30892161e0dff"
+      },
+      {
+        "path": "packages/animation-engine/src/composition-media-color.ts",
+        "sha256": "267e1d7ba035050c57e5a014e2f1cf50a98221a1d4ba61c2a6933539d59f01ea"
+      },
+      {
+        "path": "packages/animation-engine/src/composition-render.ts",
+        "sha256": "e2e36eda2b8b61a98f3152ab5cee006c387fabecd05f15f287e82917146c5860"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-ordered-frames.ts",
+        "sha256": "ea1c6e5413febbf66740bbb8175e1e8672f5cb2613368ed64e35709bc5f5a687"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output-artifacts.ts",
+        "sha256": "672dc0896a01724024241e88380c493eeb06aca3607ee6dc960adb4d0798c3b1"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output-audio.ts",
+        "sha256": "12470c51a9b00978d41e0c185f8a30d1af011222e115483243c1e608c6840d50"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output-input.ts",
+        "sha256": "65f907522698ecb8027b4c46cf02ec6443c5149ea523b44409c686e9e65f0851"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output.ts",
+        "sha256": "196a94cbc8c1f0bba3d91b3bf8dd9dfa1b51f7d5282ab93b3b5d7e5bec3b9f1e"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-surface-broker.ts",
+        "sha256": "adb25fe3c8ebab22dccdb0a86aa61602cc14eacc53241aa1aa81bf75b5a46f87"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-surface-client.ts",
+        "sha256": "a202e1a84ee42ad5d226bb2c95b71b7547129a418c52ca598e7493c267267ad0"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-surface-store.ts",
+        "sha256": "102baa4ed5966bc6659a65d7bd14f2a56abac844b8ed1d13d2812cb657ce6440"
+      },
+      {
+        "path": "packages/execution-runtime/src/export-browser-worker.ts",
+        "sha256": "41c6fb293bff3bf4ddfc3a3808464d6d60ac464c4a85dadd58bfb84e5758ff60"
+      },
+      {
+        "path": "packages/execution-runtime/src/export-page.ts",
+        "sha256": "d00a42172d5bbec609eda7ccbe803de0eec7ee98a6f74aab832c3f4dbcbc273b"
+      },
+      {
+        "path": "packages/execution-runtime/src/export-worker.ts",
+        "sha256": "5590d7dda1f264cf4e68feae1b49f0e6e7aba5c4053fd34c72ea6c566770e81f"
+      },
+      {
+        "path": "packages/execution-runtime/src/ffmpeg-process.ts",
+        "sha256": "4e27482d2ce4309b8f2a1e3342fd051de05cead90e2d1227e2de32a3acad6ace"
+      },
+      {
+        "path": "packages/renderer-core/src/canvas-pixel-source.ts",
+        "sha256": "c7f495bcadd178c3a11f63583b6ffb4f961307dda50208e07858885178fdb5bf"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/adapters/numeric-typography.ts",
+        "sha256": "6ab242fa310c7375ddbeac9910ea38b84fb15276827c76e2b88b9741bbbcd6ee"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/backend.ts",
+        "sha256": "3785bb3e83d4ef5579c1cd4dc306274e3d01e30b1eda8ead493dfdcf5f19d4b1"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/batches.ts",
+        "sha256": "505ed4dd5a90f4408ba720a763cc4ee36c48546b1078db808af31a7995a8ddb7"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/canvas2d.ts",
+        "sha256": "4ffc058d1e82735bed48d938456f13c936ecfe026bd1efd758d84480cd89c68d"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/index.ts",
+        "sha256": "2221b2c5291377f36903d228d81d202adec07146c2f31920e2fe200e3efa321b"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/prefix.ts",
+        "sha256": "e5bdf609ad61968189dfecc5d328b226430f2558463da911496e1180959507ea"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/providers.ts",
+        "sha256": "30fc19d44b704fff6274f18d5984291507a3237377cd7bde64f4d1bdf4dc354d"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/renderer.ts",
+        "sha256": "ce1c9ea4742cb3584e2c9ecd8a8cb4898ceb378a793d84b9d73a35ae18107ad7"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/required-coverage.ts",
+        "sha256": "5e400986469f0859bc1e21e4dc97a40ab215a1227f34076b755e1142d0e2e8c3"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/root-cache.ts",
+        "sha256": "783c6ec68889c9ad619d75c8b2dceda4969b5208d8a732640027487b513679b2"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/source-cache.ts",
+        "sha256": "d2b7c9bc836a1ad1c56c44436bc75cc963a382122dc6ec041380b4e0de44c65b"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/source-preparation.ts",
+        "sha256": "d8253eafcb8d8cf1ceb68ca83bb575c1ba95c297e81dab135fd7366760b2d89f"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/statistics.ts",
+        "sha256": "26fb369f3cb40a446afeab7e369ab2e28d167c7fcda962d8e87c5c94c35b3281"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/surface-cache.ts",
+        "sha256": "9f74740712a7b5679ef196c95b77203cda554baa26684beb4ab998c5b1133827"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/text-clock.ts",
+        "sha256": "81b36ed9c497e4bede6d11041d0bbe5032710db51978a0692895a643a8cdcdcd"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/text.ts",
+        "sha256": "93a3f45fc4caed8df35b3ba2c06ff6cc9ca9cbd4bd8f7ba5b5d809ab4c7b3ed5"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-device.ts",
+        "sha256": "9ea54afd6127cb47182844dd4347133e40a19f2a8ade64fe5cf1142586c8e025"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-vectors.ts",
+        "sha256": "4a9696af580ff3bd3665b9dc5ca9f3c9b9f09bf3a7e250e85395ae175559d0d6"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl-visual-key.ts",
+        "sha256": "bd4a294167db9778c8f70758327453762c84d34800118a1167efe9ffbfeea929"
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl2.ts",
+        "sha256": "ff82734f2f1054847ef1b385e32c2ca9ec55200e7964e6935688eda9f032c18b"
+      },
+      {
+        "path": "packages/renderer-core/src/managed-memory-context.ts",
+        "sha256": "a72ec34af5543a8573ffdbab187bdac31d2e5654018ab2413840374abdee1ca3"
+      },
+      {
+        "path": "packages/renderer-core/src/managed-memory.ts",
+        "sha256": "7a4c7e7f60b2ecd136dc6423656c72d43d7270f2c83454cc1e4ba556c65ba476"
+      },
+      {
+        "path": "packages/renderer-core/src/typography-renderer.ts",
+        "sha256": "3546469ef4dc71d4918aadf9bf1aaa9ccea31e012563d42a1545d4ac89bcaddd"
+      },
+      {
+        "path": "packages/scene-contract/src/composition/media.ts",
+        "sha256": "144820324928bfd128fc3785dfed08dfae32b9c247bba3003f2f7f5262002feb"
+      },
+      {
+        "path": "packages/scene-contract/src/composition/validate-media.ts",
+        "sha256": "2a34b98f8ab5f4a637366436456e371f0a45749f4a392c998a6b79c018ddedf1"
+      },
+      {
+        "path": "tests/browser/composition-output.ts",
+        "sha256": "f40e9480c7a689b7e7af7a023c571cefea04864e90b69676d4bcc7a39357acf8"
+      },
+      {
+        "path": "tests/browser/composition-parallel.ts",
+        "sha256": "99cabca4b10a66995d32916c0caca9f622bb16c199e28dd50cdd920b5ae326bf"
+      },
+      {
+        "path": "tests/browser/composition-surfaces.ts",
+        "sha256": "1549dccfd93bb765b94e490324efac9b931b1efb7f1c3223a242a6c50bbb62ec"
+      },
+      {
+        "path": "tests/helpers/composition-memory-reference.ts",
+        "sha256": "3ec77193adb9e3c90ca69e18fafdda4525096493083ab0d50f46816939267599"
+      },
+      {
+        "path": "tests/helpers/composition-output-lifecycle.ts",
+        "sha256": "72ac91e812c09fcf6130435acb63222d6a2737054f5f4a425cf44e0a2191ee82"
+      },
+      {
+        "path": "tests/helpers/composition-output-preview.ts",
+        "sha256": "3b8127ee1cc4d6d86372fb4519ec92560e3f83d1165d6c1fe4e56bd107ef8de9"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-lifecycle.ts",
+        "sha256": "22b0fdf295b701cf4590528fed2aa1fc2c3c47bc46588ef1b7595a3f174d5f24"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-native.ts",
+        "sha256": "8d7d7d84defa66782011be1d13abb7ad641a390307763acaafa0847d1d5d7386"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-prefixes.ts",
+        "sha256": "7851a5cc813a2f440084ab0a6fadfbb55ef9af2a9522e40240dba5ca937c76a3"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-proof.ts",
+        "sha256": "7181cf6b7a7b56cb0ca5e3637861e980c4b17bfc41692d757f3cefde1b0cd8f8"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-roots.ts",
+        "sha256": "a63b5510ef6af9f587afd36843109b97ad51797df804e9cab30cad35a9d7ecd3"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-sources.ts",
+        "sha256": "71b211535e38fc13a0756eadd581661951bdc0641ddadc91ecb92e0fc7ac80f9"
+      },
+      {
+        "path": "tests/helpers/composition-parallel-tints.ts",
+        "sha256": "90b236134209838bb771c294689a24a103e55e8c14ba0b8b86a3359006852e01"
+      },
+      {
+        "path": "tests/helpers/composition-prefix-reference.ts",
+        "sha256": "6add6a9ee6e4f0ee5bdfb32b215d0a0344134c218ad2b5c16942bb09546fe3aa"
+      },
+      {
+        "path": "tests/helpers/composition-root-reference.ts",
+        "sha256": "82dbab04ae49839c25c5a51b093da551d32e7a58ec6ce67f0993fb2bf7bbc53f"
+      },
+      {
+        "path": "tests/helpers/composition-source-fixture.ts",
+        "sha256": "9bdb36d087a4b06bc0833cc20e9550aa09385a8cd25f90766daf5727e731ad99"
+      },
+      {
+        "path": "tests/helpers/composition-source-reference.ts",
+        "sha256": "51f06ea997f83f63a108ac0520678da8e2cd40234240d09a81cecae63c3f366e"
+      },
+      {
+        "path": "tests/helpers/composition-surface-reference.ts",
+        "sha256": "c4fa5cfc966c81cdc6deda0e8add2775514de1d3e8f7226ce53981006cf6e3ce"
+      },
+      {
+        "path": "tests/helpers/composition-tint-fixture.ts",
+        "sha256": "2d00f502576c13d469e87c16d5a50024b8e3ecf222fd1a885eb2f8d5152a48fd"
+      },
+      {
+        "path": "tests/integration/composition-program-cli.test.ts",
+        "sha256": "f5e74435b573f423e7ca381683d4f66d87838960db3f85af414edfc46a92d958"
+      },
+      {
+        "path": "tests/runtime/composition-ffmpeg-process.test.ts",
+        "sha256": "a0f3b51c112aa9e5c5a46637cbd072bdf27ff7f170059c68f3130c9e245ab9d1"
+      },
+      {
+        "path": "tests/runtime/composition-ordered-frames.test.ts",
+        "sha256": "c91521362571ae050ec75ff941137c61c93e7a3c380d4ace42c22afb88325033"
+      },
+      {
+        "path": "tests/runtime/composition-output-artifacts.test.ts",
+        "sha256": "b604e4d2ae55497c1a534235faa30771f8baa3b645169948728a0a95b0de2668"
+      },
+      {
+        "path": "tests/runtime/composition-surface-store.test.ts",
+        "sha256": "fac1c46fa0020bdb46bc8a8b398e13fd276d708a88627fc914e02aa918389ffe"
+      },
+      {
+        "path": "tests/unit/composition-media-color.test.ts",
+        "sha256": "e1cd32e61d57304a28a2a629126454c585d2e6efdfdaa809790555e33ffe2b49"
+      },
+      {
+        "path": "tests/unit/composition-media-resources.test.ts",
+        "sha256": "8d784615801c061f02f85608780b59c47032bd6b7d4f6cc9789b769d4aaee807"
+      },
+      {
+        "path": "tests/unit/composition-output-input.test.ts",
+        "sha256": "9516438b86fa637f075075e41f89066136a44eef87ca10b47caac33e3852af06"
+      },
+      {
+        "path": "tests/unit/composition-output-profile.test.ts",
+        "sha256": "9ba8ed83bba90403fd28724609c3c9ffd30222cf5aedd3d5532d7d31b72bb02f"
+      },
+      {
+        "path": "tests/unit/composition-prefix.test.ts",
+        "sha256": "f4519487046c937f300357747b1d641d5521fd45cb5ad9f480ca6bb351443a8a"
+      },
+      {
+        "path": "tests/unit/composition-source-preparation.test.ts",
+        "sha256": "253711a769cfaad1547c79e6742d2ed0aece1d67c0cc9fb826d22fdbb766d7ec"
+      },
+      {
+        "path": "tests/unit/composition-statistics.test.ts",
+        "sha256": "2ef0f8df7797eccca326b73bce8e25c018e1c3f27117d0947dca39bb8db6d50a"
+      },
+      {
+        "path": "tests/unit/composition-surface-key.test.ts",
+        "sha256": "f06d21adc2dab5bda65e72066e6ba8e0dfa353c4d6add19adb23b950cf789a33"
+      },
+      {
+        "path": "tests/unit/composition-text-clock.test.ts",
+        "sha256": "71b89091ebbfc04238f3a38f000cdea25a944b682b472d0a84a7b7366f0820d3"
+      },
+      {
+        "path": "tests/unit/managed-memory.test.ts",
+        "sha256": "e4a199cc0954472ca05a959968cc8b5c07ec5b6f4351bd0ece1915cec1881a6d"
+      },
+      {
+        "path": "tools/still-shift-cli/src/cli.ts",
+        "sha256": "77d9f9178f877935956ebbbbdd15a287b1fc99c949c26faf2ea35aa89e612df9"
+      },
+      {
+        "path": "tools/still-shift-cli/src/composition/commands.ts",
+        "sha256": "9a08c33f81a8dbe04635ebc75df15bd370a4db6abe51cac923c86487b20d1acb"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": ["pnpm", "build"],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "packages/renderer-core/src/managed-memory.ts",
+        "tests/unit/managed-memory.test.ts",
+        "packages/renderer-core/src/managed-memory-context.ts",
+        "tests/helpers/composition-memory-reference.ts",
+        "tests/browser/composition-surfaces.ts"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": ["pnpm", "check:boundaries"],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/managed-memory.test.ts",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0
+    },
+    {
+      "exitCode": 0,
+      "seconds": 41.15089699998498,
+      "log": "/private/tmp/ce15-surface-browser-23.log"
+    }
+  ],
+  "unitTests": 9,
+  "nativePrimitives": {
+    "status": "passed",
+    "exactChannelComparisons": 1024,
+    "rejectedBeforeNativeSetter": true,
+    "scratchCanvasDestroyed": true,
+    "committedCanvasDestroyed": true,
+    "retainedBackingStoreAlias": true,
+    "scopeOverlapRejected": true,
+    "before": {
+      "scope": "declared-application-owned-bytes",
+      "limits": {
+        "pixels": 400000,
+        "metadata": 8192
+      },
+      "current": {
+        "pixels": 1024,
+        "metadata": 0
+      },
+      "peak": {
+        "pixels": 181024,
+        "metadata": 0
+      },
+      "reservations": 1
+    },
+    "after": {
+      "scope": "declared-application-owned-bytes",
+      "limits": {
+        "pixels": 400000,
+        "metadata": 8192
+      },
+      "current": {
+        "pixels": 0,
+        "metadata": 0
+      },
+      "peak": {
+        "pixels": 181024,
+        "metadata": 0
+      },
+      "reservations": 0
+    }
+  },
+  "nativeEnvironment": {
+    "profile": "chromium-software-2",
+    "browserVersion": "151.0.7922.34",
+    "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+    "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "existingAudit": {
+    "cases": 120,
+    "exactFrameChecks": 6496
+  },
+  "scope": "Explicit declared application-owned bytes only. Pixel and metadata categories reserve before a factory or Canvas backing setter. Backing-store aliases share one lease; scratch, retained, committed construction and disposal are explicit. Destruction releases all owners and preserves the first original error, including null. The 8192 reservation-entry cap is a separate control count, not full metadata-byte admission. Physical RSS/driver/codec internals are distinct.",
+  "nativeEvidence": "Actual native over-quota Canvas resize is rejected before its original setter. Native kernel pixels remain exact; ended scratch and final disposal zero actual Canvas dimensions. Promoted buffer aliases and successful constructor ownership survive intermediate phases. This primitive is now included in the permanent native surface audit.",
+  "rejectedAttempts": [
+    {
+      "log": "/private/tmp/ce15-memory-compile-2.log",
+      "reason": "class imported only as a type; lint required import type"
+    },
+    {
+      "log": "/private/tmp/ce15-memory-compile-6.log",
+      "reason": "TypeScript literal narrowing does not infer side effects of cleanup; compare observed numeric dimensions"
+    },
+    {
+      "log": "/private/tmp/ce15-memory-compile-7.log",
+      "reason": "same narrowing affected an observed statistics getter; explicit numeric observation fixes the test"
+    }
+  ],
+  "fullGate": "not run",
+  "speedProof": "not measured",
+  "pending": [
+    "wire every actual renderer/export resource lifetime, including assets/GPU/CPU scratch/cache/capture/upload",
+    "bound aggregate worker and Node storage plus metadata before allocation/serialization",
+    "full large-area worker matrix",
+    "actual 120-second one/four worker >=3x end-to-end proof",
+    "complete immutable CE15 gate and PR, followed by CE14"
+  ],
+  "logs": [
+    {
+      "path": "/private/tmp/ce15-memory-compile-1.log",
+      "sha256": "331105a8fda08db73cbae704b8460a56598625764e7ecd067f877639b694d6c6"
+    },
+    {
+      "path": "/private/tmp/ce15-memory-compile-2.log",
+      "sha256": "d542cbcb65a6c7bc3aa178259bc427df36192a3953a602aa849978c657ba3658"
+    },
+    {
+      "path": "/private/tmp/ce15-memory-compile-3.log",
+      "sha256": "d542cbcb65a6c7bc3aa178259bc427df36192a3953a602aa849978c657ba3658"
+    },
+    {
+      "path": "/private/tmp/ce15-memory-compile-4.log",
+      "sha256": "44fcbe85fbbf7998c6f5017e133ccbc26581e1a428b3db2c19892666cbce7afe"
+    },
+    {
+      "path": "/private/tmp/ce15-memory-compile-5.log",
+      "sha256": "b5c707138c24c099a10bcb5f38e20abc320cacf5bc34a21c5f873e244025e5fa"
+    },
+    {
+      "path": "/private/tmp/ce15-memory-compile-6.log",
+      "sha256": "34e1f89068f19ddd3417bac812d369620239bc9df5b9aeb5b523b3e8bee2b265"
+    },
+    {
+      "path": "/private/tmp/ce15-memory-compile-7.log",
+      "sha256": "bb630e41e037cc44d9ff945b5a8da15550c47d948fcd11f5727697cc1548f54c"
+    },
+    {
+      "path": "/private/tmp/ce15-memory-compile-8.log",
+      "sha256": "1a84015703220055aa7af1d1c5d4cbc7d739292c72cc0058afdd3f5538ec528a"
+    },
+    {
+      "path": "/private/tmp/ce15-memory-compile-9.log",
+      "sha256": "6bd126b0d8ed95914cde00b6b15ca55fd5f08ac927c076171c624a8273d033cf"
+    },
+    {
+      "path": "/private/tmp/ce15-surface-browser-23.log",
+      "sha256": "b8fad89069972f4d0b6bbcb86ea41d56105db81f4867c2d57a575dcb9c0b3c0d"
+    },
+    {
+      "path": "/private/tmp/ce15-memory-primitives-1.log",
+      "sha256": "53a9a00284efcfcda1853947496b4ae15b322f3991d875cad9a60121de640ca3"
+    }
+  ]
+}

@@ -286,6 +286,25 @@ The permanent parallel command now includes 303 successful exports / 2,680 decod
 frames plus 24 live failures; its expanded whole run is reserved for final acceptance.
 [Detailed evidence](./composition-ce15-tint-results.json).
 
+## Accepted managed allocation foundation — 2026-10-07
+
+Explicit pixel and metadata leases admit declared application-owned bytes before
+allocation. Typed views share backing-store ownership; sequential scratch phases,
+retention, constructor commit and final disposal define release. Cleanup visits
+every owner even when a destructor throws and preserves the original reason.
+A pinned export page can own one asynchronous allocator scope. Canvas uses
+per-instance backing accessors and original native setters/context policy.
+
+Nine unit tests pass. The native browser proves 1,024 exact channel comparisons,
+over-quota rejection before the native setter, real scratch/final Canvas destruction,
+retained backing aliases and overlap rejection. This primitive joins the mandatory
+surface audit; all 120 existing cases / 6,496 exact frames still pass. Build, lint
+and boundaries pass. Production rendering has not yet adopted these primitives.
+The 8,192 control-entry cap is not complete metadata-byte admission, and declared
+storage is distinct from physical RSS. Aggregate allocation coverage, full area/
+worker matrix, actual 120-second speed proof and final gate remain pending.
+[Detailed evidence](./composition-ce15-memory-foundation-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

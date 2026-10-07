@@ -17,6 +17,7 @@ import type * as PrefixChecks from "../helpers/composition-prefix-reference.ts";
 import type * as RootChecks from "../helpers/composition-root-reference.ts";
 import { COMPOSITION_TINT_VARIANTS } from "../helpers/composition-tint-fixture.ts";
 import type * as SourceChecks from "../helpers/composition-source-reference.ts";
+import type * as MemoryChecks from "../helpers/composition-memory-reference.ts";
 
 type SurfaceOutcome = Awaited<
   ReturnType<typeof Checks.checkSharedCompositionSurfaces>
@@ -681,6 +682,12 @@ try {
       (await import(url)) as typeof RootChecks
     ).checkRootPreparationFailures();
   });
+  const memoryPrimitives = await workers[0]!.page.evaluate(async () => {
+    const url = "/tests/helpers/composition-memory-reference.ts";
+    return (
+      (await import(url)) as typeof MemoryChecks
+    ).checkManagedMemoryPrimitives();
+  });
   const directory = join(root, "benchmarks/results/composition-ce15-surfaces");
   await mkdir(directory, { recursive: true });
   const result = {
@@ -718,6 +725,7 @@ try {
     protectedSources,
     nativeRoots,
     protectedRoots,
+    memoryPrimitives,
     reports,
   };
   await writeFile(

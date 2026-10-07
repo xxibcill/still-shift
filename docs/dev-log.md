@@ -73,7 +73,9 @@ still hold before relying on them.
   Shared runtime tints, real variable axes/corrections and both crossfade inputs
   now pass 100 focused / 67 typography tests, 120 audit cases / 6,496 exact frames
   and 64 public exports / 768 decoded frames with actual once-global native counts.
-  Aggregate memory, the actual
+  Managed allocation primitives now pass nine units and 1,024 exact native channels,
+  with actual Canvas destruction and rejection before the native setter.
+  Production allocation integration, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -307,6 +309,20 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-07 — CE15 managed allocation foundation checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `bffaf8a`.
+- **Done:** pre-allocation pixel/metadata leases, explicit scratch/retained and
+  constructor ownership; backing aliases; native Canvas backing admission/release.
+- **Results:** build/lint/boundaries and nine ownership tests pass. Native browser
+  passes 1,024 exact channels, rejection before the setter and actual Canvas cleanup;
+  permanent surface audit remains 120 cases / 6,496 exact frames.
+- **Scope / next:** primitives are not yet wired into production rendering.
+  Complete actual allocation/metadata coverage and full area/worker matrix;
+  two-minute speed, final CE15 gates/PR and all CE14 remain pending. Full gate not run.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [memory foundation evidence](./composition-ce15-memory-foundation-results.json).
 
 ### 2026-10-07 — CE15 runtime glyph tint and broader preparation checkpoint
 

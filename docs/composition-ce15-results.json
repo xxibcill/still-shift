@@ -4,7 +4,7 @@
   "branch": "codex/composition-ce15",
   "base": "aedfc9e",
   "started": "2026-10-07",
-  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics, complete FFmpeg command CPU, global runtime glyph tints and broader sources",
+  "checkpoint": "transparent renderer, seven delivery profiles, independent surfaces and production parallel parity/lifecycle, shared native preparation sources, original-target roots, closed native prefixes, actual submission statistics, complete FFmpeg command CPU, global runtime glyph tints and broader sources, managed allocation foundation",
   "versions": {
     "canvas": "composition-canvas-1.46.0",
     "webgl": "composition-webgl2-0.67.0"
@@ -695,5 +695,14 @@
     "glyphPerformanceLimit": 1.5,
     "fullGate": "pending",
     "speedProof": "pending"
+  },
+  "managedMemoryFoundation": {
+    "status": "managed allocation foundation passed; production allocation integration remains pending",
+    "record": "docs/composition-ce15-memory-foundation-results.json",
+    "relevantFingerprint": "225a9db9f5b1aecf4fe82eef77eeed781f50b8c9a61241ac38f8c9d6990e9215",
+    "unitTests": 9,
+    "exactNativeChannels": 1024,
+    "fullGate": "pending",
+    "integration": "pending"
   }
 }

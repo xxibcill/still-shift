@@ -5111,7 +5111,8 @@ command CPU and actual process-group reaping pass 23 focused / 20 CLI tests,
 Shared runtime tints, real variable axes/corrections and both state-crossfade inputs
 pass 100 focused / 67 typography tests, 120 audit cases / 6,496 exact comparisons
 and 64 public exports / 768 frames with actual once-global native painting.
-Aggregate limits, two-minute speed proof
+Managed allocation primitives pass nine units / 1,024 exact native channels;
+production resource integration remains pending. Aggregate limits, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),
 [format evidence](./composition-ce15-format-results.json).
