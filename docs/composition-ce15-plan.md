@@ -621,6 +621,29 @@ Damage/vector/provider keys, retained graphs, font/checksum/ledger/Node metadata
 actual production/aggregate admission, speed and full-gate acceptance remain pending.
 [Evidence](./composition-ce15-frame-key-metadata-results.json).
 
+## Accepted WebGL damage metadata checkpoint — 2026-10-08
+
+The actual damage tracker admits original bounds/map/corner/coordinate/union/header/
+layer structures before production using concrete graph-operation counts. Original
+native bounds callbacks and operators remain unchanged. Current header/layer keys
+retain explicit output owners across frame cleanup; the prior frame stays owned
+through comparison and then releases. Changed-bounds pairs and original dirty
+copies reserve before creation. The dirty owner stays live through actual drawing;
+`endFrame` clears the device clip before releasing it. Reusable reset and final
+close clear retained keys/controls, including original null/partial-key failures.
+Borrowed geometry retains its original caller ownership.
+
+Build, lint, boundaries and 152 focused tests pass, including original nine damage
+cases and six metadata regressions. The complete 144-case / 8,000-comparison audit,
+96 actual RPC snapshots, 22 moving/blurred and ten stationary native frames pass.
+Original WebGL, 69 typography tests, 12 provider cases / 60 frames and eight fixtures
+pass; glyph 1.417335× meets unchanged 1.5 maximum. All 64 exports preserve 768 complete
+bodies/frames against pushed `e2659ca`. Both initial test failures are retained.
+
+Vector/provider keys, retained graphs, font/checksum/ledger/Node metadata, actual
+production/aggregate admission, speed and full-gate acceptance remain pending.
+[Evidence](./composition-ce15-damage-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -546,6 +546,7 @@ export function createWebgl2Backend(
     endFrame(completed) {
       renderingFrame = false;
       device.setFrameClip();
+      damage.finish();
       if (!completed) damage.reset();
     },
     renderIsolate: (op, like, draw) => isolates.render(op, like, draw),
@@ -1165,7 +1166,7 @@ export function createWebgl2Backend(
     present: () => device.present(target),
     dispose() {
       images.dispose();
-      damage.reset();
+      damage.dispose();
       readback.dispose();
       isolates.close();
       vectors.dispose();

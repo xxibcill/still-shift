@@ -91,13 +91,14 @@ still hold before relying on them.
   70 tests, the complete audit, six native complete-body oracles, twelve failure
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
   Owned submission/source/root/surface metadata, cache checksums and WebGL
-  definition/isolate/frame keys/controls now pass 137 focused tests, the complete
-  audit, 22 moving/blurred native frames, ten stationary native frames and 96
-  owned RPC snapshots. Original retained keys, quota/null cleanup and frame reuse
-  pass; both stationary previews dispose with zero storage/reservations. Original
-  WebGL/provider checks, 69 typography tests and 64 exports / 768 prior-exact bodies/
-  frames pass; glyph 1.483363× meets unchanged 1.5 maximum. Other damage/vector/provider/
-  graph/font/checksum/ledger-control/Node metadata, production admission, aggregate memory, the actual
+  definition/isolate/frame/damage keys/controls now pass 152 focused tests, the
+  complete audit, 22 moving/blurred and ten stationary native frames and 96 owned
+  RPC snapshots. Original damage bounds/copies reserve before creation; dirty
+  owners persist through actual frame clip consumption. Quota/null/borrowed
+  geometry and zero post-preview storage pass. Original WebGL/provider checks,
+  69 typography tests and 64 exports / 768 prior-exact bodies/frames pass; glyph
+  1.417335× meets unchanged 1.5 maximum. Other vector/provider/graph/font/checksum/
+  ledger-control/Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
   flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
   pending. [Plan](./composition-ce15-plan.md),
@@ -331,6 +332,22 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 WebGL damage metadata and actual clip lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `e2659ca`.
+- **Done:** pre-admitted original bounds/copies; retained header/layer/frame keys;
+  dirty-region ownership through actual clip consumption and reset/final cleanup.
+- **Results:** build/lint/boundaries, 152 focused / 69 typography tests; complete
+  144-case / 8,000-comparison audit, 22 moving/blurred and ten stationary native
+  frames, 96 real RPC snapshots and original WebGL/provider checks pass. All 64
+  exports / 768 bodies/frames match prior output; glyph 1.417335× meets unchanged 1.5.
+- **Review:** native map-spy typing and conservative definition-history test
+  assumption repaired; quota/null/borrowed geometry and consumer lifetime pass.
+- **Next:** vector/provider/graph/font/ledger/Node metadata, production/aggregate
+  admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [damage metadata evidence](./composition-ce15-damage-metadata-results.json).
 
 ### 2026-10-08 — CE15 retained frame keys and cache control
 

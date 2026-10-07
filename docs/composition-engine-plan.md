@@ -5127,14 +5127,15 @@ frame parity and borrowed/late native cleanup pass. Glyph 1.383989× ≤ 1.5×.
 Native capture/upload admission now passes 70 tests, the complete audit, six
 native complete-body oracles, twelve failure cases, original media/WebGL export
 commands and 64 prior-exact public exports / 768 bodies and frames. Owned submission/
-source/root/surface metadata, cache checksums and WebGL definition/isolate/frame
-keys/controls now pass 137 focused tests, the complete audit, 22 moving/blurred and
-ten stationary native frames and 96 owned RPC snapshots. Original retained keys,
-quota/null cleanup, exact stationary frame reuse and zero post-preview storage pass.
-Original WebGL/provider checks and 69 typography tests pass; glyph 1.483363× meets
+source/root/surface metadata, cache checksums and WebGL definition/isolate/frame/
+damage keys/controls now pass 152 focused tests, the complete audit, 22 moving/blurred
+and ten stationary native frames and 96 owned RPC snapshots. Original damage
+bounds/copies admit before creation; dirty owners persist through actual clip
+consumption. Quota/null/borrowed geometry and zero post-preview storage pass.
+Original WebGL/provider checks and 69 typography tests pass; glyph 1.417335× meets
 unchanged 1.5 maximum. All 64 exports / 768 bodies and frames retain prior exact
-output. Other damage/vector/provider/graph/font/checksum/ledger-control/Node metadata
-and production admission remain pending.
+output. Other vector/provider/graph/font/checksum/ledger-control/Node metadata and
+production admission remain pending.
 Aggregate limits, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),
