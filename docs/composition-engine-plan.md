@@ -3929,6 +3929,27 @@ audio waveform follow-through remains CE13. Cinematic family camera parity follo
 in CE4c. [PR #43](https://github.com/xxibcill/still-shift/pull/43) is open and attached against CE6; begin CE8-L on a new branch.
 [Evidence](./composition-ce8-results.json).
 
+### PR #43 review follow-up (2026-10-08)
+
+Four inline P2 findings have separate repairs from reviewed `9b53db3`: retain XYZ
+smooth velocities during Bézier edits; settle camera writers before validating
+derived optics; tolerate machine-scale affine roundoff; and project spatial null
+guides through their own scope's camera/world transform. Genuine projective effect
+relations and invalid final/independent optical controls still reject. Evaluator,
+Canvas, WebGL and export cache identities are 48 / 1.40.5 / 0.55.4 / 0.6.4.
+
+Independent Standards and Spec reviews have no findings. Original-code regressions
+fail for each finding; focused suites pass and 28 Canvas/WebGL guide comparisons
+and reverse seeks are exact. One complete pinned local `pnpm check` passes 2,265
+unit, 46 runtime, 224 integration and 14 depth tests, all 57 required commands,
+full Canvas family pixel/timing policy and 176 frozen items / 36,061 frames without
+regeneration. Native camera hashes, repeat/independent exports, inspector edits and
+36 hardware comparisons pass unchanged policy. The source fingerprint is unchanged
+through the 98.5-minute gate. The four repairs use one final normal push to existing
+PR #43, which integrates `main` after #42 merged. Owner review/merge remain; CE6-P
+stays separate and GitHub Actions disabled.
+[Repair evidence](./pr-43-followup-fix-results.json).
+
 ---
 
 ### CE8-L-F cast-shadow preparation (2026-10-06)

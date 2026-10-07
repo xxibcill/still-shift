@@ -36,6 +36,7 @@ import {
   inverseHomography,
   multiplyHomographies,
   projectPlane,
+  planeHomography,
   type Homography,
 } from "../evaluate/spatial-geometry.ts";
 import { spatialStackOrder } from "./spatial-order.ts";
@@ -1160,16 +1161,18 @@ class GraphBuilder {
           return captured;
         let effectMatrix = matrix;
         if (effect.space && effect.space !== state.id) {
-          const source = this.exposureScope(scope, state).byId.get(
-            effect.space,
-          )!;
+          const sourceScope = this.exposureScope(scope, state);
+          const source = sourceScope.byId.get(effect.space)!;
+          const sourceHomography =
+            source.projection?.homography ??
+            (source.spatialWorld &&
+            source.worldMatrix3d &&
+            sourceScope.tree.camera
+              ? planeHomography(source.worldMatrix3d, sourceScope.tree.camera)
+              : affineHomography(source.screenMatrix));
           const h = multiplyHomographies(
             affineHomography(matrix),
-            multiplyHomographies(
-              inverse,
-              source.projection?.homography ??
-                affineHomography(source.screenMatrix),
-            ),
+            multiplyHomographies(inverse, sourceHomography),
           );
           const affine = affineCoordinateMatrix(h);
           if (!affine)

@@ -43,17 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #43 follow-up repairs in progress (2026-10-07):** isolated
+- **PR #43 follow-up repairs verified (2026-10-08):** isolated
   `codex/pr43-followup-fixes` from reviewed `9b53db3`. All four findings have
-  inline PR comments. XYZ smooth-handle preservation is repaired; its two
-  regressions fail before repair and 51 related tests pass afterward.
-  Settled camera optics are also repaired: three regressions fail before repair
-  and 86 related tests pass afterward; evaluator identity advances to 48.
-  Affine effect-space roundoff is repaired: two regressions fail before repair
-  and 32 related tests pass afterward without accepting real perspective.
-  Spatial null guides and
-  final verification remain in flight. Delivery uses one finding per commit
-  and one final normal push. [Evidence](./pr-43-followup-fix-results.json).
+  inline PR comments and separate repairs: XYZ smooth handles, settled camera
+  optics, affine roundoff and spatial null-guide coordinates. Independent
+  Standards and Spec reviews have no findings. Complete pinned local `pnpm check`
+  passes 2,265 unit / 46 runtime / 224 integration / 14 depth tests, all 57
+  required commands, full Canvas family pixel/timing checks and 176 frozen
+  items / 36,061 frames without regeneration. All 28 guide pixel comparisons
+  and reverse seeks are exact; 36 hardware comparisons pass unchanged policy.
+  The source fingerprint stays exact through the 98.5-minute gate. Cache identities
+  are E48 / 1.40.5 / 0.55.4 / export 0.6.4. Delivery uses four finding-specific
+  commits and one final normal push; owner review/merge remain. CE6-P stays
+  owner-deferred and Actions disabled. [Evidence](./pr-43-followup-fix-results.json).
 
 - **PR #43 conflict integration verified (2026-10-07):** isolated PR head
   `c0c8f5d` integrates `main` at `f1cc8fe0`. CE8 cameras/XYZ/coverage and
@@ -782,9 +784,25 @@ still hold before relying on them.
   must not use TypeScript constructor parameter properties: Node's strip-only mode
   rejects them and five Lab integration suites fail.
 
-_Last updated 2026-10-07 by Codex for PR #43 conflict resolution._
+_Last updated 2026-10-08 by Codex for PR #43 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #43 null-guide repair and final verification
+
+- **Agent / branch:** Codex on isolated `codex/pr43-followup-fixes`, from `9b53db3`.
+- **Done:** project spatial null guides from their evaluated world transform and
+  owning camera; complete the fourth finding-specific repair commit.
+- **Results:** five original-code regressions fail before repair; 49 related tests
+  pass afterward, and 28 Canvas/WebGL guide comparisons/reverse seeks are exact.
+  Complete pinned local `pnpm check` passes 2,265 units, 46 runtime, 224 integration,
+  14 depth tests, all required browser groups and 176 frozen items / 36,061 frames.
+  Full Canvas family pixel/timing policy and the source fingerprint remain intact.
+- **Review:** independent Standards and Spec reviews have no findings.
+- **Next:** owner review/merge of PR #43; all four repairs use one final normal
+  push. CE6-P remains separate and Actions stay disabled.
+- **Records:** [repair evidence](./pr-43-followup-fix-results.json) and
+  [plan follow-up](./composition-engine-plan.md#pr-43-review-follow-up-2026-10-08).
 
 ### 2026-10-07 — PR #43 follow-up review repairs
 
@@ -793,15 +811,14 @@ _Last updated 2026-10-07 by Codex for PR #43 conflict resolution._
 - **Done:** preserve XYZ smooth spatial velocities across adjacent Bézier edits;
   validate secondary camera optics after their expression/motion writers settle.
   Accept machine-roundoff affine effect coordinates while rejecting real perspective.
-- **Results:** two new tests fail before repair; 51 focused tests pass afterward,
-  including fractional position/POI samples, both smoothing forms and undo/save.
-  Three optics regressions fail before repair; 86 related tests pass afterward,
-  retaining final bounds, independent control validation and nested readers.
-  Two affine-space regressions fail before repair; 32 related tests pass afterward.
-- **Attempts:** corrected the camera test draft's signal key count and diagnostic
-  case before rerunning its failing original-code evidence.
-- **Next:** null-guide coordinates,
-  final verification and one final normal push. Actions stay disabled.
+  Project spatial null guides through their own scope's camera and world transform.
+- **Results:** original-code regressions fail for all four findings; focused groups
+  pass 51 / 86 / 32 / 49 tests. All 28 Canvas/WebGL coordinate comparisons and
+  reverse seeks are exact. Independent Standards and Spec reviews have no findings.
+- **Attempts:** corrected signal/anchor fixtures and browser preview frames;
+  controls require visible effect paint. Detailed attempts remain in the evidence.
+- **Next:** finish full local verification and one final normal push. Frozen
+  references, thresholds and all 57 required commands remain; Actions stay disabled.
 - **Records:** [review/fix evidence](./pr-43-followup-fix-results.json).
 
 ### 2026-10-07 — PR #43 main conflict integration
