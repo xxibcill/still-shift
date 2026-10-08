@@ -5133,18 +5133,17 @@ snapshot/call-input/controller/wrapper and device/native-surface/pool-key/array/
 row-view/swap/dirty-set/cached-color/clip-intersection, device shader-source/program/
 uniform/diagnostic, paint batch/geometry/shader/uniform/input, Gaussian kernel/
 rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/default-
-sampler-results/sampled-GPU-Canvas-work, managed plan/sum-shader cache, particle/
-Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
-texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-metadata pass 604 focused tests, complete audit, 22 moving/blurred and ten stationary
-native frames and 96 owned RPC snapshots. Sampled Canvas tap/view/sample/sums/map/
-producer/native refs pre-admit with reused sampling slots, clear each pixel's
-temporary arrays after consumption and visit both backings after publication/failure.
-Twelve new tests / 12 original full native traces/pixels cover actual refs, quotas,
-partial/producer/native/adoption/null/cleanup/retry. Standalone/other sampling/cache/
-error/class/caller/depth sampling remain pending. Native probes, WebGL/providers and
-69 typography tests pass; glyph 1.434383× meets unchanged 1.5 maximum. All
-64 exports / 768 bodies/frames retain prior exact output. Recording/device/pool/shader/paint/
+sampler-results/sampled-GPU-Canvas-work/transform-results, managed plan/sum-shader
+cache, particle/Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls,
+depth mesh/texture/multisample/uniform/draw/text/native-controls and PNG source/draw/
+coordinate metadata pass 613 focused tests, complete audit, 22 moving/blurred and ten
+stationary native frames and 96 owned RPC snapshots. Standalone transform roots/child
+vectors/working refs pre-admit; actual results stay through consumers then clear on
+release/scratch/allocator. Nine new tests / 36 original full tables / 230 signed zeros
+check quotas/refs/partial/producer/adoption/null/cleanup/retry and lifetime. Other
+sampling/cache/error/class/caller/depth sampling remain pending. Native probes,
+WebGL/providers and 69 typography tests pass; glyph 1.422481× meets unchanged
+1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

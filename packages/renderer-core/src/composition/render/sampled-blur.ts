@@ -50,10 +50,7 @@ type GpuSampledBlurWork = {
   inputs?: WebglSurface[] | undefined;
 };
 function clearGpuSampledBlurWork(work: GpuSampledBlurWork) {
-  for (const tap of work.taps) (tap as number[]).length = 0;
-  work.taps.length = 0;
-  if (work.transforms) work.transforms.length = 0;
-  if (work.shape) delete work.shape.length;
+  clearSampleTransformWork(work);
   work.declarationChunks.length = 0;
   if (work.declarationParts) work.declarationParts.length = 0;
   work.stepChunks.length = 0;
@@ -144,15 +141,7 @@ function clearCanvasSampledBlurWork(work: CanvasSampledBlurWork) {
   }
   clearSampledPixel(work);
   if (work.sample) work.sample.length = 0;
-  const transforms = work.transformWork;
-  for (const tap of transforms.taps) (tap as number[]).length = 0;
-  transforms.taps.length = 0;
-  if (transforms.transforms) transforms.transforms.length = 0;
-  if (transforms.shape) delete transforms.shape.length;
-  transforms.shape =
-    transforms.transformProducer =
-    transforms.transforms =
-      undefined;
+  clearSampleTransformWork(work.transformWork);
   work.sampling.index = undefined;
   for (const key in work)
     delete (work as Partial<CanvasSampledBlurWork>)[
@@ -185,6 +174,17 @@ function finishCanvasSampledBlur(work: CanvasSampledBlurWork, failed: boolean) {
 }
 const IDENTITY: SampleTransform = [256, 0, 0, 0, 256, 0];
 const scalar = (p: Params, key: string) => p[key] as number;
+function clearSampleTransformWork(work: SampleTransformWork) {
+  for (const tap of work.taps) (tap as number[]).length = 0;
+  work.taps.length = 0;
+  if (work.transforms) work.transforms.length = 0;
+  if (work.shape) delete work.shape.length;
+  work.shape = work.transformProducer = work.transforms = undefined;
+}
+function clearSampleTransforms(values: SampleTransform[]) {
+  for (const value of values) (value as number[]).length = 0;
+  values.length = 0;
+}
 export function blurSampleTransforms(
   id: string,
   p: Params,
@@ -196,6 +196,67 @@ export function blurSampleTransforms(
     p,
     id === "blur.lens" ? "radius" : id === "blur.radial" ? "angle" : "amount",
   );
+  const count = amount === 0 ? 0 : scalar(p, "samples");
+  if (work || !renderMemory())
+    return produceSampleTransforms(id, p, w, h, amount, count, work);
+  const capacity =
+    amount === 0
+      ? 1
+      : Number.isFinite(count)
+        ? Math.max(0, Math.floor(count))
+        : count > 0
+          ? Number.MAX_SAFE_INTEGER
+          : 0;
+  const phase = allocateRenderMetadata<SampleTransformWork>(
+    1024 + 128 * capacity,
+    () => ({ taps: [] }),
+    false,
+    clearSampleTransformWork,
+  );
+  let result: SampleTransform[] | undefined,
+    failure: unknown,
+    failed = false;
+  try {
+    result = allocateRenderMetadata<SampleTransform[]>(
+      512 + 256 * capacity,
+      () => produceSampleTransforms(id, p, w, h, amount, count, phase),
+      false,
+      clearSampleTransforms,
+    );
+    phase.taps.length = 0;
+    phase.transforms = undefined;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      releaseRenderMetadata(phase);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the first producer or cleanup failure. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+function produceSampleTransforms(
+  id: string,
+  p: Params,
+  w: number,
+  h: number,
+  amount: number,
+  count: number,
+  work?: SampleTransformWork,
+): SampleTransform[] {
   if (amount === 0) {
     const result: SampleTransform[] = [[...IDENTITY]];
     if (work) {
@@ -204,7 +265,6 @@ export function blurSampleTransforms(
     }
     return result;
   }
-  const count = scalar(p, "samples");
   const shape = { length: count };
   if (work) work.shape = shape;
   if (id === "blur.lens") {

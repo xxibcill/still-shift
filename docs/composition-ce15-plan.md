@@ -1641,6 +1641,29 @@ registry/class/caller/depth sampling/provider/graph/font/common/ledger/Node and
 production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-sampled-canvas-metadata-results.json).
 
+## Accepted standalone transform result checkpoint — 2026-10-08
+
+Admit actual temporary work at 1024+128*capacity and actual returned outer/child
+tables at 512+256*capacity before shape/producer/array/vector factories. Preserve
+original neutral skipped samples getter and original count/math. Transfer actual
+root/child vectors out of temporary refs, retire work, hold returned data through
+consumers outside scope until release/scratch/allocator, then clear actual arrays.
+Partial math/adoption/temporary cleanup null clears actual partial/completed values,
+preserving first failure over secondary retirement and permitting retry. Inactive
+route and already admitted GPU/Canvas callers retain original production paths.
+
+Build/lint/boundaries and 613 focused tests / 70 files pass. Nine new tests cover
+neutral/max quotas, actual root/child ownership and refs, producer/adoption/null/
+cleanup/retry, outside-scope/scratch/allocator lifetime and count/capacity behavior.
+All 36 original full tables / 230 signed zeros match active/inactive scopes; all
+24 GPU/Canvas traces rerun. Initial fixture getter build failure retained, attempt 2
+accepted. Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers,
+69 typography and 64 prior-exact exports / 768 bodies/frames pass; glyph
+1.422481× meets unchanged 1.5 maximum. Remaining other sampling/effect/cache/
+registry/class/caller/depth sampling/provider/graph/font/common/ledger/Node and
+production/aggregate/speed/final gates pending.
+[Evidence](./composition-ce15-transform-results-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
