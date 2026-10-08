@@ -1638,6 +1638,12 @@ native projection after JSON reload. Invalid declarations, transparent painted
 coverage and a reveal that does not clear fail with `comp-camera-coverage`.
 Declared reveal subjects and occluders retain the cinematic full-opacity rule at
 every integer frame, including keyed opacity and inherited group opacity.
+Background masks, mattes, enabled effects and ancestor treatments additionally
+require rendered alpha coverage at actual shutter states. Other layers cannot
+hide a hole in the declared background. Fully covered treatments remain valid;
+cinematic declarations remain errors even when optional coverage uses warnings.
+The declared background must remain drawable; using it as another layer's matte
+source cannot suppress its viewport coverage.
 Shared `effects-1` opt-in and target validation are preserved.
 
 ### Temporal echo (CE6 dependency slice)

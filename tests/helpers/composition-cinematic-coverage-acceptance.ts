@@ -76,6 +76,150 @@ export async function compositionCinematicCoverageAcceptance(
       };
       const held = JSON.parse(JSON.stringify(uncovered)) as Composition;
       held.layers[1]!.motionBlur = false;
+      const alphaCases = [
+        "mask",
+        "matte",
+        "matte-source",
+        "ancestor-matte-source",
+        "group-mask",
+        "group-clip",
+        "group-effect",
+        "shutter-mask",
+        "opaque-sibling",
+        "full-mask",
+        "full-matte",
+        "disabled-effect",
+        "identity-effect",
+      ].map((id) => {
+        const changed = structuredClone(doc);
+        changed.motionBlur!.enabled = id === "shutter-mask";
+        const layer = changed.layers[1]!;
+        const hole = {
+          id: "hole",
+          mode: "subtract" as const,
+          path: {
+            closed: true,
+            vertices: [
+              [16, 16],
+              [32, 16],
+              [32, 32],
+              [16, 32],
+            ] as [number, number][],
+          },
+        };
+        if (["mask", "shutter-mask", "opaque-sibling"].includes(id))
+          layer.masks = [hole];
+        if (id === "shutter-mask") {
+          layer.masks![0]!.opacity = 0;
+          changed.expressions = {
+            "background.masks[hole].opacity": {
+              source: "step(0.1, abs(sin(frame * 6.283185307179586)))",
+            },
+          };
+        }
+        if (id === "full-mask")
+          layer.masks = [
+            {
+              id: "full",
+              mode: "add",
+              path: {
+                closed: true,
+                vertices: [
+                  [0, 0],
+                  [48, 0],
+                  [48, 48],
+                  [0, 48],
+                ],
+              },
+            },
+          ];
+        if (id === "matte" || id === "full-matte") {
+          changed.layers.push({
+            id: "matte",
+            type: "solid",
+            size: [48, 48],
+            color: "#ffffff",
+            transform: { anchor: [0, 0], position: [-8, -8] },
+            ...(id === "matte" ? { masks: [hole] } : {}),
+          });
+          layer.trackMatte = { layer: "matte", mode: "alpha" };
+        }
+        if (id === "ancestor-matte-source") {
+          layer.parent = "paint-group";
+          changed.layers.push({
+            id: "paint-group",
+            type: "group",
+            size: [48, 48],
+            transform: { anchor: [0, 0] },
+          });
+        }
+        if (id === "matte-source" || id === "ancestor-matte-source")
+          changed.layers.push({
+            id: "matted-subject",
+            type: "solid",
+            size: [8, 8],
+            color: "#ffffff",
+            trackMatte: {
+              layer: id === "matte-source" ? "background" : "paint-group",
+              mode: "alpha",
+            },
+          });
+        if (id.startsWith("group-")) {
+          layer.parent = "paint-group";
+          changed.layers.push({
+            id: "paint-group",
+            type: "group",
+            size: id === "group-clip" ? [16, 16] : [48, 48],
+            transform: { anchor: [0, 0] },
+            ...(id === "group-clip" ? { clip: true } : {}),
+            ...(id === "group-mask" ? { masks: [hole] } : {}),
+            ...(id === "group-effect"
+              ? {
+                  effects: [
+                    {
+                      id: "wipe",
+                      effect: "transition.linear-wipe",
+                      params: { progress: 0.5 },
+                    },
+                  ],
+                }
+              : {}),
+          });
+        }
+        if (id === "opaque-sibling")
+          changed.layers.push({
+            ...structuredClone(layer),
+            id: "sibling",
+            masks: [],
+          });
+        if (id === "disabled-effect")
+          layer.effects = [
+            {
+              id: "wipe",
+              effect: "transition.linear-wipe",
+              enabled: false,
+              params: { progress: 1 },
+            },
+          ];
+        if (id === "identity-effect")
+          layer.effects = [
+            {
+              id: "tint",
+              effect: "color.tint",
+              params: { amount: 0 },
+            },
+          ];
+        return {
+          id,
+          doc: changed,
+          valid: [
+            "full-mask",
+            "full-matte",
+            "disabled-effect",
+            "identity-effect",
+          ].includes(id),
+        };
+      });
       const reports = [];
       for (const backend of backends) {
         const resources = await render.loadCompositionResources(
@@ -154,6 +298,67 @@ export async function compositionCinematicCoverageAcceptance(
             throw Error(
               `${backend}: coverage rejection changed valid pixels (${maxControlDelta}, ${maxRetainedDelta})`,
             );
+          const renderedAlpha = [];
+          for (const item of alphaCases) {
+            let preview:
+              | ReturnType<typeof render.createCompositionPreview>
+              | undefined;
+            let diagnostics: ReturnType<typeof render.passageDiagnostics> = [];
+            let maxValidDelta = 0;
+            try {
+              preview = render.createCompositionPreview(
+                document.createElement("canvas"),
+                JSON.parse(JSON.stringify(item.doc)) as Composition,
+                await render.loadCompositionResources(item.doc, () => assetUrl),
+                { backend, coverageSeverity: "warning" },
+              );
+              for (const frame of [0, 2, 1, 0]) {
+                const result = preview.renderFrame(frame);
+                if (result.diagnostics.length)
+                  throw Error(`${item.id}: unexpected diagnostics`);
+                maxValidDelta = Math.max(
+                  maxValidDelta,
+                  render.compareFrames(pixels, preview.readPixels(), 32, 32)
+                    .maxChannelDelta,
+                );
+              }
+            } catch (error) {
+              diagnostics = render.passageDiagnostics(error);
+            } finally {
+              preview?.dispose();
+            }
+            if (item.valid) {
+              if (diagnostics.length || maxValidDelta > 1)
+                throw Error(
+                  `${backend}/${item.id}: valid alpha treatment changed coverage or pixels`,
+                );
+            } else if (
+              !diagnostics.some(
+                (diagnostic) =>
+                  diagnostic.code === "comp-camera-coverage" &&
+                  diagnostic.node === "background" &&
+                  diagnostic.path === "metadata.cinematicCoverage" &&
+                  diagnostic.severity === "error",
+              )
+            )
+              throw Error(
+                `${backend}/${item.id}: uncovered rendered alpha was accepted`,
+              );
+            retained.renderFrame(1);
+            if (
+              render.compareFrames(pixels, retained.readPixels(), 32, 32)
+                .maxChannelDelta !== 0
+            )
+              throw Error(
+                `${backend}/${item.id}: failed coverage changed retained pixels`,
+              );
+            renderedAlpha.push({
+              id: item.id,
+              valid: item.valid,
+              diagnostics,
+              maxValidDelta,
+            });
+          }
           reports.push({
             backend,
             decodedPng: true,
@@ -161,13 +366,14 @@ export async function compositionCinematicCoverageAcceptance(
             heldBackground: { frames: 4, maxChannelDelta: maxControlDelta },
             retainedPreview: { frames: 4, maxChannelDelta: maxRetainedDelta },
             renderErrors: [],
+            renderedAlpha,
           });
         } finally {
           control.dispose();
           retained.dispose();
         }
       }
-      return { reports, uncovered, assetUrl };
+      return { reports, uncovered, assetUrl, alphaCases };
     },
     [...backends],
   );

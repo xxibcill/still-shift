@@ -202,3 +202,38 @@ it("preserves persisted declaration restrictions before evaluating exposures", (
   layer.sources.push({ asset: "painted" });
   expect(() => checkReload(multiple)).toThrow(/single-state stretch image/);
 });
+
+it.each([false, true])(
+  "rejects a background suppressed by a matte source (ancestor: %s)",
+  (ancestor) => {
+    const document = scene();
+    if (ancestor) {
+      document.layers.find((layer) => layer.id === "background")!.parent =
+        "paint-group";
+      document.layers.push({
+        id: "paint-group",
+        type: "group",
+        size: [120, 100],
+        transform: { anchor: [0, 0] },
+      });
+    }
+    document.layers.unshift({
+      id: "matted-subject",
+      type: "solid",
+      size: [8, 8],
+      color: "#ffffff",
+      trackMatte: {
+        layer: ancestor ? "paint-group" : "background",
+        mode: "alpha",
+      },
+    });
+    const state = evaluateComp(document, 0).layers.find(
+      (layer) => layer.id === "background",
+    )!;
+    expect(state.visible).toBe(true);
+    expect(state.drawable).toBe(ancestor);
+    expect(() => checkReload(document)).toThrow(
+      /background must remain drawable/,
+    );
+  },
+);

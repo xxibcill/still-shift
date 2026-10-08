@@ -34,6 +34,34 @@ const declarationSchema = z.object({
     .optional(),
 });
 
+/** Untreated planes are covered geometrically; alpha treatments require the rendered layer. */
+export function cinematicRenderedCoverageRequirements(
+  composition: Composition,
+): ReadonlyMap<string, string> {
+  const parsed = declarationSchema.safeParse(
+    composition.metadata?.cinematicCoverage,
+  );
+  const requirements = new Map<string, string>();
+  if (!parsed.success) return requirements;
+  const layers = new Map(composition.layers.map((layer) => [layer.id, layer]));
+  for (
+    let layer = layers.get(parsed.data.background);
+    layer;
+    layer = layer.parent ? layers.get(layer.parent) : undefined
+  ) {
+    if (
+      layer.masks?.length ||
+      layer.trackMatte ||
+      layer.effects?.some((effect) => effect.enabled !== false) ||
+      (layer.type === "group" && layer.clip)
+    ) {
+      requirements.set(parsed.data.background, "metadata.cinematicCoverage");
+      break;
+    }
+  }
+  return requirements;
+}
+
 /** Persisted alpha declarations are checked against decoded assets and native camera states. */
 export function validateCinematicCompositionCoverage(
   composition: Composition,
@@ -82,6 +110,20 @@ export function validateCinematicCompositionCoverage(
     return result;
   };
   const cover = node(background);
+  const layers = new Map(composition.layers.map((layer) => [layer.id, layer]));
+  const matteSources = new Set(
+    composition.layers.flatMap((layer) =>
+      layer.trackMatte ? [layer.trackMatte.layer] : [],
+    ),
+  );
+  for (
+    let layer = layers.get(background);
+    layer;
+    layer = layer.parent ? layers.get(layer.parent) : undefined
+  ) {
+    if (layer.type === "group" && matteSources.has(layer.id))
+      fail("Cinematic background must remain drawable", background, 0);
+  }
   const [left, top, width, height] = paintedBounds;
   if (
     left < 0 ||
@@ -130,6 +172,8 @@ export function validateCinematicCompositionCoverage(
   };
   const checkBackground = (tree: EvaluatedLayerTree, frame: number) => {
     const state = planeState(tree, cover, frame);
+    if (!state.drawable)
+      fail("Cinematic background must remain drawable", background, frame);
     const a = projectLocalPoint(state.projection!, [left, top])!;
     const b = projectLocalPoint(state.projection!, [
       left + width,

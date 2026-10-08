@@ -1410,10 +1410,14 @@ comparisons and real inspector edits/undo/save/reload. The full Canvas matrices
 pass unchanged pixels and the 1.25 timing limit; WebGL timing retains CE6-P's
 existing deferral. All tracked visual references are unchanged.
 [Implementation evidence](./composition-ce4c-results.json). [PR #45](https://github.com/xxibcill/still-shift/pull/45) now targets `main`.
-The focused conflict-resolution verification and two open review findings are
-recorded in [merge evidence](./pr-45-conflict-resolution-results.json) and
-[review findings](./pr-45-review-results.json); the original full gate above remains
-historical.
+Focused conflict-resolution verification is recorded in
+[merge evidence](./pr-45-conflict-resolution-results.json). The original review
+findings are fixed in [repair evidence](./pr-45-fix-results.json); the subsequent
+persisted reveal-opacity and rendered background-alpha findings are fixed in
+[alpha repair evidence](./pr-45-alpha-fix-results.json), one finding per commit.
+Final alpha repair checks pass 2,390 units, both-backend cinematic diagnostics,
+protected export failures and all 176 frozen items / 36,061 unchanged frame hashes.
+These are scoped PR follow-up checks; the original full gate above remains historical.
 
 - [x] Map depth planes to 3D layers and the cinematic camera (including dolly zoom,
       curved approach and focus handoff) to the CE8 camera.

@@ -38,7 +38,7 @@ export type ExportableScene =
   | IllustratedScene
   | CompositionScene;
 
-const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.8";
+const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.9";
 
 export type ExportRequest = {
   runtime?: BrowserRuntimeOptions;

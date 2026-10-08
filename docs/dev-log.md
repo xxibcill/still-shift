@@ -43,14 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #45 alpha follow-up repairs in flight (2026-10-08):** both new P2
-  findings are posted inline on `76fb71b`. The commit containing this checkpoint
-  preserves full evaluated opacity for persisted reveal subjects and occluders;
-  41 focused tests and decoded-PNG Canvas/WebGL rejection/retained-preview checks
-  pass, as do four protected export failures and independent repair reviews.
-  Rendered background alpha remains next. Use one commit per finding and one
-  final push after affected browser/export/baseline verification. No full
-  repository gate is claimed; owner checkout is untouched and Actions disabled.
+- **PR #45 alpha follow-up repairs verified (2026-10-08):** both new P2
+  findings are posted inline on reviewed `76fb71b`, with one repair per commit.
+  `737b0cc` preserves full evaluated reveal opacity; the commit containing this
+  checkpoint checks rendered background alpha and rejects direct or ancestor
+  matte-source suppression. Final fast checks pass 2,390 units, all 46 cinematic
+  diagnostic cases pass, and all 176 frozen items / 36,061 frame hashes match.
+  Valid treated backgrounds and retained previews are exact on both backends;
+  all 22 invalid opacity/alpha exports fail without publishing output. Eight
+  affected integrations, camera, WebGL export and exposure checks also pass.
+  Independent repair reviews have no remaining findings. One final normal push
+  delivers both repair commits; owner review/merge remain. No new full repository
+  or timing gate is claimed; owner checkout is untouched and Actions disabled.
   [Alpha repair evidence](./pr-45-alpha-fix-results.json).
 
 - **PR #45 review repairs verified (2026-10-08):** both P2 findings are posted
@@ -885,6 +889,16 @@ still hold before relying on them.
 _Last updated 2026-10-08 by Codex for PR #45 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #45 rendered background-alpha repair and final verification
+
+- **Agent / branch:** Codex on `codex/pr45-alpha-fixes` after reveal repair `737b0cc`.
+- **Scope:** second inline P2 finding; one finding per commit and one final push.
+- **Done:** validate isolated rendered background alpha at actual exposure states, preserve mandatory cinematic errors, and reject direct/ancestor matte-source suppression. Add both-backend mask, matte, group, shutter and sibling-concealment regressions; document the native coverage rule and bump renderer/export identities.
+- **Results:** final fast checks pass 2,390 units; 46 cinematic diagnostics and 176 frozen items / 36,061 hashes pass unchanged. Valid/retained PNG previews stay exact; 22 invalid opacity/alpha exports publish nothing. Eight affected integrations, camera, WebGL exports and exposure checks pass. Final Standards and Spec audits have no findings.
+- **Rejected / do not repeat:** an early frozen run stopped at a missing browser initializer after 40 matching items while work was in flight; it is not counted as passed. Final module/profile preflight and complete sequential frozen run pass on an unchanged source fingerprint. No baseline regeneration, full `pnpm check` or timing matrix.
+- **Open / next:** final normal push delivers both repairs together; owner review/merge remain. Actions stay disabled.
+- **Records:** [alpha repair evidence](./pr-45-alpha-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
 
 ### 2026-10-08 — PR #45 persisted reveal-opacity repair
 

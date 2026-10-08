@@ -31,7 +31,10 @@ import {
 import { STORY_CONTENT_PROVIDERS } from "../adapters/story-providers.ts";
 import { validateRequiredCompositionCoverage } from "./required-coverage.ts";
 import { validateStoryCompositionCoverage } from "../adapters/story-coverage.ts";
-import { validateCinematicCompositionCoverage } from "../adapters/cinematic-coverage.ts";
+import {
+  validateCinematicCompositionCoverage,
+  cinematicRenderedCoverageRequirements,
+} from "../adapters/cinematic-coverage.ts";
 import { COMMERCE_CONTENT_PROVIDERS } from "../adapters/commerce-providers.ts";
 import { APPEARANCE_PROVIDERS } from "../adapters/appearance-providers.ts";
 import { MOTION_PATH_PROVIDERS } from "../adapters/motion-path.ts";
@@ -328,6 +331,7 @@ export function createCompositionPreview(
         backend,
         { textBounds: text.bounds },
         options.coverageSeverity ?? "error",
+        cinematicRenderedCoverageRequirements(composition),
       );
     } catch (error) {
       backend.dispose();
