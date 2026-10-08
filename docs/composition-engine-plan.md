@@ -5136,26 +5136,26 @@ rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/d
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
 standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/late-point-results/
 radial-GPU-Canvas-work/standalone-radial-point/control/encoded-view-results/stylize-
-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
+GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work/Canvas-color-source-gradient-image-work, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
 replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/
-native-controls and PNG source/draw/coordinate metadata pass 881 focused tests, complete audit, 22 moving/blurred and ten stationary
-native frames and 96 owned RPC snapshots. Actual 16384-byte GPU color owner precedes
-input/native factories; original entry tuples grow before original value getters,
-actual filter/uniform/gradient spread precede producers and actual input tuple/shared
-gradient vectors stay live through native pass. Original ownKeys/descriptor/receiver
-traces stay exact via empty facade. Actual 1024-byte curve backing has adoption guards
-and retirement; one actual pixel child serves all 256 samples without per-sample
-standalone leases. Clear actual tuples/records/handlers/key/descriptor/input/source/
-intermediate arrays and preserve first null over later cleanup. Ten new tests / 23
-whole original GPU traces, seven original enumeration cases, 84 getter cuts,
-quota/adoption/native/lifetime/cleanup/retry pass with all 871 prior tests and full
-46 native color records. Attempts repair extra descriptor reads and fixture injection/
-disposal sequencing; attempt 4 passes 881/100. Native probes, WebGL/providers/69
-typography tests pass; glyph 1.394345× meets unchanged 1.5 maximum. All 64 exports /
-768 bodies/frames retain prior exact output. Arbitrary ownKeys key-list capacity
-requires pre-producer admission; captured/cleared refs are not its byte-bound proof.
-Canvas/kernel/shader/store/registry, arbitrary borrowed methods/species, other effect/
-cache/error/class/caller/depth sampling remain pending. Recording/device/pool/shader/paint/
+native-controls and PNG source/draw/coordinate metadata pass 893 focused tests, complete audit, 22 moving/blurred and ten stationary
+native frames and 96 owned RPC snapshots. Actual 16384-byte Canvas color owner precedes
+input/native factories; capture empty/partial source before original conversion and
+reuse one actual pixel child across all pixels without standalone helper leases.
+Capture actual gradient keys/mapper/mapped/RGBA through original byte consumers and
+clear sample arrays after writes. Reserve exact image backing before native readback,
+capture actual image/buffer before adoption, guard unowned constructed backing and
+retire after publication. Independent controls/cache remain live through publication;
+controls retire and original scoped table cache remains until allocator disposal.
+Attempt all cleanup, clear actual refs and preserve first null. Twelve new tests /
+23 full original Canvas pixel/parameter/input traces, 464 parameter and 18 input cuts,
+partial/reuse/gradient/image/quota/adoption/native/multiple-cleanup/late-null/retry pass
+with all 881 prior tests and full 46 native GPU/Canvas color records. Attempt 1 passes
+893/101. Native probes, WebGL/providers/69 typography tests pass; glyph 1.425039×
+meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact
+output. GPU ownKeys key-list capacity, kernel/shader/registry, arbitrary borrowed
+methods/species/identity contracts, other effect/cache/error/class/caller/depth
+sampling remain pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

@@ -1,8 +1,8 @@
 import type { ManagedMemory, MemoryLease } from "../../managed-memory.ts";
 import type { WebglSurface } from "./webgl-device.ts";
+import type { CanvasSurface } from "./canvas2d.ts";
 import {
   allocateRenderPixels,
-  readRenderImageData,
   renderMemory,
 } from "../../managed-memory-context.ts";
 import {
@@ -26,16 +26,6 @@ import {
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
-function finishColorGradientMetadata(
-  controls: object | undefined,
-  failed: boolean,
-) {
-  try {
-    if (controls) releaseRenderMetadata(controls);
-  } catch (error) {
-    if (!failed) throw error;
-  }
-}
 function colorGradientUniforms(params: Params) {
   const controls = gradientControls(params);
   let result: ReturnType<typeof gradientUniforms> | undefined,
@@ -642,6 +632,130 @@ function colorGpuCurveBytes(work: ColorGpuWork): Uint8Array<ArrayBuffer> {
   }
 }
 
+type ColorCanvasWork = {
+  managed: boolean;
+  memory?: ManagedMemory | undefined;
+  pixel: ColorPixelWork;
+  input?: CanvasSurface | undefined;
+  output?: CanvasSurface | undefined;
+  image?: ImageData | undefined;
+  imageProducer?: (() => ImageData) | undefined;
+  backing?: ArrayBuffer | undefined;
+  pixelLease?: MemoryLease | undefined;
+  gradient?: GradientControls | undefined;
+  table?: Uint8Array<ArrayBuffer> | undefined;
+  source?: Rgba | undefined;
+  gradientKeys?: number[] | undefined;
+  gradientMapper?: ((channel: number) => number) | undefined;
+  gradientMapped?: number[] | undefined;
+  gradientResult?: Rgba | undefined;
+};
+function clearColorCanvasSample(work: ColorCanvasWork) {
+  clearColorPixelWork(work.pixel);
+  if (work.source) (work.source as number[]).length = 0;
+  if (work.gradientKeys) work.gradientKeys.length = 0;
+  if (work.gradientMapped) work.gradientMapped.length = 0;
+  if (work.gradientResult) (work.gradientResult as number[]).length = 0;
+  work.source =
+    work.gradientKeys =
+    work.gradientMapped =
+    work.gradientResult =
+      undefined;
+  work.gradientMapper = undefined;
+}
+function clearColorCanvasWork(work: ColorCanvasWork) {
+  let failed = false,
+    failure: unknown;
+  try {
+    work.pixelLease?.release();
+  } catch (error) {
+    failed = true;
+    failure = error;
+  }
+  try {
+    if (work.gradient) releaseRenderMetadata(work.gradient);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      failure = error;
+    }
+  }
+  try {
+    if (
+      work.memory &&
+      work.backing?.byteLength &&
+      !work.memory.owns(work.backing)
+    )
+      (
+        work.backing as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }
+      ).transfer(0);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      failure = error;
+    }
+  }
+  clearColorCanvasSample(work);
+  if (work.gradient)
+    for (const key in work.gradient)
+      delete (work.gradient as Partial<GradientControls>)[
+        key as keyof GradientControls
+      ];
+  for (const key in work)
+    delete (work as Partial<ColorCanvasWork>)[key as keyof ColorCanvasWork];
+  if (failed) throw failure;
+}
+function colorCanvasWork(): ColorCanvasWork {
+  const memory = renderMemory();
+  return allocateRenderMetadata<ColorCanvasWork>(
+    16384,
+    () => ({ managed: !!memory, memory, pixel: {} }),
+    false,
+    clearColorCanvasWork,
+  );
+}
+function finishColorCanvasWork(work: ColorCanvasWork, failed: boolean) {
+  try {
+    if (work.managed) releaseRenderMetadata(work);
+    else clearColorCanvasWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
+function colorCanvasImage(
+  work: ColorCanvasWork,
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+): ImageData {
+  if (!work.memory)
+    return (work.image = context.getImageData(0, 0, width, height));
+  const lease = (work.pixelLease = work.memory.reserve(
+    "pixels",
+    Math.abs(width * height) * 4,
+  ));
+  try {
+    work.imageProducer = () =>
+      (work.image = context.getImageData(0, 0, width, height));
+    const image = work.imageProducer(),
+      backing = (work.backing = image.data.buffer as ArrayBuffer);
+    work.memory.adopt(backing, lease, (value) => {
+      const buffer = value as ArrayBuffer & {
+        transfer(bytes: number): ArrayBuffer;
+      };
+      if (buffer.byteLength) buffer.transfer(0);
+    });
+    return image;
+  } catch (error) {
+    try {
+      lease.release();
+    } catch {
+      /* Preserve first native factory/adoption error. */
+    }
+    throw error;
+  }
+}
+
 const HSL = `
 vec3 adjustHsl(vec3 rgb) {
   float maximum=max(max(rgb.r,rgb.g),rgb.b),minimum=min(min(rgb.r,rgb.g),rgb.b),chroma=maximum-minimum;
@@ -753,60 +867,67 @@ export function colorEffectKernel(
       }
     },
     renderCanvas(context, input, params: RenderEffect["params"]) {
-      let gradient: GradientControls | undefined,
-        failed = false;
+      const work = colorCanvasWork();
+      let failed = false;
       try {
-        const output = context.createSurface(input.width, input.height);
-        const image = readRenderImageData(
+        work.input = input;
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        const image = colorCanvasImage(
+          work,
           input.ctx,
-          0,
-          0,
           input.width,
           input.height,
         );
-        gradient =
-          id === "color.gradient-ramp" ? gradientControls(params) : undefined;
-        const table = gradient ? gradientColorTable(params) : undefined;
+        const gradient = (work.gradient =
+          id === "color.gradient-ramp" ? gradientControls(params) : undefined);
+        const table = (work.table = gradient
+          ? gradientColorTable(params)
+          : undefined);
         for (let y = 0; y < input.height; y++)
           for (let x = 0; x < input.width; x++) {
             const i = (y * input.width + x) * 4;
-            const source: Rgba = [
-              colorEffectChannel(image.data[i]!, image.data[i + 3]!),
-              colorEffectChannel(image.data[i + 1]!, image.data[i + 3]!),
-              colorEffectChannel(image.data[i + 2]!, image.data[i + 3]!),
-              image.data[i + 3]! / 255,
-            ];
-            let result: Rgba,
-              ownedResult: Rgba | undefined,
-              pixelFailed = false;
+            const source = (work.source = [] as unknown as Rgba);
+            source[0] = colorEffectChannel(image.data[i]!, image.data[i + 3]!);
+            source[1] = colorEffectChannel(
+              image.data[i + 1]!,
+              image.data[i + 3]!,
+            );
+            source[2] = colorEffectChannel(
+              image.data[i + 2]!,
+              image.data[i + 3]!,
+            );
+            source[3] = image.data[i + 3]! / 255;
             try {
+              let result: Rgba;
               if (gradient && table) {
                 const index = gradientRank(gradient, x + 0.5, y + 0.5) * 4,
                   strength =
                     ((params.amount as number) * table[index + 3]!) / 255;
-                result = [0, 1, 2]
-                  .map((c) =>
+                const keys = (work.gradientKeys = [0, 1, 2]);
+                const mapped = (work.gradientMapped = keys.map(
+                  (work.gradientMapper = (c) =>
                     unit(
                       source[c]! +
                         (table[index + c]! / 255 - source[c]!) * strength,
-                    ),
-                  )
-                  .concat(source[3]) as Rgba;
+                    )),
+                ));
+                result = work.gradientResult = mapped.concat(source[3]) as Rgba;
               } else
-                result = ownedResult = colorEffectPixel(
+                result = colorEffectPixel(
                   id,
                   source,
                   params,
                   x + 0.5,
                   y + 0.5,
+                  work.pixel,
                 );
               for (let channel = 0; channel < 4; channel++)
                 image.data[i + channel] = Math.round(result[channel]! * 255);
-            } catch (error) {
-              pixelFailed = true;
-              throw error;
             } finally {
-              finishColorGradientMetadata(ownedResult, pixelFailed);
+              clearColorCanvasSample(work);
             }
           }
         output.ctx.putImageData(image, 0, 0);
@@ -815,7 +936,7 @@ export function colorEffectKernel(
         failed = true;
         throw error;
       } finally {
-        finishColorGradientMetadata(gradient, failed);
+        finishColorCanvasWork(work, failed);
       }
     },
   } satisfies CompositionEffectPlugin);

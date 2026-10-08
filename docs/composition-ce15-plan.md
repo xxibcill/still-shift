@@ -2255,6 +2255,32 @@ kernel/shader/registry, arbitrary borrowed methods/species, common/Node, product
 aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-color-gpu-metadata-results.json).
 
+## Accepted selected Canvas color metadata checkpoint — 2026-10-08
+
+Actual 16384-byte callback owner precedes original input/native factories. Capture
+empty/partial source before original channel conversions, reuse one actual pixel
+child across all pixels without standalone phase/result leases, and capture original
+gradient keys/mapper/mapped/RGBA through byte consumers. Clear actual sample arrays
+after writes. Reserve exact native readback backing before getImageData, capture image/
+buffer before adoption and retire after native publication; guard constructed unowned
+backing after adoption null. Keep independent gradient controls/cache through publication,
+then retire controls and preserve original scoped table cache until allocator disposal.
+Attempt all cleanup and preserve first error including null.
+
+Build/lint/boundaries and 893 focused tests / 101 files pass on attempt 1. Twelve new
+tests preserve 23 independently original complete Canvas pixels/parameter/input reads,
+464 parameter and 18 input getter cuts, exact quotas, actual partial/reused/gradient/
+image lifetimes, source/byte rounds, adoption/native/multiple-cleanup/late-null/retry.
+All 881 prior tests and complete 46 original GPU/Canvas native records rerun. Complete
+144-case / 8,000-frame audit, 96 RPC snapshots, native probes, WebGL/providers, 69
+typography tests and 64 prior-exact exports / 768 bodies/frames pass; glyph 1.425039×
+meets unchanged 1.5 maximum. Independent original harness initialization repaired before
+freezing new input traces; preserve original ctx/width/height order and all native oracles.
+
+GPU ownKeys capacity, kernel/shader/registry, arbitrary borrowed methods/species/
+identity contracts, common/Node, production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-color-canvas-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

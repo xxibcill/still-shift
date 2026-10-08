@@ -497,16 +497,15 @@ it("retires actual RGBA at GPU curve-byte and Canvas pixel consumers and preserv
       h = shadowHarness(),
       round = Math.round;
     let result: Rgba | undefined,
-      gpuWork: { pixel: { colorOutput?: Rgba } } | undefined;
+      callbackWork: { pixel: { colorOutput?: Rgba } } | undefined;
     await withManagedMemory(memory, async () => {
       vi.spyOn(memory, "adopt").mockImplementation((value, lease, destroy) => {
         if (lease.bytes === 512 && Array.isArray(value)) result = value as Rgba;
-        if (gpu && lease.bytes === 16384) gpuWork = value as typeof gpuWork;
+        if (lease.bytes === 16384) callbackWork = value as typeof callbackWork;
         return adopt(
           value,
           lease,
-          (lease.bytes === 512 && Array.isArray(value)) ||
-            (gpu && lease.bytes === 16384)
+          (lease.bytes === 512 && Array.isArray(value)) || lease.bytes === 16384
             ? (v) => {
                 destroy?.(v);
                 throw Error("secondary RGBA cleanup");
@@ -515,9 +514,9 @@ it("retires actual RGBA at GPU curve-byte and Canvas pixel consumers and preserv
         );
       });
       vi.spyOn(Math, "round").mockImplementation((v) => {
-        if (gpu && gpuWork?.pixel.colorOutput) {
-          result = gpuWork.pixel.colorOutput;
-          expect(memory.owns(gpuWork)).toBe(true);
+        if (callbackWork?.pixel.colorOutput) {
+          result = callbackWork.pixel.colorOutput;
+          expect(memory.owns(callbackWork)).toBe(true);
           expect(result).toHaveLength(4);
           throw null;
         }
