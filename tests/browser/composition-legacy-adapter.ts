@@ -20,6 +20,7 @@ import {
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as Timing from "../helpers/paired-render-timing.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
+import { legacyTextVariants } from "../helpers/composition-legacy-text.ts";
 import { cinematicPreviewEncoder } from "../helpers/cinematic-preview-export.ts";
 import {
   cameraHardwarePreview,
@@ -79,7 +80,10 @@ try {
       original = PreparedSceneSchema.parse(
         JSON.parse(await readFile(path, "utf8")),
       );
-    const inputs = [{ id: entry.id, scene: original }];
+    const inputs = [
+      { id: entry.id, scene: original },
+      ...legacyTextVariants(entry.id, original),
+    ];
     for (const item of inputs) {
       const source = PreparedSceneSchema.parse(item.scene);
       const composition = legacyToComposition(source),

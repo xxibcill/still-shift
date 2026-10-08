@@ -4,6 +4,7 @@ import {
   PreparedSceneSchema,
   validateComposition,
 } from "@still-shift/scene-contract";
+import { legacyTextVariants } from "../helpers/composition-legacy-text.ts";
 import { legacyToComposition } from "../../packages/renderer-core/src/composition/adapters/legacy.ts";
 import {
   compilePreparedScene,
@@ -162,3 +163,33 @@ it.each(
     assertStates(input);
   },
 );
+
+it.each(
+  legacyTextVariants(
+    "legacy/chronicle-reveal",
+    source(
+      fixtures.find((fixture) => fixture.id === "legacy/chronicle-reveal")!
+        .path,
+    ),
+  ),
+)("preserves bounded measured text and containers for $id", ({ id, scene }) => {
+  const composition = assertStates(scene);
+  const node = scene.nodes.find((node) => node.id === "title")!;
+  const layer = composition.layers.find((layer) => layer.id === node.id)!;
+  expect(layer).toMatchObject({
+    type: "provider",
+    provider: id.endsWith("/text-box")
+      ? "commerce.text@1.0.0"
+      : "commerce.text@1.2.0",
+    assets: ["legacy-text-font"],
+    usesSystemFonts: false,
+    params: { node },
+  });
+  expect(
+    composition.layers.find((layer) => layer.id === "kicker"),
+  ).toMatchObject({
+    type: "provider",
+    provider: "story.text@1.0.0",
+    usesSystemFonts: true,
+  });
+});

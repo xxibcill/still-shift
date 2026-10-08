@@ -15,7 +15,7 @@ import {
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import { params, preparedNodeLayer } from "./prepared.ts";
 
-export const LEGACY_ADAPTER_VERSION = "legacy-composition-0.1.0";
+export const LEGACY_ADAPTER_VERSION = "legacy-composition-0.1.1";
 
 /** Freeze millisecond recipes at integer frames; playback uses only native data. */
 export function legacyToComposition(
@@ -55,6 +55,10 @@ export function compiledLegacyToComposition(
         evaluatePreparedNode(scene, node, frame),
       );
       const layer = preparedNodeLayer(scene, node, samples);
+      if (node.type === "text" && layer.type === "provider") {
+        if (node.container) layer.provider = "commerce.text@1.2.0";
+        else if (node.textBox) layer.provider = "commerce.text@1.0.0";
+      }
       const follower = scene.followers[node.id];
       if (follower) {
         const path = scene.nodes.find((node) => node.id === follower.path)!;

@@ -1,0 +1,68 @@
+{
+  "pr": 47,
+  "date": "2026-10-08",
+  "reviewHead": "ed4034cd7413e0edf6c05adda71774e2f0277117",
+  "base": "8cc7b14f7090896a755080461b248ac6b2a0eb6f",
+  "branch": "codex/pr47-review-fixes",
+  "status": "in-progress",
+  "deliveryPolicy": "One finding per commit; one final normal push to codex/composition-ce4d.",
+  "review": "https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5452665143",
+  "scope": "Six scoped PR review repairs; no new milestone or full repository gate is claimed.",
+  "toolchain": "Pinned local Node22.23.1/pnpm10.29.3/Python3.12.11/Playwright1.62.1 Chromium1234/FFmpeg8.0.1 verified; own Python environment and Vite caches.",
+  "findings": [
+    {
+      "id": 1,
+      "title": "Boxed/container legacy text",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4215761573",
+      "status": "implemented-focused-verified",
+      "change": "Existing bounded commerce text providers retain measured boxes and caption/speech/thought containers. Legacy adapter0.1.1 and illustrated renderer0.12.1 invalidate old preparation/cache identity.",
+      "checks": [
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-legacy-adapter.test.ts --maxWorkers=2",
+          "status": "pass",
+          "tests": 19
+        },
+        {
+          "command": "pnpm exec tsx tests/browser/composition-legacy-adapter.ts --only legacy/chronicle-reveal --smoke",
+          "status": "pass-focused-smoke",
+          "cases": 10,
+          "frames": 50,
+          "reverseFrames": 50,
+          "maxChannelDelta": {
+            "canvas2d": 0,
+            "webgl2": 1
+          },
+          "scope": "Original fixture plus four added text variants, both backends. Sampled pixel/seek check; full delivery deferred to final scoped verification."
+        },
+        {
+          "command": "pnpm build",
+          "status": "pass-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "status": "pending"
+    },
+    {
+      "id": 3,
+      "status": "pending"
+    },
+    {
+      "id": 4,
+      "status": "pending"
+    },
+    {
+      "id": 5,
+      "status": "pending"
+    },
+    {
+      "id": 6,
+      "status": "pending"
+    }
+  ],
+  "finalVerification": {
+    "status": "pending",
+    "fullPnpmCheck": "not-run-scoped-follow-up-policy"
+  }
+}

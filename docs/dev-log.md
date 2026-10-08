@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #47 review repairs in progress (2026-10-08):** isolated
+  `codex/pr47-review-fixes` from reviewed `ed4034c`. All six findings are posted
+  inline. Boxed/container legacy text is repaired with 19 focused units and
+  50 native/oracle pixel and reverse-seek comparisons on both backends. Five
+  repairs and final focused browser/export/frozen-baseline verification remain.
+  One finding per commit; one final normal push. Owner CE15 checkout is untouched;
+  no new full repository gate is claimed. [Evidence](./pr-47-fix-results.json).
+
 - **PR #47 conflicts resolved and locally verified (2026-10-08):** isolated
   `codex/pr47-conflict-resolution` integrates `main` at `8cc7b14f` into CE4d
   `adf6cea`. All 17 conflicts preserve native defaults/depth and reviewed cinematic,
@@ -959,6 +967,20 @@ still hold before relying on them.
 _Last updated 2026-10-08 by Codex for PR #47 conflict resolution._
 
 ## Entries
+
+### 2026-10-08 — PR #47 review repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr47-review-fixes`, from `ed4034c`.
+- **Scope:** six posted inline review findings, one finding per commit.
+- **Done:** boxed/container legacy text uses existing bounded local text providers;
+  adapter and illustrated identities invalidate prior preparation caches.
+- **Results:** 19 focused units, build and 50 sampled native/oracle frames with
+  reverse seeks pass; Canvas delta 0 and WebGL delta 1. Independent source review
+  has no remaining finding in this repair. No full repository gate was run.
+- **Open / next:** finish five repairs, scoped browser/export/frozen-baseline checks,
+  then push all six commits once. No owner decision blocks these authorized fixes.
+- **Records:** [repair evidence](./pr-47-fix-results.json),
+  [inline review](https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5452665143).
 
 ### 2026-10-08 — Resolve PR #47 conflicts with main
 
