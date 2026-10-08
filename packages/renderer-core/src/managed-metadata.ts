@@ -25,6 +25,22 @@ export function allocateRenderMetadata<T extends object>(
 ): T {
   const memory = renderMemory();
   if (!memory) return factory();
+  return allocateManagedRenderMetadata(
+    memory,
+    bytes,
+    factory,
+    retained,
+    destroy,
+  );
+}
+/** Keep late consumer results under their actual captured allocator outside render scope. */
+export function allocateManagedRenderMetadata<T extends object>(
+  memory: ManagedMemory,
+  bytes: number,
+  factory: () => T,
+  retained = false,
+  destroy?: (value: T) => void,
+): T {
   const lease = memory.reserve("metadata", bytes, undefined, retained);
   let value: T | undefined;
   try {

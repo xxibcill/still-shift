@@ -98,19 +98,19 @@ still hold before relying on them.
   Gaussian kernel/rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
-  mapping/radial-GPU-Canvas-work/standalone-radial-point/control/encoded-view-results,
-  managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/replace/
-  built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/native-
-  controls and PNG source/draw/coordinate metadata pass 710 focused tests, complete
-  audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC snapshots.
-  Standalone warp mapping admits before original factories, holds actual matrices/
-  vectors/records/closures through outside-scope consumers then clears refs. Nine new
-  tests / 21 full original mappings/getter sequences/18 signed zeros check quotas/
-  roots/partial/null/adoption/retry/lifetime/caller. Harness failures retained; focused
-  attempt 3 passes. Native probes, WebGL/providers, 69 typography tests and 64 exports /
-  768 prior-exact bodies/frames pass; glyph 1.382429× meets unchanged 1.5 maximum.
-  Later warp point results, other effects/cache/error/class/caller/depth sampling
-  remain pending.
+  mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
+  encoded-view-results, managed plan/sum-shader cache, particle/Canvas/WebGL region,
+  effect-paint/replace/built-ins/callback-controls, depth mesh/texture/multisample/
+  uniform/draw/text/native-controls and PNG source/draw/coordinate metadata pass 720
+  focused tests, complete audit, 22 moving/blurred and ten stationary native frames
+  and 96 owned RPC snapshots. Late warp points admit before original producers under
+  captured allocator outside scope; outputs survive mapping cleanup then clear at
+  consumer cleanup. Ten new tests / 105 original values/signed zeros/three undefined
+  outputs check quotas/captured owners/math/lifetime/null/adoption/retry/caller.
+  Type failure retained; focused attempt 2 passes. Native probes, WebGL/providers,
+  69 typography tests and 64 exports / 768 prior-exact bodies/frames pass; glyph
+  1.369987× meets unchanged 1.5 maximum. Other effects/cache/error/class/caller/
+  depth sampling remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -346,6 +346,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual late standalone warp point results
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `a5538ce3`.
+- **Done:** admit actual late outputs before original producers under mapping's
+  captured allocator, keep outside scope and independent of mapping cleanup; clear
+  actual outputs/empty controls. Original caller route adds no per-point lease.
+- **Results:** build/lint/boundaries, 720 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.369987×.
+- **Verification:** ten new tests / 105 original points/signed zeros/three undefined
+  points, quotas/captured owners/math/lifetime/null/adoption/retry/caller. Prior exact
+  assertions unchanged; type failure retained, focused attempt 2 passes. Glyph
+  1.57× displayed failure retained; affected unchanged-code repeat passes.
+- **Next:** stylize/noise/color/transition/cache/class/depth sampling, provider/graph/
+  font/common/registry/ledger/Node, aggregate memory/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [warp point evidence](./composition-ce15-warp-points-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual standalone warp mapping result
 

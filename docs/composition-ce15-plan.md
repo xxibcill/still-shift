@@ -1905,6 +1905,31 @@ registry/error/class/depth sampling/provider/graph/font/common/ledger/Node and
 production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-warp-mapping-metadata-results.json).
 
+## Accepted late standalone warp point results checkpoint — 2026-10-08
+
+Reuse original metadata admission/error body with explicit captured allocator.
+Standalone admitted mapping reserves 272-byte actual output before original point
+math/array or empty-control factory. Keep outputs owned outside render scope,
+even with another active allocator; drop mapping tracker point ref after adoption.
+Point outputs outlive mapping cleanup and clear at explicit/scratch/allocator
+cleanup. Original undefined output retires actual temporary empty owner immediately.
+Preserve original null over secondary cleanup; parent remains owned after failure.
+Original caller-admitted GPU/Canvas route adds no per-point reservation.
+
+Build/lint/boundaries and 720 focused tests / 82 files pass on attempt 2 after
+explicit controller type annotation. Ten new tests check 105 original values/signed
+zeros, three original undefined destinations, exact quota, actual captured owners/
+math/independent lifetime/scratch/allocator/null/adoption/retry/caller. Two prior
+mapping consumers release outputs after unchanged value assertions; all 710 prior
+tests rerun. Complete audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers,
+69 typography and 64 prior-exact exports / 768 bodies/frames pass; glyph
+1.369987× meets unchanged 1.5 maximum. Other effects/cache/registry/error/class/
+depth sampling/provider/graph/font/common/ledger/Node, production/aggregate/speed/
+final gates remain pending. Prior glyph timing displayed 1.57× and failed; workload
+snapshot, failed reports and affected successful repeat are retained without
+threshold/protocol/code adjustment or a claimed cause.
+[Evidence](./composition-ce15-warp-points-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -14,6 +14,7 @@ import type { WebglSurface } from "./webgl-device.ts";
 import type { CanvasSurface } from "./canvas2d.ts";
 import {
   allocateRenderMetadata,
+  allocateManagedRenderMetadata,
   releaseRenderMetadata,
 } from "../../managed-metadata.ts";
 type Params = Readonly<
@@ -236,13 +237,46 @@ export function warpMapping(
   work?: WarpMappingWork,
 ): Mapping {
   if (work || !renderMemory()) return produceWarpMapping(id, p, w, h, work);
+  const memory = renderMemory()!;
   let partial: GpuWarpWork | undefined;
   try {
     return allocateRenderMetadata<Mapping>(
       16384,
       () => {
-        partial = { managed: true, arrays: [] };
-        return produceWarpMapping(id, p, w, h, partial);
+        const control: GpuWarpWork = (partial = { managed: true, arrays: [] });
+        const mapping = produceWarpMapping(id, p, w, h, control);
+        const producer = mapping.sourcePoint;
+        mapping.sourcePoint = control.sourcePoint = (x, y) => {
+          let point: number[] | undefined;
+          let result: number[] | { empty?: true } | undefined;
+          try {
+            result = allocateManagedRenderMetadata<number[] | { empty?: true }>(
+              memory,
+              272,
+              () => (point = producer(x, y)) ?? { empty: true },
+              false,
+              (value) => {
+                if (Array.isArray(value)) value.length = 0;
+                else delete value.empty;
+              },
+            );
+            control.point = undefined;
+            point = undefined;
+            if (Array.isArray(result)) return result;
+            releaseRenderMetadata(result);
+            return undefined;
+          } catch (error) {
+            try {
+              if (result) releaseRenderMetadata(result);
+            } catch {
+              /* Preserve the original point or cleanup failure. */
+            }
+            if (point) point.length = 0;
+            control.point = undefined;
+            throw error;
+          }
+        };
+        return mapping;
       },
       false,
       () => {

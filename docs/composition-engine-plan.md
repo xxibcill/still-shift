@@ -5134,19 +5134,19 @@ row-view/swap/dirty-set/cached-color/clip-intersection, device shader-source/pro
 uniform/diagnostic, paint batch/geometry/shader/uniform/input, Gaussian kernel/
 rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/default-
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
-standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/radial-GPU-Canvas-
-work/standalone-radial-point/control/encoded-view-results, managed plan/sum-shader
-cache, particle/Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls,
-depth mesh/texture/multisample/uniform/draw/text/native-controls and PNG source/draw/
-coordinate metadata pass 710 focused tests, complete audit, 22 moving/blurred and
-ten stationary native frames and 96 owned RPC snapshots. Standalone warp mapping
-admits before original factories, holds actual matrices/vectors/records/closures
-through outside-scope consumers then clears refs. Nine new tests / 21 full original
-mappings/getter sequences/18 signed zeros check quotas/roots/partial/null/adoption/
-retry/lifetime/caller. Harness failures retained; focused attempt 3 passes. Native
-probes, WebGL/providers and 69 typography tests pass; glyph 1.382429× meets
-unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output.
-Later warp point results, other effects/cache/error/class/caller/depth sampling remain
+standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/late-point-results/
+radial-GPU-Canvas-work/standalone-radial-point/control/encoded-view-results, managed
+plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/replace/built-ins/
+callback-controls, depth mesh/texture/multisample/uniform/draw/text/native-controls
+and PNG source/draw/coordinate metadata pass 720 focused tests, complete audit,
+22 moving/blurred and ten stationary native frames and 96 owned RPC snapshots.
+Late warp points admit before original producers under captured allocator outside
+scope; outputs survive mapping cleanup then clear at consumer cleanup. Ten new tests /
+105 original values/signed zeros/three undefined outputs check quotas/captured owners/
+math/lifetime/null/adoption/retry/caller. Type failure retained; focused attempt 2
+passes. Native probes, WebGL/providers and 69 typography tests pass; glyph
+1.369987× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain
+prior exact output. Other effects/cache/error/class/caller/depth sampling remain
 pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
