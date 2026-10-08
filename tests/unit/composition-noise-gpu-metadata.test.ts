@@ -9,6 +9,7 @@ import {
 } from "../../packages/renderer-core/src/composition/render/noise-effects.ts";
 import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
 import { withManagedMemory } from "../../packages/renderer-core/src/managed-memory-context.ts";
+import { releaseRenderMetadata } from "../../packages/renderer-core/src/managed-metadata.ts";
 export const sha = (v: unknown) =>
   createHash("sha256").update(JSON.stringify(v)).digest("hex");
 export function shadowHarness() {
@@ -195,6 +196,7 @@ it("preserves all 16 original native callbacks/full pixels, six controls/uniform
             ].map(([x, y]) => noiseField(controls, x!, y!));
             expect(fields).toEqual(row.values);
             expect(accesses).toEqual(row.accesses);
+            releaseRenderMetadata(controls);
           } else {
             const rgb = structuredClone(row.rgb!);
             expect(fractalNoiseColor(row.value!, params, rgb)).toEqual(
@@ -279,7 +281,16 @@ it("retains actual controls/three uniform records/seed-z vectors/full shader/inp
         seed = work!.seedParts;
         z = work!.zParts;
         inputs = work!.inputs;
-        expect(controls).toEqual(noiseControls(raw));
+        expect(controls).toEqual(
+          originals.find(
+            (row) =>
+              row.kind === "controls" &&
+              row.params.seed === raw.seed &&
+              row.params.scale === raw.scale &&
+              row.params.octaves === raw.octaves &&
+              row.params.evolution === raw.evolution,
+          )!.controls,
+        );
         expect(base!.seedParts).toBe(seed);
         expect(base!.zParts).toBe(z);
         expect(uniforms!.seedParts).toBe(seed);

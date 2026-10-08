@@ -99,21 +99,25 @@ still hold before relying on them.
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
   mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work, managed plan/sum-shader cache, particle/
+  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
   texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 775 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. Noise Canvas work admits actual controls/
-  views/sample/RGB-color maps/octave plane/sampling/native refs before factories.
-  Drop actual plane after each original octave; clear actual pixel arrays/callbacks
-  after each pixel. Keep views through publication, retire both original backings and
-  clear actual refs even after native detach errors, preserving first null. No extra
-  pixel/octave leases. Thirteen new tests / 38 original complete rows and 16 getter
-  sequences check quota/actual partial-consumer refs/math/map/field/sampling/native/
-  adoption/cleanup null/retry. Focused attempt 1 passes. Native probes, WebGL/providers
-  and 69 typography tests pass; glyph 1.458716× meets unchanged 1.5 maximum. All
-  64 exports / 768 bodies/frames retain prior exact output. Standalone noise helpers
-  and other effects/cache/error/class/caller/depth sampling remain pending.
+  metadata pass 783 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Standalone noiseControls admits actual
+  1024-byte temporary producer/partial record and independent 512-byte result before
+  original getters/math/record factories. Transfer completed result out of phase;
+  retain captured allocator ownership outside scope until consumer/scratch/allocator
+  cleanup. Preserve original formulas/getters/borrowed params and inactive/caller
+  route without extra leases. Clear actual partial/result/producer refs after null,
+  preserve first null over secondary cleanup and exact retry. Eight new tests retain
+  six original controls/uniform tables and 30 fields with exact getter order and
+  verify quota/partial-producer refs/captured lifetime/adoption/cleanup/retry/caller.
+  All 775 prior tests rerun, with two affected tests releasing newly owned controls
+  and using the same frozen oracle. Focused attempt 1 passes. Native probes,
+  WebGL/providers and 69 typography tests pass; glyph 1.470339× meets unchanged
+  1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output. Uniform/
+  field/color helpers and other effects/cache/error/class/caller/depth sampling
+  remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -349,6 +353,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual standalone noise-controls metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `998ed11c`.
+- **Done:** admit actual temporary producer/partial controls and independent result
+  before factories; retain captured allocator ownership outside scope until consumer.
+- **Results:** build/lint/boundaries, 783 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.470339×.
+- **Verification:** eight new tests / six complete original controls/uniform tables,
+  30 field values/exact getters/quota/actual partial refs/lifetime/adoption/cleanup/
+  retry/caller; all 775 prior tests rerun. First attempt passes. Two prior tests
+  release new owned controls and retain the same frozen expected values.
+- **Next:** uniform/field/color helpers, other effects/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, aggregate memory/speed/final gate,
+  then CE14. Production admission remains pending.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [noise controls evidence](./composition-ce15-noise-controls-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual noise Canvas callback metadata
 

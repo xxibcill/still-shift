@@ -2035,6 +2035,29 @@ helpers, other effects/cache/registry/error/class/depth sampling/provider/graph/
 common/ledger/Node and production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-noise-canvas-metadata-results.json).
 
+## Accepted standalone noise-controls metadata checkpoint — 2026-10-08
+
+Default active helper admits actual 1024-byte temporary phase/producer/partial
+record and independent 512-byte result before original getters/math/record factories.
+Transfer completed result out of phase without clearing it; retire phase and producer.
+Keep actual result under captured allocator outside scope and while another scope is
+active until consumer/scratch/allocator cleanup clears its five fields. Preserve
+original inactive/caller route without extra helper leases, formulas/getter order,
+borrowed params and first null over secondary cleanup. Retire independent result if
+successful temporary cleanup fails; preserve exact retry.
+
+Build/lint/boundaries and 783 focused tests / 89 files pass on attempt 1. Eight new
+tests preserve six original controls/uniform tables and 30 field values with exact
+getters and verify quota/actual partial-producer refs/captured ownership/lifetime/
+producer/adoption/cleanup null/retry/caller. All 775 prior tests rerun; two affected
+prior tests release newly owned controls and compare against the same frozen oracle.
+Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography tests
+and 64 prior-exact exports / 768 bodies/frames pass; glyph 1.470339× meets unchanged
+1.5 maximum. Uniform/field/color helpers, other effects/cache/registry/error/class/
+depth sampling/provider/graph/font/common/ledger/Node and production/aggregate/speed/
+final gates remain pending.
+[Evidence](./composition-ce15-noise-controls-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

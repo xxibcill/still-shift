@@ -43,12 +43,12 @@ type GpuNoiseWork = NoiseControlWork &
     effectUniforms?: Record<string, number | readonly number[]> | undefined;
     uniforms?: Record<string, number | readonly number[]> | undefined;
   };
+function clearNoiseControlResult(value: NoiseControls) {
+  for (const key in value)
+    delete (value as Partial<NoiseControls>)[key as keyof NoiseControls];
+}
 function clearNoiseControls(work: NoiseControlWork) {
-  if (work.controls)
-    for (const key in work.controls)
-      delete (work.controls as Partial<NoiseControls>)[
-        key as keyof NoiseControls
-      ];
+  if (work.controls) clearNoiseControlResult(work.controls);
 }
 function clearGpuNoiseWork(work: GpuNoiseWork) {
   clearNoiseControls(work);
@@ -225,6 +225,62 @@ export function noiseHash(
   return (hash ^ (hash >>> 16)) & 65535;
 }
 export function noiseControls(
+  p: Params,
+  work?: NoiseControlWork,
+): NoiseControls {
+  if (work || !renderMemory()) return produceNoiseControls(p, work);
+  const phase = allocateRenderMetadata<NoiseControlsPhase>(
+    1024,
+    () => ({ managed: true }),
+    false,
+    clearNoiseControlsPhase,
+  );
+  let result: NoiseControls | undefined,
+    failed = false,
+    failure: unknown;
+  try {
+    result = allocateRenderMetadata<NoiseControls>(
+      512,
+      (phase.producer = () => produceNoiseControls(p, phase)),
+      false,
+      clearNoiseControlResult,
+    );
+    phase.controls = undefined;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      releaseRenderMetadata(phase);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the first producer/admission/cleanup error. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+type NoiseControlsPhase = NoiseControlWork & {
+  managed: boolean;
+  producer?: (() => NoiseControls) | undefined;
+};
+function clearNoiseControlsPhase(phase: NoiseControlsPhase) {
+  clearNoiseControls(phase);
+  for (const key in phase)
+    delete (phase as Partial<NoiseControlsPhase>)[
+      key as keyof NoiseControlsPhase
+    ];
+}
+function produceNoiseControls(
   p: Params,
   work?: NoiseControlWork,
 ): NoiseControls {
