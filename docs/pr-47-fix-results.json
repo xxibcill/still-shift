@@ -72,11 +72,26 @@
           "newTests": 10
         }
       ],
-      "rejectedTestAssumption": "An initial expression test assumed scope-clock frame expressions freeze with layer holdFrame; actual existing expression clock semantics do not. Replaced with direct expression animation and a held nested keyed-clock test; production semantics unchanged."
+      "rejectedTestAssumption": "An initial expression test assumed scope-clock frame expressions freeze with layer holdFrame; actual existing expression clock semantics do not. Replaced with direct expression animation and a held nested keyed-clock test; production semantics unchanged.",
+      "commit": "67e5855addb72c55c2a58d346241a2b6ac0bca4e"
     },
     {
       "id": 4,
-      "status": "pending"
+      "title": "Lab pending-source refresh race",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4215761595",
+      "status": "implemented-focused-verified",
+      "change": "Separate explicit source ownership from renderer candidates; pending source preparation uses latest controls, retries stale renderer preparation, preserves pending seeks, and suppresses superseded success/failure.",
+      "checks": [
+        {
+          "command": "pnpm test:browser:lab-session",
+          "status": "pass",
+          "scope": "Existing Lab workflows plus pending HTTP/decode preparation with control changes, pending seeks, superseded POST failure and stale local success/failure; no page errors."
+        },
+        {
+          "command": "pnpm exec eslint apps/lab/src/main.ts tests/browser/lab-session.ts",
+          "status": "pass"
+        }
+      ]
     },
     {
       "id": 5,

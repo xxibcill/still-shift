@@ -73,6 +73,7 @@ let renderer: WebGLPreview | null = null;
 let timer: number | null = null;
 let currentFrame = 0;
 let localUrls: string[] = [];
+let sourceRequestId = 0;
 let previewRequestId = 0;
 let activeImages: {
   name: string;
@@ -289,8 +290,12 @@ const loadScene = async (pair: PreviewPair) => {
   return {
     source,
     depth,
-    resolvedScene: resolveLabScene(source, depth, pair.durationMs),
   };
+};
+
+const beginSourceRequest = (): number => {
+  previewRequestId += 1;
+  return ++sourceRequestId;
 };
 
 const activateScene = async (
@@ -299,7 +304,7 @@ const activateScene = async (
   source: HTMLImageElement,
   depth: HTMLImageElement | null,
   nextScene: PreviewScene,
-  requestId: number,
+  isCurrent: () => boolean,
   frameIndex: number | (() => number) = 0,
 ): Promise<void> => {
   // Prepare on a private canvas. A superseded async load must not alter the
@@ -313,7 +318,7 @@ const activateScene = async (
     source,
     depth,
   );
-  if (requestId !== previewRequestId) {
+  if (!isCurrent()) {
     nextRenderer.dispose();
     return;
   }
@@ -357,16 +362,30 @@ const inspectPair = async (
   pair: PreviewPair,
   requestId: number,
 ): Promise<void> => {
-  if (requestId !== previewRequestId) return;
+  if (requestId !== sourceRequestId) return;
   stop();
   status.textContent = `Loading ${name}…`;
   previewStage.setAttribute("aria-busy", "true");
   try {
-    const { source, depth, resolvedScene } = await loadScene(pair);
-    if (requestId !== previewRequestId) return;
-    await activateScene(name, pair, source, depth, resolvedScene, requestId);
+    const { source, depth } = await loadScene(pair);
+    // Controls may update the displayed source while this request loads. Keep
+    // its source ownership and prepare again with the latest controls if needed.
+    while (requestId === sourceRequestId) {
+      const candidateId = ++previewRequestId;
+      const isCurrent = () =>
+        requestId === sourceRequestId && candidateId === previewRequestId;
+      try {
+        const nextScene = resolveLabScene(source, depth, pair.durationMs);
+        await activateScene(name, pair, source, depth, nextScene, isCurrent);
+      } catch (error) {
+        if (requestId !== sourceRequestId) return;
+        if (candidateId !== previewRequestId) continue;
+        throw error;
+      }
+      if (candidateId === previewRequestId) return;
+    }
   } catch (error) {
-    if (requestId !== previewRequestId) return;
+    if (requestId !== sourceRequestId) return;
     previewStage.setAttribute("aria-busy", "false");
     throw error;
   }
@@ -387,7 +406,7 @@ const refreshScene = (): void => {
         source,
         depth,
         nextScene,
-        requestId,
+        () => requestId === previewRequestId,
         () => currentFrame,
       );
     } catch (error) {
@@ -447,18 +466,18 @@ const showError = (error: unknown): void => {
 const prepareSelected = async (): Promise<void> => {
   const id = select.value;
   if (!id) return;
-  const requestId = ++previewRequestId;
+  const requestId = beginSourceRequest();
   status.classList.remove("error");
   prepareButton.disabled = true;
   status.textContent = `Preparing ${id}…`;
   try {
     const prepared = await prepareEntry(id);
-    if (requestId !== previewRequestId) return;
+    if (requestId !== sourceRequestId) return;
     await inspectPair(prepared.id, prepared, requestId);
   } catch (error) {
-    if (requestId === previewRequestId) showError(error);
+    if (requestId === sourceRequestId) showError(error);
   } finally {
-    if (requestId === previewRequestId) prepareButton.disabled = !select.value;
+    if (requestId === sourceRequestId) prepareButton.disabled = !select.value;
   }
 };
 
@@ -640,7 +659,8 @@ if (OutputFormatSchema.safeParse(requestedFormat).success)
 updateFormatNote();
 
 select.addEventListener("change", () => {
-  previewRequestId += 1;
+  beginSourceRequest();
+  previewStage.setAttribute("aria-busy", "false");
   prepareButton.disabled = !select.value;
   status.textContent = select.value
     ? `${select.value} selected. Prepare to inspect its preview.`
@@ -653,7 +673,7 @@ galleryButton.addEventListener("click", () => {
   void buildGallery();
 });
 byId<HTMLButtonElement>("load-local").addEventListener("click", () => {
-  void loadLocal().catch(showError);
+  void loadLocal();
 });
 
 const loadLocal = async (): Promise<void> => {
@@ -663,7 +683,7 @@ const loadLocal = async (): Promise<void> => {
   localUrls.forEach((url) => URL.revokeObjectURL(url));
   localUrls = [URL.createObjectURL(source)];
   if (depth) localUrls.push(URL.createObjectURL(depth));
-  const requestId = ++previewRequestId;
+  const requestId = beginSourceRequest();
   prepareButton.disabled = !select.value;
   status.classList.remove("error");
   const pair: PreviewPair = {
@@ -671,7 +691,11 @@ const loadLocal = async (): Promise<void> => {
     depthUrl: localUrls[1] ?? null,
     durationMs: 5000,
   };
-  await inspectPair(source.name, pair, requestId);
+  try {
+    await inspectPair(source.name, pair, requestId);
+  } catch (error) {
+    if (requestId === sourceRequestId) showError(error);
+  }
 };
 frameSlider.addEventListener("input", () => {
   stop();

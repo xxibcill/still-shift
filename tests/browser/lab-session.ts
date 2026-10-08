@@ -54,19 +54,22 @@ function apply(page: Page, form: string) {
     );
   });
 }
-async function holdNextImage(page: Page) {
+async function holdNextImage(page: Page, skip = 0, fail = false) {
   // Delay the browser's asset decoding boundary; no session internals are exposed.
   await page.evaluate(`(() => {
     const gate = Promise.withResolvers();
     const state = { started: false, finished: false, release: gate.resolve };
     window.delayedImage = state;
     const decode = HTMLImageElement.prototype.decode;
+    let skipped = ${skip};
     HTMLImageElement.prototype.decode = async function () {
+      if (skipped-- > 0) return decode.call(this);
       HTMLImageElement.prototype.decode = decode;
-      state.started = true;
       await decode.call(this);
+      state.started = true;
       await gate.promise;
       state.finished = true;
+      if (${fail}) throw new Error("Injected source decode failure");
     };
   })()`);
 }
@@ -99,6 +102,166 @@ async function holdExport(page: Page) {
         body: JSON.stringify({ error: "Injected export failure" }),
       }),
   };
+}
+
+async function heldPreparation(page: Page, id: string) {
+  let receive!: (route: Route) => void;
+  const request = new Promise<Route>((resolve) => {
+    receive = resolve;
+  });
+  await page.route(`**/api/prepare?id=${id}`, (route) => receive(route), {
+    times: 1,
+  });
+  await page.locator("#corpus-entry").selectOption(id);
+  await page.locator("#prepare").click();
+  return request;
+}
+function prepareFallback(route: Route, id: string) {
+  return route.fulfill({
+    status: 422,
+    contentType: "application/json",
+    body: JSON.stringify({
+      error: "No depth in the controlled session fixture",
+      code: "DEPTH_PREPARATION_FAILED",
+      sourceUrl: `/session-source-${id}.svg`,
+      durationMs: 3000,
+    }),
+  });
+}
+async function depthReady(page: Page, name: string, intensity: string) {
+  await page.waitForFunction(
+    ({ name, intensity }) =>
+      document.querySelector("#scene-name")?.textContent === name &&
+      document.querySelector("#status")?.textContent?.includes(" ready ·") &&
+      JSON.parse(document.querySelector("#parameters")!.textContent!).motion
+        .intensity === intensity,
+    { name, intensity },
+  );
+}
+async function loadLocalSource(page: Page, name: string) {
+  await page.locator("#local-source").setInputFiles({
+    name,
+    mimeType: "image/svg+xml",
+    buffer: Buffer.from(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#72896d"/><circle cx="320" cy="180" r="72" fill="#ebc783"/></svg>',
+    ),
+  });
+  await page.locator("#load-local").click();
+}
+async function depthSourceRequests(page: Page, origin: string) {
+  await page.route("**/api/corpus", (route) =>
+    route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        status: "frozen",
+        entries: ["session-a", "session-b", "session-c"].map((id) => ({
+          id,
+          categories: ["illustration_anime"],
+          expectedShotDurationMs: 3000,
+        })),
+      }),
+    }),
+  );
+  await page.route("**/session-source-*.svg", (route) =>
+    route.fulfill({
+      contentType: "image/svg+xml",
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#416c97"/></svg>',
+    }),
+  );
+  await page.goto(origin);
+  await page.locator("#preset").selectOption("locked_hold");
+  await loadLocalSource(page, "session-local.svg");
+  await depthReady(page, "session-local.svg", "subtle");
+
+  const pending = await heldPreparation(page, "session-a");
+  await page.locator("#intensity").selectOption("standard");
+  await depthReady(page, "session-local.svg", "standard");
+  assert.equal(await page.locator("#prepare").isDisabled(), true);
+  await prepareFallback(pending, "session-a");
+  await depthReady(page, "session-a", "standard");
+  assert.equal(await page.locator("#prepare").isEnabled(), true);
+
+  // The second decode belongs to renderer resource preparation, after source
+  // decoding. Changing controls at this boundary must retry the new source.
+  const preparingRenderer = await heldPreparation(page, "session-b");
+  await holdNextImage(page, 1);
+  await prepareFallback(preparingRenderer, "session-b");
+  await page.waitForFunction(
+    () => (window as unknown as DelayedImageWindow).delayedImage.started,
+  );
+  await page.locator("#intensity").selectOption("strong");
+  await depthReady(page, "session-a", "strong");
+  assert.equal(await page.locator("#prepare").isDisabled(), true);
+  await releaseImage(page);
+  await depthReady(page, "session-b", "strong");
+  assert.equal(await page.locator("#prepare").isEnabled(), true);
+
+  // A seek made while the displayed source refreshes is applied on activation.
+  await holdNextImage(page);
+  await page.locator("#intensity").selectOption("subtle");
+  await page.waitForFunction(
+    () => (window as unknown as DelayedImageWindow).delayedImage.started,
+  );
+  await page.locator("#frame").evaluate((slider: HTMLInputElement) => {
+    slider.value = "18";
+    slider.dispatchEvent(new Event("input"));
+  });
+  await releaseImage(page);
+  await depthReady(page, "session-b", "subtle");
+  assert.equal(await page.locator("#frame").inputValue(), "18");
+
+  // Selecting a newer source cancels the old request, including its cleanup.
+  const superseded = await heldPreparation(page, "session-a");
+  const latest = await heldPreparation(page, "session-c");
+  await superseded.fulfill({
+    status: 500,
+    contentType: "application/json",
+    body: JSON.stringify({ error: "Injected stale preparation failure" }),
+  });
+  await page.waitForTimeout(100);
+  assert.equal(await page.locator("#prepare").isDisabled(), true);
+  assert.equal(
+    await page.locator("#status").innerText(),
+    "Preparing session-c…",
+  );
+  await prepareFallback(latest, "session-c");
+  await depthReady(page, "session-c", "subtle");
+  assert.equal(await page.locator("#prepare").isEnabled(), true);
+  assert.equal(
+    await page.locator("#preview-stage").getAttribute("aria-busy"),
+    "false",
+  );
+
+  // Late successful decoding cannot replace the newest explicit local source.
+  await holdNextImage(page);
+  await loadLocalSource(page, "session-stale.svg");
+  await page.waitForFunction(
+    () => (window as unknown as DelayedImageWindow).delayedImage.started,
+  );
+  await loadLocalSource(page, "session-newest.svg");
+  await depthReady(page, "session-newest.svg", "subtle");
+  const newest = await pixels(page, "#preview");
+  const latestStatus = await page.locator("#status").innerText();
+  await releaseImage(page);
+  assert.equal(await pixels(page, "#preview"), newest);
+  assert.equal(await page.locator("#status").innerText(), latestStatus);
+
+  await holdNextImage(page, 0, true);
+  await loadLocalSource(page, "session-failed.svg");
+  await page.waitForFunction(
+    () => (window as unknown as DelayedImageWindow).delayedImage.started,
+  );
+  await loadLocalSource(page, "session-recovered.svg");
+  await depthReady(page, "session-recovered.svg", "subtle");
+  const recovered = await pixels(page, "#preview");
+  const recoveredStatus = await page.locator("#status").innerText();
+  await releaseImage(page);
+  assert.equal(await pixels(page, "#preview"), recovered);
+  assert.equal(await page.locator("#status").innerText(), recoveredStatus);
+  assert.equal(await page.locator("#prepare").isEnabled(), true);
+  console.log(
+    "Depth Lab: pending preparation, latest controls, pending seeks and stale source success/failure passed",
+  );
 }
 
 const server = await createServer({
@@ -313,6 +476,7 @@ try {
   console.log(
     "Depth Lab: vertical format, scene-sized canvas and guide overlay passed",
   );
+  await depthSourceRequests(page, origin);
   assert.deepEqual(errors, []);
 } finally {
   await browser?.close();

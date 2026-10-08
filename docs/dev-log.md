@@ -47,7 +47,7 @@ still hold before relying on them.
   `codex/pr47-review-fixes` from reviewed `ed4034c`. All six findings are posted
   inline. Boxed/container text and GPU-only image-plane preflight are repaired;
   each passes 19 focused units, quality passes 118 affected units, and text passes
-  50 native/oracle pixel/seek comparisons on both backends. Three repairs and final focused browser/export/frozen-baseline verification remain.
+  50 native/oracle pixel/seek comparisons on both backends. Lab source ownership and pending seek races also pass the complete Lab session browser suite. Two repairs and final focused browser/export/frozen-baseline verification remain.
   One finding per commit; one final normal push. Owner CE15 checkout is untouched;
   no new full repository gate is claimed. [Evidence](./pr-47-fix-results.json).
 
@@ -976,12 +976,13 @@ _Last updated 2026-10-08 by Codex for PR #47 conflict resolution._
   pure 2D image planes preflight backend/storage capability before painting,
   including every shutter sample. Quality signatures now include evaluated local
   image motion without suppressing actual held tails. Adapter/renderer identities
-  invalidate caches.
+  invalidate caches. Lab pending preparation now retains source ownership while
+  adopting the latest renderer controls and seek.
 - **Results:** text and image-plane preflight each pass 19 focused units; build
   and 50 sampled native/oracle frames with
   reverse seeks pass; Canvas delta 0 and WebGL delta 1. Independent source review
   has no remaining finding in this repair. No full repository gate was run.
-- **Open / next:** finish three repairs, scoped browser/export/frozen-baseline checks,
+- **Open / next:** finish two repairs, scoped browser/export/frozen-baseline checks,
   then push all six commits once. No owner decision blocks these authorized fixes.
 - **Records:** [repair evidence](./pr-47-fix-results.json),
   [inline review](https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5452665143).
