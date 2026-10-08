@@ -45,20 +45,54 @@ export function allocateManagedRenderMetadata<T extends object>(
   admitted?: (lease: MemoryLease) => void,
 ): T {
   const lease = memory.reserve("metadata", bytes, undefined, retained);
-  let value: T | undefined;
+  let finish: (() => void) | undefined,
+    value: T | undefined,
+    registered: MemoryLease | undefined,
+    adopted = false;
   try {
+    finish = lease.deferRelease();
     admitted?.(lease);
     value = factory();
     const owner = value;
+    registered = metadataLeases.get(owner);
+    if (registered)
+      throw Error("Managed allocation returned an already owned resource");
     memory.adopt(owner, lease, () => {
-      metadataLeases.delete(owner);
-      destroy?.(owner);
+      let failed = false,
+        failure: unknown;
+      try {
+        destroy?.(owner);
+      } catch (error) {
+        failed = true;
+        failure = error;
+      } finally {
+        try {
+          if (metadataLeases.get(owner) === lease) metadataLeases.delete(owner);
+        } catch (error) {
+          if (!failed) {
+            failed = true;
+            failure = error;
+          }
+        }
+      }
+      if (failed) throw failure;
     });
+    adopted = true;
     metadataLeases.set(owner, lease);
+    finish();
+    if (!lease.active)
+      throw Error("Managed metadata allocation owner was disposed");
     return owner;
   } catch (error) {
     try {
-      if (value && !memory.owns(value)) destroy?.(value);
+      if (
+        value &&
+        !adopted &&
+        !registered &&
+        !memory.owns(value) &&
+        !metadataLeases.has(value)
+      )
+        destroy?.(value);
     } catch {
       /* Preserve the original ownership/factory error. */
     }
@@ -66,6 +100,17 @@ export function allocateManagedRenderMetadata<T extends object>(
       lease.release();
     } catch {
       /* Preserve the original factory/admission error. */
+    }
+    try {
+      finish?.();
+    } catch {
+      /* Deferred cleanup remains secondary to the first failure. */
+    }
+    try {
+      if (value && !memory.owns(value) && metadataLeases.get(value) === lease)
+        metadataLeases.delete(value);
+    } catch {
+      /* Remove only this completed registration without replacing the first error. */
     }
     throw error;
   }

@@ -5136,25 +5136,27 @@ rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/d
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
 standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/late-point-results/
 radial-GPU-Canvas-work/standalone-radial-point/control/encoded-view-results/stylize-
-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work/Canvas-color-source-gradient-image-work/common-memory-native-retirement/allocation-identity-adoption-failure-cleanup/color-kernel-construction-cache-state, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
+GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work/Canvas-color-source-gradient-image-work/common-memory-native-retirement/allocation-identity-adoption-failure-cleanup/color-kernel-construction-cache-state/common-metadata-factory-registry-handoff, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
 replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/
-native-controls and PNG source/draw/coordinate metadata pass 957 focused tests, complete audit, 22 moving/blurred and ten
-stationary native frames and 96 owned RPC snapshots. Fixed built-in kernel construction
-phase32768/cache4096/state8192 capture actual entries/tuple/filter/map/join/declaration/
-shader/candidate/callback refs before producers and clear actual temporary products.
-Scoped active cache hits keep identity without reserves/Gets; inactive factory and four
-frozen public fields/borrowed definitions stay original. Retired-adoption guards, partial
-publication rollback and retiring-cache replacement isolation preserve prior entries,
-first null and retry. Callback state checks precede inputs/native/params; actual state/
-shader stays charged through invocation retirement and clears after settlement. Ten
-untouched-original complete shader/constructor oracles and all ten embedded prior color
-oracles remain exact. 23 new units/all 934 prior tests pass; 49 prior color tests
-preserve original quota with real admitted filler. Build/lint/boundaries and
-957/104 pass. Native probes, WebGL/providers/69 typography tests pass; glyph
-1.392962× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain
-prior exact output. Independent callback work/image/curve/gradient/control/table/backend
-lifetimes, common metadata factory handoff, escaped immutable wrapper/closure/global/
-bootstrap, ownKeys capacity, caller/depth/provider/font/Node remain pending. Recording/device/pool/shader/paint/
+native-controls and PNG source/draw/coordinate metadata pass 972 focused tests, complete audit, 22 moving/blurred and ten stationary
+native frames and 96 owned RPC snapshots. Fixed color kernel construction/cache/state
+remains admitted with exact ten original complete constructor/shader oracles. Common
+metadata helper takes its own hold before admitted hook/factory, keeps actual owner/
+record/charge through adoption/registry/destruction, rejects known active/retiring
+global metadata aliases across allocators and preserves fresh producer/Get order.
+Association remains discoverable through destructor; independent release/settlement
+preserves first null, completed adoption prevents double destruction and retired
+successful output is rejected. 15 new units/all 957 prior tests pass; ten old helper
+tests byte exact. Both integrated attempts pass build/lint/boundaries and 972/105;
+final attempt corrects stale kernel association comments. Private 48/3 passes and
+original-source RED 11/25 retains earlier fixture hash caveat. Native probes,
+WebGL/providers/69 typography tests pass; glyph 1.423015× meets unchanged 1.5.
+All 64 exports / 768 bodies/frames retain prior exact output. Pre-mutating registry
+set plus external hold can leave adopted unregistered owner; pre-mutating delete
+can leave stale inactive association. These intrinsic/foreign limits, callback
+parent/curve/image/gradient/control/table/key/cache native-consumer lifetime,
+escaped immutable wrapper/closure/global/bootstrap, params/retained-graph capacity,
+caller/depth/provider/font/Node/production/aggregate/speed/final gates remain pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

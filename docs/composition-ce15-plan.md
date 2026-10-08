@@ -2364,6 +2364,35 @@ escaped immutable wrapper/closure/global/bootstrap ownership, params ownKeys cap
 provider/font/Node/production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-color-kernel-metadata-results.json).
 
+## Accepted common metadata factory/registry lifetime checkpoint — 2026-10-08
+
+Reserve and hold before the admitted hook and original factory. Keep the actual
+owner, resource record and admission live through adoption, metadata publication
+and synchronous destruction. Preserve the original fresh producer/Get order.
+Reject known active or retiring metadata aliases by exact global registry identity
+before adoption, including another allocator, and keep the association discoverable
+through its destructor. Attempt release and settlement independently; preserve first
+error including null. Completed adoption prevents double destruction; settled retired
+successful output is rejected before it reaches its caller.
+
+Build/lint/boundaries and 972 focused tests / 105 files pass, including
+15 new helper regressions and all 957 prior tests. Ten old helper tests are byte exact.
+Private final 48/3 passes; original-source RED fails 11/25 with all ten old tests passing.
+The RED ran an earlier typed fixture with retained hash prefix 598fa815; final fixture
+digest 8c6eb813 is recorded separately. Both integrated attempts pass; final attempt
+includes the corrected kernel-test association comments. Complete 144-case / 8,000-frame
+audit, 96 RPC snapshots, native probes, WebGL/providers, 69 typography tests and 64
+prior-exact exports / 768 bodies/frames pass. Glyph 1.423015× meets unchanged 1.5.
+
+Two intrinsic failure limits remain explicit: registry set failure before mutation
+with an external hold can leave an adopted owner unregistered until settlement;
+delete failure before mutation can leave an inactive stale association. Opaque or
+unregistered foreign ownership and arbitrary replaced intrinsics remain pending.
+The helper hold ends at return; callback parent/curve/image/gradient/control/table/
+key/cache native-consumer lifetimes remain separate work. Production admission,
+bootstrap/params/provider/font/Node/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-metadata-factory-lifetime-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

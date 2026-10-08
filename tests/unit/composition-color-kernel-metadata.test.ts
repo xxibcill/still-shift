@@ -14,9 +14,9 @@
 // and callback-work/child/backend lifetimes are NOT proven by these tests.
 // State holds below test only actual state/shader lifetime. Broader reentrant
 // success through GPU/Canvas child disposal remains pending.
-// The central metadata helper's association published after an already-retired
-// adopt remains pending: these kernel guards prevent a disposed kernel/cache
-// publication, but do not claim to repair that common WeakMap association seam.
+// The common helper now holds ownership through adoption and registry handoff.
+// Kernel guards still protect publication; common factory/registry failure cuts
+// and known cross-allocator aliases are covered in managed-metadata-lifetime.
 import { afterEach, expect, it, vi } from "vitest";
 import { createHash } from "node:crypto";
 import { compositionEffectDefinition } from "../../packages/scene-contract/src/index.ts";
@@ -2093,7 +2093,7 @@ it("settles the state hold when callback work quota rejects before native/input/
   zero(memory);
 });
 
-it("rejects phase/cache/state that retire immediately after actual adopt and before metadata handoff without running later producers", async () => {
+it("keeps retiring phase/cache/state charged after actual adopt until metadata handoff rejects, without running later producers", async () => {
   for (const which of ["phase", "cache", "state"] as const)
     for (const primaryNull of [false, true]) {
       const memory = new ManagedMemory(limits);
@@ -2108,14 +2108,16 @@ it("rejects phase/cache/state that retire immediately after actual adopt and bef
         expect(retiredRecord!.value).toBe(owner);
         memory.dispose();
         expect(lease.active).toBe(false);
-        if (which === "phase") {
-          expect(memory.owns(owner)).toBe(true);
-          expect(memory.statistics.current.metadata).toBe(PHASE);
-        } else {
-          expect(memory.owns(owner)).toBe(false);
-          expect(retiredRecord).toEqual({});
-          expect(memory.statistics.current.metadata).toBe(PHASE);
-        }
+        // The common helper's own factory/adoption hold keeps this actual
+        // record live until its synchronous handoff settles. The independent
+        // phase hold survives that settlement until constructor cleanup.
+        expect(memory.owns(owner)).toBe(true);
+        expect(retiredRecord!.value).toBe(owner);
+        expect(memory.statistics.current.metadata).toBe(
+          which === "phase"
+            ? PHASE
+            : PHASE + (which === "cache" ? CACHE : STATE),
+        );
         if (primaryNull) throw null;
       });
       await withManagedMemory(memory, async () => {
@@ -2123,7 +2125,10 @@ it("rejects phase/cache/state that retire immediately after actual adopt and bef
           freeze = vi.spyOn(Object, "freeze");
         const failure = firstFailure(() => colorEffectKernel("color.tint"));
         if (primaryNull) expect(failure).toBeNull();
-        else expect(String(failure)).toMatch(/managed color kernel.*disposed/);
+        else
+          expect(String(failure)).toMatch(
+            /Managed metadata allocation owner was disposed/,
+          );
         if (which !== "state") expect(entries).not.toHaveBeenCalled();
         expect(freeze).not.toHaveBeenCalled();
         expect(retired).toEqual({});
