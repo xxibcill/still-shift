@@ -1446,6 +1446,28 @@ payload, effects/provider/graph/font/common/registry/ledger/Node, production/
 aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-depth-text-metadata-results.json).
 
+## Accepted depth initialization/native control checkpoint — 2026-10-08
+
+Before original shader array/tuple/grid/view reference factories admit actual
+4096-byte working control. Before native program/VAO/buffer factories admit actual
+retained 2048-byte handle control. Capture actual shaders/tuples, CPU grid/results/
+views and returned native handles through original consumers. Visit every CPU
+backing/result/shader/native handle despite cleanup failures; preserve first thrown
+value including null. Clear actual working containers and class/control refs;
+retain native controls across scratch/scope exit. Renderer/allocator-first and
+independent buffer retirement destroy each native handle once. Failed setup or
+retirement releases unreturned controls and permits retry. Original failure and
+successful disposal native order, shader bodies and all mesh bytes remain exact.
+
+Build/lint/boundaries, 485 focused / seventeen new tests, complete audit 144/8,000,
+96 RPC snapshots, native probes, WebGL/providers and 69 typography tests pass;
+glyph 1.435714× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames
+match `83e99b8`. Incomplete attempt 3 omitted prior text tests and is retained as
+unaccepted; final attempt 4 includes every prior suite. Class/caller factories,
+sampling query payload, effects/provider/graph/font/common/registry/ledger/Node,
+production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-depth-native-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

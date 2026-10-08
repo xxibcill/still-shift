@@ -97,16 +97,16 @@ still hold before relying on them.
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace, seven built-ins, depth mesh/texture/
-  retained multisample/uniform/draw/renderer-text/diagnostic and PNG source/draw/
-  coordinate metadata pass 468 focused tests, complete audit, 22 moving/blurred and
-  ten stationary native frames and 96 owned RPC snapshots. Actual renderer DOMString/
-  probe and diagnostic Error/message pre-admit; text drops after predicate, actual
-  Error remains through consumer/allocator cleanup. Two original initialization
-  traces/twelve new tests, quota/native/factory/null/retry and retained Error refs
-  pass. Purpose depth metadata headroom covers pinned text ceiling; original pixel/
-  native/source-root/PNG checks stay. Class/program/native controls and sampling
-  query payload remain pending. Native probes, WebGL/providers, 69 typography tests
-  and 64 exports / 768 prior-exact bodies/frames pass; glyph 1.416013× meets 1.5.
+  retained multisample/uniform/draw/text/native-control and PNG source/draw/coordinate
+  metadata pass 485 focused tests, complete audit, 22 moving/blurred and ten
+  stationary native frames and 96 owned RPC snapshots. Actual shader/tuple/grid/view
+  work and retained native program/VAO/buffer controls pre-admit, stay through
+  consumers, then clear refs. Two whole original traces/seventeen new tests cover
+  quotas, partial/CPU/native/null cleanup, retry, scope/allocator-first/independent
+  retirement. Final focused attempt 4 includes prior text suite omitted by attempt 3.
+  Class/caller factories and sampling query payload remain pending. Native probes,
+  WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact bodies/frames
+  pass; glyph 1.435714× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -342,6 +342,25 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual depth initialization and native controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `83e99b8`.
+- **Done:** pre-admit actual shader/tuple/grid/view work and retained native
+  program/VAO/buffer controls; visit all captured cleanup, preserve first null,
+  drop actual refs, retain across scratch/scope and avoid duplicate native deletes.
+- **Results:** build/lint/boundaries, 485 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.435714× meets unchanged 1.5 maximum.
+- **Verification:** seventeen new tests/two complete original initialization traces;
+  quotas, partial/native/CPU cleanup, null/retry, retained refs, scope/allocator-first
+  and independently retired buffers. Attempt 3 omitted text suite and is unaccepted;
+  final attempt 4 includes every prior suite. No full gate or threshold changes.
+- **Next:** class/caller factories, sampling query payload, effects/provider/graph/
+  font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [depth native evidence](./composition-ce15-depth-native-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual depth renderer and diagnostic text
 

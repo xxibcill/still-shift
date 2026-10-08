@@ -510,8 +510,45 @@ type DepthUniformState = {
   entries: Map<string, DepthUniformEntry>;
 };
 
+type DepthProgramOwner = {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  gl?: WebGL2RenderingContext | undefined;
+  program?: WebGLProgram | null | undefined;
+  programCreated: boolean;
+  vao?: WebGLVertexArrayObject | null | undefined;
+  vertex?: WebGLBuffer | undefined;
+  index?: WebGLBuffer | undefined;
+  vertexOwned: boolean;
+  indexOwned: boolean;
+  failed: boolean;
+};
+type DepthProgramWork = {
+  managed: boolean;
+  shaders: (WebGLShader | null)[];
+  codes?: [number, string][] | undefined;
+  grid?: DepthGrid | undefined;
+  expanded?: DepthGrid | undefined;
+  vertices?: DepthGrid["vertices"] | undefined;
+  indices?: DepthGrid["indices"] | undefined;
+};
+function clearProgramWork(work: DepthProgramWork) {
+  work.shaders.length = 0;
+  if (work.codes) {
+    for (const tuple of work.codes) tuple[1] = "";
+    work.codes.length = 0;
+  }
+  work.codes =
+    work.grid =
+    work.expanded =
+    work.vertices =
+    work.indices =
+      undefined;
+}
+
 /** Layer-local GPU content, owned by the shared composition device. */
 export class WebglDepthImages {
+  private nativeProgram: DepthProgramOwner | undefined;
   private program: WebGLProgram | undefined;
   private vao: WebGLVertexArrayObject | undefined;
   private vertex: WebGLBuffer | undefined;
@@ -629,94 +666,186 @@ export class WebglDepthImages {
     }
   }
 
+  private clearNativeProgram(owner: DepthProgramOwner) {
+    const gl = owner.gl,
+      memory = owner.memory;
+    const program = owner.program,
+      created = owner.programCreated;
+    const vertex = owner.vertex,
+      index = owner.index,
+      vao = owner.vao;
+    const vertexOwned = owner.vertexOwned,
+      indexOwned = owner.indexOwned;
+    if (this.nativeProgram === owner) {
+      this.nativeProgram = undefined;
+      this.program = this.vertex = this.index = this.vao = undefined;
+      this.count = 0;
+    }
+    owner.program = owner.vertex = owner.index = owner.vao = undefined;
+    owner.gl = owner.memory = undefined;
+    owner.programCreated = owner.vertexOwned = owner.indexOwned = false;
+    if (!gl) return;
+    let failed = false,
+      first: unknown;
+    const visit = (work: () => void) => {
+      try {
+        work();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          first = error;
+        }
+      }
+    };
+    if (owner.failed && created) visit(() => gl.deleteProgram(program!));
+    if (vertex && (!vertexOwned || memory?.owns(vertex)))
+      visit(() =>
+        releaseRenderStorage(vertex, (value) => gl.deleteBuffer(value)),
+      );
+    if (index && (!indexOwned || memory?.owns(index)))
+      visit(() =>
+        releaseRenderStorage(index, (value) => gl.deleteBuffer(value)),
+      );
+    if (vao) visit(() => gl.deleteVertexArray(vao));
+    if (!owner.failed && created) visit(() => gl.deleteProgram(program!));
+    if (failed) throw first;
+  }
+  private releaseNativeProgram(owner: DepthProgramOwner) {
+    if (owner.managed) releaseRenderMetadata(owner);
+    else this.clearNativeProgram(owner);
+  }
   private initialize() {
+    const memory = renderMemory();
+    if (this.textureState.closed || this.uniformState.closed)
+      throw Error("Depth renderer is disposed");
+    if (memory && this.textureState.memory !== memory)
+      throw Error("Depth renderer belongs to another allocator");
     if (this.program) return;
     const gl = this.device.gl;
     const software = depthSoftwareRenderer(gl);
-    const shaders: WebGLShader[] = [];
-    const program = gl.createProgram()!;
+    const phase = allocateRenderMetadata<DepthProgramWork>(
+      4096,
+      () => ({ managed: memory !== undefined, shaders: [] }),
+      false,
+      clearProgramWork,
+    );
+    let owner: DepthProgramOwner | undefined;
+    let failed = false,
+      first: unknown;
+    const visit = (work: () => void) => {
+      try {
+        work();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          first = error;
+        }
+      }
+    };
     try {
-      for (const [type, code] of [
+      owner = allocateRenderMetadata<DepthProgramOwner>(
+        2048,
+        () => ({
+          managed: memory !== undefined,
+          memory,
+          gl,
+          programCreated: false,
+          vertexOwned: false,
+          indexOwned: false,
+          failed: false,
+        }),
+        true,
+        (value) => this.clearNativeProgram(value),
+      );
+      this.nativeProgram = owner;
+      const program = (owner.program = gl.createProgram());
+      owner.programCreated = true;
+      phase.codes = [
         [gl.VERTEX_SHADER, software ? VERTEX : HARDWARE_VERTEX],
         [gl.FRAGMENT_SHADER, software ? FRAGMENT : HARDWARE_FRAGMENT],
-      ] as const) {
-        const shader = gl.createShader(type)!;
-        shaders.push(shader);
-        gl.shaderSource(shader, code);
-        gl.compileShader(shader);
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-          throw depthProgramDiagnostic(gl, shader, true);
-        gl.attachShader(program, shader);
+      ];
+      for (const [type, code] of phase.codes) {
+        const shader = gl.createShader(type);
+        phase.shaders.push(shader);
+        gl.shaderSource(shader!, code);
+        gl.compileShader(shader!);
+        if (!gl.getShaderParameter(shader!, gl.COMPILE_STATUS))
+          throw depthProgramDiagnostic(gl, shader!, true);
+        gl.attachShader(program!, shader!);
       }
-      gl.linkProgram(program);
-      if (!gl.getProgramParameter(program, gl.LINK_STATUS))
-        throw depthProgramDiagnostic(gl, program, false);
-      this.program = program;
-      this.vao = gl.createVertexArray()!;
+      gl.linkProgram(program!);
+      if (!gl.getProgramParameter(program!, gl.LINK_STATUS))
+        throw depthProgramDiagnostic(gl, program!, false);
+      this.program = program!;
+      this.vao = (owner.vao = gl.createVertexArray())!;
       gl.bindVertexArray(this.vao);
-      const grid = depthImageGrid();
-      let vertices = grid.vertices;
-      let indices = grid.indices;
-      let expanded: DepthGrid | undefined;
-      try {
-        if (!software) {
-          expanded = hardwareDepthGrid(grid);
-          indices = expanded.indices;
-          vertices = expanded.vertices;
-        }
-        this.count = indices.length;
-        this.vertex = createRenderStorage(
-          vertices.byteLength,
-          () => gl.createBuffer(),
-          (buffer) => {
-            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-          },
-          (buffer) => gl.deleteBuffer(buffer),
-        );
-        for (let attribute = 0; attribute < (software ? 1 : 4); attribute++) {
-          gl.enableVertexAttribArray(attribute);
-          gl.vertexAttribPointer(
-            attribute,
-            4,
-            gl.FLOAT,
-            false,
-            software ? 16 : 64,
-            attribute * 16,
-          );
-        }
-        this.index = createRenderStorage(
-          indices.byteLength,
-          () => gl.createBuffer(),
-          (buffer) => {
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
-            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-          },
-          (buffer) => gl.deleteBuffer(buffer),
-        );
-      } finally {
-        releaseRenderPixels(vertices);
-        releaseRenderPixels(indices);
-        releaseRenderPixels(grid.vertices);
-        releaseRenderPixels(grid.indices);
-        if (expanded) releaseRenderMetadata(expanded);
-        releaseRenderMetadata(grid);
+      const grid = (phase.grid = depthImageGrid());
+      phase.vertices = grid.vertices;
+      phase.indices = grid.indices;
+      if (!software) {
+        phase.expanded = hardwareDepthGrid(grid);
+        phase.indices = phase.expanded.indices;
+        phase.vertices = phase.expanded.vertices;
       }
+      const vertices = phase.vertices,
+        indices = phase.indices;
+      this.count = indices.length;
+      this.vertex = owner.vertex = createRenderStorage(
+        vertices.byteLength,
+        () => gl.createBuffer(),
+        (buffer) => {
+          gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+          gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+        },
+        (buffer) => gl.deleteBuffer(buffer),
+      );
+      owner.vertexOwned = memory?.owns(owner.vertex) === true;
+      for (let attribute = 0; attribute < (software ? 1 : 4); attribute++) {
+        gl.enableVertexAttribArray(attribute);
+        gl.vertexAttribPointer(
+          attribute,
+          4,
+          gl.FLOAT,
+          false,
+          software ? 16 : 64,
+          attribute * 16,
+        );
+      }
+      this.index = owner.index = createRenderStorage(
+        indices.byteLength,
+        () => gl.createBuffer(),
+        (buffer) => {
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
+          gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+        },
+        (buffer) => gl.deleteBuffer(buffer),
+      );
+      owner.indexOwned = memory?.owns(owner.index) === true;
     } catch (error) {
-      gl.deleteProgram(program);
-      if (this.vertex)
-        releaseRenderStorage(this.vertex, (value) => gl.deleteBuffer(value));
-      if (this.index)
-        releaseRenderStorage(this.index, (value) => gl.deleteBuffer(value));
-      if (this.vao) gl.deleteVertexArray(this.vao);
-      this.vertex = undefined;
-      this.index = undefined;
-      this.vao = undefined;
-      this.program = undefined;
-      throw error;
-    } finally {
-      for (const shader of shaders) gl.deleteShader(shader);
+      failed = true;
+      first = error;
     }
+    // Keep the original CPU retirement order, visiting every captured backing/result.
+    visit(() => releaseRenderPixels(phase.vertices));
+    visit(() => releaseRenderPixels(phase.indices));
+    visit(() => releaseRenderPixels(phase.grid?.vertices));
+    visit(() => releaseRenderPixels(phase.grid?.indices));
+    if (phase.expanded) visit(() => releaseRenderMetadata(phase.expanded!));
+    if (phase.grid) visit(() => releaseRenderMetadata(phase.grid!));
+    if (failed && owner) {
+      owner.failed = true;
+      visit(() => this.releaseNativeProgram(owner!));
+    }
+    for (const shader of phase.shaders) visit(() => gl.deleteShader(shader));
+    if (failed && owner && this.nativeProgram === owner) {
+      owner.failed = true;
+      visit(() => this.releaseNativeProgram(owner!));
+    }
+    visit(() => {
+      if (phase.managed) releaseRenderMetadata(phase);
+      else clearProgramWork(phase);
+    });
+    if (failed) throw first;
   }
 
   private destroyTexture(entry: DepthTextureEntry) {
@@ -1310,36 +1439,46 @@ export class WebglDepthImages {
     const gl = this.device.gl;
     let failed = false,
       first: unknown;
-    try {
+    const visit = (work: () => void) => {
+      try {
+        work();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          first = error;
+        }
+      }
+    };
+    visit(() => {
       if (this.textureState.managed) releaseRenderMetadata(this.textureState);
       else if (!this.textureState.closed) this.clearTextures(this.textureState);
-    } catch (error) {
-      failed = true;
-      first = error;
-    }
-    try {
+    });
+    visit(() => {
       if (this.uniformState.managed) releaseRenderMetadata(this.uniformState);
       else if (!this.uniformState.closed) this.clearUniforms(this.uniformState);
-      if (this.multisample) {
-        const previous = this.multisample;
-        this.multisample = undefined;
-        this.releaseMultisample(previous);
-      }
-      if (this.vertex)
-        releaseRenderStorage(this.vertex, (value) => gl.deleteBuffer(value));
-      if (this.index)
-        releaseRenderStorage(this.index, (value) => gl.deleteBuffer(value));
-      if (this.vao) gl.deleteVertexArray(this.vao);
-      if (this.program) gl.deleteProgram(this.program);
-      this.program = undefined;
-      this.vertex = undefined;
-      this.index = undefined;
-      this.vao = undefined;
-    } catch (error) {
-      if (!failed) {
-        failed = true;
-        first = error;
-      }
+    });
+    const multisample = this.multisample;
+    this.multisample = undefined;
+    if (multisample) visit(() => this.releaseMultisample(multisample));
+    if (this.nativeProgram)
+      visit(() => this.releaseNativeProgram(this.nativeProgram!));
+    else {
+      const vertex = this.vertex,
+        index = this.index,
+        vao = this.vao,
+        program = this.program;
+      this.program = this.vertex = this.index = this.vao = undefined;
+      this.count = 0;
+      if (vertex)
+        visit(() =>
+          releaseRenderStorage(vertex, (value) => gl.deleteBuffer(value)),
+        );
+      if (index)
+        visit(() =>
+          releaseRenderStorage(index, (value) => gl.deleteBuffer(value)),
+        );
+      if (vao) visit(() => gl.deleteVertexArray(vao));
+      if (program) visit(() => gl.deleteProgram(program));
     }
     if (failed) throw first;
   }

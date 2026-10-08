@@ -5134,16 +5134,16 @@ row-view/swap/dirty-set/cached-color/clip-intersection, device shader-source/pro
 uniform/diagnostic, paint batch/geometry/shader/uniform/input, Gaussian kernel/
 rescale/box/fallback, managed plan/sum-shader cache, particle/Canvas/WebGL region,
 effect-paint/replace, seven built-ins, depth mesh/texture/retained multisample/uniform/
-draw/renderer-text/diagnostic and PNG source/draw/coordinate metadata pass 468 focused
+draw/text/native-control and PNG source/draw/coordinate metadata pass 485 focused
 tests, complete audit, 22 moving/blurred and ten stationary native frames and
-96 owned RPC snapshots. Actual renderer DOMString/probe and diagnostic Error/message
-pre-admit; text drops after predicate, actual Error remains through consumer/
-allocator cleanup. Two original initialization traces/twelve new tests, quota/native/
-factory/null/retry and retained Error refs pass. Purpose depth metadata headroom
-covers pinned text ceiling; original pixel/native/source-root/PNG checks stay.
-Class/program/native controls and sampling query payload remain pending. Native
-probes, WebGL/providers and 69 typography tests pass; glyph 1.416013× meets unchanged
-1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output. Recording/device/pool/shader/paint/
+96 owned RPC snapshots. Actual shader/tuple/grid/view work and retained native
+program/VAO/buffer controls pre-admit, stay through consumers, then clear refs.
+Two whole original traces/seventeen tests cover quotas, partial/CPU/native/null
+cleanup, retry, scope/allocator-first/independent retirement. Final focused attempt
+4 includes prior text suite omitted by attempt 3. Class/caller factories and
+sampling query payload remain pending. Native probes, WebGL/providers and
+69 typography tests pass; glyph 1.435714× meets unchanged 1.5 maximum.
+All 64 exports / 768 bodies/frames retain prior exact output. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof
