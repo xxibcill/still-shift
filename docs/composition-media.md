@@ -141,7 +141,12 @@ and relocates both the sequence pattern and manifest path.
 Preview sessions accept optional asynchronous `prepareFrame` readiness. They retain
 visible pixels until readiness succeeds, ignore superseded seeks/first frames, cancel
 stale candidates, and dispose resources once. Playback waits for each native readiness
-step and guards restart/pause generations. Still-only renderers remain synchronous.
+step and guards restart/pause generations. Native resource captures remain owned by
+an active or candidate preview until disposal, replacement failure, or connection
+closure releases them. Later prepares and peer tabs cannot evict a held capture;
+the server rejects additional preparation at the 64 live/pending capture bound
+rather than removing an existing preview's resources. Still-only renderers remain
+synchronous.
 Native inspector source-clock keys expose Media key value editing. Real edit/undo/redo,
 save/reload, backend switching and draft-export checks are verified; actual native PCM
 and source/processed waveform lanes are the next work.

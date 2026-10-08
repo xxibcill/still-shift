@@ -235,6 +235,105 @@ export async function verifyNativeMediaAuthoring(
     );
     await seek(1);
     assert.equal(await picture(), edited);
+    // A valid edited capture must survive peer prepares and failed replacements.
+    const fixtureBase = fixtureServer.resolvedUrls!.local[0]!;
+    const prepareUrl = new URL(
+      `/composition/prepare?scene=${encodeURIComponent(fixturePath)}`,
+      fixtureBase,
+    ).href;
+    const peers: { capture: string; assets: Record<string, string> }[] = [];
+    for (let index = 0; index < 6; index++) {
+      const response = await page.request.post(prepareUrl, {
+        headers: { "x-still-shift-composition": "1" },
+        data: { document: fixture },
+      });
+      assert.equal(response.status(), 200);
+      peers.push(await response.json());
+    }
+    const rejectedCaptures: Record<string, string>[] = [];
+    await page.route("**/composition/prepare?*", async (route) => {
+      const response = await route.fetch();
+      assert.equal(response.status(), 200);
+      const payload = await response.json();
+      rejectedCaptures.push(payload.assets);
+      for (const [id, url] of Object.entries(payload.assets))
+        if (id.startsWith("__media:"))
+          payload.assets[id] = `${url}&reject-candidate=1`;
+      await route.fulfill({ response, json: payload });
+    });
+    await page.route(
+      "**/composition/native-asset?*reject-candidate=1",
+      (route) =>
+        route.fulfill({ status: 404, body: "Rejected candidate frame" }),
+    );
+    for (const backend of ["webgl2", "canvas2d", "webgl2"]) {
+      const releasing = page.waitForResponse(
+        (response) =>
+          new URL(response.url()).pathname === "/composition/capture-release",
+      );
+      await page.locator("#backend").selectOption(backend);
+      await page.waitForFunction(
+        () =>
+          document
+            .getElementById("error")
+            ?.textContent?.includes("Prepared frame is unavailable") &&
+          !document.getElementById("inspector-edit")?.hasAttribute("disabled"),
+      );
+      assert.equal((await releasing).status(), 204);
+      assert.equal(await picture(), edited);
+      const failedAssets = rejectedCaptures.at(-1)!;
+      assert.equal(
+        (
+          await page.request.get(
+            new URL(failedAssets["__media:clip:1"]!, fixtureBase).href,
+          )
+        ).status(),
+        404,
+      );
+    }
+    await page.unroute("**/composition/prepare?*");
+    await page.unroute("**/composition/native-asset?*reject-candidate=1");
+    await seek(5);
+    assert.equal(
+      await picture(),
+      last,
+      "uncached source frame survives discarded candidates and peer prepares",
+    );
+    await seek(1);
+    assert.equal(
+      await picture(),
+      edited,
+      "reverse seek retains the previous valid capture",
+    );
+    for (const peer of peers) {
+      assert.equal(
+        (
+          await page.request.get(
+            new URL(peer.assets["__media:clip:2"]!, fixtureBase).href,
+          )
+        ).status(),
+        200,
+      );
+      const released = await page.request.post(
+        new URL(
+          `/composition/capture-release?scene=${encodeURIComponent(fixturePath)}`,
+          fixtureBase,
+        ).href,
+        {
+          headers: { "x-still-shift-composition": "1" },
+          data: { capture: peer.capture },
+        },
+      );
+      assert.equal(released.status(), 204);
+      assert.equal(
+        (
+          await page.request.get(
+            new URL(peer.assets["__media:clip:2"]!, fixtureBase).href,
+          )
+        ).status(),
+        404,
+      );
+    }
     assert.deepEqual(errors, []);
     return {
       newlyReferencedOriginal: 1,
@@ -244,6 +343,8 @@ export async function verifyNativeMediaAuthoring(
       draftExport: "byte-identical",
       playback: "last frame exact",
       fixturePreview: "exact",
+      retainedCapture:
+        "six peer prepares; three rejected replacements; uncached and reverse seeks exact; disposed URLs revoked",
       changedBindingsRejected: true,
       originalMediaNotServed: true,
       sequenceOriginalWatch: "changed bytes rejected; restored pixels exact",

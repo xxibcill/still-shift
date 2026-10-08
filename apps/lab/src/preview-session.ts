@@ -46,6 +46,7 @@ function previewResources() {
   const controller = new AbortController();
   let disposed = false;
   const urls: string[] = [];
+  const releases: (() => void)[] = [];
   let audio: PreviewAudio | undefined;
   const surfaces: {
     renderer: PreviewRenderer;
@@ -54,6 +55,10 @@ function previewResources() {
   }[] = [];
   return {
     signal: controller.signal,
+    onDispose(release: () => void) {
+      if (disposed) release();
+      else releases.push(release);
+    },
     audio(player: PreviewAudio) {
       if (disposed) player.dispose();
       else if (audio) {
@@ -129,17 +134,28 @@ function previewResources() {
     dispose() {
       if (disposed) return;
       disposed = true;
-      controller.abort();
-      audio?.dispose();
+      const errors: unknown[] = [];
+      const release = (dispose: () => void) => {
+        try {
+          dispose();
+        } catch (error) {
+          errors.push(error);
+        }
+      };
+      release(() => controller.abort());
+      if (audio) release(() => audio!.dispose());
       audio = undefined;
-      for (const { renderer } of surfaces) renderer.dispose();
-      for (const url of urls) URL.revokeObjectURL(url);
+      for (const { renderer } of surfaces) release(() => renderer.dispose());
+      for (const url of urls) release(() => URL.revokeObjectURL(url));
+      for (const callback of releases.splice(0)) release(callback);
+      if (errors.length)
+        throw new AggregateError(errors, "Preview resources could not dispose");
     },
   };
 }
 type PreviewResources = Pick<
   ReturnType<typeof previewResources>,
-  "url" | "preview" | "renderer" | "signal" | "audio"
+  "url" | "preview" | "renderer" | "signal" | "audio" | "onDispose"
 >;
 
 export function createPreviewSession<T extends PreviewSnapshot>(

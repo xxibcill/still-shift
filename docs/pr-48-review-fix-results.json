@@ -1,0 +1,577 @@
+{
+  "schemaVersion": "pr-review-fix-results-1",
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/48",
+  "reviewedHead": "d62a7a4d058a66bb7e3e253e7ca71c54e9c6f6ae",
+  "base": "e249a5dac2c720f388b44b4437ed3cb6643820f2",
+  "delivery": {
+    "policy": "One finding per commit; one normal push after the final commit",
+    "state": "Capture finding verified for its commit; cache finding verified and awaiting its separate commit; final push follows both."
+  },
+  "findings": [
+    {
+      "id": "capture-lifetime",
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/48#discussion_r4217967159",
+      "path": "tools/still-shift-cli/src/composition/preview.ts",
+      "line": 361,
+      "status": "fixed and verified; capture commit prepared",
+      "reproduction": "Third same-lease CLI prepare and sixth peer fixture prepare expire the first uncached native resource URL while the owning preview remains active.",
+      "implementation": "Candidate/active preview disposal owns a UUID capture; explicit release, failed/superseded candidate, program lease release and fixture socket disconnect remove/abort only owned work. Pending/live allocations are capped at64 and fail new work without evicting active URLs. Bounded cancellation markers reject a released delayed prepare, with owner-specific refusal on overflow.",
+      "files": [
+        "apps/lab/composition-api.ts",
+        "apps/lab/src/composition-fixture-assets.ts",
+        "apps/lab/src/composition.ts",
+        "apps/lab/src/preview-session.ts",
+        "tools/still-shift-cli/src/composition/preview.ts",
+        "tests/integration/composition-preview.test.ts",
+        "tests/integration/composition-fixture-captures.test.ts",
+        "tests/unit/preview-session-captures.test.ts",
+        "tests/browser/composition-media-authoring.ts"
+      ],
+      "cliEvidence": {
+        "worktree": "/Users/jjae/.codex/worktrees/pr48-conflict-review/still-shift",
+        "toolchain": {
+          "node": "22.23.1",
+          "pnpm": "10.29.3"
+        },
+        "scope": "Scoped PR48 CLI capture-lifetime repair; not a full repository gate",
+        "evidence_origin": "Original functions.exec/exec_command tool outputs. Shell runs were not redirected to raw log files; this JSON records their commands and results.",
+        "before": {
+          "implementation_ref": "d62a7a4d",
+          "test_added_before_fix": true,
+          "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm exec vitest run tests/integration/composition-preview.test.ts --no-file-parallelism --testNamePattern 'retains each native capture'",
+          "result": "FAIL",
+          "assertion": {
+            "test": "retains each native capture until its candidate or program owner releases it",
+            "expected_http_status": 200,
+            "actual_http_status": 404,
+            "test_file": "tests/integration/composition-preview.test.ts",
+            "line_at_time_of_run": 630,
+            "trigger": "Prepare three native captures with the same held program lease, then fetch an uncached frame URL from the first capture"
+          },
+          "test_duration_ms": 425,
+          "run_duration_seconds": 2.24
+        },
+        "after": {
+          "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm exec vitest run tests/integration/composition-preview.test.ts --no-file-parallelism",
+          "result": "PASS",
+          "test_files_passed": 1,
+          "tests_passed": 17,
+          "tests_failed": 0,
+          "started_local": "18:00:22",
+          "run_duration_seconds": 30.3,
+          "suite_duration_ms": 28760,
+          "new_regression_duration_ms": 3371,
+          "covered": [
+            "More than two held native captures remain readable",
+            "Different lease cannot release capture (403)",
+            "Explicit release and repeated cleanup",
+            "Unleased callers receive releasable capture handle",
+            "Delayed HTTP prepare body released before reservation rejects with 409",
+            "64 live/in-flight capture limit rejects new preparation without evicting active frames",
+            "Explicit release reclaims capacity",
+            "Aborted in-flight preparation reclaims capacity",
+            "Released lease prevents in-flight publication",
+            "Websocket disconnect releases owned captures",
+            "128 cancellation records are separately bounded; overflow blocks only the owner while active and other-owner captures survive"
+          ],
+          "raw_output_available": false,
+          "captured_summary": "Test Files 1 passed (1)\nTests 17 passed (17)\nStart at 18:00:22\nDuration 30.30s (transform 836ms, setup 0ms, collect 1.42s, tests 28.76s, environment 0ms, prepare 27ms)",
+          "post_run_change": "Root subsequently added explicit pool array type for TS7034; no runtime behavior changed."
+        },
+        "additional_focused_checks": [
+          {
+            "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm exec eslint tools/still-shift-cli/src/composition/preview.ts tests/integration/composition-preview.test.ts",
+            "exit_code": 0
+          },
+          {
+            "command": "git diff --check -- tools/still-shift-cli/src/composition/preview.ts tests/integration/composition-preview.test.ts",
+            "exit_code": 0
+          },
+          {
+            "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm exec prettier --write tools/still-shift-cli/src/composition/preview.ts tests/integration/composition-preview.test.ts",
+            "exit_code": 0
+          }
+        ],
+        "independent_review": "resolve_renderer read-only review of final CLI repair found no additional actionable issue",
+        "no_commits_or_push_by_agent": true
+      },
+      "fixtureBefore": {
+        "reviewedHead": "d62a7a4d058a66bb7e3e253e7ca71c54e9c6f6ae",
+        "result": "failed",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "trigger": "Six fixture prepares then fetch the first still-held native URL",
+        "durationSeconds": 1.97,
+        "source": "Recorded agent tool output; no raw log saved"
+      },
+      "focusedChecks": {
+        "cliIntegrations": 17,
+        "fixtureIntegrations": 5,
+        "previewLifecycleUnits": 4,
+        "browser": {
+          "newlyReferencedOriginal": 1,
+          "inspectorUndoRedo": "exact",
+          "savedReload": "exact",
+          "backendSwitch": "exact",
+          "draftExport": "byte-identical",
+          "playback": "last frame exact",
+          "fixturePreview": "exact",
+          "retainedCapture": "six peer prepares; three rejected replacements; uncached and reverse seeks exact; disposed URLs revoked",
+          "changedBindingsRejected": true,
+          "originalMediaNotServed": true,
+          "sequenceOriginalWatch": "changed bytes rejected; restored pixels exact"
+        }
+      },
+      "independentReview": "Final CLI/Lab capture patch independently reviewed; duplicate cleanup, close-listener and cancellation-owner gaps fixed before final verification. No remaining actionable finding."
+    },
+    {
+      "id": "cache-lock-cleanup",
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/48#discussion_r4217967164",
+      "path": "packages/animation-engine/src/composition-media-cache.ts",
+      "line": 577,
+      "status": "implemented; pending separate commit",
+      "implementation": "Shared finishCompositionMediaCacheTransaction(release, stage) removes staging in try and always releases in finally. All three finally blocks use it; source validation, cache hit, stage preparation, atomic rename publication and rollback remain specific to each source cache.",
+      "files": [
+        "packages/animation-engine/src/composition-media-cache-storage.ts",
+        "packages/animation-engine/src/composition-media-cache.ts",
+        "packages/animation-engine/src/composition-media-audio.ts",
+        "packages/animation-engine/src/composition-audio-mix.ts",
+        "tests/unit/composition-media-cache-cleanup.test.ts"
+      ],
+      "checks": [
+        {
+          "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm exec vitest run tests/unit/composition-media-cache-cleanup.test.ts --maxWorkers=1 --no-file-parallelism",
+          "phase": "before fix",
+          "exitCode": 1,
+          "testsPassed": 1,
+          "testsFailed": 1,
+          "durationSeconds": 0.661,
+          "log": "/private/tmp/pr48-cache-cleanup-before.log",
+          "evidence": "Injected stage rm EACCES after real visual-cache staging/decode error; real .media.lock remained. Normal stage removal case passed.",
+          "logSha256": "c9285196450ad3f5a83160f7f99d4d0a6eb331b8f929e33ce01b31cf36b8a2d3"
+        },
+        {
+          "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm exec vitest run tests/unit/composition-media-cache-cleanup.test.ts --maxWorkers=1 --no-file-parallelism",
+          "phase": "after fix",
+          "exitCode": 0,
+          "testsPassed": 2,
+          "testsFailed": 0,
+          "durationSeconds": 0.56,
+          "log": "/private/tmp/pr48-cache-cleanup-after.log",
+          "evidence": "Actual cache lock absent and reacquirable both when stage removal succeeds and when it rejects; failed preparation never publishes a cache entry.",
+          "logSha256": "de54873505f46b0cbe2c81fa1cee0eb05d236141430fd6e3e76c35dd7dc3c019"
+        },
+        {
+          "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm exec vitest run tests/integration/composition-media-cache.test.ts tests/integration/composition-media-audio.test.ts tests/integration/composition-audio-mix.test.ts --maxWorkers=1 --no-file-parallelism",
+          "phase": "after fix",
+          "exitCode": 0,
+          "testFilesPassed": 3,
+          "testsPassed": 34,
+          "testsFailed": 0,
+          "durationSeconds": 11.47,
+          "log": "/private/tmp/pr48-cache-transaction-regressions.log",
+          "suiteTests": {
+            "composition-media-cache": 8,
+            "composition-media-audio": 8,
+            "composition-audio-mix": 18
+          },
+          "evidence": "Existing cache hit/relocation, manifest/checksum tampering, concurrent publication, actual streamed cancellation, quota/working budget, deterministic PCM/repeated output all pass.",
+          "logSha256": "4093628a8ab41dcfc5c41e1af2bc5cf7e23104625b20367156c43c4f62368881"
+        },
+        {
+          "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm exec eslint packages/animation-engine/src/composition-media-cache-storage.ts packages/animation-engine/src/composition-media-cache.ts packages/animation-engine/src/composition-media-audio.ts packages/animation-engine/src/composition-audio-mix.ts tests/unit/composition-media-cache-cleanup.test.ts",
+          "exitCode": 0
+        },
+        {
+          "command": "git diff --check",
+          "exitCode": 0
+        }
+      ]
+    }
+  ],
+  "preflight": {
+    "toolchain": "Node22.23.1/pnpm10.29.3/Python3.12.11/Playwright1.62.1/Chromium151.0.7922.34/FFmpeg8.0.1",
+    "runtimeImports": [
+      "composition-media",
+      "composition-audio-mix",
+      "composition renderer",
+      "fixture API",
+      "numpy2.3.3/scipy1.16.2/dawdreamer"
+    ],
+    "isolation": "Attached PR worktree has its own node_modules/Vite caches/.venv; UV cache and soundtrack Python are isolated in /private/tmp; owner CE15 checkout untouched."
+  },
+  "verificationScope": {
+    "fullPnpmCheckRun": false,
+    "reason": "Scoped PR repairs; no evaluator, pixel renderer, authored fixture, baseline or export encoder changes. Existing milestone/conflict verification stays historical. Focused ownership/cache regressions and affected browser/export checks verify the final repair code.",
+    "githubActions": "Remain disabled; all checks local."
+  },
+  "checks": [
+    {
+      "label": "preflight",
+      "command": ["pnpm", "toolchain:check"],
+      "exitCode": 0,
+      "seconds": 0.61,
+      "log": "/private/tmp/pr48-fix-preflight.log",
+      "logSha256": "591e8d007bd053ae1342b38a3fbce007686c6aa4abc7af3cb1a93a049c845d50"
+    },
+    {
+      "label": "lab-captures-green",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/preview-session-captures.test.ts",
+        "tests/integration/composition-fixture-captures.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0,
+      "seconds": 8.39,
+      "log": "/private/tmp/pr48-fix-lab-captures-green.log",
+      "logSha256": "173507c7cf87650ababe68cb20235715b56397128d46ced2c428540f11a7e3a0"
+    },
+    {
+      "label": "quality",
+      "command": ["pnpm", "check:fast"],
+      "exitCode": 2,
+      "seconds": 24.83,
+      "log": "/private/tmp/pr48-fix-quality.log",
+      "logSha256": "92e1709e71d254f4ec17b624a1e235ecffdbdf5ab919b4498ce4e8facbd34b8f"
+    },
+    {
+      "label": "lab-captures-final",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/preview-session-captures.test.ts",
+        "tests/integration/composition-fixture-captures.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0,
+      "seconds": 9.9,
+      "log": "/private/tmp/pr48-fix-lab-captures-final.log",
+      "logSha256": "46e2a67b637d924b4791bbdd90bdb1093bf8a7fd51b8b1e007f25a8a4716b061"
+    },
+    {
+      "label": "quality-final",
+      "command": ["pnpm", "check:fast"],
+      "exitCode": 1,
+      "seconds": 12.85,
+      "log": "/private/tmp/pr48-fix-quality-final.log",
+      "logSha256": "2c848310913d4393a65ff865792060f321f48d2544976c03f5851907658dbc91"
+    },
+    {
+      "label": "quality-final-sequential",
+      "command": ["pnpm", "check:fast"],
+      "exitCode": 0,
+      "seconds": 47.55,
+      "log": "/private/tmp/pr48-fix-quality-final-sequential.log",
+      "logSha256": "06f4c0fb63505bd56845bc5761ff9eb7e482d0478f4e369767fc8e23c1491fe7"
+    },
+    {
+      "label": "browser-media",
+      "command": ["pnpm", "test:browser:composition-media"],
+      "exitCode": 0,
+      "seconds": 33.71,
+      "log": "/private/tmp/pr48-fix-browser-media.log",
+      "logSha256": "411485456cbcfc4cbddcb3850bd72813aa48320da820d58361d98a9f599f710d"
+    },
+    {
+      "label": "browser-session",
+      "command": ["pnpm", "test:browser:composition-session"],
+      "exitCode": 0,
+      "seconds": 2.21,
+      "log": "/private/tmp/pr48-fix-browser-session.log",
+      "logSha256": "cac7b04130b44bd064b62295575cba4402f9cc1e7faf9088425b64abce5d13dc"
+    }
+  ],
+  "browserMediaProof": {
+    "status": "passed",
+    "preparedKey": "sha256:9941e5f60996b3f0d823c1e25bf664dd066559e905a060c0c53e0874fb2cb403",
+    "cases": [
+      {
+        "colorSpace": "srgb",
+        "backend": "canvas2d",
+        "pixels": [
+          [128, 0, 127, 255],
+          [64, 128, 63, 255],
+          [128, 255, 128, 255],
+          [255, 255, 255, 255],
+          [64, 128, 63, 255],
+          [128, 0, 127, 255]
+        ],
+        "frameHashes": [
+          "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+          "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+          "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+          "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+          "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+          "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+        ],
+        "stats": {
+          "decodedBytes": 16384,
+          "encodedBytes": 0,
+          "peakDecodedBytes": 16384,
+          "peakEncodedBytes": 183,
+          "decodedFrames": 4,
+          "hits": 5,
+          "evictions": 2
+        }
+      },
+      {
+        "colorSpace": "srgb",
+        "backend": "webgl2",
+        "pixels": [
+          [128, 0, 127, 255],
+          [64, 128, 63, 255],
+          [128, 255, 128, 255],
+          [255, 255, 255, 255],
+          [64, 128, 63, 255],
+          [128, 0, 127, 255]
+        ],
+        "frameHashes": [
+          "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+          "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+          "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+          "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+          "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+          "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+        ],
+        "stats": {
+          "decodedBytes": 16384,
+          "encodedBytes": 0,
+          "peakDecodedBytes": 16384,
+          "peakEncodedBytes": 183,
+          "decodedFrames": 4,
+          "hits": 5,
+          "evictions": 2
+        }
+      },
+      {
+        "colorSpace": "linear-srgb",
+        "backend": "canvas2d",
+        "pixels": [
+          [188, 0, 187, 255],
+          [74, 149, 136, 255],
+          [128, 255, 128, 255],
+          [255, 255, 255, 255],
+          [74, 149, 136, 255],
+          [188, 0, 187, 255]
+        ],
+        "frameHashes": [
+          "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+          "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+          "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+          "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+          "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+          "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+        ],
+        "stats": {
+          "decodedBytes": 16384,
+          "encodedBytes": 0,
+          "peakDecodedBytes": 16384,
+          "peakEncodedBytes": 183,
+          "decodedFrames": 4,
+          "hits": 5,
+          "evictions": 2
+        }
+      },
+      {
+        "colorSpace": "linear-srgb",
+        "backend": "webgl2",
+        "pixels": [
+          [188, 0, 187, 255],
+          [74, 149, 136, 255],
+          [128, 255, 128, 255],
+          [255, 255, 255, 255],
+          [74, 149, 136, 255],
+          [188, 0, 187, 255]
+        ],
+        "frameHashes": [
+          "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+          "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+          "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+          "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+          "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+          "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+        ],
+        "stats": {
+          "decodedBytes": 16384,
+          "encodedBytes": 0,
+          "peakDecodedBytes": 16384,
+          "peakEncodedBytes": 183,
+          "decodedFrames": 4,
+          "hits": 5,
+          "evictions": 2
+        }
+      }
+    ],
+    "compare": [
+      {
+        "colorSpace": "srgb",
+        "maxDelta": 0,
+        "differing": 0
+      },
+      {
+        "colorSpace": "linear-srgb",
+        "maxDelta": 0,
+        "differing": 0
+      }
+    ],
+    "pairBudget": "PassageError: Complete exposure/history frame set exceeds live decoded budget",
+    "gpu": {
+      "peakGpu": 30208,
+      "disposedGpu": 0,
+      "gpuBudget": "PassageError: Native image raster texture exceeds configured GPU cache bytes"
+    },
+    "exports": [
+      {
+        "source": "sequence",
+        "backend": "canvas2d",
+        "frames": 6,
+        "originalFrames": [0, 1, 2],
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical",
+        "audioSource": "explicit WAV asset",
+        "masterSamples": 12000,
+        "masterPcm": "source-bit-identical including final sample",
+        "audioDecoded": "independent AAC sample-bit-identical",
+        "audioTrackClock": "exact 48k sample count"
+      },
+      {
+        "source": "sequence",
+        "backend": "webgl2",
+        "frames": 6,
+        "originalFrames": [0, 1, 2],
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical",
+        "audioSource": "explicit WAV asset",
+        "masterSamples": 12000,
+        "masterPcm": "source-bit-identical including final sample",
+        "audioDecoded": "independent AAC sample-bit-identical",
+        "audioTrackClock": "exact 48k sample count"
+      },
+      {
+        "source": "video",
+        "backend": "canvas2d",
+        "frames": 6,
+        "originalFrames": [0, 1, 2],
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical",
+        "audioSource": "explicit embedded PCM asset",
+        "masterSamples": 12000,
+        "masterPcm": "source-bit-identical including final sample",
+        "audioDecoded": "independent AAC sample-bit-identical",
+        "audioTrackClock": "exact 48k sample count"
+      },
+      {
+        "source": "video",
+        "backend": "webgl2",
+        "frames": 6,
+        "originalFrames": [0, 1, 2],
+        "repeatedMp4": "byte-identical",
+        "independentPreviewMp4": "byte-identical",
+        "rawPngTransport": "byte-identical",
+        "audioSource": "explicit embedded PCM asset",
+        "masterSamples": 12000,
+        "masterPcm": "source-bit-identical including final sample",
+        "audioDecoded": "independent AAC sample-bit-identical",
+        "audioTrackClock": "exact 48k sample count",
+        "transactionProof": "post-mux cancellation and validation rejection publish no MP4/sidecars; stages removed"
+      }
+    ],
+    "authoring": {
+      "newlyReferencedOriginal": 1,
+      "inspectorUndoRedo": "exact",
+      "savedReload": "exact",
+      "backendSwitch": "exact",
+      "draftExport": "byte-identical",
+      "playback": "last frame exact",
+      "fixturePreview": "exact",
+      "retainedCapture": "six peer prepares; three rejected replacements; uncached and reverse seeks exact; disposed URLs revoked",
+      "changedBindingsRejected": true,
+      "originalMediaNotServed": true,
+      "sequenceOriginalWatch": "changed bytes rejected; restored pixels exact"
+    },
+    "audioAuthoring": {
+      "sync": {
+        "samples": 250,
+        "maxFrameDifference": 1,
+        "maxSourceFrameDifference": 0
+      },
+      "webglSync": {
+        "samples": 248,
+        "maxFrameDifference": 1,
+        "maxSourceFrameDifference": 0
+      },
+      "sourcePixels": [
+        {
+          "backend": "webgl2",
+          "exactReverseSeeks": 48
+        },
+        {
+          "backend": "canvas2d",
+          "exactReverseSeeks": 48
+        }
+      ],
+      "combinedMedia": "24 frame-numbered FFV1 frames at12fps; reverse remap; animated still and lower third; matching stereo PCM",
+      "savedRevision": 3,
+      "sampleCount": 96000,
+      "rate": 48000,
+      "channels": 2,
+      "master": "all PCM sample bits exact",
+      "offlineSeek": "frame 6 through distinct last samples exact",
+      "playback": "audio clock; full final interval; seek/pause exact",
+      "gainPanEdit": "waveform changes; undo/redo exact; saved master bits exact",
+      "draftExport": "byte-identical",
+      "fixtureWaveforms": "source/processed/mix",
+      "registeredMaster": "WAV with exact captured checksum",
+      "originalAudioNotServed": true,
+      "sourceWatch": "changed source stops sound and preserves valid pixels; restored source reloads"
+    }
+  },
+  "finalSummary": {
+    "units": 2566,
+    "unitFiles": 234,
+    "cliIntegrations": 17,
+    "fixtureIntegrations": 5,
+    "cacheIntegrations": 34,
+    "cacheFaultUnits": 2,
+    "previewLifecycleUnits": 4,
+    "nativeMediaBrowser": "passed; independent/repeated/native raw-PNG exports, PCM/AAC, waveform/playback/source-watch and capture lifetime",
+    "previewSessionBrowser": "passed",
+    "fastCheck": "passed after explicit regression array typing and sequential fixture/format scans"
+  },
+  "verificationNotes": [
+    "Both repair patches were present during final focused verification; commits separate the findings by source/test paths. Relevant code hashes identify tested content.",
+    "Initial fast check failed on test pool implicit any; explicit type repaired, runtime semantics unchanged.",
+    "Next format scan overlapped with fixture integration temporary files. They were cleaned by the test and a sequential full fast check passed. Avoid overlapping repository format scans with tests generating registered fixture files.",
+    "No full pnpm check, camera/cinematic/passage matrix, production-default inventory or frozen-baseline inventory was rerun; no evaluator, renderer, authored fixture, encoder, threshold or frozen baseline changed. Native exports and exact seek pixels verify the affected path."
+  ],
+  "testedCodeSha256": {
+    "apps/lab/composition-api.ts": "f1f83123c0fc94255cdf6a6a868e4e60cbbb68698343c06299a6177b326a2c42",
+    "apps/lab/src/composition-fixture-assets.ts": "5cf512418f49297a48c836ffb40ee6ade85813f2565cb94e4f47f04ae258b453",
+    "apps/lab/src/composition.ts": "cc4d1645ccd3abb548a7d35325fba5656cae3dc160703e94a772a16cc38aa4e0",
+    "apps/lab/src/preview-session.ts": "1d4645793e98846e5056959ed4d49d0c9346a5b2d36df7f27a7c1973035aeacb",
+    "packages/animation-engine/src/composition-audio-mix.ts": "afcdadddeab6d237de53918511e60811ef5989cdf6dbf42bb424c55c947b21d3",
+    "packages/animation-engine/src/composition-media-audio.ts": "9061da019e56f2c7343e7a8b113bab52a4f86eef8af0364ae26dba8d213b5dc8",
+    "packages/animation-engine/src/composition-media-cache-storage.ts": "8f38027064a6e6daf7c39b59dcf7f0f25e40a39c96abe4b6897b8ba7d5d3a665",
+    "packages/animation-engine/src/composition-media-cache.ts": "c1943d47a2c33b94ccdcdd380e3650e26287996ad86eafc75625345f383698a6",
+    "tests/browser/composition-media-authoring.ts": "c06da3461750e4660a67770d110e932847723c488a727191d40cf224c69f61e6",
+    "tests/integration/composition-fixture-captures.test.ts": "3fd951fa271f98bb0858045274db855af9866e51e0abe9f31417429884592522",
+    "tests/integration/composition-preview.test.ts": "6b53c6f6ac20096598b002c7c5eb454b9035719d0c8eb55fe36f7fbf2d6b70d8",
+    "tests/unit/composition-media-cache-cleanup.test.ts": "4708ab6747f1e18248098ec6f4ede48dc3e0ca3e64113d279c100cde1be96139",
+    "tests/unit/preview-session-captures.test.ts": "88a433924628b633c45765a2329829e8be394dac0bb334d622cacf8ac00f4d35",
+    "tools/still-shift-cli/src/composition/preview.ts": "2b4e8398985f6dd1a7f90b6a1e8e70cc87b47e8d298c8152fc756a9712afaadf"
+  }
+}

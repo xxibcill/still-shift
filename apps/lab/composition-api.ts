@@ -19,7 +19,7 @@ import {
   captureCompositionAssets,
   capturedMediaComposition,
 } from "../../tools/still-shift-cli/src/composition/captured-assets.ts";
-import type { Plugin } from "vite";
+import type { Plugin, WebSocketClient } from "vite";
 
 const root = resolve(import.meta.dirname, "../..");
 const fixtures = resolve(root, "benchmarks/fixtures/composition");
@@ -87,8 +87,21 @@ export const compositionApi = (): Plugin => {
   let exporting = false;
   const captures = new Map<
     string,
-    { scene: string; paths: Record<string, string> }
+    {
+      scene: string;
+      paths: Record<string, string>;
+      owner?: string;
+      controller?: AbortController;
+    }
   >();
+  const fixtureOwners = new Map<string, WebSocketClient>();
+  const cancelledCaptures = new Map<
+    string,
+    { scene: string; owner?: string }
+  >();
+  const blockedOwners = new Set<string>();
+  const ownerByClient = new WeakMap<WebSocketClient, string>();
+  const maxCaptures = 64;
   const preparing = new Set<AbortController>();
   async function source(scene: string, signal?: AbortSignal) {
     const validation = validateComposition(
@@ -131,9 +144,59 @@ export const compositionApi = (): Plugin => {
   return {
     name: "still-shift-composition-fixtures",
     configureServer(server) {
+      server.ws.on(
+        "composition-fixture:retain",
+        (data: { request?: unknown }, client) => {
+          if (
+            client.socket.readyState !== 1 ||
+            !data ||
+            typeof data.request !== "string" ||
+            data.request.length > 64
+          )
+            return;
+          let owner = ownerByClient.get(client);
+          if (!owner && fixtureOwners.size >= maxCaptures) {
+            client.send("composition-fixture:retained", {
+              request: data.request,
+              diagnostics: [
+                {
+                  message:
+                    "The fixture preview already has 64 live pages; close an unused preview",
+                },
+              ],
+            });
+            return;
+          }
+          if (!owner) {
+            owner = randomUUID();
+            fixtureOwners.set(owner, client);
+            ownerByClient.set(client, owner);
+            const token = owner;
+            client.socket.once("close", () => {
+              fixtureOwners.delete(token);
+              blockedOwners.delete(token);
+              for (const [capture, entry] of captures)
+                if (entry.owner === token) {
+                  entry.controller?.abort();
+                  captures.delete(capture);
+                }
+              for (const [capture, entry] of cancelledCaptures)
+                if (entry.owner === token) cancelledCaptures.delete(capture);
+            });
+          }
+          client.send("composition-fixture:retained", {
+            request: data.request,
+            owner,
+            diagnostics: [],
+          });
+        },
+      );
       server.httpServer?.once("close", () => {
         for (const controller of preparing) controller.abort();
         captures.clear();
+        fixtureOwners.clear();
+        cancelledCaptures.clear();
+        blockedOwners.clear();
       });
       server.middlewares.use((request, response, next) => {
         const url = new URL(request.url ?? "/", "http://localhost");
@@ -186,6 +249,57 @@ export const compositionApi = (): Plugin => {
             await pipeline(createReadStream(path), response);
             return;
           }
+          if (url.pathname === "/composition/capture-release") {
+            const body = (await readEditRequest(request)) as {
+              capture?: unknown;
+              owner?: unknown;
+            };
+            if (
+              !body ||
+              Object.keys(body).some(
+                (key) => !["capture", "owner"].includes(key),
+              ) ||
+              typeof body.capture !== "string" ||
+              !/^[a-f0-9-]{36}$/.test(body.capture) ||
+              (body.owner !== undefined &&
+                (typeof body.owner !== "string" ||
+                  !fixtureOwners.has(body.owner)))
+            )
+              throw new CompositionSaveError(
+                400,
+                "comp-edit-request",
+                "Use a registered capture and its fixture owner",
+              );
+            const captured = captures.get(body.capture);
+            const cancelled = cancelledCaptures.get(body.capture);
+            const previous = captured ?? cancelled;
+            if (
+              previous &&
+              (previous.scene !== scene || previous.owner !== body.owner)
+            )
+              throw new CompositionSaveError(
+                409,
+                "comp-edit-capture",
+                "Native capture belongs to a different fixture owner",
+              );
+            if (captured) {
+              captured.controller?.abort();
+              captures.delete(body.capture);
+            } else if (!cancelled) {
+              if (cancelledCaptures.size < maxCaptures * 2)
+                cancelledCaptures.set(body.capture, {
+                  scene,
+                  ...(typeof body.owner === "string"
+                    ? { owner: body.owner }
+                    : {}),
+                });
+              else
+                blockedOwners.add(
+                  typeof body.owner === "string" ? body.owner : "unowned",
+                );
+            }
+            return send(response, 204, "");
+          }
           const text = await readFile(scene, "utf8");
           if (url.pathname === "/composition/scene")
             return send(response, 200, text, types[".json"]);
@@ -196,16 +310,90 @@ export const compositionApi = (): Plugin => {
             };
             preparing.add(controller);
             response.on("close", abort);
+            if (response.destroyed || request.aborted) controller.abort();
+            let capture: string | undefined;
+            let published = false;
+            let reservation:
+              | {
+                  scene: string;
+                  paths: Record<string, string>;
+                  owner?: string;
+                  controller?: AbortController;
+                }
+              | undefined;
             try {
               const body = (await readEditRequest(request)) as {
                 document?: unknown;
+                capture?: unknown;
+                owner?: unknown;
               };
-              if (!body || Object.keys(body).some((key) => key !== "document"))
+              if (
+                !body ||
+                Object.keys(body).some(
+                  (key) => !["document", "capture", "owner"].includes(key),
+                ) ||
+                (body.capture !== undefined &&
+                  (typeof body.capture !== "string" ||
+                    !/^[a-f0-9-]{36}$/.test(body.capture))) ||
+                (body.owner !== undefined &&
+                  (typeof body.owner !== "string" ||
+                    !fixtureOwners.has(body.owner)))
+              )
                 throw new CompositionSaveError(
                   400,
                   "comp-edit-request",
-                  "Use document",
+                  "Use document, capture and its registered fixture owner",
                 );
+              controller.signal.throwIfAborted();
+              capture =
+                typeof body.capture === "string" ? body.capture : randomUUID();
+              const cancelled = cancelledCaptures.get(capture);
+              if (cancelled) {
+                if (cancelled.scene !== scene || cancelled.owner !== body.owner)
+                  throw new CompositionSaveError(
+                    409,
+                    "comp-edit-capture",
+                    "Native capture belongs to a different fixture owner",
+                  );
+                cancelledCaptures.delete(capture);
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-capture",
+                  "Native capture was already disposed",
+                );
+              }
+              if (
+                blockedOwners.has(
+                  typeof body.owner === "string" ? body.owner : "unowned",
+                )
+              )
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-limit",
+                  "Too many pending capture cancellations; reconnect this fixture preview",
+                );
+              if (captures.has(capture))
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-capture",
+                  "Native capture is already reserved",
+                );
+              if (captures.size >= maxCaptures)
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-limit",
+                  "The preview already has 64 live native captures; close an unused preview",
+                );
+              const reserved = {
+                scene,
+                paths: {},
+                controller,
+                ...(typeof body.owner === "string"
+                  ? { owner: body.owner }
+                  : {}),
+              };
+              captures.set(capture, reserved);
+              reservation = reserved;
               const loaded = await source(scene, controller.signal);
               const document = editableDocument(
                 body.document,
@@ -225,17 +413,20 @@ export const compositionApi = (): Plugin => {
               );
               const paths = { ...prepared?.assetPaths, ...audio?.assetPaths };
               controller.signal.throwIfAborted();
-              const capture = randomUUID();
-              captures.set(capture, {
-                scene,
-                paths,
-              });
-              while (captures.size > 4)
-                captures.delete(captures.keys().next().value!);
+              if (captures.get(capture) !== reserved)
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-capture",
+                  "Native capture was disposed during preparation",
+                );
+              reserved.paths = paths;
+              delete reservation.controller;
+              published = true;
               send(
                 response,
                 200,
                 JSON.stringify({
+                  capture,
                   preparedMedia: prepared?.preparedMedia,
                   preparedAudio: audio?.preparedAudio,
                   assets: Object.fromEntries(
@@ -248,6 +439,13 @@ export const compositionApi = (): Plugin => {
                 types[".json"],
               );
             } finally {
+              if (
+                !published &&
+                capture &&
+                reservation &&
+                captures.get(capture) === reservation
+              )
+                captures.delete(capture);
               response.off("close", abort);
               preparing.delete(controller);
             }

@@ -29,6 +29,7 @@ import {
   positionCompositionAudioWaveforms,
 } from "./composition-audio-waveforms.ts";
 import { createPreviewSession } from "./preview-session.ts";
+import { retainFixtureOwner } from "./composition-fixture-assets.ts";
 import {
   retainProgramSnapshot,
   releaseProgramSnapshot,
@@ -400,6 +401,28 @@ async function load(
       ) &&
         (!capture.preparedMedia || edit.document))
     ) {
+      const owner = programMode ? undefined : await retainFixtureOwner();
+      ownership.signal.throwIfAborted();
+      const captureId = crypto.randomUUID();
+      const binding = programMode
+        ? { revision: program!.revision, lease: program!.lease }
+        : { owner };
+      ownership.onDispose(() => {
+        void fetch(
+          programMode
+            ? "/composition/program-capture-release"
+            : `/composition/capture-release?${query}`,
+          {
+            method: "POST",
+            keepalive: true,
+            headers: {
+              "Content-Type": "application/json",
+              "x-still-shift-composition": "1",
+            },
+            body: JSON.stringify({ ...binding, capture: captureId }),
+          },
+        ).catch(() => {});
+      });
       const response = await fetch(
         programMode
           ? "/composition/program-prepare"
@@ -412,9 +435,8 @@ async function load(
             "x-still-shift-composition": "1",
           },
           body: JSON.stringify({
-            ...(programMode
-              ? { revision: program!.revision, lease: program!.lease }
-              : {}),
+            ...binding,
+            capture: captureId,
             document: value,
           }),
         },

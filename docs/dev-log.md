@@ -43,16 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #48 conflicts resolved and reviewed (2026-10-08):** isolated
-  worktree from CE13 `aedfc9eb` integrates `main` at `e249a5da`. All 23 conflicts
-  combine native video/audio with reviewed renderer, passage and retained-draft
-  behavior. Pinned startup/build/schema/lint, 2,560 unit / 46 runtime / 179 affected
-  integration checks and 14 Python tests pass across focused runs. Independent
-  review has one reproduced P2: active native capture URLs can expire before
-  replacement acceptance. All affected browser/timeline checks, 336 selected native
-  default frames and 176 frozen items / 36,061 frames pass. No full
-  repository gate was run or claimed. Owner CE15 files are untouched.
-  [Evidence](./pr-48-conflict-resolution-results.json).
+- **PR #48 capture repair verified; cache commit pending (2026-10-08):** both inline findings
+  are posted on the reviewed conflict-resolution head `d62a7a4d`. Native capture
+  ownership now preserves active/candidate resources across peer prepares and
+  rejects new work at capacity; explicit disposal, canceled requests and disconnects
+  release their captures. A shared cache cleanup boundary always releases the lock.
+  Final fast checks pass 2,566 units, 17 CLI / 5 fixture / 34 cache integrations
+  pass, and native media/export/session browsers pass. Capture ownership is ready
+  for its commit; cache cleanup follows in a separate commit, then one normal push.
+  Owner CE15 files are untouched; no full repository gate is run or claimed.
+  [Repair evidence](./pr-48-review-fix-results.json).
 
 - **CE13 complete (2026-10-07):** original acceptance at `01fbca2` passes the
   complete local `pnpm check` in 12825.81 seconds, all 63 required commands,
@@ -73,6 +73,23 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-08 — PR #48 inline findings and scoped repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr48-conflict-resolution`, from `d62a7a4d`.
+- **Scope:** two posted inline findings; one finding per commit, one final normal push.
+- **Done:** explicit native capture ownership/release, bounded pending/live resources,
+  canceled-request guards and disconnect cleanup; shared visual/PCM/mix lock cleanup.
+- **Results:** pre-fix URL expiry and lingering-lock failures reproduced; CLI preview
+  integrations, 5 fixture / 34 cache integrations and 2,566 units pass. Native
+  browser/export/session checks pass, including uncached and reverse seek retention.
+- **Rejected:** initial fast build found an implicit array type in the new CLI regression;
+  added the explicit capture-array type. A formatting scan overlapped with temporary
+  fixture API test files; rerun sequentially after cleanup, never format generated fixtures.
+- **Next:** commit capture ownership, then cache cleanup separately; push both once.
+  No full `pnpm check` is run or claimed.
+- **Records:** [repair evidence](./pr-48-review-fix-results.json),
+  [PR #48](https://github.com/xxibcill/still-shift/pull/48).
 
 ### 2026-10-08 — PR #48 conflicts resolved and independently reviewed
 

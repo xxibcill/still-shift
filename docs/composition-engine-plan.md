@@ -5442,6 +5442,25 @@ retained lease. Tie captures to active/candidate ownership before merging. A
 caller-mutation clock candidate was suppressed by the documented immutable-object
 contract. [Resolution and review evidence](./pr-48-conflict-resolution-results.json).
 
+### CE13 PR #48 inline review repairs — 2026-10-08
+
+Both follow-ups are posted as inline comments on `d62a7a4d`: active native capture
+expiry and the visual cache's lock-release gap when staging cleanup throws. Repairs
+bind prepared captures to candidate/active ownership with explicit disposal,
+owner disconnect, cancellation and capacity guards; a shared cleanup boundary always
+releases the visual/PCM/mix artifact lock. Source verification, publication,
+renderer versions, pixel thresholds and frozen baselines are unchanged.
+
+The CLI and fixture expiry regressions fail before the repair; the real-lock cleanup
+fault leaves `.media.lock` before the repair. Ownership/API and existing 34 cache
+integrations pass after the changes. Final fast check passes 2,566 units; 17 CLI /
+5 fixture integrations and native browser/export/session checks pass. Six peer
+prepares and three failed replacements preserve uncached/reverse seeks exactly.
+Capture ownership is ready for its commit; cache cleanup follows separately, then
+one final normal push;
+this scoped follow-up does not run or claim a full repository gate.
+[Repair evidence](./pr-48-review-fix-results.json).
+
 ## CE14 — Mesh warp and puppet pins
 
 **Outcome:** Still artwork bends, squashes and gestures without new poses, which is the

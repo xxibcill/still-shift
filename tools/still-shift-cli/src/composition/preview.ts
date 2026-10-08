@@ -53,8 +53,22 @@ export type ProgramSnapshot = {
   diagnostics: CompositionDiagnostic[];
 };
 type NativeSnapshotBytes = SnapshotBytes<DraftAsset> & {
-  captures: Map<string, Record<string, string>>;
+  sourcePaths: Record<string, string>;
 };
+type NativeOwner = { revision: number; lease?: string };
+type NativeCapture = NativeOwner & {
+  controller: AbortController;
+  paths?: Record<string, string>;
+};
+const CAPTURE_LIMIT = 64;
+const CANCELLATION_LIMIT = 128;
+const ownerKey = (owner: NativeOwner) =>
+  `${owner.revision}:${owner.lease ?? "recent"}`;
+const sameOwner = (left: NativeOwner, right: NativeOwner) =>
+  left.revision === right.revision && left.lease === right.lease;
+const captureId = (value: unknown): value is string =>
+  typeof value === "string" &&
+  /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
 async function availablePort() {
   const socket = createSocketServer();
   await new Promise<void>((resolve, reject) => {
@@ -84,6 +98,27 @@ export async function createProgramPreview(
     snapshots = new ProgramSnapshots<NativeSnapshotBytes>();
   const sequencePatterns = new Map<string, RegExp>();
   const preparing = new Set<AbortController>();
+  const captures = new Map<string, NativeCapture>();
+  const leaseOwners = new Map<string, WebSocketClient>();
+  const cancellations = new Map<string, NativeOwner>();
+  const blockedOwners = new Map<string, NativeOwner>();
+  const releaseCapture = (id: string) => {
+    const capture = captures.get(id);
+    if (!capture) return;
+    captures.delete(id);
+    capture.controller.abort();
+  };
+  const releaseLease = (lease: string, owner: WebSocketClient) => {
+    if (leaseOwners.get(lease) !== owner) return;
+    for (const [id, capture] of captures)
+      if (capture.lease === lease) releaseCapture(id);
+    for (const [id, cancelled] of cancellations)
+      if (cancelled.lease === lease) cancellations.delete(id);
+    for (const [key, blocked] of blockedOwners)
+      if (blocked.lease === lease) blockedOwners.delete(key);
+    snapshots.release(lease, owner);
+    leaseOwners.delete(lease);
+  };
   let current: NativeSnapshotBytes | undefined,
     revision = 0,
     pending = false,
@@ -163,9 +198,17 @@ export async function createProgramPreview(
       current = {
         snapshot,
         bytes,
-        captures: new Map([["source", source.assetPaths]]),
+        sourcePaths: source.assetPaths,
       };
       snapshots.add(current);
+      for (const [id, capture] of captures)
+        if (!snapshots.get(capture.revision, capture.lease)) releaseCapture(id);
+      for (const [id, cancelled] of cancellations)
+        if (!snapshots.get(cancelled.revision, cancelled.lease))
+          cancellations.delete(id);
+      for (const [key, blocked] of blockedOwners)
+        if (!snapshots.get(blocked.revision, blocked.lease))
+          blockedOwners.delete(key);
       failure = [];
       server.ws.send({
         type: "custom",
@@ -263,9 +306,13 @@ export async function createProgramPreview(
                 "Use a positive source revision",
               );
             const lease = snapshots.retain(data.revision as number, client);
+            leaseOwners.set(lease, client);
             if (!owners.has(client)) {
               owners.add(client);
-              client.socket.once("close", () => snapshots.releaseOwner(client));
+              client.socket.once("close", () => {
+                for (const [lease, owner] of leaseOwners)
+                  if (owner === client) releaseLease(lease, client);
+              });
             }
             client.send("composition-program:retained", {
               request: data.request,
@@ -284,7 +331,7 @@ export async function createProgramPreview(
         "composition-program:release",
         (data: { lease?: unknown }, client) => {
           if (data && typeof data.lease === "string" && data.lease.length <= 64)
-            snapshots.release(data.lease, client);
+            releaseLease(data.lease, client);
         },
       );
       server.middlewares.use((request, response, next) => {
@@ -296,10 +343,67 @@ export async function createProgramPreview(
             "/composition/program-save",
             "/composition/program-export",
             "/composition/program-prepare",
+            "/composition/program-capture-release",
           ].includes(url.pathname)
         )
           return next();
         response.setHeader("Cache-Control", "no-store");
+        if (url.pathname === "/composition/program-capture-release") {
+          void (async () => {
+            try {
+              const body = (await readEditRequest(request)) as {
+                revision?: number;
+                lease?: string;
+                capture?: unknown;
+              };
+              if (
+                !body ||
+                Object.keys(body).some(
+                  (key) => !["revision", "lease", "capture"].includes(key),
+                ) ||
+                !Number.isSafeInteger(body.revision) ||
+                body.revision! < 1 ||
+                !captureId(body.capture) ||
+                (body.lease !== undefined &&
+                  (typeof body.lease !== "string" || body.lease.length > 64))
+              )
+                throw new CompositionSaveError(
+                  400,
+                  "comp-edit-request",
+                  "Use revision, lease and capture",
+                );
+              const owner: NativeOwner = {
+                revision: body.revision!,
+                ...(body.lease !== undefined ? { lease: body.lease } : {}),
+              };
+              const capture = captures.get(body.capture);
+              const cancelled = cancellations.get(body.capture);
+              if (
+                (capture && !sameOwner(capture, owner)) ||
+                (cancelled && !sameOwner(cancelled, owner))
+              )
+                throw new CompositionSaveError(
+                  403,
+                  "comp-edit-capture",
+                  "Native capture belongs to a different preview owner",
+                );
+              if (capture) releaseCapture(body.capture);
+              else if (snapshots.get(owner.revision, owner.lease)) {
+                // Release may arrive before the corresponding prepare body. Never
+                // evict a cancellation while that request can still arrive.
+                if (cancellations.size >= CANCELLATION_LIMIT && !cancelled)
+                  blockedOwners.set(ownerKey(owner), owner);
+                else if (!blockedOwners.has(ownerKey(owner)))
+                  cancellations.set(body.capture, owner);
+              }
+              response.statusCode = 204;
+              response.end();
+            } catch (error) {
+              sendCompositionEditError(response, error, input);
+            }
+          })();
+          return;
+        }
         if (url.pathname === "/composition/program-prepare") {
           void (async () => {
             const controller = new AbortController();
@@ -308,22 +412,29 @@ export async function createProgramPreview(
             };
             preparing.add(controller);
             response.on("close", abort);
+            let capture: string | undefined;
+            let reservation: NativeCapture | undefined;
+            let published = false;
             try {
               const body = (await readEditRequest(request)) as {
                 revision?: number;
                 document?: unknown;
                 lease?: string;
+                capture?: unknown;
               };
+              controller.signal.throwIfAborted();
               if (
                 !body ||
                 Object.keys(body).some(
-                  (key) => !["revision", "document", "lease"].includes(key),
-                )
+                  (key) =>
+                    !["revision", "document", "lease", "capture"].includes(key),
+                ) ||
+                (body.capture !== undefined && !captureId(body.capture))
               )
                 throw new CompositionSaveError(
                   400,
                   "comp-edit-request",
-                  "Use revision, document and lease",
+                  "Use revision, document, lease and optional capture",
                 );
               const captured = snapshots.get(body.revision ?? -1, body.lease);
               if (!captured)
@@ -331,6 +442,33 @@ export async function createProgramPreview(
                   409,
                   "comp-edit-revision",
                   "Source asset revision expired; reload before preparing",
+                );
+              const owner: NativeOwner = {
+                revision: captured.snapshot.revision,
+                ...(body.lease !== undefined ? { lease: body.lease } : {}),
+              };
+              const cancelled = body.capture
+                ? cancellations.get(body.capture)
+                : undefined;
+              if (cancelled) {
+                if (!sameOwner(cancelled, owner))
+                  throw new CompositionSaveError(
+                    403,
+                    "comp-edit-capture",
+                    "Native capture belongs to a different preview owner",
+                  );
+                cancellations.delete(body.capture!);
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-capture",
+                  "This native capture was released before preparation",
+                );
+              }
+              if (blockedOwners.has(ownerKey(owner)))
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-limit",
+                  "This preview has too many pending cancellations; reload before preparing again",
                 );
               const document = editableDocument(
                 body.document,
@@ -340,6 +478,26 @@ export async function createProgramPreview(
                 document,
                 captured.bytes,
               );
+              if (captures.size >= CAPTURE_LIMIT)
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-limit",
+                  "The preview already has 64 native captures; close an unused preview before preparing another",
+                );
+              capture =
+                typeof body.capture === "string" ? body.capture : randomUUID();
+              if (captures.has(capture))
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-capture",
+                  "This native capture is already owned by a preview",
+                );
+              reservation = {
+                revision: captured.snapshot.revision,
+                ...(body.lease !== undefined ? { lease: body.lease } : {}),
+                controller,
+              };
+              captures.set(capture, reservation);
               const prepared = await prepareCompositionMedia(
                 nativeDocument,
                 dirname(sourceInput),
@@ -352,17 +510,20 @@ export async function createProgramPreview(
               );
               const paths = { ...prepared?.assetPaths, ...audio?.assetPaths };
               controller.signal.throwIfAborted();
-              const captureOwner = `${body.lease ?? "recent"}:`;
-              const capture = captureOwner + randomUUID();
-              captured.captures.set(capture, paths);
-              const ownedCaptures = [...captured.captures.keys()].filter((id) =>
-                id.startsWith(captureOwner),
-              );
-              for (const oldest of ownedCaptures.slice(0, -2))
-                captured.captures.delete(oldest);
+              if (
+                captures.get(capture) !== reservation ||
+                snapshots.get(body.revision ?? -1, body.lease) !== captured
+              )
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-revision",
+                  "Preview owner was released during native preparation",
+                );
+              reservation.paths = paths;
               response.setHeader("Content-Type", "application/json");
               response.end(
                 JSON.stringify({
+                  capture,
                   preparedMedia: prepared?.preparedMedia,
                   preparedAudio: audio?.preparedAudio,
                   assets: {
@@ -385,9 +546,16 @@ export async function createProgramPreview(
                   },
                 }),
               );
+              published = true;
             } catch (error) {
               sendCompositionEditError(response, error, input);
             } finally {
+              if (
+                !published &&
+                capture &&
+                captures.get(capture) === reservation
+              )
+                releaseCapture(capture);
               response.off("close", abort);
               preparing.delete(controller);
             }
@@ -539,9 +707,16 @@ export async function createProgramPreview(
         );
         const id = url.searchParams.get("id") ?? "";
         const asset = captured?.bytes.get(id);
-        const path = captured?.captures.get(
-          url.searchParams.get("capture") ?? "source",
-        )?.[id];
+        const capture = url.searchParams.get("capture") ?? "source";
+        const prepared = captures.get(capture);
+        const paths =
+          capture === "source"
+            ? captured?.sourcePaths
+            : prepared?.revision === captured?.snapshot.revision &&
+                prepared?.lease === (url.searchParams.get("lease") ?? undefined)
+              ? prepared?.paths
+              : undefined;
+        const path = paths?.[id];
         if ((id.startsWith("__media:") || id === "__audio:mix") && path) {
           response.setHeader(
             "Content-Type",
@@ -598,6 +773,10 @@ export async function createProgramPreview(
       clearTimeout(timer);
       abort?.abort();
       for (const controller of preparing) controller.abort();
+      for (const id of captures.keys()) releaseCapture(id);
+      leaseOwners.clear();
+      cancellations.clear();
+      blockedOwners.clear();
       server.watcher.off("all", changed);
       await active;
       await saving;
