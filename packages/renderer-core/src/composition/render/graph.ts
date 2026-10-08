@@ -1128,6 +1128,13 @@ class GraphBuilder {
     if (!content) return [];
     const camera = this.exposureScope(scope, state).tree.camera;
     const focus = state.focusBlur ?? 0;
+    const crossfading =
+      content.type === "image" &&
+      content.stateFrom !== undefined &&
+      content.stateFrom !== content.state &&
+      content.stateMix !== undefined &&
+      content.stateMix > 0 &&
+      content.stateMix < 1;
     if (
       content.type === "image" &&
       content.rasterize === "natural-size" &&
@@ -1145,7 +1152,9 @@ class GraphBuilder {
       (!focus ||
         (camera?.blurModel === "gaussian" &&
           content.fit === "stretch" &&
-          !content.sources.some((source) => source.registration)))
+          !content.sources.some((source) => source.registration) &&
+          // Blend states with local overscan before applying screen-space focus.
+          !crossfading))
     ) {
       const placement = planePlacement(plane, frame.matrix, [0, 0]);
       if (!placement?.affineMatrix) return [];

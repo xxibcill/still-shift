@@ -904,7 +904,9 @@ Projection still participates in finite/backend preflight. Local masks, nonprimi
 effects, active receiving lights and lens focus retain their local-surface path;
 mattes preserve shared isolation. Direct Gaussian focus applies only to stretch
 images without pose registration and permits the filter to extend beyond the
-image rectangle. Other content keeps the shared postprojection Gaussian pass.
+image rectangle. Focused active image crossfades blend with local overscan before
+the shared postprojection Gaussian pass; settled states and zero-focus blends
+retain direct source drawing. Other content keeps the shared postprojection pass.
 
 WebGL2 uses actual plane homographies and near/far clipping. True perspective
 uses four quarter-pixel coverage samples and RGBA8 premultiplied bilinear weights

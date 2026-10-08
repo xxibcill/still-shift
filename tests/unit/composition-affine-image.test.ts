@@ -148,6 +148,59 @@ it("preserves Gaussian focus overscan and matte/opacity/blend isolation", () => 
   });
 });
 
+it.each([0.25, 0.5, 0.75])(
+  "retains Gaussian focus overscan during an affine image crossfade at %s",
+  (stateMix) => {
+    const doc = scene([
+      {
+        id: "camera",
+        type: "camera",
+        depthOfField: true,
+        focusDistance: 200,
+        aperture: 10,
+        blurModel: "gaussian",
+        maxBlur: 4,
+      },
+      image({
+        sources: [{ asset: "image" }, { asset: "image" }],
+        stateFrom: 0,
+        state: 1,
+        stateMix,
+      }),
+    ]);
+    expect(graph(doc).root.ops[0]).toMatchObject({
+      kind: "project",
+      focusPadding: 14,
+      effects: [{ effect: "blur.gaussian", params: { radius: 4 } }],
+    });
+  },
+);
+
+it.each([
+  { stateFrom: 0, state: 1, stateMix: 0, focusDistance: 200 },
+  { stateFrom: 0, state: 1, stateMix: 1, focusDistance: 200 },
+  { stateFrom: 1, state: 1, stateMix: 0.5, focusDistance: 200 },
+  { stateFrom: 0, state: 1, stateMix: 0.5, focusDistance: 100 },
+])(
+  "keeps eligible settled and zero-focus images on direct draws: %j",
+  (entry) => {
+    const { focusDistance, ...states } = entry;
+    const doc = scene([
+      {
+        id: "camera",
+        type: "camera",
+        depthOfField: true,
+        focusDistance,
+        aperture: 10,
+        blurModel: "gaussian",
+        maxBlur: 4,
+      },
+      image({ sources: [{ asset: "image" }, { asset: "image" }], ...states }),
+    ]);
+    expect(graph(doc).root.ops[0]!.kind).toBe("draw");
+  },
+);
+
 it("retains three-sigma overscan for Gaussian focus on general projected content", () => {
   const doc = scene([
     {

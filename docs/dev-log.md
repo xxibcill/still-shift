@@ -43,18 +43,21 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #45 rendered reveal-alpha repair complete (2026-10-08):** the first
-  P2 finding on reviewed `8ee9088` is posted inline and repaired in the commit
-  containing this checkpoint. Native reveal validation measures treated target
-  and combined foreground alpha at actual shutter exposures, including shared
-  ancestor treatments and drawable matte suppression. All 58 focused units,
-  TypeScript, focused lint/format and boundaries pass. Both backends pass 45
-  reveal cases (21 invalid rejected, 24 valid exact); 42 invalid exports publish
-  nothing, 20 valid repeat pairs and ten independent control exports are exact.
-  The separate focus-crossfade repair and final affected browser/export/frozen
-  checks remain in flight; one final normal push will deliver both commits.
-  No new full repository or timing gate is claimed; owner checkout is untouched
-  and Actions stay disabled. [Repair evidence](./pr-45-reveal-focus-fix-results.json).
+- **PR #45 rendered reveal/focus repairs verified (2026-10-08):** both P2
+  findings on reviewed `8ee9088` are posted inline and repaired one per commit.
+  `c91d717` validates rendered reveal alpha and preserves in-viewport edge samples;
+  the commit containing this checkpoint preserves focused crossfade overscan.
+  Final fast checks pass 2,400 units, eight affected integrations and all 46
+  cinematic diagnostic cases pass, and camera/WebGL export/exposure checks pass.
+  Both backends pass 45 reveal cases (21 invalid rejected, 24 valid exact); 42
+  invalid exports publish nothing, 20 valid repeat pairs and ten independent
+  control exports are exact. All 20 crossfade pixel comparisons and repeated
+  reference exports are exact. All 176 frozen items / 36,061 hashes match without
+  regeneration on frozen final source. Independent repair reviews have no
+  remaining findings. One final normal push delivers both commits; owner
+  review/merge remain. No new full repository or timing gate is claimed; owner
+  checkout is untouched and Actions stay disabled.
+  [Repair evidence](./pr-45-reveal-focus-fix-results.json).
 
 - **PR #45 alpha follow-up repairs verified (2026-10-08):** both new P2
   findings are posted inline on reviewed `76fb71b`, with one repair per commit.
@@ -902,6 +905,16 @@ still hold before relying on them.
 _Last updated 2026-10-08 by Codex for PR #45 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #45 focus-crossfade repair and final verification
+
+- **Agent / branch:** Codex on `codex/pr45-reveal-focus-fixes` after rendered reveal repair `c91d717`.
+- **Scope:** second inline P2 finding; one finding per commit and one final push.
+- **Done:** preserve local overscan before Gaussian focus for active image crossfades; retain direct drawing at settled/zero-focus boundaries. Add graph and decoded-PNG regressions, document the behavior and bump backend identities.
+- **Results:** three new unit cases and the pixel regression fail on reviewed source (maximum delta 146); all 20 repaired crossfade comparisons are exact and both-backend repeated exports match the projected reference. Final fast checks pass 2,400 units; eight affected integrations, all 46 cinematic diagnostics, camera/WebGL export/exposure checks and all 176 frozen items / 36,061 hashes pass. Reveal checks pass 45 cases per backend; 42 invalid exports publish nothing, 20 valid repeat pairs and ten controls are byte-identical. Final independent Standards/Spec reviews have no findings.
+- **Rejected / do not repeat:** a final edge review caught artificial transparency inside the viewport; corrected neighbor interpolation remains in the first finding's commit. Editing that module interrupted the first frozen run after 34 matches; only the complete 305.68-second rerun on unchanged final source counts. No baseline regeneration, full `pnpm check` or timing matrix.
+- **Open / next:** one final normal push delivers both repair commits together; owner review/merge remain. Actions stay disabled.
+- **Records:** [repair evidence](./pr-45-reveal-focus-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
 
 ### 2026-10-08 — PR #45 rendered semantic reveal-alpha repair
 

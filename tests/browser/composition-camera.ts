@@ -30,6 +30,7 @@ import { cameraGroupBlurAcceptance } from "./camera-group-blur.ts";
 import { cameraEffectSpaceAcceptance } from "./camera-effect-space.ts";
 import { cameraAncestorCoverageAcceptance } from "./camera-ancestor-coverage.ts";
 import { compositionAffineBlurAcceptance } from "../helpers/composition-affine-blur-reference.ts";
+import { compositionAffineCrossfadeFocusAcceptance } from "../helpers/composition-affine-crossfade-focus.ts";
 import { cameraSampleCosts } from "./camera-cost.ts";
 import {
   cameraInspectorAcceptance,
@@ -209,6 +210,8 @@ try {
   }
   const groupBlur = await cameraGroupBlurAcceptance(page),
     affineBlur = await compositionAffineBlurAcceptance(page),
+    affineCrossfadeFocus =
+      await compositionAffineCrossfadeFocusAcceptance(page),
     effectSpace = await cameraEffectSpaceAcceptance(page),
     ancestorCoverage = await cameraAncestorCoverageAcceptance(page),
     failures = await cameraFailureAcceptance(page, root),
@@ -254,6 +257,7 @@ try {
         hardware,
         groupBlur,
         affineBlur,
+        affineCrossfadeFocus,
         effectSpace,
         ancestorCoverage,
         inspector,
