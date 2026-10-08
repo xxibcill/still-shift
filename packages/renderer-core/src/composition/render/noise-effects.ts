@@ -1,6 +1,7 @@
 import {
   allocateRenderPixels,
   readRenderImageData,
+  renderMemory,
 } from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import { colorEffectChannel } from "./color-effects.ts";
@@ -9,6 +10,11 @@ import {
   PREMULTIPLIED_SAMPLE_SHADER,
 } from "./sampled-blur.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
+import type { WebglSurface } from "./webgl-device.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+} from "../../managed-metadata.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
@@ -19,6 +25,87 @@ type NoiseControls = {
   z: number;
   zWeight: number;
 };
+type NoiseControlWork = { controls?: NoiseControls | undefined };
+type NoiseUniformWork = {
+  uniformBase?: Record<string, number | readonly number[]> | undefined;
+  seedParts?: number[] | undefined;
+  zParts?: number[] | undefined;
+};
+type GpuNoiseWork = NoiseControlWork &
+  NoiseUniformWork & {
+    managed: boolean;
+    input?: WebglSurface | undefined;
+    output?: WebglSurface | undefined;
+    inputs?: WebglSurface[] | undefined;
+    shader?: string | undefined;
+    effectUniforms?: Record<string, number | readonly number[]> | undefined;
+    uniforms?: Record<string, number | readonly number[]> | undefined;
+  };
+function clearGpuNoiseWork(work: GpuNoiseWork) {
+  if (work.controls)
+    for (const key in work.controls)
+      delete (work.controls as Partial<NoiseControls>)[
+        key as keyof NoiseControls
+      ];
+  if (work.seedParts) work.seedParts.length = 0;
+  if (work.zParts) work.zParts.length = 0;
+  if (work.uniformBase)
+    for (const key in work.uniformBase) delete work.uniformBase[key];
+  if (work.effectUniforms)
+    for (const key in work.effectUniforms) delete work.effectUniforms[key];
+  if (work.uniforms) for (const key in work.uniforms) delete work.uniforms[key];
+  if (work.inputs) work.inputs.length = 0;
+  for (const key in work)
+    delete (work as Partial<GpuNoiseWork>)[key as keyof GpuNoiseWork];
+}
+function gpuNoiseWork(): GpuNoiseWork {
+  const managed = renderMemory() !== undefined;
+  return allocateRenderMetadata<GpuNoiseWork>(
+    16384,
+    () => ({ managed }),
+    false,
+    clearGpuNoiseWork,
+  );
+}
+function finishGpuNoiseWork(work: GpuNoiseWork, failed: boolean) {
+  const managed = work.managed;
+  try {
+    if (managed) releaseRenderMetadata(work);
+    else clearGpuNoiseWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
+function gpuNoiseUniforms(
+  work: GpuNoiseWork,
+  controls: NoiseControls,
+  params: Params,
+  amount: number,
+  turbulent: boolean,
+): Record<string, number | readonly number[]> {
+  const result = (work.uniforms = {}) as Record<
+    string,
+    number | readonly number[]
+  >;
+  const base = uniforms(controls, work);
+  for (const key in base)
+    if (Object.hasOwn(base, key)) result[key] = base[key]!;
+  const extra = (work.effectUniforms = {}) as Record<
+    string,
+    number | readonly number[]
+  >;
+  if (turbulent) extra.amountFixed = Math.round(amount * 16);
+  else {
+    extra.amount = amount;
+    extra.contrast = scalar(params, "contrast");
+    extra.brightness = scalar(params, "brightness");
+    extra.dark = params.dark as readonly number[];
+    extra.light = params.light as readonly number[];
+  }
+  for (const key in extra)
+    if (Object.hasOwn(extra, key)) result[key] = extra[key]!;
+  return result;
+}
 const scalar = (p: Params, name: string) => p[name] as number;
 const unit = (v: number) => Math.max(0, Math.min(1, v));
 /** 32-bit coordinate avalanche; integer wrap and low 16 output bits are intentional. */
@@ -38,17 +125,22 @@ export function noiseHash(
   hash = Math.imul(hash ^ (hash >>> 15), 0x846ca68b) >>> 0;
   return (hash ^ (hash >>> 16)) & 65535;
 }
-export function noiseControls(p: Params): NoiseControls {
+export function noiseControls(
+  p: Params,
+  work?: NoiseControlWork,
+): NoiseControls {
   const evolution = scalar(p, "evolution"),
     epoch = Math.floor(evolution);
-  return {
-    seed: scalar(p, "seed"),
-    inverseScale: Math.round(1048576 / scalar(p, "scale")),
-    octaves: scalar(p, "octaves"),
-    z: epoch >>> 0,
-    zWeight: Math.floor((evolution - epoch) * 256),
-  };
+  const result = {} as NoiseControls;
+  if (work) work.controls = result;
+  result.seed = scalar(p, "seed");
+  result.inverseScale = Math.round(1048576 / scalar(p, "scale"));
+  result.octaves = scalar(p, "octaves");
+  result.z = epoch >>> 0;
+  result.zWeight = Math.floor((evolution - epoch) * 256);
+  return result;
 }
+
 const interpolate = (a: number, b: number, weight: number) =>
   Math.floor((a * (256 - weight) + b * weight + 128) / 256);
 function octaveNoise(
@@ -115,14 +207,21 @@ uint installedSeed(){return uint(seedParts.x)|(uint(seedParts.y)<<16u);}
 `;
 function uniforms(
   c: NoiseControls,
+  work?: NoiseUniformWork,
 ): Record<string, number | readonly number[]> {
-  return {
-    inverseScale: c.inverseScale,
-    octaves: c.octaves,
-    seedParts: [c.seed & 65535, c.seed >>> 16],
-    zParts: [c.z & 65535, c.z >>> 16, c.zWeight],
-  };
+  const result = {} as Record<string, number | readonly number[]>;
+  if (work) work.uniformBase = result;
+  result.inverseScale = c.inverseScale;
+  result.octaves = c.octaves;
+  const seed = [c.seed & 65535, c.seed >>> 16];
+  if (work) work.seedParts = seed;
+  result.seedParts = seed;
+  const z = [c.z & 65535, c.z >>> 16, c.zWeight];
+  if (work) work.zParts = z;
+  result.zParts = z;
+  return result;
 }
+
 export function fractalNoiseColor(
   value: number,
   p: Params,
@@ -168,26 +267,28 @@ export function noiseEffectKernel(
     renderGpu(context, input, params) {
       const amount = scalar(params, "amount");
       if (amount === 0) return input;
-      const controls = noiseControls(params),
-        output = context.createSurface(input.width, input.height);
-      context.pass(
-        `${FIELD_SHADER}\n${turbulent ? PREMULTIPLIED_SAMPLE_SHADER + TURBULENT_SHADER : FRACTAL_SHADER}`,
-        output,
-        [input],
-        {
-          ...uniforms(controls),
-          ...(turbulent
-            ? { amountFixed: Math.round(amount * 16) }
-            : {
-                amount,
-                contrast: scalar(params, "contrast"),
-                brightness: scalar(params, "brightness"),
-                dark: params.dark as readonly number[],
-                light: params.light as readonly number[],
-              }),
-        },
-      );
-      return output;
+      const work = gpuNoiseWork();
+      let failed = false;
+      try {
+        work.input = input;
+        const controls = noiseControls(params, work),
+          output = (work.output = context.createSurface(
+            input.width,
+            input.height,
+          ));
+        context.pass(
+          (work.shader = `${FIELD_SHADER}\n${turbulent ? PREMULTIPLIED_SAMPLE_SHADER + TURBULENT_SHADER : FRACTAL_SHADER}`),
+          output,
+          (work.inputs = [input]),
+          gpuNoiseUniforms(work, controls, params, amount, turbulent),
+        );
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishGpuNoiseWork(work, failed);
+      }
     },
     renderCanvas(context, input, params) {
       const amount = scalar(params, "amount");

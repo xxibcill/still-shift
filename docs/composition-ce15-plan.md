@@ -1993,6 +1993,26 @@ and 64 prior-exact exports / 768 bodies/frames pass; glyph 1.422721× meets unch
 font/common/ledger/Node and production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-stylize-offset-metadata-results.json).
 
+## Accepted noise GPU callback metadata checkpoint — 2026-10-08
+
+Reserve 16384-byte actual callback owner before original controls/math, uniform
+records, seed/z vectors, complete shader/input tuple/native factories. Capture actual
+empty partial records before fields, preserve original amount/getter/key order and
+zero neutral behavior; retain actual refs through native pass then clear. Borrowed
+dark/light vectors stay intact. Preserve first producer/native null over secondary
+cleanup and permit retry; success cleanup null propagates after actual refs retire.
+
+Build/lint/boundaries and 762 focused tests / 87 files pass on attempt 2 after exact
+test Proxy target typing. Nine new tests preserve 38 complete original rows and 16
+callback getter sequences, plus quota/actual refs/partial controls-uniforms/math/
+native/adoption/cleanup null/retry. All 748 prior tests and five original noise tests
+rerun. Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography
+tests and 64 prior-exact exports / 768 bodies/frames pass; glyph 1.415045× meets
+unchanged 1.5 maximum. Noise Canvas/default helpers, other effects/cache/registry/
+error/class/depth sampling/provider/graph/font/common/ledger/Node and production/
+aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-noise-gpu-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

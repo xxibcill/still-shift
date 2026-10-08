@@ -99,20 +99,20 @@ still hold before relying on them.
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
   mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results, managed plan/sum-shader cache, particle/
+  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-work, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
   texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 748 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. Standalone chromatic offset admits actual
-  272-byte result before original getters/math/array factory; keep owned outside
-  scope and while another scope is active until consumer/scratch/allocator cleanup.
-  Original caller-admitted routes add no result lease. Seven new tests / five original
-  values/positive-zero/getter sequences check quota/actual reservation/captured
-  allocator/lifetime/producer/adoption/cleanup null/retry/caller. Type failure
-  retained; focused attempt 2 passes. Native probes, WebGL/providers and 69 typography
-  tests pass; glyph 1.422721× meets unchanged 1.5 maximum. All 64 exports / 768
-  bodies/frames retain prior exact output. Other effects/cache/error/class/caller/
-  depth sampling remain pending.
+  metadata pass 762 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Noise GPU work admits actual controls/
+  three uniform records/seed-z vectors/full shader/input/native refs before factories,
+  keeps through original pass and clears actual partial records/vectors/refs. Preserve
+  original amount/getter/key order and zero neutral paths; borrowed colors stay
+  intact. Nine new tests / 38 original complete rows and 16 callback getter sequences
+  check quota/actual refs/partial controls-uniforms/math/native/adoption/cleanup null/
+  retry. Type failure retained; focused attempt 2 passes. Native probes, WebGL/
+  providers and 69 typography tests pass; glyph 1.415045× meets unchanged 1.5
+  maximum. All 64 exports / 768 bodies/frames retain prior exact output. Noise Canvas/
+  default helpers and other effects/cache/error/class/caller/depth sampling pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -348,6 +348,25 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual noise GPU callback metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `b019c1de`.
+- **Done:** admit actual controls/three uniform records/seed-z vectors/full shader/
+  input/native refs before factories, retain through pass and clear actual refs.
+  Preserve amount/getter/key order and zero neutral paths; borrowed colors intact.
+- **Results:** build/lint/boundaries, 762 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.415045×.
+- **Verification:** nine new tests / 38 complete original control/uniform/field/
+  color/native rows and 16 callback getter sequences, quota/actual partial-consumer
+  refs/math/native/adoption/cleanup null/retry. All 748 prior plus five original
+  noise tests rerun; type failure retained, focused attempt 2 passes.
+- **Next:** noise Canvas/default helpers, color/transition/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, aggregate memory/speed/final gate,
+  then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [noise GPU evidence](./composition-ce15-noise-gpu-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual standalone chromatic offset result
 
