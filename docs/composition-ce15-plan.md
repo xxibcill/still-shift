@@ -1597,6 +1597,27 @@ transform/effect/cache/registry/error/class/caller/depth sampling/provider/graph
 common/ledger/Node and production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-sampler-default-metadata-results.json).
 
+## Accepted sampled-blur GPU work checkpoint — 2026-10-08
+
+Admit actual 262144-byte GPU work before tap/shape/producer, shader map/join/body,
+uniform key/row/pair/group/flat/record and native input/output reference factories.
+Validated radial/zoom/lens controls cap taps at 64, rows/entries at 128 and original
+shader body at 10,558 UTF16 units. Capture actual partial arrays and all text/refs
+through pass; clear actual arrays/records/shape and drop strings/functions/native
+refs after success/failure. Preserve first null over cleanup; borrowed params/input
+stay intact. No per-tap/pixel lease. Standalone transform/Canvas admission pending.
+
+Build/lint/boundaries and 592 focused tests / 68 files pass. Nine new tests inspect
+actual refs, partial math/slice/shader/null/adoption/native/publication cleanup and
+retry. All 36 complete original tables (230 signed zeros) and 24 whole native traces
+remain exact. Initial fixture declaration/JSON sign failures retained; attempt 3
+accepted without math normalization. Complete audit 144/8,000, 96 RPC snapshots,
+native probes, WebGL/providers, 69 typography and 64 prior-exact exports / 768 bodies/
+frames pass; glyph 1.401351× meets unchanged 1.5 maximum. Remaining Canvas/helper/
+effect/cache/registry/class/caller/depth sampling/provider/graph/font/common/ledger/
+Node and production/aggregate/speed/final gates pending.
+[Evidence](./composition-ce15-sampled-gpu-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -5133,16 +5133,16 @@ snapshot/call-input/controller/wrapper and device/native-surface/pool-key/array/
 row-view/swap/dirty-set/cached-color/clip-intersection, device shader-source/program/
 uniform/diagnostic, paint batch/geometry/shader/uniform/input, Gaussian kernel/
 rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/default-
-sampler-results, managed plan/sum-shader cache, particle/Canvas/WebGL region,
-effect-paint/replace/built-ins/callback-controls, depth mesh/texture/multisample/
-uniform/draw/text/native-controls and PNG source/draw/coordinate metadata pass
-583 focused tests, complete audit, 22 moving/blurred and ten stationary native frames
-and 96 owned RPC snapshots. Default sampler arrays/control refs pre-admit; actual
-results shrink after production, stay through consumers then clear. Eight new tests /
-80 original full results cover quotas/refs/producer/adoption/shrink/null/retry and
-actual retirement. Supplied-output callers/transforms/cache/error/class/caller and
-depth sampling admission remain pending. Native probes, WebGL/providers and
-69 typography tests pass; glyph 1.361893× meets unchanged 1.5 maximum. All
+sampler-results/sampled-GPU-work, managed plan/sum-shader cache, particle/Canvas/
+WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/texture/
+multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate metadata
+pass 592 focused tests, complete audit, 22 moving/blurred and ten stationary native
+frames and 96 owned RPC snapshots. Sampled GPU taps/shader/uniform/ref work pre-admits
+and clears actual values after pass/failure. Nine new tests / 36 tables / 230 signed
+zeros / 24 whole native traces check original math, refs and partial/producer/native/
+adoption/null/cleanup/retry. Sampled Canvas and standalone/other sampling/cache/error/
+class/caller/depth sampling remain pending. Native probes, WebGL/providers and
+69 typography tests pass; glyph 1.401351× meets unchanged 1.5 maximum. All
 64 exports / 768 bodies/frames retain prior exact output. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.

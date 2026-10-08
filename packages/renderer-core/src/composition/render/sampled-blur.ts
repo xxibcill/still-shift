@@ -1,6 +1,7 @@
 import {
   allocateRenderPixels,
   readRenderImageData,
+  renderMemory,
 } from "../../managed-memory-context.ts";
 import {
   allocateRenderMetadata,
@@ -9,11 +10,96 @@ import {
 } from "../../managed-metadata.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
+import type { WebglSurface } from "./webgl-device.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
 /** Integer affine rows: source = (2*x*a + 2*y*c + translation)/512. */
 type SampleTransform = [number, number, number, number, number, number];
+type GpuSampledBlurWork = {
+  managed: boolean;
+  taps: SampleTransform[];
+  shape?: { length?: number } | undefined;
+  transformProducer?:
+    | ((value: unknown, i: number) => SampleTransform)
+    | undefined;
+  transforms?: SampleTransform[] | undefined;
+  declarationChunks: string[];
+  declarationParts?: string[] | undefined;
+  declarationProducer?:
+    | ((tap: SampleTransform, i: number) => string)
+    | undefined;
+  declarations?: string | undefined;
+  stepChunks: string[];
+  stepParts?: string[] | undefined;
+  stepProducer?: ((tap: SampleTransform, i: number) => string) | undefined;
+  steps?: string | undefined;
+  rows: number[][];
+  uniformKeys: string[];
+  entries: [string, number[]][];
+  entryGroups: [string, number[]][][];
+  flatEntries?: [string, number[]][] | undefined;
+  entryProducer?:
+    | ((tap: SampleTransform, i: number) => [string, number[]][])
+    | undefined;
+  uniforms?: Record<string, number[]> | undefined;
+  shader?: string | undefined;
+  input?: WebglSurface | undefined;
+  output?: WebglSurface | undefined;
+  inputs?: WebglSurface[] | undefined;
+};
+function clearGpuSampledBlurWork(work: GpuSampledBlurWork) {
+  for (const tap of work.taps) (tap as number[]).length = 0;
+  work.taps.length = 0;
+  if (work.transforms) work.transforms.length = 0;
+  if (work.shape) delete work.shape.length;
+  work.declarationChunks.length = 0;
+  if (work.declarationParts) work.declarationParts.length = 0;
+  work.stepChunks.length = 0;
+  if (work.stepParts) work.stepParts.length = 0;
+  for (const row of work.rows) row.length = 0;
+  work.rows.length = 0;
+  work.uniformKeys.length = 0;
+  for (const entry of work.entries) (entry as unknown[]).length = 0;
+  work.entries.length = 0;
+  for (const group of work.entryGroups) group.length = 0;
+  work.entryGroups.length = 0;
+  if (work.flatEntries) work.flatEntries.length = 0;
+  if (work.uniforms) for (const key in work.uniforms) delete work.uniforms[key];
+  if (work.inputs) work.inputs.length = 0;
+  for (const key in work)
+    delete (work as Partial<GpuSampledBlurWork>)[
+      key as keyof GpuSampledBlurWork
+    ];
+}
+function gpuSampledBlurWork(): GpuSampledBlurWork {
+  const managed = renderMemory() !== undefined;
+  // Validated radial/zoom/lens controls cap samples at 64 and shader text at 10,558 characters.
+  return allocateRenderMetadata<GpuSampledBlurWork>(
+    262144,
+    () => ({
+      managed,
+      taps: [],
+      declarationChunks: [],
+      stepChunks: [],
+      rows: [],
+      uniformKeys: [],
+      entries: [],
+      entryGroups: [],
+    }),
+    false,
+    clearGpuSampledBlurWork,
+  );
+}
+function finishGpuSampledBlur(work: GpuSampledBlurWork, failed: boolean) {
+  const managed = work.managed;
+  try {
+    if (managed) releaseRenderMetadata(work);
+    else clearGpuSampledBlurWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
 const IDENTITY: SampleTransform = [256, 0, 0, 0, 256, 0];
 const scalar = (p: Params, key: string) => p[key] as number;
 export function blurSampleTransforms(
@@ -21,18 +107,28 @@ export function blurSampleTransforms(
   p: Params,
   w: number,
   h: number,
+  work?: GpuSampledBlurWork,
 ): SampleTransform[] {
   const amount = scalar(
     p,
     id === "blur.lens" ? "radius" : id === "blur.radial" ? "angle" : "amount",
   );
-  if (amount === 0) return [[...IDENTITY]];
+  if (amount === 0) {
+    const result: SampleTransform[] = [[...IDENTITY]];
+    if (work) {
+      work.taps.push(result[0]!);
+      work.transforms = result;
+    }
+    return result;
+  }
   const count = scalar(p, "samples");
-  if (id === "blur.lens")
-    return Array.from({ length: count }, (_, i) => {
+  const shape = { length: count };
+  if (work) work.shape = shape;
+  if (id === "blur.lens") {
+    const producer = (_: unknown, i: number): SampleTransform => {
       const radius = amount * Math.sqrt((i + 0.5) / count),
         angle = i * Math.PI * (3 - Math.sqrt(5));
-      return [
+      const value: SampleTransform = [
         256,
         0,
         Math.round(Math.cos(angle) * radius * 16) * 32,
@@ -40,11 +136,18 @@ export function blurSampleTransforms(
         256,
         Math.round(Math.sin(angle) * radius * 16) * 32,
       ];
-    });
+      if (work) work.taps.push(value);
+      return value;
+    };
+    if (work) work.transformProducer = producer;
+    const result = Array.from(shape, producer);
+    if (work) work.transforms = result;
+    return result;
+  }
   const center = p.center as readonly number[];
   const cx = center[0]! * w,
     cy = center[1]! * h;
-  return Array.from({ length: count }, (_, i) => {
+  const producer = (_: unknown, i: number): SampleTransform => {
     const position = i / (count - 1) - 0.5;
     const angle =
       id === "blur.radial" ? (amount * position * Math.PI) / 180 : 0;
@@ -53,7 +156,7 @@ export function blurSampleTransforms(
       b = Math.round(Math.sin(angle) * scale * 256),
       c = -b,
       d = a;
-    return [
+    const value: SampleTransform = [
       a,
       c,
       Math.round((cx - (a * cx + c * cy) / 256) * 16) * 32,
@@ -61,7 +164,13 @@ export function blurSampleTransforms(
       d,
       Math.round((cy - (b * cx + d * cy) / 256) * 16) * 32,
     ];
-  });
+    if (work) work.taps.push(value);
+    return value;
+  };
+  if (work) work.transformProducer = producer;
+  const result = Array.from(shape, producer);
+  if (work) work.transforms = result;
+  return result;
 }
 /** Bilinear premultiplied byte interpolation with 1/16 weights and transparent padding. */
 export type PremultipliedSampleControl = {
@@ -161,35 +270,79 @@ export function sampledBlurKernel(
     id,
     definition,
     renderGpu(context, input, params) {
-      const transforms = blurSampleTransforms(
-        id,
-        params,
-        input.width,
-        input.height,
-      );
-      const declarations = transforms
-        .map((_, i) => `uniform vec3 rowX${i};uniform vec3 rowY${i};`)
-        .join("\n");
-      const steps = transforms
-        .map(
-          (_, i) =>
-            `sum+=sampleBytes(vec2(dot(vec3(gl_FragCoord.xy*2.0,1.0),rowX${i}),dot(vec3(gl_FragCoord.xy*2.0,1.0),rowY${i}))/512.0);`,
-        )
-        .join("\n");
-      const uniforms = Object.fromEntries(
-        transforms.flatMap((tap, i) => [
-          [`rowX${i}`, tap.slice(0, 3)],
-          [`rowY${i}`, tap.slice(3, 6)],
-        ]),
-      );
-      const output = context.createSurface(input.width, input.height);
-      context.pass(
-        `${declarations}\n${PREMULTIPLIED_SAMPLE_SHADER}\nvoid main(){vec4 sum=vec4(0.0);${steps}pixel=floor(sum/${transforms.length}.0+0.5)/255.0;}`,
-        output,
-        [input],
-        uniforms,
-      );
-      return output;
+      const work = gpuSampledBlurWork();
+      let failed = false;
+      try {
+        work.input = input;
+        const transforms = blurSampleTransforms(
+          id,
+          params,
+          input.width,
+          input.height,
+          work,
+        );
+        const declarationProducer = (work.declarationProducer = (
+          _: SampleTransform,
+          i: number,
+        ) => {
+          const value = `uniform vec3 rowX${i};uniform vec3 rowY${i};`;
+          work.declarationChunks.push(value);
+          return value;
+        });
+        const declarations = (work.declarations = (work.declarationParts =
+          transforms.map(declarationProducer)).join("\n"));
+        const stepProducer = (work.stepProducer = (
+          _: SampleTransform,
+          i: number,
+        ) => {
+          const value = `sum+=sampleBytes(vec2(dot(vec3(gl_FragCoord.xy*2.0,1.0),rowX${i}),dot(vec3(gl_FragCoord.xy*2.0,1.0),rowY${i}))/512.0);`;
+          work.stepChunks.push(value);
+          return value;
+        });
+        const steps = (work.steps = (work.stepParts =
+          transforms.map(stepProducer)).join("\n"));
+        const entryProducer = (work.entryProducer = (
+          tap: SampleTransform,
+          i: number,
+        ): [string, number[]][] => {
+          const group: [string, number[]][] = [];
+          work.entryGroups.push(group);
+          const keyX = `rowX${i}`;
+          work.uniformKeys.push(keyX);
+          const rowX = tap.slice(0, 3);
+          work.rows.push(rowX);
+          const entryX: [string, number[]] = [keyX, rowX];
+          work.entries.push(entryX);
+          group.push(entryX);
+          const keyY = `rowY${i}`;
+          work.uniformKeys.push(keyY);
+          const rowY = tap.slice(3, 6);
+          work.rows.push(rowY);
+          const entryY: [string, number[]] = [keyY, rowY];
+          work.entries.push(entryY);
+          group.push(entryY);
+          return group;
+        });
+        const uniforms = (work.uniforms = Object.fromEntries(
+          (work.flatEntries = transforms.flatMap(entryProducer)),
+        ));
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        context.pass(
+          (work.shader = `${declarations}\n${PREMULTIPLIED_SAMPLE_SHADER}\nvoid main(){vec4 sum=vec4(0.0);${steps}pixel=floor(sum/${transforms.length}.0+0.5)/255.0;}`),
+          output,
+          (work.inputs = [input]),
+          uniforms,
+        );
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishGpuSampledBlur(work, failed);
+      }
     },
     renderCanvas(context, input, params) {
       const transforms = blurSampleTransforms(
