@@ -2507,10 +2507,15 @@ are in [completion results](./composition-ce15-completion-results.json).
 
 ## Remaining acceptance
 
-1. Repeat the two-minute speed proof on the final code checkpoint.
-2. Run the complete pinned local `pnpm check` on that immutable checkpoint, then
-   record completion and update PR #49. The full gate is required for milestone
-   acceptance; focused results do not replace it.
+The final production checkpoint `24378343` repeats the speed proof at **3.437×**
+(422.877 → 123.038 seconds), with exact encoded/frame/audio equality. The first
+full gate stopped at an obsolete evaluator assertion rejecting 17 fps after
+3,554 passing units. The assertion now checks accepted 17 fps and rejected 61 fps;
+219 affected tests pass. Production and benchmark code are unchanged.
+
+Run the complete pinned local `pnpm check` on the corrected checkpoint, then
+record completion and update PR #49. The full gate is required for milestone
+acceptance; focused results do not replace it.
 
 GitHub Actions remain disabled. CE14, CE5-X/Q9, CE6-P and separate owner work are
 outside this completion task. No milestone or PR is merged by this task.

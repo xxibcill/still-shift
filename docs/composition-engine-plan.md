@@ -5565,9 +5565,10 @@ with **3.470×** speedup and identical encoded output, every decoded frame and a
 
 Final reference-cache review repairs pass 21 units and 72 production exports.
 All seven formats, native depth/alpha/audio checks, parallel boundaries and 24
-live cleanup failures pass focused regressions. The final code checkpoint still
-needs its repeated speed proof and complete local `pnpm check`; CE15 is not yet
-marked complete. Historical implementation details and checkpoint-specific proof
+live cleanup failures pass focused regressions. Final production code `24378343` repeats the speed proof at **3.437×** with
+exact output. Its first full gate stopped at an obsolete 17-fps rejection test;
+the corrected assertion and 219 affected tests pass. The complete local gate
+is restarting; CE15 is not yet marked complete. Historical implementation details and checkpoint-specific proof
 remain in the [delivery plan](./composition-ce15-plan.md),
 [completion evidence](./composition-ce15-completion-results.json) and linked
 records. Historical speculative metadata-audit lists are not claims of measured

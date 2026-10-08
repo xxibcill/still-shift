@@ -35,8 +35,7 @@
     }
   },
   "remaining": [
-    "repeat authentic speed acceptance on the final code checkpoint",
-    "complete required local pnpm check on the immutable final code checkpoint"
+    "complete required local pnpm check after correcting the obsolete 17-fps rejection test"
   ],
   "productionMemory": {
     "status": "production browser admission, bounded Node result transfer and complete 48-case area matrix passed",
@@ -75,7 +74,7 @@
     "changes": [
       "full-area cache budgets and contiguous bounded worker groups",
       "admitted Blob transport above128MiB;64KiB cache writes independent of socket chunk coalescing",
-      "integer1–60fps and exclusive-end PCM ceiling; encoder EOF drains all audio",
+      "integer1\u201360fps and exclusive-end PCM ceiling; encoder EOF drains all audio",
       "dependency-aware native prefixes including constant keys and expression-only motion",
       "admitted timing records and bounded browser-to-Node result transfer/manifest capacity"
     ],
@@ -163,6 +162,18 @@
     "finalGate": {
       "status": "pending",
       "command": "pnpm check"
+    },
+    "finalSpeed": {
+      "status": "passed",
+      "checkpoint": "24378343364dc61e094d4d6b62ab8ac5b2b8e065",
+      "durationSeconds": 120,
+      "frames": 2880,
+      "fps": 24,
+      "oneWorkerMs": 422877.176625,
+      "fourWorkersMs": 123037.778666,
+      "speedup": 3.4369701827350774,
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-vWH8VX",
+      "logSha256": "caf64f3cfa0503f1c81f0c2ff39a14049659c7a685b616ee9bc598e0a4a6b0fd"
     }
   },
   "referenceCheckpoint": {
@@ -206,5 +217,19 @@
       "/private/tmp/ce15-final-static.log": "52aec4dfd502596d28811f717cc635436afc4d9bfd7709a1ecc0f1c66eeee9db",
       "/private/tmp/ce15-final-soundtrack-preflight.log": "d7687b7f3bdef78a0cd58be2ffd460b818aafa0e33d3ed89ce0981bf8ec05661"
     }
-  }
+  },
+  "gateAttempts": [
+    {
+      "name": "gate",
+      "command": "pnpm check",
+      "status": "failed",
+      "startedAt": "2026-10-09T00:31:32+0700",
+      "log": "/private/tmp/ce15-24378343-gate.log",
+      "exitCode": 1,
+      "elapsedSeconds": 85.60022845806088,
+      "finishedAt": "2026-10-09T00:32:58+0700",
+      "failure": "one obsolete evaluator test still expected17fps rejection; production now correctly supports integer1\u201360",
+      "repair": "test61fps range rejection and17fps success;219 affected tests pass; production code unchanged"
+    }
+  ]
 }

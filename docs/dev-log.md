@@ -48,8 +48,10 @@ still hold before relying on them.
   All 48 maximum-area exports pass. The two-minute proof at `adfb9592` measures
   **3.470×** with exact encoded/frame/audio parity. Final reference selection passes
   21 units and 72 exports; all-format, expanded parallel/live-failure and legacy
-  export regressions pass. Repeat the speed proof and run the complete local gate
-  on the immutable final code checkpoint before marking CE15 complete.
+  export regressions pass. Final production code `24378343` repeats the speed proof at **3.437×**.
+  The full gate stopped after 3,554 unit passes on an obsolete 17-fps rejection
+  assertion; the corrected test and 219 affected tests pass. Restart the complete
+  gate; production code is unchanged.
   [Completion evidence](./composition-ce15-completion-results.json).
 
 - **PR #48 third review repairs verified (2026-10-08):** both P2 findings
@@ -81,6 +83,16 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE15 gate frame-rate assertion repair
+
+- **Scope:** update the old evaluator test for the accepted integer 1–60 fps range.
+- **Results:** 219 affected tests pass. Full gate attempt at `24378343` stopped
+  after 3,554 unit passes on this obsolete assertion; no complete gate claimed.
+- **Evidence:** final production code passed the 3.437× exact-output speed proof.
+  Only this test and records change; production/benchmark code remains unchanged.
+- **Next:** restart complete local `pnpm check` on the corrected checkpoint.
+- **Record:** [completion evidence](./composition-ce15-completion-results.json).
 
 ### 2026-10-09 — CE15 maximum-area and speed acceptance; final reference repairs
 
