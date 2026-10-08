@@ -27,7 +27,10 @@ import {
 } from "./camera-hardware.ts";
 import { cameraFailureAcceptance } from "./camera-failures.ts";
 import { cameraGroupBlurAcceptance } from "./camera-group-blur.ts";
+import { cameraEffectSpaceAcceptance } from "./camera-effect-space.ts";
 import { cameraAncestorCoverageAcceptance } from "./camera-ancestor-coverage.ts";
+import { compositionAffineBlurAcceptance } from "../helpers/composition-affine-blur-reference.ts";
+import { compositionAffineCrossfadeFocusAcceptance } from "../helpers/composition-affine-crossfade-focus.ts";
 import { cameraSampleCosts } from "./camera-cost.ts";
 import {
   cameraInspectorAcceptance,
@@ -206,6 +209,10 @@ try {
     console.log("Native CE8 fixture:", name);
   }
   const groupBlur = await cameraGroupBlurAcceptance(page),
+    affineBlur = await compositionAffineBlurAcceptance(page),
+    affineCrossfadeFocus =
+      await compositionAffineCrossfadeFocusAcceptance(page),
+    effectSpace = await cameraEffectSpaceAcceptance(page),
     ancestorCoverage = await cameraAncestorCoverageAcceptance(page),
     failures = await cameraFailureAcceptance(page, root),
     hardware = await cameraHardwarePreview(
@@ -249,6 +256,9 @@ try {
         failures,
         hardware,
         groupBlur,
+        affineBlur,
+        affineCrossfadeFocus,
+        effectSpace,
         ancestorCoverage,
         inspector,
         xyInspector,
@@ -265,6 +275,8 @@ try {
       failures,
       hardware,
       groupBlur,
+      affineBlur,
+      effectSpace,
       ancestorCoverage,
       inspector,
       xyInspector,

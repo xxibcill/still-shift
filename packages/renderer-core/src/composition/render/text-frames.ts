@@ -24,9 +24,13 @@ export function collectCompositionTextFrames(
       samples.set(prefix + node, new Set());
   }
   if (!samples.size) return {};
-  const hasHistory = [comp, ...(comp.precomps ?? [])].some((scope) =>
+  const needsGraph = [comp, ...(comp.precomps ?? [])].some((scope) =>
     scope.layers.some((layer) =>
-      layer.effects?.some((effect) => effect.effect === "time.echo"),
+      layer.effects?.some(
+        (effect) =>
+          effect.effect === "time.echo" ||
+          Object.keys(effect.inputs ?? {}).length > 0,
+      ),
     ),
   );
   const visitOps = (ops: RenderOp[]) => {
@@ -78,7 +82,7 @@ export function collectCompositionTextFrames(
       textBounds,
     })) {
       visit(tree, comp, "");
-      if (hasHistory)
+      if (needsGraph)
         visitOps(
           buildRenderGraph(comp, tree, { textBounds, cull: false }).root.ops,
         );

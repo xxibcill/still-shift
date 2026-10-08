@@ -1,0 +1,321 @@
+{
+  "pr": 42,
+  "reviewedHead": "2f1a99ca2c69b328412ae4f23fb85069bd07f309",
+  "date": "2026-10-06",
+  "branch": "codex/pr42-review-fixes",
+  "pushPolicy": "Push all three finding commits together after the final code checkpoint.",
+  "findings": [
+    {
+      "id": "hidden-animated-text-input",
+      "comment": "https://github.com/xxibcill/still-shift/pull/42#discussion_r4192761350",
+      "status": "fixed",
+      "changes": "Collect render-graph text clocks when scoped effect inputs exist, retaining lazy preparation for unused hidden text.",
+      "verification": {
+        "focusedUnitTests": 8,
+        "browser": "Chromium 151.0.7922.34 / pinned SwiftShader",
+        "nativeRows": 6,
+        "renderedFrames": 24,
+        "maximumDeltaFromVisibleControl": 0,
+        "sources": ["text", "group", "remapped precomp"],
+        "seekOrder": [4, 8, 1, 4],
+        "build": "passed",
+        "focusedLint": "passed"
+      },
+      "commit": "8618bee"
+    },
+    {
+      "id": "nested-input-failure-cleanup",
+      "comment": "https://github.com/xxibcill/still-shift/pull/42#discussion_r4192761355",
+      "status": "fixed",
+      "changes": "Release internally allocated nested composition surfaces when initialization or rendering throws; retain caller-owned destinations.",
+      "verification": {
+        "focusedUnitTests": 38,
+        "failureStages": ["clear", "effect"],
+        "repeatsPerStage": 3,
+        "liveSurfacesAfterEachFailure": 0,
+        "originalFailurePropagation": "preserved",
+        "build": "passed",
+        "focusedLint": "passed"
+      },
+      "failedAttempts": [
+        {
+          "reason": "The new effect-failure fixture inherited a position outside the 16x16 precomp, so culling skipped its callback.",
+          "attempts": 2,
+          "repair": "Place the source at [0,0] with a matching 16x16 size; no production change was needed."
+        }
+      ],
+      "commit": "ebb9bbf"
+    },
+    {
+      "id": "transition-premultiplied-coverage",
+      "comment": "https://github.com/xxibcill/still-shift/pull/42#discussion_r4192761363",
+      "status": "fixed",
+      "changes": "Reconstruct Canvas stored premultiplied bytes, apply transition coverage to RGBA, then convert the rounded channels back to straight ImageData.",
+      "versions": {
+        "transitionKernels": "1.0.1",
+        "canvasRenderer": "composition-canvas-1.40.0"
+      },
+      "verification": {
+        "focusedUnitTests": 23,
+        "composedMapProgress": [0, 0.0862745098039216, 0.5, 1],
+        "seekOrder": [0, 3, 1, 0],
+        "renderedFrames": 32,
+        "maximumBackendDelta": 0,
+        "originalMaximumBackendDelta": 255,
+        "build": "passed",
+        "focusedLint": "passed",
+        "generatedReferenceCheck": "passed",
+        "originalCatalogueCanvasHashesChanged": 32,
+        "newCanvasMatchesPreservedGpuHashes": 31,
+        "versionedOracle": "tests/visual/composition-effect-catalogue/darwin-arm64-transition-coverage-1.0.1.json",
+        "catalogueReferenceCheck": {
+          "framePairs": 75,
+          "forwardFrames": 32,
+          "reverseFrames": 32,
+          "randomSeeks": 11,
+          "maximumBackendDelta": 1,
+          "exactCorrectedCanvasAndPreservedGpuHashes": true,
+          "sourceFingerprint": "passed"
+        }
+      }
+    }
+  ],
+  "githubActions": "disabled; local verification only",
+  "baselines": "Original frozen files and all thresholds unchanged; transition coverage 1.0.1 has a separate exact Canvas oracle.",
+  "finalGateAttempts": [
+    {
+      "status": "stopped",
+      "codeCheckpoint": "f40bdc0",
+      "exitCode": 143,
+      "reason": "Focused inspection proved all 32 original Canvas transition hashes encode the prior rounding. Preserve the original files and check corrected Canvas coverage with a separate versioned oracle before the final gate.",
+      "completed": {
+        "unitTests": 1717,
+        "runtimeTests": 46,
+        "integrationTests": 139,
+        "depthTests": 14,
+        "preBrowserChecks": "all passed",
+        "browserGroups": [
+          "depth",
+          "vertical-image",
+          "export",
+          "golden",
+          "cli",
+          "batch",
+          "illustrated",
+          "illustrated:vertical",
+          "cinematic",
+          "cinematic:vertical",
+          "threshold"
+        ]
+      },
+      "next": "Final full pnpm check after versioned acceptance repair."
+    },
+    {
+      "status": "failed",
+      "codeCheckpoint": "db3501718f4845afaa3c40066d200ecb03c44b17",
+      "command": "pnpm check",
+      "log": "benchmarks/results/pr42-fixes/final-check-db35017.log",
+      "exitCode": 1,
+      "failure": {
+        "suite": "composition-story-fixtures",
+        "fixture": "story/calibration-pan",
+        "maximumPixelDelta": 1,
+        "pixelFailures": [],
+        "renderReadbackRatio": 1.2556390967646844,
+        "unchangedLimit": 1.25
+      },
+      "completed": {
+        "unitTests": 1717,
+        "runtimeTests": 46,
+        "integrationTests": 139,
+        "depthTests": 14,
+        "browserGroupsThrough": "composition-passage",
+        "ce6CatalogueHashes": "exact including versioned Canvas transition oracle",
+        "ce6RepeatedAndIndependentExports": "byte-identical on both backends",
+        "ce6HardwarePreview": "passed unchanged perceptual tier"
+      },
+      "environmentObservation": "Other checkouts were concurrently running browser tests and CPU-heavy rendering. Their processes were preserved. Contention is a possible timing factor, not a proven cause."
+    },
+    {
+      "status": "passed",
+      "codeCheckpoint": "db3501718f4845afaa3c40066d200ecb03c44b17",
+      "command": "pnpm check",
+      "log": "benchmarks/results/pr42-fixes/final-check-db35017-retry1.log",
+      "exitCode": 0,
+      "startedAt": "2026-10-06T12:46:03.528816+00:00",
+      "completedAt": "2026-10-06T14:29:33.387783+00:00",
+      "completed": {
+        "unitTests": 1717,
+        "runtimeTests": 46,
+        "integrationTests": 139,
+        "depthTests": 14,
+        "preBrowserChecks": "all passed",
+        "requiredTestSuites": 55,
+        "completeSuiteOrderVerified": true,
+        "browserGroups": "all passed",
+        "frozenBaselines": 176,
+        "baselineFrames": 36061
+      },
+      "canvasFamilyMatrices": {
+        "story": {
+          "cases": 69,
+          "frames": 14086,
+          "maximumTimingRatio": 1.1929599997738036,
+          "maximumPixelDelta": 2,
+          "pixelFailures": 0,
+          "unchangedTimingLimit": 1.25
+        },
+        "commerce": {
+          "cases": 127,
+          "frames": 28200,
+          "maximumTimingRatio": 1.158134922534828,
+          "maximumPixelDelta": 1,
+          "pixelFailures": 0,
+          "unchangedTimingLimit": 1.25
+        },
+        "typography": {
+          "cases": 20,
+          "frames": 3367,
+          "maximumTimingRatio": 1.2319634693878034,
+          "maximumPixelDelta": 2,
+          "pixelFailures": 0,
+          "unchangedTimingLimit": 1.25
+        }
+      },
+      "calibrationPan": {
+        "maximumPixelDelta": 1,
+        "pixelFailures": [],
+        "renderReadbackRatio": 1.099806575664647,
+        "unchangedLimit": 1.25
+      }
+    }
+  ],
+  "finalGate": {
+    "status": "passed",
+    "codeCheckpoint": "db3501718f4845afaa3c40066d200ecb03c44b17",
+    "command": "pnpm check",
+    "log": "benchmarks/results/pr42-fixes/final-check-db35017-retry1.log",
+    "exitCode": 0,
+    "startedAt": "2026-10-06T12:46:03.528816+00:00",
+    "completedAt": "2026-10-06T14:29:33.387783+00:00",
+    "completed": {
+      "unitTests": 1717,
+      "runtimeTests": 46,
+      "integrationTests": 139,
+      "depthTests": 14,
+      "preBrowserChecks": "all passed",
+      "requiredTestSuites": 55,
+      "completeSuiteOrderVerified": true,
+      "browserGroups": "all passed",
+      "frozenBaselines": 176,
+      "baselineFrames": 36061
+    },
+    "canvasFamilyMatrices": {
+      "story": {
+        "cases": 69,
+        "frames": 14086,
+        "maximumTimingRatio": 1.1929599997738036,
+        "maximumPixelDelta": 2,
+        "pixelFailures": 0,
+        "unchangedTimingLimit": 1.25
+      },
+      "commerce": {
+        "cases": 127,
+        "frames": 28200,
+        "maximumTimingRatio": 1.158134922534828,
+        "maximumPixelDelta": 1,
+        "pixelFailures": 0,
+        "unchangedTimingLimit": 1.25
+      },
+      "typography": {
+        "cases": 20,
+        "frames": 3367,
+        "maximumTimingRatio": 1.2319634693878034,
+        "maximumPixelDelta": 2,
+        "pixelFailures": 0,
+        "unchangedTimingLimit": 1.25
+      }
+    },
+    "calibrationPan": {
+      "maximumPixelDelta": 1,
+      "pixelFailures": [],
+      "renderReadbackRatio": 1.099806575664647,
+      "unchangedLimit": 1.25
+    }
+  },
+  "nativeAcceptance": {
+    "codeCheckpoint": "db3501718f4845afaa3c40066d200ecb03c44b17",
+    "fixtures": 6,
+    "forwardBackendHashes": 384,
+    "reverseBackendChecks": 384,
+    "randomBackendSeeks": 132,
+    "maximumSoftwareDelta": 1,
+    "storedHashes": "exact; versioned Canvas transition reference and preserved original WebGL/all other Canvas references",
+    "repeatedRawPngAndIndependentPreviewExports": "byte-identical for all six fixtures on both backends",
+    "hardware": {
+      "comparisons": 36,
+      "policy": "unchanged perceptual hardware policy",
+      "maximumDelta": 47,
+      "minimumPsnr": 53.38960252979594,
+      "minimumSsim": 0.999162608174115
+    },
+    "rawEvidence": "benchmarks/results/composition-ce6-completion/native-acceptance.json"
+  },
+  "implementationReview": {
+    "codeCheckpoint": "db3501718f4845afaa3c40066d200ecb03c44b17",
+    "standards": "No actionable findings.",
+    "specAndCorrectness": "No actionable findings.",
+    "method": "Independent source-only review of the three fix commits and evidence; no additional tests or mutations."
+  },
+  "timingControl": {
+    "reviewedHead": "2f1a99ca2c69b328412ae4f23fb85069bd07f309",
+    "sourceFilesChecked": 346,
+    "mismatchedSourceFiles": 0,
+    "workspaceImports": "local snapshot",
+    "viteCaches": "local snapshot",
+    "comparison": "Completed sequentially after the preceding gate and two quiet-host samples, ten seconds apart, before each control.",
+    "original": {
+      "exitCode": 1,
+      "log": "benchmarks/results/pr42-fixes/timing-original-2f1a99c.log",
+      "startedAt": "2026-10-06T12:45:25.599691+00:00",
+      "completedAt": "2026-10-06T12:45:29.629004+00:00",
+      "maxDelta": 1,
+      "minPsnr": 82.7247284862714,
+      "failures": [],
+      "ratio": 1.2933867728813442,
+      "legacyMs": 249.5000001192093,
+      "compositionMs": 322.69999998807907,
+      "legacyRenderMs": 32.59999996423721,
+      "compositionRenderMs": 74.80000025033951,
+      "evaluationMs": 31.09999907016754,
+      "graphMs": 9.400000929832458
+    },
+    "fixed": {
+      "exitCode": 0,
+      "log": "benchmarks/results/pr42-fixes/timing-fixed-db35017.log",
+      "startedAt": "2026-10-06T12:45:39.692648+00:00",
+      "completedAt": "2026-10-06T12:45:43.384017+00:00",
+      "maxDelta": 1,
+      "minPsnr": 82.7247284862714,
+      "failures": [],
+      "ratio": 1.0903179215566279,
+      "legacyMs": 276.79999965429306,
+      "compositionMs": 301.80000030994415,
+      "legacyRenderMs": 35.80000025033951,
+      "compositionRenderMs": 79.20000040531158,
+      "evaluationMs": 31.29999953508377,
+      "graphMs": 9.70000046491623
+    },
+    "interpretation": "The original snapshot also exceeded the unchanged timing limit; the fixed snapshot and the subsequent complete gate passed. Timing variance is observed; a contention cause is not proven.",
+    "rawEvidence": "benchmarks/results/pr42-fixes/queued-verification.json"
+  },
+  "sourceFingerprint": {
+    "algorithm": "sha256",
+    "digest": "c8d315616be173e53723c8f0a3b2faf0bf852bea38a18d0a0bef6c7c22a836c2",
+    "trackedFiles": 1676,
+    "excludedPaths": ["docs/dev-log.md", "docs/pr-42-fix-results.json"],
+    "encoding": "git ls-tree -rz --full-tree; retained records including null separators",
+    "evidenceAmendment": "Only these two verification records are updated after the successful gate; all other tracked files retain this fingerprint."
+  },
+  "delivery": "Three findings have inline PR comments and separate fix commits; final evidence is included in the third commit. Owner review and merge remain."
+}

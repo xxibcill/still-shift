@@ -19,6 +19,26 @@ export type RevealProjection = {
   top: number;
   scale: number;
 };
+export type RevealAlphaSampler = {
+  sample: (
+    node: RevealImageNode,
+    frame: number,
+    screenX: number,
+    screenY: number,
+  ) => number | undefined;
+  occlusion?: (frame: number, screenX: number, screenY: number) => number;
+};
+
+export class RevealValidationError extends Error {
+  readonly node: string;
+  readonly frame: number;
+
+  constructor(message: string, node: string, frame: number) {
+    super(message);
+    this.node = node;
+    this.frame = frame;
+  }
+}
 
 function insidePolygon([x, y]: Point, polygon: Point[]) {
   let inside = false;
@@ -102,7 +122,7 @@ export function inspectForegroundReveal(
 }
 
 /** The alpha gate consumes projected image geometry from either renderer. */
-export function inspectProjectedReveal(
+export function* inspectProjectedRevealFrames(
   declaration: {
     region: Point[];
     subject: RevealImageNode;
@@ -112,6 +132,7 @@ export function inspectProjectedReveal(
   },
   images: ReadonlyMap<string, AlphaImage>,
   project: (node: RevealImageNode, frame: number) => RevealProjection,
+  sampleAlpha?: RevealAlphaSampler,
 ) {
   const {
     region: polygon,
@@ -141,6 +162,7 @@ export function inspectProjectedReveal(
     throw new Error("Reveal target has too few opaque samples");
   const coverage: number[] = [];
   for (let frame = 0; frame < frameCount; frame++) {
+    yield frame;
     const target = project(subject, frame);
     const foreground = occluders.map((node) => ({
       node,
@@ -151,36 +173,68 @@ export function inspectProjectedReveal(
     for (const [x, y] of points) {
       const screenX = target.left + x * target.scale,
         screenY = target.top + y * target.scale;
+      const targetAlpha = sampleAlpha?.sample(subject, frame, screenX, screenY);
+      if (targetAlpha !== undefined && targetAlpha < 0.95)
+        throw new RevealValidationError(
+          `Reveal rendered target must remain opaque at frame ${frame}`,
+          subject.id,
+          frame,
+        );
+      const renderedOcclusion = sampleAlpha?.occlusion?.(
+        frame,
+        screenX,
+        screenY,
+      );
+      if (renderedOcclusion !== undefined) {
+        total += renderedOcclusion;
+        continue;
+      }
       let transmission = 1;
       for (const { node, image, p } of foreground)
         transmission *=
           1 -
-          sampleNode(
-            node,
-            image,
-            (screenX - p.left) / p.scale,
-            (screenY - p.top) / p.scale,
-          );
+          (sampleAlpha?.sample(node, frame, screenX, screenY) ??
+            sampleNode(
+              node,
+              image,
+              (screenX - p.left) / p.scale,
+              (screenY - p.top) / p.scale,
+            ));
       total += 1 - transmission;
     }
     coverage.push(total / points.length);
   }
   const initialOcclusion = coverage[0]!;
   if (initialOcclusion < 0.1 || initialOcclusion > 0.35)
-    throw new Error(
+    throw new RevealValidationError(
       `Reveal initial occlusion must be 10–35%; measured ${(initialOcclusion * 100).toFixed(2)}%`,
+      subject.id,
+      0,
     );
   if (coverage[settleFrame]! > 0.01)
-    throw new Error(`Reveal does not clear the target by frame ${settleFrame}`);
+    throw new RevealValidationError(
+      `Reveal does not clear the target by frame ${settleFrame}`,
+      subject.id,
+      settleFrame,
+    );
   let minimum = initialOcclusion;
   for (let frame = 1; frame < coverage.length; frame++) {
     if (coverage[frame]! > minimum + 0.01)
-      throw new Error(`Reveal reocclusion at frame ${frame}`);
+      throw new RevealValidationError(
+        `Reveal reocclusion at frame ${frame}`,
+        subject.id,
+        frame,
+      );
     minimum = Math.min(minimum, coverage[frame]!);
   }
   const clearFrame = coverage.findIndex((value) => value <= 0.01);
   const worstAfterClear = Math.max(...coverage.slice(clearFrame));
-  if (worstAfterClear > 0.01) throw new Error("Reveal does not stay clear");
+  if (worstAfterClear > 0.01)
+    throw new RevealValidationError(
+      "Reveal does not stay clear",
+      subject.id,
+      coverage.findIndex((value, frame) => frame >= clearFrame && value > 0.01),
+    );
   return {
     initialOcclusion,
     finalOcclusion: coverage.at(-1)!,
@@ -192,4 +246,15 @@ export function inspectProjectedReveal(
     targetSamples: points.length,
     coverage,
   };
+}
+
+/** Synchronous sources consume the same frame iterator without awaiting preparation. */
+export function inspectProjectedReveal(
+  ...args: Parameters<typeof inspectProjectedRevealFrames>
+) {
+  const frames = inspectProjectedRevealFrames(...args);
+  for (;;) {
+    const step = frames.next();
+    if (step.done) return step.value;
+  }
 }

@@ -17,9 +17,11 @@ import {
   discrete,
   motionScalar,
   scalar,
+  smoothKeyVelocity,
   vector,
   vector3,
 } from "../../../packages/renderer-core/src/composition/evaluate/sample.ts";
+import { sampleCurveGraph } from "./composition-graph-sample.ts";
 import { readJsonPath, type JsonPath } from "./composition-document.ts";
 
 type Key = {
@@ -33,10 +35,12 @@ type Key = {
   spatialIn?: [number, number] | [number, number, number];
   spatialOut?: [number, number] | [number, number, number];
 };
+/** The top-level composition has no precomp ID. */
+export type CompositionScope = string | null;
 export type KeyTrack = {
   id: string;
   label: string;
-  scope: string;
+  scope: CompositionScope;
   owner: string;
   path: JsonPath;
   property?: string;
@@ -65,13 +69,33 @@ export function compositionTracks(document: Composition): KeyTrack[] {
     path: JsonPath,
     property: string | undefined,
     kind: KeyTrack["kind"],
-    scope: string,
+    scope: CompositionScope,
     owner: string,
     fps: number,
     array = false,
     dimensions?: 3,
     fallbackZ = 0,
   ) {
+    if (
+      kind === "vector" &&
+      raw &&
+      typeof raw === "object" &&
+      !Array.isArray(raw) &&
+      !isKeyed(raw)
+    ) {
+      for (const axis of dimensions === 3 ? ["x", "y", "z"] : ["x", "y"]) {
+        add(
+          (raw as Record<string, unknown>)[axis],
+          [...path, axis],
+          property ? `${property}.${axis}` : undefined,
+          "scalar",
+          scope,
+          owner,
+          fps,
+        );
+      }
+      return;
+    }
     const keys =
       array && Array.isArray(raw)
         ? (raw as Key[])
@@ -82,7 +106,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
     const id = JSON.stringify(path);
     tracks.push({
       id,
-      label: `${scope} / ${owner} · ${property ?? path.at(-1)}`,
+      label: `${scope === null ? "root" : `precomp ${scope}`} / ${owner} · ${property ?? path.at(-1)}`,
       scope,
       owner,
       path,
@@ -109,7 +133,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
   function layerTracks(
     layer: CompositionLayer,
     path: JsonPath,
-    scope: string,
+    scope: CompositionScope,
     fps: number,
   ) {
     const value = layer as unknown as Record<string, unknown>;
@@ -117,43 +141,21 @@ export function compositionTracks(document: Composition): KeyTrack[] {
       const kind = ["anchor", "position", "scale", "orientation"].includes(name)
         ? "vector"
         : "scalar";
-      if (
+      add(
+        raw,
+        [...path, "transform", name],
+        `transform.${name}`,
+        kind,
+        scope,
+        layer.id,
+        fps,
+        false,
         kind === "vector" &&
-        raw &&
-        typeof raw === "object" &&
-        !Array.isArray(raw) &&
-        !isKeyed(raw)
-      ) {
-        for (const axis of layer.threeD ||
-        layer.type === "camera" ||
-        layer.type === "light"
-          ? ["x", "y", "z"]
-          : ["x", "y"])
-          add(
-            (raw as Record<string, unknown>)[axis],
-            [...path, "transform", name, axis],
-            `transform.${name}.${axis}`,
-            "scalar",
-            scope,
-            layer.id,
-            fps,
-          );
-      } else
-        add(
-          raw,
-          [...path, "transform", name],
-          `transform.${name}`,
-          kind,
-          scope,
-          layer.id,
-          fps,
-          false,
-          kind === "vector" &&
-            (layer.threeD || layer.type === "camera" || layer.type === "light")
-            ? 3
-            : undefined,
-          name === "scale" ? 1 : 0,
-        );
+          (layer.threeD || layer.type === "camera" || layer.type === "light")
+          ? 3
+          : undefined,
+        name === "scale" ? 1 : 0,
+      );
     }
     if (layer.type === "audio")
       for (const name of ["gainDb", "pan"] as const)
@@ -169,33 +171,15 @@ export function compositionTracks(document: Composition): KeyTrack[] {
           layer.id,
           fps,
         );
-      const raw = layer.plane?.motion?.offset;
-      if (
-        raw &&
-        typeof raw === "object" &&
-        !Array.isArray(raw) &&
-        !isKeyed(raw)
-      )
-        for (const axis of ["x", "y"] as const)
-          add(
-            raw[axis],
-            [...path, "plane", "motion", "offset", axis],
-            `plane.motion.offset.${axis}`,
-            "scalar",
-            scope,
-            layer.id,
-            fps,
-          );
-      else
-        add(
-          raw,
-          [...path, "plane", "motion", "offset"],
-          "plane.motion.offset",
-          "vector",
-          scope,
-          layer.id,
-          fps,
-        );
+      add(
+        layer.plane?.motion?.offset,
+        [...path, "plane", "motion", "offset"],
+        "plane.motion.offset",
+        "vector",
+        scope,
+        layer.id,
+        fps,
+      );
       add(
         layer.plane?.reveal?.progress,
         [...path, "plane", "reveal", "progress"],
@@ -217,68 +201,29 @@ export function compositionTracks(document: Composition): KeyTrack[] {
           layer.id,
           fps,
         );
-      const raw = layer.motion?.offset;
-      if (
-        raw &&
-        typeof raw === "object" &&
-        !Array.isArray(raw) &&
-        !isKeyed(raw)
-      )
-        for (const axis of ["x", "y"] as const)
-          add(
-            raw[axis],
-            [...path, "motion", "offset", axis],
-            `motion.offset.${axis}`,
-            "scalar",
-            scope,
-            layer.id,
-            fps,
-          );
-      else
+      add(
+        layer.motion?.offset,
+        [...path, "motion", "offset"],
+        "motion.offset",
+        "vector",
+        scope,
+        layer.id,
+        fps,
+      );
+    }
+    if (layer.type === "camera") {
+      for (const name of ["pointOfInterest", "viewOffset"] as const)
         add(
-          raw,
-          [...path, "motion", "offset"],
-          "motion.offset",
+          layer[name],
+          [...path, name],
+          name,
           "vector",
           scope,
           layer.id,
           fps,
+          false,
+          name === "pointOfInterest" ? 3 : undefined,
         );
-    }
-    if (layer.type === "camera") {
-      for (const name of ["pointOfInterest", "viewOffset"] as const) {
-        const raw = layer[name];
-        if (
-          raw &&
-          typeof raw === "object" &&
-          !Array.isArray(raw) &&
-          !isKeyed(raw)
-        ) {
-          for (const axis of name === "viewOffset"
-            ? ["x", "y"]
-            : ["x", "y", "z"])
-            add(
-              (raw as Record<string, unknown>)[axis],
-              [...path, name, axis],
-              `${name}.${axis}`,
-              "scalar",
-              scope,
-              layer.id,
-              fps,
-            );
-        } else
-          add(
-            raw,
-            [...path, name],
-            name,
-            "vector",
-            scope,
-            layer.id,
-            fps,
-            false,
-            name === "pointOfInterest" ? 3 : undefined,
-          );
-      }
       for (const name of [
         "zoom",
         "focalLength",
@@ -483,7 +428,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
       );
   }
   const scopes = [
-    { scope: "root", value: document, path: [] as JsonPath },
+    { scope: null, value: document, path: [] as JsonPath },
     ...(document.precomps ?? []).map((value, i) => ({
       scope: value.id,
       value,
@@ -547,7 +492,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
       ["signals", i, "keys"],
       undefined,
       "scalar",
-      "root",
+      null,
       `signal ${signal.id} (before additions)`,
       document.fps,
       true,
@@ -559,7 +504,7 @@ export function compositionTracks(document: Composition): KeyTrack[] {
       ["camera2d"],
       undefined,
       "camera",
-      "root",
+      null,
       "Camera 2D (source controls)",
       document.fps,
     );
@@ -594,20 +539,10 @@ export function trackGraph(track: KeyTrack, samples = 160) {
   const start = track.keys[0]!.frame,
     end = track.keys.at(-1)!.frame;
   const count = Math.max(2, Math.min(512, samples));
-  return Array.from({ length: count }, (_, i) => {
-    const frame = start + ((end - start) * i) / (count - 1),
-      delta = 0.01;
-    const value = sampleTrack(track, frame);
-    const left = sampleTrack(track, Math.max(start, frame - delta)),
-      right = sampleTrack(track, Math.min(end, frame + delta));
-    const span = Math.min(end, frame + delta) - Math.max(start, frame - delta);
-    return {
-      frame,
-      value,
-      speed: value.map((_, axis) =>
-        span ? (right[axis]! - left[axis]!) / span : 0,
-      ),
-    };
+  return sampleCurveGraph((frame) => sampleTrack(track, frame), {
+    start,
+    end,
+    count,
   });
 }
 function keysIn(draft: Composition, track: KeyTrack): Key[] {
@@ -638,8 +573,21 @@ export function editTemporalHandle(
         ? { spatialSpeed: speed as number }
         : { speed }),
   };
-  delete key.smooth;
-  if (key.interpolation === "smooth") delete key.interpolation;
+}
+function retainSmoothSide(
+  keys: Key[],
+  kind: "scalar" | "vector" | "color",
+  index: number,
+  side: "in" | "out",
+) {
+  const key = keys[index]!;
+  if (!key.smooth && key.interpolation !== "smooth") return;
+  const handle = key[side];
+  if (handle?.speed !== undefined || handle?.spatialSpeed !== undefined) return;
+  key[side] = {
+    ease: handle?.ease ?? 1 / 3,
+    ...smoothKeyVelocity(keys as Keyed<unknown>["keys"], kind, index, side),
+  };
 }
 /** Explicitly selecting Bézier replaces the higher-priority temporal handles for this segment. */
 export function editSegmentBezier(
@@ -648,12 +596,18 @@ export function editSegmentBezier(
   destination: number,
   bezier: [number, number, number, number],
 ) {
-  if (["discrete", "path", "camera"].includes(track.kind) || destination < 1)
+  const kind = track.kind;
+  if (
+    (kind !== "scalar" && kind !== "vector" && kind !== "color") ||
+    destination < 1
+  )
     throw new Error("Select a numeric segment ending after the first key");
   const keys = keysIn(draft, track),
     a = keys[destination - 1],
     b = keys[destination];
   if (!a || !b) throw new Error("Segment no longer exists");
+  retainSmoothSide(keys, kind, destination - 1, "in");
+  retainSmoothSide(keys, kind, destination, "out");
   delete a.out;
   delete b.in;
   delete a.smooth;
@@ -701,7 +655,7 @@ export function resolvedTrackRoutes(
   let visited = 0;
   const definitions = new Map((document.precomps ?? []).map((p) => [p.id, p]));
   function visit(
-    scope: string,
+    scope: CompositionScope,
     layers: CompositionLayer[],
     route: string[],
     fps: number,
@@ -724,6 +678,6 @@ export function resolvedTrackRoutes(
           );
       }
   }
-  visit("root", document.layers, [], document.fps);
+  visit(null, document.layers, [], document.fps);
   return routes;
 }

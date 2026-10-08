@@ -11,6 +11,7 @@ import {
   projectionUniforms,
 } from "./webgl-projective.ts";
 import { blurPadding } from "./webgl-blur-padding.ts";
+import { accumulateWebglExposure } from "./webgl-exposure.ts";
 import { blurKernelLength } from "./webgl-blur-kernel.ts";
 import { WebglPaint } from "./webgl-paint.ts";
 import { WebglDamage } from "./webgl-damage.ts";
@@ -39,7 +40,7 @@ import { blendShader } from "./webgl-blend.ts";
 import { FLAT_LIGHTING_SHADER, flatLightingUniforms } from "./flat-lighting.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.66.0" as const;
+  "composition-webgl2-0.66.1" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -1009,37 +1010,44 @@ export function createWebgl2Backend(
       device.setFrameClip();
       let painted: ReturnType<WebglBounds["snapshot"]> = null;
       let background: number | undefined;
-      const sum = device.surface(dst.width, dst.height, true);
-      let next: WebglSurface | undefined;
       try {
-        next = device.surface(dst.width, dst.height, true);
         exposure = true;
-        for (let i = 0; i < count; i++) {
+        const renderSample = (i: number) => {
           render(i);
           if (i === 0) background = bounds.clearColor(dst);
           else if (background !== bounds.clearColor(dst)) bounds.full(dst);
           bounds.include(dst, painted);
           painted = bounds.snapshot(dst);
-          device.pass(
-            linear
-              ? `${linearShaderControls()} void main(){pixel=texture(backdrop,uv)+vec4(linearWords(stored(texture(source,uv))));}`
-              : "void main() { pixel = texture(backdrop,uv) + floor(texture(source,uv)*255.0+0.5); }",
-            next,
-            linear ? [dst, sum, transferSurface()] : [dst, sum],
-          );
-          device.swap(sum, next);
+          return { background: bounds.exactClearColor(dst), painted };
+        };
+        if (!linear) {
+          accumulateWebglExposure(device, dst, count, renderSample);
+        } else {
+          const sum = device.surface(dst.width, dst.height, true);
+          let next: WebglSurface | undefined;
+          try {
+            next = device.surface(dst.width, dst.height, true);
+            for (let i = 0; i < count; i++) {
+              renderSample(i);
+              device.pass(
+                `${linearShaderControls()} void main(){pixel=texture(backdrop,uv)+vec4(linearWords(stored(texture(source,uv))));}`,
+                next,
+                [dst, sum, transferSurface()],
+              );
+              device.swap(sum, next);
+            }
+            device.pass(
+              `${linearShaderControls("backdrop")} uniform float count; void main(){uvec4 sums=uvec4(texture(source,uv)),words=uvec4(0u);for(int c=0;c<4;c++)words[c]=roundedDivide(sums[c],uint(count));pixel=vec4(encodedWords(words))/255.0;}`,
+              dst,
+              [sum, transferSurface()],
+              { count },
+            );
+          } finally {
+            device.release(sum);
+            if (next) device.release(next);
+          }
         }
-        device.pass(
-          linear
-            ? `${linearShaderControls("backdrop")} uniform float count; void main(){uvec4 sums=uvec4(texture(source,uv)),words=uvec4(0u);for(int c=0;c<4;c++)words[c]=roundedDivide(sums[c],uint(count));pixel=vec4(encodedWords(words))/255.0;}`
-            : "uniform float count; void main() { pixel = floor(texture(source,uv)/count+0.5)/255.0; }",
-          dst,
-          linear ? [sum, transferSurface()] : [sum],
-          { count },
-        );
       } finally {
-        device.release(sum);
-        if (next) device.release(next);
         exposure = false;
         damage.reset();
         device.setFrameClip();

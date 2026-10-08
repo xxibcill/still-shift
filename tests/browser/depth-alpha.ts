@@ -5,6 +5,7 @@ import {
   assertPinnedRenderEnvironment,
 } from "@still-shift/execution-runtime";
 import { depthAlphaEdgeAcceptance } from "./depth-failures.ts";
+import { depthBitmapAcceptance } from "./depth-bitmaps.ts";
 
 export async function depthAlphaProfileAcceptance(url: string) {
   const reports = [];
@@ -18,7 +19,12 @@ export async function depthAlphaProfileAcceptance(url: string) {
       if (profile === "pinned") assertPinnedRenderEnvironment(environment);
       else assert.doesNotMatch(environment.webglRenderer, /SwiftShader/);
       const { report } = await depthAlphaEdgeAcceptance(page);
-      reports.push({ profile, environment, ...report });
+      reports.push({
+        profile,
+        environment,
+        ...report,
+        bitmaps: await depthBitmapAcceptance(page),
+      });
     } finally {
       await browser.close();
     }

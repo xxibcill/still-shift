@@ -114,6 +114,8 @@ export function sampleShapes(
       if (value !== undefined)
         result[key] = Array.isArray(value) ? [...value] : value;
     }
+    if (content.type === "zig-zag" && content.points !== undefined)
+      result.points = content.points;
     if (content.type === "group") {
       result.contents = sampleShapes(content.contents, time, fps, location);
       result.transform = sampledFields(

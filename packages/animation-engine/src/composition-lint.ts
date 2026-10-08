@@ -79,30 +79,41 @@ export async function lintCompositionFile(
     await page.goto(
       runtimeBrowserUrl(server.resolvedUrls!.local[0]!, "composition-compile"),
     );
-    const report = await page.evaluate(
+    const result = await page.evaluate(
       async ({ json, urls, policyJson, backend }) => {
         const comp = JSON.parse(json) as Composition;
         const policy = JSON.parse(policyJson) as CompositionQualityPolicy;
         const moduleUrl = "/packages/renderer-core/src/index.ts";
         const renderer = (await import(moduleUrl)) as typeof Renderer;
-        const resources = await renderer.loadCompositionResources(
-          comp,
-          (id: string) => urls[id]!,
-        );
-        const preview = renderer.createCompositionPreview(
-          document.createElement("canvas"),
-          comp,
-          resources,
-          { backend },
-        );
+        let preview:
+          | ReturnType<typeof renderer.createCompositionPreview>
+          | undefined;
         try {
-          return await renderer.analyzeRenderedCompositionQuality(
+          const resources = await renderer.loadCompositionResources(
             comp,
-            preview,
-            policy,
+            (id: string) => urls[id]!,
           );
+          preview = renderer.createCompositionPreview(
+            document.createElement("canvas"),
+            comp,
+            resources,
+            { backend },
+          );
+          return {
+            ok: true as const,
+            report: await renderer.analyzeRenderedCompositionQuality(
+              comp,
+              preview,
+              policy,
+            ),
+          };
+        } catch (error) {
+          return {
+            ok: false as const,
+            diagnostics: renderer.passageDiagnostics(error),
+          };
         } finally {
-          preview.dispose();
+          preview?.dispose();
         }
       },
       {
@@ -112,7 +123,8 @@ export async function lintCompositionFile(
         backend,
       },
     );
-    return { ...report, validationDiagnostics: loaded.warnings };
+    if (!result.ok) throw new PassageError(result.diagnostics);
+    return { ...result.report, validationDiagnostics: loaded.warnings };
   } finally {
     try {
       await browser?.close();

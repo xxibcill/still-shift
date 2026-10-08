@@ -1,0 +1,294 @@
+{
+  "model": "flat-alpha-shadow-candidate-1",
+  "side": 64,
+  "cases": [
+    {
+      "id": "hard/0",
+      "hash": "a4e53079bb580e08b0d2fb88b9991e0296210b91ccf2ffdc4f129dd7c501f37a"
+    },
+    {
+      "id": "hard/1",
+      "hash": "6f2afa79ddb23a6294172df124d0527a8acb22d53ccd1b92fa16d2185030267e"
+    },
+    {
+      "id": "hard/2",
+      "hash": "435885108e26e03465e9a09a9ae511b683d4dd37c73ce80ccefc5922bd0f4cc7"
+    },
+    {
+      "id": "hard/3",
+      "hash": "72bdd1fb1213757fd3b45da6f779cce56cb4a8808ce6e6951b8f7f36eb9cc173"
+    },
+    {
+      "id": "hard/4",
+      "hash": "72bdd1fb1213757fd3b45da6f779cce56cb4a8808ce6e6951b8f7f36eb9cc173"
+    },
+    {
+      "id": "hard/5",
+      "hash": "435885108e26e03465e9a09a9ae511b683d4dd37c73ce80ccefc5922bd0f4cc7"
+    },
+    {
+      "id": "hard/6",
+      "hash": "6f2afa79ddb23a6294172df124d0527a8acb22d53ccd1b92fa16d2185030267e"
+    },
+    {
+      "id": "hard/7",
+      "hash": "a4e53079bb580e08b0d2fb88b9991e0296210b91ccf2ffdc4f129dd7c501f37a"
+    },
+    {
+      "id": "soft-four/0",
+      "hash": "ee0831f67d4e15927737fe2ff38ff033e688a1dbe4571ce5318f1dbe27daf375"
+    },
+    {
+      "id": "soft-four/1",
+      "hash": "3cbc516a54a87d06d80fc3b2d98aa5f0a683fc551137b9aef0b2b855b85f63cb"
+    },
+    {
+      "id": "soft-four/2",
+      "hash": "4579160b3fbee5ae15a78ea173d30c12ae8189beb5cf4674f86f1d3cfbf7dd8e"
+    },
+    {
+      "id": "soft-four/3",
+      "hash": "924e3c6db8dc59858dd6a2d971d2c0a68eef509e5146c89d805ea12da10eb396"
+    },
+    {
+      "id": "soft-four/4",
+      "hash": "924e3c6db8dc59858dd6a2d971d2c0a68eef509e5146c89d805ea12da10eb396"
+    },
+    {
+      "id": "soft-four/5",
+      "hash": "4579160b3fbee5ae15a78ea173d30c12ae8189beb5cf4674f86f1d3cfbf7dd8e"
+    },
+    {
+      "id": "soft-four/6",
+      "hash": "3cbc516a54a87d06d80fc3b2d98aa5f0a683fc551137b9aef0b2b855b85f63cb"
+    },
+    {
+      "id": "soft-four/7",
+      "hash": "ee0831f67d4e15927737fe2ff38ff033e688a1dbe4571ce5318f1dbe27daf375"
+    },
+    {
+      "id": "soft-sixteen/0",
+      "hash": "d2f351b9957919845809bb8d343c245926bf9f051ce2070adafe6219704d604a"
+    },
+    {
+      "id": "soft-sixteen/1",
+      "hash": "dcf6da244ab5ee74a2379706d1fb4c07e5441fe45acfef65c233b999c3213621"
+    },
+    {
+      "id": "soft-sixteen/2",
+      "hash": "45d442d5502914c5600a52cff4e4d2ff2971daaf175ebf9dbf37323331afb928"
+    },
+    {
+      "id": "soft-sixteen/3",
+      "hash": "fb74b9dda593f94daf654cedba7cd83a98f4ef5ac25894bf06bd4c44c82bbf19"
+    },
+    {
+      "id": "soft-sixteen/4",
+      "hash": "fb74b9dda593f94daf654cedba7cd83a98f4ef5ac25894bf06bd4c44c82bbf19"
+    },
+    {
+      "id": "soft-sixteen/5",
+      "hash": "45d442d5502914c5600a52cff4e4d2ff2971daaf175ebf9dbf37323331afb928"
+    },
+    {
+      "id": "soft-sixteen/6",
+      "hash": "dcf6da244ab5ee74a2379706d1fb4c07e5441fe45acfef65c233b999c3213621"
+    },
+    {
+      "id": "soft-sixteen/7",
+      "hash": "d2f351b9957919845809bb8d343c245926bf9f051ce2070adafe6219704d604a"
+    },
+    {
+      "id": "alpha-hole/0",
+      "hash": "82e99f4a10bf2a458c3d7c168508834cac62561687315ac1785a8e67fcfd8897"
+    },
+    {
+      "id": "alpha-hole/1",
+      "hash": "2caa7180b171f102b0771ba121c81ab93af09d63f826aab3ed9f3c41a3cd3654"
+    },
+    {
+      "id": "alpha-hole/2",
+      "hash": "c325aa5581cf0b473c3a475dc158e190dfd4410096d14ae87dddf56495299469"
+    },
+    {
+      "id": "alpha-hole/3",
+      "hash": "283d6ac4481a87f45ca2237b44a52482617c34862f831955c3f4d5ad9317a305"
+    },
+    {
+      "id": "alpha-hole/4",
+      "hash": "283d6ac4481a87f45ca2237b44a52482617c34862f831955c3f4d5ad9317a305"
+    },
+    {
+      "id": "alpha-hole/5",
+      "hash": "c325aa5581cf0b473c3a475dc158e190dfd4410096d14ae87dddf56495299469"
+    },
+    {
+      "id": "alpha-hole/6",
+      "hash": "2caa7180b171f102b0771ba121c81ab93af09d63f826aab3ed9f3c41a3cd3654"
+    },
+    {
+      "id": "alpha-hole/7",
+      "hash": "82e99f4a10bf2a458c3d7c168508834cac62561687315ac1785a8e67fcfd8897"
+    },
+    {
+      "id": "translucent-overlap/0",
+      "hash": "5aa4372b38fd0c74c85262d3c4d953a7d6776c9779275bacd743f576e8a8f09e"
+    },
+    {
+      "id": "translucent-overlap/1",
+      "hash": "b25c64621caf59a630fc21902c045ace11748c4bccf8127d1f5ac5517cd763b3"
+    },
+    {
+      "id": "translucent-overlap/2",
+      "hash": "4678af179aa6a6310dc846fa89a91714e3a28453d1b8da63fe0fa1e38a410f5f"
+    },
+    {
+      "id": "translucent-overlap/3",
+      "hash": "7cf6a876b79fbdc44b929915995e2c0bddec3f8685f252a96c6d78e7bbc3ca70"
+    },
+    {
+      "id": "translucent-overlap/4",
+      "hash": "7cf6a876b79fbdc44b929915995e2c0bddec3f8685f252a96c6d78e7bbc3ca70"
+    },
+    {
+      "id": "translucent-overlap/5",
+      "hash": "4678af179aa6a6310dc846fa89a91714e3a28453d1b8da63fe0fa1e38a410f5f"
+    },
+    {
+      "id": "translucent-overlap/6",
+      "hash": "b25c64621caf59a630fc21902c045ace11748c4bccf8127d1f5ac5517cd763b3"
+    },
+    {
+      "id": "translucent-overlap/7",
+      "hash": "5aa4372b38fd0c74c85262d3c4d953a7d6776c9779275bacd743f576e8a8f09e"
+    },
+    {
+      "id": "tilted-mirrored/0",
+      "hash": "62ef2fce45c1264ff3a06b9ee9d15eaf8dd3bbb45fd1d234a15845d9e5ce9338"
+    },
+    {
+      "id": "tilted-mirrored/1",
+      "hash": "5b673cbc7f23b11c1453bf65fddcbe0b87fac47e0fbb81b34601772b1e27357d"
+    },
+    {
+      "id": "tilted-mirrored/2",
+      "hash": "346d2560eef7255e5ad06692aba781e5585e7e033ee6cf2d3414d400799b576e"
+    },
+    {
+      "id": "tilted-mirrored/3",
+      "hash": "024d433253e05f60a1bd2c6a571b0b421ca3921007af95104f709447abd36521"
+    },
+    {
+      "id": "tilted-mirrored/4",
+      "hash": "024d433253e05f60a1bd2c6a571b0b421ca3921007af95104f709447abd36521"
+    },
+    {
+      "id": "tilted-mirrored/5",
+      "hash": "346d2560eef7255e5ad06692aba781e5585e7e033ee6cf2d3414d400799b576e"
+    },
+    {
+      "id": "tilted-mirrored/6",
+      "hash": "5b673cbc7f23b11c1453bf65fddcbe0b87fac47e0fbb81b34601772b1e27357d"
+    },
+    {
+      "id": "tilted-mirrored/7",
+      "hash": "62ef2fce45c1264ff3a06b9ee9d15eaf8dd3bbb45fd1d234a15845d9e5ce9338"
+    },
+    {
+      "id": "offscreen/0",
+      "hash": "a4e53079bb580e08b0d2fb88b9991e0296210b91ccf2ffdc4f129dd7c501f37a"
+    },
+    {
+      "id": "offscreen/1",
+      "hash": "6f2afa79ddb23a6294172df124d0527a8acb22d53ccd1b92fa16d2185030267e"
+    },
+    {
+      "id": "offscreen/2",
+      "hash": "435885108e26e03465e9a09a9ae511b683d4dd37c73ce80ccefc5922bd0f4cc7"
+    },
+    {
+      "id": "offscreen/3",
+      "hash": "72bdd1fb1213757fd3b45da6f779cce56cb4a8808ce6e6951b8f7f36eb9cc173"
+    },
+    {
+      "id": "offscreen/4",
+      "hash": "72bdd1fb1213757fd3b45da6f779cce56cb4a8808ce6e6951b8f7f36eb9cc173"
+    },
+    {
+      "id": "offscreen/5",
+      "hash": "435885108e26e03465e9a09a9ae511b683d4dd37c73ce80ccefc5922bd0f4cc7"
+    },
+    {
+      "id": "offscreen/6",
+      "hash": "6f2afa79ddb23a6294172df124d0527a8acb22d53ccd1b92fa16d2185030267e"
+    },
+    {
+      "id": "offscreen/7",
+      "hash": "a4e53079bb580e08b0d2fb88b9991e0296210b91ccf2ffdc4f129dd7c501f37a"
+    },
+    {
+      "id": "precomp-isolation/0",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "precomp-isolation/1",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "precomp-isolation/2",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "precomp-isolation/3",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "precomp-isolation/4",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "precomp-isolation/5",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "precomp-isolation/6",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "precomp-isolation/7",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "disabled/0",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "disabled/1",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "disabled/2",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "disabled/3",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "disabled/4",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "disabled/5",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "disabled/6",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    },
+    {
+      "id": "disabled/7",
+      "hash": "0fbba07a833d4dcfc7024eaf313661a0ba8f80a05c6d29b8801c612e10e60dee"
+    }
+  ]
+}

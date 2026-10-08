@@ -3,6 +3,7 @@ import { cinematicToComposition } from "../../packages/renderer-core/src/composi
 import { validateCinematicCompositionCoverage } from "../../packages/renderer-core/src/composition/adapters/cinematic-coverage.ts";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { CinematicSceneSchema } from "../../packages/scene-contract/src/cinematic.ts";
+import { validateComposition } from "../../packages/scene-contract/src/index.ts";
 import {
   compileCinematicScene,
   projectCinematicNode,
@@ -109,6 +110,136 @@ const images = () =>
   ]);
 
 describe("foreground reveal", () => {
+  it.each(["room", "wall"])(
+    "rejects a %s reveal plane suppressed directly or through a matte-source group",
+    (id) => {
+      for (const inherited of [false, true]) {
+        const composition = cinematicToComposition(
+          CinematicSceneSchema.parse(source()),
+        );
+        const layer = composition.layers.find((layer) => layer.id === id)!;
+        if (inherited) {
+          layer.parent = "reveal-group";
+          composition.layers.unshift({
+            id: "reveal-group",
+            type: "group",
+            size: [composition.width, composition.height],
+            transform: { anchor: [0, 0] },
+          });
+        }
+        composition.layers.unshift({
+          id: "consumer",
+          type: "solid",
+          size: [8, 8],
+          color: "#ffffff",
+          trackMatte: { layer: inherited ? "reveal-group" : id, mode: "alpha" },
+        });
+        const validated = validateComposition(
+          JSON.parse(JSON.stringify(composition)),
+        );
+        expect(validated.ok).toBe(true);
+        if (!validated.ok) throw Error("Invalid reveal matte-source fixture");
+        const assets = images();
+        expect(() =>
+          validateCinematicCompositionCoverage(
+            validated.composition,
+            (asset) => assets.get(asset)!,
+          ),
+        ).toThrow(/reveal.*drawable/);
+      }
+    },
+  );
+
+  it("requires rendered validation for native reveal alpha treatments", () => {
+    const composition = cinematicToComposition(
+      CinematicSceneSchema.parse(source()),
+    );
+    composition.layers.find((layer) => layer.id === "room")!.effects = [
+      {
+        id: "erase",
+        effect: "transition.linear-wipe",
+        params: { progress: 1 },
+      },
+    ];
+    const assets = images();
+    expect(() =>
+      validateCinematicCompositionCoverage(
+        composition,
+        (asset) => assets.get(asset)!,
+      ),
+    ).toThrow(/rendered alpha validation/);
+  });
+
+  it.each(["room", "wall"])(
+    "rejects reduced %s opacity in persisted native reveal declarations",
+    (id) => {
+      const composition = cinematicToComposition(
+        CinematicSceneSchema.parse(source()),
+      );
+      const layer = composition.layers.find((layer) => layer.id === id)!;
+      layer.transform = { ...layer.transform, opacity: 0.1 };
+      const reloaded = validateComposition(
+        JSON.parse(JSON.stringify(composition)),
+      );
+      expect(reloaded.ok).toBe(true);
+      if (!reloaded.ok) throw Error("Invalid reveal opacity fixture");
+      const assets = images();
+      expect(() =>
+        validateCinematicCompositionCoverage(
+          reloaded.composition,
+          (asset) => assets.get(asset)!,
+        ),
+      ).toThrow(/full-opacity/);
+    },
+  );
+
+  it("checks reveal opacity at later frames and through parent groups", () => {
+    for (const inherited of [false, true]) {
+      const composition = cinematicToComposition(
+        CinematicSceneSchema.parse(source()),
+      );
+      const wall = composition.layers.find((layer) => layer.id === "wall")!;
+      const opacity = {
+        keys: [
+          { frame: 0, value: 1, interpolation: "hold" as const },
+          { frame: 1, value: 0.1 },
+        ],
+      };
+      if (inherited) {
+        wall.parent = "wall-group";
+        composition.layers.unshift({
+          id: "wall-group",
+          type: "group",
+          size: [composition.width, composition.height],
+          transform: { anchor: [0, 0], opacity },
+        });
+      } else wall.transform = { ...wall.transform, opacity };
+      const reloaded = validateComposition(
+        JSON.parse(JSON.stringify(composition)),
+      );
+      expect(reloaded.ok).toBe(true);
+      if (!reloaded.ok) throw Error("Invalid animated reveal opacity fixture");
+      const assets = images();
+      try {
+        validateCinematicCompositionCoverage(
+          reloaded.composition,
+          (asset) => assets.get(asset)!,
+        );
+        throw Error("Expected reveal opacity rejection");
+      } catch (error) {
+        expect(passageDiagnostics(error)).toContainEqual(
+          expect.objectContaining({
+            code: "comp-camera-coverage",
+            node: "wall",
+            frame: 1,
+            path: "metadata.cinematicCoverage",
+            message: expect.stringMatching(/full-opacity/),
+          }),
+        );
+      }
+    }
+  });
+
   it("preserves the alpha gate and native projection after composition JSON reload", () => {
     const input = CinematicSceneSchema.parse(source());
     const composition = JSON.parse(

@@ -46,7 +46,11 @@ import {
   validateRequiredCompositionCoverage,
 } from "./required-coverage.ts";
 import { validateStoryCompositionCoverage } from "../adapters/story-coverage.ts";
-import { validateCinematicCompositionCoverage } from "../adapters/cinematic-coverage.ts";
+import { cinematicRenderedCoverageRequirements } from "../adapters/cinematic-coverage.ts";
+import {
+  validateRenderedCinematicCompositionCoverage,
+  validateRenderedCinematicCompositionCoverageAsync,
+} from "./cinematic-reveal.ts";
 import { COMMERCE_CONTENT_PROVIDERS } from "../adapters/commerce-providers.ts";
 import { APPEARANCE_PROVIDERS } from "../adapters/appearance-providers.ts";
 import { MOTION_PATH_PROVIDERS } from "../adapters/motion-path.ts";
@@ -269,6 +273,46 @@ export type CompositionPreview = {
   dispose(): void;
 };
 
+type CompositionPreviewOptions = {
+  backend?: CompositionBackend;
+  createCanvas?: (width: number, height: number) => HTMLCanvasElement;
+  providers?: readonly CanvasContentProvider[];
+  coverageSeverity?: "error" | "warning";
+  /** Exact integer frames owned by an independently bounded family timeline window. */
+  validationFrames?: readonly number[];
+};
+
+/** Prepared local content and coverage, reusable without retaining a backend's surfaces. */
+export type PreparedCompositionPreview = {
+  create(canvas: HTMLCanvasElement): CompositionPreview;
+};
+
+export function prepareCompositionPreview(
+  composition: Composition,
+  resources: CompositionResources,
+  options: CompositionPreviewOptions = {},
+): PreparedCompositionPreview {
+  // Keep compiled clocks and prepared drawers tied to the same immutable source,
+  // even when an author edits the document after preparing another preview.
+  const snapshot = structuredClone(composition);
+  const canvas = options.createCanvas
+    ? options.createCanvas(snapshot.width, snapshot.height)
+    : document.createElement("canvas");
+  try {
+    const prepared = prepareCompositionPreviewOnCanvas(
+      canvas,
+      snapshot,
+      resources,
+      options,
+      false,
+    );
+    prepared.preview.dispose();
+    return { create: prepared.createPreview };
+  } finally {
+    canvas.width = canvas.height = 0;
+  }
+}
+
 /**
  * Render with the selected backend (Canvas 2D by default). Preview and export
  * share the evaluator, graph, prepared content and exposure sampling.
@@ -279,13 +323,23 @@ export function createCompositionPreview(
   canvas: HTMLCanvasElement,
   composition: Composition,
   resources: CompositionResources,
-  options: {
-    backend?: CompositionBackend;
-    createCanvas?: (width: number, height: number) => HTMLCanvasElement;
-    providers?: readonly CanvasContentProvider[];
-    coverageSeverity?: "error" | "warning";
-  } = {},
+  options: CompositionPreviewOptions = {},
 ): CompositionPreview {
+  return prepareCompositionPreviewOnCanvas(
+    canvas,
+    composition,
+    resources,
+    options,
+  ).preview;
+}
+
+function prepareCompositionPreviewOnCanvas(
+  canvas: HTMLCanvasElement,
+  composition: Composition,
+  resources: CompositionResources,
+  options: CompositionPreviewOptions,
+  ownsMedia = true,
+) {
   const validation = validateComposition(composition);
   if (!validation.ok) throw new PassageError(validation.diagnostics);
   canvas.width = composition.width;
@@ -314,16 +368,42 @@ export function createCompositionPreview(
     probe.height = asset.height;
     const context = probe.getContext("2d", { willReadFrequently: true });
     if (!context) throw new Error("Canvas 2D is unavailable");
-    context.drawImage(image, 0, 0);
-    return context.getImageData(0, 0, probe.width, probe.height);
+    try {
+      context.drawImage(image, 0, 0);
+      return context.getImageData(0, 0, probe.width, probe.height);
+    } finally {
+      probe.width = probe.height = 0;
+    }
   };
-  validateStoryCompositionCoverage(composition, readAssetPixels);
-  validateCinematicCompositionCoverage(composition, readAssetPixels);
+  validateStoryCompositionCoverage(
+    composition,
+    readAssetPixels,
+    options.validationFrames,
+  );
   const text = prepareCompositionText(
     composition,
     resources.fonts,
     ctx,
-    undefined,
+    options.validationFrames
+      ? Object.fromEntries(
+          composition.layers.flatMap((layer) =>
+            layer.type === "text"
+              ? [
+                  [
+                    layer.id,
+                    [
+                      ...new Set(
+                        (layer.sampleTimes ?? options.validationFrames!).map(
+                          Math.round,
+                        ),
+                      ),
+                    ],
+                  ],
+                ]
+              : [],
+          ),
+        )
+      : undefined,
     resources.textProbe,
   );
   const drawProvider = prepareCompositionProviders(
@@ -354,122 +434,171 @@ export function createCompositionPreview(
     drawProvider,
     ...(options.createCanvas ? { createCanvas: options.createCanvas } : {}),
   };
-  if (kind === "webgl2") {
-    const backend = createWebgl2Backend(canvas, {
-      ...backendOptions,
-      boundedCanvas: (content) =>
-        content.type === "text" || drawProvider.boundedCanvas(content),
-      singleImage: (content) =>
-        content.type === "provider"
-          ? drawProvider.singleImage(content)
-          : text.singleImage(content),
-      stableImages: (content) =>
-        content.type === "provider"
-          ? drawProvider.stableImages(content)
-          : text.stableImages(content),
-      contentKey: (content) =>
-        content.type === "provider"
-          ? drawProvider.contentKey(content)
-          : text.contentKey(content),
-      contentBounds: (content) =>
-        content.type === "provider"
-          ? drawProvider.contentBounds(content)
-          : text.contentBounds(content),
-    });
-    return preview(backend, backend.target, () => backend.present());
-  }
-  const backend = createCanvas2dBackend(backendOptions);
-  return preview(backend, backend.wrap(canvas, ctx), () => {});
+  let coverageDiagnostics: PassageDiagnostic[] = [];
+  let initialization: Promise<void> | undefined;
+  const requiredRootLayers = cinematicRenderedCoverageRequirements(composition);
+  return { preview: createPreview(canvas, true), createPreview };
 
-  function preview<S extends Surface>(
-    backend: RenderBackend<S> & { dispose(): void },
-    target: S,
-    present: () => void,
+  function createPreview(
+    targetCanvas: HTMLCanvasElement,
+    validateCoverage = false,
   ): CompositionPreview {
-    // The GPU backend retains bounded readback bytes; graph reuse skips identical draws.
-    const cache: CompositionFrameCache | undefined =
-      kind === "webgl2" ? {} : undefined;
-    let coverageDiagnostics: PassageDiagnostic[] = [];
-    let initialization: Promise<void> | undefined;
-    try {
-      if (!resources.media)
-        coverageDiagnostics = validateRequiredCompositionCoverage(
-          composition,
-          backend,
-          { textBounds: text.bounds },
-          options.coverageSeverity ?? "error",
-        );
-    } catch (error) {
-      backend.dispose();
-      throw error;
+    targetCanvas.width = composition.width;
+    targetCanvas.height = composition.height;
+    if (kind === "webgl2") {
+      const backend = createWebgl2Backend(targetCanvas, {
+        ...backendOptions,
+        boundedCanvas: (content) =>
+          content.type === "text" || drawProvider.boundedCanvas(content),
+        singleImage: (content) =>
+          content.type === "provider"
+            ? drawProvider.singleImage(content)
+            : text.singleImage(content),
+        stableImages: (content) =>
+          content.type === "provider"
+            ? drawProvider.stableImages(content)
+            : text.stableImages(content),
+        contentKey: (content) =>
+          content.type === "provider"
+            ? drawProvider.contentKey(content)
+            : text.contentKey(content),
+        contentBounds: (content) =>
+          content.type === "provider"
+            ? drawProvider.contentBounds(content)
+            : text.contentBounds(content),
+      });
+      return preview(backend, backend.target, () => backend.present());
     }
-    return {
-      backend: kind,
-      rendererVersion: backend.version,
-      readPixels: () => backend.readPixels(target),
-      textBounds: text.bounds,
-      prepareFrame(frame) {
-        if (!resources.media) return;
-        if (!initialization)
-          initialization = (async () => {
-            if (!hasRequiredCompositionCoverage(composition)) return;
-            const validate = createCompositionCoverageValidator(
-              composition,
-              backend,
-              { textBounds: text.bounds },
-              options.coverageSeverity ?? "error",
-            );
-            try {
-              for (let at = 0; at < composition.frameCount; at++) {
+    const targetContext = targetCanvas.getContext("2d", {
+      alpha: false,
+      ...(softwareRaster ? { willReadFrequently: true } : {}),
+    });
+    if (!targetContext) throw new Error("Canvas 2D is unavailable");
+    const backend = createCanvas2dBackend(backendOptions);
+    return preview(
+      backend,
+      backend.wrap(targetCanvas, targetContext),
+      () => {},
+    );
+
+    function preview<S extends Surface>(
+      backend: RenderBackend<S> & { dispose(): void },
+      target: S,
+      present: () => void,
+    ): CompositionPreview {
+      // The GPU backend retains bounded readback bytes; graph reuse skips identical draws.
+      const cache: CompositionFrameCache | undefined =
+        kind === "webgl2" ? {} : undefined;
+      if (validateCoverage && !resources.media)
+        try {
+          validateRenderedCinematicCompositionCoverage(
+            composition,
+            readAssetPixels,
+            backend,
+            { textBounds: text.bounds },
+          );
+          coverageDiagnostics = validateRequiredCompositionCoverage(
+            composition,
+            backend,
+            { textBounds: text.bounds },
+            options.coverageSeverity ?? "error",
+            requiredRootLayers,
+            options.validationFrames,
+          );
+        } catch (error) {
+          backend.dispose();
+          throw error;
+        }
+      return {
+        backend: kind,
+        rendererVersion: backend.version,
+        readPixels: () => backend.readPixels(target),
+        textBounds: text.bounds,
+        prepareFrame(frame) {
+          if (!resources.media) return;
+          if (!initialization)
+            initialization = (async () => {
+              const required = hasRequiredCompositionCoverage(
+                composition,
+                requiredRootLayers,
+              );
+              const frames =
+                options.validationFrames ??
+                Array.from({ length: composition.frameCount }, (_, at) => at);
+              const selected = new Set(frames);
+              const validated = new Set<number>();
+              const validate = createCompositionCoverageValidator(
+                composition,
+                backend,
+                { textBounds: text.bounds },
+                options.coverageSeverity ?? "error",
+                requiredRootLayers,
+              );
+              const prepare = async (at: number) => {
                 await resources.media!.prepareFrame(at, {
                   textBounds: text.bounds,
                   cull: false,
                 });
-                coverageDiagnostics.push(...validate(at));
+                if (required && selected.has(at)) {
+                  coverageDiagnostics.push(...validate(at));
+                  validated.add(at);
+                }
+              };
+              try {
+                await validateRenderedCinematicCompositionCoverageAsync(
+                  composition,
+                  readAssetPixels,
+                  backend,
+                  prepare,
+                  { textBounds: text.bounds },
+                );
+                if (required)
+                  for (const at of frames)
+                    if (!validated.has(at)) await prepare(at);
+              } finally {
+                backend.endFrame?.(false);
               }
-            } finally {
-              backend.endFrame?.(false);
-            }
-          })();
-        return initialization.then(() =>
-          resources.media!.prepareFrame(frame, { textBounds: text.bounds }),
-        );
-      },
-      renderFrame(frame) {
-        resources.media?.assertReady(frame);
-        if (
-          !Number.isInteger(frame) ||
-          frame < 0 ||
-          frame >= composition.frameCount
-        )
-          throw new Error("Frame index outside composition timeline");
-        const report = renderCompositionExposure(
-          backend,
-          target,
-          composition,
-          frame,
-          {
-            textBounds: text.bounds,
-          },
-          cache,
-        );
-        if (report.samples > 0) present();
-        return coverageDiagnostics.length
-          ? {
-              ...report,
-              diagnostics: [...report.diagnostics, ...coverageDiagnostics],
-            }
-          : report;
-      },
-      dispose() {
-        if (cache) {
-          cache.root = undefined;
-          cache.key = undefined;
-        }
-        backend.dispose();
-        resources.media?.dispose();
-        canvas.width = composition.width;
-      },
-    };
+            })();
+          return initialization.then(() =>
+            resources.media!.prepareFrame(frame, { textBounds: text.bounds }),
+          );
+        },
+        renderFrame(frame) {
+          resources.media?.assertReady(frame);
+          if (
+            !Number.isInteger(frame) ||
+            frame < 0 ||
+            frame >= composition.frameCount
+          )
+            throw new Error("Frame index outside composition timeline");
+          const report = renderCompositionExposure(
+            backend,
+            target,
+            composition,
+            frame,
+            {
+              textBounds: text.bounds,
+            },
+            cache,
+          );
+          if (report.samples > 0) present();
+          return coverageDiagnostics.length
+            ? {
+                ...report,
+                diagnostics: [...report.diagnostics, ...coverageDiagnostics],
+              }
+            : report;
+        },
+        dispose() {
+          if (cache) {
+            cache.root = undefined;
+            cache.key = undefined;
+          }
+          backend.dispose();
+          if (ownsMedia) resources.media?.dispose();
+          targetCanvas.width = composition.width;
+        },
+      };
+    }
   }
 }

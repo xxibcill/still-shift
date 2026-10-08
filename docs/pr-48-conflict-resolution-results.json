@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/48",
+  "originalHead": "aedfc9eb98a60d3278385b476c8c9024143e5b7b",
+  "integratedMain": "e249a5dac2c720f388b44b4437ed3cb6643820f2",
+  "scope": "Focused PR conflict repair and review. No new milestone or complete repository gate.",
+  "status": "verification-in-progress",
+  "conflictsResolved": 17,
+  "conflictFiles": [
+    "apps/lab/composition-api.ts",
+    "apps/lab/src/composition.ts",
+    "apps/lab/src/passage-audio-player.ts",
+    "apps/lab/src/passage.ts",
+    "docs/composition-engine-plan.md",
+    "docs/dev-log.md",
+    "package.json",
+    "packages/animation-engine/src/index.ts",
+    "packages/animation-engine/src/passage-compositions.ts",
+    "packages/animation-engine/src/soundtrack-passage.ts",
+    "packages/animation-engine/src/story-passage-render.ts",
+    "packages/execution-runtime/src/export-worker.ts",
+    "packages/scene-contract/src/index.ts",
+    "tests/unit/batch-identity.test.ts",
+    "tests/unit/composition-keys.test.ts",
+    "tests/unit/soundtrack-preview.test.ts",
+    "tools/still-shift-cli/src/composition/preview.ts"
+  ],
+  "mandatoryCommands": {
+    "ce13": 63,
+    "main": 63,
+    "combined": 64,
+    "allParentCommandsRetained": true
+  },
+  "versions": {
+    "evaluator": "composition-evaluator-54",
+    "canvas": "composition-canvas-1.45.1",
+    "webgl2": "composition-webgl2-0.66.1",
+    "export": "chromium-ffmpeg-0.6.11"
+  },
+  "preflight": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromium": "151.0.7922.34",
+    "ffmpeg": "8.0.1",
+    "isolation": "Offline frozen worktree-local node_modules and independent optimizer/config caches; cloned Python and pinned soundtrack environments; independent UV cache.",
+    "imports": "Chromium startup, Vite config, renderer, numpy/cv2/PIL/torch/torchvision/transformers/local depth, soundtrack dawdreamer/numpy/scipy"
+  },
+  "preservation": {
+    "distinctLogEntries": 326,
+    "actionsEnabled": false,
+    "ownerCheckoutEdited": false,
+    "fullPnpmCheckRun": false
+  },
+  "verification": []
+}

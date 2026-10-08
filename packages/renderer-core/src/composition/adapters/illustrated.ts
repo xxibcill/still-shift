@@ -1,3 +1,4 @@
+import { compileFamilyTimeline } from "./timeline.ts";
 import type { IllustratedScene } from "../../prepared-scene.ts";
 import type { Images } from "./illustrated-assets.ts";
 import type { CompositionResources } from "../render/renderer.ts";
@@ -5,6 +6,10 @@ import { compiledStoryToComposition } from "./story.ts";
 import { compiledCommerceToComposition } from "./commerce.ts";
 import { compiledCinematicToComposition } from "./cinematic.ts";
 import { compiledLegacyToComposition } from "./legacy.ts";
+import {
+  legacyResourceAliases,
+  legacyTextProbe,
+} from "./legacy-compatibility.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { validateStoryTextLayout } from "../../story-text-layout.ts";
@@ -20,7 +25,7 @@ export function prepareIllustratedComposition(
   images: Images,
   context: CanvasRenderingContext2D,
 ) {
-  const fonts = images.fonts ?? new Map();
+  const fonts = new Map(images.fonts ?? []);
   const textLayout = { context, fonts };
   const prepared = (() => {
     if (input.schemaVersion === "story-scene-1") {
@@ -38,7 +43,9 @@ export function prepareIllustratedComposition(
       return {
         scene,
         typography,
-        composition: compiledStoryToComposition(scene),
+        ...compileFamilyTimeline(scene.frameCount, (window) =>
+          compiledStoryToComposition(scene, {}, window),
+        ),
       };
     }
     if (input.schemaVersion === "commerce-scene-1") {
@@ -52,7 +59,9 @@ export function prepareIllustratedComposition(
         typography: scene.typography
           ? prepareTypography(scene, fonts)
           : undefined,
-        composition: compiledCommerceToComposition(scene, { textLayout }),
+        ...compileFamilyTimeline(scene.frameCount, (window) =>
+          compiledCommerceToComposition(scene, { textLayout }, window),
+        ),
       };
     }
     return {
@@ -66,10 +75,27 @@ export function prepareIllustratedComposition(
   })();
   // Styles and animated font axes were verified and loaded by asset preparation.
   // Match variants by their immutable source bytes, preserving provider isolation.
+  const documents =
+    "windows" in prepared && prepared.windows
+      ? prepared.windows.map((window) => window.composition)
+      : [prepared.composition];
+  const nativeImages = new Map(
+    [...images].map(([id, image]) => [id, images.rasters?.get(id) ?? image]),
+  );
+  for (const document of documents)
+    for (const [native, original] of legacyResourceAliases(document, [
+      ...input.assets,
+      ...(input.fonts ?? []),
+    ])) {
+      const image = nativeImages.get(original);
+      if (image) nativeImages.set(native, image);
+      const font = fonts.get(original);
+      if (font) fonts.set(native, font);
+    }
   const providerFonts: NonNullable<CompositionResources["providerFonts"]> =
     new Map(
-      [prepared.composition, ...(prepared.composition.precomps ?? [])].flatMap(
-        (scope, index) =>
+      documents.flatMap((composition) =>
+        [composition, ...(composition.precomps ?? [])].flatMap((scope, index) =>
           scope.layers.flatMap((layer) => {
             if (layer.type !== "provider") return [];
             const declared = new Set(layer.assets ?? []);
@@ -90,18 +116,23 @@ export function prepareIllustratedComposition(
               ] as const,
             ];
           }),
+        ),
       ),
     );
+  const textProbe = images.textProbe
+    ? input.schemaVersion === "illustrated-scene-1"
+      ? legacyTextProbe(prepared.composition, input.nodes, images.textProbe)
+      : images.textProbe
+    : undefined;
   const resources: CompositionResources = {
-    ...(images.textProbe ? { textProbe: images.textProbe } : {}),
-    images: new Map(
-      [...images].map(([id, image]) => [id, images.rasters?.get(id) ?? image]),
-    ),
+    ...(textProbe ? { textProbe } : {}),
+    images: nativeImages,
     fonts,
     providerFonts,
   };
   return {
     composition: prepared.composition,
+    ...("windows" in prepared ? { windows: prepared.windows } : {}),
     resources,
     typography: prepared.typography,
     resolvedTextSizes: Object.fromEntries(

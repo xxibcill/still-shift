@@ -15,6 +15,7 @@ import {
 } from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
+  implicitAnchorDependencies,
   SIZED_LAYER_TYPES,
   cameraOpticalDependencies,
   type Composition,
@@ -71,6 +72,7 @@ import {
   sampleSpatialTransform,
   sampleCameraControls,
   refreshCameraControls,
+  type CameraValidationPhase,
 } from "./spatial-state.ts";
 import {
   layerMatrix3d,
@@ -364,10 +366,13 @@ function baseState(
   }
   if (layer.type === "camera") {
     try {
-      state.camera = sampleCameraControls(layer, time, fps, [
-        ctx.scope.width,
-        ctx.scope.height,
-      ]);
+      state.camera = sampleCameraControls(
+        layer,
+        time,
+        fps,
+        [ctx.scope.width, ctx.scope.height],
+        "intermediate",
+      );
     } catch (error) {
       passageError(
         "comp-camera-settings",
@@ -444,20 +449,30 @@ function baseState(
 
 class Evaluation {
   readonly root: Context;
+  readonly compiled: CompiledComposition;
+  readonly time: number;
+  readonly options: EvaluationOptions;
+  private readonly session: Session;
+  private readonly audioClock: boolean;
   private count = 0;
   private readonly cameras = new Map<number, ReturnType<typeof cameraMatrix>>();
   constructor(
-    readonly compiled: CompiledComposition,
-    readonly time: number,
-    readonly options: EvaluationOptions,
-    private readonly session: Session = {
+    compiled: CompiledComposition,
+    time: number,
+    options: EvaluationOptions,
+    session: Session = {
       history: new Map(),
       signals: new Map(),
       shapes: new ShapeGeometryBudget({ frame: time }),
       steps: 0,
     },
-    private readonly audioClock = false,
+    audioClock = false,
   ) {
+    this.compiled = compiled;
+    this.time = time;
+    this.options = options;
+    this.session = session;
+    this.audioClock = audioClock;
     this.root = context(compiled, compiled.comp, time, compiled.comp.fps);
   }
 
@@ -581,27 +596,27 @@ class Evaluation {
       });
     const scope = this.compiled.scopes.get(host.comp)!;
     const remappedTime = yield* this.clock(ctx, host);
-    const sourceTime = this.audioClock
-      ? loopedAudioPrecompTime(
-          remappedTime,
-          scope.frameCount,
-          scope.fps ?? this.compiled.comp.fps,
-          host,
-        )
-      : loopedPrecompTime(remappedTime, scope.frameCount, host, {
-          node: host.id,
-          path: `${this.bindings(ctx, host.id)}.loop`,
-          frame: this.time,
-        });
     const route = [...ctx.route, host.id];
-    const clock =
-      scopeTimeOverride(this.options.scopeTimes, route.join("/")) ?? sourceTime;
+    const sourceTime =
+      scopeTimeOverride(this.options.scopeTimes, route.join("/")) ??
+      (this.audioClock
+        ? loopedAudioPrecompTime(
+            remappedTime,
+            scope.frameCount,
+            scope.fps ?? this.compiled.comp.fps,
+            host,
+          )
+        : loopedPrecompTime(remappedTime, scope.frameCount, host, {
+            node: host.id,
+            path: `${this.bindings(ctx, host.id)}.loop`,
+            frame: this.time,
+          }));
     const next = context(
       this.compiled,
       scope,
       this.audioClock
-        ? clock
-        : Math.max(0, Math.min(scope.frameCount - 1, clock)),
+        ? sourceTime
+        : Math.max(0, Math.min(scope.frameCount - 1, sourceTime)),
       scope.fps ?? this.compiled.comp.fps,
       route,
     );
@@ -757,7 +772,11 @@ class Evaluation {
   }
 
   /** Clamp written values and keep an unauthored constraint reference on the anchor. */
-  private normalize(ctx: Context, state: EvaluatedLayer) {
+  private normalize(
+    ctx: Context,
+    state: EvaluatedLayer,
+    phase: CameraValidationPhase = "intermediate",
+  ) {
     state.transform.opacity = unit(state.transform.opacity);
     if (state.gainDb !== undefined)
       state.gainDb = Math.max(-120, Math.min(12, state.gainDb));
@@ -784,7 +803,7 @@ class Evaluation {
     }
     if (state.camera) {
       try {
-        refreshCameraControls(state.camera, ctx.scope.width);
+        refreshCameraControls(state.camera, ctx.scope.width, phase);
       } catch (error) {
         passageError(
           "comp-camera-settings",
@@ -975,6 +994,12 @@ class Evaluation {
       return copy(readProperty(fresh, segments));
     }
     if (!stage.sealed) {
+      for (const anchor of implicitAnchorDependencies(
+        layer,
+        segments,
+        this.writesReference(ctx, stage.state),
+      ))
+        yield* this.readStage(ctx, layer, anchor);
       const bindings =
           this.compiled.expressions.get(this.bindings(ctx, layer.id)) ?? [],
         optics =
@@ -1444,6 +1469,7 @@ class Evaluation {
         this.bindings(ctx, layer.id),
       ) ?? [])
         if (!binding.clock) yield* this.applied(ctx, layer, binding);
+    if (state.camera) this.normalize(ctx, state, "settled");
     if (layer.type === "precomp")
       state.timeRemap = yield* this.clock(ctx, layer);
     if (

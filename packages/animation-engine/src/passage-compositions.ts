@@ -7,6 +7,7 @@ import {
 } from "@still-shift/scene-contract";
 import {
   passageError,
+  PassageError,
   validatePassageCompositions,
 } from "@still-shift/renderer-core/passage-compositions";
 export {
@@ -21,7 +22,8 @@ import type { PreparedPassage } from "./story-passage-io.ts";
 /** A companion map assigns native composition files without extending frozen family schemas. */
 export async function loadPassageCompositions(
   path: string,
-  passage: Pick<PreparedPassage, "beats">,
+  passage: Pick<PreparedPassage, "beats"> &
+    Partial<Pick<PreparedPassage, "audio">>,
   allowPath?: (path: string) => Promise<unknown>,
   options: CompositionMediaPreparationOptions = {},
 ) {
@@ -55,10 +57,13 @@ export async function loadPassageCompositions(
     await allowPath?.(file);
     const result = validateComposition(await readReferenceJson(file, id));
     if (!result.ok)
-      passageError("comp-passage-reference", result.diagnostics[0]!.message, {
-        beat: id,
-        path: file,
-      });
+      throw new PassageError(
+        result.diagnostics.map((diagnostic) => ({
+          ...diagnostic,
+          beat: id,
+          sourcePath: file,
+        })),
+      );
     if (allowPath)
       for (const asset of result.composition.assets) {
         options.signal?.throwIfAborted();

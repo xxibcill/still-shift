@@ -11,7 +11,10 @@ type ExposureScene =
   | CinematicRenderScene;
 
 /** Reachable source clocks for preparation and compilation, including raw echo history. */
-export function sourceExposureTimeline(scene: ExposureScene) {
+export function sourceExposureTimeline(
+  scene: ExposureScene,
+  window: readonly [number, number] = [0, scene.timeline.frameCount],
+) {
   const frameCount = scene.timeline.frameCount;
   const componentScene = {
     componentData: "componentData" in scene ? scene.componentData : undefined,
@@ -32,7 +35,7 @@ export function sourceExposureTimeline(scene: ExposureScene) {
     ]),
   ].sort((a, b) => a - b);
   const times = new Set<number>();
-  for (let frame = 0; frame < frameCount; frame++) {
+  for (let frame = window[0]; frame < window[1]; frame++) {
     times.add(frame);
     if (!blur?.shutterAngle || !isEffectActive(blur, frame)) continue;
     const lower = Math.max(...cuts.filter((cut) => cut <= frame));

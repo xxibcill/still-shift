@@ -4,7 +4,14 @@ import { readFile, realpath } from "node:fs/promises";
 import { createServer as createSocketServer } from "node:net";
 import { dirname, resolve } from "node:path";
 import { pipeline } from "node:stream/promises";
-import { createServer, type Plugin, type ViteDevServer } from "vite";
+import {
+  createServer,
+  type Plugin,
+  type ViteDevServer,
+  type WebSocketClient,
+} from "vite";
+import { ProgramSnapshots, type SnapshotBytes } from "./preview-snapshots.ts";
+import { passageDiagnostics } from "../../../../packages/renderer-core/src/passage-diagnostics.ts";
 import {
   readCompositionSource,
   prepareCompositionMedia,
@@ -31,6 +38,7 @@ import {
   saveCompositionDocument,
   sourceHash,
   editableDocument,
+  sendCompositionEditError,
 } from "./save.ts";
 export type ProgramSnapshot = {
   revision: number;
@@ -44,9 +52,7 @@ export type ProgramSnapshot = {
   preparedAudio?: CompositionPreparedAudio;
   diagnostics: CompositionDiagnostic[];
 };
-type SnapshotBytes = {
-  snapshot: ProgramSnapshot;
-  bytes: Map<string, DraftAsset>;
+type NativeSnapshotBytes = SnapshotBytes<DraftAsset> & {
   captures: Map<string, Record<string, string>>;
 };
 async function availablePort() {
@@ -75,10 +81,10 @@ export async function createProgramPreview(
     input = await realpath(sourceInput).catch(() => sourceInput);
   const root = resolve(import.meta.dirname, "../../../../");
   const watched = new Set<string>([input]),
-    snapshots = new Map<number, SnapshotBytes>();
+    snapshots = new ProgramSnapshots<NativeSnapshotBytes>();
   const sequencePatterns = new Map<string, RegExp>();
   const preparing = new Set<AbortController>();
-  let current: SnapshotBytes | undefined,
+  let current: NativeSnapshotBytes | undefined,
     revision = 0,
     pending = false,
     closed = false;
@@ -159,9 +165,7 @@ export async function createProgramPreview(
         bytes,
         captures: new Map([["source", source.assetPaths]]),
       };
-      snapshots.set(revision, current);
-      while (snapshots.size > 2)
-        snapshots.delete(snapshots.keys().next().value!);
+      snapshots.add(current);
       failure = [];
       server.ws.send({
         type: "custom",
@@ -237,6 +241,52 @@ export async function createProgramPreview(
     name: "still-shift-composition-program",
     configureServer(value) {
       server = value;
+      const owners = new WeakSet<WebSocketClient>();
+      server.ws.on(
+        "composition-program:retain",
+        (data: { request?: unknown; revision?: unknown }, client) => {
+          if (
+            client.socket.readyState !== 1 ||
+            !data ||
+            typeof data.request !== "string" ||
+            data.request.length > 64
+          )
+            return;
+          try {
+            if (
+              !Number.isSafeInteger(data.revision) ||
+              (data.revision as number) < 1
+            )
+              throw new CompositionSaveError(
+                400,
+                "comp-edit-revision",
+                "Use a positive source revision",
+              );
+            const lease = snapshots.retain(data.revision as number, client);
+            if (!owners.has(client)) {
+              owners.add(client);
+              client.socket.once("close", () => snapshots.releaseOwner(client));
+            }
+            client.send("composition-program:retained", {
+              request: data.request,
+              lease,
+              diagnostics: [],
+            });
+          } catch (error) {
+            client.send("composition-program:retained", {
+              request: data.request,
+              diagnostics: passageDiagnostics(error),
+            });
+          }
+        },
+      );
+      server.ws.on(
+        "composition-program:release",
+        (data: { lease?: unknown }, client) => {
+          if (data && typeof data.lease === "string" && data.lease.length <= 64)
+            snapshots.release(data.lease, client);
+        },
+      );
       server.middlewares.use((request, response, next) => {
         const url = new URL(request.url ?? "/", "http://localhost");
         if (
@@ -262,19 +312,20 @@ export async function createProgramPreview(
               const body = (await readEditRequest(request)) as {
                 revision?: number;
                 document?: unknown;
+                lease?: string;
               };
               if (
                 !body ||
                 Object.keys(body).some(
-                  (key) => !["revision", "document"].includes(key),
+                  (key) => !["revision", "document", "lease"].includes(key),
                 )
               )
                 throw new CompositionSaveError(
                   400,
                   "comp-edit-request",
-                  "Use revision and document",
+                  "Use revision, document and lease",
                 );
-              const captured = snapshots.get(body.revision ?? -1);
+              const captured = snapshots.get(body.revision ?? -1, body.lease);
               if (!captured)
                 throw new CompositionSaveError(
                   409,
@@ -301,36 +352,41 @@ export async function createProgramPreview(
               );
               const paths = { ...prepared?.assetPaths, ...audio?.assetPaths };
               controller.signal.throwIfAborted();
-              const capture = randomUUID();
+              const captureOwner = `${body.lease ?? "recent"}:`;
+              const capture = captureOwner + randomUUID();
               captured.captures.set(capture, paths);
-              while (captured.captures.size > 3) {
-                const oldest = [...captured.captures.keys()].find(
-                  (id) => id !== "source",
-                )!;
+              const ownedCaptures = [...captured.captures.keys()].filter((id) =>
+                id.startsWith(captureOwner),
+              );
+              for (const oldest of ownedCaptures.slice(0, -2))
                 captured.captures.delete(oldest);
-              }
               response.setHeader("Content-Type", "application/json");
               response.end(
                 JSON.stringify({
                   preparedMedia: prepared?.preparedMedia,
                   preparedAudio: audio?.preparedAudio,
                   assets: {
-                    ...captured.snapshot.assets,
+                    ...Object.fromEntries(
+                      Object.entries(captured.snapshot.assets).map(
+                        ([id, path]) => [
+                          id,
+                          body.lease
+                            ? `${path}&lease=${encodeURIComponent(body.lease)}`
+                            : path,
+                        ],
+                      ),
+                    ),
                     ...Object.fromEntries(
                       Object.keys(paths).map((id) => [
                         id,
-                        `/composition/program-asset?revision=${captured.snapshot.revision}&capture=${capture}&id=${encodeURIComponent(id)}`,
+                        `/composition/program-asset?revision=${captured.snapshot.revision}&capture=${capture}&id=${encodeURIComponent(id)}${body.lease ? `&lease=${encodeURIComponent(body.lease)}` : ""}`,
                       ]),
                     ),
                   },
                 }),
               );
             } catch (error) {
-              if (!response.headersSent && !response.destroyed) {
-                response.statusCode =
-                  error instanceof CompositionSaveError ? error.status : 422;
-                response.end(String(error));
-              }
+              sendCompositionEditError(response, error, input);
             } finally {
               response.off("close", abort);
               preparing.delete(controller);
@@ -345,11 +401,13 @@ export async function createProgramPreview(
                 revision?: number;
                 document?: unknown;
                 backend?: unknown;
+                lease?: string;
               };
               if (
                 !body ||
                 Object.keys(body).some(
-                  (key) => !["revision", "document", "backend"].includes(key),
+                  (key) =>
+                    !["revision", "document", "backend", "lease"].includes(key),
                 )
               )
                 throw new CompositionSaveError(
@@ -357,7 +415,7 @@ export async function createProgramPreview(
                   "comp-edit-request",
                   "Use revision, document and backend",
                 );
-              const captured = snapshots.get(body.revision ?? -1);
+              const captured = snapshots.get(body.revision ?? -1, body.lease);
               if (!captured)
                 throw new CompositionSaveError(
                   409,
@@ -383,12 +441,7 @@ export async function createProgramPreview(
                 exporting = false;
               }
             } catch (error) {
-              if (response.headersSent || response.destroyed) return;
-              response.statusCode =
-                error instanceof CompositionSaveError ? error.status : 500;
-              response.end(
-                error instanceof Error ? error.message : String(error),
-              );
+              sendCompositionEditError(response, error, input);
             }
           })();
           return;
@@ -456,24 +509,7 @@ export async function createProgramPreview(
                 }),
               );
             } catch (error) {
-              response.statusCode =
-                error instanceof CompositionSaveError ? error.status : 500;
-              response.setHeader("Content-Type", "application/json");
-              response.end(
-                JSON.stringify({
-                  diagnostics: [
-                    {
-                      code:
-                        error instanceof CompositionSaveError
-                          ? error.code
-                          : "comp-edit-save",
-                      path: input,
-                      message:
-                        error instanceof Error ? error.message : String(error),
-                    },
-                  ],
-                }),
-              );
+              sendCompositionEditError(response, error, input);
             } finally {
               savingHash = undefined;
             }
@@ -499,6 +535,7 @@ export async function createProgramPreview(
         }
         const captured = snapshots.get(
           Number(url.searchParams.get("revision")),
+          url.searchParams.get("lease") ?? undefined,
         );
         const id = url.searchParams.get("id") ?? "";
         const asset = captured?.bytes.get(id);

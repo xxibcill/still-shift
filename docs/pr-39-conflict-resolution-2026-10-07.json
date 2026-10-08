@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "pr-conflict-repair-1",
+  "date": "2026-10-07",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/39",
+  "originalHead": "82e3a9240f79849a87b6209fe11880c5fc69262b",
+  "integratedBase": "e907d1683d99796e8efe27342cc3150d550dab7c",
+  "headBranch": "codex/composition-ce8lf-prototype",
+  "baseBranch": "codex/composition-ce7",
+  "repairBranch": "codex/pr39-merge-repair-20261007",
+  "status": "verified",
+  "resolution": {
+    "conflictedFiles": ["docs/dev-log.md"],
+    "decision": "Retain CE8-L-F preparation, both PR #39 review fixes, PR #40 conflict/review fixes and every dated entry from both parents. Keep the current 2026-10-07 update marker.",
+    "datedEntriesRetainedExactlyOnce": 149,
+    "automaticMerge": "Preserve current CE7/CE5 renderer, clock, expression, shape, soundtrack and native loader repairs; composition-engine plan combines both records.",
+    "manualCodeChanges": false,
+    "productionCodeAndConfigurationExactToIntegratedBase": true,
+    "prototypeSourcesAndFrozenReferencesExactToOriginalHead": true,
+    "developmentLogEntry": "No new session entry: manual resolution and evidence edits are documentation-only; both parent Current state summaries and Entries retained.",
+    "frozenAssets": "All visual references and fixtures retain their parent bytes; no regeneration, threshold or repeat-export changes.",
+    "requiredChecks": "All scripts and mandatory test groups from both parents retained."
+  },
+  "preflight": {
+    "toolchain": "passed: Node 22.23.1, pnpm 10.29.3, Python 3.12.11, uv 0.7.12, Playwright 1.62.1, Chromium 151.0.7922.34/revision 1234, FFmpeg 8.0.1",
+    "isolation": "Frozen offline pnpm install and private pinned Python/ruff in managed worktree; Vite optimizer/config caches resolve inside this worktree. Shadow browser runner serves no Vite app.",
+    "imports": "Prototype and render-browser imports, bare-Node Vite config load and actual Chromium startup pass.",
+    "coordination": "PR #40 expensive acceptance completed and its verified e907d16 base was pushed before final integration and shadow probes. Read-only owner status was inspected: CE13 full gate remained active in Commerce correctness/export checks. This runner has no timing benchmark or performance acceptance."
+  },
+  "verification": {
+    "focusedUnit": {
+      "command": "pnpm exec vitest run tests/unit/cast-shadow-prototype.test.ts tests/unit/composition-time-exposure.test.ts --maxWorkers=1 --no-file-parallelism",
+      "status": "passed",
+      "tests": 24,
+      "files": 2,
+      "shadowAnalyticTests": 12
+    },
+    "fast": {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitTests": 1919,
+      "files": 157,
+      "includes": "schema, package boundaries, repository TypeScript/prose formatting, ESLint, build and all unit tests"
+    },
+    "format": {
+      "command": "pnpm format:check",
+      "status": "passed",
+      "includes": "repository formatting and pinned Python Ruff formatting"
+    },
+    "lint": {
+      "command": "pnpm lint",
+      "status": "passed",
+      "includes": "ESLint and pinned Python Ruff"
+    },
+    "browser": {
+      "command": "node --import tsx scripts/composition/cast-shadow-prototype/verify.ts",
+      "status": "passed",
+      "frozenPoses": 96,
+      "pinnedSeekDraws": 288,
+      "independentPixelAndPNGRepeats": 96,
+      "hardwareDraws": 12,
+      "maximumInput": "8 casters x 16 samples x 64-square alpha masks passed pinned, repeated and hardware",
+      "maximumCPUShaderByteDelta": 0,
+      "nearCollinearInput": "rejected before CPU/GPU rendering",
+      "performanceMeasured": false
+    },
+    "mergeAudit": "passed: production/config equality, unchanged prototype/frozen references, required scripts/test groups, all dated parent log entries and git diff --check",
+    "fullCheck": "NOT RUN: documentation conflict resolution of the isolated preparation. No full pnpm check or production integration acceptance is claimed. Historical parent gates retain their original fingerprints.",
+    "upstreamAcceptance": {
+      "record": "docs/pr-40-conflict-resolution-results.json",
+      "exactBase": "e907d1683d99796e8efe27342cc3150d550dab7c",
+      "scope": "Verified production source, fixture and configuration bytes are unchanged from this published base; upstream evidence remains tied to that snapshot."
+    },
+    "pendingProductionAcceptance": "CE8/CE8-L integration, real native shadow exports, alpha/colour/clock/cache/DOF acceptance, owner quality/budget decisions, 1080p profiles and full production gate remain outstanding in the candidate specification.",
+    "logs": {
+      "merge-audit.json": {
+        "path": "benchmarks/results/pr39-conflict-20261007/merge-audit.json",
+        "sha256": "3724440a52223064689bcc1c2e15e7745327cc308d83d27ca59870fdf0dde236"
+      },
+      "fast.log": {
+        "path": "benchmarks/results/pr39-conflict-20261007/fast.log",
+        "sha256": "0e24e0fecb8b11e2da84cdc523f6e0d5464ef5aecb192fffe3d0fa02869a26ab"
+      },
+      "prototype-browser.log": {
+        "path": "benchmarks/results/pr39-conflict-20261007/prototype-browser.log",
+        "sha256": "933b4091576a86436b67bd01f3c49206e6f80a4cbea56cffef392aa0a5767c74"
+      },
+      "format.log": {
+        "path": "benchmarks/results/pr39-conflict-20261007/format.log",
+        "sha256": "89bf2b253118bb3e8119552856fa6f7e98967b5bca5993e02aef51569a07ece6"
+      },
+      "lint.log": {
+        "path": "benchmarks/results/pr39-conflict-20261007/lint.log",
+        "sha256": "f65a84d4797f95617e62fe72b2095ea72b2b29f694c83564f702731981ccf912"
+      },
+      "focused-unit.log": {
+        "path": "benchmarks/results/pr39-conflict-20261007/focused-unit.log",
+        "sha256": "7557b1c0102e0100ddf8e95c311ab696428dab148a5cc019798b48ecc05e00ce"
+      },
+      "vite-preflight.log": {
+        "path": "benchmarks/results/pr39-conflict-20261007/vite-preflight.log",
+        "sha256": "96c91e4692f38b91b6b512ac75866c1460ef6fbc61ef3d7bb3736c22c267df56"
+      },
+      "toolchain.log": {
+        "path": "benchmarks/results/pr39-conflict-20261007/toolchain.log",
+        "sha256": "7e2fcd3d3f87f808319a18dc40e9b33729ef14824c6aa7ba77ce9fa8fedd473e"
+      }
+    }
+  },
+  "fingerprint": {
+    "algorithm": "sha256 of sorted tracked path, NUL and file SHA256 digest; excludes docs/, AGENTS.md, ROADMAP.md and README.md",
+    "files": 1473,
+    "sha256": "c5bf13ed08e26e1bfdef8542675b9a711f734b930369183abc77842751f3e0c4"
+  },
+  "browser": {
+    "model": "flat-alpha-shadow-candidate-1",
+    "scope": "isolated direct-visibility shader; not production assets, CE7 integration or MP4 export",
+    "dimensions": [64, 64],
+    "node": "22.23.1",
+    "sourceHashes": [
+      {
+        "name": "model.ts",
+        "hash": "44d349c065ee9d219f8bf22d0ef68d1871b407e99c16be9720826aa8b4b73c42"
+      },
+      {
+        "name": "fixtures.ts",
+        "hash": "395a0a2d9ac9f7bfcd946923d58afcfa65c67554011a4c52a65ceb05be0d9586"
+      },
+      {
+        "name": "reference.ts",
+        "hash": "d20e525e9cf58a6594a8604b06dc1746c1ef044dadcb7b6c17e594b16be5d5bc"
+      },
+      {
+        "name": "shader.ts",
+        "hash": "c8f6b669f614448f08d6525d1021b9d6865283481d05ca5829b93028f61060fc"
+      },
+      {
+        "name": "verify.ts",
+        "hash": "030a53788566f2b0407d1aece1b5dfce2e7e40902d2ddf14b8d71abb9582f45d"
+      }
+    ],
+    "inputHash": "d581feec5c1b59eb18028cfbf1039864445033a0402f34928cf363ac41f3438c",
+    "maximumInputHash": "8edc340244028af6689c833351e0c5b69d644a198a55ea56e1c719e3130309e9",
+    "rejectedNearCollinearInput": {
+      "hash": "5e71460f25bf5395eca8bab7a4e6c1fb8e6e1db703d372e3580a840442a73b5f",
+      "diagnostic": "shadow-prototype-input: ill-conditioned plane",
+      "result": "pass"
+    },
+    "referenceCount": 96,
+    "toleranceBytes": 1,
+    "pinned": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 288,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "result": "pass",
+      "repeat": false
+    },
+    "repeated": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 96,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "result": "pass",
+      "repeat": true
+    },
+    "hardware": {
+      "environment": {
+        "profile": "hardware",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+        "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "draws": 12,
+      "maxDelta": 0,
+      "maximumInput": {
+        "casters": 8,
+        "samples": 16,
+        "textureSide": 64,
+        "maxDelta": 0
+      },
+      "result": "pass",
+      "repeat": false
+    },
+    "performanceMeasured": false
+  },
+  "prototypeAndFrozenFileSha256": {
+    "docs/composition-ce8lf-gallery.png": "c689b64ea690203030494ac939c443c530328c2dc1ee6b9cdcb4bb8370eb8b3e",
+    "scripts/composition/cast-shadow-prototype/README.md": "ba65907cb750c1e903ec4d610dcbb3c2a16591d45c48629e5044002a10ca955a",
+    "scripts/composition/cast-shadow-prototype/fixtures.ts": "395a0a2d9ac9f7bfcd946923d58afcfa65c67554011a4c52a65ceb05be0d9586",
+    "scripts/composition/cast-shadow-prototype/model.ts": "44d349c065ee9d219f8bf22d0ef68d1871b407e99c16be9720826aa8b4b73c42",
+    "scripts/composition/cast-shadow-prototype/reference.ts": "d20e525e9cf58a6594a8604b06dc1746c1ef044dadcb7b6c17e594b16be5d5bc",
+    "scripts/composition/cast-shadow-prototype/shader.ts": "c8f6b669f614448f08d6525d1021b9d6865283481d05ca5829b93028f61060fc",
+    "scripts/composition/cast-shadow-prototype/verify.ts": "030a53788566f2b0407d1aece1b5dfce2e7e40902d2ddf14b8d71abb9582f45d",
+    "tests/unit/cast-shadow-prototype.test.ts": "44f359f7034c4f200e63f5f4e975741fa031558eacbff1c5c273aa24fc104848",
+    "tests/visual/cast-shadow-prototype/reference.json": "a4fbe1464063792d432417739b475ecb33e5544c82a972e33a4ab9e17339d9c0",
+    "tests/visual/cast-shadow-prototype/solid-reference.json": "d099c8c3afcc294c60ad11bbd52dcab840514c2dd21f1919b41e56fa63432f22"
+  },
+  "liveRefresh": {
+    "remoteHead": "82e3a9240f79849a87b6209fe11880c5fc69262b",
+    "remoteBase": "e907d1683d99796e8efe27342cc3150d550dab7c",
+    "cachedGitHubBase": "817cc9f982f9459cc641af864a8f160bfedc668e",
+    "note": "Live Git refs are authoritative: GitHub PR metadata kept an older base SHA. Both live refs unchanged after final acceptance; original PR head/base names and OPEN state confirmed."
+  },
+  "githubActions": "disabled: live repository setting checked; no workflow files introduced.",
+  "delivery": "Normal merge commit and fast-forward push to existing PR head; no force push, retarget, merge/close or owner checkout changes."
+}

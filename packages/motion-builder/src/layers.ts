@@ -1,3 +1,4 @@
+import { anchorPoint, type NamedAnchor } from "./anchors.ts";
 import {
   CompositionBehaviourSchema,
   type CompositionBehaviour,
@@ -39,7 +40,7 @@ export class Layer<K extends Kind = Kind> {
   autoId = false;
   inferImageSize = false;
   inferMediaSize = false;
-  pendingAnchor: "center" | "top" | "bottom" | "left" | "right" | undefined;
+  pendingAnchor: NamedAnchor | undefined;
   imageAsset: ImageAsset | undefined;
   preparedAssets: CompositionAsset[] = [];
   nested: Composition | Precomp | undefined;
@@ -71,29 +72,27 @@ export class Layer<K extends Kind = Kind> {
     this.draft.transform!.position = z === undefined ? [x, y] : [x, y, z];
     return this;
   }
-  anchor(
-    x: number | "center" | "top" | "bottom" | "left" | "right",
-    y?: number,
-  ): this {
+  anchor(x: number | NamedAnchor, y?: number): this {
     if (typeof x === "number") {
       this.pendingAnchor = undefined;
       this.draft.transform!.anchor = [x, y ?? x];
     } else {
-      if (this.inferImageSize || this.inferMediaSize) {
+      if (
+        this.inferImageSize ||
+        this.inferMediaSize ||
+        (this.draft.type === "precomp" && !this.nested)
+      ) {
         this.pendingAnchor = x;
         return this;
       }
       this.pendingAnchor = undefined;
-      const size =
-        "size" in this.draft && this.draft.size ? this.draft.size : [0, 0];
-      const anchors = {
-        center: [size[0]! / 2, size[1]! / 2],
-        top: [size[0]! / 2, 0],
-        bottom: [size[0]! / 2, size[1]!],
-        left: [0, size[1]! / 2],
-        right: [size[0]!, size[1]! / 2],
-      };
-      this.draft.transform!.anchor = anchors[x] as [number, number];
+      const size: [number, number] =
+        "size" in this.draft && this.draft.size
+          ? this.draft.size
+          : this.nested
+            ? [this.nested.width, this.nested.height]
+            : [0, 0];
+      this.draft.transform!.anchor = anchorPoint(x, size);
     }
     return this;
   }
@@ -110,6 +109,7 @@ export class Layer<K extends Kind = Kind> {
     return this;
   }
   transform(value: CompositionTransform): this {
+    if (value.anchor !== undefined) this.pendingAnchor = undefined;
     Object.assign(this.draft.transform!, structuredClone(value));
     return this;
   }
@@ -122,6 +122,7 @@ export class Layer<K extends Kind = Kind> {
       this.inferImageSize = false;
       this.inferMediaSize = false;
     }
+    if (options.transform?.anchor !== undefined) this.pendingAnchor = undefined;
     Object.assign(this.draft, structuredClone(options));
     return this;
   }

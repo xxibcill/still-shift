@@ -431,19 +431,18 @@ function homographyPoint(h: Homography, [x, y]: Point): Point {
   ];
 }
 
-/** Clip the local z=0 artwork plane before projecting; no affine perspective approximation. */
-export function projectPlane(
+/** Project the local z=0 coordinate plane even when its owner has no drawable bounds. */
+export function planeHomography(
   world: Matrix4,
   camera: CameraGeometry,
-  bounds: Bounds,
-): ProjectedPlane {
+): Homography {
   const origin = cameraPoint(camera, worldPoint(world, [0, 0, 0]));
   const x = subtract(cameraPoint(camera, worldPoint(world, [1, 0, 0])), origin);
   const y = subtract(cameraPoint(camera, worldPoint(world, [0, 1, 0])), origin);
   const cx = camera.width / 2 + camera.viewOffset[0],
     cy = camera.height / 2 + camera.viewOffset[1],
     z = camera.zoom;
-  const homography: Homography = [
+  return [
     z * x[0] + cx * x[2],
     z * y[0] + cx * y[2],
     z * origin[0] + cx * origin[2],
@@ -454,7 +453,16 @@ export function projectPlane(
     y[2],
     origin[2],
   ];
-  const depth: Point3 = [x[2], y[2], origin[2]];
+}
+
+/** Clip the local z=0 artwork plane before projecting; no affine perspective approximation. */
+export function projectPlane(
+  world: Matrix4,
+  camera: CameraGeometry,
+  bounds: Bounds,
+): ProjectedPlane {
+  const homography = planeHomography(world, camera);
+  const depth: Point3 = [homography[6], homography[7], homography[8]];
   const inverse = inverseHomography(homography);
   const localPolygon = clipDepth(
     clipDepth(

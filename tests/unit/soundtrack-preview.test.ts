@@ -1,8 +1,13 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { PassageAudioPlayer } from "../../apps/lab/src/passage-audio-player.ts";
 import { sha256Hex } from "../../packages/renderer-core/src/browser-checksum.ts";
-import { validateSoundtrackProject } from "@still-shift/scene-contract";
+import {
+  validateSoundtrackProject,
+  type Composition,
+} from "@still-shift/scene-contract";
 import type { CompiledStoryPassage } from "../../packages/renderer-core/src/story-passage.ts";
+import { validatePassageCompositions } from "../../packages/renderer-core/src/passage-compositions.ts";
+import { passageEventSoundtrack } from "../helpers/passage-event-soundtrack.ts";
 const project = () =>
   validateSoundtrackProject({
     schemaVersion: "soundtrack-project-1",
@@ -65,6 +70,87 @@ function setup() {
 afterEach(() => vi.unstubAllGlobals());
 const bytes = new Uint8Array([1, 2, 3, 4]).buffer;
 const digest = async () => "sha256:" + (await sha256Hex(bytes));
+
+function nativeSoundtrack() {
+  const timing = {
+    ...passage,
+    beats: [
+      {
+        id: "beat",
+        start: 0,
+        scene: { width: 1920, height: 1080, fps: 24, frameCount: 24 },
+        events: [{ id: "hit", start: 6, end: 12 }],
+      },
+    ],
+  } as unknown as CompiledStoryPassage;
+  const picture: Composition = {
+    schemaVersion: "composition-1",
+    id: "native",
+    width: 1920,
+    height: 1080,
+    fps: 24,
+    frameCount: 24,
+    assets: [],
+    layers: [],
+  };
+  const mix = passageEventSoundtrack(timing, "beat", "hit");
+  return { timing, picture, mix };
+}
+
+describe("saved soundtrack native event bindings", () => {
+  it("rejects missing or mismatched native markers before decoding a saved mix", async () => {
+    const { context, player } = setup();
+    const { timing, picture, mix } = nativeSoundtrack();
+    for (const duration of [undefined, 5]) {
+      if (duration !== undefined) {
+        picture.markers = [{ id: "hit", frame: 6, duration }];
+        picture.metadata = { passage: { eventMarkers: { hit: "hit" } } };
+      }
+      await expect(
+        player.setSoundtrack(mix, bytes, await digest(), timing, {
+          beat: picture,
+        }),
+      ).rejects.toMatchObject({
+        name: "PassageError",
+        diagnostics: [
+          expect.objectContaining({
+            code: "comp-passage-binding",
+            beat: "beat",
+            event: "hit",
+          }),
+        ],
+      });
+    }
+    expect(context.decodeAudioData).not.toHaveBeenCalled();
+  });
+
+  it("accepts a mapped saved sound and rechecks native bindings before playback", async () => {
+    const { context, player } = setup();
+    const { timing, picture, mix } = nativeSoundtrack();
+    picture.markers = [{ id: "hit", frame: 6, duration: 6 }];
+    picture.metadata = { passage: { eventMarkers: { hit: "hit" } } };
+    const compositions = { beat: picture };
+    expect(validatePassageCompositions(timing, compositions).beat).toEqual(
+      picture,
+    );
+    expect(
+      await player.setSoundtrack(
+        mix,
+        bytes,
+        await digest(),
+        timing,
+        compositions,
+      ),
+    ).toBe(true);
+    expect(await player.play(timing, 0, true, compositions)).toBe(true);
+    context.source.start.mockClear();
+    picture.markers[0]!.frame = 7;
+    await expect(player.play(timing, 0, true, compositions)).rejects.toThrow(
+      /mapped native marker/,
+    );
+    expect(context.source.start).not.toHaveBeenCalled();
+  });
+});
 describe("rendered soundtrack playback via a Web Audio API harness (no browser DSP)", () => {
   it("uses the full checked buffer, seeks on integer samples and shares the passage clock", async () => {
     const { context, player } = setup();

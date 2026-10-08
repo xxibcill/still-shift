@@ -9,6 +9,7 @@ import {
   CompositionSaveError,
   readEditRequest,
   editableDocument,
+  sendCompositionEditError,
 } from "../../tools/still-shift-cli/src/composition/save.ts";
 import { validateComposition } from "../../packages/scene-contract/src/index.ts";
 import { readCompositionSource } from "../../packages/animation-engine/src/composition-source.ts";
@@ -274,10 +275,10 @@ export const compositionApi = (): Plugin => {
                 "comp-edit-busy",
                 "A composition export is already running",
               );
-            const base = JSON.parse(text),
-              assets = await captureCompositionAssets(await source(scene));
             exporting = true;
             try {
+              const base = JSON.parse(text),
+                assets = await captureCompositionAssets(await source(scene));
               await exportCompositionDraft(
                 body.document,
                 base,
@@ -301,6 +302,10 @@ export const compositionApi = (): Plugin => {
             return send(response, 404, "Unknown composition asset");
           send(response, 200, await readFile(path), types[extname(path)]);
         })().catch((error: unknown) => {
+          if (url.pathname === "/composition/export") {
+            sendCompositionEditError(response, error);
+            return;
+          }
           if (!response.headersSent && !response.destroyed)
             send(
               response,

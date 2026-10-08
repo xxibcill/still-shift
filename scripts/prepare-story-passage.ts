@@ -76,6 +76,8 @@ try {
     throw new Error("--backend must be canvas2d or webgl2");
   if (values.renderer === "legacy" && values.backend !== "canvas2d")
     throw new Error("--backend webgl2 requires --renderer composition");
+  if (values["composition-beats"] && values.renderer !== "composition")
+    throw new Error("--composition-beats requires --renderer composition");
   const passage = await readStoryPassage(
     values.plan,
     format ? { format } : undefined,
@@ -102,19 +104,16 @@ try {
     range.end <= range.start
   )
     throw new Error("Invalid half-open preview frame range");
+  // Validate native picture files before writing outputs, including --prepare-only.
+  const compositions = values["composition-beats"]
+    ? await loadPassageCompositions(values["composition-beats"], passage)
+    : undefined;
   if (narration) await verifyPassageNarration(passage, narration);
   if (!values.resume) await writePreparedPassage(output, passage);
   let report: Awaited<ReturnType<typeof renderStoryPassage>> | undefined;
   if (!values["prepare-only"])
     report = await renderStoryPassage(output, passage, narration, {
-      ...(values["composition-beats"]
-        ? {
-            compositions: await loadPassageCompositions(
-              values["composition-beats"],
-              passage,
-            ),
-          }
-        : {}),
+      ...(compositions ? { compositions } : {}),
       renderer: values.renderer as "legacy" | "composition",
       backend: values.backend as "canvas2d" | "webgl2",
 
