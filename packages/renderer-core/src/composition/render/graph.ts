@@ -891,6 +891,7 @@ class GraphBuilder {
           color: state.color!,
         };
       case "image":
+        if (layer.sampling === "linear-srgb") this.spatial = true;
         return {
           type: "image",
           width: layer.size[0],
@@ -922,6 +923,7 @@ class GraphBuilder {
             : {}),
         };
       case "depth-image":
+        this.spatial = true;
         return {
           shaderVersion: DEPTH_IMAGE_SHADER_VERSION,
           sourceSize: imageAssetSize(this.comp, layer.sourceAsset),

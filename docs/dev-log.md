@@ -45,9 +45,9 @@ still hold before relying on them.
 
 - **PR #47 review repairs in progress (2026-10-08):** isolated
   `codex/pr47-review-fixes` from reviewed `ed4034c`. All six findings are posted
-  inline. Boxed/container legacy text is repaired with 19 focused units and
-  50 native/oracle pixel and reverse-seek comparisons on both backends. Five
-  repairs and final focused browser/export/frozen-baseline verification remain.
+  inline. Boxed/container text and GPU-only image-plane preflight are repaired;
+  each passes 19 focused units, and text passes 50 native/oracle pixel and
+  reverse-seek comparisons on both backends. Four repairs and final focused browser/export/frozen-baseline verification remain.
   One finding per commit; one final normal push. Owner CE15 checkout is untouched;
   no new full repository gate is claimed. [Evidence](./pr-47-fix-results.json).
 
@@ -973,11 +973,13 @@ _Last updated 2026-10-08 by Codex for PR #47 conflict resolution._
 - **Agent / branch:** Codex on isolated `codex/pr47-review-fixes`, from `ed4034c`.
 - **Scope:** six posted inline review findings, one finding per commit.
 - **Done:** boxed/container legacy text uses existing bounded local text providers;
-  adapter and illustrated identities invalidate prior preparation caches.
-- **Results:** 19 focused units, build and 50 sampled native/oracle frames with
+  pure 2D image planes preflight backend/storage capability before painting,
+  including every shutter sample. Adapter and renderer identities invalidate caches.
+- **Results:** text and image-plane preflight each pass 19 focused units; build
+  and 50 sampled native/oracle frames with
   reverse seeks pass; Canvas delta 0 and WebGL delta 1. Independent source review
   has no remaining finding in this repair. No full repository gate was run.
-- **Open / next:** finish five repairs, scoped browser/export/frozen-baseline checks,
+- **Open / next:** finish four repairs, scoped browser/export/frozen-baseline checks,
   then push all six commits once. No owner decision blocks these authorized fixes.
 - **Records:** [repair evidence](./pr-47-fix-results.json),
   [inline review](https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5452665143).

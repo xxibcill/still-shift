@@ -38,11 +38,24 @@
           "command": "pnpm build",
           "status": "pass-checkpoint"
         }
-      ]
+      ],
+      "commit": "b31682d281ca87771a5c2de5c966e307fe44a8e5"
     },
     {
       "id": 2,
-      "status": "pending"
+      "title": "Image-plane backend preflight",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4215761580",
+      "status": "implemented-focused-verified",
+      "change": "Pure 2D depth/linear image planes mark graph capability work; static compile flag preflights every shutter sample without allocating 3D evaluator geometry. Canvas1.44.2/WebGL0.65.2 enter cache identity.",
+      "checks": [
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-image-plane-backend.test.ts tests/unit/composition-depth-graph.test.ts tests/unit/composition-depth-image.test.ts --maxWorkers=2 --no-file-parallelism",
+          "status": "pass",
+          "tests": 19,
+          "newTests": 6,
+          "scope": "Unsupported Canvas before clear/accumulate, supported surface-budget failures, local 2D/depth graph regressions."
+        }
+      ]
     },
     {
       "id": 3,
