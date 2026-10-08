@@ -43,16 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE15 final acceptance in progress (2026-10-09):** production checkpoint `21817411`
-  passes a 3.408× two-minute speed proof with identical encoded/frame/audio output.
-  The full gate passes all CE15 browser checks but stops at legacy depth startup:
-  a short native renderer string incorrectly reserved 1 GiB. The repair uses
-  actual returned-text admission, preserving queries, diagnostics and cleanup.
-  44 focused tests, vertical/general exports, 30 golden comparisons, complete
-  depth acceptance and all 176 frozen baseline items (36,061 frames) pass.
-  Repair `7b889399` is pushed. The browser diagnostic oracle is now aligned
-  with actual-size admission and passes the full surface suite. Only tests and
-  records changed after the speed proof; the complete gate remains required.
+- **CE15 final acceptance in progress (2026-10-09):** production checkpoint
+  `21817411` passes a 3.408× two-minute proof with exact encoded/frame/audio output.
+  Delivery, cache, worker/memory and native loading/text repairs are implemented.
+  Focused depth acceptance, 176 frozen baselines and the corrected native surface
+  suite pass. The latest gate hit a preview test's five-second outer timeout,
+  shorter than its six-second assertion; the outer budget is repaired and all 17
+  preview integrations pass. Production is unchanged; a complete gate is pending.
   [Completion evidence](./composition-ce15-completion-results.json).
 - **Owner continuation (2026-10-09):** finish CE15, commit and push, then create
   a new branch and complete CE14 (mesh warp and puppet pins), following the
@@ -88,6 +85,16 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE15 preview recovery test budget
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `6868dfea`.
+- **Done:** allow setup around the existing six-second missing-dependency recovery
+  assertion; its previous five-second outer test budget could cancel it early.
+- **Results:** all 17 preview integrations and changed-file lint pass. No
+  production code or recovery timing requirement changed.
+- **Next:** complete the full local gate, then continue CE14 on a new branch.
+- **Record:** [completion evidence](./composition-ce15-completion-results.json).
 
 ### 2026-10-09 — CE15 native diagnostic browser regression
 

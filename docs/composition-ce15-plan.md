@@ -2543,6 +2543,15 @@ Depth storage checks use a normal 128 KiB metadata quota. Typecheck, helper lint
 and the complete surface suite pass. Only tests and records changed after this
 speed proof; production code is unchanged.
 
+## Preview test budget — 2026-10-09
+
+The `6868dfea` gate passed 3,556 units and 83 runtime tests; 313/314 integrations
+passed, with one preview recovery case cancelled by its outer five-second test
+budget before the existing six-second poll expired. Isolated recovery passed.
+The outer budget now allows setup, while the six-second assertion is unchanged.
+All 17 preview integration tests pass. This is a test-only repair; production and
+the `21817411` speed proof remain unchanged.
+
 ## Remaining acceptance
 
 Complete the required pinned local `pnpm check` on the repaired checkpoint.

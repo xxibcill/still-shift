@@ -320,6 +320,7 @@ it.each([
       .poll(() => session.snapshot()?.composition.frameCount, { timeout: 6000 })
       .toBe(24);
   },
+  10000, // Allow setup plus the unchanged six-second watcher recovery assertion.
 );
 
 it("rebuilds CommonJS helper and transitive JSON data edits", async () => {

@@ -332,6 +332,20 @@
       "failure": "surface browser helper still expected old maximum-V8-string diagnostic denial before native log query",
       "repair": "test exact native diagnostic, actual retained capacity, cache reuse and handle cleanup; normal 128 KiB depth metadata test quota",
       "productionChanged": false
+    },
+    {
+      "name": "gate",
+      "command": "pnpm check",
+      "checkpoint": "6868dfeadac19f51668568f3165493a4f5870a23",
+      "status": "failed",
+      "startedAt": "2026-10-09T02:18:50+0700",
+      "log": "/private/tmp/ce15-6868dfea-gate.log",
+      "exitCode": 1,
+      "elapsedSeconds": 414.1855980840046,
+      "finishedAt": "2026-10-09T02:25:44+0700",
+      "failure": "TypeScript preview missing-dependency recovery test hit outer five-second timeout, shorter than its six-second poll assertion",
+      "repair": "ten-second enclosing budget for four parameterized cases; preserve six-second recovery poll; all 17 preview integration tests pass",
+      "productionChanged": false
     }
   ],
   "nativeLoaderCheckpoint": {
@@ -408,5 +422,13 @@
       "/private/tmp/ce15-native-text-browser-static.log": "a7b7f717ddde363a75de3369b8e1fb6be1b450099a8c470912751ab671998849",
       "/private/tmp/ce15-native-text-browser-surfaces.log": "2e83cd89b75eb96a650e451a1f0149d9d46a03c97752954bf31ebae5d992c158"
     }
+  },
+  "previewHarnessRepair": {
+    "status": "passed",
+    "tests": 17,
+    "changed": "outer test timeout only",
+    "preserved": "6000 ms recovery assertion",
+    "log": "/private/tmp/ce15-preview-timeout-fixed.log",
+    "logSha256": "38c43f4145a4c50961eb2afe8632684bf4391013fa4f80b567ed06e3d4882e67"
   }
 }

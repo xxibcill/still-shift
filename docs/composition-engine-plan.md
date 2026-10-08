@@ -5556,21 +5556,18 @@ decode-back pixel check.
 (frames on both sides of a boundary), cancellation during parallel export.
 
 **Final acceptance in progress (2026-10-09):** all CE15 features are implemented.
-Production checkpoint `21817411` passes the two-minute proof at **3.408×** with identical
-encoded/frame/audio output. Its full gate passes all CE15 suites, including all
-formats, parallel cleanup, dependency caches, frame-rate/audio and 8192² checks,
-then exposes an oversized native-text reservation in legacy depth initialization.
-Repair `7b889399` passes 44 focused tests, vertical/general exports, golden
-parity, complete depth acceptance and 176 frozen baseline items (36,061 frames).
-The browser diagnostic oracle is aligned with actual-size admission and passes
-the complete surface suite. Production code is unchanged after the speed proof;
-the final complete gate remains required.
+Production checkpoint `21817411` passes the two-minute proof at **3.408×** with
+identical encoded/frame/audio output. Focused output, cache, parallel/memory,
+maximum-area, native loader/text, depth and frozen-baseline checks pass. Final
+gate attempts and their repairs are recorded; no complete gate is claimed yet.
+The latest test-only repair preserves the six-second preview recovery assertion
+while giving its enclosing test enough setup time; all 17 preview tests pass.
 
 Counters cover declared application allocations and retained native-returned
 text; native driver production and process RSS are separate. See the
 [delivery plan](./composition-ce15-plan.md) and
 [completion evidence](./composition-ce15-completion-results.json).
-After CE15 is complete and pushed, the owner requests a new branch for CE14.
+After CE15 is complete and pushed, continue CE14 on a new branch as requested.
 
 **Completion record:** _to be filled in._
 
