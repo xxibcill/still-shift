@@ -39,7 +39,11 @@ export async function checkTransitionEffectRendering(
     },
     selectedKinds,
   );
-  return { ...matrix, coverageOracles: checkTransitionCoverageOracles() };
+  return {
+    ...matrix,
+    coverageOracles: checkTransitionCoverageOracles(),
+    mapChains: checkTransitionMapRendering(),
+  };
 }
 
 import { createCompositionPreview } from "../../packages/renderer-core/src/index.ts";
@@ -129,6 +133,103 @@ function checkTransitionCoverageOracles() {
           `Transition coverage oracle ${effect}/${variant}: ${maxDelta}`,
         );
       rows.push({ effect, case: variant, maxDelta });
+    }
+  }
+  return rows;
+}
+
+/** A one-byte coverage error in a translucent map must not shift the final image. */
+export function checkTransitionMapRendering() {
+  const rows = [];
+  for (const progress of [0, 1 - 233 / 255, 0.5, 1]) {
+    const comp: Composition = {
+      schemaVersion: "composition-1",
+      id: "transition-map-chain",
+      width: 128,
+      height: 16,
+      fps: 24,
+      frameCount: 4,
+      assets: [],
+      background: "#000000",
+      layers: [
+        {
+          id: "stripes",
+          type: "precomp",
+          comp: "stripes",
+          transform: { anchor: [0, 0] },
+          effects: [
+            {
+              id: "displace",
+              effect: "distort.displacement-map",
+              inputs: { map: "map" },
+              params: { amount: [1000, 0], channelX: 0 },
+            },
+          ],
+        },
+        {
+          id: "map",
+          type: "solid",
+          enabled: false,
+          size: [128, 16],
+          color: "#5a000011",
+          transform: { anchor: [0, 0] },
+          effects: [
+            {
+              id: "wipe",
+              effect: "transition.venetian-blinds",
+              params: { width: 1, angle: 0, softness: 1, progress },
+            },
+          ],
+        },
+      ],
+      precomps: [
+        {
+          id: "stripes",
+          width: 128,
+          height: 16,
+          frameCount: 4,
+          layers: Array.from({ length: 32 }, (_, stripe) => ({
+            id: `stripe${stripe}`,
+            type: "solid" as const,
+            size: [4, 16] as [number, number],
+            color: stripe % 2 ? "#000000" : "#ffffff",
+            transform: {
+              anchor: [0, 0] as [number, number],
+              position: [stripe * 4, 0] as [number, number],
+            },
+          })),
+        },
+      ],
+    };
+    const reference = createCompositionPreview(
+      document.createElement("canvas"),
+      comp,
+      { images: new Map(), fonts: new Map() },
+    );
+    const gpu = createCompositionPreview(
+      document.createElement("canvas"),
+      comp,
+      { images: new Map(), fonts: new Map() },
+      { backend: "webgl2" },
+    );
+    let maxDelta = 0;
+    try {
+      for (const frame of [0, 3, 1, 0]) {
+        reference.renderFrame(frame);
+        gpu.renderFrame(frame);
+        const expected = reference.readPixels(),
+          actual = gpu.readPixels();
+        for (let i = 0; i < actual.length; i++)
+          maxDelta = Math.max(maxDelta, Math.abs(actual[i]! - expected[i]!));
+      }
+      if (maxDelta > 1)
+        throw Error(
+          `Transition displacement-map chain exceeds software parity: ${maxDelta}`,
+        );
+      rows.push({ progress, frames: 4, maxDelta });
+    } finally {
+      reference.dispose();
+      gpu.dispose();
     }
   }
   return rows;

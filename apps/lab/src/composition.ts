@@ -22,18 +22,17 @@ import {
 import { createCompositionInspector } from "./composition-inspector.ts";
 import { createCompositionOverlay } from "./composition-overlay.ts";
 import { createPreviewSession } from "./preview-session.ts";
+import {
+  retainProgramSnapshot,
+  releaseProgramSnapshot,
+  type OwnedProgramSnapshot,
+} from "./composition-program-assets.ts";
+import { passageDiagnostics } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
+import type { ProgramSnapshot } from "../../../tools/still-shift-cli/src/composition/preview.ts";
 
 const programMode = new URLSearchParams(location.search).has("program");
 type ProgramResponse = {
-  snapshot?: {
-    revision: number;
-    composition: Composition;
-    document?: Composition;
-    sourceSha256?: string;
-    source: "json" | "builder";
-    input: string;
-    assets: Record<string, string>;
-  };
+  snapshot?: ProgramSnapshot & { lease?: string };
   diagnostics: { code: string; path: string; message: string }[];
 };
 
@@ -79,6 +78,7 @@ function describeRenderer(backend: CompositionBackend) {
 const lintButton = el<HTMLButtonElement>("lint");
 let lintFindings: MotionLintDiagnostic[] = [];
 let lintAbort: AbortController | undefined;
+let lintAvailable = false;
 function showLint(report: ReturnType<typeof analyzeCompositionQuality>) {
   lintFindings = report.diagnostics;
   const errors = lintFindings.filter((d) => d.severity === "error").length;
@@ -222,11 +222,26 @@ const session = createPreviewSession<CompositionSnapshot>({
     );
     el("command").textContent =
       `pnpm --silent still-shift comp render --input ${program ? JSON.stringify(program.input) : `benchmarks/fixtures/composition/${snapshot.path}`} --output ${comp.id}.mp4 --backend ${snapshot.backend}`;
-    showLint(
-      analyzeCompositionQuality(comp, {
-        evaluation: { textBounds: preview.textBounds },
-      }),
-    );
+    // Lint is advisory: a lint failure must not stop the composition previewing.
+    lintAvailable = false;
+    try {
+      showLint(
+        analyzeCompositionQuality(comp, {
+          evaluation: { textBounds: preview.textBounds },
+        }),
+      );
+      lintAvailable = true;
+    } catch (cause) {
+      lintFindings = [];
+      el("lint-timeline").replaceChildren();
+      el("lint-findings").replaceChildren();
+      const diagnostics = passageDiagnostics(cause);
+      el("lint-summary").textContent = `Motion checks unavailable: ${
+        diagnostics.length
+          ? diagnostics.map((d) => `${d.code}: ${d.message}`).join("; ")
+          : String(cause instanceof Error ? cause.message : cause)
+      }`;
+    }
     status.textContent = `Ready: ${comp.name ?? comp.id} · ${comp.width} × ${comp.height} · ${comp.fps} fps${program?.source === "builder" ? " · edit the source to change motion" : ""}`;
     status.dataset.ready = snapshot.path;
     status.dataset.backend = snapshot.backend;
@@ -305,6 +320,7 @@ async function load(
   lintAbort?.abort();
   error.textContent = "";
   status.textContent = `Loading ${path}…`;
+  let retainedProgram: OwnedProgramSnapshot | undefined;
   const accepted = await session.load(async (ownership) => {
     const query = `scene=${encodeURIComponent(path)}`;
     const response = edit.document
@@ -323,8 +339,10 @@ async function load(
             .map((d) => `${d.code} ${d.path}: ${d.message}`)
             .join("\n"),
         );
-      program = payload.snapshot;
-      if (!program) throw new Error("No valid composition is available yet.");
+      if (!payload.snapshot)
+        throw new Error("No valid composition is available yet.");
+      retainedProgram = await retainProgramSnapshot(payload.snapshot);
+      program = retainedProgram;
       value = program.document ?? program.composition;
     } else {
       if (!response!.ok) throw new Error(`Cannot load ${path}`);
@@ -366,6 +384,8 @@ async function load(
       backend,
       program,
       accept() {
+        if (currentProgram?.lease !== program?.lease)
+          releaseProgramSnapshot(currentProgram);
         currentProgram = program;
         if (edit.proposal) nextHistory.commit(edit.proposal);
         documentHistory = nextHistory;
@@ -394,13 +414,16 @@ async function load(
     );
     return { snapshot, initialFrame: retainedFrame };
   });
+  if (!accepted) releaseProgramSnapshot(retainedProgram);
   select.disabled = programMode;
   saveButton.disabled =
     currentProgram?.source === "builder" || !documentHistory;
+  lintButton.disabled ||= !lintAvailable;
   return accepted;
 }
 
 lintButton.onclick = async () => {
+  if (!lintAvailable) return;
   const run = generation,
     at = session.frame;
   await session.export(async (snapshot) => {
@@ -498,7 +521,9 @@ saveButton.onclick = async () => {
               .map((d) => `${d.code}: ${d.message}`)
               .join("\n") || "Save failed",
           );
-        currentProgram = payload.snapshot;
+        const savedProgram = await retainProgramSnapshot(payload.snapshot);
+        releaseProgramSnapshot(currentProgram);
+        currentProgram = savedProgram;
         const snapshot = session.snapshot;
         if (snapshot) snapshot.program = currentProgram;
         documentHistory.markSaved();
@@ -511,6 +536,7 @@ saveButton.onclick = async () => {
     })
     .finally(() => {
       saveButton.disabled = currentProgram?.source === "builder";
+      lintButton.disabled ||= !lintAvailable;
     });
 };
 exportButton.onclick = () => {
@@ -527,18 +553,27 @@ exportButton.onclick = () => {
             "x-still-shift-composition": "1",
           },
           body: JSON.stringify({
-            revision: currentProgram?.revision,
+            revision: snapshot.program?.revision,
+            lease: snapshot.program?.lease,
             document: snapshot.document,
             backend: snapshot.backend,
           }),
         },
       );
-      if (!response.ok) throw new Error(await response.text());
+      if (!response.ok) {
+        const payload = (await response.json()) as ProgramResponse;
+        throw new Error(
+          payload.diagnostics
+            .map((d) => `${d.code} ${d.path}: ${d.message}`)
+            .join("\n"),
+        );
+      }
       download(await response.blob(), `${snapshot.composition.id}.mp4`);
       return "MP4 exported with the pinned software renderer.";
     })
     .finally(() => {
       saveButton.disabled = currentProgram?.source === "builder";
+      lintButton.disabled ||= !lintAvailable;
     });
 };
 
@@ -587,6 +622,7 @@ if (programMode) {
         })
         .finally(() => {
           select.disabled = programMode;
+          lintButton.disabled ||= !lintAvailable;
         });
     },
   );

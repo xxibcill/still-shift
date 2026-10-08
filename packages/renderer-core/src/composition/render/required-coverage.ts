@@ -33,9 +33,11 @@ export function validateRequiredCompositionCoverage<S extends Surface>(
   backend: RenderBackend<S>,
   options: EvaluationOptions = {},
   severity: "error" | "warning" = "error",
+  requiredRootLayers: ReadonlyMap<string, string> = new Map(),
 ): PassageDiagnostic[] {
   const scopes = [comp, ...(comp.precomps ?? [])];
   if (
+    !requiredRootLayers.size &&
     !scopes.some((scope) =>
       scope.layers.some((layer) => layer.coverage === "required"),
     )
@@ -54,7 +56,13 @@ export function validateRequiredCompositionCoverage<S extends Surface>(
   ) => {
     for (const state of tree.layers) {
       const node = route + state.id;
-      if (state.layer.coverage === "required" && !failed.has(node)) {
+      const declarationPath =
+        route === "" ? requiredRootLayers.get(state.id) : undefined;
+      if (
+        (state.layer.coverage === "required" ||
+          declarationPath !== undefined) &&
+        !failed.has(node)
+      ) {
         const graph = buildLayerRenderGraph(
           comp,
           tree,
@@ -77,10 +85,11 @@ export function validateRequiredCompositionCoverage<S extends Surface>(
         }
         if (pixel) {
           const message = `Required camera coverage on ${node} exposes the owning scope at frame ${frame}, pixel ${pixel[0]},${pixel[1]}`;
-          if (severity === "error")
+          const path = declarationPath ?? node + ".coverage";
+          if (severity === "error" || declarationPath !== undefined)
             passageError("comp-camera-coverage", message, {
               node,
-              path: node + ".coverage",
+              path,
               frame,
             });
           diagnostics.push({
@@ -88,7 +97,7 @@ export function validateRequiredCompositionCoverage<S extends Surface>(
             severity,
             message,
             node,
-            path: node + ".coverage",
+            path,
             frame,
           });
           failed.add(node);

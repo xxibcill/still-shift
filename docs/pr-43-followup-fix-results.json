@@ -1,0 +1,190 @@
+{
+  "version": "pr-43-followup-fix-results-1",
+  "date": "2026-10-07",
+  "reviewedHead": "9b53db303d5f65d0772a5b4881d16528abd33c71",
+  "branch": "codex/pr43-followup-fixes",
+  "review": "https://github.com/xxibcill/still-shift/pull/43#pullrequestreview-5445038219",
+  "delivery": "One finding per commit, one final normal push to the existing PR branch.",
+  "findings": [
+    {
+      "id": "xyz-smooth-handles",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163500",
+      "status": "fixed",
+      "commitSubject": "fix(lab): retain XYZ velocities across Bezier segment edits",
+      "commit": "d4bb362",
+      "repair": "Materialize preserved smooth spatial handles using the authored XYZ arc-length table; retain the established XY table for two-component tracks.",
+      "red": {
+        "command": "pnpm exec vitest run tests/unit/composition-keys.test.ts --maxWorkers=1",
+        "failed": 2,
+        "passed": 38
+      },
+      "green": {
+        "command": "pnpm exec vitest run tests/unit/composition-keys.test.ts tests/unit/composition-spatial-sample.test.ts tests/unit/composition-spatial-expression-keys.test.ts --maxWorkers=2",
+        "passed": 51,
+        "coverage": "XYZ position and camera POI, smooth flag and interpolation mode, fractional samples outside the edited segment, undo/redo and serialized document validation."
+      }
+    },
+    {
+      "id": "settled-camera-optics",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163510",
+      "status": "fixed",
+      "commitSubject": "fix(composition): validate camera optics after writers settle",
+      "commit": "69fd183",
+      "repair": "Validate independent controls at every sample/write while deferring the derived zoom domain until camera expressions and motion writers settle. Preserve immediate finite/positive secondary values and final optical bounds. Advance evaluator cache identity to 48.",
+      "red": {
+        "command": "pnpm exec vitest run tests/unit/composition-camera-expression-dependencies.test.ts --maxWorkers=1",
+        "failed": 3,
+        "passed": 6
+      },
+      "green": {
+        "command": "pnpm exec vitest run tests/unit/composition-camera-expression-dependencies.test.ts tests/unit/composition-spatial-state.test.ts tests/unit/composition-spatial-properties.test.ts tests/unit/composition-spatial-scope.test.ts tests/unit/composition-spatial-integration.test.ts tests/unit/composition-expressions.test.ts --maxWorkers=2",
+        "passed": 86,
+        "coverage": "Expression insertion/layer order, root/precomp scopes, fractional/reverse reads, keyed-stage driver replacement, final derived bounds, independent control bounds and existing optical feedback cycles."
+      },
+      "attempts": "Initial test draft needed a second signal key and a case-insensitive diagnostic assertion; corrected fixtures were rerun against original production code before repair."
+    },
+    {
+      "id": "affine-effect-space-tolerance",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163530",
+      "status": "fixed",
+      "commitSubject": "fix(composition): tolerate affine effect-space roundoff",
+      "commit": "fe1ab89",
+      "repair": "Convert effect coordinate homographies with a denominator-relative 32-machine-epsilon tolerance, rejecting nonfinite/degenerate and genuinely projective relations. Advance Canvas/WebGL identities to 1.40.4/0.55.3.",
+      "red": {
+        "command": "pnpm exec vitest run tests/unit/composition-spatial-effect-space.test.ts --maxWorkers=1",
+        "failed": 2,
+        "passed": 2
+      },
+      "green": {
+        "command": "pnpm exec vitest run tests/unit/composition-spatial-effect-space.test.ts tests/unit/composition-projective-placement.test.ts tests/unit/composition-spatial-capabilities.test.ts tests/unit/composition-spatial-integration.test.ts tests/unit/composition-effect-inputs.test.ts --maxWorkers=2",
+        "passed": 32,
+        "coverage": "Identical compound-rotation planes, source anchor offsets, signed/rescaled homography identity, genuinely projective relations, invalid denominators and finite values, existing capability/placement/input tests."
+      }
+    },
+    {
+      "id": "spatial-null-effect-space",
+      "comment": "https://github.com/xxibcill/still-shift/pull/43#discussion_r4209163542",
+      "status": "fixed",
+      "commitSubject": "fix(composition): project spatial null effect coordinates",
+      "repair": "Share plane homography arithmetic between drawable planes and coordinate guides. Project spatial null guides from their evaluated world transform and their owning scope's camera, independently of bounds and visibility. Advance Canvas/WebGL/export identities to 1.40.5/0.55.4/0.6.4.",
+      "red": {
+        "command": "pnpm exec vitest run tests/unit/composition-spatial-effect-space.test.ts --maxWorkers=1",
+        "failed": 5,
+        "passed": 5
+      },
+      "green": {
+        "command": "pnpm exec vitest run tests/unit/composition-spatial-effect-space.test.ts tests/unit/composition-spatial-geometry.test.ts tests/unit/composition-projective-placement.test.ts tests/unit/composition-spatial-capabilities.test.ts tests/unit/composition-spatial-integration.test.ts tests/unit/composition-effect-inputs.test.ts --maxWorkers=2",
+        "passed": 49,
+        "coverage": "Hidden and inherited spatial null guides, affine/perspective/compound planes, source anchors, owning precomp cameras and genuine projective rejection."
+      },
+      "browser": {
+        "command": "Pinned Chromium/Vite cameraEffectSpaceAcceptance; also integrated into pnpm test:browser:composition-camera",
+        "comparisons": 28,
+        "maximumChannelDelta": 0,
+        "reverseSeeks": "exact",
+        "coverage": "Canvas/WebGL affine and nested camera guides; WebGL perspective, inherited parent and compound coplanar guide coordinates. Controls require visible sweep paint, and every comparison retains the existing maximum channel-delta-one policy."
+      },
+      "attempts": "Corrected the unit fixture's explicit source anchor before rerunning original-code red evidence. Browser fixture drafts used an unsupported fractional public preview frame and required paint at each sweep endpoint; corrected to integer frames and visible paint across each case, with every pixel comparison and reverse-seek assertion retained."
+    }
+  ],
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "dependencies": "Frozen offline worktree-local pnpm dependencies; isolated Vite/config caches.",
+    "independentReview": {
+      "standardsFindings": 0,
+      "specFindings": 0,
+      "extraChecks": "Standards review accepted 1,000 deterministic coplanar null-guide scenes; Spec review confirmed both optical expression orders and invalid final/control bounds."
+    },
+    "frozenFixturesAndVisualAssetsUnchanged": 516,
+    "requiredTestCommandsUnchanged": 57,
+    "finalGate": {
+      "command": ["pnpm", "check"],
+      "startedAt": "2026-10-07T16:37:27.903924+00:00",
+      "finishedAt": "2026-10-07T18:15:56.205997+00:00",
+      "exitCode": 0,
+      "seconds": 5908.29,
+      "log": "/private/tmp/pr43-followup-full-check.log",
+      "logSha256": "653b144afe0fa2c7fdf3840c6e2c7a05a4fc81e6531975271dae885dabc1f357",
+      "fingerprintBefore": {
+        "files": 1691,
+        "sha256": "143bb9dc41c90b0766037582bf2718d62fe5a3827c6b8825ae75592153d12d3e"
+      },
+      "fingerprintAfter": {
+        "files": 1691,
+        "sha256": "143bb9dc41c90b0766037582bf2718d62fe5a3827c6b8825ae75592153d12d3e"
+      },
+      "sourceUnchanged": true,
+      "status": "passed",
+      "requiredTestCommandsCompleted": 57,
+      "counts": {
+        "unit": 2265,
+        "runtime": 46,
+        "integration": 224,
+        "depth": 14
+      }
+    },
+    "githubActions": "disabled",
+    "rendererIdentities": {
+      "evaluator": 48,
+      "canvas": "1.40.5",
+      "webgl": "0.55.4",
+      "compositionExport": "0.6.4"
+    },
+    "environment": {
+      "profile": "chromium-software-2",
+      "browserVersion": "151.0.7922.34",
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "ffmpeg": "8.0.1",
+    "isolation": "Worktree-local pnpm/Vite caches, Python venv and soundtrack runtime; private UV cache. Browser/config/import/toolchain preflight passed before the full gate. No competing test workloads.",
+    "fullCanvasFamilies": {
+      "story": {
+        "cases": 69,
+        "frames": 14086,
+        "maximumReportedRatio": 1.1524685315707421,
+        "maximumChannelDelta": 2
+      },
+      "commerce": {
+        "cases": 127,
+        "frames": 28200,
+        "maximumReportedRatio": 1.1306818150769957,
+        "maximumChannelDelta": 1
+      },
+      "typography": {
+        "cases": 20,
+        "frames": 3367,
+        "maximumReportedRatio": 1.1223914233239818,
+        "maximumChannelDelta": 2
+      }
+    },
+    "frozenBaselines": {
+      "status": "passed without regeneration",
+      "items": 176,
+      "frames": 36061,
+      "thresholds": "unchanged"
+    },
+    "nativeCamera": {
+      "baseline": "exact",
+      "forwardFrames": 384,
+      "reverseFrames": 384,
+      "seeks": 108,
+      "exportCases": 12,
+      "repeatAndIndependentExports": "byte-identical",
+      "effectCoordinateComparisons": 28,
+      "effectCoordinateMaximumChannelDelta": 0,
+      "hardwareComparisons": 36,
+      "hardwareTiers": {
+        "exact": 33,
+        "near": 3
+      },
+      "reportSha256": "7efddf134b75119014dd5524c16162327cc8ba51fc0bdc15c776ef458f5a306d"
+    }
+  },
+  "completedDate": "2026-10-08"
+}

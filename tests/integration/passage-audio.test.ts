@@ -1,3 +1,8 @@
+import {
+  soundtrackFromPassage,
+  renderPassageSoundtrack,
+  renderSoundtrackProject,
+} from "@still-shift/animation-engine";
 import { mkdtemp, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -251,3 +256,46 @@ describe("exported passage audio", () => {
     );
   });
 });
+
+it("explicit soundtrack adapter preserves legacy plans and opt-in passage range alignment", async () => {
+  const { passage } = await fixture(),
+    before = JSON.stringify(passage.plan);
+  const project = soundtrackFromPassage(passage);
+  const path = join(directory, "adapted-project.json");
+  await writeFile(path, JSON.stringify(project));
+  expect(JSON.stringify(passage.plan)).toBe(before);
+  expect(project.clips[0]!.anchor?.reference).toEqual(
+    passage.audio!.sounds[0]!.anchor,
+  );
+  const rendered = await renderSoundtrackProject(
+    path,
+    join(directory, "adapted-full"),
+  );
+  const start = passage.audio!.sounds[0]!.start + 3,
+    end = start + 12;
+  const output = join(directory, "adapted-passage", "mix.wav");
+  await import("node:fs/promises").then((fs) =>
+    fs.mkdir(join(directory, "adapted-passage")),
+  );
+  const report = await renderPassageSoundtrack(output, passage, path, {
+    range: { start, end },
+  });
+  expect(report.soundtrack.revision).toBe(0);
+  await writeFile(path, JSON.stringify({ ...project, revision: 1 }));
+  await expect(
+    renderPassageSoundtrack(
+      join(directory, "conflicted-mix.wav"),
+      passage,
+      path,
+      { expectedRevision: 0 },
+    ),
+  ).rejects.toMatchObject({ code: "revision-conflict" });
+  await writeFile(path, JSON.stringify(project));
+  expect(await samples(output)).toEqual(
+    (await samples(join(rendered.output, "audio/mix.wav"))).slice(
+      Math.round((start / passage.plan.fps) * 48000) * 2,
+      Math.round((end / passage.plan.fps) * 48000) * 2,
+    ),
+  );
+  expect(JSON.stringify(passage.plan)).toBe(before);
+}, 10000);

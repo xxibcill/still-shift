@@ -1,0 +1,201 @@
+{
+  "date": "2026-10-07",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/40",
+  "reviewedHead": "e907d1683d99796e8efe27342cc3150d550dab7c",
+  "branch": "codex/pr40-clock-fixes",
+  "delivery": "One finding per commit; one normal push to the existing PR head after final verification.",
+  "status": "complete",
+  "findings": [
+    {
+      "id": "content-clock-echo-bake",
+      "comment": "https://github.com/xxibcill/still-shift/pull/40#discussion_r4203762759",
+      "status": "fixed",
+      "commitSubject": "fix(composition): preserve content clocks in echo baking",
+      "change": "Select historical primitive-blur dependencies using the shared layerContentTime and the owning scope FPS, including group ancestors. Incompatible inherited history returns comp-bake-time; compatible positive content blur still suppresses unused inherited history.",
+      "reproduction": {
+        "frame": 16,
+        "controls": ["holdFrame: 2", "posterizeFps: 1"],
+        "sourceGhostRadius": 32,
+        "incorrectBakedGhostRadius": 30,
+        "backends": ["canvas2d", "webgl2"],
+        "changedRgbaChannels": 9444,
+        "maximumChannelDelta": 2,
+        "withoutControl": "exact original/baked pixels"
+      },
+      "regressions": {
+        "red": {
+          "failed": 4,
+          "existingPassed": 49,
+          "log": "benchmarks/results/pr40-clock-fixes/first-red.log"
+        },
+        "green": {
+          "tests": 98,
+          "files": 6,
+          "log": "benchmarks/results/pr40-clock-fixes/first-green.log"
+        },
+        "coverage": [
+          "held and posterized inactive overrides reject incompatible inherited blur history",
+          "held and posterized active overrides preserve compatible echo graphs on random/reverse seeks",
+          "input remains unchanged on bake rejection"
+        ]
+      },
+      "checks": {
+        "build": "passed",
+        "changedFileLint": "passed",
+        "boundaries": "passed"
+      },
+      "commit": "3afebc9e3817ae96fd1fc72174c18fb98d9bbea2"
+    },
+    {
+      "id": "explicit-loop-clock-override",
+      "comment": "https://github.com/xxibcill/still-shift/pull/40#discussion_r4203762768",
+      "status": "fixed",
+      "commitSubject": "fix(composition): honor explicit loop clock overrides",
+      "change": "Select own-property instance clock overrides before lazy loop mapping/validation, retaining finite raw host remaps and the unchanged source clamp. Evaluator version 33 separates passage/export caches.",
+      "regressions": {
+        "red": {
+          "failed": 3,
+          "existingPassed": 15,
+          "log": "benchmarks/results/pr40-clock-fixes/second-red.log"
+        },
+        "green": {
+          "tests": 101,
+          "files": 6,
+          "log": "benchmarks/results/pr40-clock-fixes/second-green.log"
+        },
+        "coverage": [
+          "cycle and pingpong",
+          "zero and source-range clamps",
+          "raw remap preservation",
+          "inherited properties do not override",
+          "nested routes and reused source instances",
+          "reverse/random seeks and input immutability"
+        ]
+      }
+    }
+  ],
+  "finalVerification": {
+    "status": "passed selected acceptance",
+    "fullGate": "No complete pnpm check on this code claimed; historical full gates retain their recorded snapshots.",
+    "fast": {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitTests": 1914,
+      "files": 156,
+      "log": "benchmarks/results/pr40-clock-fixes/check-fast.log"
+    },
+    "integration": {
+      "status": "passed",
+      "tests": 41,
+      "files": 5,
+      "log": "benchmarks/results/pr40-clock-fixes/integration.log",
+      "scope": [
+        "composition-program",
+        "composition-program-cli",
+        "composition-preview",
+        "composition-save",
+        "composition-inspector-code"
+      ]
+    },
+    "browserGroups": [
+      {
+        "command": ["pnpm", "test:browser:composition-exposure"],
+        "exitCode": 0,
+        "seconds": 23.69,
+        "log": "benchmarks/results/pr40-clock-fixes/test-browser-composition-exposure.log"
+      },
+      {
+        "command": ["pnpm", "test:browser:composition-expressions"],
+        "exitCode": 0,
+        "seconds": 16.33,
+        "log": "benchmarks/results/pr40-clock-fixes/test-browser-composition-expressions.log"
+      },
+      {
+        "command": ["pnpm", "test:browser:composition-quality"],
+        "exitCode": 0,
+        "seconds": 9.11,
+        "log": "benchmarks/results/pr40-clock-fixes/test-browser-composition-quality.log"
+      },
+      {
+        "command": ["pnpm", "test:browser:composition-baselines"],
+        "exitCode": 0,
+        "seconds": 295.28,
+        "log": "benchmarks/results/pr40-clock-fixes/test-browser-composition-baselines.log"
+      }
+    ],
+    "clockRegressionBrowser": {
+      "status": "passed",
+      "incompatibleControls": ["holdFrame: 2", "posterizeFps: 1"],
+      "rejection": "comp-bake-time",
+      "compatiblePixelObservations": 144,
+      "maximumChannelDelta": 0,
+      "loopOverrideSourceTime": 5,
+      "rawRemap": "preserved",
+      "log": "benchmarks/results/pr40-clock-fixes/clock-browser-acceptance.log",
+      "results": "benchmarks/results/pr40-clock-fixes/clock-browser-acceptance.json"
+    },
+    "nativeCE7": {
+      "status": "passed",
+      "fixtureFrames": 96,
+      "reverseFrames": 96,
+      "randomSeeksPerFixture": 11,
+      "backendMaximumChannelDelta": 0,
+      "analyticMaximumChannelDelta": 1,
+      "hardwareComparisons": 12,
+      "hardwareMaximumChannelDelta": 1,
+      "storedBaselines": "exact",
+      "exports": "Both fixtures/backends repeated MP4, independent preview MP4 and raw/PNG bytes identical; both legacy 60-frame exposure/indexed MP4 checks pass."
+    },
+    "frozenBaselines": {
+      "status": "passed",
+      "items": 176,
+      "frames": 36061,
+      "comparison": "every stored frame hash exact; no regeneration"
+    },
+    "notRun": [
+      "Complete pnpm check",
+      "Python/depth/soundtrack suites",
+      "Serial sample-cost profiling",
+      "Full strict family timing matrices"
+    ]
+  },
+  "frozenBaselines": "not regenerated",
+  "githubActions": "disabled",
+  "preflight": {
+    "status": "passed",
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "uv": "0.7.12",
+    "ffmpeg": "8.0.1",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "chromiumVersion": "151.0.7922.34",
+    "viteCaches": "worktree-local optimizer/config paths; no shared owner verification caches",
+    "viteLoader": "configured bundle loader passed",
+    "log": "benchmarks/results/pr40-clock-fixes/preflight.log",
+    "rejectedProbes": [
+      {
+        "probe": "optional bare-native Vite config loader",
+        "result": "existing ElevenLabsSfxError parameter property cannot be stripped by bare Node; configured Vite bundle loader passes. No unrelated code change.",
+        "log": "benchmarks/results/pr40-clock-fixes/preflight-bare-native-failed.log"
+      },
+      {
+        "probe": "historical conflict-repair Python path",
+        "result": "no environment remains at that path; pinned Python/depth imports verified read-only using the existing owner environment."
+      }
+    ],
+    "pythonVersion": "3.12.11",
+    "pythonEnvironment": "Pinned 3.12.11 version and depth imports checked read-only; selected acceptance does not execute Python workers.",
+    "dependencies": "Worktree-local copies of pinned dependencies, with local workspace links and separate optimizer/config caches."
+  },
+  "independentReview": {
+    "standards": "passed; no material findings",
+    "spec": "passed; both original analytic probes independently rerun and repaired"
+  },
+  "fingerprint": {
+    "files": 1464,
+    "sha256": "d148046dab07cb662143abfaffc0c8d9da99fe35b02ebbfc2b41feb39f193b11",
+    "algorithm": "sorted tracked path, NUL, and binary file SHA256; excluding docs/, AGENTS.md, README.md, ROADMAP.md",
+    "verifiedAfterAllAcceptance": true
+  }
+}

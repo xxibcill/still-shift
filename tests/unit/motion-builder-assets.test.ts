@@ -84,6 +84,7 @@ it("returns located missing-file, invalid-image and native asset errors", async 
     } catch (error) {
       expect(error).toBeInstanceOf(BuilderError);
       expect((error as BuilderError).code).toBe(code);
+      expect((error as BuilderError).dependencies).toEqual([path]);
       expect((error as BuilderError).location.file).toContain(
         "motion-builder-assets.test.ts",
       );
@@ -111,12 +112,12 @@ it("hashes font assets and validates weights and variable-axis bounds", async ()
   });
   await expect(
     fontAsset("font", path, { weight: "bad" }),
-  ).rejects.toMatchObject({ code: "comp-builder-asset" });
+  ).rejects.toMatchObject({ code: "comp-builder-asset", dependencies: [path] });
   await expect(
     fontAsset("font", path, {
       variable: { wght: { min: 100, default: 950, max: 900 } },
     }),
-  ).rejects.toMatchObject({ code: "comp-builder-asset" });
+  ).rejects.toMatchObject({ code: "comp-builder-asset", dependencies: [path] });
 });
 
 it("infers SVG viewport aspect ratio from a single dimension without reading data-width", async () => {

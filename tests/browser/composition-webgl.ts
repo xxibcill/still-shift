@@ -1,3 +1,5 @@
+import type * as TextInputChecks from "../helpers/composition-text-input-reference.ts";
+import type * as InputEchoChecks from "../helpers/composition-input-echo-reference.ts";
 import type * as CapturedHistoryChecks from "../helpers/composition-captured-history-reference.ts";
 import type * as LargeBlurChecks from "../helpers/composition-large-blur-reference.ts";
 import type * as LinearChecks from "../helpers/composition-linear-reference.ts";
@@ -20,6 +22,7 @@ import assert from "node:assert/strict";
 import { resolve } from "node:path";
 import { createServer } from "vite";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
+import type * as Exposure from "../helpers/composition-webgl-exposure.ts";
 import type * as Rational from "../helpers/composition-webgl-float-sum.ts";
 import type * as Checks from "../helpers/composition-webgl-reference.ts";
 import type * as VectorPaints from "../helpers/composition-webgl-vector-paints.ts";
@@ -28,6 +31,7 @@ import type * as Png from "../helpers/composition-webgl-png.ts";
 import type * as Blur from "../helpers/composition-webgl-blur.ts";
 import type * as Performance from "../helpers/composition-webgl-performance.ts";
 import type * as StoryImages from "../helpers/composition-webgl-story-images.ts";
+import type * as DisjointPaints from "../helpers/composition-webgl-disjoint-paints.ts";
 const server = await createServer({
   root: resolve(import.meta.dirname, "../.."),
   configFile: false,
@@ -47,6 +51,23 @@ try {
     ).checkProviderShadowPaints();
   });
   console.log("WebGL provider shadow paints:", JSON.stringify(providerShadows));
+  const sourceEcho = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-input-echo-reference.ts";
+    return (
+      (await import(url)) as typeof InputEchoChecks
+    ).checkCapturedSourceEchoPixels();
+  });
+  console.log("WebGL hidden source echoes:", JSON.stringify(sourceEcho));
+  const animatedInputs = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-text-input-reference.ts";
+    return (
+      (await import(url)) as typeof TextInputChecks
+    ).checkAnimatedTextInputRendering();
+  });
+  console.log(
+    "WebGL hidden animated text inputs:",
+    JSON.stringify(animatedInputs),
+  );
   const largeBlur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-large-blur-reference.ts";
     return (
@@ -265,6 +286,23 @@ try {
     ).checkTurbulentQuotients();
   });
   console.log("WebGL turbulent quotient:", JSON.stringify(noiseQuotients));
+  const disjoint = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-disjoint-paints.ts";
+    return (
+      (await import(url)) as typeof DisjointPaints
+    ).checkWebglDisjointPaints();
+  });
+  console.log("WebGL disjoint paint exactness:", disjoint);
+  const exposure = await page.evaluate(async () => {
+    const url = "/tests/helpers/composition-webgl-exposure.ts";
+    const checks = (await import(url)) as typeof Exposure;
+    return {
+      fusion: checks.checkWebglExposureFusion(),
+      bounded: checks.checkWebglBoundedExposure(),
+      fractional: checks.checkWebglFractionalExposure(),
+    };
+  });
+  console.log("WebGL final exposure sum/resolve exactness:", exposure);
   const blur = await page.evaluate(async () => {
     const url = "/tests/helpers/composition-webgl-blur.ts";
     return ((await import(url)) as typeof Blur).checkWebglPrimitiveBlur();

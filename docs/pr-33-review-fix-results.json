@@ -1,0 +1,84 @@
+{
+  "date": "2026-10-05",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/33",
+  "startingHead": "b6cc3cdec1aa6093e3297b3a47d45d83b348d4c1",
+  "review": "https://github.com/xxibcill/still-shift/pull/33#pullrequestreview-5410547165",
+  "commitPolicy": "One finding per commit; one final push after all fixes and local verification.",
+  "findings": [
+    {
+      "id": "project-size",
+      "priority": "P1",
+      "comment": "https://github.com/xxibcill/still-shift/pull/33#discussion_r4181179588",
+      "status": "fixed",
+      "implementation": "Check final UTF-8 JSON bytes against the same 8 MB read limit before atomic replacement; share the check with portable package files and render snapshots. Keep the original file and revision on rejection.",
+      "red": "New valid dense-project edit regression failed because save returned success instead of project-size.",
+      "green": "All 13 soundtrack integration lifecycle tests passed; oversized save leaves exact original bytes, readable revision 0, and no temporary file or lock.",
+      "redLog": "/private/tmp/pr33-size-red.log",
+      "greenLog": "/private/tmp/pr33-size-green.log",
+      "commit": "077443e"
+    },
+    {
+      "id": "preview-pruning",
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/33#discussion_r4181179581",
+      "status": "fixed",
+      "implementation": "Queue render publication/pruning and Lab edits by real project path; hold the shared artifact lock for the full preview mutation to exclude independent Lab instances. Release queues and locks after failures.",
+      "red": "Two deterministic mocked-worker regressions failed: concurrent renders retained no published output, and an edit during rendering left an obsolete preview published.",
+      "green": "Eight concurrency and real-worker HTTP API tests pass, including one retained newest preview, edit invalidation after publication, render failure recovery, independent-server exclusion and normal stale/checksum checks. TypeScript build and focused ESLint pass.",
+      "redLog": "/private/tmp/pr33-preview-red.log",
+      "greenLog": "/private/tmp/pr33-preview-api-green.log",
+      "commit": "f35f1b7",
+      "testAdjustment": "The independent-server cleanup assertion initially rejected the existing persistent .lock.recovery guard. It now verifies that the owned lock is released while permitting the kernel recovery guard."
+    },
+    {
+      "id": "render-duration",
+      "priority": "P2",
+      "comment": "https://github.com/xxibcill/still-shift/pull/33#discussion_r4181179595",
+      "status": "fixed",
+      "implementation": "Use math.nextafter(length / 48000, math.inf) at the DawDreamer call so its seconds-to-samples truncation preserves the exact integer count. Keep exact output length validation; do not pad/crop narration or change its intervals.",
+      "red": "Of seven new duration regressions, silent 48,005/110,400 samples and the non-silent 69-frame/30-fps passage failed with output-invalid before the fix; four short/block-boundary cases passed.",
+      "green": "All seven duration regressions pass. Every mix/stem is the exact authored length, narration equals its original source samples, and DSP/ducking range outputs equal the full-render PCM slices.",
+      "redLog": "/private/tmp/pr33-duration-red.log"
+    }
+  ],
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "checks": [
+      {
+        "command": "pnpm check:soundtrack",
+        "exitCode": 0,
+        "unitFiles": 129,
+        "unitTests": 1438,
+        "runtimeFiles": 9,
+        "runtimeTests": 46,
+        "audioIntegrationFiles": 4,
+        "audioIntegrationTests": 34,
+        "depthTests": 14,
+        "staticChecks": [
+          "schema:check",
+          "check:boundaries",
+          "format:check:ts",
+          "lint:ts",
+          "build"
+        ],
+        "soundtrackPythonChecks": ["ruff check", "ruff format --check"],
+        "log": "/private/tmp/pr33-fixes-final-check.log",
+        "logSha256": "b72a1b71ec5723e44f6e9b3b4bed0515a8d2e652745393cc4e31cbe0e06ab4e0"
+      }
+    ],
+    "browserVerification": "Not rerun; the CE16 browser exception was scoped to the previous completion pass.",
+    "githubActions": "Prohibited; all checks local.",
+    "environment": {
+      "dependencies": "Frozen pnpm lockfile installed offline in isolated managed worktree.",
+      "soundtrackPython": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/runtime/bin/python",
+      "depthAndRuff": "Reused repository .venv via an ignored symlink; UV_NO_SYNC=1, no environment replacement.",
+      "UV_CACHE_DIR": "/private/tmp/pr33-fixes-uv-cache"
+    },
+    "notRerun": [
+      "Full pnpm check browser matrix",
+      "Frozen CE0 baselines",
+      "Listening or human audiovisual QA"
+    ]
+  }
+}

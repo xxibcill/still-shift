@@ -5,6 +5,7 @@
  * `value − keyed(t)` to the keyed result.
  */
 import {
+  COMPOSITION_LIMITS,
   compositionEffectDefinition,
   locateShapeProperty,
   isKeyed,
@@ -14,6 +15,7 @@ import {
   type PropertyPathSegment,
 } from "@still-shift/scene-contract";
 import type { Point } from "../../node-transform.ts";
+import { passageError } from "../../passage-diagnostics.ts";
 import { color, scalar, vector, vector3 } from "./sample.ts";
 import type { Point3 } from "./spatial-geometry.ts";
 import { lerp, zip, type ExpressionValue } from "./expression-math.ts";
@@ -27,6 +29,13 @@ export type OwnCurve = {
   joint?: Keyed<Point>;
   /** Opt-in xyz keys, including an implicit z for authored xy position/scale keys. */
   joint3?: { value: Keyed<Point3>; fallback: Point3 };
+  /** Separate dimensions define a path through their independently eased samples. */
+  separated?: {
+    owner: object;
+    fps: number;
+    dimensions: 2 | 3;
+    fallbackZ: number;
+  };
 };
 
 const VECTOR_AXIS: Record<string, number> = { x: 0, y: 1, z: 2 };
@@ -199,15 +208,25 @@ export function ownCurve(
         : vector(raw, time, fps, [0, 0]),
     axis === undefined ? undefined : VECTOR_AXIS[axis],
   );
-  if (spatial && isKeyed(raw) && axis === undefined)
+  if (axis !== undefined) return { frames, sample };
+  if (spatial && isKeyed(raw))
     return {
       frames,
       sample,
       joint3: { value: raw as Keyed<Point3>, fallback },
     };
-  return isKeyed(raw) && axis === undefined
+  return isKeyed(raw)
     ? { frames, sample, joint: raw as Keyed<Point> }
-    : { frames, sample };
+    : {
+        frames,
+        sample,
+        separated: {
+          owner: raw as object,
+          fps,
+          dimensions: spatial ? 3 : 2,
+          fallbackZ,
+        },
+      };
 }
 
 const mod = (a: number, b: number) => ((a % b) + b) % b;
@@ -420,6 +439,113 @@ function roveTable3(joint: NonNullable<OwnCurve["joint3"]>) {
   tables.set(joint.fallback[2], table);
   return table;
 }
+const separatedRoveTables = new WeakMap<
+  object,
+  Map<string, { points: number[][]; lengths: number[] }>
+>();
+const ROVE_SUBDIVISIONS = 128;
+const SPRING_SAMPLES_PER_PERIOD = 512;
+
+/** Natural spring frequency bounds oscillation speed, including damped responses. */
+function springRate(raw: unknown, start: number) {
+  if (!isKeyed(raw)) return 0;
+  const index = raw.keys.findIndex((key) => key.frame > start);
+  if (index < 1) return 0;
+  const a = raw.keys[index - 1]!,
+    b = raw.keys[index]!;
+  if (
+    a.value === b.value ||
+    b.interpolation === "linear" ||
+    b.interpolation === "hold" ||
+    b.step ||
+    b.bezier ||
+    a.smooth ||
+    b.smooth ||
+    a.interpolation === "smooth" ||
+    b.interpolation === "smooth" ||
+    a.out ||
+    b.in
+  )
+    return 0;
+  const easing = b.easing as
+    | { spring?: { stiffness: number; mass: number } }
+    | string
+    | undefined;
+  return typeof easing === "object" && easing.spring
+    ? Math.sqrt(easing.spring.stiffness / easing.spring.mass)
+    : 0;
+}
+
+function separatedSubdivisions(curve: OwnCurve) {
+  const { owner, fps, dimensions } = curve.separated!;
+  const axes = owner as { x: unknown; y: unknown; z?: unknown };
+  const subdivisions = curve.frames.slice(0, -1).map((start, index) => {
+    const duration = curve.frames[index + 1]! - start;
+    const frequency = Math.max(
+      springRate(axes.x, start),
+      springRate(axes.y, start),
+      dimensions === 3 ? springRate(axes.z, start) : 0,
+    );
+    return Math.max(
+      ROVE_SUBDIVISIONS,
+      Math.ceil(
+        (duration * frequency * SPRING_SAMPLES_PER_PERIOD) /
+          (2 * Math.PI * fps),
+      ),
+    );
+  });
+  const points = 1 + subdivisions.reduce((total, count) => total + count, 0);
+  const maxPoints =
+    dimensions * COMPOSITION_LIMITS.maxKeys * ROVE_SUBDIVISIONS + 1;
+  if (points > maxPoints)
+    passageError(
+      "comp-expression-value",
+      `rove(): resolving this separated path requires ${points.toLocaleString("en-US")} points; at most ${maxPoints.toLocaleString("en-US")} are allowed`,
+      { path: "expressions" },
+    );
+  return subdivisions;
+}
+
+/** Sample each interval in the union of separate key times, retaining axis easing. */
+function separatedRoveTable(curve: OwnCurve) {
+  const subdivisions = separatedSubdivisions(curve);
+  const points: number[][] = [];
+  const lengths: number[] = [];
+  curve.frames.slice(0, -1).forEach((start, index) => {
+    const duration = curve.frames[index + 1]! - start;
+    const count = subdivisions[index]!;
+    for (let i = index ? 1 : 0; i <= count; i++) {
+      const point = curve.sample(start + (duration * i) / count) as number[];
+      const previous = points.at(-1);
+      lengths.push(
+        previous
+          ? lengths.at(-1)! +
+              Math.hypot(...point.map((axis, i) => axis - previous[i]!))
+          : 0,
+      );
+      points.push(point);
+    }
+  });
+  return { points, lengths };
+}
+
+function rovingPath(curve: OwnCurve) {
+  if (curve.joint3) return roveTable3(curve.joint3);
+  if (curve.joint) {
+    let table = roveTables.get(curve.joint);
+    if (!table)
+      roveTables.set(curve.joint, (table = roveTable(curve.joint.keys)));
+    return table;
+  }
+  if (!curve.separated) return undefined;
+  const { owner, fps, dimensions, fallbackZ } = curve.separated;
+  const key = `${fps}/${dimensions}/${fallbackZ}`;
+  let tables = separatedRoveTables.get(owner);
+  if (!tables) separatedRoveTables.set(owner, (tables = new Map()));
+  let table = tables.get(key);
+  if (!table) tables.set(key, (table = separatedRoveTable(curve)));
+  return table;
+}
 
 /** Constant-speed traversal of the whole keyed path between its first and last keys. */
 export function rove(
@@ -427,17 +553,11 @@ export function rove(
   time: number,
   value: ExpressionValue,
 ): ExpressionValue {
-  const joint = curve?.joint ?? curve?.joint3?.value;
-  if (!curve || !joint || joint.keys.length < 2) return value;
-  let table: { points: number[][]; lengths: number[] } | undefined =
-    curve.joint3 ? roveTable3(curve.joint3) : roveTables.get(joint);
-  if (!table)
-    roveTables.set(
-      joint,
-      (table = roveTable(joint.keys as Keyed<Point>["keys"])),
-    );
-  const first = joint.keys[0]!.frame,
-    last = joint.keys.at(-1)!.frame;
+  if (!curve || curve.frames.length < 2) return value;
+  const table = rovingPath(curve);
+  if (!table) return value;
+  const first = curve.frames[0]!,
+    last = curve.frames.at(-1)!;
   const progress = Math.max(0, Math.min(1, (time - first) / (last - first)));
   const distance = progress * table.lengths.at(-1)!;
   let at = table.lengths.findIndex((length, i) => i > 0 && length >= distance);

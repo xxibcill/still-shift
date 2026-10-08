@@ -17,6 +17,7 @@ const ids = [
 it("defines bounded animated transition controls with an unchanged default", () => {
   for (const effect of ids) {
     const definition = compositionEffectDefinition(effect)!;
+    expect(definition.version).toBe("1.0.1");
     expect(definition.params.safeParse({ progress: 1.1 }).success).toBe(false);
     expect(
       definition.params.safeParse({

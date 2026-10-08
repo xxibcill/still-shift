@@ -1,0 +1,1620 @@
+{
+  "date": "2026-10-04",
+  "milestone": "CE16",
+  "technicalLifecycle": "passed",
+  "ce16Integration": "complete; full local repository gate, frozen baselines and audio lifecycle passed",
+  "branch": "codex/composition-ce16",
+  "base": "dee9e7b4c35256e298d8168b635aacd934a4a4ae",
+  "worktree": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift",
+  "sampleRate": 48000,
+  "channels": 2,
+  "durationSeconds": 60,
+  "samplesPerChannel": 2880000,
+  "blockSize": 512,
+  "runs": {
+    "initial": {
+      "ok": true,
+      "project": "benchmarks/fixtures/composition/ce16/backend-proof.json",
+      "projectSha256": "sha256:f587926f6225abed8955b5a9714139ee4bc46d663c6a3c1d38cf5167c2c85e19",
+      "sampleRate": 48000,
+      "blockSize": 512,
+      "durationSamples": 2880000,
+      "sourceHashes": {
+        "narration": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "placement": [
+        {
+          "id": "narration",
+          "startSample": 0,
+          "endSampleExclusive": 2880000
+        },
+        {
+          "id": "bgm",
+          "startSample": 24000,
+          "endSampleExclusive": 788640
+        },
+        {
+          "id": "sfx-pouch",
+          "startSample": 42240,
+          "endSampleExclusive": 66240
+        },
+        {
+          "id": "sfx-roots",
+          "startSample": 565760,
+          "endSampleExclusive": 589760
+        }
+      ],
+      "files": {
+        "narration": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "bgm": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-pouch": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-roots": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "music-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "mix": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        }
+      },
+      "stemTap": "Post clip gain/envelopes and per-track filters, pre bus/master; buses also exported.",
+      "masterProcessing": "Unity summation; no normalization, limiter or master DSP.",
+      "narrationDecodedExact": true,
+      "reconstructionMaxSampleError": 0.0,
+      "latency": {
+        "inputImpulseSample": 1024,
+        "firstOutputSample": 1024,
+        "peakOutputSample": 1026,
+        "lastOutputAbove1eMinus10": 3080,
+        "onsetLatencySamples": 0,
+        "compensationSamples": 0,
+        "tailPolicy": "Retain tails within the project; truncate at its declared end.",
+        "externalPlugins": "Unsupported; no automatic compensation claimed."
+      },
+      "wallSeconds": 0.45913783402647823,
+      "peakResidentBytes": 751108096,
+      "host": {
+        "system": "Darwin",
+        "release": "25.6.0",
+        "architecture": "arm64",
+        "python": "3.12.11"
+      },
+      "packages": {
+        "dawdreamer": "0.9.0",
+        "numpy": "2.3.3",
+        "scipy": "1.16.2"
+      }
+    },
+    "reloaded": {
+      "ok": true,
+      "project": "benchmarks/fixtures/composition/ce16/backend-proof.json",
+      "projectSha256": "sha256:f587926f6225abed8955b5a9714139ee4bc46d663c6a3c1d38cf5167c2c85e19",
+      "sampleRate": 48000,
+      "blockSize": 512,
+      "durationSamples": 2880000,
+      "sourceHashes": {
+        "narration": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "placement": [
+        {
+          "id": "narration",
+          "startSample": 0,
+          "endSampleExclusive": 2880000
+        },
+        {
+          "id": "bgm",
+          "startSample": 24000,
+          "endSampleExclusive": 788640
+        },
+        {
+          "id": "sfx-pouch",
+          "startSample": 42240,
+          "endSampleExclusive": 66240
+        },
+        {
+          "id": "sfx-roots",
+          "startSample": 565760,
+          "endSampleExclusive": 589760
+        }
+      ],
+      "files": {
+        "narration": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "bgm": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-pouch": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-roots": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "music-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "mix": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        }
+      },
+      "stemTap": "Post clip gain/envelopes and per-track filters, pre bus/master; buses also exported.",
+      "masterProcessing": "Unity summation; no normalization, limiter or master DSP.",
+      "narrationDecodedExact": true,
+      "reconstructionMaxSampleError": 0.0,
+      "latency": {
+        "inputImpulseSample": 1024,
+        "firstOutputSample": 1024,
+        "peakOutputSample": 1026,
+        "lastOutputAbove1eMinus10": 3080,
+        "onsetLatencySamples": 0,
+        "compensationSamples": 0,
+        "tailPolicy": "Retain tails within the project; truncate at its declared end.",
+        "externalPlugins": "Unsupported; no automatic compensation claimed."
+      },
+      "wallSeconds": 0.4294688339577988,
+      "peakResidentBytes": 748945408,
+      "host": {
+        "system": "Darwin",
+        "release": "25.6.0",
+        "architecture": "arm64",
+        "python": "3.12.11"
+      },
+      "packages": {
+        "dawdreamer": "0.9.0",
+        "numpy": "2.3.3",
+        "scipy": "1.16.2"
+      }
+    },
+    "edited": {
+      "ok": true,
+      "project": "benchmarks/fixtures/composition/ce16/backend-proof.edited.json",
+      "projectSha256": "sha256:1844d2124115e94cf424570b941fa319007b4ad27ac2c91d82fe18d09d77f612",
+      "sampleRate": 48000,
+      "blockSize": 512,
+      "durationSamples": 2880000,
+      "sourceHashes": {
+        "narration": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "placement": [
+        {
+          "id": "narration",
+          "startSample": 0,
+          "endSampleExclusive": 2880000
+        },
+        {
+          "id": "bgm",
+          "startSample": 24000,
+          "endSampleExclusive": 788640
+        },
+        {
+          "id": "sfx-pouch",
+          "startSample": 47040,
+          "endSampleExclusive": 71040
+        },
+        {
+          "id": "sfx-roots",
+          "startSample": 565760,
+          "endSampleExclusive": 589760
+        }
+      ],
+      "files": {
+        "narration": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "bgm": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-pouch": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-roots": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "music-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "sfx-bus": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        },
+        "mix": {
+          "samplesPerChannel": 2880000,
+          "channels": 2,
+          "bytes": 23040058
+        }
+      },
+      "stemTap": "Post clip gain/envelopes and per-track filters, pre bus/master; buses also exported.",
+      "masterProcessing": "Unity summation; no normalization, limiter or master DSP.",
+      "narrationDecodedExact": true,
+      "reconstructionMaxSampleError": 0.0,
+      "latency": {
+        "inputImpulseSample": 1024,
+        "firstOutputSample": 1024,
+        "peakOutputSample": 1026,
+        "lastOutputAbove1eMinus10": 3080,
+        "onsetLatencySamples": 0,
+        "compensationSamples": 0,
+        "tailPolicy": "Retain tails within the project; truncate at its declared end.",
+        "externalPlugins": "Unsupported; no automatic compensation claimed."
+      },
+      "wallSeconds": 0.4449830829980783,
+      "peakResidentBytes": 748683264,
+      "host": {
+        "system": "Darwin",
+        "release": "25.6.0",
+        "architecture": "arm64",
+        "python": "3.12.11"
+      },
+      "packages": {
+        "dawdreamer": "0.9.0",
+        "numpy": "2.3.3",
+        "scipy": "1.16.2"
+      }
+    }
+  },
+  "checksumRejection": {
+    "expectedExitCode": 1,
+    "actualExitCode": 1,
+    "stdout": {
+      "ok": false,
+      "stage": "ce16-a-render",
+      "error": "source-checksum: narration"
+    }
+  },
+  "projectSnapshots": {
+    "initial": "benchmarks/results/composition-ce16/initial/project.json",
+    "reloaded": "benchmarks/results/composition-ce16/reloaded/project.json",
+    "edited": "benchmarks/results/composition-ce16/edited/project.json"
+  },
+  "decodedComparisons": {
+    "reloaded": {
+      "narration": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "bgm": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "sfx-pouch": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "sfx-roots": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "music-bus": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "sfx-bus": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "mix": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      }
+    },
+    "edited": {
+      "narration": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "bgm": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "sfx-pouch": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.09154027421027422,
+        "differingSamples": 2876084,
+        "exact": false
+      },
+      "sfx-roots": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "music-bus": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.0,
+        "differingSamples": 0,
+        "exact": true
+      },
+      "sfx-bus": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.09154027421027422,
+        "differingSamples": 2844960,
+        "exact": false
+      },
+      "mix": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samplesPerChannel": 2880000,
+        "maximumSampleError": 0.09154027153272182,
+        "differingSamples": 61167,
+        "exact": false
+      }
+    }
+  },
+  "setup": {
+    "setup-venv": {
+      "wallSeconds": 0.03,
+      "peakResidentBytes": 19939328,
+      "log": "benchmarks/results/composition-ce16/setup-venv.stderr.log",
+      "method": "macOS /usr/bin/time -l; reused uv cache directory; install downloaded the three wheels"
+    },
+    "setup-install": {
+      "wallSeconds": 17.53,
+      "peakResidentBytes": 58441728,
+      "log": "benchmarks/results/composition-ce16/setup-install.stderr.log",
+      "method": "macOS /usr/bin/time -l; reused uv cache directory; install downloaded the three wheels"
+    }
+  },
+  "dependencies": [
+    {
+      "name": "numpy",
+      "version": "2.3.3",
+      "licenseExpression": null,
+      "licenseFirstLine": ["Copyright (c) 2005-2025, NumPy Developers."],
+      "runtimeRequirements": [],
+      "licenseFiles": [
+        {
+          "file": "benchmarks/results/composition-ce16/licenses/numpy/LICENSE.txt",
+          "bundledNames": [
+            "lapack-lite",
+            "dragon4",
+            "libdivide",
+            "Meson",
+            "spin",
+            "tempita",
+            "OpenBLAS",
+            "LAPACK",
+            "GCC runtime library",
+            "libquadmath"
+          ],
+          "bundledLicenses": [
+            "BSD-3-Clause",
+            "MIT",
+            "Zlib",
+            "Apache 2.0",
+            "BSD-3",
+            "MIT",
+            "BSD-3-Clause",
+            "BSD-3-Clause-Open-MPI",
+            "GPL-3.0-or-later WITH GCC-exception-3.1",
+            "LGPL-2.1-or-later"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "dawdreamer",
+      "version": "0.9.0",
+      "licenseExpression": null,
+      "licenseFirstLine": [],
+      "runtimeRequirements": [],
+      "licenseFiles": [
+        {
+          "file": "benchmarks/results/composition-ce16/licenses/dawdreamer/LICENSE",
+          "bundledNames": [],
+          "bundledLicenses": []
+        }
+      ]
+    },
+    {
+      "name": "scipy",
+      "version": "1.16.2",
+      "licenseExpression": null,
+      "licenseFirstLine": [
+        "Copyright (c) 2001-2002 Enthought, Inc. 2003, SciPy Developers."
+      ],
+      "runtimeRequirements": ["numpy<2.6,>=1.25.2"],
+      "licenseFiles": [
+        {
+          "file": "benchmarks/results/composition-ce16/licenses/scipy/LICENSE.txt",
+          "bundledNames": [
+            "OpenBLAS",
+            "LAPACK",
+            "GCC runtime library",
+            "libquadmath"
+          ],
+          "bundledLicenses": [
+            "BSD-3-Clause",
+            "BSD-3-Clause-Open-MPI",
+            "GPL-3.0-or-later WITH GCC-exception-3.1",
+            "LGPL-2.1-or-later"
+          ]
+        }
+      ]
+    }
+  ],
+  "toolchain": {
+    "ffmpeg": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+    "ffprobe": "ffprobe version 8.0.1 Copyright (c) 2007-2025 the FFmpeg developers",
+    "uv": "uv 0.7.12 (dc3fd4647 2025-06-06)",
+    "python": "3.12.11"
+  },
+  "sourceConversion": "Decode with FFmpeg aresample=48000, then end-exclusive sample trim. Stereo inputs retained; no time stretching. Only SFX are resampled from 96 kHz.",
+  "cueEdit": {
+    "id": "sfx-pouch",
+    "moveSamples": 4800,
+    "gainChangeDb": -3
+  },
+  "commandSurface": {
+    "setup": "UV_CACHE_DIR=/private/tmp/still-shift-ce16-uv-cache uv venv --python 3.12.11 benchmarks/results/composition-ce16/runtime && uv pip sync --python benchmarks/results/composition-ce16/runtime/bin/python --require-hashes scripts/soundtrack/requirements.txt",
+    "initial": "benchmarks/results/composition-ce16/runtime/bin/python scripts/soundtrack/proof-worker.py --project benchmarks/fixtures/composition/ce16/backend-proof.json --output-dir benchmarks/results/composition-ce16/initial",
+    "reload": "benchmarks/results/composition-ce16/runtime/bin/python scripts/soundtrack/proof-worker.py --project benchmarks/fixtures/composition/ce16/backend-proof.json --output-dir benchmarks/results/composition-ce16/reloaded",
+    "edit": "benchmarks/results/composition-ce16/runtime/bin/python scripts/soundtrack/proof-worker.py --project benchmarks/fixtures/composition/ce16/backend-proof.edited.json --output-dir benchmarks/results/composition-ce16/edited",
+    "verify": "pnpm soundtrack:proof --verify-only"
+  },
+  "licensing": {
+    "dawdreamer": "GPLv3, installed 0.9.0 wheel LICENSE retained locally.",
+    "upstreamNativeComponents": [
+      "JUCE",
+      "nanobind",
+      "libsamplerate",
+      "Rubber Band",
+      "Steinberg VST2/3",
+      "FAUST"
+    ],
+    "upstreamSource": "https://github.com/DBraun/DawDreamer/blob/main/README.md#license",
+    "packaging": "Trial runtime is local and isolated; no dependency binary distributed or production backend adopted. GPL and native/transitive obligations require a documented packaging decision before distribution. Subprocess use is not a licensing exemption."
+  },
+  "computerUse": "none",
+  "listening": "not performed",
+  "audiovisualQA": "not performed",
+  "verification": {
+    "date": "2026-10-04",
+    "toolchain": {
+      "command": "UV_NO_SYNC=1 UV_CACHE_DIR=/private/tmp/still-shift-ce16-uv-cache pnpm toolchain:check",
+      "exitCode": 0,
+      "log": "benchmarks/results/composition-ce16/ce16-b-toolchain.log"
+    },
+    "focusedFinal": {
+      "command": "pnpm test:soundtrack",
+      "exitCode": 0,
+      "files": 5,
+      "tests": 35,
+      "log": "benchmarks/results/composition-ce16/ce16-completion-audit-focused.log",
+      "scope": "Audio/model/HTTP plus six Web Audio harness cases. No actual native browser decoding/playback claim."
+    },
+    "lifecycle": {
+      "command": "STILL_SHIFT_SOUNDTRACK_RESULTS=benchmarks/results/composition-ce16/integration-final pnpm soundtrack:verify",
+      "exitCode": 0
+    },
+    "setupRecovery": {
+      "command": "pnpm soundtrack:setup",
+      "exitCode": 0,
+      "result": "Existing Python runtime reused; exact three packages audited without replacement"
+    },
+    "failedAttempts": [
+      {
+        "stage": "package boundaries",
+        "diagnostic": "animation-engine missing declared zod dependency",
+        "resolution": "Declared exact existing zod 4.1.5 and updated lockfile"
+      },
+      {
+        "stage": "format/lint",
+        "diagnostic": "Generated evidence and lockfile formatting, new JS globals/destructuring lint, long Python evidence strings",
+        "resolution": "Explicit Node imports, schema projection, formatter and line wrapping; checks pass"
+      },
+      {
+        "stage": "strengthened cancellation/recovery test",
+        "diagnostic": "Missing lstat/mkdir imports in test harness",
+        "resolution": "Fixed imports; actual running-worker cancellation and recovery tests pass"
+      },
+      {
+        "stage": "sandboxed toolchain read",
+        "diagnostic": "UV default cache write denied in sandbox",
+        "resolution": "Verified with private UV cache and no-sync; no primary environment changes"
+      },
+      {
+        "stage": "final passage adapter review",
+        "diagnostic": "Gallery labeled the opt-in audio mode silent; export could consume a revision different from its job identity after a concurrent edit",
+        "resolution": "Added soundtrack mode and captured-revision guard; focused regression passes"
+      },
+      {
+        "stage": "completion audit preview regressions",
+        "diagnostic": "Cleared/superseded decodes could reattach; held automation display interpolated incorrectly; duplicate beat IDs accepted first match",
+        "resolution": "Generation/request guards, immutable snapshots, sample scheduling, held-step projection and unique beat-reference validation; regressions pass."
+      },
+      {
+        "stage": "draft frame-rate test",
+        "diagnostic": "41 fps outside existing 24/30 fps passage contract",
+        "resolution": "Use supported 30 fps case; no passage frame-rate expansion."
+      },
+      {
+        "stage": "command-only tier policy audit",
+        "diagnostic": "Indirect headless browser work admitted by direct-import filter",
+        "resolution": "Explicit audio-only allowlist and historical evidence correction; earlier use is not erased."
+      },
+      {
+        "stage": "authorized full pnpm check integration",
+        "command": "pnpm check",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-full-check-browser-authorized.log",
+        "diagnostic": "Five Lab integration suites fail plain-Node Vite config load: ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX in renderer-core/cinematic-scene.ts parameter property.",
+        "resolution": "Added renderer-core/soundtrack subpath and narrow imports for audio IO/render/adapter; exact plain-Node Vite path passes."
+      },
+      {
+        "stage": "full check after narrow imports",
+        "command": "pnpm check",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-full-check-browser-authorized-final.log",
+        "diagnostic": "Vitest root alias incorrectly handled new soundtrack subpath; four unit suites could not resolve it.",
+        "resolution": "Added specific alias before broad package alias; all 35 focused audio tests pass."
+      },
+      {
+        "stage": "authorized full check visual integration",
+        "command": "pnpm check",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-full-check-browser-authorized-complete.log",
+        "diagnostic": "story-acting.test.ts timed out waiting 30 seconds for passage-text browser runtime while a separate focused browser job was also running.",
+        "resolution": "Unchanged isolated recheck passed all three story-acting tests, and the frozen serial full pnpm check passed. Original timeout cause remains unestablished."
+      },
+      {
+        "stage": "new browser test URL assertion",
+        "command": "pnpm test:browser:soundtrack",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-browser-focused.log",
+        "diagnostic": "Test concatenated origin ending slash with absolute path, received SPA HTML 200 instead of stale-audio 409.",
+        "resolution": "Resolve URL with new URL(); real stale-audio rejection passes."
+      },
+      {
+        "stage": "new browser test narration identity",
+        "command": "pnpm test:browser:soundtrack",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-browser-focused-diagnostic.log",
+        "diagnostic": "Synthetic fixture omitted its authorized passage narration hash; existing guard correctly rejected attachment.",
+        "resolution": "Declare fixture hash, retain guard. Native attachment passes."
+      },
+      {
+        "stage": "new browser test temporary mix assumption",
+        "command": "pnpm test:browser:soundtrack",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-browser-focused-final.log",
+        "diagnostic": "Test assumed temporary pre-encode WAVs survive passage publication; staging is correctly cleaned.",
+        "resolution": "Compare actual mux delivery decode to independent canonical render plus matching AAC encoding; full/range outputs match exactly."
+      },
+      {
+        "stage": "full check cinematic playback",
+        "command": "pnpm check",
+        "exitCode": 1,
+        "log": "benchmarks/results/composition-ce16/ce16-full-check-final.log",
+        "diagnostic": "Existing dolly cinematic test timed out waiting for playback scrub to advance.",
+        "resolution": "Unchanged standalone dolly recheck passed 23 comparisons; frozen serial full pnpm check also passed dolly and all remaining gates."
+      }
+    ],
+    "unperformed": [
+      "Listening",
+      "Human audiovisual QA",
+      "Visible GUI inspection"
+    ],
+    "baselinePolicy": "No baseline regeneration; visual rendering algorithms and fixtures unchanged",
+    "milestoneClosure": "All CE16 technical acceptance and repository Definition-of-done gates passed under the one-time browser verification authorization. Creative listening/audiovisual acceptance remains unperformed.",
+    "baselineInventoryTests": {
+      "command": "pnpm exec vitest run tests/unit/composition-baseline-inventory.test.ts tests/unit/composition-baseline-regeneration.test.ts tests/unit/composition-baseline-timings.test.ts --no-file-parallelism",
+      "exitCode": 0,
+      "tests": 26,
+      "scope": "Inventory/provenance/timing logic only; no rendered baseline parity claim"
+    },
+    "finalFastTier": {
+      "command": "pnpm check:fast",
+      "exitCode": 0,
+      "unitTests": 1436,
+      "log": "benchmarks/results/composition-ce16/ce16-completion-audit-command-only.log"
+    },
+    "historicalBroadTier": {
+      "command": "pnpm check:soundtrack",
+      "exitCode": 0,
+      "unitFiles": 128,
+      "unitTests": 1428,
+      "runtimeFiles": 9,
+      "runtimeTests": 46,
+      "commandIntegrationFiles": 26,
+      "commandIntegrationTests": 94,
+      "depthTests": 14,
+      "pythonLintAndFormat": "passed",
+      "log": "benchmarks/results/composition-ce16/ce16-b-command-check-final.log",
+      "policyStatus": "Not compliant with zero browser driving: direct-import filter admitted transitive headless browser work. Retained historical result only."
+    },
+    "commandOnlyTier": {
+      "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH UV_NO_SYNC=1 UV_CACHE_DIR=/private/tmp/still-shift-ce16-uv-cache pnpm check:soundtrack",
+      "exitCode": 0,
+      "unitFiles": 129,
+      "unitTests": 1436,
+      "runtimeFiles": 9,
+      "runtimeTests": 46,
+      "commandIntegrationFiles": 3,
+      "commandIntegrationTests": 19,
+      "depthTests": 14,
+      "pythonLintAndFormat": "passed",
+      "log": "benchmarks/results/composition-ce16/ce16-completion-audit-command-only.log",
+      "selection": "Explicit audited audio-only allowlist; no picture renderer invocation"
+    },
+    "retainedLifecycleRecheck": {
+      "command": "STILL_SHIFT_SOUNDTRACK_RESULTS=benchmarks/results/composition-ce16/integration-final pnpm soundtrack:verify --verify-only",
+      "exitCode": 0,
+      "result": "All current whole-file original/packaged source hashes match; exact decoded reload, relocation, unchanged narration, unaffected stems and unity reconstruction.",
+      "log": "benchmarks/results/composition-ce16/ce16-closeout-source-and-pcm.log",
+      "date": "2026-10-05",
+      "logSha256": "sha256:acdee24075e3095bafe0b381e602728ff388a0ae93df00978028df873b9f6cd3"
+    },
+    "completionAudit": "docs/composition-ce16-completion-audit.md",
+    "browserPolicy": {
+      "status": "Historical breach recorded; corrected subsequent verification selection",
+      "diagnostic": "Direct Playwright import filtering missed transitive headless-browser launches through renderer libraries and child scripts.",
+      "resolution": "Replaced with three audited audio-only integration suites. No CUA/desktop/visible GUI inspection, but cumulative zero browser driving cannot be claimed."
+    },
+    "browserAuthorization": {
+      "date": "2026-10-04",
+      "userInstruction": "Allow automated browser verification.",
+      "scope": "This CE16 checking pass only. Normal create/edit/save/recover/render/export remains command/API/file-based; no production GUI dependency.",
+      "historicalBreach": "Earlier unapproved indirect headless-browser runs remain recorded."
+    },
+    "focusedBrowser": {
+      "command": "pnpm test:browser:soundtrack",
+      "exitCode": 0,
+      "log": "benchmarks/results/composition-ce16/ce16-browser-verified.log",
+      "results": {
+        "root": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/browser-EfAf6k",
+        "browserVerification": "owner-authorized one-time pass",
+        "nativeDecode": {
+          "sampleRate": 48000,
+          "channels": 2,
+          "samplesPerChannel": 384000,
+          "differingSamples": 0,
+          "maxSampleError": 0
+        },
+        "editor": {
+          "savedRevision": 10,
+          "edits": [
+            "move",
+            "gain",
+            "trim",
+            "hold automation",
+            "mute",
+            "solo",
+            "undo",
+            "redo"
+          ],
+          "staleEditRejected": true,
+          "previewInvalidated": true
+        },
+        "passagePreview": {
+          "savedRevision": 10,
+          "starts": [
+            {
+              "args": [0.04533333333333334, 2.5, 5.5],
+              "length": 384000,
+              "rate": 48000,
+              "channels": 2
+            }
+          ],
+          "clearReturnsToLegacy": true
+        },
+        "passageExport": {
+          "fullFrames": 192,
+          "rangeFrames": 24,
+          "rangePCMExact": true,
+          "deliveryDecodeMatchesIndependentEncode": {
+            "full": "SHA256=4ef9f3d20444786a460ef93a8ba682a83f80158ef73000d29a249a7a5de3dc9f",
+            "range": "SHA256=4ac2a054b6cd54d66adac6e807b8e1ba3a6d0f2895421ec37607d9be38a5bc68"
+          },
+          "revision": 10
+        },
+        "ok": true
+      },
+      "scope": "Real optional editor and native decoder/playback, passage attachment/seek/clear and full/range picture/mux exports. AAC comparison is to independently encoded canonical audio, not a claim of lossless AAC."
+    },
+    "fullRepository": {
+      "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH UV_NO_SYNC=1 UV_CACHE_DIR=/private/tmp/still-shift-ce16-uv-cache pnpm check",
+      "status": "passed",
+      "log": "benchmarks/results/composition-ce16/ce16-full-check-frozen.log",
+      "exitCode": 0,
+      "date": "2026-10-05",
+      "verifiedCommit": "974dfdfaf89aac0a74049760f6c7fd120b72b693",
+      "unitFiles": 129,
+      "unitTests": 1436,
+      "runtimeFiles": 9,
+      "runtimeTests": 46,
+      "integrationFiles": 33,
+      "integrationTests": 125,
+      "depthTests": 14,
+      "browserGroups": [
+        "test:browser:soundtrack",
+        "test:browser:depth",
+        "test:browser:vertical-image",
+        "test:browser:export",
+        "test:browser:cli",
+        "test:browser:batch",
+        "test:browser:illustrated",
+        "test:browser:illustrated:vertical",
+        "test:browser:cinematic",
+        "test:browser:cinematic:vertical",
+        "test:browser:threshold",
+        "test:browser:dolly",
+        "test:browser:lateral",
+        "test:browser:reveal",
+        "test:browser:story",
+        "test:browser:story:activity",
+        "test:browser:story:continuous",
+        "test:browser:passage:authoring",
+        "test:browser:lab-session",
+        "test:browser:commerce",
+        "test:browser:commerce-components",
+        "test:browser:commerce-effects",
+        "test:browser:commerce-spatial",
+        "test:browser:reusable-components",
+        "test:browser:reusable-package",
+        "test:browser:reusable-behavior-package",
+        "test:browser:reusable-timing-package",
+        "test:browser:typography",
+        "test:browser:typography:fixtures",
+        "test:browser:composition-evaluator",
+        "test:browser:composition-expressions",
+        "test:browser:composition",
+        "test:browser:composition-webgl",
+        "test:browser:composition-webgl-export",
+        "test:browser:composition-exposure",
+        "test:browser:composition-effects",
+        "test:browser:composition-story-adapter",
+        "test:browser:composition-story-fixtures",
+        "test:browser:composition-commerce-adapter",
+        "test:browser:composition-typography-adapter",
+        "test:browser:composition-provider-typography",
+        "test:browser:composition-baselines"
+      ],
+      "logSha256": "sha256:a899959438bd80ecd2aa4b37dc33e1d2d9c60c1836b900638896537f65f3588c",
+      "workingTreeDuringRun": "Frozen and clean; no concurrent edits or additional browser jobs",
+      "soundtrackBrowser": {
+        "resultsPath": "benchmarks/results/composition-ce16/browser-RGq3lR/results.json",
+        "resultsSha256": "sha256:6e437b314c8013a56d23260065bb336ffd2c312b5aae3f0d21e18a7b561e15e7",
+        "results": {
+          "root": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/browser-RGq3lR",
+          "browserVerification": "owner-authorized one-time pass",
+          "nativeDecode": {
+            "sampleRate": 48000,
+            "channels": 2,
+            "samplesPerChannel": 384000,
+            "differingSamples": 0,
+            "maxSampleError": 0
+          },
+          "editor": {
+            "savedRevision": 10,
+            "edits": [
+              "move",
+              "gain",
+              "trim",
+              "hold automation",
+              "mute",
+              "solo",
+              "undo",
+              "redo"
+            ],
+            "staleEditRejected": true,
+            "previewInvalidated": true
+          },
+          "passagePreview": {
+            "savedRevision": 10,
+            "starts": [
+              {
+                "args": [0.050666666666666665, 2.5, 5.5],
+                "length": 384000,
+                "rate": 48000,
+                "channels": 2
+              }
+            ],
+            "clearReturnsToLegacy": true
+          },
+          "passageExport": {
+            "fullFrames": 192,
+            "rangeFrames": 24,
+            "rangePCMExact": true,
+            "deliveryDecodeMatchesIndependentEncode": {
+              "full": "SHA256=4ef9f3d20444786a460ef93a8ba682a83f80158ef73000d29a249a7a5de3dc9f",
+              "range": "SHA256=4ac2a054b6cd54d66adac6e807b8e1ba3a6d0f2895421ec37607d9be38a5bc68"
+            },
+            "revision": 10
+          },
+          "ok": true
+        }
+      },
+      "familyAdapterChecks": {
+        "canvasStory": {
+          "items": 68,
+          "frames": 13894
+        },
+        "canvasCommerce": {
+          "items": 127,
+          "frames": 28200
+        },
+        "canvasTypography": {
+          "items": 20,
+          "frames": 3367
+        },
+        "scope": "Existing acceptance tolerances; predefined full gate only. Deferred CE6-P WebGL performance matrices were not resumed."
+      }
+    },
+    "dollyRecheck": {
+      "command": "pnpm test:browser:dolly",
+      "exitCode": 0,
+      "log": "benchmarks/results/composition-ce16/ce16-dolly-diagnostic.log",
+      "comparisons": 23
+    },
+    "sourceVerifierCorrection": {
+      "diagnostic": "New current-source check initially resolved packaged paths relative to render snapshot, which is not the authoring project directory.",
+      "resolution": "Use and validate manifest identityInputs resolved source paths; all current hashes match.",
+      "command": "STILL_SHIFT_SOUNDTRACK_RESULTS=benchmarks/results/composition-ce16/integration-final pnpm soundtrack:verify --verify-only",
+      "initialExitCode": 1,
+      "stage": "current-source hash verification",
+      "failedArtifact": "benchmarks/results/composition-ce16/integration-final/relocated/project.json",
+      "retainedDiagnostic": "Tool transcript: FileNotFoundError resolving relocated/assets relative to render snapshot; no separate initial failure log."
+    },
+    "renderedBaselines": {
+      "command": "pnpm test:browser:composition-baselines (within pnpm check)",
+      "exitCode": 0,
+      "items": 176,
+      "frames": 36061,
+      "elapsedSeconds": 286.8,
+      "renderer": "ANGLE Vulkan SwiftShader",
+      "fingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+      "platform": "darwin-arm64",
+      "regenerated": false,
+      "trackedReferencesUnchangedFromBase": true,
+      "referenceHashes": {
+        "tests/visual/composition-baselines/fixtures.json": "sha256:47d05d3894efd55efef2e19bad69d04db226f32c393afe0f87d911d25bec5216",
+        "tests/visual/composition-baselines/darwin-arm64.json": "sha256:25c2465f27c57121ef1623ee48477d9ee52757a06b0e7b20a8458b3e206b4a79"
+      },
+      "log": "benchmarks/results/composition-ce16/ce16-full-check-frozen.log"
+    }
+  },
+  "backendProofLimitations": [
+    "Readable ce16-backend-proof-1 is a prototype format, not soundtrack-project-1.",
+    "Full worker protocol, shared edits, ducking, timeline and passage integration are not implemented.",
+    "Fixture uses existing local episode source paths; portable project relocation remains CE16-B work.",
+    "Per-process peak resident memory excludes separate FFmpeg child processes; /usr/bin/time -l records are retained for measured runs.",
+    "Initial install used a cold download cache without peak-memory profiling; measured fresh hash-locked setup downloaded all three wheels again.",
+    "No speed comparison or advantage is claimed."
+  ],
+  "integration": {
+    "schemaVersion": "soundtrack-project-1",
+    "workerProtocol": "soundtrack-worker-1",
+    "dspVersion": "soundtrack-dsp-1",
+    "results": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final",
+    "commands": [
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "validate",
+          "--project",
+          "benchmarks/fixtures/composition/ce16/project.json"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack validate --project benchmarks/fixtures/composition/ce16/project.json",
+        "exitCode": 0,
+        "wallSeconds": 0.904589042
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "render",
+          "--project",
+          "benchmarks/fixtures/composition/ce16/project.json",
+          "--output-dir",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/initial",
+          "--stems"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack render --project benchmarks/fixtures/composition/ce16/project.json --output-dir /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/initial --stems",
+        "exitCode": 0,
+        "wallSeconds": 1.994019459
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "render",
+          "--project",
+          "benchmarks/fixtures/composition/ce16/project.json",
+          "--output-dir",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/reloaded",
+          "--stems"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack render --project benchmarks/fixtures/composition/ce16/project.json --output-dir /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/reloaded --stems",
+        "exitCode": 0,
+        "wallSeconds": 2.1165702909999995
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "edit",
+          "--project",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json",
+          "--revision",
+          "0",
+          "--operations",
+          "benchmarks/fixtures/composition/ce16/edits.json"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack edit --project /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json --revision 0 --operations benchmarks/fixtures/composition/ce16/edits.json",
+        "exitCode": 0,
+        "wallSeconds": 0.967957625
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "render",
+          "--project",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json",
+          "--output-dir",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited",
+          "--stems"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack render --project /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json --output-dir /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited --stems",
+        "exitCode": 0,
+        "wallSeconds": 2.0107086250000004
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "package",
+          "--project",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json",
+          "--output-dir",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/portable"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack package --project /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited-project.json --output-dir /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/portable",
+        "exitCode": 0,
+        "wallSeconds": 1.0178483749999996
+      },
+      {
+        "command": [
+          "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+          "--import",
+          "tsx",
+          "tools/still-shift-cli/src/cli.ts",
+          "soundtrack",
+          "render",
+          "--project",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/portable/project.json",
+          "--output-dir",
+          "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/relocated",
+          "--stems"
+        ],
+        "equivalentCommand": "pnpm still-shift soundtrack render --project /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/portable/project.json --output-dir /Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/relocated --stems",
+        "exitCode": 0,
+        "wallSeconds": 1.9830092080000012
+      }
+    ],
+    "runs": {
+      "initial": {
+        "protocol": "soundtrack-worker-1",
+        "ok": true,
+        "revision": 0,
+        "sampleRate": 48000,
+        "channels": 2,
+        "range": {
+          "start": 0,
+          "end": 2880000
+        },
+        "blockSize": 512,
+        "stemTap": "post clip gain/fades/automation, ducking and track DSP; pre bus/master gain",
+        "normalization": "none",
+        "latencySamples": 0,
+        "latencyProbes": [
+          {
+            "track": "bgm",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-pouch",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-roots",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          }
+        ],
+        "tailPolicy": "retain-to-project-end",
+        "dspVersion": "soundtrack-dsp-1",
+        "ducking": {
+          "method": "peak-window-attack-hold-release-1",
+          "sourceTrack": "narration",
+          "targetTracks": ["bgm"],
+          "thresholdDb": -32,
+          "attenuationDb": -12,
+          "windowSamples": 480,
+          "attackSamples": 2400,
+          "releaseSamples": 12000,
+          "holdSamples": 4800,
+          "lookaheadSamples": 2400
+        },
+        "wallSeconds": 0.6704328329651617,
+        "peakResidentBytes": 757415936,
+        "runtime": {
+          "python": "3.12.11",
+          "platform": "macOS-26.6.2-arm64-arm-64bit",
+          "packages": {
+            "dawdreamer": "0.9.0",
+            "numpy": "2.3.3",
+            "scipy": "1.16.2"
+          }
+        },
+        "identity": "8b8be8530ccfe743269956fb192ffd745c039e8aa1a8cd5bc28f190f9f015761",
+        "output": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/initial"
+      },
+      "reloaded": {
+        "protocol": "soundtrack-worker-1",
+        "ok": true,
+        "revision": 0,
+        "sampleRate": 48000,
+        "channels": 2,
+        "range": {
+          "start": 0,
+          "end": 2880000
+        },
+        "blockSize": 512,
+        "stemTap": "post clip gain/fades/automation, ducking and track DSP; pre bus/master gain",
+        "normalization": "none",
+        "latencySamples": 0,
+        "latencyProbes": [
+          {
+            "track": "bgm",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-pouch",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-roots",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          }
+        ],
+        "tailPolicy": "retain-to-project-end",
+        "dspVersion": "soundtrack-dsp-1",
+        "ducking": {
+          "method": "peak-window-attack-hold-release-1",
+          "sourceTrack": "narration",
+          "targetTracks": ["bgm"],
+          "thresholdDb": -32,
+          "attenuationDb": -12,
+          "windowSamples": 480,
+          "attackSamples": 2400,
+          "releaseSamples": 12000,
+          "holdSamples": 4800,
+          "lookaheadSamples": 2400
+        },
+        "wallSeconds": 0.6623319169739261,
+        "peakResidentBytes": 757235712,
+        "runtime": {
+          "python": "3.12.11",
+          "platform": "macOS-26.6.2-arm64-arm-64bit",
+          "packages": {
+            "dawdreamer": "0.9.0",
+            "numpy": "2.3.3",
+            "scipy": "1.16.2"
+          }
+        },
+        "identity": "8b8be8530ccfe743269956fb192ffd745c039e8aa1a8cd5bc28f190f9f015761",
+        "output": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/reloaded"
+      },
+      "edited": {
+        "protocol": "soundtrack-worker-1",
+        "ok": true,
+        "revision": 1,
+        "sampleRate": 48000,
+        "channels": 2,
+        "range": {
+          "start": 0,
+          "end": 2880000
+        },
+        "blockSize": 512,
+        "stemTap": "post clip gain/fades/automation, ducking and track DSP; pre bus/master gain",
+        "normalization": "none",
+        "latencySamples": 0,
+        "latencyProbes": [
+          {
+            "track": "bgm",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-pouch",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-roots",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          }
+        ],
+        "tailPolicy": "retain-to-project-end",
+        "dspVersion": "soundtrack-dsp-1",
+        "ducking": {
+          "method": "peak-window-attack-hold-release-1",
+          "sourceTrack": "narration",
+          "targetTracks": ["bgm"],
+          "thresholdDb": -32,
+          "attenuationDb": -12,
+          "windowSamples": 480,
+          "attackSamples": 2400,
+          "releaseSamples": 12000,
+          "holdSamples": 4800,
+          "lookaheadSamples": 2400
+        },
+        "wallSeconds": 0.6930127909872681,
+        "peakResidentBytes": 757465088,
+        "runtime": {
+          "python": "3.12.11",
+          "platform": "macOS-26.6.2-arm64-arm-64bit",
+          "packages": {
+            "dawdreamer": "0.9.0",
+            "numpy": "2.3.3",
+            "scipy": "1.16.2"
+          }
+        },
+        "identity": "b94459294da62240d14e7590240776a60d55df2c2a351499687296f5698009d5",
+        "output": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/edited"
+      },
+      "relocated": {
+        "protocol": "soundtrack-worker-1",
+        "ok": true,
+        "revision": 1,
+        "sampleRate": 48000,
+        "channels": 2,
+        "range": {
+          "start": 0,
+          "end": 2880000
+        },
+        "blockSize": 512,
+        "stemTap": "post clip gain/fades/automation, ducking and track DSP; pre bus/master gain",
+        "normalization": "none",
+        "latencySamples": 0,
+        "latencyProbes": [
+          {
+            "track": "bgm",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-pouch",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          },
+          {
+            "track": "sfx-roots",
+            "impulseSample": 1024,
+            "onsetSample": 1024,
+            "peakSample": 1026,
+            "lastAbove1eMinus10": 3080,
+            "compensationSamples": 0
+          }
+        ],
+        "tailPolicy": "retain-to-project-end",
+        "dspVersion": "soundtrack-dsp-1",
+        "ducking": {
+          "method": "peak-window-attack-hold-release-1",
+          "sourceTrack": "narration",
+          "targetTracks": ["bgm"],
+          "thresholdDb": -32,
+          "attenuationDb": -12,
+          "windowSamples": 480,
+          "attackSamples": 2400,
+          "releaseSamples": 12000,
+          "holdSamples": 4800,
+          "lookaheadSamples": 2400
+        },
+        "wallSeconds": 0.6472230000072159,
+        "peakResidentBytes": 757170176,
+        "runtime": {
+          "python": "3.12.11",
+          "platform": "macOS-26.6.2-arm64-arm-64bit",
+          "packages": {
+            "dawdreamer": "0.9.0",
+            "numpy": "2.3.3",
+            "scipy": "1.16.2"
+          }
+        },
+        "identity": "1e32e711cf1222eee34c094d5a3aa5e16aed5685227762d020fa35bf1197b3c5",
+        "output": "/Users/jjae/.codex/worktrees/composition-ce16/still-shift/benchmarks/results/composition-ce16/integration-final/relocated"
+      }
+    },
+    "currentSourceHashes": {
+      "initial": {
+        "narration-source": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm-source": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch-source": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots-source": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "reloaded": {
+        "narration-source": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm-source": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch-source": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots-source": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "edited": {
+        "narration-source": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm-source": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch-source": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots-source": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      },
+      "relocated": {
+        "narration-source": "sha256:0a80738d189e94b9cce7c298d2aa5bf7732fbe949f6416777b747d0e208647ae",
+        "bgm-source": "sha256:27e3048461d5eb179856b2c6f15c57eb0823fb2f9696806079e3ec16704c53ce",
+        "sfx-pouch-source": "sha256:0b01365da4a880c12943e508458a6cd0bdef9b64f86df3dadee945fdd39753da",
+        "sfx-roots-source": "sha256:6868cbfe2a63dd83bfda1427b1ad2b257a4ee275913bee9349fb49b1cf7aa484"
+      }
+    },
+    "outputSizesBytes": {
+      "initial": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      },
+      "reloaded": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      },
+      "edited": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      },
+      "relocated": {
+        "narration": 23040058,
+        "bgm": 23040058,
+        "sfx-pouch": 23040058,
+        "sfx-roots": 23040058,
+        "music-bus": 23040058,
+        "sfx-bus": 23040058,
+        "master": 23040058
+      }
+    },
+    "reloadPCM": {
+      "narration": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "bgm": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-pouch": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-roots": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "music-bus": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-bus": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "master": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      }
+    },
+    "editedPCM": {
+      "narration": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "bgm": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-pouch": {
+        "maxSampleError": 0.09154027700424194,
+        "differingSamples": 2876084,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-roots": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "music-bus": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-bus": {
+        "maxSampleError": 0.09154027700424194,
+        "differingSamples": 2844960,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "master": {
+        "maxSampleError": 0.09154026955366135,
+        "differingSamples": 61180,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      }
+    },
+    "relocatedPCM": {
+      "narration": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "bgm": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-pouch": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-roots": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "music-bus": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "sfx-bus": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      },
+      "master": {
+        "maxSampleError": 0.0,
+        "differingSamples": 0,
+        "samplesPerChannel": 2880000,
+        "channels": 2
+      }
+    },
+    "narrationPCM": {
+      "maxSampleError": 0.0,
+      "differingSamples": 0,
+      "samplesPerChannel": 2880000,
+      "channels": 2
+    },
+    "reconstructionPCM": {
+      "maxSampleError": 0.0,
+      "differingSamples": 0,
+      "samplesPerChannel": 2880000,
+      "channels": 2
+    },
+    "waveformPlaylistEvaluation": {
+      "engine": "13.6.0 MIT",
+      "core": "12.6.1 MIT",
+      "browser": "16.0.0 MIT, React/Tone peers",
+      "components": "@dawcore/components 0.0.37 MIT, Lit/native audio peers",
+      "decision": "Vanilla TypeScript view; shared project is sole authority. Engine collision rules and snapshot history differ from allowed overlaps and persisted project history. No additional npm audio libraries installed."
+    },
+    "preview": "Hash-checked rendered full mix; API response bytes exact. Range rendering evaluates complete DSP/ducking schedule before cropping.",
+    "measurementMethod": "CLI monotonic wall time includes preflight, calibration and worker. Worker wallSeconds starts after calibration. RUSAGE_SELF peak includes worker/calibration but excludes FFmpeg children; no speed advantage claimed."
+  },
+  "limitations": [
+    "No listening or human audiovisual QA performed; automated technical checks are separate.",
+    "Earlier unapproved indirect headless-browser use remains recorded. The owner later authorized automated browser verification for the completion pass only.",
+    "Local opt-in pinned Python runtime only; GPL/transitive distribution decision remains pending. No backend dependency binaries bundled.",
+    "Only causal built-in high/low-pass DSP is accepted, with per-path onset probes. External plugins and nonzero latency compensation are unsupported.",
+    "No drag handles or native browser DSP path adopted; explicit numeric/JSON edits share the same atomic API and preview uses rendered audio."
+  ],
+  "completionDate": "2026-10-05",
+  "milestoneStatus": "complete"
+}

@@ -133,6 +133,27 @@ it("reports missing exports and program exceptions as structured diagnostics", a
     diagnostics: [expect.objectContaining({ message: "authored failure" })],
   });
 });
+it.each([".ts", ".cts"])(
+  "retains successful asset reads when a later %s build fails",
+  async (extension) => {
+    const root = await directory(),
+      input = join(root, `entry${extension}`),
+      art = join(root, "art.svg"),
+      font = join(root, "font.ttf");
+    await writeFile(art, '<svg width="8" height="12"/>');
+    await writeFile(font, "font bytes");
+    await writeFile(
+      input,
+      `import{imageAsset,fontAsset}from'@still-shift/motion/node';export default(async()=>{await imageAsset('art',${JSON.stringify(art)});await fontAsset('font',${JSON.stringify(font)});throw new Error('failure after reading assets');})();`,
+    );
+    await expect(loadProgram(input)).rejects.toMatchObject({
+      dependencies: expect.arrayContaining([art, font]),
+      diagnostics: [
+        expect.objectContaining({ message: "failure after reading assets" }),
+      ],
+    });
+  },
+);
 it("bounds console output and runtime and retains dependencies on failed reloads", async () => {
   const root = await directory(),
     input = join(root, "entry.ts"),
@@ -179,4 +200,59 @@ it("cancels a running rebuild and closes the child before cleaning temporary out
   } finally {
     clearTimeout(timer);
   }
+});
+
+it("rejects adding the same auto-ID text object twice without hanging the builder", async () => {
+  const root = await directory(),
+    input = join(root, "duplicate.ts");
+  await writeFile(
+    input,
+    `import {comp,text} from '@still-shift/motion';export default comp({width:64,height:64,fps:24,frames:24},c=>{const title=text('Hello');c.add(title);c.add(title);});`,
+  );
+  await expect(loadProgram(input, { timeoutMs: 2000 })).rejects.toMatchObject({
+    diagnostics: [
+      expect.objectContaining({
+        code: "comp-builder-id",
+        message: expect.stringContaining("Duplicate layer text"),
+      }),
+    ],
+  });
+});
+
+it.each([".cts", ".ts"])(
+  "traces CommonJS helper and JSON dependencies from %s",
+  async (extension) => {
+    const root = await directory(),
+      input = join(root, `program${extension}`),
+      helper = join(root, "helper.cts"),
+      data = join(root, "data.json");
+    await writeFile(data, JSON.stringify({ count: 24 }));
+    await writeFile(
+      helper,
+      `const data=require('./data.json');export const count:number=data.count;`,
+    );
+    const prefix =
+      extension === ".ts"
+        ? `import{createRequire}from'node:module';const require=createRequire(import.meta.url);`
+        : "";
+    await writeFile(
+      input,
+      `${prefix}const{count}=require('./helper.cts');export default {schemaVersion:'composition-1',id:'commonjs',width:64,height:64,fps:24,frameCount:count,layers:[],assets:[]};`,
+    );
+    const loaded = await loadProgram(input);
+    expect(loaded.composition.frameCount).toBe(24);
+    expect(loaded.dependencies).toEqual(
+      expect.arrayContaining([await realpath(helper), await realpath(data)]),
+    );
+  },
+);
+
+it("loads standalone CommonJS builders through the public motion alias", async () => {
+  const root = await directory(),
+    input = join(root, "builder.cts");
+  await writeFile(
+    input,
+    `import{comp,solid}from'@still-shift/motion';export default comp({width:64,height:64,fps:24,frames:24},c=>c.add(solid('box',{size:[8,8],color:'#FFFFFF'})));`,
+  );
+  expect((await loadProgram(input)).composition.layers[0]?.id).toBe("box");
 });

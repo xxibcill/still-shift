@@ -1,5 +1,10 @@
 import type { ShapeGeometryBudget } from "../shapes/budget.ts";
-import { flattenBezier, arcLengths, pointAtLength } from "../shapes/path.ts";
+import {
+  flattenBezier,
+  transformBezier,
+  arcLengths,
+  pointAtLength,
+} from "../shapes/path.ts";
 import type {
   Composition,
   CompositionScope,
@@ -138,10 +143,9 @@ function applyConstraint(
           ...ctx.budget.location,
         },
       );
-    const localPoints = flattenBezier(path, ctx.budget);
-    ctx.budget.vertices(localPoints.length);
-    const points = localPoints.map((point) =>
-      ctx.budget.point(transformPoint(source.worldMatrix, point)),
+    const points = flattenBezier(
+      transformBezier(path, source.worldMatrix, ctx.budget),
+      ctx.budget,
     );
     const lengths = arcLengths(points),
       total = lengths.at(-1) ?? 0;

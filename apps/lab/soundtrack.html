@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Still Shift · Soundtrack</title>
+    <link rel="stylesheet" href="/src/soundtrack.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <p>Still Shift / Soundtrack</p>
+        <h1>Sound layers</h1>
+        <a href="/passage.html">Passage preview</a>
+      </header>
+      <form id="load">
+        <label
+          >Saved project path<input
+            id="path"
+            value="benchmarks/fixtures/composition/ce16/project.json"
+            required /></label
+        ><button>Load</button>
+      </form>
+      <p id="status" role="status">
+        Load a saved project to inspect its clips.
+      </p>
+      <p id="error" role="alert"></p>
+      <section class="toolbar" aria-label="Soundtrack actions">
+        <button id="undo" disabled>Undo</button
+        ><button id="redo" disabled>Redo</button
+        ><button id="render" disabled>Render this revision</button
+        ><a id="download" hidden>Download mix</a>
+      </section>
+      <audio id="preview" controls hidden></audio>
+      <p>
+        Preview uses the rendered mix. Seeking preserves the full filter and
+        ducking history.
+      </p>
+      <section id="timeline" aria-label="Sound layers and waveforms"></section>
+      <form id="clip-edit" hidden>
+        <h2>Clip</h2>
+        <label>Clip<select id="clip"></select></label>
+        <label
+          >Start sample<input
+            id="start"
+            type="number"
+            step="1"
+            min="0"
+            required /></label
+        ><label
+          >Anchor offset samples (follows start)<input
+            id="offset"
+            type="number"
+            step="1"
+            readonly
+        /></label>
+        <label
+          >Gain (dB)<input
+            id="gain"
+            type="number"
+            min="-120"
+            max="12"
+            step="0.1"
+            required
+        /></label>
+        <label
+          >Pan (−1 left, 0 centre, 1 right)<input
+            id="pan"
+            type="number"
+            min="-1"
+            max="1"
+            step="0.05"
+            required
+        /></label>
+        <label
+          >Source start sample<input
+            id="source-start"
+            type="number"
+            min="0"
+            step="1"
+            required /></label
+        ><label
+          >Source end sample (exclusive)<input
+            id="source-end"
+            type="number"
+            min="1"
+            step="1"
+            required
+        /></label>
+        <label
+          >Fade in samples<input
+            id="fade-in"
+            type="number"
+            min="0"
+            step="1"
+            required /></label
+        ><label
+          >Fade in curve<select id="fade-in-curve">
+            <option value="linear">Linear</option>
+            <option value="equal-power">Equal power (−3 dB midpoint)</option>
+          </select></label
+        >
+        <label
+          >Fade out samples<input
+            id="fade-out"
+            type="number"
+            min="0"
+            step="1"
+            required /></label
+        ><label
+          >Fade out curve<select id="fade-out-curve">
+            <option value="linear">Linear</option>
+            <option value="equal-power">Equal power (−3 dB midpoint)</option>
+          </select></label
+        >
+        <label
+          >Automation JSON<textarea
+            id="automation"
+            rows="4"
+            required
+          ></textarea></label
+        ><button>Save clip edits</button>
+      </form>
+      <button type="button" id="remove-clip" hidden>Remove clip</button>
+      <section id="mix" hidden>
+        <h2>Mix graph</h2>
+        <form id="ducking-edit">
+          <label
+            >Ducking JSON (empty removes ducking)<textarea
+              id="ducking"
+              rows="6"
+            ></textarea></label
+          ><button>Save ducking</button>
+        </form>
+        <form id="limiter-edit">
+          <label
+            >Master limiter JSON (empty removes it; mix only)<textarea
+              id="limiter"
+              rows="4"
+              placeholder='{"ceilingDb": -1, "lookaheadSamples": 480, "releaseSamples": 4800}'
+            ></textarea></label
+          ><button>Save limiter</button>
+        </form>
+        <form id="add-track">
+          <label>New track ID<input id="track-id" required /></label>
+          <label
+            >Role<select id="track-role">
+              <option value="sfx">SFX</option>
+              <option value="ambience">Ambience</option>
+              <option value="bgm">BGM</option>
+              <option value="narration">Narration</option>
+            </select></label
+          >
+          <label>Output<select id="track-output"></select></label>
+          <button>Add track</button>
+        </form>
+        <form id="add-bus">
+          <label>New bus ID<input id="bus-id" required /></label>
+          <label>Output<select id="bus-output"></select></label>
+          <button>Add bus</button>
+        </form>
+      </section>
+      <form id="add-cue" hidden>
+        <h2>Add cue</h2>
+        <label>Cue ID<input id="cue-id" required /></label>
+        <label
+          >Asset ID<input id="cue-asset" list="cue-assets" required /></label
+        ><datalist id="cue-assets"></datalist>
+        <label
+          >New asset path (optional, relative to the project)<input
+            id="cue-asset-path"
+        /></label>
+        <label>Track<select id="cue-track"></select></label>
+        <label
+          >Source start sample<input
+            id="cue-source-start"
+            type="number"
+            min="0"
+            step="1"
+            value="0"
+            required /></label
+        ><label
+          >Source end sample (exclusive)<input
+            id="cue-source-end"
+            type="number"
+            min="1"
+            step="1"
+            required /></label
+        ><label
+          >Start sample<input
+            id="cue-start"
+            type="number"
+            min="0"
+            step="1"
+            required /></label
+        ><label
+          >Gain (dB)<input
+            id="cue-gain"
+            type="number"
+            min="-120"
+            max="12"
+            step="0.1"
+            value="0"
+            required
+        /></label>
+        <button>Add cue</button>
+      </form>
+      <p>
+        All positions use 48 kHz integer samples. Source intervals are
+        end-exclusive. Saved edits invalidate preview until that revision is
+        rendered. Use the CLI to retime anchors or create a portable package.
+      </p>
+    </main>
+    <script type="module" src="/src/soundtrack.ts"></script>
+  </body>
+</html>
