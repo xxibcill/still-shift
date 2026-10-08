@@ -394,6 +394,23 @@ type Multisample = {
   width: number;
   height: number;
 };
+type DepthTextureEntry = {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  key?: string | undefined;
+  texture?: WebGLTexture | undefined;
+  nativeOwned: boolean;
+  bytes: number;
+  counted: boolean;
+};
+type DepthTextureState = {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  closed: boolean;
+  textures: Map<string, WebGLTexture>;
+  sizes: Map<string, number>;
+  entries: Map<string, DepthTextureEntry>;
+};
 
 /** Layer-local GPU content, owned by the shared composition device. */
 export class WebglDepthImages {
@@ -401,9 +418,26 @@ export class WebglDepthImages {
   private vao: WebGLVertexArrayObject | undefined;
   private vertex: WebGLBuffer | undefined;
   private index: WebGLBuffer | undefined;
-  private readonly textures = new Map<string, WebGLTexture>();
+  private readonly textureState = allocateRenderMetadata<DepthTextureState>(
+    1536,
+    () => ({
+      managed: renderMemory() !== undefined,
+      memory: renderMemory(),
+      closed: false,
+      textures: new Map(),
+      sizes: new Map(),
+      entries: new Map(),
+    }),
+    true,
+    (state) => this.clearTextures(state),
+  );
+  private get textures() {
+    return this.textureState.textures;
+  }
   private textureBytes = 0;
-  private readonly textureSizes = new Map<string, number>();
+  private get textureSizes() {
+    return this.textureState.sizes;
+  }
   private readonly locations = new Map<string, WebGLUniformLocation | null>();
   private multisample: Multisample | undefined;
   private count = 0;
@@ -517,12 +551,98 @@ export class WebglDepthImages {
     }
   }
 
+  private destroyTexture(entry: DepthTextureEntry) {
+    const key = entry.key,
+      texture = entry.texture;
+    // Retire the actual cache references even if native destruction fails.
+    if (key !== undefined && this.textureState.entries.get(key) === entry) {
+      this.textureState.entries.delete(key);
+      this.textures.delete(key);
+      this.textureSizes.delete(key);
+      if (entry.counted) this.textureBytes -= entry.bytes;
+    }
+    entry.key = entry.texture = undefined;
+    entry.counted = false;
+    const memory = entry.memory;
+    entry.memory = undefined;
+    if (texture && (!entry.nativeOwned || memory?.owns(texture)))
+      releaseRenderStorage(texture, (value) =>
+        this.device.gl.deleteTexture(value),
+      );
+  }
+  private releaseTexture(entry: DepthTextureEntry) {
+    if (entry.managed) releaseRenderMetadata(entry);
+    else this.destroyTexture(entry);
+  }
+  private clearTextures(state: DepthTextureState) {
+    let failed = false,
+      first: unknown;
+    for (const entry of state.entries.values()) {
+      try {
+        this.releaseTexture(entry);
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          first = error;
+        }
+      }
+    }
+    state.textures.clear();
+    state.sizes.clear();
+    state.entries.clear();
+    state.closed = true;
+    state.memory = undefined;
+    this.textureBytes = 0;
+    if (failed) throw first;
+  }
   private texture(id: string, hash: string, color: boolean, node: string) {
-    const key = `${id}:${hash}:${color}`;
+    const state = this.textureState,
+      memory = renderMemory();
+    if (state.closed) throw Error("Depth texture cache is disposed");
+    if (memory && state.memory !== memory)
+      throw Error("Depth texture cache belongs to another allocator");
+    const entry = allocateRenderMetadata<DepthTextureEntry>(
+      2048 + 4 * (id.length + hash.length),
+      () => ({
+        managed: memory !== undefined,
+        memory,
+        nativeOwned: false,
+        bytes: 0,
+        counted: false,
+      }),
+      true,
+      (value) => this.destroyTexture(value),
+    );
+    let failed = false;
+    try {
+      return this.textureEntry(entry, id, hash, color, node);
+    } catch (error) {
+      failed = true;
+      try {
+        this.releaseTexture(entry);
+      } catch {
+        /* Preserve original texture factory/upload/cache failure. */
+      }
+      throw error;
+    } finally {
+      if (!failed && !entry.counted) this.releaseTexture(entry);
+    }
+  }
+  private textureEntry(
+    entry: DepthTextureEntry,
+    id: string,
+    hash: string,
+    color: boolean,
+    node: string,
+  ) {
+    const key = (entry.key = `${id}:${hash}:${color}`);
     const stored = this.textures.get(key);
     if (stored) {
       this.textures.delete(key);
       this.textures.set(key, stored);
+      const owner = this.textureState.entries.get(key)!;
+      this.textureState.entries.delete(key);
+      this.textureState.entries.set(key, owner);
       return stored;
     }
     const gl = this.device.gl,
@@ -549,12 +669,7 @@ export class WebglDepthImages {
         this.textureBytes + bytes > IMAGE_PLANE_BYTE_LIMIT)
     ) {
       const oldest = this.textures.keys().next().value!;
-      releaseRenderStorage(this.textures.get(oldest)!, (value) =>
-        gl.deleteTexture(value),
-      );
-      this.textures.delete(oldest);
-      this.textureBytes -= this.textureSizes.get(oldest)!;
-      this.textureSizes.delete(oldest);
+      this.releaseTexture(this.textureState.entries.get(oldest)!);
     }
     const texture = createRenderStorage(
       bytes,
@@ -579,9 +694,14 @@ export class WebglDepthImages {
       },
       (texture) => gl.deleteTexture(texture),
     );
+    entry.texture = texture;
+    entry.nativeOwned = entry.memory?.owns(texture) ?? false;
+    entry.bytes = bytes;
+    this.textureState.entries.set(key, entry);
     this.textures.set(key, texture);
     this.textureSizes.set(key, bytes);
     this.textureBytes += bytes;
+    entry.counted = true;
     return texture;
   }
 
@@ -876,28 +996,40 @@ export class WebglDepthImages {
 
   dispose() {
     const gl = this.device.gl;
-    for (const texture of this.textures.values())
-      releaseRenderStorage(texture, (value) => gl.deleteTexture(value));
-    this.textures.clear();
-    this.textureSizes.clear();
-    this.textureBytes = 0;
-    this.locations.clear();
-    if (this.multisample) {
-      gl.deleteFramebuffer(this.multisample.framebuffer);
-      releaseRenderStorage(this.multisample.color, (value) =>
-        gl.deleteRenderbuffer(value),
-      );
-      this.multisample = undefined;
+    let failed = false,
+      first: unknown;
+    try {
+      if (this.textureState.managed) releaseRenderMetadata(this.textureState);
+      else if (!this.textureState.closed) this.clearTextures(this.textureState);
+    } catch (error) {
+      failed = true;
+      first = error;
     }
-    if (this.vertex)
-      releaseRenderStorage(this.vertex, (value) => gl.deleteBuffer(value));
-    if (this.index)
-      releaseRenderStorage(this.index, (value) => gl.deleteBuffer(value));
-    if (this.vao) gl.deleteVertexArray(this.vao);
-    if (this.program) gl.deleteProgram(this.program);
-    this.program = undefined;
-    this.vertex = undefined;
-    this.index = undefined;
-    this.vao = undefined;
+    try {
+      this.locations.clear();
+      if (this.multisample) {
+        gl.deleteFramebuffer(this.multisample.framebuffer);
+        releaseRenderStorage(this.multisample.color, (value) =>
+          gl.deleteRenderbuffer(value),
+        );
+        this.multisample = undefined;
+      }
+      if (this.vertex)
+        releaseRenderStorage(this.vertex, (value) => gl.deleteBuffer(value));
+      if (this.index)
+        releaseRenderStorage(this.index, (value) => gl.deleteBuffer(value));
+      if (this.vao) gl.deleteVertexArray(this.vao);
+      if (this.program) gl.deleteProgram(this.program);
+      this.program = undefined;
+      this.vertex = undefined;
+      this.index = undefined;
+      this.vao = undefined;
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        first = error;
+      }
+    }
+    if (failed) throw first;
   }
 }

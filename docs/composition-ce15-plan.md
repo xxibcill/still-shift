@@ -1340,6 +1340,27 @@ cache/state, effects/plugins/provider/graph/font/common helper/registry/ledger/N
 production/aggregate admission, speed/full gate remain pending.
 [Evidence](./composition-ce15-png-draw-metadata-results.json).
 
+## Accepted depth texture-cache metadata checkpoint — 2026-10-08
+
+Admit actual texture/size/entry Maps and state at 1536 before factories. Admit
+actual entry/key/control/native/Map-slot capacity at 2048+4\*(id.length+hash.length)
+before original template/resource/native producers. Retain actual key and native
+owner through original cache life, then clear actual entry/container/allocator refs.
+Preserve original 64-entry/128 MiB budgets, sRGB/linear upload flags and native LRU
+disposal order. Partial Map insertion and upload/coercion/query/native failures
+release all actual selected owners and preserve original null/retry. Cache disposal
+visits all entries despite first-null; native storage releases once after scope
+exit and in allocator-first cleanup. Foreign active cache rejects before producers.
+
+One complete original 24-call trace stays exact. Build/lint/boundaries and all
+425 focused tests, fourteen new regressions, complete audit 144/8,000, 96 RPC
+snapshots, prior native probes, WebGL/providers and 69 typography tests pass;
+glyph 1.392188× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames
+match pushed `0b9fc54`. Class/caller factories, dedicated depth program/locations/
+renderer text/multisample/draw state, effects/plugins/provider/graph/font/common
+helper/registry/ledger/Node, production/aggregate admission, speed/full gate pending.
+[Evidence](./composition-ce15-depth-texture-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

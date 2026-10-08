@@ -96,14 +96,14 @@ still hold before relying on them.
   pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback, managed plan/sum-shader cache, particle/
-  Canvas/WebGL region, effect-paint/replace, seven built-ins, depth mesh and PNG
-  source/draw/coordinate metadata pass 411 focused tests, complete audit, 22 moving/
-  blurred and ten stationary native frames and 96 owned RPC snapshots. Actual PNG
-  placement/input/uniform/vector data and coordinate record/native/view pre-admit,
-  stay through consumers/cache, then clear. Three original draw traces/eleven new
-  tests, quota/scope-exit/resize/null/retry/foreign/native allocator-first once-only
-  release pass. Native probes, WebGL/providers, 69 typography tests and 64 exports /
-  768 prior-exact bodies/frames pass; glyph 1.328205× meets unchanged 1.5 maximum.
+  Canvas/WebGL region, effect-paint/replace, seven built-ins, depth mesh/texture and
+  PNG source/draw/coordinate metadata pass 425 focused tests, complete audit,
+  22 moving/blurred and ten stationary native frames and 96 owned RPC snapshots.
+  Actual depth texture Maps/key/entry/native refs pre-admit, stay through cache,
+  then clear. One original 24-call trace/fourteen new tests, quota/LRU/byte-budget/
+  partial/null/retry/foreign/scope-exit/native allocator-first once-only release
+  pass. Native probes, WebGL/providers, 69 typography tests and 64 exports / 768
+  prior-exact bodies/frames pass; glyph 1.392188× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -339,6 +339,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual depth texture cache data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `0b9fc54`.
+- **Done:** pre-admit actual texture cache Maps/state, template key/entry/slots/
+  native references; retain through original cache, clear on retirement; preserve
+  64-entry/128 MiB budgets, upload flags, LRU/native identity and original null/retry.
+- **Results:** build/lint/boundaries, 425 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.392188× meets unchanged 1.5 maximum.
+- **Verification:** fourteen new tests/one whole original 24-call trace; cache/
+  byte-budget eviction, partial insert/upload/null/retry, scope-exit/allocator-first
+  native once-only release and foreign guard. Two fixture type failures retained.
+- **Next:** class/caller factories, dedicated depth program/locations/renderer
+  text/multisample/draw state, effects/provider/graph/font/common/ledger/Node, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [depth texture evidence](./composition-ce15-depth-texture-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual PNG draw and coordinate data
 
