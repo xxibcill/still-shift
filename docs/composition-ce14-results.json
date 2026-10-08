@@ -35,13 +35,40 @@
     ]
   },
   "remaining": [
-    "Bezier and puppet contracts",
-    "deterministic rigid MLS and alpha topology",
-    "starch and overlap",
+    "alpha topology and bounded mesh refinement",
     "Canvas and WebGL rendering",
     "pin-only arm and house demo",
     "constraint/expression and story-acting integration",
     "focused browser/export/flip acceptance",
     "full local pnpm check"
-  ]
+  ],
+  "geometry": {
+    "status": "focused-passed",
+    "tests": 58,
+    "testFiles": 6,
+    "gridDimensions": 49,
+    "checks": {
+      "regressions": {
+        "status": "passed",
+        "logSha256": "da317c352ee0f67f23127fd6cdd8f5adbeb1bee303341fedf0ff1b1a4ef0f6ff"
+      },
+      "types": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lint": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "schema-check": {
+        "status": "passed",
+        "logSha256": "fd0421a6b710ec75b9107d02b9ce77186844691d6d769187139d3bc9b65f5606"
+      },
+      "boundaries": {
+        "status": "passed",
+        "logSha256": "5c910c33392af699061309d6cedd4b1c9773841d34fd0a81402eebfe60700563"
+      }
+    },
+    "rendering": "pending"
+  }
 }

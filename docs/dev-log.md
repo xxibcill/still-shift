@@ -44,9 +44,9 @@ still hold before relying on them.
 ## Current state
 
 - **CE14 in progress (2026-10-09):** new `codex/composition-ce14` branch starts
-  from completed, pushed CE15 `efa42f42`. Animated point collections are implemented;
-  focused authoring tests pass. Solver, alpha triangulation, starch/overlap, both
-  backends, demo and final acceptance remain in flight. No blocker or owner
+  from completed, pushed CE15 `efa42f42`. Animated controls, mesh contracts and deterministic
+  geometry are implemented; focused tests and static checks pass. Alpha topology,
+  both backends, demo and final acceptance remain in flight. No blocker or owner
   decision is pending. [CE14 plan](./composition-ce14-plan.md).
 
 - **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
@@ -87,6 +87,17 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE14 deterministic mesh geometry
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, after `c66defee`.
+- **Done:** native Bezier/puppet contracts, rigid MLS, starch-region geometry,
+  stable overlap sorting and triangle flip/collapse detection.
+- **Results:** 58 focused tests, TypeScript, lint, schema and boundaries pass.
+  All 49 rectangular control-grid dimensions are exercised.
+- **Next:** alpha topology and both textured-mesh backends; visual/export and
+  complete milestone acceptance remain pending.
+- **Records:** [CE14 plan](./composition-ce14-plan.md), [evidence](./composition-ce14-results.json).
 
 ### 2026-10-09 — CE14 animated point controls
 

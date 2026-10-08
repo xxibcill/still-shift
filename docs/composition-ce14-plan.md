@@ -46,9 +46,31 @@ TypeScript, changed-file lint, generated schema freshness and package boundaries
 also pass.
 No solver, renderer, demo or full milestone gate is claimed yet.
 
+### 2026-10-09 — Mesh contracts and deterministic geometry
+
+`distort.mesh-warp` declares row-major normalized controls, a layer-local origin
+and size, 2–8 rows/columns and bounded tessellation. `distort.puppet` declares up to
+32 rest/target pins and eight starch/overlap regions. Cross-parameter validation
+runs after expressions: dimensions/counts must agree, rest pins are distinct,
+region radii are positive and starch strength lies between zero and one.
+
+The rigid MLS solver preserves rigid motions and exact pin targets. Zero pins
+are identity; one pin translates. A collapsed covariance produces a diagnostic
+rather than a nonfinite transform. Reductions always use authored pin order.
+Starch applies one local rigid fit throughout a region's inner half-radius and
+smoothly falls off at its edge; later regions blend after earlier ones and exact
+pin constraints win. Overlap uses source-triangle centroids, the last matching
+region's depth and original triangle index as a stable tie-breaker. Flip detection
+compares each triangle to its original winding and rejects collapsed areas.
+
+All 58 focused geometry/contract/plugin/point/curve tests pass. TypeScript,
+changed-file lint, generated schema/reference freshness and boundaries pass.
+This is a geometry checkpoint: native rendering and alpha topology are not yet
+implemented, so no visual or milestone acceptance is claimed.
+
 ## Remaining acceptance
 
-1. Add Bezier and puppet effect contracts, deterministic solver and alpha topology.
+1. Add alpha-outline extraction, licensed triangulation and bounded refinement.
 2. Implement starch, overlap and Canvas/WebGL textured mesh rendering with bounded
    allocations and cleanup; preserve CE15 cache/dependency behavior.
 3. Add the native arm/house demo, expression/constraint example and story-acting

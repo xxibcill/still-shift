@@ -1,3 +1,4 @@
+import { MESH_EFFECT_DEFINITIONS } from "./mesh-effects.ts";
 import { MAP_EFFECT_DEFINITIONS } from "./map-effects.ts";
 import { SHADOW_EFFECT_DEFINITIONS } from "./shadow-effects.ts";
 import { RADIAL_DISTORTION_DEFINITIONS } from "./radial-distortion.ts";
@@ -46,6 +47,7 @@ export const COMPOSITION_EFFECTS: Readonly<
   ...TRANSITION_EFFECT_DEFINITIONS,
   ...SAMPLED_BLUR_DEFINITIONS,
   ...WARP_EFFECT_DEFINITIONS,
+  ...MESH_EFFECT_DEFINITIONS,
   ...NOISE_EFFECT_DEFINITIONS,
   ...STYLIZE_EFFECT_DEFINITIONS,
   ...RADIAL_DISTORTION_DEFINITIONS,
