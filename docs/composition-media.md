@@ -45,7 +45,11 @@ uses CE16's gain/pan/fade conventions while keeping its optional backend separat
 written values clamp to -120…+12 dB and -1…+1. Audio `timeRemap` uses absolute source
 seconds. `sourceStartSample` / `sourceEndSample` are an authorized half-open trim.
 Remapped PCM positions use Q16 sample units; natural identity paths must preserve
-exact integer sample origins throughout nested scopes. Audio is not picture geometry.
+exact integer sample origins throughout nested scopes. Audio visibility compares
+Q16 PCM coordinates against exact half-open layer, scope and inherited group bounds;
+authored property/frame clocks and ordinary picture visibility remain unchanged.
+The evaluator identity advances so prepared masters missing a boundary sample are
+rebuilt. Audio is not picture geometry.
 
 Narration may have an explicit source trim and placement, but its complete authorized
 interval must fit the composition and every inherited visibility window. Changed
@@ -163,7 +167,7 @@ The established picture loop/terminal-hold behavior stays unchanged.
 Output samples must be nonnegative safe integers. Internal `scopeTimes` overrides
 reject in this API; authored ordinary source remap remains supported. Protected
 narration rejects baked `sampleTimes` on voice and ancestors, even when disabled, in
-addition to the previously prohibited source-clock changes. The evaluator is version 53. Continuous clock/dependency correctness, PCM decode/mix,
+addition to the previously prohibited source-clock changes. The evaluator is version 55. Continuous clock/dependency correctness, PCM decode/mix,
 waveforms, preview and matching-audio delivery are verified; passage mixing is verified.
 
 `prepareCompositionAudioSource` verifies the actual single mono/stereo source stream

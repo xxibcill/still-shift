@@ -16,7 +16,7 @@
       "reviewThread": "PRRT_kwDOUNeEOM6qWKAU",
       "path": "apps/lab/composition-api.ts",
       "lineOnReviewedHead": 129,
-      "status": "fixed; focused verification passed; separate first commit pending",
+      "status": "fixed and verified in its separate first finding commit",
       "repair": "Fixture original authorization reuses compositionSequenceFramePath, applying the same bounded padding rules as validation and decoding.",
       "before": {
         "command": "pnpm exec vitest run tests/integration/composition-fixture-captures.test.ts --maxWorkers=1 --no-file-parallelism --testNamePattern 'digit padding'",
@@ -32,7 +32,8 @@
         "log": "/private/tmp/pr48-padding-after.log",
         "evidence": "Both accepted widths prepare and serve captured PNGs, and produce actual64x64 one-frame MP4 draft exports. Independent FFmpeg-decoded center RGB matches original source color within unchanged3-byte encoding tolerance. Existing capacity, owner/disconnect, duplicate and delayed cancellation tests pass."
       },
-      "rejected": "Initial export pixel oracle sampled the center outside the naturally sized8x8 artwork. Added explicit64x64 stretch and center placement to the test fixture; kept the pixel assertion and reran all7 checks."
+      "rejected": "Initial export pixel oracle sampled the center outside the naturally sized8x8 artwork. Added explicit64x64 stretch and center placement to the test fixture; kept the pixel assertion and reran all7 checks.",
+      "commit": "0a4e975c9d6d45141a4dbfdcad3e2c274803e361"
     },
     {
       "id": "nested-audio-boundary",
@@ -41,10 +42,395 @@
       "reviewThread": "PRRT_kwDOUNeEOM6qWKAL",
       "path": "packages/renderer-core/src/composition/evaluate/evaluate.ts",
       "lineOnReviewedHead": 619,
-      "status": "repair and exact boundary verification in progress",
-      "reviewReproduction": "Valid24fps root with25fps narration precomp hosted at frame7 and voice at childframe11 loses stereo sample35120: expected[0.75,-0.5], actual[0,0]. Following sample correct."
+      "status": "fixed and verified; separate second finding commit includes this evidence",
+      "reviewReproduction": "Valid24fps root with25fps narration precomp hosted at frame7 and voice at childframe11 loses stereo sample35120: expected[0.75,-0.5], actual[0,0]. Following sample correct.",
+      "repair": "Audio-only Context visibilitySample holds Q16 PCM coordinates. Scope, layer, group and matte half-open visibility compare exact sample bounds. Raw property/source/frame times and ordinary picture comparisons remain unchanged.",
+      "evaluatorVersionBefore": "composition-evaluator-54",
+      "evaluatorVersionAfter": "composition-evaluator-55",
+      "cacheInvalidation": "Prepared media/audio/export identity uses evaluator version55, so an old master missing a boundary sample is rebuilt.",
+      "before": {
+        "command": "pnpm exec vitest run tests/unit/composition-audio-clock.test.ts tests/integration/composition-audio-mix.test.ts --maxWorkers=1 --no-file-parallelism --testNamePattern 'exact half-open|exact PCM scope|fractional authored|independently placed'",
+        "exitCode": 1,
+        "testsFailed": 16,
+        "testsPassed": 12,
+        "testsSkipped": 35,
+        "log": "/private/tmp/pr48-audio-boundary-red.log",
+        "evidence": "Actual independently placed entire-master regression fails on the reviewed code; nested visibility boundaries omit the first authorized PCM sample."
+      },
+      "after": {
+        "command": "pnpm exec vitest run tests/unit/composition-audio-clock.test.ts tests/integration/composition-audio-mix.test.ts --maxWorkers=1 --no-file-parallelism",
+        "exitCode": 0,
+        "testsPassed": 69,
+        "clockUnits": 50,
+        "audioMixIntegrations": 19,
+        "seconds": 7.65,
+        "log": "/private/tmp/pr48-audio-boundary-final.log",
+        "evidence": {
+          "rootNestedBoundaryChecks": 5400,
+          "deepNestedBoundaryChecks": 750,
+          "rootWindowChecks": 30,
+          "fractionalBoundaryCases": 8,
+          "wholeMasterSamples": 40000,
+          "independentlyPlacedSourceSamples": 1920,
+          "firstAuthorizedOutputSample": 35120,
+          "firstStereoSample": [0.75, -0.5],
+          "lastAuthorizedOutputSample": 37039,
+          "lastStereoSample": [0.25, -0.125],
+          "firstFollowingSilenceSample": 37040,
+          "entireMasterByteIdenticalToIndependentPlacement": true,
+          "pictureVisibilityAndRawPropertyClocks": "unchanged"
+        }
+      },
+      "diagnostics": [
+        "First repaired run exposed tests using Object.is to distinguish0 from preexisting quantizer signedzero. Kept the quantizer and used exact numeric ordinal equality, without tolerance.",
+        "Far-out literal remap exceeded the declared contract; replaced the invalid test fixture with a permitted expression-produced far-out clock."
+      ]
     }
   ],
   "verificationScope": "Focused PR follow-up repair checks; no full pnpm check run or complete repository gate claimed. Existing frozen baselines and authored acceptance tolerances preserved.",
-  "githubActions": "Prohibited; no workflows added or enabled."
+  "githubActions": "Prohibited; no workflows added or enabled.",
+  "finalVerification": {
+    "fast": {
+      "command": "pnpm check:fast",
+      "exitCode": 0,
+      "unitTests": 2599,
+      "unitFiles": 234,
+      "unitSeconds": 22.37,
+      "checks": [
+        "schema",
+        "package boundaries",
+        "repository TypeScript/artifact formatting",
+        "TypeScript lint",
+        "TypeScript build",
+        "all unit tests"
+      ],
+      "log": "/private/tmp/pr48-second-final-fast.log"
+    },
+    "integrations": {
+      "command": "pnpm exec vitest run tests/integration/composition-preview.test.ts tests/integration/composition-fixture-captures.test.ts tests/integration/composition-media-cache.test.ts tests/integration/composition-media-audio.test.ts tests/integration/composition-audio-mix.test.ts tests/integration/passage-native-audio.test.ts tests/integration/passage-native-media.test.ts tests/integration/passage-audio.test.ts --maxWorkers=1 --no-file-parallelism",
+      "exitCode": 0,
+      "tests": 80,
+      "files": 8,
+      "seconds": 80.75,
+      "counts": {
+        "compositionPreview": 17,
+        "compositionFixtureCaptures": 7,
+        "compositionMediaCache": 8,
+        "compositionMediaAudio": 8,
+        "compositionAudioMix": 19,
+        "passageNativeAudio": 9,
+        "passageNativeMedia": 6,
+        "passageAudio": 6
+      },
+      "log": "/private/tmp/pr48-second-final-integrations.log"
+    },
+    "mediaBrowser": {
+      "command": "pnpm test:browser:composition-media",
+      "exitCode": 0,
+      "log": "/private/tmp/pr48-second-final-media-browser.log",
+      "proof": {
+        "status": "passed",
+        "preparedKey": "sha256:9941e5f60996b3f0d823c1e25bf664dd066559e905a060c0c53e0874fb2cb403",
+        "cases": [
+          {
+            "colorSpace": "srgb",
+            "backend": "canvas2d",
+            "pixels": [
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
+            ],
+            "frameHashes": [
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "srgb",
+            "backend": "webgl2",
+            "pixels": [
+              [128, 0, 127, 255],
+              [64, 128, 63, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [64, 128, 63, 255],
+              [128, 0, 127, 255]
+            ],
+            "frameHashes": [
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "227a1d0688a0fbb1b055b1b23ea5a0a2d24c5aa7b827388d3ab6198315aecb29",
+              "19903d54be1714b0997044f79735479a5043dbccc63e157bf230ba84b8fe3556"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "backend": "canvas2d",
+            "pixels": [
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
+            ],
+            "frameHashes": [
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "backend": "webgl2",
+            "pixels": [
+              [188, 0, 187, 255],
+              [74, 149, 136, 255],
+              [128, 255, 128, 255],
+              [255, 255, 255, 255],
+              [74, 149, 136, 255],
+              [188, 0, 187, 255]
+            ],
+            "frameHashes": [
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "550ce511a450131398f114c4d1ccdb62759551fe1554b34923256d74b571f12d",
+              "7e19a2b20ad5de730cb65a20b2c7b093146e4d3c7a4b5caf408d87e8a7c7f1e1",
+              "0c8dbe33f7ae76dea1e20acefe1bf8aff0f1efee6fd8036605af062bbf708d95",
+              "f285ade2e1a56d1a905592a9704be43275ab2058a5f870835341d1bb1d5c18e8"
+            ],
+            "stats": {
+              "decodedBytes": 16384,
+              "encodedBytes": 0,
+              "peakDecodedBytes": 16384,
+              "peakEncodedBytes": 183,
+              "decodedFrames": 4,
+              "hits": 5,
+              "evictions": 2
+            }
+          }
+        ],
+        "compare": [
+          {
+            "colorSpace": "srgb",
+            "maxDelta": 0,
+            "differing": 0
+          },
+          {
+            "colorSpace": "linear-srgb",
+            "maxDelta": 0,
+            "differing": 0
+          }
+        ],
+        "pairBudget": "PassageError: Complete exposure/history frame set exceeds live decoded budget",
+        "gpu": {
+          "peakGpu": 30208,
+          "disposedGpu": 0,
+          "gpuBudget": "PassageError: Native image raster texture exceeds configured GPU cache bytes"
+        },
+        "exports": [
+          {
+            "source": "sequence",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit WAV asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          },
+          {
+            "source": "sequence",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit WAV asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          },
+          {
+            "source": "video",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit embedded PCM asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          },
+          {
+            "source": "video",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit embedded PCM asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count",
+            "transactionProof": "post-mux cancellation and validation rejection publish no MP4/sidecars; stages removed"
+          }
+        ],
+        "authoring": {
+          "newlyReferencedOriginal": 1,
+          "inspectorUndoRedo": "exact",
+          "savedReload": "exact",
+          "backendSwitch": "exact",
+          "draftExport": "byte-identical",
+          "playback": "last frame exact",
+          "fixturePreview": "exact",
+          "retainedCapture": "six peer prepares; three rejected replacements; uncached and reverse seeks exact; disposed URLs revoked",
+          "changedBindingsRejected": true,
+          "originalMediaNotServed": true,
+          "sequenceOriginalWatch": "changed bytes rejected; restored pixels exact"
+        },
+        "audioAuthoring": {
+          "sync": {
+            "samples": 254,
+            "maxFrameDifference": 1,
+            "maxSourceFrameDifference": 0
+          },
+          "webglSync": {
+            "samples": 253,
+            "maxFrameDifference": 1,
+            "maxSourceFrameDifference": 0
+          },
+          "sourcePixels": [
+            {
+              "backend": "webgl2",
+              "exactReverseSeeks": 48
+            },
+            {
+              "backend": "canvas2d",
+              "exactReverseSeeks": 48
+            }
+          ],
+          "combinedMedia": "24 frame-numbered FFV1 frames at12fps; reverse remap; animated still and lower third; matching stereo PCM",
+          "savedRevision": 2,
+          "sampleCount": 96000,
+          "rate": 48000,
+          "channels": 2,
+          "master": "all PCM sample bits exact",
+          "offlineSeek": "frame 6 through distinct last samples exact",
+          "playback": "audio clock; full final interval; seek/pause exact",
+          "gainPanEdit": "waveform changes; undo/redo exact; saved master bits exact",
+          "draftExport": "byte-identical",
+          "fixtureWaveforms": "source/processed/mix",
+          "registeredMaster": "WAV with exact captured checksum",
+          "originalAudioNotServed": true,
+          "sourceWatch": "changed source stops sound and preserves valid pixels; restored source reloads"
+        }
+      }
+    },
+    "sessionBrowser": {
+      "command": "pnpm test:browser:composition-session",
+      "exitCode": 0,
+      "log": "/private/tmp/pr48-second-final-session-browser.log",
+      "proof": {
+        "audioResources": true,
+        "lateAudioResumeIgnored": true,
+        "completeAudioInterval": true,
+        "failedFrameRetained": true,
+        "staleIgnored": true,
+        "shorterClamped": true,
+        "rendererIdentity": true,
+        "callbackOrder": true,
+        "dynamicExportLock": true,
+        "nativeInitialReadiness": true,
+        "nativeStaleSeekIgnored": true,
+        "nativeFailureRetained": true,
+        "nativePendingClear": true,
+        "errors": [
+          "Invalid staged frame Previous valid preview is preserved.",
+          "Native preparation failed Previous valid preview is preserved."
+        ],
+        "disposed": [
+          "invalid",
+          "stale",
+          "first",
+          "async-stale",
+          "latest",
+          "async-native",
+          "audio-stale",
+          "audio-active",
+          "audio-next"
+        ]
+      }
+    },
+    "independentReview": "Separate read-only reviewer found no remaining actionable concerns in final sequence/audio repairs, exact sample predicates, raw/picture clock preservation, range fallback, cache identity and actual output regressions.",
+    "formattingIsolation": "Repository formatting scan completed before integration/browser jobs that register temporary fixtures. Evidence-only documentation updates after execution receive a focused formatting/diff check.",
+    "fullPnpmCheckRun": false,
+    "fullGateJustification": "Scoped PR repairs, audio-only visibility predicates and one fixture filename helper. Focused exact regressions, existing units, affected passage/media browsers and actual exports verify final code. No pixel threshold, encoder law, authored baseline or fixture inventory changes."
+  },
+  "verifiedFileSha256": {
+    "apps/lab/composition-api.ts": "fe6b4d21c69a7df85b61e7d3861578f57e3600e9ee718899bd17658bd145dff8",
+    "packages/renderer-core/src/composition/evaluate/evaluate.ts": "edfb81cbb08986d60188489f1e815f51c5163c36d0cb51515b76a01e8119073e",
+    "packages/renderer-core/src/composition/evaluate/media-clock.ts": "7c076b5f6c9ddfa1138af1d22ae3e2593ef4233f920e01222e33a804c9d8f337",
+    "packages/renderer-core/src/composition/evaluate/version.ts": "c580cd559a7c01d9e0e9f05501f95a77d1355732976e2d7d86c055d1e996584d",
+    "tests/integration/composition-fixture-captures.test.ts": "b6a9fbd535ff15473e1235839dff3ea96bf927e1e423aed2f2853d8f4b9990e7",
+    "tests/unit/composition-audio-clock.test.ts": "7a268fb1dfd2e208f72f32e8a05f3521c5409fb0431a302f63a1e930ed00e3c5",
+    "tests/integration/composition-audio-mix.test.ts": "17e367be44d7c47bab4c62103bd5c8fe9acfae96cc114eafc4a9275146067c2c"
+  },
+  "delivery": {
+    "strategy": "One normal fast-forward push after the separate final audio finding commit",
+    "branch": "codex/composition-ce13",
+    "expectedPreviousRemoteHead": "63766426d611dce8cabe707c3fce353d2f15e1d5",
+    "sequenceCommit": "0a4e975c9d6d45141a4dbfdcad3e2c274803e361",
+    "audioCommit": "Separate second finding commit containing audio code/tests and this final evidence; see PR history."
+  }
 }

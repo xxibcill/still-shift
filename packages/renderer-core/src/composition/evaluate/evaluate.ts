@@ -83,6 +83,7 @@ import { projectSpatialScope } from "./spatial-scope.ts";
 import { sampleLight, validateLight } from "./lighting.ts";
 import { compositionSampleIndex } from "./sample-clock.ts";
 import { naturalMediaSeconds, sampledCompositionMedia } from "./media.ts";
+import { audioVisibilitySample } from "./media-clock.ts";
 import {
   layerContentTime,
   loopedPrecompTime,
@@ -133,6 +134,7 @@ type Stage = {
 type Context = {
   scope: CompositionScope;
   time: number;
+  visibilitySample?: number;
   fps: number;
   route: string[];
   states: Map<string, EvaluatedLayer>;
@@ -263,6 +265,7 @@ function context(
   time: number,
   fps: number,
   route: string[] = [],
+  audioClock = false,
 ): Context {
   let soloLayers = compiled.solo.get(scope);
   if (soloLayers === undefined)
@@ -278,6 +281,9 @@ function context(
   return {
     scope,
     time,
+    ...(audioClock
+      ? { visibilitySample: audioVisibilitySample(time, fps) }
+      : {}),
     fps,
     route,
     states: new Map(),
@@ -292,6 +298,16 @@ function context(
     soloLayers,
     matteLayers,
   };
+}
+
+function scopeTimeWithin(ctx: Context, begin: number, end: number): boolean {
+  if (ctx.visibilitySample === undefined)
+    return ctx.time >= begin && ctx.time < end;
+  const samplesPerFrame = 48000 / ctx.fps;
+  return (
+    ctx.visibilitySample >= begin * samplesPerFrame &&
+    ctx.visibilitySample < end * samplesPerFrame
+  );
 }
 
 function baseState(
@@ -315,10 +331,12 @@ function baseState(
     SIZED_LAYER_TYPES.has(layer.type) ? [size[0] / 2, size[1] / 2] : [0, 0],
   );
   const visible =
-    ctx.time >= 0 &&
-    ctx.time < ctx.scope.frameCount &&
-    ctx.time >= (layer.inPoint ?? 0) &&
-    ctx.time < (layer.outPoint ?? ctx.scope.frameCount) &&
+    scopeTimeWithin(ctx, 0, ctx.scope.frameCount) &&
+    scopeTimeWithin(
+      ctx,
+      layer.inPoint ?? 0,
+      layer.outPoint ?? ctx.scope.frameCount,
+    ) &&
     layer.enabled !== false &&
     (!ctx.soloLayers || ctx.soloLayers.has(layer.id));
   const state: EvaluatedLayer = {
@@ -473,7 +491,14 @@ class Evaluation {
     this.options = options;
     this.session = session;
     this.audioClock = audioClock;
-    this.root = context(compiled, compiled.comp, time, compiled.comp.fps);
+    this.root = context(
+      compiled,
+      compiled.comp,
+      time,
+      compiled.comp.fps,
+      [],
+      audioClock,
+    );
   }
 
   private shapeBudget(ctx: Context, layer: CompositionLayer) {
@@ -619,6 +644,7 @@ class Evaluation {
         : Math.max(0, Math.min(scope.frameCount - 1, sourceTime)),
       scope.fps ?? this.compiled.comp.fps,
       route,
+      this.audioClock,
     );
     ctx.children.set(host.id, next);
     return next;
@@ -1615,8 +1641,11 @@ class Evaluation {
     // A matte's enable/solo switches do not hide its alpha-producing children.
     const parentVisible =
       parent && ctx.matteLayers.has(parent.id)
-        ? ctx.time >= (parent.layer.inPoint ?? 0) &&
-          ctx.time < (parent.layer.outPoint ?? ctx.scope.frameCount)
+        ? scopeTimeWithin(
+            ctx,
+            parent.layer.inPoint ?? 0,
+            parent.layer.outPoint ?? ctx.scope.frameCount,
+          )
         : parent?.visible;
     const groupVisible = parent
       ? (ctx.groupVisible.get(parent.id) ?? true) &&
@@ -1709,8 +1738,7 @@ class Evaluation {
     const scopes = audioScopes(this.compiled);
     if (
       !scopes.has(ctx.scope) ||
-      ctx.time < 0 ||
-      ctx.time >= ctx.scope.frameCount
+      !scopeTimeWithin(ctx, 0, ctx.scope.frameCount)
     )
       return [];
     const result: EvaluatedCompositionAudio[] = [];

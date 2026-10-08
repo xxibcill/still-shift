@@ -5461,6 +5461,27 @@ commit. Both deliver in one final normal push;
 this scoped follow-up does not run or claim a full repository gate.
 [Repair evidence](./pr-48-review-fix-results.json).
 
+### CE13 PR #48 second review repairs — 2026-10-08
+
+The second independent review posts two new P2 findings inline on `63766426`:
+accepted two-digit sequence padding fails registered fixture authorization, and
+mixed-rate nested audio loses an exact boundary sample. Sequence authorization now
+reuses `compositionSequenceFramePath` (`0a4e975c`); audio visibility compares Q16
+PCM positions against exact half-open scope/layer/group bounds while authored
+property times and ordinary picture clocks remain unchanged. Evaluator identity
+advances 54→55 so an incorrect previously cached master is rebuilt.
+
+Both accepted padding regressions fail before repair. The actual nested narration
+master loses its first stereo sample at output 35,120 before repair. Final code
+preserves all 40,000 master samples against independent source placement, including
+first/last impulses and surrounding silence. Fast checks pass 2,599 units; 80
+focused cache/preview/native/passage integrations and native media/authoring/export/
+session browsers pass. Independent final implementation review has no actionable
+concerns. Frozen visuals, source-clock quantizer laws and acceptance tolerances are
+unchanged. Each posted finding has a separate commit, delivered in one final normal
+push; this scoped follow-up does not run or claim a full repository gate.
+[Second review repair evidence](./pr-48-second-review-fix-results.json).
+
 ## CE14 — Mesh warp and puppet pins
 
 **Outcome:** Still artwork bends, squashes and gestures without new poses, which is the

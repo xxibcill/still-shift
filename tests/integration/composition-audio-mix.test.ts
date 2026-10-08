@@ -621,3 +621,53 @@ it("cancels an actual streamed mix without publishing and detects source PCM cha
     (await readdir(cacheDirectory)).filter((n) => !n.startsWith(".")),
   ).toHaveLength(1);
 });
+
+it("preserves every independently placed nested narration sample including its first impulse", async () => {
+  const { asset, raw } = await source(
+    "nested-boundary",
+    1920,
+    2,
+    (sample, channel) =>
+      sample === 0
+        ? channel
+          ? -0.5
+          : 0.75
+        : sample === 1919
+          ? channel
+            ? -0.125
+            : 0.25
+          : ((sample % 31) - 15) / 64,
+  );
+  const comp = document(asset);
+  comp.frameCount = 20;
+  comp.layers = [
+    { id: "host", type: "precomp", comp: "spoken", startFrame: 7 },
+  ];
+  comp.precomps = [
+    {
+      id: "spoken",
+      width: 64,
+      height: 48,
+      fps: 25,
+      frameCount: 13,
+      layers: [
+        {
+          id: "voice",
+          type: "audio",
+          asset: asset.id,
+          role: "narration",
+          startFrame: 11,
+          inPoint: 11,
+          outPoint: 12,
+        },
+      ],
+    },
+  ];
+  const actual = await render(comp, "nested-boundary");
+  const expected = Buffer.alloc(40000 * 8);
+  raw.copy(expected, 35120 * 8);
+  expect(actual.pcm).toEqual(expected);
+  expect(pair(actual.pcm, 35120)).toEqual([0.75, -0.5]);
+  expect(pair(actual.pcm, 37039)).toEqual([0.25, -0.125]);
+  expect(pair(actual.pcm, 37040)).toEqual([0, 0]);
+});

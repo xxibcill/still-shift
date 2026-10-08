@@ -267,3 +267,279 @@ it.each([24, 25, 30, 50, 60] as const)(
     expect(evaluateCompositionAudio(comp, period + 1)).toEqual([]);
   },
 );
+
+function setAudioSampleCount(comp: Composition, sampleCount: number) {
+  const asset = comp.assets[0]!;
+  if (asset.type !== "audio") throw Error("Expected audio");
+  asset.sampleCount = sampleCount;
+}
+
+const audioRates = [24, 25, 30, 50, 60] as const;
+const audioRatePairs = audioRates.flatMap((rootFps) =>
+  audioRates.map((nestedFps) => [rootFps, nestedFps] as const),
+);
+
+it.each(audioRatePairs)(
+  "keeps exact half-open audio visibility boundaries at %i root/%i nested fps",
+  (rootFps, nestedFps) => {
+    const samplesPerFrame = 48000 / nestedFps;
+    for (const hostStart of [7, 53, 101])
+      for (const voiceStart of [3, 7, 11, 17])
+        for (const parent of ["none", "group", "matte"] as const) {
+          const comp = document(rootFps);
+          comp.frameCount = rootFps * 6;
+          setAudioSampleCount(comp, samplesPerFrame);
+          comp.layers = [
+            {
+              id: "host",
+              type: "precomp",
+              comp: "spoken",
+              startFrame: hostStart,
+            },
+          ];
+          comp.precomps = [
+            {
+              id: "spoken",
+              width: 64,
+              height: 48,
+              fps: nestedFps,
+              frameCount: 100,
+              layers: [
+                {
+                  id: "voice",
+                  type: "audio",
+                  asset: "pcm",
+                  role: "narration",
+                  startFrame: voiceStart,
+                  inPoint: voiceStart,
+                  outPoint: voiceStart + 1,
+                  ...(parent === "none" ? {} : { parent: "window" }),
+                },
+              ],
+            },
+          ];
+          if (parent !== "none") {
+            const layers = comp.precomps[0]!.layers;
+            layers.unshift({
+              id: "window",
+              type: "group",
+              size: [64, 48],
+              inPoint: voiceStart,
+              outPoint: voiceStart + 1,
+              ...(parent === "matte" ? { enabled: false } : {}),
+            });
+            if (parent === "matte")
+              layers.push({
+                id: "picture",
+                type: "solid",
+                size: [64, 48],
+                color: "#ffffff",
+                trackMatte: { layer: "window", mode: "alpha" },
+              });
+          }
+          expect(validateComposition(comp).ok).toBe(true);
+          const origin =
+            hostStart * (48000 / rootFps) + voiceStart * samplesPerFrame;
+          for (const elapsed of [
+            -1,
+            0,
+            1,
+            samplesPerFrame - 1,
+            samplesPerFrame,
+            samplesPerFrame + 1,
+          ]) {
+            const voices = evaluateCompositionAudio(comp, origin + elapsed);
+            if (elapsed < 0 || elapsed >= samplesPerFrame)
+              expect(voices).toEqual([]);
+            else {
+              expect(voices).toHaveLength(1);
+              expect(voices[0]!.key).toBe("host/voice");
+              expect(voices[0]!.sourceSample === elapsed).toBe(true);
+              expect(voices[0]!.clipSample === elapsed).toBe(true);
+            }
+          }
+        }
+  },
+);
+
+it("retains exact PCM scope endpoints through two natural precomp clocks", () => {
+  for (const rootFps of audioRates)
+    for (const nestedFps of audioRates)
+      for (const voiceFps of audioRates) {
+        const count = 48000 / voiceFps;
+        const comp = document(rootFps);
+        comp.frameCount = rootFps * 3;
+        setAudioSampleCount(comp, count);
+        comp.layers = [
+          { id: "outer", type: "precomp", comp: "middle", startFrame: 7 },
+        ];
+        comp.precomps = [
+          {
+            id: "middle",
+            width: 64,
+            height: 48,
+            fps: nestedFps,
+            frameCount: 80,
+            layers: [
+              { id: "inner", type: "precomp", comp: "spoken", startFrame: 17 },
+            ],
+          },
+          {
+            id: "spoken",
+            width: 64,
+            height: 48,
+            fps: voiceFps,
+            frameCount: 1,
+            layers: [
+              { id: "voice", type: "audio", asset: "pcm", role: "narration" },
+            ],
+          },
+        ];
+        expect(validateComposition(comp).ok).toBe(true);
+        const origin = 7 * (48000 / rootFps) + 17 * (48000 / nestedFps);
+        for (const elapsed of [-1, 0, 1, count - 1, count, count + 1]) {
+          const voices = evaluateCompositionAudio(comp, origin + elapsed);
+          if (elapsed < 0 || elapsed >= count) expect(voices).toEqual([]);
+          else {
+            expect(voices).toHaveLength(1);
+            expect(voices[0]!.key).toBe("outer/inner/voice");
+            expect(voices[0]!.sourceSample === elapsed).toBe(true);
+          }
+        }
+      }
+});
+
+it("preserves fractional authored clocks on either side of audio visibility boundaries", () => {
+  const quantum = 1 / 65536;
+  for (const boundary of [11, 12])
+    for (const offset of [-quantum, 0, quantum, 0.5]) {
+      const comp = document();
+      setAudioSampleCount(comp, 48000);
+      const sourceFrame = boundary + offset * (25 / 48000);
+      comp.layers = [
+        { id: "host", type: "precomp", comp: "spoken", timeRemap: sourceFrame },
+      ];
+      comp.precomps = [
+        {
+          id: "spoken",
+          width: 64,
+          height: 48,
+          fps: 25,
+          frameCount: 20,
+          layers: [
+            {
+              id: "voice",
+              type: "audio",
+              asset: "pcm",
+              startFrame: 11,
+              inPoint: 11,
+              outPoint: 12,
+              gainDb: {
+                keys: [
+                  { frame: 0, value: 0 },
+                  { frame: 1, value: 1, interpolation: "linear" },
+                ],
+              },
+            },
+          ],
+        },
+      ];
+      comp.expressions = { "host/voice.gainDb": { source: "value" } };
+      const voices = evaluateCompositionAudio(comp, 0);
+      const inside = boundary === 11 ? offset >= 0 : offset < 0;
+      if (!inside) expect(voices).toEqual([]);
+      else {
+        expect(voices[0]!.sourceSample).toBe((boundary - 11) * 1920 + offset);
+        // Source quantization must not rewrite expression/key time.
+        expect(voices[0]!.gainDb).toBe(
+          Math.max(0, Math.min(1, sourceFrame - 11)),
+        );
+      }
+    }
+  const comp = document();
+  comp.frameCount = 20;
+  setAudioSampleCount(comp, 1920);
+  comp.layers = [
+    { id: "host", type: "precomp", comp: "spoken", startFrame: 7 },
+  ];
+  comp.precomps = [
+    {
+      id: "spoken",
+      width: 64,
+      height: 48,
+      fps: 25,
+      frameCount: 13,
+      layers: [
+        {
+          id: "voice",
+          type: "audio",
+          asset: "pcm",
+          startFrame: 11,
+          inPoint: 11,
+          outPoint: 12,
+        },
+      ],
+    },
+  ];
+  // Ordinary picture visibility retains its existing unsnapped frame clock.
+  expect(
+    evaluateComp(comp, 35120 * (24 / 48000)).layers[0]!.precomp!.layers[0]!
+      .visible,
+  ).toBe(false);
+});
+
+it.each(audioRates)(
+  "retains half-open root group and precomp windows at %i fps",
+  (fps) => {
+    const comp = document(fps);
+    const count = 48000 / fps;
+    comp.frameCount = fps * 2;
+    setAudioSampleCount(comp, 48000);
+    comp.layers = [
+      { id: "window", type: "group", size: [64, 48], inPoint: 7, outPoint: 8 },
+      {
+        id: "host",
+        type: "precomp",
+        comp: "spoken",
+        startFrame: 7,
+        inPoint: 7,
+        outPoint: 8,
+        parent: "window",
+      },
+    ];
+    comp.precomps = [
+      {
+        id: "spoken",
+        width: 64,
+        height: 48,
+        fps: 25,
+        frameCount: 25,
+        layers: [{ id: "sound", type: "audio", asset: "pcm" }],
+      },
+    ];
+    for (const elapsed of [-1, 0, 1, count - 1, count, count + 1]) {
+      const sounds = evaluateCompositionAudio(comp, 7 * count + elapsed);
+      if (elapsed < 0 || elapsed >= count) expect(sounds).toEqual([]);
+      else {
+        expect(sounds).toHaveLength(1);
+        expect(sounds[0]!.sourceSample === elapsed).toBe(true);
+      }
+    }
+  },
+);
+
+it("retains silent far-out authored scope clocks outside the Q16 coordinate bound", () => {
+  const comp = document();
+  comp.layers = [{ id: "host", type: "precomp", comp: "spoken" }];
+  comp.precomps = [
+    {
+      id: "spoken",
+      width: 64,
+      height: 48,
+      frameCount: 48,
+      layers: [{ id: "sound", type: "audio", asset: "pcm" }],
+    },
+  ];
+  comp.expressions = { "host.timeRemap": { source: "1000000000000" } };
+  expect(evaluateCompositionAudio(comp, 0)).toEqual([]);
+});
