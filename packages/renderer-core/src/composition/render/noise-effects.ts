@@ -351,6 +351,50 @@ export function noiseField(
   seed = c.seed,
   work?: NoiseFieldWork,
 ): number {
+  if (work || !renderMemory()) return produceNoiseField(c, x, y, seed, work);
+  const phase = allocateRenderMetadata<NoiseFieldPhase>(
+    1024,
+    () => ({ managed: true }),
+    false,
+    clearNoiseFieldPhase,
+  );
+  let result: number | undefined,
+    failed = false,
+    failure: unknown;
+  try {
+    phase.producer = () => produceNoiseField(c, x, y, seed, phase);
+    result = phase.producer();
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      releaseRenderMetadata(phase);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) throw failure;
+  return result!;
+}
+type NoiseFieldPhase = NoiseFieldWork & {
+  managed: boolean;
+  producer?: (() => number) | undefined;
+};
+function clearNoiseFieldPhase(phase: NoiseFieldPhase) {
+  for (const key in phase)
+    delete (phase as Partial<NoiseFieldPhase>)[key as keyof NoiseFieldPhase];
+}
+function produceNoiseField(
+  c: NoiseControls,
+  x: number,
+  y: number,
+  seed: number,
+  work?: NoiseFieldWork,
+): number {
   let sum = 0;
   for (let octave = 0; octave < c.octaves; octave++)
     sum +=

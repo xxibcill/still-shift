@@ -99,25 +99,24 @@ still hold before relying on them.
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
   mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results, managed plan/sum-shader cache, particle/
+  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
   texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 791 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. Standalone noiseFieldUniforms admits actual
-  1024-byte temporary producer/partial record-vectors and independent 1536-byte
-  returned uniform record/vectors before original getter/factories. Capture actual
-  empty seed/z vectors before original element reads and retain exact seven-read
-  getter order/field insertion. Transfer completed record/vectors out of phase, retire
-  producer and keep captured allocator ownership outside scope until consumer/scratch/
-  allocator cleanup. Preserve inactive/caller route without extra leases, borrowed
-  controls, first null over secondary cleanup and exact retry. Eight new tests retain
-  six independently frozen complete uniform/getter tables and verify quota/actual
-  partial record-vectors/producer/lifetime/all getter cuts/adoption/cleanup/retry/caller.
-  All 783 prior tests rerun, with two affected tests releasing newly owned uniforms
-  after unchanged frozen assertions. Focused attempt 1 passes. Native probes,
-  WebGL/providers and 69 typography tests pass; glyph 1.368082× meets unchanged
-  1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output. Field/color
-  helpers and other effects/cache/error/class/caller/depth sampling remain pending.
+  metadata pass 799 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Standalone noiseField admits actual
+  1024-byte producer/plane owner before original octave getters/math/plane factories.
+  Default seed scalar retains original parameter evaluation, one read and allocation-
+  free getter failure. Hold producer through final scalar consumer, drop each actual
+  original plane after its octave even on null and retire phase. Preserve inactive/
+  caller route without extra leases, borrowed controls, first null and exact retry.
+  Eight new tests retain 60 independent original field value/getter/math-count rows,
+  quota/default seed/actual producer-plane refs/all getters/math/adoption/cleanup/
+  retry/caller. All 791 prior tests rerun unchanged. Attempt 1 builds but lint rejects
+  throw from finally; first error now propagates after cleanup. Attempt 2 passes.
+  Native probes, WebGL/providers and 69 typography tests pass; glyph 1.407681×
+  meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact
+  output. Color helper and other effects/cache/error/class/caller/depth sampling
+  remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -353,6 +352,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual standalone noise-field metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `78f4c557`.
+- **Done:** admit actual producer and original octave plane closures before factories,
+  hold through scalar consumer, drop each plane after its octave and retire phase.
+- **Results:** build/lint/boundaries, 799 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.407681×.
+- **Verification:** eight new tests / 60 original field value/getter/math-count rows,
+  quota/default seed/actual producer-plane refs/all getter cuts/math/adoption/cleanup/
+  retry/caller; all 791 prior tests rerun unchanged. Second attempt passes.
+- **Rejected / repaired:** first attempt builds; lint rejects throw from finally.
+  First error now propagates after cleanup, retaining original math and plane behavior.
+- **Next:** color helper, other effects/cache/class/depth sampling/provider/graph/
+  font/common/registry/ledger/Node, aggregate memory/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [noise field evidence](./composition-ce15-noise-field-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual standalone noise-uniform metadata
 

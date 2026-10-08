@@ -5136,24 +5136,23 @@ rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/d
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
 standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/late-point-results/
 radial-GPU-Canvas-work/standalone-radial-point/control/encoded-view-results/stylize-
-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
+GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
 replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/
-native-controls and PNG source/draw/coordinate metadata pass 791 focused tests,
+native-controls and PNG source/draw/coordinate metadata pass 799 focused tests,
 complete audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
-snapshots. Standalone noiseFieldUniforms admits actual 1024-byte temporary producer/
-partial record-vectors and independent 1536-byte uniform record/vector result before
-original getter/factories. Capture empty actual seed/z vectors before element reads,
-retaining exact seven-read getter order/field insertion. Transfer completed record/
-vectors out of phase, retire producer and retain captured allocator ownership outside
-scope until consumer/scratch/allocator cleanup. Preserve inactive/caller route without
-extra leases, borrowed controls, first null over secondary cleanup and exact retry.
-Eight new tests retain six independent complete uniform/getter tables and verify
-quota/actual partial vectors/producer/lifetime/all getter cuts/adoption/cleanup/retry/
-caller. All 783 prior tests rerun; two affected tests release newly owned uniforms
-after unchanged frozen assertions. Focused attempt 1 passes. Native probes,
-WebGL/providers and 69 typography tests pass; glyph 1.368082× meets unchanged 1.5
-maximum. All 64 exports / 768 bodies/frames retain prior exact output. Field/color
-helpers and other effects/cache/error/class/caller/depth sampling remain pending. Recording/device/pool/shader/paint/
+snapshots. Standalone noiseField admits actual 1024-byte producer/plane owner before
+original octave getters/math/plane factories. Default seed scalar keeps original
+parameter evaluation, one read and allocation-free getter failure. Hold producer
+through final scalar consumer; drop each actual plane after its octave even on null,
+then retire phase. Preserve inactive/caller route without extra leases, borrowed
+controls, first null over secondary cleanup and exact retry. Eight new tests retain
+60 original field value/getter/math-count rows, quota/default seed/actual producer-
+plane refs/all getter cuts/math/adoption/cleanup/retry/caller. All 791 prior tests
+rerun unchanged. Attempt 1 builds but lint rejects throw from finally; first error
+now propagates after cleanup. Attempt 2 passes. Native probes, WebGL/providers and
+69 typography tests pass; glyph 1.407681× meets unchanged 1.5 maximum. All 64 exports
+/ 768 bodies/frames retain prior exact output. Color helper and other effects/cache/
+error/class/caller/depth sampling remain pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

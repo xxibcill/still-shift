@@ -2079,6 +2079,27 @@ Field/color helpers, other effects/cache/registry/error/class/depth sampling/pro
 graph/font/common/ledger/Node and production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-noise-uniforms-metadata-results.json).
 
+## Accepted standalone noise-field metadata checkpoint — 2026-10-08
+
+Default active helper admits actual 1024-byte temporary producer/plane owner before
+original octave getters/math/plane factories. Original default seed scalar remains
+in parameter evaluation with one read and allocation-free getter failure. Hold actual
+producer through all octaves and final scalar consumer; drop each actual original
+plane after its octave, even on null, then retire phase. Preserve inactive/caller
+route without extra leases, borrowed controls, first null over secondary cleanup and
+exact retry. Scalar result leaves zero owned metadata/reservations.
+
+Build/lint/boundaries and 799 focused tests / 91 files pass on attempt 2. Attempt 1
+builds but lint rejects throw from finally; first error now propagates after cleanup.
+Eight new tests preserve 60 independently frozen original field values/getter/math-
+count rows, plus quota/default seed behavior/actual producer-plane refs/all getter
+cuts/math/adoption/cleanup null/retry/caller. All 791 prior tests rerun unchanged.
+Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography tests
+and 64 prior-exact exports / 768 bodies/frames pass; glyph 1.407681× meets unchanged
+1.5 maximum. Color helper, other effects/cache/registry/error/class/depth sampling/
+provider/graph/font/common/ledger/Node and production/aggregate/speed/final gates
+remain pending. [Evidence](./composition-ce15-noise-field-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
