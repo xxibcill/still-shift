@@ -94,3 +94,101 @@ it("resolves secondary zoom when a motion driver selects focal length and an exp
     12,
   );
 });
+
+it.each(["root", "precomp"] as const)(
+  "validates derived zoom after optical expression writers settle in a %s scope",
+  (scope) => {
+    for (const reverse of [false, true])
+      for (const readerFirst of [false, true]) {
+        const prefix = scope === "precomp" ? "instance/" : "";
+        const entries: [string, { source: string }][] = [
+          [`${prefix}camera.filmSize`, { source: "0.001" }],
+          [`${prefix}camera.focalLength`, { source: "1" }],
+          [
+            `${prefix}reader.transform.position.x`,
+            { source: `ref('${prefix}camera.zoom')` },
+          ],
+        ];
+        const doc = scene(
+          Object.fromEntries(reverse ? entries.reverse() : entries),
+        );
+        doc.width = doc.height = 100;
+        if (readerFirst) doc.layers.reverse();
+        if (scope === "precomp") {
+          doc.precomps = [
+            {
+              id: "inner",
+              width: 100,
+              height: 100,
+              frameCount: 32,
+              layers: doc.layers,
+            },
+          ];
+          doc.layers = [{ id: "instance", type: "precomp", comp: "inner" }];
+        }
+        const parsed = CompositionSchema.parse(doc);
+        for (const frame of [5.5, 31, 0]) {
+          const root = evaluateComp(parsed, frame);
+          const tree = scope === "precomp" ? root.layers[0]!.precomp! : root;
+          expect(tree.camera!.zoom).toBe(100_000);
+          expect(
+            tree.layers.find((state) => state.id === "reader")!.transform
+              .position[0],
+          ).toBe(100_000);
+          expect(evaluateProperty(parsed, `${prefix}camera.zoom`, frame)).toBe(
+            100_000,
+          );
+        }
+      }
+  },
+);
+
+it.each(["expression", "driver"] as const)(
+  "allows a %s to settle optics after keyed sampling",
+  (writer) => {
+    const doc = scene({});
+    doc.width = 100;
+    doc.layers[0] = {
+      id: "camera",
+      type: "camera",
+      filmSize: 0.001,
+      ...(writer === "driver" ? { focalLength: 36 } : {}),
+    };
+    if (writer === "expression")
+      doc.expressions = { "camera.focalLength": { source: "1" } };
+    else {
+      doc.signals = [
+        {
+          id: "focal",
+          keys: [
+            { frame: 0, value: 1 },
+            { frame: 31, value: 1 },
+          ],
+        },
+      ];
+      doc.drivers = [
+        { target: "camera.focalLength", signal: "focal", blend: "replace" },
+      ];
+    }
+    const parsed = CompositionSchema.parse(doc);
+    expect(evaluateComp(parsed, 5.5).camera!.zoom).toBe(100_000);
+  },
+);
+
+it("rejects invalid final derived optics and invalid independent controls", () => {
+  for (const expressions of [
+    {
+      "camera.filmSize": { source: "0.001" },
+      "camera.focalLength": { source: "36" },
+    },
+    { "camera.zoom": { source: "1000001" } },
+    { "camera.filmSize": { source: "0" } },
+    { "camera.focalLength": { source: "10001" } },
+  ]) {
+    const doc = scene(expressions);
+    doc.width = 100;
+    expect(() => evaluateComp(CompositionSchema.parse(doc), 0)).toThrow(
+      /camera (zoom|filmSize|focalLength)/i,
+    );
+  }
+});

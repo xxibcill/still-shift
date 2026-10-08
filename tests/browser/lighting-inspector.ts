@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { lightingReceivingFocusAcceptance } from "./lighting-focus.ts";
 import { mkdtemp, writeFile, readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
@@ -6,6 +7,7 @@ import type { Browser } from "playwright";
 import type { Composition } from "@still-shift/scene-contract";
 import { createProgramPreview } from "../../tools/still-shift-cli/src/composition/preview.ts";
 export async function lightingInspectorAcceptance(browser: Browser) {
+  const focus = await lightingReceivingFocusAcceptance(browser);
   const directory = await mkdtemp(join(tmpdir(), "ce8l-inspector-")),
     input = join(directory, "lighting.json"),
     page = await browser.newPage({ viewport: { width: 1280, height: 900 } }),
@@ -141,6 +143,7 @@ export async function lightingInspectorAcceptance(browser: Browser) {
       receiverToggle: "source/undo/redo/save",
       lightTracks: ["XYZ", "color", "intensity", "innerCone"],
       intensityEdit: 0.75,
+      focus,
       errors,
     };
   } finally {

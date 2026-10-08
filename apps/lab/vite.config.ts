@@ -1,3 +1,4 @@
+import { soundtrackApi } from "./soundtrack-api.ts";
 import { commerceApi } from "./commerce-api.ts";
 import { compositionApi } from "./composition-api.ts";
 import { resolve } from "node:path";
@@ -14,6 +15,7 @@ const root = resolve(import.meta.dirname, "../..");
 export default defineConfig({
   root: resolve(import.meta.dirname),
   plugins: [
+    soundtrackApi(),
     commerceApi(),
     passageSfxApi(),
     passageApi(),

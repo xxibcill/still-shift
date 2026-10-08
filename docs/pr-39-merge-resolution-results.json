@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "pr-conflict-resolution-1",
+  "date": "2026-10-06",
+  "pr": "https://github.com/xxibcill/still-shift/pull/39",
+  "headBranch": "codex/composition-ce8lf-prototype",
+  "originalHead": "17ba543d7471b4c66e82cf6e18d346992fe6fc30",
+  "baseBranch": "codex/composition-ce7",
+  "mergedBase": "817cc9f982f9459cc641af864a8f160bfedc668e",
+  "method": "Merge current remote base without rewriting history; push only HEAD to existing PR head.",
+  "resolution": {
+    "conflictedFiles": ["docs/dev-log.md"],
+    "decision": "Retain CE8-L-F preparation current state and entry; adopt CE7 completed current state and retain CE7 completion entry. Preserve both histories and prerequisite/integration limits.",
+    "automaticMerge": [
+      "docs/composition-ce7-results.json",
+      "docs/composition-engine-plan.md"
+    ],
+    "codeChanges": false,
+    "productionSourcesAndPrototypeAndFixturesUnchangedFromOriginalHead": true,
+    "newDevelopmentLogEntry": "Not added: documentation-only resolution; both existing entries retained."
+  },
+  "preflight": {
+    "command": "pnpm toolchain:check",
+    "result": "passed",
+    "versions": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "uv": "0.7.12",
+      "playwright": "1.62.1",
+      "chromiumRevision": "1234",
+      "chromiumVersion": "151.0.7922.34",
+      "ffmpeg": "8.0.1"
+    },
+    "dependencies": "Private node_modules installed with pnpm install --frozen-lockfile; no owner dependency symlink.",
+    "python": "Private .venv using Python 3.12.11; UV_CACHE_DIR=/private/tmp/pr39-ce8lf-uv-cache; UV_NO_SYNC=1; no Python suites claimed.",
+    "vite": "Own node_modules/.vite and node_modules/.vite-temp; prototype browser runner does not use Vite.",
+    "browserStartupAndPrototypeModuleImports": "passed",
+    "minorDiagnostic": "Post-preflight cache listing initially used an unmatched zsh glob and exited 1 after all preflight checks passed; confirmed private cache directories after Vitest created them."
+  },
+  "verification": {
+    "schema": "pnpm schema:check passed",
+    "boundaries": "pnpm check:boundaries passed",
+    "typecheck": "pnpm build passed",
+    "focusedLint": "pnpm exec eslint scripts/composition/cast-shadow-prototype tests/unit/cast-shadow-prototype.test.ts passed",
+    "format": "pnpm exec prettier --check on merged documentation, prototype sources and frozen references passed",
+    "analytic": {
+      "command": "pnpm exec vitest run tests/unit/cast-shadow-prototype.test.ts --maxWorkers=1 --no-file-parallelism",
+      "result": "passed",
+      "tests": 9
+    },
+    "browser": {
+      "command": "node --import tsx scripts/composition/cast-shadow-prototype/verify.ts",
+      "result": "passed",
+      "referenceCount": 96,
+      "pinned": {
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "draws": 288,
+        "maxDelta": 0,
+        "maximumInput": {
+          "casters": 8,
+          "samples": 16,
+          "textureSide": 64,
+          "maxDelta": 0
+        },
+        "result": "pass",
+        "repeat": false
+      },
+      "repeated": {
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "draws": 96,
+        "maxDelta": 0,
+        "maximumInput": {
+          "casters": 8,
+          "samples": 16,
+          "textureSide": 64,
+          "maxDelta": 0
+        },
+        "result": "pass",
+        "repeat": true
+      },
+      "hardware": {
+        "environment": {
+          "profile": "hardware",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+          "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "draws": 12,
+        "maxDelta": 0,
+        "maximumInput": {
+          "casters": 8,
+          "samples": 16,
+          "textureSide": 64,
+          "maxDelta": 0
+        },
+        "result": "pass",
+        "repeat": false
+      },
+      "sourceHashes": [
+        {
+          "name": "model.ts",
+          "hash": "244f815004dadddfd02923cacf94fe18b007aeaf99085c278b07249cc28bb35a"
+        },
+        {
+          "name": "fixtures.ts",
+          "hash": "956b42cda825b46b1b9044568d543a53c1c32290ae1574f5b175a9a09435ddc4"
+        },
+        {
+          "name": "reference.ts",
+          "hash": "d20e525e9cf58a6594a8604b06dc1746c1ef044dadcb7b6c17e594b16be5d5bc"
+        },
+        {
+          "name": "shader.ts",
+          "hash": "5b60c82e479427274c049a4bdad2b62c80533f15aa385c79d8c70dec2072e65c"
+        },
+        {
+          "name": "verify.ts",
+          "hash": "accb7ade047f366c81b64252ba58ebf419a8fe6dc8bf47670f37dfdf2f3fbc33"
+        }
+      ],
+      "identicalToOriginalPreparationReport": true,
+      "localReport": "benchmarks/results/ce8lf-prototype/report.json"
+    },
+    "frozenReferencesSha256": {
+      "tests/visual/cast-shadow-prototype/reference.json": "a4fbe1464063792d432417739b475ecb33e5544c82a972e33a4ab9e17339d9c0",
+      "tests/visual/cast-shadow-prototype/solid-reference.json": "d099c8c3afcc294c60ad11bbd52dcab840514c2dd21f1919b41e56fa63432f22"
+    },
+    "diffCheck": "git diff --check passed; no unmerged paths",
+    "fullRepositoryGate": "NOT RUN: documentation-only merge; production sources and prototype sources/fixtures exactly unchanged from the original head. Original isolated preparation acceptance rerun; original CE7 full gate retained as historical evidence, not claimed as rerun.",
+    "actions": "Repository enabled=false verified; no tracked workflows present."
+  },
+  "limitations": [
+    "Production CE8/CE8-L integration, native assets/clocks, real exports, 1080p budgets and owner policy decisions remain as recorded in composition-ce8lf-results.json.",
+    "No merge or close of PR #39."
+  ]
+}

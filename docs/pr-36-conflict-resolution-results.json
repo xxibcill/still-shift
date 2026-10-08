@@ -1,0 +1,552 @@
+{
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/36",
+  "date": "2026-10-06",
+  "status": "verified",
+  "headBefore": "6e0d1087893a0635245f697d6c98f293681c4939",
+  "baseIntegrated": "ddaf9d28c5450ac73589e5a675fdbb0e05fd9d6c",
+  "headBranch": "codex/composition-ce10",
+  "baseBranch": "codex/composition-ce4a-completion",
+  "worktree": "/Users/jjae/.codex/worktrees/pr36-ce10-conflicts/still-shift",
+  "resolution": [
+    "Non-rewriting merge of the current remote CE4a base into the existing CE10 head; retain both development-log histories.",
+    "Carry CE4a reference guidance into CE10 maintained composition-reference-notes.md and regenerate the reference; the generated output matches the base guidance.",
+    "Add story adapter provenance to the provider reading-time fixture so CE10 authored-font enforcement and CE12 reading-time lint both remain exercised. Add a CLI regression retaining rejection without provenance.",
+    "Latest base adds soundtrack, expression/bake and lint repairs. Preserve soundtrack and authoring exports/commands/test groups, CE10 workspace links, both log histories, and latest generated guidance.",
+    "Combine CE10 transactional watch previews and retained frames with advisory lint from the updated base. Install a valid candidate even when lint cannot run, clear stale findings, and retain source read-only state and playback. A browser regression verifies this in authoring mode.",
+    "Remove base CLI imports whose composition command behavior already lives in CE10 composition/commands.ts."
+  ],
+  "preflight": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromium": "151.0.7922.34",
+    "ffmpeg": "8.0.1",
+    "workspaceDependencies": "Own frozen-lockfile install; no shared node_modules, optimizer or Vite config caches",
+    "pythonEnvironment": "Own uv sync --frozen environment",
+    "uvCache": "/private/tmp/still-shift-pr36-conflict-uv-cache",
+    "imports": "Relevant modules import through the repository tsx loader; Python numpy/cv2/PIL/torch/transformers import successfully",
+    "soundtrackRuntime": {
+      "path": "/private/tmp/still-shift-pr36-conflict-soundtrack-runtime/bin/python",
+      "setup": "pnpm soundtrack:setup with own STILL_SHIFT_SOUNDTRACK_ENV",
+      "python": "3.12.11",
+      "dawdreamer": "0.9.0",
+      "numpy": "2.3.3",
+      "scipy": "1.16.2",
+      "imports": "passed"
+    }
+  },
+  "codeFixturesAssetsToolchainFingerprint": {
+    "algorithm": "sha256(relative path + NUL + bytes + NUL), sorted git ls-files excluding docs/ and README.md, ROADMAP.md, AGENTS.md",
+    "files": 1381,
+    "sha256": "d5c6ea93b9890a087e4d1a2a151df6799b59aa07796ea9eaac553ab950d26992"
+  },
+  "retainedFailures": [
+    "Initial check:fast rejected stale generated reference; repaired its maintained source and subsequent fast checks passed.",
+    "Initial integration run: missing.js watch recovery exceeded its unchanged 5-second timeout, and provider reading lint was stopped by CE10 unpinned-font enforcement. The isolated watch rerun instead timed out in its first immutable-snapshot case. All 13 unchanged watch assertions pass in the final focused rerun; fixture repair and authored-font rejection pass all 16 lint CLI cases.",
+    "Normal composition-program browser command could not start because Vite maps port 0 to occupied 5173. An identical temporary suite copy with only an explicit available port passes every original assertion; the copy is removed.",
+    "A bare Node strip-only preflight over broad app imports encountered the unchanged CinematicCoverageError parameter property. The repository normal tsx imports and pinned toolchain/browser/Python preflight pass; no unrelated implementation change was made."
+  ],
+  "limits": [
+    "Full pnpm check aggregate and unrelated browser matrices were not rerun for this conflict-resolution task; the complete latest integration run and affected browser suites pass.",
+    "Routine soundtrack verification used command/model/PCM/API checks; the native passage browser suites additionally verify saved-audio mux and unchanged decoded pictures. The standalone CE16 editor browser suite, owner listening, deferred CE6-P timing matrices and real-media corpus acceptance were not rerun.",
+    "The normal authoring browser suite still needs an available explicit port while another local session occupies Vite default 5173; all assertions, including the new combined-preview regression, pass in the temporary available-port harness."
+  ],
+  "actionsEnabled": false,
+  "delivery": {
+    "strategy": "Normal non-force push of both merge commits to the existing codex/composition-ce10 head",
+    "latestBaseRechecked": "ddaf9d28c5450ac73589e5a675fdbb0e05fd9d6c",
+    "headRechecked": "6e0d1087893a0635245f697d6c98f293681c4939",
+    "mergePullRequest": false,
+    "closePullRequest": false,
+    "mergeabilityConfirmation": "Verified after push in the task final report"
+  },
+  "initialBaseVerification": {
+    "unit": 1598,
+    "runtime": {
+      "status": "passed",
+      "tests": 46,
+      "command": "pnpm test:runtime",
+      "log": "/private/tmp/pr36-conflict-runtime.log"
+    },
+    "integration": {
+      "aggregateStatus": "failed-before-fixture-repair",
+      "command": "pnpm test:integration",
+      "testsPassed": 161,
+      "testsFailed": 2,
+      "log": "/private/tmp/pr36-conflict-integration.log",
+      "affectedFinalRerun": {
+        "status": "passed",
+        "tests": 29,
+        "files": [
+          "tests/integration/composition-preview.test.ts",
+          "tests/integration/composition-lint-cli.test.ts"
+        ],
+        "command": "pnpm exec vitest run tests/integration/composition-preview.test.ts tests/integration/composition-lint-cli.test.ts --maxWorkers=1 --no-file-parallelism",
+        "log": "/private/tmp/pr36-conflict-focused-rerun.log"
+      },
+      "finalCoverage": "All 164 current integration cases covered by the initial aggregate plus the affected final rerun; do not label the aggregate command as passed."
+    },
+    "checks": [
+      {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "seconds": 48.25,
+        "log": "/private/tmp/pr36-conflict-check-fast.log"
+      },
+      {
+        "command": "pnpm format:check",
+        "exitCode": 0,
+        "seconds": 11.07,
+        "log": "/private/tmp/pr36-conflict-format-check.log"
+      },
+      {
+        "command": "pnpm lint",
+        "exitCode": 0,
+        "seconds": 5.0,
+        "log": "/private/tmp/pr36-conflict-lint.log"
+      },
+      {
+        "command": "pnpm test:depth",
+        "exitCode": 0,
+        "seconds": 1.28,
+        "log": "/private/tmp/pr36-conflict-test-depth.log"
+      },
+      {
+        "command": "pnpm test:browser:smoke",
+        "exitCode": 0,
+        "seconds": 30.07,
+        "log": "/private/tmp/pr36-conflict-test-browser-smoke.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-program",
+        "exitCode": 1,
+        "seconds": 1.73,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-program.log"
+      },
+      {
+        "command": "pnpm exec tsx tests/browser/pr36-conflict-program-check.ts",
+        "suite": "composition-program.ts with explicit available port only",
+        "exitCode": 0,
+        "seconds": 14.49,
+        "log": "/private/tmp/pr36-conflict-program-available-port.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-builder",
+        "exitCode": 0,
+        "seconds": 27.07,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-builder.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-quality",
+        "exitCode": 0,
+        "seconds": 8.59,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-quality.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-native-passage",
+        "exitCode": 0,
+        "seconds": 51.07,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-native-passage.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-native-passage:webgl",
+        "exitCode": 0,
+        "seconds": 99.6,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-native-passage-webgl.log"
+      },
+      {
+        "command": "pnpm test:browser:passage:authoring",
+        "exitCode": 0,
+        "seconds": 73.14,
+        "log": "/private/tmp/pr36-conflict-test-browser-passage-authoring.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-evaluator",
+        "exitCode": 0,
+        "seconds": 1.51,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-evaluator.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-expressions",
+        "exitCode": 0,
+        "seconds": 12.28,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-expressions.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-provider-typography",
+        "exitCode": 0,
+        "seconds": 8.2,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-provider-typography.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-baselines",
+        "exitCode": 0,
+        "seconds": 298.79,
+        "log": "/private/tmp/pr36-conflict-test-browser-composition-baselines.log"
+      }
+    ],
+    "frozenBaselines": {
+      "status": "passed",
+      "items": 176,
+      "frames": 36061,
+      "regenerated": false,
+      "seconds": 292.52
+    }
+  },
+  "initialBaseIntegrated": "91f9c54b16f1d182dbcb28594adca30a4a6c9390",
+  "initialMergeCommit": "f39813f",
+  "verification": {
+    "phase": "latest-base final verification",
+    "unit": 1740,
+    "runtime": 46,
+    "integration": {
+      "status": "passed",
+      "command": "pnpm test:integration",
+      "tests": 208,
+      "files": 42
+    },
+    "depth": 14,
+    "checks": [
+      {
+        "command": "pnpm check:fast",
+        "exitCode": 0,
+        "log": "/private/tmp/pr36-conflict-refresh-fast.log"
+      },
+      {
+        "command": "pnpm format:check",
+        "exitCode": 0,
+        "seconds": 8.67,
+        "log": "/private/tmp/pr36-conflict-refresh-format-check.log"
+      },
+      {
+        "command": "pnpm lint",
+        "exitCode": 0,
+        "seconds": 4.56,
+        "log": "/private/tmp/pr36-conflict-refresh-lint.log"
+      },
+      {
+        "command": "pnpm test:runtime",
+        "exitCode": 0,
+        "seconds": 10.82,
+        "log": "/private/tmp/pr36-conflict-refresh-test-runtime.log"
+      },
+      {
+        "command": "pnpm test:integration",
+        "exitCode": 0,
+        "seconds": 218.29,
+        "log": "/private/tmp/pr36-conflict-refresh-test-integration.log"
+      },
+      {
+        "command": "pnpm test:depth",
+        "exitCode": 0,
+        "seconds": 0.89,
+        "log": "/private/tmp/pr36-conflict-refresh-test-depth.log"
+      },
+      {
+        "command": "pnpm soundtrack:lint",
+        "exitCode": 0,
+        "seconds": 0.24,
+        "log": "/private/tmp/pr36-conflict-refresh-soundtrack-lint.log"
+      },
+      {
+        "command": "pnpm test:browser:smoke",
+        "exitCode": 0,
+        "seconds": 29.97,
+        "log": "/private/tmp/pr36-conflict-refresh-test-browser-smoke.log"
+      },
+      {
+        "command": "pnpm exec tsx tests/browser/pr36-conflict-program-check.ts",
+        "exitCode": 0,
+        "seconds": 11.52,
+        "log": "/private/tmp/pr36-conflict-refresh-program-available-port.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-builder",
+        "exitCode": 0,
+        "seconds": 22.28,
+        "log": "/private/tmp/pr36-conflict-refresh-test-browser-composition-builder.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-quality",
+        "exitCode": 0,
+        "seconds": 8.5,
+        "log": "/private/tmp/pr36-conflict-refresh-test-browser-composition-quality.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-native-passage",
+        "exitCode": 0,
+        "seconds": 52.92,
+        "log": "/private/tmp/pr36-conflict-refresh-test-browser-composition-native-passage.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-native-passage:webgl",
+        "exitCode": 0,
+        "seconds": 104.35,
+        "log": "/private/tmp/pr36-conflict-refresh-test-browser-composition-native-passage-webgl.log"
+      },
+      {
+        "command": "pnpm test:browser:passage:authoring",
+        "exitCode": 0,
+        "seconds": 84.74,
+        "log": "/private/tmp/pr36-conflict-refresh-test-browser-passage-authoring.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-evaluator",
+        "exitCode": 0,
+        "seconds": 1.91,
+        "log": "/private/tmp/pr36-conflict-refresh-test-browser-composition-evaluator.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-expressions",
+        "exitCode": 0,
+        "seconds": 14.89,
+        "log": "/private/tmp/pr36-conflict-refresh-test-browser-composition-expressions.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-provider-typography",
+        "exitCode": 0,
+        "seconds": 9.38,
+        "log": "/private/tmp/pr36-conflict-refresh-test-browser-composition-provider-typography.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-baselines",
+        "exitCode": 0,
+        "seconds": 318.03,
+        "log": "/private/tmp/pr36-conflict-refresh-test-browser-composition-baselines.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-provider-typography -- --hardware",
+        "exitCode": 0,
+        "log": "/private/tmp/pr36-conflict-refresh-hardware-typography.log"
+      }
+    ],
+    "finalFocusedStaticChecks": "Changed preview, browser regression and CLI imports pass targeted ESLint, Prettier and pnpm build after the final edits.",
+    "frozenBaselines": {
+      "status": "passed",
+      "items": 176,
+      "frames": 36061,
+      "seconds": 310.62,
+      "regenerated": false
+    },
+    "builder": {
+      "status": "passed",
+      "lines": 197,
+      "framesPerBackend": 192,
+      "backends": ["canvas2d", "webgl2"],
+      "maxChannelDelta": 0,
+      "backwardSeeksPerBackend": 7,
+      "typescriptJsonExportsByteIdentical": true
+    },
+    "watch": {
+      "status": "passed",
+      "invalidRebuildRetainsPixels": true,
+      "helperAndAssetRecovery": true,
+      "frameRetained": 17,
+      "shorterClamped": 7,
+      "advisoryLintKeepsPreviewAndFrame": true,
+      "portHarness": "Temporary identical suite copy with explicit available port; removed after execution."
+    },
+    "nativePassages": {
+      "status": "passed",
+      "framesPerBackend": 576,
+      "backends": ["canvas2d", "webgl2"],
+      "savedSoundtrackMux": true,
+      "decodedPictureHashUnchangedByAudio": true,
+      "cacheReuse": true,
+      "backwardSeeks": true,
+      "peakWebglContexts": 4,
+      "remainingWebglContexts": 0
+    },
+    "hardwareProviderTypography": {
+      "status": "passed",
+      "renderer": "Apple M5 Pro ANGLE Metal",
+      "cases": 12,
+      "framesPerCase": 5
+    }
+  },
+  "initialFingerprint": {
+    "algorithm": "sha256(relative path + NUL + bytes + NUL), sorted git ls-files excluding docs/ and README.md, ROADMAP.md, AGENTS.md",
+    "files": 1339,
+    "sha256": "f87ad57968459a0679775282d0b2e351a12a747087ed8e57331cb931ca0f084a"
+  },
+  "logs": [
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-check-fast.log",
+      "sha256": "ad3f96a9ea319863fa00f1eb30eae5cbcce1f3bc7f3786efa9aa1ba571320d28"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-fast.log",
+      "sha256": "4ada4778160f44923a91e7f7898e84770b788adcfad2829289e1b3a74800f564"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-focused-rerun.log",
+      "sha256": "38c74562668d66faa20da5789d6898c78c26cf86fbea1dcd6cc78c6722b502ee"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-format-check.log",
+      "sha256": "3e84a56647cc3a15e20deebf4cf3c7c3bfbcd37db54793d4fb4257175df7b427"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-install.log",
+      "sha256": "bd9b8dbae27db2685c618151461f3074f0850de61f40567bbe4b588dbd9d9ba1"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-integration.log",
+      "sha256": "471103463172c54510e9adf399a4542e339793374249ce183e902724438e018a"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-lint.log",
+      "sha256": "9c92f1ba4d668d22cdb5797e86f63bf64301c30b405ea007b69ff0d27e6240ae"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-preview-rerun.log",
+      "sha256": "ce79899b2dc5a4aabfebfe66091f30141b170f404e4f1a8ef648d33a7a4bf7c5"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-program-available-port.log",
+      "sha256": "d78c94e379871315a315367ca15d782eef5aa81fa653e2cf211c71fe6711d793"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-fast.log",
+      "sha256": "d2eaaccf6be1ca8358d48391d0ed807738cd71c38a3c555cf0f21884eb9d8e77"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-format-check.log",
+      "sha256": "3e84a56647cc3a15e20deebf4cf3c7c3bfbcd37db54793d4fb4257175df7b427"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-hardware-typography.log",
+      "sha256": "2c2a13ffbdb8c03c1f4eb610bb0842aacdc9ed55a34c26e98183a0105bf0f9cd"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-install.log",
+      "sha256": "ae8785456732887b85b855134d9f76eef88bc0dab40982661c600f36a084d649"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-lint.log",
+      "sha256": "9c92f1ba4d668d22cdb5797e86f63bf64301c30b405ea007b69ff0d27e6240ae"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-program-available-port.log",
+      "sha256": "d3e0e571ebb2407b0d985988e162ff53f947fa14ee3d13fa1c3425c55eb6c4dc"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-soundtrack-lint.log",
+      "sha256": "d28c7bdb7ee4c6390f883ca60069d08b8696d59386a2ed62535f591df2ea4b28"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-soundtrack-setup.log",
+      "sha256": "4cbee42cfb14fd7929dffde272b8ee1cdbc993f11c77d23836e1d214b0e39e28"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-browser-composition-baselines.log",
+      "sha256": "70d6b4772a3753c287cd0984cb297e2ae47909d77d5ed0e697c5799298725eb7"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-browser-composition-builder.log",
+      "sha256": "2910c1ad8c038a5f82ccfabfc0348faac5f851bdbb907e0b813a08ced6ce813b"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-browser-composition-evaluator.log",
+      "sha256": "1f00ebeb7a56d501d39a4f585b4389a33fb503cc2307472f1642607f96c373d0"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-browser-composition-expressions.log",
+      "sha256": "672390f553765d6c93b955a452a38d6c6381997994aae3361cf2ac1b3072bb81"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-browser-composition-native-passage-webgl.log",
+      "sha256": "524e46f1c6ec1f1ca7bcc6817f1098cdec31935b9cd799fdbb6d4daf04333abe"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-browser-composition-native-passage.log",
+      "sha256": "c118c56897cbefebc4bf127c7d4e236cb7518a43fefd8444e2a9fcea82f16d80"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-browser-composition-provider-typography.log",
+      "sha256": "efc260b44643dd1a7f9859f46f4ca1f559ef4823c47e77c732e17163bfef5f41"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-browser-composition-quality.log",
+      "sha256": "47b8cbaf18e4c2df6d16f2e6105147fc8b6700927c2e1e5772c3b8e6f0ee9afd"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-browser-passage-authoring.log",
+      "sha256": "321ada8e1e5e974b3ceaa34cc6f964cd025fcb76a7f93240ba15978c8d996712"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-browser-smoke.log",
+      "sha256": "28c2cc298ba0ecbe8b8c934413180f6a351cd6fd91e0892fcbf0c2ed29057fdb"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-depth.log",
+      "sha256": "d84157e6415b0a2ade2fada82ac33870ecbc139869a0610d02ecea6eaed297a3"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-integration.log",
+      "sha256": "9f67574e3f75a94c17eede2edb1140c7a57118f7bbc382573be3a632c9ace766"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-refresh-test-runtime.log",
+      "sha256": "b3d5eaf6fee6cb28fada0d49c2008c1731735ea533fcc55e9a6507eb2c2cb61f"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-runtime.log",
+      "sha256": "34a586b333a892dc888b23061b69d4b135dcfe9f547b301b250b0b17968a9dd0"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-browser-composition-baselines.log",
+      "sha256": "931f32b66e40e00237994829f048f61e44447d702d9c47553df4b4fd50bfd34b"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-browser-composition-builder.log",
+      "sha256": "2910c1ad8c038a5f82ccfabfc0348faac5f851bdbb907e0b813a08ced6ce813b"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-browser-composition-evaluator.log",
+      "sha256": "1f00ebeb7a56d501d39a4f585b4389a33fb503cc2307472f1642607f96c373d0"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-browser-composition-expressions.log",
+      "sha256": "b5255b900403d68a2b509086e38dbc424663654f4b38fa1bfa394d1eb5686fb6"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-browser-composition-native-passage-webgl.log",
+      "sha256": "863a7c95c3fcf97f6501c31717cda14b102454310fd7f5f9a02fbec2dcf45a96"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-browser-composition-native-passage.log",
+      "sha256": "abb1fa475b2e5573c30da3a4856fc28be3f243b49fef3e27d4d61e6623584ae4"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-browser-composition-program.log",
+      "sha256": "9338a5f8ee38bf41465b4c23f1ffc3b30eba02e2e76cc28401cc20d88059bd38"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-browser-composition-provider-typography.log",
+      "sha256": "efc260b44643dd1a7f9859f46f4ca1f559ef4823c47e77c732e17163bfef5f41"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-browser-composition-quality.log",
+      "sha256": "dcadd84869d80fbcdae75da030016bb553994614800ab0b3a1bdb99fa66624ba"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-browser-passage-authoring.log",
+      "sha256": "9a32458bb76fa39a137aa29727b49fe91640050580b72faa8f3e477d09037e48"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-browser-smoke.log",
+      "sha256": "4ffcc8d146a2d3a1d0dffa0b538c67fef7408d7ddbea5ce446efb84dfbd58e1f"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-test-depth.log",
+      "sha256": "f16a9bdb9600088f7c12a694b76f09061f1d873e89a770f96609c136df333df9"
+    },
+    {
+      "path": "benchmarks/results/pr36-conflict-20261006/pr36-conflict-uv-sync.log",
+      "sha256": "8cd3020d671b58d6b96a0f07676709ef9e5a08893f8adbdf23b61eb928332415"
+    }
+  ]
+}

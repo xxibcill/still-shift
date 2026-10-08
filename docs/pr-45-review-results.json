@@ -1,0 +1,166 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/45",
+  "fixedPoint": "50cbf6332ece7ffafc156645f6a7e4e532d7f986",
+  "codeCheckpoint": "1b3f98f6b2c3808ca7f07a2cf0985b6dc8545b58",
+  "status": "both findings posted inline and repaired in separate commits; independent repair reviews have no actionable findings",
+  "publishedGitHubCommentsOrReview": true,
+  "standards": {
+    "findings": [
+      {
+        "priority": "P2",
+        "title": "Retain local painting for primitive blur on affine images",
+        "file": "packages/renderer-core/src/composition/render/graph.ts",
+        "start": 1142,
+        "end": 1145,
+        "body": "The new direct-draw eligibility permits blur.primitive and forwards its unchanged local radius onto the screen draw. A 3D image scaled 2x with local radius 4 should blur before projection, giving roughly an 8-pixel screen radius. The natural-size path instead uses screen radius 4 and loses directional scaling under nonuniform transforms. Keep positive authored or inherited primitive painting blur on the established local-surface path.",
+        "documentedBehavior": {
+          "file": "docs/composition-reference.md",
+          "line": 2841,
+          "quote": "radius (default 0; 0\u20131,000 surface pixels)"
+        },
+        "kind": "correctness regression; not a heuristic style complaint",
+        "evidence": {
+          "pixelProbe": [
+            {
+              "backend": "canvas2d",
+              "noBlur": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              },
+              "primitiveBlur": {
+                "maxChannelDelta": 80,
+                "differingChannels": 5232,
+                "psnr": 26.42636715021937,
+                "ssim": 0.9539061607853047
+              }
+            },
+            {
+              "backend": "webgl2",
+              "noBlur": {
+                "maxChannelDelta": 0,
+                "differingChannels": 0,
+                "psnr": null,
+                "ssim": 1
+              },
+              "primitiveBlur": {
+                "maxChannelDelta": 80,
+                "differingChannels": 5232,
+                "psnr": 26.42636715021937,
+                "ssim": 0.9539061607853047
+              }
+            }
+          ],
+          "noBlurMaxDelta": 0,
+          "primitiveBlurMaxDelta": 80,
+          "backends": ["canvas2d", "webgl2"],
+          "probeLog": "/private/tmp/pr45-blur-review-proof-corrected.log"
+        },
+        "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449039",
+        "repairEvidence": "docs/pr-45-fix-results.json",
+        "repairStatus": "fixed"
+      }
+    ],
+    "hardCodingStandardViolations": 0
+  },
+  "spec": {
+    "findings": [
+      {
+        "priority": "P2",
+        "title": "Validate cinematic coverage at actual shutter sample clocks",
+        "file": "packages/renderer-core/src/composition/adapters/cinematic-coverage.ts",
+        "start": 131,
+        "end": 133,
+        "body": "The persisted coverage gate validates integer frames only, although native exposure renders fractional camera states. Enable a 360-degree, phase-0, two-sample shutter on the threshold-push composition, enable motionBlur on its layers, and author camera viewOffset.x as value + 5000 * sin(frame * 6.283185307179586). Integer coverage passes, but frame 1 samples 0.75 and 1.25, where the background is entirely outside the 1920-pixel viewport. Both real-asset Canvas/WebGL previews load without diagnostics and render only the solid background color. Validate coverage using actual exposure trees as well as required integer states.",
+        "spec": {
+          "file": "docs/composition-engine-plan.md",
+          "start": 1420,
+          "end": 1421,
+          "quote": "Keep coverage, source-resolution and framing validations, now evaluated on the composition camera."
+        },
+        "evidence": {
+          "fixture": "benchmarks/fixtures/cinematic-illustrated/ci-01-threshold-push.json",
+          "expression": "value + 5000 * sin(frame * 6.283185307179586)",
+          "shutter": {
+            "enabled": true,
+            "shutterAngle": 360,
+            "shutterPhase": 0,
+            "samples": 2
+          },
+          "exposureStates": [
+            {
+              "sample": 0.75,
+              "bounds": {
+                "left": -5032,
+                "top": -18.296650717703262,
+                "right": -3048,
+                "bottom": 1098.2966507177032
+              }
+            },
+            {
+              "sample": 1.25,
+              "bounds": {
+                "left": 4968,
+                "top": -18.296650717703262,
+                "right": 6952,
+                "bottom": 1098.2966507177032
+              }
+            }
+          ],
+          "realAssetPixelProbe": [
+            {
+              "backend": "canvas2d",
+              "actualAssetsReloadCoverage": "accepted",
+              "renderDiagnostics": [],
+              "width": 1920,
+              "height": 1080,
+              "allPixelsSame": true,
+              "uniformRgba": [212, 190, 145, 255],
+              "expectedVsBroken": {
+                "maxChannelDelta": 211,
+                "differingChannels": 6208798,
+                "psnr": 8.184735492477257,
+                "ssim": 0.34478208234608704
+              }
+            },
+            {
+              "backend": "webgl2",
+              "actualAssetsReloadCoverage": "accepted",
+              "renderDiagnostics": [],
+              "width": 1920,
+              "height": 1080,
+              "allPixelsSame": true,
+              "uniformRgba": [212, 190, 145, 255],
+              "expectedVsBroken": {
+                "maxChannelDelta": 211,
+                "differingChannels": 6208798,
+                "psnr": 8.184735492477257,
+                "ssim": 0.34478208234608704
+              }
+            }
+          ],
+          "probeLog": "/private/tmp/pr45-shutter-review-proof.log",
+          "reproduction": "/private/tmp/pr45-shutter-gap-composition.json"
+        },
+        "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449051",
+        "repairEvidence": "docs/pr-45-fix-results.json",
+        "repairStatus": "fixed"
+      }
+    ],
+    "scopeCreepFindings": [],
+    "excludedCandidate": "Persisting source-density and protected-framing checks after arbitrary native edits was not reported: reference documentation distinguishes initial adaptation validation from the narrower persisted coverage declaration."
+  },
+  "scope": "Original review findings and real-pixel reproductions retained. Follow-up repairs and final focused verification are recorded in docs/pr-45-fix-results.json.",
+  "findingCounts": {
+    "standards": 1,
+    "spec": 1
+  },
+  "reviewId": 5447731207,
+  "remainingFindings": 0,
+  "repairCommits": {
+    "primitiveBlur": "a99be1f7fa3d48c8521f647ffcbbbbfa84fcb157",
+    "shutterCoverage": "commit containing the final repair record"
+  }
+}

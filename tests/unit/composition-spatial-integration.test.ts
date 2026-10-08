@@ -234,3 +234,93 @@ it("projects parent group masks using bounded local coverage instead of an XY ap
   expect(op.masks[0]!.matrix).toEqual([1, 0, 0, 1, 5, 5]);
   expect(op.ops[0]!.kind).toBe("project");
 });
+
+it.each([
+  { childRadius: undefined, expectedRadius: 5 },
+  { childRadius: 0, expectedRadius: 5 },
+  { childRadius: 2, expectedRadius: 2 },
+])(
+  "keeps inherited primitive blur support for projected artwork ($childRadius)",
+  ({ childRadius, expectedRadius }) => {
+    const doc = CompositionSchema.parse(
+      document([
+        {
+          id: "group",
+          type: "group",
+          size: [100, 100],
+          transform: { anchor: [0, 0] },
+          effects: [
+            { id: "blur", effect: "blur.primitive", params: { radius: 5 } },
+          ],
+        },
+        {
+          ...plane("art"),
+          parent: "group",
+          transform: { anchor: [0, 0, 0], position: [40, 40, 0] },
+          ...(childRadius === undefined
+            ? {}
+            : {
+                effects: [
+                  {
+                    id: "blur",
+                    effect: "blur.primitive",
+                    params: { radius: childRadius },
+                  },
+                ],
+              }),
+        },
+      ]),
+    );
+    const tree = evaluateComp(doc, 0),
+      op = buildRenderGraph(doc, tree).root.ops[0]!;
+    const art = op.kind === "isolate" ? op.ops[0]! : op;
+    if (art.kind !== "project") throw Error("Expected projective artwork");
+    const support = expectedRadius * 3 + 2;
+    expect(art.surface.width).toBe(10 + support * 2);
+    expect(art.surface.height).toBe(10 + support * 2);
+    expect(tree.layers[1]!.bounds).toEqual({
+      left: 40 - support,
+      top: 40 - support,
+      right: 50 + support,
+      bottom: 50 + support,
+    });
+  },
+);
+
+it("retains inherited group blur across a collapsed affine precomp's spatial scope", () => {
+  const doc = CompositionSchema.parse({
+    ...document([
+      {
+        id: "group",
+        type: "group",
+        size: [100, 100],
+        transform: { anchor: [0, 0] },
+        effects: [
+          { id: "blur", effect: "blur.primitive", params: { radius: 5 } },
+        ],
+      },
+      {
+        id: "nested",
+        type: "precomp",
+        comp: "source",
+        parent: "group",
+        collapseTransforms: true,
+        transform: { anchor: [0, 0] },
+      },
+    ]),
+    precomps: [
+      {
+        id: "source",
+        width: 100,
+        height: 100,
+        frameCount: 24,
+        layers: [plane("art")],
+      },
+    ],
+  });
+  const art = buildRenderGraph(doc, evaluateComp(doc, 0)).root.ops[0]!;
+  if (art.kind !== "project")
+    throw Error("Expected collapsed projected artwork");
+  expect(art.surface.width).toBe(44);
+  expect(art.surface.height).toBe(44);
+});

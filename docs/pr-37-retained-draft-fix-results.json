@@ -1,0 +1,157 @@
+{
+  "date": "2026-10-06",
+  "pr": "https://github.com/xxibcill/still-shift/pull/37",
+  "reviewHead": "00d5fba4fc9ae42dd10aa56d479be6aac4d64d35",
+  "reviewUrl": "https://github.com/xxibcill/still-shift/pull/37#pullrequestreview-5424541841",
+  "policy": "One finding per commit; one normal push after the final finding commit. GitHub Actions remain disabled.",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "verification": "Pinned toolchain check passes with an isolated Python environment and UV_NO_SYNC=1; depth dependencies are not needed by these repair checks."
+  },
+  "findings": [
+    {
+      "id": "R11",
+      "title": "Preserve focus after rebuilding layer controls",
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4192163317",
+      "status": "fixed",
+      "change": "Restore the focused layer/control identity after selection and successful or rejected visibility staging, without moving focus away from another control or a replaced source history.",
+      "regressionBefore": "Pinned inspector browser acceptance fails: Selecting a layer must preserve keyboard focus; actual false.",
+      "verification": [
+        "TypeScript build passes.",
+        "Full inspector desktop/phone/watch/save/MP4 acceptance passes with repeated layer and Hide/Show/Solo keyboard activation, rejected asset-load rollback, and no focus stealing during a paused asset load."
+      ],
+      "commit": "516422d1a4e61930bfcee7939b738ecb4b039823",
+      "logs": [
+        "/private/tmp/pr37-r11-red.log",
+        "/private/tmp/pr37-r11-green.log"
+      ]
+    },
+    {
+      "id": "R12",
+      "title": "Preserve assets belonging to retained dirty drafts",
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/37#discussion_r4192163320",
+      "status": "fixed",
+      "change": "Retain immutable registered asset snapshots for accepted program drafts using bounded connection-owned leases. Edits, undo/redo, renderer switches and MP4 export use the accepted draft lease. Failed candidate loads, replaced sources/saves and closed connections release their leases. Recent revisions remain independently bounded to two.",
+      "regressionBefore": "After repeated valid source/asset rebuilds, the dirty draft loses its assets: the next edit reports Asset unavailable: art Previous valid preview is preserved. Its original revision has been evicted.",
+      "verification": [
+        "Three external source and registered-asset changes preserve the accepted draft revision, frame, edits, undo/redo and Canvas/WebGL switching.",
+        "Retained draft MP4 is byte-identical to an independent CLI render of the edited document using the original red SVG bytes.",
+        "Stale saves still reject with comp-edit-conflict. Failed reload releases the proposed lease; accepted reload retires the draft lease. Closing another page releases only that connection's leases.",
+        "Four unit regressions cover recent-revision eviction, exact revision/token lookup, owner-only release, disconnected-owner cleanup, the 64-lease bound, capacity recovery and server shutdown."
+      ],
+      "logs": [
+        "/private/tmp/pr37-r12-red.log",
+        "/private/tmp/pr37-r12-green.log",
+        "/private/tmp/pr37-r12-unit.log",
+        "/private/tmp/pr37-final-repair-inspector-final.log"
+      ]
+    }
+  ],
+  "limitations": [
+    "Full pnpm check, unrelated browser groups, Python depth suites and frozen baselines are not rerun for this focused repair slice. No baselines are regenerated."
+  ],
+  "delivery": {
+    "branch": "codex/pr37-review-fixes",
+    "target": "codex/composition-ce11",
+    "strategy": "Two finding commits in R11/R12 order; one final normal push after the second finding commit.",
+    "reviewMerge": "Owner decision; GitHub Actions remain disabled.",
+    "latestBaseCheck": {
+      "verifiedBase": "6e0d1087893a0635245f697d6c98f293681c4939",
+      "remoteBaseAtDelivery": "515dfe0ffeab7d95dc116b3d9c896722fe2d5370",
+      "headAtDelivery": "00d5fba4fc9ae42dd10aa56d479be6aac4d64d35",
+      "status": "The PR head is unchanged. CE10 advanced during this repair session; integrating that new base is pending separate work. The two verified finding commits keep the reviewed base.",
+      "conflicts": [
+        "apps/lab/src/composition.ts",
+        "docs/dev-log.md",
+        "package.json"
+      ],
+      "log": "/private/tmp/pr37-new-base-merge-check.log"
+    }
+  },
+  "environment": {
+    "checkout": "Isolated managed worktree; owner checkout untouched.",
+    "dependencies": "Copied the existing isolated review dependency stores with the same lockfile after offline install found a missing cached @eslint/js tarball. Removed copied Vite optimizer/config caches before verification.",
+    "browser": "Pinned software Chromium profile; affected correctness groups run sequentially."
+  },
+  "finalVerification": [
+    {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "testFiles": 137,
+      "unitTests": 1563,
+      "log": "/private/tmp/pr37-final-repair-fast.log"
+    },
+    {
+      "command": "pnpm exec vitest run tests/integration/composition-preview.test.ts tests/integration/composition-save.test.ts tests/integration/composition-export-owner.test.ts tests/integration/composition-inspector-code.test.ts tests/integration/composition-program-cli.test.ts --maxWorkers=2 --no-file-parallelism",
+      "status": "passed",
+      "testFiles": 5,
+      "tests": 29,
+      "log": "/private/tmp/pr37-final-repair-integration.log"
+    },
+    {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "testFiles": 9,
+      "tests": 46,
+      "log": "/private/tmp/pr37-final-repair-runtime.log"
+    },
+    {
+      "command": "pnpm test:browser:composition-inspector",
+      "status": "passed",
+      "coverage": "Existing desktop/phone/save/watch/export acceptance plus retained-draft asset ownership regression.",
+      "log": "/private/tmp/pr37-final-repair-inspector-final.log"
+    },
+    {
+      "command": "pnpm test:browser:composition-session",
+      "status": "passed",
+      "log": "/private/tmp/pr37-final-repair-composition-session.log"
+    },
+    {
+      "command": "pnpm test:browser:lab-session",
+      "status": "passed",
+      "log": "/private/tmp/pr37-final-repair-lab-session.log"
+    },
+    {
+      "command": "pnpm test:browser:composition-program",
+      "status": "passed",
+      "coverage": "Builder watch, last-valid pixels/frame, shorter-source clamping, backend switching and TypeScript/JSON byte-identical exports.",
+      "log": "/private/tmp/pr37-final-repair-program.log"
+    },
+    {
+      "command": "UV_NO_SYNC=1 pnpm toolchain:check",
+      "status": "passed",
+      "log": "/private/tmp/pr37-final-repair-toolchain.log"
+    },
+    {
+      "command": "pnpm schema:check",
+      "status": "passed",
+      "log": "/private/tmp/pr37-final-repair-schema-check.log"
+    },
+    {
+      "command": "pnpm build and changed-regression ESLint after the startup assertion refinement",
+      "status": "passed"
+    }
+  ],
+  "verificationRepairs": [
+    {
+      "failure": "The combined inspector command twice timed out in the new initial-load assertion requiring exactly revision 1. The unchanged standalone retained-draft regression passed.",
+      "diagnosis": "Added startup diagnostics showed the preview was Ready at source revision 2 with no preview error or page/request failure: a startup watcher notification advanced the valid revision.",
+      "repair": "Accept any positive initial revision, capture the actual accepted dirty-draft revision and require it to remain unchanged while the server advances by at least three valid external revisions. The complete combined command then passed.",
+      "logs": [
+        "/private/tmp/pr37-final-repair-inspector.log",
+        "/private/tmp/pr37-final-repair-inspector-retry.log",
+        "/private/tmp/pr37-r12-repeat.log",
+        "/private/tmp/pr37-final-repair-inspector-final.log"
+      ]
+    }
+  ],
+  "independentReview": {
+    "standards": "No hard violations or substantive judgement findings in committed R11 plus tracked/untracked R12.",
+    "spec": "No incomplete fixes, new substantive findings or scope issues. Ownership and cleanup preserve the accepted picture and captured export bytes."
+  }
+}

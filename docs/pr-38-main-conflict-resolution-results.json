@@ -1,0 +1,1170 @@
+{
+  "date": "2026-10-06",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/38",
+  "headBranch": "codex/composition-ce5",
+  "baseBranch": "main",
+  "originalHead": "3d0da6a0712275c18be6896d687ac53eb4ff2cc4",
+  "integratedBase": "bdf8f6af8b50717e77405ce47ee21ea05b524b52",
+  "strategy": "Merge current main in an isolated managed worktree; retain shared history and push normally to the existing PR branch.",
+  "resolution": {
+    "conflicts": [
+      "docs/dev-log.md",
+      "package.json",
+      "packages/renderer-core/src/composition/evaluate/evaluate.ts"
+    ],
+    "scripts": "Retain every script and original non-aggregate command from both parents. All original test groups remain, including native shapes and soundtrack.",
+    "scriptsRetained": 122,
+    "testGroupsRetained": 56,
+    "evaluation": "Use composition-evaluator-30 for the combined native shape and main expression/roving fixes; preserve shape budgets and main explicit constructor state assignments.",
+    "renderers": "Retain composition-canvas-1.23.5 and composition-webgl2-0.37.5 from the CE5 review fixes.",
+    "developmentLog": "Preserve both Current state histories and every original dated entry exactly once; sort entries by date and add this session.",
+    "originalDatedEntriesRetained": 137,
+    "finalDatedEntries": 138,
+    "automaticMergeReview": "Shape property sampling/baking, inspector shape tracks/outlines and shape diagnostics remain beside main expression, lint, scope/focus and soundtrack changes. Generated schema/reference check passes."
+  },
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "isolation": "Fresh worktree-local pnpm install --frozen-lockfile --offline, uv sync --frozen and separate pinned soundtrack:setup runtime; UV_CACHE_DIR=/private/tmp/pr38-main-uv-cache. No owner dependency tree or Vite optimizer/config cache shared.",
+    "preflight": "Pinned toolchain including Chromium launch, depth-worker imports, soundtrack imports and native Vite config loading pass."
+  },
+  "verification": {
+    "fast": {
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "unitTests": 1869,
+      "files": 153
+    },
+    "runtime": {
+      "command": "pnpm test:runtime",
+      "status": "passed",
+      "tests": 46
+    },
+    "integration": {
+      "status": "passed",
+      "tests": 65,
+      "files": 10
+    },
+    "depth": {
+      "command": "pnpm test:depth",
+      "status": "passed",
+      "tests": 14
+    },
+    "affectedChecks": [
+      {
+        "name": "runtime",
+        "command": ["pnpm", "test:runtime"],
+        "exitCode": 0,
+        "seconds": 12.52,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/runtime.log"
+      },
+      {
+        "name": "integration",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/integration/composition-preview.test.ts",
+          "tests/integration/composition-save.test.ts",
+          "tests/integration/composition-export-owner.test.ts",
+          "tests/integration/composition-inspector-code.test.ts",
+          "tests/integration/composition-program.test.ts",
+          "tests/integration/composition-program-cli.test.ts",
+          "tests/integration/composition-lint-cli.test.ts",
+          "tests/integration/composition-examples.test.ts",
+          "tests/integration/composition-reference-generation.test.ts",
+          "tests/integration/passage-compositions.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "exitCode": 0,
+        "seconds": 52.46,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/integration.log"
+      },
+      {
+        "name": "depth",
+        "command": ["pnpm", "test:depth"],
+        "exitCode": 0,
+        "seconds": 2.46,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/depth.log"
+      },
+      {
+        "name": "composition-shapes",
+        "command": ["pnpm", "test:browser:composition-shapes"],
+        "exitCode": 0,
+        "seconds": 17.23,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/composition-shapes.log"
+      },
+      {
+        "name": "composition-expressions",
+        "command": ["pnpm", "test:browser:composition-expressions"],
+        "exitCode": 0,
+        "seconds": 16.62,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/composition-expressions.log"
+      },
+      {
+        "name": "composition-evaluator",
+        "command": ["pnpm", "test:browser:composition-evaluator"],
+        "exitCode": 0,
+        "seconds": 1.73,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/composition-evaluator.log"
+      },
+      {
+        "name": "composition-quality",
+        "command": ["pnpm", "test:browser:composition-quality"],
+        "exitCode": 0,
+        "seconds": 9.25,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/composition-quality.log"
+      },
+      {
+        "name": "composition-inspector",
+        "command": ["pnpm", "test:browser:composition-inspector"],
+        "exitCode": 0,
+        "seconds": 17.06,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/composition-inspector.log"
+      },
+      {
+        "name": "composition-builder",
+        "command": ["pnpm", "test:browser:composition-builder"],
+        "exitCode": 0,
+        "seconds": 22.99,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/composition-builder.log"
+      },
+      {
+        "name": "composition-session",
+        "command": ["pnpm", "test:browser:composition-session"],
+        "exitCode": 0,
+        "seconds": 2.2,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/composition-session.log"
+      },
+      {
+        "name": "composition-native-passage",
+        "command": ["pnpm", "test:browser:composition-native-passage"],
+        "exitCode": 0,
+        "seconds": 53.73,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/composition-native-passage.log"
+      },
+      {
+        "name": "composition-native-passage:webgl",
+        "command": ["pnpm", "test:browser:composition-native-passage:webgl"],
+        "exitCode": 0,
+        "seconds": 99.91,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/composition-native-passage-webgl.log"
+      },
+      {
+        "name": "soundtrack",
+        "command": ["pnpm", "test:browser:soundtrack"],
+        "exitCode": 0,
+        "seconds": 23.18,
+        "log": "benchmarks/results/pr38-main-conflict-20261006/soundtrack.log"
+      }
+    ],
+    "shapes": [
+      {
+        "squareCapCoverage": [
+          {
+            "id": "onscreen",
+            "paint": "stroke",
+            "join": "round",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "onscreen",
+            "paint": "stroke",
+            "join": "round",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "onscreen",
+            "paint": "stroke",
+            "join": "bevel",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "onscreen",
+            "paint": "stroke",
+            "join": "bevel",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "onscreen",
+            "paint": "stroke",
+            "join": "miter",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "onscreen",
+            "paint": "stroke",
+            "join": "miter",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "onscreen",
+            "paint": "gradient-stroke",
+            "join": "round",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "onscreen",
+            "paint": "gradient-stroke",
+            "join": "round",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "onscreen",
+            "paint": "gradient-stroke",
+            "join": "bevel",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "onscreen",
+            "paint": "gradient-stroke",
+            "join": "bevel",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "onscreen",
+            "paint": "gradient-stroke",
+            "join": "miter",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "onscreen",
+            "paint": "gradient-stroke",
+            "join": "miter",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "stroke",
+            "join": "round",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "stroke",
+            "join": "round",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "stroke",
+            "join": "bevel",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "stroke",
+            "join": "bevel",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "stroke",
+            "join": "miter",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "stroke",
+            "join": "miter",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "gradient-stroke",
+            "join": "round",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "gradient-stroke",
+            "join": "round",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "gradient-stroke",
+            "join": "bevel",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "gradient-stroke",
+            "join": "bevel",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "gradient-stroke",
+            "join": "miter",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "right-edge",
+            "paint": "gradient-stroke",
+            "join": "miter",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "stroke",
+            "join": "round",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "stroke",
+            "join": "round",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "stroke",
+            "join": "bevel",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "stroke",
+            "join": "bevel",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "stroke",
+            "join": "miter",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "stroke",
+            "join": "miter",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "gradient-stroke",
+            "join": "round",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "gradient-stroke",
+            "join": "round",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "gradient-stroke",
+            "join": "bevel",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "gradient-stroke",
+            "join": "bevel",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "gradient-stroke",
+            "join": "miter",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "left-edge",
+            "paint": "gradient-stroke",
+            "join": "miter",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "stroke",
+            "join": "round",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "stroke",
+            "join": "round",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "stroke",
+            "join": "bevel",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "stroke",
+            "join": "bevel",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "stroke",
+            "join": "miter",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "stroke",
+            "join": "miter",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "gradient-stroke",
+            "join": "round",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "gradient-stroke",
+            "join": "round",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "gradient-stroke",
+            "join": "bevel",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "gradient-stroke",
+            "join": "bevel",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "gradient-stroke",
+            "join": "miter",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "top-edge",
+            "paint": "gradient-stroke",
+            "join": "miter",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "stroke",
+            "join": "round",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "stroke",
+            "join": "round",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "stroke",
+            "join": "bevel",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "stroke",
+            "join": "bevel",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "stroke",
+            "join": "miter",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "stroke",
+            "join": "miter",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "gradient-stroke",
+            "join": "round",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "gradient-stroke",
+            "join": "round",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "gradient-stroke",
+            "join": "bevel",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "gradient-stroke",
+            "join": "bevel",
+            "backend": "webgl2",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "gradient-stroke",
+            "join": "miter",
+            "backend": "canvas2d",
+            "frames": 5
+          },
+          {
+            "id": "bottom-edge",
+            "paint": "gradient-stroke",
+            "join": "miter",
+            "backend": "webgl2",
+            "frames": 5
+          }
+        ]
+      },
+      {
+        "id": "connector",
+        "frames": 7,
+        "maxDelta": 0,
+        "changedBytes": 0,
+        "minPsnr": 999
+      },
+      {
+        "id": "rect",
+        "frames": 7,
+        "maxDelta": 0,
+        "changedBytes": 0,
+        "minPsnr": 999
+      },
+      {
+        "id": "ellipse",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 259,
+        "minPsnr": 78.11481094208014
+      },
+      {
+        "id": "star",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 399,
+        "minPsnr": 76.23807962602518
+      },
+      {
+        "id": "gradient",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 16093,
+        "minPsnr": 60.18143847005731
+      },
+      {
+        "id": "stroke-plain",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 91,
+        "minPsnr": 82.65739465968173
+      },
+      {
+        "id": "stroke-ink",
+        "frames": 7,
+        "maxDelta": 0,
+        "changedBytes": 0,
+        "minPsnr": 999
+      },
+      {
+        "id": "stroke-brush",
+        "frames": 7,
+        "maxDelta": 0,
+        "changedBytes": 0,
+        "minPsnr": 999
+      },
+      {
+        "id": "trim-paths",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 490,
+        "minPsnr": 75.34584778260752
+      },
+      {
+        "id": "repeater",
+        "frames": 7,
+        "maxDelta": 0,
+        "changedBytes": 0,
+        "minPsnr": 999
+      },
+      {
+        "id": "offset-path",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 196,
+        "minPsnr": 79.3252478693279
+      },
+      {
+        "id": "round-corners",
+        "frames": 7,
+        "maxDelta": 0,
+        "changedBytes": 0,
+        "minPsnr": 999
+      },
+      {
+        "id": "wiggle-paths",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 31,
+        "minPsnr": 83.38290133116784
+      },
+      {
+        "id": "zig-zag",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 70,
+        "minPsnr": 83.79682818275009
+      },
+      {
+        "id": "pucker-bloat",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 455,
+        "minPsnr": 75.66769461632154
+      },
+      {
+        "id": "twist",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 14,
+        "minPsnr": 90.78652822611028
+      },
+      {
+        "id": "merge-union",
+        "frames": 7,
+        "maxDelta": 0,
+        "changedBytes": 0,
+        "minPsnr": 999
+      },
+      {
+        "id": "merge-subtract",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 7,
+        "minPsnr": 93.79682818275009
+      },
+      {
+        "id": "merge-intersect",
+        "frames": 7,
+        "maxDelta": 0,
+        "changedBytes": 0,
+        "minPsnr": 999
+      },
+      {
+        "id": "merge-exclude",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 14,
+        "minPsnr": 90.78652822611028
+      },
+      {
+        "id": "painted-repeat-gradient",
+        "frames": 7,
+        "maxDelta": 2,
+        "changedBytes": 25123,
+        "minPsnr": 58.23621659265477
+      },
+      {
+        "id": "compound-repeat-gradient",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 22715,
+        "minPsnr": 58.68468117138622
+      },
+      {
+        "id": "polygon",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 350,
+        "minPsnr": 76.8071281393899
+      },
+      {
+        "id": "radial-fill",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 16093,
+        "minPsnr": 60.18143847005731
+      },
+      {
+        "id": "linear-stroke",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 1249,
+        "minPsnr": 70.9638158957146
+      },
+      {
+        "id": "radial-stroke",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 1261,
+        "minPsnr": 70.78652822611028
+      },
+      {
+        "id": "painted-group-trim",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 329,
+        "minPsnr": 77.07584960339292
+      },
+      {
+        "id": "painted-group-repeat",
+        "frames": 7,
+        "maxDelta": 2,
+        "changedBytes": 29932,
+        "minPsnr": 57.223400814603835
+      },
+      {
+        "id": "zero-size",
+        "frames": 7,
+        "maxDelta": 0,
+        "changedBytes": 0,
+        "minPsnr": 999
+      },
+      {
+        "id": "zero-gradient",
+        "frames": 7,
+        "maxDelta": 0,
+        "changedBytes": 0,
+        "minPsnr": 999
+      },
+      {
+        "id": "signed-open-offset",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 1764,
+        "minPsnr": 69.78282277493466
+      },
+      {
+        "id": "even-odd-hole",
+        "frames": 7,
+        "maxDelta": 1,
+        "changedBytes": 518,
+        "minPsnr": 75.10451098544033
+      },
+      {
+        "shapeAcceptance": [
+          {
+            "fixture": "reference-sheet",
+            "frames": 48,
+            "reverseFrames": 48,
+            "maxDelta": 2,
+            "minPsnr": 66.690249204446
+          },
+          {
+            "fixture": "animation",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 1,
+            "minPsnr": 74.95529650432465
+          },
+          {
+            "backend": "canvas2d",
+            "exportedFrames": 96,
+            "independentMp4": "byte-identical",
+            "transport": "byte-identical"
+          },
+          {
+            "backend": "webgl2",
+            "exportedFrames": 96,
+            "independentMp4": "byte-identical",
+            "transport": "byte-identical"
+          },
+          {
+            "fixture": "core",
+            "frames": 48,
+            "reverseFrames": 48,
+            "maxDelta": 0,
+            "minPsnr": 999
+          },
+          {
+            "legacyConnectors": [
+              {
+                "style": "plain",
+                "frames": 48,
+                "maxDelta": 0
+              },
+              {
+                "style": "ink",
+                "frames": 48,
+                "maxDelta": 0
+              },
+              {
+                "style": "brush",
+                "frames": 48,
+                "maxDelta": 0
+              }
+            ]
+          },
+          {
+            "hardwarePreview": {
+              "environments": [
+                {
+                  "profile": "chromium-software-2",
+                  "browserVersion": "151.0.7922.34",
+                  "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                  "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                  "platform": "darwin",
+                  "arch": "arm64"
+                },
+                {
+                  "profile": "hardware",
+                  "browserVersion": "151.0.7922.34",
+                  "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                  "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                  "platform": "darwin",
+                  "arch": "arm64"
+                }
+              ],
+              "tier": "unchanged perceptual hardware policy",
+              "comparisons": 18,
+              "reports": [
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "canvas2d",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "canvas2d",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "webgl2",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "reference-sheet",
+                  "backend": "webgl2",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "canvas2d",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "canvas2d",
+                  "frame": 95,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "webgl2",
+                  "frame": 48,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "animation",
+                  "backend": "webgl2",
+                  "frame": 95,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "canvas2d",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "canvas2d",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "canvas2d",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "webgl2",
+                  "frame": 0,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "webgl2",
+                  "frame": 24,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                },
+                {
+                  "fixture": "core",
+                  "backend": "webgl2",
+                  "frame": 47,
+                  "tier": "exact",
+                  "maxDelta": 0,
+                  "psnr": 999,
+                  "ssim": 1
+                }
+              ]
+            }
+          },
+          {
+            "geometryOverflow": "both exports reject with comp-shape-work-limit; no output published"
+          }
+        ],
+        "inspector": "passed",
+        "baseline": "exact"
+      }
+    ],
+    "builder": "192 exact pixel frames and seven reverse seeks per backend; TypeScript and JSON MP4 exports are byte-identical.",
+    "nativePassages": "Canvas2D and WebGL2 each pass all 576-frame picture/cache/cue/narration/saved-soundtrack/relocation/diagnostic/Lab checks.",
+    "soundtrack": "Pinned native PCM, real saved controls, playback/seek/clear and full/range passage mux browser acceptance pass.",
+    "fullPnpmCheck": "not rerun",
+    "frozenCE0Baselines": "not rerun or regenerated",
+    "visualBaselines": "Every committed visual baseline is unchanged from the original PR head; native shape stored hashes pass exactly.",
+    "policy": "No pixel/timing thresholds, repeat-export checks, test budgets or baselines changed.",
+    "sourceAndFixtureFingerprintExcludingDocs": {
+      "files": 1448,
+      "sha256": "22b1ffd8c503ea301012f0f1577dcdd3cbca6f0f193905e7cf961607a1ec8075"
+    }
+  },
+  "failedVerificationAttempts": [],
+  "githubActions": {
+    "enabled": false,
+    "workflowFilesAdded": 0
+  },
+  "logs": [
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/composition-builder.log",
+      "sha256": "4891b8e2edbff2cae9f4e250b52f22a1f5771b3d639ea61fc755d1c2c69a147e"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/composition-evaluator.log",
+      "sha256": "d90548f524f2c71e16335061a4861ec5d5aa6353e7b6b94219b98196ce574700"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/composition-expressions.log",
+      "sha256": "100950360c2cd24e4093b0556ad607a69abdf6d2d74413d4b8863278da9c2f8e"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/composition-inspector.log",
+      "sha256": "f4bf386018668285a70b06627295222d4e492ffc9bb93b4a42f3cb897af2b662"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/composition-native-passage-webgl.log",
+      "sha256": "73c0dc6bd33c2a5152c89b010a2f712521a4c758af5a03941f18cb37d88c19b0"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/composition-native-passage.log",
+      "sha256": "267c708f67bc5bc079c661b1c66be654c635d5e5b1f77823236fd78d015d15fd"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/composition-quality.log",
+      "sha256": "16efbde9537b261d105ee7f971dd03f02ca238c4522ae4b14cbef5d3d9209857"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/composition-session.log",
+      "sha256": "5d1eecd39ae4df262e35c904297af7cc1ac99d9f131b8f3d4d7a5dc02dc1fd2d"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/composition-shapes.log",
+      "sha256": "e501a9e0eb79393242c0a10f63bfb3b272b7a476e49295de20122733d1c294b9"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/depth.log",
+      "sha256": "e88e372187e8215f39ea39cf24d6bc9a0f4fa182f3248bfd7c6e69178ce21e58"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/fast.log",
+      "sha256": "cddcaafa0b78d7d262f79541709b677f7bf0a31ba00fbaf8f12a9259329edd7e"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/format.log",
+      "sha256": "f96eb31d707c7cf002e371b1cfabef2eb991c6f4e161e9ef9a1e689fce4ff03b"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/install.log",
+      "sha256": "d60a568390c91687199812ac00a37e9d7d835cdacbc6a56118077170a5aca0db"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/integration.log",
+      "sha256": "1cb245ce3bd9791b432f47e682bf9548448cb52f2baf0fe74e45e80aee48a5f7"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/preflight.log",
+      "sha256": "e53a8511baf3f8758bee21e56c2acd3452e241a8a7d000837e0c200dac2f288b"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/runtime.log",
+      "sha256": "8b1bd694d4d352619024b80bc2b36ca2153322827be3b943355a3a27975fedcc"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/schema.log",
+      "sha256": "121307660421776525926fa46d8bbd6f04acad92e25c36326cfef29987be8a51"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/soundtrack-setup.log",
+      "sha256": "984c8037d1cc2120abc779fb3b919ccbde9b14e63e025abefc284dae633fbcfc"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/soundtrack.log",
+      "sha256": "2832b483a6dc61f28129869feb2c57a54c0328950e29ef6553faca07934fe794"
+    },
+    {
+      "path": "benchmarks/results/pr38-main-conflict-20261006/uv-sync.log",
+      "sha256": "e5dee390585e694a0e96a585fd8a2e057b047e68d88ef7ef68ba6b5f9d0b04cd"
+    }
+  ],
+  "delivery": "One normal push to HEAD:refs/heads/codex/composition-ce5 after the merge commit. Recheck remote head and mergeability; do not merge or close the PR.",
+  "limits": [
+    "Full pnpm check and frozen CE0 acceptance were not rerun for this conflict-resolution slice. Prior milestone evidence remains historical."
+  ]
+}
