@@ -43,14 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #49 conflict repair (2026-10-08):** main `118927de` is integrated with
+  CE15 `8faae4be` in an isolated worktree. Fourteen conflicts are resolved;
+  3,524 units, affected integrations/browser/exports and frozen subsets pass. CE15 milestone ownership/aggregate/speed
+  and final gate remain pending. [Conflict evidence](./pr-49-conflict-resolution-results.json).
+
 - **CE15 recovered and Canvas lifetime verified (2026-10-08):** old chat is idle;
   no old verification remains active. Recovered GPU slice is local commit `61d7b911`.
   Canvas parent/native image holds now pass 999 focused tests, six genuine native
   probes, complete 144-case / 8,000-frame audit and 64 prior-exact exports / 768
   bodies/frames; glyph 1.376068× ≤ 1.5. Gradient/backend/params/production ownership,
-  aggregate/area/speed and final CE15 gate remain pending. Push authorization to
-  `https://github.com/xxibcill/still-shift` awaits the user after automatic approval
-  review rejected the external transfer. [Canvas evidence](./composition-ce15-color-canvas-lifetime-results.json).
+  aggregate/area/speed and final CE15 gate remain pending. GPU and Canvas checkpoints `61d7b911` and `8faae4be` are pushed to PR #49. [Canvas evidence](./composition-ce15-color-canvas-lifetime-results.json).
 
 - **CE15 in progress (2026-10-08):** `codex/composition-ce15` from completed CE13
   `aedfc9e`; transparent renderer checkpoint `49e0543` is pushed. Seven explicit
@@ -135,234 +138,55 @@ still hold before relying on them.
   pending. [Plan](./composition-ce15-plan.md),
   [format evidence](./composition-ce15-format-results.json).
 
-- **CE13 complete; PR #48 delivered (2026-10-07):** `codex/composition-ce13`
-  from CE4d `adf6cea`, verified `01fbca2`. Audited merged CE16 PR #33 is integrated.
-  Native CFR video/sequences/audio, bounded SDR/PCM resources, waveforms/playback,
-  matching exports and complete passage masters are delivered. Both backends pass
-  96 exact reverse seeks / 480 playback observations with zero source-frame offset.
-  Preview/export share verified FFmpeg frames; WebCodecs remains unadopted without
-  equivalent parity proof. Complete pinned local `pnpm check` passes in 12825.81s:
-  all 63 mandatory commands, 2,103 unit / 46 runtime / 247 integration / 14 depth tests,
-  176 actual defaults and 176 frozen items / 36,061 frames; all four Canvas matrices
-  pass unchanged 1.25× policy. All 141 prior visual files and tracked snapshot bytes
-  remain exact. Three failed gates, the interrupted third attempt and loader/readiness repairs are retained.
-  Canvas 1.45 / WebGL2 0.66 / evaluator 53 / mixer 2 / export 0.6.7 remain current.
-  [PR #48](https://github.com/xxibcill/still-shift/pull/48) is open and attached against CE4d PR #47.
-  Continue CE15 → CE14 on new branches. No gate remains active. CE5-X/Q9 and
-  separate CE6-P remain pending. [Evidence](./composition-ce13-results.json).
+- **PR #48 third review repairs verified (2026-10-08):** both P2 findings
+  posted inline on `1dae23c8` are fixed. Cache identity includes OS/architecture
+  (`2fb40127`); audio traversal avoids unrelated visual layout while preserving
+  actual dependencies and picture constraints (evaluator 56). Fast checks pass
+  2,616 units; 83 affected integrations and native media/Canvas/WebGL passage
+  browsers pass. All 176 frozen items / 36,061 frames match. Each finding has its
+  own commit, delivered in one normal push; owner review/merge is next. No full
+  repository gate is run or claimed. Owner CE15 checkout is untouched.
+  [Third review evidence](./pr-48-third-review-fix-results.json).
 
-- **CE4d complete (2026-10-07):**
-  `codex/composition-ce4d` from CE4c `17666eb`. Native production defaults and old
-  painter retirement are complete. Its closeout used Canvas 1.44 / WebGL2 0.65 /
-  image-plane shader 0.4 / depth adapter 0.1 / pipeline 0.13. Immutable `ae2e1f0` passes
-  complete pinned local `pnpm check` in 11705.18 seconds: 2,005 unit / 46 runtime /
-  143 integration / 14 Python tests, all 61 required commands, all browser gates,
-  all 176 actual family defaults and 176 frozen items / 36,061 frames. Four Canvas
-  family matrices pass their unchanged 1.25× policy; all 141 prior visual files
-  remain exact. Independent/repeated/raw exports, depth/legacy delivery, hardware,
-  Lab pending seeks, cache relocation and fresh zipper QA pass. Both prior failed
-  gates and rejected diagnostics remain in the [evidence](./composition-ce4d-results.json).
-  [PR #47](https://github.com/xxibcill/still-shift/pull/47) is open and attached against CE4c.
-  CE13 and its CE16 integration are complete; continue CE15 → CE14.
-  CE5-X/Q9 remains pending; CE6-P retains WebGL timing work. No verification job
-  remains active and no owner decision blocks the approved order.
-  [Continuation](./composition-continuation-handoff-2026-10-07.md).
+- **CE13 complete (2026-10-07):** original acceptance at `01fbca2` passes the
+  complete local `pnpm check` in 12825.81 seconds, all 63 required commands,
+  2,103 unit / 46 runtime / 247 integration / 14 depth tests, 176 defaults and
+  176 frozen items / 36,061 frames. Native picture/PCM, waveforms/playback and
+  complete passage masters are delivered; exact reverse-seek/export evidence
+  remains in [CE13 results](./composition-ce13-results.json).
+  [PR #48](https://github.com/xxibcill/still-shift/pull/48) targets `main`.
 
-- **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
-  CE8-L `e1bd4bc`; final runtime `37cc07a`, verified snapshot `e1fb3e3`.
-  Native camera framing, depth planes, Gaussian focus, decoded-alpha safety and
-  shared effects pass all 46 backend cases / 5,520 forward and reverse frames,
-  46 independent preview encodes, 138 production exports, 138 actual hardware
-  comparisons and real inspector edits/undo/reload. Complete pinned `pnpm check`
-  passes 1,938 unit / 46 runtime / 140 integration / 14 depth tests, all required
-  browser groups and all 176 frozen CE0 items / 36,061 frames. The four Canvas
-  family matrices pass the unchanged pixel and 1.25 timing policies; all tracked
-  visual references remain unchanged. Earlier failures and diagnostics remain in
-  the [evidence](./composition-ce4c-results.json). WebGL speed targets remain CE6-P.
-  [PR #45](https://github.com/xxibcill/still-shift/pull/45) is open and attached against CE8-L.
-  CE4d is complete in open/attached PR #47; CE13 follows.
-  Separate cross-chat coordination authorization remains pending.
+- **Prerequisites integrated:** CE4d PR #47 and earlier reviewed feature PRs are
+  merged into `main`. PR #47 review repairs and frozen/default verification are
+  recorded in [follow-up evidence](./pr-47-followup-fix-results.json).
+  The approved CE5-X scope retains its audit stop/Q9 owner decisions; CE6-P
+  remains owner-paused and deferred, with acceptance incomplete.
 
-- **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
-  `9d8f33a`; final code `d72ba2c`, verified checkpoint `3820c1c`. Bounded ambient,
-  point and spot lighting, scoped pure evaluation, linear GPU shading, cache/Canvas
-  preflight, builder and inspector controls are delivered. Complete pinned local
-  `pnpm check` passes 1,889 unit / 46 runtime / 139 integration / 14 depth tests,
-  all required browser groups, 176 frozen CE0 items / 36,061 frames and unchanged
-  Canvas family matrices. All 141 committed visual files remain exact; 46 lighting
-  files are new and all 95 preexisting files are unchanged. Native correctness,
-  alpha, seeks, repeat/independent exports, hardware and real inspector pass.
-  Serial 1080p costs are recorded. Earlier oracle/inspector failures and the first full-gate timing failure remain
-  in the evidence. Serial profiles passed; the complete gate was rerun from the
-  start under unchanged assertions. No source output or tolerance was changed.
-  [PR #44](https://github.com/xxibcill/still-shift/pull/44) is open and attached against CE8.
-  CE6-P/CE8-L-F
-  remain separate future work. No owner decision is pending.
-  [Evidence](./composition-ce8-lighting-results.json).
-
-- **CE8 complete (2026-10-06):** `codex/composition-ce8` from CE6 `2f1a99c`,
-  final code `16262ec`. Scoped cameras, XYZ transforms, projective planes,
-  stable depth, focus blur, actual coverage and real inspector frusta are delivered.
-  Full pinned `pnpm check` passes 1,841 unit / 46 runtime / 139 integration /
-  14 depth tests, all required browser groups and 176 frozen baselines / 36,061
-  frames. Full Canvas family matrices pass unchanged pixel/timing policy.
-  Final-code native correctness, exports, seeking and hardware checks pass;
-  serial 1080p costs are refreshed. Earlier failures remain in the evidence.
-  [PR #43](https://github.com/xxibcill/still-shift/pull/43) is open and attached against CE6; CE8-L follows.
-  CE6-P targets remain separate.
-  No owner decision is pending. [Evidence](./composition-ce8-results.json).
-
-- **CE6 complete (2026-10-06):** `codex/composition-ce6-completion` from
-  CE7 `817cc9f`; runtime `4cd8a8d`, final code/test checkpoint `f11a7b7`.
-  All 39 native effects, GPU filtering, scoped inputs/history and optional linear
-  blending are delivered. Complete `pnpm check` passes 1,712 unit, 46 runtime,
-  139 integration, 14 depth tests, all browser groups and 176 frozen baselines /
-  36,061 frames; all three full Canvas family matrices pass unchanged policy.
-  Native software/hash/seek/independent and repeated exports pass; 36 hardware
-  comparisons pass their perceptual policy, and all 78 serial 1080p costs are recorded.
-  [PR #42](https://github.com/xxibcill/still-shift/pull/42) is open and attached against CE7; CE8 follows on a new branch.
-  CE6-P targets remain separate; no owner decision is pending.
-  [Evidence](./composition-ce6-completion-results.json).
-
-- **Verification quiet window released (2026-10-06):** CE6-P's timed brackets,
-  unchanged strict family audits, required exports and CE7 byte comparisons are
-  terminal. Explicit release at 01:24 UTC permits planned CE8 verification.
-  No checkout, policy or frozen baseline is changed by this coordination.
-
-- **CE7 complete (2026-10-06):** `codex/composition-ce7`, code `0e48388`.
-  Local holds/posterization, source loops, freeze remap, deterministic adaptive
-  exposure and controlled cuts are delivered. Full `pnpm check` passes 1,600 unit,
-  46 runtime, 139 integration, 14 depth, all browser groups and 176 frozen baselines
-  / 36,061 frames. Native pixels/seeks/stored hashes, 12 hardware comparisons,
-  independent/repeated exports and serial seven-count 1080p costs pass/are recorded.
-  CE13 decode integration remains its conditional handoff. [PR #40](https://github.com/xxibcill/still-shift/pull/40) is open
-  and attached; CE6 starts on a new branch. No owner decision is pending.
-  [Evidence](./composition-ce7-results.json).
-
-- **CE5 complete (2026-10-05):** `codex/composition-ce5`, runtime `4908cbe`.
-  Native shapes, authoring/baking/inspector, reference/animation/MP4 acceptance and
-  complete `pnpm check` pass: 1,569 unit, 46 runtime, 139 integration, 14 depth,
-  all browser groups and 176 frozen baselines / 36,061 frames. Native stored hashes
-  and reverse seeks pass; legacy connectors, actual CE4a brush conversion and all
-  18 Apple hardware comparisons are exact. Failed attempts/repairs are retained.
-  [PR #38](https://github.com/xxibcill/still-shift/pull/38) is open and attached; CE7 is now complete.
-  No owner decision is pending. [Evidence](./composition-ce5-results.json).
-
-- **CE11 complete (2026-10-05):** `codex/composition-ce11`, runtime `5f36268`.
-  Native inspector, graph/handle edits, overlays, lossless history, guarded source
-  saves and captured-asset exports pass desktop/phone and builder/watch acceptance.
-  Full `pnpm check` passes: 1,510 unit, 46 runtime, 139 integration and 14 depth
-  tests, all browser suites and 176 frozen baselines / 36,061 frames. Initial failures
-  and repairs are retained. [PR #37](https://github.com/xxibcill/still-shift/pull/37) is open and attached; begin CE5 on a new branch. Native camera
-  frusta are complete in CE8; audio waveforms follow CE13. [Evidence](./composition-ce11-results.json).
-
-- **CE10 complete (2026-10-05):** `codex/composition-ce10` from CE4a `869a793`;
-  runtime `e501fed`. Typed authoring, CLI/watch, presets, eight examples and generated
-  guidance pass the full local check: 1,499 unit, 46 runtime, 134 integration and
-  14 depth tests, all browser suites and 176 frozen baselines / 36,061 frames.
-  The 197-line builder has exact 192-frame Canvas/WebGL parity and identical exports;
-  a fresh skill-only source validates without repairs and renders correctly. Initial
-  trial/gate failures are retained. [PR #36](https://github.com/xxibcill/still-shift/pull/36)
-  is open and attached; owner review/merge remain. CE11 is complete; CE5 follows.
-  [Evidence](./composition-ce10-results.json).
-
-- **CE4a complete (2026-10-05):** `codex/composition-ce4a-completion`, implementation
-  `876814f` from CE12 `0987396`. Adapted/native picture passages, story fractional
-  shutter clocks and explicit narrative bindings are delivered. Full local checks,
-  176 baselines / 36,061 frames, both 69-case family matrices / 14,086 frames and
-  mixed 576-frame passages pass correctness. WebGL's 51 strict timing overruns stay
-  deferred to CE6-P. CE10 is complete; broader CE7 stays open.
-  [Evidence](./composition-ce4a-completion-results.json).
-
-- **CE12 motion linting (`[x]`, 2026-10-05):** complete on
-  `codex/composition-ce12`, implementation `a365f26` from delivered CE9 `dee9e7b`.
-  Rules, CLI lint and Lab timeline are delivered. Full `pnpm check` and all 176
-  frozen baselines / 36,061 frames pass in a clean tracked snapshot. Stillness
-  acceptance is 79 frozen comparisons in v013 versus zero in the fresh continuous
-  prototype. Corpus lint covers 153 state reports and 23 pixel-only items with
-  explicit limits and no unexpected failures; existing craft errors remain visible.
-  Prior local work retained; CE6-P and CE9-F1 remain deferred. CE4a and CE10 are complete.
-  [Completion record](./composition-engine-plan.md#ce12-completion-record-2026-10-05).
-  [PR #34](https://github.com/xxibcill/still-shift/pull/34) is open and mergeable, based on CE9 while PR #32
-  awaits merge. Owner review and merge remain pending.
-
-- **PR #32 printer fix (2026-10-04):** re-review of delivered `e81a146` found
-  one remaining P2 print/parse length defect and no standards findings.
-  Posted the inline finding, added compact canonical output with equivalent
-  decimal/exponent spellings, and covered eight length/precision/grammar cases.
-  Fast checks pass (1,420 tests), along with expression pixel/seek/repeated and
-  baked export checks on both backends and evaluator browser parity. One finding
-  commit contains the code, tests and records, followed by one final push.
-  Owner review/merge remains pending.
-  [Printer fix evidence](./pr-32-printer-fix-results.json).
-  [Re-review evidence](./pr-32-rereview-results.json).
-
-- **PR #32 earlier fixes delivered (2026-10-04):** inline review posted on
-  `75e46f2`; `c3fc70f`, `e693334` and `e81a146` fixed lazy `if`, distance
-  dimensions and auto-orient bake parity. Main `5a6705c` (merged PR #31) was
-  integrated separately. Remote head was verified as `e81a146`, mergeable.
-  All 176 frozen baseline items / 36,061 frames passed without regeneration.
-  [Fix evidence](./pr-32-fix-results.json).
-  [Review evidence](./pr-32-review-results.json).
-
-_Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
-
-- **PR #32 conflict resolution (2026-10-04):** merged `main` at `3413780` into
-  PR head `a0708ba` and pushed merge `05033c8`, retaining CE9 expressions and
-  main correctness fixes. GitHub confirms `MERGEABLE` / `CLEAN`.
-  Both browser suites remain in `pnpm test`; evaluator is `22`, WebGL is `0.36.1`.
-  Fast checks (1,404 unit tests), affected browser/export checks, hardware
-  typography and all 176 frozen baselines pass. Review/merge remains pending.
-  See [resolution evidence](./pr-32-conflict-resolution-results.json).
-
-- **CE9 expressions and motion behaviours (`[x]`, 2026-10-04):** complete on
-  `codex/composition-ce9` (from `codex/composition-ce6-performance` at `6034de3`),
-  with all required local verification passing and four logical local commits
-  (see the closeout entry). [PR #32](https://github.com/xxibcill/still-shift/pull/32)
-  targets `main` and is ready for review. The conflict-resolution merge incorporates
-  `main` at `3413780` and was pushed as `05033c8`; local correctness and
-  frozen-baseline checks pass. GitHub confirms `MERGEABLE` / `CLEAN`.
-  One checklist item, runtime
-  re-expression of signals/drivers/periodic motion, moved to follow-up **CE9-F1**
-  with a recorded reason. Do not merge PR #30 as part of this work.
-- **Documentation delivery (CE6):** `c7afacc` commits `AGENTS.md`, this log,
-  `docs/composition-engine-plan.md` and `docs/verification.md` on
-  `codex/composition-ce6-performance`. [PR #31](https://github.com/xxibcill/still-shift/pull/31)
-  targets `main`; separate conflict-resolution merge `c2b5e39` has been pushed.
-  Local audit record `205f413` remains outside PR #31 and this CE9 branch.
-- **CE6-P performance (`[d]`, owner approved 2026-10-03):** WebGL's **1.25×**
-  render/readback gate and CE6's **2×** speed target are deferred to an
-  unscheduled future version. No further tuning or rendering architecture
-  experiments until an explicit owner request resumes this work. The 0.35
-  matrices retain 116 timing failures (73 commerce, 40 story/components, 3
-  typography); all pixel, seek and export checks pass. The original 117
-  failing cases are not claimed resolved.
-  - `ecf9bc6` (renderer `composition-webgl2-0.36.0`) was committed at the
-    owner's request **before** its full family matrices finished. Local CE6
-    audit record `205f413` is separate and remains undelivered. It does not
-    validate the combined WebGL `0.36.1` tree. This conflict-resolution session
-    reruns focused correctness/export checks, not the strict family audits.
-  - **Rendering-path decision deferred:** effect-free cases are bounded by the
-    GPU-process boundary on pinned SwiftShader. Retain the measurements and
-    rejected experiments for the future version.
-- **Feature priority:** CE4a and CE6 features remain incomplete. CE12 linting is
-  complete; CE10's builder/CLI still needs CE4a feature/parity acceptance. CE5
-  shape layers and CE7 time controls are also ready. CE8 needs CE6 features and
-  CE9; CE14 needs CE6 features; neither needs CE6-P.
-- **Untracked files to leave alone:** `docs/composition-renderer-performance-research-1.md`
-  and `-2.md` (intentionally untracked research notes) and
-  `docs/pr-30-review-plan.json` (origin unknown; it fails the Prettier check, so
-  run `pnpm check`'s steps individually and check formatting of changed files).
-- **PR base:** CE4a PR #29 and CE4b PR #30 are merged into `main` (verified
-  2026-10-03); target `main`.
-- **Toolchain gotchas:** run with the pinned Node 22.23.1
-  (`~/.nvm/versions/node/v22.23.1/bin` first on `PATH`). The shell default is Node
-  24, whose V8 differs in the last ULP of `**`/`exp`, so CE9 baked fixtures must be
-  regenerated on Node 22. Code loaded by the Lab Vite config (`scene-contract`)
-  must not use TypeScript constructor parameter properties: Node's strip-only mode
-  rejects them and five Lab integration suites fail.
+- **Continuation:** the owner's separate CE15 checkout remains in progress;
+  continue CE15 → CE14. No owner decision blocks that order. GitHub Actions
+  remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-08 — PR #49 merge-conflict resolution
+
+- **Agent / branch:** Codex; isolated `pr49-conflicts` worktree from `8faae4be`.
+- **Scope:** merge main `118927de` into PR #49 while preserving CE15 and reviewed upstream behavior.
+- **Done:** reconciled 14 conflict files, retained both test-command sets and histories;
+  combined reusable previews, rendered coverage, native bitmap upload, GPU instancing,
+  exact exposure bounds and managed lifetimes. Isolated export-test Vite caches;
+  asynchronous cinematic coverage now awaits shared preparation sources.
+- **Results:** 3,524 units; 102 focused tests; 144 surface cases / 8,000 frames;
+  complete WebGL, 38 alpha cases, 28 output exports and the parallel matrix pass.
+  Final cached-cinematic pixels/rejections and four public exports pass both backends.
+  Frozen subset 4 items / 792 frames and 336 affected default frames pass. No full
+  repository gate was run; frozen visuals/tolerances remain unchanged from main.
+- **Rejected:** stale optimizer imports, an invalidated borrowed clear-color array,
+  changed ordinary shader admission and a readonly test fixture were repaired. The
+  unchanged gradient-table timeout passes in the quiet final unit run; its limit stays intact.
+- **Open / next:** PR #49 remains open for the remaining CE15 milestone work.
+  CE15 acceptance remains pending; GitHub Actions stay disabled.
+- **Records:** [conflict-resolution results](./pr-49-conflict-resolution-results.json).
 
 ### 2026-10-08 — CE15 Canvas parent and native image lifetime
 
@@ -1958,6 +1782,333 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 - **Records:** [plan](./composition-ce15-plan.md),
   [Canvas admission evidence](./composition-ce15-canvas-memory-results.json).
 
+### 2026-10-08 — PR #48 third review findings and scoped repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr48-third-review-fixes`, from `1dae23c8`.
+- **Scope:** both P2 findings posted inline before repairs; one commit per finding,
+  one final normal push.
+- **Done:** `2fb40127` partitions all native caches by OS/architecture; the audio
+  repair skips unrelated visual layout, retains actual dependencies and picture
+  placement, and advances evaluator identity to 56.
+- **Results:** fast checks pass 2,616 units; 83 affected integrations and native
+  media plus Canvas/WebGL passage browsers pass; 176 frozen items / 36,061 frames
+  match. Independent review finds no issues.
+- **Rejected:** corrected text-anchor/driver test fixtures and retained the existing
+  gain clamp. No pixel threshold, numerical tolerance or frozen reference changed.
+- **Delivery / next:** separate finding commits and one final normal push; owner
+  review/merge follows. No full repository gate is run or claimed.
+- **Records:** [third review evidence](./pr-48-third-review-fix-results.json),
+  [PR #48](https://github.com/xxibcill/still-shift/pull/48).
+
+### 2026-10-08 — PR #48 second review findings and scoped repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr48-second-review-fixes`, from `63766426`.
+- **Scope:** both findings posted inline before repairs; one commit per finding,
+  one final normal push.
+- **Done:** bounded sequence authorization `0a4e975c`; audio visibility uses exact
+  PCM coordinates while raw property/picture clocks stay unchanged. Evaluator 55
+  invalidates previously prepared incorrect masters; audio has its own final commit.
+- **Results:** both padded API failures and whole-master sample loss reproduced.
+  Final fast checks pass 2,599 units; 80 affected integrations and native media/
+  authoring/export/session browsers pass, including independently decoded padded
+  exports and all 40,000 stereo samples of the boundary master. Final review passes.
+- **Rejected:** corrected the export fixture's pixel placement, preserved signedzero
+  quantizer laws with exact numeric assertions, and used a valid far-out clock
+  expression in the defensive regression. No tolerance or baseline was changed.
+- **Delivery / next:** two finding commits, one final normal push; owner review/merge.
+  No full repository gate is run or claimed; owner CE15 checkout is untouched.
+- **Records:** [second review evidence](./pr-48-second-review-fix-results.json),
+  [PR #48](https://github.com/xxibcill/still-shift/pull/48).
+
+### 2026-10-08 — PR #48 inline findings and scoped repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr48-conflict-resolution`, from `d62a7a4d`.
+- **Scope:** two posted inline findings; one finding per commit, one final normal push.
+- **Done:** capture lifetime `d0ce169c` adds ownership/release, bounded pending/live
+  resources, cancellation guards and disconnect cleanup. The following finding commit
+  shares visual/PCM/mix lock cleanup and adds the real-lock fault regression.
+- **Results:** pre-fix URL expiry and lingering-lock failures reproduced; CLI preview
+  integrations, 5 fixture / 34 cache integrations and 2,566 units pass. Native
+  browser/export/session checks pass, including uncached and reverse seek retention.
+- **Rejected:** initial fast build found an implicit array type in the new CLI regression;
+  added the explicit capture-array type. A formatting scan overlapped with temporary
+  fixture API test files; rerun sequentially after cleanup, never format generated fixtures.
+- **Delivery / next:** one finding per commit, one final normal push; owner review/merge.
+  No full `pnpm check` was run or claimed; no verification job remains active.
+- **Records:** [repair evidence](./pr-48-review-fix-results.json),
+  [PR #48](https://github.com/xxibcill/still-shift/pull/48).
+
+### 2026-10-08 — PR #48 conflicts resolved and independently reviewed
+
+- **Agent / branch:** Codex on isolated `codex/pr48-conflict-resolution`, from `aedfc9eb`.
+- **Done:** merged `main` at `e249a5da`; combined all 23 conflicts, preserved native
+  media/audio and reviewed renderer/authoring/soundtrack behavior. Native draft
+  preparation keeps per-draft leases; cinematic alpha checks await source frames.
+- **Results:** pinned toolchain/build/lint/schema, 2,560 units / 46 runtime /
+  179 affected integration checks and 14 Python tests pass across focused runs.
+  Two integration expectations were repaired and rerun. Affected media/passage/
+  renderer/timeline browsers, 336 selected native default frames and all 176 frozen
+  items / 36,061 frames pass without regeneration.
+- **Rejected:** initial build exposed duplicate CLI/Vitest imports, an invalid new
+  image fixture and an unsafe async UI narrowing; repaired before regression checks.
+- **Review:** one reproduced P2: active native capture URLs expire after newer
+  prepares; native caller-mutation candidate is suppressed by the immutable contract.
+- **Scope correction:** interrupted the over-scoped full 15-fixture cinematic export
+  matrix after about 14 minutes; it is not passed. Existing exact coverage/reveal
+  helpers and 2 affected defaults pass; full default inventory is not rerun.
+- **Delivery / next:** merge `471582f5`, test repairs `749452d2` and final evidence
+  delivered through a normal push to PR #48; owner follow-up on the single P2
+  capture-lifetime finding. No verification job remains active.
+  No full `pnpm check` was run or claimed; owner CE15 checkout is untouched.
+- **Records:** [resolution evidence](./pr-48-conflict-resolution-results.json),
+  [PR #48](https://github.com/xxibcill/still-shift/pull/48).
+
+### 2026-10-08 — PR #47 bitmap repair and follow-up closeout
+
+- **Agent / branch:** Codex on isolated `codex/pr47-second-review-fixes`.
+- **Done:** normalized same/cross-realm ImageBitmap image/depth uploads through
+  temporary Canvas2D surfaces; released scratch storage and advanced cache identity.
+  All three posted findings have separate commits and one final normal push.
+- **Results:** 144 exact bitmap comparisons on pinned software and M5 Pro hardware;
+  36 independent mixed-color alpha cases match. Final fast checks pass 2,498 units;
+  affected browsers/exports, all 176 family defaults and 176 frozen items pass.
+  Final probe guards have 36 exact comparisons after inventory/export checkpoints.
+- **Rejected:** direct bitmap uploads failed orientation/alpha checks; evidence JSON
+  formatting briefly stopped the final fast check, then formatting and rerun passed.
+- **Open / next:** owner review/merge; CE6-P WebGL timing remains deferred.
+  No full `pnpm check` run or complete repository gate is claimed; owner files untouched.
+- **Records:** [evidence](./pr-47-followup-fix-results.json),
+  [PR #47](https://github.com/xxibcill/still-shift/pull/47).
+
+### 2026-10-08 — PR #47 legacy compatibility repair
+
+- **Agent / branch:** Codex on isolated `codex/pr47-second-review-fixes`.
+- **Done:** compacted reachable states, pruned unused assets, bound long image/font
+  IDs through source ordinals and preserved deep clips/followers in collapsed scopes.
+  Collision-safe payload IDs and copied ink/container probes preserve diagnostics.
+- **Results:** 53 final focused units / 36 exact probe comparisons; final fast checks
+  pass all 2,498 units. Complete affected delivery passes 26 backend cases / 3,552
+  forward and reverse frames, 26 independent encodes / 78 production-repeat-raw
+  exports and 102 hardware comparisons. Worst Canvas median ratio 1.1839 stays
+  below 1.25. All 176 family defaults and frozen items / 36,061 frames pass.
+- **Rejected:** initial source-budget/pose/metadata corners and final aliased probes
+  failed; regressions now pass. Full inventory/export checks preceded the probe-only
+  amendment; final focused probes and fast checks verify it. No full `pnpm check` run.
+- **Next:** bitmap repair is complete in the following slice; owner review/merge follows delivery.
+- **Records:** [evidence](./pr-47-followup-fix-results.json).
+
+### 2026-10-08 — PR #47 follow-up review repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr47-second-review-fixes`, from `787ded34`.
+- **Scope:** three posted inline findings; one finding per commit, one final push.
+- **Done:** posted the three code comments; cached window text/provider preparation
+  and coverage before playback, released temporary backends, advanced cache versions.
+- **Results:** pinned toolchain/build, 103 affected units and two long-timeline browser
+  fixtures pass; boundary playback repeats no preparation and pixels remain exact.
+  Other repairs and final focused verification remain in flight.
+- **Next:** finish each repair and focused verification, then push all three commits once.
+- **Records:** [evidence](./pr-47-followup-fix-results.json),
+  [inline review](https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5453536103).
+
+### 2026-10-08 — PR #47 review repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr47-review-fixes`, from `ed4034c`.
+- **Scope:** six posted inline review findings, one finding per commit, one final push.
+- **Done:** bounded boxed/container text; GPU image-plane preflight; actual local
+  quality clocks; Lab source ownership and pending seeks; own follower bindings;
+  long story/commerce timelines split into bounded native windows with global clocks.
+- **Results:** 2,487 units / 46 runtime / 65 affected integrations pass, as do
+  affected browsers, selected long-scene raw/seek/disposal checks and complete
+  boxed-text delivery. All 176 defaults and frozen items / 36,061 frames pass.
+  Canvas maximum 1.0532× is below unchanged 1.25×; no full repository gate was run.
+- **Rejected / do not repeat:** initial fast check exposed the expected changed
+  batch identity hash; corrected that snapshot only. Frozen visual files are exact.
+- **Open / next:** owner review/merge of PR #47; delivery uses one final normal push.
+- **Records:** [repair evidence](./pr-47-fix-results.json),
+  [inline review](https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5452665143).
+
+### 2026-10-08 — Resolve PR #47 conflicts with main
+
+- **Agent / branch:** Codex on `codex/pr47-conflict-resolution` from `adf6cea`.
+- **Scope:** merge `main` at `8cc7b14f` into native CE4d; preserve both parents.
+- **Done:** commit containing this entry resolves 17 conflicts, repairs duplicate
+  test imports from auto-merge, advances merged cache identities and their fixture.
+- **Results:** fast checks pass 2,457 units; 46 runtime / 79 affected integrations /
+  14 depth tests, affected browsers and complete native depth/legacy delivery pass.
+  All 176 defaults and 176 frozen items / 36,061 frames pass unchanged references.
+  Both histories and 62 mandatory commands remain; independent merge review is clear.
+- **Rejected / retained:** failed build and stale identity fixture are recorded;
+  unchanged Canvas 1.25× policy passes, WebGL timing remains CE6-P deferred.
+- **Next:** owner review/merge. No new full `pnpm check` is claimed; owner CE15
+  checkout is untouched and GitHub Actions remain disabled.
+- **Records:** [evidence](./pr-47-conflict-resolution-results.json),
+  [PR #47](https://github.com/xxibcill/still-shift/pull/47).
+
+### 2026-10-08 — Resolve PR #46 conflicts with main
+
+- **Agent / branch:** Codex in isolated `pr46-conflict-resolution`, original PR
+  head `eda7aeb8`, integrated main `1f6fe812`.
+- **Done:** retain main's complete runtime and newer version identities, preserve
+  CE5-X approval/audit stop/Q9 and both parent log histories; correct current E51 prose.
+- **Results:** pinned toolchain/native browser startup, all 2,400 unit tests, build,
+  schema, lint and boundaries pass. Main code/tests/assets/config are exact; all
+  144 visual files / 433 fixtures remain exact. Independent merge audit has no findings.
+- **Scope:** unit command retained its built-in directory filter and ran all units;
+  no full `pnpm check`, browser/export, frozen render or timing gate was rerun.
+- **Next:** owner review/merge of PR #46. Original CE5-X scope, connector contract,
+  A1 baseline and remaining sequence decisions remain open.
+- **Records:** [Resolution](./pr-46-conflict-resolution-results.json),
+  [original audit](./composition-ce5x-results.json), [PR #46](https://github.com/xxibcill/still-shift/pull/46).
+
+### 2026-10-08 — PR #45 focus-crossfade repair and final verification
+
+- **Agent / branch:** Codex on `codex/pr45-reveal-focus-fixes` after rendered reveal repair `c91d717`.
+- **Scope:** second inline P2 finding; one finding per commit and one final push.
+- **Done:** preserve local overscan before Gaussian focus for active image crossfades; retain direct drawing at settled/zero-focus boundaries. Add graph and decoded-PNG regressions, document the behavior and bump backend identities.
+- **Results:** three new unit cases and the pixel regression fail on reviewed source (maximum delta 146); all 20 repaired crossfade comparisons are exact and both-backend repeated exports match the projected reference. Final fast checks pass 2,400 units; eight affected integrations, all 46 cinematic diagnostics, camera/WebGL export/exposure checks and all 176 frozen items / 36,061 hashes pass. Reveal checks pass 45 cases per backend; 42 invalid exports publish nothing, 20 valid repeat pairs and ten controls are byte-identical. Final independent Standards/Spec reviews have no findings.
+- **Rejected / do not repeat:** a final edge review caught artificial transparency inside the viewport; corrected neighbor interpolation remains in the first finding's commit. Editing that module interrupted the first frozen run after 34 matches; only the complete 305.68-second rerun on unchanged final source counts. No baseline regeneration, full `pnpm check` or timing matrix.
+- **Open / next:** one final normal push delivers both repair commits together; owner review/merge remain. Actions stay disabled.
+- **Records:** [repair evidence](./pr-45-reveal-focus-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
+
+### 2026-10-08 — PR #45 rendered semantic reveal-alpha repair
+
+- **Agent / branch:** Codex on `codex/pr45-reveal-focus-fixes` from reviewed `8ee9088`.
+- **Scope:** first of two inline P2 findings; one finding per commit, one final push.
+- **Done:** measure rendered subject and combined occluder alpha at actual shutter states, preserve held clocks/shared ancestor isolation and node/frame diagnostics, and reject suppressed matte sources. Add decoded-PNG controls, document the rule and bump backend identities.
+- **Results:** three new unit regressions fail on reviewed source; all 58 focused units, TypeScript, focused lint/format and boundaries pass. Both backends pass 45 reveal cases; 42 invalid exports publish nothing, 20 valid repeat pairs and ten independent control exports are byte-identical. In-viewport edge samples pass while offscreen queries fail. Independent Standards and Spec reviews have no remaining findings.
+- **Rejected / do not repeat:** the first smooth-wall shutter fixture used the wrong key interpolation; corrected held-wall red confirms the defect. The temporary export runner’s initial control property was wrong; supplemental exports verify all controls. Keep caches and Python environment isolated.
+- **Open / next:** separate focus-crossfade repair, final scoped browser/export/frozen checks, then one normal push. No full `pnpm check` or timing matrix; Actions remain disabled.
+- **Records:** [repair evidence](./pr-45-reveal-focus-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
+
+### 2026-10-08 — PR #45 rendered background-alpha repair and final verification
+
+- **Agent / branch:** Codex on `codex/pr45-alpha-fixes` after reveal repair `737b0cc`.
+- **Scope:** second inline P2 finding; one finding per commit and one final push.
+- **Done:** validate isolated rendered background alpha at actual exposure states, preserve mandatory cinematic errors, and reject direct/ancestor matte-source suppression. Add both-backend mask, matte, group, shutter and sibling-concealment regressions; document the native coverage rule and bump renderer/export identities.
+- **Results:** final fast checks pass 2,390 units; 46 cinematic diagnostics and 176 frozen items / 36,061 hashes pass unchanged. Valid/retained PNG previews stay exact; 22 invalid opacity/alpha exports publish nothing. Eight affected integrations, camera, WebGL exports and exposure checks pass. Final Standards and Spec audits have no findings.
+- **Rejected / do not repeat:** an early frozen run stopped at a missing browser initializer after 40 matching items while work was in flight; it is not counted as passed. Final module/profile preflight and complete sequential frozen run pass on an unchanged source fingerprint. No baseline regeneration, full `pnpm check` or timing matrix.
+- **Open / next:** final normal push delivers both repairs together; owner review/merge remain. Actions stay disabled.
+- **Records:** [alpha repair evidence](./pr-45-alpha-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
+
+### 2026-10-08 — PR #45 persisted reveal-opacity repair
+
+- **Agent / branch:** Codex on `codex/pr45-alpha-fixes` from reviewed `76fb71b`.
+- **Scope:** first of two new inline alpha-validation findings; one finding per commit.
+- **Done:** preserve full evaluated subject/occluder opacity and diagnostic node/frame after native reload; add static, keyed and inherited regressions and document the retained source rule.
+- **Results:** three new regressions fail on reviewed source; 41 focused tests, TypeScript and focused lint pass. Actual decoded-PNG Canvas/WebGL previews and four export attempts reject invalid opacity; valid retained previews stay exact. Independent Standards and Spec reviews have no findings.
+- **Rejected / do not repeat:** group fixtures require `size`; use the isolated worktree's caches and environment, with approved commands for sandbox-restricted startup.
+- **Open / next:** rendered background-alpha repair; then affected browser/export/frozen checks and one final push. No full `pnpm check` is claimed; Actions remain disabled.
+- **Records:** [alpha repair evidence](./pr-45-alpha-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
+
+### 2026-10-08 — PR #45 shutter coverage repair and final verification
+
+- **Agent / branch:** Codex on `codex/pr45-conflict-review` (from `a99be1f`).
+- **Scope:** second inline P2 finding, one repair per commit and one final push.
+- **Done:** validate declared background coverage using actual mixed exposure states;
+  retain held-layer clocks, shutter cuts, opacity, focus padding and integer reveal semantics.
+- **Results:** five regressions fail on original code; all 38 focused units pass after repair.
+  Decoded-PNG previews and protected export failures pass on both backends. Final fast
+  checks pass 2,385 units; eight affected integrations, camera/cinematic smoke/export/exposure
+  suites and all 176 frozen items / 36,061 frames pass. No baselines regenerated.
+- **Rejected / do not repeat:** no new full `pnpm check` or family timing matrix for scoped fixes.
+- **Open / next:** both repairs use one final normal push; owner review/merge remain.
+- **Records:** [repair evidence](./pr-45-fix-results.json),
+  [inline findings and disposition](./pr-45-review-results.json).
+
+### 2026-10-08 — PR #45 local primitive-blur repair
+
+- **Agent / branch:** Codex on isolated `codex/pr45-conflict-review` from `3545055`.
+- **Done:** post both findings inline; keep positive own/inherited/collapsed
+  primitive blur on its local surface before projection. Zero/disabled blur keeps
+  the direct image path. Canvas/WebGL/export identities are 1.42.2 / 0.57.2 / 0.6.7.
+- **Results:** four original-code unit failures and a real-pixel delta of 82 are
+  reproduced before repair. After repair, 35 focused units and all 36 actual
+  Canvas/WebGL pairs pass exactly across uniform/nonuniform/rotated placement.
+  Pinned toolchain/imports, focused formatting and lint pass.
+- **Open / next:** coverage repair, final focused verification and a single final
+  push remain. This commit repairs only the first finding. No full gate or Actions.
+- **Records:** [Repair evidence](./pr-45-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449039).
+
+### 2026-10-08 — PR #45 main conflict integration and independent review
+
+- **Agent / branch:** Codex on isolated `codex/pr45-conflict-review` from `17666eb`.
+- **Done:** merge `1b3f98f` combines nine conflicts with `main` at `50cbf633`;
+  keep settled optics, shared XYZ/view-offset tracks, clipping/echo rounding,
+  both development histories and all 59 mandatory commands. Combined evaluator /
+  Canvas / WebGL / export identities are 51 / 1.42.1 / 0.57.1 / 0.6.6.
+- **Results:** 2,371 units, 46 runtime, eight affected integrations and scoped
+  cinematic/camera/lighting/export/exposure/inspector checks pass. All 176 frozen
+  items / 36,061 frames and main baseline bytes match without regeneration.
+- **Review / next:** two independently reproduced P2 findings remain open:
+  affine primitive-blur scaling and integer-only persisted shutter coverage.
+  Verified merge/evidence are pushed; GitHub confirms mergeable. Owner review/merge
+  remain. No full gate or CE6-P
+  acceptance is claimed; owner checkout is untouched and Actions remain disabled.
+- **Records:** [Merge evidence](./pr-45-conflict-resolution-results.json),
+  [independent review](./pr-45-review-results.json).
+
+### 2026-10-08 — PR #44 receiving-toggle focus repair and final verification
+
+- **Agent / branch:** Codex on isolated `codex/pr44-conflict-review` after `009ae7d`.
+- **Done:** give Receive light a stable control identity and reuse guarded focus
+  restoration; keep this finding separate from the XYZ dependency commit.
+- **Results:** the original-code keyboard regression fails; repeated Space/Enter,
+  rejected edits and deliberately moved focus pass after repair. Final fast checks
+  pass 2,322 units; native lighting, inspector and WebGL exports pass. All 176 frozen
+  items / 36,061 frames and the final source fingerprint remain unchanged.
+- **Review / next:** independent Standards and Spec audits report no remaining
+  findings. Push both repair commits together after this commit; owner review/merge
+  remain. No full repository gate, performance rerun or Actions.
+- **Records:** [Repair evidence](./pr-44-fix-results.json),
+  [finding](https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916490).
+
+### 2026-10-08 — PR #44 implicit XYZ light dependency repair
+
+- **Agent / branch:** Codex on isolated `codex/pr44-conflict-review` from `5b233c8`.
+- **Done:** post both findings inline; include implicit lights in shared anchor
+  dependency discovery and advance evaluator cache identity to 50.
+- **Results:** six new unit failures and native pixel parity fail before repair;
+  75 focused tests, build/lint and six native cases pass afterward. All 240 preview
+  draws match explicit XYZ controls; 24 production/control/repeat/raw exports
+  cover 192 frames and are byte-identical within each case.
+- **Open / next:** commit this finding, repair keyboard focus in a separate commit,
+  finish scoped verification and push both together. No full gate rerun or Actions.
+- **Records:** [Repair evidence](./pr-44-fix-results.json),
+  [finding](https://github.com/xxibcill/still-shift/pull/44#discussion_r4210916475).
+
+### 2026-10-08 — Resolve and review PR #44 against merged CE8
+
+- **Agent / branch:** Codex in isolated managed `pr44-review`, from `e1bd4bc`.
+- **Done:** merge `548b5c7` combines eight conflicts with `main` at `e97dacbc`;
+  `3640c69` preserves light-key editing under main's null root scopes.
+  Lighting, camera/XYZ, effect/exposure, soundtrack and both histories are retained.
+- **Results:** fast checks (2,313 unit), 112 focused regressions, 46 runtime and
+  all eleven example programs pass. Native lighting/camera/export/hardware and
+  real inspector pass; all 176 frozen items / 36,061 frames match unchanged references.
+- **Review / next:** one Standards usability P2 and one Spec P2 remain open:
+  receiving-toggle focus and implicit XYZ light Z reference dependencies.
+  Normal push delivers the conflict resolution; owner repair/merge remain.
+  No full `pnpm check` or performance gate rerun; owner checkout is untouched.
+- **Records:** [resolution](./pr-44-conflict-resolution-results.json),
+  [review](./pr-44-review-results.json).
+
+### 2026-10-08 — PR #43 null-guide repair and final verification
+
+- **Agent / branch:** Codex on isolated `codex/pr43-followup-fixes`, from `9b53db3`.
+- **Done:** project spatial null guides from their evaluated world transform and
+  owning camera; complete the fourth finding-specific repair commit.
+- **Results:** five original-code regressions fail before repair; 49 related tests
+  pass afterward, and 28 Canvas/WebGL guide comparisons/reverse seeks are exact.
+  Complete pinned local `pnpm check` passes 2,265 units, 46 runtime, 224 integration,
+  14 depth tests, all required browser groups and 176 frozen items / 36,061 frames.
+  Full Canvas family pixel/timing policy and the source fingerprint remain intact.
+- **Review:** independent Standards and Spec reviews have no findings.
+- **Next:** owner review/merge of PR #43; all four repairs use one final normal
+  push. CE6-P remains separate and Actions stay disabled.
+- **Records:** [repair evidence](./pr-43-followup-fix-results.json) and
+  [plan follow-up](./composition-engine-plan.md#pr-43-review-follow-up-2026-10-08).
+
 ### 2026-10-07 — CE15 managed allocation foundation checkpoint
 
 - **Agent / branch:** Codex on `codex/composition-ce15` from pushed `bffaf8a`.
@@ -2152,6 +2303,471 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   bounded parallel export and final full gate. CE15 remains incomplete; CE14 follows.
 - **Records:** [plan](./composition-ce15-plan.md),
   [results](./composition-ce15-results.json).
+
+### 2026-10-07 — CE4d complete local gate and native-default closeout
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, verified `ae2e1f0`.
+- **Done:** native family/depth defaults, shared-graph painter consolidation and
+  truthful Lab/cache provenance complete; every existing acceptance gate is retained.
+- **Results:** full pinned local `pnpm check` passes in 11705.18 seconds, all
+  61 test commands, 2,005/46/143/14 tests, all 176 defaults/frozen items and all
+  four strict Canvas matrices. All 141 prior visual files remain exact.
+- **Rejected / do not repeat:** both earlier failed full gates remain recorded;
+  never claim focused checks replace the full gate or reapply superseded drafts.
+- **Delivery / next:** [PR #47](https://github.com/xxibcill/still-shift/pull/47) is open and attached;
+  CE13 → CE15 → CE14 with CE16 reuse.
+  WebGL speed remains CE6-P; CE5-X/Q9 pending. Actions remain disabled.
+- **Records:** [results](./composition-ce4d-results.json),
+  [plan](./composition-engine-plan.md#ce4d-completion-record-2026-10-07).
+
+### 2026-10-07 — CE4d native golden identity and parity pass
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, repair `3747d16`.
+- **Results:** focused golden parity passes all five scenes / 15 frozen samples /
+  30 PNG/JPEG transport comparisons and original motion checks. Every actual Lab scene
+  reports the native renderer; frozen reference identity remains unchanged. Pinned
+  startup/fingerprint, Python imports, format, scoped lint and build pass.
+- **Next:** complete `pnpm check` from the beginning on the new isolated checkpoint;
+  preserve both prior failed gates. Then CE4d PR and approved milestone continuation.
+- **Records:** [results](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d golden renderer metadata migration repair
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, from `4a8ba90`.
+- **Failure:** second full gate passes 2,005 unit / 46 runtime / 143 integration /
+  14 Python tests and depth, vertical and export browser suites. Golden pixel/motion
+  and transport checks pass, then old renderer metadata equality fails (332.26 seconds).
+- **Repair:** assert native Lab renderer identity and frozen legacy reference identity
+  separately; every stored sample, threshold and transport assertion is unchanged.
+- **Next:** focused golden regression and full gate from the start on a fresh checkpoint.
+- **Records:** [results](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d repaired Depth Lab acceptance passes
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, runtime `69469a8`, harness `e8a70d9`.
+- **Results:** complete depth-motion suite passes original far/near/drift, comparison/hold,
+  crop/fallback/edge and stale-selection/gallery assertions. A real delayed decode confirms
+  a seek during preparation survives the staged native refresh. Both affected Lab session
+  suites pass. No motion, pixel or timing threshold changed.
+- **Next:** complete `pnpm check` from the start on a fresh private checkpoint; the first
+  failed gate remains recorded. Then CE4d PR/attachment and all remaining approved milestones.
+- **Records:** [results](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d full gate finds asynchronous Depth Lab handoff
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` after `8ce662a`.
+- **Full gate:** stopped after 217.48 seconds at the Depth Lab motion check; 2,005 unit,
+  46 runtime, 143 integration and 14 Python depth tests passed first. This gate failed.
+- **Diagnostic:** waiting for committed parameters preserves all motion assertions and
+  passes: far marker 10.5 px, near marker 17.5 px. The old test observed pending refresh.
+- **Repair:** explicit updating/readiness state, latest seek at commit, first-frame staging
+  before active replacement, stale-load error protection and truthful native Lab version.
+  A real delayed-decode regression seeks during preparation; no threshold changes.
+  Its first focused run passes motion/pending seeks, then finds the same stale-read
+  assumption in comparison/hold tests; those now wait for committed readiness.
+- **Open / next:** focused Depth Lab/Lab sessions, then a complete local gate rerun and
+  milestone PR/attachment. The approved CE13 → CE15 → CE14 order remains unchanged.
+- **Records:** [results](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d complete public-default focused acceptance passes
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, runtime `75c0828`.
+- **Results:** all 176 actual family defaults pass 36,061 forward and reverse frames,
+  assigned pixel tiers, text probes and every unchanged CE0 hash. Explicit public depth
+  defaults pass all 23 timelines / 2,070 frames exactly. Strict CLI cache relocation,
+  checksums/repeat exports and actual vertical export pass after the portability repair.
+  Pinned toolchain, schema, boundaries, format, lint and build pass. All 141 prior visual
+  files remain exact; no threshold or frozen reference changed.
+- **Next:** one complete local `pnpm check` on the final isolated checkpoint, completion
+  PR/attachment, then CE13 → CE15 → CE14 with CE16 audit/reuse. CE5-X/Q9 remains pending.
+- **Records:** [results](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d public defaults pass and cache manifest portability is repaired
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` after `0de5294`.
+- **Results:** explicit public-depth defaults pass all 23 timelines / 2,070 forward and reverse
+  frames exactly. Actual vertical Node export, both Lab session checks, public export worker,
+  42 units and 11 integration tests pass. Fresh 690-frame zipper pixel QA passes the unchanged
+  policy; 2,172 authored warnings remain, with no validation or frozen-motion errors.
+- **Correction:** earlier depth logs described as defaults actually covered direct native layers;
+  explicit `--default` proof is recorded separately.
+- **Repair:** strict CLI alternate-cache equality exposed absolute native asset paths. Content-based
+  document references now bind separately to verified physical files; pipeline 0.13 invalidates
+  prior cache identity. Eight focused tests, scoped format/lint and build pass.
+- **Open / next:** relocated-cache CLI/export rerun, remaining 176-item family acceptance and full
+  local gate; CE4d PR, then CE13 → CE15 → CE14 with CE16 audit/reuse.
+- **Records:** [results](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d frozen-oracle dependency is made explicit
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` after `db0a4ca`.
+- **Results:** 42 focused unit tests and 11 startup/cancellation/publication integration tests pass.
+  Actual-default browser acceptance stopped before pixels: test-only Three resolution had relied
+  on the retired production import.
+- **Done:** pinned Three 0.186.0 and its types move to root test development dependencies;
+  renderer production dependencies no longer include Three. Lock package/snapshot maps and
+  all versions/integrities are unchanged. Build passes.
+- **Open / next:** rerun actual-default browser acceptance, required family/Lab/export matrices,
+  zipper QA and full local gate; then CE4d PR and remaining approved milestones.
+- **Records:** [results](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d native delivery passes and production defaults are consolidated
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` after `7359189`.
+- **Prerequisite proof:** immutable `5bcba60` native delivery passes 29 timelines, 29 independent
+  encodes, 87 byte-identical production/repeat/raw exports, 23 cost brackets, inspector/resource
+  checks and 90 hardware comparisons. Both GPU alpha edges conserve coverage exactly.
+- **Done:** public family/depth factories now use the prepared shared composition backends;
+  duplicate Three/family/commerce/mask frame painters are retired. Node exports and manifests
+  carry native composition/provenance; pipeline 0.12 and renderer/adapter/shader enter cache identity.
+  Historical references remain on test-only oracles.
+- **Results:** build/scoped ESLint pass; default-route focused checks and milestone acceptance are pending.
+- **Open / next:** actual-default depth/family/Lab/export checks, zipper QA and complete local gate;
+  create/attach CE4d PR, then continue CE13 → CE15 → CE14 with CE16 audit/reuse.
+- **Records:** [results](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d complete legacy delivery passes after shadow repair
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`; pushed code checkpoint `5bcba60`.
+- **Results:** all 7 fixtures on both backends pass 2,352 forward and 2,352 reverse frames;
+  14 independent preview encodes match 42 production/repeat/raw exports. Relocation,
+  overwrite protection and all 66 hardware comparisons pass unchanged policies.
+  Canvas's worst median ratio is 1.1822 (limit 1.25); WebGL costs retain the CE6-P deferral.
+- **Depth preflight:** pinned tools and renderer/export imports pass. Both GPU alpha edges conserve
+  coverage exactly. All 23 prepared timelines pass 2,070 exact forward/reverse frozen comparisons.
+- **Open / next:** complete native depth delivery is running serially on the same immutable snapshot;
+  defaults and the final complete local gate remain pending. Then PR/CE13 → CE15 → CE14.
+- **Records:** [results](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d separate shadow/source paint repair checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` from `93845ba`.
+- **Scope:** serial legacy delivery reached Crisis Fracture frame41 with delta3 at one shadow/stroke pixel.
+- **Done:** known unfiltered/unclipped Canvas shadows and source coverage reach the shared GPU
+  backdrop as separate paints. Unbounded source extents and absolute/reset transforms are retained.
+  WebGL2 is 0.65.0. Critical smoke/hardware frames and a pinned direct-Canvas regression are added.
+- **Results:** build/scoped ESLint and39 unit tests pass. All7 legacy fixtures pass2,352 forward
+  and2,352 reverse frames on both backends, unchanged delta2 maximum. All12 hardware regression
+  comparisons pass the unchanged perceptual policy (minPSNR45.7339/SSIM0.998534).
+- **Rejected:** flattened bitmap blending fixes frame41 but breaks six other frames; software
+  vector preparation does not fix frame41. A pinned near assertion was too strict for a hardware
+  diagnostic; hardware policy remains unchanged. Complete delivery is still pending.
+- **Open / next:** serial legacy/native delivery, default consolidation and final local gate; then PR/CE13.
+- **Records:** [results](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d overlapping PNG rounding repair checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` from `fbaa6a8`.
+- **Scope:** complete legacy delivery exposed WebGL Comparison Build failures on frames30–34.
+- **Done:** verified PNG images use bitmap source-over rounding; vector primitive rounding is preserved.
+  WebGL2 is 0.64.0. Focused smoke includes the actual failing frames.
+- **Results:** checkpoint `fe5b8a6` passes toolchain/build/scoped ESLint,39 unit tests and alpha
+  on both GPU profiles. All7 WebGL smoke fixtures /40 forward+40 reverse frames pass, including
+  the five failing frames. Diagnostic frame32 improves from delta3 /396 pixels above2 to delta1.
+  Complete serial delivery is running; the unchanged near tier remains delta2.
+- **Failed / do not repeat:** the complete 4b99cad legacy gate failed; later depth delivery did not run.
+  All 23 prepared depth timelines had passed exact forward/reverse parity before that failure.
+- **Open / next:** focused/full legacy parity, native delivery, defaults and final full gate; then PR/CE13.
+- **Records:** [results](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d preserved-alpha filtering checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` from `d72bab0`.
+- **Scope:** repair the confirmed authored depth-image alpha fringe from the fresh-chat handoff.
+- **Done:** both GPU fragments filter preserved-alpha linear texels in premultiplied form;
+  opaque compatibility sampling remains unchanged. Version identities are advanced.
+- **Results:** checkpoint `4b99cad` passes toolchain, build, scoped ESLint and 20 unit tests.
+  SwiftShader and Apple M5 Pro each pass all 128 filtered edge pixels with exact R+G conservation
+  and repeat identity; the fringe pixel improves from RGB111,112,0 to143,112,0. Full delivery is running.
+- **Open / next:** focused alpha proof, affected native delivery and legacy delivery, default migration,
+  actual-route acceptance, final local gate and CE4d PR; then CE13 → CE15 → CE14.
+- **Records:** [results](./composition-ce4d-results.json), [handoff](./composition-continuation-handoff-2026-10-07.md).
+
+### 2026-10-07 — Composition work handed to a fresh chat
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`; code `1ec5d04` pushed.
+- **Scope:** User requested a fresh chat because this one is large and lagging.
+- **State:** Verified hardware repair is checkpointed. Existing full native depth
+  job completed during wrap-up: all29 encodes/87 exports and90 hardware checks
+  pass; the full proof is saved. No verification job remains active.
+  Confirmed preserved-alpha edge darkening is recorded but unrepaired.
+- **Next:** New chat reads the completed proof, fixes alpha,
+  closes CE4d, then continues CE13 → CE15 → CE14 and audits/reuses CE16.
+- **Records:** [Saved handoff](./composition-continuation-handoff-2026-10-07.md),
+  [measured evidence](./composition-ce4d-results.json). Owner edits are preserved.
+
+### 2026-10-07 — CE4d hardware depth interpolation checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4d` after `bcc1c8b`.
+- **Done:** Hardware UVs use pinned 1/16-pixel subpixel precision; the software
+  shader/mesh stay unchanged. WebGL2 0.62.0 / image-plane shader 0.3.0.
+- **Results:** Build/lint/20 unit tests pass; all 23 timelines / 2,070 forward and
+  reverse frames stay exact. All 87 hardware comparisons pass the unchanged
+  policy. Three tiny rasters retain full coverage and exact hardware parity.
+- **Next:** Fresh full native delivery, legacy timing/delivery, default switch and
+  complete milestone gate. Earlier failed/rejected diagnostics remain recorded.
+- **Records:** [Full measured evidence](./composition-ce4d-results.json).
+
+### 2026-10-07 — CE4d complete depth delivery reaches hardware failure
+
+- **Agent / branch:** Codex on `codex/composition-ce4d`, verified code `f01a35b`.
+- **Results:** All 23 serial cost brackets are saved; 29 independent encodes and
+  87 production/repeat/raw exports agree byte-for-byte. Hardware repeated-precomp
+  frame 0 fails the unchanged perceptual policy; final acceptance is incomplete.
+- **Rejected:** Source rasterization/filter/derivative alternatives do not fix it.
+  Full triangle reconstruction, rounded reconstruction and centroid interpolation
+  fail frozen software parity. No production shader change retained.
+- **Next:** Verify hardware-only interpolation, then finish migration and full gate.
+- **Records:** [Full costs, failure and diagnostics](./composition-ce4d-results.json).
+
+### 2026-10-07 — PR #43 follow-up review repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr43-followup-fixes`, from `9b53db3`.
+- **Scope:** four posted P2 findings, each repaired in a separate commit.
+- **Done:** preserve XYZ smooth spatial velocities across adjacent Bézier edits;
+  validate secondary camera optics after their expression/motion writers settle.
+  Accept machine-roundoff affine effect coordinates while rejecting real perspective.
+  Project spatial null guides through their own scope's camera and world transform.
+- **Results:** original-code regressions fail for all four findings; focused groups
+  pass 51 / 86 / 32 / 49 tests. All 28 Canvas/WebGL coordinate comparisons and
+  reverse seeks are exact. Independent Standards and Spec reviews have no findings.
+- **Attempts:** corrected signal/anchor fixtures and browser preview frames;
+  controls require visible effect paint. Detailed attempts remain in the evidence.
+- **Next:** finish full local verification and one final normal push. Frozen
+  references, thresholds and all 57 required commands remain; Actions stay disabled.
+- **Records:** [review/fix evidence](./pr-43-followup-fix-results.json).
+
+### 2026-10-07 — PR #43 main conflict integration
+
+- **Agent / branch:** Codex on isolated PR head `c0c8f5d`, integrating `main` `f1cc8fe0`.
+- **Done:** retain cameras/XYZ/ancestor coverage with all upstream renderer,
+  clocks, shape, builder, inspector, quality and soundtrack fixes; advance caches.
+- **Results:** fast checks pass 2,247 units; 46 runtime / 224 integration tests,
+  native camera acceptance, nine affected browser groups and 176 frozen baselines /
+  36,061 frames pass. Fifteen new integration regressions retain Z tracks/dependencies,
+  roving, projected scale/reflections and orientation timing. Source fingerprint stays exact.
+- **Attempts:** initial formatting stop and late orientation finding are retained;
+  final complete fast checks reran after repairs. No full `pnpm check` is claimed.
+- **Next:** owner review/merge of the updated existing PR branch.
+  CE6-P performance stays deferred and Actions disabled.
+- **Records:** [resolution evidence](./pr-43-conflict-resolution-results.json).
+
+### 2026-10-07 — PR #42 hidden-source echo history repair
+
+- **Agent / branch:** Codex on isolated `codex/pr42-followup-fixes`, after `6e33664`.
+- **Scope:** second inline P2 finding; preserve the captured source's own echo.
+- **Done:** apply scoped capture visibility to historical source paints and group
+  descendants while retaining in/out points; separate corrected renderer caches.
+- **Results:** ten regressions fail before repair; 59 focused tests pass afterward.
+  Final fast gate passes 2,093 units; 40 exact backend cases / 160 renders, catalogue,
+  hardware/export/exposure checks and 176 frozen items / 36,061 frames pass.
+  Independent Standards and Spec review have no findings; full gate was not rerun.
+- **Next:** one normal push delivers both finding commits; owner review/merge remain.
+- **Records:** [review/fix evidence](./pr-42-followup-fix-results.json).
+
+### 2026-10-07 — PR #42 normalized plugin registration repair
+
+- **Agent / branch:** Codex on isolated `codex/pr42-followup-fixes`, from `b2f2048`.
+- **Scope:** first of two posted P2 findings; retain the contract-owned descriptor.
+- **Done:** renderer input snapshots follow the immutable normalized registration.
+- **Results:** both new regressions fail before repair and pass afterward; all 30
+  focused plugin/input/contract tests, build and focused lint pass.
+- **Next:** the separate echo repair and final evidence are recorded above;
+  both finding commits share one final normal push. Owner review/merge remain.
+- **Records:** [review/fix evidence](./pr-42-followup-fix-results.json).
+
+### 2026-10-07 — PR #42 main conflict resolution
+
+- **Agent / branch:** Codex on isolated PR head `f000d8d` from
+  `codex/composition-ce6-completion`; merge `main` at `3a5f2ff9`.
+- **Done:** retain both native effect/linear-light paths and upstream exposure,
+  disjoint paints, shape/clock/builder/inspector and soundtrack repairs.
+  Fresh evaluator/Canvas/WebGL identities separate combined caches.
+- **Results:** fast checks pass 2,077 units; all 224 integration tests and ten
+  focused browser groups pass. Native catalogue seeks, independent/repeated exports,
+  hardware comparisons and all 176 frozen items / 36,061 frames pass.
+  All 196 prior entries and 56 required test commands remain; assets match parents.
+- **Next:** owner review/merge of PR #42. No new full gate or
+  CE6-P performance acceptance is claimed. Primary CE15 edits remain untouched.
+- **Records:** [conflict evidence](./pr-42-conflict-resolution-results.json).
+
+### 2026-10-07 — PR #41 immutable benchmark sources repair
+
+- **Agent / branch:** Codex on isolated `codex/pr41-benchmark-fixes`, after `81238bb`.
+- **Scope:** second inline P2 finding; immutable shared runtime and source provenance.
+- **Done:** freeze repository browser modules, retain all shared source/manifest hashes,
+  preserve selected historical sources and reject/retain drift or setup/timing failures.
+- **Results:** all 24 focused regressions, lint/build and independent review axes pass.
+  Pinned loader smoke passes 852 exposure and 24 exact particle cases plus both renderer
+  versions. Retain the original shallow-source failures, canonical-path repair and two
+  missing-report failures. Final fast gate passes 1,960 units / 160 files; the initial
+  test type-import lint failure and its repair are retained in the evidence.
+- **Open / next:** two finding commits and one final normal push; owner review/merge.
+  No renderer changes, timing measurements, strict audit or full gate; CE6-P stays deferred.
+- **Records:** [review/fix evidence](./pr-41-benchmark-fix-results.json).
+
+### 2026-10-07 — PR #41 benchmark workload guard repair
+
+- **Agent / branch:** Codex on isolated `codex/pr41-benchmark-fixes`, from `4e3c32b`.
+- **Scope:** first of two posted inline P2 findings; direct composition workloads.
+- **Done:** extract the process classifier, detect direct Node/tsx composition commands
+  and ignore only the current PID while retaining package-manager/test detection.
+- **Results:** five tests fail before repair; all 13 focused regressions, lint and build pass.
+- **Open / next:** freeze shared sources for finding two, verify, commit separately and
+  perform one final normal push to PR #41. CE6-P timing work remains deferred.
+- **Records:** [review/fix evidence](./pr-41-benchmark-fix-results.json).
+
+### 2026-10-07 — PR #41 merge conflict resolution
+
+- **Agent / branch:** Codex in isolated `pr41-conflict`, from PR head `e5f4992`.
+- **Scope:** merge current `main` (`fb785772`) into the existing PR without rewriting history.
+- **Done:** retain both development-log histories and PR echo/particle/exposure changes;
+  preserve upstream CE7 clock/state fixes and use WebGL 0.42.1 for combined caches.
+- **Results:** pinned toolchain/browser and fast gate pass; 1,936 units / 66 integrations,
+  WebGL correctness, 852 exposure cases per GPU profile, native clock/state checks,
+  12 hardware comparisons and four production export cases pass. Frozen assets stay exact.
+  Initial fast check stopped on merged-log formatting, repaired with Prettier.
+- **Open / next:** owner review/merge on PR #41; CE6-P remains deferred/incomplete.
+  No new full repository gate, strict audit or performance acceptance is claimed.
+- **Records:** [conflict-resolution evidence](./pr-41-conflict-resolution-results.json).
+
+### 2026-10-07 — CE6-P paused and deferred again
+
+- **Owner decision:** “let's just pause here and defer it to future version again”.
+- **Status:** completion goal paused; CE6-P is deferred, not complete. No future version
+  number or restart date is assigned. Resume only on an explicit owner request.
+- **Retained:** reviewed 0.42.0 / `d4ecdf8` in [PR #41](https://github.com/xxibcill/still-shift/pull/41),
+  passing local/targeted correctness and all measured gains, failures and rejected experiments.
+- **Open:** original 117/current 119 timing misses, native 2× and the full strict audit on 0.42.0.
+  Requirements remain unchanged; the proposed architecture prototype is not approved.
+- **Verification:** documentation formatting/diff checks only; no further performance work.
+- **Records:** [deferral](./composition-ce6p-plan.md#owner-deferral--2026-10-07),
+  [resolution record](./composition-ce6p-resolution-plan.md#owner-deferral--2026-10-07).
+
+### 2026-10-07 — CE6-P feasibility assessment
+
+- **Scope:** owner asked whether the unchanged target justifies further work after three days.
+- **Evidence:** native production is 1.450/1.500 ms against matched 0.39375/0.375 ms
+  budgets, requiring roughly 73–75% less total time. Standalone allocate+slice
+  costs 0.500/0.525 ms; this is an observed control, not a universal lower bound.
+- **Assessment:** the complete unchanged target is unlikely under the current approach;
+  no compatible closure mechanism or original strict timing failure closure is demonstrated.
+- **Recommendation / owner decision:** retain reviewed 0.42.0 and avoid an unbounded tuning loop.
+  A separately authorized architecture prototype needs an early feasibility gate and may
+  improve preview throughput without proving the original synchronous timing requirement.
+- **Verification:** reviewed retained evidence; no benchmark or acceptance rerun.
+- **Records:** [native decision](./composition-ce6p-resolution-plan.md#native-owned-output-decision--2026-10-06),
+  [cost evidence](./composition-ce6p-cost-results.json).
+
+### 2026-10-07 — CE6-P 0.42.0 reviewed delivery
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `633138b`.
+- **Done:** retained the approved echo bitmap-rounding correction, disjoint-particle GPU paint
+  and renderer version 0.42.0 for [PR #41](https://github.com/xxibcill/still-shift/pull/41).
+- **Validation:** the complete local gate passes; both review axes are clear after evidence fixes.
+  Targeted echo timelines, seeks, exports and sampled hardware agreement pass.
+- **Rejected:** the fixed-native owned-output experiment preserves bytes but regresses;
+  its complete allocation control alone exceeds the unchanged native budget.
+- **Open / next:** CE6-P is incomplete. Original 117 timing misses, no new misses, native 2×,
+  and the complete strict 195-case WebGL audit on 0.42.0 remain open. Both timing holds ended.
+  No compatible closure mechanism is selected; architecture/acceptance changes need an owner decision.
+- **Records:** [execution and decision](./composition-ce6p-resolution-plan.md#native-owned-output-decision--2026-10-06),
+  [cost evidence](./composition-ce6p-cost-results.json), [echo proof](./composition-ce6p-echo-diagnosis-results.json).
+
+### 2026-10-07 — PR #40 unreachable posterized-state cuts
+
+- **Agent / branch:** Codex on `codex/pr40-posterized-cut-fix` from `824a627`.
+- **Scope:** One inline P2 finding; preserve motion blur when posterization skips temporary states.
+- **Done:** Reachable discrete-state comparison with conservative precision handling;
+  evaluator/backend versions and unit/both-backend pixel regressions updated.
+- **Results:** 246 focused tests and both independent reviews pass. Full local
+  `pnpm check` passes 1,921 unit, 46 runtime, 224 integration, 14 depth and all browser
+  groups; 112 new pixel comparisons and 176 frozen items / 36,061 frames are exact.
+  Final source fingerprint is unchanged; first gate failure and environment repair retained.
+- **Rejected / do not repeat:** Comparing a theoretical prior grid without proving it
+  brackets the authored switch loses real cuts under extreme stretch.
+- **Open / next:** Owner review/merge; delivery uses one finding commit and one final normal push.
+- **Records:** [Fix evidence](./pr-40-posterized-cut-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/40#discussion_r4204819931).
+
+### 2026-10-07 — PR #40 explicit loop overrides and final acceptance
+
+- **Agent / branch:** Codex on `codex/pr40-clock-fixes` after first fix `3afebc9`.
+- **Scope:** Second inline finding; lazy instance overrides retain raw remaps and source clamps.
+- **Done:** Three red regressions repaired; evaluator identity advances to 33.
+- **Results:** 101 focused tests, full fast gate / 1,914 units, 41 integrations,
+  native exposure/expression/quality and 176 frozen items / 36,061 frames pass.
+  Twelve hardware comparisons and repeated/independent exports retain all assertions.
+  Held/posterized compatible pixels are exact across 144 observations; incompatible
+  history is rejected. Both independent reviews and the code fingerprint pass.
+- **Rejected / do not repeat:** Optional bare-native config loading hits an existing
+  ElevenLabs parameter property; configured Vite loading passes. No unrelated repair.
+- **Open / next:** One finding per commit and one final normal push; owner review/merge remain.
+  Full `pnpm check`, Python/depth, serial profiles and strict timing matrices were not rerun.
+- **Records:** [Fix evidence](./pr-40-clock-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/40#discussion_r4203762768).
+
+### 2026-10-07 — PR #40 echo bake content-clock repair
+
+- **Agent / branch:** Codex on `codex/pr40-clock-fixes` from `e907d16`.
+- **Scope:** First of two inline clock-integration findings on PR #40.
+- **Done:** Use the evaluator's content clock and owning FPS for historical blur dependencies.
+- **Results:** Four regressions fail before repair; 98 focused tests, build, changed-file
+  lint and package boundaries pass after it. Compatible echo graphs stay exact.
+- **Open / next:** Fix explicit loop overrides separately, then final focused acceptance
+  and one normal push to the existing PR. No full gate or baseline regeneration claimed.
+- **Records:** [Fix evidence](./pr-40-clock-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/40#discussion_r4203762759).
+
+### 2026-10-07 — PR #39 quality-independent radius-zero shadows
+
+- **Agent / branch:** Codex on isolated `codex/pr39-zero-radius-fix`, from `cf38a439`.
+- **Finding:** [P2 radius-zero quality changes](https://github.com/xxibcill/still-shift/pull/39#discussion_r4204571866)
+  reproduced one-byte changes in both the CPU reference and pinned software shader.
+- **Done:** share effective sample selection between CPU and shader construction;
+  point emitters use one center sample and retain the authored sample-count option.
+- **Results:** new regression failed before repair; 15 analytic tests, toolchain,
+  build, schema, boundaries and focused lint/format pass. Complete prototype GPU
+  verification retains all 96 frozen poses, seek/repeat/hardware, maximum-input
+  and conditioned-shear checks. Radius-zero RGBA/PNG are exact across qualities
+  within each profile and independent software repeats; frozen references are unchanged.
+- **Delivery:** one finding commit and one final normal push to the existing PR branch.
+- **Open / next:** owner review/merge; full repository/native/export acceptance,
+  production precision and owner quality/budget choices remain deferred. Actions stay disabled.
+- **Records:** [fix evidence](./pr-39-zero-radius-fix-results.json).
+
+### 2026-10-07 — PR #39 conservative shadow-plane conditioning margin
+
+- **Agent / branch:** Codex on isolated `codex/pr39-conditioning-fix`, from `0a11372`.
+- **Finding:** [P2 inaccurate accepted shears](https://github.com/xxibcill/still-shift/pull/39#discussion_r4203797977)
+  reproduced 155-byte pinned / 140-byte hardware errors; an interior pixel differs by 30 bytes.
+- **Done:** raise the shared float32 Gram margin to `1e-2`, reject the reported
+  nonzero-determinant shear and retain five supported near-limit/full-resolution controls.
+- **Results:** regression failed before repair; 14 analytic tests, pinned toolchain,
+  build, schema, boundaries and focused lint/format pass. All 96 frozen poses,
+  288 seek draws, 96 independent repeats, 12 hardware probes and maximum inputs
+  remain exact. Supported-shear controls pass all three profiles within one byte.
+- **Delivery:** one finding commit and one final normal push to the existing PR branch.
+- **Open / next:** owner review/merge; full repository/native/export acceptance,
+  production precision and owner quality/budget choices remain deferred. Actions stay disabled.
+- **Records:** [fix evidence](./pr-39-conditioning-margin-fix-results.json).
+
+### 2026-10-07 — Resolve PR #40 against current CE5
+
+- **Agent / branch:** Codex on isolated `codex/pr40-conflict-repair`, from `48fe4cc`.
+- **Done:** merge CE5 `d3093bd`; preserve both log histories, CE7 controls/cut fixes
+  and upstream shape/expression/lint/inspector/soundtrack repairs; assign fresh cache
+  identities and explicit cinematic error fields for native Node/Vite loading.
+- **Results:** final fast checks pass 1,907 units; 46 runtime, 224 integration,
+  14 depth and all 14 affected browser groups pass. All 176 frozen items / 36,061
+  frames remain exact. CE7 hashes, analytic pixels, 12 hardware comparisons and
+  repeated/independent/raw exports pass with unchanged source fingerprint.
+- **Retained failure:** five Lab suites could not load externalized cinematic
+  parameter properties; 35 existing regressions and the final aggregate pass after repair.
+- **Open / next:** owner review/merge; normal publication targets existing PR #40.
+  No full `pnpm check`, new cost profile or full timing-matrix run is claimed. Actions remain disabled.
+- **Records:** [resolution evidence](./pr-40-conflict-resolution-results.json),
+  [PR #40](https://github.com/xxibcill/still-shift/pull/40).
 
 ### 2026-10-07 — CE13 complete native media acceptance
 
@@ -2421,222 +3037,6 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 - **Open / next:** commit/push this integrated slice, then implement deterministic native video, sequences, protected audio and real waveforms.
 - **Records:** [CE13](./composition-engine-plan.md#ce13--video-image-sequence-and-audio-layers),
   [evidence](./composition-ce13-results.json), [CE16 PR #33](https://github.com/xxibcill/still-shift/pull/33).
-
-### 2026-10-07 — CE4d complete local gate and native-default closeout
-
-- **Agent / branch:** Codex on `codex/composition-ce4d`, verified `ae2e1f0`.
-- **Done:** native family/depth defaults, shared-graph painter consolidation and
-  truthful Lab/cache provenance complete; every existing acceptance gate is retained.
-- **Results:** full pinned local `pnpm check` passes in 11705.18 seconds, all
-  61 test commands, 2,005/46/143/14 tests, all 176 defaults/frozen items and all
-  four strict Canvas matrices. All 141 prior visual files remain exact.
-- **Rejected / do not repeat:** both earlier failed full gates remain recorded;
-  never claim focused checks replace the full gate or reapply superseded drafts.
-- **Delivery / next:** [PR #47](https://github.com/xxibcill/still-shift/pull/47) is open and attached;
-  CE13 → CE15 → CE14 with CE16 reuse.
-  WebGL speed remains CE6-P; CE5-X/Q9 pending. Actions remain disabled.
-- **Records:** [results](./composition-ce4d-results.json),
-  [plan](./composition-engine-plan.md#ce4d-completion-record-2026-10-07).
-
-### 2026-10-07 — CE4d native golden identity and parity pass
-
-- **Agent / branch:** Codex on `codex/composition-ce4d`, repair `3747d16`.
-- **Results:** focused golden parity passes all five scenes / 15 frozen samples /
-  30 PNG/JPEG transport comparisons and original motion checks. Every actual Lab scene
-  reports the native renderer; frozen reference identity remains unchanged. Pinned
-  startup/fingerprint, Python imports, format, scoped lint and build pass.
-- **Next:** complete `pnpm check` from the beginning on the new isolated checkpoint;
-  preserve both prior failed gates. Then CE4d PR and approved milestone continuation.
-- **Records:** [results](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d golden renderer metadata migration repair
-
-- **Agent / branch:** Codex on `codex/composition-ce4d`, from `4a8ba90`.
-- **Failure:** second full gate passes 2,005 unit / 46 runtime / 143 integration /
-  14 Python tests and depth, vertical and export browser suites. Golden pixel/motion
-  and transport checks pass, then old renderer metadata equality fails (332.26 seconds).
-- **Repair:** assert native Lab renderer identity and frozen legacy reference identity
-  separately; every stored sample, threshold and transport assertion is unchanged.
-- **Next:** focused golden regression and full gate from the start on a fresh checkpoint.
-- **Records:** [results](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d repaired Depth Lab acceptance passes
-
-- **Agent / branch:** Codex on `codex/composition-ce4d`, runtime `69469a8`, harness `e8a70d9`.
-- **Results:** complete depth-motion suite passes original far/near/drift, comparison/hold,
-  crop/fallback/edge and stale-selection/gallery assertions. A real delayed decode confirms
-  a seek during preparation survives the staged native refresh. Both affected Lab session
-  suites pass. No motion, pixel or timing threshold changed.
-- **Next:** complete `pnpm check` from the start on a fresh private checkpoint; the first
-  failed gate remains recorded. Then CE4d PR/attachment and all remaining approved milestones.
-- **Records:** [results](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d full gate finds asynchronous Depth Lab handoff
-
-- **Agent / branch:** Codex on `codex/composition-ce4d` after `8ce662a`.
-- **Full gate:** stopped after 217.48 seconds at the Depth Lab motion check; 2,005 unit,
-  46 runtime, 143 integration and 14 Python depth tests passed first. This gate failed.
-- **Diagnostic:** waiting for committed parameters preserves all motion assertions and
-  passes: far marker 10.5 px, near marker 17.5 px. The old test observed pending refresh.
-- **Repair:** explicit updating/readiness state, latest seek at commit, first-frame staging
-  before active replacement, stale-load error protection and truthful native Lab version.
-  A real delayed-decode regression seeks during preparation; no threshold changes.
-  Its first focused run passes motion/pending seeks, then finds the same stale-read
-  assumption in comparison/hold tests; those now wait for committed readiness.
-- **Open / next:** focused Depth Lab/Lab sessions, then a complete local gate rerun and
-  milestone PR/attachment. The approved CE13 → CE15 → CE14 order remains unchanged.
-- **Records:** [results](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d complete public-default focused acceptance passes
-
-- **Agent / branch:** Codex on `codex/composition-ce4d`, runtime `75c0828`.
-- **Results:** all 176 actual family defaults pass 36,061 forward and reverse frames,
-  assigned pixel tiers, text probes and every unchanged CE0 hash. Explicit public depth
-  defaults pass all 23 timelines / 2,070 frames exactly. Strict CLI cache relocation,
-  checksums/repeat exports and actual vertical export pass after the portability repair.
-  Pinned toolchain, schema, boundaries, format, lint and build pass. All 141 prior visual
-  files remain exact; no threshold or frozen reference changed.
-- **Next:** one complete local `pnpm check` on the final isolated checkpoint, completion
-  PR/attachment, then CE13 → CE15 → CE14 with CE16 audit/reuse. CE5-X/Q9 remains pending.
-- **Records:** [results](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d public defaults pass and cache manifest portability is repaired
-
-- **Agent / branch:** Codex on `codex/composition-ce4d` after `0de5294`.
-- **Results:** explicit public-depth defaults pass all 23 timelines / 2,070 forward and reverse
-  frames exactly. Actual vertical Node export, both Lab session checks, public export worker,
-  42 units and 11 integration tests pass. Fresh 690-frame zipper pixel QA passes the unchanged
-  policy; 2,172 authored warnings remain, with no validation or frozen-motion errors.
-- **Correction:** earlier depth logs described as defaults actually covered direct native layers;
-  explicit `--default` proof is recorded separately.
-- **Repair:** strict CLI alternate-cache equality exposed absolute native asset paths. Content-based
-  document references now bind separately to verified physical files; pipeline 0.13 invalidates
-  prior cache identity. Eight focused tests, scoped format/lint and build pass.
-- **Open / next:** relocated-cache CLI/export rerun, remaining 176-item family acceptance and full
-  local gate; CE4d PR, then CE13 → CE15 → CE14 with CE16 audit/reuse.
-- **Records:** [results](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d frozen-oracle dependency is made explicit
-
-- **Agent / branch:** Codex on `codex/composition-ce4d` after `db0a4ca`.
-- **Results:** 42 focused unit tests and 11 startup/cancellation/publication integration tests pass.
-  Actual-default browser acceptance stopped before pixels: test-only Three resolution had relied
-  on the retired production import.
-- **Done:** pinned Three 0.186.0 and its types move to root test development dependencies;
-  renderer production dependencies no longer include Three. Lock package/snapshot maps and
-  all versions/integrities are unchanged. Build passes.
-- **Open / next:** rerun actual-default browser acceptance, required family/Lab/export matrices,
-  zipper QA and full local gate; then CE4d PR and remaining approved milestones.
-- **Records:** [results](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d native delivery passes and production defaults are consolidated
-
-- **Agent / branch:** Codex on `codex/composition-ce4d` after `7359189`.
-- **Prerequisite proof:** immutable `5bcba60` native delivery passes 29 timelines, 29 independent
-  encodes, 87 byte-identical production/repeat/raw exports, 23 cost brackets, inspector/resource
-  checks and 90 hardware comparisons. Both GPU alpha edges conserve coverage exactly.
-- **Done:** public family/depth factories now use the prepared shared composition backends;
-  duplicate Three/family/commerce/mask frame painters are retired. Node exports and manifests
-  carry native composition/provenance; pipeline 0.12 and renderer/adapter/shader enter cache identity.
-  Historical references remain on test-only oracles.
-- **Results:** build/scoped ESLint pass; default-route focused checks and milestone acceptance are pending.
-- **Open / next:** actual-default depth/family/Lab/export checks, zipper QA and complete local gate;
-  create/attach CE4d PR, then continue CE13 → CE15 → CE14 with CE16 audit/reuse.
-- **Records:** [results](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d complete legacy delivery passes after shadow repair
-
-- **Agent / branch:** Codex on `codex/composition-ce4d`; pushed code checkpoint `5bcba60`.
-- **Results:** all 7 fixtures on both backends pass 2,352 forward and 2,352 reverse frames;
-  14 independent preview encodes match 42 production/repeat/raw exports. Relocation,
-  overwrite protection and all 66 hardware comparisons pass unchanged policies.
-  Canvas's worst median ratio is 1.1822 (limit 1.25); WebGL costs retain the CE6-P deferral.
-- **Depth preflight:** pinned tools and renderer/export imports pass. Both GPU alpha edges conserve
-  coverage exactly. All 23 prepared timelines pass 2,070 exact forward/reverse frozen comparisons.
-- **Open / next:** complete native depth delivery is running serially on the same immutable snapshot;
-  defaults and the final complete local gate remain pending. Then PR/CE13 → CE15 → CE14.
-- **Records:** [results](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d separate shadow/source paint repair checkpoint
-
-- **Agent / branch:** Codex on `codex/composition-ce4d` from `93845ba`.
-- **Scope:** serial legacy delivery reached Crisis Fracture frame41 with delta3 at one shadow/stroke pixel.
-- **Done:** known unfiltered/unclipped Canvas shadows and source coverage reach the shared GPU
-  backdrop as separate paints. Unbounded source extents and absolute/reset transforms are retained.
-  WebGL2 is 0.65.0. Critical smoke/hardware frames and a pinned direct-Canvas regression are added.
-- **Results:** build/scoped ESLint and39 unit tests pass. All7 legacy fixtures pass2,352 forward
-  and2,352 reverse frames on both backends, unchanged delta2 maximum. All12 hardware regression
-  comparisons pass the unchanged perceptual policy (minPSNR45.7339/SSIM0.998534).
-- **Rejected:** flattened bitmap blending fixes frame41 but breaks six other frames; software
-  vector preparation does not fix frame41. A pinned near assertion was too strict for a hardware
-  diagnostic; hardware policy remains unchanged. Complete delivery is still pending.
-- **Open / next:** serial legacy/native delivery, default consolidation and final local gate; then PR/CE13.
-- **Records:** [results](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d overlapping PNG rounding repair checkpoint
-
-- **Agent / branch:** Codex on `codex/composition-ce4d` from `fbaa6a8`.
-- **Scope:** complete legacy delivery exposed WebGL Comparison Build failures on frames30–34.
-- **Done:** verified PNG images use bitmap source-over rounding; vector primitive rounding is preserved.
-  WebGL2 is 0.64.0. Focused smoke includes the actual failing frames.
-- **Results:** checkpoint `fe5b8a6` passes toolchain/build/scoped ESLint,39 unit tests and alpha
-  on both GPU profiles. All7 WebGL smoke fixtures /40 forward+40 reverse frames pass, including
-  the five failing frames. Diagnostic frame32 improves from delta3 /396 pixels above2 to delta1.
-  Complete serial delivery is running; the unchanged near tier remains delta2.
-- **Failed / do not repeat:** the complete 4b99cad legacy gate failed; later depth delivery did not run.
-  All23 prepared depth timelines had passed exact forward/reverse parity before that failure.
-- **Open / next:** focused/full legacy parity, native delivery, defaults and final full gate; then PR/CE13.
-- **Records:** [results](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d preserved-alpha filtering checkpoint
-
-- **Agent / branch:** Codex on `codex/composition-ce4d` from `d72bab0`.
-- **Scope:** repair the confirmed authored depth-image alpha fringe from the fresh-chat handoff.
-- **Done:** both GPU fragments filter preserved-alpha linear texels in premultiplied form;
-  opaque compatibility sampling remains unchanged. Version identities are advanced.
-- **Results:** checkpoint `4b99cad` passes toolchain, build, scoped ESLint and 20 unit tests.
-  SwiftShader and Apple M5 Pro each pass all 128 filtered edge pixels with exact R+G conservation
-  and repeat identity; the fringe pixel improves from RGB111,112,0 to143,112,0. Full delivery is running.
-- **Open / next:** focused alpha proof, affected native delivery and legacy delivery, default migration,
-  actual-route acceptance, final local gate and CE4d PR; then CE13 → CE15 → CE14.
-- **Records:** [results](./composition-ce4d-results.json), [handoff](./composition-continuation-handoff-2026-10-07.md).
-
-### 2026-10-07 — Composition work handed to a fresh chat
-
-- **Agent / branch:** Codex on `codex/composition-ce4d`; code `1ec5d04` pushed.
-- **Scope:** User requested a fresh chat because this one is large and lagging.
-- **State:** Verified hardware repair is checkpointed. Existing full native depth
-  job completed during wrap-up: all29 encodes/87 exports and90 hardware checks
-  pass; the full proof is saved. No verification job remains active.
-  Confirmed preserved-alpha edge darkening is recorded but unrepaired.
-- **Next:** New chat reads the completed proof, fixes alpha,
-  closes CE4d, then continues CE13 → CE15 → CE14 and audits/reuses CE16.
-- **Records:** [Saved handoff](./composition-continuation-handoff-2026-10-07.md),
-  [measured evidence](./composition-ce4d-results.json). Owner edits are preserved.
-
-### 2026-10-07 — CE4d hardware depth interpolation checkpoint
-
-- **Agent / branch:** Codex on `codex/composition-ce4d` after `bcc1c8b`.
-- **Done:** Hardware UVs use pinned 1/16-pixel subpixel precision; the software
-  shader/mesh stay unchanged. WebGL2 0.62.0 / image-plane shader 0.3.0.
-- **Results:** Build/lint/20 unit tests pass; all 23 timelines / 2,070 forward and
-  reverse frames stay exact. All 87 hardware comparisons pass the unchanged
-  policy. Three tiny rasters retain full coverage and exact hardware parity.
-- **Next:** Fresh full native delivery, legacy timing/delivery, default switch and
-  complete milestone gate. Earlier failed/rejected diagnostics remain recorded.
-- **Records:** [Full measured evidence](./composition-ce4d-results.json).
-
-### 2026-10-07 — CE4d complete depth delivery reaches hardware failure
-
-- **Agent / branch:** Codex on `codex/composition-ce4d`, verified code `f01a35b`.
-- **Results:** All 23 serial cost brackets are saved; 29 independent encodes and
-  87 production/repeat/raw exports agree byte-for-byte. Hardware repeated-precomp
-  frame 0 fails the unchanged perceptual policy; final acceptance is incomplete.
-- **Rejected:** Source rasterization/filter/derivative alternatives do not fix it.
-  Full triangle reconstruction, rounded reconstruction and centroid interpolation
-  fail frozen software parity. No production shader change retained.
-- **Next:** Verify hardware-only interpolation, then finish migration and full gate.
-- **Records:** [Full costs, failure and diagnostics](./composition-ce4d-results.json).
 
 ### 2026-10-06 — CE4d startup and provenance focused acceptance passes
 
@@ -3840,6 +4240,643 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 - **Records:** [CE7 evidence](./composition-ce7-results.json), including initial
   focused failures, assertion repair, actual hardware and serial cost evidence.
 
+### 2026-10-06 — CE6-P resumed; echo correction and measured cost gate
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `633138b`.
+- **Scope:** approved versioned echo fix and messages to both named chats.
+- **Done:** renderer 0.42.0 targeted frames/seeks, four identical MP4 pairs and profile samples pass.
+- **Results:** full local `pnpm check` passes 1,600 units, 46 runtime, 139 integration, 14 depth,
+  all browser groups and 176 frozen baselines / 36,061 frames; references remain unchanged.
+- **Costs:** eight quiet particle sessions show selected gains; all pinned ratios still exceed 1.25×.
+- **Rejected:** combined fresh-read/known-clear candidate regresses on both profiles; full allocate+fill
+  alone exceeds the native budget. No broader proof or direct-solid timing follows.
+- **Open / next:** native 2×, original 117/all strict family misses; no compatible closure mechanism
+  selected. Both quiet slices released. Contract or acceptance changes require an owner decision.
+  Source research resolves CPU Skia / possible Graphite; prepared bytes remain unverified.
+- **Records:** [costs](./composition-ce6p-cost-results.json), [echo](./composition-ce6p-echo-diagnosis-results.json),
+  [execution](./composition-ce6p-resolution-plan.md#quiet-window-cost-decisions--2026-10-06),
+  [source research](./composition-ce6p-owned-output-research.md).
+
+### 2026-10-06 — CE6-P goal activated; all failure GPU operations traced
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible` from `633138b`.
+- **Done:** active unchanged completion goal; baseline GPU traces cover all 119
+  failures / 117 originals at 476 frames, with exact repeated counts and pixels.
+- **Results:** known-clear copies in 100 cases (311/1,956 calls; 44.33M/117.37M
+  pixels). Twenty-five copies in eight cases require scope beyond single paint,
+  including all four typography failures. No elapsed saving or closure claim.
+  Fingerprints, failed attempts and cleanup are retained; formatting/diff checks
+  pass. The competing check advanced from cinematic to typography; its live
+  replacement worker is verified. Native guard refuses contention before launch.
+- **Open / next:** quiet-host native costs, particle brackets, echo compatibility
+  decision, original strict audits and final local `pnpm check`. The goal is
+  blocked after the same conditions persist for three turns; acceptance stays open.
+  Owner requested detail; current host contention was revalidated. No approval
+  or goal-resume instruction was received during that explanation.
+- **Records:** [execution record](./composition-ce6p-resolution-plan.md#active-completion-goal-and-gpu-operation-coverage),
+  [operation evidence](./composition-ce6p-route-map-results.json).
+
+### 2026-10-06 — CE6-P echo cause isolated; acceptance work remains blocked
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible` from `633138b`.
+- **Done:** diagnosed cumulative primitive rounding in transparent echo image
+  history; prepared a scoped correction patch without retaining production changes.
+  Four failing cases pass 960 frames / 1,040 seeks in the isolated pinned proposal;
+  controls pass and preserve unrelated bytes. Type check and 12 perceptual hardware
+  samples pass. All 119 timing misses have actual selected-frame graph mappings.
+- **Verification:** reviewed particle/native runners pass untimed preflight;
+  failed-attempt retention is exercised. Sampling/harness review errors are repaired
+  and retained. No elapsed timing, new full gate or milestone closure is claimed.
+- **Open / next:** explicit echo compatibility and cross-chat messaging approvals
+  remain pending; automatic approval review rejected coordination again. Other
+  workloads continue. Complete native attribution and particle A/B, then unchanged
+  strict audits and full local gate if the budget evidence supports proceeding.
+- **Records:** [execution plan](./composition-ce6p-resolution-plan.md#echo-diagnosis-and-concrete-proposal),
+  [echo evidence](./composition-ce6p-echo-diagnosis-results.json),
+  [routing evidence](./composition-ce6p-route-map-results.json).
+
+### 2026-10-06 — CE6-P disjoint particle candidate verified for correctness
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `633138b`.
+- **Scope:** follow the resolution plan to significant bounded progress.
+- **Done:** pack disjoint particle neighborhoods and draw one exact instanced
+  paint; add capability/resource fallbacks and focused byte/fault oracles.
+- **Results:** selected paint passes 48–50 → 3; 720 frames plus 780 seeks per GPU
+  profile match immutable 0.40.0; 1,600 unit tests, full WebGL correctness and
+  repeated 240-frame stacked MP4 export pass. No elapsed speedup measured.
+- **Repairs:** both review findings fixed; ignored historical `.ts` diagnostic
+  moved to `.mts` after type-check failure. Hardware/pinned byte drift is inherited;
+  twelve samples pass the existing perceptual tier.
+- **Open / next:** quiet-window messaging approval, count-one attribution, valid
+  A/B and strict/full gates; 119 timing misses/four echo gaps remain unclosed.
+- **Records:** [execution plan](./composition-ce6p-resolution-plan.md#execution-record-2026-10-06),
+  [raw progress evidence](./composition-ce6p-disjoint-paints-results.json).
+
+### 2026-10-06 — CE6-P research before further experiments
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `633138b`.
+- **Scope:** research solutions and define a bounded resolution plan before more trials.
+- **Done:** primary-source research, source-path review, retained timing budget
+  calculations and independent plan review; runtime and acceptance remain unchanged.
+- **Results:** 89 of 119 timing misses need more than 37.5% lower total cost;
+  native count-one needs about 72% pinned / 78% hardware on retained summaries.
+  A possible image-cache conflict is not established for story-instances.
+- **Rejected / do not repeat:** existing PBO/FBO/scratch/upload experiments remain
+  rejected; generic cache/batching advice lacks a demonstrated route to closure.
+- **Open / next:** one bounded feasibility/attribution stage before implementation;
+  explicit compatibility scope before an echo-byte correction. No workloads ran.
+- **Records:** [research](./composition-ce6p-resolution-research.md),
+  [resolution plan](./composition-ce6p-resolution-plan.md).
+
+### 2026-10-06 — CE6-P strict audit and preserved-renderer proof
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`; runtime `7a797a9`.
+- **Done:** unchanged strict matrices traverse 195 cases / 40,783 frames; all 53
+  repeated MP4 pairs, relocation, overwrite protection and negative fit/font checks pass.
+- **Failures:** all original 117 timing failures remain, plus atom-rotate and
+  editorial/numeric. Four echo cases exceed their existing tier; all failing exits retained.
+- **Provenance:** CE7 reproduces the four gaps. All 2,500 forward/reverse/random/
+  repeated-read comparisons are byte-identical, including multi-sample echo/matte.
+- **Delivery:** measured candidate retained; existing full gate/reviews remain valid.
+  Main quiet window released at 01:24:27 UTC; Actions verified disabled.
+  PR #41 is available for review; original performance targets and inherited gaps remain open.
+- **Records:** [family audit and diagnostic source](./composition-ce6p-family-audit.json),
+  [brackets](./composition-ce6p-exposure-brackets.json), [plan](./composition-ce6p-plan.md).
+
+### 2026-10-06 — CE6-P measured candidate retained
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `702bcf4`.
+- **Results:** four complete valid brackets retained. Bounded pinned export improves
+  2.676–3.962× at 2–64 samples over fusion alone; high-count RAF diagnostics improve.
+  Hardware confirmation retains the original outlier and establishes no broad gain.
+- **Selection:** retain exact compatible candidate for pinned benefits; renderer
+  stays `7a797a9`, with existing reviews/focused/full-gate proof unchanged.
+- **Next:** unchanged strict WebGL family audits with exports in the reserved window,
+  then preserved-CE7 comparison of four echo-related pixel failures, final PR
+  evidence and machine release. Provenance is pending. All six invalid attempts remain;
+  original 117 cases and native/family acceptance targets stay open.
+- **Records:** [raw brackets/analysis](./composition-ce6p-exposure-brackets.json),
+  [evidence](./composition-ce6p-performance-results.json), [plan](./composition-ce6p-plan.md).
+
+### 2026-10-06 — CE6-P quiet-window coordination authorized
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `56adc86`.
+- **Owner authorization:** approved main-chat coordination. Request sent; main
+  acknowledged it will finish its current gate normally, then hold verification.
+  Its full gate now passed and is terminal; the quiet window is available.
+- **State / next:** handoff received; running remaining verification in the reserved window.
+  Preserve valid fusion data and all six invalid attempts; run remaining bounded
+  pinned/hardware brackets and strict family audits serially, then release machine.
+  Existing renderer checks remain passed; PR #41 and CE6-P targets stay open.
+- **Records:** [plan](./composition-ce6p-plan.md),
+  [evidence](./composition-ce6p-performance-results.json).
+
+### 2026-10-06 — CE6-P remaining performance verification blocked
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `69a3e21`.
+- **Rejected:** sixth invalid attempt: remaining-only retry `9449` completes its
+  baseline, then main radial/warp/stylize/noise unit checks contaminate the candidate.
+  The bracket is rejected and retained; session terminal exit 1, hardware unstarted.
+- **State:** no retry/family workload queued. Recurring contention persists across
+  at least three consecutive goal turns; unaffected checks and draft delivery done.
+- **Owner / next:** provide a quiet verification window or authorize coordination
+  with the main chat (original scope allows read-only checks). Preserve valid fusion
+  data; complete bounded pinned/hardware brackets and strict family audits with exports.
+  PR #41 stays draft; all original 117 failures and targets remain open.
+- **Records:** [plan](./composition-ce6p-plan.md),
+  [evidence and blocker audit](./composition-ce6p-performance-results.json).
+
+### 2026-10-06 — CE6-P first valid independent timing bracket
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `ae6db18`.
+- **Results:** fusion-only pinned baseline/candidate/candidate/baseline complete
+  with no detected contention. Two-sample export improves 15.85 → 14.25 ms
+  (1.112×); higher-count gains overlap timing variability. No broad preview claim.
+- **Rejected:** bounded first baseline overlapped main stylize unit tests;
+  fifth invalid attempt retained; launcher `3547` terminal exit 1.
+- **Next:** preserve valid fusion data; retry only remaining bounded/hardware
+  comparisons and strict WebGL family audits after a reserved quiet window.
+  Session `9449` is now terminal with a sixth invalid bracket.
+  Draft PR #41 stays draft; original 117 failures and targets remain open.
+- **Records:** [raw bracket and analysis](./composition-ce6p-exposure-brackets.json),
+  [evidence](./composition-ce6p-performance-results.json), [plan](./composition-ce6p-plan.md).
+
+### 2026-10-06 — CE6-P draft review delivery
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`, from `905feff`.
+- **Done:** pushed and attached [draft PR #41](https://github.com/xxibcill/still-shift/pull/41),
+  based on delivered CE7 `817cc9f`; verified Actions remain disabled.
+- **Results:** passed exactness/focused/full-gate checks are reviewable. No valid
+  timing bracket yet; main verification repeatedly reset the ten-minute wait.
+  Verified waiting launcher `66431` idle, stopped it (exit 143), and replaced it
+  with session `3547` using two idle minutes and unchanged timing/rejection methods.
+  That session is now terminal after a valid fusion bracket and rejected bounded run.
+- **Next:** complete the remaining independent A/B,
+  strict WebGL family audits and measured candidate selection precede PR readiness.
+  All original 117 failures and existing performance targets remain open.
+- **Records:** [plan](./composition-ce6p-plan.md),
+  [evidence](./composition-ce6p-performance-results.json).
+
+### 2026-10-06 — CE6-P exposure fusion candidate checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible`.
+- **Done:** final shutter addition/average fusion, bounded GPU snapshots/sums,
+  independent byte-average and
+  retained-original GPU regressions, isolated serial A/B harness and preview budgets.
+- **Results:** pinned toolchain/import preflight, TypeScript build and changed-file
+  lint pass; 852 exactness cases pass on pinned SwiftShader and Apple Metal.
+  Focused WebGL/exposure/export suites pass, including 12 hardware comparisons;
+  complete `pnpm check` passes all suites and 176 frozen baselines / 36,061 frames.
+  Four timing attempts were rejected by overlap detection and retained.
+- **Rejected draft:** dividing signed exposure differences before adding the
+  background can move half-byte ties; restore the integer numerator before division.
+- **Retained attempt:** sandbox offline install lacked a package; normal locked
+  install succeeded. No acceptance or baseline was changed.
+- **Review:** both axes clean after repair. Rounded clear metadata could differ
+  from GPU bytes; bounded accumulation now requires exact clear channels and has
+  189 fractional-clear regressions. Fixed launch cleanup, old anchor, cold budgets
+  and workload guard. Measurement review also repaired mixed-revision bounds
+  loading and added workload fingerprints. Runtime stays fixed during the gate.
+  Invalid timings are retained; Actions remain disabled.
+- **Next:** corrected serial A/B is queued after a ten-minute quiet window;
+  strict WebGL family matrices and measured candidate selection follow;
+  draft PR #41 is now published.
+- **Records:** [slice plan](./composition-ce6p-plan.md),
+  [retained evidence](./composition-ce6p-performance-results.json).
+
+### 2026-10-06 — PR #40 reachable outgoing-state visibility correction
+
+- **Agent / branch:** Codex on `codex/composition-ce7`, after `4c7266a`.
+- **Done:** outgoing-state suppression samples the reachable posterized clock or
+  baked index. Both findings have separate fixes and published inline PR comments.
+- **Results:** all five new regressions failed before repair; 50 focused tests and
+  independent review pass. Full `pnpm check` passes 1,605 unit, 46 runtime,
+  139 integration, 14 depth, every required browser suite and 176 frozen baselines
+  / 36,061 frames. Final-code native hashes, hardware and repeated exports pass.
+- **Rejected / do not repeat:** cold Python worker imports caused three protocol
+  timeouts on the first gate; warmed imports fixed the environment. The complete
+  retry passed with unchanged default timeouts, thresholds and baselines.
+- **Open / next:** owner review/merge. GitHub Actions remain disabled.
+- **Records:** [fix evidence](./pr-40-fix-results.json).
+
+### 2026-10-06 — PR #40 posterized cut boundary correction
+
+- **Agent / branch:** Codex on `codex/composition-ce7`, from `817cc9f`.
+- **Done:** posted both findings as inline PR comments; corrected cut inversion
+  against the actual floored clock and bumped evaluator/backend identities.
+- **Results:** three new regressions failed before repair; all 48 focused tests,
+  build, changed-file lint and package boundaries now pass. Pinned toolchain passes
+  with separate optimizer caches and a copied Python environment.
+- **Open / next:** fix outgoing-state suppression in its own commit, then run final
+  affected verification and push both commits together. No full gate claimed yet.
+- **Records:** [fix evidence](./pr-40-fix-results.json),
+  [PR review](https://github.com/xxibcill/still-shift/pull/40#pullrequestreview-5423806559).
+
+### 2026-10-06 — PR #39 float32 Gram conditioning fix
+
+- **Agent / checkout:** Codex on `codex/pr39-gram-fix` from PR head `a521818`.
+- **Finding:** [P2 shader UV division](https://github.com/xxibcill/still-shift/pull/39#discussion_r4192154579)
+  reproduced 253-byte software / 255-byte hardware errors on a small-coordinate plane.
+- **Done:** reject float32-ill-conditioned bases in shared preflight and guard shader
+  input construction. Regression reproduced before the fix; one focused fix commit.
+- **Results:** all 12 analytic tests, pinned toolchain and focused static checks pass.
+  All 96 frozen poses, 288 seek draws, 96 independent repeats, 12 hardware probes
+  and maximum-input checks remain byte exact; frozen references are unchanged.
+- **Rejected:** cross-product UV solve still differed by 127 bytes at thin-plane
+  boundaries; reverted it rather than changing the oracle or frozen references.
+- **Open / next:** full repository/native/real-export acceptance was not run;
+  CE8/CE8-L integration and owner policy/budget decisions remain pending.
+- **Records:** [fix evidence](./pr-39-gram-fix-results.json).
+
+### 2026-10-06 — PR #39 receiver self-entry preflight fix
+
+- **Agent / checkout:** Codex in an isolated PR #39 worktree from `344cb8e`.
+- **Finding:** posted the P2 preflight mismatch as an
+  [inline review comment](https://github.com/xxibcill/still-shift/pull/39#discussion_r4191535608).
+- **Done:** allow one caster with the receiver's scoped identity; keep input
+  validation and duplicate-caster rejection. Regression covers shared/copied self
+  entries, other caster visibility and duplicate self entries through preflight.
+- **Results:** regression reproduced first; all 11 analytic tests and focused
+  toolchain/static gates pass. All 96 frozen poses, 288 seek draws, 96 independent
+  repeats, 12 hardware probes and maximum-input checks remain byte exact.
+- **Limits:** full repository/native/real-export gate not run for this isolated
+  prototype correction; production integration remains pending. Actions stay disabled.
+- **Delivery:** one focused fix commit for PR #39; no merge.
+- **Records:** [review-fix evidence](./pr-39-self-entry-fix-results.json).
+
+### 2026-10-06 — CE8-L-F bounded cast-shadow preparation
+
+- **Agent / branch:** Codex on `codex/composition-ce8lf-prototype`, CE7 `0e48388`.
+- **Done:** `20210b8` specifies the candidate/CPU oracle; `f04f593` delivers the
+  independent shader, frozen alpha fixtures, reviewed gallery and evidence.
+- **Results:** 9 analytic tests; 96 frozen poses, 288 seek draws, 96 independent
+  PNG repeats and 12 actual hardware comparisons exact, plus maximum-input checks.
+  Toolchain/static gates pass. Full repository/native/real-export acceptance was
+  not run for this isolated preparation. Actions remain disabled.
+- **Limits:** four-sample lobes and 16-sample bands retained; no production
+  quality/performance claim. CE8/CE8-L, owner policy/budgets and integration remain.
+- **Delivery:** [draft PR #39](https://github.com/xxibcill/still-shift/pull/39) is open
+  and attached; primary checkout untouched. No merge performed.
+- **Records:** [specification](./composition-ce8lf-cast-shadow-spec.md),
+  [evidence](./composition-ce8lf-results.json), [gallery](./composition-ce8lf-gallery.png).
+
+### 2026-10-06 — Repair PR #38 scaled follow-path contours
+
+- **Agent / branch:** Codex on isolated `codex/pr38-follow-path-fix`, from `eb17b1f`.
+- **Done:** post the sole P2 finding inline; transform cubics before world-arc-length
+  flattening using shared geometry budgets; advance evaluator and renderer identities.
+- **Results:** both layer/ancestor-scale regressions fail before repair and pass after.
+  Final fast checks pass 1,871 unit tests; native hashes/seeks, independent MP4/raw/PNG
+  exports, inspector and 18 exact hardware comparisons pass. Evaluator Node/browser
+  parity passes five fixtures × nine frames with numeric error below 6e-14.
+- **Next:** one finding commit and one final normal push to PR #38; owner review/merge
+  remain. No full gate/CE0 rerun, baseline regeneration or tolerance change. No blocker.
+  Owner checkout changes are preserved; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-38-follow-path-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/38#discussion_r4193023747).
+
+### 2026-10-06 — Resolve PR #38 against main
+
+- **Agent / branch:** Codex in isolated `pr38-conflicts`, from CE5 `3d0da6a`.
+- **Done:** merge main `bdf8f6a`; retain shape and soundtrack test aggregates,
+  assign evaluator version 30 and preserve both development histories.
+  Main expression, lint, inspector scope/focus and soundtrack fixes survive.
+- **Results:** fast checks: 1,869 unit; 46 runtime, 65 affected integration,
+  14 depth and ten browser groups pass. Shape hashes, 300 exact cap comparisons,
+  18 exact hardware comparisons, independent exports and both 576-frame passages pass.
+  Code and fixture fingerprints are unchanged throughout acceptance.
+- **Next:** normal push to existing PR #38; owner review/merge remain. Full gate
+  and frozen CE0 were not rerun; no baseline/tolerance changes. Actions stay disabled.
+  Owner checkout edits remain untouched; isolated verification evidence is preserved.
+- **Records:** [Main conflict evidence](./pr-38-main-conflict-resolution-results.json).
+
+### 2026-10-06 — Repair PR #38 square-cap bounds and close both findings
+
+- **Agent / branch:** Codex on isolated `codex/pr38-shape-review-fixes`.
+- **Done:** retain square-cap tangent/normal coverage alongside miter coverage;
+  add solid/gradient bounds, edge-culling and independent pixel regressions.
+  Prior finding commit `335ff23` repairs smooth zig-zag; this is the second finding commit.
+- **Results:** fast checks pass 1,623 unit tests; 65 focused shape tests and 300
+  exact direct-Canvas comparisons cover both backends, all viewport edges, joins,
+  color changes and reverse seeks. Final native hashes, exports, inspector and 18
+  exact hardware comparisons pass. Independent standards/spec review is clear.
+- **Retained failures:** pre-fix tests reproduce clipping/culling; initial browser
+  oracles needed actual gradient paint and normal miter-limit coverage. Corrected
+  test assumptions preserve exact pixels and low-limit geometry coverage.
+- **Next:** deliver both finding commits with one normal push to PR #38; owner
+  review/merge remain. No full `pnpm check` rerun or additional baseline regeneration.
+  Primary checkout changes are untouched; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-38-fix-results.json), [inline review](https://github.com/xxibcill/still-shift/pull/38#pullrequestreview-5424533811).
+
+### 2026-10-06 — Repair PR #38 smooth zig-zag sampling
+
+- **Agent / branch:** Codex on isolated `codex/pr38-shape-review-fixes`, from `2b1c6e5`.
+- **Done:** posted both review findings inline; preserve smooth zig-zag mode without
+  overwriting animated polystar counts; add regressions and bump output identities.
+- **Results:** fast checks pass all 1,620 unit tests; 62 focused shape tests and native shape acceptance pass,
+  including inspector, independent/repeated transports and 18 exact hardware comparisons.
+  Previous corner hashes reproduce exactly; every corrected reference pixel stays in
+  cell 13. Source fixtures, animation/core and frozen CE0 baselines are unchanged.
+- **Retained failure:** initial fast check linted a temporary review probe; moved
+  probes outside the disposable verification snapshot. Production code was unaffected.
+- **Next:** finish square-cap bounds in its own commit, then push both commits once.
+  Full `pnpm check` was not rerun; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-38-fix-results.json), [inline review](https://github.com/xxibcill/still-shift/pull/38#pullrequestreview-5424533811).
+
+### 2026-10-06 — Resolve CE5 PR #38 against the advancing CE11 base
+
+- **Agent / branch:** Codex in isolated `pr38-ce5-conflicts`, targeting `codex/composition-ce5`.
+- **Done:** first merge `f615017` integrates CE11 `4946e9d`; a second merge
+  integrates advanced `00d5fba`. Both sides' log histories and feature fixes survive.
+  Equivalent save imports resolve to the public lock entrypoint and narrow diagnostics.
+- **Results:** final fast checks (1,618 unit), 46 runtime, 47 focused integration,
+  14 depth, affected browser acceptance and all 176 frozen items / 36,061 frames pass.
+  Native hashes, reverse seeks, 18 hardware comparisons and both-backend exports pass.
+- **Retained failure:** initial integration config loading failed; broad save imports
+  were narrowed. A temporary unrelated constructor probe was reverted. No full
+  `pnpm check` rerun or baseline regeneration is claimed; Actions remain disabled.
+- **Next:** owner review and merge of the existing PR; delivery uses a normal push.
+- **Records:** [Resolution evidence](./pr-38-conflict-resolution-results.json),
+  [CE5 acceptance](./composition-ce5-results.json), [CE11/CE10 merge evidence](./pr-37-merge-results.json).
+
+### 2026-10-06 — PR #37 R15: Separate top-level and precomp scope identity
+
+- **Agent / branch:** Codex on isolated `codex/pr37-inspector-fixes`, after R14 `22308f5`.
+- **Done:** distinguish top-level scope from every authored precomp ID in keys,
+  selection, markers, instance routes and overlays; preserve the unselected source
+  layer when a nested root-named definition is edited and saved.
+- **Results:** validated regression fails on `12bfc1d` and passes after repair;
+  fast checks: 1,805 unit, 31 affected integration, 46 runtime and four browser
+  groups pass. Inspector phone/desktop, captured MP4 parity and new focus/scope checks pass.
+- **Repairs:** correct new fixture fps/snippet parsing and restore missing isolated
+  CLI dependency links. Independent standards/spec review found no new issues.
+- **Next:** one normal final push delivers all three finding commits. Owner
+  review/merge remain; full gate/depth/baselines were not rerun. No Actions.
+- **Records:** [Repair evidence](./pr-37-inspector-fix-results.json).
+
+### 2026-10-06 — PR #37 R14: Respect focus moved during Bezier edits
+
+- **Agent / branch:** Codex on isolated `codex/pr37-inspector-fixes`, after R13 `6f992bc`.
+- **Done:** guard asynchronous SVG handle focus with original control and history
+  ownership; preserve repeated arrow edits while respecting focus moved elsewhere.
+- **Results:** paused-asset checkbox-focus assertion fails before repair and passes
+  afterward; R13 focus checks remain passing. Build and affected lint pass.
+- **Next:** R15 scope identity in its own commit, affected final checks, one push.
+  Full gate/depth/baselines were not rerun. Owner checkout untouched; no Actions.
+- **Records:** [Repair evidence](./pr-37-inspector-fix-results.json).
+
+### 2026-10-06 — PR #37 R13: Preserve numeric Apply keyboard focus
+
+- **Agent / branch:** Codex on isolated `codex/pr37-inspector-fixes` from `12bfc1d`.
+- **Done:** post all three findings inline; restore graph Apply button focus
+  after acceptance/rejection while respecting changed focus and source ownership.
+- **Results:** new browser regression fails before repair and passes afterward;
+  temporal/Bezier/spatial controls, repeated activation, rejection and moved-focus
+  guards pass. Build, affected lint and pinned toolchain preflight pass.
+- **Next:** R14 and R15 in separate commits, affected final checks, one final push.
+  Full gate/depth/baselines were not rerun. Owner checkout untouched; no Actions.
+- **Records:** [Repair evidence](./pr-37-inspector-fix-results.json).
+
+### 2026-10-06 — Resolve PR #37 against main
+
+- **Agent / branch:** Codex in isolated `pr37-conflicts`, from CE11 `7fac583`.
+- **Done:** merge main `54782d7`; retain native inspector/draft/asset ownership,
+  integrate advisory lint, preserve both test aggregates and development histories.
+- **Results:** fast checks: 1,803 unit; 46 runtime, 60 affected integration and six
+  browser groups pass. Final affected static checks pass after the watch-error guard.
+  Builder 192-frame pixels/exports, inspector phone/desktop/MP4 and retained assets pass.
+- **Repair:** generated-reference source drift and missing isolated soundtrack
+  runtime are repaired; unchanged soundtrack retry passes exact PCM and passage mux.
+- **Next:** normal push to PR #37; owner review/merge remain. Full gate and frozen
+  baselines were not rerun or regenerated; Actions remain disabled. Owner checkout untouched.
+- **Records:** [Conflict evidence](./pr-37-main-conflict-resolution-results.json).
+
+### 2026-10-06 — PR #37 R12: Retain dirty-draft asset snapshots
+
+- **Agent / branch:** Codex on isolated `codex/pr37-review-fixes`, after R11 `516422d`.
+- **Done:** connection-owned captured assets survive recent-revision eviction;
+  failed/replaced drafts and socket closure retire bounded leases. Native edits,
+  history, renderer changes and export keep the accepted draft's original bytes.
+- **Results:** fast checks: 1,563 unit; 29 affected integration, 46 runtime and four
+  browser groups pass, including byte-identical retained-asset MP4 and cleanup.
+  Independent standards/spec review found no new substantive findings.
+- **Verification repair:** startup can reach revision 2; the new regression now
+  captures its accepted revision instead of assuming 1. Combined acceptance passes.
+- **Next:** one final normal push delivers both finding commits. CE10 advanced to
+  `515dfe0`; integrating its new base conflicts is separate pending work. Owner
+  review/merge remain. Full gate/depth/baselines not rerun; owner checkout untouched.
+  No Actions.
+- **Records:** [Repair evidence](./pr-37-retained-draft-fix-results.json).
+
+### 2026-10-06 — PR #37 R11: Retain layer-control keyboard focus
+
+- **Agent / branch:** Codex on isolated `codex/pr37-review-fixes` from `00d5fba`.
+- **Done:** posted both findings inline; restore layer selection and visibility
+  focus after staged acceptance/rejection without stealing another control's focus.
+- **Results:** new regression fails before the repair; TypeScript and complete
+  inspector desktop/phone/watch/save/MP4 acceptance pass with the new focus checks.
+- **Next:** R12 in a separate commit, affected final checks, then one normal push.
+  Owner checkout remains untouched; full gate/baselines were not rerun. No Actions.
+- **Records:** [Repair evidence](./pr-37-retained-draft-fix-results.json).
+
+### 2026-10-06 — Resolve PR #37 against current CE10
+
+- **Agent / branch:** Codex in an isolated managed CE11 worktree from `4946e9d`.
+- **Scope:** merge CE10 `6e0d108`, preserve both milestones and review fixes.
+- **Done:** retain both conflicted log sections and narrow the save-diagnostics
+  import that made the Lab config load an unrelated unsupported TypeScript class.
+- **Results:** 1,559 unit, 46 runtime, 14 depth and seven browser groups pass.
+  Corrected integration: 156 passes and one timeout; all 13 affected-file tests
+  pass on unchanged retry. Original setup failures and Python warmup are recorded.
+  Full `pnpm check` and frozen baselines were not rerun; no aggregate pass is claimed.
+- **Delivery:** recheck current base/head, then commit and normally push only
+  PR #37; GitHub mergeability is checked after delivery. Review/merge remain owner decisions.
+- **Records:** [Merge evidence](./pr-37-merge-results.json),
+  [CE11 acceptance](./composition-ce11-results.json).
+
+### 2026-10-06 — Repair PR #36 current-head review findings
+
+- **Agent / branch:** Codex on isolated `codex/pr36-current-review-fixes`, from `8be5fc7`.
+- **Done:** post three inline findings; fix exact style call sites (`1e97b29`),
+  successful image/font read recovery (`e374d05`) and explicit-anchor precedence.
+- **Results:** regressions fail before their fixes; 69 builder unit and 52 affected
+  integration tests pass, with build, generated schema/guidance, boundaries and lint.
+  All 192 frames match exactly on Canvas/WebGL, including backward seeks; program/JSON
+  exports are identical. Real watch retention, frame clamps and repairs pass.
+- **Rejected / harness:** invalid style-ID assumptions and mixed generic test types
+  are corrected. Watch verification uses unchanged assertions with an available port.
+- **Open / next:** three finding commits, one final push; review/merge remain owner
+  decisions. Full gate and unrelated baseline matrices not rerun; Actions disabled.
+- **Records:** [fix evidence](./pr-36-current-head-fix-results.json),
+  [PR #36](https://github.com/xxibcill/still-shift/pull/36).
+
+### 2026-10-06 — Resolve PR #36 against the refreshed CE4a base
+
+- **Agent / branch:** Codex in isolated `pr36-ce10-conflicts`, for `codex/composition-ce10`.
+- **Done:** after verified merge `f39813f`, integrate refreshed base `ddaf9d2`.
+  Retain authoring and soundtrack APIs/commands/tests, all log entries and maintained
+  generator guidance. Combine transactional watch previews with advisory lint,
+  clearing stale findings; a browser regression retains playback, frame and read-only state.
+- **Results:** fast checks (1,740 unit), 46 runtime, all 208 integration, 14 depth,
+  soundtrack Python and affected browser checks pass. Builder has exact 192-frame
+  Canvas/WebGL parity and identical exports; both 576-frame native passages cover
+  saved-audio mux/cache reuse. Hardware typography and all 176 frozen items /
+  36,061 frames pass without regeneration. Final remote base still `ddaf9d2`.
+- **Limits / next:** full `pnpm check`, standalone soundtrack-editor UI and deferred
+  performance matrices were not rerun. Watch-browser assertions use an identical
+  temporary copy with an available port; earlier failed attempts remain recorded.
+  Normal push targets only the existing PR head; owner review/merge remain pending.
+  GitHub Actions remain disabled; owner's checkout and other heads are untouched.
+- **Records:** [resolution evidence](./pr-36-conflict-resolution-results.json),
+  [PR #36](https://github.com/xxibcill/still-shift/pull/36).
+
+### 2026-10-06 — Verify PR #36 initial CE4a base merge
+
+- **Agent / branch:** Codex in isolated `pr36-ce10-conflicts`, CE10 head `6e0d108`.
+- **Done:** merge CE4a `91f9c54`; retain both log histories, maintain base guidance
+  in CE10's generator source, and mark the provider lint fixture as adapter output.
+  A new CLI test retains rejection of authored unpinned providers.
+- **Results:** fast checks (1,598 unit), 46 runtime and 14 depth pass. Initial
+  integration passes 161 cases; all 29 affected final cases pass after repair and
+  unchanged watch timeout reruns. Builder and native passages retain both backend
+  parity, backward seeks and identical exports; all 176 baselines / 36,061 frames pass.
+- **Limits:** normal watch-browser startup hits occupied 5173; an identical temporary
+  copy with an explicit available port passes. Full `pnpm check` was not rerun.
+- **Next:** final fetch found base `ddaf9d2`; integrate it and rerun affected checks
+  before pushing. Owner review/merge remain pending; Actions remain disabled.
+- **Records:** [resolution evidence](./pr-36-conflict-resolution-results.json).
+
+### 2026-10-06 — Resolve PR #35 against current CE12
+
+- **Agent / branch:** Codex in managed `pr35-ce4a-conflicts`, from PR head `91f9c54`.
+- **Done:** merge the current remote CE12 base without rewriting history; retain
+  both APIs, cache identities, pnpm test groups, guides and development histories.
+- **Regression:** saved soundtracks preserve all native composition picture frames
+  and reuse their picture clips on Canvas and WebGL while supplying audio.
+- **Results:** 1,680 unit, 46 runtime and 14 depth checks pass. Frozen baselines
+  match all 176 fixtures / 36,061 frames. The initial integration run has 174
+  passes and two timeouts; failed cases pass on unchanged serial reruns, as do
+  affected browser checks. Initial failures and log hashes are retained. Full `pnpm check` and deferred timing matrices were not rerun.
+- **Delivery / next:** one merge commit to the existing head after checking both
+  remote branches; verify GitHub mergeability after push. Owner review/merge
+  remains pending; other checkouts are untouched.
+- **Records:** [resolution evidence](./pr-35-conflict-resolution-results.json),
+  [PR #35](https://github.com/xxibcill/still-shift/pull/35).
+
+### 2026-10-06 — Fix PR #35 current-head review findings
+
+- **Agent / branch:** Claude Code on `codex/pr35-audio-binding-fixes` from `282b112`.
+- **Scope / done:** three findings posted inline and fixed one per commit. Native
+  beats bind event-anchored sounds to native markers instead of inheriting template
+  event timing; `story:passage` validates `--composition-beats` before any output,
+  including `--prepare-only`; every render writes the native composition it used to
+  `scenes/<beat>.composition.json`, including on cache reuse.
+- **Results:** `pnpm check:fast` (1,538 unit), 46 runtime, passage integration/CLI,
+  both 576-frame native passage backends and Lab authoring checks pass on Node
+  22.23.1. Each new regression failed before its fix.
+- **Rejected:** Node 24.16 runs fail one unrelated `comp bake` test on the
+  unmodified head; verification uses the pinned toolchain.
+- **Open / next:** owner review and merge; full gate and baseline matrices not rerun.
+- **Records:** [fix evidence](./pr-35-current-head-fix-results.json),
+  [review](https://github.com/xxibcill/still-shift/pull/35#pullrequestreview-5418458083).
+
+### 2026-10-06 — PR #42 premultiplied transition coverage
+
+- **Agent / branch:** Codex on `codex/pr42-review-fixes` after `ebb9bbf`.
+- **Done:** multiply stored premultiplied transition RGBA consistently with GPU;
+  bump the four effect versions to 1.0.1 and Canvas renderer to 1.40.0.
+- **Results:** four composed-map cases / 32 browser frames are exact (previous
+  maximum delta 255); focused checks and independent implementation reviews pass.
+- **Final gate:** full local `pnpm check` at `db35017` passes 1,717 unit, 46 runtime,
+  139 integration, 14 depth tests, all required browser groups and 176 frozen baselines /
+  36,061 frames. All three full Canvas family matrices and native CE6 acceptance pass.
+- **Retained:** original reference files and thresholds; a separate versioned corrected
+  Canvas oracle. Earlier stopped/failed gates and original/fixed timing controls are
+  recorded; the successful gate's calibration-pan ratio is 1.0998 against 1.25.
+- **Next:** owner review and merge. Final evidence belongs to this third finding commit.
+- **Records:** [PR #42 fix evidence](./pr-42-fix-results.json).
+
+### 2026-10-06 — PR #42 nested input failure cleanup
+
+- **Agent / branch:** Codex on `codex/pr42-review-fixes`; text fix `8618bee`.
+- **Done:** release owned precomp destinations if initialization or rendering fails;
+  keep caller-owned surfaces and propagate the original failure.
+- **Results:** 38 focused unit tests and build/lint pass; six repeated failures leave
+  zero live surfaces. Initial test placement was offscreen and is repaired in the fixture.
+- **Next:** transition coverage in its own commit, final verification, then one push.
+- **Records:** [PR #42 fix evidence](./pr-42-fix-results.json).
+
+### 2026-10-06 — PR #42 hidden animated text input fix
+
+- **Agent / branch:** Codex on `codex/pr42-review-fixes` from `2f1a99c`.
+- **Done:** posted all three findings inline; collect glyph clocks for scoped effect
+  inputs even without echo, preserving inactive-window and unused-source behavior.
+- **Results:** eight focused unit tests, build/lint and 24 pinned-browser frames pass;
+  hidden text/group/remapped precomp inputs exactly match visible source controls.
+- **Next:** one commit each for nested failure cleanup and transition coverage;
+  complete final local verification, then push the three commits together.
+- **Records:** [PR #42 fix evidence](./pr-42-fix-results.json).
+
+### 2026-10-06 — PR #43 ancestor-group coverage fix
+
+- **Agent / branch:** Codex on `codex/pr43-fixes`, after XY fix `c36c686`.
+- **Done:** required alpha retains ancestor masks, mattes, effects and echo;
+  unrelated siblings cannot hide holes, and captured source groups remain intact.
+- **Results:** 35 focused units and 72 coverage cases pass. Final full pinned
+  `pnpm check` passes 1,851 unit / 46 runtime / 139 integration / 14 depth,
+  every required browser suite and all 176 frozen baselines / 36,061 frames.
+- **Rejected / repaired:** current-child visibility prematurely bypassed ancestor
+  echo; out-point/zero-opacity regressions now pass. Initial full gate stopped on
+  a copied Python CLI's stale shebang; isolated environment repair and full rerun pass.
+- **Open / next:** owner review/merge of PR #43. One finding per commit;
+  push after the final commit. Baselines unchanged; GitHub Actions verified disabled.
+- **Records:** [Fix evidence](./pr-43-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759936).
+
+### 2026-10-06 — PR #43 XY spatial tangent fix
+
+- **Agent / branch:** Codex on `codex/pr43-fixes`, after blur fix `e16d962`.
+- **Done:** authored XY keys retain two-component tangents on cameras and 3D
+  artwork; valid XYZ editing stays three-dimensional.
+- **Results:** 14 focused units and all three real XY inspector edit/undo/redo/save
+  flows pass; build and changed-file lint pass. Original key values stay XY.
+- **Open / next:** ancestor-group required coverage, final local verification and
+  one push remain. GitHub Actions stay disabled.
+- **Records:** [Fix evidence](./pr-43-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759928).
+
+### 2026-10-06 — PR #43 inherited projected blur fix
+
+- **Agent / branch:** Codex on `codex/pr43-fixes` from CE8 `9d8f33a`.
+- **Done:** shared positive primitive-blur inheritance expands actual local
+  projection support; collapsed affine precomps preserve outer-scope painting.
+  Evaluator/Canvas/WebGL/export identities identify the changed pixels.
+- **Results:** 20 focused units and 24 exact identity-camera pixel comparisons;
+  pinned toolchain/imports, build and changed-file lint pass. Baselines unchanged.
+- **Open / next:** fix XY tangent editing and ancestor-group coverage separately;
+  final local verification and one push remain. GitHub Actions stay disabled.
+- **Records:** [Fix evidence](./pr-43-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759920).
+
+### 2026-10-06 — CE5-X prerequisites and provider audit stop
+
+- **Agent / branch:** Codex on isolated `codex/composition-ce5x`, from CE4c `17666eb`.
+- **Done:** plan `e39f99b` and review fixes `335ff23`, `3d0da6a`, `d3093bd`
+  cherry-picked with CE4c functionality retained; record scoped owner approval/Q9.
+- **Results:** pinned toolchain, Python imports and 67 focused shape tests pass;
+  native shape baselines/seeks/exports/inspector, 144 legacy connector frames and
+  18 exact hardware comparisons pass.
+  Audit: 265 cases, 132 affected, 268 named path/flow provider layers before migration;
+  71 affected CE0 items / 14,916 frames. Final inventory has zero audit errors.
+- **Retained failures:** initial isolated dependency imports and fitted-panel audit
+  preparation failed; repaired and retained in evidence. No full `pnpm check` run.
+- **Open / next:** owner stop triggered for additional component motion providers,
+  source-image attachments and four/five-vertex annotations; runtime migration stops.
+  Resolve scope/contract first. A1 and remaining sequence decisions stay open.
+- **PR:** [Draft #46](https://github.com/xxibcill/still-shift/pull/46) targets CE4c;
+  audit checkpoint `f793fc0`, no auto-merge. Active CE4d checkout remains untouched.
+- **Records:** [CE5-X audit](./composition-ce5x-results.json), [plan](./composition-engine-plan.md#ce5-x--shape-fidelity-connectors-and-expressive-strokes).
+
 ### 2026-10-05 — CE7 native acceptance and serial sample costs
 
 - **Agent / branch:** Codex on `codex/composition-ce7`.
@@ -4348,6 +5385,954 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   [verification](./composition-ce12-verification-results.json),
   [corpus](./composition-ce12-lint-results.json), [stillness](./composition-ce12-stillness-results.json).
 
+### 2026-10-05 — CE6-P parallel optimization lane resumed
+
+- **Agent / branch:** Codex on `codex/composition-ce6p-compatible` from `0e48388`.
+- **Scope:** measured compatible WebGL optimizations; independent of CE6 catalogue work.
+- **Done:** active goal set, retained profiles/rejected experiments reviewed, dedicated
+  branch and local locked dependency/Python environments prepared.
+- **Results:** no candidate or performance target is claimed verified yet.
+- **Next:** byte-level exposure fusion regression, then serial A/B without competing
+  workloads; focused family acceptance and final full local gate before PR.
+- **Records:** [slice plan](./composition-ce6p-plan.md).
+
+### 2026-10-05 — PR #37 R10: Guard fixture export asset reads
+
+- **Agent / branch:** Codex on `codex/composition-ce11`; R8/R9 are `7d9f76c` /
+  `290af0c`.
+- **Done:** acquired export ownership before reading registered fixture assets
+  and released it after staging/rendering failures as well as successful exports.
+- **Results:** the paused-read race fails before the fix; 20 focused integration,
+  1,534 unit and 46 runtime tests pass with static gates and all four selected browser
+  groups. Both review axes found no new defects; the test import lint error is repaired.
+- **Next:** one normal push after this third finding commit; owner review/merge remain.
+- **Records:** [follow-up evidence](./pr-37-followup-fix-results.json).
+
+### 2026-10-05 — PR #37 R9: Preserve neighboring Bézier motion
+
+- **Agent / branch:** Codex on `codex/composition-ce11`; R8 is `7d9f76c`.
+- **Done:** retained native smooth velocities on untouched neighboring segments
+  when Bézier replaces the selected segment's smoothing; reference updated.
+- **Results:** 20 new scalar/vector/color/spatial/signal regressions fail before
+  the fix; all 35 curve/history tests, TypeScript and inspector acceptance pass.
+- **Next:** R10 in its own commit, then final local checks and one push.
+- **Records:** [follow-up evidence](./pr-37-followup-fix-results.json).
+
+### 2026-10-05 — PR #37 R8: Preserve graph-selector focus
+
+- **Agent / branch:** Codex on `codex/composition-ce11` from `9b2247e`.
+- **Done:** posted all three follow-up inline findings; restored focus after key
+  and resolved-instance selection rebuilds their native graph controls.
+- **Results:** new focus regression fails before the fix; full inspector browser
+  acceptance passes after it, including repeated selections and existing MP4 parity.
+- **Next:** R9 and R10 in separate commits, then final local checks and one push.
+- **Records:** [follow-up evidence](./pr-37-followup-fix-results.json).
+
+### 2026-10-05 — PR #37 R7: Share curve sampling and speed calculation
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Share uniform curve sampling and clipped finite-difference speed calculation across authored and resolved graphs while retaining each callers sampling bounds.
+- **Results:** All 15 focused curve/history tests pass, including exact authored/resolved agreement, linear boundary speeds, zero-duration ranges and the 512 sample cap. Final check:fast passes 1514 unit tests; 18 focused integration and 46 runtime tests pass; all four selected browser groups pass.
+- **Next:** One final push; owner review and merge remain.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168177).
+
+### 2026-10-05 — PR #37 R6: Discover separated constraint-reference channels
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Discover separated x/y channels through one native vector-track path, including constraintReference, with scalar lanes, resolved graphs, edits and code copies.
+- **Results:** Red: valid separated constraintReference returned no tracks. Green: all 10 key tests and inspector acceptance pass, including native reference path sampling, handle edits, code copy and history. TypeScript build passes.
+- **Next:** R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168168).
+
+### 2026-10-05 — PR #37 R5: Clear stale copied code when selecting path keys
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Reset copy state on every graph selection, populate native path-key snippets before the numeric-graph early return, and disable copying when the source has no tracks.
+- **Results:** Red: selecting masks[cutout].path retained transform.position code. Green: inspector acceptance passes path snippet selection and empty-source copy disabling alongside editing, watch, phone and MP4 parity checks.
+- **Next:** R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168163).
+
+### 2026-10-05 — PR #37 R4: Preserve the opposite side when editing a handle
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Keep shared smooth settings when replacing one temporal handle so the opposite segment retains its native motion.
+- **Results:** Red: both smooth encodings changed untouched incoming values (frame 5: 2.5 to 5). Green: 13 curve/history tests pass with exact incoming/outgoing preservation, edited-side changes and undo/redo round trips.
+- **Next:** R5, R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168155).
+
+### 2026-10-05 — PR #37 R3: Preserve structured validation diagnostics
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Retain native validation and font diagnostics through the shared passage-diagnostics error model; save and both export APIs return JSON envelopes, and the Lab displays their property paths.
+- **Results:** Red: save flattened two native range errors into one generic filename diagnostic. Green: all 7 save/API tests pass; invalid documents return the exact native diagnostics from save and both export endpoints. TypeScript build passes.
+- **Next:** R4, R5, R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168142).
+
+### 2026-10-05 — PR #37 R2: Restore focus after keyboard handle edits
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Restore the selected SVG handle focus after accepted keyboard edits; pointer edits retain their existing behavior.
+- **Results:** Red: the repeated-keyboard browser test lost focus after its first adjustment. Green: inspector acceptance passes with consecutive horizontal and Shift vertical edits, undo, save, phone layout and native MP4 parity.
+- **Next:** R3, R4, R5, R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168138).
+
+### 2026-10-05 — PR #37 R1: Serialize saves across preview sessions
+
+- **Agent / branch:** Codex on `codex/composition-ce11`.
+- **Done:** Guard canonical JSON sources with the existing cross-process artifact lock across conflict checks and atomic replacement.
+- **Results:** Red: helper saves both succeeded and independent preview returned 422. Green: all 6 save tests pass, including independent previews, repeated helper races and separate Node processes.
+- **Next:** R2, R3, R4, R5, R6, R7.
+- **Records:** [Fix evidence](./pr-37-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/37#discussion_r4183168129).
+
+### 2026-10-05 — Integrate CE12 base and verify PR #35 follow-up fixes
+
+- **Agent / branch:** Codex on `codex/pr35-followup-fixes` after `cde2c2c`.
+- **Scope / done:** merge CE12 `8c717b3` and retain the PR #34 and PR #35 records
+  when resolving the development-log conflict; no source conflicts occurred.
+- **Results:** fast checks (1,536 unit), 46 runtime, 130 integration, 14 Python and
+  smoke tests pass. Both 576-frame passage backends, authoring and native lint
+  browser checks pass; 176 frozen fixtures / 36,061 frames match. Normal Vite CLI
+  native loading passes. Full browser aggregate/timing matrices were not rerun.
+- **Delivery:** all three finding commits remain separate, followed by this base
+  merge and one final push; owner review/merge remains pending.
+- **Records:** [fix evidence](./pr-35-followup-fix-results.json).
+
+### 2026-10-05 — Initialize PR #35 native inspection after preview installation
+
+- **Agent / branch:** Codex on `codex/pr35-followup-fixes` after `bff1305`.
+- **Scope:** third follow-up finding, one separate implementation commit.
+- **Done:** initialize native layer options/state for first and single beats and
+  retain a valid selection through edit, undo and redo preview replacement.
+- **Results:** all 17 passage Lab integration cases, TypeScript and targeted ESLint
+  pass, including both renderers. Final gates/base integration remain before push.
+- **Rejected:** both new cases first reproduced surrogate layer options; browser
+  interaction was corrected to open the collapsed inspector before selecting.
+- **Open / next:** integrate the CE12 base log, run final checks and push all fixes.
+- **Records:** [fix evidence](./pr-35-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968018).
+
+### 2026-10-05 — Validate PR #35 native handoff subjects and boundary visibility
+
+- **Agent / branch:** Codex on `codex/pr35-followup-fixes` after `ea62b7b`.
+- **Scope:** second follow-up finding, one separate implementation commit.
+- **Done:** require incoming targets/outgoing sources beyond focus/evidence; check
+  native enter/exit visibility through root/precomp paths and instance clocks.
+  Retain the passage boundary before transition tails and Node strip-only loading.
+- **Results:** 123 focused unit/integration tests, 576-frame Canvas mixed passage,
+  Node import compatibility, TypeScript and targeted ESLint pass.
+- **Rejected:** all five new tests failed against the prior missing-subject or
+  unknown-mapping behavior before implementation.
+- **Open / next:** repair initial/reinstalled native inspection, then final gates/push.
+- **Records:** [fix evidence](./pr-35-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968013).
+
+### 2026-10-05 — Preserve PR #35 Lab native diagnostics end to end
+
+- **Agent / branch:** Codex on `codex/pr35-followup-fixes` from `84d7924`.
+- **Scope:** first follow-up finding, posted inline before implementation.
+- **Done:** retain the structured PassageError contract across Vite module identities
+  and HTTP responses; display codes and both source/field locations in Lab.
+- **Results:** 19 focused unit/integration tests, TypeScript and targeted ESLint pass.
+  The new test verifies the actual bundled API and both invalid fields in Chromium.
+- **Rejected:** the initial foreign-constructor test reproduced generic diagnostic
+  fallback; approval-service capacity failures executed no setup changes.
+- **Open / next:** native handoff targets and initial inspection; one final push.
+- **Records:** [fix evidence](./pr-35-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/35#discussion_r4183968004).
+
+### 2026-10-05 — Fix PR #35 WebGL passage context budget
+
+- **Agent / branch:** Codex on `codex/pr35-review-fixes`, after `c9c0971`.
+- **Done:** two GPU preview slots serve independent beat picture canvases. Native
+  validation remains eager; disposal and failed preparation release GL contexts.
+- **Results:** 20 beats and eight overlapping edits preserve pixels and backward
+  seeks, peak at four live contexts and end at zero. Fast checks pass 1,470 unit
+  tests; 46 runtime, 117 integration, 14 Python, smoke, both mixed 576-frame passage
+  backends and authoring checks pass. All 176 frozen items / 36,061 frames match.
+- **Initial failures:** fresh-environment depth-protocol timeouts passed on one
+  unchanged targeted rerun; helper TypeScript inference was repaired. See evidence.
+- **Delivery:** one finding per commit; push all three together after this final
+  finding commit. Owner review and merge remain pending.
+- **Records:** [fix evidence](./pr-35-fix-results.json).
+
+### 2026-10-05 — Fix PR #35 native evidence text alternatives
+
+- **Agent / branch:** Codex on `codex/pr35-review-fixes`, after `6ce9993`.
+- **Done:** mapped evidence states and whole-layer corrections retain the passage
+  qualification; span corrections fail explicitly on mapped evidence layers.
+- **Results:** six regressions cover matching alternatives, root/precomp states,
+  delayed state changes and text replacements. All 18 focused checks, build,
+  targeted lint and formatting pass. Initial nested test-fixture repair is recorded.
+- **Open / next:** bound WebGL passage contexts, finish local verification and
+  push all three finding commits together. Owner merge remains pending.
+- **Records:** [fix evidence](./pr-35-fix-results.json).
+
+### 2026-10-05 — Fix PR #35 native composition diagnostics
+
+- **Agent / branch:** Codex on isolated `codex/pr35-review-fixes`, from `869a793`.
+- **Done:** posted all three inline findings; loader retains every schema diagnostic
+  and adds beat/source context. Lab displays the source filename and field path.
+- **Results:** two invalid fields retain both original diagnostics; 12 focused
+  unit/integration checks, build, targeted lint and formatting pass.
+- **Open / next:** evidence text-state validation and bounded WebGL previews;
+  commit each finding separately, then push all three together. Owner merge remains.
+- **Records:** [fix evidence](./pr-35-fix-results.json).
+
+### 2026-10-05 — PR #36 re-review fix 3: recover watched invalid assets
+
+- **Agent / branch:** Codex on `codex/pr36-rereview-fixes`; prior fixes `9314879`, `63b6add`.
+- **Done:** Asset-schema failures retain the image/font path; initially invalid SVGs
+  rebuild automatically after repair. One finding per commit, one final push.
+- **Results:** Three tests fail before repair; 29 focused tests and build pass.
+  Fast checks pass (1,524 unit), 46 runtime and 31 affected integration tests pass.
+  Browser watch retains pixels/frame state; all 192 Canvas/WebGL frames match the
+  reference exactly, including backward seeks, with byte-identical exports.
+- **Limits:** Watch harness uses an available port because 5173 is occupied. Full
+  unrelated integration/browser, depth and frozen-baseline suites were not rerun.
+- **Open / next:** Three findings fixed and verified; owner review/merge remain.
+  GitHub Actions remain disabled; original checkout and local work retained.
+- **Records:** [Evidence](./pr-36-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933402).
+
+### 2026-10-05 — PR #36 re-review fix 2: attribute joined outgoing key fields
+
+- **Agent / branch:** Codex on `codex/pr36-rereview-fixes`; prior fix `9314879`.
+- **Done:** Add optional field attribution to compact source tracks for merged `out`
+  and `spatialOut`; preserve incoming/key-value ownership and nested inheritance.
+- **Results:** Four regressions fail before repair; 46 focused tests and build pass.
+  Existing six-field metadata and bounded root-layer coverage remain valid.
+- **Open / next:** Repair asset-schema watch recovery, then verify and push once.
+  GitHub Actions remain disabled; review and merge remain owner decisions.
+- **Records:** [Evidence](./pr-36-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933400).
+
+### 2026-10-05 — PR #36 re-review fix 1: retain static state before delayed from
+
+- **Agent / branch:** Codex on `codex/pr36-rereview-fixes`, from `f68f135`.
+- **Done:** Preserve the static value until the first delayed segment changes to its
+  explicit `from` value. Scalar/vector, `by`, fade-in and backward sampling covered.
+- **Results:** Three regressions fail before repair; 41 focused tests and build pass.
+- **Rejected:** Unconditional frame-zero keys changed equivalent emitted tracks;
+  retain a hold only when the authored static value differs from the segment start.
+- **Open / next:** Fix joined-key field attribution and invalid-asset watch recovery
+  in separate commits, then run final checks and push once. Actions remain disabled.
+- **Records:** [Evidence](./pr-36-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183933394).
+
+### 2026-10-05 — PR #36 fix 6: trace CommonJS program dependencies
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Synchronous hooks trace CommonJS helpers, transitive JSON and missing
+  absolute/relative imports. Focused regressions fail before repair and pass afterward.
+- **Results:** Fast checks pass (1,515 unit); 46 runtime, 146 integration and 14 depth
+  tests pass. Watch preserves valid pixels and frame state; the 192-frame builder
+  matches Canvas/WebGL exactly and exports are byte-identical. Typography passes.
+- **Rejected / repaired:** Native Node rejects constructor parameter properties;
+  repaired the first finding commit and added a native-load regression. The temporary
+  watch harness requires `.mts` outside the module package and a free port because
+  another local session uses 5173. Full unrelated browser/baseline suites were not rerun.
+- **Open / next:** Six findings fixed in six commits, followed by one final push.
+  Owner review/merge remains pending; GitHub Actions remain disabled.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180673).
+
+### 2026-10-05 — PR #36 fix 5: watch missing TypeScript import candidates
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Watch missing typescript import candidates; focused regressions fail before repair and pass afterward.
+- **Open / next:** 5/6 findings fixed; remaining repairs and final checks precede one final push. Owner review/merge remains pending.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180672).
+
+### 2026-10-05 — PR #36 fix 4: resolve symbolic precomp anchors
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Resolve symbolic precomp anchors; focused regressions fail before repair and pass afterward.
+- **Open / next:** 4/6 findings fixed; remaining repairs and final checks precede one final push. Owner review/merge remains pending.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180668).
+
+### 2026-10-05 — PR #36 fix 3: reject repeated auto-ID layer objects
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Reject repeated auto-id layer objects; focused regressions fail before repair and pass afterward.
+- **Open / next:** 3/6 findings fixed; remaining repairs and final checks precede one final push. Owner review/merge remains pending.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180666).
+
+### 2026-10-05 — PR #36 fix 2: preserve joined animation handles
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Preserve joined animation handles; focused regressions fail before repair and pass afterward.
+- **Open / next:** 2/6 findings fixed; remaining repairs and final checks precede one final push. Owner review/merge remains pending.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180658).
+
+### 2026-10-05 — PR #36 fix 1: attribute text preset failures to the correct source
+
+- **Agent / branch:** Codex on `codex/composition-ce10`, from `afb4045`.
+- **Done:** Attribute text preset failures to the correct source; focused regressions fail before repair and pass afterward.
+- **Open / next:** 1/6 findings fixed; remaining repairs and final checks precede one final push. Owner review/merge remains pending.
+- **Records:** [Fix evidence](./pr-36-fix-results.json), [inline finding](https://github.com/xxibcill/still-shift/pull/36#discussion_r4183180652).
+
+### 2026-10-05 — Resolve PR #34 against main
+
+- **Agent / branch:** Codex in an isolated checkout from CE12 `afa9be0`.
+- **Done:** integrates `main` at `3581855`; keeps motion linting and soundtrack
+  exports/commands, newer expression/bake fixes and both development histories.
+  Five conflicted files are resolved without changing implementation behavior.
+- **Results:** fast checks (1,651 unit), 46 runtime, 169 integration,
+  the focused fallback rerun (1 test), 14 depth and browser quality/expression
+  checks pass on the pinned toolchain. Soundtrack Python lint, imports and command/history retention pass.
+- **Setup repair:** shared Python launcher pointed to a removed checkout. The
+  isolated environment now has its own launcher; the failed fallback test passes
+  on targeted rerun. Shared environment unchanged.
+- **Limits / next:** full `pnpm check`, unrelated browser matrices and frozen CE0
+  were not rerun. One merge push resolves PR conflicts; owner review/merge remains.
+  Original working checkouts retained; GitHub Actions remains disabled.
+- **Records:** [Conflict evidence](./pr-34-conflict-resolution-results.json),
+  [PR #34](https://github.com/xxibcill/still-shift/pull/34).
+
+### 2026-10-05 — PR #34 unavailable nested coverage and final verification
+
+- **Agent / branch:** Codex on `codex/composition-ce12`, after `d6af44e`.
+- **Done:** declared nested coverage now reports precisely the frames missing after host expiration or before activation; nonexistent declarations retain their own diagnostic. Five inline findings each have one commit, followed by one final push.
+- **Results:** six coverage regressions failed before repair. Final fast checks (1,544 unit), 46 runtime, 16 CLI and native browser checks pass; corpus lint covers 176 items / 36,061 frames with zero unexpected failures. Group paint removes false state freezes in two fixtures; frozen pixels and baseline checksum are unchanged.
+- **Rejected / do not repeat:** sandboxed runtime checks cannot run `ps`; outside-sandbox reruns pass. Concurrent corpus/browser checks hit one browser startup timeout; isolated corpus rerun passes. No harness or pixel threshold changes.
+- **Open / next:** owner review/merge and the existing base-branch `docs/dev-log.md` conflict. Full `pnpm check` render/export groups were not rerun.
+- **Records:** [Additional repair evidence](./pr-34-additional-fix-results.json); [CE12 repair record](./composition-engine-plan.md#ce12-pr-34-additional-lint-repairs-2026-10-05).
+
+### 2026-10-05 — PR #34 evaluated track motion
+
+- **Agent / branch:** Codex on `codex/composition-ce12`, after `f7d90a2`.
+- **Done:** timing lint compares each final evaluated property, so overridden rotation/effect keys cannot borrow unrelated motion.
+- **Results:** two regressions failed before repair with identical visible state across 90 frames; 127 focused quality/CLI tests, build and changed-file ESLint pass. A moving vector component remains counted.
+- **Open / next:** nested coverage, final checks and one final push.
+- **Records:** [Additional repair evidence](./pr-34-additional-fix-results.json).
+
+### 2026-10-05 — PR #34 easing weights
+
+- **Agent / branch:** Codex on `codex/composition-ce12`, after `88927ad`.
+- **Done:** each moving property contributes one easing vote, split across its distinct profiles. Redundant keys do not skew the share.
+- **Results:** two regressions failed before repair; 124 focused quality/CLI tests, build and changed-file ESLint pass. Minority key density no longer hides a genuine property majority.
+- **Open / next:** overridden tracks, nested coverage and final verification; one final push.
+- **Records:** [Additional repair evidence](./pr-34-additional-fix-results.json).
+
+### 2026-10-05 — PR #34 signed scale pops
+
+- **Agent / branch:** Codex on `codex/composition-ce12`, after `5d3f0d3`.
+- **Done:** signed scale survives null-parent and precomp inheritance, so abrupt reflections produce scale-pop findings.
+- **Results:** five regressions failed before repair; 121 focused quality/CLI tests, build and changed-file ESLint pass. Rotations, declared cuts and canceled reflections stay exempt. Final review found rotated-axis cancellation; an effective linear-matrix guard and eighth scale regression correct it in the same finding commit.
+- **Open / next:** easing weights, overridden tracks, nested coverage and final verification; one final push.
+- **Records:** [Additional repair evidence](./pr-34-additional-fix-results.json).
+
+### 2026-10-05 — PR #34 group paint modifiers
+
+- **Agent / branch:** Codex on `codex/composition-ce12`, from `7525540`.
+- **Done:** posted five inline findings; group effects now contribute to state, timing and velocity when their descendants paint.
+- **Results:** two new regressions failed before repair; 114 focused quality/CLI tests, build, changed-file ESLint and browser quality pass. Hidden/offscreen/empty groups and collapsed surfaces remain excluded.
+- **Open / next:** four remaining finding commits, final checks and one push. The existing base-branch documentation conflict remains pending.
+- **Records:** [Additional repair evidence](./pr-34-additional-fix-results.json).
+
+### 2026-10-05 — PR #34 review fixes: velocity samples, join cost, Lab, framing
+
+- **Agent / branch:** Claude Code on `codex/composition-ce12` (from `8c717b3`).
+- **Done:** `059f04a` measures join velocities a step away from the join, so
+  per-frame held keys are frame samples (held motion listed as unmeasured);
+  `c81eafc` shares fractional join searches per clock and charges them to the lint
+  budget; `04ac50a` keeps Lab previews working when lint fails; the final commit
+  frames clipped content by its painted region.
+- **Results:** each regression failed before its repair. Corpus velocity findings
+  1,031 -> 0 (median ratio ~5,600 = 1/(2 x step) showed they were artifacts);
+  80 stretched siblings lint in 2.9 s instead of 31.4 s. Fast checks (1,518 unit),
+  46 runtime, 15 CLI, browser quality and corpus lint pass; full `pnpm check` not run.
+- **Rejected / do not repeat:** integer-frame velocity differencing for held tracks
+  flags ordinary easing curvature at the 0.02 ratio; anchoring joins on one side of
+  the bisection bracket fails for reversed clocks.
+- **Open / next:** resolve the `docs/dev-log.md` conflict with the moved CE9 base;
+  speed changes inside held (baked) motion are not measured by velocity lint.
+- **Records:** [Review evidence](./pr-34-review-fix-results.json), review on PR #34.
+
+### 2026-10-05 — PR #34 structured lint limits and final verification
+
+- **Agent / branch:** Codex on `codex/pr34-followup-fixes`, after `498c771`.
+- **Done:** third finding repaired with stable `comp-lint-limit` / `layers` errors
+  and early rejection of oversized root timelines, including rendered lint.
+- **Results:** original capacity regression failed; all 99 focused quality/CLI
+  tests, fast checks (1,509 unit), 46 runtime tests and native browser checks pass.
+  CE0 lint covers 176 items / 36,061 frames; zero unexpected failures, two newly
+  caught reading-time errors, other diagnostics and reference checksum unchanged.
+- **Open / next:** one final push after this third commit; owner review/merge.
+  Original checkout retained; no renderer/version or baseline changes.
+- **Records:** [Follow-up evidence](./pr-34-followup-fix-results.json).
+
+### 2026-10-05 — PR #34 collapsed precomp sampling
+
+- **Agent / branch:** Codex on `codex/pr34-followup-fixes`, after `99605b4`.
+- **Done:** traverse collapsed paint outside source bounds; framing follows painted
+  descendants, and unused collapsed backgrounds do not count as motion.
+- **Results:** two regressions failed before repair; all 96 focused quality/CLI
+  tests, rendered browser checks, TypeScript and ESLint pass. Invalid test interval
+  corrected; hidden, clipped, nested and empty content controls pass.
+- **Open / next:** structured lint limits, final verification and one final push.
+- **Records:** [Follow-up evidence](./pr-34-followup-fix-results.json).
+
+### 2026-10-05 — PR #34 provider reading reveal
+
+- **Agent / branch:** Codex on `codex/pr34-followup-fixes`, from `a41f687`.
+- **Done:** posted all three inline findings; reading time now uses provider reveal.
+- **Results:** three regression failures before the fix; all 87 focused quality/CLI
+  tests, rendered browser checks, TypeScript and ESLint pass.
+- **Open / next:** collapsed precomp traversal, structured lint limits and final
+  verification; one final push after all three finding commits.
+- **Records:** [Follow-up evidence](./pr-34-followup-fix-results.json).
+
+### 2026-10-05 — PR #34 clipped viewport coverage
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired clipped viewport coverage.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** all five repairs and final local verification complete;
+  delivery uses one final push, followed by owner review/merge.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
+### 2026-10-05 — PR #34 one-frame scale and opacity pulses
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired one-frame scale and opacity pulses.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** 1 finding repairs, final verification and one final push;
+  owner review/merge remains pending.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
+### 2026-10-05 — PR #34 contributing matte motion
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired contributing matte motion.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** 2 finding repairs, final verification and one final push;
+  owner review/merge remains pending.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
+### 2026-10-05 — PR #34 active effect tracks
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired active effect tracks.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** 3 finding repairs, final verification and one final push;
+  owner review/merge remains pending.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
+### 2026-10-05 — PR #34 pixel-mode diagnostics
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, reviewing `82453d9`.
+- **Scope / done:** posted the inline finding and repaired pixel-mode diagnostics.
+- **Results:** regression evidence and local checks are recorded below; no renderer
+  output/version or frozen-baseline changes.
+- **Open / next:** 4 finding repairs, final verification and one final push;
+  owner review/merge remains pending.
+- **Records:** [Re-review fix evidence](./pr-34-rereview-fix-results.json).
+
+### 2026-10-05 — PR #34 parent-driven timing and final verification
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, from reviewed `0987396`.
+- **Done:** final finding fixed by collecting contributing ancestors, preserving
+  instance identity, counting shared tracks once and inspecting fractional
+  forward/reverse joins. Null opacity stays excluded; group opacity contributes.
+- **Results:** six regressions failed before the fix; all 43 quality tests,
+  11 CLI tests, fast checks (1,468 unit tests) and expanded CE12 browser checks pass.
+  Corpus lint covers 176 items / 36,061 frames with identical reports and no
+  unexpected failure. Source checksums are recorded; renderer/baselines unchanged.
+- **Open / next:** one final push delivers all three finding commits; owner review
+  and merge remain pending. A sandbox Vite-temp write failure passed on retry.
+- **Records:** [Fix evidence](./pr-34-fix-results.json),
+  [CE12 plan](./composition-engine-plan.md#ce12--motion-linting).
+
+### 2026-10-05 — PR #34 inactive-effect motion evidence
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`.
+- **Done:** second finding fixed by excluding inactive effects from state signatures
+  and velocity inputs, preserving evaluation and rendered output.
+- **Results:** all four new regressions failed before the fix; 44 focused tests,
+  build, changed-file ESLint and the CE12 browser group now pass, including rendered
+  static content with disabled animated effects.
+- **Open / next:** parent-driven timing is the final finding; verify then push once.
+- **Records:** [Fix evidence](./pr-34-fix-results.json),
+  [CE12 plan](./composition-engine-plan.md#ce12--motion-linting).
+
+### 2026-10-05 — PR #34 structured policy diagnostics
+
+- **Agent / branch:** Codex on `codex/pr34-review-fixes`, from PR head `0987396`.
+- **Done:** first finding fixed with stable cut, shot and pixel-evidence codes/paths;
+  posted all three inline comments on the reviewed PR diff.
+- **Results:** nine regressions reproduced the failures; 40 focused tests, build
+  and changed-file ESLint pass on Node 22.23.1 / pnpm 10.29.3.
+- **Open / next:** fix inactive-effect motion and parent-driven timing, one finding
+  per commit, then verify and push once. Original local work retained.
+- **Records:** [Fix evidence](./pr-34-fix-results.json),
+  [CE12 plan](./composition-engine-plan.md#ce12--motion-linting).
+
+### 2026-10-05 — PR #33 master limiter, browser check and owner decisions
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `2945649`.
+- **Owner decisions:** 1b opt-in master limiter; 2 owner listens; 3a one
+  automated browser run authorized; 4a runtime stays local-only, remind before
+  contributing/distributing.
+- **Done:** `3b84f31` optional `master.limiter` (ceiling −24…0 dBFS, lookahead
+  ≤ 4,800, release ≤ 480,000 samples) on the mix after master gain; vectorized
+  forward-min attack + running-min release; gain exactly 1 out of reach;
+  `soundtrack-dsp-6`; `limiter` edit. `f5edcea` Lab limiter editor. `def0e1e`
+  browser workflow drives all new authoring controls. Listening checklist and
+  licensing note added.
+- **Results:** limiter integration test: ceiling held, out-of-reach samples and
+  stems bit-identical, linear release rate, report accurate, removal restores
+  the mix. No-limiter projects byte-identical (200 randomized). Fully limited
+  10-minute mix: 0.94 s. Browser run passed (new controls plus exact native
+  PCM, playback/seek/clear, passage full/range mux with the limiter); first
+  attempt failed on a test locator (a select's accessible name includes its
+  option), fixed and rerun within the same authorization. Real episode: hot mix
+  +4.59 dBFS / 6,419 overs → −1.00 dBFS / 0 overs, 5.59 dB max reduction.
+- **Not run:** listening (owner), frozen baselines.
+
+### 2026-10-05 — PR #33 tiling, Lab mix controls and exact memory estimate
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `01fbb1b`.
+- **Done:** `5738b0a` `tile` edit: crossfaded copies `<id>-2…` up to `endSample`
+  (equal-power joins, ≤ half-clip crossfade, last copy trimmed); no contract
+  change. `f246429` Lab track output/filters controls, ducking JSON editor,
+  add track/bus (unit-tested request builders); moved Remove clip out of
+  `#clip-edit` because the browser workflow's `#clip-edit button` locator had
+  become ambiguous under Playwright strict mode. `acb00c0` memory estimate now
+  simulates the render's depth-first live buffers instead of charging every
+  accumulator on a path.
+- **Results:** tiled-bed join gains match the equal-power formula in a render
+  test. Exact estimate vs measured macOS `phys_footprint` (default allocator):
+  margins 0.24–0.26 GB on adversarial graphs at the budget edge (stacked five
+  live buffers, filtered first inputs, empty buses, eight-bus chain) and larger
+  on common shapes; 3 nested buses + filters + ducking at 10 minutes now fit
+  (1.13 GB estimate, 0.88 GB measured; previously rejected at 1.60 GB).
+  `pnpm check:soundtrack`: 1,525 unit, 46 runtime, 47 audio integration,
+  14 depth; Python lint/format.
+- **Rejected / do not repeat:** reusing the narration mix for the ducking
+  detector — duplicate pass measured at ~0.04 s shaping + ~0.15 s decode of a
+  2 s 10-minute render, about the cost of a spill/read-back. Making no-op edits
+  skip saving — the existing unit test pins "every accepted request saves once";
+  left as designed (Lab controls send no no-op requests).
+- **Not run:** browser suites, baselines, listening.
+
+### 2026-10-05 — PR #33 authoring completeness, parity guard and render speed
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `287cff9`.
+- **Done:** `8d0c428` adds `add-track`, `remove-track`, `add-bus`, `remove-bus`,
+  `route`, `processors` and `ducking` edits (contract track/bus/processor/ducking
+  schemas extracted; generated JSON Schema unchanged). `a62cef7`: the lifecycle
+  verifier recorded a hard-coded `soundtrack-dsp-2`; it now records the rendered
+  version. `a21fc0f`: Lab draws fade shapes and adds cues (optionally registering
+  a source) via a unit-tested request builder and an HTTP-level test.
+  `b19059a`: `soundtrack edit --operations -` reads stdin (8 MB bound).
+  `968c589`: checked-in routing parity script vs DawDreamer's AddProcessor
+  (62 cases incl. normal and subnormal double-rounding midpoints) runs in the
+  integration suite; unfused add, missing tie fix and missing subnormal
+  candidates each fail it. `74c5abd`: outputs hashed while written; TwoSum tie
+  work only on possible ties (fused adds 6.0 → 0.9 s on a 10-minute 16-track
+  render; total ~30 → 25 s).
+- **Results:** byte-identical to the original single-graph worker on 400 more
+  randomized projects. Real-media `pnpm soundtrack:verify` into a fresh /tmp
+  results path: reload, unaffected stems, relocation, narration exact (committed
+  CE16 evidence file restored afterwards, not rewritten). `pnpm check:soundtrack`:
+  1,523 unit, 46 runtime, 46 audio integration, 14 depth; Python lint/format.
+- **Not run:** browser suites, baselines, listening; Lab UI is type/lint/model
+  tested only.
+- **Remaining, low value:** the memory estimate counts every accumulator on a
+  bus path (exact DFS simulation would admit depth-3 + filters + ducking at 10
+  minutes); WAV writing of many large stems is bounded by page faults; no Lab
+  forms for tracks/buses/filters/ducking (CLI/API edits cover them).
+
+### 2026-10-05 — PR #33 bounded-memory soundtrack render
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `7f1f4dd`.
+- **Problem:** the estimate `duration × 8 × (nodes × 4 + 8) ≤ 1.5 GB` capped
+  projects at 89–244 s despite the documented 10 minutes, and real use was
+  worse: 10-minute renders peaked at 2.2 GiB (1 track) to 6.1 GiB (4 filtered
+  tracks, bus, ducking). One DawDreamer graph held an input copy and recording per
+  node; clip envelopes, ducking and WAV writes made full-length temporaries.
+- **Done:** `0fc092f`. DawDreamer renders only filter chains, one track at a time
+  before routing, spilled to the stage and memory-mapped back. NumPy routing
+  reproduces DawDreamer 0.9.0 / JUCE exactly: applyGain then fused
+  `addWithMultiply` (single rounding; emulated via float64 TwoSum with the
+  midpoint case resolved), gains within an ulp of 1 as unity, subnormals kept.
+  Depth-first routing, chunked clip shaping, direct FFmpeg streaming for long
+  clips, interval-based ducking, streaming WAV writer, one cross-track decode
+  plan with a fixed 64 MB budget. New shared estimate (contract + worker):
+  depth + 1 (or 3 for a filter render), +0.5 ducking, + 328 MB. Guide updated
+  in `c662e68`.
+- **Results:** byte-identical outputs vs the previous worker on 800 randomized
+  projects (incl. 200 with a forced 5,000-frame decode budget) and the CE16
+  fixture. An unfused-add mutant differs on 8 of 40 seeds; an out-of-order error
+  mutant fails the decode test. 10-minute macOS `phys_footprint`: 0.25–0.94 GiB,
+  all below the estimate. Stress: 16 reused assets 2.2 → 1.5 s; fixture
+  unchanged. `pnpm check:soundtrack`: 1,520 unit, 46 runtime, 43 audio
+  integration (new: TS/Python estimate parity, a 10-minute ducked/filtered/bussed
+  render), 14 depth; Python lint/format pass.
+- **Rejected / do not repeat:** relying on `MallocLargeCache=0` (undocumented
+  libmalloc knob) to hide macOS large-block retention; a decode budget scaled to
+  a quarter project buffer (starved short projects: stress 2.2 → 7.2 s);
+  per-track decode plans (lost cross-track sharing).
+- **Changed semantics:** tracks render one at a time (ducking detector, filtered
+  tracks, then routing order); errors are first-in-authored-order within a track.
+  Filtered tracks need temporary stage disk (230 MB each at 10 minutes).
+  `STILL_SHIFT_SOUNDTRACK_DECODE_FRAMES` may only lower the decode budget (tests).
+- **Not run:** browser suites, baselines and listening (PCM unchanged).
+
+### 2026-10-05 — PR #33 shared and parallel soundtrack decoding
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `e20b6a6`.
+- **Profile first:** the 60 s CE16 fixture renders in 0.6 s (decode 0.09 s), so
+  realistic projects were not decode-bound. A 120 s, 4-track, 128-cue stress
+  project cut from 10-minute 44.1 kHz WAV/MP3 sources spent ~18 of ~20 s
+  decoding: a reused asset whose covering span exceeded the cache fell back to
+  per-clip decodes, each resampling the source from its start.
+- **Done:** `77a759e` streams one FFmpeg pass per reused asset, keeping only its
+  clips' samples (budget now bounds retained samples, not the covering span).
+  A deterministic decode plan runs on up to eight threads, at most four
+  project-length buffers ahead; probes and source hashing are parallel too.
+  Clips are consumed in authored order; errors surface at the first affected
+  clip in authored order.
+- **Results:** byte-identical outputs versus the previous worker on the fixture
+  (7 files) and both stress projects (5 files each). Stress: 19.6 → 2.1 s
+  (16 reused assets) and 24.7 → 4.7 s (100 assets); fixture 0.56 → 0.44 s on a
+  15-core Mac. Peak RSS at most +91 MiB. The reuse test now covers streamed,
+  over-budget and corrupt-source paths; a mutation resolving decode jobs
+  newest-first fails it. `pnpm check:soundtrack`: 1,519 unit, 46 runtime,
+  41 audio integration, 14 depth; Python lint/format pass.
+- **Not run:** browser suites, baselines and listening (PCM unchanged).
+- **Open / next:** the duration-bound owner decision above. Remaining ideas:
+  Lab fade drawing and Lab clip adding.
+
+### 2026-10-05 — PR #33 equal-power fade curves
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `c41c58b`
+  (cue/asset/fade edits pushed to PR #33 first, at the owner's request).
+- **Done:** `e1d6c49` adds optional `clips[].fadeInCurve`/`fadeOutCurve`:
+  `linear` (absent default) or `equal-power`, `sin(r·π/2)` over the linear ramp
+  `r`, −3 dB at the midpoint. Gain is pinned to exactly 1 where `r = 1`, so it
+  never depends on platform sine rounding. `fade` edits set curves; `linear`
+  removes the field. JSON Schema regenerated; `soundtrack-dsp-5`. `d73d624` adds
+  Lab curve selects.
+- **Results:** a new integration test checks quarter-sine sample gains at both
+  fades, exact unity between them, per-fade independence and bit-identical
+  absent vs explicit `linear` PCM. It fails on a worker that bumps only its
+  version string. `pnpm check:soundtrack`: 1,519 unit, 46 runtime, 41 audio
+  integration, 14 depth; Python lint/format pass.
+- **Not run:** browser suites, baselines and listening; Lab change is
+  type/lint-checked only.
+- **Open / next:** the Lab timeline does not draw fade shapes. Per-clip decoding
+  still resamples each source from its start; looping and a master limiter
+  remain out of contract scope.
+
+### 2026-10-05 — PR #33 cue, asset and fade edit operations
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `204053f`.
+- **Done:** `d6fa38b` adds `add-clip` (complete contract clip, appended so
+  existing summation order and PCM are unchanged), `remove-clip`, `fade`,
+  `add-asset` and `remove-asset` (`asset-in-use` while referenced). File-based
+  saves hash added sources relative to the project JSON; a stated mismatched
+  hash, missing or oversized source fails before saving. `e4194a6` adds Lab
+  fade fields and a Remove clip button. Previously these needed hand-edited JSON
+  outside the revision lock.
+- **Results:** two unit tests (one-request undo, append order, 16 error codes;
+  a wrong-code mutation fails) and one integration test (relative hashing,
+  rejected saves leave bytes intact, the added cue renders at −6 dB and its
+  removal restores the effect stem exactly). `pnpm check:soundtrack`: 1,518 unit,
+  46 runtime, 40 audio integration, 14 depth; Python lint/format pass. Runtime
+  borrowed read-only from the Codex CE16 worktree via
+  `STILL_SHIFT_SOUNDTRACK_PYTHON`.
+- **Not run:** browser workflow suites (owner authorization covered only the
+  CE16 completion pass), baselines and listening. Lab form changes are
+  type/lint-checked only.
+- **Open / next:** push to PR #33 when the owner approves. Adding clips from the
+  Lab, equal-power fade curves, looping and a master limiter remain out of scope.
+
+### 2026-10-05 — PR #33 clip-level pan
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `2cddbb2`.
+- **Done:** optional `clips[].pan` in [-1, 1]. The left/right gains are
+  `√2·cos/sin((pan + 1)·π/4)`: unity at centre, +3 dB on the panned side and exact
+  silence on the other at hard pan. The ducking detector taps before pan. Adds a
+  `pan` edit operation (`0` removes the field), a Lab pan field and clip label,
+  regenerated JSON Schema and the `soundtrack-dsp-4` version.
+- **Results:** a new integration test checks that explicit centre is bit-identical
+  to absent pan (all stems, mix, duck envelope), that panning narration leaves the
+  duck envelope unchanged, that hard left gives exact right silence and √2 on the
+  left, and that intermediate gains follow the law. It fails on the previous worker,
+  including after bumping only its version string. `pnpm check:soundtrack`:
+  1,516 unit, 46 runtime, 39 audio integration, 14 depth; Python lint/format pass.
+- **Not run:** browser workflow suites, baselines and listening.
+- **Open / next:** pushed to PR #33 as `633412f`; owner review/merge remains.
+  Looping and a master limiter are not in `soundtrack-project-1`.
+
+### 2026-10-05 — PR #33 mix headroom report and Lab number-field guard
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements` from `3317633`.
+- **Scope:** improvement pass on the CE16 soundtrack engine after review rounds.
+- **Done:** the worker reports `peakDbfs` (`null` when silent) and
+  `samplesAboveFullScale` per output, measured on the cropped PCM it writes;
+  the manifest schema requires both. The Lab shows the mix peak and an over warning,
+  and rejects empty/invalid number fields that `Number("")` silently saved as
+  0 dB or sample 0.
+- **Results:** the new integration test compares reported values with decoded file
+  samples (+6 dB master: exactly 1 over; muted stem: `null`) and fails on the
+  previous worker with a schema error. 2 new unit tests. `pnpm check:soundtrack` on
+  Node 22.23.1: 1,515 unit, 46 runtime, 38 audio integration, 14 depth; Python
+  lint/format pass.
+- **Rejected / do not repeat:** running the gate on Node 24.16.0 fails the CE9
+  bake test by 1 ULP. This toolchain mismatch is not a regression; use the pinned
+  22.23.1.
+- **Not changed:** fade-out ends at `1/fadeOutSamples` before the clip's exclusive
+  end, matching half-open fade-in semantics; this is not a defect. Browser workflow
+  suites, baselines and listening were not run.
+- **Open / next:** owner approval to push to PR #33. Owner decision pending on
+  whether clip pan, looping or a master limiter belong in a later contract
+  version; `soundtrack-project-1` has none of them.
+
+### 2026-10-05 — PR #33 portable stem filename fix and verification
+
+- **Agent / branch:** Codex on `codex/pr33-followup-fixes`; ducking fix `579553a`.
+- **Done:** reject case-insensitive track/bus filename collisions and reserved
+  names before rendering, including persisted undo/redo; preserve distinct names.
+- **Results:** eight regressions fail before repair; all 63 focused tests pass
+  afterward. Full `pnpm check:soundtrack`: 1,513 unit, 46 runtime, 37 audio
+  integration and 14 depth tests; static/Python checks pass.
+- **Limits:** no browser workflow/baseline suites or listening. Separate toolchain
+  check launched headless Chromium for version verification only. Shared Python
+  editable-package binding restored to the primary checkout after verification.
+- **Delivery:** second finding commit, then push both fixes together to PR #33.
+  GitHub Actions remain prohibited; owner review/merge remains pending.
+- **Records:** [fix evidence and inline comments](./pr-33-followup-fix-results.json).
+
+### 2026-10-05 — PR #33 ducking hold fix
+
+- **Agent / branch:** Codex on `codex/pr33-followup-fixes` from `0dc2782`.
+- **Done:** posted both findings inline; hold begins only after detector activity.
+  Worker and render identity advance to `soundtrack-dsp-3`; guide updated.
+- **Results:** silent and delayed-speech long-hold regressions fail before repair;
+  all 22 soundtrack lifecycle tests pass after repair. Browser/listening not run.
+- **Next:** fix stem case collisions in the second finding commit, verify locally,
+  then push both commits together. GitHub Actions remain prohibited.
+- **Records:** [fix evidence](./pr-33-followup-fix-results.json).
+
+### 2026-10-05 — Resolve PR #33 against merged CE9
+
+- **Agent / branch:** Codex on isolated PR #33 checkout, from `039c1d5`.
+- **Scope:** merge `main` at `b32dcfa` after dependency PR #32 merged.
+- **Done:** retain both branches' development records; source and tests merge
+  automatically, preserving CE16 review fixes and CE9 follow-up fixes.
+- **Results:** pinned toolchain and `pnpm check:soundtrack` pass: 1,505 unit,
+  46 runtime, 34 audio integration and 14 depth tests, plus static/Python gates.
+  All 48 branch entry titles retained; Actions disabled. Browser/baseline groups
+  were not rerun. Formatting and whitespace checks pass.
+- **Delivery / next:** merge pushed to PR #33; owner review/merge pending.
+- **Records:** [conflict-resolution evidence](./pr-33-conflict-resolution-results.json).
+
+### 2026-10-05 — Preserve PR #33 exact backend sample counts
+
+- **Agent / branch:** Codex on `codex/pr33-review-fixes`, after `f35f1b7`.
+- **Scope:** P2 inline finding: converting 110,400 samples to seconds rendered one short.
+- **Done:** round seconds upward by one representable step at the pinned DawDreamer
+  boundary; retain the exact output-length check and unchanged narration placement.
+- **Results:** three new duration cases fail before the fix; all seven new duration
+  regressions pass, including 1/511/512/513/48,005/110,400 samples, original narration
+  and exact full/range stems with DSP. Final `pnpm check:soundtrack` passes:
+  1,438 unit / 46 runtime / 34 audio integration / 14 depth, plus all static/Python gates.
+- **Delivery:** one commit per finding (`077443e`, `f35f1b7`, this slice), published
+  together after the final checks. No Actions, source-media changes or GUI checks.
+- **Open / limits:** owner review/merge pending; full browser/baseline matrix and
+  creative listening/AV QA not rerun. Earlier completion records remain historical.
+- **Records:** [review/fix evidence](./pr-33-review-fix-results.json).
+
+### 2026-10-05 — Coordinate PR #33 preview publication
+
+- **Agent / branch:** Codex on `codex/pr33-review-fixes`, after `077443e`.
+- **Scope:** P2 inline finding: concurrent renders could prune each other's outputs.
+- **Done:** queue render publication/pruning and Lab edits per real project path;
+  use the existing artifact lock across independent Lab instances. Register the
+  new command-only concurrency suite in the local soundtrack verification tiers.
+- **Results:** both race regressions fail before the fix; all eight mocked-worker
+  concurrency and real-worker HTTP API tests pass, including edit invalidation,
+  failure recovery, independent-server exclusion and stale preview rejection.
+  TypeScript build and focused lint pass.
+- **Open / next:** repair backend duration rounding, run final local checks and
+  push the three finding commits together. No browser checks or Actions.
+- **Records:** [review/fix evidence](./pr-33-review-fix-results.json).
+
+### 2026-10-05 — Bound PR #33 saved project bytes
+
+- **Agent / branch:** Codex on `codex/pr33-review-fixes`, from `b6cc3cd`.
+- **Scope:** P1 inline finding: successful edits could exceed the reader's 8 MB limit.
+- **Done:** share UTF-8 serialization bounds across atomic saves, packages and
+  rendered snapshots; oversized edits leave the original bytes and revision intact.
+- **Results:** regression failed before the fix; all 13 soundtrack lifecycle tests
+  pass after it, including reload, undo/redo, relocation, cancellation and PCM checks.
+- **Open / next:** fix concurrent preview pruning and backend duration rounding,
+  then run the final local gate and push the three finding commits together.
+- **Records:** [review/fix evidence](./pr-33-review-fix-results.json).
+
+### 2026-10-05 — PR #33 review: SFX edit transactions, decode reuse, Lab pruning
+
+- **Agent / branch:** Claude Code on `claude/ce16-sfx-improvements`, from PR #33
+  head `e7f3175`; pushed to `codex/composition-ce16` at the owner's request.
+- **Scope:** review-driven fixes to the CE16 soundtrack engine and Lab API.
+- **Done:** one edit request is one undo entry, and only its final state is
+  validated (no-op requests add no history). An anchored `move` keeps its anchor
+  point and derives `offsetSamples`; conflicting or unanchored offsets fail with
+  `anchor-conflict`, and the Lab offset field is read-only. `retime` saves only
+  when an anchor moved (it no longer fails with `edit-schema` when none did).
+  The worker probes each asset once and decodes a reused asset's span once
+  within one project-length buffer, else per clip. Lab renders are grouped per
+  project; a render keeps only the newest, a Lab edit removes all, and a pruned
+  preview answers `revision-conflict`.
+- **Results:** on Node 22.23.1: toolchain, schema, boundaries, format, lint,
+  build and ruff pass; 1,438 unit, 46 runtime, 127 integration and 14 depth
+  tests pass. `test:browser:soundtrack` passes (owner-approved run; its single
+  400 console line also appears on unmodified `e7f3175`). A 124-clip SFX
+  project rendered bit-identically on all 7 outputs, with worker time cut from
+  4.3 s to 0.56 s; CE16 fixture mix hash unchanged. A slicing mutation fails
+  the new reuse test. The other 41 browser groups and baselines were not run.
+- **Rejected / do not repeat:** Node 24 fails the CE9 bake test by one ULP and
+  depth tests time out without `uv sync`; both are environment, not regressions.
+- **Ducking (owner chose option B):** the detector is now a pre-fader
+  sidechain, hearing narration clip gain/fades/automation but not track
+  gain/mute/solo/DSP; DSP version `soundtrack-dsp-2`. CE16 fixture outputs stay
+  bit-identical (unity narration clip); render identities change with the
+  version. Recorded CE16 evidence JSON still describes the `dsp-1` runs.
+- **Full `pnpm check` on `6ed279e` (Node 22.23.1):** all 47 test steps pass,
+  including all browser groups and 176 frozen baseline items / 36,061 frames.
+  `composition-commerce-adapter` missed its 1.25× timing gate twice on
+  `commerce/atom-text` (1.26×, 1.29×; pixels exact) while another session loaded
+  the machine; the untouched `e7f3175` passed at 1.16×, and the branch then
+  passed the whole group at 1.19× (worst item 1.22×). Treat as load noise.
+- **Open / next:** PR #33 review/merge still pending after PR #32.
+- **Records:** [soundtrack guide](./soundtrack-project.md),
+  [PR #33](https://github.com/xxibcill/still-shift/pull/33).
+
+### 2026-10-05 — Publish isolated CE16 as PR #33
+
+- **Agent / branch:** Codex on `codex/composition-ce16`, after `361dfe1`.
+- **Done:** published and attached [PR #33](https://github.com/xxibcill/still-shift/pull/33).
+- **Base:** `codex/composition-ce9` at `dee9e7b`; stacking excludes CE9 changes
+  from this PR. Merge [#32](https://github.com/xxibcill/still-shift/pull/32) first,
+  then retarget CE16 to `main`. Primary checkout and CE12 work remain untouched.
+- **Verification:** retained full local gate and all 176 frozen baselines pass;
+  no implementation changes for publication. Repository Actions confirmed disabled.
+- **Open / next:** owner review/merge pending; existing technical/creative limits
+  remain in the [completion audit](./composition-ce16-completion-audit.md).
+
+### 2026-10-05 — Complete isolated CE16 technical verification
+
+- **Agent / branch:** Codex on isolated `codex/composition-ce16`, from `dee9e7b`.
+- **Done:** `6e0e74d` fixes narrow module loading and adds real browser verification;
+  `974dfdf` strengthens current source checks. Closing records mark CE16 `[x]`.
+- **Results:** full local `pnpm check` exit 0 on frozen `974dfdf`: 1,436 unit,
+  46 runtime, 125 integration, 14 depth tests and 42 browser groups. All 176 frozen
+  baselines / 36,061 frames pass without regeneration; native stereo decode exact,
+  editor/playback/full/range mux pass. Final source/PCM recheck also passes.
+- **Rejected / do not repeat:** broad command-only import filtering admitted
+  browsers; use the explicit audio allowlist. Retained loader/alias/test-fixture
+  failures are resolved; unchanged timeout cases also pass in the final full gate.
+- **Open / limits:** no technical blockers; listening/human AV QA unperformed.
+  Future binary distribution needs packaging review. Owner browser exception was
+  for this completion pass only; production requires no GUI. No Actions or CE12 edits.
+- **Records:** [audit](./composition-ce16-completion-audit.md),
+  [results](./composition-ce16-verification-results.json), [guide](./soundtrack-project.md).
+
+### 2026-10-05 — Fix PR #32 separate-axis constant speed
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `32e31ac`.
+- **Done:** build constant-speed paths from independently eased axis samples,
+  preserve motion offsets and native joint-path arithmetic, cache by source/fps,
+  and bound spring sampling work. Evaluator version is `25`; a new browser
+  fixture covers separate-axis source/baked pixel and seek parity.
+- **Results:** 13 new expression cases pass, including a dense spring reference
+  at three frame rates. Fast checks pass 1,487 unit tests; runtime 46 and
+  integration 111 pass. Both expression browser backends, repeated/baked exports
+  and Node/browser evaluator parity pass. All 176 frozen items / 36,061 frames
+  pass without regeneration.
+- **Rejected:** fixed 128 samples per interval alias spring oscillations;
+  128/256 per natural period miss the 0.05 px reference tolerance. Use 512 per
+  period and report a clear error above the 512,001-point bound.
+- **Delivery:** four finding commits and one final push to PR #32. Owner
+  review/merge remains pending; deferred performance/runtime work stays deferred.
+- **Records:** [Second follow-up evidence](./pr-32-second-followup-fix-results.json).
+
+### 2026-10-05 — Fix PR #32 periodic reference dependencies
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `4f7d8be`.
+- **Done:** use root-clock periodic windows and exact reference axes in echoed
+  dependency traversal; retain anchors for delayed/lagged and temporal reads.
+  Historical vector samples constrain only read components, preserving other axes
+  when ordinary samples arrive later under reversed clocks.
+- **Results:** all 53 bake/component-history tests pass. Three original cases and
+  two component-history acceptance cases failed before their fixes; 19 new cases
+  cover periodic windows, temporal readers and required-axis conflicts.
+- **Open / next:** combined correctness checks, the separate-axis roving finding
+  commit and one final push after all four commits.
+- **Records:** [Second follow-up evidence](./pr-32-second-followup-fix-results.json).
+
+### 2026-10-05 — Fix PR #32 normalized AST bounds
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `6876407`.
+- **Done:** accept the serialized depth of parser-valid ASTs while retaining the
+  500-node source bound, 64 KiB payload limit and generic JSON/metadata depth 64.
+- **Results:** four new cases failed before the fix; all nine normalization cases
+  and the affected bounds/syntax/expression files pass (174 tests). CLI output
+  for 40/250 terms revalidates and evaluates correctly. Independent review passes.
+- **Open / next:** periodic reference writers and separate-axis roving, combined
+  local correctness gates and one final push after all four finding commits.
+- **Records:** [evidence](./pr-32-second-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/32#discussion_r4181734013).
+
+### 2026-10-05 — Fix PR #32 timed primitive-blur history
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, from `c4f7c8d`.
+- **Done:** posted all four findings inline; select the active blur at the historical
+  scope/layer clock and include inherited blur outside a nearer override's window.
+- **Results:** two regressions failed before the fix; all 34 bake tests pass,
+  including forward/reversed covering-window cases that must still bake exactly.
+- **Open / next:** normalized AST bounds, periodic references and separate-axis
+  roving; combined local correctness checks, then one final push after four commits.
+- **Records:** [evidence](./pr-32-second-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/32#discussion_r4181734002).
+
+### 2026-10-05 — Fix PR #32 nested echo bake clocks
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, after `5aeb64e`.
+- **Done:** sample render echo clocks and contributing property dependencies;
+  preserve compatible keys and refuse conflicting/fractional history with
+  `comp-bake-time`. Cover primitive blur and active unchanged-source revisions.
+- **Results:** 17 new bake cases; fast checks pass (1,442 tests), runtime 46 and
+  integration 111 tests pass. Both browser backends pass pixels/seeks/repeated and
+  baked MP4 parity; all 176 frozen items / 36,061 frames pass without regeneration.
+- **Rejected / do not repeat:** sampling all sibling properties over-rejected
+  compatible bakes; raw effect exclusion missed primitive blur/revision reads;
+  collecting overridden group blur also over-rejected. Regressions cover each.
+- **Delivery / next:** two finding commits, one final push to PR #32, then owner
+  review/merge. Full test pipeline and strict hardware matrices were not run.
+- **Records:** [follow-up fix evidence](./pr-32-followup-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/32#discussion_r4181138611).
+
+### 2026-10-05 — Fix PR #32 implicit anchor/reference dependencies
+
+- **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, from `dee9e7b`.
+- **Done:** posted both inline findings; resolve inherited reference axes through
+  anchor expressions and reject their self/indirect cycles before evaluation.
+- **Results:** three regressions failed before the fix. Five final cases cover
+  property/tree reads, order/seeks, authored/partial references, motion writers and
+  nested instances; all fast checks pass (1,425 tests). A one-key signal fixture
+  failed the existing schema and was corrected to two keys before rerunning.
+- **Open / next:** nested echo bake parity, then combined browser/runtime/baseline
+  correctness checks and one final push. CE6-P and CE9-F1 remain deferred.
+- **Records:** [follow-up fix evidence](./pr-32-followup-fix-results.json),
+  [inline review](https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5410494179).
+
 ### 2026-10-04 — Fix the remaining PR #32 printer finding
 
 - **Agent / branch:** Codex on isolated `codex/pr32-review-fixes`, from `e81a146`;
@@ -4450,6 +6435,97 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 - **Records:** [CE9 completion record](./composition-engine-plan.md#ce9--expressions-and-motion-behaviours),
   [verification results](./composition-ce9-verification-results.json).
 
+### 2026-10-04 — Resolve PR #31 against main
+
+- **Agent / branch:** Codex on `codex/pr31-conflict-resolution`, from PR head
+  `6034de3`, in an isolated managed worktree.
+- **Scope:** merge `main` at `3413780`; the sole conflict was the WebGL renderer
+  version. Chose `0.36.1`, preserving both branches' fixes and optimizations.
+- **Results:** `pnpm check:fast` (1,286 tests), WebGL, exposure, provider-typography
+  and WebGL-export browser checks pass on Node 22.23.1. Formatting and whitespace
+  checks pass; no unmerged paths or conflict markers remain.
+- **Open / next:** publish the merge to PR #31. Full family matrices, hardware
+  and frozen CE0 checks were not rerun; CE6-P remains deferred. Local audit
+  commit `205f413` remains separate.
+- **Records:** [conflict-resolution evidence](./pr-31-conflict-resolution-results.json),
+  [PR #31](https://github.com/xxibcill/still-shift/pull/31).
+
+### 2026-10-04 — Verify CE16 under the owner’s one-time browser exception
+
+- **Agent / branch:** Codex on isolated `codex/composition-ce16`, after `07bf912`.
+- **Authorization:** owner explicitly allowed automated browser verification for
+  this checking pass. Routine production remains command/API/file-based.
+- **Done:** narrow soundtrack module entry fixes strip-only Vite loading; new
+  local browser group covers shared edits, exact 384,000-sample stereo native decode,
+  playback/seek/clear and 192-frame/full + 24-frame/range passage mux audio.
+- **Results:** focused browser checks, all 35 audio tests and Python checks pass.
+  Full gate passes 1,436 unit, 46 runtime, 125 integration and 14 depth tests so far.
+- **In flight:** remaining full `pnpm check` browser groups and frozen CE0 baselines.
+- **Failures:** retained loader/alias failures, fixture corrections and one visual
+  timeouts. Both timed-out cases pass unchanged alone. Verifier now independently
+  checks current original/packaged whole-file hashes; all match. Final gate runs
+  serially on frozen files, with no parallel edits or tests.
+- **Constraints:** no GitHub Actions, provider calls, purchases, source changes or
+  primary checkout/CE12 edits. Earlier headless-browser breach stays recorded.
+- **Records:** [CE16 audit](./composition-ce16-completion-audit.md),
+  [results](./composition-ce16-verification-results.json).
+
+### 2026-10-04 — Audit CE16 completion and correct browser verification selection
+
+- **Agent / branch:** Codex on isolated `codex/composition-ce16`, after `733b24d`.
+- **Done:** `31764f4` guards cleared/superseded preview attachments and immutable snapshots;
+  model held automation steps; reject duplicate beat anchors; correct CLI example
+  and generated measurement evidence. Added six preview harness regressions.
+- **Results:** corrected tier passes 1,436 unit, 46 runtime, 19 audio integration
+  and 14 depth tests; focused group 35; retained 60-second decoded lifecycle exact.
+- **Rejected / repaired:** direct Playwright-import filtering missed indirect
+  headless-browser launches. Earlier broad checks violated zero browser driving;
+  retained honestly, replaced with three audited audio-only suites. No CUA used.
+- **Open / next:** closure blocked after three consecutive impasse audits; owner
+  resolution of full check/rendered baseline conflict remains pending; `[~]`.
+  Listening/AV QA and binary distribution decision unperformed/pending.
+- **Records:** [requirement audit](./composition-ce16-completion-audit.md),
+  [evidence](./composition-ce16-verification-results.json).
+
+### 2026-10-04 — Continue CE16 into the shared project and passage integration
+
+- **Agent / branch:** Codex on isolated `codex/composition-ce16`, after `0ad92e9`.
+- **Done:** `15b02eb` commits the shared project contract, atomic revision
+  edits/history, bounded worker, CLI lifecycle, explicit BGM ducking, optional
+  layer view and passage adapter. Worktree is clean after the documentation record.
+- **Results:** full 60-second CLI reload/portable relocation exact; narration and
+  unrelated edited stems unchanged; mix reconstructed exactly. Local model/PCM/API
+  checks preserve legacy passage audio. 1,428 unit, 46 runtime, 94 command integration and 14 depth tests pass;
+  focused final audio/API group passes 27 tests.
+- **Rejected / repaired:** boundary check found undeclared `zod`; declared exact
+  existing version. Formatting of generated evidence/lockfile corrected. Final review fixed
+  soundtrack gallery mode and revision drift during picture export.
+- **Open / next:** owner closure decision requested; full `pnpm check`/browser
+  baselines unperformed under CE16's
+  browser-driving prohibition, so milestone remains `[~]`. Distribution packaging
+  decision pending; listening, audiovisual QA and GUI inspection unperformed.
+- **Records:** [guide](./soundtrack-project.md),
+  [milestone](./composition-engine-plan.md#ce16--programmable-soundtrack-project-and-timeline),
+  [technical evidence](./composition-ce16-verification-results.json).
+
+### 2026-10-04 — Isolate CE16 and verify its backend lifecycle
+
+- **Agent / branch:** Codex on `codex/composition-ce16`, from delivered CE9 `dee9e7b`.
+- **Scope:** owner requested isolated CE16 implementation, alongside separate CE12 work.
+- **Done:** created and attached managed worktree; reused development dependencies;
+  started isolated pinned DawDreamer environment setup.
+- **Results:** seven 60-second mix/stem/bus outputs per run, exact fresh-process
+  reload and unaffected-stem comparisons; narration source PCM exact. Gain/move
+  edits and checksum rejection verified; built-in DSP onset delay is zero.
+  Fast checks pass (1,420 tests); Python lint/format checks pass.
+- **Environment:** initial fast run failed on six files because the dependency
+  symlink lacked package-local `three`; isolated offline install resolves it.
+  Full runtime/browser/baseline groups were not rerun.
+- **Open / next:** CE16-B integration and packaging remain pending. No listening
+  or audiovisual QA performed. Zero Computer Use; raw assets preserved.
+- **Records:** [CE16](./composition-engine-plan.md#ce16--programmable-soundtrack-project-and-timeline),
+  [backend proof evidence](./composition-ce16-verification-results.json).
+
 ### 2026-10-03 — CE9 expressions and motion behaviours
 
 - **Agent / branch:** Claude Code on `codex/composition-ce9` (from `6034de3`; the
@@ -4479,21 +6555,6 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
 - **Records:** [CE9 completion record](./composition-engine-plan.md#ce9--expressions-and-motion-behaviours),
   [decision log](./composition-engine-plan.md#decision-log),
   [expression reference](./composition-reference.md#expressions-ce9).
-
-### 2026-10-04 — Resolve PR #31 against main
-
-- **Agent / branch:** Codex on `codex/pr31-conflict-resolution`, from PR head
-  `6034de3`, in an isolated managed worktree.
-- **Scope:** merge `main` at `3413780`; the sole conflict was the WebGL renderer
-  version. Chose `0.36.1`, preserving both branches' fixes and optimizations.
-- **Results:** `pnpm check:fast` (1,286 tests), WebGL, exposure, provider-typography
-  and WebGL-export browser checks pass on Node 22.23.1. Formatting and whitespace
-  checks pass; no unmerged paths or conflict markers remain.
-- **Open / next:** publish the merge to PR #31. Full family matrices, hardware
-  and frozen CE0 checks were not rerun; CE6-P remains deferred. Local audit
-  commit `205f413` remains separate.
-- **Records:** [conflict-resolution evidence](./pr-31-conflict-resolution-results.json),
-  [PR #31](https://github.com/xxibcill/still-shift/pull/31).
 
 ### 2026-10-03 — Commit documentation and prepare CE6 PR
 

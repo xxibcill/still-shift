@@ -1,0 +1,1483 @@
+{
+  "milestone": "CE6-P",
+  "status": "Verified compatibility-preserving measured slice delivered for review; CE6-P milestone acceptance remains open",
+  "startedDate": "2026-10-05",
+  "updatedDate": "2026-10-06",
+  "branch": "codex/composition-ce6p-compatible",
+  "base": "0e4838852855f6dc8cf91bba763a402dfd716f88",
+  "scope": "Current WebGL approach only: independent candidates for final shutter sum/resolve fusion and bounded GPU exposure snapshots/sums. Main feature lane untouched.",
+  "acceptanceChanged": false,
+  "baselineChanged": false,
+  "gpuPolicyChanged": false,
+  "githubActions": "disabled; local verification only",
+  "targets": {
+    "familyMaximumRatio": 1.25,
+    "nativeCanvasOverWebglMinimumRatio1920x1080": 2,
+    "originalFamilyFailures": 117,
+    "originalFailuresClosed": 0
+  },
+  "originalFailureSource": "composition-ce6-performance-results.json families items ratio033 > 1.25; all 117 remain open, including 0.35 timing variation",
+  "originalFailingCases": {
+    "commerce": [
+      {
+        "id": "commerce/atom-anchor",
+        "ratio033": 1.9219240144066383,
+        "ratio035": 1.868876081175987
+      },
+      {
+        "id": "commerce/atom-attachment",
+        "ratio033": 2.445828150378221,
+        "ratio035": 2.358674462088724
+      },
+      {
+        "id": "commerce/atom-attachment/nested-crop-brush",
+        "ratio033": 2.6915001683352338,
+        "ratio035": 2.6101901930538083
+      },
+      {
+        "id": "commerce/atom-background-light",
+        "ratio033": 1.6816533033298648,
+        "ratio035": 1.6632851721404833
+      },
+      {
+        "id": "commerce/atom-displacement",
+        "ratio033": 2.064861504774125,
+        "ratio035": 2.058268301502184
+      },
+      {
+        "id": "commerce/atom-displacement/pixel-stack",
+        "ratio033": 2.3239727705280186,
+        "ratio035": 2.038399011929951
+      },
+      {
+        "id": "commerce/atom-displacement/pixel-reversed",
+        "ratio033": 2.4644828579232994,
+        "ratio035": 2.152973040991247
+      },
+      {
+        "id": "commerce/atom-drift",
+        "ratio033": 1.874972911206539,
+        "ratio035": 1.853864470612458
+      },
+      {
+        "id": "commerce/atom-echo/returning-matte",
+        "ratio033": 3.118120279020959,
+        "ratio035": 3.089860172893283
+      },
+      {
+        "id": "commerce/atom-effects-studio",
+        "ratio033": 1.6295294309489474,
+        "ratio035": 1.6099432770135615
+      },
+      {
+        "id": "commerce/atom-float",
+        "ratio033": 2.0511811022826096,
+        "ratio035": 2.0216476223918862
+      },
+      {
+        "id": "commerce/atom-focus-blur",
+        "ratio033": 1.6316646459449677,
+        "ratio035": 1.3934590918515581
+      },
+      {
+        "id": "commerce/atom-focus-blur/active-opacity",
+        "ratio033": 2.3368799129159754,
+        "ratio035": 1.983496684983321
+      },
+      {
+        "id": "commerce/atom-glow",
+        "ratio033": 2.9540250963958568,
+        "ratio035": 2.1912191163062755
+      },
+      {
+        "id": "commerce/atom-grain",
+        "ratio033": 3.8925529975522366,
+        "ratio035": 2.4038350925709966
+      },
+      {
+        "id": "commerce/atom-height-shadow",
+        "ratio033": 2.3819716621531213,
+        "ratio035": 2.4490426105567593
+      },
+      {
+        "id": "commerce/atom-layout/transformed-annotation",
+        "ratio033": 3.226726211156692,
+        "ratio035": 3.235666546067301
+      },
+      {
+        "id": "commerce/atom-light-sweep",
+        "ratio033": 1.8413895879238829,
+        "ratio035": 1.7551020408106588
+      },
+      {
+        "id": "commerce/atom-light-sweep/rotated-skew",
+        "ratio033": 1.7871105889874515,
+        "ratio035": 1.741019213830695
+      },
+      {
+        "id": "commerce/atom-light-sweep/image-matte",
+        "ratio033": 1.872671144300712,
+        "ratio035": 1.8242005377002126
+      },
+      {
+        "id": "commerce/atom-light-sweep/glow-first",
+        "ratio033": 2.7123010249229758,
+        "ratio035": 2.308863535761705
+      },
+      {
+        "id": "commerce/atom-matte",
+        "ratio033": 2.2203944546676055,
+        "ratio035": 1.8215991849495912
+      },
+      {
+        "id": "commerce/atom-matte/inverted-overlap",
+        "ratio033": 1.5401207934393948,
+        "ratio035": 1.5309344171413535
+      },
+      {
+        "id": "commerce/atom-matte/shared-group-source",
+        "ratio033": 1.4689297044660814,
+        "ratio035": 1.4410172786293758
+      },
+      {
+        "id": "commerce/atom-matte/inverted-overlap/focus-matte",
+        "ratio033": 2.0679326024668327,
+        "ratio035": 1.809165048775588
+      },
+      {
+        "id": "commerce/atom-matte/shared-group-source/focus-matte",
+        "ratio033": 1.695020857547016,
+        "ratio035": 1.5494958139511543
+      },
+      {
+        "id": "commerce/atom-panel/appearance-uniform",
+        "ratio033": 2.4713656406770363,
+        "ratio035": 2.515590999553777
+      },
+      {
+        "id": "commerce/atom-parallax",
+        "ratio033": 4.182366458011387,
+        "ratio035": 4.182684222290838
+      },
+      {
+        "id": "commerce/atom-particles",
+        "ratio033": 5.565318592196303,
+        "ratio035": 4.725460127933498
+      },
+      {
+        "id": "commerce/atom-particles/environment-stack",
+        "ratio033": 3.340994962124778,
+        "ratio035": 2.3250481683308513
+      },
+      {
+        "id": "commerce/atom-particles/environment-reversed",
+        "ratio033": 3.3347094666999855,
+        "ratio035": 2.3400793259699117
+      },
+      {
+        "id": "commerce/atom-path/spatial",
+        "ratio033": 4.673720141867908,
+        "ratio035": 4.65571614978381
+      },
+      {
+        "id": "commerce/atom-path/morph",
+        "ratio033": 3.3431603756366433,
+        "ratio035": 3.272590365452471
+      },
+      {
+        "id": "commerce/atom-path/spatial-morph",
+        "ratio033": 3.7122252741174013,
+        "ratio035": 3.610533159358097
+      },
+      {
+        "id": "commerce/atom-path/appearance-uniform",
+        "ratio033": 3.869633096062194,
+        "ratio035": 3.9085411914215564
+      },
+      {
+        "id": "commerce/atom-path/appearance-ink",
+        "ratio033": 2.9541818283796704,
+        "ratio035": 3.285060972469105
+      },
+      {
+        "id": "commerce/atom-path/appearance-brush",
+        "ratio033": 3.351804770186923,
+        "ratio035": 3.412236718631172
+      },
+      {
+        "id": "commerce/atom-scale",
+        "ratio033": 1.5276633305012057,
+        "ratio035": 1.4555128590729423
+      },
+      {
+        "id": "commerce/atom-sequence",
+        "ratio033": 2.4269557041893197,
+        "ratio035": 2.3714195784199945
+      },
+      {
+        "id": "commerce/atom-studio",
+        "ratio033": 2.0969135805412575,
+        "ratio035": 2.1638149496146792
+      },
+      {
+        "id": "commerce/atom-text/animated-states",
+        "ratio033": 4.566730400215205,
+        "ratio035": 4.534154531153213
+      },
+      {
+        "id": "component/commerce-bracket",
+        "ratio033": 2.3972250806433846,
+        "ratio035": 2.4478844152830885
+      },
+      {
+        "id": "component/commerce-detail-sequence",
+        "ratio033": 1.7198587261828129,
+        "ratio035": 1.5064429527150796
+      },
+      {
+        "id": "component/commerce-instances",
+        "ratio033": 2.134343429746135,
+        "ratio035": 2.1664969398107456
+      },
+      {
+        "id": "component/commerce-layout",
+        "ratio033": 2.1032934109522903,
+        "ratio035": 2.048828129724825
+      },
+      {
+        "id": "component/commerce-leader",
+        "ratio033": 2.1868076495467736,
+        "ratio035": 2.1727694671763804
+      },
+      {
+        "id": "component/commerce-leader/source-crop-ink",
+        "ratio033": 2.2996542471258064,
+        "ratio035": 2.309891801957113
+      },
+      {
+        "id": "component/commerce-outline",
+        "ratio033": 2.57475727655535,
+        "ratio035": 2.616927591325753
+      },
+      {
+        "id": "component/commerce-pin",
+        "ratio033": 1.4432742961766483,
+        "ratio035": 1.4929164628854619
+      },
+      {
+        "id": "component/commerce-sequence",
+        "ratio033": 1.3984693945624067,
+        "ratio035": 1.450960568055432
+      },
+      {
+        "id": "component/commerce-stagger",
+        "ratio033": 2.972986009069306,
+        "ratio035": 3.045004948398542
+      },
+      {
+        "id": "component/commerce-state",
+        "ratio033": 1.2807348071270062,
+        "ratio035": 1.4433518581502722
+      },
+      {
+        "id": "component/commerce-supply-sequence",
+        "ratio033": 2.0841750836827733,
+        "ratio035": 2.200320046715252
+      },
+      {
+        "id": "component/commerce-supply",
+        "ratio033": 2.8190401276676154,
+        "ratio035": 2.9128978192204027
+      },
+      {
+        "id": "component/commerce-text-fit",
+        "ratio033": 1.3044747103443721,
+        "ratio035": 1.2840000000596046
+      },
+      {
+        "id": "component/commerce-text-fit/native-thai",
+        "ratio033": 1.2955974863950193,
+        "ratio035": 1.2474526889391002
+      },
+      {
+        "id": "component/commerce-tour",
+        "ratio033": 2.880000005623729,
+        "ratio035": 2.877716231564565
+      },
+      {
+        "id": "component/commerce-transform",
+        "ratio033": 2.27712363458332,
+        "ratio035": 2.2175423409132726
+      },
+      {
+        "id": "component/commerce-travel",
+        "ratio033": 1.5846511644455727,
+        "ratio035": 1.5792270547982155
+      },
+      {
+        "id": "component/commerce-underline",
+        "ratio033": 2.1565762023620048,
+        "ratio035": 2.089870132802248
+      },
+      {
+        "id": "component/commerce-value",
+        "ratio033": 2.4751131256527446,
+        "ratio035": 2.426847659291963
+      },
+      {
+        "id": "component/commerce-value/half-away-from-zero",
+        "ratio033": 2.794911733261037,
+        "ratio035": 2.772843285676547
+      },
+      {
+        "id": "component/commerce-value/truncate",
+        "ratio033": 2.7262682088956676,
+        "ratio035": 2.767466113934336
+      },
+      {
+        "id": "component/commerce-visibility",
+        "ratio033": 1.37473684235623,
+        "ratio035": 1.4705591278879602
+      },
+      {
+        "id": "component/isolated-bracket",
+        "ratio033": 2.527214511490823,
+        "ratio035": 2.4603735490365874
+      },
+      {
+        "id": "component/isolated-detail-sequence",
+        "ratio033": 1.4670244086892246,
+        "ratio035": 1.4823187464660326
+      },
+      {
+        "id": "component/isolated-leader",
+        "ratio033": 1.9697950379452138,
+        "ratio035": 1.9173511334033735
+      },
+      {
+        "id": "component/isolated-outline",
+        "ratio033": 2.237675148794173,
+        "ratio035": 2.2340311285560865
+      },
+      {
+        "id": "component/isolated-supply-sequence",
+        "ratio033": 1.841551149995868,
+        "ratio035": 1.8363540402360736
+      },
+      {
+        "id": "component/isolated-supply",
+        "ratio033": 2.8174483058211894,
+        "ratio035": 2.726695944373115
+      },
+      {
+        "id": "component/isolated-tour",
+        "ratio033": 2.8453093821114064,
+        "ratio035": 2.668786695501893
+      },
+      {
+        "id": "component/isolated-transform",
+        "ratio033": 2.0150884475385613,
+        "ratio035": 1.9512459428694704
+      },
+      {
+        "id": "component/isolated-underline",
+        "ratio033": 1.6320850202366561,
+        "ratio035": 1.5595800481263482
+      },
+      {
+        "id": "component/isolated-value",
+        "ratio033": 1.5900747775925719,
+        "ratio035": 1.6077192958131428
+      }
+    ],
+    "storyComponents": [
+      {
+        "id": "component/story-bracket",
+        "ratio033": 3.085501863707621,
+        "ratio035": 3.0397463041931405
+      },
+      {
+        "id": "component/story-detail-sequence",
+        "ratio033": 3.193984304954488,
+        "ratio035": 3.1848445019537626
+      },
+      {
+        "id": "component/story-instances",
+        "ratio033": 5.097061440749663,
+        "ratio035": 5.019642851959762
+      },
+      {
+        "id": "component/story-layout",
+        "ratio033": 4.983920036375194,
+        "ratio035": 5.068314595576564
+      },
+      {
+        "id": "component/story-leader",
+        "ratio033": 2.772173909955304,
+        "ratio035": 2.7518062054654053
+      },
+      {
+        "id": "component/story-leader/flow",
+        "ratio033": 3.067039100890012,
+        "ratio035": 3.104593921610608
+      },
+      {
+        "id": "component/story-leader/flow-target-matte",
+        "ratio033": 2.8812303808622506,
+        "ratio035": 2.8882645883393874
+      },
+      {
+        "id": "component/story-leader/flow-target-inverted",
+        "ratio033": 3.5657564370142327,
+        "ratio035": 3.55387284895302
+      },
+      {
+        "id": "component/story-leader/spatial",
+        "ratio033": 4.593174978459541,
+        "ratio035": 4.471843513145816
+      },
+      {
+        "id": "component/story-leader/morph",
+        "ratio033": 4.187253242307146,
+        "ratio035": 4.194683134090667
+      },
+      {
+        "id": "component/story-leader/spatial-morph",
+        "ratio033": 3.2691853591701503,
+        "ratio035": 3.3943865733914915
+      },
+      {
+        "id": "component/story-leader/appearance-uniform",
+        "ratio033": 3.062180246912708,
+        "ratio035": 2.9714814876690814
+      },
+      {
+        "id": "component/story-mask",
+        "ratio033": 2.7853947542750577,
+        "ratio035": 2.6999093372351415
+      },
+      {
+        "id": "component/story-outline",
+        "ratio033": 3.1973094280446066,
+        "ratio035": 2.9139099281057304
+      },
+      {
+        "id": "component/story-pin",
+        "ratio033": 3.7913613596693247,
+        "ratio035": 3.6296699382846223
+      },
+      {
+        "id": "component/story-sequence",
+        "ratio033": 3.514274394872735,
+        "ratio035": 3.403645843080229
+      },
+      {
+        "id": "component/story-stagger",
+        "ratio033": 5.50988821632174,
+        "ratio035": 5.440355838090087
+      },
+      {
+        "id": "component/story-state",
+        "ratio033": 4.183624807864451,
+        "ratio035": 4.088578964447226
+      },
+      {
+        "id": "component/story-state/blended-container",
+        "ratio033": 4.679456702307172,
+        "ratio035": 4.282898716849463
+      },
+      {
+        "id": "component/story-state/appearance-uniform",
+        "ratio033": 4.183614803310621,
+        "ratio035": 3.9773877854964974
+      },
+      {
+        "id": "component/story-state/effects-group-grain",
+        "ratio033": 1.9318620217390168,
+        "ratio035": 1.661295891208849
+      },
+      {
+        "id": "component/story-supply-sequence",
+        "ratio033": 3.151353626185997,
+        "ratio035": 3.130667380540637
+      },
+      {
+        "id": "component/story-supply",
+        "ratio033": 4.342087539622243,
+        "ratio035": 4.46120822656809
+      },
+      {
+        "id": "component/story-text-fit",
+        "ratio033": 3.802290072785336,
+        "ratio035": 3.7762978134480254
+      },
+      {
+        "id": "component/story-tour",
+        "ratio033": 4.399526384598188,
+        "ratio035": 4.576827096584323
+      },
+      {
+        "id": "component/story-transform",
+        "ratio033": 3.9632508882897066,
+        "ratio035": 4.043526378058096
+      },
+      {
+        "id": "component/story-travel",
+        "ratio033": 4.137824229177094,
+        "ratio035": 4.293487220631368
+      },
+      {
+        "id": "component/story-underline",
+        "ratio033": 2.6686851131612355,
+        "ratio035": 2.7496516520315573
+      },
+      {
+        "id": "component/story-value",
+        "ratio033": 3.893789381690149,
+        "ratio035": 3.7226179859174735
+      },
+      {
+        "id": "component/story-visibility",
+        "ratio033": 3.0013357124903264,
+        "ratio035": 3.024850436256462
+      },
+      {
+        "id": "component/passage-components/instances",
+        "ratio033": 5.06930253043459,
+        "ratio035": 5.022869969758404
+      },
+      {
+        "id": "component/passage-components/leader",
+        "ratio033": 2.6727659609378223,
+        "ratio035": 2.568938195515669
+      },
+      {
+        "id": "component/passage-components/value",
+        "ratio033": 3.7549783592616324,
+        "ratio035": 3.4657534189499155
+      },
+      {
+        "id": "component/passage-behaviors/transform",
+        "ratio033": 3.8828451954932293,
+        "ratio035": 3.7450212217356067
+      },
+      {
+        "id": "component/passage-behaviors/state",
+        "ratio033": 4.109702971954016,
+        "ratio035": 4.011658523720989
+      },
+      {
+        "id": "component/passage-behaviors/travel",
+        "ratio033": 4.150877204637986,
+        "ratio035": 3.9888689340528614
+      },
+      {
+        "id": "component/passage-behaviors/supply",
+        "ratio033": 4.37802420611886,
+        "ratio035": 4.072362418029079
+      },
+      {
+        "id": "component/passage-timing/visibility",
+        "ratio033": 2.9716814155146922,
+        "ratio035": 2.901992685253503
+      },
+      {
+        "id": "component/passage-timing/text-fit",
+        "ratio033": 3.7409798660132774,
+        "ratio035": 3.670840786050914
+      },
+      {
+        "id": "component/passage-timing/supply-sequence",
+        "ratio033": 3.1357829775729384,
+        "ratio035": 2.9215017068911906
+      }
+    ],
+    "typography": [
+      {
+        "id": "typography/editorial/containers",
+        "ratio033": 1.3547208575801146,
+        "ratio035": 1.3570760108555942
+      },
+      {
+        "id": "typography/editorial/appearance-uniform",
+        "ratio033": 1.6124686284619538,
+        "ratio035": 1.4948299624148134
+      },
+      {
+        "id": "typography/variable-thai/numeric",
+        "ratio033": 1.5780637965238553,
+        "ratio035": 1.4978123516128314
+      }
+    ]
+  },
+  "versions": {
+    "baseline": "composition-webgl2-0.38.1",
+    "candidate": "composition-webgl2-0.40.0"
+  },
+  "checkpoints": [
+    {
+      "commit": "f3ff661",
+      "purpose": "Resume isolated lane and record plan"
+    },
+    {
+      "commit": "cff9b58",
+      "purpose": "Buildable prototype and exactness/serial diagnostic harness; runtime unverified at checkpoint"
+    },
+    {
+      "commit": "f86dc15",
+      "purpose": "Review repairs, cold preview budgets and all original failure rows"
+    },
+    {
+      "commit": "706be71",
+      "purpose": "Independent fusion-only baseline; reject overlapping timing workloads"
+    },
+    {
+      "commit": "00951b9",
+      "purpose": "Buildable bounded exposure candidate before fractional-background review repair"
+    },
+    {
+      "commit": "7a797a9",
+      "purpose": "Exact-clear eligibility repair and 189 GPU fractional regressions"
+    },
+    {
+      "commit": "e1c0cb8",
+      "purpose": "Documentation-only merge of completed CE7 milestone; main checkout untouched"
+    }
+  ],
+  "verification": [
+    {
+      "command": "pnpm install --offline --frozen-lockfile",
+      "status": "failed",
+      "reason": "Sandbox store missing balanced-match tarball; no source change"
+    },
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "status": "passed",
+      "environment": "Node 22.23.1 / pnpm 10.29.3; isolated local dependencies"
+    },
+    {
+      "command": "uv sync --frozen",
+      "status": "passed",
+      "environment": "local .venv, Python 3.12.11"
+    },
+    {
+      "command": "pnpm toolchain:check; workspace and Python imports",
+      "status": "passed"
+    },
+    {
+      "command": "changed-file eslint; pnpm build",
+      "status": "passed"
+    },
+    {
+      "command": "tests/browser/composition-webgl-exposure.ts pinned and hardware",
+      "status": "passed",
+      "casesPerProfile": 852,
+      "breakdown": {
+        "fusion": 201,
+        "bounded": 462,
+        "fractionalClear": 189
+      },
+      "logs": [
+        "benchmarks/results/composition-ce6p/exact-pinned.log",
+        "benchmarks/results/composition-ce6p/exact-hardware.log"
+      ]
+    },
+    {
+      "command": "fusion A/B bracket attempt 1",
+      "status": "rejected-invalid",
+      "reason": "competing workload detected during first baseline timing; no performance conclusion",
+      "record": "benchmarks/results/composition-ce6p/invalid-01-fusion-ab.json"
+    },
+    {
+      "command": "bounded A/B bracket attempt 1",
+      "status": "rejected-invalid",
+      "reason": "competing workload detected during first baseline timing; no performance conclusion",
+      "record": "benchmarks/results/composition-ce6p/invalid-02-bounded-ab.json"
+    },
+    {
+      "command": "changed-file formatting/eslint; pnpm build after diagnostic provenance repair",
+      "status": "passed",
+      "runtimeChanged": false
+    },
+    {
+      "command": "pnpm check",
+      "status": "passed",
+      "record": "fullGate",
+      "baselineRegenerated": false
+    },
+    {
+      "command": "Three unchanged strict WebGL family commands with --keep-going and required exports",
+      "status": "complete audit; each command exits 1 for preserved acceptance failures",
+      "record": "strictFamilyAudit"
+    },
+    {
+      "command": "Direct preserved-CE7/candidate byte comparison of every failing pixel case plus zero-decay control",
+      "status": "passed; 2500 frame/read comparisons exact",
+      "record": "preservedByteProof"
+    }
+  ],
+  "review": {
+    "standards": {
+      "documentedBreaches": 0,
+      "findings": [
+        "Browser-launch cleanup scope",
+        "Preserve CE6-P old anchor",
+        "Conservative workload guard recognizes pnpm run/filter/cjs invocations without shell false positives",
+        "Best-effort 2-second overlap detection retains and rejects invalid timing runs; startup/end checks also apply",
+        "Rounded clear metadata is not exact framebuffer bytes; restrict bounded path to exact premultiplied integer clear channels and opaque screens"
+      ],
+      "resolution": "fixed before runtime verification"
+    },
+    "spec": {
+      "findings": ["Cold preview budget missing"],
+      "resolution": "fixed; separate initialization, first submission and next RAF interval; no GPU completion claim"
+    },
+    "bounded": {
+      "status": "both axes clean after repair, runtime pending",
+      "regressionCasesPerProfile": 852,
+      "fractionalClearCases": 189,
+      "resolution": "Fractional/unknown first clear falls back to full-frame accumulation; later uncertainty expands full screen; averages compared with actual GPU sample bytes"
+    },
+    "measurementProvenance": {
+      "finding": "A/B injected renderer/kernel but shared current WebglBounds, so historical baseline incurred exact-clear metadata calculation absent from declared refs",
+      "resolution": "Inject renderer/kernel/bounds consistently from each ref; snapshot/fingerprint shared workload helpers and working-tree revision/status",
+      "scope": "diagnostic harness only; runtime unchanged; full gate continues",
+      "status": "formatting/lint/build passed; both axes clean on read-only repair review"
+    }
+  },
+  "pending": [
+    "Owner review and merge of PR #41",
+    "CE6-P milestone: all original 117 timing failures remain above 1.25x, two additional timing misses observed, and native count-one 2x target unachieved",
+    "CE6-P correctness acceptance: four inherited CE7 echo legacy-tier gaps remain; candidate preserves original bytes"
+  ],
+  "workloadCoordination": "Owner-authorized quiet window completed. All timed brackets, strict matrices, required exports and direct byte comparisons are terminal; release sent to main at 2026-10-06 01:24:27 UTC. Remaining work is review delivery metadata.",
+  "repositoryActionsVerified": {
+    "enabled": false,
+    "checkedDate": "2026-10-06",
+    "method": "gh api repos/xxibcill/still-shift/actions/permissions"
+  },
+  "candidates": [
+    {
+      "id": "final-exposure-fusion",
+      "renderer": "composition-webgl2-0.39.0",
+      "ref": "706be71",
+      "status": "valid pinned fusion-only bracket complete; two-sample export improvement measured, higher-count/preview gains unproven"
+    },
+    {
+      "id": "bounded-exposure-snapshot-sum",
+      "renderer": "composition-webgl2-0.40.0",
+      "status": "Retained for measured pinned sparse exposure benefit (2.676x-3.962x over fusion); no broad hardware speedup claim. Exactness/review/full gate pass; four inherited echo tier gaps are byte-exact with CE7 and remain acceptance failures."
+    }
+  ],
+  "rejectedDrafts": [
+    {
+      "id": "divide-signed-differences-first",
+      "stage": "analytic, not benchmarked",
+      "reason": "GPU reciprocal division plus background cancellation can move half-byte ties; candidate restores original nonnegative integer numerator before division"
+    }
+  ],
+  "retainedAudit036": {
+    "auditRecordCommit": "205f413",
+    "runtimeCommit": "ecf9bc6",
+    "renderer": "composition-webgl2-0.36.0",
+    "cases": 195,
+    "pixelFailures": 0,
+    "timingFailures": {
+      "commerce": 71,
+      "storyComponents": 40,
+      "typography": 4
+    },
+    "status": "historical audit only; does not verify the combined 0.38.1/0.39.0/0.40.0 trees"
+  },
+  "exactnessProfiles": {
+    "pinned": {
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "cases": 852,
+      "fusion": 201,
+      "bounded": 462,
+      "fractionalClear": 189,
+      "maxDelta": 0
+    },
+    "hardware": {
+      "environment": {
+        "profile": "hardware",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+        "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "cases": 852,
+      "fusion": 201,
+      "bounded": 462,
+      "fractionalClear": 189,
+      "maxDelta": 0
+    }
+  },
+  "invalidTimingAttempts": [
+    {
+      "record": "invalid-01-fusion-ab.json",
+      "baselineRef": "0e4838852855f6dc8cf91bba763a402dfd716f88",
+      "candidateRef": "706be71",
+      "method": "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; original CE7 export-cost method; separate RAF preview diagnostic; startup/end workload checks and 2-second overlap polling (invalid runs retained and rejected)",
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "timingValid": false,
+      "overlap": [
+        "42960 node (vitest)    ",
+        "42968 node (vitest 1)     ",
+        "42969 node (vitest 2)     ",
+        "42970 node (vitest 3)     ",
+        "42971 node (vitest 4)     ",
+        "42972 node (vitest 5)     ",
+        "42973 node (vitest 6)     ",
+        "42974 node (vitest 7)     ",
+        "42975 node (vitest 8)     ",
+        "42976 node (vitest 9)     ",
+        "42977 node (vitest 10)     ",
+        "42978 node (vitest 11)     ",
+        "42979 node (vitest 12)     ",
+        "42980 node (vitest 13)     ",
+        "42981 node (vitest 14)     ",
+        "43015 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm exec prettier --write /private/tmp/ce7-pr-dev-log.md"
+      ],
+      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results.",
+      "sourceSelectionLimitation": "Shared current bounds implementation; mixed revisions cannot substantiate full ref-to-ref costs. Already rejected for overlap; no gain claim."
+    },
+    {
+      "record": "invalid-02-bounded-ab.json",
+      "baselineRef": "706be71",
+      "candidateRef": "working-tree",
+      "method": "Serial baseline/candidate/candidate/baseline sessions, independent Vite optimizer caches; original CE7 export-cost method; separate RAF preview diagnostic; startup/end workload checks and 2-second overlap polling (invalid runs retained and rejected)",
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "timingValid": false,
+      "overlap": ["44715 node (vitest)     ", "44723 node (vitest 1)     "],
+      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results.",
+      "sourceSelectionLimitation": "Shared current bounds implementation; mixed revisions cannot substantiate full ref-to-ref costs. Already rejected for overlap; no gain claim."
+    },
+    {
+      "record": "invalid-03-fusion-ab.json",
+      "baselineRef": "0e4838852855f6dc8cf91bba763a402dfd716f88",
+      "candidateRef": "706be71",
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "timingValid": false,
+      "overlap": [
+        "52015 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm --silent test:browser:composition-native-passage",
+        "52036 node --import tsx tests/browser/composition-native-passage.ts"
+      ],
+      "conclusion": "Rejected; no performance claim. Raw local result retained under ignored benchmarks/results.",
+      "sourceSelectionLimitation": "Shared current bounds implementation; mixed revisions cannot substantiate full ref-to-ref costs. Already rejected for overlap; no gain claim."
+    },
+    {
+      "record": "invalid-1791228320169-fusion-ref-ab.json",
+      "baselineRef": "0e4838852855f6dc8cf91bba763a402dfd716f88",
+      "candidateRef": "706be71",
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "timingValid": false,
+      "overlap": [
+        " 8207 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm build"
+      ],
+      "sourceSelection": "renderer/kernel/bounds selected per ref; shared helpers captured and hashed",
+      "conclusion": "Rejected solely for overlapping main-chat build; no performance claim"
+    },
+    {
+      "file": "benchmarks/results/composition-ce6p/invalid-1791230639211-bounded-ref-ab.json",
+      "sha256": "255b894650f4d9b76edc36a5a8a1f07ddf416285d271289b13d48d0906fee59e",
+      "bracket": "bounded fusion-only versus final candidate",
+      "completedSessions": 1,
+      "timingValid": false,
+      "reason": "Main stylize unit verification overlapped first baseline; no bounded gain can be inferred",
+      "overlap": [
+        "38692 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm exec vitest run tests/unit/composition-stylize-effects.test.ts",
+        "38694 node (vitest)   ",
+        "38702 node (vitest 1)     ",
+        "38703 node (vitest 2)     ",
+        "38704 node (vitest 3)     ",
+        "38705 node (vitest 4)     ",
+        "38706 node (vitest 5)     ",
+        "38707 node (vitest 6)     ",
+        "38708 node (vitest 7)     ",
+        "38709 node (vitest 8)     ",
+        "38710 node (vitest 9)     ",
+        "38711 node (vitest 10)     ",
+        "38712 node (vitest 11)     ",
+        "38713 node (vitest 12)     ",
+        "38714 node (vitest 13)     ",
+        "38715 node (vitest 14)     "
+      ],
+      "provenance": "All renderer/kernel/bounds and shared helper source fingerprints repaired and captured",
+      "workingTreeRef": "ae6db182d00df5e081e9fd55b3d6a33a0a5a302e"
+    },
+    {
+      "file": "benchmarks/results/composition-ce6p/invalid-1791231055332-bounded-ref-ab.json",
+      "sha256": "cdeb1d7e0014047016d086de3562270f901763210b285f4c02c4348f507cd477",
+      "bracket": "bounded fusion-only versus final candidate",
+      "completedSessions": 2,
+      "sessions": [
+        {
+          "variant": "baseline",
+          "renderer": "composition-webgl2-0.39.0",
+          "timingValid": true
+        },
+        {
+          "variant": "candidate",
+          "renderer": "composition-webgl2-0.40.0",
+          "timingValid": false
+        }
+      ],
+      "timingValid": false,
+      "reason": "Main radial/warp/stylize/noise unit verification overlapped candidate session; complete bracket rejected",
+      "overlap": [
+        "44508 node /Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm exec vitest run tests/unit/composition-radial-distortion.test.ts tests/unit/composition-warp-effects.test.ts tests/unit/composition-stylize-effects.test.ts tests/unit/composition-noise-effects.test.ts",
+        "44522 node (vitest)      ",
+        "44530 node (vitest 1)     ",
+        "44531 node (vitest 2)     ",
+        "44532 node (vitest 3)     ",
+        "44533 node (vitest 4)     ",
+        "44534 node (vitest 5)     ",
+        "44535 node (vitest 6)     ",
+        "44536 node (vitest 7)     ",
+        "44537 node (vitest 8)     ",
+        "44538 node (vitest 9)     ",
+        "44540 node (vitest 10)     ",
+        "44541 node (vitest 11)     ",
+        "44542 node (vitest 12)     ",
+        "44543 node (vitest 13)     ",
+        "44544 node (vitest 14)     "
+      ],
+      "provenance": "All renderer/kernel/bounds and shared helper source fingerprints repaired and captured",
+      "workingTreeRef": "69a3e2197df4669592413baaf376158b9dfd7b9b"
+    }
+  ],
+  "integrationBase": "817cc9f (CE7 delivered docs-only closeout; runtime still 0e48388)",
+  "focusedRegression": {
+    "status": "passed",
+    "commands": [
+      "pnpm test:browser:composition-webgl",
+      "pnpm test:browser:composition-exposure",
+      "pnpm test:browser:composition-webgl-export"
+    ],
+    "timeControlAcceptance": {
+      "reports": [
+        {
+          "fixture": "time-controls",
+          "frames": 48,
+          "reverseFrames": 48,
+          "randomSeeks": 11,
+          "maxDelta": 0,
+          "oracleMaxDelta": 1,
+          "sampleCounts": {
+            "0": 8,
+            "1": 8,
+            "2": 8,
+            "3": 8,
+            "4": 8,
+            "5": 8,
+            "6": 8,
+            "7": 8,
+            "8": 8,
+            "9": 8,
+            "10": 8,
+            "11": 8,
+            "12": 8,
+            "13": 8,
+            "14": 8,
+            "15": 8,
+            "16": 8,
+            "17": 8,
+            "18": 8,
+            "19": 8,
+            "20": 8,
+            "21": 8,
+            "22": 8,
+            "23": 8,
+            "24": 8,
+            "25": 8,
+            "26": 8,
+            "27": 8,
+            "28": 8,
+            "29": 8,
+            "30": 8,
+            "31": 8,
+            "32": 8,
+            "33": 8,
+            "34": 8,
+            "35": 8,
+            "36": 8,
+            "37": 8,
+            "38": 8,
+            "39": 8,
+            "40": 8,
+            "41": 8,
+            "42": 8,
+            "43": 8,
+            "44": 8,
+            "45": 8,
+            "46": 8,
+            "47": 8
+          }
+        },
+        {
+          "fixture": "time-controls",
+          "backend": "canvas2d",
+          "frames": 48,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "time-controls",
+          "backend": "webgl2",
+          "frames": 48,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "adaptive",
+          "frames": 48,
+          "reverseFrames": 48,
+          "randomSeeks": 11,
+          "maxDelta": 0,
+          "oracleMaxDelta": 0,
+          "sampleCounts": {
+            "0": 16,
+            "1": 3,
+            "2": 3,
+            "3": 3,
+            "4": 3,
+            "5": 3,
+            "6": 3,
+            "7": 3,
+            "8": 3,
+            "9": 3,
+            "10": 3,
+            "11": 3,
+            "12": 3,
+            "13": 3,
+            "14": 3,
+            "15": 3,
+            "16": 3,
+            "17": 3,
+            "18": 3,
+            "19": 3,
+            "20": 3,
+            "21": 3,
+            "22": 3,
+            "23": 3,
+            "24": 3,
+            "25": 3,
+            "26": 3,
+            "27": 3,
+            "28": 3,
+            "29": 3,
+            "30": 3,
+            "31": 3,
+            "32": 3,
+            "33": 3,
+            "34": 3,
+            "35": 3,
+            "36": 3,
+            "37": 3,
+            "38": 3,
+            "39": 3,
+            "40": 3,
+            "41": 3,
+            "42": 3,
+            "43": 3,
+            "44": 3,
+            "45": 3,
+            "46": 3,
+            "47": 1
+          }
+        },
+        {
+          "fixture": "adaptive",
+          "backend": "canvas2d",
+          "frames": 48,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        },
+        {
+          "fixture": "adaptive",
+          "backend": "webgl2",
+          "frames": 48,
+          "repeatedMp4": "byte-identical",
+          "independentPreviewMp4": "byte-identical",
+          "rawPngTransport": "byte-identical"
+        }
+      ],
+      "hardware": {
+        "environments": [
+          {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          {
+            "profile": "hardware",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+            "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+            "platform": "darwin",
+            "arch": "arm64"
+          }
+        ],
+        "tier": "unchanged perceptual hardware policy",
+        "comparisons": 12,
+        "reports": [
+          {
+            "fixture": "time-controls",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 81.93291602579515,
+            "ssim": 0.9999996703088253
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "canvas2d",
+            "frame": 24,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 81.93291602579515,
+            "ssim": 0.999999861996413
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "canvas2d",
+            "frame": 47,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 84.94321598243496,
+            "ssim": 0.9999999004438144
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 81.93291602579515,
+            "ssim": 0.9999996703088253
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "webgl2",
+            "frame": 24,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 81.93291602579515,
+            "ssim": 0.999999861996413
+          },
+          {
+            "fixture": "time-controls",
+            "backend": "webgl2",
+            "frame": 47,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 84.94321598243496,
+            "ssim": 0.9999999004438144
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "canvas2d",
+            "frame": 0,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "canvas2d",
+            "frame": 24,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "canvas2d",
+            "frame": 47,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "webgl2",
+            "frame": 0,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "webgl2",
+            "frame": 24,
+            "tier": "near",
+            "maxDelta": 1,
+            "psnr": 87.95351593907478,
+            "ssim": 0.9999999930858892
+          },
+          {
+            "fixture": "adaptive",
+            "backend": "webgl2",
+            "frame": 47,
+            "tier": "exact",
+            "maxDelta": 0,
+            "psnr": 999,
+            "ssim": 1
+          }
+        ]
+      },
+      "baseline": "exact"
+    },
+    "webglExportFixtures": [
+      "ce6/echo 60 frames",
+      "ce6/generators 60 frames",
+      "ce7/exposure 60 frames",
+      "ce4a/providers 24 frames"
+    ],
+    "checks": [
+      "byte-identical CLI/repeat/raw-PNG/encoded-preview exports",
+      "Lab backend switching and overwrite protection",
+      "60-frame exposure and indexed repeated exports",
+      "Stored CE7 hashes unchanged",
+      "all native WebGL fixture tiers unchanged"
+    ]
+  },
+  "fullGate": {
+    "status": "passed",
+    "command": "pnpm check",
+    "codeRef": "7a797a9",
+    "launchRef": "2037122",
+    "log": "/private/tmp/ce6p-full-reviewed.log",
+    "session": 91297,
+    "completedStages": [
+      "toolchain",
+      "schema",
+      "package boundaries",
+      "formatting",
+      "lint",
+      "build",
+      "unit",
+      "runtime",
+      "integration",
+      "depth",
+      "all browser groups",
+      "frozen CE0 baselines"
+    ],
+    "wholeGatePassed": true,
+    "sourceScopeNote": "Renderer/runtime remains reviewed7a797a9. Benchmark diagnostic provenance was repaired after early gate lint/build; separate focused formatting/lint/build validate that script. No runtime change or gate interruption.",
+    "exitCode": 0,
+    "logSha256": "8000cc51c6254ad4d1d1aa857ea8a62c2b1ef2ad1dff121298dc96f5f79f0941",
+    "retainedLog": "benchmarks/results/composition-ce6p/full-gate.log",
+    "counts": {
+      "unit": 1600,
+      "runtime": 46,
+      "integration": 139,
+      "depth": 14,
+      "frozenCases": 176,
+      "frozenFrames": 36061
+    },
+    "browserGroups": "all existing pnpm test chain groups passed",
+    "canvasFamilyMatrices": {
+      "storyComponents": {
+        "cases": 69,
+        "frames": 14086,
+        "status": "existing pixel/state/seek/export/timing assertions passed"
+      },
+      "commerce": {
+        "cases": 127,
+        "frames": 28200,
+        "status": "existing pixel/state/seek/export/timing assertions passed"
+      },
+      "typography": {
+        "cases": 20,
+        "frames": 3367,
+        "status": "existing pixel/state/seek/export/timing assertions passed"
+      }
+    }
+  },
+  "familyAuditMethods": {
+    "commerce": {
+      "command": "pnpm test:browser:composition-commerce-adapter --webgl --keep-going",
+      "method": "Current unchanged paired complete timelines, 3 alternating passes, minimum500ms per backend/pass, max64 cycles; median ratio; complete pixels/reverse seeks/state and required exports"
+    },
+    "storyComponents": {
+      "command": "pnpm test:browser:composition-story-fixtures --webgl --components --keep-going --profile",
+      "method": "Current unchanged frame-zero warmup then timed first forward traversal; pixels outside timing; complete components/state/backward seeks and required exports"
+    },
+    "typography": {
+      "command": "pnpm test:browser:composition-typography-adapter --webgl --keep-going --profile",
+      "method": "Current unchanged frame-zero warmup then timed first forward traversal; pixels outside timing; complete typography/state/backward seeks and required exports"
+    }
+  },
+  "queuedAb": {
+    "status": "latest coordinated remaining-only session 30995 terminal exit 0; pinned/hardware complete; additional hardware confirmation 41653 terminal exit 0",
+    "session": 30995,
+    "launcher": "/private/tmp/ce6p-ab-remaining.mjs",
+    "outputs": [
+      "benchmarks/results/composition-ce6p/bounded-ref-ab.json",
+      "benchmarks/results/composition-ce6p/hardware-bounded-ref-ab.json"
+    ],
+    "failureHandling": "Stop at first failed bracket; retain invalid timing uniquely; never overwrite valid prior results",
+    "fullGateRequiredAndPassed": true,
+    "supersededLauncher": {
+      "session": 66431,
+      "pid": 9949,
+      "status": "verified idle with no benchmark child; stopped intentionally; terminal exit 143",
+      "reason": "Repeated main verification reset the ten-minute heuristic without timing starting; shorten pre-start delay only, retain benchmark workload/order and overlap rejection"
+    },
+    "failedPredecessor": {
+      "session": 3547,
+      "exitCode": 1,
+      "result": "valid fusion bracket saved; first bounded baseline overlapped main stylize unit tests; hardware not started"
+    },
+    "hardwareConfirmationSession": 41653
+  },
+  "pullRequest": {
+    "number": 41,
+    "url": "https://github.com/xxibcill/still-shift/pull/41",
+    "status": "published and attached; verified measured slice available for review",
+    "base": "codex/composition-ce7",
+    "baseHead": "817cc9f982f9459cc641af864a8f160bfedc668e",
+    "remaining": "Owner review/merge; milestone acceptance targets remain open",
+    "evidenceHead": "Runtime 7a797a9; final evidence includes complete family audit and preserved-renderer byte proof",
+    "priorEvidenceHead": "febbf60"
+  },
+  "validTimingEvidence": {
+    "file": "docs/composition-ce6p-exposure-brackets.json",
+    "brackets": [
+      "fusion",
+      "boundedPinned",
+      "boundedHardware",
+      "boundedHardwareConfirmation"
+    ],
+    "order": ["baseline", "candidate", "candidate", "baseline"],
+    "allSessionsValid": true,
+    "twoSampleExportMeanOfMediansMs": {
+      "baseline": 15.849999994039536,
+      "candidate": 14.250000029802322
+    },
+    "twoSampleExportSpeedup": 1.112280699009894,
+    "limitations": "Both valid Apple M5 Pro brackets retained. Original two-sample candidate medians 6.4/2.9 ms; confirmation 2.8/3.3 ms. All-session baseline/candidate mean median ratio 0.987x there. Other-count changes are also comparable to variability; no broad hardware export or preview/presentation speedup is claimed. RAF interval diagnostics remain about 8.3 ms. Count-one path gives no established improvement and remains below native 2x Canvas/WebGL target on both profiles. Counts 2-64 of this exposure fixture exceed 2x on both profiles, but cannot close the broader native or 1.25x family acceptance. Original 117 cases remain individually tracked; strict WebGL family audits are complete with 119 timing failures, including all original 117; no family gain is claimed.",
+    "sourceHashesConsistentAcrossBoundedProfiles": true,
+    "boundedPinnedExportSpeedupRange": [2.6761904727844965, 3.9616485407616966],
+    "hardwareConfirmationReason": "Investigate a slow two-sample candidate session; both valid hardware brackets retained with no session discarded"
+  },
+  "blockingAudit": {
+    "date": "2026-10-06",
+    "condition": "Recurring independent main-checkout verification invalidates required serial timings and prevents sustained strict family audit window",
+    "consecutiveGoalTurnsAtLeast": 3,
+    "turnEvidence": [
+      "Draft PR delivery: main verification repeatedly resets guarded wait; no valid timing bracket",
+      "Pre-start-delay revision: main verification resets both ten-minute and two-minute waits",
+      "First valid fusion bracket: remaining bounded comparisons twice rejected for main unit verification, latest at candidate session"
+    ],
+    "currentImpasse": "Unaffected toolchain, correctness, focused/full-gate checks, independent reviews, draft publication and valid fusion measurement are complete. Remaining candidate selection, pinned/hardware measurements and strict WebGL family audits require an uncontended window. Current launchers are terminal; no other-chat modification or messaging authorized.",
+    "neededChange": "An externally available quiet verification window, or human authorization to coordinate one with the main chat",
+    "resume": "Keep valid fusion evidence; run remaining bounded pinned/hardware complete brackets only, then existing strict family commands with exports; never reuse invalid partial timings or relax acceptance"
+  },
+  "coordination": {
+    "date": "2026-10-06",
+    "authorizedByUser": true,
+    "mainThreadId": "01a10861-3560-7b60-842f-c22dc4b77953",
+    "request": "Let existing main gate finish normally, then hold builds/formatters/tests/browser matrices/exports until CE6-P release",
+    "acknowledged": true,
+    "state": "Reserved window released to main after all verification workloads became terminal",
+    "release": "Send release message once CE6-P verification workload is terminal",
+    "windowAvailable": false,
+    "releaseSentUtc": "2026-10-06 01:24:27 UTC"
+  },
+  "strictFamilyAudit": {
+    "record": "docs/composition-ce6p-family-audit.json",
+    "controllerSession": 25376,
+    "controllerExitCode": 0,
+    "childExitCodes": [1, 1, 1],
+    "strictCommandsPassed": false,
+    "completeTraversal": true,
+    "cases": 195,
+    "frames": 40783,
+    "timingFailures": 119,
+    "originalFailuresRechecked": 117,
+    "originalFailuresStillFailing": 117,
+    "originalFailuresMissing": 0,
+    "additionalTimingMisses": [
+      "commerce/atom-rotate",
+      "typography/editorial/numeric"
+    ],
+    "pixelFailureCases": 4,
+    "requiredRepeatedMp4PairsPassed": 53,
+    "negativeFontFitDiagnosticsPassed": true,
+    "observedOverlap": false,
+    "method": "Unchanged commands, tiers, timing assertions, state/seek checks and required exports; best-effort overlap polling in owner-coordinated quiet window. Controller completion does not mean strict acceptance passed."
+  },
+  "preservedByteProof": {
+    "record": "docs/composition-ce6p-family-audit.json#preservedEchoByteProof",
+    "session": 50161,
+    "exitCode": 0,
+    "baseline": "composition-webgl2-0.38.1 at 0e48388",
+    "candidate": "composition-webgl2-0.40.0; sources match measured brackets",
+    "cases": 5,
+    "frameReadComparisons": 2500,
+    "orders": [
+      "all forward",
+      "all reverse",
+      "17 deterministic random per case",
+      "3 repeated middle per case"
+    ],
+    "maxCandidateDelta": 0,
+    "differingChannels": 0,
+    "legacyTierFailuresReproduced": 4,
+    "legacyMaxDelta": [5, 4, 5, 4],
+    "legacyPsnrAndFailingFramesMatchStrictAudit": true,
+    "control": "zero-decay; max legacy delta 0",
+    "diagnosticSourceRetained": true,
+    "interpretation": "Four echo-related pixel-tier gaps are inherited from CE7. Exact candidate compatibility does not close those gaps or relax fixture tiers."
+  }
+}

@@ -32,7 +32,9 @@ import {
 } from "./composition-media-color.ts";
 
 import {
+  compositionMediaCacheIdentity,
   compositionMediaCacheLock,
+  finishCompositionMediaCacheTransaction,
   compositionMediaCacheSize,
 } from "./composition-media-cache-storage.ts";
 
@@ -343,7 +345,7 @@ export async function prepareCompositionVisualMedia(
     maxBuffer: 128 * 1024,
   });
   const ffmpegIdentity = hash(runtime.stdout);
-  const identity = JSON.stringify({
+  const identity = compositionMediaCacheIdentity({
     decoderVersion: COMPOSITION_MEDIA_DECODER_VERSION,
     ffmpegIdentity,
     source: inspected.provenance,
@@ -580,7 +582,6 @@ export async function prepareCompositionVisualMedia(
     if (published) await rm(directory, { recursive: true, force: true });
     throw error;
   } finally {
-    if (stage) await rm(stage, { recursive: true, force: true });
-    await release();
+    await finishCompositionMediaCacheTransaction(release, stage);
   }
 }

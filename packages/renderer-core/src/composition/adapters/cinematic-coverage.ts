@@ -1,15 +1,22 @@
 import { z } from "zod";
-import type { Composition } from "@still-shift/scene-contract";
+import type {
+  Composition,
+  CompositionLayer,
+} from "@still-shift/scene-contract";
 import {
   prepareAlphaCoverage,
   type AlphaPixels,
 } from "../../alpha-coverage.ts";
-import { passageError } from "../../passage-diagnostics.ts";
+import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import {
-  inspectProjectedReveal,
+  inspectProjectedRevealFrames,
+  RevealValidationError,
+  type RevealAlphaSampler,
   type RevealImageNode,
 } from "../../reveal-validation.ts";
 import { evaluateComp } from "../evaluate/evaluate.ts";
+import { evaluateCompositionExposure } from "../evaluate/exposure.ts";
+import type { EvaluatedLayerTree } from "../evaluate/types.ts";
 import { projectLocalPoint } from "../evaluate/spatial-geometry.ts";
 
 const id = z.string().regex(/^[a-zA-Z][\w-]*$/);
@@ -32,10 +39,70 @@ const declarationSchema = z.object({
     .optional(),
 });
 
+function hasAlphaTreatment(
+  layers: ReadonlyMap<string, CompositionLayer>,
+  id: string,
+) {
+  for (
+    let layer = layers.get(id);
+    layer;
+    layer = layer.parent ? layers.get(layer.parent) : undefined
+  ) {
+    if (
+      layer.masks?.length ||
+      layer.trackMatte ||
+      layer.effects?.some((effect) => effect.enabled !== false) ||
+      (layer.type === "group" && layer.clip)
+    )
+      return true;
+  }
+  return false;
+}
+
+/** Only treated reveal planes need backend alpha capture; ordinary recipes retain source sampling. */
+export function cinematicRenderedRevealRequirements(composition: Composition) {
+  const parsed = declarationSchema.safeParse(
+    composition.metadata?.cinematicCoverage,
+  );
+  if (!parsed.success || !parsed.data.reveal) return;
+  const { subject, occluders } = parsed.data.reveal;
+  const layers = new Map(composition.layers.map((layer) => [layer.id, layer]));
+  const focus = composition.layers.some(
+    (layer) => layer.type === "camera" && layer.depthOfField,
+  );
+  const shutter =
+    composition.motionBlur?.enabled && !!composition.motionBlur.shutterAngle;
+  return {
+    subject,
+    occluders,
+    layers: new Set(
+      [subject, ...occluders].filter(
+        (id) => focus || shutter || hasAlphaTreatment(layers, id),
+      ),
+    ),
+  };
+}
+
+/** Untreated planes are covered geometrically; alpha treatments require the rendered layer. */
+export function cinematicRenderedCoverageRequirements(
+  composition: Composition,
+): ReadonlyMap<string, string> {
+  const parsed = declarationSchema.safeParse(
+    composition.metadata?.cinematicCoverage,
+  );
+  const requirements = new Map<string, string>();
+  if (!parsed.success) return requirements;
+  const layers = new Map(composition.layers.map((layer) => [layer.id, layer]));
+  if (hasAlphaTreatment(layers, parsed.data.background))
+    requirements.set(parsed.data.background, "metadata.cinematicCoverage");
+  return requirements;
+}
+
 /** Persisted alpha declarations are checked against decoded assets and native camera states. */
-export function validateCinematicCompositionCoverage(
+export function* cinematicCompositionCoverageFrames(
   composition: Composition,
   readPixels: (assetId: string) => AlphaPixels,
+  sampleAlpha?: RevealAlphaSampler,
 ) {
   const declaration = composition.metadata?.cinematicCoverage;
   if (declaration === undefined) return;
@@ -80,6 +147,20 @@ export function validateCinematicCompositionCoverage(
     return result;
   };
   const cover = node(background);
+  const layers = new Map(composition.layers.map((layer) => [layer.id, layer]));
+  const matteSources = new Set(
+    composition.layers.flatMap((layer) =>
+      layer.trackMatte ? [layer.trackMatte.layer] : [],
+    ),
+  );
+  for (
+    let layer = layers.get(background);
+    layer;
+    layer = layer.parent ? layers.get(layer.parent) : undefined
+  ) {
+    if (layer.type === "group" && matteSources.has(layer.id))
+      fail("Cinematic background must remain drawable", background, 0);
+  }
   const [left, top, width, height] = paintedBounds;
   if (
     left < 0 ||
@@ -104,14 +185,12 @@ export function validateCinematicCompositionCoverage(
         background,
       );
   }
-  let previousFrame = NaN;
-  let tree: ReturnType<typeof evaluateComp>;
-  const project = (node: RevealImageNode, frame: number) => {
-    if (frame !== previousFrame) {
-      tree = evaluateComp(composition, frame);
-      previousFrame = frame;
-    }
-    const state = tree!.layers.find((state) => state.id === node.id);
+  const planeState = (
+    tree: EvaluatedLayerTree,
+    node: RevealImageNode,
+    frame: number,
+  ) => {
+    const state = tree.layers.find((state) => state.id === node.id);
     const matrix = state?.projection?.affineMatrix;
     if (
       !state?.visible ||
@@ -126,11 +205,12 @@ export function validateCinematicCompositionCoverage(
         node.id,
         frame,
       );
-    return { left: matrix[4], top: matrix[5], scale: matrix[0] };
+    return state;
   };
-  for (let frame = 0; frame < composition.frameCount; frame++) {
-    project(cover, frame);
-    const state = tree!.layers.find((state) => state.id === background)!;
+  const checkBackground = (tree: EvaluatedLayerTree, frame: number) => {
+    const state = planeState(tree, cover, frame);
+    if (!state.drawable)
+      fail("Cinematic background must remain drawable", background, frame);
     const a = projectLocalPoint(state.projection!, [left, top])!;
     const b = projectLocalPoint(state.projection!, [
       left + width,
@@ -145,16 +225,61 @@ export function validateCinematicCompositionCoverage(
       b[1] < composition.height + padding - 0.001
     )
       fail("Cinematic camera exposes uncovered background", background, frame);
+  };
+  for (let frame = 0; frame < composition.frameCount; frame++) {
+    checkBackground(evaluateComp(composition, frame), frame);
+    if (composition.motionBlur?.enabled && composition.motionBlur.shutterAngle)
+      for (const exposure of evaluateCompositionExposure(composition, frame))
+        checkBackground(exposure, frame);
   }
   if (!reveal) return;
   if (reveal.settleFrame >= composition.frameCount)
     fail("Reveal settle frame exceeds the composition timeline");
   const subject = node(reveal.subject);
   const occluders = reveal.occluders.map(node);
+  for (const image of [subject, ...occluders]) {
+    for (
+      let layer = layers.get(image.id);
+      layer;
+      layer = layer.parent ? layers.get(layer.parent) : undefined
+    ) {
+      if (
+        matteSources.has(layer.id) &&
+        (layer.id === image.id || layer.type === "group")
+      )
+        fail("Cinematic reveal planes must remain drawable", image.id, 0);
+    }
+  }
+  const rendered = cinematicRenderedRevealRequirements(composition)!.layers;
+  if (rendered.size && !sampleAlpha)
+    fail(
+      "Cinematic reveal treatments require rendered alpha validation",
+      rendered.values().next().value,
+      0,
+    );
   for (const image of [subject, ...occluders])
     for (const source of image.states) pixels(source.asset);
+  let previousFrame = NaN;
+  let tree: EvaluatedLayerTree;
+  const project = (node: RevealImageNode, frame: number) => {
+    if (frame !== previousFrame) {
+      tree = evaluateComp(composition, frame);
+      previousFrame = frame;
+    }
+    const state = planeState(tree!, node, frame);
+    if (!state.drawable)
+      fail("Cinematic reveal planes must remain drawable", node.id, frame);
+    if (state.opacity !== 1)
+      fail(
+        "Cinematic reveal requires full-opacity native planes",
+        node.id,
+        frame,
+      );
+    const matrix = state.projection!.affineMatrix!;
+    return { left: matrix[4], top: matrix[5], scale: matrix[0] };
+  };
   try {
-    return inspectProjectedReveal(
+    return yield* inspectProjectedRevealFrames(
       {
         ...reveal,
         subject,
@@ -163,8 +288,23 @@ export function validateCinematicCompositionCoverage(
       },
       images,
       project,
+      sampleAlpha,
     );
   } catch (error) {
+    if (error instanceof PassageError) throw error;
+    if (error instanceof RevealValidationError)
+      fail(error.message, error.node, error.frame);
     fail(error instanceof Error ? error.message : String(error), subject.id);
+  }
+}
+
+/** Persisted still coverage remains synchronous; media can prepare each yielded frame. */
+export function validateCinematicCompositionCoverage(
+  ...args: Parameters<typeof cinematicCompositionCoverageFrames>
+) {
+  const frames = cinematicCompositionCoverageFrames(...args);
+  for (;;) {
+    const step = frames.next();
+    if (step.done) return step.value;
   }
 }

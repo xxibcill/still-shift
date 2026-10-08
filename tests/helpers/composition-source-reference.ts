@@ -1,3 +1,5 @@
+import { PassageError } from "../../packages/renderer-core/src/passage-diagnostics.ts";
+import type { Composition } from "@still-shift/scene-contract";
 import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
 import { releaseRenderMetadata } from "../../packages/renderer-core/src/managed-metadata.ts";
 import {
@@ -390,5 +392,149 @@ export async function checkManagedSourceFailures() {
     return { reports, before, after: memory.statistics };
   } finally {
     memory.dispose();
+  }
+}
+
+/** Rendered cinematic coverage can request immutable source pixels after construction. */
+export async function checkCachedCinematicPreparation() {
+  const source = document.createElement("canvas");
+  source.width = source.height = 48;
+  const context = source.getContext("2d")!;
+  context.fillStyle = "#d08040";
+  context.fillRect(0, 0, 48, 48);
+  context.fillStyle = "#204080";
+  context.fillRect(16, 0, 16, 48);
+  const composition: Composition = {
+    schemaVersion: "composition-1",
+    id: "cached-cinematic",
+    width: 32,
+    height: 32,
+    fps: 24,
+    frameCount: 3,
+    assets: [
+      {
+        id: "art",
+        type: "image",
+        path: "art.png",
+        width: 48,
+        height: 48,
+        sha256: "sha256:" + "0".repeat(64),
+      },
+    ],
+    layers: [
+      { id: "camera", type: "camera" },
+      {
+        id: "background",
+        type: "image",
+        threeD: true,
+        size: [48, 48],
+        sources: [{ asset: "art" }],
+        fit: "stretch",
+        transform: { anchor: [0, 0, 0], position: [-8, -8, 0] },
+      },
+    ],
+    metadata: {
+      cinematicCoverage: {
+        background: "background",
+        paintedBounds: [0, 0, 48, 48],
+      },
+    },
+  };
+  const resources = { images: new Map([["art", source]]), fonts: new Map() };
+  const reports = [];
+  try {
+    for (const backend of ["canvas2d", "webgl2"] as const) {
+      let published = 0;
+      const options = {
+        backend,
+        surfaceCache: {
+          scopeKey: "sha256:" + "a".repeat(64),
+          byteLimit: 1024 * 1024,
+          exchange: {
+            claim: async (identity: {
+              path: string;
+              key: string;
+              width: number;
+              height: number;
+            }) =>
+              identity.path.startsWith("source:")
+                ? {
+                    kind: "lease" as const,
+                    token: identity.key,
+                    byteLength: identity.width * identity.height * 4,
+                  }
+                : { kind: "uncached" as const },
+            publish: async () => {
+              published++;
+            },
+          },
+        },
+      };
+      const control = createCompositionPreview(
+        document.createElement("canvas"),
+        composition,
+        resources,
+        { backend },
+      );
+      const preview = await createCompositionPreviewAsync(
+        document.createElement("canvas"),
+        composition,
+        resources,
+        options,
+      );
+      try {
+        for (const frame of [0, 2, 1, 0]) {
+          await preview.prepareFrame(frame);
+          preview.renderFrame(frame);
+          control.renderFrame(frame);
+          const expected = control.readPixels(),
+            actual = preview.readPixels();
+          if (
+            actual.length !== expected.length ||
+            actual.some((byte, index) => byte !== expected[index])
+          )
+            throw Error("Cached cinematic preparation changed native pixels");
+        }
+        if (published !== 1)
+          throw Error("Cinematic source must publish exactly once");
+      } finally {
+        preview.dispose();
+        control.dispose();
+      }
+      const invalid = structuredClone(composition);
+      invalid.layers[1]!.transform!.position = [48, 48, 0];
+      const rejected = await createCompositionPreviewAsync(
+        document.createElement("canvas"),
+        invalid,
+        resources,
+        options,
+      );
+      let failure: unknown;
+      try {
+        await rejected.prepareFrame(0);
+      } catch (error) {
+        failure = error;
+      } finally {
+        rejected.dispose();
+      }
+      if (
+        !(failure instanceof PassageError) ||
+        !failure.diagnostics.some(
+          (diagnostic) => diagnostic.code === "comp-camera-coverage",
+        )
+      )
+        throw Error(
+          "Cached cinematic preparation failed to reject uncovered background",
+        );
+      reports.push({
+        backend,
+        frameChecks: 4,
+        maxDelta: 0,
+        rejectedCoverage: true,
+      });
+    }
+    return reports;
+  } finally {
+    source.width = source.height = 0;
   }
 }

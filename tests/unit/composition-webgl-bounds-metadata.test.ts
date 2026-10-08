@@ -200,3 +200,28 @@ it("releases partial read pixels/views after null native region failure and supp
     expect(bounds.clearColor(target)).toBeUndefined();
   });
 });
+
+it.each([false, true])(
+  "retains exact clear-byte evidence for representable colors with opaque=%s",
+  async (opaque) => {
+    const memory = new ManagedMemory(limits);
+    await withManagedMemory(memory, async () => {
+      const target = surface(32, 24, opaque),
+        bounds = new WebglBounds(target);
+      bounds.clear(target, [1, 0, 0, 128 / 255]);
+      expect(bounds.exactClearColor(target)).toBe(bounds.clearColor(target));
+      bounds.clear(target, [1, 0, 0, 0.5]);
+      expect(bounds.exactClearColor(target)).toBeUndefined();
+      bounds.clear(target, [0, 0, 0, 0.5]);
+      expect(bounds.exactClearColor(target)).toBe(
+        opaque ? bounds.clearColor(target) : undefined,
+      );
+      bounds.clear(target, [0.1, 0, 0, 1]);
+      expect(bounds.exactClearColor(target)).toBeUndefined();
+      bounds.dispose();
+      expect(bounds.exactClearColor(target)).toBeUndefined();
+      memory.dispose();
+      expect(memory.statistics.reservations).toBe(0);
+    });
+  },
+);

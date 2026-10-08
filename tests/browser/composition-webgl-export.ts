@@ -21,11 +21,13 @@ const directory = await mkdtemp(join(tmpdir(), "composition-webgl-export-"));
 const server = await createServer({
   root,
   configFile: false,
+  cacheDir: join(directory, "preview-vite"),
   logLevel: "error",
   server: { host: "127.0.0.1", port: 0 },
 });
 const lab = await createServer({
   configFile: resolve(root, "apps/lab/vite.config.ts"),
+  cacheDir: join(directory, "lab-vite"),
   logLevel: "error",
   server: { port: 0, strictPort: false, watch: null },
 });

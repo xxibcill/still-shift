@@ -27,9 +27,15 @@ export function uncoveredViewportPixel(
       return [pixel % width, Math.floor(pixel / width)];
   return null;
 }
-export function hasRequiredCompositionCoverage(comp: Composition) {
-  return [comp, ...(comp.precomps ?? [])].some((scope) =>
-    scope.layers.some((layer) => layer.coverage === "required"),
+export function hasRequiredCompositionCoverage(
+  comp: Composition,
+  requiredRootLayers: ReadonlyMap<string, string> = new Map(),
+) {
+  return (
+    requiredRootLayers.size > 0 ||
+    [comp, ...(comp.precomps ?? [])].some((scope) =>
+      scope.layers.some((layer) => layer.coverage === "required"),
+    )
   );
 }
 
@@ -38,6 +44,7 @@ export function* compositionRequiredCoverageGraphs(
   comp: Composition,
   frame: number,
   options: EvaluationOptions = {},
+  requiredRootLayers: ReadonlyMap<string, string> = new Map(),
 ) {
   const definitions = new Map(
     (comp.precomps ?? []).map((scope) => [scope.id, scope]),
@@ -48,14 +55,18 @@ export function* compositionRequiredCoverageGraphs(
     route: string,
   ): Generator<{
     node: string;
+    declarationPath?: string;
     scope: CompositionScope;
     graph: ReturnType<typeof buildLayerRenderGraph>;
   }> {
     for (const state of tree.layers) {
       const node = route + state.id;
-      if (state.layer.coverage === "required")
+      const declarationPath =
+        route === "" ? requiredRootLayers.get(state.id) : undefined;
+      if (state.layer.coverage === "required" || declarationPath !== undefined)
         yield {
           node,
+          ...(declarationPath !== undefined ? { declarationPath } : {}),
           scope,
           graph: buildLayerRenderGraph(
             comp,
@@ -83,14 +94,21 @@ export function createCompositionCoverageValidator<S extends Surface>(
   backend: RenderBackend<S>,
   options: EvaluationOptions = {},
   severity: "error" | "warning" = "error",
+  requiredRootLayers: ReadonlyMap<string, string> = new Map(),
 ) {
   const failed = new Set<string>();
   return (frame: number): PassageDiagnostic[] => {
     const diagnostics: PassageDiagnostic[] = [];
-    for (const { node, scope, graph } of compositionRequiredCoverageGraphs(
+    for (const {
+      node,
+      declarationPath,
+      scope,
+      graph,
+    } of compositionRequiredCoverageGraphs(
       comp,
       frame,
       options,
+      requiredRootLayers,
     )) {
       if (failed.has(node)) continue;
       const target = backend.createSurface(scope.width, scope.height);
@@ -110,10 +128,11 @@ export function createCompositionCoverageValidator<S extends Surface>(
       }
       if (!pixel) continue;
       const message = `Required camera coverage on ${node} exposes the owning scope at frame ${frame}, pixel ${pixel[0]},${pixel[1]}`;
-      if (severity === "error")
+      const path = declarationPath ?? node + ".coverage";
+      if (severity === "error" || declarationPath !== undefined)
         passageError("comp-camera-coverage", message, {
           node,
-          path: node + ".coverage",
+          path,
           frame,
         });
       diagnostics.push({
@@ -121,7 +140,7 @@ export function createCompositionCoverageValidator<S extends Surface>(
         severity,
         message,
         node,
-        path: node + ".coverage",
+        path,
         frame,
       });
       failed.add(node);
@@ -136,17 +155,21 @@ export function validateRequiredCompositionCoverage<S extends Surface>(
   backend: RenderBackend<S>,
   options: EvaluationOptions = {},
   severity: "error" | "warning" = "error",
+  requiredRootLayers: ReadonlyMap<string, string> = new Map(),
+  frames?: readonly number[],
 ): PassageDiagnostic[] {
-  if (!hasRequiredCompositionCoverage(comp)) return [];
+  if (!hasRequiredCompositionCoverage(comp, requiredRootLayers)) return [];
   const validate = createCompositionCoverageValidator(
     comp,
     backend,
     options,
     severity,
+    requiredRootLayers,
   );
   const diagnostics: PassageDiagnostic[] = [];
   try {
-    for (let frame = 0; frame < comp.frameCount; frame++)
+    for (const frame of frames ??
+      Array.from({ length: comp.frameCount }, (_, frame) => frame))
       diagnostics.push(...validate(frame));
     return diagnostics;
   } finally {

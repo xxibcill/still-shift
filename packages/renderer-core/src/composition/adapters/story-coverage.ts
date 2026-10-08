@@ -14,6 +14,7 @@ const coverIds = z.array(z.string().regex(/^[a-zA-Z][\w-]*$/)).max(20);
 export function validateStoryCompositionCoverage(
   composition: Composition,
   readPixels: (assetId: string) => AlphaPixels,
+  frames?: readonly number[],
 ) {
   const declaration = composition.metadata?.storyCameraCover;
   if (declaration === undefined) return;
@@ -51,7 +52,8 @@ export function validateStoryCompositionCoverage(
           node: id,
         },
       );
-  for (let frame = 0; frame < composition.frameCount; frame++) {
+  for (const frame of frames ??
+    Array.from({ length: composition.frameCount }, (_, frame) => frame)) {
     for (const state of evaluateComp(composition, frame).layers) {
       if (!covers.has(state.id) || state.layer.type !== "image") continue;
       const layer = state.layer;

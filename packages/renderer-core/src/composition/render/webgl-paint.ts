@@ -206,13 +206,14 @@ export class WebglPaint {
     dst: WebglSurface,
     rect: Bounds,
     primitive = true,
+    bitmapRounding = false,
   ) {
     const active = this.device.drawRegion(dst, rect);
     if (!active) return;
     // Holder/array/uniform/value/union-box and original/native cleanup controls.
     const phase = paintLifetime(1536);
     try {
-      if (!primitive && !dst.floating) {
+      if (!primitive && !dst.floating && !bitmapRounding) {
         const gl = this.device.gl;
         gl.enable(gl.BLEND);
         gl.blendEquation(gl.FUNC_ADD);
@@ -252,7 +253,7 @@ export class WebglPaint {
               origin: [rect.left, rect.top],
               backdropOrigin: dst.screen ? [active.left, active.top] : [0, 0],
               region: [rect.left, rect.top, rect.right, rect.bottom],
-              primitive: primitive ? 1 : 0,
+              primitive: primitive && !bitmapRounding ? 1 : 0,
             }),
             false,
             (phase.clip = dst.screen

@@ -35,7 +35,9 @@ import {
 import { compositionMediaChecksum } from "./composition-media-probe.ts";
 import {
   compositionMediaCacheDirectory,
+  compositionMediaCacheIdentity,
   compositionMediaCacheLock,
+  finishCompositionMediaCacheTransaction,
   compositionMediaCacheSize,
   compositionMediaMappingIdentity,
 } from "./composition-media-cache-storage.ts";
@@ -369,7 +371,7 @@ export async function prepareCompositionAudio(
       ffmpegIdentity: source.ffmpegIdentity,
     }),
   );
-  const identity = JSON.stringify({
+  const identity = compositionMediaCacheIdentity({
     evaluatorVersion: COMPOSITION_EVALUATOR_VERSION,
     mixerVersion: COMPOSITION_AUDIO_MIXER_VERSION,
     decoderVersion: COMPOSITION_AUDIO_DECODER_VERSION,
@@ -559,10 +561,6 @@ export async function prepareCompositionAudio(
     if (published) await rm(directory, { recursive: true, force: true });
     throw error;
   } finally {
-    try {
-      if (stage) await rm(stage, { recursive: true, force: true });
-    } finally {
-      await release();
-    }
+    await finishCompositionMediaCacheTransaction(release, stage);
   }
 }

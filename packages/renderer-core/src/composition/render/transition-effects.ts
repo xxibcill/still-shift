@@ -139,12 +139,18 @@ export function transitionEffectKernel(
             input.width,
             input.height,
           );
-          image.data[index + 3] = Math.round(image.data[index + 3]! * amount);
-          if (!image.data[index + 3])
-            image.data[index] =
-              image.data[index + 1] =
-              image.data[index + 2] =
-                0;
+          const alpha = image.data[index + 3]!;
+          const coveredAlpha = Math.round(alpha * amount);
+          for (let channel = 0; channel < 3; channel++) {
+            const premultiplied = Math.round(
+              (image.data[index + channel]! * alpha) / 255,
+            );
+            const covered = Math.round(premultiplied * amount);
+            image.data[index + channel] = coveredAlpha
+              ? Math.round((covered * 255) / coveredAlpha)
+              : 0;
+          }
+          image.data[index + 3] = coveredAlpha;
         }
       output.ctx.putImageData(image, 0, 0);
       return output;

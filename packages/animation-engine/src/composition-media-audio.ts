@@ -26,7 +26,9 @@ import {
 export { verifyCompositionAudioPcm } from "@still-shift/execution-runtime/pcm";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import {
+  compositionMediaCacheIdentity,
   compositionMediaCacheLock,
+  finishCompositionMediaCacheTransaction,
   compositionMediaCacheSize,
 } from "./composition-media-cache-storage.ts";
 import {
@@ -331,7 +333,7 @@ export async function prepareCompositionAudioSource(
     maxBuffer: 128 * 1024,
   });
   const ffmpegIdentity = hash(runtime.stdout);
-  const identity = JSON.stringify({
+  const identity = compositionMediaCacheIdentity({
     decoderVersion: COMPOSITION_AUDIO_DECODER_VERSION,
     ffmpegIdentity,
     source: inspected.provenance,
@@ -499,10 +501,6 @@ export async function prepareCompositionAudioSource(
     if (published) await rm(directory, { recursive: true, force: true });
     throw error;
   } finally {
-    try {
-      if (stage) await rm(stage, { recursive: true, force: true });
-    } finally {
-      await release();
-    }
+    await finishCompositionMediaCacheTransaction(release, stage);
   }
 }

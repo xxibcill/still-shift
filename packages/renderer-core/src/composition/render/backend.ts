@@ -220,11 +220,11 @@ export function executeGraph<S extends Surface>(
   };
   const paintSurface = (node: SurfaceNode, into?: S): S => {
     const dst = into ?? backend.createSurface(node.width, node.height);
-    const start = into
-      ? (backend.rootPrefix?.(node, dst, options.rootRole ?? "frame") ?? 0)
-      : 0;
-    if (start === 0) backend.clear(dst, node.background);
     try {
+      const start = into
+        ? (backend.rootPrefix?.(node, dst, options.rootRole ?? "frame") ?? 0)
+        : 0;
+      if (start === 0) backend.clear(dst, node.background);
       runOps(node.ops, dst, start);
       return dst;
     } catch (error) {

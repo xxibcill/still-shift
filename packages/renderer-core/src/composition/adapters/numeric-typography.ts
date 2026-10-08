@@ -55,7 +55,7 @@ import {
 
 export const NumericTypographyParamsSchema = StoryTextParamsSchema.extend({
   fps: z.number().positive().max(240),
-  frameCount: z.number().int().positive().max(COMPOSITION_LIMITS.maxKeys),
+  frameCount: z.number().int().positive().max(COMPOSITION_LIMITS.maxFrameCount),
   numeric: z
     .object({
       value: ComponentValueSchema,
@@ -121,7 +121,10 @@ function parse(layer: ProviderLayer, path: string): Params {
   return value;
 }
 
-function textScene(data: Params): Parameters<typeof prepareTypography>[0] {
+function textScene(
+  data: Params,
+  sampleTimes?: readonly number[],
+): Parameters<typeof prepareTypography>[0] {
   return {
     nodes: [data.node],
     fps: data.fps,
@@ -141,7 +144,9 @@ function textScene(data: Params): Parameters<typeof prepareTypography>[0] {
     // Preparation uses local samples, never a family evaluator. Every formatted
     // value is still shaped so an unvisited overflowing value cannot slip through.
     animationFrames: {
-      [data.node.id]: Array.from({ length: data.frameCount }, (_, i) => i),
+      [data.node.id]: sampleTimes
+        ? [...new Set(sampleTimes.map(Math.round))]
+        : Array.from({ length: data.frameCount }, (_, i) => i),
     },
     ...(data.numeric
       ? {
@@ -174,7 +179,7 @@ function typographyProvider(id: string): CanvasContentProvider {
           resolvedTextStyle(data.node, data.textStyles, span?.style),
           fonts,
         );
-      await loadTextAnimationFonts(textScene(data), fonts);
+      await loadTextAnimationFonts(textScene(data, layer.sampleTimes), fonts);
     },
     prepare(layer, resources, path) {
       const data = parse(layer, path);
@@ -185,7 +190,7 @@ function typographyProvider(id: string): CanvasContentProvider {
           { path: `${path}.assets` },
         );
       const prepared = prepareTypography(
-        textScene(data),
+        textScene(data, layer.sampleTimes),
         new Map(resources.fonts),
         {
           softwareRaster: !!resources.softwareRaster,

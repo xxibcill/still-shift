@@ -6,7 +6,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { format } from "prettier";
 import type { Page } from "playwright";
-import type { Composition } from "@still-shift/scene-contract";
+import {
+  compositionEffectDefinition,
+  type Composition,
+} from "@still-shift/scene-contract";
 import {
   loadComposition,
   renderComposition,
@@ -236,7 +239,53 @@ export async function runEffectCatalogueAcceptance(
         environment.rasterFingerprint,
         "CE6 raster fingerprint",
       );
-      assert.deepEqual(items, stored.items, "CE6 full-frame hashes");
+      // Keep the original catalogue intact; corrected coverage has a versioned Canvas oracle.
+      const transitionIds = [
+        "transition.linear-wipe",
+        "transition.radial-wipe",
+        "transition.venetian-blinds",
+        "transition.block-dissolve",
+      ];
+      const transitionVersion = compositionEffectDefinition(
+        transitionIds[0]!,
+      )!.version;
+      const corrected = JSON.parse(
+        await readFile(
+          join(
+            baselineDirectory,
+            `${environment.platform}-${environment.arch}-transition-coverage-${transitionVersion}.json`,
+          ),
+          "utf8",
+        ),
+      );
+      assert.equal(
+        corrected.version,
+        "composition-transition-coverage-baseline-1",
+      );
+      assert.equal(
+        corrected.environment.rasterFingerprint,
+        environment.rasterFingerprint,
+        "Transition coverage raster fingerprint",
+      );
+      assert.deepEqual(
+        corrected.effectVersions,
+        Object.fromEntries(
+          transitionIds.map((id) => [
+            id,
+            compositionEffectDefinition(id)!.version,
+          ]),
+        ),
+        "Transition coverage effect versions",
+      );
+      assert.equal(corrected.fixture, "catalogue-transition");
+      assert.equal(
+        corrected.source,
+        stored.items[corrected.fixture].source,
+        "Transition coverage source fingerprint",
+      );
+      const expected = structuredClone(stored.items);
+      expected[corrected.fixture].canvas2d = corrected.canvas2d;
+      assert.deepEqual(items, expected, "CE6 full-frame hashes");
     }
     const hardware = await shapeHardwarePreview(root, fixtures);
     await writeFile(

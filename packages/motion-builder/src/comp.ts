@@ -1,3 +1,4 @@
+import { anchorPoint, type NamedAnchor } from "./anchors.ts";
 import { applyIntents } from "./intent-lowering.ts";
 import type { IntentCommand } from "./presets.ts";
 import { authoredFontDiagnostics } from "./fonts.ts";
@@ -48,6 +49,7 @@ export class CompositionBuilder {
     id: string;
     draft: CompositionLayer;
     location: SourceLocation;
+    pendingAnchor: NamedAnchor | undefined;
   }[] = [];
   private readonly timelines: Motion[] = [];
   private readonly tracks: SourceTrack[] = [];
@@ -94,6 +96,12 @@ export class CompositionBuilder {
     assets.forEach((asset) => this.asset(asset));
   }
   add<K extends Kind>(node: Layer<K>): Layer<K> {
+    if (this.nodes.includes(node))
+      throw new BuilderError(
+        "comp-builder-id",
+        `Duplicate layer ${node.id}`,
+        node.location,
+      );
     if (node.autoId) {
       const base = node.id;
       let suffix = 1;
@@ -396,7 +404,20 @@ export class CompositionBuilder {
   }
   finish(): Composition {
     const output = structuredClone(this.composition);
-    output.layers = this.nodes.map((node) => structuredClone(node.draft));
+    output.layers = this.nodes.map((node) => {
+      const draft = structuredClone(node.draft);
+      if (draft.type === "precomp" && node.pendingAnchor) {
+        const definition = output.precomps?.find(
+          (item) => item.id === draft.comp,
+        );
+        if (definition)
+          draft.transform!.anchor = anchorPoint(node.pendingAnchor, [
+            definition.width,
+            definition.height,
+          ]);
+      }
+      return draft;
+    });
     const layers = new Map(
       output.layers.map((layer) => [
         layer.id,

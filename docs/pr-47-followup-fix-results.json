@@ -1,0 +1,4889 @@
+{
+  "pr": 47,
+  "date": "2026-10-08",
+  "reviewHead": "787ded34df3c0c605c8e01db98c761665d9e9999",
+  "base": "8cc7b14f7090896a755080461b248ac6b2a0eb6f",
+  "branch": "codex/pr47-second-review-fixes",
+  "status": "fixed-and-focused-verification-complete",
+  "deliveryPolicy": "One finding per commit; one final normal push to codex/composition-ce4d.",
+  "review": "https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5453536103",
+  "scope": "Three scoped follow-up review repairs. No new milestone or complete repository gate is claimed.",
+  "toolchain": {
+    "status": "pass",
+    "command": "pnpm toolchain:check",
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "isolation": "Managed worktree with local Vite optimizer/config caches; pinned dependencies linked read-only, existing Python environment used with UV_NO_SYNC=1 and separate UV cache."
+  },
+  "findings": [
+    {
+      "id": 1,
+      "title": "Prepare timeline-window text before frame rendering",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4216462774",
+      "status": "fixed-focused-verification-passed",
+      "checks": [
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-family-preparation.test.ts tests/unit/composition-family-timeline.test.ts tests/unit/composition-depth-image.test.ts tests/unit/composition-image-plane-backend.test.ts --maxWorkers=2 --no-file-parallelism --cache=false",
+          "status": "pass",
+          "tests": 26
+        },
+        {
+          "command": "pnpm build",
+          "status": "pass-checkpoint"
+        },
+        {
+          "command": "focused ESLint and Prettier",
+          "status": "pass"
+        },
+        {
+          "command": "pnpm test:browser:composition-family-timeline",
+          "status": "pass-focused-selected-frames",
+          "fixtures": 2,
+          "sourceFrameCountEach": 2101,
+          "parityVisitsEach": 21,
+          "maxChannelDelta": 0,
+          "independentRepeatedRawFramesEach": 4,
+          "providerAndFontPreparationsDuringRendering": 0,
+          "surfacesReleased": true,
+          "log": "/private/tmp/pr47-second-window-browser-final.log",
+          "scope": "Selected boundary/late/reverse visits and independent repeat raw captures on the complete source timeline; no complete long-timeline encoded export is claimed."
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-family-preparation.test.ts tests/unit/composition-family-timeline.test.ts tests/unit/composition-render-graph.test.ts tests/unit/composition-canvas-pool.test.ts tests/unit/composition-text-clock.test.ts tests/unit/composition-text-inputs.test.ts tests/unit/composition-text-axes.test.ts tests/unit/composition-providers.test.ts tests/unit/composition-cinematic-coverage.test.ts tests/unit/composition-typography-adapter.test.ts --cache false --maxWorkers=2",
+          "status": "pass",
+          "tests": 103,
+          "log": "/private/tmp/pr47-second-window-units-final.log"
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/batch-identity.test.ts tests/unit/composition-family-preparation.test.ts tests/unit/composition-family-timeline.test.ts --maxWorkers=2 --no-file-parallelism --cache=false",
+          "status": "pass",
+          "tests": 12
+        }
+      ],
+      "change": "Each native window retains detached prepared text/provider content and validated coverage. Preparation backends are released immediately; rendering switches only the current backend and reuses prepared content. Canvas1.44.3/WebGL0.65.3/illustrated0.12.3 invalidate previous cache identity.",
+      "regressionBeforeFix": "New unit regression expected two upfront provider preparations but original code prepared only the first window; repeated boundary seeks triggered additional preparation.",
+      "rejectedDiagnostic": "Initial final browser instrumentation required positive provider counts on an image-only commerce window. Scoped that assertion to provider-bearing windows; production code unchanged and the final regression passes.",
+      "commit": "e69869ab"
+    },
+    {
+      "id": 2,
+      "title": "Preserve accepted legacy input envelope",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4216462782",
+      "status": "fixed-focused-verification-passed",
+      "checks": [
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-legacy-adapter.test.ts --maxWorkers=2 --no-file-parallelism --cache=false",
+          "status": "pass",
+          "tests": 29,
+          "covered": [
+            "33 source states",
+            "501 unused assets",
+            "547 assets from native-size source tables",
+            "129/610/100000-character identifiers",
+            "oversized pose/anchor labels",
+            "complete200-node parent envelope",
+            "deep scoped followers",
+            "image/font alias binding after JSON reload",
+            "input immutability"
+          ],
+          "log": "/private/tmp/pr47-second-legacy-unit-final.log"
+        },
+        {
+          "command": "node --import tsx /private/tmp/pr47-legacy-envelope-review.mts",
+          "status": "pass-independent-probe",
+          "cases": 3,
+          "jsonReloadResourceBinding": "pass",
+          "inputUnchanged": true
+        },
+        {
+          "command": "node --import tsx tests/browser/composition-legacy-adapter.ts --smoke --only chronicle-reveal",
+          "status": "pass-earlier-diagnostic-only",
+          "scope": "Sampled pre-final alias/610-character fixtures; superseded by complete affected delivery below.",
+          "log": "/private/tmp/pr47-second-legacy-font-smoke.log"
+        },
+        {
+          "command": "pnpm test:browser:composition-legacy-adapter",
+          "status": "pass-complete-affected-delivery",
+          "baseFixtures": 7,
+          "inputVariants": 13,
+          "backendCases": 26,
+          "frames": 3552,
+          "reverseFrames": 3552,
+          "maxChannelDelta": 2,
+          "independentPreviewEncodes": 26,
+          "productionRepeatRawExports": 78,
+          "exportCases": [
+            {
+              "id": "legacy/chronicle-reveal",
+              "backend": "canvas2d",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal",
+              "backend": "webgl2",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-box",
+              "backend": "canvas2d",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-box",
+              "backend": "webgl2",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/caption",
+              "backend": "canvas2d",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/caption",
+              "backend": "webgl2",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/speech",
+              "backend": "canvas2d",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/speech",
+              "backend": "webgl2",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/thought",
+              "backend": "canvas2d",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/thought",
+              "backend": "webgl2",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/accepted-font-identifier",
+              "backend": "canvas2d",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/accepted-font-identifier",
+              "backend": "webgl2",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/resource-flow",
+              "backend": "canvas2d",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/resource-flow",
+              "backend": "webgl2",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/access-pressure",
+              "backend": "canvas2d",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/access-pressure",
+              "backend": "webgl2",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/comparison-build",
+              "backend": "canvas2d",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/comparison-build",
+              "backend": "webgl2",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/pose-prop-change",
+              "backend": "canvas2d",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/pose-prop-change",
+              "backend": "webgl2",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/pose-prop-change/accepted-envelope",
+              "backend": "canvas2d",
+              "frames": 240,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/pose-prop-change/accepted-envelope",
+              "backend": "webgl2",
+              "frames": 240,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/vertical-chronicle-reveal",
+              "backend": "canvas2d",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/vertical-chronicle-reveal",
+              "backend": "webgl2",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            }
+          ],
+          "canvasTimingLimit": 1.25,
+          "worstCanvasMedianRatio": 1.183831670602435,
+          "worstWebglMedianRatio": 1.784850800099569,
+          "webglTimingPolicy": "CE6-P deferred; measured unchanged method",
+          "hardwareComparisons": 102,
+          "hardwarePolicy": "unchanged perceptual hardware policy",
+          "hardwareMaxChannelDelta": 138,
+          "hardwareMinimumPsnr": 44.941564569983974,
+          "reports": [
+            {
+              "id": "legacy/chronicle-reveal",
+              "backend": "canvas2d",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "e7d7a87238b95a6fe9d56a50e671be9bc0299769c24fd047c63dfe4954bc6084",
+              "ratio": 1.0790011704360782,
+              "timings": [
+                {
+                  "legacyMs": 684.7999992370605,
+                  "compositionMs": 738.9000006914139,
+                  "ratio": 1.0790011704360782,
+                  "cycles": 1,
+                  "frames": 168
+                },
+                {
+                  "legacyMs": 691.7999993562698,
+                  "compositionMs": 748.7000008821487,
+                  "ratio": 1.0822492072547343,
+                  "cycles": 1,
+                  "frames": 168
+                },
+                {
+                  "legacyMs": 671.3999999761581,
+                  "compositionMs": 680.3000000715256,
+                  "ratio": 1.013255883371587,
+                  "cycles": 1,
+                  "frames": 168
+                }
+              ]
+            },
+            {
+              "id": "legacy/chronicle-reveal",
+              "backend": "webgl2",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 1,
+              "minPsnr": 104.60798564099834,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "d2048dfe6482867a66579e4254223249108556727937ce818c6f4c6f072f0961",
+              "ratio": 0.3987572674041056,
+              "timings": [
+                {
+                  "legacyMs": 1742.400000333786,
+                  "compositionMs": 689.6999998092651,
+                  "ratio": 0.39583333314803804,
+                  "cycles": 3,
+                  "frames": 504
+                },
+                {
+                  "legacyMs": 1754.2000011205673,
+                  "compositionMs": 699.4999989271164,
+                  "ratio": 0.3987572674041056,
+                  "cycles": 3,
+                  "frames": 504
+                },
+                {
+                  "legacyMs": 1740.099998831749,
+                  "compositionMs": 702.1000012159348,
+                  "ratio": 0.40348255944330996,
+                  "cycles": 3,
+                  "frames": 504
+                }
+              ]
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-box",
+              "backend": "canvas2d",
+              "frames": 72,
+              "reverseFrames": 72,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "d3d628a461a7926569f807f166b8d16d201d4e40d0a330399bda4bc2143fb441",
+              "ratio": 1.0181852635435833,
+              "timings": [
+                {
+                  "legacyMs": 512.8000003099442,
+                  "compositionMs": 536.6999996900558,
+                  "ratio": 1.0466068630375704,
+                  "cycles": 2,
+                  "frames": 144
+                },
+                {
+                  "legacyMs": 527.8999997377396,
+                  "compositionMs": 537.5000003576279,
+                  "ratio": 1.0181852635435833,
+                  "cycles": 2,
+                  "frames": 144
+                },
+                {
+                  "legacyMs": 586.7000004053116,
+                  "compositionMs": 530.0999995470047,
+                  "ratio": 0.9035282072282159,
+                  "cycles": 2,
+                  "frames": 144
+                }
+              ]
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-box",
+              "backend": "webgl2",
+              "frames": 72,
+              "reverseFrames": 72,
+              "maxDelta": 1,
+              "minPsnr": 109.07956595442053,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "45abc522d71626fa2be168d01af020dd0f5a5e16a8e694be106ed4a153b36625",
+              "ratio": 0.39024390185526714,
+              "timings": [
+                {
+                  "legacyMs": 1344.800000667572,
+                  "compositionMs": 524.7999994754791,
+                  "ratio": 0.39024390185526714,
+                  "cycles": 5,
+                  "frames": 360
+                },
+                {
+                  "legacyMs": 1342.6999990940094,
+                  "compositionMs": 526.8000007867813,
+                  "ratio": 0.39234378576170487,
+                  "cycles": 5,
+                  "frames": 360
+                },
+                {
+                  "legacyMs": 1341.2999994754791,
+                  "compositionMs": 510.00000047683716,
+                  "ratio": 0.3802281373863228,
+                  "cycles": 5,
+                  "frames": 360
+                }
+              ]
+            },
+            {
+              "id": "legacy/chronicle-reveal/caption",
+              "backend": "canvas2d",
+              "frames": 72,
+              "reverseFrames": 72,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "036758d1af4cb3d45e5f2eb650ca18f69b4970937b0d3b22d31542f5e2edd357",
+              "ratio": 1.0220754729275943,
+              "timings": [
+                {
+                  "legacyMs": 529.9999996423721,
+                  "compositionMs": 541.7000002861023,
+                  "ratio": 1.0220754729275943,
+                  "cycles": 2,
+                  "frames": 144
+                },
+                {
+                  "legacyMs": 558.1999996900558,
+                  "compositionMs": 562.900000333786,
+                  "ratio": 1.0084199223331063,
+                  "cycles": 2,
+                  "frames": 144
+                },
+                {
+                  "legacyMs": 543.7999993562698,
+                  "compositionMs": 561.600000500679,
+                  "ratio": 1.0327326244308204,
+                  "cycles": 2,
+                  "frames": 144
+                }
+              ]
+            },
+            {
+              "id": "legacy/chronicle-reveal/caption",
+              "backend": "webgl2",
+              "frames": 72,
+              "reverseFrames": 72,
+              "maxDelta": 1,
+              "minPsnr": 109.07956595442053,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "a117ce9e6a72eccc54284fc69bcbad6aa41ecd47fac75661dd08e7d7a67ee8a6",
+              "ratio": 0.4068457538962724,
+              "timings": [
+                {
+                  "legacyMs": 1432.5,
+                  "compositionMs": 586.8999999761581,
+                  "ratio": 0.40970331586468284,
+                  "cycles": 5,
+                  "frames": 360
+                },
+                {
+                  "legacyMs": 1384.7999999523163,
+                  "compositionMs": 563.3999999761581,
+                  "ratio": 0.4068457538962724,
+                  "cycles": 5,
+                  "frames": 360
+                },
+                {
+                  "legacyMs": 1337.7000005245209,
+                  "compositionMs": 541.5999994277954,
+                  "ratio": 0.40487403694059243,
+                  "cycles": 5,
+                  "frames": 360
+                }
+              ]
+            },
+            {
+              "id": "legacy/chronicle-reveal/speech",
+              "backend": "canvas2d",
+              "frames": 72,
+              "reverseFrames": 72,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "b254c80a8ade6b2e743ada732aec608272c0fff4f5262869a0df11782c7d301a",
+              "ratio": 1.0160717621084832,
+              "timings": [
+                {
+                  "legacyMs": 533.800000667572,
+                  "compositionMs": 525.6999992132187,
+                  "ratio": 0.9848257747391842,
+                  "cycles": 2,
+                  "frames": 144
+                },
+                {
+                  "legacyMs": 535.1000000238419,
+                  "compositionMs": 543.6999999284744,
+                  "ratio": 1.0160717621084832,
+                  "cycles": 2,
+                  "frames": 144
+                },
+                {
+                  "legacyMs": 525.2000002861023,
+                  "compositionMs": 566.299999833107,
+                  "ratio": 1.0782559016081787,
+                  "cycles": 2,
+                  "frames": 144
+                }
+              ]
+            },
+            {
+              "id": "legacy/chronicle-reveal/speech",
+              "backend": "webgl2",
+              "frames": 72,
+              "reverseFrames": 72,
+              "maxDelta": 1,
+              "minPsnr": 109.07956595442053,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "eaf0639b325c979e4e9232081c7fc0c216250d1aa8fe64b02eaecb9e0c9cf92b",
+              "ratio": 0.4270691995033821,
+              "timings": [
+                {
+                  "legacyMs": 1179.1999999284744,
+                  "compositionMs": 503.60000002384186,
+                  "ratio": 0.4270691995033821,
+                  "cycles": 4,
+                  "frames": 288
+                },
+                {
+                  "legacyMs": 1384.2000000476837,
+                  "compositionMs": 589.3999997377396,
+                  "ratio": 0.4258055192294723,
+                  "cycles": 5,
+                  "frames": 360
+                },
+                {
+                  "legacyMs": 1395.2999995946884,
+                  "compositionMs": 607.7000005245209,
+                  "ratio": 0.4355335775109637,
+                  "cycles": 5,
+                  "frames": 360
+                }
+              ]
+            },
+            {
+              "id": "legacy/chronicle-reveal/thought",
+              "backend": "canvas2d",
+              "frames": 72,
+              "reverseFrames": 72,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "217001ab71fcbe5f272af24f729d701106294d0345707b6ef1a73e96ef61911d",
+              "ratio": 0.9985890687013876,
+              "timings": [
+                {
+                  "legacyMs": 566.9999990463257,
+                  "compositionMs": 566.200001001358,
+                  "ratio": 0.9985890687013876,
+                  "cycles": 2,
+                  "frames": 144
+                },
+                {
+                  "legacyMs": 563.6000001430511,
+                  "compositionMs": 625.5999999046326,
+                  "ratio": 1.1100070967811297,
+                  "cycles": 2,
+                  "frames": 144
+                },
+                {
+                  "legacyMs": 565.1000001430511,
+                  "compositionMs": 552.9999998807907,
+                  "ratio": 0.9785878600969786,
+                  "cycles": 2,
+                  "frames": 144
+                }
+              ]
+            },
+            {
+              "id": "legacy/chronicle-reveal/thought",
+              "backend": "webgl2",
+              "frames": 72,
+              "reverseFrames": 72,
+              "maxDelta": 1,
+              "minPsnr": 109.07956595442053,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "43bb0a0062f2f9132aec5d74b482d03b80186b2c593e51aa2c4ac874a8ad81fe",
+              "ratio": 0.4203269364872252,
+              "timings": [
+                {
+                  "legacyMs": 1407.0000002384186,
+                  "compositionMs": 591.3999997377396,
+                  "ratio": 0.4203269364872252,
+                  "cycles": 5,
+                  "frames": 360
+                },
+                {
+                  "legacyMs": 1423.6999987363815,
+                  "compositionMs": 600.7000014781952,
+                  "ratio": 0.4219287785427774,
+                  "cycles": 5,
+                  "frames": 360
+                },
+                {
+                  "legacyMs": 1443.1999996900558,
+                  "compositionMs": 591.1000003814697,
+                  "ratio": 0.409575942702616,
+                  "cycles": 5,
+                  "frames": 360
+                }
+              ]
+            },
+            {
+              "id": "legacy/chronicle-reveal/accepted-font-identifier",
+              "backend": "canvas2d",
+              "frames": 72,
+              "reverseFrames": 72,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "036758d1af4cb3d45e5f2eb650ca18f69b4970937b0d3b22d31542f5e2edd357",
+              "defaultMaxDelta": 0,
+              "ratio": 1.0634573323431284,
+              "timings": [
+                {
+                  "legacyMs": 574.4999994039536,
+                  "compositionMs": 611.100000500679,
+                  "ratio": 1.0637075737766721,
+                  "cycles": 2,
+                  "frames": 144
+                },
+                {
+                  "legacyMs": 548.399999499321,
+                  "compositionMs": 583.2000005245209,
+                  "ratio": 1.0634573323431284,
+                  "cycles": 2,
+                  "frames": 144
+                },
+                {
+                  "legacyMs": 555.6999996900558,
+                  "compositionMs": 587.6000001430511,
+                  "ratio": 1.0574050755277806,
+                  "cycles": 2,
+                  "frames": 144
+                }
+              ]
+            },
+            {
+              "id": "legacy/chronicle-reveal/accepted-font-identifier",
+              "backend": "webgl2",
+              "frames": 72,
+              "reverseFrames": 72,
+              "maxDelta": 1,
+              "minPsnr": 109.07956595442053,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "a117ce9e6a72eccc54284fc69bcbad6aa41ecd47fac75661dd08e7d7a67ee8a6",
+              "defaultMaxDelta": 0,
+              "ratio": 0.44987309663862124,
+              "timings": [
+                {
+                  "legacyMs": 1260.799999833107,
+                  "compositionMs": 567.200000166893,
+                  "ratio": 0.44987309663862124,
+                  "cycles": 4,
+                  "frames": 288
+                },
+                {
+                  "legacyMs": 1248.1000008583069,
+                  "compositionMs": 565.3999991416931,
+                  "ratio": 0.4530085720317865,
+                  "cycles": 4,
+                  "frames": 288
+                },
+                {
+                  "legacyMs": 1259.3000000715256,
+                  "compositionMs": 559.2999999523163,
+                  "ratio": 0.4441356308429677,
+                  "cycles": 4,
+                  "frames": 288
+                }
+              ]
+            },
+            {
+              "id": "legacy/resource-flow",
+              "backend": "canvas2d",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "e8068d04a4962b2472fcbf93f2673e07722a79009ad23be896fcbd3d414f18e2",
+              "ratio": 1.1526041672777394,
+              "timings": [
+                {
+                  "legacyMs": 541.7000004053116,
+                  "compositionMs": 624.0999997854233,
+                  "ratio": 1.1521137148208571,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 575.9999998807907,
+                  "compositionMs": 663.9000002145767,
+                  "ratio": 1.1526041672777394,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 588.6999989748001,
+                  "compositionMs": 682.1000008583069,
+                  "ratio": 1.1586546662921005,
+                  "cycles": 2,
+                  "frames": 336
+                }
+              ]
+            },
+            {
+              "id": "legacy/resource-flow",
+              "backend": "webgl2",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 1,
+              "minPsnr": 103.51654094674765,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "1702e89c7cba5d34536025c02635c2565c63adb8f6ce687c63540357b7594dfc",
+              "ratio": 0.9967573639674265,
+              "timings": [
+                {
+                  "legacyMs": 709.3000007867813,
+                  "compositionMs": 706.9999990463257,
+                  "ratio": 0.9967573639674265,
+                  "cycles": 3,
+                  "frames": 504
+                },
+                {
+                  "legacyMs": 693.499999165535,
+                  "compositionMs": 695.5000007152557,
+                  "ratio": 1.0028839243722094,
+                  "cycles": 3,
+                  "frames": 504
+                },
+                {
+                  "legacyMs": 719.7000011205673,
+                  "compositionMs": 695.899998664856,
+                  "ratio": 0.9669306621944491,
+                  "cycles": 3,
+                  "frames": 504
+                }
+              ]
+            },
+            {
+              "id": "legacy/access-pressure",
+              "backend": "canvas2d",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "51fd1da8f290ec989f6fe3e3e0f5a4376351da31fa03a21c592e4b78824e2304",
+              "ratio": 1.183831670602435,
+              "timings": [
+                {
+                  "legacyMs": 541.8000003099442,
+                  "compositionMs": 641.399999499321,
+                  "ratio": 1.183831670602435,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 512.0999999046326,
+                  "compositionMs": 617.8000001907349,
+                  "ratio": 1.206404999620751,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 564.2000000476837,
+                  "compositionMs": 581.8999998569489,
+                  "ratio": 1.0313718536117853,
+                  "cycles": 2,
+                  "frames": 336
+                }
+              ]
+            },
+            {
+              "id": "legacy/access-pressure",
+              "backend": "webgl2",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 1,
+              "minPsnr": 85.8367414014436,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "a6b00e37e3e6709691391fb67a04d05aa1d1932ae98e92142fdb749da8fe7f2c",
+              "ratio": 0.8831255876669667,
+              "timings": [
+                {
+                  "legacyMs": 746.0999994277954,
+                  "compositionMs": 658.9000004529953,
+                  "ratio": 0.8831255876669667,
+                  "cycles": 3,
+                  "frames": 504
+                },
+                {
+                  "legacyMs": 750.5999999046326,
+                  "compositionMs": 646.8000003099442,
+                  "ratio": 0.8617106320172173,
+                  "cycles": 3,
+                  "frames": 504
+                },
+                {
+                  "legacyMs": 549.6999992132187,
+                  "compositionMs": 520.6000008583069,
+                  "ratio": 0.9470620367535703,
+                  "cycles": 2,
+                  "frames": 336
+                }
+              ]
+            },
+            {
+              "id": "legacy/comparison-build",
+              "backend": "canvas2d",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 2,
+              "minPsnr": 84.66104419668761,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "16e3bd5b4284c7b4cc977671cbc598473f5a52944fd9de7fb281bc722a1fc5a8",
+              "ratio": 1.0826373616857996,
+              "timings": [
+                {
+                  "legacyMs": 682.5000003576279,
+                  "compositionMs": 738.8999997377396,
+                  "ratio": 1.0826373616857996,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 712.2999991178513,
+                  "compositionMs": 771.4000006914139,
+                  "ratio": 1.0829706607423208,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 733.6000003814697,
+                  "compositionMs": 772.0999994277954,
+                  "ratio": 1.0524809147032521,
+                  "cycles": 2,
+                  "frames": 336
+                }
+              ]
+            },
+            {
+              "id": "legacy/comparison-build",
+              "backend": "webgl2",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 2,
+              "minPsnr": 82.7752872041703,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "768b02795ff035749f141e130d05e5d8db34fcb0b6a8835385d0924181bbfed6",
+              "ratio": 1.0469837600799243,
+              "timings": [
+                {
+                  "legacyMs": 689.5999995470047,
+                  "compositionMs": 722.0000004768372,
+                  "ratio": 1.0469837600799243,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 716.8999990224838,
+                  "compositionMs": 741.2000008821487,
+                  "ratio": 1.0338959434967203,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 729.3999997377396,
+                  "compositionMs": 769.0000002384186,
+                  "ratio": 1.0542911989510795,
+                  "cycles": 2,
+                  "frames": 336
+                }
+              ]
+            },
+            {
+              "id": "legacy/pose-prop-change",
+              "backend": "canvas2d",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "7a69b6a54b65b327c05bc28c3a8b4104949b94932c650518d934360da10a9cb1",
+              "ratio": 1.1369344540305608,
+              "timings": [
+                {
+                  "legacyMs": 581.3000007867813,
+                  "compositionMs": 660.8999990224838,
+                  "ratio": 1.1369344540305608,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 599.2000008821487,
+                  "compositionMs": 631.6999989748001,
+                  "ratio": 1.0542389820507418,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 579.6999999284744,
+                  "compositionMs": 693.9000002145767,
+                  "ratio": 1.1969984479906723,
+                  "cycles": 2,
+                  "frames": 336
+                }
+              ]
+            },
+            {
+              "id": "legacy/pose-prop-change",
+              "backend": "webgl2",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "7a69b6a54b65b327c05bc28c3a8b4104949b94932c650518d934360da10a9cb1",
+              "ratio": 0.5060333119139997,
+              "timings": [
+                {
+                  "legacyMs": 1141.6999990940094,
+                  "compositionMs": 563.0000011920929,
+                  "ratio": 0.49312428977740114,
+                  "cycles": 4,
+                  "frames": 672
+                },
+                {
+                  "legacyMs": 1176.799998998642,
+                  "compositionMs": 595.5000009536743,
+                  "ratio": 0.5060333119139997,
+                  "cycles": 4,
+                  "frames": 672
+                },
+                {
+                  "legacyMs": 1150.6000014543533,
+                  "compositionMs": 583.8999985456467,
+                  "ratio": 0.5074743592974097,
+                  "cycles": 4,
+                  "frames": 672
+                }
+              ]
+            },
+            {
+              "id": "legacy/pose-prop-change/accepted-envelope",
+              "backend": "canvas2d",
+              "frames": 240,
+              "reverseFrames": 240,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "862edbab497f1ac119c42aa0d2f89b4bcc844b9dfe72b5e8a6f08a076d380795",
+              "defaultMaxDelta": 0,
+              "ratio": 1.0179128513974416,
+              "timings": [
+                {
+                  "legacyMs": 1953.8000003099442,
+                  "compositionMs": 2049.899999499321,
+                  "ratio": 1.0491862008261499,
+                  "cycles": 1,
+                  "frames": 240
+                },
+                {
+                  "legacyMs": 1987.399999499321,
+                  "compositionMs": 2023.0000003576279,
+                  "ratio": 1.0179128513974416,
+                  "cycles": 1,
+                  "frames": 240
+                },
+                {
+                  "legacyMs": 2019.8000003099442,
+                  "compositionMs": 2022.8999996185303,
+                  "ratio": 1.0015348050837263,
+                  "cycles": 1,
+                  "frames": 240
+                }
+              ]
+            },
+            {
+              "id": "legacy/pose-prop-change/accepted-envelope",
+              "backend": "webgl2",
+              "frames": 240,
+              "reverseFrames": 240,
+              "maxDelta": 2,
+              "minPsnr": 87.58737482786673,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "d0e2009a08635db36c25adc85b06f66def98cfcd018fc8fe34c83b5e15badceb",
+              "defaultMaxDelta": 0,
+              "ratio": 0.19192232439952284,
+              "timings": [
+                {
+                  "legacyMs": 4191.800000548363,
+                  "compositionMs": 804.4999995231628,
+                  "ratio": 0.19192232439952284,
+                  "cycles": 2,
+                  "frames": 480
+                },
+                {
+                  "legacyMs": 4249.099999785423,
+                  "compositionMs": 845.3999999761581,
+                  "ratio": 0.19895977972249423,
+                  "cycles": 2,
+                  "frames": 480
+                },
+                {
+                  "legacyMs": 4129.800000667572,
+                  "compositionMs": 755.1999995708466,
+                  "ratio": 0.18286599821995506,
+                  "cycles": 2,
+                  "frames": 480
+                }
+              ]
+            },
+            {
+              "id": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "0c6919a7500848ac86b8560106312d3096aca8850a76a6caa84fa1e91a7c1291",
+              "ratio": 1.1096523690863982,
+              "timings": [
+                {
+                  "legacyMs": 540.7999994754791,
+                  "compositionMs": 600.1000006198883,
+                  "ratio": 1.1096523690863982,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 537.7999994754791,
+                  "compositionMs": 610.4000004529953,
+                  "ratio": 1.1349944236673923,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 558.799998998642,
+                  "compositionMs": 594.4000009298325,
+                  "ratio": 1.0637079491678327,
+                  "cycles": 2,
+                  "frames": 336
+                }
+              ]
+            },
+            {
+              "id": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 2,
+              "minPsnr": 87.78911535554096,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "f49782aa8f7eecde96ff0a0df1baa51f7cab398318887b0ce9590a7833fb41e6",
+              "ratio": 1.784850800099569,
+              "timings": [
+                {
+                  "legacyMs": 653.5000007152557,
+                  "compositionMs": 1166.3999991416931,
+                  "ratio": 1.784850800099569,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 716.699999332428,
+                  "compositionMs": 1285.3000005483627,
+                  "ratio": 1.7933584508798084,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 670.199999332428,
+                  "compositionMs": 1157.5000003576279,
+                  "ratio": 1.7270963913915087,
+                  "cycles": 2,
+                  "frames": 336
+                }
+              ]
+            },
+            {
+              "id": "legacy/vertical-chronicle-reveal",
+              "backend": "canvas2d",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 0,
+              "minPsnr": null,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "63951bfc02ae16b2e43294bcec27b840de453504d28494faf067f20f4ed3f951",
+              "ratio": 1.049573561549024,
+              "timings": [
+                {
+                  "legacyMs": 937.9999996423721,
+                  "compositionMs": 984.5000003576279,
+                  "ratio": 1.049573561549024,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 952.099999666214,
+                  "compositionMs": 999.7000004053116,
+                  "ratio": 1.0499947492446016,
+                  "cycles": 2,
+                  "frames": 336
+                },
+                {
+                  "legacyMs": 979.6999994516373,
+                  "compositionMs": 1024.0000005960464,
+                  "ratio": 1.0452179250476727,
+                  "cycles": 2,
+                  "frames": 336
+                }
+              ]
+            },
+            {
+              "id": "legacy/vertical-chronicle-reveal",
+              "backend": "webgl2",
+              "frames": 168,
+              "reverseFrames": 168,
+              "maxDelta": 1,
+              "minPsnr": 92.7247284862714,
+              "failures": [],
+              "errors": [],
+              "previewChecksum": "34947d643bf68c4b4bdc3693bedbdf44022fda2d3f683747a868418545144d9c",
+              "ratio": 0.4677905313656664,
+              "timings": [
+                {
+                  "legacyMs": 1404.6000002622604,
+                  "compositionMs": 657.799999833107,
+                  "ratio": 0.46831838225137806,
+                  "cycles": 3,
+                  "frames": 504
+                },
+                {
+                  "legacyMs": 1389.8000004291534,
+                  "compositionMs": 645.2999993562698,
+                  "ratio": 0.4643114111073601,
+                  "cycles": 3,
+                  "frames": 504
+                },
+                {
+                  "legacyMs": 1393.9999995231628,
+                  "compositionMs": 652.100000500679,
+                  "ratio": 0.4677905313656664,
+                  "cycles": 3,
+                  "frames": 504
+                }
+              ]
+            }
+          ],
+          "hardwareReports": [
+            {
+              "fixture": "legacy/chronicle-reveal",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 15,
+              "differingChannels": 1724291,
+              "psnr": 50.74725821344301,
+              "ssim": 0.9991410544480257
+            },
+            {
+              "fixture": "legacy/chronicle-reveal",
+              "backend": "canvas2d",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 15,
+              "differingChannels": 1725906,
+              "psnr": 50.68963267361946,
+              "ssim": 0.9991405530035857
+            },
+            {
+              "fixture": "legacy/chronicle-reveal",
+              "backend": "canvas2d",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1711505,
+              "psnr": 50.55283286197735,
+              "ssim": 0.9991254950583504
+            },
+            {
+              "fixture": "legacy/chronicle-reveal",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 15,
+              "differingChannels": 1735617,
+              "psnr": 50.72229633498723,
+              "ssim": 0.999140163121083
+            },
+            {
+              "fixture": "legacy/chronicle-reveal",
+              "backend": "webgl2",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 15,
+              "differingChannels": 1740253,
+              "psnr": 50.65798482574212,
+              "ssim": 0.9991389779786887
+            },
+            {
+              "fixture": "legacy/chronicle-reveal",
+              "backend": "webgl2",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1730123,
+              "psnr": 50.51801787939471,
+              "ssim": 0.9991230814630238
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/text-box",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 40,
+              "differingChannels": 1705559,
+              "psnr": 50.613278244629505,
+              "ssim": 0.9991256134948606
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/text-box",
+              "backend": "canvas2d",
+              "frame": 36,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1707139,
+              "psnr": 50.55862148245937,
+              "ssim": 0.9991256367245166
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/text-box",
+              "backend": "canvas2d",
+              "frame": 71,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1717893,
+              "psnr": 50.54158762829043,
+              "ssim": 0.9991251853995323
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/text-box",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 39,
+              "differingChannels": 1722114,
+              "psnr": 50.58263300075482,
+              "ssim": 0.9991237924136858
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/text-box",
+              "backend": "webgl2",
+              "frame": 36,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1726642,
+              "psnr": 50.522230711459855,
+              "ssim": 0.9991231598434535
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/text-box",
+              "backend": "webgl2",
+              "frame": 71,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1731342,
+              "psnr": 50.514989973176235,
+              "ssim": 0.9991229306108966
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/caption",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 40,
+              "differingChannels": 1705559,
+              "psnr": 50.613278244629505,
+              "ssim": 0.9991256134948606
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/caption",
+              "backend": "canvas2d",
+              "frame": 36,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1707139,
+              "psnr": 50.55862148245937,
+              "ssim": 0.9991256367245166
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/caption",
+              "backend": "canvas2d",
+              "frame": 71,
+              "tier": "perceptual",
+              "maxChannelDelta": 56,
+              "differingChannels": 1702139,
+              "psnr": 49.25299464201985,
+              "ssim": 0.9990621343823861
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/caption",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 39,
+              "differingChannels": 1722114,
+              "psnr": 50.58263300075482,
+              "ssim": 0.9991237924136858
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/caption",
+              "backend": "webgl2",
+              "frame": 36,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1726642,
+              "psnr": 50.522230711459855,
+              "ssim": 0.9991231598434535
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/caption",
+              "backend": "webgl2",
+              "frame": 71,
+              "tier": "perceptual",
+              "maxChannelDelta": 55,
+              "differingChannels": 1805222,
+              "psnr": 49.16289093264752,
+              "ssim": 0.9990577844391949
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/speech",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 40,
+              "differingChannels": 1705559,
+              "psnr": 50.613278244629505,
+              "ssim": 0.9991256134948606
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/speech",
+              "backend": "canvas2d",
+              "frame": 36,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1707139,
+              "psnr": 50.55862148245937,
+              "ssim": 0.9991256367245166
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/speech",
+              "backend": "canvas2d",
+              "frame": 71,
+              "tier": "perceptual",
+              "maxChannelDelta": 67,
+              "differingChannels": 1719779,
+              "psnr": 49.16788222706793,
+              "ssim": 0.9990423966912307
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/speech",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 39,
+              "differingChannels": 1722114,
+              "psnr": 50.58263300075482,
+              "ssim": 0.9991237924136858
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/speech",
+              "backend": "webgl2",
+              "frame": 36,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1726642,
+              "psnr": 50.522230711459855,
+              "ssim": 0.9991231598434535
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/speech",
+              "backend": "webgl2",
+              "frame": 71,
+              "tier": "perceptual",
+              "maxChannelDelta": 68,
+              "differingChannels": 1787967,
+              "psnr": 49.09928506259237,
+              "ssim": 0.9990404471544436
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/thought",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 40,
+              "differingChannels": 1705559,
+              "psnr": 50.613278244629505,
+              "ssim": 0.9991256134948606
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/thought",
+              "backend": "canvas2d",
+              "frame": 36,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1707139,
+              "psnr": 50.55862148245937,
+              "ssim": 0.9991256367245166
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/thought",
+              "backend": "canvas2d",
+              "frame": 71,
+              "tier": "perceptual",
+              "maxChannelDelta": 65,
+              "differingChannels": 1720535,
+              "psnr": 48.098947640188115,
+              "ssim": 0.9989824644841153
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/thought",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 39,
+              "differingChannels": 1722114,
+              "psnr": 50.58263300075482,
+              "ssim": 0.9991237924136858
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/thought",
+              "backend": "webgl2",
+              "frame": 36,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1726642,
+              "psnr": 50.522230711459855,
+              "ssim": 0.9991231598434535
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/thought",
+              "backend": "webgl2",
+              "frame": 71,
+              "tier": "perceptual",
+              "maxChannelDelta": 66,
+              "differingChannels": 1786064,
+              "psnr": 48.06201206760043,
+              "ssim": 0.9989801699161438
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/accepted-font-identifier",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 40,
+              "differingChannels": 1705559,
+              "psnr": 50.613278244629505,
+              "ssim": 0.9991256134948606
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/accepted-font-identifier",
+              "backend": "canvas2d",
+              "frame": 36,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1707139,
+              "psnr": 50.55862148245937,
+              "ssim": 0.9991256367245166
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/accepted-font-identifier",
+              "backend": "canvas2d",
+              "frame": 71,
+              "tier": "perceptual",
+              "maxChannelDelta": 56,
+              "differingChannels": 1702139,
+              "psnr": 49.25299464201985,
+              "ssim": 0.9990621343823861
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/accepted-font-identifier",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 39,
+              "differingChannels": 1722114,
+              "psnr": 50.58263300075482,
+              "ssim": 0.9991237924136858
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/accepted-font-identifier",
+              "backend": "webgl2",
+              "frame": 36,
+              "tier": "perceptual",
+              "maxChannelDelta": 45,
+              "differingChannels": 1726642,
+              "psnr": 50.522230711459855,
+              "ssim": 0.9991231598434535
+            },
+            {
+              "fixture": "legacy/chronicle-reveal/accepted-font-identifier",
+              "backend": "webgl2",
+              "frame": 71,
+              "tier": "perceptual",
+              "maxChannelDelta": 55,
+              "differingChannels": 1805222,
+              "psnr": 49.16289093264752,
+              "ssim": 0.9990577844391949
+            },
+            {
+              "fixture": "legacy/resource-flow",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "legacy/resource-flow",
+              "backend": "canvas2d",
+              "frame": 84,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "legacy/resource-flow",
+              "backend": "canvas2d",
+              "frame": 167,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "legacy/resource-flow",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 15,
+              "differingChannels": 326088,
+              "psnr": 55.393123783578744,
+              "ssim": 0.9998979013363847
+            },
+            {
+              "fixture": "legacy/resource-flow",
+              "backend": "webgl2",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 106,
+              "differingChannels": 429056,
+              "psnr": 49.157461422465076,
+              "ssim": 0.9993589931189419
+            },
+            {
+              "fixture": "legacy/resource-flow",
+              "backend": "webgl2",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 106,
+              "differingChannels": 496409,
+              "psnr": 46.88573075161659,
+              "ssim": 0.9988270508941809
+            },
+            {
+              "fixture": "legacy/access-pressure",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "legacy/access-pressure",
+              "backend": "canvas2d",
+              "frame": 84,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "legacy/access-pressure",
+              "backend": "canvas2d",
+              "frame": 167,
+              "tier": "exact",
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": 999,
+              "ssim": 1
+            },
+            {
+              "fixture": "legacy/access-pressure",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 15,
+              "differingChannels": 318267,
+              "psnr": 55.87235094394135,
+              "ssim": 0.9999078411839105
+            },
+            {
+              "fixture": "legacy/access-pressure",
+              "backend": "webgl2",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 101,
+              "differingChannels": 333755,
+              "psnr": 48.29685207786066,
+              "ssim": 0.9992551723892069
+            },
+            {
+              "fixture": "legacy/access-pressure",
+              "backend": "webgl2",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 128,
+              "differingChannels": 336784,
+              "psnr": 47.940038223878645,
+              "ssim": 0.9992176217956793
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 55,
+              "differingChannels": 514680,
+              "psnr": 51.31706498503851,
+              "ssim": 0.9992546873098361
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "canvas2d",
+              "frame": 30,
+              "tier": "perceptual",
+              "maxChannelDelta": 53,
+              "differingChannels": 694874,
+              "psnr": 50.433091957911,
+              "ssim": 0.9992372282003777
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "canvas2d",
+              "frame": 31,
+              "tier": "perceptual",
+              "maxChannelDelta": 65,
+              "differingChannels": 966617,
+              "psnr": 49.39455995277577,
+              "ssim": 0.9990856003683164
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "canvas2d",
+              "frame": 32,
+              "tier": "perceptual",
+              "maxChannelDelta": 48,
+              "differingChannels": 1238288,
+              "psnr": 49.87004724576423,
+              "ssim": 0.9992084554031926
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "canvas2d",
+              "frame": 33,
+              "tier": "perceptual",
+              "maxChannelDelta": 42,
+              "differingChannels": 1184837,
+              "psnr": 49.593873508970475,
+              "ssim": 0.9991156633511565
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "canvas2d",
+              "frame": 34,
+              "tier": "perceptual",
+              "maxChannelDelta": 51,
+              "differingChannels": 1421932,
+              "psnr": 49.864792557924645,
+              "ssim": 0.99910505409739
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "canvas2d",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 65,
+              "differingChannels": 1007846,
+              "psnr": 48.29236380459981,
+              "ssim": 0.9985843302184993
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "canvas2d",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 55,
+              "differingChannels": 1007819,
+              "psnr": 48.301634715129964,
+              "ssim": 0.9985875722143299
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 55,
+              "differingChannels": 508608,
+              "psnr": 51.31586560121241,
+              "ssim": 0.9992542518856451
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "webgl2",
+              "frame": 30,
+              "tier": "perceptual",
+              "maxChannelDelta": 54,
+              "differingChannels": 755833,
+              "psnr": 51.00411285133355,
+              "ssim": 0.9992749721185615
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "webgl2",
+              "frame": 31,
+              "tier": "perceptual",
+              "maxChannelDelta": 65,
+              "differingChannels": 870828,
+              "psnr": 49.737609428865845,
+              "ssim": 0.9991167647923804
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "webgl2",
+              "frame": 32,
+              "tier": "perceptual",
+              "maxChannelDelta": 47,
+              "differingChannels": 517334,
+              "psnr": 51.960862928700784,
+              "ssim": 0.9993136697748808
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "webgl2",
+              "frame": 33,
+              "tier": "perceptual",
+              "maxChannelDelta": 42,
+              "differingChannels": 1156803,
+              "psnr": 49.642182901383265,
+              "ssim": 0.9991294316017189
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "webgl2",
+              "frame": 34,
+              "tier": "perceptual",
+              "maxChannelDelta": 51,
+              "differingChannels": 557401,
+              "psnr": 52.036989772811204,
+              "ssim": 0.9991812066344253
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "webgl2",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 65,
+              "differingChannels": 1001095,
+              "psnr": 48.28536119036812,
+              "ssim": 0.998582689671221
+            },
+            {
+              "fixture": "legacy/comparison-build",
+              "backend": "webgl2",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 55,
+              "differingChannels": 1001067,
+              "psnr": 48.29430832268602,
+              "ssim": 0.9985860386500562
+            },
+            {
+              "fixture": "legacy/pose-prop-change",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 113,
+              "differingChannels": 567572,
+              "psnr": 47.72402771350011,
+              "ssim": 0.999012991904415
+            },
+            {
+              "fixture": "legacy/pose-prop-change",
+              "backend": "canvas2d",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 138,
+              "differingChannels": 559360,
+              "psnr": 48.242619538425956,
+              "ssim": 0.9990576367017177
+            },
+            {
+              "fixture": "legacy/pose-prop-change",
+              "backend": "canvas2d",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 14,
+              "differingChannels": 555784,
+              "psnr": 52.79548250307708,
+              "ssim": 0.9998502231338011
+            },
+            {
+              "fixture": "legacy/pose-prop-change",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 113,
+              "differingChannels": 627704,
+              "psnr": 47.64759929497342,
+              "ssim": 0.9990065153509005
+            },
+            {
+              "fixture": "legacy/pose-prop-change",
+              "backend": "webgl2",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 138,
+              "differingChannels": 618030,
+              "psnr": 48.15901091771145,
+              "ssim": 0.9990505097075476
+            },
+            {
+              "fixture": "legacy/pose-prop-change",
+              "backend": "webgl2",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 14,
+              "differingChannels": 615011,
+              "psnr": 52.55786093325929,
+              "ssim": 0.9998432597720838
+            },
+            {
+              "fixture": "legacy/pose-prop-change/accepted-envelope",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 113,
+              "differingChannels": 504058,
+              "psnr": 47.93633768778827,
+              "ssim": 0.9990395787160363
+            },
+            {
+              "fixture": "legacy/pose-prop-change/accepted-envelope",
+              "backend": "canvas2d",
+              "frame": 120,
+              "tier": "perceptual",
+              "maxChannelDelta": 21,
+              "differingChannels": 493230,
+              "psnr": 53.42254431460013,
+              "ssim": 0.9998677387670508
+            },
+            {
+              "fixture": "legacy/pose-prop-change/accepted-envelope",
+              "backend": "canvas2d",
+              "frame": 239,
+              "tier": "perceptual",
+              "maxChannelDelta": 20,
+              "differingChannels": 489460,
+              "psnr": 53.76042324861704,
+              "ssim": 0.9998683313636403
+            },
+            {
+              "fixture": "legacy/pose-prop-change/accepted-envelope",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 113,
+              "differingChannels": 535970,
+              "psnr": 47.88813320518269,
+              "ssim": 0.9990340115203551
+            },
+            {
+              "fixture": "legacy/pose-prop-change/accepted-envelope",
+              "backend": "webgl2",
+              "frame": 120,
+              "tier": "perceptual",
+              "maxChannelDelta": 21,
+              "differingChannels": 522759,
+              "psnr": 53.2424354948752,
+              "ssim": 0.9998613364770015
+            },
+            {
+              "fixture": "legacy/pose-prop-change/accepted-envelope",
+              "backend": "webgl2",
+              "frame": 239,
+              "tier": "perceptual",
+              "maxChannelDelta": 20,
+              "differingChannels": 521370,
+              "psnr": 53.57487550916014,
+              "ssim": 0.999861965462769
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 454501,
+              "psnr": 46.04375591021336,
+              "ssim": 0.9985574543939342
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frame": 41,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 455953,
+              "psnr": 45.8848917020761,
+              "ssim": 0.9985179045013987
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frame": 42,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 455723,
+              "psnr": 45.86334473067523,
+              "ssim": 0.99850445818451
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frame": 43,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 455402,
+              "psnr": 45.7638621790604,
+              "ssim": 0.9984669185187142
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frame": 44,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 454876,
+              "psnr": 45.61297766297991,
+              "ssim": 0.998388845109927
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frame": 45,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 454598,
+              "psnr": 45.256302147268826,
+              "ssim": 0.9982303498907904
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frame": 77,
+              "tier": "perceptual",
+              "maxChannelDelta": 101,
+              "differingChannels": 459972,
+              "psnr": 45.373928071888116,
+              "ssim": 0.9984036568067132
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frame": 86,
+              "tier": "perceptual",
+              "maxChannelDelta": 96,
+              "differingChannels": 468334,
+              "psnr": 44.941564569983974,
+              "ssim": 0.99845520485616
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 109,
+              "differingChannels": 469726,
+              "psnr": 45.82494298573745,
+              "ssim": 0.9986282355525032
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "canvas2d",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 93,
+              "differingChannels": 467994,
+              "psnr": 45.855656435516174,
+              "ssim": 0.9986094580291598
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 475161,
+              "psnr": 46.02060979075675,
+              "ssim": 0.9985501898183444
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frame": 41,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 476578,
+              "psnr": 45.946200443983784,
+              "ssim": 0.998537643998877
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frame": 42,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 476332,
+              "psnr": 45.962300216480486,
+              "ssim": 0.9985357404763545
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frame": 43,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 476010,
+              "psnr": 45.98186880113712,
+              "ssim": 0.9985343864278042
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frame": 44,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 475396,
+              "psnr": 46.05649828578403,
+              "ssim": 0.9985487044758963
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frame": 45,
+              "tier": "perceptual",
+              "maxChannelDelta": 100,
+              "differingChannels": 475052,
+              "psnr": 46.01558248332398,
+              "ssim": 0.9985408450318596
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frame": 77,
+              "tier": "perceptual",
+              "maxChannelDelta": 101,
+              "differingChannels": 483873,
+              "psnr": 46.11102023894827,
+              "ssim": 0.9985688729392204
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frame": 86,
+              "tier": "perceptual",
+              "maxChannelDelta": 96,
+              "differingChannels": 488779,
+              "psnr": 45.73391791698352,
+              "ssim": 0.9986252980411353
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 110,
+              "differingChannels": 490535,
+              "psnr": 45.936987700761954,
+              "ssim": 0.9986290630074474
+            },
+            {
+              "fixture": "legacy/crisis-fracture",
+              "backend": "webgl2",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 93,
+              "differingChannels": 489329,
+              "psnr": 45.747099690183994,
+              "ssim": 0.9985969648264043
+            },
+            {
+              "fixture": "legacy/vertical-chronicle-reveal",
+              "backend": "canvas2d",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 13,
+              "differingChannels": 1325451,
+              "psnr": 52.008881062382386,
+              "ssim": 0.9993302744213304
+            },
+            {
+              "fixture": "legacy/vertical-chronicle-reveal",
+              "backend": "canvas2d",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 13,
+              "differingChannels": 1324879,
+              "psnr": 52.0068865719783,
+              "ssim": 0.9993310924102657
+            },
+            {
+              "fixture": "legacy/vertical-chronicle-reveal",
+              "backend": "canvas2d",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 53,
+              "differingChannels": 1380750,
+              "psnr": 51.46450031568013,
+              "ssim": 0.9992926263290822
+            },
+            {
+              "fixture": "legacy/vertical-chronicle-reveal",
+              "backend": "webgl2",
+              "frame": 0,
+              "tier": "perceptual",
+              "maxChannelDelta": 13,
+              "differingChannels": 1341601,
+              "psnr": 51.94941768651881,
+              "ssim": 0.9993263413742586
+            },
+            {
+              "fixture": "legacy/vertical-chronicle-reveal",
+              "backend": "webgl2",
+              "frame": 84,
+              "tier": "perceptual",
+              "maxChannelDelta": 13,
+              "differingChannels": 1340703,
+              "psnr": 51.94948832678101,
+              "ssim": 0.9993267573295123
+            },
+            {
+              "fixture": "legacy/vertical-chronicle-reveal",
+              "backend": "webgl2",
+              "frame": 167,
+              "tier": "perceptual",
+              "maxChannelDelta": 54,
+              "differingChannels": 1402400,
+              "psnr": 51.40107451171697,
+              "ssim": 0.9992873852778349
+            }
+          ],
+          "log": "/private/tmp/pr47-second-legacy-delivery-final.log",
+          "checkpoint": "6c5ae679 plus bitmap changes, before the final long-ID probe-only amendment",
+          "postAmendmentScope": "Ordinary preview/export rendering is unchanged by the probe amendment. The final focused probe regression and check:fast verify the amendment; this full affected delivery was not rerun."
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-legacy-adapter.test.ts tests/unit/composition-providers.test.ts tests/unit/composition-text-inputs.test.ts tests/unit/composition-commerce-text-states.test.ts tests/unit/composition-family-preparation.test.ts --cache false --maxWorkers=2",
+          "status": "pass-final-probe-amendment",
+          "files": 5,
+          "tests": 53,
+          "log": "/private/tmp/pr47-legacy-probes-unknown-units-green.log"
+        },
+        {
+          "command": "node --import tsx /private/tmp/pr47-legacy-probe-runner.mts",
+          "status": "pass-final-probe-amendment",
+          "browserCases": 12,
+          "frameComparisons": 36,
+          "maxChannelDelta": 0,
+          "beforeRepairMaxChannelDelta": 141,
+          "coverage": [
+            "100000-character provider IDs",
+            "collision with an authored synthetic-looking ID",
+            "ink-only and container-only modes",
+            "root and nested 33-parent scenes",
+            "provider payload ID equals collision-safe native ID",
+            "caller probe and scene unchanged",
+            "unknown target collides with generated native alias",
+            "unknown ink/container oracle hashes identical; known target hashes distinct",
+            "ordinary unknown target retained in fresh copy"
+          ],
+          "reports": [
+            {
+              "id": "legacy/chronicle-reveal/text-probes-root",
+              "node": "title",
+              "mode": "ink-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "104,132,223,78,118,119,80,239,132,135,200,227,213,121,84,116,222,99,144,29,215,41,99,25,254,186,105,109,198,150,148,31",
+              "unknownTarget": false
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-probes-root",
+              "node": "title",
+              "mode": "container-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "34,199,124,165,239,124,103,79,39,128,178,194,207,163,160,49,99,182,19,142,10,52,205,49,111,206,84,0,170,69,209,59",
+              "unknownTarget": false
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-probes-root",
+              "node": "kicker",
+              "mode": "ink-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "206,204,17,176,89,64,64,79,174,174,13,23,141,84,94,207,179,55,68,10,163,93,82,21,65,6,23,22,206,123,214,222",
+              "unknownTarget": false
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-probes-root",
+              "node": "kicker",
+              "mode": "container-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "216,238,159,18,135,43,16,25,198,140,165,79,112,106,173,188,221,25,222,3,210,99,83,78,59,113,246,52,71,236,146,54",
+              "unknownTarget": false
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-probes-root",
+              "node": "legacy-identifier-0",
+              "mode": "ink-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "206,204,17,176,89,64,64,79,174,174,13,23,141,84,94,207,179,55,68,10,163,93,82,21,65,6,23,22,206,123,214,222",
+              "unknownTarget": true
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-probes-root",
+              "node": "legacy-identifier-0",
+              "mode": "container-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "206,204,17,176,89,64,64,79,174,174,13,23,141,84,94,207,179,55,68,10,163,93,82,21,65,6,23,22,206,123,214,222",
+              "unknownTarget": true
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-probes-nested",
+              "node": "title",
+              "mode": "ink-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "104,132,223,78,118,119,80,239,132,135,200,227,213,121,84,116,222,99,144,29,215,41,99,25,254,186,105,109,198,150,148,31",
+              "unknownTarget": false
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-probes-nested",
+              "node": "title",
+              "mode": "container-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "34,199,124,165,239,124,103,79,39,128,178,194,207,163,160,49,99,182,19,142,10,52,205,49,111,206,84,0,170,69,209,59",
+              "unknownTarget": false
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-probes-nested",
+              "node": "kicker",
+              "mode": "ink-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "206,204,17,176,89,64,64,79,174,174,13,23,141,84,94,207,179,55,68,10,163,93,82,21,65,6,23,22,206,123,214,222",
+              "unknownTarget": false
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-probes-nested",
+              "node": "kicker",
+              "mode": "container-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "216,238,159,18,135,43,16,25,198,140,165,79,112,106,173,188,221,25,222,3,210,99,83,78,59,113,246,52,71,236,146,54",
+              "unknownTarget": false
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-probes-nested",
+              "node": "legacy-identifier-0",
+              "mode": "ink-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "206,204,17,176,89,64,64,79,174,174,13,23,141,84,94,207,179,55,68,10,163,93,82,21,65,6,23,22,206,123,214,222",
+              "unknownTarget": true
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-probes-nested",
+              "node": "legacy-identifier-0",
+              "mode": "container-only",
+              "frames": [0, 36, 71],
+              "maxChannelDelta": 0,
+              "referenceHash": "206,204,17,176,89,64,64,79,174,174,13,23,141,84,94,207,179,55,68,10,163,93,82,21,65,6,23,22,206,123,214,222",
+              "unknownTarget": true
+            }
+          ],
+          "log": "/private/tmp/pr47-legacy-probes-unknown-green.log",
+          "unknownAliasCases": 4,
+          "unknownAliasComparisons": 12
+        }
+      ],
+      "change": "Compact image sources to recipe-reachable integer states when source/asset budgets require it; prune unused assets; alias oversized identifiers with bounded source ordinals; bind real decoded images/fonts; split deep groups into collapsed precomps preserving direct draws, clips, transforms and opacity. Legacy adapter0.1.3/illustrated0.12.4 invalidate previous caches. Native authored limits remain unchanged. Provider payload IDs use the final collision-safe native layer ID; legacy ink/container probes are cloned and rebound through root source ordinals, including nested scopes. Unknown authoring probe targets that collide with generated aliases are rebound to the empty, nonmatching ID; ordinary unknown targets are retained in a fresh copy.",
+      "review": "Independent final review confirmed collapsed transforms/clips/opacity, follower scopes, resource ordinals, valid probe targets through nested scopes, unknown alias guards and caller immutability; no remaining concrete issue found.",
+      "rejectedDiagnostics": [
+        "Initial independent review found547 retained assets via unused native-size source tables and oversized pose labels; added focused regressions and normalization.",
+        "Unbounded original identifiers exceeded native64KiB metadata; bounded ordinal aliases and provider payload sanitization remove them.",
+        "Final TypeScript check found union narrowing, exact optional style and parent-walk inference errors; corrected types before final check:fast pass.",
+        "Final independent review found legacy long-ID ink/container probes retained the original target while provider payload IDs were shortened; repaired collision-safe payload IDs and cloned ordinal-based probe binding within the same finding. Regression failed before repair with channel delta141, then passed with delta0.",
+        "Final unknown-target review found an absent authoring ID could match a generated native alias. The browser reproduced channel delta141 and root/nested unit cases failed; the guarded mapping now passes36 exact comparisons and53 focused units."
+      ],
+      "commit": "32368e65d71d29c9b72790f63eeb24edfc068398"
+    },
+    {
+      "id": 3,
+      "title": "Normalize ImageBitmap texture orientation and alpha",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4216462791",
+      "status": "fixed-focused-verification-passed",
+      "checks": [
+        {
+          "command": "pnpm exec tsx tests/browser/composition-depth-alpha.ts",
+          "status": "pass",
+          "profiles": ["pinned SwiftShader", "hardware Apple M5 Pro"],
+          "casesPerProfile": 24,
+          "frameVisitsPerCase": 3,
+          "totalBitmapComparisons": 144,
+          "maxChannelDelta": 0,
+          "alphaEdgeChecks": "pass",
+          "log": "/private/tmp/pr47-bitmaps-cross-realm.txt",
+          "reports": [
+            {
+              "profile": "pinned",
+              "environment": {
+                "profile": "chromium-software-2",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                "platform": "darwin",
+                "arch": "arm64"
+              },
+              "intermediatePixels": 128,
+              "maxConservationError": 0,
+              "row": [
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [239, 16, 0, 255],
+                [207, 48, 0, 255],
+                [175, 80, 0, 255],
+                [143, 112, 0, 255],
+                [112, 143, 0, 255],
+                [80, 175, 0, 255],
+                [48, 207, 0, 255],
+                [16, 239, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255]
+              ],
+              "bitmaps": [
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                }
+              ]
+            },
+            {
+              "profile": "hardware",
+              "environment": {
+                "profile": "hardware",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                "platform": "darwin",
+                "arch": "arm64"
+              },
+              "intermediatePixels": 128,
+              "maxConservationError": 0,
+              "row": [
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [255, 0, 0, 255],
+                [239, 16, 0, 255],
+                [207, 48, 0, 255],
+                [175, 80, 0, 255],
+                [143, 112, 0, 255],
+                [112, 143, 0, 255],
+                [80, 175, 0, 255],
+                [48, 207, 0, 255],
+                [16, 239, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255],
+                [0, 255, 0, 255]
+              ],
+              "bitmaps": [
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "current",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": false,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "current",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "default",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "none",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                },
+                {
+                  "kind": "depth-image",
+                  "translucent": true,
+                  "realm": "iframe",
+                  "premultiplyAlpha": "premultiply",
+                  "frames": [0, 1, 0],
+                  "maxChannelDelta": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "command": "node --import tsx /private/tmp/pr47-bitmap-quantization-probe.mts",
+          "status": "pass-independent-probe",
+          "cases": 36,
+          "sourceRgb": ["123,71,181", "117,82,173"],
+          "alphaValues": [8, 16, 32, 64, 128, 224],
+          "premultiplyAlpha": ["default", "none", "premultiply"],
+          "maxChannelDeltaAfterNormalization": 0,
+          "maxChannelDeltaDirectBitmapUpload": 45,
+          "log": "/private/tmp/pr47-bitmap-quantization-probe.json"
+        }
+      ],
+      "regressionBeforeFix": "Original reviewed head fails bitmap image/depth regression with channel delta255; direct mixed-color alpha uploads differ by up to45.",
+      "change": "Normalize same- and cross-realm ImageBitmap resources through a temporary Canvas2D upload surface so existing WebGL flip/straight-alpha flags apply; release the surface in finally. Image/depth motion, orientation and translucent colors match HTML images. Shader0.4.1/WebGL0.65.4 invalidate previous cache identities.",
+      "review": "Independent review confirmed same/cross-realm detection, image/depth parity, mixed-color translucent pixels, released temporary canvases, failed texture deletion and caller-owned bitmap lifetime."
+    }
+  ],
+  "finalVerification": {
+    "status": "focused-verification-complete",
+    "fullPnpmCheck": "not-run-scoped-follow-up-policy",
+    "checks": [
+      {
+        "command": "pnpm check:fast",
+        "status": "pass-earlier-checkpoint",
+        "unitFiles": 225,
+        "unitTests": 2496,
+        "scope": "Schema, package boundaries, TS formatting, TS lint, build and all unit tests; not a complete repository gate.",
+        "log": "/private/tmp/pr47-second-check-fast-final.log",
+        "checkpoint": "Before final probe-only amendment; superseded by final check:fast below."
+      },
+      {
+        "command": "pnpm exec tsx tests/browser/composition-depth-image.ts --default",
+        "status": "pass",
+        "log": "/private/tmp/pr47-second-depth-defaults.log"
+      },
+      {
+        "command": "pnpm exec tsx tests/browser/composition-depth-image.ts --extended --default",
+        "status": "pass",
+        "log": "/private/tmp/pr47-second-depth-defaults-extended.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-webgl-export",
+        "status": "pass",
+        "fixtures": 4,
+        "totalFrames": 204,
+        "evidence": "CLI, repeated byte-identical exports, raw/PNG, independent preview encoding, Lab backend switching and overwrite protection.",
+        "log": "/private/tmp/pr47-second-webgl-export.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-baselines",
+        "status": "pass",
+        "items": 176,
+        "frames": 36061,
+        "seconds": 277.96,
+        "frozenHashes": "unchanged",
+        "log": "/private/tmp/pr47-second-frozen-baselines.log"
+      },
+      {
+        "command": "pnpm test:browser:composition-family-defaults",
+        "status": "pass-complete-affected-inventory",
+        "items": 176,
+        "frames": 36061,
+        "reverseFrames": 36061,
+        "maxChannelDelta": 2,
+        "frozenOracle": "all176unchanged",
+        "checkpoint": "6c5ae679 plus bitmap changes, before the final long-ID probe-only amendment",
+        "postAmendmentScope": "Final amendment changes aliased legacy text probe IDs, including unknown targets; ordinary176-input rendering is unchanged. Focused long-ID probes (36 exact frame comparisons) and final check:fast (2498 units) pass after that amendment; the complete affected inventory was not rerun.",
+        "reports": [
+          {
+            "id": "story/continuous-unequal-margins",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/continuous-access-constraint",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/continuous-relationship-build",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/continuous-evidence-boundary",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/continuous-dated-system-break",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 1,
+            "minPsnr": 80.96381589571459,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/continuous-category-swap",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/continuous-motif-resolve",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/v013-unequal-margins",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/v013-access-constraint",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/buffer-press-unequal-margins",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/v2-unequal-margins",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/calibration-pan",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 1,
+            "minPsnr": 82.7247284862714,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/template-resource-network",
+            "frames": 648,
+            "reverseFrames": 648,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "story/template-unequal-access",
+            "frames": 312,
+            "reverseFrames": 312,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "passage/comparison-access/unequal-margins",
+            "frames": 334,
+            "reverseFrames": 334,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "passage/comparison-access/unequal-access",
+            "frames": 312,
+            "reverseFrames": 312,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "passage/linked-comparison/compare",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "passage/linked-comparison/continue",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "passage/linked-comparison/reset",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "passage/linked-network-vertical/network",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "acting/illustrated-sequence/detail",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "acting/illustrated-sequence/action",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "acting/illustrated-sequence/consequence",
+            "frames": 288,
+            "reverseFrames": 288,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "acting/parcel-actions/wrong-door",
+            "frames": 204,
+            "reverseFrames": 204,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "acting/parcel-actions/knock",
+            "frames": 276,
+            "reverseFrames": 276,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "acting/parcel-actions/handover",
+            "frames": 384,
+            "reverseFrames": 384,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "acting/parcel-image-model/wrong-door",
+            "frames": 204,
+            "reverseFrames": 204,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "acting/parcel-image-model/knock",
+            "frames": 276,
+            "reverseFrames": 276,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "acting/parcel-image-model/handover",
+            "frames": 384,
+            "reverseFrames": 384,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "motion-craft/buffer-press",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "motion-craft/buffer-press-accelerate",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "motion-craft/supply-ramps",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "motion-craft/gallery",
+            "frames": 61,
+            "reverseFrames": 61,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "motion-craft/intent-presets",
+            "frames": 61,
+            "reverseFrames": 61,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "typography/editorial",
+            "frames": 151,
+            "reverseFrames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false,
+            "textProbes": [
+              {
+                "node": "headline",
+                "mode": "ink-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "headline",
+                "mode": "container-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "rag",
+                "mode": "ink-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "rag",
+                "mode": "container-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              }
+            ]
+          },
+          {
+            "id": "typography/glyph-performance",
+            "frames": 151,
+            "reverseFrames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false,
+            "textProbes": [
+              {
+                "node": "glyphs",
+                "mode": "ink-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "glyphs",
+                "mode": "container-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              }
+            ]
+          },
+          {
+            "id": "typography/selectors",
+            "frames": 151,
+            "reverseFrames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false,
+            "textProbes": [
+              {
+                "node": "headline",
+                "mode": "ink-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "headline",
+                "mode": "container-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "tracking",
+                "mode": "ink-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "tracking",
+                "mode": "container-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              }
+            ]
+          },
+          {
+            "id": "typography/semantic",
+            "frames": 181,
+            "reverseFrames": 181,
+            "maxDelta": 2,
+            "minPsnr": 85.45474120690878,
+            "frozenOracle": "unchanged",
+            "candidate": false,
+            "textProbes": [
+              {
+                "node": "claim",
+                "mode": "ink-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "claim",
+                "mode": "container-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "margin",
+                "mode": "ink-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "margin",
+                "mode": "container-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "qualifier",
+                "mode": "ink-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "qualifier",
+                "mode": "container-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              }
+            ]
+          },
+          {
+            "id": "typography/transitions",
+            "frames": 151,
+            "reverseFrames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false,
+            "textProbes": [
+              {
+                "node": "crossfade",
+                "mode": "ink-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "crossfade",
+                "mode": "container-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "roll",
+                "mode": "ink-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "roll",
+                "mode": "container-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "retype",
+                "mode": "ink-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "retype",
+                "mode": "container-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "count",
+                "mode": "ink-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "count",
+                "mode": "container-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              }
+            ]
+          },
+          {
+            "id": "typography/variable-thai",
+            "frames": 151,
+            "reverseFrames": 151,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false,
+            "textProbes": [
+              {
+                "node": "thai",
+                "mode": "ink-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "thai",
+                "mode": "container-only",
+                "frames": [0, 75, 150],
+                "maxChannelDelta": 0
+              }
+            ]
+          },
+          {
+            "id": "typography/vertical",
+            "frames": 181,
+            "reverseFrames": 181,
+            "maxDelta": 2,
+            "minPsnr": 85.45474120690878,
+            "frozenOracle": "unchanged",
+            "candidate": false,
+            "textProbes": [
+              {
+                "node": "claim",
+                "mode": "ink-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "claim",
+                "mode": "container-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "margin",
+                "mode": "ink-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "margin",
+                "mode": "container-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "qualifier",
+                "mode": "ink-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "qualifier",
+                "mode": "container-only",
+                "frames": [0, 90, 180],
+                "maxChannelDelta": 0
+              }
+            ]
+          },
+          {
+            "id": "typography/commerce",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false,
+            "textProbes": [
+              {
+                "node": "product-name",
+                "mode": "ink-only",
+                "frames": [0, 96, 191],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "product-name",
+                "mode": "container-only",
+                "frames": [0, 96, 191],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "headline-0",
+                "mode": "ink-only",
+                "frames": [0, 96, 191],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "headline-0",
+                "mode": "container-only",
+                "frames": [0, 96, 191],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "cta",
+                "mode": "ink-only",
+                "frames": [0, 96, 191],
+                "maxChannelDelta": 0
+              },
+              {
+                "node": "cta",
+                "mode": "container-only",
+                "frames": [0, 96, 191],
+                "maxChannelDelta": 0
+              }
+            ]
+          },
+          {
+            "id": "commerce/a01-landscape",
+            "frames": 300,
+            "reverseFrames": 300,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/a01-feed",
+            "frames": 300,
+            "reverseFrames": 300,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/h01-landscape",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/h01-portrait",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/h03-thai",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/h04-square",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/vertical-h01-portrait",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-anchor",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-attachment",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-background-light",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-background",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-callout",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-detail",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-directional-blur",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-displacement",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-drift",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-echo",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-effects-studio",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-fade",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-float",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-focus-blur",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-glow",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-grain",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-height-shadow",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-introduction",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-layout",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-light-sweep",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-matte",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-motion-blur",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-overshoot",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-panel",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-parallax",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-particles",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-path",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-product",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-rotate",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-scale",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-sequence",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-shadow",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-studio",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-text",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "commerce/atom-translate",
+            "frames": 240,
+            "reverseFrames": 240,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-bracket",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-detail-sequence",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-instances",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-layout",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-leader",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-mask",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-outline",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-pin",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-sequence",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-stagger",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-state",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-supply-sequence",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-supply",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-text-fit",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-tour",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-transform",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-travel",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-underline",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-value",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/commerce-visibility",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-bracket",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-detail-sequence",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-instances",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-layout",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-leader",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-mask",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-outline",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-pin",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-sequence",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-stagger",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-state",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-supply-sequence",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-supply",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-text-fit",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-tour",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-transform",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-travel",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-underline",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-value",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/isolated-visibility",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-bracket",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-detail-sequence",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-instances",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-layout",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-leader",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-mask",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-outline",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-pin",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-sequence",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-stagger",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-state",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-supply-sequence",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-supply",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-text-fit",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-tour",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-transform",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-travel",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-underline",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-value",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/story-visibility",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/passage-components/instances",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/passage-components/leader",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/passage-components/value",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/passage-behaviors/transform",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/passage-behaviors/state",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/passage-behaviors/travel",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/passage-behaviors/supply",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/passage-timing/visibility",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/passage-timing/text-fit",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "component/passage-timing/supply-sequence",
+            "frames": 192,
+            "reverseFrames": 192,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/threshold-push",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/threshold-push-alternate",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/lateral-track",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/lateral-track-alternate",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/foreground-reveal",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/foreground-reveal-alternate",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/rising-vista",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/detail-to-world",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/curved-approach",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/dolly-zoom-tension",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/dolly-zoom-tension-alternate",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/layered-parallax",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/layered-parallax-alternate",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/focus-handoff",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 1,
+            "minPsnr": 113.0589660411409,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "cinematic/vertical-rising-vista",
+            "frames": 96,
+            "reverseFrames": 96,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "legacy/chronicle-reveal",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "legacy/resource-flow",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "legacy/access-pressure",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "legacy/comparison-build",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 2,
+            "minPsnr": 84.66104419668761,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "legacy/pose-prop-change",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "legacy/crisis-fracture",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          },
+          {
+            "id": "legacy/vertical-chronicle-reveal",
+            "frames": 168,
+            "reverseFrames": 168,
+            "maxDelta": 0,
+            "minPsnr": null,
+            "frozenOracle": "unchanged",
+            "candidate": false
+          }
+        ],
+        "log": "/private/tmp/pr47-second-family-defaults-final.log"
+      },
+      {
+        "command": "pnpm check:fast",
+        "status": "pass-before-unknown-probe-guard",
+        "unitFiles": 225,
+        "unitTests": 2498,
+        "scope": "Schema, package boundaries, formatting, lint, TypeScript build and all unit tests before the unknown/generated-alias guard. Superseded by final code check below.",
+        "log": "/private/tmp/pr47-second-check-fast-probes-final.log"
+      },
+      {
+        "command": "pnpm check:fast",
+        "status": "pass-final-code",
+        "unitFiles": 225,
+        "unitTests": 2498,
+        "scope": "Schema, package boundaries, formatting, lint, TypeScript build and all unit tests. Includes final unknown/long-ID probe guards and bitmap repair; not a complete repository gate.",
+        "log": "/private/tmp/pr47-second-check-fast-final-code-formatted.log"
+      }
+    ],
+    "depthDefaults": {
+      "timelines": 23,
+      "frames": 2070,
+      "maxChannelDelta": 0,
+      "reverseSeeks": "pass"
+    },
+    "rejectedDiagnostics": [
+      "Final check:fast attempt stopped at formatting after adding bitmap evidence JSON. Applied Prettier to the evidence before rerunning; code was unchanged. Log: /private/tmp/pr47-second-check-fast-final-code.log."
+    ]
+  },
+  "preservation": {
+    "ownerCheckoutEdited": false,
+    "frozenVisualFilesRegenerated": false,
+    "githubActionsEnabled": false
+  },
+  "finalVersions": {
+    "canvas": "composition-canvas-1.44.3",
+    "webgl": "composition-webgl2-0.65.4",
+    "legacyAdapter": "legacy-composition-0.1.3",
+    "illustrated": "illustrated-canvas-0.12.4",
+    "imagePlaneShader": "composition-image-plane-0.4.1"
+  }
+}

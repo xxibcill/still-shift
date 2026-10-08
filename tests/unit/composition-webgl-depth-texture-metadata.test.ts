@@ -493,3 +493,53 @@ it("releases working key records after original coercion, resource query and nat
   empty(memory);
   memory.dispose();
 });
+
+it.each([false, true])(
+  "owns bitmap normalization through upload and retires Canvas on failure=%s",
+  async (fail) => {
+    const memory = new ManagedMemory(limits);
+    const drawImage = vi.fn();
+    class Canvas {
+      private w = 300;
+      private h = 150;
+      get width() {
+        return this.w;
+      }
+      set width(value: number) {
+        this.w = value;
+      }
+      get height() {
+        return this.h;
+      }
+      set height(value: number) {
+        this.h = value;
+      }
+      getContext() {
+        return { drawImage };
+      }
+    }
+    let canvas: Canvas | undefined;
+    vi.stubGlobal("HTMLCanvasElement", Canvas);
+    vi.stubGlobal("document", { createElement: () => (canvas = new Canvas()) });
+    await withManagedMemory(memory, async () => {
+      const h = setup();
+      Object.defineProperty(h.images.get("photo")!, Symbol.toStringTag, {
+        value: "ImageBitmap",
+      });
+      vi.spyOn(h.device.gl, "texImage2D").mockImplementation((...args) => {
+        expect(args.at(-1)).toBe(canvas);
+        expect([canvas!.width, canvas!.height]).toEqual([64, 48]);
+        expect(memory.statistics.current.pixels).toBe(64 * 48 * 4 * 2);
+        if (fail) throw Error("upload failed");
+      });
+      if (fail) expect(() => h.run()).toThrow("upload failed");
+      else h.run();
+      expect(drawImage).toHaveBeenCalledWith(h.images.get("photo"), 0, 0);
+      expect([canvas!.width, canvas!.height]).toEqual([0, 0]);
+      expect(memory.statistics.current.pixels).toBe(fail ? 0 : 64 * 48 * 4);
+      h.p.dispose();
+      memory.dispose();
+      empty(memory);
+    });
+  },
+);

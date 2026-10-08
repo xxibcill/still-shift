@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-10-07
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE5, CE6, CE7, CE8, CE8-L, CE10 and CE11 complete (2026-10-06). CE4c complete (2026-10-06); CE4d and CE13 complete (2026-10-07). WebGL performance acceptance is deferred to a future version (CE6-P, user approved 2026-10-03). Q1 and Q3 decided
+- **Updated:** 2026-10-08
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE5, CE6, CE7, CE8, CE8-L, CE10 and CE11 complete (2026-10-06). CE4c complete (2026-10-06); CE4d and CE13 complete (2026-10-07). CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q6 open; Q7 decided 2026-10-05 and migration complete 2026-10-07.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -34,6 +34,7 @@ the owner's requirement that every second moves with meaning (see the
 - A typed TypeScript builder API, a CLI, a Lab composition inspector with a graph
   editor, AI-facing reference material and motion linting.
 - Alpha and higher-quality export formats, per-layer caching and parallel rendering.
+- Programmable soundtrack projects for narration, cues, SFX, ambience and BGM (CE16).
 
 **Out of scope**
 
@@ -177,7 +178,9 @@ These apply to every milestone. A change that breaks one needs a decision-log en
 
 1. **Integer frames are authoritative.** Keys, in/out points and cues are integer
    frames. Subframe sampling exists only for motion blur and time remapping, and is
-   deterministic.
+   deterministic. CE16 audio placement and automation use integer samples at an
+   explicit sample rate; picture cues/events retain integer frames through a
+   deterministic conversion.
 2. **Evaluation is pure.** `evaluateComp(comp, time)` depends only on its inputs, never
    on previous frames. Seeking backwards must equal playing forwards.
 3. **Determinism.** The same composition, assets, fonts, renderer version and toolchain
@@ -366,9 +369,9 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE4c  | Cinematic adapter                              | A      | CE3, CE8                   | Codex                  | `codex/composition-ce4c`            | `[x]`  | [evidence](./composition-ce4c-results.json)                                        |
 | CE4d  | Legacy/depth adapters and old-path removal     | A      | CE4a–CE4c                  | Codex                  | `codex/composition-ce4d`            | `[x]`  | [evidence](./composition-ce4d-results.json)                                        |
 | CE5   | Shape layers                                   | B      | CE3                        | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
-| CE5-X | Shape fidelity, connectors and strokes         | B      | CE5, CE4a, CE9, CE11, CE12 |                        |                                     | `[ ]`  | [CE5-X scope](#ce5-x--shape-fidelity-connectors-and-expressive-strokes)            |
+| CE5-X | Shape fidelity, connectors and strokes         | B      | CE5, CE4a, CE9, CE11, CE12 | Codex                  | `codex/composition-ce5x`            | `[~]`  | [Audit / scope stop](./composition-ce5x-results.json)                              |
 | CE6   | WebGL2 backend and effect registry             | B      | CE3                        | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
-| CE6-P | WebGL performance acceptance                   | Future | CE6                        |                        |                                     | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
+| CE6-P | WebGL performance acceptance                   | Future | CE6                        | Codex                  | `codex/composition-ce6p-compatible` | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                  | B      | CE3                        | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
 | CE8   | 2.5D layers and unified camera                 | B      | CE3, CE6, CE9              | Codex                  | `codex/composition-ce8`             | `[x]`  | [evidence](./composition-ce8-results.json)                                         |
 | CE8-L | Bounded lighting for 2.5D layers               | B      | CE8                        | Codex                  | `codex/composition-ce8-lighting`    | `[x]`  | [Evidence](./composition-ce8-lighting-results.json)                                |
@@ -379,6 +382,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   | Codex                  | `codex/composition-ce13`            | `[x]`  | [evidence](./composition-ce13-results.json)                                        |
 | CE14  | Mesh warp and puppet pins                      | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
 | CE15  | Output formats, caching and parallel rendering | D      | CE3                        | Codex                  | `codex/composition-ce15`            | `[~]`  | [Format/alpha proof](./composition-ce15-results.json)                              |
+| CE16  | Programmable soundtrack project and timeline   | D      | CE3; CE16-A                | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
 
 ### Phases and parallel work
 
@@ -417,6 +421,14 @@ completion gates. Family-fixture parity is a CE4 adapter gate after its prerequi
 milestones are complete; it cannot block the backend or camera that the adapter needs.
 
 ### Current-version priority and deferred performance
+
+**Latest owner decision, 2026-10-07:** pause CE6-P and defer remaining performance
+work to an unscheduled future version again. Retain reviewed 0.42.0 / `d4ecdf8`
+and PR #41, its verified corrections/gains and all evidence. The completion goal
+is paused; resume tuning or architecture experiments only on explicit owner
+request. Original 117/current 119 timing misses, native 2× and the complete strict
+audit on 0.42.0 remain open. Acceptance is preserved and CE6-P is not complete.
+No architecture prototype is approved. [Deferral record](./composition-ce6p-plan.md#owner-deferral--2026-10-07).
 
 **Owner decision, 2026-10-03:** defer the remaining WebGL performance work to a
 future version and prioritize other features. CE6-P owns the WebGL **1.25×**
@@ -1398,7 +1410,15 @@ frames, 46 independent preview encodes, 138 production exports, 138 actual hardw
 comparisons and real inspector edits/undo/save/reload. The full Canvas matrices
 pass unchanged pixels and the 1.25 timing limit; WebGL timing retains CE6-P's
 existing deferral. All tracked visual references are unchanged.
-[Implementation evidence](./composition-ce4c-results.json). [PR #45](https://github.com/xxibcill/still-shift/pull/45) is open and attached against CE8-L.
+[Implementation evidence](./composition-ce4c-results.json). [PR #45](https://github.com/xxibcill/still-shift/pull/45) now targets `main`.
+Focused conflict-resolution verification is recorded in
+[merge evidence](./pr-45-conflict-resolution-results.json). The original review
+findings are fixed in [repair evidence](./pr-45-fix-results.json); the subsequent
+persisted reveal-opacity and rendered background-alpha findings are fixed in
+[alpha repair evidence](./pr-45-alpha-fix-results.json), one finding per commit.
+Final alpha repair checks pass 2,390 units, both-backend cinematic diagnostics,
+protected export failures and all 176 frozen items / 36,061 unchanged frame hashes.
+These are scoped PR follow-up checks; the original full gate above remains historical.
 
 - [x] Map depth planes to 3D layers and the cinematic camera (including dolly zoom,
       curved approach and focus handoff) to the CE8 camera.
@@ -1499,6 +1519,22 @@ comparisons; the full `pnpm check`.
   controls remain at their approved sequence position; its prerequisite slice is
   recorded below. Native builder/inspector exposure follows in CE10/CE11.
 - **Evidence:** [completion results](./composition-ce4a-completion-results.json).
+
+### CE4a PR #35 conflict integration (2026-10-06)
+
+Integrate the current CE12 remote base into CE4a head `91f9c54` without rewriting
+shared history. Native beat maps/bindings, fractional story exposure, renderer
+selection and cached composition copies remain intact alongside CE16 saved
+soundtracks and the newer CE12/CE9 lint/expression/bake repairs. Public narrow
+entrypoints, all pnpm commands/test groups and both documentation histories are
+retained. Both native-passage backends now verify that saved soundtrack assembly
+adds audio, reuses picture clips and preserves decoded native picture frames.
+
+[Conflict-resolution evidence](./pr-35-conflict-resolution-results.json) records
+focused local verification and frozen baseline checks. Full `pnpm check`, deferred
+CE6-P timing matrices and human listening/audiovisual QA were not rerun. No pixel
+thresholds, timing assertions or baseline files are changed. Owner review and merge
+remain pending; GitHub Actions remains disabled.
 
 ### CE4a start record (2026-10-02)
 
@@ -3085,8 +3121,13 @@ results on known polygons), pixel tests, animated trim/morph sequences.
 story/commerce path providers, and gain the stroke, connector and authoring tools
 motion designers use for diagrams and animated titles.
 
-**Status:** `[ ]` planned, drafted 2026-10-06. Scope and sequence position await
-the owner ([Q9](#open-questions-for-the-owner)). CE5 and
+**Status:** `[~]` on `codex/composition-ce5x` (Codex), from complete CE4c.
+The owner approved A2/A3/A8/B3/B4 gap closure on 2026-10-06. The initial audit
+triggered the requested scope stop: spatial/morph/appearance providers, product
+attachments and multi-vertex bound annotations exceed the named emission scope
+or B3 endpoint contract. See [audit evidence](./composition-ce5x-results.json).
+Runtime migration has not started; the remaining sequence position and A1 baseline
+question stay open ([Q9](#open-questions-for-the-owner)). CE5 and
 [PR #38](https://github.com/xxibcill/still-shift/pull/38) are closed as delivered;
 nothing here reopens CE5 or changes its recorded evidence.
 
@@ -3757,9 +3798,17 @@ CE6 PR remain. [Evidence](./composition-ce6-completion-results.json).
   compatible mechanism on the pinned profile. The owner decision in slice 1
   stands; the requirement remains **open**.
 
+<a id="ce6-p--deferred-webgl-performance-acceptance"></a>
+
 ### CE6-P — Deferred WebGL performance acceptance
 
-- **Status:** `[d]`, user approved 2026-10-03. This supersedes the earlier
+- **Status:** `[d]`, owner paused and deferred again on 2026-10-07 after the
+  isolated 2026-10-05/06 resumption. Reviewed renderer 0.42.0 / `d4ecdf8` remains
+  delivered for review in [PR #41](https://github.com/xxibcill/still-shift/pull/41).
+  Milestone acceptance is incomplete. No future version or restart date is assigned;
+  resume only on explicit owner request. The main feature lane remains independent.
+  [Deferral record](./composition-ce6p-plan.md#owner-deferral--2026-10-07).
+- **Prior deferral:** user approved 2026-10-03. This superseded the earlier
   CE4b-to-CE6 timing ownership decision and the performance slices' requests for
   an immediate rendering-path decision. Optimization and architecture experiments
   are deferred so other feature milestones can proceed.
@@ -3774,12 +3823,73 @@ CE6 PR remain. [Evidence](./composition-ce6-completion-results.json).
   variation; none of the original 117 failures is claimed resolved.
   [Performance results](./composition-ce6-performance-results.json) and the
   dated slice records above remain the measured evidence.
-- **Latest implementation:** `ecf9bc6` retains bounded radial light and identity
+- **Prior implementation:** `ecf9bc6` retains bounded radial light and identity
   composites as renderer `composition-webgl2-0.36.0`. Its focused checks are
   recorded in the [development log](./dev-log.md), but its full family audit is
   still pending at this decision. Record any already-started correctness audit
   results without requiring timing closure or starting further tuning. Deferral
   does not establish correctness for unverified changes.
+- **Measured slice (2026-10-06):** reviewed `7a797a9` / renderer 0.40.0 fuses and
+  bounds exposure accumulation. All 852 exactness cases per GPU profile, focused
+  checks and full local gate pass. Four valid brackets show pinned sparse exposure
+  export gains of 2.676–3.962× over fusion alone; broad hardware gains are unproven.
+  Unchanged strict audits complete 195 cases / 40,783 frames and 53 identical
+  repeated MP4 pairs, with 119 timing failures (all original 117 still fail).
+  Four echo tier gaps are inherited from CE7: 2,500 direct byte comparisons are
+  exact and reproduce the original gaps. These gaps still block correctness
+  acceptance; native count-one 2× and family 1.25× targets stay open. The reserved
+  quiet window is released. [Family proof](./composition-ce6p-family-audit.json),
+  [raw timing brackets](./composition-ce6p-exposure-brackets.json).
+- **Research before further trials (2026-10-06):** primary-source/source-path
+  investigation produced a [resolution plan](./composition-ce6p-resolution-plan.md)
+  and [research record](./composition-ce6p-resolution-research.md), with no new
+  workloads or runtime change. Start with count-one feasibility and representative
+  cost attribution; require an eligible mechanism, sufficient removable cost and
+  byte proof before implementation. The inherited echo correction needs an
+  explicit exception to preserving those known failing CE7 bytes. All targets
+  remain unchanged and open.
+- **Resolution execution progress (2026-10-06):** local uncommitted WebGL 0.41.0
+  packs disjoint particle neighborhoods for one instanced exact paint. Selected
+  frames reduce 48–50 paint passes to three. Base/stacked/reversed particle
+  timelines preserve 720 frames plus 780 seeks per profile against 0.40.0; unit,
+  WebGL correctness and repeated stacked export checks pass. Hardware drift is
+  inherited and twelve samples meet the existing perceptual policy. No elapsed
+  timing or failure closure is claimed; authorized quiet-window coordination,
+  count-one cost attribution, strict audits and the final full gate remain.
+  [Execution record](./composition-ce6p-resolution-plan.md#execution-record-2026-10-06),
+  [evidence](./composition-ce6p-disjoint-paints-results.json).
+- **Echo cause and routing (2026-10-06):** a scoped proposal corrects accumulated
+  bitmap/primitive rounding drift in the four inherited echo cases. Their pinned
+  timelines/seeks meet the unchanged near tier; byte-preserved controls and 12
+  perceptual hardware samples pass. Production echo correction still awaits the
+  explicit compatibility decision. All 119 timing misses retain selected-frame
+  graph mappings, including all original 117; costs and closure remain unmeasured.
+  Reviewed native/particle runners pass untimed preflight. Concurrent workloads
+  and pending permission to coordinate other chats still prevent elapsed work.
+  [Echo proposal and evidence](./composition-ce6p-echo-diagnosis-results.json),
+  [routing](./composition-ce6p-route-map-results.json).
+- **Active completion goal and GPU trace (2026-10-06):** the owner requested
+  continuing until unchanged CE6-P acceptance is met. The goal is now blocked
+  after three turns of unanswered compatibility scope and host contention.
+  All 119 failures / 117 originals now have actual untimed GPU operations at
+  476 selected frames, repeated with exact counts and owned pixel hashes.
+  Known-clear copies occur in 100 cases (311 of 1,956 calls); native count-one
+  also has an eligible known-clear copy. This is a concrete hypothesis for the
+  pending cost gate, without an elapsed saving or closure claim. Source/input/
+  asset fingerprints, failed attempts and cleanup retention are reviewed.
+  Quiet-host timing and echo compatibility approval remain pending.
+  [Goal and trace record](./composition-ce6p-resolution-plan.md#active-completion-goal-and-gpu-operation-coverage),
+  [operation evidence](./composition-ce6p-route-map-results.json).
+- **Owner-authorized resumption (2026-10-06):** renderer 0.42.0 retains the tested
+  echo correction and particle candidate. Targeted frames/seeks, four identical
+  MP4 pairs, selected profile agreement and focused local checks pass. Eight
+  uncontended particle sessions show selected gains, but all pinned ratios remain
+  above 1.25×. Native owned-read cost exceeds the diagnostic Canvas half-budget
+  even after optimistically removing render/barrier costs; paint/copy removal
+  alone is rejected as closure. The quiet timing slice is finished. Strict
+  audits, native 2× and the final full local gate remain open.
+  [Resumption record](./composition-ce6p-resolution-plan.md#owner-authorized-resumption--2026-10-06),
+  [cost evidence](./composition-ce6p-cost-results.json).
 - **Verification while deferred:** run local correctness and feature checks.
   Existing strict WebGL family audits remain available with `--webgl
 --keep-going`; they retain and report timing failures. A timing-only nonzero
@@ -3789,8 +3899,9 @@ CE6 PR remain. [Evidence](./composition-ce6-completion-results.json).
   approach or explicitly revises acceptance. No CPU/GPU hybrid, default backend
   switch, GPU policy change or baseline regeneration is authorized by this deferral.
 
-**Completion record:** CE6 feature work is complete; performance acceptance
-remains deferred to CE6-P.
+**Completion record:** CE6 feature work is complete; CE6-P performance
+acceptance remains incomplete and owner-deferred again on 2026-10-07. Preserve
+every original target and the measured slices below.
 
 ---
 
@@ -3848,6 +3959,82 @@ Frame blending is validated with deterministic hold/linear source-frame-pair
 arithmetic; decoded media rendering follows CE13. Root-global procedural clocks
 retain documented semantics alongside layer-local controls. [PR #40](https://github.com/xxibcill/still-shift/pull/40) is open
 and attached, based on CE5; CE6 begins on a new branch. [Evidence](./composition-ce7-results.json).
+
+### PR #40 review corrections (2026-10-06)
+
+Boundary correction `4c7266a` aligns posterized state/effect cuts with the actual
+floored content clock on both sides of floating-point inversion, including reversed
+start/stretch transforms. The separate outgoing-state correction checks visibility
+at the reachable posterized frame or baked index before suppressing a cut.
+Three boundary and two outgoing-state regressions failed before their repairs;
+50 focused tests, build, changed-file lint and independent review pass.
+Full local `pnpm check` passes 1,605 unit, 46 runtime, 139 integration, 14 depth,
+all required browser suites and 176 unchanged frozen baselines / 36,061 frames.
+Final-code CE7 native pixels, seeks, stored hashes, 12 hardware comparisons and
+both backend exports pass. The initial cold-import protocol timeouts and complete
+successful retry are retained in [review-fix evidence](./pr-40-fix-results.json).
+
+### CE7 PR #40 current base integration (2026-10-07)
+
+Current CE5 `d3093bd` is merged into CE7 `48fe4cc` with published history preserved.
+CE7 clocks, loops and adaptive/cut-safe exposure remain beside upstream scaled
+follow-path, expression, bake/lint, inspector and soundtrack fixes. New evaluator
+32 / Canvas 1.24.4 / WebGL2 0.38.4 identify the combined caches. Explicit cinematic
+error report fields restore the externalized evaluator's native Node/Vite loading.
+
+Final fast checks pass 1,907 units; 46 runtime, 224 integration, 14 depth and all 14
+focused browser groups pass. CE7 stored/analytic pixels, forward/reverse/random seeks,
+12 hardware comparisons and repeated/independent/raw exports retain their assertions.
+All 176 frozen items / 36,061 frames remain exact. The initial five-suite loader failure
+and repair are retained. No complete combined `pnpm check`, new serial cost profile
+or full timing-matrix run is claimed; historical gates remain scoped to their snapshots.
+Normal publication targets the existing PR #40 head; owner review/merge remain.
+[Resolution evidence](./pr-40-conflict-resolution-results.json).
+
+### CE7 PR #40 clock integration review repairs (2026-10-07)
+
+Both new findings are inline on PR #40 and repaired in separate commits from
+reviewed `e907d16`. Echo bake dependency selection uses the shared held/posterized
+content clock and owning FPS, retaining group ancestry and compatible positive
+blur overrides. Incompatible inherited history returns `comp-bake-time`.
+Explicit instance clocks now precede unused loop mapping/validation while raw
+host remaps and ordinary source clamps remain unchanged. Evaluator 33 separates
+passage/export caches; backend versions and frozen assets are unchanged.
+
+Four bake and three loop regressions fail before their repairs; 101 focused tests
+pass afterward. Final fast checks pass 1,914 units and 41 affected integrations.
+Native exposure, expression/bake parity and quality pass, including 12 hardware
+comparisons and independent/repeated/raw exports. All 176 frozen items / 36,061
+frames remain exact. New browser proof rejects both incompatible content clocks
+and preserves 144 compatible original/baked pixel observations exactly on both
+backends. Independent standards/spec review and final source fingerprint pass.
+
+Delivery uses one finding per commit and one final normal push to the existing
+PR head; owner review/merge remain separate. No complete new `pnpm check`, Python
+suite, serial cost profile or strict timing-matrix run is claimed. Historical
+full gates retain their original snapshots; no baseline or tolerance is changed.
+[Fix evidence](./pr-40-clock-fix-results.json).
+
+### CE7 PR #40 unreachable-state exposure review repair (2026-10-07)
+
+One P2 finding is inline on reviewed `824a627`. Posterized state/stateFrom
+cuts now compare effective states on adjacent content grids, retaining cuts
+conservatively when root precision skips grids. Ordinary clocks, real switches,
+indexed clocks and reversed boundary semantics retain their existing behavior.
+Evaluator 34 / Canvas 1.24.5 / WebGL2 0.38.5 separate corrected output caches.
+
+Three original and two extreme-stretch precision regressions fail before their
+repairs; 246 focused tests and independent standards/spec reviews pass. Final full
+local `pnpm check` passes 1,921 unit, 46 runtime, 224 integration, 14 depth and all
+52 required browser/golden groups. New both-backend cases match equivalent constant
+states in 112 exact pixel comparisons; CE7 native/hardware acceptance and repeated
+exports pass. All 176 frozen items / 36,061 frames remain exact, with the final
+source fingerprint unchanged. The first gate stopped at a copied virtualenv
+launcher path and one audio timeout; the local environment repair, passing focused
+and full integration reruns, and successful full gate are retained. Delivery uses
+one finding commit and one final normal push; owner review/merge remain. No baseline
+or tolerance is regenerated or changed. No separate optional serial cost profile
+or full backend timing matrix is claimed. [Fix evidence](./pr-40-posterized-cut-fix-results.json).
 
 ---
 
@@ -4036,6 +4223,70 @@ audio waveform follow-through remains CE13. Cinematic family camera parity follo
 in CE4c. [PR #43](https://github.com/xxibcill/still-shift/pull/43) is open and attached against CE6; begin CE8-L on a new branch.
 [Evidence](./composition-ce8-results.json).
 
+### PR #43 review follow-up (2026-10-08)
+
+Four inline P2 findings have separate repairs from reviewed `9b53db3`: retain XYZ
+smooth velocities during Bézier edits; settle camera writers before validating
+derived optics; tolerate machine-scale affine roundoff; and project spatial null
+guides through their own scope's camera/world transform. Genuine projective effect
+relations and invalid final/independent optical controls still reject. Evaluator,
+Canvas, WebGL and export cache identities are 48 / 1.40.5 / 0.55.4 / 0.6.4.
+
+Independent Standards and Spec reviews have no findings. Original-code regressions
+fail for each finding; focused suites pass and 28 Canvas/WebGL guide comparisons
+and reverse seeks are exact. One complete pinned local `pnpm check` passes 2,265
+unit, 46 runtime, 224 integration and 14 depth tests, all 57 required commands,
+full Canvas family pixel/timing policy and 176 frozen items / 36,061 frames without
+regeneration. Native camera hashes, repeat/independent exports, inspector edits and
+36 hardware comparisons pass unchanged policy. The source fingerprint is unchanged
+through the 98.5-minute gate. The four repairs use one final normal push to existing
+PR #43, which integrates `main` after #42 merged. Owner review/merge remain; CE6-P
+stays separate and GitHub Actions disabled.
+[Repair evidence](./pr-43-followup-fix-results.json).
+
+---
+
+### CE8-L-F cast-shadow preparation (2026-10-06)
+
+Owner resumed **bounded inter-layer cast shadows** for independent design and
+prototypes, from CE7 `0e48388` on `codex/composition-ce8lf-prototype`. Production
+integration follows delivered CE8 and CE8-L. The main lane's CE8-L plan scopes
+ambient/point/spot lights on flat opted-in planes; this base has neither milestone.
+This preparation does not mark CE8, CE8-L or CE8-L-F complete, enable the reserved
+light contract, or resume realistic surface shading. See the
+[candidate specification](./composition-ce8lf-cast-shadow-spec.md) and
+[preparation evidence](./composition-ce8lf-results.json) for explicit alpha assets,
+candidate flags, geometry, bounded budgets, fixtures and integration decisions.
+
+**Preparation delivered (2026-10-06):** [draft PR #39](https://github.com/xxibcill/still-shift/pull/39)
+contains the reviewable specification and isolated CPU/shader/geometry prototypes.
+Nine analytic tests and 96 frozen poses pass; pinned seeking/independent PNG
+repeats and 12 hardware probes are exact. Proposed budgets and visible soft-shadow
+banding remain owner decisions. Production integration and its full acceptance
+remain outstanding; no CE8-L-F milestone completion is claimed.
+
+**PR #39 base refresh (2026-10-07):** merge verified CE7 `e907d16` while
+retaining the candidate and both prototype review fixes. The development log
+retains all 149 parent entries exactly once; manual resolution is documentation-only.
+Production code/configuration matches the new base; prototype source and frozen
+inputs match original head `82e3a92`. Focused 24 tests, complete fast checks
+(1,919 units), repository/Python format and lint pass. All 96 frozen poses,
+288 seek draws, 96 independent pixel/PNG repeats, 12 hardware comparisons and
+maximum inputs remain byte exact. No complete `pnpm check`, native shadow export
+or production integration acceptance is claimed; existing prerequisites and owner
+policy/budget decisions remain. [Resolution evidence](./pr-39-conflict-resolution-2026-10-07.json).
+
+**PR #39 radius-zero correction (2026-10-07):** shared CPU/shader sample selection
+uses one center sample for a zero-radius emitter while retaining the authored
+quality option. A rounding-boundary regression failed before repair; 15 analytic
+tests and focused static gates pass. All 96 frozen poses, seek draws, independent
+repeats, hardware probes, maximum inputs and conditioned-shear controls retain
+their assertions. The new hard-shadow control requires exact RGBA/PNG across
+1/4/16 authored samples within each profile and independent software repeats.
+Frozen references and production sources are unchanged; no full repository,
+native shadow export, performance or production integration acceptance was run.
+[Fix evidence](./pr-39-zero-radius-fix-results.json).
+
 ---
 
 ## CE8-L — Bounded lighting for 2.5D layers
@@ -4140,7 +4391,25 @@ are recorded with their corrections and serial timing diagnosis. The full gate
 was rerun from the start under unchanged assertions. No source rendering or tolerance
 was changed to repair those tests. [Detailed evidence](./composition-ce8-lighting-results.json).
 
-[PR #44](https://github.com/xxibcill/still-shift/pull/44) is open and attached against CE8. CE4c starts next on its own branch.
+[PR #44](https://github.com/xxibcill/still-shift/pull/44) now targets `main` after CE8 merged.
+
+**PR #44 conflict resolution and review (2026-10-08):** merge `548b5c7`
+combines current `main` at `e97dacbc`; code checkpoint `3640c69` also preserves
+light key editing with main's null root scope. Fast checks pass 2,313 unit tests,
+112 focused regressions, 46 runtime and all eleven example programs. Native
+lighting/camera, alpha, seeks, independent/repeated exports, hardware and real
+inspector pass; all 176 frozen items / 36,061 frames match without regeneration.
+Cache identities are E49 / Canvas 1.41.1 / WebGL 0.56.1 / export 0.6.5.
+This is focused follow-up evidence, with no new full `pnpm check` or performance
+acceptance. The original two P2 findings were posted inline and repaired separately:
+`009ae7d` completes implicit XYZ light dependencies; the following repair preserves
+receiving-toggle keyboard focus. Evaluator identity advances to E50. Final fast
+checks pass 2,322 units; affected lighting/inspector/WebGL export browsers and all
+176 frozen items / 36,061 frames pass without regeneration. Independent Standards
+and Spec audits have no remaining findings. Owner review/merge remain.
+[Repair evidence](./pr-44-fix-results.json).
+[Resolution evidence](./pr-44-conflict-resolution-results.json),
+[review evidence](./pr-44-review-results.json).
 
 ### CE8-L-F — Deferred advanced lighting
 
@@ -4392,6 +4661,23 @@ arbitrary input either parses to a valid AST or returns a diagnostic, never thro
   separate CE6 work; the 1.25× WebGL gate and 2× speed target remain **deferred
   performance**, with no claim that their recorded failures are resolved.
 
+**PR #32 second follow-up fixes (2026-10-05).** Four P2 findings from current-head
+review are posted [inline](https://github.com/xxibcill/still-shift/pull/32#pullrequestreview-5411412767).
+Timed primitive-blur selection now respects historical scope/layer clocks and effect
+windows; four regressions and all 34 bake tests pass. Normalized AST JSON bounds
+now accept parser-valid output (nine regressions), retaining byte and metadata limits.
+The affected normalization/bounds/syntax/expression group passes 174 tests. Periodic
+reference dependencies now respect root-clock windows and the exact axes read,
+retain anchor dependencies for shifted reads, and preserve unrelated components
+when historical samples precede ordinary samples. Separate-axis constant speed
+passes 51 expression tests, including spring sampling at three frame rates and
+an explicit 512,001-point work bound; evaluator version is `25`. Combined local
+verification passes fast checks (1,487 unit tests), runtime (46), integration
+(111), both expression browser backends and repeated/baked exports, evaluator
+parity, and all 176 frozen items / 36,061 frames without regeneration. Delivery
+uses four finding commits and one final push to PR #32; owner review/merge remains
+pending. [Evidence](./pr-32-second-followup-fix-results.json).
+
 ---
 
 ## CE10 — TypeScript builder API and CLI
@@ -4552,6 +4838,22 @@ result, saves, and the exported MP4 matches the Lab preview.
 **Verification:** Browser tests for editing, undo/redo, save/reload, hot reload and
 preview/export parity.
 
+### CE11 PR #37 main conflict integration (2026-10-06)
+
+Merge main `54782d7` into reviewed CE11 `7fac583` without rewriting shared history.
+Retain inspector edits, transactional preview/document history and captured assets;
+keep main's motion lint advisory inside the shared ready callback. Preserve both
+pnpm test aggregates and development histories, and keep saved soundtrack guidance
+in the reference generator source. The existing lint-capacity regression explicitly
+reloads source because renderer switches now preserve the accepted draft.
+
+[Conflict evidence](./pr-37-main-conflict-resolution-results.json) records 1,803 unit,
+46 runtime, 60 affected integration and six browser groups, plus final affected
+static checks. Builder pixels/exports, retained-asset MP4 and exact soundtrack PCM
+pass. Initial reference drift and missing soundtrack-runtime failure are retained.
+Full `pnpm check` and frozen baselines were not rerun or regenerated; no pixel,
+timing or budget policy changed. Owner review/merge remain; Actions remain disabled.
+
 ### CE11 completion record (2026-10-05)
 
 - **Owner / branch:** Codex on `codex/composition-ce11`, from CE10 `afb4045` /
@@ -4694,6 +4996,82 @@ recorded.
 See the CE12 and CE4a completion records above for verification evidence.
 
 ---
+
+### CE12 PR #34 follow-up repairs (2026-10-05)
+
+Three further findings on `a41f687` are posted inline and repaired one per commit.
+Provider reading time uses sampled reveal; brief and partial reveals fail, while
+sufficient consecutive reveal passes in state and rendered lint. Collapsed precomps
+traverse paint outside source bounds and derive framing from descendants; hidden,
+clipped, nested and empty-content cases are covered. Capacity failures use stable
+`comp-lint-limit` diagnostics with the `layers` path. A root-layer lower bound
+rejects oversized timelines before sampling or rendering; nested accounting retains
+the unchanged 2,000,000 layer-frame limit.
+
+Fast checks (1,509 unit tests), 46 runtime tests, 15 CLI tests and the expanded native
+browser suite pass. CE0 lint covers 176 items / 36,061 frames with zero unexpected
+failures. It now detects two additional reading-time errors in one existing fixture;
+all other diagnostics and frozen-pixel findings match the prior report. Baseline
+hashes, renderer output and versions are unchanged. Full render/export checks were
+not rerun. Delivery uses one final push after the third finding commit; owner
+review/merge remains pending. [Follow-up evidence](./pr-34-followup-fix-results.json).
+
+### CE12 PR #34 additional lint repairs (2026-10-05)
+
+Five inline findings on `7525540` are repaired one per commit: contributing group
+paint modifiers, inherited signed scale, property-weighted easing shares, final
+evaluated track motion and unavailable declared nested coverage. Regressions cover
+hidden/offscreen groups, reflections canceled across rotated axes, dense redundant
+keys, expression overrides, precomp lifetime gaps and shot boundaries. Final
+Standards/Spec review found no remaining actionable findings.
+
+Fast checks (1,544 unit), 46 runtime, 16 CLI and the expanded browser quality suite
+pass. Corpus lint covers all 176 items / 36,061 frames with zero unexpected failures.
+Group paint corrects state freezes in `commerce/atom-matte` and
+`component/isolated-mask`; frozen-pixel results and the baseline checksum remain
+unchanged. The sandboxed runtime attempt and concurrent corpus/browser startup
+timeout are recorded; successful final runs use the required local capabilities
+and isolated corpus execution. Full `pnpm check` render/export groups were not
+rerun. Delivery uses one final push after the fifth finding commit; owner
+review/merge remains pending; the base-branch conflict is resolved in the record
+below. [Additional repair evidence](./pr-34-additional-fix-results.json).
+
+### CE12 PR #34 main integration (2026-10-05)
+
+Merged `main` at `3581855` into CE12 head `afa9be0` to resolve five conflicted
+files. Both lint and soundtrack exports, all pnpm commands/test groups, both
+reference sections and development histories are retained. Main's later expression
+and bake repairs and soundtrack implementation merge automatically; no manual
+algorithm, threshold or baseline changes are introduced.
+
+Local fast checks pass with 1,651 unit tests, along with 46 runtime,
+169 integration tests on the initial suite and the repaired fallback on a focused
+rerun (1 test), 14 depth tests, soundtrack Python lint and the affected
+composition quality/expression browser checks (including repeated/baked exports).
+The initial integration failure was a stale shared Python launcher; this checkout
+now owns its launcher and imports local depth source. Shared environment unchanged.
+The toolchain, local workspace imports and required test-group retention are
+verified. This is focused conflict-integration evidence; a full `pnpm check`,
+unrelated browser matrices, corpus lint and frozen CE0 were not rerun. One merge
+push resolves the conflicts; owner review/merge remains pending. GitHub Actions
+remains disabled. [Conflict evidence](./pr-34-conflict-resolution-results.json).
+
+### CE12 PR #34 lint review repairs (2026-10-06)
+
+Three P2 findings on `f870fce` are posted inline and repaired one per commit.
+Separated vector tracks reuse evaluated component reads and retain one vote per
+property. Integer samples, fractional searches and velocity probes share the
+unchanged 2,000,000 layer-frame budget. Co-start uses evaluated motion onset,
+respects visibility gaps and keeps shot/cut boundary starts in the correct shot.
+
+Final fast checks pass 1,663 unit tests; 46 runtime, 16 CLI, browser quality and
+four targeted Node/Chromium comparisons pass. Standards and Spec re-review are
+clear. Corpus lint covers all 176 items / 36,061 frames with zero unexpected
+failures. Against the exact reviewed head, one false co-start warning is removed
+from `acting/parcel-actions/handover`; all other reports and baseline checksums
+are unchanged. Full `pnpm check`, unrelated browser/export matrices and fresh
+frozen CE0 renders were not rerun. Delivery uses one final push; owner review/merge
+remains pending. [Evidence](./pr-34-20261006-fix-results.json).
 
 ## CE13 — Video, image-sequence and audio layers
 
@@ -5037,6 +5415,94 @@ is retained; the serial passes do not replace a fresh complete local `pnpm check
 
 ---
 
+### CE13 PR #48 conflict integration and review (2026-10-08)
+
+CE13 `aedfc9eb` now integrates reviewed `main` at `e249a5da` through merge
+`471582f5`; test-contract follow-up is `749452d2`. All 23 conflicts retain native
+picture/PCM, main clock/coverage/bitmap fixes, saved soundtrack validation and
+retained-draft authoring. Reusable media ownership and per-frame cinematic alpha
+validation are explicit. Combined identities are evaluator 54 / Canvas 1.45.1 /
+WebGL2 0.66.1 / export 0.6.11. All 64 required parent commands remain available.
+
+Focused local verification passes build/lint/schema/boundaries, 2,560 units,
+46 runtime, 179 affected integrations across repaired focused runs, 14 Python tests,
+native media/audio authoring and exports, both native passage backends, affected
+renderer/camera/timeline checks, 336 selected native default frames and all 176 frozen
+items / 36,061 frames. All 215 main visual files remain exact. The full 15-fixture
+cinematic variant/export command was over-scoped and interrupted after about 14
+minutes; it is not passed. Existing exact coverage/reveal helpers and selected
+default cases pass instead. No complete production-default inventory or full
+`pnpm check` was rerun; original milestone evidence stays historical.
+
+Independent Standards review has no hard violation and one possible cache-transaction
+duplication concern. Spec review has one reproduced P2: native capture FIFO eviction
+can remove lazy frame URLs while their previous preview remains active. Root
+reproduction observes 404 for the first capture and 200 for the latest under the same
+retained lease. Tie captures to active/candidate ownership before merging. A
+caller-mutation clock candidate was suppressed by the documented immutable-object
+contract. [Resolution and review evidence](./pr-48-conflict-resolution-results.json).
+
+### CE13 PR #48 inline review repairs — 2026-10-08
+
+Both follow-ups are posted as inline comments on `d62a7a4d`: active native capture
+expiry and the visual cache's lock-release gap when staging cleanup throws. Repairs
+bind prepared captures to candidate/active ownership with explicit disposal,
+owner disconnect, cancellation and capacity guards; a shared cleanup boundary always
+releases the visual/PCM/mix artifact lock. Source verification, publication,
+renderer versions, pixel thresholds and frozen baselines are unchanged.
+
+The CLI and fixture expiry regressions fail before the repair; the real-lock cleanup
+fault leaves `.media.lock` before the repair. Ownership/API and existing 34 cache
+integrations pass after the changes. Final fast check passes 2,566 units; 17 CLI /
+5 fixture integrations and native browser/export/session checks pass. Six peer
+prepares and three failed replacements preserve uncached/reverse seeks exactly.
+Capture ownership is committed as `d0ce169c`; cache cleanup has its own following
+commit. Both deliver in one final normal push;
+this scoped follow-up does not run or claim a full repository gate.
+[Repair evidence](./pr-48-review-fix-results.json).
+
+### CE13 PR #48 second review repairs — 2026-10-08
+
+The second independent review posts two new P2 findings inline on `63766426`:
+accepted two-digit sequence padding fails registered fixture authorization, and
+mixed-rate nested audio loses an exact boundary sample. Sequence authorization now
+reuses `compositionSequenceFramePath` (`0a4e975c`); audio visibility compares Q16
+PCM positions against exact half-open scope/layer/group bounds while authored
+property times and ordinary picture clocks remain unchanged. Evaluator identity
+advances 54→55 so an incorrect previously cached master is rebuilt.
+
+Both accepted padding regressions fail before repair. The actual nested narration
+master loses its first stereo sample at output 35,120 before repair. Final code
+preserves all 40,000 master samples against independent source placement, including
+first/last impulses and surrounding silence. Fast checks pass 2,599 units; 80
+focused cache/preview/native/passage integrations and native media/authoring/export/
+session browsers pass. Independent final implementation review has no actionable
+concerns. Frozen visuals, source-clock quantizer laws and acceptance tolerances are
+unchanged. Each posted finding has a separate commit, delivered in one final normal
+push; this scoped follow-up does not run or claim a full repository gate.
+[Second review repair evidence](./pr-48-second-review-fix-results.json).
+
+### CE13 PR #48 third review repairs — 2026-10-08
+
+Both P2 findings are posted inline on `1dae23c8`. Native picture/source PCM/mix
+caches now share an identity builder that always includes OS and CPU architecture.
+Actual sequence/PCM/mix tests with a fixed FFmpeg build reproduce incorrect cache
+hits when only the execution identity changes before the fix. Both OS and CPU
+variations now miss independently, preserve exact output bytes, and reuse the
+original entry after restoring its identity. All 37 affected cache integrations
+pass, including original relocation, provenance, bounds and cancellation checks.
+Audio traversal now reads authored visibility and audio property stages without
+unrelated precomp/parent geometry. Actual drivers that read constrained geometry
+still require measured bounds; picture constraints remain intact. Evaluator 56
+invalidates prepared masters. Exact PCM regressions cover text-attached precomps,
+and the real video export cases preserve measured placement on Canvas and WebGL.
+Fast checks pass 2,616 units; 83 affected integrations and native media plus both
+576-frame passage browser checks pass. Independent standards/spec review finds no
+actionable concerns. All 176 frozen items / 36,061 frames match in 289.11 seconds;
+references and thresholds are unchanged. Each finding receives its own commit,
+with one final normal push; no full repository gate is run or claimed.
+[Third review evidence](./pr-48-third-review-fix-results.json).
+
 ## CE14 — Mesh warp and puppet pins
 
 **Outcome:** Still artwork bends, squashes and gestures without new poses, which is the
@@ -5171,6 +5637,263 @@ and final local gate remain pending.
 
 ---
 
+## CE16 — Programmable soundtrack project and timeline
+
+**Outcome:** An AI agent or human coder can prepare, edit, save, recover, render and
+verify narration, sound cues, SFX, ambience and BGM through CLIs, APIs, libraries and
+files. An optional embedded timeline lets the owner inspect and edit the same saved
+project. Automated production works without opening the editor.
+
+**Status:** `[x]` technically complete (2026-10-05), Codex on isolated
+`codex/composition-ce16` from `dee9e7b`. CE16-A lifecycle and CE16-B integration
+passed, including full local `pnpm check`, real browser audio/editor/export checks
+and 176 frozen baseline items / 36,061 frames without regeneration. The owner
+allowed automated headless-browser verification for this completion pass only.
+Production remains command/API/file-based. Original checkout/CE12 work preserved.
+The [completion audit](./composition-ce16-completion-audit.md) records exact scope,
+unperformed creative review and the earlier browser-policy breach.
+
+**Research handoff:** [CLI and Embedded Audio Engines for Still Shift](</Users/jjae/Documents/obsidian/ai-business/history-offstage/04 Research/Completed Studies/2026-10-03 - CLI and Embedded Audio Engines for Still Shift.md>)
+(2026-10-03, documentary research only). Proposed roles:
+
+- **DawDreamer:** Python offline processing, routing, parameter automation and stem
+  capture. The handoff reports GPLv3 and a 0.9.0 Apple Silicon/Python 3.11 wheel;
+  these are research leads, not a verified local dependency set.
+- **Waveform Playlist:** TypeScript timeline model and optional embedded waveform
+  components. The handoff reports MIT and engine source version 13.6.0. Its headless
+  model does not render audio; Web Components are experimental. Verify the exact
+  published engine/component/adapter versions and APIs before selection.
+- **FFmpeg/ffprobe:** retain delivery encoding, normalization and technical
+  measurements. Record versions and normalization settings; never silently change
+  the legacy mix's levels.
+
+**Existing implementation to preserve:** the strict
+[`passage-audio-1` contract](../packages/scene-contract/src/passage-audio.ts),
+[cue/event compiler](../packages/renderer-core/src/passage-audio.ts),
+[Web Audio scheduler](../packages/renderer-core/src/passage-audio-playback.ts),
+[FFmpeg renderer](../packages/animation-engine/src/passage-audio.ts) and
+[Lab controls](../apps/lab/src/passage-audio-controls.ts). They already provide
+hash-checked assets, frame-based trims/offsets, gains, linear fades, cue/event links,
+shared-clock preview and 48 kHz stereo export. Tracks/buses, general automation,
+DSP chains and automatic ducking are new work; see [audio guide](./passage-audio.md).
+
+### Non-negotiable constraints
+
+- **ZERO Computer Use** throughout setup, editing, recovery, saving and exporting.
+  **Owner exception (2026-10-04):** automated headless-browser verification is
+  authorized for this CE16 completion pass only. It is not a production workflow
+  dependency. The earlier unapproved indirect headless-browser use stays recorded.
+  Outside this verification exception, no desktop/browser driving, GUI scripting,
+  activation-dialog
+  workaround or routine dialog handoff to the owner. Use command, API, library and
+  file interfaces, including for testing the optional editor's model and persistence.
+- Read `AGENTS.md`, the development log and current audio implementation before
+  starting. Preserve unrelated work. Verification is local through pnpm commands;
+  GitHub Actions remain prohibited and disabled.
+- Use existing raw assets without changing their bytes. No provider generation,
+  purchases, active episode replacement or automatic migration of existing episodes.
+- Never pad, slow or time-stretch narration to fit picture or sound. Silence in a
+  full-length mix/stem container is permitted outside the unchanged narration clip;
+  it must not rewrite or extend the narration source interval.
+- Candidates remain provisional until exact dependencies, licenses and runtime
+  lifecycle are verified. Record distribution implications of GPLv3 and transitive
+  licenses before integration; do not infer that subprocess use settles licensing.
+- A lifecycle failure is a failure: record the exact command, stage, versions,
+  exit status, stderr and retained artifacts. Do not substitute a GUI or mark it
+  passed. Raise only a concrete missing decision if progress actually depends on it.
+
+### CE16-A — Prove the backend before integration
+
+- [x] Create an isolated **60-second** fixture with existing narration, **one BGM
+      interval and two SFX cues**, using new project/output paths. Record source
+      hashes, trims and cue positions. Do not invent a longer narration take to fill
+      the container; use existing speech within its natural duration.
+- [x] Resolve and pin DawDreamer and all Python dependencies in a command-created
+      isolated environment. Record Python, OS/architecture, FFmpeg/ffprobe and
+      installed package versions/licenses. Install and run exclusively by commands;
+      start with built-in processors and avoid plugins requiring activation dialogs.
+- [x] Demonstrate source trimming, integer-sample placement, explicit gain
+      envelopes/interpolation, at least one built-in DSP chain, named track/bus
+      routing, and aligned **48 kHz stereo mix and stems**. All outputs span exactly
+      2,880,000 samples per channel; report whether stems are pre/post processing
+      and how master processing affects reconstruction of the mix.
+- [x] Account for processor latency and effect tails: use an impulse/alignment
+      probe, declare the render block size, measure path delays and document any
+      compensation. DawDreamer does not automatically compensate external-plugin
+      latency. Reject unsupported latency rather than allowing silent cue drift.
+- [x] Save a readable versioned project, reload in a **new process**, re-render and
+      compare decoded PCM against the first output. Engine snapshots may be caches;
+      the saved project must reconstruct the graph without an in-memory session.
+- [x] Move one SFX cue and change its gain using commands, save/reload and render.
+      Verify the intended edit and decoded equality of unaffected layer stems and
+      source hashes. Record expected master/bus changes separately.
+- [x] Measure wall time and peak memory for setup, initial render, fresh-process
+      reload/render and edit/render, with host, block size, output sizes and commands.
+      Record measurement method; do not claim a speed advantage without comparison.
+- [x] Save lifecycle results and decoded comparisons, including maximum sample
+      error, differing-sample count, channel/rate/length and sample-position checks.
+      Require exact decoded repeat/reload equality on the pinned local runtime;
+      diagnose any mismatch before calling the gate passed.
+
+**Gate:** Every CE16-A item must pass with recorded evidence before adopting the
+backend or beginning integration. On success, continue into CE16-B within the
+authorized implementation scope without generic approval. On failure, retain the
+isolated fixture and precise failure evidence; integration stays unstarted until
+the lifecycle is resolved. No substitute candidate is silently called a DawDreamer
+pass.
+
+### CE16-B — Shared project, worker, CLI and optional timeline
+
+- [x] Introduce one bounded, explicitly versioned audio-project contract (proposed
+      `soundtrack-project-1`) carrying asset paths/SHA-256 hashes, named tracks and
+      roles, source intervals, integer sample positions, cue/event anchors and
+      sample offsets, gains, fades, automation points/interpolation, routing and
+      processing settings. Define sample-rate conversion and end-exclusive intervals.
+- [x] Preserve `passage-audio-1` plans and behavior through a compatible adapter or
+      an explicitly versioned opt-in schema. Keep original anchors alongside resolved
+      sample positions; reject missing/conflicting references. Retiming picture
+      cues/events recomputes positions deterministically while source trims and
+      authored durations remain fixed. No migration on load or export.
+- [x] Define a structured Node/TypeScript → Python worker protocol with JSON
+      requests/results, stable diagnostics, asset/clip/processor context, nonzero
+      failures and actionable remedies. Separate stdout JSON from stderr logs;
+      bound resources and support cancellation, missing-runtime errors and recovery.
+- [x] Provide CLI validation, project inspection, editing, mix render and named stem
+      render. Implement shared edit operations for gains, mute/solo, trims, moves,
+      automation and undo/redo where supported; CLI and visible edits write the same
+      saved project through the same validation/persistence API. Use atomic saves
+      and revision checks so stale edits cannot overwrite newer work.
+- [x] Retain FFmpeg/ffprobe delivery and measurement. Declare channel conversion,
+      normalization, stem tap points, bus/master processing, latency compensation and
+      tail/range rules in project/results. Cache identity includes the project,
+      source hashes, backend/DSP versions, toolchain and render settings.
+- [x] Implement **narration-aware BGM ducking** with explicit detector/source,
+      threshold, attenuation/ratio, attack, release, hold and lookahead parameters
+      as applicable. Persist defaults and the resulting automation or deterministic
+      derivation. Test speech, pauses and boundaries; leave narration samples and
+      timing unchanged. Do not silently duck SFX/ambience or legacy projects.
+- [x] Evaluate pinned Waveform Playlist packages against the vanilla TypeScript Lab.
+      Add an optional embedded layer timeline with clips, waveforms, overlaps and
+      automation; mute/solo, gain, trimming, movement and undo/redo where supported.
+      Document unsupported component controls and implement needed shared operations
+      directly. The component model is an adapter, not a second project authority.
+- [x] Preview and export consume the same saved project/revision. Prove timing and
+      decoded-audio agreement for any native/browser DSP path; use **rendered-stem
+      preview** when that DSP cannot match. Seeking/range preview must preserve
+      envelopes, ducking and effect state, with no provider call or GUI prerequisite.
+- [x] Connect the project to passage preview/export and later CE13/CE11 media/inspector
+      interfaces without making the backend wait for those milestones. Preserve
+      existing narration-only, sound-only, silent, range and portable-package behavior.
+- [x] Document command-only environment setup, edit/save/reload, inspect/validate,
+      render, cancellation/recovery and relocation, plus optional owner-facing
+      editor usage and licensing/packaging choices.
+
+**Implemented command surface:**
+
+```sh
+pnpm still-shift soundtrack validate --project <project.json>
+pnpm still-shift soundtrack inspect --project <project.json> --json
+pnpm still-shift soundtrack edit --project <project.json> --revision <number> --operations <edits.json>
+pnpm still-shift soundtrack render --project <project.json> --output-dir <fresh-dir> --stems
+```
+
+### Acceptance, verification and delivery evidence
+
+**Acceptance:** Deliver working reproducible commands, a saved editable example
+project, optional layer view, aligned mix/stems and measured lifecycle results.
+A fresh process can load, edit and export without opening the editor. CLI and
+component/API edits round-trip through one saved project; cue/event retiming preserves
+relationships and unaffected layers. Legacy plans retain their output behavior.
+Technical acceptance does not imply listening or audiovisual creative acceptance.
+
+**Verification:** Add meaningful local pnpm test commands covering schema/routing
+errors and cycles, checksum tampering, bounds, trims/placements, envelopes/DSP,
+latency, ducking, fresh-process reload, unchanged stems, save/revision conflicts,
+undo/redo, anchor retiming, preview/export agreement, seek/range behavior, cancellation,
+recovery, portable relocation and existing audio regressions. Exercise timeline and
+persistence through library/DOM harnesses and APIs/files without driving a GUI.
+Compare decoded PCM rather than encoded-file bytes; keep fixtures independent of
+provider services. Register required groups in existing local verification tiers.
+
+**Records:** Keep the saved fixture under `benchmarks/fixtures/composition/ce16/`,
+generated mixes/stems and measurements under an isolated ignored results directory,
+and tracked evidence in `docs/composition-ce16-verification-results.json` when work
+runs. Record exact commands, resolved dependencies/licenses, hashes, timing/memory,
+PCM comparisons, limitations and failures. Update the audio guide, composition
+reference/user guide and development log with links. Report **technical checks**,
+**actual listening** and **audiovisual QA** separately; mark listening/watching
+unperformed unless they actually occurred, and never claim them from ffprobe/PCM tests.
+
+### CE16 isolated backend proof record (2026-10-04)
+
+- **Owner / branch:** Codex on `codex/composition-ce16`, isolated managed worktree
+  `/Users/jjae/.codex/worktrees/composition-ce16/still-shift`, from `dee9e7b`.
+  Primary checkout and concurrent CE12 work remain untouched.
+- **Technical lifecycle:** passed for the scoped prototype: existing narration,
+  one BGM interval, two SFX cues; 60 seconds at 48 kHz stereo / 2,880,000 samples.
+  Seven mix/track/bus files per run; all reload outputs have zero differing decoded
+  samples. The edited cue moves 4,800 samples and changes gain by -3 dB; narration,
+  BGM, second SFX and music bus remain exact. Narration matches its decoded source.
+- **DSP / alignment:** built-in high-pass / low-pass chain, explicit linear gain
+  envelopes, named music/SFX buses, unity master and post-processing track stems.
+  Impulse onset delay 0 samples; peak response at +2 samples; tail and truncation
+  policy recorded. No external plugin latency support is claimed.
+- **Runtime:** Python 3.12.11, DawDreamer 0.9.0, NumPy 2.3.3, SciPy 1.16.2;
+  hash-pinned lockfile and isolated install. Exact timings, memory methods,
+  dependencies and license records are in the [evidence](./composition-ce16-verification-results.json).
+- **Commands:** `pnpm soundtrack:proof --verify-only` checks retained decoded outputs.
+  `pnpm soundtrack:proof` performs three renders in a fresh results location;
+  existing results are protected. See [prototype guide](./composition-ce16-backend-proof.md).
+- **Historical status:** CE16 was `[~]` at this isolated backend proof, before
+  CE16-B integration; see the subsequent implementation
+  record below. Distribution packaging remains pending. Dependencies are
+  not bundled or adopted into the production runtime. No listening or audiovisual
+  QA performed; command-only backend proof. Later integration verification policy
+  correction is documented in the completion audit.
+
+### CE16 shared project implementation and closure record (2026-10-05)
+
+- **Owner / branch:** Codex on the same isolated `codex/composition-ce16` worktree.
+- **Implemented:** bounded `soundtrack-project-1`, shared validated edits with
+  atomic revision saves and persisted undo/redo, structured cancellable Python
+  protocol, CLI inspect/validate/edit/retime/render/package, calibrated causal
+  filters and explicit narration-aware BGM ducking. Backend/DSP version is
+  `soundtrack-dsp-1`; old passage-audio output behavior is preserved.
+- **Integration:** optional vanilla TypeScript layer view with overlaps, rendered
+  waveforms, automation and shared edit API; exact rendered-mix preview and explicit
+  passage export adapter. Waveform Playlist's published versions were evaluated;
+  its collision/history rules were not adopted as a second authority.
+- **Lifecycle:** seven 60-second 48 kHz stereo outputs, all 2,880,000 samples/channel;
+  fresh-process reload and portable relocation exact; moved/lowered cue preserves
+  four unrelated stems; narration unchanged and unity buses reconstruct exactly.
+  Measured commands, worker memory and comparisons are in
+  [evidence](./composition-ce16-verification-results.json).
+- **Verification:** full local `pnpm check` passes on implementation `974dfdf`:
+  1,436 unit, 46 runtime, 125 integration, 14 depth tests and 42 browser groups.
+  All 176 frozen baseline items / 36,061 frames pass without regeneration.
+  Focused audio group: 35 tests. Corrected command-only tier: three audio integration
+  suites / 19 tests. Real browser decoding has zero differing float32 samples;
+  playback/seek/clear, editor persistence and 192-frame full / 24-frame range picture
+  exports pass. Delivery decodes match independently encoded canonical renders.
+  Final source-hash/reload/relocation/stem/narration recheck passes.
+  Commands, log hashes and earlier failures/remedies are retained in evidence.
+  No listening, human audiovisual QA or visible GUI inspection performed.
+  Earlier unapproved indirect browser work remains recorded in the
+  [completion audit](./composition-ce16-completion-audit.md); later browser checks
+  used the owner's one-time authorization. Deferred CE6-P performance work stays
+  deferred. GPL/transitive distribution decision remains pending; runtime is local
+  opt-in and no backend binaries are bundled.
+- **Guide:** [setup, contract, commands, recovery, preview and licensing](./soundtrack-project.md).
+
+**Completion record:** _CE16-A and CE16-B technical acceptance and all repository
+Definition-of-done gates passed on the isolated branch. Tracker `[x]`;
+[completion audit](./composition-ce16-completion-audit.md) and
+[verification results](./composition-ce16-verification-results.json) retain commands,
+versions, source hashes, measurements, failures and limitations. Production requires
+no editor; creative listening/audiovisual acceptance remains unperformed._
+
+---
+
 ## Definition of done
 
 A milestone is complete when **all** of the following hold:
@@ -5223,6 +5946,7 @@ A milestone is complete when **all** of the following hold:
 
 | Date       | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Reason                                                                                                                                                                                                                                          | Superseded by               |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| 2026-10-06 | Q9 partial approval: start CE5-X gap closure A2, A3, A8, B3 and B4 on `codex/composition-ce5x` from CE4c; preserve provider fallbacks and frozen baselines. The sequence position of the remaining CE5-X scope and A1 baseline regeneration remain open.                                                                                                                                                                                                                                                                            | Owner explicitly approved this task. Audit stop conditions apply; additional provider/contract scope is not inferred.                                                                                                                           |                             |
 | 2026-09-30 | Introduce one `composition-1` contract; existing families become compilers into it                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Removes per-family duplication; every later feature is built once                                                                                                                                                                               |                             |
 | 2026-09-30 | Keep Canvas 2D as the reference backend and add WebGL2 as the production backend behind one interface                                                                                                                                                                                                                                                                                                                                                                                                                               | Preserves parity with existing output while enabling GPU effects and performance                                                                                                                                                                |                             |
 | 2026-09-30 | Expressions are a serialisable AST; JavaScript ergonomics live in the builder                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Determinism, sandbox safety in export workers, easy validation of agent output (see Q3)                                                                                                                                                         | Q3 entry below              |
@@ -5275,17 +5999,17 @@ A milestone is complete when **all** of the following hold:
 
 ## Open questions for the owner
 
-| ID  | Question                                                                                                                                                                                                                                                                                                                                                                                          | Needed by                                                       | Answer                                                                                                                                                                                                                                                                    |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Q1  | GPU determinism: pin export to a software GL path (SwiftShader, slower but reproducible), or accept `near`-tier tolerance across GPUs with hardware rendering?                                                                                                                                                                                                                                    | CE0                                                             | 2026-09-30: hybrid (option C). See [GPU determinism policy](#gpu-determinism-policy)                                                                                                                                                                                      |
-| Q2  | Once adapters reach parity, should the four family schemas be frozen (still accepted, no new features) so new work targets `composition-1` only?                                                                                                                                                                                                                                                  | CE4d                                                            | 2026-10-01: option C — freeze the families' visual vocabulary; story-level features may still grow. See [decision log](#decision-log) and CE4d                                                                                                                            |
-| Q3  | Is an AST expression language acceptable, or must compositions accept raw JavaScript expressions (with a sandbox) for AE-style familiarity?                                                                                                                                                                                                                                                       | CE9                                                             | 2026-09-30: text syntax parsed into an AST; no raw JavaScript. See [CE9 expression form](#expression-form)                                                                                                                                                                |
-| Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                                                                                                                                                                                                                                                    | CE15                                                            | 2026-10-01: both — alpha formats for editors and social delivery formats ship together. See CE15                                                                                                                                                                          |
-| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                                                                                                                                                                                                                                                             | Phase D                                                         |                                                                                                                                                                                                                                                                           |
-| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                                                                                                                                                                                                                                                        | After CE8                                                       |                                                                                                                                                                                                                                                                           |
-| Q7  | Single-image depth animation (depth presets and flat editorial presets) uses a separate WebGL renderer. Should it become a composition layer type (for example a `depth-image` layer), or stay a separate path?                                                                                                                                                                                   | CE4d                                                            | 2026-10-05: native depth-image integration approved; migration complete 2026-10-07. See [CE4d completion](#ce4d-completion-record-2026-10-07).                                                                                                                            |
-| Q8  | Output is exact only within one operating system and CPU architecture (policy rule 6). Should one canonical render environment, for example the Linux container in `scripts/composition/linux/` on a fixed architecture, be used for CI, caches shared between machines and final exports, with macOS renders treated as development previews?                                                    | Before shared caches or CE15 parallel rendering across machines | 2026-10-01: Mac first — `darwin-arm64` is the reference environment for now; before supporting a second machine type, decide between B (canonical environment) and C (platform-independent text, preferred). See [GPU determinism policy](#gpu-determinism-policy) rule 6 |
-| Q9  | Approve [CE5-X](#ce5-x--shape-fidelity-connectors-and-expressive-strokes) and its sequence position (proposed: Slice A directly after CE4d, so provider retirement aligns with old-path removal; Slice B before CE13). A1 changes native CE5 merge/offset/round-corner output under a new geometry version; may those CE5 native baselines be regenerated with recorded diffs (CE0 stays frozen)? |
+| ID  | Question                                                                                                                                                                                                                                                                                                                                                                                          | Needed by                                                       | Answer                                                                                                                                                                                                                                                                                                         |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q1  | GPU determinism: pin export to a software GL path (SwiftShader, slower but reproducible), or accept `near`-tier tolerance across GPUs with hardware rendering?                                                                                                                                                                                                                                    | CE0                                                             | 2026-09-30: hybrid (option C). See [GPU determinism policy](#gpu-determinism-policy)                                                                                                                                                                                                                           |
+| Q2  | Once adapters reach parity, should the four family schemas be frozen (still accepted, no new features) so new work targets `composition-1` only?                                                                                                                                                                                                                                                  | CE4d                                                            | 2026-10-01: option C — freeze the families' visual vocabulary; story-level features may still grow. See [decision log](#decision-log) and CE4d                                                                                                                                                                 |
+| Q3  | Is an AST expression language acceptable, or must compositions accept raw JavaScript expressions (with a sandbox) for AE-style familiarity?                                                                                                                                                                                                                                                       | CE9                                                             | 2026-09-30: text syntax parsed into an AST; no raw JavaScript. See [CE9 expression form](#expression-form)                                                                                                                                                                                                     |
+| Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                                                                                                                                                                                                                                                    | CE15                                                            | 2026-10-01: both — alpha formats for editors and social delivery formats ship together. See CE15                                                                                                                                                                                                               |
+| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                                                                                                                                                                                                                                                             | Phase D                                                         |                                                                                                                                                                                                                                                                                                                |
+| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                                                                                                                                                                                                                                                        | After CE8                                                       |                                                                                                                                                                                                                                                                                                                |
+| Q7  | Single-image depth animation (depth presets and flat editorial presets) uses a separate WebGL renderer. Should it become a composition layer type (for example a `depth-image` layer), or stay a separate path?                                                                                                                                                                                   | CE4d                                                            | 2026-10-05: native depth-image integration approved; migration complete 2026-10-07. See [CE4d completion](#ce4d-completion-record-2026-10-07).                                                                                                                                                                 |
+| Q8  | Output is exact only within one operating system and CPU architecture (policy rule 6). Should one canonical render environment, for example the Linux container in `scripts/composition/linux/` on a fixed architecture, be used for CI, caches shared between machines and final exports, with macOS renders treated as development previews?                                                    | Before shared caches or CE15 parallel rendering across machines | 2026-10-01: Mac first — `darwin-arm64` is the reference environment for now; before supporting a second machine type, decide between B (canonical environment) and C (platform-independent text, preferred). See [GPU determinism policy](#gpu-determinism-policy) rule 6                                      |
+| Q9  | Approve [CE5-X](#ce5-x--shape-fidelity-connectors-and-expressive-strokes) and its sequence position (proposed: Slice A directly after CE4d, so provider retirement aligns with old-path removal; Slice B before CE13). A1 changes native CE5 merge/offset/round-corner output under a new geometry version; may those CE5 native baselines be regenerated with recorded diffs (CE0 stays frozen)? | CE5-X                                                           | 2026-10-06: approved only A2/A3/A8/B3/B4 gap closure from CE4c. The rest of CE5-X sequence and A1 baseline question remain open. Initial audit stopped migration for additional component motion providers, product attachments and multi-vertex annotations; see [evidence](./composition-ce5x-results.json). |
 
 ## Appendix — AE feature coverage map
 
@@ -5373,18 +6097,18 @@ with general primitives; the "Target" column names that later form.
 
 ### Components (`scene-components-1..3`)
 
-| Feature                                           | Today                                                  | `composition-1` form                                                                | Milestone               |
-| ------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------- | ----------------------- |
-| Values and numeric text bindings (formatting)     | `component-values.ts`                                  | Interim provider for formatted text; target expression bound to text source         | CE4a/b, CE9             |
-| Property bindings                                 | `component-values.ts`                                  | Driver / expression                                                                 | CE2, CE9                |
-| State schedules (cuts, ramp)                      | `component-state.ts`                                   | `state` keys with hold interpolation; ramp as `stateMix` keys                       | CE1–CE3                 |
-| Travels along paths                               | `component-travel.ts`                                  | `follow-path` constraint with keyed progress                                        | CE2                     |
-| Visibility windows                                | `component-visibility.ts`                              | Layer in/out points; multiple windows as hold-keyed opacity                         | CE1                     |
-| Pins                                              | `component-pin.ts`                                     | `attach` constraint                                                                 | CE2                     |
-| Text fits                                         | `component-text-fit.ts`                                | Text layer fit option resolved at compile with measured fonts                       | CE3                     |
-| Masks (`invert`)                                  | `component-mask.ts`                                    | Track matte (`alpha` / `alpha-inverted`)                                            | CE3                     |
-| Annotations (anchored leaders, protected regions) | `component-annotations.ts`                             | Commerce: `commerce.path@1.0.0` baked vertices; target `connector` shape paths (B3) | CE4a/b, CE5, CE9, CE5-X |
-| Relationships and instances                       | `component-relationships.ts`, `component-instances.ts` | Compiled                                                                            | CE4a/b                  |
+| Feature                                           | Today                                                  | `composition-1` form                                                                                                                                           | Milestone               |
+| ------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| Values and numeric text bindings (formatting)     | `component-values.ts`                                  | Interim provider for formatted text; target expression bound to text source                                                                                    | CE4a/b, CE9             |
+| Property bindings                                 | `component-values.ts`                                  | Driver / expression                                                                                                                                            | CE2, CE9                |
+| State schedules (cuts, ramp)                      | `component-state.ts`                                   | `state` keys with hold interpolation; ramp as `stateMix` keys                                                                                                  | CE1–CE3                 |
+| Travels along paths                               | `component-travel.ts`                                  | `follow-path` constraint with keyed progress                                                                                                                   | CE2                     |
+| Visibility windows                                | `component-visibility.ts`                              | Layer in/out points; multiple windows as hold-keyed opacity                                                                                                    | CE1                     |
+| Pins                                              | `component-pin.ts`                                     | `attach` constraint                                                                                                                                            | CE2                     |
+| Text fits                                         | `component-text-fit.ts`                                | Text layer fit option resolved at compile with measured fonts                                                                                                  | CE3                     |
+| Masks (`invert`)                                  | `component-mask.ts`                                    | Track matte (`alpha` / `alpha-inverted`)                                                                                                                       | CE3                     |
+| Annotations (anchored leaders, protected regions) | `component-annotations.ts`                             | Commerce: `commerce.path@1.0.0` baked vertices; B3 connector target, with multi-vertex bracket/outline audit gap ([evidence](./composition-ce5x-results.json)) | CE4a/b, CE5, CE9, CE5-X |
+| Relationships and instances                       | `component-relationships.ts`, `component-instances.ts` | Compiled                                                                                                                                                       | CE4a/b                  |
 
 ### Story-only rendering
 
@@ -5401,16 +6125,16 @@ with general primitives; the "Target" column names that later form.
 
 ### Commerce-only rendering
 
-| Feature                                                                                                                         | Today                                                 | `composition-1` form                                                       | Milestone |
-| ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------- | --------- |
-| Effects: directional blur, focus blur, glow, grain, light sweep, background light, displacement, echo, particles, height shadow | `commerce-effects.ts`, `commerce-effects-renderer.ts` | Effect registry entries                                                    | CE6       |
-| Effect: motion blur (shutter angle, samples)                                                                                    | `commerce-effects.ts`                                 | Composition/layer motion blur                                              | CE7       |
-| Effects: overshoot, drift, parallax                                                                                             | `commerce-effect-motion.ts`                           | Behaviours or compiled keys, not pixel effects                             | CE9       |
-| Geometry (anchors, protected regions) and attachments                                                                           | `commerce-spatial.ts`, `commerce-geometry.ts`         | Asset anchors; baked vertices via `commerce.path@1.0.0`, later expressions | CE4b, CE9 |
-| Mattes (`invert`, `order: after-effects`)                                                                                       | `commerce-spatial.ts`                                 | Track mattes                                                               | CE3       |
-| Visibility windows, text fits                                                                                                   | `commerce-spatial.ts`                                 | In/out points; text fit option                                             | CE1, CE3  |
-| Layout, product preparation, shadow textures, floating hand                                                                     | `commerce-*.ts`, `animation-engine/commerce-*.ts`     | Compiled; generated shadows are prepared files referenced as assets        | CE4b      |
-| Registration, claims and source metadata                                                                                        | `metadata`                                            | Composition metadata passthrough                                           | CE1       |
+| Feature                                                                                                                         | Today                                                 | `composition-1` form                                                                                                                                  | Milestone |
+| ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| Effects: directional blur, focus blur, glow, grain, light sweep, background light, displacement, echo, particles, height shadow | `commerce-effects.ts`, `commerce-effects-renderer.ts` | Effect registry entries                                                                                                                               | CE6       |
+| Effect: motion blur (shutter angle, samples)                                                                                    | `commerce-effects.ts`                                 | Composition/layer motion blur                                                                                                                         | CE7       |
+| Effects: overshoot, drift, parallax                                                                                             | `commerce-effect-motion.ts`                           | Behaviours or compiled keys, not pixel effects                                                                                                        | CE9       |
+| Geometry (anchors, protected regions) and attachments                                                                           | `commerce-spatial.ts`, `commerce-geometry.ts`         | Asset anchors; `commerce.path@1.0.0` includes product attachments beyond annotation-only B3; audit stop ([evidence](./composition-ce5x-results.json)) | CE4b, CE9 |
+| Mattes (`invert`, `order: after-effects`)                                                                                       | `commerce-spatial.ts`                                 | Track mattes                                                                                                                                          | CE3       |
+| Visibility windows, text fits                                                                                                   | `commerce-spatial.ts`                                 | In/out points; text fit option                                                                                                                        | CE1, CE3  |
+| Layout, product preparation, shadow textures, floating hand                                                                     | `commerce-*.ts`, `animation-engine/commerce-*.ts`     | Compiled; generated shadows are prepared files referenced as assets                                                                                   | CE4b      |
+| Registration, claims and source metadata                                                                                        | `metadata`                                            | Composition metadata passthrough                                                                                                                      | CE1       |
 
 ### Cinematic-only rendering
 
@@ -5481,3 +6205,16 @@ baked to one key per integer frame in CE4d; no fractional key frames. Note 3: `c
 with `cameraDepth`. Note 4: no contract change; CE2 accepts fractional evaluation times.
 Note 5: image `rasterize: "natural-size"`. Note 6: no contract change. Note 7: adapter
 rule above, plus a CE2 follow-up. See the [decision log](#decision-log).
+
+#### CE6-P retained 0.42.0 gate and rejected owned-output candidate (2026-10-06)
+
+The full local gate passes all browser groups and 176 frozen baselines / 36,061
+frames on retained renderer 0.42.0. Two uncontended fixed-native diagnostics
+preserve all candidate bytes/ownership but reject fresh-owned-read plus known-clear
+paint: 1.7875 / 1.8125 ms against matched half-Canvas 0.39375 / 0.375 ms. Complete
+allocate+fill alone costs 0.850 / 0.925 ms. No production change follows that
+experiment, and the quiet slice is released. The existing strict failure ledger
+and native 2× remain open; 0.42.0 has not received a repeated full strict audit.
+No compatible closure mechanism is selected, and changing the readback contract
+or acceptance requires an explicit owner decision.
+[Decision/evidence](./composition-ce6p-resolution-plan.md#native-owned-output-decision--2026-10-06).

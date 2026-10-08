@@ -204,6 +204,78 @@ describe("native content clocks", () => {
     host(doc).posterizeFps = 12;
     expect(childTime(doc, 20)).toBe(7);
   });
+
+  it.each(["cycle", "pingpong"] as const)(
+    "uses explicit instance clocks before validating an unused %s loop",
+    (loop) => {
+      const doc = childFixture();
+      host(doc).loop = loop;
+      doc.expressions = {
+        "host.timeRemap": { source: "frame * 1000000000000" },
+      };
+      expect(validateComposition(doc).ok).toBe(true);
+      const before = structuredClone(doc);
+      for (const frame of [7, 3, 0, 7]) {
+        for (const [override, expected] of [
+          [5, 5],
+          [0, 0],
+          [-5, 0],
+          [100, 9],
+        ]) {
+          const options = { scopeTimes: { host: override! } };
+          const state = evaluateComp(doc, frame, options).layers[0]!;
+          expect(state.timeRemap).toBe(frame * 1000000000000);
+          expect(state.precomp!.time).toBe(expected);
+          expect(
+            evaluateProperty(
+              doc,
+              "host/box.transform.position.x",
+              frame,
+              options,
+            ),
+          ).toBeCloseTo(expected!);
+        }
+      }
+      const inherited = Object.create({ host: 5 }) as Record<string, number>;
+      for (const options of [{}, { scopeTimes: inherited }]) {
+        expect(() => evaluateComp(doc, 7, options)).toThrow(
+          "Loop source time must be within ±2^40 frames",
+        );
+      }
+      expect(doc).toEqual(before);
+    },
+  );
+
+  it("keeps nested clock overrides separate from reused source instances", () => {
+    const doc = childFixture();
+    const nestedHost = host(doc);
+    nestedHost.loop = "cycle";
+    doc.precomps!.push({
+      id: "wrapper",
+      width: 160,
+      height: 100,
+      frameCount: 60,
+      layers: [nestedHost],
+    });
+    doc.layers = [
+      { id: "outer", type: "precomp", comp: "wrapper" },
+      { ...structuredClone(nestedHost), id: "other", timeRemap: 4 },
+    ];
+    doc.expressions = {
+      "outer/host.timeRemap": { source: "frame * 1000000000000" },
+    };
+    expect(validateComposition(doc).ok).toBe(true);
+    for (const frame of [7, 4, 0, 7]) {
+      const tree = evaluateComp(doc, frame, {
+        scopeTimes: { "outer/host": 5 },
+      });
+      const inner = tree.layers[0]!.precomp!.layers[0]!;
+      expect(inner.timeRemap).toBe(frame * 1000000000000);
+      expect(inner.precomp!.time).toBe(5);
+      expect(tree.layers[1]!.precomp!.time).toBe(4);
+    }
+  });
+
   it("validates time bounds and rejects a count without a loop", () => {
     for (const fields of [
       { posterizeFps: 0 },

@@ -19,6 +19,7 @@ import {
   risingParticles,
 } from "../../pixel-generators.ts";
 import { WebglPaint } from "./webgl-paint.ts";
+import { WebglDisjointPaints } from "./webgl-disjoint-paints.ts";
 import { cssColor, type Canvas2dBackend } from "./canvas2d.ts";
 import type { Bounds, Rgba } from "../evaluate/types.ts";
 import type { RenderEffect } from "./graph.ts";
@@ -387,12 +388,14 @@ vec4 translatedX(float shift) {
 
 export class WebglEffects {
   private readonly paints: WebglPaint;
+  private readonly disjointPaints: WebglDisjointPaints;
   constructor(
     private readonly device: WebglDevice,
     private readonly raster: Canvas2dBackend,
     private readonly bounds: WebglBounds,
   ) {
     this.paints = new WebglPaint(device, bounds);
+    this.disjointPaints = new WebglDisjointPaints(device, raster, bounds);
   }
 
   /**
@@ -466,6 +469,7 @@ export class WebglEffects {
         dst.height,
       ));
       paintRisingParticles(pixels.ctx, effect, dst.width, dst.height);
+      if (this.disjointPaints.draw(pixels, dst, rects)) return;
       for (const rect of rects) {
         const source = (phase.source = this.device.surface(
           rect.right - rect.left,

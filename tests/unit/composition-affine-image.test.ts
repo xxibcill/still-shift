@@ -148,6 +148,59 @@ it("preserves Gaussian focus overscan and matte/opacity/blend isolation", () => 
   });
 });
 
+it.each([0.25, 0.5, 0.75])(
+  "retains Gaussian focus overscan during an affine image crossfade at %s",
+  (stateMix) => {
+    const doc = scene([
+      {
+        id: "camera",
+        type: "camera",
+        depthOfField: true,
+        focusDistance: 200,
+        aperture: 10,
+        blurModel: "gaussian",
+        maxBlur: 4,
+      },
+      image({
+        sources: [{ asset: "image" }, { asset: "image" }],
+        stateFrom: 0,
+        state: 1,
+        stateMix,
+      }),
+    ]);
+    expect(graph(doc).root.ops[0]).toMatchObject({
+      kind: "project",
+      focusPadding: 14,
+      effects: [{ effect: "blur.gaussian", params: { radius: 4 } }],
+    });
+  },
+);
+
+it.each([
+  { stateFrom: 0, state: 1, stateMix: 0, focusDistance: 200 },
+  { stateFrom: 0, state: 1, stateMix: 1, focusDistance: 200 },
+  { stateFrom: 1, state: 1, stateMix: 0.5, focusDistance: 200 },
+  { stateFrom: 0, state: 1, stateMix: 0.5, focusDistance: 100 },
+])(
+  "keeps eligible settled and zero-focus images on direct draws: %j",
+  (entry) => {
+    const { focusDistance, ...states } = entry;
+    const doc = scene([
+      {
+        id: "camera",
+        type: "camera",
+        depthOfField: true,
+        focusDistance,
+        aperture: 10,
+        blurModel: "gaussian",
+        maxBlur: 4,
+      },
+      image({ sources: [{ asset: "image" }, { asset: "image" }], ...states }),
+    ]);
+    expect(graph(doc).root.ops[0]!.kind).toBe("draw");
+  },
+);
+
 it("retains three-sigma overscan for Gaussian focus on general projected content", () => {
   const doc = scene([
     {
@@ -172,4 +225,103 @@ it("retains three-sigma overscan for Gaussian focus on general projected content
     focusPadding: 14,
     effects: [{ effect: "blur.gaussian", params: { radius: 4 } }],
   });
+});
+
+it.each<[number, number, number]>([
+  [2, 2, 1],
+  [3, 1, 1],
+])(
+  "preserves local primitive blur before affine image projection at scale %j",
+  (x, y, z) => {
+    const result = graph(
+      scene([
+        image({
+          transform: { scale: [x, y, z] },
+          effects: [
+            {
+              id: "primitive",
+              effect: "blur.primitive",
+              params: { radius: 4 },
+            },
+          ],
+        }),
+      ]),
+    );
+    const projection = result.root.ops[0]!;
+    expect(projection.kind).toBe("project");
+    if (projection.kind !== "project") throw Error("local projection missing");
+    expect(projection.surface.ops[0]).toMatchObject({
+      kind: "draw",
+      paintBlur: 4,
+      content: { type: "image" },
+    });
+    expect(projection.placement.affineMatrix?.[0]).toBe(x);
+    expect(projection.placement.affineMatrix?.[3]).toBe(y);
+  },
+);
+
+it("preserves inherited primitive blur before affine image projection", () => {
+  const result = graph(
+    scene([
+      {
+        id: "parent",
+        type: "group",
+        size: [100, 80],
+        effects: [
+          { id: "primitive", effect: "blur.primitive", params: { radius: 4 } },
+        ],
+      },
+      image({ parent: "parent", transform: { scale: [2, 1, 1] } }),
+    ]),
+  );
+  const projection = result.root.ops[0]!;
+  expect(projection.kind).toBe("project");
+  if (projection.kind !== "project") throw Error("local projection missing");
+  expect(projection.surface.ops[0]).toMatchObject({
+    kind: "draw",
+    paintBlur: 4,
+  });
+});
+
+it("retains direct affine image drawing only while animated primitive blur is zero", () => {
+  const doc = scene([
+    image({
+      effects: [
+        {
+          id: "primitive",
+          effect: "blur.primitive",
+          params: {
+            radius: {
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 1, value: 4, interpolation: "hold" },
+              ],
+            },
+          },
+        },
+      ],
+    }),
+  ]);
+  expect(buildRenderGraph(doc, evaluateComp(doc, 0)).root.ops[0]!.kind).toBe(
+    "draw",
+  );
+  expect(buildRenderGraph(doc, evaluateComp(doc, 1)).root.ops[0]!.kind).toBe(
+    "project",
+  );
+});
+
+it("retains direct affine image drawing for disabled primitive blur", () => {
+  const doc = scene([
+    image({
+      effects: [
+        {
+          id: "primitive",
+          effect: "blur.primitive",
+          enabled: false,
+          params: { radius: 4 },
+        },
+      ],
+    }),
+  ]);
+  expect(graph(doc).root.ops[0]!.kind).toBe("draw");
 });

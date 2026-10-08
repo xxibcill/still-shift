@@ -824,6 +824,13 @@ try {
       (await import(url)) as typeof Checks
     ).checkSurfacePreparationFailures();
   });
+  const cachedCinematic = await workers[0]!.page.evaluate(async () => {
+    const url = "/tests/helpers/composition-source-reference.ts";
+    return (
+      (await import(url)) as typeof SourceChecks
+    ).checkCachedCinematicPreparation();
+  });
+  assert.equal(cachedCinematic.length, 2);
   const protectedSources = await workers[0]!.page.evaluate(async () => {
     const url = "/tests/helpers/composition-source-reference.ts";
     return (
@@ -978,6 +985,7 @@ try {
     nativeStorage,
     protectedPreparation,
     protectedSources,
+    cachedCinematic,
     nativeRoots,
     protectedRoots,
     memoryPrimitives,

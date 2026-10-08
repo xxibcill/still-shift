@@ -1,0 +1,130 @@
+{
+  "pullRequest": 40,
+  "base": "817cc9f982f9459cc641af864a8f160bfedc668e",
+  "status": "complete",
+  "review": "https://github.com/xxibcill/still-shift/pull/40#pullrequestreview-5423806559",
+  "findings": [
+    {
+      "id": "posterized-cut-rounding",
+      "status": "fixed",
+      "changes": "Verify cut inversion against the unchanged layerContentTime floor; bracket floating-point error and refine the reachable scope boundary.",
+      "regressions": {
+        "red": 3,
+        "greenFocusedTests": 48,
+        "covers": [
+          "integer export frames",
+          "forward/reversed clocks",
+          "start/stretch transforms",
+          "nested state/effect cuts",
+          "nominal cut rounded after an already-reachable integer export frame"
+        ]
+      },
+      "checks": {
+        "toolchain": "passed",
+        "build": "passed",
+        "changedFileLint": "passed",
+        "boundaries": "passed",
+        "fullLocalGate": "passed"
+      },
+      "rejectedExperiment": "Returning an already-reachable nominal cut missed earlier reachable scope doubles; independent review reproduced all-old samples at integer frame216 with stretch13. Bracketing now checks both sides.",
+      "commit": "4c7266a"
+    },
+    {
+      "id": "posterized-outgoing-state-visibility",
+      "status": "fixed",
+      "changes": "Suppress outgoing resets only when invisible at the reachable posterized content clock or baked sample index; preserve ordinary nonposterized arithmetic.",
+      "regressions": {
+        "red": 2,
+        "greenFocusedTests": 50,
+        "covers": ["forward/reversed outgoing state", "sample-table indices"]
+      },
+      "checks": {
+        "build": "passed",
+        "changedFileLint": "passed",
+        "independentStandardsReview": "passed",
+        "independentSpecReview": "passed",
+        "fullLocalGate": "passed"
+      },
+      "commitSubject": "fix(composition): sample outgoing mix at reachable clocks"
+    }
+  ],
+  "finalVerification": {
+    "status": "passed",
+    "command": "pnpm check",
+    "log": "benchmarks/results/pr-40-fixes/pnpm-check.log",
+    "codeDiffSha256": "6408d6e3789bad7a8cf5357b787d59c46fb308d090a4c48aff7c7b78727e45ed",
+    "attempts": [
+      {
+        "attempt": 1,
+        "status": "failed",
+        "stage": "integration",
+        "unitTestsPassed": 1605,
+        "runtimeTestsPassed": 46,
+        "integrationTestsPassed": 136,
+        "integrationTimeouts": 3,
+        "failure": "Copied Python environment had cold worker imports; three unchanged protocol tests exceeded the default 5-second timeout.",
+        "log": "benchmarks/results/pr-40-fixes/pnpm-check-attempt-1.log"
+      },
+      {
+        "attempt": 2,
+        "status": "passed",
+        "exitCode": 0,
+        "log": "benchmarks/results/pr-40-fixes/pnpm-check.log",
+        "repair": "Warm unchanged Python worker imports before rerun; default timeouts and all required suites retained."
+      }
+    ],
+    "exitCode": 0,
+    "codeFingerprintVerifiedAfterGate": true,
+    "unitTestsPassed": 1605,
+    "runtimeTestsPassed": 46,
+    "integrationTestsPassed": 139,
+    "depthTestsPassed": 14,
+    "browserSuites": "all configured required suites passed",
+    "frozenBaselineItems": 176,
+    "frozenBaselineFrames": 36061,
+    "frozenBaselineDurationSeconds": 298.72
+  },
+  "frozenBaselines": "not regenerated",
+  "githubActions": "disabled",
+  "preflight": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "toolchain": "passed",
+    "relevantModuleImports": "passed",
+    "viteCaches": "isolated worktree optimizer/config paths",
+    "pythonEnvironment": "copied .venv; local editable depth worker rebuilt",
+    "pythonWorkerImports": "passed; cv2/numpy/Pillow/torch/torchvision/transformers/worker imported before retry",
+    "pythonProtocolRegression": {
+      "tests": 5,
+      "status": "passed",
+      "durationMs": 1270,
+      "defaultTimeoutMs": 5000
+    }
+  },
+  "initialNativeBrowserCheck": {
+    "status": "passed before final bracket refinement",
+    "backendMaximumChannelDelta": 0,
+    "analyticMaximumChannelDelta": 1,
+    "hardwareComparisons": 12,
+    "hardwareMaximumChannelDelta": 1,
+    "storedBaselines": "exact",
+    "bothBackendExports": "repeated MP4, independent preview MP4, raw/PNG byte-identical",
+    "oldExposureExports": "two 60-frame fixtures byte-identical"
+  },
+  "finalNativeBrowserCheck": {
+    "status": "passed on final code in full gate",
+    "fixtureFrames": 96,
+    "reverseFrames": 96,
+    "randomSeeksPerFixture": 11,
+    "backendMaximumChannelDelta": 0,
+    "analyticMaximumChannelDelta": 1,
+    "hardwareComparisons": 12,
+    "hardwareMaximumChannelDelta": 1,
+    "storedBaselines": "exact",
+    "bothBackendExports": "repeated MP4, independent preview MP4, raw/PNG byte-identical",
+    "rendererFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba"
+  }
+}

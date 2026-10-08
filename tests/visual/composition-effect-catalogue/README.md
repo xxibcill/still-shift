@@ -12,3 +12,11 @@ creation used `--write-ce6-baseline`; ordinary verification never writes them.
 Pinned backend comparisons use the existing near tier. Hardware comparisons keep
 the existing perceptual policy and report the actual tier achieved by each frame.
 Timing evidence records cold and warm render plus complete readback separately.
+
+The original catalogue files remain unchanged after the transition coverage fix.
+Canvas transition kernels 1.0.1 have a separate versioned hash oracle in
+`darwin-arm64-transition-coverage-1.0.1.json`, checked against the effect versions,
+source digest and pinned raster fingerprint. All other original hashes, including
+all WebGL frames, remain required. The corrected Canvas oracle records the
+premultiplied coverage equations; it does not relax pixel tiers or replace legacy
+CE0 baselines.

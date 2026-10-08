@@ -1,5 +1,7 @@
 import {
   allocateRenderPixels,
+  createRenderCanvas,
+  releaseRenderCanvas,
   createRenderStorage,
   releaseRenderPixels,
   releaseRenderStorage,
@@ -19,7 +21,7 @@ import {
   depthProgramDiagnostic,
 } from "./webgl-depth-text.ts";
 
-export const DEPTH_IMAGE_SHADER_VERSION = "composition-image-plane-0.4.0";
+export const DEPTH_IMAGE_SHADER_VERSION = "composition-image-plane-0.4.1";
 const IMAGE_PLANE_BYTE_LIMIT = 128 * 1024 * 1024;
 
 export function validateImagePlaneSurface(
@@ -972,22 +974,41 @@ export class WebglDepthImages {
       bytes,
       () => gl.createTexture(),
       (texture) => {
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
-        gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
-        gl.texImage2D(
-          gl.TEXTURE_2D,
-          0,
-          color ? gl.SRGB8_ALPHA8 : gl.RGBA8,
-          gl.RGBA,
-          gl.UNSIGNED_BYTE,
-          image as TexImageSource,
-        );
+        // ImageBitmap ignores unpack orientation and alpha flags; normalize through owned Canvas storage.
+        const bitmapCanvas =
+          Object.prototype.toString.call(image) === "[object ImageBitmap]"
+            ? createRenderCanvas()
+            : undefined;
+        try {
+          if (bitmapCanvas) {
+            bitmapCanvas.width = size[0];
+            bitmapCanvas.height = size[1];
+            const context = bitmapCanvas.getContext("2d");
+            if (!context) throw Error("Canvas 2D is unavailable");
+            context.drawImage(image, 0, 0);
+          }
+          gl.bindTexture(gl.TEXTURE_2D, texture);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+          gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+          gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
+          gl.texImage2D(
+            gl.TEXTURE_2D,
+            0,
+            color ? gl.SRGB8_ALPHA8 : gl.RGBA8,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            (bitmapCanvas ?? image) as TexImageSource,
+          );
+        } finally {
+          if (bitmapCanvas) {
+            if (renderMemory()) releaseRenderCanvas(bitmapCanvas);
+            else bitmapCanvas.width = bitmapCanvas.height = 0;
+          }
+        }
       },
       (texture) => gl.deleteTexture(texture),
     );

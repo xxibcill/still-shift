@@ -45,7 +45,11 @@ uses CE16's gain/pan/fade conventions while keeping its optional backend separat
 written values clamp to -120…+12 dB and -1…+1. Audio `timeRemap` uses absolute source
 seconds. `sourceStartSample` / `sourceEndSample` are an authorized half-open trim.
 Remapped PCM positions use Q16 sample units; natural identity paths must preserve
-exact integer sample origins throughout nested scopes. Audio is not picture geometry.
+exact integer sample origins throughout nested scopes. Audio visibility compares
+Q16 PCM coordinates against exact half-open layer, scope and inherited group bounds;
+authored property/frame clocks and ordinary picture visibility remain unchanged.
+The evaluator identity advances so prepared masters missing a boundary sample are
+rebuilt. Audio is not picture geometry.
 
 Narration may have an explicit source trim and placement, but its complete authorized
 interval must fit the composition and every inherited visibility window. Changed
@@ -75,7 +79,10 @@ metadata must be supported. Prepared pixels are converted into canonical sRGB RG
 private cache directory. Video selection uses FFmpeg frame ordinal `n`, with no
 browser video seeking. Source SHA, verified rational timing and color, selected
 ordinals, optional mapping SHA, decoder version and actual FFmpeg runtime identity
-form the key; relocated physical paths do not. Prepared PNG hashes, byte counts,
+form the key; relocated physical paths do not. Visual, source PCM and mixed-audio
+cache identities also pin the operating system and CPU architecture through one
+shared identity builder. Copying a cache across platforms cannot authorize reuse;
+returning to the original platform still reuses its verified entries. Prepared PNG hashes, byte counts,
 dimensions and canonical layout verify on every hit. Modified entries reject.
 
 Source range/matrix is converted to full RGB. BT.709 transfer is decoded and then
@@ -141,7 +148,12 @@ and relocates both the sequence pattern and manifest path.
 Preview sessions accept optional asynchronous `prepareFrame` readiness. They retain
 visible pixels until readiness succeeds, ignore superseded seeks/first frames, cancel
 stale candidates, and dispose resources once. Playback waits for each native readiness
-step and guards restart/pause generations. Still-only renderers remain synchronous.
+step and guards restart/pause generations. Native resource captures remain owned by
+an active or candidate preview until disposal, replacement failure, or connection
+closure releases them. Later prepares and peer tabs cannot evict a held capture;
+the server rejects additional preparation at the 64 live/pending capture bound
+rather than removing an existing preview's resources. Still-only renderers remain
+synchronous.
 Native inspector source-clock keys expose Media key value editing. Real edit/undo/redo,
 save/reload, backend switching and draft-export checks are verified; actual native PCM
 and source/processed waveform lanes are the next work.
@@ -155,10 +167,16 @@ Audio cycle loops cover the full scope duration, including singleton scopes. Aud
 pingpong reflects at the final 48 kHz sample, and finite audio loops end in silence.
 The established picture loop/terminal-hold behavior stays unchanged.
 
+Audio visibility reads authored layer/group metadata without evaluating parent
+geometry. Spatial constraints on precomp hosts or parent groups therefore do not
+require measured text layout during PCM preparation. Actual audio drivers that
+read constrained geometry still evaluate that dependency and require its measured
+bounds; picture evaluation retains the complete visual constraints.
+
 Output samples must be nonnegative safe integers. Internal `scopeTimes` overrides
 reject in this API; authored ordinary source remap remains supported. Protected
 narration rejects baked `sampleTimes` on voice and ancestors, even when disabled, in
-addition to the previously prohibited source-clock changes. The evaluator is version 53. Continuous clock/dependency correctness, PCM decode/mix,
+addition to the previously prohibited source-clock changes. The evaluator is version 56. Continuous clock/dependency correctness, PCM decode/mix,
 waveforms, preview and matching-audio delivery are verified; passage mixing is verified.
 
 `prepareCompositionAudioSource` verifies the actual single mono/stereo source stream

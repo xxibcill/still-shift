@@ -1,0 +1,305 @@
+# CE6-P compatible WebGL optimization lane
+
+- Date: 2026-10-05
+- Branch: `codex/composition-ce6p-compatible`
+- Starting commit: `0e4838852855f6dc8cf91bba763a402dfd716f88` (CE7)
+- Status: `[d]`, owner paused CE6-P and deferred remaining performance work to an unscheduled future version on 2026-10-07. Milestone acceptance remains incomplete. Reviewed renderer 0.42.0 and all evidence are retained in PR #41; the full local gate passes, while the original timing failures, native 2× and full strict audit on 0.42.0 remain open.
+
+## Owner deferral — 2026-10-07
+
+The owner requested: “let's just pause here and defer it to future version again”.
+Pause the completion goal and stop performance tuning, additional timing windows
+and architecture experiments until an explicit owner request resumes the work.
+No future version number or deadline is assigned. Preserve the 1.25× family and
+native 2× targets, original 117 cases and all correctness/ownership acceptance.
+This decision defers the requirements; it does not mark CE6-P complete.
+
+Retain renderer 0.42.0 / `d4ecdf8`, the approved scoped echo correction,
+particle gain, full local gate and [PR #41](https://github.com/xxibcill/still-shift/pull/41).
+The existing strict ledger has 119 timing misses; the complete 195-case audit has
+not been repeated on 0.42.0. Both timing holds ended. The rejected native
+owned-output candidate stays rejected, and the proposed GPU-resident/asynchronous
+architecture prototype is not approved. Detailed earlier records below are
+historical; they do not authorize a restart.
+
+The owner requested research before further trial and error on 2026-10-06.
+The [resolution plan](./composition-ce6p-resolution-plan.md) and
+[cited research](./composition-ce6p-resolution-research.md) preserve budget,
+eligibility and stop conditions. The [execution record](./composition-ce6p-resolution-plan.md#execution-record-2026-10-06)
+retains particle work reduction, the approved echo correction, routing of all 119
+timing misses, and the costed rejection of native paint/owned-output candidates.
+The scoped echo authorization and elapsed sessions are complete; all original
+strict timing failures and native acceptance remain open.
+
+The [prior goal and GPU trace record](./composition-ce6p-resolution-plan.md#active-completion-goal-and-gpu-operation-coverage)
+retains 476 selected frames across all 119 failures, with exact repeated operation
+counts and owned pixel hashes. Structural coverage is not milestone completion.
+The isolated lane leaves the primary checkout independent. No CPU/GPU composition
+hybrid, default-backend change, GPU-policy change, acceptance revision or
+frozen-baseline regeneration is authorized. GitHub Actions remain disabled.
+
+## Preserved acceptance
+
+Retain all original 117 tracked family timing failures and the existing 1.25×
+legacy render/readback assertions, plus the native 1920×1080 2× WebGL versus
+Canvas target. Each fixture keeps its pixel tier, evaluated-state agreement,
+forward/reverse/random seeking, repeated-export identity and pinned SwiftShader
+policy. Hardware preview must still agree with pinned export. Separate preview
+and export budgets with environment fingerprints and warm/cold methods.
+
+Prior evidence: [performance slices](./composition-ce6-performance-results.json),
+[feasibility report](./composition-ce4b-feasibility.md),
+[feasibility results](./composition-ce4b-feasibility-results.json),
+[CE7 exposure costs](./composition-ce7-results.json).
+Do not repeat the rejected scratch readback, framebuffer, PBO, skipped-clear,
+unspecialized blur or upload-variant experiments.
+
+## Slice 1: final exposure accumulation
+
+The current exposure path accumulates integer byte samples into RGBA32F, then
+performs a separate averaging draw. Test fusing the last sample addition with
+the average into the destination. Integer sums at the schema cap of 64 samples
+are exactly representable (at most 16,320 per channel), so operation order and
+rounding can remain unchanged. Keep the offscreen feedback rule and independent
+public readback ownership. This removes one full-frame draw, with no claimed
+effect on ordinary one-sample cases or on the original 117 failures.
+
+1. Preflight pinned Node 22.23.1/pnpm 10.29.3, workspace imports, Python, browser
+   and independent Vite optimizer/config caches.
+2. Compare the candidate byte-for-byte with the original accumulation at every
+   count 1–64, odd dimensions, opaque screen/offscreen and transparent offscreen
+   destinations, rounding ties, repeated reads and exception recovery.
+3. Run serial baseline/candidate/candidate/baseline diagnostics after the main
+   gate ends. Preserve original CE7 1080p sample-cost method, and measure preview
+   separately with fingerprints. Retain failed experiments.
+4. Run relevant exposure/WebGL/export/hardware regressions and required family
+   audits with their existing methods. Review final code before the full gate.
+5. Aim for one successful full `pnpm check` on final code. Retain any failed
+   attempts; never claim an incomplete gate passed. Publish/attach a reviewable
+   PR with the remaining performance targets.
+
+Resumable verification or runner redesign is separate work.
+
+## Candidate review (2026-10-06)
+
+Two independent code-review skill axes inspected the candidate against `0e48388`.
+The first fusion review found no renderer correctness or documented-standards defect.
+Three findings were repaired before runtime verification: protect Vite/cache cleanup
+when browser launch fails, preserve the old CE6-P heading anchor, and report cold
+preview initialization/first submission/next RAF separately from warmed calls.
+Preview submission and RAF costs do not guarantee GPU completion. Runtime evidence
+is still required.
+
+The timing harness refuses competing workloads at startup and samples processes
+every two seconds until timing ends. Detected overlap or inspection failure is
+retained as invalid timing and rejected. This is best-effort detection: very short
+workloads can start and finish between polls. Do not use a contaminated run as
+performance evidence; rerun the complete serial bracket once the machine is quiet.
+
+## Slice 2 candidate: bounded exposure snapshots and sums (2026-10-06)
+
+For an opaque screen whose clear bytes and conservative painted bounds are known,
+accumulate signed byte differences from the first background only within the
+growing union of painted bounds. Use the existing GPU `copyRegion` blit to snapshot
+that region instead of resolving the entire screen texture. Restore the exact
+nonnegative integer byte sum before the final division. Empty regions perform no
+accumulation draw; changed/unknown later backgrounds expand the union to the full
+screen. Unknown initial backgrounds and texture targets retain the fused full-frame
+path. Public bytes, backend selection and GPU policy are unchanged.
+
+An initial algebraic draft divided signed differences before adding the background.
+That form can move half-byte ties through cancellation with approximate GPU
+division, so it was rejected analytically before browser execution. The candidate
+restores the original integer numerator, avoiding that change in rounding.
+
+Regression coverage adds all counts 2–64 for moving/empty/full regions, white
+background ties, changed backgrounds, unknown first/later metadata and exception
+recovery against both the retained original algorithm and an independent average.
+Standards review found that rounded background metadata cannot substitute for GPU
+clear bytes. The bounded path now requires exact integer premultiplied clear
+channels and an opaque screen; fractional clears use the full-frame path. Added
+189 moving-region cases against original accumulation and independent averages
+of actual GPU sample bytes. Both review axes are clean after repair.
+All 852 kernel cases pass on pinned SwiftShader and Apple Metal, including the
+189 fractional-clear cases. Focused WebGL/exposure/export regressions pass, including stored hashes,
+seeks, repeated/independent exports and 12 hardware comparisons. Three
+initial timing attempts were rejected for competing main-lane verification; no
+performance conclusion is drawn from them.
+
+Measurement review found that selecting renderer/kernel alone loaded current
+bounds for historical baselines, adding exact-clear metadata work absent from those
+refs. All three already-invalid attempts retain that mixed-revision limitation.
+The repaired harness pins renderer, kernel and bounds together, snapshots shared
+workload helpers, and fingerprints each source and the working-tree revision.
+This is a diagnostic-only repair; the reviewed renderer is unchanged and the live
+full gate continues. Separate lint/build checks validate the repaired script.
+
+The A/B harness loads renderer, kernel and bounds from pinned refs without changing
+files. Measure slice 1 separately with `--candidate-ref 706be71` against `0e48388`,
+then slice 2 with `--baseline-ref 706be71` against the working tree. Keep each
+four-session bracket and its source fingerprints separately.
+
+## Full local gate (2026-10-06)
+
+The complete `pnpm check` passes 1,600 unit, 46 runtime, 139 integration, 14 depth
+tests, every existing browser group, and 176 frozen baselines / 36,061 frames.
+Current Canvas matrices retain their pixel/timing assertions: story/component
+69 cases / 14,086 frames, commerce 127 / 28,200 and typography 20 / 3,367.
+Renderer/runtime stayed fixed at the reviewed `7a797a9`; the diagnostic provenance
+repair has its separate passing formatting/lint/build checks and both reviews.
+Subsequent strict WebGL audits and valid serial brackets are recorded below.
+
+The first corrected bracket also detected an overlapping main-chat build and was
+retained as invalid. Its source selection is repaired; contention is its sole
+rejection reason. The next guarded attempt waits ten quiet minutes before each
+serial bracket. No earlier timing record substantiates a gain.
+
+## Draft review delivery (2026-10-06)
+
+[PR #41](https://github.com/xxibcill/still-shift/pull/41) is published and attached,
+stacked on the delivered CE7 branch `817cc9f`. It is a draft with the completed
+correctness/full-gate evidence and explicit pending performance validation.
+Main-checkout verification keeps resetting the guarded retry's quiet window;
+its session `66431` remains live. Select candidates from valid independent brackets
+and complete strict WebGL family audits before marking the PR ready. CE6-P targets
+remain open; no gain is claimed from rejected timings.
+
+The ten-minute pre-start heuristic repeatedly reset without starting a bracket.
+Confirmed the owned launcher had no benchmark child, stopped it intentionally
+(session `66431`, exit 143), and replaced it with session `3547` using two idle
+minutes. This changes scheduling only: the workload, four-session order, source
+fingerprints, GPU policy, overlap rejection and acceptance methods are unchanged.
+The temporary family-audit wrapper now preserves every attempt in a unique
+directory; its collector retains fixture-specific and general export messages.
+It has not run any matrix yet.
+
+## First valid bracket (2026-10-06)
+
+The independent pinned fusion-only bracket completes all four sessions without
+observed contention; source refs/hashes and raw cold/warm preview/export samples
+are committed in [exposure evidence](./composition-ce6p-exposure-brackets.json).
+At two shutter samples, mean export session medians improve from 15.85 ms to
+14.25 ms (1.112×); both candidate medians are below both baseline medians.
+Baseline bookend drift is 1.058× and Canvas control changes by 1.012×. Higher-count
+improvements of 1.007–1.037× are comparable to variability. No broad preview or
+presentation speedup is established. Native 2× and family 1.25× targets remain open.
+
+The following bounded bracket detects main stylize unit tests during its first
+baseline and is retained as the fifth invalid timing attempt. Session `3547` is
+terminal (exit 1); hardware comparison did not start. Retain the complete valid
+fusion bracket and retry only the remaining bounded/hardware comparisons after
+competing tests are terminal. Strict family audits remain pending.
+
+After confirming the competing unit/build verification terminal, launched only
+remaining bounded pinned/hardware brackets in session `9449`. Its two-minute
+pre-start wait and original four-session contention checks stay unchanged; it
+cannot overwrite the already complete fusion evidence. No other local test
+workload or family matrix is launched concurrently.
+
+## Performance verification blocker (2026-10-06)
+
+The remaining-only retry `9449` is terminal (exit 1): its fusion baseline finishes
+without overlap, then main radial/warp/stylize/noise unit verification contaminates
+the bounded candidate session. Both sessions are retained in the sixth invalid
+attempt; the incomplete bracket supports no bounded gain. Hardware did not start.
+No retry or family matrix is currently queued.
+
+The same contention condition persists across at least three consecutive goal
+turns. All unaffected preflight, exactness, focused/full-gate checks, independent
+reviews, draft delivery and the valid fusion-only measurement are complete.
+Finishing the remaining measurements and strict family audits requires an
+uncontended verification window. The original scope permits only read-only main
+chat coordination; no permission to message it has arrived. Resume when a quiet
+window is available or the owner authorizes coordination. Keep all existing
+acceptance requirements and valid fusion data, run only remaining brackets, then
+strict family commands with exports before selecting the final candidates and
+marking the PR ready. CE6-P acceptance is unachieved.
+
+## Coordinated window authorized (2026-10-06)
+
+The owner approved messaging the main chat to reserve a quiet verification window.
+The main chat acknowledged: let its current gate finish normally, then announce
+availability and hold builds, formatters, tests, browser matrices and exports until
+CE6-P releases the machine. No CE6-P workload is queued before that announcement.
+Resume only bounded pinned/hardware comparisons and strict family audits; preserve
+the complete fusion evidence. Release the reserved machine when our workload is
+terminal. No renderer, policy or acceptance change is authorized by coordination.
+
+The main gate finished successfully and explicitly announced the quiet window
+available. It holds further verification until CE6-P releases the machine.
+Run the remaining comparisons and strict matrices serially; the isolated renderer
+is unchanged, so its already-passed full gate is not duplicated.
+
+## Measured candidate selection (2026-10-06)
+
+The coordinated window produces complete valid bounded pinned and hardware
+brackets. Pinned export mean session medians improve **2.676–3.962×** at 2–64
+samples against fusion alone on the moving 400×300 solid at 1920×1080. Baseline
+bookend drift is at most 3.1% for these counts, with Canvas controls changing
+−2.7% to +5.0%. Preview RAF intervals improve 5.267×/5.522× at 32/64 samples;
+low-count intervals stay about 8.3 ms. These are RAF diagnostics, not GPU timers.
+
+Hardware's original two-sample candidate session is variable (6.4/2.9 ms). One
+unchanged confirmation bracket gives 2.8/3.3 ms; retain both complete records,
+including the slow session. The combined baseline/candidate mean median ratio is
+0.987× there, and other differences overlap variability. No broad hardware speedup
+is established; RAF intervals remain about 8.3 ms. Retain the candidate for its
+pinned benefits and existing exactness, rather than claiming all workloads improve.
+
+All four valid raw brackets and descriptive analyses are committed in
+[exposure evidence](./composition-ce6p-exposure-brackets.json). Count one remains
+below the native 2× target on both profiles; this exposure fixture's counts 2–64
+exceed 2×, without proving the broader native target. Strict family audits still
+follow unchanged. Renderer/runtime remains fixed at `7a797a9`; its passing full
+gate and independent reviews are retained.
+
+## Complete strict family audit and byte provenance (2026-10-06)
+
+Controller `25376` completes all three unchanged strict WebGL commands serially
+with state/seek checks and required exports. Each child retains its failing exit 1;
+controller exit 0 means collection completed, not acceptance passed. The unique
+attempt is `benchmarks/results/composition-ce6p/family-audit-1791245579263580000`.
+No competing workload was observed by the best-effort guard.
+
+| Family           | Cases | Forward frames | Pixel-tier failures | Timing failures | Repeated MP4 pairs |
+| ---------------- | ----: | -------------: | ------------------: | --------------: | -----------------: |
+| Commerce         |   127 |         28,200 |                   4 |              75 |                 30 |
+| Story components |    48 |          9,216 |                   0 |              40 |                 13 |
+| Typography       |    20 |          3,367 |                   0 |               4 |                 10 |
+
+Every original case is present: all 74 commerce, 40 story/component and 3 typography
+timing failures still exceed the unchanged 1.25× gate. Two additional misses are
+`commerce/atom-rotate` and `typography/editorial/numeric`. No family gain or closure
+is claimed. All 53 required repeated MP4 pairs are byte-identical; relocation,
+overwrite protection and negative font/fit diagnostics pass.
+
+Four echo-related commerce cases exceed their pixel tier (maximum deltas 5, 4,
+5 and 4). Diagnostic session `50161` loads renderer/bounds consistently from CE7
+`0e48388` (0.38.1) beside the current 0.40.0 candidate. Each failing case and the
+zero-decay control gets all 240 forward and reverse frames, 17 deterministic random
+seeks and three repeated middle-frame reads: **2,500 exact byte comparisons**, with
+zero differing channels. The original renderer reproduces identical legacy maximum
+deltas, minimum PSNR values and failing frames. This includes the multi-sample
+overlap/echo/matte case; the control has zero legacy delta. Candidate source hashes
+match the measured brackets. These four gaps are inherited; fixture tiers and
+CE6-P correctness acceptance remain unchanged and unachieved.
+
+[Family evidence](./composition-ce6p-family-audit.json) retains every case, timing,
+failure, original-case disposition, export record, workload observation, source
+hash and the executed diagnostic source. Runtime stays at reviewed `7a797a9`; the
+already-passed full gate is not duplicated. The owner-authorized quiet window was
+released to the main chat at 2026-10-06 01:24:27 UTC after all workloads became
+terminal. PR #41 delivers this measured compatible slice for review; broader
+native/family performance targets and inherited echo tier gaps remain open.
+
+## Resumed cost gate (2026-10-06)
+
+Renderer 0.42.0 passes the targeted echo frames, seeks, repeated exports and
+selected profile agreement. Eight uncontended particle sessions establish a
+1.355× pinned base reduction and 1.776–2.170× hardware reductions; pinned
+environment bookend drift limits those comparisons. The native diagnostic
+rejects paint/copy removal alone: owned reads remain above the observed Canvas
+half-budget on both profiles. No original strict pinned timing closure is claimed.
+The final full local gate and unchanged strict audits remain required.
+[Decisions and controls](./composition-ce6p-cost-results.json),
+[execution record](./composition-ce6p-resolution-plan.md#quiet-window-cost-decisions--2026-10-06).

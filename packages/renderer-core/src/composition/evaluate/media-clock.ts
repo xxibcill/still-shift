@@ -17,3 +17,12 @@ export function mediaSamplePosition(
     );
   return Math.round(value * scale) / scale;
 }
+
+/** Visibility uses the PCM grid without changing authored frame/property clocks. */
+export function audioVisibilitySample(frame: number, fps: number): number {
+  const sample = (frame * 48000) / fps;
+  // Far-out scope times remain invisible without introducing a quantizer error.
+  return Math.abs(sample) * 65536 <= Number.MAX_SAFE_INTEGER
+    ? mediaSamplePosition(sample, 16)
+    : sample;
+}

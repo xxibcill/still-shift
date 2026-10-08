@@ -7,6 +7,7 @@ import { scalar, unit, vector, vector3 } from "./sample.ts";
 import type { Point3, SpatialTransform } from "./spatial-geometry.ts";
 
 type CameraLayer = Extract<CompositionLayer, { type: "camera" }>;
+export type CameraValidationPhase = "intermediate" | "settled";
 export type SampledCameraControls = {
   model: "one-node" | "two-node";
   pointOfInterest: Point3;
@@ -71,6 +72,7 @@ export function sampleCameraControls(
   time: number,
   fps: number,
   viewport: Point,
+  phase: CameraValidationPhase = "settled",
 ): SampledCameraControls {
   if (layer.zoom !== undefined && layer.focalLength !== undefined)
     throw Error(
@@ -110,12 +112,15 @@ export function sampleCameraControls(
     blurModel: layer.blurModel ?? "lens",
     maxBlur: layer.maxBlur ?? 128,
   };
-  validateCameraControls(controls);
+  validateCameraControls(controls, phase);
   return controls;
 }
 
 /** Runtime overshoot and expression writes obey the same bounded optical domain. */
-export function validateCameraControls(controls: SampledCameraControls) {
+export function validateCameraControls(
+  controls: SampledCameraControls,
+  phase: CameraValidationPhase = "settled",
+) {
   if (
     controls.viewOffset.length !== 2 ||
     !controls.viewOffset.every(
@@ -139,9 +144,14 @@ export function validateCameraControls(controls: SampledCameraControls) {
   for (const name of Object.keys(ranges) as (keyof typeof ranges)[]) {
     const value = controls[name],
       [minimum, maximum] = ranges[name];
-    if (name === "focalLength" && controls.opticalMode === "zoom") {
+    if (
+      (name === "focalLength" && controls.opticalMode === "zoom") ||
+      (name === "zoom" &&
+        controls.opticalMode === "focal-length" &&
+        phase === "intermediate")
+    ) {
       if (!Number.isFinite(value) || value <= 0)
-        throw Error("Derived camera focalLength must be finite and positive");
+        throw Error(`Derived camera ${name} must be finite and positive`);
       continue;
     }
     if (!Number.isFinite(value) || value < minimum || value > maximum)
@@ -163,9 +173,10 @@ export function validateCameraControls(controls: SampledCameraControls) {
 export function refreshCameraControls(
   controls: SampledCameraControls,
   width: number,
+  phase: CameraValidationPhase = "settled",
 ) {
   if (controls.opticalMode === "zoom")
     controls.focalLength = (controls.zoom * controls.filmSize) / width;
   else controls.zoom = (controls.focalLength * width) / controls.filmSize;
-  validateCameraControls(controls);
+  validateCameraControls(controls, phase);
 }

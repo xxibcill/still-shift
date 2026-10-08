@@ -39,6 +39,7 @@ import { withMotionPath } from "./motion-path.ts";
 import { compileAppearance } from "./appearance.ts";
 import { componentTextLayer } from "./component-text.ts";
 import { compileAttachedPathGeometry } from "./commerce-path.ts";
+import { sourceExposureTimeline } from "../../commerce-exposure.ts";
 import { compileFamilyEffects } from "./effects.ts";
 import { compileFamilyExposure } from "./exposure.ts";
 
@@ -60,7 +61,7 @@ export type StoryCompositionOptions = {
   textLayout?: CompositionTextLayout;
 };
 
-export const STORY_ADAPTER_VERSION = "story-composition-0.10.0";
+export const STORY_ADAPTER_VERSION = "story-composition-0.10.1";
 function checkSupported(scene: StoryScene) {
   if (scene.frameCount > COMPOSITION_LIMITS.maxKeys)
     passageError(
@@ -97,26 +98,48 @@ export function storyToComposition(
 export function compiledStoryToComposition(
   scene: StoryRenderScene,
   options: Pick<StoryCompositionOptions, "id"> = {},
+  window?: readonly [number, number],
 ): Composition {
-  checkSupported(scene);
-  validateComponentAnnotations(scene);
+  if (!window) checkSupported(scene);
+  if (
+    window &&
+    (!Number.isInteger(window[0]) ||
+      !Number.isInteger(window[1]) ||
+      window[0] < 0 ||
+      window[1] <= window[0] ||
+      window[1] > scene.frameCount)
+  )
+    passageError("comp-adapter-limit", "Invalid native source sample window", {
+      path: "frameCount",
+    });
+  validateComponentAnnotations(scene, window);
   const components = componentCapabilities(scene.componentData);
   const layers: CompositionLayer[] = [];
-  const exposure = compileFamilyExposure(scene);
+  const exposure = compileFamilyExposure(scene, window);
   const times =
-    exposure?.times ??
+    (window ? sourceExposureTimeline(scene, window).times : exposure?.times) ??
     Array.from({ length: scene.frameCount }, (_, frame) => frame);
+  if (times.length > COMPOSITION_LIMITS.maxKeys)
+    passageError(
+      "comp-adapter-limit",
+      "The native sample window exceeds the key limit",
+      { path: "frameCount" },
+    );
   const ids = new Set(scene.nodes.map((n) => n.id));
   const visit = (parent: string | undefined) => {
     for (const node of scene.nodes.filter((n) => n.parent === parent)) {
       const samples: Samples = times.map((time) =>
         evaluatePreparedNodeAtTime(scene, node, time),
       );
-      if (exposure) samples.times = times;
+      if (exposure || window) samples.times = times;
       const appearance = compileAppearance(scene, node, samples);
       const componentGeometry =
         node.type === "path"
-          ? compileAttachedPathGeometry(scene, node, exposure?.times)
+          ? compileAttachedPathGeometry(
+              scene,
+              node,
+              exposure || window ? times : undefined,
+            )
           : undefined;
       let layer: CompositionLayer = {
         ...(node.type === "text" && scene.typography
@@ -128,7 +151,11 @@ export function compiledStoryToComposition(
                 : {}),
               geometry:
                 node.type === "path"
-                  ? compileStoryPathGeometry(scene, node, exposure?.times)
+                  ? compileStoryPathGeometry(
+                      scene,
+                      node,
+                      exposure || window ? times : undefined,
+                    )
                   : undefined,
             })),
         ...cameraLayer(scene, node),
@@ -191,7 +218,7 @@ export function compiledStoryToComposition(
           const geometry = compileStoryPathGeometry(
             scene,
             node,
-            exposure?.times,
+            exposure || window ? times : undefined,
           );
           layers.push(
             withMotionPath(scene, node, {
@@ -272,11 +299,16 @@ export function compiledStoryToComposition(
       mode: mask.invert ? "alpha-inverted" : "alpha",
     };
   }
-  compileFamilyEffects(scene, layers, roots, exposure?.times);
-  if (exposure)
+  compileFamilyEffects(
+    scene,
+    layers,
+    roots,
+    exposure || window ? times : undefined,
+  );
+  if (exposure || window)
     for (const layer of layers) {
       layer.sampleTimes = times;
-      layer.motionBlur = true;
+      if (exposure) layer.motionBlur = true;
     }
   const { markers, cueIds } = compileAdapterMarkers([
     ...scene.motionEvents.map((event) => event.window),

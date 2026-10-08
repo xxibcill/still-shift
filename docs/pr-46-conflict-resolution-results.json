@@ -1,0 +1,159 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/46",
+  "originalHead": "eda7aeb81df315f0f5ae49841d67b225c455c53d",
+  "integratedBase": "1f6fe8124fa82b9d1acac8596a1d6a319418a720",
+  "status": "conflicts resolved and local verification passed; CE5-X remains stopped after audit",
+  "fullPnpmCheckRun": false,
+  "resolution": {
+    "conflictedFiles": [
+      "docs/composition-engine-plan.md",
+      "docs/dev-log.md",
+      "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+      "packages/renderer-core/src/composition/render/version.ts",
+      "packages/renderer-core/src/composition/render/webgl2.ts"
+    ],
+    "behavior": "All three shape prerequisites and their tests/reference assets already exist identically on main. Retain complete main runtime and configuration, including newer cinematic, spatial, lighting, effect and soundtrack repairs. No new CE5-X native fields or migration are introduced.",
+    "documentation": "Retain CE5-X partial owner approval, audit inventory, scope stop, Q9 and provider fallbacks; retain main CE6-P pause, CE16 completion and later repair histories. Both parent development-log entry sets remain intact exactly once. Correct current reference prose to retained evaluator 51.",
+    "versions": {
+      "evaluator": "composition-evaluator-51",
+      "canvas": "composition-canvas-1.42.6",
+      "webgl": "composition-webgl2-0.57.6"
+    },
+    "originalAudit": "docs/composition-ce5x-results.json remains byte-exact to original PR head; historical setup evidence is retained."
+  },
+  "mergeAudit": {
+    "nonDocumentationDiffFromMain": [],
+    "untrackedNonDocumentation": [],
+    "visualFilesExactToMain": 144,
+    "fixtureFilesExactToMain": 433,
+    "originalAuditByteExact": true,
+    "auditSha256": "05010969021a560411fead9df6a2e707a248b04b31c1e7df9d7f54bd5931acd1",
+    "parentLogHeadings": {
+      "eda7aeb81df315f0f5ae49841d67b225c455c53d": {
+        "headings": 128,
+        "missing": [],
+        "duplicated": []
+      },
+      "1f6fe8124fa82b9d1acac8596a1d6a319418a720": {
+        "headings": 265,
+        "missing": [],
+        "duplicated": []
+      }
+    },
+    "noBaselineRegeneration": true,
+    "sourceTestsAssetsAndConfigurationExactToMain": true
+  },
+  "verification": {
+    "scope": "Scoped conflict resolution; complete source/tests/assets/configuration identity with verified main means no new browser, export, timing or full milestone gate is required.",
+    "checks": [
+      {
+        "label": "toolchain",
+        "command": ["pnpm", "toolchain:check"],
+        "exitCode": 0,
+        "seconds": 1.23,
+        "log": "/private/tmp/pr46-toolchain.log",
+        "logSha256": "ecc40c8642c7be5f9d90e28fe416942158f24ccc15022aa6e60c8787019cb0fb"
+      },
+      {
+        "label": "schema",
+        "command": ["pnpm", "schema:check"],
+        "exitCode": 0,
+        "seconds": 2.07,
+        "log": "/private/tmp/pr46-schema.log",
+        "logSha256": "123d7658bca2b536893c79dddaf33f6e279d8253f9400230ec317e457f65161e"
+      },
+      {
+        "label": "boundaries",
+        "command": ["pnpm", "check:boundaries"],
+        "exitCode": 0,
+        "seconds": 1.1,
+        "log": "/private/tmp/pr46-boundaries.log",
+        "logSha256": "9018a54162165a3510257fb5175a96678c96070b14fc3df304ca39f8c0cca44c"
+      },
+      {
+        "label": "build",
+        "command": ["pnpm", "build"],
+        "exitCode": 0,
+        "seconds": 9.9,
+        "log": "/private/tmp/pr46-build.log",
+        "logSha256": "1f5b732dd233c03d200848fa10cb25638baa9ede7b713951f2f2a2507e6d371f"
+      },
+      {
+        "label": "lint",
+        "command": ["pnpm", "lint:ts"],
+        "exitCode": 0,
+        "seconds": 7.74,
+        "log": "/private/tmp/pr46-lint.log",
+        "logSha256": "ee489884920059415e55a4f490aeff9de97353f761fa49c3d93e70c8ff74a11c"
+      },
+      {
+        "label": "shape-units",
+        "command": [
+          "pnpm",
+          "test:unit",
+          "tests/unit/composition-shape-authoring.test.ts",
+          "tests/unit/composition-shape-compiler.test.ts",
+          "tests/unit/composition-shape-contract.test.ts",
+          "tests/unit/composition-shape-evaluator.test.ts",
+          "tests/unit/composition-shape-geometry.test.ts",
+          "tests/unit/composition-shape-operators.test.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 24.12,
+        "log": "/private/tmp/pr46-shape-units.log",
+        "logSha256": "80575f2bcf1078ebdab56f2644351517427d1b6cac9740a35eb3f89cdd20f783"
+      },
+      {
+        "label": "format",
+        "command": [
+          "pnpm",
+          "exec",
+          "prettier",
+          "--check",
+          "docs/composition-ce5x-results.json",
+          "docs/composition-engine-plan.md",
+          "docs/composition-reference-notes.md",
+          "docs/composition-reference.md",
+          "docs/dev-log.md",
+          "docs/pr-46-conflict-resolution-results.json"
+        ],
+        "exitCode": 0,
+        "seconds": 1.21,
+        "log": "/private/tmp/pr46-format.log",
+        "logSha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+      }
+    ],
+    "unitTests": 2400,
+    "unitFiles": 215,
+    "unitScopeClarification": "The existing pnpm test:unit script retains its tests/unit directory filter alongside supplied shape paths, so this invocation ran the complete unit suite, including all 67 shape tests; it did not run the full repository gate.",
+    "notRun": [
+      "full pnpm check",
+      "browser render/export suites",
+      "frozen CE0 render gate",
+      "depth tests",
+      "hardware/performance tests"
+    ],
+    "independentMergeReview": "No findings: main runtime/configuration exact; CE5-X audit/plan stop/Q9 intact; main CE6-P/CE16 retained; both parent log entry bodies unchanged."
+  },
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "chromiumVersion": "151.0.7922.34",
+    "ffmpeg": "8.0.1",
+    "isolation": "Fresh offline frozen worktree-local pnpm dependencies with separate Vite optimizer/config caches. Minimal private pinned Python venv and UV cache for toolchain startup; UV_NO_SYNC=1. No depth dependency/import/test work was required for this source-identical merge. Owner checkout dependencies and caches are untouched."
+  },
+  "githubActions": {
+    "enabled": false,
+    "verifiedVia": "gh api repos/xxibcill/still-shift/actions/permissions",
+    "workflowFilesAdded": false
+  },
+  "limitations": [
+    "CE5-X migration remains stopped pending the original owner scope/connector contract decision. A1 baseline and remaining sequence decisions stay open.",
+    "Parent milestone gates remain historical evidence; focused verification is not a new complete repository gate."
+  ]
+}

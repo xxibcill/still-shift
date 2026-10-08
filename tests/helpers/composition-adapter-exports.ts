@@ -91,7 +91,20 @@ export async function assertAdapterExport(
         first.systemFontLayers.sort(),
         source.nodes
           .filter((node) => node.type === "text" && !node.fontAsset)
-          .map((node) => node.id)
+          .map((node) => {
+            for (const scope of [exported, ...(exported.precomps ?? [])])
+              for (const layer of scope.layers)
+                if (
+                  layer.type === "provider" &&
+                  (layer.params.node?.id === node.id ||
+                    exported.metadata?.legacyLayerAliases?.[layer.id] ===
+                      source.nodes.indexOf(node))
+                )
+                  return scope === exported
+                    ? layer.id
+                    : `${scope.id}/${layer.id}`;
+            throw new Error(`Missing exported system-font node ${node.id}`);
+          })
           .sort(),
       );
     else assert.deepEqual(first.systemFontLayers, []);

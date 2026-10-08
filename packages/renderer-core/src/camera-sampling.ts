@@ -77,14 +77,22 @@ export function cameraProjection(
   };
 }
 
-/** One-sided derivatives at a join; callers select property-specific normalization. */
+/**
+ * One-sided derivatives at a join, each measured a step away from it. A value
+ * step within one step of the join (a held frame sample) is not velocity;
+ * callers select property-specific normalization.
+ */
 export function boundaryVelocityJump(
+  beforeOuter: readonly number[],
   before: readonly number[],
-  at: readonly number[],
   after: readonly number[],
+  afterOuter: readonly number[],
   step: number,
 ) {
   return Math.hypot(
-    ...at.map((value, i) => (after[i]! - value - (value - before[i]!)) / step),
+    ...before.map(
+      (value, i) =>
+        (afterOuter[i]! - after[i]! - (value - beforeOuter[i]!)) / step,
+    ),
   );
 }

@@ -37,7 +37,7 @@ import {
 import type { RenderEnvironment } from "@still-shift/execution-runtime/render-browser";
 import { acquirePassageJob } from "./passage-job.ts";
 import assert from "node:assert/strict";
-import { readFile, mkdir, rm } from "node:fs/promises";
+import { readFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
@@ -241,6 +241,13 @@ async function assembleStoryPassage(
           options.signal,
         ),
     });
+    const native = options.compositions?.[beat.id];
+    // The cache copy records its first render; this copy names this run's asset files.
+    if (native)
+      await replacePassageJson(
+        join(options.sceneDirectory, beat.id + ".composition.json"),
+        native,
+      );
     clips.push(clip);
     await options.job.beat(beat.id);
     options.onProgress?.({
@@ -619,6 +626,18 @@ async function assembleStoryPassage(
   return report;
 }
 
+async function replacePassageJson(path: string, value: unknown) {
+  const temporary = `${path}.write-${randomUUID()}`;
+  try {
+    await writeFile(temporary, JSON.stringify(value, null, 2) + "\n", {
+      flag: "wx",
+    });
+    await rename(temporary, path);
+  } finally {
+    await rm(temporary, { force: true });
+  }
+}
+
 export type PassageRenderOptions = {
   compositions?: PassageCompositions;
   renderer?: "legacy" | "composition";
@@ -645,9 +664,24 @@ export async function renderStoryPassage(
   options: PassageRenderOptions = {},
 ) {
   options.signal?.throwIfAborted();
+  if (
+    options.soundtrackProject &&
+    (narration || options.soundEffects === false)
+  )
+    soundtrackFail(
+      "soundtrack-mode",
+      "Choose a saved soundtrack or legacy narration/effect controls",
+    );
+  const soundtrackProjectSha256 = options.soundtrackProject
+    ? await soundtrackChecksum(options.soundtrackProject)
+    : undefined;
+  const soundtrack = options.soundtrackProject
+    ? await readSoundtrackProject(options.soundtrackProject)
+    : undefined;
   const compositions = validatePassageCompositions(
     passage,
     options.compositions,
+    soundtrack,
   );
   if (Object.keys(compositions).length && options.renderer !== "composition")
     passageError(
@@ -657,14 +691,6 @@ export async function renderStoryPassage(
     );
   options = { ...options, compositions };
 
-  if (
-    options.soundtrackProject &&
-    (narration || options.soundEffects === false)
-  )
-    soundtrackFail(
-      "soundtrack-mode",
-      "Choose a saved soundtrack or legacy narration/effect controls",
-    );
   const first = passage.beats[0]?.scene;
   if (!first)
     passageError("empty-passage", "A passage needs at least one beat");
@@ -712,12 +738,6 @@ export async function renderStoryPassage(
     options.signal,
   );
   const jobRuntime = await passageJobRuntimeIdentity(runtime, options.signal);
-  const soundtrackProjectSha256 = options.soundtrackProject
-    ? await soundtrackChecksum(options.soundtrackProject)
-    : undefined;
-  const soundtrack = options.soundtrackProject
-    ? await readSoundtrackProject(options.soundtrackProject)
-    : undefined;
   if (soundtrack) {
     await verifySoundtrackSources(soundtrack, options.soundtrackProject!);
     if (

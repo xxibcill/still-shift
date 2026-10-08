@@ -20,6 +20,9 @@ import {
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as Timing from "../helpers/paired-render-timing.ts";
 import { assertAdapterExport } from "../helpers/composition-adapter-exports.ts";
+import { legacyTextVariants } from "../helpers/composition-legacy-text.ts";
+import { legacyEnvelopeVariants } from "../helpers/composition-legacy-envelope.ts";
+import { legacyTextProbeAcceptance } from "./legacy-text-probes.ts";
 import { cinematicPreviewEncoder } from "../helpers/cinematic-preview-export.ts";
 import {
   cameraHardwarePreview,
@@ -59,8 +62,10 @@ if (smoke)
   console.log(
     "Diagnostic smoke only: sampled pixels/seeks; full timelines, timing and exports remain pending.",
   );
+const viteCache = await mkdtemp(join(tmpdir(), "ce4d-legacy-vite-"));
 const server = await createServer({
   root,
+  cacheDir: viteCache,
   configFile: false,
   server: { host: "127.0.0.1", port: 0 },
   logLevel: "error",
@@ -79,13 +84,23 @@ try {
       original = PreparedSceneSchema.parse(
         JSON.parse(await readFile(path, "utf8")),
       );
-    const inputs = [{ id: entry.id, scene: original }];
+    const textVariants = legacyTextVariants(entry.id, original);
+    const inputs = [
+      { id: entry.id, scene: original },
+      ...textVariants,
+      ...legacyEnvelopeVariants(entry.id, original),
+    ];
     for (const item of inputs) {
       const source = PreparedSceneSchema.parse(item.scene);
       const composition = legacyToComposition(source),
         scene = compilePreparedScene(source);
       const urls = Object.fromEntries(
-        composition.assets.map((asset) => [
+        [
+          ...source.assets,
+          ...(source.fonts ?? []),
+          ...(textVariants[0]?.scene.fonts ?? []),
+          ...composition.assets,
+        ].map((asset) => [
           asset.id,
           `/@fs${resolve(dirname(path), asset.path)}`,
         ]),
@@ -131,6 +146,7 @@ try {
               backend,
               smoke,
               tier,
+              checkDefault,
             }) => {
               const scene = JSON.parse(sceneJson) as ReturnType<
                 typeof Render.compilePreparedScene
@@ -142,11 +158,22 @@ try {
               const m = (await import(moduleUrl)) as typeof Render;
               const canvas = document.createElement("canvas"),
                 oldCanvas = document.createElement("canvas");
+              const preparedImages = await m.loadIllustratedImages(
+                scene,
+                (id) => urls[id]!,
+              );
               const legacy = oracle.createIllustratedPreview(
                 oldCanvas,
                 scene,
-                await m.loadIllustratedImages(scene, (id) => urls[id]!),
+                preparedImages,
               );
+              const defaultPreview = checkDefault
+                ? m.createIllustratedPreview(
+                    document.createElement("canvas"),
+                    scene,
+                    preparedImages,
+                  )
+                : undefined;
               const native = m.createCompositionPreview(
                 canvas,
                 composition as Composition,
@@ -158,6 +185,7 @@ try {
               );
               const old = oldCanvas.getContext("2d")!;
               const hashes = new Map<number, string>();
+              const defaultHashes = new Map<number, string>();
               const hash = async (pixels: Uint8ClampedArray) =>
                 Array.from(
                   new Uint8Array(
@@ -183,7 +211,8 @@ try {
                     (_, frame) => frame,
                   );
               let maxDelta = 0,
-                minPsnr = Infinity;
+                minPsnr = Infinity,
+                defaultMaxDelta = 0;
               const failures: { frame: number; delta: number; psnr: number }[] =
                 [];
               const errors: unknown[] = [];
@@ -212,6 +241,25 @@ try {
                       psnr: comparison.psnr,
                     });
                   hashes.set(frame, await hash(pixels));
+                  if (defaultPreview) {
+                    defaultPreview.renderFrame(frame);
+                    const actual = defaultPreview.readPixels();
+                    const comparison = m.compareFrames(
+                      old.getImageData(0, 0, canvas.width, canvas.height).data,
+                      actual,
+                      canvas.width,
+                      canvas.height,
+                    );
+                    defaultMaxDelta = Math.max(
+                      defaultMaxDelta,
+                      comparison.maxChannelDelta,
+                    );
+                    assertBrowser(
+                      m.meetsTier(comparison, tier),
+                      `Default legacy path changed frame ${frame}: ${comparison.maxChannelDelta}`,
+                    );
+                    defaultHashes.set(frame, await hash(actual));
+                  }
                   if (!smoke)
                     await (
                       window as unknown as {
@@ -227,6 +275,14 @@ try {
                     (await hash(native.readPixels())) === hashes.get(frame),
                     `Reverse seek changed frame ${frame}`,
                   );
+                  if (defaultPreview) {
+                    defaultPreview.renderFrame(frame);
+                    assertBrowser(
+                      (await hash(defaultPreview.readPixels())) ===
+                        defaultHashes.get(frame),
+                      `Default reverse seek changed frame ${frame}`,
+                    );
+                  }
                 }
                 const previewChecksum = smoke
                   ? undefined
@@ -260,11 +316,13 @@ try {
                   failures,
                   errors,
                   previewChecksum,
+                  ...(checkDefault ? { defaultMaxDelta } : {}),
                   ...timing,
                 };
               } finally {
                 native.dispose();
                 legacy.dispose();
+                defaultPreview?.dispose();
               }
               function assertBrowser(condition: boolean, message: string) {
                 if (!condition) throw Error(message);
@@ -278,6 +336,7 @@ try {
               backend,
               smoke,
               tier: entry.tier,
+              checkDefault: item.id.includes("/accepted-"),
             },
           );
           console.log(
@@ -294,8 +353,19 @@ try {
             console.log(
               `CE6-P deferred WebGL timing only: ${item.id} ${report.ratio}`,
             );
+          const textProbes =
+            item.id === entry.id && backend === "canvas2d"
+              ? await legacyTextProbeAcceptance(page, entry.id, source, urls)
+              : [];
+          if (textProbes.length)
+            console.log(`Legacy text probes: ${JSON.stringify(textProbes)}`);
           totalFrames += report.frames;
-          reports.push({ id: item.id, backend, ...report });
+          reports.push({
+            id: item.id,
+            backend,
+            ...report,
+            ...(textProbes.length ? { textProbes } : {}),
+          });
           if (!smoke)
             exports.push(
               await assertAdapterExport(
@@ -358,6 +428,7 @@ try {
       await server.close();
     } finally {
       await rm(directory, { recursive: true, force: true });
+      await rm(viteCache, { recursive: true, force: true });
     }
   }
 }

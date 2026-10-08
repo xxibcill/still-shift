@@ -23,6 +23,7 @@ type BoundsState = {
   bounds: WeakMap<WebglSurface, Entry> | undefined;
   entries: Set<Entry>;
   background: number | undefined;
+  exactBackground: number | undefined;
 };
 /** Conservative painted bounds allow readback to omit an unchanged clear color. */
 export class WebglBounds {
@@ -34,11 +35,13 @@ export class WebglBounds {
         bounds: new WeakMap(),
         entries: new Set(),
         background: undefined,
+        exactBackground: undefined,
       }),
       false,
       (value) => {
         value.bounds = undefined;
         value.background = undefined;
+        value.exactBackground = undefined;
         for (const entry of value.entries) releaseRenderMetadata(entry);
         value.entries.clear();
       },
@@ -88,6 +91,7 @@ export class WebglBounds {
     const state = this.state;
     state.bounds = undefined;
     state.background = undefined;
+    state.exactBackground = undefined;
     for (const entry of state.entries) releaseRenderMetadata(entry);
     state.entries.clear();
     releaseRenderMetadata(state);
@@ -115,6 +119,21 @@ export class WebglBounds {
         );
         try {
           this.state.background = new Uint32Array(bytes.buffer)[0]!;
+          const exact = (value: number) => {
+            const byte = value * 255;
+            return (
+              byte >= 0 &&
+              byte <= 255 &&
+              Math.abs(byte - Math.round(byte)) < 1e-6
+            );
+          };
+          this.state.exactBackground =
+            (color ?? [0, 0, 0, 0])
+              .slice(0, 3)
+              .every((value) => exact(value * alpha)) &&
+            (surface.opaque || exact(alpha))
+              ? this.state.background
+              : undefined;
         } finally {
           releaseRenderPixels(bytes);
         }
@@ -167,6 +186,10 @@ export class WebglBounds {
 
   clearColor(surface: WebglSurface) {
     return surface === this.root ? this.state.background : undefined;
+  }
+  /** Bytes known without relying on framebuffer clear quantization. */
+  exactClearColor(surface: WebglSurface) {
+    return surface === this.root ? this.state.exactBackground : undefined;
   }
   include(surface: WebglSurface, rect: Rect | null) {
     if (!rect) return;

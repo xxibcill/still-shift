@@ -1,0 +1,418 @@
+{
+  "pr": 47,
+  "date": "2026-10-08",
+  "reviewHead": "ed4034cd7413e0edf6c05adda71774e2f0277117",
+  "base": "8cc7b14f7090896a755080461b248ac6b2a0eb6f",
+  "branch": "codex/pr47-review-fixes",
+  "status": "repairs-complete-local-verification-passed",
+  "deliveryPolicy": "One finding per commit; one final normal push to codex/composition-ce4d.",
+  "review": "https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5452665143",
+  "scope": "Six scoped PR review repairs; no new milestone or full repository gate is claimed.",
+  "toolchain": "Pinned local Node22.23.1/pnpm10.29.3/Python3.12.11/Playwright1.62.1 Chromium1234/FFmpeg8.0.1 verified; own Python environment and Vite caches.",
+  "findings": [
+    {
+      "id": 1,
+      "title": "Boxed/container legacy text",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4215761573",
+      "status": "fixed-verified",
+      "change": "Existing bounded commerce text providers retain measured boxes and caption/speech/thought containers. Legacy adapter0.1.1 and illustrated renderer0.12.1 invalidate old preparation/cache identity.",
+      "checks": [
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-legacy-adapter.test.ts --maxWorkers=2",
+          "status": "pass",
+          "tests": 19
+        },
+        {
+          "command": "pnpm exec tsx tests/browser/composition-legacy-adapter.ts --only legacy/chronicle-reveal --smoke",
+          "status": "pass-focused-smoke",
+          "cases": 10,
+          "frames": 50,
+          "reverseFrames": 50,
+          "maxChannelDelta": {
+            "canvas2d": 0,
+            "webgl2": 1
+          },
+          "scope": "Original fixture plus four added text variants, both backends. Sampled pixel/seek check; full delivery deferred to final scoped verification."
+        },
+        {
+          "command": "pnpm build",
+          "status": "pass-checkpoint"
+        },
+        {
+          "command": "pnpm exec tsx tests/browser/composition-legacy-adapter.ts --only legacy/chronicle-reveal",
+          "status": "pass-full-selected-fixture-and-four-variants",
+          "cases": 10,
+          "frames": 912,
+          "reverseFrames": 912,
+          "maxChannelDelta": {
+            "canvas2d": 0,
+            "webgl2": 1
+          },
+          "canvasTimingLimit": 1.25,
+          "maxCanvasTimingRatio": 1.053109714302802,
+          "canvasTimings": {
+            "legacy/chronicle-reveal": 1.053109714302802,
+            "legacy/chronicle-reveal/text-box": 0.996560287827018,
+            "legacy/chronicle-reveal/caption": 1.0350705290677895,
+            "legacy/chronicle-reveal/speech": 1.0093685593402275,
+            "legacy/chronicle-reveal/thought": 0.9944714366276947
+          },
+          "exports": [
+            {
+              "id": "legacy/chronicle-reveal",
+              "backend": "canvas2d",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal",
+              "backend": "webgl2",
+              "frames": 168,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-box",
+              "backend": "canvas2d",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/text-box",
+              "backend": "webgl2",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/caption",
+              "backend": "canvas2d",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/caption",
+              "backend": "webgl2",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/speech",
+              "backend": "canvas2d",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/speech",
+              "backend": "webgl2",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/thought",
+              "backend": "canvas2d",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            },
+            {
+              "id": "legacy/chronicle-reveal/thought",
+              "backend": "webgl2",
+              "frames": 72,
+              "repeatedMp4": "byte-identical",
+              "independentPreviewMp4": "byte-identical",
+              "rawPngTransport": "byte-identical",
+              "relocatedAssets": "pass",
+              "overwriteProtection": "pass"
+            }
+          ],
+          "hardware": {
+            "status": "pass-unchanged-perceptual-policy",
+            "frames": 30,
+            "minPsnr": 48.06201206760043,
+            "minSsim": 0.9989801699161438,
+            "environments": [
+              {
+                "profile": "chromium-software-2",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                "platform": "darwin",
+                "arch": "arm64"
+              },
+              {
+                "profile": "hardware",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+                "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+                "platform": "darwin",
+                "arch": "arm64"
+              }
+            ]
+          },
+          "webglTiming": "Measured with unchanged method; CE6-P remains owner-deferred.",
+          "timingIsolation": "Read-only process inventory showed no competing test workload before this run."
+        }
+      ],
+      "commit": "b31682d281ca87771a5c2de5c966e307fe44a8e5"
+    },
+    {
+      "id": 2,
+      "title": "Image-plane backend preflight",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4215761580",
+      "status": "fixed-verified",
+      "change": "Pure 2D depth/linear image planes mark graph capability work; static compile flag preflights every shutter sample without allocating 3D evaluator geometry. Canvas1.44.2/WebGL0.65.2 enter cache identity.",
+      "checks": [
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-image-plane-backend.test.ts tests/unit/composition-depth-graph.test.ts tests/unit/composition-depth-image.test.ts --maxWorkers=2 --no-file-parallelism",
+          "status": "pass",
+          "tests": 19,
+          "newTests": 6,
+          "scope": "Unsupported Canvas before clear/accumulate, supported surface-budget failures, local 2D/depth graph regressions."
+        }
+      ],
+      "commit": "e6781d48336567f0760d17f5ca72f0ce19f17f38"
+    },
+    {
+      "id": 3,
+      "title": "Depth/image-plane quality signatures",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4215761583",
+      "status": "fixed-verified",
+      "change": "Quality signatures include actual evaluated local depth and image-plane values; unrelated existing signatures are unchanged. Held/invisible/static depth remains frozen; reveal held tail remains detected.",
+      "checks": [
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-image-plane-quality.test.ts tests/unit/composition-lighting-quality.test.ts tests/unit/composition-quality.test.ts --maxWorkers=2 --no-file-parallelism",
+          "status": "pass",
+          "tests": 118,
+          "newTests": 10
+        }
+      ],
+      "rejectedTestAssumption": "An initial expression test assumed scope-clock frame expressions freeze with layer holdFrame; actual existing expression clock semantics do not. Replaced with direct expression animation and a held nested keyed-clock test; production semantics unchanged.",
+      "commit": "67e5855addb72c55c2a58d346241a2b6ac0bca4e"
+    },
+    {
+      "id": 4,
+      "title": "Lab pending-source refresh race",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4215761595",
+      "status": "fixed-verified",
+      "change": "Separate explicit source ownership from renderer candidates; pending source preparation uses latest controls, retries stale renderer preparation, preserves pending seeks, and suppresses superseded success/failure.",
+      "checks": [
+        {
+          "command": "pnpm test:browser:lab-session",
+          "status": "pass",
+          "scope": "Existing Lab workflows plus pending HTTP/decode preparation with control changes, pending seeks, superseded POST failure and stale local success/failure; no page errors."
+        },
+        {
+          "command": "pnpm exec eslint apps/lab/src/main.ts tests/browser/lab-session.ts",
+          "status": "pass"
+        }
+      ],
+      "commit": "6d7a71fd78a6c67e04395f09eea7091b73120f92"
+    },
+    {
+      "id": 5,
+      "title": "Inherited legacy follower lookup",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4215761599",
+      "status": "fixed-verified",
+      "change": "Only own follower bindings become native constraints; valid unbound constructor/toString/hasOwnProperty node ids retain all frames, inherited matrices and opacity after JSON reload. Adapter0.1.2 and illustrated renderer0.12.2 invalidate preparation caches.",
+      "checks": [
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-legacy-adapter.test.ts --maxWorkers=2",
+          "status": "pass",
+          "tests": 22,
+          "newTests": 3
+        }
+      ],
+      "commit": "c995b33c13af04055d6e91f76544c15607925075"
+    },
+    {
+      "id": 6,
+      "title": "Long accepted family timelines",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4215761606",
+      "status": "fixed-verified",
+      "change": "Default story/commerce preparation compiles inspectable independent native windows upfront. Each preserves original global clocks and the picture graph with exact shutter/raw-history samples; windows shrink to existing2000-key and64KiB provider/effect budgets. Source geometry/text/fonts and global camera coverage validate before rendering. Renderer selects precompiled native data and releases old window surfaces. Story adapter0.10.1/Commerce adapter0.17.1 invalidate preparation identity.",
+      "checks": [
+        {
+          "command": "pnpm check:fast",
+          "status": "pass",
+          "unitTests": 2487,
+          "newLongTimelineUnitTests": 7,
+          "scope": "2000/2001 boundaries,108000 accepted timeline ceiling, late parent/camera/provider/global flow and typography clocks, reverse seeks, shutter/raw-echo/grain, bounded diagnostics."
+        },
+        {
+          "command": "pnpm test:browser:composition-family-timeline",
+          "status": "pass-focused-selected-frames",
+          "fixtures": 2,
+          "sourceFrameCountEach": 2101,
+          "parityVisitsEach": 21,
+          "maxChannelDelta": 0,
+          "independentRepeatedRawFramesEach": 4,
+          "scope": "Actual default/source oracle; first-window boundary plus/minus1, late/final/reverse seeks, fresh independent repeated full-sizeRGBA captures and full-viewport canvas release after window switch/disposal. Selected frames retain full timelines; not a complete long-source encoded export."
+        }
+      ]
+    }
+  ],
+  "finalVerification": {
+    "status": "passed-focused-follow-up",
+    "fullPnpmCheck": "not-run-scoped-follow-up-policy",
+    "fastChecks": {
+      "status": "pass",
+      "unitTests": 2487
+    },
+    "runtimeTests": 46,
+    "affectedIntegrationTests": 65,
+    "labSession": "pass-initial-and-final",
+    "nativeDepthDefaults": {
+      "status": "pass",
+      "timelines": 23,
+      "frames": 2070,
+      "reverseFrames": 2070,
+      "maxChannelDelta": 0
+    },
+    "webglExports": "pass-CLI-repeat-raw-PNG-encoded-preview-Lab-overwrite",
+    "exposureBrowser": "pass",
+    "independentSourceReview": "No remaining actionable finding in all six repairs or new browser regression.",
+    "failedAttempt": {
+      "check": "first pnpm check:fast",
+      "result": "2486pass/1failed expected batch cache hash changed after renderer version bumps",
+      "repair": "Updated identity snapshot only; focused identity3tests and complete2487unit fast rerun pass. No visual baseline regeneration."
+    },
+    "familyDefaults": {
+      "command": "pnpm test:browser:composition-family-defaults",
+      "status": "pass",
+      "items": 176,
+      "frames": 36061,
+      "reverseFrames": 36061,
+      "maxChannelDelta": 2,
+      "scope": "Complete actual native family defaults against test-only oracle and unchanged CE0 references."
+    },
+    "frozenBaselines": {
+      "command": "pnpm test:browser:composition-baselines",
+      "status": "pass",
+      "items": 176,
+      "frames": 36061,
+      "seconds": 281.05,
+      "regenerated": false
+    },
+    "versions": {
+      "legacyAdapter": "legacy-composition-0.1.2",
+      "storyAdapter": "story-composition-0.10.1",
+      "commerceAdapter": "commerce-composition-0.17.1",
+      "illustrated": "illustrated-canvas-0.12.2",
+      "canvas": "composition-canvas-1.44.2",
+      "webgl2": "composition-webgl2-0.65.2",
+      "evaluator": "composition-evaluator-52"
+    },
+    "preservation": {
+      "ownerCheckoutEdited": false,
+      "frozenVisualFilesChanged": false,
+      "githubWorkflowFilesChanged": false,
+      "actionsEnabled": false,
+      "allExistingRequiredPnpmCommandsRetained": true,
+      "newLongTimelineBrowserRegressionInLocalTestGate": true
+    },
+    "logs": {
+      "fast": {
+        "path": "/private/tmp/pr47-fix-fast-final.txt",
+        "sha256": "8233fbe1739f4daf957d9ffba45e4c76d90e32174b79ec8bca651d2ed6460638"
+      },
+      "runtime": {
+        "path": "/private/tmp/pr47-fix-runtime.txt",
+        "sha256": "dd574350846a296f8a2c2ec100cdb8633189a24b340e5b519561e7ffd3071fb3"
+      },
+      "affectedIntegrations": {
+        "path": "/private/tmp/pr47-fix-integrations.txt",
+        "sha256": "0e26e67826acc2ad0568f07b3b32b96e2235fdd24fa1a774c03f45ec88750303"
+      },
+      "lab": {
+        "path": "/private/tmp/pr47-fix-lab-browser-final.txt",
+        "sha256": "b1df1799fa95938f88b7701334f759fd4e8dca55ae91b2af778e542a33b0ea66"
+      },
+      "longTimeline": {
+        "path": "/private/tmp/pr47-fix-long-browser.txt",
+        "sha256": "5706b7fd142aa3a538e4eb74a6df7359164d744357bbe12f4f9a64c7d8ed9878"
+      },
+      "depthDefault": {
+        "path": "/private/tmp/pr47-fix-depth-default.txt",
+        "sha256": "fee9833af6c871b25010f1014ec1b97640f7c12069189499274789cd6d366ec5"
+      },
+      "depthExtendedDefault": {
+        "path": "/private/tmp/pr47-fix-depth-extended-default.txt",
+        "sha256": "96db39d497e64ddd03fdb838581c3e06e23d91401e2a800aafeb23d886a905c2"
+      },
+      "webglExport": {
+        "path": "/private/tmp/pr47-fix-webgl-export.txt",
+        "sha256": "a5dcef8d7009912c6c4bb7e1cb317594d4a44b962754918558dcb7d0377674ed"
+      },
+      "exposure": {
+        "path": "/private/tmp/pr47-fix-exposure-browser.txt",
+        "sha256": "4cbe9b49f47191ef5edeeca487ff0a8cb10550ce72bbb868640fdb382e383786"
+      },
+      "familyDefaults": {
+        "path": "/private/tmp/pr47-fix-family-defaults.txt",
+        "sha256": "f3b39ea8ddf3aaccac75818c2be229845a68cbb65283ecd2f7a471a45d5d4aa6"
+      },
+      "frozenBaselines": {
+        "path": "/private/tmp/pr47-fix-baselines.txt",
+        "sha256": "7231659d57e06cfbc05625ab142c0632e06440fa7dc6647ad10f1e9ba2a690f7"
+      },
+      "boxedDelivery": {
+        "path": "/private/tmp/pr47-fix-boxed-delivery.txt",
+        "sha256": "850adad36f0a2d578f51c21bc6f63fd87929cd13b4a7a2a14915f5ab8decf9e6"
+      },
+      "format": {
+        "path": "/private/tmp/pr47-fix-format-final.txt",
+        "sha256": "8cf69a729db3f201e315ce45af0dcb371e10f6e78cb26b707c2c94b3e5dac93d"
+      }
+    },
+    "sourceFingerprint": {
+      "sha256": "76749147cfd40126f352e6549224af506ed8715d0b3f573242601fe854ec06f3",
+      "files": 1333,
+      "scope": "Production code, runtime/build configs, dependency manifest excluding script-list membership, lockfile, fixtures, frozen references and test helpers. Executed commands and test-runner hashes are recorded separately; documentation and generated caches/results excluded."
+    },
+    "testRunnerHashes": {
+      "tests/browser/composition-family-timeline.ts": "f77f0f98925d24ef58852d5e96962e0a9d53538c573dbb26e3fb1669c5bd02f7",
+      "tests/browser/composition-legacy-adapter.ts": "169483da7ed5e4d09f91ef54fb928626b19a27928a07e0624ae9b4bd259af0b3",
+      "tests/browser/lab-session.ts": "945f48d149e218ec195310fd8827d698a8a5e6a883ee4c7cb9441cd54e5df653",
+      "tests/unit/composition-family-timeline.test.ts": "e443005a1fc23e053cc30632c5ede7c4f86d979ae5de205b09740efaa7e70ef7",
+      "tests/unit/composition-image-plane-backend.test.ts": "403cb4c94368291d9f270049d7d6a1d5f18a468fe459708ff4cadda608bedf54",
+      "tests/unit/composition-image-plane-quality.test.ts": "25e2bc27c9b4edb561c66f2f05293b2c2d3ba036b067a081bf196d4e971fc521",
+      "tests/unit/composition-legacy-adapter.test.ts": "0f7c732933c856a328121e03327afd6d17d8c414b15e0254647d0f97533f5c2e"
+    },
+    "formatCheck": "pass"
+  },
+  "delivery": "Six finding-specific commits; one final normal push to codex/composition-ce4d after local verification."
+}

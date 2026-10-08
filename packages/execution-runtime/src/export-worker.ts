@@ -73,9 +73,9 @@ export type ExportableScene =
   | IllustratedScene
   | CompositionScene;
 
-const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.7";
-const COMPOSITION_EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.7.0";
-const COMPOSITION_PARALLEL_EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.8.0";
+const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.11";
+const COMPOSITION_EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.7.1";
+const COMPOSITION_PARALLEL_EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.8.1";
 
 export type ExportAudioInput = {
   path: string;

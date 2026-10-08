@@ -15,6 +15,7 @@ import {
 } from "./effects.ts";
 import {
   COMPOSITION_LIMITS,
+  implicitAnchorDependencies,
   SIZED_LAYER_TYPES,
   cameraOpticalDependencies,
   type Composition,
@@ -71,6 +72,7 @@ import {
   sampleSpatialTransform,
   sampleCameraControls,
   refreshCameraControls,
+  type CameraValidationPhase,
 } from "./spatial-state.ts";
 import {
   layerMatrix3d,
@@ -81,6 +83,7 @@ import { projectSpatialScope } from "./spatial-scope.ts";
 import { sampleLight, validateLight } from "./lighting.ts";
 import { compositionSampleIndex } from "./sample-clock.ts";
 import { naturalMediaSeconds, sampledCompositionMedia } from "./media.ts";
+import { audioVisibilitySample } from "./media-clock.ts";
 import {
   layerContentTime,
   loopedPrecompTime,
@@ -131,6 +134,7 @@ type Stage = {
 type Context = {
   scope: CompositionScope;
   time: number;
+  visibilitySample?: number;
   fps: number;
   route: string[];
   states: Map<string, EvaluatedLayer>;
@@ -261,6 +265,7 @@ function context(
   time: number,
   fps: number,
   route: string[] = [],
+  audioClock = false,
 ): Context {
   let soloLayers = compiled.solo.get(scope);
   if (soloLayers === undefined)
@@ -276,6 +281,9 @@ function context(
   return {
     scope,
     time,
+    ...(audioClock
+      ? { visibilitySample: audioVisibilitySample(time, fps) }
+      : {}),
     fps,
     route,
     states: new Map(),
@@ -290,6 +298,29 @@ function context(
     soloLayers,
     matteLayers,
   };
+}
+
+function scopeTimeWithin(ctx: Context, begin: number, end: number): boolean {
+  if (ctx.visibilitySample === undefined)
+    return ctx.time >= begin && ctx.time < end;
+  const samplesPerFrame = 48000 / ctx.fps;
+  return (
+    ctx.visibilitySample >= begin * samplesPerFrame &&
+    ctx.visibilitySample < end * samplesPerFrame
+  );
+}
+
+function layerVisible(ctx: Context, layer: CompositionLayer): boolean {
+  return (
+    scopeTimeWithin(ctx, 0, ctx.scope.frameCount) &&
+    scopeTimeWithin(
+      ctx,
+      layer.inPoint ?? 0,
+      layer.outPoint ?? ctx.scope.frameCount,
+    ) &&
+    layer.enabled !== false &&
+    (!ctx.soloLayers || ctx.soloLayers.has(layer.id))
+  );
 }
 
 function baseState(
@@ -312,20 +343,13 @@ function baseState(
     fps,
     SIZED_LAYER_TYPES.has(layer.type) ? [size[0] / 2, size[1] / 2] : [0, 0],
   );
-  const visible =
-    ctx.time >= 0 &&
-    ctx.time < ctx.scope.frameCount &&
-    ctx.time >= (layer.inPoint ?? 0) &&
-    ctx.time < (layer.outPoint ?? ctx.scope.frameCount) &&
-    layer.enabled !== false &&
-    (!ctx.soloLayers || ctx.soloLayers.has(layer.id));
   const state: EvaluatedLayer = {
     id: layer.id,
     layer,
     time:
       sampleIndex === undefined ? sourceTime : layer.sampleTimes![sampleIndex]!,
     ...(sampleIndex === undefined ? {} : { sampleIndex }),
-    visible,
+    visible: layerVisible(ctx, layer),
     drawable: false,
     transform: {
       anchor,
@@ -364,10 +388,13 @@ function baseState(
   }
   if (layer.type === "camera") {
     try {
-      state.camera = sampleCameraControls(layer, time, fps, [
-        ctx.scope.width,
-        ctx.scope.height,
-      ]);
+      state.camera = sampleCameraControls(
+        layer,
+        time,
+        fps,
+        [ctx.scope.width, ctx.scope.height],
+        "intermediate",
+      );
     } catch (error) {
       passageError(
         "comp-camera-settings",
@@ -444,21 +471,38 @@ function baseState(
 
 class Evaluation {
   readonly root: Context;
+  readonly compiled: CompiledComposition;
+  readonly time: number;
+  readonly options: EvaluationOptions;
+  private readonly session: Session;
+  private readonly audioClock: boolean;
   private count = 0;
   private readonly cameras = new Map<number, ReturnType<typeof cameraMatrix>>();
   constructor(
-    readonly compiled: CompiledComposition,
-    readonly time: number,
-    readonly options: EvaluationOptions,
-    private readonly session: Session = {
+    compiled: CompiledComposition,
+    time: number,
+    options: EvaluationOptions,
+    session: Session = {
       history: new Map(),
       signals: new Map(),
       shapes: new ShapeGeometryBudget({ frame: time }),
       steps: 0,
     },
-    private readonly audioClock = false,
+    audioClock = false,
   ) {
-    this.root = context(compiled, compiled.comp, time, compiled.comp.fps);
+    this.compiled = compiled;
+    this.time = time;
+    this.options = options;
+    this.session = session;
+    this.audioClock = audioClock;
+    this.root = context(
+      compiled,
+      compiled.comp,
+      time,
+      compiled.comp.fps,
+      [],
+      audioClock,
+    );
   }
 
   private shapeBudget(ctx: Context, layer: CompositionLayer) {
@@ -581,29 +625,30 @@ class Evaluation {
       });
     const scope = this.compiled.scopes.get(host.comp)!;
     const remappedTime = yield* this.clock(ctx, host);
-    const sourceTime = this.audioClock
-      ? loopedAudioPrecompTime(
-          remappedTime,
-          scope.frameCount,
-          scope.fps ?? this.compiled.comp.fps,
-          host,
-        )
-      : loopedPrecompTime(remappedTime, scope.frameCount, host, {
-          node: host.id,
-          path: `${this.bindings(ctx, host.id)}.loop`,
-          frame: this.time,
-        });
     const route = [...ctx.route, host.id];
-    const clock =
-      scopeTimeOverride(this.options.scopeTimes, route.join("/")) ?? sourceTime;
+    const sourceTime =
+      scopeTimeOverride(this.options.scopeTimes, route.join("/")) ??
+      (this.audioClock
+        ? loopedAudioPrecompTime(
+            remappedTime,
+            scope.frameCount,
+            scope.fps ?? this.compiled.comp.fps,
+            host,
+          )
+        : loopedPrecompTime(remappedTime, scope.frameCount, host, {
+            node: host.id,
+            path: `${this.bindings(ctx, host.id)}.loop`,
+            frame: this.time,
+          }));
     const next = context(
       this.compiled,
       scope,
       this.audioClock
-        ? clock
-        : Math.max(0, Math.min(scope.frameCount - 1, clock)),
+        ? sourceTime
+        : Math.max(0, Math.min(scope.frameCount - 1, sourceTime)),
       scope.fps ?? this.compiled.comp.fps,
       route,
+      this.audioClock,
     );
     ctx.children.set(host.id, next);
     return next;
@@ -757,7 +802,11 @@ class Evaluation {
   }
 
   /** Clamp written values and keep an unauthored constraint reference on the anchor. */
-  private normalize(ctx: Context, state: EvaluatedLayer) {
+  private normalize(
+    ctx: Context,
+    state: EvaluatedLayer,
+    phase: CameraValidationPhase = "intermediate",
+  ) {
     state.transform.opacity = unit(state.transform.opacity);
     if (state.gainDb !== undefined)
       state.gainDb = Math.max(-120, Math.min(12, state.gainDb));
@@ -784,7 +833,7 @@ class Evaluation {
     }
     if (state.camera) {
       try {
-        refreshCameraControls(state.camera, ctx.scope.width);
+        refreshCameraControls(state.camera, ctx.scope.width, phase);
       } catch (error) {
         passageError(
           "comp-camera-settings",
@@ -975,6 +1024,12 @@ class Evaluation {
       return copy(readProperty(fresh, segments));
     }
     if (!stage.sealed) {
+      for (const anchor of implicitAnchorDependencies(
+        layer,
+        segments,
+        this.writesReference(ctx, stage.state),
+      ))
+        yield* this.readStage(ctx, layer, anchor);
       const bindings =
           this.compiled.expressions.get(this.bindings(ctx, layer.id)) ?? [],
         optics =
@@ -1418,6 +1473,15 @@ class Evaluation {
     return this.run(this.layerTask(ctx, layer));
   }
 
+  private countLayer() {
+    if (++this.count > 20_000)
+      passageError(
+        "comp-evaluation-limit",
+        "Evaluation exceeds 20,000 layer instances",
+        { path: "layers" },
+      );
+  }
+
   private *layerTask(
     ctx: Context,
     layer: CompositionLayer,
@@ -1428,12 +1492,7 @@ class Evaluation {
       passageError("comp-motion-cycle", "Evaluation dependency cycle", {
         path: this.bindings(ctx, layer.id),
       });
-    if (++this.count > 20_000)
-      passageError(
-        "comp-evaluation-limit",
-        "Evaluation exceeds 20,000 layer instances",
-        { path: "layers" },
-      );
+    this.countLayer();
     ctx.active.add(layer.id);
     // Evaluated inline: the stage's own dependencies still go through the stack.
     const stage =
@@ -1444,6 +1503,7 @@ class Evaluation {
         this.bindings(ctx, layer.id),
       ) ?? [])
         if (!binding.clock) yield* this.applied(ctx, layer, binding);
+    if (state.camera) this.normalize(ctx, state, "settled");
     if (layer.type === "precomp")
       state.timeRemap = yield* this.clock(ctx, layer);
     if (
@@ -1589,8 +1649,11 @@ class Evaluation {
     // A matte's enable/solo switches do not hide its alpha-producing children.
     const parentVisible =
       parent && ctx.matteLayers.has(parent.id)
-        ? ctx.time >= (parent.layer.inPoint ?? 0) &&
-          ctx.time < (parent.layer.outPoint ?? ctx.scope.frameCount)
+        ? scopeTimeWithin(
+            ctx,
+            parent.layer.inPoint ?? 0,
+            parent.layer.outPoint ?? ctx.scope.frameCount,
+          )
         : parent?.visible;
     const groupVisible = parent
       ? (ctx.groupVisible.get(parent.id) ?? true) &&
@@ -1678,33 +1741,77 @@ class Evaluation {
     return tree;
   }
 
+  /** Group visibility is authored metadata; audio never needs parent geometry. */
+  private audioVisible(ctx: Context, layer: CompositionLayer): boolean {
+    const visible = (candidate: CompositionLayer) =>
+      layerVisible(ctx, candidate) &&
+      (!candidate.guide || this.options.includeGuides === true);
+    if (!visible(layer)) return false;
+    for (let id = layer.parent; id; ) {
+      const parent = this.layer(ctx, id);
+      if (
+        parent.type === "group" &&
+        !(ctx.matteLayers.has(id)
+          ? scopeTimeWithin(
+              ctx,
+              parent.inPoint ?? 0,
+              parent.outPoint ?? ctx.scope.frameCount,
+            )
+          : visible(parent))
+      )
+        return false;
+      id = parent.parent;
+    }
+    return true;
+  }
+
+  private audioLayer(
+    ctx: Context,
+    layer: Extract<CompositionLayer, { type: "audio" }>,
+  ): EvaluatedCompositionAudio {
+    const property = (name: "timeRemap" | "gainDb" | "pan") =>
+      this.run(this.readStage(ctx, layer, [{ name }])) as number;
+    const sourceSeconds = property("timeRemap");
+    const gainDb = property("gainDb");
+    const pan = property("pan");
+    const { state } = this.run(this.stage(ctx, layer));
+    const media = sampledCompositionMedia(
+      layer,
+      this.compiled.comp.assets.find((asset) => asset.id === layer.asset)!,
+      sourceSeconds,
+      state.time,
+      ctx.fps,
+    );
+    return {
+      key: this.bindings(ctx, layer.id),
+      layer,
+      sourceSample: media.sourceSample!,
+      clipSample: media.clipSample!,
+      gainDb,
+      pan,
+    };
+  }
+
   /** Evaluate audible instances and their actual dependencies, without the picture tree. */
   audio(ctx = this.root): EvaluatedCompositionAudio[] {
     const scopes = audioScopes(this.compiled);
     if (
       !scopes.has(ctx.scope) ||
-      ctx.time < 0 ||
-      ctx.time >= ctx.scope.frameCount
+      !scopeTimeWithin(ctx, 0, ctx.scope.frameCount)
     )
       return [];
     const result: EvaluatedCompositionAudio[] = [];
     for (const layer of ctx.scope.layers) {
       if (layer.type === "audio") {
-        const state = this.evaluate(ctx, layer);
-        if (state.visible)
-          result.push({
-            key: this.bindings(ctx, layer.id),
-            layer,
-            sourceSample: state.media!.sourceSample!,
-            clipSample: state.media!.clipSample!,
-            gainDb: state.gainDb!,
-            pan: state.pan!,
-          });
+        this.countLayer();
+        const state = this.audioLayer(ctx, layer);
+        if (this.audioVisible(ctx, layer)) result.push(state);
       } else if (
         layer.type === "precomp" &&
         scopes.has(this.compiled.scopes.get(layer.comp)!)
       ) {
-        if (this.evaluate(ctx, layer).visible)
+        this.countLayer();
+        if (this.audioVisible(ctx, layer))
           result.push(...this.audio(this.run(this.child(ctx, layer))));
       }
     }

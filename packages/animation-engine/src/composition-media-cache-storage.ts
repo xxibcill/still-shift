@@ -1,4 +1,4 @@
-import { lstat, readdir } from "node:fs/promises";
+import { lstat, readdir, rm } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -13,6 +13,18 @@ import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 
 const checksum = (value: string) =>
   "sha256:" + createHash("sha256").update(value).digest("hex");
+
+/** Native decoded and mixed bytes are reusable only on the same execution platform. */
+export function compositionMediaCacheIdentity(
+  identity: Record<string, unknown>,
+) {
+  return JSON.stringify({
+    ...identity,
+    platform: process.platform,
+    arch: process.arch,
+  });
+}
+
 export function compositionMediaCacheDirectory(directory?: string) {
   return (
     directory ??
@@ -55,6 +67,18 @@ export async function compositionMediaCacheLock(
     }
   }
 }
+/** Cache ownership ends even when removal of a failed staging directory rejects. */
+export async function finishCompositionMediaCacheTransaction(
+  release: () => Promise<void>,
+  stage?: string,
+): Promise<void> {
+  try {
+    if (stage) await rm(stage, { recursive: true, force: true });
+  } finally {
+    await release();
+  }
+}
+
 export async function compositionMediaCacheSize(root: string): Promise<number> {
   let bytes = 0;
   for (const entry of await readdir(root, { withFileTypes: true })) {

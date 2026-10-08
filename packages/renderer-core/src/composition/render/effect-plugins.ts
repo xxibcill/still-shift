@@ -13,6 +13,7 @@ import { sampledBlurKernel } from "./sampled-blur.ts";
 import { transitionEffectKernel } from "./transition-effects.ts";
 import { colorEffectKernel } from "./color-effects.ts";
 import {
+  compositionEffectDefinition,
   registerCompositionEffectDefinition,
   type CompositionEffectDefinition,
 } from "@still-shift/scene-contract";
@@ -70,7 +71,7 @@ export function registerCompositionEffect(
   );
   const registered = Object.freeze({
     ...plugin,
-    definition: Object.freeze({ ...plugin.definition }),
+    definition: compositionEffectDefinition(plugin.id)!,
   });
   plugins.set(plugin.id, registered);
   return () => {

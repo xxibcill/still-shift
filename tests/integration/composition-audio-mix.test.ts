@@ -119,6 +119,36 @@ const pair = (pcm: Buffer, sample: number) => [
   pcm.readFloatLE(sample * 8),
   pcm.readFloatLE(sample * 8 + 4),
 ];
+
+it("preserves exact PCM when a native audio precomp is spatially attached to measured text", async () => {
+  const { asset, raw } = await source(
+    "text-attachment",
+    8000,
+    2,
+    (sample, channel) =>
+      sample === 7999 ? (channel ? -0.125 : 0.5) : channel ? -0.25 : 0.25,
+  );
+  const comp = document(asset);
+  const sound = comp.layers[0]!;
+  comp.layers = [
+    {
+      id: "title",
+      type: "text",
+      text: "Title",
+      fontSize: 24,
+      color: "#ffffff",
+    },
+    { id: "host", type: "precomp", comp: "nested" },
+  ];
+  comp.precomps = [
+    { id: "nested", width: 64, height: 48, frameCount: 4, layers: [sound] },
+  ];
+  comp.constraints = [{ type: "attach", target: "host", anchor: "title" }];
+  const actual = await render(comp, "text-attachment");
+  expect(actual.pcm).toEqual(raw);
+  expect(actual.preparedAudio.waveforms.processed[0]!.key).toBe("host/sound");
+});
+
 const failureCode = async (operation: Promise<unknown>) => {
   try {
     await operation;
@@ -620,4 +650,54 @@ it("cancels an actual streamed mix without publishing and detects source PCM cha
   expect(
     (await readdir(cacheDirectory)).filter((n) => !n.startsWith(".")),
   ).toHaveLength(1);
+});
+
+it("preserves every independently placed nested narration sample including its first impulse", async () => {
+  const { asset, raw } = await source(
+    "nested-boundary",
+    1920,
+    2,
+    (sample, channel) =>
+      sample === 0
+        ? channel
+          ? -0.5
+          : 0.75
+        : sample === 1919
+          ? channel
+            ? -0.125
+            : 0.25
+          : ((sample % 31) - 15) / 64,
+  );
+  const comp = document(asset);
+  comp.frameCount = 20;
+  comp.layers = [
+    { id: "host", type: "precomp", comp: "spoken", startFrame: 7 },
+  ];
+  comp.precomps = [
+    {
+      id: "spoken",
+      width: 64,
+      height: 48,
+      fps: 25,
+      frameCount: 13,
+      layers: [
+        {
+          id: "voice",
+          type: "audio",
+          asset: asset.id,
+          role: "narration",
+          startFrame: 11,
+          inPoint: 11,
+          outPoint: 12,
+        },
+      ],
+    },
+  ];
+  const actual = await render(comp, "nested-boundary");
+  const expected = Buffer.alloc(40000 * 8);
+  raw.copy(expected, 35120 * 8);
+  expect(actual.pcm).toEqual(expected);
+  expect(pair(actual.pcm, 35120)).toEqual([0.75, -0.5]);
+  expect(pair(actual.pcm, 37039)).toEqual([0.25, -0.125]);
+  expect(pair(actual.pcm, 37040)).toEqual([0, 0]);
 });

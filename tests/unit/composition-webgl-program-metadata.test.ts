@@ -361,3 +361,34 @@ it("cleans captured native shader/program owners after scope exit and allocator-
   expect(gl.deleteShader).toHaveBeenCalledTimes(3);
   expect(gl.deleteProgram).toHaveBeenCalledTimes(1);
 });
+
+it("keeps instanced and ordinary program owners separate through cache reuse and disposal", async () => {
+  const memory = new ManagedMemory(limits);
+  await withManagedMemory(memory, async () => {
+    const { device, gl } = setup();
+    const drawInstances = vi.fn();
+    Object.assign(gl, { drawArraysInstanced: drawInstances });
+    device.pass(body, null, []);
+    const ordinary = programs(device).get(body)!;
+    memory.beginScratch();
+    device.pass(body, null, [], {}, false, undefined, 3);
+    const instanced = programs(device).get(`rectangles:${body}`)!;
+    expect(instanced).not.toBe(ordinary);
+    expect(memory.owns(instanced.lifetime!)).toBe(true);
+    expect(gl.shaderSource.mock.calls[2]![1]).toContain("gl_InstanceID");
+    memory.endScratch();
+    device.pass(body, null, [], {}, false, undefined, 2);
+    expect(programs(device).get(`rectangles:${body}`)).toBe(instanced);
+    expect(gl.createProgram).toHaveBeenCalledTimes(2);
+    expect(gl.drawArrays).toHaveBeenCalledTimes(1);
+    expect(drawInstances.mock.calls).toEqual([
+      [gl.TRIANGLES, 0, 6, 3],
+      [gl.TRIANGLES, 0, 6, 2],
+    ]);
+    device.dispose();
+    expect(programs(device).size).toBe(0);
+    expect(gl.deleteProgram).toHaveBeenCalledTimes(2);
+    memory.dispose();
+    expect(memory.statistics.reservations).toBe(0);
+  });
+});

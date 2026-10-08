@@ -32,6 +32,22 @@ void main() {
   uv = p;
   gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
 }`;
+const RECTANGLES_VERTEX = `#version 300 es
+precision highp float;
+precision highp int;
+uniform sampler2D coverage;
+uniform vec2 destinationSize;
+out vec2 uv;
+flat out vec4 rectangleOrigin;
+void main() {
+  const vec2 corners[6]=vec2[6](vec2(0.0),vec2(1.0,0.0),vec2(0.0,1.0),vec2(0.0,1.0),vec2(1.0,0.0),vec2(1.0));
+  vec4 rect=texelFetch(coverage,ivec2(0,gl_InstanceID),0);
+  vec2 atlas=texelFetch(coverage,ivec2(1,gl_InstanceID),0).xy;
+  vec2 point=mix(rect.xy,rect.zw,corners[gl_VertexID]);
+  rectangleOrigin=vec4(rect.xy,atlas);
+  uv=point/destinationSize;
+  gl_Position=vec4(uv*2.0-1.0,0.0,1.0);
+}`;
 export const FRAGMENT_HEADER = `#version 300 es
 precision highp float;
 precision highp int;
@@ -866,15 +882,19 @@ export class WebglDevice {
     uniforms: Record<string, UniformValue> = {},
     blended = false,
     clip?: Bounds | null,
+    rectangles?: number,
   ) {
     if (target?.screen) clip = this.screenRegion(clip);
     if (clip === null) return;
     if (target?.screen) this.dropSolid();
     const gl = this.gl;
-    const workingBytes = 4096 + 12 * body.length;
+    const workingBytes =
+      rectangles === undefined
+        ? 4096 + 12 * body.length
+        : 6144 + 14 * body.length;
     const phase = allocateRenderMetadata<ProgramLifetime>(
-      // Controls/native handles/fixed shader text 4096. At most six input-length
-      // UTF16 copies cover original replacements, final body and fragment source.
+      // Ordinary shaders retain their original admission. Rectangle shaders also
+      // admit the longer vertex source and distinct prefixed program key.
       workingBytes,
       () => ({
         gl,
@@ -909,8 +929,9 @@ export class WebglDevice {
         body =
           body.replace("void main()", "void shade()") +
           "\nvoid main() { shade(); pixel.a = 1.0; }";
-      phase.body = body;
-      let program = this.programs.get(body);
+      const programKey = rectangles === undefined ? body : `rectangles:${body}`;
+      phase.body = programKey;
+      let program = this.programs.get(programKey);
       if (!program) {
         const compile = (type: number, source: string) => {
           const shader = gl.createShader(type)!;
@@ -927,11 +948,18 @@ export class WebglDevice {
           }
           return shader;
         };
+        const vertexSource =
+          rectangles === undefined ? VERTEX : RECTANGLES_VERTEX;
         const vertex = compile(
           gl.VERTEX_SHADER,
           (phase.vertexText = target?.screen
-            ? VERTEX.replace("uv = p;", "uv = vec2(p.x, 1.0-p.y);")
-            : VERTEX),
+            ? rectangles === undefined
+              ? vertexSource.replace("uv = p;", "uv = vec2(p.x, 1.0-p.y);")
+              : vertexSource.replace(
+                  "gl_Position=vec4(uv*2.0-1.0,0.0,1.0);",
+                  "gl_Position=vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,0.0,1.0);",
+                )
+            : vertexSource),
         );
         const fragment = compile(
           gl.FRAGMENT_SHADER,
@@ -977,7 +1005,7 @@ export class WebglDevice {
         phase.transformed = phase.vertexText = phase.fragmentText = undefined;
         // Actual holder/program/Map/handle/key/cache-entry/cleanup controls 768;
         // retain original body text and actual uniform name/location entries.
-        resizeRenderMetadata(phase, 768 + 2 * body.length + uniformBytes);
+        resizeRenderMetadata(phase, 768 + 2 * programKey.length + uniformBytes);
         if (this.programs.size >= 64) {
           const oldest = this.programs.keys().next().value!;
           const previous = this.programs.get(oldest)!;
@@ -987,7 +1015,7 @@ export class WebglDevice {
           if (previous.lifetime)
             releaseProgramLifetime(previous.lifetime, this.state.managed);
         }
-        this.programs.set(body, program);
+        this.programs.set(programKey, program);
         retained = true;
       }
       if (
@@ -1052,7 +1080,8 @@ export class WebglDevice {
           );
         }
         try {
-          gl.drawArrays(gl.TRIANGLES, 0, 3);
+          if (rectangles === undefined) gl.drawArrays(gl.TRIANGLES, 0, 3);
+          else gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, rectangles);
         } finally {
           if (clip) gl.disable(gl.SCISSOR_TEST);
         }

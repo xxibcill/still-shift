@@ -1,0 +1,187 @@
+{
+  "date": "2026-10-06",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/36",
+  "reviewedHead": "8be5fc7c867c36b9b3b835d4ea9c264b74225475",
+  "branch": "codex/pr36-current-review-fixes",
+  "policy": "One finding per commit; one push after the final fix commit. GitHub Actions remain disabled.",
+  "status": "all-three-findings-fixed-and-locally-verified",
+  "findings": [
+    {
+      "number": 1,
+      "finding": "match exact text-style keys for source attribution",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4192032535",
+      "status": "fixed",
+      "commitSubject": "fix(motion): match exact text-style source paths",
+      "verification": {
+        "red": "Three valid-ID regressions failed at the wrong source line before the fix.",
+        "green": {
+          "tests": 50,
+          "log": "/private/tmp/pr36-current-fix1-green.log"
+        },
+        "coverage": [
+          "hyphenated and numeric suffix collisions",
+          "style ID matching a property name",
+          "reverse-prefix compatibility"
+        ],
+        "staticChecks": [
+          "pnpm build",
+          "targeted ESLint",
+          "changed-file Prettier"
+        ],
+        "rejectedHarness": "Dot and quote style IDs are prohibited by the existing schema; removed those two test assumptions without changing the schema. Initial failure log: /private/tmp/pr36-current-fix1-red.log."
+      },
+      "commit": "1e97b29"
+    },
+    {
+      "number": 2,
+      "finding": "retain successful asset reads through later compilation failures",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4192032538",
+      "status": "fixed",
+      "commitSubject": "fix(cli): trace asset reads before program completion",
+      "verification": {
+        "red": {
+          "failedTests": 4,
+          "log": "/private/tmp/pr36-current-fix2-red.log",
+          "note": "ESM/CommonJS dependency assertions fail; unrecovered image/font watch tests reach their original 5-second test deadline. The final watch tests allow 10 seconds for their explicit 6-second assertions."
+        },
+        "green": {
+          "tests": 33,
+          "log": "/private/tmp/pr36-current-fix2-green.log"
+        },
+        "coverage": [
+          "image and font read paths survive a later program exception in ESM and CommonJS",
+          "initial schema failure recovers when only a dimension-source image changes",
+          "failed source edit retains valid preview and recovers after a newly read font changes",
+          "successful read dependencies are traced even when assets are not registered in final JSON",
+          "existing missing imports, invalid assets, immutable snapshots, timeout and cancellation behavior"
+        ],
+        "implementation": "Node asset reads publish a diagnostics-channel event before I/O; the fresh CLI child appends it to the existing dependency trace. No authoring API or JSON contract changes.",
+        "staticChecks": [
+          "pnpm build",
+          "pnpm check:boundaries",
+          "targeted ESLint",
+          "changed-file Prettier"
+        ]
+      },
+      "commit": "e374d05"
+    },
+    {
+      "number": 3,
+      "finding": "let explicit transforms override deferred symbolic anchors",
+      "comment": "https://github.com/xxibcill/still-shift/pull/36#discussion_r4192032543",
+      "status": "fixed",
+      "commitSubject": "fix(motion): honor explicit anchor overrides",
+      "verification": {
+        "red": {
+          "failedRegressions": 4,
+          "compatibilityCasesPassed": 2,
+          "log": "/private/tmp/pr36-current-fix3-red.log"
+        },
+        "green": {
+          "tests": 69,
+          "log": "/private/tmp/pr36-current-fix3-green.log"
+        },
+        "coverage": [
+          "transform and with replace deferred anchors with static and animated values",
+          "named and inline precomp references emit identical explicit anchors",
+          "deferred image sizing respects explicit anchors",
+          "transform edits to other fields retain symbolic anchors"
+        ],
+        "staticChecks": [
+          "pnpm build",
+          "pnpm schema:check",
+          "pnpm check:boundaries",
+          "targeted ESLint",
+          "changed-file Prettier"
+        ],
+        "harnessRepairs": "Initial TypeScript checks caught heterogeneous Layer generic inference in the new fixture. Keep concrete image/precomp types for registration; no authoring API change."
+      }
+    }
+  ],
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "fullGateRerun": false,
+    "builderUnitTests": 69,
+    "affectedIntegrationTests": 52,
+    "staticChecks": [
+      "pnpm build",
+      "pnpm schema:check (including generated composition guidance)",
+      "pnpm check:boundaries",
+      "ESLint on all changed source/test files",
+      "Prettier on all changed files",
+      "git diff --check"
+    ],
+    "integrationLogs": [
+      "/private/tmp/pr36-current-fix2-green.log",
+      "/private/tmp/pr36-current-final-integration.log"
+    ],
+    "builder": {
+      "status": "passed",
+      "lines": 197,
+      "frames": 192,
+      "numericValues": 42256,
+      "maxNumericDelta": 5.684341886080802e-14,
+      "pixels": [
+        {
+          "backend": "canvas2d",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "minimumPsnr": "Infinity",
+          "backwardSeeks": 7
+        },
+        {
+          "backend": "webgl2",
+          "frames": 192,
+          "maxChannelDelta": 0,
+          "minimumPsnr": "Infinity",
+          "backwardSeeks": 7
+        }
+      ],
+      "exports": {
+        "typescriptJsonByteIdentical": true,
+        "sha256": "5ebd5dca399ea9f149611e60edea3ad01710aa56d0999abf7a227710b3395b38"
+      }
+    },
+    "watch": {
+      "status": "passed",
+      "watch": {
+        "helperReload": true,
+        "invalidKeepsPixels": true,
+        "frameRetained": 17,
+        "shorterClamped": 7,
+        "backendSwitch": true,
+        "fullReload": false,
+        "readonlyBuilder": true,
+        "advisoryLintKeepsPreviewAndFrame": true
+      },
+      "render": {
+        "sources": ["typescript", "json"],
+        "frames": 8,
+        "fps": 24,
+        "byteIdentical": true
+      }
+    },
+    "browserLogs": [
+      "/private/tmp/pr36-current-final-builder.log",
+      "/private/tmp/pr36-current-final-watch.log"
+    ],
+    "watchHarness": "Unchanged tests/browser/composition-program.ts assertions in a temporary copy with an explicit available port; existing server preserved, temporary source removed after execution.",
+    "preflight": {
+      "chromium": "151.0.7922.34",
+      "python": "3.12.11",
+      "ffmpeg": "8.0.1",
+      "ffprobe": "8.0.1",
+      "workspace": "isolated managed worktree with local package links and private optimizer caches"
+    },
+    "limits": [
+      "Full pnpm check and unrelated browser/baseline matrices were not rerun.",
+      "No renderer, thresholds, baselines, contracts or GitHub Actions changes."
+    ]
+  },
+  "delivery": {
+    "policy": "One normal push after the third finding commit.",
+    "targetBranch": "codex/composition-ce10",
+    "ownerReviewAndMerge": "pending"
+  }
+}
