@@ -4,7 +4,7 @@ import type { CanvasImageResources } from "./canvas2d.ts";
 import type { DepthImageContent, ImageContent } from "./graph.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 
-export const DEPTH_IMAGE_SHADER_VERSION = "composition-image-plane-0.4.0";
+export const DEPTH_IMAGE_SHADER_VERSION = "composition-image-plane-0.4.1";
 const IMAGE_PLANE_BYTE_LIMIT = 128 * 1024 * 1024;
 
 export function validateImagePlaneSurface(
@@ -351,7 +351,22 @@ export class WebglDepthImages {
         { node },
       );
     const texture = gl.createTexture()!;
+    // ImageBitmap ignores WebGL unpack flip/premultiplication flags. Canvas
+    // restores the same orientation and straight-alpha upload used by DOM images.
+    const bitmapCanvas =
+      Object.prototype.toString.call(image) === "[object ImageBitmap]"
+        ? document.createElement("canvas")
+        : undefined;
     try {
+      let upload: CanvasImageSource = image;
+      if (bitmapCanvas) {
+        bitmapCanvas.width = size[0];
+        bitmapCanvas.height = size[1];
+        const context = bitmapCanvas.getContext("2d");
+        if (!context) throw new Error("Canvas 2D is unavailable");
+        context.drawImage(image, 0, 0);
+        upload = bitmapCanvas;
+      }
       gl.bindTexture(gl.TEXTURE_2D, texture);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -366,7 +381,7 @@ export class WebglDepthImages {
         color ? gl.SRGB8_ALPHA8 : gl.RGBA8,
         gl.RGBA,
         gl.UNSIGNED_BYTE,
-        image as TexImageSource,
+        upload as TexImageSource,
       );
       const bytes = size[0] * size[1] * 4;
       // A bounded asset cache; evictions are recreated from immutable verified bytes.
@@ -387,6 +402,8 @@ export class WebglDepthImages {
     } catch (error) {
       gl.deleteTexture(texture);
       throw error;
+    } finally {
+      if (bitmapCanvas) bitmapCanvas.width = bitmapCanvas.height = 0;
     }
   }
 

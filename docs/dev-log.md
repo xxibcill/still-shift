@@ -43,18 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #47 follow-up review repairs in progress (2026-10-08):** isolated
-  `codex/pr47-second-review-fixes` from reviewed `787ded34`. Window preparation and
-  the reported legacy source/identifier/asset/parent compatibility cases are fixed
-  in separate commits; long-ID text probes also retain exact ink/container output.
-  Final fast checks pass all 2,498 units. Legacy delivery passes 26 backend cases /
-  3,552 forward and reverse frames, 26 independent encodes / 78 production-repeat-raw
-  exports and 102 hardware comparisons. Worst Canvas median ratio is 1.1839 against
-  unchanged 1.25; WebGL timing remains CE6-P deferred. All 176 family defaults and
-  176 frozen items / 36,061 frames pass; final probe amendment has 36 exact targeted
-  comparisons after those inventory checks. Bitmap checks pass both GPU profiles;
-  its separate commit and one final push remain. Owner CE15 checkout is untouched;
-  no new full repository gate is planned or claimed.
+- **PR #47 follow-up review repairs verified (2026-10-08):** isolated
+  `codex/pr47-second-review-fixes` from reviewed `787ded34`. Three inline findings
+  are fixed in three separate commits: window preparation, accepted legacy inputs
+  and ImageBitmap orientation/alpha. Final fast checks pass all 2,498 units;
+  affected timeline, depth, export and legacy delivery checks pass. All 176 family
+  defaults and 176 frozen items / 36,061 frames pass without regeneration; final
+  probe amendments have 36 exact comparisons after those inventory checks. Bitmap
+  checks pass 144 exact comparisons across software/hardware GPU profiles.
+  Canvas legacy timing stays below 1.25; WebGL timing remains CE6-P deferred.
+  Delivery uses one final normal push after all three commits; owner review/merge
+  is next. Owner CE15 checkout is untouched; no new full repository gate is claimed.
   [Evidence](./pr-47-followup-fix-results.json).
 
 - **PR #47 review repairs verified (2026-10-08):** isolated
@@ -986,6 +985,23 @@ _Last updated 2026-10-08 by Codex for PR #47 follow-up review repairs._
 
 ## Entries
 
+### 2026-10-08 — PR #47 bitmap repair and follow-up closeout
+
+- **Agent / branch:** Codex on isolated `codex/pr47-second-review-fixes`.
+- **Done:** normalized same/cross-realm ImageBitmap image/depth uploads through
+  temporary Canvas2D surfaces; released scratch storage and advanced cache identity.
+  All three posted findings have separate commits and one final normal push.
+- **Results:** 144 exact bitmap comparisons on pinned software and M5 Pro hardware;
+  36 independent mixed-color alpha cases match. Final fast checks pass 2,498 units;
+  affected browsers/exports, all 176 family defaults and 176 frozen items pass.
+  Final probe guards have 36 exact comparisons after inventory/export checkpoints.
+- **Rejected:** direct bitmap uploads failed orientation/alpha checks; evidence JSON
+  formatting briefly stopped the final fast check, then formatting and rerun passed.
+- **Open / next:** owner review/merge; CE6-P WebGL timing remains deferred.
+  No full `pnpm check` run or complete repository gate is claimed; owner files untouched.
+- **Records:** [evidence](./pr-47-followup-fix-results.json),
+  [PR #47](https://github.com/xxibcill/still-shift/pull/47).
+
 ### 2026-10-08 — PR #47 legacy compatibility repair
 
 - **Agent / branch:** Codex on isolated `codex/pr47-second-review-fixes`.
@@ -1000,7 +1016,7 @@ _Last updated 2026-10-08 by Codex for PR #47 follow-up review repairs._
 - **Rejected:** initial source-budget/pose/metadata corners and final aliased probes
   failed; regressions now pass. Full inventory/export checks preceded the probe-only
   amendment; final focused probes and fast checks verify it. No full `pnpm check` run.
-- **Next:** commit bitmap repair separately, then make one final normal push.
+- **Next:** bitmap repair is complete in the following slice; owner review/merge follows delivery.
 - **Records:** [evidence](./pr-47-followup-fix-results.json).
 
 ### 2026-10-08 — PR #47 follow-up review repairs

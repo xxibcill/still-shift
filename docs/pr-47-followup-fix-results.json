@@ -4,7 +4,7 @@
   "reviewHead": "787ded34df3c0c605c8e01db98c761665d9e9999",
   "base": "8cc7b14f7090896a755080461b248ac6b2a0eb6f",
   "branch": "codex/pr47-second-review-fixes",
-  "status": "repairs-in-progress",
+  "status": "fixed-and-focused-verification-complete",
   "deliveryPolicy": "One finding per commit; one final normal push to codex/composition-ce4d.",
   "review": "https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5453536103",
   "scope": "Three scoped follow-up review repairs. No new milestone or complete repository gate is claimed.",
@@ -2476,13 +2476,14 @@
         "Final TypeScript check found union narrowing, exact optional style and parent-walk inference errors; corrected types before final check:fast pass.",
         "Final independent review found legacy long-ID ink/container probes retained the original target while provider payload IDs were shortened; repaired collision-safe payload IDs and cloned ordinal-based probe binding within the same finding. Regression failed before repair with channel delta141, then passed with delta0.",
         "Final unknown-target review found an absent authoring ID could match a generated native alias. The browser reproduced channel delta141 and root/nested unit cases failed; the guarded mapping now passes36 exact comparisons and53 focused units."
-      ]
+      ],
+      "commit": "32368e65d71d29c9b72790f63eeb24edfc068398"
     },
     {
       "id": 3,
       "title": "Normalize ImageBitmap texture orientation and alpha",
       "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4216462791",
-      "status": "in-progress",
+      "status": "fixed-focused-verification-passed",
       "checks": [
         {
           "command": "pnpm exec tsx tests/browser/composition-depth-alpha.ts",
@@ -4877,5 +4878,12 @@
     "ownerCheckoutEdited": false,
     "frozenVisualFilesRegenerated": false,
     "githubActionsEnabled": false
+  },
+  "finalVersions": {
+    "canvas": "composition-canvas-1.44.3",
+    "webgl": "composition-webgl2-0.65.4",
+    "legacyAdapter": "legacy-composition-0.1.3",
+    "illustrated": "illustrated-canvas-0.12.4",
+    "imagePlaneShader": "composition-image-plane-0.4.1"
   }
 }
