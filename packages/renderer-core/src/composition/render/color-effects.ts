@@ -1,6 +1,7 @@
 import {
   allocateRenderPixels,
   readRenderImageData,
+  renderMemory,
 } from "../../managed-memory-context.ts";
 import {
   gradientControls,
@@ -15,7 +16,10 @@ import type { Rgba } from "../evaluate/types.ts";
 import type { RenderEffect } from "./graph.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 
-import { releaseRenderMetadata } from "../../managed-metadata.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+} from "../../managed-metadata.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
@@ -63,7 +67,61 @@ const unit = (v: number) => Math.max(0, Math.min(1, v));
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 const n = (p: Params, key: string) => p[key] as number;
 const v = (p: Params, key: string) => p[key] as readonly number[];
-function hueSaturation(rgb: readonly number[], p: Params): number[] {
+type ColorPixelWork = {
+  rgb?: number[] | undefined;
+  output?: number[] | undefined;
+  unitOutput?: number[] | undefined;
+  hslKeys?: number[] | undefined;
+  hslOutput?: number[] | undefined;
+  colorOutput?: Rgba | undefined;
+  sliceMethod?: ((start?: number, end?: number) => number[]) | undefined;
+  sliceArgs?: number[] | undefined;
+  mapper?: ((value: number, index: number) => number) | undefined;
+  points?: readonly (readonly number[])[] | undefined;
+  black?: readonly number[] | undefined;
+  white?: readonly number[] | undefined;
+  start?: readonly number[] | undefined;
+  end?: readonly number[] | undefined;
+  first?: readonly number[] | undefined;
+  last?: readonly number[] | undefined;
+};
+type ColorPixelPhase = ColorPixelWork & {
+  managed: boolean;
+  producer?: (() => Rgba) | undefined;
+};
+function clearColorPixelWork(work: ColorPixelWork) {
+  if (work.rgb) work.rgb.length = 0;
+  if (work.output) work.output.length = 0;
+  if (work.unitOutput) work.unitOutput.length = 0;
+  if (work.hslKeys) work.hslKeys.length = 0;
+  if (work.hslOutput) work.hslOutput.length = 0;
+  if (work.colorOutput) (work.colorOutput as number[]).length = 0;
+  if (work.sliceArgs) work.sliceArgs.length = 0;
+  for (const key in work) delete work[key as keyof ColorPixelWork];
+}
+function clearColorPixelPhase(phase: ColorPixelPhase) {
+  clearColorPixelWork(phase);
+  for (const key in phase)
+    delete (phase as Partial<ColorPixelPhase>)[key as keyof ColorPixelPhase];
+}
+function colorPixelMapper(
+  work: ColorPixelWork | undefined,
+  mapper: (value: number, index: number) => number,
+) {
+  if (work) work.mapper = mapper;
+  return mapper;
+}
+function colorPixelSlice(pixel: Rgba, work: ColorPixelWork) {
+  const method = (work.sliceMethod = pixel.slice);
+  const args = (work.sliceArgs = [0, 3]);
+  return Reflect.apply(method, pixel, args) as number[];
+}
+
+function hueSaturation(
+  rgb: readonly number[],
+  p: Params,
+  work?: ColorPixelWork,
+): number[] {
   const maximum = Math.max(...rgb),
     minimum = Math.min(...rgb),
     chroma = maximum - minimum;
@@ -82,12 +140,19 @@ function hueSaturation(rgb: readonly number[], p: Params): number[] {
   const change = n(p, "lightness") / 100;
   light = unit(light + (change >= 0 ? 1 - light : light) * change);
   const outputChroma = (1 - Math.abs(2 * light - 1)) * saturation;
-  return [0, 4, 2].map(
-    (offset) =>
-      unit(Math.abs(((hue * 6 + offset) % 6) - 3) - 1) * outputChroma +
-      light -
-      outputChroma / 2,
+  const keys = [0, 4, 2];
+  if (work) work.hslKeys = keys;
+  const result = keys.map(
+    colorPixelMapper(
+      work,
+      (offset) =>
+        unit(Math.abs(((hue * 6 + offset) % 6) - 3) - 1) * outputChroma +
+        light -
+        outputChroma / 2,
+    ),
   );
+  if (work) work.hslOutput = result;
+  return result;
 }
 /** Recover stored premultiplied bytes, then round straight channels with explicit half-up ties.
  * Canvas readback uses platform unpremultiplication rounding at half-byte boundaries.
@@ -106,44 +171,104 @@ export function colorEffectPixel(
   p: Params,
   x: number,
   y: number,
+  work?: ColorPixelWork,
 ): Rgba {
-  const rgb = pixel.slice(0, 3);
+  if (work || !renderMemory())
+    return produceColorEffectPixel(id, pixel, p, x, y, work);
+  const phase = allocateRenderMetadata<ColorPixelPhase>(
+    4096,
+    () => ({ managed: true }),
+    false,
+    clearColorPixelPhase,
+  );
+  let result: Rgba | undefined,
+    failed = false,
+    failure: unknown;
+  try {
+    result = allocateRenderMetadata<Rgba>(
+      512,
+      (phase.producer = () =>
+        produceColorEffectPixel(id, pixel, p, x, y, phase)),
+      false,
+      (value) => {
+        (value as number[]).length = 0;
+      },
+    );
+    phase.colorOutput = undefined;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      releaseRenderMetadata(phase);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the first producer/admission/cleanup error. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+function produceColorEffectPixel(
+  id: string,
+  pixel: Rgba,
+  p: Params,
+  x: number,
+  y: number,
+  work?: ColorPixelWork,
+): Rgba {
+  const rgb = work ? colorPixelSlice(pixel, work) : pixel.slice(0, 3);
+  if (work) work.rgb = rgb;
   let output: number[];
   switch (id) {
     case "color.curves": {
       const points = p.curve as readonly (readonly number[])[];
-      output = rgb.map((value) => {
-        let mapped = points.at(-1)![1]!;
-        for (let i = 1; i < points.length; i++) {
-          const first = points[i - 1]!,
-            last = points[i]!;
-          if (value <= last[0]!) {
-            mapped = mix(
-              first[1]!,
-              last[1]!,
-              unit((value - first[0]!) / (last[0]! - first[0]!)),
-            );
-            break;
+      if (work) work.points = points;
+      output = rgb.map(
+        colorPixelMapper(work, (value) => {
+          let mapped = points.at(-1)![1]!;
+          for (let i = 1; i < points.length; i++) {
+            const first = points[i - 1]!,
+              last = points[i]!;
+            if (value <= last[0]!) {
+              mapped = mix(
+                first[1]!,
+                last[1]!,
+                unit((value - first[0]!) / (last[0]! - first[0]!)),
+              );
+              break;
+            }
           }
-        }
-        return mix(value, mapped, n(p, "amount"));
-      });
+          return mix(value, mapped, n(p, "amount"));
+        }),
+      );
       break;
     }
     case "color.levels": {
       const black = n(p, "inputBlack"),
         span = n(p, "inputWhite") - black;
-      output = rgb.map((value) =>
-        mix(
-          n(p, "outputBlack"),
-          n(p, "outputWhite"),
-          Math.pow(
-            Math.abs(span) < 1e-7
-              ? value >= black
-                ? 1
-                : 0
-              : unit((value - black) / span),
-            1 / n(p, "gamma"),
+      output = rgb.map(
+        colorPixelMapper(work, (value) =>
+          mix(
+            n(p, "outputBlack"),
+            n(p, "outputWhite"),
+            Math.pow(
+              Math.abs(span) < 1e-7
+                ? value >= black
+                  ? 1
+                  : 0
+                : unit((value - black) / span),
+              1 / n(p, "gamma"),
+            ),
           ),
         ),
       );
@@ -151,22 +276,28 @@ export function colorEffectPixel(
     }
     case "color.tint": {
       const luminance = rgb[0]! * 0.2126 + rgb[1]! * 0.7152 + rgb[2]! * 0.0722;
-      const black = v(p, "black"),
-        white = v(p, "white"),
-        strength = n(p, "amount") * mix(black[3]!, white[3]!, luminance);
-      output = rgb.map((value, c) =>
-        mix(value, mix(black[c]!, white[c]!, luminance), strength),
+      const black = v(p, "black");
+      if (work) work.black = black;
+      const white = v(p, "white");
+      if (work) work.white = white;
+      const strength = n(p, "amount") * mix(black[3]!, white[3]!, luminance);
+      output = rgb.map(
+        colorPixelMapper(work, (value, c) =>
+          mix(value, mix(black[c]!, white[c]!, luminance), strength),
+        ),
       );
       break;
     }
     case "color.hue-saturation":
-      output = hueSaturation(rgb, p);
+      output = hueSaturation(rgb, p, work);
       break;
     case "color.exposure":
-      output = rgb.map((value) =>
-        Math.pow(
-          unit(value * 2 ** n(p, "exposure") + n(p, "offset")),
-          1 / n(p, "gamma"),
+      output = rgb.map(
+        colorPixelMapper(work, (value) =>
+          Math.pow(
+            unit(value * 2 ** n(p, "exposure") + n(p, "offset")),
+            1 / n(p, "gamma"),
+          ),
         ),
       );
       break;
@@ -175,46 +306,73 @@ export function colorEffectPixel(
         factor =
           contrast >= 0 ? 1 / Math.max(0.001, 1 - contrast) : 1 + contrast;
       output = rgb.map(
-        (value) => (value - 0.5) * factor + 0.5 + n(p, "brightness"),
+        colorPixelMapper(
+          work,
+          (value) => (value - 0.5) * factor + 0.5 + n(p, "brightness"),
+        ),
       );
       break;
     }
     case "color.fill":
-      output = rgb.map((value, c) =>
-        mix(value, v(p, "color")[c]!, n(p, "amount") * v(p, "color")[3]!),
+      output = rgb.map(
+        colorPixelMapper(work, (value, c) =>
+          mix(value, v(p, "color")[c]!, n(p, "amount") * v(p, "color")[3]!),
+        ),
       );
       break;
     case "color.gradient-ramp": {
-      const start = v(p, "start"),
-        end = v(p, "end"),
-        dx = end[0]! - start[0]!,
+      const start = v(p, "start");
+      if (work) work.start = start;
+      const end = v(p, "end");
+      if (work) work.end = end;
+      const dx = end[0]! - start[0]!,
         dy = end[1]! - start[1]!,
         length = dx * dx + dy * dy;
       const t =
         length === 0
           ? 0
           : unit(((x - start[0]!) * dx + (y - start[1]!) * dy) / length);
-      const first = v(p, "startColor"),
-        last = v(p, "endColor"),
-        strength = n(p, "amount") * mix(first[3]!, last[3]!, t);
-      output = rgb.map((value, c) =>
-        mix(value, mix(first[c]!, last[c]!, t), strength),
+      const first = v(p, "startColor");
+      if (work) work.first = first;
+      const last = v(p, "endColor");
+      if (work) work.last = last;
+      const strength = n(p, "amount") * mix(first[3]!, last[3]!, t);
+      output = rgb.map(
+        colorPixelMapper(work, (value, c) =>
+          mix(value, mix(first[c]!, last[c]!, t), strength),
+        ),
       );
       break;
     }
     case "color.invert":
-      output = rgb.map((value) => mix(value, 1 - value, n(p, "amount")));
+      output = rgb.map(
+        colorPixelMapper(work, (value) =>
+          mix(value, 1 - value, n(p, "amount")),
+        ),
+      );
       break;
     case "color.posterize":
       output = rgb.map(
-        (value) =>
-          Math.floor(value * (n(p, "levels") - 1) + 0.5) / (n(p, "levels") - 1),
+        colorPixelMapper(
+          work,
+          (value) =>
+            Math.floor(value * (n(p, "levels") - 1) + 0.5) /
+            (n(p, "levels") - 1),
+        ),
       );
       break;
     default:
       throw Error(`comp-effect-unavailable: unknown color kernel ${id}`);
   }
-  return [...output.map(unit), pixel[3]] as Rgba;
+  if (work) work.output = output;
+  const result = [] as unknown as Rgba;
+  if (work) work.colorOutput = result;
+  const mapped = output.map(colorPixelMapper(work, unit));
+  if (work) work.unitOutput = mapped;
+  let index = 0;
+  for (const value of mapped) result[index++] = value;
+  result[index] = pixel[3];
+  return result;
 }
 const HSL = `
 vec3 adjustHsl(vec3 rgb) {
@@ -303,15 +461,24 @@ export function colorEffectKernel(
           () => new Uint8Array(256 * 4),
         );
         for (let value = 0; value < 256; value++) {
-          const mapped = colorEffectPixel(
+          const result = colorEffectPixel(
             id,
             [value / 255, value / 255, value / 255, 1],
             params,
             0,
             0,
-          )[0];
-          bytes[value * 4] = Math.round(mapped * 255);
-          bytes[value * 4 + 3] = 255;
+          );
+          let failed = false;
+          try {
+            const mapped = result[0];
+            bytes[value * 4] = Math.round(mapped * 255);
+            bytes[value * 4 + 3] = 255;
+          } catch (error) {
+            failed = true;
+            throw error;
+          } finally {
+            finishColorGradientMetadata(result, failed);
+          }
         }
         const transfer = context.createSurface(256, 1);
         context.uploadBytes(transfer, bytes);
@@ -343,23 +510,38 @@ export function colorEffectKernel(
               colorEffectChannel(image.data[i + 2]!, image.data[i + 3]!),
               image.data[i + 3]! / 255,
             ];
-            let result: Rgba;
-            if (gradient && table) {
-              const index = gradientRank(gradient, x + 0.5, y + 0.5) * 4,
-                strength =
-                  ((params.amount as number) * table[index + 3]!) / 255;
-              result = [0, 1, 2]
-                .map((c) =>
-                  unit(
-                    source[c]! +
-                      (table[index + c]! / 255 - source[c]!) * strength,
-                  ),
-                )
-                .concat(source[3]) as Rgba;
-            } else
-              result = colorEffectPixel(id, source, params, x + 0.5, y + 0.5);
-            for (let channel = 0; channel < 4; channel++)
-              image.data[i + channel] = Math.round(result[channel]! * 255);
+            let result: Rgba,
+              ownedResult: Rgba | undefined,
+              pixelFailed = false;
+            try {
+              if (gradient && table) {
+                const index = gradientRank(gradient, x + 0.5, y + 0.5) * 4,
+                  strength =
+                    ((params.amount as number) * table[index + 3]!) / 255;
+                result = [0, 1, 2]
+                  .map((c) =>
+                    unit(
+                      source[c]! +
+                        (table[index + c]! / 255 - source[c]!) * strength,
+                    ),
+                  )
+                  .concat(source[3]) as Rgba;
+              } else
+                result = ownedResult = colorEffectPixel(
+                  id,
+                  source,
+                  params,
+                  x + 0.5,
+                  y + 0.5,
+                );
+              for (let channel = 0; channel < 4; channel++)
+                image.data[i + channel] = Math.round(result[channel]! * 255);
+            } catch (error) {
+              pixelFailed = true;
+              throw error;
+            } finally {
+              finishColorGradientMetadata(ownedResult, pixelFailed);
+            }
           }
         output.ctx.putImageData(image, 0, 0);
         return output;

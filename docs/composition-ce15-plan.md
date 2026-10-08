@@ -2202,6 +2202,32 @@ Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography
 bootstrap/common/Node, production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-gradient-table-metadata-results.json).
 
+## Accepted standalone color-pixel metadata checkpoint — 2026-10-08
+
+Active helper admits actual 4096-byte producer/slice-arguments/mapper/borrowed-ref/
+intermediate-array phase and independent 512-byte RGBA before original factories.
+Capture actual RGB/HSL/normalized arrays and partial three-channel final result
+before alpha getter; preserve original formulas and full input/root/nested reads.
+Transfer completed result out of phase with captured ownership outside scope until
+consumer/scratch/allocator clears actual RGBA. GPU curve-byte and non-gradient
+Canvas pixel consumers retire returned RGBA after original rounds/writes; first
+consumer null dominates secondary cleanup. Preserve inactive/admitted caller route.
+
+Build/lint/boundaries and 871 focused tests / 99 files pass on attempt 2. All nine
+new tests and 870 total pass on attempt 1; preceding unchanged table oracle hits
+unchanged five-second timeout. Read-only system workload observed, cause unknown.
+Buffer only observer SHA updates while preserving all getter/hash bytes/counts/
+prefix/suffix/expected hashes and timeout; all prior table oracles pass. Nine new
+tests preserve 92 independent original outputs/full getter traces and all 462
+getter cuts across 15 complete paths, five math cuts, quota/actual partial arrays/
+captured lifetime/adoption/cleanup/retry/caller/GPU-Canvas consumer null. All 854
+prior plus eight original curve tests and 46 full native color records rerun.
+Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography tests,
+64 prior-exact exports / 768 bodies/frames pass; glyph 1.414894× meets unchanged
+1.5 maximum. Broader callback/store/registry work, arbitrary borrowed methods/species,
+common/Node, production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-color-pixel-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -99,30 +99,28 @@ still hold before relying on them.
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
   mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view, managed plan/sum-shader cache, particle/
+  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
   texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 854 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. GradientColorTable admits actual 8192-byte
-  producer/borrowed-color/tuple/key/iterator/view phase, retained 4096-byte Map/cache
-  and 2048-byte entry control; dynamic UTF16 key capacity preserves original native
-  JSON reads/toJSON/coercion without another length read. Serializer record adoption
-  null releases actual record. Explicit 262144-byte backing admission captures actual
-  view before adoption and guards failed backing cleanup. Preserve original formulas/
-  bytes/cache hits/eight-entry eviction and inactive native route. Captured allocator
-  keeps actual Map/entry/key/view/backing outside scope and clears all despite errors.
-  Capture rollback key before native Map mutation; insertion/eviction/late cleanup
-  null rolls back candidate/new cache, preserves valid entries and first null, retries.
-  Ten new tests / 16 whole original table/getter hashes, quota/actual roots/lifetime/
-  JSON/interpolation/adoption/Map pre/post-mutation/eviction/cleanup/retry/native JSON.
-  All 844 prior including 46 full native color trace/upload/pixel oracles rerun; prior
-  consumer tests distinguish retained table cache and actual uniform results. Earlier
-  fixture preparation/observer counter/typing/unused hashing failures recorded; final
-  attempt 6 passes, without original data/timeout/threshold changes. Native probes,
-  WebGL/providers/69 typography tests pass; glyph 1.440780× meets unchanged 1.5
-  maximum. All 64 exports / 768 bodies/frames retain prior exact output. Other color
-  callbacks/stores, arbitrary borrowed factories/module bootstrap/common and other
-  effects/cache/error/class/caller/depth sampling remain pending.
+  metadata pass 871 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Standalone colorEffectPixel admits actual
+  4096-byte producer/slice-arguments/mapper/borrowed-ref/intermediate-array phase and
+  independent 512-byte RGBA before original factories. Capture RGB/HSL/normalized and
+  partial three-channel result before alpha getter; preserve formulas and full input/
+  root/nested reads. Transfer completed result out of phase with captured ownership
+  outside scope until consumer/scratch/allocator clears actual RGBA. GPU curve-byte
+  and non-gradient Canvas pixel consumers retire after original rounds/writes, with
+  first consumer null over secondary cleanup. Preserve inactive/admitted caller route.
+  Nine new tests / 92 original results/full getters, 462 getter cuts / 15 paths, five
+  math cuts, quota/actual partial arrays/lifetime/adoption/cleanup/retry/caller/native
+  consumers. All 854 prior plus eight original curve tests and 46 full native color
+  records rerun. Attempt 1 all new tests / 870 total pass, preceding unchanged table
+  oracle times out; workload observed/cause unknown. Buffer only SHA observer calls,
+  preserving exact original hash bytes/getters/counts/prefix/suffix and timeout. Attempt
+  2 passes. Native probes, WebGL/providers/69 typography tests pass; glyph 1.414894×
+  meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact
+  output. Outer color callbacks/stores/registry, arbitrary borrowed methods/species,
+  other effects/cache/error/class/caller/depth sampling remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -358,6 +356,25 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual standalone color-pixel metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `a7aa2a22`.
+- **Done:** admit actual producer/slice/mapper/borrowed refs/intermediate and partial
+  RGBA; retain independent result and retire at GPU curve/Canvas pixel consumers.
+- **Results:** build/lint/boundaries, 871 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.414894×.
+- **Verification:** nine new tests / 92 original outputs/getter traces, 462 getter
+  cuts / 15 paths, math/quota/actual refs/lifetime/adoption/cleanup/retry/caller/
+  native consumers; all 854 prior plus eight original curve tests rerun.
+- **Rejected / repaired:** attempt 1 prior table-oracle timeout (870 pass), system
+  workload observed/cause unknown; buffer only SHA observer calls preserving exact
+  original hash input and timeout. Attempt 2 passes; original thresholds unchanged.
+- **Next:** outer color callback/store ownership, arbitrary methods/species/common/
+  Node, aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [color pixel evidence](./composition-ce15-color-pixel-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual gradient-table cache/key/view metadata
 

@@ -5136,29 +5136,27 @@ rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/d
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
 standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/late-point-results/
 radial-GPU-Canvas-work/standalone-radial-point/control/encoded-view-results/stylize-
-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
+GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
 replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/
-native-controls and PNG source/draw/coordinate metadata pass 854 focused tests, complete audit, 22 moving/blurred and ten stationary
-native frames and 96 owned RPC snapshots. GradientColorTable admits actual 8192-byte
-producer/borrowed-color/tuple/key/iterator/view phase, retained 4096-byte Map/cache
-and 2048-byte entry control; dynamic UTF16 key capacity preserves original native
-JSON reads/toJSON/coercion without another length read. Serializer record adoption
-null releases actual record. Explicit 262144-byte backing admission captures actual
-view before adoption and guards failed backing cleanup. Preserve original formulas/
-bytes/cache hits/eight-entry eviction and inactive native route. Captured allocator
-keeps actual Map/entry/key/view/backing outside scope and clears all despite errors.
-Capture rollback key before native Map mutation; insertion/eviction/late cleanup
-null rolls back candidate/new cache, preserves valid entries and first null, retries.
-Ten new tests / 16 whole original table/getter hashes, quota/actual roots/lifetime/
-JSON/interpolation/adoption/Map pre/post-mutation/eviction/cleanup/retry/native JSON.
-All 844 prior including 46 full native color trace/upload/pixel oracles rerun; prior
-consumer tests distinguish retained table cache and actual uniform results. Earlier
-fixture preparation/observer counter/typing/unused hashing failures recorded; final
-attempt 6 passes, without original data/timeout/threshold changes. Native probes,
-WebGL/providers/69 typography tests pass; glyph 1.440780× meets unchanged 1.5
-maximum. All 64 exports / 768 bodies/frames retain prior exact output. Other color
-callbacks/stores, arbitrary borrowed factories/module bootstrap/common and other
-effects/cache/error/class/caller/depth sampling remain pending. Recording/device/pool/shader/paint/
+native-controls and PNG source/draw/coordinate metadata pass 871 focused tests, complete audit, 22 moving/blurred and ten stationary
+native frames and 96 owned RPC snapshots. Standalone colorEffectPixel admits actual
+4096-byte producer/slice-arguments/mapper/borrowed-ref/intermediate-array phase and
+independent 512-byte RGBA before original factories. Capture RGB/HSL/normalized and
+partial three-channel result before alpha getter; preserve formulas and full input/
+root/nested reads. Transfer completed result out of phase with captured ownership
+outside scope until consumer/scratch/allocator clears actual RGBA. GPU curve-byte
+and non-gradient Canvas pixel consumers retire after original rounds/writes, with
+first consumer null over secondary cleanup. Preserve inactive/admitted caller route.
+Nine new tests / 92 original results/full getters, 462 getter cuts / 15 paths, five
+math cuts, quota/actual partial arrays/lifetime/adoption/cleanup/retry/caller/native
+consumers. All 854 prior plus eight original curve tests and 46 full native color
+records rerun. Attempt 1 all new tests / 870 total pass, preceding unchanged table
+oracle times out; workload observed/cause unknown. Buffer only SHA observer calls,
+preserving exact original hash bytes/getters/counts/prefix/suffix and timeout. Attempt
+2 passes. Native probes, WebGL/providers/69 typography tests pass; glyph 1.414894×
+meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact
+output. Outer color callbacks/stores/registry, arbitrary borrowed methods/species,
+other effects/cache/error/class/caller/depth sampling remain pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

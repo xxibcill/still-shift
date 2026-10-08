@@ -68,10 +68,15 @@ function trace(
     counts: Record<string, number> = {},
     prefix: string[] = [],
     suffix: string[] = [];
-  let calls = 0;
+  let calls = 0,
+    pendingHash = "";
   const record = (key: string) => {
     if (collect) {
-      hash.update(key + "\0");
+      pendingHash += key + "\0";
+      if (pendingHash.length >= 65536) {
+        hash.update(pendingHash);
+        pendingHash = "";
+      }
       counts[key] = (counts[key] ?? 0) + 1;
       if (prefix.length < 32) prefix.push(key);
       if (suffix.length === 32) suffix.shift();
@@ -115,7 +120,7 @@ function trace(
     params,
     result: () => ({
       calls,
-      sha256: hash.digest("hex"),
+      sha256: hash.update(pendingHash).digest("hex"),
       counts,
       prefix,
       suffix,
