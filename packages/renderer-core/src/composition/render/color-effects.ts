@@ -4,6 +4,7 @@ import {
 } from "../../managed-memory-context.ts";
 import {
   gradientControls,
+  type GradientControls,
   gradientRank,
   gradientUniforms,
   gradientColorTable,
@@ -14,9 +15,32 @@ import type { Rgba } from "../evaluate/types.ts";
 import type { RenderEffect } from "./graph.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 
+import { releaseRenderMetadata } from "../../managed-metadata.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
+function finishColorGradientControls(
+  controls: GradientControls | undefined,
+  failed: boolean,
+) {
+  try {
+    if (controls) releaseRenderMetadata(controls);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
+function colorGradientUniforms(params: Params) {
+  const controls = gradientControls(params);
+  let failed = false;
+  try {
+    return gradientUniforms(controls);
+  } catch (error) {
+    failed = true;
+    throw error;
+  } finally {
+    finishColorGradientControls(controls, failed);
+  }
+}
 const unit = (v: number) => Math.max(0, Math.min(1, v));
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 const n = (p: Params, key: string) => p[key] as number;
@@ -243,7 +267,7 @@ export function colorEffectKernel(
         context.uploadBytes(transfer, gradientColorTable(params));
         context.pass(shader, output, [input, transfer], {
           ...uniforms,
-          ...gradientUniforms(gradientControls(params)),
+          ...colorGradientUniforms(params),
         });
       } else if (id === "color.curves") {
         // A 256-entry transfer is control data; all image pixels are transformed on the GPU.
@@ -269,45 +293,55 @@ export function colorEffectKernel(
       return output;
     },
     renderCanvas(context, input, params: RenderEffect["params"]) {
-      const output = context.createSurface(input.width, input.height);
-      const image = readRenderImageData(
-        input.ctx,
-        0,
-        0,
-        input.width,
-        input.height,
-      );
-      const gradient =
-          id === "color.gradient-ramp" ? gradientControls(params) : undefined,
-        table = gradient ? gradientColorTable(params) : undefined;
-      for (let y = 0; y < input.height; y++)
-        for (let x = 0; x < input.width; x++) {
-          const i = (y * input.width + x) * 4;
-          const source: Rgba = [
-            colorEffectChannel(image.data[i]!, image.data[i + 3]!),
-            colorEffectChannel(image.data[i + 1]!, image.data[i + 3]!),
-            colorEffectChannel(image.data[i + 2]!, image.data[i + 3]!),
-            image.data[i + 3]! / 255,
-          ];
-          let result: Rgba;
-          if (gradient && table) {
-            const index = gradientRank(gradient, x + 0.5, y + 0.5) * 4,
-              strength = ((params.amount as number) * table[index + 3]!) / 255;
-            result = [0, 1, 2]
-              .map((c) =>
-                unit(
-                  source[c]! +
-                    (table[index + c]! / 255 - source[c]!) * strength,
-                ),
-              )
-              .concat(source[3]) as Rgba;
-          } else
-            result = colorEffectPixel(id, source, params, x + 0.5, y + 0.5);
-          for (let channel = 0; channel < 4; channel++)
-            image.data[i + channel] = Math.round(result[channel]! * 255);
-        }
-      output.ctx.putImageData(image, 0, 0);
-      return output;
+      let gradient: GradientControls | undefined,
+        failed = false;
+      try {
+        const output = context.createSurface(input.width, input.height);
+        const image = readRenderImageData(
+          input.ctx,
+          0,
+          0,
+          input.width,
+          input.height,
+        );
+        gradient =
+          id === "color.gradient-ramp" ? gradientControls(params) : undefined;
+        const table = gradient ? gradientColorTable(params) : undefined;
+        for (let y = 0; y < input.height; y++)
+          for (let x = 0; x < input.width; x++) {
+            const i = (y * input.width + x) * 4;
+            const source: Rgba = [
+              colorEffectChannel(image.data[i]!, image.data[i + 3]!),
+              colorEffectChannel(image.data[i + 1]!, image.data[i + 3]!),
+              colorEffectChannel(image.data[i + 2]!, image.data[i + 3]!),
+              image.data[i + 3]! / 255,
+            ];
+            let result: Rgba;
+            if (gradient && table) {
+              const index = gradientRank(gradient, x + 0.5, y + 0.5) * 4,
+                strength =
+                  ((params.amount as number) * table[index + 3]!) / 255;
+              result = [0, 1, 2]
+                .map((c) =>
+                  unit(
+                    source[c]! +
+                      (table[index + c]! / 255 - source[c]!) * strength,
+                  ),
+                )
+                .concat(source[3]) as Rgba;
+            } else
+              result = colorEffectPixel(id, source, params, x + 0.5, y + 0.5);
+            for (let channel = 0; channel < 4; channel++)
+              image.data[i + channel] = Math.round(result[channel]! * 255);
+          }
+        output.ctx.putImageData(image, 0, 0);
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishColorGradientControls(gradient, failed);
+      }
     },
   } satisfies CompositionEffectPlugin);
   kernels.set(id, kernel);

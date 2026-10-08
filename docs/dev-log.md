@@ -99,26 +99,27 @@ still hold before relying on them.
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
   mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results, managed plan/sum-shader cache, particle/
+  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control-results, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
   texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 810 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. Standalone native fractalNoiseColor admits
-  actual 4096-byte producer/map-handler/receiver/callback/arguments and independent
-  512-byte result capacity before factories. Original native length read/coercion
-  grows result capacity to 512+8\*n before output creation; preserve original getter
-  receiver/order/has/constructor/channels/sparse holes without another length read.
-  Transfer completed result, clear phase/tuple/handler refs, keep actual result under
-  captured allocator outside scope until consumer; preserve inactive/caller route
-  and first null. Eleven new tests / 22 original color/getter/sparse/length rows,
-  quota/actual refs/lifetime/all getter-clamp cuts/adoption/cleanup/retry/caller/native
-  coercion/admission hook/custom-map bound. All 799 prior tests rerun. Attempt 1
-  test-only const lint and attempt 2 Vitest proxy-inspection recursion (809 pass)
-  repaired; attempt 3 passes. Native probes, WebGL/providers/69 typography tests
-  pass; glyph 1.410120× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/
-  frames retain prior exact output. Non-native map full-array bound exceeds eventual
-  8-GiB quotas; arbitrary map/species intermediates need ownership contracts. Other
-  effects/cache/error/class/caller/depth sampling remain pending.
+  metadata pass 835 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Standalone gradientControls admits actual
+  1024-byte producer/borrowed endpoint/partial record phase and independent 512-byte
+  result before original getters/math/factories. Capture a/b before translation round;
+  preserve original formulas/getters/signed zeros and transfer completed result out
+  of phase with captured ownership outside scope. GPU color caller retires controls
+  at uniform consumer; Canvas retains through rank/pixel/publication then retires.
+  Preserve inactive/caller route, borrowed endpoints and first null. Nine new tests /
+  eight original controls/uniform/getter tables, 40 ranks and 46 full native traces/
+  uploads/Canvas pixels, quota/actual refs/lifetime/getter-math/adoption/cleanup/retry/
+  caller/native consumer null. All 810 prior and 16 original color/gradient tests
+  rerun. Attempt 1 fixture typing; harness/endpoint observations isolated. Attempt 2
+  JSON loses original negative zeros (828 pass); four expected signs restored from
+  original only. Attempt 3 passes. Native probes, WebGL/providers/69 typography
+  tests pass; glyph 1.439883× meets unchanged 1.5 maximum. All 64 exports / 768
+  bodies/frames retain prior exact output. Gradient uniforms/tables/cache and other
+  color callback arrays/stores, arbitrary borrowed factories and other effects/
+  cache/error/class/caller/depth sampling remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -354,6 +355,25 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual standalone gradient-control metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `66e7a22c`.
+- **Done:** admit actual producer/borrowed endpoints/partial controls and independent
+  result; retire at GPU uniform and Canvas publication consumers, or outside scope.
+- **Results:** build/lint/boundaries, 835 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.439883×.
+- **Verification:** nine new tests / eight original controls/uniform tables, 40 ranks,
+  46 full native traces/uploads/pixels, quota/actual refs/lifetime/getter-math/adoption/
+  cleanup/retry/caller; all 810 prior and 16 original color/gradient tests rerun.
+- **Rejected / repaired:** attempt 1 native fixture typing; isolated harness/endpoint
+  observer before tests. Attempt 2 JSON loses original negative zeros (828 pass);
+  four expected signs restored from original. Attempt 3 passes; formulas unchanged.
+- **Next:** gradient uniforms/tables/cache and color callback ownership, arbitrary
+  borrowed factories/common/Node, aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [gradient controls evidence](./composition-ce15-gradient-controls-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual standalone native noise-color metadata
 

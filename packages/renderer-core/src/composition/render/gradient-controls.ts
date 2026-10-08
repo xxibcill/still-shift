@@ -3,6 +3,10 @@ import {
   releaseRenderPixels,
   renderMemory,
 } from "../../managed-memory-context.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+} from "../../managed-metadata.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
@@ -13,15 +17,88 @@ export type GradientControls = {
   mode: number;
   divisorBits: number;
 };
+type GradientControlWork = {
+  start?: readonly number[] | undefined;
+  end?: readonly number[] | undefined;
+  controls?: GradientControls | undefined;
+};
+type GradientControlsPhase = GradientControlWork & {
+  managed: boolean;
+  producer?: (() => GradientControls) | undefined;
+};
+function clearGradientControls(value: GradientControls) {
+  for (const key in value)
+    delete (value as Partial<GradientControls>)[key as keyof GradientControls];
+}
+function clearGradientControlsPhase(phase: GradientControlsPhase) {
+  if (phase.controls) clearGradientControls(phase.controls);
+  for (const key in phase)
+    delete (phase as Partial<GradientControlsPhase>)[
+      key as keyof GradientControlsPhase
+    ];
+}
 /** Mixed-radix projected ranks; very thin ramps become an oriented midpoint step. */
-export function gradientControls(p: Params): GradientControls {
-  const start = p.start as readonly number[],
-    end = p.end as readonly number[],
-    dx = end[0]! - start[0]!,
+export function gradientControls(
+  p: Params,
+  work?: GradientControlWork,
+): GradientControls {
+  if (work || !renderMemory()) return produceGradientControls(p, work);
+  const phase = allocateRenderMetadata<GradientControlsPhase>(
+    1024,
+    () => ({ managed: true }),
+    false,
+    clearGradientControlsPhase,
+  );
+  let result: GradientControls | undefined,
+    failed = false,
+    failure: unknown;
+  try {
+    result = allocateRenderMetadata<GradientControls>(
+      512,
+      (phase.producer = () => produceGradientControls(p, phase)),
+      false,
+      clearGradientControls,
+    );
+    phase.controls = undefined;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      releaseRenderMetadata(phase);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the first producer/admission/cleanup error. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+function produceGradientControls(
+  p: Params,
+  work?: GradientControlWork,
+): GradientControls {
+  const start = p.start as readonly number[];
+  if (work) work.start = start;
+  const end = p.end as readonly number[];
+  if (work) work.end = end;
+  const dx = end[0]! - start[0]!,
     dy = end[1]! - start[1]!,
     length = Math.hypot(dx, dy);
-  if (length === 0)
-    return { a: 0, b: 0, translation: 0, mode: 0, divisorBits: 0 };
+  if (length === 0) {
+    const result = { a: 0, b: 0, translation: 0, mode: 0, divisorBits: 0 };
+    if (work) work.controls = result;
+    return result;
+  }
   const thin = length < 1 / 256,
     ax = dx / (thin ? length : length * length),
     by = dy / (thin ? length : length * length),
@@ -32,13 +109,14 @@ export function gradientControls(p: Params): GradientControls {
     b = Math.round(by * 2 ** bits),
     cx = thin ? (start[0]! + end[0]!) / 2 : start[0]!,
     cy = thin ? (start[1]! + end[1]!) / 2 : start[1]!;
-  return {
-    a,
-    b,
-    translation: Math.round(-2 * (cx * a + cy * b)),
-    mode: thin ? 2 : 1,
-    divisorBits: bits - 15,
-  };
+  const result = {} as GradientControls;
+  if (work) work.controls = result;
+  result.a = a;
+  result.b = b;
+  result.translation = Math.round(-2 * (cx * a + cy * b));
+  result.mode = thin ? 2 : 1;
+  result.divisorBits = bits - 15;
+  return result;
 }
 export function gradientRank(
   c: GradientControls,

@@ -2126,6 +2126,31 @@ need ownership contracts. Other effects/cache/class/provider/common/ledger/Node 
 production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-noise-color-metadata-results.json).
 
+## Accepted standalone gradient-control metadata checkpoint — 2026-10-08
+
+Default active helper admits actual 1024-byte producer/borrowed endpoint/partial
+record phase and independent 512-byte result before original getters/math/factories.
+Capture actual a/b record before translation round, preserving all original formulas,
+getter order and signed zeros. Transfer completed result out of phase and retain
+captured ownership outside scope until consumer/scratch/allocator clears five fields.
+GPU color caller retires controls after original uniform consumer; Canvas caller
+retains through original rank/pixel/publication consumers then retires. Preserve
+inactive/caller route without extra leases, borrowed endpoints and first null.
+
+Build/lint/boundaries and 835 focused tests / 95 files pass on attempt 3. Attempt 1
+has native fixture parameter type errors; pre-test review isolates the native harness
+and endpoint identity observations. Attempt 2 has seven expected fixture failures
+from JSON losing negative zero (828 pass); independent original execution restores
+four expected signed-zero positions only. Nine new tests retain eight original
+controls/uniform/getter tables, 40 ranks and 46 complete native color traces/full
+uploads/Canvas pixels, plus quota/actual refs/lifetime/getter-math/adoption/cleanup/
+retry/caller/native consumer null. All 810 prior and 16 original color/gradient tests
+rerun. Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography
+tests and 64 prior-exact exports / 768 bodies/frames pass; glyph 1.439883× meets
+unchanged 1.5 maximum. Gradient uniforms/tables/cache and other color callback arrays/
+stores, arbitrary borrowed factories, common/Node and production/aggregate/speed/final
+gates remain pending. [Evidence](./composition-ce15-gradient-controls-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
