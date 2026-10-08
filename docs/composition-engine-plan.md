@@ -5133,18 +5133,18 @@ snapshot/call-input/controller/wrapper and device/native-surface/pool-key/array/
 row-view/swap/dirty-set/cached-color/clip-intersection, device shader-source/program/
 uniform/diagnostic, paint batch/geometry/shader/uniform/input, Gaussian kernel/
 rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/default-
-sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work,
-managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/replace/
-built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/native-
-controls and PNG source/draw/coordinate metadata pass 633 focused tests, complete
-audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC snapshots.
-Map Canvas neutral/readback/premultiply/vector/channel/sampling/subview/native refs
-pre-admit; reusable pixel refs clear after consumption, all four backings retire
-after publication/failure. Twelve new tests / 11 full original native traces/pixels
-check quotas/refs/partial/native/adoption/null/cleanup/retry. Standalone helpers/
-other effects/cache/error/class/caller/depth sampling remain pending. Native probes,
-WebGL/providers and 69 typography tests pass; glyph 1.500000× meets unchanged
-1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output. Recording/device/pool/shader/paint/
+sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
+standalone-channel-work, managed plan/sum-shader cache, particle/Canvas/WebGL region,
+effect-paint/replace/built-ins/callback-controls, depth mesh/texture/multisample/
+uniform/draw/text/native-controls and PNG source/draw/coordinate metadata pass 640
+focused tests, complete audit, 22 moving/blurred and ten stationary native frames
+and 96 owned RPC snapshots. Standalone channel actual controller/closure pre-admit,
+stay through consumers then clear; alpha no-op and getter order preserved. Canvas
+adds no per-pixel lease. Seven new tests / 40 original scalar/getter oracles check
+quotas/refs/null/cleanup/retry. Other helpers/effects/cache/error/class/caller/depth
+sampling remain pending. Native probes, WebGL/providers and 69 typography tests pass;
+glyph 1.408163× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames
+retain prior exact output. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

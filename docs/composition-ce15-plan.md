@@ -1712,6 +1712,25 @@ effects/cache/registry/class/caller/depth sampling/provider/graph/font/common/le
 Node and production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-map-canvas-metadata-results.json).
 
+## Accepted standalone map-channel work checkpoint — 2026-10-08
+
+Admit actual 512-byte temporary controller and straight closure before selected
+standalone factories; borrowed alpha is read once and original scalar math/getter
+order remains exact. Keep actual closure through consumers, clear then retire.
+Original alpha return creates no controller/closure/admission, even with no available
+capacity. Canvas reuses its admitted control without a per-pixel lease. Producer/
+adoption/null/secondary/successful-cleanup failures retire actual refs and permit retry.
+
+Build/lint/boundaries and all 640 focused tests / 73 files pass. Seven new tests
+check 40 independently saved original values/access sequences, actual refs/owners,
+quota/no-op/producer/adoption/null/cleanup/retry. Failed lint and invalid/mistaken
+fixture attempts remain recorded; final attempt 4 accepted. Audit 144/8,000,
+96 RPC snapshots, native probes, WebGL/providers, 69 typography and 64 prior-exact
+exports / 768 bodies/frames pass; glyph 1.408163× meets unchanged 1.5 maximum.
+Other helpers/effects/cache/registry/class/caller/depth sampling/provider/graph/font/
+common/ledger/Node and production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-map-channel-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

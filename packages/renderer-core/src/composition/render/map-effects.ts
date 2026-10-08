@@ -135,7 +135,41 @@ export function mapChannel(
   control?: MapChannelControl,
 ): number {
   if (channel === 3) return pixel[3]!;
-  const a = pixel[3]!;
+  const alpha = pixel[3]!;
+  if (control || !renderMemory())
+    return produceMapChannel(pixel, channel, alpha, control);
+  const work = allocateRenderMetadata<MapChannelControl>(
+    512,
+    () => ({}),
+    false,
+    clearMapChannelControl,
+  );
+  let failed = false;
+  try {
+    return produceMapChannel(pixel, channel, alpha, work);
+  } catch (error) {
+    failed = true;
+    throw error;
+  } finally {
+    finishMapChannelWork(work, failed);
+  }
+}
+function finishMapChannelWork(work: MapChannelControl, failed: boolean) {
+  try {
+    releaseRenderMetadata(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
+function clearMapChannelControl(control: MapChannelControl) {
+  control.straight = undefined;
+}
+function produceMapChannel(
+  pixel: ArrayLike<number>,
+  channel: number,
+  a: number,
+  control?: MapChannelControl,
+): number {
   const straight = (c: number) => (a ? Math.round((pixel[c]! * 255) / a) : 0);
   if (control) control.straight = straight;
   try {

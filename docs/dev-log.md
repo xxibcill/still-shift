@@ -97,18 +97,17 @@ still hold before relying on them.
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
-  map-GPU-Canvas-work, managed plan/sum-shader cache, particle/Canvas/WebGL region,
-  effect-paint/replace/built-ins/callback-controls, depth mesh/texture/multisample/
-  uniform/draw/text/native-controls and PNG source/draw/coordinate metadata pass
-  633 focused tests, complete audit, 22 moving/blurred and ten stationary native
-  frames and 96 owned RPC snapshots. Map Canvas neutral/readback/premultiply/vector/
-  channel/sampling/subview/native refs pre-admit; reusable pixel refs clear after
-  consumption, all four backings retire after publication/failure. Twelve new tests /
-  11 full original native traces/pixels check quotas/refs/partial/native/adoption/
-  null/cleanup/retry. Standalone helpers/other effects/cache/error/class/caller/
-  depth sampling remain pending. Native probes, WebGL/providers, 69 typography tests
-  and 64 exports / 768 prior-exact bodies/frames pass; glyph 1.500000× meets
-  unchanged 1.5 maximum.
+  map-GPU-Canvas-work/standalone-channel-work, managed plan/sum-shader cache, particle/
+  Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
+  texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
+  metadata pass 640 focused tests, complete audit, 22 moving/blurred and ten
+  stationary native frames and 96 owned RPC snapshots. Standalone map-channel actual
+  controller/closure pre-admit, stay through consumers, clear then retire; original
+  alpha no-op and getter order preserved. Canvas adds no per-pixel lease. Seven new
+  tests / 40 original scalar/getter oracles check quotas/refs/null/cleanup/retry.
+  Other helpers/effects/cache/error/class/caller/depth sampling remain pending.
+  Native probes, WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
+  bodies/frames pass; glyph 1.408163× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -344,6 +343,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual standalone map-channel work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `2459e68`.
+- **Done:** pre-admit actual standalone controller/straight closure, retain through
+  original consumers, clear refs and retire temporary capacity; preserve original
+  alpha no-op and single borrowed alpha read. Canvas adds no per-pixel lease.
+- **Results:** build/lint/boundaries, 640 focused / 69 typography tests, full
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.408163×.
+- **Verification:** seven new tests / 40 full saved scalar/getter oracles, actual
+  ownership, quota/no-op, producer/adoption/null/secondary/successful cleanup/retry.
+  Initial lint/fixture failures retained; final attempt 4 accepted. No full gate.
+- **Next:** other helpers/effects/cache/class/depth sampling, provider/graph/font/
+  common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [channel evidence](./composition-ce15-map-channel-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual map-effect Canvas work
 
