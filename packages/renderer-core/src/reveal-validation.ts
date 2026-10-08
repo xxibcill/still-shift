@@ -10,6 +10,35 @@ export type AlphaImage = {
   data: Uint8ClampedArray;
 };
 type Point = [number, number];
+export type RevealImageNode = Pick<
+  PreparedImage,
+  "id" | "width" | "height" | "states"
+>;
+export type RevealProjection = {
+  left: number;
+  top: number;
+  scale: number;
+};
+export type RevealAlphaSampler = {
+  sample: (
+    node: RevealImageNode,
+    frame: number,
+    screenX: number,
+    screenY: number,
+  ) => number | undefined;
+  occlusion?: (frame: number, screenX: number, screenY: number) => number;
+};
+
+export class RevealValidationError extends Error {
+  readonly node: string;
+  readonly frame: number;
+
+  constructor(message: string, node: string, frame: number) {
+    super(message);
+    this.node = node;
+    this.frame = frame;
+  }
+}
 
 function insidePolygon([x, y]: Point, polygon: Point[]) {
   let inside = false;
@@ -44,7 +73,7 @@ function alphaAt(image: AlphaImage, x: number, y: number) {
 }
 
 function sampleNode(
-  node: PreparedImage,
+  node: RevealImageNode,
   image: AlphaImage,
   x: number,
   y: number,
@@ -75,7 +104,44 @@ export function inspectForegroundReveal(
   const subjectDepth = scene.layers.find(
     (layer) => layer.node === subject.id,
   )!.depth;
-  const imageFor = (node: PreparedImage) => {
+  return inspectProjectedReveal(
+    {
+      region: polygon,
+      subject,
+      occluders: scene.nodes.filter(
+        (node) =>
+          scene.layers.find((layer) => layer.node === node.id)!.depth <
+          subjectDepth,
+      ),
+      frameCount: scene.timeline.frameCount,
+      settleFrame: scene.cameraFrames[2]!.frame,
+    },
+    images,
+    (node, frame) => projectCinematicNode(scene, node as PreparedImage, frame),
+  );
+}
+
+/** The alpha gate consumes projected image geometry from either renderer. */
+export function inspectProjectedReveal(
+  declaration: {
+    region: Point[];
+    subject: RevealImageNode;
+    occluders: RevealImageNode[];
+    frameCount: number;
+    settleFrame: number;
+  },
+  images: ReadonlyMap<string, AlphaImage>,
+  project: (node: RevealImageNode, frame: number) => RevealProjection,
+  sampleAlpha?: RevealAlphaSampler,
+) {
+  const {
+    region: polygon,
+    subject,
+    occluders,
+    frameCount,
+    settleFrame,
+  } = declaration;
+  const imageFor = (node: RevealImageNode) => {
     const image = images.get(node.states[0]!.asset);
     if (!image) throw new Error(`Missing alpha image for ${node.id}`);
     return image;
@@ -94,54 +160,80 @@ export function inspectForegroundReveal(
         points.push([x, y]);
   if (points.length < 100)
     throw new Error("Reveal target has too few opaque samples");
-  const occluders = scene.nodes.filter(
-    (node) =>
-      scene.layers.find((layer) => layer.node === node.id)!.depth <
-      subjectDepth,
-  );
   const coverage: number[] = [];
-  for (let frame = 0; frame < scene.timeline.frameCount; frame++) {
-    const target = projectCinematicNode(scene, subject, frame);
+  for (let frame = 0; frame < frameCount; frame++) {
+    const target = project(subject, frame);
     const foreground = occluders.map((node) => ({
       node,
       image: imageFor(node),
-      p: projectCinematicNode(scene, node, frame),
+      p: project(node, frame),
     }));
     let total = 0;
     for (const [x, y] of points) {
       const screenX = target.left + x * target.scale,
         screenY = target.top + y * target.scale;
+      const targetAlpha = sampleAlpha?.sample(subject, frame, screenX, screenY);
+      if (targetAlpha !== undefined && targetAlpha < 0.95)
+        throw new RevealValidationError(
+          `Reveal rendered target must remain opaque at frame ${frame}`,
+          subject.id,
+          frame,
+        );
+      const renderedOcclusion = sampleAlpha?.occlusion?.(
+        frame,
+        screenX,
+        screenY,
+      );
+      if (renderedOcclusion !== undefined) {
+        total += renderedOcclusion;
+        continue;
+      }
       let transmission = 1;
       for (const { node, image, p } of foreground)
         transmission *=
           1 -
-          sampleNode(
-            node,
-            image,
-            (screenX - p.left) / p.scale,
-            (screenY - p.top) / p.scale,
-          );
+          (sampleAlpha?.sample(node, frame, screenX, screenY) ??
+            sampleNode(
+              node,
+              image,
+              (screenX - p.left) / p.scale,
+              (screenY - p.top) / p.scale,
+            ));
       total += 1 - transmission;
     }
     coverage.push(total / points.length);
   }
   const initialOcclusion = coverage[0]!;
   if (initialOcclusion < 0.1 || initialOcclusion > 0.35)
-    throw new Error(
+    throw new RevealValidationError(
       `Reveal initial occlusion must be 10–35%; measured ${(initialOcclusion * 100).toFixed(2)}%`,
+      subject.id,
+      0,
     );
-  const settleFrame = scene.cameraFrames[2]!.frame;
   if (coverage[settleFrame]! > 0.01)
-    throw new Error(`Reveal does not clear the target by frame ${settleFrame}`);
+    throw new RevealValidationError(
+      `Reveal does not clear the target by frame ${settleFrame}`,
+      subject.id,
+      settleFrame,
+    );
   let minimum = initialOcclusion;
   for (let frame = 1; frame < coverage.length; frame++) {
     if (coverage[frame]! > minimum + 0.01)
-      throw new Error(`Reveal reocclusion at frame ${frame}`);
+      throw new RevealValidationError(
+        `Reveal reocclusion at frame ${frame}`,
+        subject.id,
+        frame,
+      );
     minimum = Math.min(minimum, coverage[frame]!);
   }
   const clearFrame = coverage.findIndex((value) => value <= 0.01);
   const worstAfterClear = Math.max(...coverage.slice(clearFrame));
-  if (worstAfterClear > 0.01) throw new Error("Reveal does not stay clear");
+  if (worstAfterClear > 0.01)
+    throw new RevealValidationError(
+      "Reveal does not stay clear",
+      subject.id,
+      coverage.findIndex((value, frame) => frame >= clearFrame && value > 0.01),
+    );
   return {
     initialOcclusion,
     finalOcclusion: coverage.at(-1)!,

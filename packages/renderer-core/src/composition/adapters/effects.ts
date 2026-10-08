@@ -6,9 +6,13 @@ import { effectProgress, effectPhase } from "../../commerce-effect-motion.ts";
 import { baked } from "./prepared.ts";
 import type { CommerceRenderScene } from "../../commerce-scene.ts";
 import type { StoryRenderScene } from "../../story-scene.ts";
+import type { CinematicRenderScene } from "../../cinematic-scene.ts";
 import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
 
-type EffectScene = CommerceRenderScene | StoryRenderScene;
+type EffectScene =
+  | CommerceRenderScene
+  | StoryRenderScene
+  | CinematicRenderScene;
 
 /** Equal source poses share an identity even when an animation returns to a prior pose. */
 function echoRevisions(
@@ -166,7 +170,7 @@ export function compileFamilyEffects(
   layers: CompositionLayer[],
   roots: ReadonlyMap<string, string> = new Map(),
   times: readonly number[] = Array.from(
-    { length: scene.frameCount },
+    { length: scene.timeline.frameCount },
     (_, frame) => frame,
   ),
 ) {

@@ -689,6 +689,17 @@ describe("composition-1 fixtures", () => {
         ...(lighting.precomps ?? []).flatMap((scope) => scope.layers),
       );
     }
+    const framingFocus = JSON.parse(
+      readFileSync(
+        resolve(
+          root,
+          "benchmarks/fixtures/composition/ce4c/framing-focus.json",
+        ),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(framingFocus).ok).toBe(true);
+    allLayers.push(...framingFocus.layers);
     for (const option of layers.CompositionLayerSchema.options) {
       const type = option.shape.type.value;
       if (UNAVAILABLE_LAYER_TYPES[type]) continue;

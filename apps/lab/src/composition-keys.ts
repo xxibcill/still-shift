@@ -158,17 +158,18 @@ export function compositionTracks(document: Composition): KeyTrack[] {
       );
     }
     if (layer.type === "camera") {
-      add(
-        layer.pointOfInterest,
-        [...path, "pointOfInterest"],
-        "pointOfInterest",
-        "vector",
-        scope,
-        layer.id,
-        fps,
-        false,
-        3,
-      );
+      for (const name of ["pointOfInterest", "viewOffset"] as const)
+        add(
+          layer[name],
+          [...path, name],
+          name,
+          "vector",
+          scope,
+          layer.id,
+          fps,
+          false,
+          name === "pointOfInterest" ? 3 : undefined,
+        );
       for (const name of [
         "zoom",
         "focalLength",

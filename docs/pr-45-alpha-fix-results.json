@@ -1,0 +1,1110 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/45",
+  "reviewedHead": "76fb71ba41e0daec65c2a73c635336aa9e22cd43",
+  "reviewId": 5450839600,
+  "status": "both alpha findings verified in separate repair commits; delivery uses one final normal push",
+  "fullPnpmCheckRun": false,
+  "githubActionsEnabled": false,
+  "findings": [
+    {
+      "id": "reveal-opacity",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4214135363",
+      "status": "fixed in 737b0cccbdb91bdf52a1879a4430b3a1baee0c7d",
+      "change": "Preserve the source cinematic full-opacity invariant for evaluated native reveal subjects and occluders at every integer frame; retain node/frame diagnostics.",
+      "red": "Three regressions fail on reviewed source with valid fixtures",
+      "focusedTests": 41,
+      "browserAndExport": {
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "browser": [
+          {
+            "backend": "canvas2d",
+            "decodedPng": true,
+            "rejections": [
+              {
+                "node": "wall",
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic reveal requires full-opacity native planes",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "wall",
+                    "frame": 0
+                  }
+                ]
+              },
+              {
+                "node": "subject",
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic reveal requires full-opacity native planes",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "subject",
+                    "frame": 0
+                  }
+                ]
+              }
+            ],
+            "maxRetainedDelta": 0
+          },
+          {
+            "backend": "webgl2",
+            "decodedPng": true,
+            "rejections": [
+              {
+                "node": "wall",
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic reveal requires full-opacity native planes",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "wall",
+                    "frame": 0
+                  }
+                ]
+              },
+              {
+                "node": "subject",
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic reveal requires full-opacity native planes",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "subject",
+                    "frame": 0
+                  }
+                ]
+              }
+            ],
+            "maxRetainedDelta": 0
+          }
+        ],
+        "exports": [
+          {
+            "backend": "canvas2d",
+            "node": "wall",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal requires full-opacity native planes",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "node": "wall",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal requires full-opacity native planes",
+            "published": false
+          },
+          {
+            "backend": "canvas2d",
+            "node": "subject",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal requires full-opacity native planes",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "node": "subject",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal requires full-opacity native planes",
+            "published": false
+          }
+        ]
+      },
+      "independentReviews": {
+        "Standards": "no actionable findings",
+        "Spec": "no actionable findings"
+      }
+    },
+    {
+      "id": "rendered-background-alpha",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4214135367",
+      "status": "fixed in the commit containing this checkpoint",
+      "change": "Validate isolated rendered background alpha, including masks, mattes, enabled effects and group ancestor treatments, at integer and actual mixed shutter states. Reject declared backgrounds suppressed as direct or ancestor group matte sources. Retain the cheap decoded-source/geometric path for untreated backgrounds and mandatory error severity for cinematic metadata.",
+      "red": "Decoded-PNG mask acceptance fails before repair; direct and ancestor matte-source unit regressions both fail on reviewed source.",
+      "browserAndExport": {
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "browser": [
+          {
+            "backend": "canvas2d",
+            "decodedPng": true,
+            "rejection": [
+              {
+                "code": "comp-camera-coverage",
+                "severity": "error",
+                "message": "Cinematic camera exposes uncovered background",
+                "path": "metadata.cinematicCoverage",
+                "node": "background",
+                "frame": 0
+              }
+            ],
+            "heldBackground": {
+              "frames": 4,
+              "maxChannelDelta": 0
+            },
+            "retainedPreview": {
+              "frames": 4,
+              "maxChannelDelta": 0
+            },
+            "renderErrors": [],
+            "renderedAlpha": [
+              {
+                "id": "mask",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "matte",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "matte-source",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic background must remain drawable",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "background",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "ancestor-matte-source",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic background must remain drawable",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "background",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "group-mask",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 16,16",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "group-clip",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 16,0",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "group-effect",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 0,0",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "shutter-mask",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "opaque-sibling",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "full-mask",
+                "valid": true,
+                "diagnostics": [],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "full-matte",
+                "valid": true,
+                "diagnostics": [],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "disabled-effect",
+                "valid": true,
+                "diagnostics": [],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "identity-effect",
+                "valid": true,
+                "diagnostics": [],
+                "maxValidDelta": 0
+              }
+            ]
+          },
+          {
+            "backend": "webgl2",
+            "decodedPng": true,
+            "rejection": [
+              {
+                "code": "comp-camera-coverage",
+                "severity": "error",
+                "message": "Cinematic camera exposes uncovered background",
+                "path": "metadata.cinematicCoverage",
+                "node": "background",
+                "frame": 0
+              }
+            ],
+            "heldBackground": {
+              "frames": 4,
+              "maxChannelDelta": 0
+            },
+            "retainedPreview": {
+              "frames": 4,
+              "maxChannelDelta": 0
+            },
+            "renderErrors": [],
+            "renderedAlpha": [
+              {
+                "id": "mask",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "matte",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "matte-source",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic background must remain drawable",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "background",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "ancestor-matte-source",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic background must remain drawable",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "background",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "group-mask",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 16,16",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "group-clip",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 16,0",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "group-effect",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 0,0",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "shutter-mask",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "opaque-sibling",
+                "valid": false,
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+                    "node": "background",
+                    "path": "metadata.cinematicCoverage",
+                    "frame": 0
+                  }
+                ],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "full-mask",
+                "valid": true,
+                "diagnostics": [],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "full-matte",
+                "valid": true,
+                "diagnostics": [],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "disabled-effect",
+                "valid": true,
+                "diagnostics": [],
+                "maxValidDelta": 0
+              },
+              {
+                "id": "identity-effect",
+                "valid": true,
+                "diagnostics": [],
+                "maxValidDelta": 0
+              }
+            ]
+          }
+        ],
+        "exports": [
+          {
+            "backend": "canvas2d",
+            "id": "mask",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "id": "mask",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+            "published": false
+          },
+          {
+            "backend": "canvas2d",
+            "id": "matte",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "id": "matte",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+            "published": false
+          },
+          {
+            "backend": "canvas2d",
+            "id": "matte-source",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic background must remain drawable",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "id": "matte-source",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic background must remain drawable",
+            "published": false
+          },
+          {
+            "backend": "canvas2d",
+            "id": "ancestor-matte-source",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic background must remain drawable",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "id": "ancestor-matte-source",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic background must remain drawable",
+            "published": false
+          },
+          {
+            "backend": "canvas2d",
+            "id": "group-mask",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 16,16",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "id": "group-mask",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 16,16",
+            "published": false
+          },
+          {
+            "backend": "canvas2d",
+            "id": "group-clip",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 16,0",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "id": "group-clip",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 16,0",
+            "published": false
+          },
+          {
+            "backend": "canvas2d",
+            "id": "group-effect",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 0,0",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "id": "group-effect",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 0,0",
+            "published": false
+          },
+          {
+            "backend": "canvas2d",
+            "id": "shutter-mask",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "id": "shutter-mask",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+            "published": false
+          },
+          {
+            "backend": "canvas2d",
+            "id": "opaque-sibling",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "id": "opaque-sibling",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Required camera coverage on background exposes the owning scope at frame 0, pixel 8,8",
+            "published": false
+          }
+        ]
+      },
+      "acceptance": {
+        "invalidVariantsPerBackend": 9,
+        "validVariantsPerBackend": 4,
+        "protectedExportFailures": 18,
+        "publishedInvalidOutputs": 0,
+        "retainedPreviewMaxDelta": 0,
+        "validAlphaTreatmentMaxDelta": 0,
+        "alphaThresholdUnchanged": "254/255"
+      },
+      "independentReviews": {
+        "Standards": "no actionable findings after final ancestor matte-source repair; independent reproducer now rejected",
+        "Spec": "no actionable findings in final code; nested group ancestry and ordinary transform parents checked"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "label": "opacity-red",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/foreground-reveal.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 1,
+      "seconds": 2.46,
+      "log": "/private/tmp/pr45-alpha-opacity-red.log",
+      "logSha256": "ff6fac62bb9918629c32631e02dc914e0caa9ae8b83b602ab86d3ee8c39f1c83"
+    },
+    {
+      "label": "opacity-green",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/foreground-reveal.test.ts",
+        "tests/unit/composition-cinematic-coverage.test.ts",
+        "tests/unit/composition-cinematic-adapter.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 1,
+      "seconds": 3.19,
+      "log": "/private/tmp/pr45-alpha-opacity-green.log",
+      "logSha256": "c2692ede909e9ee4503b6316913d70f1112aa7c9f9f2c194216e4e9677ffb094"
+    },
+    {
+      "label": "preflight",
+      "command": ["pnpm", "toolchain:check"],
+      "exitCode": 0,
+      "seconds": 1.29,
+      "log": "/private/tmp/pr45-alpha-preflight.log",
+      "logSha256": "c36c4cb3862ba3812b8f943349125805446c040fe45058bdd7cc9f3a113186d9"
+    },
+    {
+      "label": "opacity-red-valid",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/foreground-reveal.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 1,
+      "seconds": 2.28,
+      "log": "/private/tmp/pr45-alpha-opacity-red-valid.log",
+      "logSha256": "76d1a7599d14486faaa92ab0308c0fa342b9a21d627015d6d5f365ee745ee04f"
+    },
+    {
+      "label": "opacity-green-valid",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/foreground-reveal.test.ts",
+        "tests/unit/composition-cinematic-coverage.test.ts",
+        "tests/unit/composition-cinematic-adapter.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0,
+      "seconds": 3.34,
+      "log": "/private/tmp/pr45-alpha-opacity-green-valid.log",
+      "logSha256": "ff574bf1cb3e8cab2600528d299f4089c4c18abf0963d411677a40793a465378"
+    },
+    {
+      "label": "opacity-browser",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/pr45-alpha-opacity-browser.mts"
+      ],
+      "exitCode": 0,
+      "seconds": 4.92,
+      "log": "/private/tmp/pr45-alpha-opacity-browser.log",
+      "logSha256": "6868bc4f8a0ffe43bea2af8322c9d5cdd6fa8826a51a581cb49e6fc408beeada"
+    },
+    {
+      "label": "opacity-format",
+      "command": [
+        "pnpm",
+        "exec",
+        "prettier",
+        "--write",
+        "tests/unit/foreground-reveal.test.ts",
+        "docs/composition-reference-notes.md",
+        "docs/composition-reference.md",
+        "packages/renderer-core/src/composition/adapters/cinematic-coverage.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 1.08,
+      "log": "/private/tmp/pr45-alpha-opacity-format.log",
+      "logSha256": "51ce20fd86111ba89d56d84b7339f632d3c9511512ecd48319949a2965c4ce8c"
+    },
+    {
+      "label": "opacity-build",
+      "command": ["pnpm", "build"],
+      "exitCode": 0,
+      "seconds": 5.8,
+      "log": "/private/tmp/pr45-alpha-opacity-build.log",
+      "logSha256": "c3e302e1e042b4da6ed01b6b2f4b3b741b0b12f4ac94a67dd0e9c1bcaa7e8ff6"
+    },
+    {
+      "label": "opacity-lint",
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "packages/renderer-core/src/composition/adapters/cinematic-coverage.ts",
+        "tests/unit/foreground-reveal.test.ts",
+        "packages/renderer-core/src/composition/render/version.ts",
+        "packages/renderer-core/src/composition/render/webgl2.ts",
+        "packages/execution-runtime/src/export-worker.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 1.28,
+      "log": "/private/tmp/pr45-alpha-opacity-lint.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "coverage-red",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/pr45-alpha-coverage-browser.mts"
+      ],
+      "exitCode": 1,
+      "seconds": 2.02,
+      "log": "/private/tmp/pr45-alpha-coverage-red.log",
+      "logSha256": "1698ea67569f7086ff611bf78540e40c4f65e9ed9ade857695a4bd85013ffb95"
+    },
+    {
+      "label": "coverage-format",
+      "command": [
+        "pnpm",
+        "exec",
+        "prettier",
+        "--write",
+        "packages/renderer-core/src/composition/adapters/cinematic-coverage.ts",
+        "packages/renderer-core/src/composition/render/required-coverage.ts",
+        "packages/renderer-core/src/composition/render/renderer.ts",
+        "tests/helpers/composition-cinematic-coverage-acceptance.ts",
+        "docs/composition-reference-notes.md",
+        "docs/composition-reference.md"
+      ],
+      "exitCode": 0,
+      "seconds": 0.77,
+      "log": "/private/tmp/pr45-alpha-coverage-format.log",
+      "logSha256": "8c111556c0792b79eb6f1c787be02678407e2599986dfeef63886b00424a2a6b"
+    },
+    {
+      "label": "coverage-green",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/pr45-alpha-coverage-browser.mts"
+      ],
+      "exitCode": 0,
+      "seconds": 12.85,
+      "log": "/private/tmp/pr45-alpha-coverage-green.log",
+      "logSha256": "d4b49abd87340fdbf35831f998762d486ed5c379ba454f21010ba4f655fa96d4"
+    },
+    {
+      "label": "final-fast",
+      "command": ["pnpm", "check:fast"],
+      "exitCode": 0,
+      "seconds": 56.47,
+      "log": "/private/tmp/pr45-alpha-final-fast.log",
+      "logSha256": "38ddc5b3753371590cac10f434879e4b2a7b5bef744184ef9b5c01f1769e3702"
+    },
+    {
+      "label": "final-integration",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/integration/composition-program-cli.test.ts",
+        "tests/integration/composition-examples.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0,
+      "seconds": 18.05,
+      "log": "/private/tmp/pr45-alpha-final-integration.log",
+      "logSha256": "32821a7020b1b54df102a7ce5f2885cb62dd15e72cb69547b2efac58cde8afd8"
+    },
+    {
+      "label": "final-camera",
+      "command": ["pnpm", "test:browser:composition-camera"],
+      "exitCode": 0,
+      "seconds": 89.44,
+      "log": "/private/tmp/pr45-alpha-final-camera.log",
+      "logSha256": "2f9938ea25454774cfc586be625a7b846aaf321c12baa43643f3df56b443dbaa"
+    },
+    {
+      "label": "final-cinematic-smoke",
+      "command": [
+        "pnpm",
+        "test:browser:composition-cinematic-adapter",
+        "--smoke"
+      ],
+      "exitCode": 0,
+      "seconds": 45.74,
+      "log": "/private/tmp/pr45-alpha-final-cinematic-smoke.log",
+      "logSha256": "249cd373269ee508889eaf32d69361f25a66b83cb5839555c55bba0212cecda2"
+    },
+    {
+      "label": "final-webgl-export",
+      "command": ["pnpm", "test:browser:composition-webgl-export"],
+      "exitCode": 0,
+      "seconds": 30.42,
+      "log": "/private/tmp/pr45-alpha-final-webgl-export.log",
+      "logSha256": "d85e82dbf4c2afc822b93dd1dc1e65dc3c237a0963e1f518fa4e98535d854be3"
+    },
+    {
+      "label": "matte-source-red",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/composition-cinematic-coverage.test.ts",
+        "-t",
+        "suppressed as",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 1,
+      "seconds": 1.28,
+      "log": "/private/tmp/pr45-alpha-matte-source-red.log",
+      "logSha256": "ac3444f61fffedeb98243c9be74561c2e9352eb350a4b39ec86c1bcf04c6e9b9"
+    },
+    {
+      "label": "audit-format",
+      "command": [
+        "pnpm",
+        "exec",
+        "prettier",
+        "--write",
+        "packages/renderer-core/src/composition/adapters/cinematic-coverage.ts",
+        "tests/unit/composition-cinematic-coverage.test.ts",
+        "tests/helpers/composition-cinematic-coverage-acceptance.ts",
+        "docs/composition-reference.md",
+        "docs/composition-reference-notes.md"
+      ],
+      "exitCode": 0,
+      "seconds": 0.82,
+      "log": "/private/tmp/pr45-alpha-audit-format.log",
+      "logSha256": "c2ecd189346773f995b2c33f25e5bb6cd53bfd3ace3dd3d4967dfd001ca16021"
+    },
+    {
+      "label": "final-exposure",
+      "command": ["pnpm", "test:browser:composition-exposure"],
+      "exitCode": 0,
+      "seconds": 21.28,
+      "log": "/private/tmp/pr45-alpha-final-exposure.log",
+      "logSha256": "a0370797dc81a65f0d84e29fb8508533377b6a161c76f385753bdd9388a48b16"
+    },
+    {
+      "label": "audited-fast",
+      "command": ["pnpm", "check:fast"],
+      "exitCode": 0,
+      "seconds": 48.14,
+      "log": "/private/tmp/pr45-alpha-audited-fast.log",
+      "logSha256": "79d8ab15c9845d0df830b878aff82f510ce4cef5a4a465d733c10d66caccb7a6"
+    },
+    {
+      "label": "audited-opacity-browser",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/pr45-alpha-opacity-browser.mts"
+      ],
+      "exitCode": 0,
+      "seconds": 5.09,
+      "log": "/private/tmp/pr45-alpha-audited-opacity-browser.log",
+      "logSha256": "6868bc4f8a0ffe43bea2af8322c9d5cdd6fa8826a51a581cb49e6fc408beeada"
+    },
+    {
+      "label": "audited-coverage-browser",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/pr45-alpha-coverage-browser.mts"
+      ],
+      "exitCode": 0,
+      "seconds": 16.78,
+      "log": "/private/tmp/pr45-alpha-audited-coverage-browser.log",
+      "logSha256": "5a915e9e46e44c7d29d51492d44692c198ffd4c39b99b00757b060bf387f035f"
+    },
+    {
+      "label": "final-baselines",
+      "command": ["pnpm", "test:browser:composition-baselines"],
+      "exitCode": 1,
+      "seconds": 114.09,
+      "log": "/private/tmp/pr45-alpha-final-baselines.log",
+      "logSha256": "cc01c90d5e36c57fae85fea7f8f1571b018fad148156c4511e758e25c0a3f393"
+    },
+    {
+      "label": "final-audit-format",
+      "command": [
+        "pnpm",
+        "exec",
+        "prettier",
+        "--write",
+        "packages/renderer-core/src/composition/adapters/cinematic-coverage.ts",
+        "tests/unit/composition-cinematic-coverage.test.ts",
+        "tests/helpers/composition-cinematic-coverage-acceptance.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 0.3,
+      "log": "/private/tmp/pr45-alpha-final-audit-format.log",
+      "logSha256": "ae7cd5c7b04748264a4191a2d240d51b39511b4745c7ae262ad4e2d720eb6727"
+    },
+    {
+      "label": "stable-fast",
+      "command": ["pnpm", "check:fast"],
+      "exitCode": 0,
+      "seconds": 44.89,
+      "log": "/private/tmp/pr45-alpha-stable-fast.log",
+      "logSha256": "c6e75f3fad26d9af53f3a09c2d046230f67bc2b5bc7da8e9b674cd2c44334cf5"
+    },
+    {
+      "label": "stable-opacity-browser",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/pr45-alpha-opacity-browser.mts"
+      ],
+      "exitCode": 0,
+      "seconds": 4.36,
+      "log": "/private/tmp/pr45-alpha-stable-opacity-browser.log",
+      "logSha256": "6868bc4f8a0ffe43bea2af8322c9d5cdd6fa8826a51a581cb49e6fc408beeada"
+    },
+    {
+      "label": "stable-coverage-browser",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/pr45-alpha-coverage-browser.mts"
+      ],
+      "exitCode": 0,
+      "seconds": 14.87,
+      "log": "/private/tmp/pr45-alpha-stable-coverage-browser.log",
+      "logSha256": "2039e7bf8efdf327df212b8045805ee3bf2423c4a6866ca4e0ddd50b49e40e0c"
+    },
+    {
+      "label": "matte-suppression-red",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/composition-cinematic-coverage.test.ts",
+        "-t",
+        "suppressed by a matte source",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 1,
+      "seconds": 1.59,
+      "log": "/private/tmp/pr45-alpha-matte-suppression-red.log",
+      "logSha256": "33f4e840462526718df81ebd821e44b27f22059c422ad0506120429d4506e242"
+    },
+    {
+      "label": "stable-cinematic-smoke",
+      "command": [
+        "pnpm",
+        "test:browser:composition-cinematic-adapter",
+        "--smoke"
+      ],
+      "exitCode": 0,
+      "seconds": 49.19,
+      "log": "/private/tmp/pr45-alpha-stable-cinematic-smoke.log",
+      "logSha256": "9b80aeabdebefaac7381474a0511bf5eb5b1399b833d90cee28bfdaefa815b06"
+    },
+    {
+      "label": "stable-baseline-preflight",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/pr45-alpha-baseline-preflight.mts"
+      ],
+      "exitCode": 0,
+      "seconds": 1.62,
+      "log": "/private/tmp/pr45-alpha-stable-baseline-preflight.log",
+      "logSha256": "53d42e201a81fcdce36fd86fe81bc11c8db25b86495e599a02c288ce1ce3aee0"
+    },
+    {
+      "label": "stable-baselines",
+      "command": ["pnpm", "test:browser:composition-baselines"],
+      "exitCode": 0,
+      "seconds": 294.44,
+      "log": "/private/tmp/pr45-alpha-stable-baselines.log",
+      "logSha256": "caf2935beed9c7be3d53293f1123480b814d09f0fcc5a6bfb527c6d7abf35425"
+    }
+  ],
+  "rejectedAttempts": [
+    {
+      "attempt": "Sandboxed worktree test startup / Python setup",
+      "reason": "Sandbox prohibits Vite cache and environment writes outside its initial roots; rerun in attached isolated worktree through approved local commands."
+    },
+    {
+      "attempt": "First inherited-opacity test fixture",
+      "reason": "Group omitted required size; corrected fixture validates and repaired test passes. Corrected regressions were also checked against original source."
+    },
+    {
+      "attempt": "Initial final frozen baseline run",
+      "reason": "Stopped after 40 matching items with window.runCompositionBaseline missing while independent review repairs and other checks were still in flight. Incomplete run is not a pass. Final browser module/profile preflight succeeds; the complete frozen check passes with no code changes or competing checks."
+    },
+    {
+      "attempt": "Treating a matte-source background as drawable based only on its child state",
+      "reason": "Independent audit reproduced direct source and ancestor group suppression. Explicit drawability and group source ancestry guards close both cases."
+    }
+  ],
+  "verificationPolicy": "Scoped PR follow-up checks only; all affected checks and complete frozen baselines passed. Original milestone full-gate evidence remains historical. No new full repository or timing gate is claimed.",
+  "sourceFingerprint": {
+    "before": {
+      "sha256": "861b9f3e2e5b8d458df47e0288db28be5adfa37068b3e34ab4d89392ae18735a",
+      "fileCount": 1732
+    },
+    "after": {
+      "sha256": "861b9f3e2e5b8d458df47e0288db28be5adfa37068b3e34ab4d89392ae18735a",
+      "fileCount": 1732
+    },
+    "unchanged": true
+  },
+  "focusedVerification": {
+    "finalSnapshot": [
+      "stable-fast",
+      "stable-opacity-browser",
+      "stable-coverage-browser",
+      "stable-cinematic-smoke",
+      "stable-baseline-preflight",
+      "stable-baselines"
+    ],
+    "unitTests": 2390,
+    "unitTestFiles": 215,
+    "cinematicDiagnosticBackendCases": 46,
+    "cinematicDiagnosticFrames": 230,
+    "frozenItems": 176,
+    "frozenFrameHashes": 36061,
+    "baselineRegenerated": false,
+    "otherPassingScopedChecks": [
+      "final-integration",
+      "final-camera",
+      "final-webgl-export",
+      "final-exposure"
+    ],
+    "integrationTests": 8,
+    "evidenceScope": "The camera, general WebGL export, exposure and CLI/example checks passed before the final matte-source guards. That increment is confined to cinematic metadata validation and is covered by final fast checks, both-backend cinematic diagnostics and 22 protected opacity/alpha export failures on the unchanged final source fingerprint. No full repository gate or performance matrix was run."
+  }
+}

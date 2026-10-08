@@ -113,6 +113,10 @@ function resolveSegments(
       }
       return missing(text, "a transform property");
     }
+    case "viewOffset":
+      return layer.type === "camera"
+        ? component("vec2", COMPONENTS.vec2, segments.slice(1))
+        : missing(text, "a camera property");
     case "pointOfInterest":
       return layer.type === "camera"
         ? component("vec3", COMPONENTS.vec3, segments.slice(1))

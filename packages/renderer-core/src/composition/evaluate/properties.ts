@@ -69,6 +69,7 @@ function container(state: EvaluatedLayer, segments: PropertyPathSegment[]) {
     state.camera &&
     [
       "pointOfInterest",
+      "viewOffset",
       "zoom",
       "focalLength",
       "filmSize",
@@ -77,9 +78,9 @@ function container(state: EvaluatedLayer, segments: PropertyPathSegment[]) {
       "blurLevel",
     ].includes(head!.name)
   )
-    return head!.name === "pointOfInterest" && next
+    return ["pointOfInterest", "viewOffset"].includes(head!.name) && next
       ? {
-          object: state.camera.pointOfInterest,
+          object: state.camera[head!.name as "pointOfInterest" | "viewOffset"],
           key: vectorAxis[next.name as keyof typeof vectorAxis],
         }
       : { object: state.camera, key: head!.name };

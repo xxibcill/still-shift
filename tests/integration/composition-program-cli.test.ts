@@ -13,6 +13,7 @@ import { afterEach, expect, it } from "vitest";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 import { loadProgram } from "../../tools/still-shift-cli/src/composition/program.ts";
 import { comp, image } from "@still-shift/motion";
+import type { Composition } from "@still-shift/scene-contract";
 import { imageAsset } from "@still-shift/motion/node";
 const directories: string[] = [];
 async function directory() {
@@ -41,6 +42,42 @@ async function run(args: string[]) {
   return { code, stdout, stderr };
 }
 const program = `import{comp,solid,expr}from'@still-shift/motion';console.log('author console');export default comp({width:64,height:64,fps:24,frames:24},c=>{const n=c.add(solid('box',{size:[8,8],color:'#223344'}));c.expression(n.path('transform.rotation'),expr\`frame * 2\`);});`;
+it("exports cinematic recipes as inspectable native camera/plane JSON with relocated assets", async () => {
+  const root = await directory(),
+    output = join(root, "cinematic.json");
+  const fixture = resolve(
+    "benchmarks/fixtures/cinematic-illustrated/ci-08-dolly-zoom-tension.json",
+  );
+  const source = JSON.parse(await readFile(fixture, "utf8"));
+  const result = await run([
+    "export-json",
+    "--scene",
+    fixture,
+    "--output",
+    output,
+  ]);
+  expect(result.code).toBe(0);
+  expect(result.stderr).toBe("");
+  const doc = JSON.parse(await readFile(output, "utf8")) as Composition;
+  const cameras = doc.layers.filter((layer) => layer.type === "camera");
+  expect(cameras).toHaveLength(1);
+  expect(cameras[0]).toMatchObject({
+    type: "camera",
+    zoom: { keys: expect.any(Array) },
+  });
+  const artwork = doc.layers.filter((layer) => layer.type !== "camera");
+  expect(artwork).toHaveLength(source.nodes.length);
+  expect(artwork.every((layer) => layer.type === "image" && layer.threeD)).toBe(
+    true,
+  );
+  expect(
+    (doc.metadata!.nativeCameraValidation as { checkedFrames: number })
+      .checkedFrames,
+  ).toBe(doc.frameCount);
+  expect(resolve(root, doc.assets[0]!.path)).toBe(
+    await realpath(resolve(dirname(fixture), source.assets[0].path)),
+  );
+});
 it("preserves render usage and scene exit codes while unreadable input remains a runtime failure", async () => {
   const result = await run([
     "render",

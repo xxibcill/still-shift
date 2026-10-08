@@ -10,11 +10,13 @@ import {
 } from "@still-shift/animation-engine";
 import {
   bakeExpressions,
+  cinematicToComposition,
   CompositionQualityPolicySchema,
   passageDiagnostics,
 } from "@still-shift/renderer-core";
 import {
   CommerceSceneSchema,
+  CinematicSceneSchema,
   StorySceneSchema,
   normalizeExpressions,
   type CompositionDiagnostic,
@@ -131,19 +133,29 @@ export async function runCompositionCommand(
       if (input) composition = (await loadProgram(source)).composition;
       else {
         const value: unknown = JSON.parse(await readFile(source, "utf8"));
-        composition =
+        if (
           value &&
           typeof value === "object" &&
           "schemaVersion" in value &&
-          value.schemaVersion === "commerce-scene-1"
-            ? await compileCommerceComposition(
-                CommerceSceneSchema.parse(value),
-                dirname(source),
-              )
-            : await compileStoryComposition(
-                StorySceneSchema.parse(value),
-                dirname(source),
-              );
+          value.schemaVersion === "illustrated-scene-2"
+        )
+          composition = cinematicToComposition(
+            CinematicSceneSchema.parse(value),
+          );
+        else
+          composition =
+            value &&
+            typeof value === "object" &&
+            "schemaVersion" in value &&
+            value.schemaVersion === "commerce-scene-1"
+              ? await compileCommerceComposition(
+                  CommerceSceneSchema.parse(value),
+                  dirname(source),
+                )
+              : await compileStoryComposition(
+                  StorySceneSchema.parse(value),
+                  dirname(source),
+                );
         composition.assets = await Promise.all(
           composition.assets.map(async (asset) => {
             const path = resolve(dirname(source), asset.path);

@@ -43,6 +43,67 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #45 rendered reveal/focus repairs verified (2026-10-08):** both P2
+  findings on reviewed `8ee9088` are posted inline and repaired one per commit.
+  `c91d717` validates rendered reveal alpha and preserves in-viewport edge samples;
+  the commit containing this checkpoint preserves focused crossfade overscan.
+  Final fast checks pass 2,400 units, eight affected integrations and all 46
+  cinematic diagnostic cases pass, and camera/WebGL export/exposure checks pass.
+  Both backends pass 45 reveal cases (21 invalid rejected, 24 valid exact); 42
+  invalid exports publish nothing, 20 valid repeat pairs and ten independent
+  control exports are exact. All 20 crossfade pixel comparisons and repeated
+  reference exports are exact. All 176 frozen items / 36,061 hashes match without
+  regeneration on frozen final source. Independent repair reviews have no
+  remaining findings. One final normal push delivers both commits; owner
+  review/merge remain. No new full repository or timing gate is claimed; owner
+  checkout is untouched and Actions stay disabled.
+  [Repair evidence](./pr-45-reveal-focus-fix-results.json).
+
+- **PR #45 alpha follow-up repairs verified (2026-10-08):** both new P2
+  findings are posted inline on reviewed `76fb71b`, with one repair per commit.
+  `737b0cc` preserves full evaluated reveal opacity; the commit containing this
+  checkpoint checks rendered background alpha and rejects direct or ancestor
+  matte-source suppression. Final fast checks pass 2,390 units, all 46 cinematic
+  diagnostic cases pass, and all 176 frozen items / 36,061 frame hashes match.
+  Valid treated backgrounds and retained previews are exact on both backends;
+  all 22 invalid opacity/alpha exports fail without publishing output. Eight
+  affected integrations, camera, WebGL export and exposure checks also pass.
+  Independent repair reviews have no remaining findings. One final normal push
+  delivers both repair commits; owner review/merge remain. No new full repository
+  or timing gate is claimed; owner checkout is untouched and Actions disabled.
+  [Alpha repair evidence](./pr-45-alpha-fix-results.json).
+
+- **PR #45 review repairs verified (2026-10-08):** both P2 findings are posted
+  inline on reviewed `3545055` and repaired one per commit. `a99be1f` retains local
+  primitive-blur scaling; the commit containing this entry validates actual mixed
+  shutter exposure coverage after decoded-asset reload. Final fast checks pass
+  2,385 units; eight affected integrations, camera, all 46 cinematic smoke cases,
+  WebGL exports and exposure checks pass. All 36 new affine pixel pairs are exact;
+  coverage rejects invalid previews/exports on both backends while valid held-layer
+  and retained-preview pixels remain exact. All 176 frozen items / 36,061 frames
+  match without regeneration. Independent repair reviews have no actionable
+  findings. Delivery uses one normal push of both repair commits after this final
+  checkpoint. Owner review/merge remain. No new full repository or performance
+  gate is claimed; owner checkout is untouched and Actions remain disabled.
+  [Repair evidence](./pr-45-fix-results.json).
+
+- **PR #45 conflicts resolved; review complete (2026-10-08):** isolated
+  `codex/pr45-conflict-review` integrates `main` at `50cbf633` into CE4c head
+  `17666eb` with merge `1b3f98f`. All nine conflicts preserve cinematic/native
+  behavior and main's reviewed spatial, lighting, echo/effect and soundtrack
+  fixes. Both development histories, all 59 mandatory commands and main visual
+  baseline bytes survive. Fast checks pass 2,371 units; 46 runtime / eight affected
+  integrations, all 46 cinematic smoke cases, native camera/lighting/exports,
+  exposure and complete selected focus-handoff checks pass. All 176 frozen items /
+  36,061 frames match without regeneration. Independent Standards and Spec reviews
+  found two P2 defects, repaired in the follow-up above: affine primitive-blur
+  scaling and integer-only persisted shutter coverage. Both are independently reproduced with real pixels
+  on Canvas/WebGL. Verified merge/evidence are pushed to PR #45; GitHub confirms
+  the PR is mergeable. Owner review/merge remain. No full repository gate or CE6-P acceptance is claimed. Owner checkout
+  stays untouched and Actions disabled.
+  [Merge evidence](./pr-45-conflict-resolution-results.json),
+  [review findings](./pr-45-review-results.json).
+
 - **PR #44 review repairs verified (2026-10-08):** both P2 findings are posted
   inline on reviewed `5b233c8` and repaired one per commit: `009ae7d` resolves
   implicit XYZ light references with evaluator 50; the commit containing this entry
@@ -50,7 +111,7 @@ still hold before relying on them.
   respects deliberately moved focus. Final fast checks pass 2,322 units; lighting,
   inspector and WebGL exports pass; all 176 frozen items / 36,061 frames match
   without regeneration. Independent Standards and Spec audits have no remaining
-  findings. One normal push follows the second commit; owner review/merge remain.
+  findings. Both repairs are merged into `main` at `50cbf633` through PR #44.
   No new full `pnpm check` or performance gate is claimed. Owner checkout is
   untouched and Actions remain disabled. [Repair evidence](./pr-44-fix-results.json).
 
@@ -64,7 +125,7 @@ still hold before relying on them.
   The original review found one Standards usability P2 (receiving-toggle keyboard
   focus) and one Spec P2 (implicit XYZ light Z reference dependencies).
   Current repair progress is tracked above.
-  PR #44 remains open for owner review/merge. No new full repository
+  PR #44 is merged into `main` at `50cbf633`. No new full repository
   gate or performance acceptance is claimed. CE6-P stays deferred and Actions disabled.
   [Resolution](./pr-44-conflict-resolution-results.json),
   [review](./pr-44-review-results.json).
@@ -145,6 +206,21 @@ still hold before relying on them.
   Baselines are unchanged; GitHub Actions are verified disabled. No implementation
   blocker remains; PR #43 is merged into `main` at `e97dacbc`. Earlier CE8 gate evidence is historical.
   [Fix evidence](./pr-43-fix-results.json).
+- **CE4c complete (2026-10-06):** `codex/composition-ce4c` from
+  CE8-L `e1bd4bc`; final runtime `37cc07a`, verified snapshot `e1fb3e3`.
+  Native camera framing, depth planes, Gaussian focus, decoded-alpha safety and
+  shared effects pass all 46 backend cases / 5,520 forward and reverse frames,
+  46 independent preview encodes, 138 production exports, 138 actual hardware
+  comparisons and real inspector edits/undo/reload. Complete pinned `pnpm check`
+  passes 1,938 unit / 46 runtime / 140 integration / 14 depth tests, all required
+  browser groups and all 176 frozen CE0 items / 36,061 frames. The four Canvas
+  family matrices pass the unchanged pixel and 1.25 timing policies; all tracked
+  visual references remain unchanged. Earlier failures and diagnostics remain in
+  the [evidence](./composition-ce4c-results.json). WebGL speed targets remain CE6-P.
+  [PR #45](https://github.com/xxibcill/still-shift/pull/45) now targets `main`; conflict resolution and review are tracked above.
+  Start CE4d on a new branch.
+  Separate cross-chat coordination authorization remains pending.
+
 - **CE8-L complete (2026-10-06):** `codex/composition-ce8-lighting` from CE8
   `9d8f33a`; final code `d72ba2c`, verified checkpoint `3820c1c`. Bounded ambient,
   point and spot lighting, scoped pure evaluation, linear GPU shading, cache/Canvas
@@ -157,8 +233,8 @@ still hold before relying on them.
   Serial 1080p costs are recorded. Earlier oracle/inspector failures and the first full-gate timing failure remain
   in the evidence. Serial profiles passed; the complete gate was rerun from the
   start under unchanged assertions. No source output or tolerance was changed.
-  [PR #44](https://github.com/xxibcill/still-shift/pull/44) is open and attached against `main`; conflict resolution and review repairs are tracked above.
-  CE4c starts next on its own branch. CE6-P/CE8-L-F
+  [PR #44](https://github.com/xxibcill/still-shift/pull/44) is merged into `main` at `50cbf633`; conflict resolution and review repairs are retained above.
+  CE6-P/CE8-L-F
   remain separate future work. No owner decision is pending.
   [Evidence](./composition-ce8-lighting-results.json).
 
@@ -826,9 +902,97 @@ still hold before relying on them.
   must not use TypeScript constructor parameter properties: Node's strip-only mode
   rejects them and five Lab integration suites fail.
 
-_Last updated 2026-10-08 by Codex for PR #44 review repairs._
+_Last updated 2026-10-08 by Codex for PR #45 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #45 focus-crossfade repair and final verification
+
+- **Agent / branch:** Codex on `codex/pr45-reveal-focus-fixes` after rendered reveal repair `c91d717`.
+- **Scope:** second inline P2 finding; one finding per commit and one final push.
+- **Done:** preserve local overscan before Gaussian focus for active image crossfades; retain direct drawing at settled/zero-focus boundaries. Add graph and decoded-PNG regressions, document the behavior and bump backend identities.
+- **Results:** three new unit cases and the pixel regression fail on reviewed source (maximum delta 146); all 20 repaired crossfade comparisons are exact and both-backend repeated exports match the projected reference. Final fast checks pass 2,400 units; eight affected integrations, all 46 cinematic diagnostics, camera/WebGL export/exposure checks and all 176 frozen items / 36,061 hashes pass. Reveal checks pass 45 cases per backend; 42 invalid exports publish nothing, 20 valid repeat pairs and ten controls are byte-identical. Final independent Standards/Spec reviews have no findings.
+- **Rejected / do not repeat:** a final edge review caught artificial transparency inside the viewport; corrected neighbor interpolation remains in the first finding's commit. Editing that module interrupted the first frozen run after 34 matches; only the complete 305.68-second rerun on unchanged final source counts. No baseline regeneration, full `pnpm check` or timing matrix.
+- **Open / next:** one final normal push delivers both repair commits together; owner review/merge remain. Actions stay disabled.
+- **Records:** [repair evidence](./pr-45-reveal-focus-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
+
+### 2026-10-08 — PR #45 rendered semantic reveal-alpha repair
+
+- **Agent / branch:** Codex on `codex/pr45-reveal-focus-fixes` from reviewed `8ee9088`.
+- **Scope:** first of two inline P2 findings; one finding per commit, one final push.
+- **Done:** measure rendered subject and combined occluder alpha at actual shutter states, preserve held clocks/shared ancestor isolation and node/frame diagnostics, and reject suppressed matte sources. Add decoded-PNG controls, document the rule and bump backend identities.
+- **Results:** three new unit regressions fail on reviewed source; all 58 focused units, TypeScript, focused lint/format and boundaries pass. Both backends pass 45 reveal cases; 42 invalid exports publish nothing, 20 valid repeat pairs and ten independent control exports are byte-identical. In-viewport edge samples pass while offscreen queries fail. Independent Standards and Spec reviews have no remaining findings.
+- **Rejected / do not repeat:** the first smooth-wall shutter fixture used the wrong key interpolation; corrected held-wall red confirms the defect. The temporary export runner’s initial control property was wrong; supplemental exports verify all controls. Keep caches and Python environment isolated.
+- **Open / next:** separate focus-crossfade repair, final scoped browser/export/frozen checks, then one normal push. No full `pnpm check` or timing matrix; Actions remain disabled.
+- **Records:** [repair evidence](./pr-45-reveal-focus-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
+
+### 2026-10-08 — PR #45 rendered background-alpha repair and final verification
+
+- **Agent / branch:** Codex on `codex/pr45-alpha-fixes` after reveal repair `737b0cc`.
+- **Scope:** second inline P2 finding; one finding per commit and one final push.
+- **Done:** validate isolated rendered background alpha at actual exposure states, preserve mandatory cinematic errors, and reject direct/ancestor matte-source suppression. Add both-backend mask, matte, group, shutter and sibling-concealment regressions; document the native coverage rule and bump renderer/export identities.
+- **Results:** final fast checks pass 2,390 units; 46 cinematic diagnostics and 176 frozen items / 36,061 hashes pass unchanged. Valid/retained PNG previews stay exact; 22 invalid opacity/alpha exports publish nothing. Eight affected integrations, camera, WebGL exports and exposure checks pass. Final Standards and Spec audits have no findings.
+- **Rejected / do not repeat:** an early frozen run stopped at a missing browser initializer after 40 matching items while work was in flight; it is not counted as passed. Final module/profile preflight and complete sequential frozen run pass on an unchanged source fingerprint. No baseline regeneration, full `pnpm check` or timing matrix.
+- **Open / next:** final normal push delivers both repairs together; owner review/merge remain. Actions stay disabled.
+- **Records:** [alpha repair evidence](./pr-45-alpha-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
+
+### 2026-10-08 — PR #45 persisted reveal-opacity repair
+
+- **Agent / branch:** Codex on `codex/pr45-alpha-fixes` from reviewed `76fb71b`.
+- **Scope:** first of two new inline alpha-validation findings; one finding per commit.
+- **Done:** preserve full evaluated subject/occluder opacity and diagnostic node/frame after native reload; add static, keyed and inherited regressions and document the retained source rule.
+- **Results:** three new regressions fail on reviewed source; 41 focused tests, TypeScript and focused lint pass. Actual decoded-PNG Canvas/WebGL previews and four export attempts reject invalid opacity; valid retained previews stay exact. Independent Standards and Spec reviews have no findings.
+- **Rejected / do not repeat:** group fixtures require `size`; use the isolated worktree's caches and environment, with approved commands for sandbox-restricted startup.
+- **Open / next:** rendered background-alpha repair; then affected browser/export/frozen checks and one final push. No full `pnpm check` is claimed; Actions remain disabled.
+- **Records:** [alpha repair evidence](./pr-45-alpha-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
+
+### 2026-10-08 — PR #45 shutter coverage repair and final verification
+
+- **Agent / branch:** Codex on `codex/pr45-conflict-review` (from `a99be1f`).
+- **Scope:** second inline P2 finding, one repair per commit and one final push.
+- **Done:** validate declared background coverage using actual mixed exposure states;
+  retain held-layer clocks, shutter cuts, opacity, focus padding and integer reveal semantics.
+- **Results:** five regressions fail on original code; all 38 focused units pass after repair.
+  Decoded-PNG previews and protected export failures pass on both backends. Final fast
+  checks pass 2,385 units; eight affected integrations, camera/cinematic smoke/export/exposure
+  suites and all 176 frozen items / 36,061 frames pass. No baselines regenerated.
+- **Rejected / do not repeat:** no new full `pnpm check` or family timing matrix for scoped fixes.
+- **Open / next:** both repairs use one final normal push; owner review/merge remain.
+- **Records:** [repair evidence](./pr-45-fix-results.json),
+  [inline findings and disposition](./pr-45-review-results.json).
+
+### 2026-10-08 — PR #45 local primitive-blur repair
+
+- **Agent / branch:** Codex on isolated `codex/pr45-conflict-review` from `3545055`.
+- **Done:** post both findings inline; keep positive own/inherited/collapsed
+  primitive blur on its local surface before projection. Zero/disabled blur keeps
+  the direct image path. Canvas/WebGL/export identities are 1.42.2 / 0.57.2 / 0.6.7.
+- **Results:** four original-code unit failures and a real-pixel delta of 82 are
+  reproduced before repair. After repair, 35 focused units and all 36 actual
+  Canvas/WebGL pairs pass exactly across uniform/nonuniform/rotated placement.
+  Pinned toolchain/imports, focused formatting and lint pass.
+- **Open / next:** coverage repair, final focused verification and a single final
+  push remain. This commit repairs only the first finding. No full gate or Actions.
+- **Records:** [Repair evidence](./pr-45-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449039).
+
+### 2026-10-08 — PR #45 main conflict integration and independent review
+
+- **Agent / branch:** Codex on isolated `codex/pr45-conflict-review` from `17666eb`.
+- **Done:** merge `1b3f98f` combines nine conflicts with `main` at `50cbf633`;
+  keep settled optics, shared XYZ/view-offset tracks, clipping/echo rounding,
+  both development histories and all 59 mandatory commands. Combined evaluator /
+  Canvas / WebGL / export identities are 51 / 1.42.1 / 0.57.1 / 0.6.6.
+- **Results:** 2,371 units, 46 runtime, eight affected integrations and scoped
+  cinematic/camera/lighting/export/exposure/inspector checks pass. All 176 frozen
+  items / 36,061 frames and main baseline bytes match without regeneration.
+- **Review / next:** two independently reproduced P2 findings remain open:
+  affine primitive-blur scaling and integer-only persisted shutter coverage.
+  Verified merge/evidence are pushed; GitHub confirms mergeable. Owner review/merge
+  remain. No full gate or CE6-P
+  acceptance is claimed; owner checkout is untouched and Actions remain disabled.
+- **Records:** [Merge evidence](./pr-45-conflict-resolution-results.json),
+  [independent review](./pr-45-review-results.json).
 
 ### 2026-10-08 — PR #44 receiving-toggle focus repair and final verification
 
@@ -1770,6 +1934,204 @@ _Last updated 2026-10-08 by Codex for PR #44 review repairs._
   final local verification and one push remain. GitHub Actions stay disabled.
 - **Records:** [Fix evidence](./pr-43-fix-results.json),
   [inline finding](https://github.com/xxibcill/still-shift/pull/43#discussion_r4192759920).
+
+### 2026-10-06 — CE4c complete verification checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, runtime `37cc07a`.
+- **Results:** complete pinned `pnpm check` on `e1fb3e3` exits 0: 1,938 unit,
+  46 runtime, 140 integration and 14 depth tests; all required browser groups;
+  176 frozen items / 36,061 frames with unchanged references. Final cinematic
+  acceptance passes 46 cases / 5,520 forward/reverse frames, 46 independent encodes,
+  138 production exports, 138 hardware comparisons and the real inspector.
+  All four full Canvas matrices retain the existing 1.25 timing limit.
+- **Open / next:** create and attach the stacked CE4c PR, then CE4d on its own
+  branch. Deferred WebGL speed work remains CE6-P. No source or thresholds changed
+  during the final gate. Earlier failed attempts remain recorded.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c complete native acceptance checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, runtime `37cc07a`.
+- **Results:** required native suite passes 46 backend cases / 5,520 forward and
+  reverse frames, delta2, 46 independent encodes, 138 production exports, 138
+  hardware comparisons and real inspector edits/undo/reload. Canvas timing max
+  1.087 passes the unchanged 1.25 limit; WebGL timing remains assigned to CE6-P.
+  Hardware minimum PSNR 48.111 / SSIM 0.998063 passes unchanged policy.
+- **Open / next:** complete `pnpm check` is in typography, with frozen-baseline
+  closure still pending. No code or reference changes during the gate.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c full family matrix checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, full snapshot `e1fb3e3`.
+- **Results:** complete Story Canvas 69 cases / 14,086 frames (max ratio 1.175)
+  and Commerce Canvas 127 / 28,200 (max ratio 1.190, delta1) pass the unchanged
+  pixel and 1.25 timing limits. No source or reference changes during this gate.
+- **Open / next:** full cinematic acceptance, typography and frozen-baseline
+  closure remain pending. The complete `pnpm check` is still in progress.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c final gate non-browser checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, full snapshot `e1fb3e3`.
+- **Results:** pinned preflight, 1,938 unit / 46 runtime / 140 integration / 14
+  depth tests pass. All 1,857 tracked snapshot files match the committed tree.
+  The unchanged preview-watch recovery test and repaired cinematic CLI assertion
+  pass in the complete integration group.
+- **Open / next:** the full browser chain remains in flight; timed matrices,
+  final native cinematic acceptance and frozen-baseline closure are still pending.
+  No source, threshold or reference was changed during this gate.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c full correctness diagnostic checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, final runtime `37cc07a`.
+- **Results:** prior checkpoint `640c8c5` completes 44 cases / 5,328 forward and
+  reverse frames, delta2, 44 independent encodes / 132 production exports, 132
+  hardware comparisons and real inspector with exit 0. Final close-focus behavior
+  already passes both full focus variants. Final pinned preflight also passes.
+- **Open / next:** full `pnpm check` includes the required timed 46-case cinematic
+  matrix. Timing was omitted only from the private diagnostic; required source
+  assertions, frozen references and pixel policy remain unchanged.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c complete focus correctness checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, focus code `37cc07a`.
+- **Results:** ordinary and close-gap focus pass both backends: 384 complete
+  forward/reverse frames, delta1, four independent encodes / 12 production exports,
+  repeat/PNG/raw identity, 12 actual hardware comparisons and the real inspector.
+  Hardware minimum PSNR55.35 / SSIM0.99956; eight comparisons are exact.
+- **Open / next:** all 46 final-code cases with unchanged timing assertions and
+  complete pinned `pnpm check`. Timing was omitted from this diagnostic while
+  independent exports/measurements remain active; no milestone completion claim.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c bounded close-focus compatibility checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, regressions `5335756`.
+- **Done:** normalize artistic focus coordinates only for valid recipes exceeding
+  the unchanged native aperture budget; physical geometry stays unchanged.
+- **Results:** 37 focused tests/build/schema/lint pass. Three new close-gap cases
+  reproduce all 288 states with <=0.000001px blur error and unchanged projection.
+- **Rejected:** the previous mapping failed all three valid cases at aperture1000;
+  camera limits and parity tolerances remain unchanged. Add the close-gap fixture
+  to required rendered/export/hardware acceptance (46 cases / 5,520 frames).
+- **Open / next:** new-case rendered checks, final native acceptance and pinned
+  gate; the ongoing prior-code correctness diagnostic retains its original scope.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c camera and lighting regression checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, CLI `640c8c5`.
+- **Results:** native camera and lighting commands finish with exit 0: stored
+  hashes, exports and inspectors pass, with 36 / 45 hardware comparisons. The
+  four preview-watch tests pass with their unchanged 5000ms timeout; 14 depth tests
+  pass. Earlier integration ended at 138 / 140 passing tests, with the CLI repair
+  and isolated watch verification now complete.
+- **Open / next:** full native timelines/exports are running as an untimed
+  diagnostic; required performance acceptance and complete pinned gate remain.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c hardware and CLI checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, fixture `9c2a97d`.
+- **Done:** CLI assertions locate the unique camera independently of paint order.
+- **Results:** all seven CLI integration tests/build/lint pass; 132 actual Metal
+  comparisons pass (67 exact, minimum PSNR48.11/SSIM0.99806) and real inspector
+  edits/history/save/reload/backend switches pass. Pinned unit/runtime pass.
+- **Rejected:** stale CLI array-position assertion and a localhost-restricted
+  invocation. The broader preview-watch test timed out at its unchanged 5000ms;
+  an isolated rerun and complete gate remain pending.
+- **Open / next:** full native software/export/timing acceptance, complete gate and
+  preview-watch verification. Concurrent independent suites remain active.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c native control fixture checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, order `44588fe`.
+- **Done:** share the native inspector framing/focus example with contract coverage.
+- **Results:** 132 contract tests and all 1,935 unit tests / 195 files pass;
+  build and focused lint pass. Frozen CE1 and CE0 fixtures remain unchanged.
+- **Rejected:** full preflight stopped at one field-inventory assertion after
+  1,934 passing tests; runtime/depth were not reached. New controls now have a
+  dedicated CE4c fixture instead of modifying the old every-field document.
+- **Open / next:** full native acceptance and pinned local gate; browser timing
+  remains queued behind active independent suites and coordination permission.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c effect ordering and exposure checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, alpha `6fdb243`.
+- **Done:** native paint-order conversion and shutter sampling of adjustments.
+- **Results:** all 15 fixtures plus seven effect variants pass sampled forward and
+  reverse pixels (44 cases / 220 frames, delta1); real temporal editing, frustum,
+  undo/redo, save/reload and backend switch pass. 26 focused tests/build/lint pass.
+- **Rejected:** grain-before-art (delta8), central-frame-only grain during exposure
+  (delta4), and an inspector fixture requesting unsupported spatial xy tangents.
+  Repairs retain the schema and pixel policies.
+- **Open / next:** full native acceptance and complete pinned local gate; independent
+  reviews are active, so timings remain queued. Coordination permission is pending.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c persisted alpha safety checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, raster fix `c3f85ec`.
+- **Done:** persisted background alpha/native coverage and semantic reveal checks;
+  all six shared-effect variants and real framing editor/save/reload acceptance.
+- **Results:** 26 focused tests, build/lint and schema generation pass. The new
+  browser checks and final full gate remain pending. Initial narrowing build
+  failure is repaired and retained in the evidence.
+- **Open / next:** native smoke/full matrix and complete local verification.
+  Independent review gates are active; timed checks are queued. Automatic review
+  rejected a coordination follow-up; explicit user authorization is pending.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c source raster consistency checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, raster `f7b1302`.
+- **Done:** natural-size image caches follow destination CPU/default raster modes.
+- **Results:** 11 focused tests/build pass; six actual hardware samples pass.
+  The complete focus run before the fix passes both software timelines, seeks,
+  timing and independent/repeated/raw exports, but hardware middle-frame SSIM
+  is 0.98918. The scoped fix makes that frame exact without changing policy.
+- **Open / next:** persisted asset alpha safety, final full native matrix and local gate.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c affine raster and acceptance checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, adapter `48c9a70`.
+- **Done:** direct affine natural-size images with preserved spatial preflight,
+  matte/focus semantics and bounded Gaussian overscan; full native acceptance harness.
+- **Results:** 58 focused tests, build/lint pass. Initial all-fixture sampled smoke
+  is exact (150 frames); final focus cleanup stays near (10 frames, delta1).
+  The first double-resampling pixel failure (delta88) remains recorded.
+- **Open / next:** full forward/reverse pixels, unchanged Canvas timing, streamed
+  independent/repeated/raw exports, hardware and complete local gate; no PR yet.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c camera/plane adapter checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, framing `c5a3816`.
+- **Done:** native camera/plane compiler, explicit Gaussian/artistic focus,
+  existing safety rules on evaluated native geometry, shared shutter/effects and CLI JSON.
+- **Results:** all 15 fixtures / 2,160 frames pass state parity; 132 focused unit
+  tests, seven CLI integrations and build pass. Earlier fixture/roundoff/harness
+  failures are recorded. Browser parity harness is authored; acceptance is pending.
+- **Open / next:** rendered pixels/timing, repeats, independent export agreement,
+  hardware and complete local gate before CE4c PR delivery.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
+
+### 2026-10-06 — CE4c native framing checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce4c`, from CE8-L `e1bd4bc`.
+- **Done:** bounded xy camera offset, shared point/plane/frustum geometry,
+  local-clock property/expression evaluation and inspector key discovery.
+- **Results:** 91 focused tests / 11 files and build pass; schema/reference generated.
+  Strict xy rejection and the corrected timing fixture are recorded in evidence.
+- **Open / next:** cinematic adapter, focus/coverage/framing and all-frame parity,
+  native acceptance and full local gate; no completion or PR claimed yet.
+- **Records:** [CE4c evidence](./composition-ce4c-results.json).
 
 ### 2026-10-06 — CE8-L complete local gate
 

@@ -1,0 +1,896 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/45",
+  "originalReviewedHead": "354505509d0a3592f2899aa8f8aeac2e71e03879",
+  "status": "both inline findings fixed in separate commits; final scoped verification and independent repair reviews pass",
+  "fullPnpmCheckRun": false,
+  "githubActionsEnabled": false,
+  "review": {
+    "reviewId": 5447731207,
+    "commentsPosted": true,
+    "comments": [
+      "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449039",
+      "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449051"
+    ]
+  },
+  "findings": [
+    {
+      "id": "primitive-blur",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449039",
+      "status": "fixed",
+      "change": "Require zero computed primitive painting blur before the direct affine image path. Positive own/inherited/collapsed blur paints on its local surface before projection; zero/disabled retain direct drawing.",
+      "versions": {
+        "canvas": "composition-canvas-1.42.2",
+        "webgl": "composition-webgl2-0.57.2",
+        "export": "chromium-ffmpeg-0.6.7"
+      },
+      "red": {
+        "checkpoint": "354505509d0a3592f2899aa8f8aeac2e71e03879",
+        "command": "node --import tsx /private/tmp/pr45-affine-blur.mts",
+        "node": "22.23.1",
+        "exitCode": 1,
+        "firstFailingCase": "canvas2d/2x/image/4",
+        "previousNoBlurControl": "passed",
+        "metrics": {
+          "maxChannelDelta": 82,
+          "differingChannels": 7424,
+          "psnr": 25.964774569077903,
+          "ssim": 0.9164679028350413
+        }
+      },
+      "green": {
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "caseCount": 36,
+        "reports": [
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "2x",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "nonuniform",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "canvas2d",
+            "geometry": "rotated",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "2x",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "nonuniform",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "image",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "image",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "group",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "group",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "collapsed-precomp",
+            "radius": 0,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          },
+          {
+            "backend": "webgl2",
+            "geometry": "rotated",
+            "owner": "collapsed-precomp",
+            "radius": 4,
+            "metrics": {
+              "maxChannelDelta": 0,
+              "differingChannels": 0,
+              "psnr": null,
+              "ssim": 1
+            }
+          }
+        ]
+      },
+      "focusedUnitTests": 35,
+      "commit": "a99be1f7fa3d48c8521f647ffcbbbbfa84fcb157",
+      "independentReview": "No actionable findings: positive own/inherited/collapsed primitive blur retains local paint before projection; zero/disabled and Gaussian focus paths retain established behavior."
+    },
+    {
+      "id": "shutter-coverage",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4211449051",
+      "status": "fixed in the commit containing this final record",
+      "change": "Validate declared background coverage on actual mixed exposure trees as well as integer frames, using each background state\u2019s projection, opacity and Gaussian focus padding. Respect held layers, adaptive/indexed sampling and shutter cuts through the shared evaluator.",
+      "scope": "Existing integer foreground-reveal ratios, settle timing and monotonic checks retain their documented timing semantics.",
+      "red": {
+        "expectedFailingTests": 5,
+        "compatibilityControlsPassing": 4,
+        "log": "/private/tmp/pr45-fix-coverage-red.log",
+        "reason": "Integer-only coverage accepts rendered fractional states that expose the background or lose opacity/focus padding."
+      },
+      "focusedUnitTests": 38,
+      "browserAndExport": {
+        "browser": [
+          {
+            "backend": "canvas2d",
+            "decodedPng": true,
+            "rejection": [
+              {
+                "code": "comp-camera-coverage",
+                "severity": "error",
+                "message": "Cinematic camera exposes uncovered background",
+                "path": "metadata.cinematicCoverage",
+                "node": "background",
+                "frame": 0
+              }
+            ],
+            "heldBackground": {
+              "frames": 4,
+              "maxChannelDelta": 0
+            },
+            "retainedPreview": {
+              "frames": 4,
+              "maxChannelDelta": 0
+            },
+            "renderErrors": []
+          },
+          {
+            "backend": "webgl2",
+            "decodedPng": true,
+            "rejection": [
+              {
+                "code": "comp-camera-coverage",
+                "severity": "error",
+                "message": "Cinematic camera exposes uncovered background",
+                "path": "metadata.cinematicCoverage",
+                "node": "background",
+                "frame": 0
+              }
+            ],
+            "heldBackground": {
+              "frames": 4,
+              "maxChannelDelta": 0
+            },
+            "retainedPreview": {
+              "frames": 4,
+              "maxChannelDelta": 0
+            },
+            "renderErrors": []
+          }
+        ],
+        "export": [
+          {
+            "backend": "canvas2d",
+            "rejection": "comp-camera-coverage: Cinematic camera exposes uncovered background",
+            "finalOutputPublished": false,
+            "remainingFiles": ["composition.json", "painted.png"]
+          },
+          {
+            "backend": "webgl2",
+            "rejection": "comp-camera-coverage: Cinematic camera exposes uncovered background",
+            "finalOutputPublished": false,
+            "remainingFiles": ["composition.json", "painted.png"]
+          }
+        ]
+      },
+      "independentReview": "No actionable findings: shared exposure evaluator matches render sampling, held camera dependencies, cuts/windows/indexed clocks, opacity and focus padding; additional validation work scales with configured samples and iteration retains bounded memory."
+    }
+  ],
+  "verification": {
+    "scope": "Focused PR repair verification; no new full repository or performance gate.",
+    "checks": [
+      {
+        "label": "blur-red",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-affine-image.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 1,
+        "seconds": 1.09,
+        "log": "/private/tmp/pr45-fix-blur-red.log",
+        "logSha256": "904bb1c0fb43d771623918b82418db4e9351daff934d828578970f2d95a9258c"
+      },
+      {
+        "label": "blur-red-valid",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-affine-image.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 1,
+        "seconds": 0.99,
+        "log": "/private/tmp/pr45-fix-blur-red-valid.log",
+        "logSha256": "067b8e9799705796016b0362d655978718f34adff97adbbf8a0ae21163add288"
+      },
+      {
+        "label": "blur-green",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-affine-image.test.ts",
+          "tests/unit/composition-spatial-capabilities.test.ts",
+          "tests/unit/composition-spatial-effect-space.test.ts",
+          "tests/unit/composition-webgl-cache.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 1.23,
+        "log": "/private/tmp/pr45-fix-blur-green.log",
+        "logSha256": "75401aae3e54333ea3e7f0d8befe0eeebd928fe610fb1e871d3686bc2cfc5abb"
+      },
+      {
+        "label": "affine-blur-green",
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "/private/tmp/pr45-affine-blur.mts"
+        ],
+        "exitCode": 0,
+        "seconds": 2.94,
+        "log": "/private/tmp/pr45-fix-affine-blur-green.log",
+        "logSha256": "621a7c93e6880bf7450eb8560ecb7b195ef76b988243b4ad39a8429a12365358"
+      },
+      {
+        "label": "coverage-red",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-cinematic-coverage.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 1,
+        "seconds": 0.94,
+        "log": "/private/tmp/pr45-fix-coverage-red.log",
+        "logSha256": "3e0afe0b5920988ad7cb1bed37088d2987bc08ff2bb5664c0b7bb0db57f79400"
+      },
+      {
+        "label": "toolchain",
+        "command": ["pnpm", "toolchain:check"],
+        "exitCode": 0,
+        "seconds": 0.63,
+        "log": "/private/tmp/pr45-fix-toolchain.log",
+        "logSha256": "24bd2d2c1d59c4208bae734016d58e4d8e0f07784720eae27dc3f6fa8aeef27e"
+      },
+      {
+        "label": "vite-config",
+        "command": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "const {loadConfigFromFile}=await import(\"vite\"); await loadConfigFromFile({command:\"serve\",mode:\"development\"},\"apps/lab/vite.config.ts\"); console.log(\"Native Vite config imports passed\");"
+        ],
+        "exitCode": 0,
+        "seconds": 0.61,
+        "log": "/private/tmp/pr45-fix-vite-config.log",
+        "logSha256": "e900665a5494d0fc73dacad5cadbe5b2bd1cfbd8bd4757b086b13047846063a8"
+      },
+      {
+        "label": "blur-format",
+        "command": [
+          "pnpm",
+          "exec",
+          "prettier",
+          "--write",
+          "packages/renderer-core/src/composition/render/graph.ts",
+          "packages/renderer-core/src/composition/render/version.ts",
+          "packages/renderer-core/src/composition/render/webgl2.ts",
+          "packages/execution-runtime/src/export-worker.ts",
+          "tests/unit/composition-affine-image.test.ts",
+          "tests/helpers/composition-affine-blur-reference.ts",
+          "tests/browser/composition-camera.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 0.38,
+        "log": "/private/tmp/pr45-fix-blur-format.log",
+        "logSha256": "18543a4dc973e3d65fdb50e2a15f5f4c802aae42eaf1c6daec716ec8379f6b6d"
+      },
+      {
+        "label": "blur-lint",
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/renderer-core/src/composition/render/graph.ts",
+          "packages/renderer-core/src/composition/render/version.ts",
+          "packages/renderer-core/src/composition/render/webgl2.ts",
+          "packages/execution-runtime/src/export-worker.ts",
+          "tests/unit/composition-affine-image.test.ts",
+          "tests/helpers/composition-affine-blur-reference.ts",
+          "tests/browser/composition-camera.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 0.8,
+        "log": "/private/tmp/pr45-fix-blur-lint.log",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "coverage-green",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-cinematic-coverage.test.ts",
+          "tests/unit/foreground-reveal.test.ts",
+          "tests/unit/composition-cinematic-adapter.test.ts",
+          "--maxWorkers=2"
+        ],
+        "exitCode": 0,
+        "seconds": 1.92,
+        "log": "/private/tmp/pr45-fix-coverage-green.log",
+        "logSha256": "ee85f4227498daf1b8253968a9858fdabe6a9109e1126e43c571a55eb7b01cf2"
+      },
+      {
+        "label": "first-record-format",
+        "command": [
+          "pnpm",
+          "exec",
+          "prettier",
+          "--write",
+          "docs/dev-log.md",
+          "docs/pr-45-fix-results.json",
+          "docs/pr-45-review-results.json"
+        ],
+        "exitCode": 0,
+        "seconds": 0.56,
+        "log": "/private/tmp/pr45-fix-first-record-format.log",
+        "logSha256": "18c156768e2ae9c6ece8137b80455764f815aac038916a4324dcdf3c003d38a9"
+      },
+      {
+        "label": "coverage-browser-green",
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "/private/tmp/pr45-coverage-browser-probe.mts"
+        ],
+        "exitCode": 0,
+        "seconds": 3.56,
+        "log": "/private/tmp/pr45-fix-coverage-browser-green.log",
+        "logSha256": "a7e4d863970d7bb380aa5c91c17cc19cb4b6c90a546302a108e2c5b5bc54a0ca"
+      },
+      {
+        "label": "coverage-browser-typecheck",
+        "command": ["pnpm", "exec", "tsc", "--noEmit", "--pretty", "false"],
+        "exitCode": 0,
+        "seconds": 6.21,
+        "log": "/private/tmp/pr45-fix-coverage-browser-typecheck.log",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "integration",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/integration/composition-program-cli.test.ts",
+          "tests/integration/composition-program-examples.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "exitCode": 0,
+        "seconds": 7.88,
+        "log": "/private/tmp/pr45-fix-integration.log",
+        "logSha256": "6ce63559a430d9942336cb7f8b58e024042a6ddf44a359437430cb01c8085ce8"
+      },
+      {
+        "label": "coverage-browser-lint",
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "tests/helpers/composition-cinematic-coverage-acceptance.ts",
+          "tests/browser/composition-cinematic-adapter.ts"
+        ],
+        "exitCode": 0,
+        "seconds": 0.71,
+        "log": "/private/tmp/pr45-fix-coverage-browser-lint.log",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "fast",
+        "command": ["pnpm", "check:fast"],
+        "exitCode": 0,
+        "seconds": 42.73,
+        "log": "/private/tmp/pr45-fix-fast.log",
+        "logSha256": "8f4212afe6b82ff84063b3745c82082bb5f5472b4a819952fd4046c2191ee201"
+      },
+      {
+        "label": "examples",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/integration/composition-examples.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "exitCode": 0,
+        "seconds": 7.37,
+        "log": "/private/tmp/pr45-fix-examples.log",
+        "logSha256": "e1dfe2cce08c16ce70a9e99ef49c47cc13c6ea3d1d213f18d4f632820da1ac29"
+      },
+      {
+        "label": "camera",
+        "command": ["pnpm", "test:browser:composition-camera"],
+        "exitCode": 0,
+        "seconds": 77.68,
+        "log": "/private/tmp/pr45-fix-camera.log",
+        "logSha256": "b84e941a094efc855877bc8e49f4a04f097f8b0b82b34acdcf8dd4aadcb1de1e"
+      },
+      {
+        "label": "cinematic-smoke",
+        "command": [
+          "pnpm",
+          "test:browser:composition-cinematic-adapter",
+          "--smoke"
+        ],
+        "exitCode": 0,
+        "seconds": 44.61,
+        "log": "/private/tmp/pr45-fix-cinematic-smoke.log",
+        "logSha256": "badddd33c88616fddfefb42c549e04e74ffaf7613d8e4f08de44a1a831d2f827"
+      },
+      {
+        "label": "webgl-export",
+        "command": ["pnpm", "test:browser:composition-webgl-export"],
+        "exitCode": 0,
+        "seconds": 33.18,
+        "log": "/private/tmp/pr45-fix-webgl-export.log",
+        "logSha256": "9969634d8d186d24234694a838c98869ce17fe190a3aa3422d5c391f6f7c571b"
+      },
+      {
+        "label": "exposure",
+        "command": ["pnpm", "test:browser:composition-exposure"],
+        "exitCode": 0,
+        "seconds": 28.61,
+        "log": "/private/tmp/pr45-fix-exposure.log",
+        "logSha256": "b7741a9238ccfa960b732f651c3789da8a52cf02b84e32ac88640791d3749f2f"
+      },
+      {
+        "label": "baselines",
+        "command": ["pnpm", "test:browser:composition-baselines"],
+        "exitCode": 0,
+        "seconds": 291.56,
+        "log": "/private/tmp/pr45-fix-baselines.log",
+        "logSha256": "2b10f7add41093fd867bfc066d662f7f5eee8692fc0e9827fb8d5a11cfbcdbbe"
+      }
+    ],
+    "notRun": ["full pnpm check", "full family timing matrices"],
+    "sourceFingerprint": {
+      "sha256": "e23f1218ef5d28d2b8a23d4df30bb5f3da3bb9eb5dac5aa1cf38a7ecdb3efc78",
+      "fileCount": 1732,
+      "unchangedAcrossFinalChecks": true,
+      "scope": "Tracked and nonignored new files excluding documentation; path and content hashes."
+    },
+    "results": {
+      "fastUnitTests": 2385,
+      "fastUnitFiles": 215,
+      "affectedIntegrationTests": 8,
+      "affinePixelPairs": 36,
+      "affinePixelMaxDelta": 0,
+      "cinematicSmokeBackendCases": 46,
+      "frozenBaselineItems": 176,
+      "frozenBaselineFrames": 36061,
+      "baselineRegeneration": false
+    },
+    "expectedRedFailures": [
+      "blur-red-valid: original-code local primitive-blur regressions",
+      "coverage-red: original-code fractional exposure regressions"
+    ],
+    "fixtureSetupFailure": "First blur-red run omitted the required group size. The fixture was corrected; blur-red-valid confirms the real original-code regression. This is test setup, not an application failure.",
+    "historicalEvidence": "Original CE4c milestone full gate and pre-repair conflict-resolution evidence remain historical; current results are focused PR follow-up checks."
+  },
+  "delivery": {
+    "policy": "One finding per commit, one normal push only after the second/final commit.",
+    "firstRepairCommit": "a99be1f7fa3d48c8521f647ffcbbbbfa84fcb157",
+    "secondRepairCommit": "commit containing this final record",
+    "remoteBranch": "codex/composition-ce4c",
+    "procedure": "Push both repair commits together after this final commit; confirm the remote head and reply to each inline finding with its repair commit.",
+    "ownerReviewAndMerge": "Remain with owner; no PR merge performed."
+  }
+}

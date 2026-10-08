@@ -88,11 +88,14 @@ export function projectSpatialScope(
           height,
           world: active.worldMatrix3d ?? affineMatrix4(active.worldMatrix),
           zoom: controls.zoom,
+          viewOffset: controls.viewOffset,
           filmSize: controls.filmSize,
           nearClip: controls.nearClip,
           farClip: controls.farClip,
           focusDistance: controls.focusDistance,
           blurLevel: controls.blurLevel,
+          blurModel: controls.blurModel,
+          maxBlur: controls.maxBlur,
           ...(pointOfInterest ? { pointOfInterest } : {}),
           aperture: controls.depthOfField ? controls.aperture : 0,
         }),
@@ -260,7 +263,10 @@ export function projectSpatialScope(
         anchor[2] ?? 0,
       ] as Point3),
     );
-    state.focusBlur = circleOfConfusion(camera, state.cameraDepth);
+    state.focusBlur = circleOfConfusion(
+      camera,
+      state.layer.focusDepth ?? state.cameraDepth,
+    );
     const bounds = localBounds(comp, scope, state, options);
     if (!bounds) continue;
     const path = [...route, state.id].join("/");
@@ -277,13 +283,15 @@ export function projectSpatialScope(
     // Unbounded generators operate within this flat layer's declared artwork domain.
     const plane = projectPlane(state.worldMatrix3d, camera, expanded ?? bounds);
     state.projection = plane;
+    const focusPadding =
+      state.focusBlur * (camera.blurModel === "gaussian" ? 3 : 1) + 1;
     state.bounds =
       plane.bounds && state.focusBlur
         ? {
-            left: plane.bounds.left - state.focusBlur - 1,
-            top: plane.bounds.top - state.focusBlur - 1,
-            right: plane.bounds.right + state.focusBlur + 1,
-            bottom: plane.bounds.bottom + state.focusBlur + 1,
+            left: plane.bounds.left - focusPadding,
+            top: plane.bounds.top - focusPadding,
+            right: plane.bounds.right + focusPadding,
+            bottom: plane.bounds.bottom + focusPadding,
           }
         : plane.bounds;
     if (plane.affineMatrix) state.screenMatrix = plane.affineMatrix;

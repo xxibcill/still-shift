@@ -25,6 +25,23 @@ const code = (doc: Composition) => {
             ?.diagnosticCode,
       );
 };
+it("limits artistic focus-depth overrides to explicitly 3D flat artwork", () => {
+  const artwork: CompositionLayer = {
+    id: "art",
+    type: "solid",
+    size: [10, 10],
+    color: "#ffffff",
+    focusDepth: 4,
+  };
+  expect(code(document([artwork]))).toContain("comp-camera-settings");
+  expect(
+    CompositionSchema.safeParse(document([{ ...artwork, threeD: true }]))
+      .success,
+  ).toBe(true);
+  expect(code(document([{ ...camera, focusDepth: 4 }]))).toContain(
+    "comp-camera-settings",
+  );
+});
 it("accepts implicit spatial camera transforms and explicit native 3D artwork", () => {
   expect(
     CompositionSchema.safeParse(

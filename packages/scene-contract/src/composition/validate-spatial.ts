@@ -25,6 +25,16 @@ export function checkSpatialLayer(
 ) {
   const spatial = spatialLayer(layer, scope);
   if (
+    layer.focusDepth !== undefined &&
+    (!layer.threeD ||
+      !["image", "solid", "text", "shape", "precomp"].includes(layer.type))
+  )
+    fail(
+      "comp-camera-settings",
+      [...path, "focusDepth"],
+      "Artistic focusDepth requires explicitly 3D flat artwork",
+    );
+  if (
     layer.receivesLight !== undefined &&
     (!layer.threeD ||
       !["image", "solid", "text", "shape", "precomp"].includes(layer.type))

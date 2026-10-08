@@ -86,6 +86,7 @@ export type ImageContent = {
   height: number;
   fit: "contain" | "cover" | "stretch";
   rasterize: "draw" | "natural-size";
+  clip?: boolean;
   /** Echo history stacking uses bitmap source-over on transparent targets. */
   bitmapRounding?: true;
   sources: ImageLayer["sources"];
@@ -139,6 +140,8 @@ export type DrawOp = {
   blend: CompositionBlendMode;
   clips: ClipRect[];
   paintBlur?: number;
+  /** Retain finite/backend preflight when an affine plane draws without an intermediate surface. */
+  projection?: ProjectivePlacement;
 };
 /** Render `ops` into a scope-sized surface, apply masks and matte, then composite. */
 export type IsolateOp = {
@@ -364,54 +367,48 @@ class GraphBuilder {
   coverageSurface(
     tree: EvaluatedLayerTree,
     def: CompositionScope,
-    id: string,
+    ids: readonly string[],
     prefix: string,
   ): SurfaceNode {
-    const state = tree.layers.find((state) => state.id === id)!;
+    const selected = tree.layers.filter((state) => ids.includes(state.id));
     const scope = this.scope(
       tree,
       def,
-      state.layer.type === "group" ? id : undefined,
+      selected.length === 1 && selected[0]!.layer.type === "group"
+        ? selected[0]!.id
+        : undefined,
     );
-    const coverageLayers = new Set([id]);
-    if (state.layer.type === "group")
-      for (const candidate of tree.layers)
-        for (
-          let parent = candidate.layer.parent;
-          parent;
-          parent = scope.byId.get(parent)!.layer.parent
-        )
-          if (parent === id) {
-            coverageLayers.add(candidate.id);
-            break;
-          }
-    for (
-      let parent = state.layer.parent;
-      parent;
-      parent = scope.byId.get(parent)!.layer.parent
-    )
-      coverageLayers.add(parent);
-    let root = state;
-    for (
-      let owner = scope.owners.get(root.id);
-      owner;
-      owner = scope.owners.get(root.id)
-    )
-      root = scope.byId.get(owner)!;
-    const ops =
-      root.visible && root.opacity > 0
-        ? this.layerOps(scope, root, {
-            coverageLayers,
-            matrix: IDENTITY,
-            transforms: [],
-            opacity: 1,
-            clips: [],
-            viewport: { width: tree.width, height: tree.height },
-            prefix,
-            background: null,
-            cull: false,
-          })
-        : [];
+    const coverageLayers = new Set(ids);
+    for (const state of selected) {
+      if (state.layer.type === "group")
+        for (const candidate of tree.layers)
+          for (
+            let parent = candidate.layer.parent;
+            parent;
+            parent = scope.byId.get(parent)!.layer.parent
+          )
+            if (parent === state.id) {
+              coverageLayers.add(candidate.id);
+              break;
+            }
+      for (
+        let parent = state.layer.parent;
+        parent;
+        parent = scope.byId.get(parent)!.layer.parent
+      )
+        coverageLayers.add(parent);
+    }
+    const ops = this.scopeLayers(scope, {
+      coverageLayers,
+      matrix: IDENTITY,
+      transforms: [],
+      opacity: 1,
+      clips: [],
+      viewport: { width: tree.width, height: tree.height },
+      prefix,
+      background: null,
+      cull: false,
+    });
     return {
       id: tree.id,
       width: tree.width,
@@ -1129,6 +1126,71 @@ class GraphBuilder {
       );
     const content = this.content(scope, state, frame);
     if (!content) return [];
+    const camera = this.exposureScope(scope, state).tree.camera;
+    const focus = state.focusBlur ?? 0;
+    const crossfading =
+      content.type === "image" &&
+      content.stateFrom !== undefined &&
+      content.stateFrom !== content.state &&
+      content.stateMix !== undefined &&
+      content.stateMix > 0 &&
+      content.stateMix < 1;
+    if (
+      content.type === "image" &&
+      content.rasterize === "natural-size" &&
+      plane.affineMatrix &&
+      !paintBlur &&
+      (options.raw ||
+        (!state.masks.length &&
+          !state.effects.some(
+            (effect) => effect.enabled && effect.effect !== "blur.primitive",
+          ))) &&
+      !(
+        layer.receivesLight &&
+        this.exposureScope(scope, state).tree.lights?.length
+      ) &&
+      (!focus ||
+        (camera?.blurModel === "gaussian" &&
+          content.fit === "stretch" &&
+          !content.sources.some((source) => source.registration) &&
+          // Blend states with local overscan before applying screen-space focus.
+          !crossfading))
+    ) {
+      const placement = planePlacement(plane, frame.matrix, [0, 0]);
+      if (!placement?.affineMatrix) return [];
+      const clips = this.groupClips(scope, state, frame);
+      const matte = options.raw
+        ? null
+        : this.matte(scope, state, frame, options.seen ?? new Set([layer.id]));
+      const draw: DrawOp = {
+        kind: "draw",
+        layer: key,
+        content: focus ? { ...content, clip: false } : content,
+        projection: placement,
+        matrix: placement.affineMatrix,
+        transforms: [...frame.transforms, plane.affineMatrix],
+        opacity: matte ? 1 : opacity,
+        blend: matte ? "normal" : blend,
+        clips: matte ? [] : clips,
+        ...(focus ? { paintBlur: focus } : {}),
+      };
+      this.spatial = true;
+      return matte
+        ? [
+            {
+              kind: "isolate",
+              layer: key,
+              ops: [draw],
+              effects: [],
+              masks: [],
+              matte,
+              opacity,
+              blend,
+              clips,
+            },
+          ]
+        : [draw];
+    }
     const raster = localSurfaceBounds(plane.localBounds, key);
     const placement = planePlacement(plane, frame.matrix, raster.origin);
     if (!placement) return [];
@@ -1233,14 +1295,19 @@ class GraphBuilder {
             },
           ]
         : [draw];
-    const focus: RenderEffect[] = state.focusBlur
+    const gaussianFocus =
+      this.exposureScope(scope, state).tree.camera?.blurModel === "gaussian";
+    const focusKind = gaussianFocus ? "blur.gaussian" : "blur.lens";
+    const focusEffects: RenderEffect[] = state.focusBlur
       ? [
           {
             id: "camera-focus",
-            effect: "blur.lens",
-            version: compositionEffectDefinition("blur.lens")!.version,
+            effect: focusKind,
+            version: compositionEffectDefinition(focusKind)!.version,
             enabled: true,
-            params: { radius: state.focusBlur, samples: 32 },
+            params: gaussianFocus
+              ? { radius: state.focusBlur }
+              : { radius: state.focusBlur, samples: 32 },
           },
         ]
       : [];
@@ -1259,9 +1326,12 @@ class GraphBuilder {
         },
         placement,
         ...(state.focusBlur
-          ? { focusPadding: Math.ceil(state.focusBlur) + 2 }
+          ? {
+              focusPadding:
+                Math.ceil(state.focusBlur * (gaussianFocus ? 3 : 1)) + 2,
+            }
           : {}),
-        effects: focus,
+        effects: focusEffects,
         matte: options.raw ? null : this.matte(scope, state, frame, seen),
         opacity,
         blend,
@@ -1550,8 +1620,20 @@ export function buildLayerRenderGraph(
   prefix: string,
   options: RenderGraphOptions = {},
 ): RenderGraph {
+  return buildLayersRenderGraph(comp, tree, scope, [id], prefix, options);
+}
+
+/** Isolate selected planes together so shared ancestor treatments and exposure alpha compose once. */
+export function buildLayersRenderGraph(
+  comp: Composition,
+  tree: EvaluatedLayerTree,
+  scope: CompositionScope,
+  ids: readonly string[],
+  prefix: string,
+  options: RenderGraphOptions = {},
+): RenderGraph {
   const builder = new GraphBuilder(comp, tree.time, options);
-  const root = builder.coverageSurface(tree, scope, id, prefix);
+  const root = builder.coverageSurface(tree, scope, ids, prefix);
   return {
     root,
     culled: builder.culled,

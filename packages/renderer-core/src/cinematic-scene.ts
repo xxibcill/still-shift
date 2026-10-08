@@ -369,7 +369,10 @@ export function sampleCinematicBlur(
   );
 }
 
-function sampleCamera(scene: CompiledCamera, frame: number): CameraKey {
+export function sampleCinematicCamera(
+  scene: CompiledCamera,
+  frame: number,
+): CameraKey {
   if (
     (!scene.effectsVersion && !Number.isInteger(frame)) ||
     !Number.isFinite(frame) ||
@@ -416,7 +419,7 @@ export function projectCinematicNode(
   node: PreparedImage,
   frame: number,
 ) {
-  const camera = sampleCamera(scene, frame);
+  const camera = sampleCinematicCamera(scene, frame);
   const layer = scene.layers.find((item) => item.node === node.id)!;
   const subject = scene.nodes.find((item) => item.id === scene.recipe.subject)!;
   const subjectDepth = scene.layers.find(
@@ -481,10 +484,17 @@ function inspectLateralTrack(
     throw new Error("Camera exceeds the lateral track movement envelope");
 }
 
-function inspectSubjectVisibility(scene: CompiledCamera, frame: number) {
+export type CinematicProjector = typeof projectCinematicNode;
+
+function inspectSubjectVisibility(
+  scene: CompiledCamera,
+  frame: number,
+  project: CinematicProjector,
+  blur: typeof sampleCinematicBlur,
+) {
   const subject = scene.nodes.find((node) => node.id === scene.recipe.subject)!;
   const layer = scene.layers.find((layer) => layer.node === subject.id)!;
-  const target = projectCinematicNode(scene, subject, frame);
+  const target = project(scene, subject, frame);
   const xs = layer.protectedRegion!.map(
     ([x]) => target.left + x * target.scale,
   );
@@ -493,9 +503,9 @@ function inspectSubjectVisibility(scene: CompiledCamera, frame: number) {
   );
   for (const near of scene.layers.filter((near) => near.depth < layer.depth)) {
     const node = scene.nodes.find((node) => node.id === near.node)!;
-    const p = projectCinematicNode(scene, node, frame);
+    const p = project(scene, node, frame);
     const padding = PRESET_BEHAVIORS[scene.recipe.preset].focusBlur
-      ? 3 * sampleCinematicBlur(scene, node.id, frame)
+      ? 3 * blur(scene, node.id, frame)
       : 0;
     // Conservatively reject even transparent card overlap with the detail.
     if (
@@ -510,13 +520,16 @@ function inspectSubjectVisibility(scene: CompiledCamera, frame: number) {
   }
 }
 
-function inspectDetailScale(scene: CompiledCamera) {
+function inspectDetailScale(
+  scene: CompiledCamera,
+  project: CinematicProjector,
+) {
   const reduction = (id: string) => {
     const node = scene.nodes.find((node) => node.id === id)!;
     return (
       1 -
-      projectCinematicNode(scene, node, scene.timeline.frameCount - 1).scale /
-        projectCinematicNode(scene, node, 0).scale
+      project(scene, node, scene.timeline.frameCount - 1).scale /
+        project(scene, node, 0).scale
     );
   };
   const foregroundScaleReduction = reduction(scene.recipe.foreground);
@@ -541,7 +554,11 @@ function inspectDetailScale(scene: CompiledCamera) {
   };
 }
 
-function inspectCamera(scene: CompiledCamera) {
+export function inspectCinematicCamera(
+  scene: CompiledCamera,
+  project: CinematicProjector = projectCinematicNode,
+  blur: typeof sampleCinematicBlur = sampleCinematicBlur,
+) {
   const profile = cameraProfile(scene);
   const behavior = PRESET_BEHAVIORS[scene.recipe.preset];
   const horizontalSpan = horizontalMotionSpan(scene);
@@ -564,8 +581,8 @@ function inspectCamera(scene: CompiledCamera) {
   )!.paintedBounds!;
   for (let frame = 0; frame < scene.timeline.frameCount; frame++) {
     if (pullback || focus || behavior.dollyZoom)
-      inspectSubjectVisibility(scene, frame);
-    const projected = projectCinematicNode(scene, plate, frame);
+      inspectSubjectVisibility(scene, frame, project, blur);
+    const projected = project(scene, plate, frame);
     const left = projected.left + painted[0] * projected.scale;
     const top = projected.top + painted[1] * projected.scale;
     const right = left + painted[2] * projected.scale;
@@ -584,15 +601,12 @@ function inspectCamera(scene: CompiledCamera) {
         frame,
         gaps: coverageGaps(backgroundMargins, 0),
       });
-    if (focus && margin < 3 * sampleCinematicBlur(scene, plate.id, frame))
+    if (focus && margin < 3 * blur(scene, plate.id, frame))
       throw new CinematicCoverageError({
         kind: "background-blur",
         node: plate.id,
         frame,
-        gaps: coverageGaps(
-          backgroundMargins,
-          3 * sampleCinematicBlur(scene, plate.id, frame),
-        ),
+        gaps: coverageGaps(backgroundMargins, 3 * blur(scene, plate.id, frame)),
       });
     minimumCoverageMargin = Math.min(
       minimumCoverageMargin,
@@ -600,7 +614,7 @@ function inspectCamera(scene: CompiledCamera) {
     );
     for (const layer of scene.layers) {
       const node = scene.nodes.find((item) => item.id === layer.node)!;
-      const p = projectCinematicNode(scene, node, frame);
+      const p = project(scene, node, frame);
       const edgeMargins = {
         left: -p.left,
         right: p.left + p.width - scene.width,
@@ -616,7 +630,7 @@ function inspectCamera(scene: CompiledCamera) {
             gaps: [{ edge, missingPixels: -edgeMargins[edge] }],
           });
       if (focus) {
-        const padding = 3 * sampleCinematicBlur(scene, node.id, frame);
+        const padding = 3 * blur(scene, node.id, frame);
         for (const edge of layer.edgeAttachments ?? [])
           if (edgeMargins[edge] < padding)
             throw new CinematicCoverageError({
@@ -698,7 +712,7 @@ function inspectCamera(scene: CompiledCamera) {
           throw new Error(`Subject protected framing fails at frame ${frame}`);
       }
     }
-    const p = projectCinematicNode(scene, subject, frame);
+    const p = project(scene, subject, frame);
     subjectTravelPx = Math.max(
       subjectTravelPx,
       Math.hypot(p.left - subject.x, p.top - subject.y),
@@ -718,20 +732,16 @@ function inspectCamera(scene: CompiledCamera) {
   }
   const travel = (id: string) => {
     const node = scene.nodes.find((item) => item.id === id)!;
-    const end = projectCinematicNode(
-      scene,
-      node,
-      scene.timeline.frameCount - 1,
-    );
-    return Math.abs(end.left - projectCinematicNode(scene, node, 0).left);
+    const end = project(scene, node, scene.timeline.frameCount - 1);
+    return Math.abs(end.left - project(scene, node, 0).left);
   };
   const foregroundTravelPx = travel(scene.recipe.foreground),
     backgroundTravelPx = travel(scene.recipe.background);
   const verticalTravel = (id: string) => {
     const node = scene.nodes.find((item) => item.id === id)!;
     return Math.abs(
-      projectCinematicNode(scene, node, scene.timeline.frameCount - 1).top -
-        projectCinematicNode(scene, node, 0).top,
+      project(scene, node, scene.timeline.frameCount - 1).top -
+        project(scene, node, 0).top,
     );
   };
   const foregroundVerticalTravelPx = verticalTravel(scene.recipe.foreground),
@@ -793,8 +803,9 @@ function inspectCamera(scene: CompiledCamera) {
     const node = scene.nodes.find((node) => node.id === id)!;
     return (
       Math.max(
-        projectCinematicNode(scene, node, 0).scale,
-        projectCinematicNode(scene, node, scene.timeline.frameCount - 1).scale,
+        1,
+        project(scene, node, 0).scale,
+        project(scene, node, scene.timeline.frameCount - 1).scale,
       ) - 1
     );
   };
@@ -807,8 +818,8 @@ function inspectCamera(scene: CompiledCamera) {
   let backgroundScaleReduction: number | undefined;
   if (behavior.dollyZoom) {
     const last = scene.timeline.frameCount - 1;
-    const startBackground = projectCinematicNode(scene, plate, 0);
-    const endBackground = projectCinematicNode(scene, plate, last);
+    const startBackground = project(scene, plate, 0);
+    const endBackground = project(scene, plate, last);
     backgroundScaleReduction = 1 - endBackground.scale / startBackground.scale;
     const subjectDepth = scene.layers.find(
       (layer) => layer.node === subject.id,
@@ -818,10 +829,10 @@ function inspectCamera(scene: CompiledCamera) {
         .filter((layer) => layer.depth < subjectDepth)
         .map((layer) => {
           const node = scene.nodes.find((item) => item.id === layer.node)!;
-          const initial = projectCinematicNode(scene, node, 0);
+          const initial = project(scene, node, 0);
           return Math.max(
             ...Array.from({ length: scene.timeline.frameCount }, (_, frame) => {
-              const p = projectCinematicNode(scene, node, frame);
+              const p = project(scene, node, frame);
               return Math.max(
                 Math.abs(p.left - initial.left),
                 Math.abs(p.left + p.width - (initial.left + initial.width)),
@@ -866,7 +877,7 @@ function inspectCamera(scene: CompiledCamera) {
       throw new Error("Camera exceeds the threshold push movement envelope");
   }
   return CameraValidationSchema.parse({
-    ...(pullback ? inspectDetailScale(scene) : {}),
+    ...(pullback ? inspectDetailScale(scene, project) : {}),
     checkedFrames: scene.timeline.frameCount,
     minimumCoverageMargin,
     foregroundTravelPx,
@@ -954,7 +965,7 @@ export function compileCinematicScene(
       key(frameCount - 1, x, y, z),
     ],
   };
-  return { ...scene, cameraValidation: inspectCamera(scene) };
+  return { ...scene, cameraValidation: inspectCinematicCamera(scene) };
 }
 
 /** Resolve and validate a prepared cinematic variant before writing it for export. */

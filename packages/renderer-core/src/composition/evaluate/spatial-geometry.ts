@@ -52,12 +52,15 @@ export type CameraGeometry = {
   down: Point3;
   forward: Point3;
   zoom: number;
+  viewOffset: Point;
   nearClip: number;
   farClip: number;
   filmSize: number;
   focusDistance: number;
   aperture: number;
   blurLevel: number;
+  blurModel: "lens" | "gaussian";
+  maxBlur: number;
 };
 export type ProjectedPlane = {
   localBounds: Bounds;
@@ -209,6 +212,7 @@ export function cameraGeometry(options: {
   height: number;
   world: Matrix4;
   pointOfInterest?: Point3;
+  viewOffset?: Point;
   zoom: number;
   nearClip?: number;
   farClip?: number;
@@ -216,14 +220,35 @@ export function cameraGeometry(options: {
   focusDistance?: number;
   aperture?: number;
   blurLevel?: number;
+  blurModel?: "lens" | "gaussian";
+  maxBlur?: number;
 }): CameraGeometry {
   const { width, height, world, zoom } = options;
+  const viewOffset: Point = [...(options.viewOffset ?? [0, 0])];
+  if (
+    viewOffset.length !== 2 ||
+    !viewOffset.every(
+      (value) => Number.isFinite(value) && Math.abs(value) <= 1_000_000,
+    )
+  )
+    throw Error(
+      "Camera view offset must contain two finite values within ±1000000",
+    );
   const nearClip = options.nearClip ?? 0.01,
     farClip = options.farClip ?? 10_000_000;
   const filmSize = options.filmSize ?? 36,
     focusDistance = options.focusDistance ?? zoom;
   const aperture = options.aperture ?? 0,
     blurLevel = options.blurLevel ?? 1;
+  const maxBlur = options.maxBlur ?? 128,
+    blurModel = options.blurModel ?? "lens";
+  if (
+    !Number.isFinite(maxBlur) ||
+    maxBlur < 0 ||
+    maxBlur > 128 ||
+    !["lens", "gaussian"].includes(blurModel)
+  )
+    throw Error("Camera focus blur model or radius cap is invalid");
   if (
     ![width, height, zoom, filmSize, focusDistance].every(
       (value) => Number.isFinite(value) && value > 0,
@@ -289,12 +314,15 @@ export function cameraGeometry(options: {
     down,
     forward,
     zoom,
+    viewOffset,
     nearClip,
     farClip,
     filmSize,
     focusDistance,
     aperture,
     blurLevel,
+    blurModel,
+    maxBlur,
   };
 }
 function cameraPoint(camera: CameraGeometry, world: Point3): Point3 {
@@ -312,8 +340,8 @@ export function projectWorldPoint(
   const [x, y, z] = cameraPoint(camera, world);
   if (z < camera.nearClip || z > camera.farClip) return null;
   return [
-    camera.width / 2 + (camera.zoom * x) / z,
-    camera.height / 2 + (camera.zoom * y) / z,
+    camera.width / 2 + camera.viewOffset[0] + (camera.zoom * x) / z,
+    camera.height / 2 + camera.viewOffset[1] + (camera.zoom * y) / z,
   ];
 }
 export function cameraDepth(camera: CameraGeometry, world: Point3): number {
@@ -336,8 +364,11 @@ export function cameraFrustum(
     [camera.width, camera.height],
     [0, camera.height],
   ].map(([x, y]) => {
-    const horizontal = ((x! - camera.width / 2) * distance) / camera.zoom;
-    const vertical = ((y! - camera.height / 2) * distance) / camera.zoom;
+    const horizontal =
+      ((x! - camera.width / 2 - camera.viewOffset[0]) * distance) / camera.zoom;
+    const vertical =
+      ((y! - camera.height / 2 - camera.viewOffset[1]) * distance) /
+      camera.zoom;
     return [0, 1, 2].map(
       (axis) =>
         camera.position[axis]! +
@@ -408,8 +439,8 @@ export function planeHomography(
   const origin = cameraPoint(camera, worldPoint(world, [0, 0, 0]));
   const x = subtract(cameraPoint(camera, worldPoint(world, [1, 0, 0])), origin);
   const y = subtract(cameraPoint(camera, worldPoint(world, [0, 1, 0])), origin);
-  const cx = camera.width / 2,
-    cy = camera.height / 2,
+  const cx = camera.width / 2 + camera.viewOffset[0],
+    cy = camera.height / 2 + camera.viewOffset[1],
     z = camera.zoom;
   return [
     z * x[0] + cx * x[2],
@@ -506,7 +537,7 @@ export function circleOfConfusion(
 ): number {
   if (camera.aperture === 0 || camera.blurLevel === 0 || depth <= 0) return 0;
   return Math.min(
-    128,
+    camera.maxBlur,
     ((camera.aperture * camera.zoom) / (2 * camera.filmSize)) *
       Math.abs(1 - camera.focusDistance / depth) *
       camera.blurLevel,

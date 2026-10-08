@@ -83,6 +83,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -118,6 +119,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -158,6 +160,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -222,6 +225,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -255,6 +259,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -296,6 +301,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -331,6 +337,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -369,6 +376,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -403,6 +411,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -437,6 +446,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -453,6 +463,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `type`                | yes      | `camera`                                                                                                                                                                                              |
 | `model`               | no       | `one-node`, `two-node`                                                                                                                                                                                |
 | `pointOfInterest`     | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
+| `viewOffset`          | no       | [number, number] or object                                                                                                                                                                            |
 | `zoom`                | no       | number or object                                                                                                                                                                                      |
 | `focalLength`         | no       | number or object                                                                                                                                                                                      |
 | `filmSize`            | no       | number or object                                                                                                                                                                                      |
@@ -462,6 +473,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `focusDistance`       | no       | number or object                                                                                                                                                                                      |
 | `aperture`            | no       | number or object                                                                                                                                                                                      |
 | `blurLevel`           | no       | number or object                                                                                                                                                                                      |
+| `blurModel`           | no       | `lens`, `gaussian`                                                                                                                                                                                    |
+| `maxBlur`             | no       | number                                                                                                                                                                                                |
 
 ### `light` contract
 
@@ -481,6 +494,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -521,6 +535,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -557,6 +572,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -593,6 +609,7 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `solo`                | no       | boolean                                                                                                                                                                                               |
 | `guide`               | no       | boolean                                                                                                                                                                                               |
 | `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
 | `receivesLight`       | no       | boolean                                                                                                                                                                                               |
 | `transform`           | no       | object                                                                                                                                                                                                |
 | `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
@@ -2023,11 +2040,37 @@ Author either `zoom` (pixels, 0.001–1,000,000) or `focalLength` (millimetres,
 and far clips are 0.01 and 10,000,000 world pixels. Clip order must remain valid.
 Two-node POI and numeric optics accept native keyed/driver/expression clocks.
 
+`viewOffset` shifts the principal point in screen pixels, with a default of
+`[0,0]` and bounded xy values within ±1,000,000. It accepts grouped xy keys or
+separated x/y keys and driver/expression writes. The shift applies after camera
+projection, independent of parent transforms, to point and plane geometry and
+the inverse frustum shown by the inspector. It changes framing without changing
+camera-space depth, clipping or illumination.
+
 Enable `depthOfField`, with focus distance in world pixels, aperture diameter in
 millimetres (default 0) and blur level (default 1). The declared screen radius is
 `min(128, aperture * zoom / (2 * filmSize) * abs(1 - focusDistance/depth) * blurLevel)`.
 Zero aperture/blur is an exact identity. Focus blur follows local artwork/effects
 and projective placement, with screen overscan, then matte/opacity/blending.
+
+For artistic flat planes, camera `blurModel: "gaussian"` selects screen-space
+Gaussian focus instead of the default lens model. Static `maxBlur` caps the
+screen radius within 0–128 pixels (default 128). An explicitly 3D image, solid,
+text, shape or flat precomp may author static `focusDepth` in world pixels
+(0.001–10,000,000), overriding its focus distance while its projection, sorting,
+clipping and lighting retain actual world depth. Without this override, focus
+continues to use evaluated camera depth. These controls preserve cinematic
+inverse-depth focus handoffs and remain available to native compositions.
+
+Eligible affine image planes with explicit `rasterize: "natural-size"` draw
+directly from the prepared source, avoiding an additional local-surface resize.
+Projection still participates in finite/backend preflight. Local masks, nonprimitive
+effects, active receiving lights and lens focus retain their local-surface path;
+mattes preserve shared isolation. Direct Gaussian focus applies only to stretch
+images without pose registration and permits the filter to extend beyond the
+image rectangle. Focused active image crossfades blend with local overscan before
+the shared postprojection Gaussian pass; settled states and zero-focus blends
+retain direct source drawing. Other content keeps the shared postprojection pass.
 
 WebGL2 uses actual plane homographies and near/far clipping. True perspective
 uses four quarter-pixel coverage samples and RGBA8 premultiplied bilinear weights
@@ -2731,6 +2774,52 @@ their path's treatment and matte, including flows on a path with zero opacity;
 screen-space grain is independent of the story camera. Shared-effect opt-in,
 root-target validation and component annotation ownership rules still apply.
 Motion blur is handled by the separate CE7 dependency.
+
+### Cinematic scenes as native compositions
+
+`cinematicToComposition(scene)` compiles `illustrated-scene-2` camera recipes to
+native 3D image planes and a keyed one-node camera. Integer and shutter sample
+times are resolved during compilation. The composition renderer reads native
+keys; it does not resample the cinematic recipe during frame rendering.
+
+Camera `viewOffset` preserves screen framing and tracking. Focus handoff uses
+the native camera's `blurModel: "gaussian"`, `maxBlur`, keyed focus distance and
+aperture; image `focusDepth` preserves the authored focus planes as the camera
+moves. Other depth, sorting, clipping and lighting calculations use the actual
+world geometry. Very close authored focus planes can exceed the camera's physical
+aperture budget. Those scenes use a bounded artistic inverse-depth space, declared
+in `metadata.cinematicFocusSpace`; geometry remains unchanged. The finite far
+focus-depth limit introduces at most 0.0000004 pixel of radius error, below the
+0.001-pixel state-parity tolerance. Existing scenes within the aperture budget
+retain their original focus coordinates.
+
+Affine natural-size image planes use one source draw; local masks, nonprimitive
+effects, perspective and lighting retain their local surfaces.
+
+The adapter checks coverage, source density, protected framing, edge attachments
+and recipe movement against the evaluated composition camera. Persisted
+`metadata.cinematicCoverage` keeps the painted-background alpha declaration and
+semantic foreground-reveal target. Preview and export check decoded alpha and
+native projection after JSON reload. Invalid declarations, transparent painted
+coverage and a reveal that does not clear fail with `comp-camera-coverage`.
+Declared reveal subjects and occluders retain the cinematic full-opacity rule at
+every integer frame, including keyed opacity and inherited group opacity.
+Masks, mattes, enabled effects, group ancestor treatments, focus and shutter blur
+also use isolated rendered alpha for semantic reveals. The original opaque target
+samples must remain opaque; suppressed matte sources cannot serve as a subject or
+occluder. Occluders are rendered together before exposure averaging, preserving
+overlap and shared ancestor treatments. Valid masks can reduce source occlusion
+into the allowed range. Treated declarations require a renderer; source-only
+validation rejects them instead of certifying an unmeasured reveal. Failures
+identify the semantic node and frame, including a remaining shutter occluder at
+the declared settle frame.
+Background masks, mattes, enabled effects and ancestor treatments additionally
+require rendered alpha coverage at actual shutter states. Other layers cannot
+hide a hole in the declared background. Fully covered treatments remain valid;
+cinematic declarations remain errors even when optional coverage uses warnings.
+The declared background must remain drawable; using it as another layer's matte
+source cannot suppress its viewport coverage.
+Shared `effects-1` opt-in and target validation are preserved.
 
 ### Temporal echo (CE6 dependency slice)
 
