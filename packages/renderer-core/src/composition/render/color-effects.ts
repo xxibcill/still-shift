@@ -1,3 +1,5 @@
+import type { ManagedMemory, MemoryLease } from "../../managed-memory.ts";
+import type { WebglSurface } from "./webgl-device.ts";
 import {
   allocateRenderPixels,
   readRenderImageData,
@@ -18,6 +20,7 @@ import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 
 import {
   allocateRenderMetadata,
+  allocateManagedRenderMetadata,
   releaseRenderMetadata,
 } from "../../managed-metadata.ts";
 type Params = Readonly<
@@ -374,6 +377,271 @@ function produceColorEffectPixel(
   result[index] = pixel[3];
   return result;
 }
+type ColorGpuEntries = [string, Params[string]][];
+type ColorGpuUniforms = Record<string, number | readonly number[]>;
+type ColorGpuWork = {
+  managed: boolean;
+  memory?: ManagedMemory | undefined;
+  pixel: ColorPixelWork;
+  entryCount: number;
+  entryBytes: number;
+  entriesLease?: MemoryLease | undefined;
+  entriesProducer?: (() => ColorGpuEntries) | undefined;
+  handler?: ProxyHandler<Params> | undefined;
+  receiver?: Params | undefined;
+  enumerationKeys?: (string | symbol)[] | undefined;
+  descriptor?: PropertyDescriptor | undefined;
+  entries?: ColorGpuEntries | undefined;
+  filtered?: ColorGpuEntries | undefined;
+  filterCallback?: ((entry: [string, Params[string]]) => boolean) | undefined;
+  filterProducer?: (() => ColorGpuEntries) | undefined;
+  uniforms?: ColorGpuUniforms | undefined;
+  uniformsProducer?: (() => ColorGpuUniforms) | undefined;
+  combined?: ColorGpuUniforms | undefined;
+  combinedProducer?: (() => ColorGpuUniforms) | undefined;
+  gradient?: ReturnType<typeof gradientUniforms> | undefined;
+  output?: WebglSurface | undefined;
+  transfer?: WebglSurface | undefined;
+  inputs?: WebglSurface[] | undefined;
+  bytes?: Uint8Array<ArrayBuffer> | undefined;
+  pixelLease?: MemoryLease | undefined;
+  pixelProducer?: (() => Uint8Array<ArrayBuffer>) | undefined;
+  sourcePixel?: Rgba | undefined;
+  shader?: string | undefined;
+};
+function clearColorGpuEntries(entries: ColorGpuEntries) {
+  for (let i = 0; i < entries.length; i++) (entries[i] as unknown[]).length = 0;
+  entries.length = 0;
+}
+function clearColorGpuUniforms(uniforms: ColorGpuUniforms) {
+  for (const key in uniforms) delete uniforms[key];
+}
+function clearColorGpuWork(work: ColorGpuWork) {
+  let failed = false,
+    failure: unknown;
+  if (work.combined) {
+    try {
+      releaseRenderMetadata(work.combined);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    clearColorGpuUniforms(work.combined);
+  }
+  if (work.gradient) {
+    try {
+      releaseRenderMetadata(work.gradient);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (work.uniforms) {
+    try {
+      releaseRenderMetadata(work.uniforms);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    clearColorGpuUniforms(work.uniforms);
+  }
+  if (work.filtered) {
+    try {
+      releaseRenderMetadata(work.filtered);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    work.filtered.length = 0;
+  }
+  if (work.entries) {
+    try {
+      releaseRenderMetadata(work.entries);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    clearColorGpuEntries(work.entries);
+  }
+  clearColorPixelWork(work.pixel);
+  if (work.sourcePixel) (work.sourcePixel as number[]).length = 0;
+  if (work.inputs) work.inputs.length = 0;
+  try {
+    work.pixelLease?.release();
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      failure = error;
+    }
+  }
+  try {
+    if (
+      work.bytes &&
+      work.memory &&
+      !work.memory.owns(work.bytes.buffer) &&
+      work.bytes.byteLength
+    )
+      (
+        work.bytes.buffer as ArrayBuffer & {
+          transfer(bytes: number): ArrayBuffer;
+        }
+      ).transfer(0);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      failure = error;
+    }
+  }
+  if (work.enumerationKeys) work.enumerationKeys.length = 0;
+  if (work.descriptor)
+    for (const key in work.descriptor)
+      delete (work.descriptor as Record<string, unknown>)[key];
+  if (work.handler)
+    for (const key in work.handler)
+      delete (work.handler as Record<string, unknown>)[key];
+  for (const key in work)
+    delete (work as Partial<ColorGpuWork>)[key as keyof ColorGpuWork];
+  if (failed) throw failure;
+}
+function colorGpuWork(): ColorGpuWork {
+  const memory = renderMemory();
+  return allocateRenderMetadata<ColorGpuWork>(
+    16384,
+    () => ({
+      managed: !!memory,
+      memory,
+      pixel: {},
+      entryCount: 0,
+      entryBytes: 512,
+    }),
+    false,
+    clearColorGpuWork,
+  );
+}
+function finishColorGpuWork(work: ColorGpuWork, failed: boolean) {
+  try {
+    if (work.managed) releaseRenderMetadata(work);
+    else clearColorGpuWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
+function colorGpuEntries(work: ColorGpuWork, params: Params): ColorGpuEntries {
+  if (!work.memory) return (work.entries = Object.entries(params));
+  work.handler = {
+    ownKeys() {
+      return (work.enumerationKeys = Reflect.ownKeys(params));
+    },
+    getOwnPropertyDescriptor(_target, key) {
+      const descriptor = (work.descriptor = Reflect.getOwnPropertyDescriptor(
+        params,
+        key,
+      ));
+      // The facade has no properties: only enumerability affects Object.entries.
+      if (descriptor) descriptor.configurable = true;
+      return descriptor;
+    },
+    get(_target, key) {
+      work.entryCount++;
+      work.entryBytes += 256 + 2 * (typeof key === "string" ? key.length : 0);
+      work.entriesLease!.resize(work.entryBytes);
+      return Reflect.get(params, key, params);
+    },
+  };
+  work.receiver = new Proxy({}, work.handler);
+  return allocateManagedRenderMetadata<ColorGpuEntries>(
+    work.memory,
+    512,
+    (work.entriesProducer = () =>
+      (work.entries = Object.entries(work.receiver!))),
+    false,
+    clearColorGpuEntries,
+    (lease) => {
+      work.entriesLease = lease;
+    },
+  );
+}
+function colorGpuUniforms(
+  work: ColorGpuWork,
+  params: Params,
+  definition: NonNullable<ReturnType<typeof compositionEffectDefinition>>,
+): ColorGpuUniforms {
+  const entries = colorGpuEntries(work, params);
+  const count = work.memory ? work.entryCount : entries.length;
+  const filtered = allocateRenderMetadata<ColorGpuEntries>(
+    512 + 16 * count,
+    (work.filterProducer = () =>
+      (work.filtered = entries.filter(
+        (work.filterCallback = ([name]) =>
+          definition.properties[name]!.type !== "curve"),
+      ))),
+    false,
+    (value) => {
+      value.length = 0;
+    },
+  );
+  return allocateRenderMetadata<ColorGpuUniforms>(
+    512 + 256 * count,
+    (work.uniformsProducer = () =>
+      (work.uniforms = Object.fromEntries(filtered) as ColorGpuUniforms)),
+    false,
+    clearColorGpuUniforms,
+  );
+}
+function colorGpuCombined(
+  work: ColorGpuWork,
+  params: Params,
+): ColorGpuUniforms {
+  const count = work.memory ? work.entryCount : work.entries!.length;
+  return allocateRenderMetadata<ColorGpuUniforms>(
+    1536 + 256 * count,
+    (work.combinedProducer = () => {
+      const result = (work.combined = { ...work.uniforms });
+      const gradient = (work.gradient = colorGradientUniforms(params));
+      for (const key in gradient) result[key] = gradient[key]!;
+      return result;
+    }),
+    false,
+    clearColorGpuUniforms,
+  );
+}
+function colorGpuCurveBytes(work: ColorGpuWork): Uint8Array<ArrayBuffer> {
+  if (!work.memory)
+    return (work.bytes = allocateRenderPixels(
+      1024,
+      () => new Uint8Array(1024),
+    ));
+  const lease = (work.pixelLease = work.memory.reserve("pixels", 1024));
+  try {
+    work.pixelProducer = () => (work.bytes = new Uint8Array(1024));
+    const bytes = work.pixelProducer();
+    work.memory.adopt(bytes.buffer, lease, (value) => {
+      const backing = value as ArrayBuffer & {
+        transfer(bytes: number): ArrayBuffer;
+      };
+      if (backing.byteLength) backing.transfer(0);
+    });
+    return bytes;
+  } catch (error) {
+    try {
+      lease.release();
+    } catch {
+      /* Preserve first factory/adoption error. */
+    }
+    throw error;
+  }
+}
+
 const HSL = `
 vec3 adjustHsl(vec3 rgb) {
   float maximum=max(max(rgb.r,rgb.g),rgb.b),minimum=min(min(rgb.r,rgb.g),rgb.b),chroma=maximum-minimum;
@@ -432,59 +700,57 @@ export function colorEffectKernel(
     id,
     definition,
     renderGpu(context, input, params) {
-      const output = context.createSurface(input.width, input.height);
-      const uniforms = Object.fromEntries(
-        Object.entries(params).filter(
-          ([name]) => definition.properties[name]!.type !== "curve",
-        ),
-      ) as Record<string, number | readonly number[]>;
-      if (id === "color.gradient-ramp") {
-        const transfer = context.createSurface(256, 256);
-        context.uploadBytes(transfer, gradientColorTable(params));
-        let gradient: ReturnType<typeof gradientUniforms> | undefined,
-          failed = false;
-        try {
-          context.pass(shader, output, [input, transfer], {
-            ...uniforms,
-            ...(gradient = colorGradientUniforms(params)),
-          });
-        } catch (error) {
-          failed = true;
-          throw error;
-        } finally {
-          finishColorGradientMetadata(gradient, failed);
-        }
-      } else if (id === "color.curves") {
-        // A 256-entry transfer is control data; all image pixels are transformed on the GPU.
-        const bytes = allocateRenderPixels(
-          256 * 4 * 1,
-          () => new Uint8Array(256 * 4),
-        );
-        for (let value = 0; value < 256; value++) {
-          const result = colorEffectPixel(
-            id,
-            [value / 255, value / 255, value / 255, 1],
-            params,
-            0,
-            0,
-          );
-          let failed = false;
-          try {
-            const mapped = result[0];
-            bytes[value * 4] = Math.round(mapped * 255);
-            bytes[value * 4 + 3] = 255;
-          } catch (error) {
-            failed = true;
-            throw error;
-          } finally {
-            finishColorGradientMetadata(result, failed);
+      const work = colorGpuWork();
+      let failed = false;
+      try {
+        work.shader = shader;
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        const uniforms = colorGpuUniforms(work, params, definition);
+        if (id === "color.gradient-ramp") {
+          const transfer = (work.transfer = context.createSurface(256, 256));
+          context.uploadBytes(transfer, gradientColorTable(params));
+          const inputs = (work.inputs = [input, transfer]);
+          context.pass(shader, output, inputs, colorGpuCombined(work, params));
+        } else if (id === "color.curves") {
+          const bytes = colorGpuCurveBytes(work);
+          for (let value = 0; value < 256; value++) {
+            const result = colorEffectPixel(
+              id,
+              (work.sourcePixel = [value / 255, value / 255, value / 255, 1]),
+              params,
+              0,
+              0,
+              work.pixel,
+            );
+            try {
+              const mapped = result[0];
+              bytes[value * 4] = Math.round(mapped * 255);
+              bytes[value * 4 + 3] = 255;
+            } finally {
+              clearColorPixelWork(work.pixel);
+              (work.sourcePixel as number[]).length = 0;
+              work.sourcePixel = undefined;
+            }
           }
-        }
-        const transfer = context.createSurface(256, 1);
-        context.uploadBytes(transfer, bytes);
-        context.pass(shader, output, [input, transfer], uniforms);
-      } else context.pass(shader, output, [input], uniforms);
-      return output;
+          const transfer = (work.transfer = context.createSurface(256, 1));
+          context.uploadBytes(transfer, bytes);
+          context.pass(
+            shader,
+            output,
+            (work.inputs = [input, transfer]),
+            uniforms,
+          );
+        } else context.pass(shader, output, (work.inputs = [input]), uniforms);
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishColorGpuWork(work, failed);
+      }
     },
     renderCanvas(context, input, params: RenderEffect["params"]) {
       let gradient: GradientControls | undefined,

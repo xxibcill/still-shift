@@ -2228,6 +2228,33 @@ Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography
 common/Node, production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-color-pixel-metadata-results.json).
 
+## Accepted selected GPU color metadata checkpoint — 2026-10-08
+
+Actual 16384-byte callback owner precedes original input/native factories. Admit
+Object.entries result at 512 bytes, grow each original tuple by 256 plus twice key
+length before original value getter; preserve original receiver and exact ownKeys/
+descriptor sequence using an empty facade. Admit actual filter/uniform/gradient
+spread records before producers; hold actual input tuple and shared gradient vectors
+through native pass. Reserve/capture/retire actual 1024-byte curve backing and reuse
+one pixel child across all 256 samples; clear actual sample arrays after byte writes.
+Preserve first native/getter/adoption null over later cleanup and exact retry.
+
+Build/lint/boundaries and 881 focused tests / 100 files pass on attempt 4. Ten new
+tests preserve 23 whole original GPU records/getters and seven independently original
+enumeration/receiver cases including nonconfigurable properties, 84 getter
+cuts, six adoption cuts, exact quotas, actual root lifetimes, native failures and
+late cleanup. Repair actual extra descriptor reads and fixture injection/disposal
+sequencing; retain all failed attempts. All 871 prior tests and full 46 native color
+records rerun. Complete 144-case / 8,000-frame audit, 96 RPC snapshots, native probes,
+WebGL/providers, 69 typography tests and 64 prior-exact exports / 768 bodies/frames
+pass; glyph 1.394345× meets unchanged 1.5 maximum.
+
+Arbitrary facade ownKeys key-list capacity still needs admission before its native
+producer; captured/cleared refs do not establish its byte bound. Canvas callbacks,
+kernel/shader/registry, arbitrary borrowed methods/species, common/Node, production/
+aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-color-gpu-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

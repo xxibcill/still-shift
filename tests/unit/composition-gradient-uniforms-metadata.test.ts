@@ -538,7 +538,8 @@ it("holds actual gradient uniform record and shared vectors through four origina
         accesses: string[] = [],
         raw = structuredClone(row.params);
       let actual: Uniforms | undefined,
-        refs: unknown[] = [];
+        refs: unknown[] = [],
+        callbackMetadata = 0;
       const run = async () => {
         if (active) {
           vi.spyOn(memory, "adopt").mockImplementation(
@@ -546,6 +547,7 @@ it("holds actual gradient uniform record and shared vectors through four origina
               if (lease.bytes === 2048 && "gradientRow" in value) {
                 actual = value as Uniforms;
                 refs = vectors(actual);
+                callbackMetadata = memory.statistics.current.metadata - 3584;
               }
               return adopt(value, lease, destroy);
             },
@@ -553,10 +555,9 @@ it("holds actual gradient uniform record and shared vectors through four origina
           const pass = h.context.pass;
           vi.spyOn(h.context, "pass").mockImplementation((...v) => {
             expect(memory.owns(actual!)).toBe(true);
-            expect(memory.statistics.current.metadata).toBeGreaterThanOrEqual(
-              8192,
+            expect(memory.statistics.current.metadata).toBe(
+              callbackMetadata + 2048,
             );
-            expect(memory.statistics.current.metadata).toBeLessThan(10240);
             const uniforms = v[3] as Uniforms;
             for (const key of [
               "gradientRow",

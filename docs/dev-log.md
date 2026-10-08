@@ -99,28 +99,27 @@ still hold before relying on them.
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
   mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results, managed plan/sum-shader cache, particle/
+  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
   texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 871 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. Standalone colorEffectPixel admits actual
-  4096-byte producer/slice-arguments/mapper/borrowed-ref/intermediate-array phase and
-  independent 512-byte RGBA before original factories. Capture RGB/HSL/normalized and
-  partial three-channel result before alpha getter; preserve formulas and full input/
-  root/nested reads. Transfer completed result out of phase with captured ownership
-  outside scope until consumer/scratch/allocator clears actual RGBA. GPU curve-byte
-  and non-gradient Canvas pixel consumers retire after original rounds/writes, with
-  first consumer null over secondary cleanup. Preserve inactive/admitted caller route.
-  Nine new tests / 92 original results/full getters, 462 getter cuts / 15 paths, five
-  math cuts, quota/actual partial arrays/lifetime/adoption/cleanup/retry/caller/native
-  consumers. All 854 prior plus eight original curve tests and 46 full native color
-  records rerun. Attempt 1 all new tests / 870 total pass, preceding unchanged table
-  oracle times out; workload observed/cause unknown. Buffer only SHA observer calls,
-  preserving exact original hash bytes/getters/counts/prefix/suffix and timeout. Attempt
-  2 passes. Native probes, WebGL/providers/69 typography tests pass; glyph 1.414894×
-  meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact
-  output. Outer color callbacks/stores/registry, arbitrary borrowed methods/species,
-  other effects/cache/error/class/caller/depth sampling remain pending.
+  metadata pass 881 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Actual 16384-byte GPU color owner precedes
+  input/native factories; original entry tuples grow before original value getters,
+  actual filter/uniform/gradient spread precede producers and actual input tuple/shared
+  gradient vectors stay live through native pass. Original ownKeys/descriptor/receiver
+  traces stay exact via empty facade. Actual 1024-byte curve backing has adoption guards
+  and retirement; one actual pixel child serves all 256 samples without per-sample
+  standalone leases. Clear actual tuples/records/handlers/key/descriptor/input/source/
+  intermediate arrays and preserve first null over later cleanup. Ten new tests / 23
+  whole original GPU traces, seven original enumeration cases, 84 getter cuts,
+  quota/adoption/native/lifetime/cleanup/retry pass with all 871 prior tests and full
+  46 native color records. Attempts repair extra descriptor reads and fixture injection/
+  disposal sequencing; attempt 4 passes 881/100. Native probes, WebGL/providers/69
+  typography tests pass; glyph 1.394345× meets unchanged 1.5 maximum. All 64 exports /
+  768 bodies/frames retain prior exact output. Arbitrary ownKeys key-list capacity
+  requires pre-producer admission; captured/cleared refs are not its byte-bound proof.
+  Canvas/kernel/shader/store/registry, arbitrary borrowed methods/species, other effect/
+  cache/error/class/caller/depth sampling remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -356,6 +355,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 selected GPU color metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `4328a6ac`.
+- **Done:** own callback and dynamically admitted original tuples/filter/uniform/
+  gradient spread, actual native input tuple and reused curve work/backing.
+- **Results:** build/lint/boundaries, 881 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.394345×.
+- **Verification:** ten new tests / 23 whole original GPU records, seven original
+  enumeration cases, 84 getter cuts, quota/adoption/native/cleanup/retry.
+- **Rejected / repaired:** actual extra descriptor reads and fixture declaration/
+  premature secondary injection/cache-disposal mock; all attempts retained.
+- **Next:** arbitrary ownKeys capacity, Canvas/kernel/store ownership, common/Node,
+  production/aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [GPU color evidence](./composition-ce15-color-gpu-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual standalone color-pixel metadata
 
