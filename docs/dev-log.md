@@ -95,18 +95,18 @@ still hold before relying on them.
   group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
   pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
-  Gaussian kernel/rescale/box/fallback, managed plan/sum-shader cache, particle/
-  Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
-  texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 509 focused tests, complete audit, 22 moving/blurred and ten
-  stationary native frames and 96 owned RPC snapshots. Actual effect callback
-  controller/Set/Map/context/function/COPY-input/dimension/fallback/snapshot controls
-  pre-admit, stay through consumers then clear. Two whole original traces/thirteen
-  new plus eleven existing plugin tests cover quotas, refs, native/callback/
-  publication/cleanup/null/retry, partial insertion and original 32-surface cap.
-  Global/kernel/error/class/caller and depth sampling factories remain pending.
-  Native probes, WebGL/providers, 69 typography tests and 64 exports / 768 prior-
-  exact bodies/frames pass; glyph 1.216981× meets unchanged 1.5 maximum.
+  Gaussian kernel/rescale/box/fallback/shadow-kernel, managed plan/sum-shader cache,
+  particle/Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls,
+  depth mesh/texture/multisample/uniform/draw/text/native-controls and PNG source/
+  draw/coordinate metadata pass 522 focused tests, complete audit, 22 moving/
+  blurred and ten stationary native frames and 96 owned RPC snapshots. Actual
+  shadow Gaussian float/shape/weight/result containers pre-admit, stay through
+  consumers then clear. Seven whole original kernel results/four native traces,
+  ten new plus three original tests cover quotas, actual refs, partial/factory/
+  math/publication/null/retry and scope/scratch retirement. Other shadow/kernel/
+  cache/error/class/caller and depth sampling factories remain pending. Native
+  probes, WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
+  bodies/frames pass; glyph 1.387597× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -342,6 +342,25 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual shadow Gaussian kernel containers
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `695a815`.
+- **Done:** pre-admit actual floating/shape/callback and returned weight/result
+  containers, preserve original Gaussian math, clear partial refs, hold actual
+  result through GPU/Canvas consumers then retire it in finally.
+- **Results:** build/lint/boundaries, 522 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.387597× meets unchanged 1.5 maximum.
+- **Verification:** ten new plus three original shadow tests; seven complete
+  original kernel results / four native GPU/Canvas traces; quotas, actual refs,
+  partial/factory/math/publication/null/retry and scope/scratch consumer retirement.
+  No full gate or threshold changes; other shadow/kernel/cache factories pending.
+- **Next:** shadow/effect/cache/class/caller/sampling factories, provider/graph/font/
+  common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [shadow kernel evidence](./composition-ce15-shadow-kernel-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual GPU/Canvas effect callback controls
 

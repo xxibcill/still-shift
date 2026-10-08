@@ -1,6 +1,11 @@
 import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+} from "../../managed-metadata.ts";
+import {
   allocateRenderPixels,
   readRenderImageData,
+  renderMemory,
 } from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
@@ -12,15 +17,61 @@ type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
 type GaussianKernel = { radius: number; weights: number[]; total: number };
+type KernelWork = {
+  managed: boolean;
+  shape?: { length: number } | undefined;
+  float?: number[] | undefined;
+  weights?: number[] | undefined;
+};
+function clearKernelWork(work: KernelWork) {
+  if (work.float) work.float.length = 0;
+  if (work.weights) work.weights.length = 0;
+  work.shape = work.float = work.weights = undefined;
+}
+function clearGaussianKernel(kernel: GaussianKernel) {
+  kernel.weights.length = 0;
+  delete (kernel as Partial<GaussianKernel>).weights;
+  delete (kernel as Partial<GaussianKernel>).radius;
+  delete (kernel as Partial<GaussianKernel>).total;
+}
 export function shadowGaussianKernel(sigma: number): GaussianKernel {
-  if (sigma === 0) return { radius: 0, weights: [4096], total: 4096 };
-  const radius = Math.ceil(sigma * 3),
-    float = Array.from({ length: radius * 2 + 1 }, (_, i) =>
+  if (sigma === 0)
+    return allocateRenderMetadata<GaussianKernel>(
+      520,
+      () => ({ radius: 0, weights: [4096], total: 4096 }),
+      false,
+      clearGaussianKernel,
+    );
+  const radius = Math.ceil(sigma * 3);
+  const length = Math.max(0, radius * 2 + 1) || 0;
+  const work = allocateRenderMetadata<KernelWork>(
+    1024 + 8 * length,
+    () => ({ managed: renderMemory() !== undefined }),
+    false,
+    clearKernelWork,
+  );
+  try {
+    work.float = Array.from((work.shape = { length: radius * 2 + 1 }), (_, i) =>
       Math.exp(-0.5 * ((i - radius) / sigma) ** 2),
-    ),
-    sum = float.reduce((a, b) => a + b, 0),
-    weights = float.map((v) => Math.round((v / sum) * 4096));
-  return { radius, weights, total: weights.reduce((a, b) => a + b, 0) };
+    );
+    const sum = work.float.reduce((a, b) => a + b, 0);
+    const result = allocateRenderMetadata<GaussianKernel>(
+      512 + 8 * length,
+      () => {
+        const weights = (work.weights = work.float!.map((v) =>
+          Math.round((v / sum) * 4096),
+        ));
+        return { radius, weights, total: weights.reduce((a, b) => a + b, 0) };
+      },
+      false,
+      clearGaussianKernel,
+    );
+    work.weights = undefined;
+    return result;
+  } finally {
+    if (work.managed) releaseRenderMetadata(work);
+    else clearKernelWork(work);
+  }
 }
 export function blurShadowMask(
   input: Uint8Array,
@@ -98,44 +149,48 @@ export function shadowEffectKernel(
       const color = params.color as readonly number[],
         opacity = params.opacity as number;
       if (opacity === 0 || color[3] === 0) return input;
-      const k = shadowGaussianKernel(params.blur as number),
-        offset = (params.offset as readonly number[]).map(
-          (v) => Math.round(v * 16) / 16,
-        ),
-        mask = context.createSurface(input.width, input.height),
-        scratch = context.createSurface(input.width, input.height),
-        table = context.createSurface(k.weights.length, 1),
-        data = allocateRenderPixels(
-          k.weights.length * 4 * 1,
-          () => new Uint8Array(k.weights.length * 4),
+      const k = shadowGaussianKernel(params.blur as number);
+      try {
+        const offset = (params.offset as readonly number[]).map(
+            (v) => Math.round(v * 16) / 16,
+          ),
+          mask = context.createSurface(input.width, input.height),
+          scratch = context.createSurface(input.width, input.height),
+          table = context.createSurface(k.weights.length, 1),
+          data = allocateRenderPixels(
+            k.weights.length * 4 * 1,
+            () => new Uint8Array(k.weights.length * 4),
+          );
+        for (let i = 0; i < k.weights.length; i++) {
+          data[i * 4] = k.weights[i]! & 255;
+          data[i * 4 + 1] = k.weights[i]! >>> 8;
+        }
+        context.uploadBytes(table, data);
+        context.pass(
+          `${PREMULTIPLIED_SAMPLE_SHADER}\nuniform vec2 offset;uniform float inner;void main(){float coverage=sampleBytes(gl_FragCoord.xy-offset).a/255.0;pixel=vec4(inner==1.0?1.0-coverage:coverage);}`,
+          mask,
+          [input],
+          { offset, inner: inner ? 1 : 0 },
         );
-      for (let i = 0; i < k.weights.length; i++) {
-        data[i * 4] = k.weights[i]! & 255;
-        data[i * 4 + 1] = k.weights[i]! >>> 8;
-      }
-      context.uploadBytes(table, data);
-      context.pass(
-        `${PREMULTIPLIED_SAMPLE_SHADER}\nuniform vec2 offset;uniform float inner;void main(){float coverage=sampleBytes(gl_FragCoord.xy-offset).a/255.0;pixel=vec4(inner==1.0?1.0-coverage:coverage);}`,
-        mask,
-        [input],
-        { offset, inner: inner ? 1 : 0 },
-      );
-      for (const [output, source, direction] of [
-        [scratch, mask, [1, 0]],
-        [mask, scratch, [0, 1]],
-      ] as const)
-        context.pass(GAUSSIAN, output, [source, table], {
-          radius: k.radius,
-          total: k.total,
-          direction,
-          padding: inner ? 255 : 0,
+        for (const [output, source, direction] of [
+          [scratch, mask, [1, 0]],
+          [mask, scratch, [0, 1]],
+        ] as const)
+          context.pass(GAUSSIAN, output, [source, table], {
+            radius: k.radius,
+            total: k.total,
+            direction,
+            padding: inner ? 255 : 0,
+          });
+        context.pass(COMPOSITE, scratch, [input, mask], {
+          color,
+          opacity,
+          inner: inner ? 1 : 0,
         });
-      context.pass(COMPOSITE, scratch, [input, mask], {
-        color,
-        opacity,
-        inner: inner ? 1 : 0,
-      });
-      return scratch;
+        return scratch;
+      } finally {
+        releaseRenderMetadata(k);
+      }
     },
     renderCanvas(context, input, params) {
       const color = params.color as readonly number[],
@@ -178,37 +233,43 @@ export function shadowEffectKernel(
           );
           mask[y * input.width + x] = inner ? 255 - sample[3]! : sample[3]!;
         }
-      const k = shadowGaussianKernel(params.blur as number),
-        horizontal = blurShadowMask(
-          mask,
-          input.width,
-          input.height,
-          k,
-          [1, 0],
-          inner ? 255 : 0,
-        ),
-        blurred = blurShadowMask(
-          horizontal,
-          input.width,
-          input.height,
-          k,
-          [0, 1],
-          inner ? 255 : 0,
-        );
-      for (let i = 0; i < premultiplied.length; i += 4) {
-        const out = shadowCompositePixel(
-          inner,
-          premultiplied.subarray(i, i + 4),
-          blurred[i / 4]!,
-          params,
-        );
-        for (let c = 0; c < 3; c++)
-          image.data[i + c] = out[3] ? Math.round((out[c]! * 255) / out[3]) : 0;
-        image.data[i + 3] = out[3]!;
+      const k = shadowGaussianKernel(params.blur as number);
+      try {
+        const horizontal = blurShadowMask(
+            mask,
+            input.width,
+            input.height,
+            k,
+            [1, 0],
+            inner ? 255 : 0,
+          ),
+          blurred = blurShadowMask(
+            horizontal,
+            input.width,
+            input.height,
+            k,
+            [0, 1],
+            inner ? 255 : 0,
+          );
+        for (let i = 0; i < premultiplied.length; i += 4) {
+          const out = shadowCompositePixel(
+            inner,
+            premultiplied.subarray(i, i + 4),
+            blurred[i / 4]!,
+            params,
+          );
+          for (let c = 0; c < 3; c++)
+            image.data[i + c] = out[3]
+              ? Math.round((out[c]! * 255) / out[3])
+              : 0;
+          image.data[i + 3] = out[3]!;
+        }
+        const output = context.createSurface(input.width, input.height);
+        output.ctx.putImageData(image, 0, 0);
+        return output;
+      } finally {
+        releaseRenderMetadata(k);
       }
-      const output = context.createSurface(input.width, input.height);
-      output.ctx.putImageData(image, 0, 0);
-      return output;
     },
   } satisfies CompositionEffectPlugin);
   kernels.set(id, kernel);

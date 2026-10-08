@@ -1491,6 +1491,27 @@ complete original GPU/Canvas native traces stay exact (14/16 calls). All 64 expo
 common/registry/ledger/Node, production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-effect-controls-metadata-results.json).
 
+## Accepted shadow Gaussian kernel checkpoint — 2026-10-08
+
+Before original floating Array.from/shape/callback factories admit actual work at
+1024+8*length. Before weight map/result/reduce factories admit actual returned
+result at 512+8*length; neutral factory admits 520. Preserve original radius/exp/
+reduce/map/round/reduce order and every weight/total. Actual floating and partial
+weight refs clear after production; actual returned kernel stays charged until
+consumer release. GPU/Canvas finally release after original native consumers,
+including publication null. Standalone results retire at explicit/scratch/allocator
+cleanup and their actual weight arrays/record refs clear. Seven whole original
+results stay exact from 1 to supported maximum 769 weights; four complete original
+GPU/Canvas inner/drop-shadow traces retain full shader/upload/Canvas output bytes.
+
+Build/lint/boundaries, 522 focused / ten new plus three original shadow tests,
+complete audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers and
+69 typography tests pass; glyph 1.387597× meets unchanged 1.5 maximum. All
+64 exports / 768 bodies/frames match `695a815`. Other shadow working/per-pixel/
+view/shader/native/cache/registry, remaining factories/provider/graph/font/common/
+ledger/Node and production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-shadow-kernel-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
