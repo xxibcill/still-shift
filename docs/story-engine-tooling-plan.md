@@ -11,7 +11,13 @@ Improve Still Shift as a reusable, deterministic render engine for story-driven 
 
 The owner clarified this scope on 2026-09-26. This plan supersedes the earlier recommendation to polish a narrated resource passage or produce additional episode sequences in this task. Existing scenes and passages are regression fixtures. Small synthetic fixtures may be added to verify engine behavior; producing artwork, refining episode choreography, assembling S01E01 and obtaining creative acceptance are outside this work.
 
-This is the engineering work tracker. The [main roadmap](../ROADMAP.md) retains broader release and episode history. E1–E6 are engineering milestones, distinct from the episode's M0–M6. No new release number or delivery date is assigned by this plan. Existing creative-review checkpoints remain recorded for their content work and do not block independent engine or tooling improvements that preserve those fixtures.
+This is the engineering work tracker. The [active roadmap](../ROADMAP.md) sets
+current product priorities; the [archived roadmap](./archive/roadmap-phase-0-2026-10-08.md)
+retains broader release and episode history. E1–E6 are engineering milestones,
+distinct from the episode's M0–M6. No new release number or delivery date is
+assigned by this plan. Existing creative-review checkpoints remain recorded for
+their content work and do not block independent engine or tooling improvements
+that preserve those fixtures.
 
 ## Baseline before implementation
 

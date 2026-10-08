@@ -4,7 +4,12 @@
 
 **Source:** Project-owner discussion
 
-**Purpose:** Preserve the intended product positioning when planning work beyond the current Phase 0 roadmap.
+**Purpose:** Preserve the intended product positioning when planning work beyond the original Phase 0 experiment.
+
+**Roadmap revision, 2026-10-08:** The owner archived Phase 0 and removed speculative
+expansion from active priorities. The [active roadmap](../ROADMAP.md) now centers
+complete explanatory-video production, with composition completion followed by a
+portable mechanism proof. Historical acceptance remains unverified.
 
 ## Owner-stated intent
 
@@ -44,9 +49,18 @@ These are positioning hypotheses, not established competitive advantages. Compar
 
 ## Current scope versus product direction
 
-The [Phase 0 roadmap](../ROADMAP.md) and [implementation plan](../Phase_0_Implementation_Plan.md) currently test a local still-image animation engine. They emphasize depth-based motion, include a deterministic 2D fallback, and assemble one explainer for evaluation. They explicitly leave script analysis, narration, text, shot planning, and automatic timeline assembly outside Phase 0.
+The [archived Phase 0 roadmap](./archive/roadmap-phase-0-2026-10-08.md) and
+[historical implementation plan](../Phase_0_Implementation_Plan.md) tested a local
+still-image animation engine. Their scope emphasized depth-based motion, included
+a deterministic 2D fallback, and assembled one explainer for evaluation. Script
+analysis, narration, text, shot planning and automatic timeline assembly were
+outside the original Phase 0 scope.
 
-That narrower experiment can validate an important component, but it does not yet deliver the owner's full goal of automated faceless-video production. Later planning should treat multiple still-animation methods and automatic mixing with text and selective AI video as core product requirements, while keeping Phase 0's existing completion gates intact unless the roadmap is deliberately revised.
+That narrower experiment provides historical component evidence; its retired
+corpus and unfinished product gates do not establish acceptance. The active
+roadmap treats multiple animation methods, narration-linked authoring and mixing
+supplied media as foundations for complete-video production. Phase 0's original
+gate requirements remain in the archive and are not marked passed by this revision.
 
 ## Measures that matter for the full product
 
@@ -56,4 +70,6 @@ That narrower experiment can validate an important component, but it does not ye
 - Technical completion rate and visual defects by shot treatment.
 - Editorial quality and motion variety across a complete video, rather than isolated clips alone.
 
-The current roadmap's Phase 0 gates are early evidence. In particular, its 80% clip acceptance without repair is not the same as the longer-term goal of producing a complete video without manual editing.
+The archived Phase 0 gates describe the earlier experiment. In particular, its 80%
+clip acceptance without repair is not the same as the longer-term goal of
+producing a complete video without manual editing.
