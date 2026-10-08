@@ -306,6 +306,8 @@ export function compositionQualityFrame(
           effects,
           content,
           clock,
+          ...(state.depthMotion ? [state.depthMotion] : []),
+          ...(state.imagePlane ? [state.imagePlane] : []),
           ...(layer.receivesLight ? [receiverLightingState(state, scope)] : []),
           ...(homography
             ? [normalizedHomography(homography), state.focusBlur ?? 0]

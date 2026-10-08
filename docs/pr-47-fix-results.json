@@ -55,11 +55,24 @@
           "newTests": 6,
           "scope": "Unsupported Canvas before clear/accumulate, supported surface-budget failures, local 2D/depth graph regressions."
         }
-      ]
+      ],
+      "commit": "e6781d48336567f0760d17f5ca72f0ce19f17f38"
     },
     {
       "id": 3,
-      "status": "pending"
+      "title": "Depth/image-plane quality signatures",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4215761583",
+      "status": "implemented-focused-verified",
+      "change": "Quality signatures include actual evaluated local depth and image-plane values; unrelated existing signatures are unchanged. Held/invisible/static depth remains frozen; reveal held tail remains detected.",
+      "checks": [
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-image-plane-quality.test.ts tests/unit/composition-lighting-quality.test.ts tests/unit/composition-quality.test.ts --maxWorkers=2 --no-file-parallelism",
+          "status": "pass",
+          "tests": 118,
+          "newTests": 10
+        }
+      ],
+      "rejectedTestAssumption": "An initial expression test assumed scope-clock frame expressions freeze with layer holdFrame; actual existing expression clock semantics do not. Replaced with direct expression animation and a held nested keyed-clock test; production semantics unchanged."
     },
     {
       "id": 4,
