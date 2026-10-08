@@ -2335,6 +2335,35 @@ common control/ledger bootstrap, color key-list/kernel/registry, backend/caller/
 provider/Node/production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-allocation-failure-results.json).
 
+## Accepted selected fixed color-kernel metadata checkpoint — 2026-10-08
+
+Admit the actual 32768-byte construction phase before the original entries/tuple/
+filter/map/join/declaration/shader/frozen-candidate producers. Capture and clear actual
+product arrays, tuple slots and callback refs. Each captured allocator retains its
+actual 4096-byte cache/Map and independent 8192-byte state per fixed built-in id.
+First peak is 45056; all ten retain 86016 with final-miss peak 118784. Hits allocate
+nothing; inactive identity, all four frozen public fields and borrowed definitions
+stay original. Pre/post registration and retired-adoption guards prevent partial or
+already-retired publication, preserve prior entries and permit retry. A retiring cache
+creates a replacement during reentrant cleanup and cannot delete that replacement.
+Callbacks reject stale state before input/native/params, hold actual shader/state
+through invocation, clear owned refs at settlement and preserve first null over cleanup.
+
+Build/lint/boundaries and 957 focused tests / 104 files pass. 23
+new tests and all 934 prior tests pass; 49 existing color tests preserve all ten embedded
+frozen native/pixel/Get oracles and original callback quota through actual admitted
+filler. Untouched original constructor independently freezes all ten full shader hashes /
+7182 code units, four descriptors and whole tuple/type/producer Get traces. Complete
+144-case / 8,000-frame audit, 96 RPC snapshots, native probes, WebGL/providers, 69
+typography tests and 64 prior-exact exports / 768 bodies/frames pass; glyph 1.392962×
+meets unchanged 1.5 maximum.
+
+Kernel state holds do not prove GPU/Canvas work or independently owned image/curve/
+gradient/control/table/backend lifetimes. These, common metadata producer handoff,
+escaped immutable wrapper/closure/global/bootstrap ownership, params ownKeys capacity,
+provider/font/Node/production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-color-kernel-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

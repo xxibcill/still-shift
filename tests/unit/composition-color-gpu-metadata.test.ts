@@ -59,6 +59,43 @@ type Work = {
   sourcePixel?: number[];
   shader?: string;
 };
+const kernelMetadata = 4096 + 8192;
+const constructorHeadroom = 32768 + kernelMetadata;
+function kernelOnly(memory: ManagedMemory) {
+  expect(memory.statistics.current).toEqual({
+    pixels: 0,
+    metadata: kernelMetadata,
+  });
+  expect(memory.statistics.reservations).toBe(2);
+}
+function prewarmWithFiller(memory: ManagedMemory, id: string) {
+  // Charge a real backing after construction to restore the original callback quota.
+  expect(colorEffectKernel(id)).toBeDefined();
+  const filler = memory.allocate(
+    "metadata",
+    32768,
+    () => new ArrayBuffer(32768),
+    true,
+    (value) => value,
+    (value) =>
+      (
+        value as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }
+      ).transfer(0),
+  );
+  expect(memory.owns(filler)).toBe(true);
+  expect(filler.byteLength).toBe(32768);
+  expect(memory.statistics.current).toEqual({
+    pixels: 0,
+    metadata: constructorHeadroom,
+  });
+  expect(memory.statistics.reservations).toBe(3);
+  return filler;
+}
+function releaseFiller(memory: ManagedMemory, filler: ArrayBuffer) {
+  memory.release(filler);
+  expect(filler.byteLength).toBe(0);
+  kernelOnly(memory);
+}
 function empty(memory: ManagedMemory) {
   expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 0 });
   expect(memory.statistics.reservations).toBe(0);
@@ -159,10 +196,15 @@ it("preserves all 23 original whole GPU shader/upload/uniform/input traces and c
       expect(raw).toEqual(row.params);
       if (active) expect(getWork()).toEqual({});
       if (active && row.id === "color.gradient-ramp") {
-        expect(memory.statistics.current.metadata).toBeGreaterThanOrEqual(6144);
-        expect(memory.statistics.current.metadata).toBeLessThan(8192);
+        expect(
+          memory.statistics.current.metadata - kernelMetadata,
+        ).toBeGreaterThanOrEqual(6144);
+        expect(
+          memory.statistics.current.metadata - kernelMetadata,
+        ).toBeLessThan(8192);
         expect(memory.statistics.current.pixels).toBe(262144);
-      } else empty(memory);
+      } else if (active) kernelOnly(memory);
+      else empty(memory);
       memory.dispose();
       empty(memory);
       vi.restoreAllMocks();
@@ -181,7 +223,8 @@ it("preserves seven independently original ownKeys/descriptor/getter receiver se
       expect(accesses).toEqual(row.accesses);
       expect(h.records).toEqual(row.records);
       expect(sha([h.records, accesses])).toBe(row.sha256);
-      empty(memory);
+      if (active) kernelOnly(memory);
+      else empty(memory);
       memory.dispose();
       vi.restoreAllMocks();
     }
@@ -194,17 +237,21 @@ it("rejects exact header/raw-result/first-tuple growth quotas before original in
     16895,
     16384 + 512 + 256 + 2 * first.length - 1,
   ]) {
-    const memory = new ManagedMemory({ ...limits, metadata: quota }),
+    const memory = new ManagedMemory({
+        ...limits,
+        metadata: quota + constructorHeadroom,
+      }),
       getWork = observe(memory),
       h = shadowHarness(),
       accesses: string[] = [],
       { params } = nativeParams(row, accesses);
     await withManagedMemory(memory, async () => {
+      const filler = prewarmWithFiller(memory, row.id);
       expect(() => gpu(row, h, params)).toThrow(/metadata/);
       expect(accesses).toEqual([]);
       expect(h.records).toHaveLength(quota === 16383 ? 0 : 1);
       if (getWork()) expect(getWork()).toEqual({});
-      empty(memory);
+      releaseFiller(memory, filler);
     });
     memory.dispose();
     vi.restoreAllMocks();
@@ -268,7 +315,7 @@ it("admits each original tuple before its borrowed getter, captures actual entri
     expect(handler).toEqual({});
     expect(enumerationKeys).toEqual([]);
     expect(descriptor).toEqual({});
-    empty(memory);
+    kernelOnly(memory);
   });
   expect(sha([h.records, accesses])).toBe(row.sha256);
   expect(raw).toEqual(row.params);
@@ -287,6 +334,7 @@ it("reuses one actual admitted pixel work across 256 original curve samples with
     bytes: Uint8Array<ArrayBuffer> | undefined,
     inputs: unknown[] | undefined;
   await withManagedMemory(memory, async () => {
+    expect(colorEffectKernel(row.id)).toBeDefined();
     const reserve = vi.spyOn(memory, "reserve");
     vi.spyOn(Math, "round").mockImplementation((v) => {
       const work = getWork()!;
@@ -328,7 +376,7 @@ it("reuses one actual admitted pixel work across 256 original curve samples with
     expect(bytes!.byteLength).toBe(0);
     expect(inputs).toEqual([]);
     expect(getWork()).toEqual({});
-    empty(memory);
+    kernelOnly(memory);
   });
   memory.dispose();
 });
@@ -414,6 +462,7 @@ it("retires actual header/entries/filter/uniform/combined or curve backing after
       work: Work | undefined,
       backing: ArrayBuffer | undefined;
     await withManagedMemory(memory, async () => {
+      expect(colorEffectKernel(row.id)).toBeDefined();
       vi.spyOn(memory, "reserve").mockImplementation((...v) => {
         const lease = reserve(...v),
           release = lease.release.bind(lease);
@@ -518,7 +567,7 @@ it("clears all actual callback roots after original create/upload/pass or curve 
       }
       expect(failure).toBeNull();
       expect(getWork()).toEqual({});
-      empty(memory);
+      kernelOnly(memory);
     });
     memory.dispose();
     vi.restoreAllMocks();
@@ -554,19 +603,22 @@ it("clears actual callback family after successful parent cleanup null then retr
     expect(failure).toBeNull();
     expect(work).toEqual({});
     expect(bytes!.byteLength).toBe(0);
-    empty(memory);
+    kernelOnly(memory);
     vi.restoreAllMocks();
     const retry = shadowHarness(),
       accesses: string[] = [],
       params = nativeParams(row, accesses).params;
     gpu(row, retry, params);
     expect(sha([retry.records, accesses])).toBe(row.sha256);
-    empty(memory);
+    kernelOnly(memory);
   });
   memory.dispose();
 });
 it("rejects large enumerable parameter results before an original value/tuple factory exceeds admitted metadata without an extra ownKeys or descriptor read", async () => {
-  const memory = new ManagedMemory({ ...limits, metadata: 32768 }),
+  const memory = new ManagedMemory({
+      ...limits,
+      metadata: 32768 + constructorHeadroom,
+    }),
     getWork = observe(memory),
     h = shadowHarness(),
     raw: Record<string, number> = {},
@@ -591,6 +643,7 @@ it("rejects large enumerable parameter results before an original value/tuple fa
     },
   });
   await withManagedMemory(memory, async () => {
+    const filler = prewarmWithFiller(memory, "color.tint");
     expect(() =>
       gpu(originals.find((r) => r.id === "color.tint")!, h, params),
     ).toThrow(/metadata/);
@@ -599,7 +652,7 @@ it("rejects large enumerable parameter results before an original value/tuple fa
     expect(accesses.length).toBeGreaterThan(0);
     expect(accesses.length).toBeLessThan(1000);
     expect(getWork()).toEqual({});
-    empty(memory);
+    releaseFiller(memory, filler);
   });
   memory.dispose();
 });

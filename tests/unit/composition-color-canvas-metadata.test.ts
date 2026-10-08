@@ -46,6 +46,43 @@ type Work = {
   gradientMapped?: number[];
   gradientResult?: number[];
 };
+const kernelMetadata = 4096 + 8192;
+const constructorHeadroom = 32768 + kernelMetadata;
+function kernelOnly(memory: ManagedMemory) {
+  expect(memory.statistics.current).toEqual({
+    pixels: 0,
+    metadata: kernelMetadata,
+  });
+  expect(memory.statistics.reservations).toBe(2);
+}
+function prewarmWithFiller(memory: ManagedMemory, id: string) {
+  // Charge a real backing after construction to restore the original callback quota.
+  expect(colorEffectKernel(id)).toBeDefined();
+  const filler = memory.allocate(
+    "metadata",
+    32768,
+    () => new ArrayBuffer(32768),
+    true,
+    (value) => value,
+    (value) =>
+      (
+        value as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }
+      ).transfer(0),
+  );
+  expect(memory.owns(filler)).toBe(true);
+  expect(filler.byteLength).toBe(32768);
+  expect(memory.statistics.current).toEqual({
+    pixels: 0,
+    metadata: constructorHeadroom,
+  });
+  expect(memory.statistics.reservations).toBe(3);
+  return filler;
+}
+function releaseFiller(memory: ManagedMemory, filler: ArrayBuffer) {
+  memory.release(filler);
+  expect(filler.byteLength).toBe(0);
+  kernelOnly(memory);
+}
 function empty(memory: ManagedMemory) {
   expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 0 });
   expect(memory.statistics.reservations).toBe(0);
@@ -135,10 +172,15 @@ it("preserves all 23 independently original complete Canvas pixels/parameter and
       exact(row, h, t);
       if (active) expect(getWork()).toEqual({});
       if (active && row.id === "color.gradient-ramp") {
-        expect(memory.statistics.current.metadata).toBeGreaterThanOrEqual(6144);
-        expect(memory.statistics.current.metadata).toBeLessThan(8192);
+        expect(
+          memory.statistics.current.metadata - kernelMetadata,
+        ).toBeGreaterThanOrEqual(6144);
+        expect(
+          memory.statistics.current.metadata - kernelMetadata,
+        ).toBeLessThan(8192);
         expect(memory.statistics.current.pixels).toBe(262144);
-      } else empty(memory);
+      } else if (active) kernelOnly(memory);
+      else empty(memory);
       memory.dispose();
       empty(memory);
       vi.restoreAllMocks();
@@ -149,13 +191,15 @@ it("rejects exact parent and image backing quotas before original input getters 
   for (const cut of ["header", "pixels"]) {
     const memory = new ManagedMemory({
         ...limits,
-        metadata: cut === "header" ? 16383 : limits.metadata,
+        metadata:
+          (cut === "header" ? 16383 : limits.metadata) + constructorHeadroom,
         pixels: cut === "pixels" ? 15 : limits.pixels,
       }),
       getWork = observe(memory),
       h = shadowHarness(),
       t = trace(row, h);
     await withManagedMemory(memory, async () => {
+      const filler = prewarmWithFiller(memory, row.id);
       expect(() => canvas(row, h, t.params, t.input)).toThrow(
         cut === "header" ? /metadata/ : /pixels/,
       );
@@ -165,7 +209,7 @@ it("rejects exact parent and image backing quotas before original input getters 
         cut === "header" ? [] : row.inputAccesses.slice(0, 5),
       );
       if (getWork()) expect(getWork()).toEqual({});
-      empty(memory);
+      releaseFiller(memory, filler);
     });
     memory.dispose();
     vi.restoreAllMocks();
@@ -218,7 +262,7 @@ it("captures actual empty and partial source before each original channel conver
       expect(image!.data.byteLength).toBe(0);
       expect(getWork()).toEqual({});
       expect(h.records).toHaveLength(2);
-      empty(memory);
+      kernelOnly(memory);
     });
     memory.dispose();
     vi.restoreAllMocks();
@@ -236,6 +280,7 @@ it("reuses one actual admitted pixel child across four original non-gradient pix
     calls = 0;
   const actual: number[][] = [];
   await withManagedMemory(memory, async () => {
+    expect(colorEffectKernel(row.id)).toBeDefined();
     const reserve = vi.spyOn(memory, "reserve"),
       create = h.context.createSurface;
     vi.spyOn(h.context, "createSurface").mockImplementation((...v) => {
@@ -276,7 +321,7 @@ it("reuses one actual admitted pixel child across four original non-gradient pix
     for (const value of actual) expect(value).toEqual([]);
     expect(image!.data.byteLength).toBe(0);
     expect(getWork()).toEqual({});
-    empty(memory);
+    kernelOnly(memory);
   });
   exact(row, h, t);
   memory.dispose();
@@ -333,8 +378,12 @@ it("holds actual gradient keys/mapper/mapped/result under callback through origi
     expect(image!.data.byteLength).toBe(0);
     expect(table!.byteLength).toBe(262144);
     expect(getWork()).toEqual({});
-    expect(memory.statistics.current.metadata).toBeGreaterThanOrEqual(6144);
-    expect(memory.statistics.current.metadata).toBeLessThan(8192);
+    expect(
+      memory.statistics.current.metadata - kernelMetadata,
+    ).toBeGreaterThanOrEqual(6144);
+    expect(memory.statistics.current.metadata - kernelMetadata).toBeLessThan(
+      8192,
+    );
     expect(memory.statistics.current.pixels).toBe(262144);
   });
   exact(row, h, t);
@@ -486,7 +535,7 @@ it("clears actual header or constructed native image backing after adoption null
       expect(work).toEqual({});
       if (image) expect(image.data.byteLength).toBe(0);
       expect(getWork()).toEqual(cut === "header" ? undefined : {});
-      empty(memory);
+      kernelOnly(memory);
     });
     vi.restoreAllMocks();
     memory.dispose();
@@ -638,13 +687,13 @@ it("retires actual callback/image after successful parent cleanup null and retri
     expect(getWork()).toEqual({});
     expect(child).toEqual({});
     expect(image!.data.byteLength).toBe(0);
-    empty(memory);
+    kernelOnly(memory);
     vi.restoreAllMocks();
     const retry = shadowHarness(),
       t = trace(row, retry);
     canvas(row, retry, t.params, t.input);
     exact(row, retry, t);
-    empty(memory);
+    kernelOnly(memory);
   });
   memory.dispose();
 });
@@ -690,7 +739,7 @@ it("retires actual callback and image after every one of the 18 original input g
       expect(accesses).toEqual(row.inputAccesses.slice(0, cut + 1));
       expect(getWork()).toEqual({});
       if (image) expect(image.data.byteLength).toBe(0);
-      empty(memory);
+      kernelOnly(memory);
     });
     vi.restoreAllMocks();
     memory.dispose();

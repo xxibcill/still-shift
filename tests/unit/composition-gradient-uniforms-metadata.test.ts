@@ -579,10 +579,12 @@ it("holds actual gradient uniform record and shared vectors through four origina
           }),
         );
         if (active) {
-          expect(memory.statistics.current.metadata).toBeGreaterThanOrEqual(
-            6144,
-          );
-          expect(memory.statistics.current.metadata).toBeLessThan(8192);
+          expect(
+            memory.statistics.current.metadata - (4096 + 8192),
+          ).toBeGreaterThanOrEqual(6144);
+          expect(
+            memory.statistics.current.metadata - (4096 + 8192),
+          ).toBeLessThan(8192);
         } else expect(memory.statistics.current.metadata).toBe(0);
       };
       if (active) await withManagedMemory(memory, run);
@@ -652,8 +654,12 @@ it("holds actual gradient uniform record and shared vectors through four origina
       expect(controls).toEqual({});
       expect(actual).toEqual({});
       for (const v of refs) expect(v).toEqual([]);
-      expect(memory.statistics.current.metadata).toBeGreaterThanOrEqual(6144);
-      expect(memory.statistics.current.metadata).toBeLessThan(8192);
+      expect(
+        memory.statistics.current.metadata - (4096 + 8192),
+      ).toBeGreaterThanOrEqual(6144);
+      expect(memory.statistics.current.metadata - (4096 + 8192)).toBeLessThan(
+        8192,
+      );
     });
     memory.dispose();
     empty(memory);

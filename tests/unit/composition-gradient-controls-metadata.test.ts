@@ -482,11 +482,16 @@ it("preserves all 46 original complete color native traces/full upload and Canva
           plugin.renderGpu(h.context as never, h.input as never, params);
         else plugin.renderCanvas!(h.context as never, h.input as never, params);
         if (row.id === "color.gradient-ramp" && active) {
-          expect(memory.statistics.current.metadata).toBeGreaterThanOrEqual(
-            6144,
+          expect(
+            memory.statistics.current.metadata - (4096 + 8192),
+          ).toBeGreaterThanOrEqual(6144);
+          expect(
+            memory.statistics.current.metadata - (4096 + 8192),
+          ).toBeLessThan(8192);
+        } else
+          expect(memory.statistics.current.metadata).toBe(
+            active ? 4096 + 8192 : 0,
           );
-          expect(memory.statistics.current.metadata).toBeLessThan(8192);
-        } else expect(memory.statistics.current.metadata).toBe(0);
       };
       if (active) await withManagedMemory(memory, run);
       else await run();
@@ -552,8 +557,12 @@ it("preserves all 46 original complete color native traces/full upload and Canva
       }
       expect(failure).toBeNull();
       expect(actual).toEqual({});
-      expect(memory.statistics.current.metadata).toBeGreaterThanOrEqual(6144);
-      expect(memory.statistics.current.metadata).toBeLessThan(8192);
+      expect(
+        memory.statistics.current.metadata - (4096 + 8192),
+      ).toBeGreaterThanOrEqual(6144);
+      expect(memory.statistics.current.metadata - (4096 + 8192)).toBeLessThan(
+        8192,
+      );
     });
     memory.dispose();
     empty(memory);

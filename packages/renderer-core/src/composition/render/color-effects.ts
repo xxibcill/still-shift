@@ -788,7 +788,7 @@ const fragments: Readonly<Record<string, string>> = {
   "color.posterize": `result=floor(rgb*(levels-1.0)+0.5)/(levels-1.0);`,
 };
 const kernels = new Map<string, Readonly<CompositionEffectPlugin>>();
-export function colorEffectKernel(
+function unmanagedColorEffectKernel(
   id: string,
 ): Readonly<CompositionEffectPlugin> | undefined {
   if (!Object.hasOwn(fragments, id)) return undefined;
@@ -942,4 +942,515 @@ export function colorEffectKernel(
   } satisfies CompositionEffectPlugin);
   kernels.set(id, kernel);
   return kernel;
+}
+
+type ColorKernelDefinition = NonNullable<
+  ReturnType<typeof compositionEffectDefinition>
+>;
+type ColorKernelEntry = [string, ColorKernelDefinition["properties"][string]];
+type ColorKernelState = {
+  id?: string | undefined;
+  cache?: ColorKernelCache | undefined;
+  definition?: ColorKernelDefinition | undefined;
+  shader?: string | undefined;
+  kernel?: Readonly<CompositionEffectPlugin> | undefined;
+  lease?: MemoryLease | undefined;
+};
+type ColorKernelCache = {
+  memory?: ManagedMemory | undefined;
+  lease?: MemoryLease | undefined;
+  entries?: Map<string, ColorKernelState> | undefined;
+  retire?: ((state: ColorKernelState) => void) | undefined;
+  failed?: boolean | undefined;
+  failure?: unknown;
+};
+type ColorKernelPhase = {
+  memory?: ManagedMemory | undefined;
+  cache?: ColorKernelCache | undefined;
+  cacheEntries?: Map<string, ColorKernelState> | undefined;
+  newCache?: boolean | undefined;
+  state?: ColorKernelState | undefined;
+  definition?: ColorKernelDefinition | undefined;
+  entries?: ColorKernelEntry[] | undefined;
+  filtered?: ColorKernelEntry[] | undefined;
+  mapped?: string[] | undefined;
+  declarations?: string | undefined;
+  shader?: string | undefined;
+  candidate?: CompositionEffectPlugin | undefined;
+  filter?: ((entry: ColorKernelEntry) => boolean) | undefined;
+  mapper?: ((entry: ColorKernelEntry) => string) | undefined;
+  producer?: (() => Readonly<CompositionEffectPlugin>) | undefined;
+  gpu?: CompositionEffectPlugin["renderGpu"] | undefined;
+  canvas?: CompositionEffectPlugin["renderCanvas"] | undefined;
+  inserted?: string | undefined;
+  committed?: boolean | undefined;
+};
+const scopedColorKernels = new WeakMap<ManagedMemory, ColorKernelCache>();
+
+function clearColorKernelState(state: ColorKernelState) {
+  try {
+    if (state.id !== undefined && state.cache?.entries?.get(state.id) === state)
+      state.cache.entries.delete(state.id);
+  } finally {
+    for (const key in state) delete state[key as keyof ColorKernelState];
+  }
+}
+function holdColorKernelState(state: ColorKernelState): () => void {
+  const lease = state.lease;
+  if (
+    !lease?.active ||
+    !state.kernel ||
+    state.id === undefined ||
+    !state.definition ||
+    state.shader === undefined
+  )
+    throw Error("comp-effect-unavailable: managed color kernel is disposed");
+  return lease.deferRelease();
+}
+function finishColorKernelState(finish: () => void, failed: boolean) {
+  try {
+    finish();
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
+function clearColorKernelCache(cache: ColorKernelCache) {
+  if (cache.entries && cache.retire) cache.entries.forEach(cache.retire);
+  cache.entries?.clear();
+  if (cache.memory && scopedColorKernels.get(cache.memory) === cache)
+    scopedColorKernels.delete(cache.memory);
+  const failed = cache.failed,
+    failure = cache.failure;
+  for (const key in cache) delete cache[key as keyof ColorKernelCache];
+  if (failed) throw failure;
+}
+function rollbackColorKernelEntry(
+  entries: Map<string, ColorKernelState> | undefined,
+  key: string | undefined,
+  state: ColorKernelState | undefined,
+) {
+  if (key !== undefined && state && entries?.get(key) === state)
+    entries.delete(key);
+}
+function rollbackColorKernelCache(
+  memory: ManagedMemory | undefined,
+  cache: ColorKernelCache | undefined,
+) {
+  if (!cache) return;
+  let failed = false,
+    failure: unknown;
+  try {
+    if (memory && scopedColorKernels.get(memory) === cache)
+      scopedColorKernels.delete(memory);
+  } catch (error) {
+    failed = true;
+    failure = error;
+  }
+  try {
+    releaseRenderMetadata(cache);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      failure = error;
+    }
+  }
+  if (failed) throw failure;
+}
+function clearColorKernelPhase(phase: ColorKernelPhase) {
+  let failed = false,
+    failure: unknown;
+  if (!phase.committed) {
+    try {
+      rollbackColorKernelEntry(phase.cacheEntries, phase.inserted, phase.state);
+    } catch (error) {
+      failed = true;
+      failure = error;
+    }
+    try {
+      if (phase.state) releaseRenderMetadata(phase.state);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    try {
+      if (phase.newCache) rollbackColorKernelCache(phase.memory, phase.cache);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (phase.filtered) phase.filtered.length = 0;
+  if (phase.entries) {
+    for (const entry of phase.entries) (entry as unknown[]).length = 0;
+    phase.entries.length = 0;
+  }
+  if (phase.mapped) phase.mapped.length = 0;
+  for (const key in phase) delete phase[key as keyof ColorKernelPhase];
+  if (failed) throw failure;
+}
+function createManagedColorKernelCandidate(
+  state: ColorKernelState,
+): CompositionEffectPlugin {
+  return {
+    id: state.id!,
+    definition: state.definition!,
+    renderGpu(context, input, params) {
+      return renderManagedColorKernelGpu(state, context, input, params);
+    },
+    renderCanvas(context, input, params) {
+      return renderManagedColorKernelCanvas(state, context, input, params);
+    },
+  } satisfies CompositionEffectPlugin;
+}
+function produceManagedColorKernel(
+  id: string,
+  phase: ColorKernelPhase,
+): Readonly<CompositionEffectPlugin> {
+  const memory = phase.memory!;
+  let cache = scopedColorKernels.get(memory);
+  if (!cache?.lease?.active) {
+    phase.newCache = true;
+    let cacheLease: MemoryLease | undefined;
+    cache = allocateManagedRenderMetadata<ColorKernelCache>(
+      memory,
+      4096,
+      () => {
+        const owner: ColorKernelCache = {
+          memory,
+          lease: cacheLease,
+          entries: new Map(),
+          failed: false,
+        };
+        phase.cache = owner;
+        owner.retire = (state) => {
+          try {
+            releaseRenderMetadata(state);
+          } catch (error) {
+            if (!owner.failed) {
+              owner.failed = true;
+              owner.failure = error;
+            }
+          }
+        };
+        return owner;
+      },
+      true,
+      clearColorKernelCache,
+      (admitted) => {
+        cacheLease = admitted;
+      },
+    );
+    if (!cacheLease?.active)
+      throw Error(
+        "comp-effect-unavailable: managed color kernel cache is disposed",
+      );
+    scopedColorKernels.set(memory, cache);
+    if (!cacheLease.active)
+      throw Error(
+        "comp-effect-unavailable: managed color kernel cache is disposed",
+      );
+  }
+  phase.cache = cache;
+  const definition = (phase.definition = compositionEffectDefinition(id)!);
+  const entries = (phase.entries = Object.entries(definition.properties));
+  const filtered = (phase.filtered = entries.filter(
+    (phase.filter = ([, property]) => property.type !== "curve"),
+  ));
+  const mapped = (phase.mapped = filtered.map(
+    (phase.mapper = ([key, property]) =>
+      `uniform ${property.type === "scalar" ? "float" : property.type === "vec2" ? "vec2" : "vec4"} ${key};`),
+  ));
+  const declarations = (phase.declarations = mapped.join("\n"));
+  const shader =
+    (phase.shader = `${id === "color.gradient-ramp" ? GRADIENT_RANK_SHADER : ""}\n${declarations}\n${id === "color.hue-saturation" ? HSL : ""}\nvoid main(){
+    vec4 sourcePixel=texelFetch(source,ivec2(gl_FragCoord.xy),0);
+    vec4 stored=floor(sourcePixel*255.0+0.5);
+    vec3 rgb=stored.a>0.0?floor(stored.rgb*255.0/stored.a+0.5)/255.0:vec3(0.0), result;
+    ${fragments[id]}
+    vec3 outputRgbBytes=floor(clamp(result,0.0,1.0)*255.0+0.5)/255.0;
+    pixel=bytes(vec4(outputRgbBytes*sourcePixel.a,sourcePixel.a));
+  }`);
+  let lease: MemoryLease | undefined;
+  const state = allocateManagedRenderMetadata<ColorKernelState>(
+    memory,
+    8192,
+    () => {
+      const owner: ColorKernelState = { id, cache, definition, shader, lease };
+      phase.state = owner;
+      return owner;
+    },
+    true,
+    clearColorKernelState,
+    (admitted) => {
+      lease = admitted;
+    },
+  );
+  if (!lease?.active)
+    throw Error("comp-effect-unavailable: managed color kernel is disposed");
+  const candidate = (phase.candidate =
+    createManagedColorKernelCandidate(state));
+  state.kernel = candidate;
+  phase.gpu = candidate.renderGpu;
+  phase.canvas = candidate.renderCanvas;
+  const kernel = Object.freeze(candidate);
+  if (!state.lease?.active)
+    throw Error("comp-effect-unavailable: managed color kernel is disposed");
+  state.kernel = kernel;
+  const cacheEntries = (phase.cacheEntries = cache.entries!);
+  phase.inserted = id;
+  cacheEntries.set(id, state);
+  if (!state.lease?.active)
+    throw Error("comp-effect-unavailable: managed color kernel is disposed");
+  return kernel;
+}
+export function colorEffectKernel(
+  id: string,
+): Readonly<CompositionEffectPlugin> | undefined {
+  const memory = renderMemory();
+  if (!memory) return unmanagedColorEffectKernel(id);
+  if (!Object.hasOwn(fragments, id)) return undefined;
+  const existingCache = scopedColorKernels.get(memory);
+  const found = existingCache?.lease?.active
+    ? existingCache.entries?.get(id)
+    : undefined;
+  if (found?.lease?.active) return found.kernel;
+  let phase: ColorKernelPhase | undefined,
+    phaseLease: MemoryLease | undefined,
+    finish: (() => void) | undefined,
+    result: Readonly<CompositionEffectPlugin> | undefined,
+    cache: ColorKernelCache | undefined,
+    cacheEntries: Map<string, ColorKernelState> | undefined,
+    state: ColorKernelState | undefined,
+    inserted: string | undefined,
+    newCache = false,
+    failed = false,
+    failure: unknown;
+  try {
+    phase = allocateManagedRenderMetadata<ColorKernelPhase>(
+      memory,
+      32768,
+      () => (phase = { memory }),
+      false,
+      clearColorKernelPhase,
+      (lease) => {
+        phaseLease = lease;
+        finish = lease.deferRelease();
+      },
+    );
+    if (!phaseLease?.active)
+      throw Error(
+        "comp-effect-unavailable: managed color kernel construction is disposed",
+      );
+    phase.producer = () => produceManagedColorKernel(id, phase!);
+    result = phase.producer();
+    cache = phase.cache;
+    cacheEntries = phase.cacheEntries;
+    state = phase.state;
+    inserted = phase.inserted;
+    newCache = !!phase.newCache;
+    phase.committed = true;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      phaseLease?.release();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    try {
+      finish?.();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      rollbackColorKernelEntry(cacheEntries, inserted, state);
+    } catch {
+      /* Preserve the first producer/admission/cleanup failure. */
+    }
+    try {
+      if (state) releaseRenderMetadata(state);
+    } catch {
+      /* Preserve the first producer/admission/cleanup failure. */
+    }
+    try {
+      if (newCache) rollbackColorKernelCache(memory, cache);
+    } catch {
+      /* Preserve the first producer/admission/cleanup failure. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+
+function renderManagedColorKernelGpu(
+  state: ColorKernelState,
+  context: Parameters<NonNullable<CompositionEffectPlugin["renderGpu"]>>[0],
+  input: WebglSurface,
+  params: RenderEffect["params"],
+): WebglSurface {
+  const finish = holdColorKernelState(state);
+  let invocationFailed = false;
+  try {
+    const id = state.id!,
+      definition = state.definition!,
+      shader = state.shader!;
+    const work = colorGpuWork();
+    let failed = false;
+    try {
+      work.shader = shader;
+      const output = (work.output = context.createSurface(
+        input.width,
+        input.height,
+      ));
+      const uniforms = colorGpuUniforms(work, params, definition);
+      if (id === "color.gradient-ramp") {
+        const transfer = (work.transfer = context.createSurface(256, 256));
+        context.uploadBytes(transfer, gradientColorTable(params));
+        const inputs = (work.inputs = [input, transfer]);
+        context.pass(shader, output, inputs, colorGpuCombined(work, params));
+      } else if (id === "color.curves") {
+        const bytes = colorGpuCurveBytes(work);
+        for (let value = 0; value < 256; value++) {
+          const result = colorEffectPixel(
+            id,
+            (work.sourcePixel = [value / 255, value / 255, value / 255, 1]),
+            params,
+            0,
+            0,
+            work.pixel,
+          );
+          try {
+            const mapped = result[0];
+            bytes[value * 4] = Math.round(mapped * 255);
+            bytes[value * 4 + 3] = 255;
+          } finally {
+            clearColorPixelWork(work.pixel);
+            (work.sourcePixel as number[]).length = 0;
+            work.sourcePixel = undefined;
+          }
+        }
+        const transfer = (work.transfer = context.createSurface(256, 1));
+        context.uploadBytes(transfer, bytes);
+        context.pass(
+          shader,
+          output,
+          (work.inputs = [input, transfer]),
+          uniforms,
+        );
+      } else context.pass(shader, output, (work.inputs = [input]), uniforms);
+      return output;
+    } catch (error) {
+      failed = true;
+      throw error;
+    } finally {
+      finishColorGpuWork(work, failed);
+    }
+  } catch (error) {
+    invocationFailed = true;
+    throw error;
+  } finally {
+    finishColorKernelState(finish, invocationFailed);
+  }
+}
+
+function renderManagedColorKernelCanvas(
+  state: ColorKernelState,
+  context: Parameters<NonNullable<CompositionEffectPlugin["renderCanvas"]>>[0],
+  input: CanvasSurface,
+  params: RenderEffect["params"],
+): CanvasSurface {
+  const finish = holdColorKernelState(state);
+  let invocationFailed = false;
+  try {
+    const id = state.id!;
+    const work = colorCanvasWork();
+    let failed = false;
+    try {
+      work.input = input;
+      const output = (work.output = context.createSurface(
+        input.width,
+        input.height,
+      ));
+      const image = colorCanvasImage(
+        work,
+        input.ctx,
+        input.width,
+        input.height,
+      );
+      const gradient = (work.gradient =
+        id === "color.gradient-ramp" ? gradientControls(params) : undefined);
+      const table = (work.table = gradient
+        ? gradientColorTable(params)
+        : undefined);
+      for (let y = 0; y < input.height; y++)
+        for (let x = 0; x < input.width; x++) {
+          const i = (y * input.width + x) * 4;
+          const source = (work.source = [] as unknown as Rgba);
+          source[0] = colorEffectChannel(image.data[i]!, image.data[i + 3]!);
+          source[1] = colorEffectChannel(
+            image.data[i + 1]!,
+            image.data[i + 3]!,
+          );
+          source[2] = colorEffectChannel(
+            image.data[i + 2]!,
+            image.data[i + 3]!,
+          );
+          source[3] = image.data[i + 3]! / 255;
+          try {
+            let result: Rgba;
+            if (gradient && table) {
+              const index = gradientRank(gradient, x + 0.5, y + 0.5) * 4,
+                strength =
+                  ((params.amount as number) * table[index + 3]!) / 255;
+              const keys = (work.gradientKeys = [0, 1, 2]);
+              const mapped = (work.gradientMapped = keys.map(
+                (work.gradientMapper = (c) =>
+                  unit(
+                    source[c]! +
+                      (table[index + c]! / 255 - source[c]!) * strength,
+                  )),
+              ));
+              result = work.gradientResult = mapped.concat(source[3]) as Rgba;
+            } else
+              result = colorEffectPixel(
+                id,
+                source,
+                params,
+                x + 0.5,
+                y + 0.5,
+                work.pixel,
+              );
+            for (let channel = 0; channel < 4; channel++)
+              image.data[i + channel] = Math.round(result[channel]! * 255);
+          } finally {
+            clearColorCanvasSample(work);
+          }
+        }
+      output.ctx.putImageData(image, 0, 0);
+      return output;
+    } catch (error) {
+      failed = true;
+      throw error;
+    } finally {
+      finishColorCanvasWork(work, failed);
+    }
+  } catch (error) {
+    invocationFailed = true;
+    throw error;
+  } finally {
+    finishColorKernelState(finish, invocationFailed);
+  }
 }

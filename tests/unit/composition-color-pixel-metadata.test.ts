@@ -62,7 +62,7 @@ function observe(memory: ManagedMemory) {
   const adopt = memory.adopt.bind(memory);
   let phase: Phase | undefined;
   vi.spyOn(memory, "adopt").mockImplementation((...v) => {
-    if (v[1].bytes === 4096) phase = v[0] as Phase;
+    if (v[1].bytes === 4096 && "managed" in v[0]) phase = v[0] as Phase;
     return adopt(...v);
   });
   return () => phase;
@@ -342,7 +342,7 @@ it("clears actual header or completed RGBA and every intermediate array after ad
         return lease;
       });
       vi.spyOn(memory, "adopt").mockImplementation((...v) => {
-        if (v[1].bytes === 4096) phase = v[0] as Phase;
+        if (v[1].bytes === 4096 && "managed" in v[0]) phase = v[0] as Phase;
         if (v[1].bytes === cut) {
           actual = v[0];
           if (cut === 512) {
@@ -384,7 +384,7 @@ it("retires independently adopted completed RGBA after successful temporary clea
     arrays: number[][] = [];
   await withManagedMemory(memory, async () => {
     vi.spyOn(memory, "adopt").mockImplementation((...v) => {
-      if (v[1].bytes === 4096) phase = v[0] as Phase;
+      if (v[1].bytes === 4096 && "managed" in v[0]) phase = v[0] as Phase;
       else {
         result = v[0] as Rgba;
         arrays = ownedArrays(phase).filter((v) => v !== result);
@@ -542,7 +542,7 @@ it("retires actual RGBA at GPU curve-byte and Canvas pixel consumers and preserv
       }
       expect(failure).toBeNull();
       expect(result).toEqual([]);
-      expect(memory.statistics.current.metadata).toBe(0);
+      expect(memory.statistics.current.metadata).toBe(4096 + 8192);
     });
     memory.dispose();
     empty(memory);
