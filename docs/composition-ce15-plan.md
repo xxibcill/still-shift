@@ -1618,6 +1618,29 @@ effect/cache/registry/class/caller/depth sampling/provider/graph/font/common/led
 Node and production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-sampled-gpu-metadata-results.json).
 
+## Accepted sampled-blur Canvas work checkpoint — 2026-10-08
+
+Admit actual 65536-byte Canvas work before tap/shape/producer, readback/ImageData/
+view/sample/sums/map/index/normalization/native-ref factories. Keep original two
+pixel admissions. Reuse sampling refs, capture each pixel's sums/map/producer until
+image writes, then clear arrays/refs; no per-pixel lease. Keep tap/native/view refs
+through publication, then visit both backings even after first cleanup null, clear
+actual arrays/shape and drop producer/image/native/allocator refs. Managed stores
+detach, inactive bytes stay exact. Partial producer/admission/native/null failures
+retire work and permit retry; first failure preserved. Standalone helper/other
+sampling/caches and remaining admission are pending.
+
+Build/lint/boundaries and 604 focused tests / 69 files pass. Twelve new tests inspect
+actual refs/backings, partial quotas/readback/math/map/adoption/native/publication/
+cleanup/null/retry and single-owner per-pixel reuse. All 12 whole original Canvas
+traces/pixels match active/inactive scopes; prior 36 transform/12 GPU traces rerun.
+Complete audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers,
+69 typography and 64 prior-exact exports / 768 bodies/frames pass. Glyph
+1.434383× meets unchanged 1.5 maximum. Remaining helper/other sampling/effect/cache/
+registry/class/caller/depth sampling/provider/graph/font/common/ledger/Node and
+production/aggregate/speed/final gates pending.
+[Evidence](./composition-ce15-sampled-canvas-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -11,6 +11,7 @@ import {
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 import type { WebglSurface } from "./webgl-device.ts";
+import type { CanvasSurface } from "./canvas2d.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
@@ -100,6 +101,88 @@ function finishGpuSampledBlur(work: GpuSampledBlurWork, failed: boolean) {
     if (!failed) throw error;
   }
 }
+type SampleTransformWork = Pick<
+  GpuSampledBlurWork,
+  "taps" | "shape" | "transformProducer" | "transforms"
+>;
+type CanvasSampledBlurWork = {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  transformWork: SampleTransformWork;
+  sampling: PremultipliedSampleControl;
+  input?: CanvasSurface | undefined;
+  image?: ImageData | undefined;
+  premultiplied?: Uint8Array<ArrayBuffer> | undefined;
+  sample?: number[] | undefined;
+  sums?: number[] | undefined;
+  bytes?: number[] | undefined;
+  normalizeProducer?: ((value: number) => number) | undefined;
+  output?: CanvasSurface | undefined;
+};
+function clearSampledPixel(work: CanvasSampledBlurWork) {
+  if (work.sums) work.sums.length = 0;
+  if (work.bytes) work.bytes.length = 0;
+  work.sums = work.bytes = undefined;
+  work.normalizeProducer = undefined;
+}
+function clearCanvasSampledBlurWork(work: CanvasSampledBlurWork) {
+  let failed = false,
+    first: unknown;
+  try {
+    if (work.image) work.memory?.release(work.image.data.buffer);
+  } catch (error) {
+    failed = true;
+    first = error;
+  }
+  try {
+    if (work.premultiplied) work.memory?.release(work.premultiplied.buffer);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  clearSampledPixel(work);
+  if (work.sample) work.sample.length = 0;
+  const transforms = work.transformWork;
+  for (const tap of transforms.taps) (tap as number[]).length = 0;
+  transforms.taps.length = 0;
+  if (transforms.transforms) transforms.transforms.length = 0;
+  if (transforms.shape) delete transforms.shape.length;
+  transforms.shape =
+    transforms.transformProducer =
+    transforms.transforms =
+      undefined;
+  work.sampling.index = undefined;
+  for (const key in work)
+    delete (work as Partial<CanvasSampledBlurWork>)[
+      key as keyof CanvasSampledBlurWork
+    ];
+  if (failed) throw first;
+}
+function canvasSampledBlurWork(): CanvasSampledBlurWork {
+  const memory = renderMemory();
+  return allocateRenderMetadata<CanvasSampledBlurWork>(
+    65536,
+    () => ({
+      managed: memory !== undefined,
+      memory,
+      transformWork: { taps: [] },
+      sampling: {},
+    }),
+    false,
+    clearCanvasSampledBlurWork,
+  );
+}
+function finishCanvasSampledBlur(work: CanvasSampledBlurWork, failed: boolean) {
+  const managed = work.managed;
+  try {
+    if (managed) releaseRenderMetadata(work);
+    else clearCanvasSampledBlurWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
 const IDENTITY: SampleTransform = [256, 0, 0, 0, 256, 0];
 const scalar = (p: Params, key: string) => p[key] as number;
 export function blurSampleTransforms(
@@ -107,7 +190,7 @@ export function blurSampleTransforms(
   p: Params,
   w: number,
   h: number,
-  work?: GpuSampledBlurWork,
+  work?: SampleTransformWork,
 ): SampleTransform[] {
   const amount = scalar(
     p,
@@ -345,59 +428,76 @@ export function sampledBlurKernel(
       }
     },
     renderCanvas(context, input, params) {
-      const transforms = blurSampleTransforms(
-        id,
-        params,
-        input.width,
-        input.height,
-      );
-      const image = readRenderImageData(
-          input.ctx,
-          0,
-          0,
+      const work = canvasSampledBlurWork();
+      let failed = false;
+      try {
+        work.input = input;
+        const transforms = blurSampleTransforms(
+          id,
+          params,
           input.width,
           input.height,
-        ),
-        premultiplied = allocateRenderPixels(
-          image.data.length * 1,
-          () => new Uint8Array(image.data.length),
+          work.transformWork,
         );
-      for (let index = 0; index < image.data.length; index += 4) {
-        const alpha = image.data[index + 3]!;
-        for (let c = 0; c < 3; c++)
-          premultiplied[index + c] = Math.round(
-            (image.data[index + c]! * alpha) / 255,
+        const image = (work.image = readRenderImageData(
+            input.ctx,
+            0,
+            0,
+            input.width,
+            input.height,
+          )),
+          premultiplied = allocateRenderPixels(
+            image.data.length * 1,
+            () => (work.premultiplied = new Uint8Array(image.data.length)),
           );
-        premultiplied[index + 3] = alpha;
-      }
-      const sample = [0, 0, 0, 0];
-      for (let y = 0; y < input.height; y++)
-        for (let x = 0; x < input.width; x++) {
-          const sums = [0, 0, 0, 0];
-          for (const tap of transforms) {
-            samplePremultiplied(
-              premultiplied,
-              input.width,
-              input.height,
-              ((2 * x + 1) * tap[0] + (2 * y + 1) * tap[1] + tap[2]) / 512,
-              ((2 * x + 1) * tap[3] + (2 * y + 1) * tap[4] + tap[5]) / 512,
-              sample,
-            );
-            for (let c = 0; c < 4; c++) sums[c]! += sample[c]!;
-          }
-          const bytes = sums.map((v) =>
-              Math.floor(v / transforms.length + 0.5),
-            ),
-            index = (y * input.width + x) * 4;
+        for (let index = 0; index < image.data.length; index += 4) {
+          const alpha = image.data[index + 3]!;
           for (let c = 0; c < 3; c++)
-            image.data[index + c] = bytes[3]
-              ? Math.round((bytes[c]! * 255) / bytes[3])
-              : 0;
-          image.data[index + 3] = bytes[3]!;
+            premultiplied[index + c] = Math.round(
+              (image.data[index + c]! * alpha) / 255,
+            );
+          premultiplied[index + 3] = alpha;
         }
-      const output = context.createSurface(input.width, input.height);
-      output.ctx.putImageData(image, 0, 0);
-      return output;
+        const sample = (work.sample = [0, 0, 0, 0]);
+        for (let y = 0; y < input.height; y++)
+          for (let x = 0; x < input.width; x++) {
+            const sums = (work.sums = [0, 0, 0, 0]);
+            for (const tap of transforms) {
+              samplePremultiplied(
+                premultiplied,
+                input.width,
+                input.height,
+                ((2 * x + 1) * tap[0] + (2 * y + 1) * tap[1] + tap[2]) / 512,
+                ((2 * x + 1) * tap[3] + (2 * y + 1) * tap[4] + tap[5]) / 512,
+                sample,
+                work.sampling,
+              );
+              for (let c = 0; c < 4; c++) sums[c]! += sample[c]!;
+            }
+            const bytes = (work.bytes = sums.map(
+                (work.normalizeProducer = (v) =>
+                  Math.floor(v / transforms.length + 0.5)),
+              )),
+              index = (y * input.width + x) * 4;
+            for (let c = 0; c < 3; c++)
+              image.data[index + c] = bytes[3]
+                ? Math.round((bytes[c]! * 255) / bytes[3])
+                : 0;
+            image.data[index + 3] = bytes[3]!;
+            clearSampledPixel(work);
+          }
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        output.ctx.putImageData(image, 0, 0);
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishCanvasSampledBlur(work, failed);
+      }
     },
   } satisfies CompositionEffectPlugin);
   kernels.set(id, kernel);
