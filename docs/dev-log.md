@@ -99,27 +99,26 @@ still hold before relying on them.
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
   mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work/Canvas-color-source-gradient-image-work, managed plan/sum-shader cache, particle/
+  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work/Canvas-color-source-gradient-image-work/common-memory-native-retirement, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
   texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 893 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. Actual 16384-byte Canvas color owner precedes
-  input/native factories; capture empty/partial source before original conversion and
-  reuse one actual pixel child across all pixels without standalone helper leases.
-  Capture actual gradient keys/mapper/mapped/RGBA through original byte consumers and
-  clear sample arrays after writes. Reserve exact image backing before native readback,
-  capture actual image/buffer before adoption, guard unowned constructed backing and
-  retire after publication. Independent controls/cache remain live through publication;
-  controls retire and original scoped table cache remains until allocator disposal.
-  Attempt all cleanup, clear actual refs and preserve first null. Twelve new tests /
-  23 full original Canvas pixel/parameter/input traces, 464 parameter and 18 input cuts,
-  partial/reuse/gradient/image/quota/adoption/native/multiple-cleanup/late-null/retry pass
-  with all 881 prior tests and full 46 native GPU/Canvas color records. Attempt 1 passes
-  893/101. Native probes, WebGL/providers/69 typography tests pass; glyph 1.425039×
-  meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact
-  output. GPU ownKeys key-list capacity, kernel/shader/registry, arbitrary borrowed
-  methods/species/identity contracts, other effect/cache/error/class/caller/depth
-  sampling remain pending.
+  metadata pass 912 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Common pixel/metadata and native retirement
+  retain actual charge, ownership, resource records and lease lookup through original
+  destructors; mark inactive before cleanup, attempt both destructors, preserve first null
+  and clear actual resource refs before returning admission. Reentrant release/disposal
+  cannot destroy twice or expose old capacity before physical cleanup. Successful adoption
+  and captured async lease prevent already-retired handle fallback. Defer native retirement
+  through already-started initialization; late registration stays charged and is destroyed
+  once after final idempotent producer hold settles. Nineteen new tests / all 893 prior
+  tests pass, including unchanged late-registration protection. Preserve initial lint,
+  three-case review red regression and 908/909 failure; final attempt 4 passes 912/102.
+  Native probes, WebGL/providers/69 typography tests pass; glyph 1.415644× meets
+  unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output.
+  First glyph run 1.56× fails; retain evidence and unchanged-source/threshold retry.
+  Generic allocate/identity/adopt backing cleanup and actual lease/control/ledger bootstrap,
+  color GPU ownKeys key-list/kernel/shader/registry, arbitrary borrowed methods/species,
+  backend/class/caller/depth sampling/provider/font/Node remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -355,6 +354,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 common memory and native retirement
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `b2352574`.
+- **Done:** retain actual admission/ownership/records through cleanup and pending
+  native initialization; destroy once, clear actual refs and preserve first null.
+- **Results:** build/lint/boundaries, 912 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.415644×.
+- **Verification:** nineteen new tests; all 893 prior tests and unchanged late
+  registration protection pass. Preserve lint failure, deliberate three-case red
+  repro and 908/909 failure; deferred producer lifetime fixes the latter. Final 4 passes.
+- **Timing:** first glyph run 1.56× fails; unchanged-source retry meets 1.5 maximum.
+- **Next:** generic allocate/identity/adopt cleanup, kernel/ownKeys/common/Node
+  preproducer ownership, production/aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [retirement evidence](./composition-ce15-memory-retirement-results.json).
 
 ### 2026-10-08 — CE15 selected Canvas color metadata
 

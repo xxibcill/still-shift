@@ -69,16 +69,21 @@ export function createRenderStorage<T extends object>(
 ): T {
   const memory = active;
   const lease = memory?.reserve("pixels", bytes, undefined, retained);
-  let value: T | undefined;
+  let value: T | undefined,
+    adopted = false;
   try {
     value = create() ?? undefined;
     if (!value) throw Error("Native render storage creation failed");
     const resource = value;
     if (memory && lease) {
       memory.adopt(resource, lease, () => {
-        storageLeases.delete(resource);
-        destroy(resource);
+        try {
+          destroy(resource);
+        } finally {
+          storageLeases.delete(resource);
+        }
       });
+      adopted = true;
       storageLeases.set(resource, lease);
     }
     initialize(resource);
@@ -86,7 +91,7 @@ export function createRenderStorage<T extends object>(
   } catch (error) {
     // Cleanup must preserve the original native/admission failure, including null.
     try {
-      if (value && !memory?.owns(value)) destroy(value);
+      if (value && !adopted && !memory?.owns(value)) destroy(value);
     } catch {
       /* The original failure owns this path. */
     }
@@ -109,16 +114,25 @@ export async function createRenderStorageAsync<T extends object>(
 ): Promise<T> {
   const memory = active;
   const value = createRenderStorage(bytes, create, () => {}, destroy, retained);
+  const lease = storageLeases.get(value);
+  const finish = lease?.deferRelease();
   try {
     await initialize(value);
-    if (memory && !storageLeases.get(value)?.active)
+    finish?.();
+    if (memory && !lease?.active)
       throw Error("Managed native decode owner was disposed");
     return value;
   } catch (error) {
     try {
-      releaseRenderStorage(value, destroy);
+      if (lease) lease.release();
+      else destroy(value);
     } catch {
       /* Preserve the original decode failure. */
+    }
+    try {
+      finish?.();
+    } catch {
+      /* Initialization failed before deferred native cleanup. */
     }
     throw error;
   }
@@ -134,19 +148,24 @@ export async function allocateRenderStorageAsync<T extends object>(
   const memory = active;
   if (!memory) return factory();
   const lease = memory.reserve("pixels", bytes, undefined, retained);
-  let value: T | undefined;
+  let value: T | undefined,
+    adopted = false;
   try {
     value = await factory();
     const resource = value;
     memory.adopt(resource, lease, () => {
-      storageLeases.delete(resource);
-      destroy(resource);
+      try {
+        destroy(resource);
+      } finally {
+        storageLeases.delete(resource);
+      }
     });
+    adopted = true;
     storageLeases.set(resource, lease);
     return resource;
   } catch (error) {
     try {
-      if (value && !memory.owns(value)) destroy(value);
+      if (value && !adopted && !memory.owns(value)) destroy(value);
     } catch {
       /* Preserve the original producer failure. */
     }

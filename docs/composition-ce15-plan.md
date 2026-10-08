@@ -2281,6 +2281,34 @@ GPU ownKeys capacity, kernel/shader/registry, arbitrary borrowed methods/species
 identity contracts, common/Node, production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-color-canvas-metadata-results.json).
 
+## Accepted common memory/native retirement checkpoint — 2026-10-08
+
+Keep actual pixel/metadata bytes, ownership, resource records and native lease lookup
+through both original destructors. Mark inactive immediately, refuse further mutations,
+attempt all cleanup and preserve first error including null; drop actual resource value/
+destroy refs and captured destructor before returning admission. Reentrant native release
+does not invoke a fallback destructor. Successful adoption and captured initializer lease
+prevent repeated destruction after an initializer has already retired its native handle.
+
+Hold retirement through already-started asynchronous initialization. Disposal immediately
+marks inactive while actual native handle, records and charge remain held until the final
+idempotent producer hold settles. Destroy late native registration once after initialization;
+preserve actual initializer failure, then original cleanup failure before generated disposed
+error. Successful initialization simply drops its hold and keeps active native ownership.
+
+Build/lint/boundaries and 912 focused tests / 102 files pass on final attempt 4. Nineteen
+new retirement tests and all 893 prior tests pass, including unchanged late-registration
+protection. Preserve the initial lint failure, deliberate three-case native red regression,
+and attempt 3's 908/909 failure before adding deferred lifetime. Complete 144-case /
+8,000-frame audit, 96 RPC snapshots, native probes, WebGL/providers, 69 typography tests
+and 64 prior-exact exports / 768 bodies/frames pass; glyph 1.415644× stays within 1.5.
+The first typography timing run reported 1.56× and fails; preserve its log and rerun
+the affected checks with unchanged source, threshold and original pixel evidence.
+
+Generic allocation/identity/adoption cleanup, lease/ledger/control bootstrap, color key-list/
+kernel/registry and other backend/class/provider/font/Node/production/aggregate/speed/final
+gates remain pending. [Evidence](./composition-ce15-memory-retirement-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

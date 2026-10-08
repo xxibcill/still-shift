@@ -4,6 +4,7 @@ export type MemoryLease = {
   readonly bytes: number;
   readonly active: boolean;
   resize(bytes: number): void;
+  deferRelease(): () => void;
   release(): void;
 };
 
@@ -39,7 +40,8 @@ export class ManagedMemory {
     if (this.leases.size >= 8192)
       throw Error("Managed memory control entries exceed their bound");
     let size = 0,
-      released = false;
+      released = false,
+      holds = 0;
     const resize = (next: number) => {
       if (this.closed || released)
         throw Error("Managed memory reservation is disposed");
@@ -54,25 +56,11 @@ export class ManagedMemory {
       this.peak[kind] = Math.max(this.peak[kind], this.current[kind]);
     };
     resize(bytes);
-    const lease: MemoryLease = {
-      get active() {
-        return !released;
-      },
-      get bytes() {
-        return size;
-      },
-      resize,
-      release: () => {
-        if (released) return;
-        released = true;
-        this.current[kind] -= size;
-        this.leases.delete(lease);
-        this.scratch.delete(lease);
-        const resource = this.resources.get(lease);
-        this.resources.delete(lease);
-        if (resource) this.ownership.delete(resource.value);
-        let failed = false;
-        let reason: unknown;
+    const retire = () => {
+      const resource = this.resources.get(lease);
+      let failed = false;
+      let reason: unknown;
+      try {
         try {
           destroy?.();
         } catch (error) {
@@ -82,9 +70,50 @@ export class ManagedMemory {
         try {
           if (resource) resource.destroy?.(resource.value);
         } catch (error) {
-          if (!failed) throw error;
+          if (!failed) {
+            failed = true;
+            reason = error;
+          }
         }
-        if (failed) throw reason;
+      } finally {
+        if (resource) {
+          this.ownership.delete(resource.value);
+          delete (resource as Partial<typeof resource>).value;
+          delete resource.destroy;
+        }
+        destroy = undefined;
+        this.resources.delete(lease);
+        this.scratch.delete(lease);
+        this.leases.delete(lease);
+        this.current[kind] -= size;
+      }
+      if (failed) throw reason;
+    };
+    const lease: MemoryLease = {
+      get active() {
+        return !released;
+      },
+      get bytes() {
+        return size;
+      },
+      resize,
+      /** Keep admission and actual owners until an already-started producer settles. */
+      deferRelease: () => {
+        if (this.closed || released)
+          throw Error("Managed memory reservation is disposed");
+        holds++;
+        let settled = false;
+        return () => {
+          if (settled) return;
+          settled = true;
+          holds--;
+          if (released && !holds) retire();
+        };
+      },
+      release: () => {
+        if (released) return;
+        released = true;
+        if (!holds) retire();
       },
     };
     this.leases.add(lease);
@@ -150,11 +179,11 @@ export class ManagedMemory {
 
   release(value: object): void {
     this.ownership.get(value)?.release();
-    this.ownership.delete(value);
   }
 
+  /** Retiring owners remain charged and observable until their destructors finish. */
   owns(value: object): boolean {
-    return this.ownership.get(value)?.active === true;
+    return this.ownership.has(value);
   }
 
   /** Scratch remains charged through capture/upload; retained resources cross this boundary explicitly. */
