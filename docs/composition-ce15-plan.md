@@ -1273,6 +1273,29 @@ plugin/effect controllers/images/depth/provider/graph/font/checksum/common helpe
 registry/ledger/Node, production/aggregate admission, speed/full gate remain pending.
 [Evidence](./composition-ce15-builtins-metadata-results.json).
 
+## Accepted depth mesh metadata checkpoint — 2026-10-08
+
+Admit actual working holder/control at 1024 before software-grid and original
+hardware expansion pixel/vector/view factories. Capture each actual set vector or
+three-view triangle through original copies then clear/drop. Existing pixel owners
+admit actual backing storage. Actual returned records admit 512 before factories,
+own actual output view references through native buffer upload, then clear fields.
+Every partial output backing releases on quota/copy/subarray/null/result failure;
+original null survives secondary cleanup and borrowed original grid stays exact.
+
+Four complete original raw buffer hashes remain exact (150672/110592 software,
+3538944/110592 hardware bytes). Build/lint/boundaries and all 384 focused tests,
+nine new regressions, complete audit 144/8,000, 96 RPC snapshots, prior native
+probes, WebGL/providers and 69 typography tests pass; glyph 1.432392× meets
+unchanged 1.5 maximum. All 64 exports / 768 bodies/frames match pushed `cc42056`.
+Typed-spy/scratch-API and glyph 1.52× failure are retained; affected timing retry
+uses original seven-round median and unchanged 1.5 maximum. Existing second-pixel fixture metadata
+8→4096 preserves original 200000-pixel denial; protected source/root quotas and all
+native pixels/timing remain unchanged. Dedicated depth programs/controllers/cache/
+state, PNG/other controllers/provider/graph/font/common helper/registry/ledger/Node,
+production/aggregate admission, speed/full gate remain pending.
+[Evidence](./composition-ce15-depth-grid-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

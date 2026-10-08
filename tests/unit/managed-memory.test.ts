@@ -322,7 +322,7 @@ it("disposes every retained native handle even when one native destructor throws
 });
 
 it("releases the partial CPU mesh if its second backing allocation is denied", async () => {
-  const memory = new ManagedMemory({ pixels: 200000, metadata: 8 });
+  const memory = new ManagedMemory({ pixels: 200000, metadata: 4096 });
   await withManagedMemory(memory, async () => {
     expect(() => depthImageGrid()).toThrow("aggregate worker quota");
     expect(memory.statistics.current.pixels).toBe(0);

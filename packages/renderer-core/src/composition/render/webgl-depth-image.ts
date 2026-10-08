@@ -3,7 +3,12 @@ import {
   createRenderStorage,
   releaseRenderPixels,
   releaseRenderStorage,
+  renderMemory,
 } from "../../managed-memory-context.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+} from "../../managed-metadata.ts";
 import { coverFit, PREVIEW_LIMITS } from "../../scene.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import type { CanvasImageResources } from "./canvas2d.ts";
@@ -188,40 +193,198 @@ void main() {
   pixel=vec4(encoded*value.a,value.a);
 }`;
 
+type DepthGrid = {
+  vertices: Float32Array<ArrayBuffer>;
+  indices: Uint16Array<ArrayBuffer>;
+};
+type GridWork = {
+  managed: boolean;
+  views: Float32Array<ArrayBuffer>[];
+  values?: number[] | undefined;
+  triangle?: Float32Array<ArrayBuffer>[] | undefined;
+  vertices?: Float32Array<ArrayBuffer> | undefined;
+  indices?: Uint16Array<ArrayBuffer> | undefined;
+};
+function clearGridWork(value: GridWork) {
+  if (value.values) value.values.length = 0;
+  if (value.triangle) value.triangle.length = 0;
+  value.views.length = 0;
+  value.values = value.triangle = value.vertices = value.indices = undefined;
+}
+function gridWork() {
+  return allocateRenderMetadata<GridWork>(
+    1024,
+    () => ({ managed: renderMemory() !== undefined, views: [] }),
+    false,
+    clearGridWork,
+  );
+}
+function gridResult(
+  vertices: DepthGrid["vertices"],
+  indices: DepthGrid["indices"],
+) {
+  return allocateRenderMetadata<DepthGrid>(
+    512,
+    () => ({ vertices, indices }),
+    false,
+    (grid) => {
+      delete (grid as Partial<DepthGrid>).vertices;
+      delete (grid as Partial<DepthGrid>).indices;
+    },
+  );
+}
+function releaseGridWork(phase: GridWork) {
+  if (phase.managed) releaseRenderMetadata(phase);
+  else clearGridWork(phase);
+}
+function releaseGridPixels(phase: GridWork) {
+  let failed = false,
+    first: unknown;
+  try {
+    releaseRenderPixels(phase.vertices);
+  } catch (error) {
+    failed = true;
+    first = error;
+  }
+  try {
+    releaseRenderPixels(phase.indices);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  if (failed) throw first;
+}
+function setGridValues(
+  phase: GridWork,
+  target: Float32Array | Uint16Array,
+  values: number[],
+  offset: number,
+) {
+  phase.values = values;
+  try {
+    target.set(values, offset);
+  } finally {
+    values.length = 0;
+    phase.values = undefined;
+  }
+}
+
 /** Fixed source mesh; no family renderer, camera or export pipeline is created. */
 export function depthImageGrid() {
-  const columns = PREVIEW_LIMITS.gridColumns,
-    rows = PREVIEW_LIMITS.gridRows;
-  const vertices = allocateRenderPixels(
-    (columns + 1) * (rows + 1) * 16,
-    () => new Float32Array((columns + 1) * (rows + 1) * 4),
-  );
-  for (let y = 0; y <= rows; y++)
-    for (let x = 0; x <= columns; x++)
-      vertices.set(
-        [
-          (x * 2) / columns - 1,
-          -((y * 2) / rows - 1),
-          x / columns,
-          1 - y / rows,
-        ],
-        (y * (columns + 1) + x) * 4,
-      );
+  const phase = gridWork();
+  let completed = false,
+    cleaned = false;
   try {
-    const indices = allocateRenderPixels(
+    const columns = PREVIEW_LIMITS.gridColumns,
+      rows = PREVIEW_LIMITS.gridRows;
+    const vertices = (phase.vertices = allocateRenderPixels(
+      (columns + 1) * (rows + 1) * 16,
+      () => new Float32Array((columns + 1) * (rows + 1) * 4),
+    ));
+    for (let y = 0; y <= rows; y++)
+      for (let x = 0; x <= columns; x++)
+        setGridValues(
+          phase,
+          vertices,
+          [
+            (x * 2) / columns - 1,
+            -((y * 2) / rows - 1),
+            x / columns,
+            1 - y / rows,
+          ],
+          (y * (columns + 1) + x) * 4,
+        );
+    const indices = (phase.indices = allocateRenderPixels(
       columns * rows * 12,
       () => new Uint16Array(columns * rows * 6),
-    );
+    ));
     for (let y = 0; y < rows; y++)
       for (let x = 0; x < columns; x++) {
         const a = x + (columns + 1) * y,
           b = a + columns + 1;
-        indices.set([a, b, a + 1, b, b + 1, a + 1], (y * columns + x) * 6);
+        setGridValues(
+          phase,
+          indices,
+          [a, b, a + 1, b, b + 1, a + 1],
+          (y * columns + x) * 6,
+        );
       }
-    return { vertices, indices };
+    const result = gridResult(vertices, indices);
+    completed = true;
+    return result;
   } catch (error) {
-    releaseRenderPixels(vertices);
+    cleaned = true;
+    try {
+      releaseGridPixels(phase);
+    } catch {
+      /* Preserve original mesh factory/consumer failure. */
+    }
     throw error;
+  } finally {
+    try {
+      if (!completed && !cleaned) releaseGridPixels(phase);
+    } finally {
+      releaseGridWork(phase);
+    }
+  }
+}
+
+/** Original per-triangle hardware attributes, with three borrowed backing views per triangle. */
+export function hardwareDepthGrid(grid: DepthGrid) {
+  const phase = gridWork();
+  let completed = false,
+    cleaned = false;
+  try {
+    const indices = (phase.indices = allocateRenderPixels(
+      grid.indices.length * 2,
+      () => new Uint16Array(grid.indices.length),
+    ));
+    const vertices = (phase.vertices = allocateRenderPixels(
+      indices.length * 16 * 4,
+      () => new Float32Array(indices.length * 16),
+    ));
+    for (let start = 0; start < indices.length; start += 3) {
+      const triangle = (phase.triangle = (phase.values = [0, 1, 2]).map(
+        (corner) => {
+          const offset = grid.indices[start + corner]! * 4;
+          const view = grid.vertices.subarray(offset, offset + 4);
+          phase.views.push(view);
+          return view;
+        },
+      ));
+      try {
+        for (let corner = 0; corner < 3; corner++) {
+          const index = start + corner;
+          indices[index] = index;
+          vertices.set(triangle[corner]!, index * 16);
+          for (let other = 0; other < 3; other++)
+            vertices.set(triangle[other]!, index * 16 + 4 + other * 4);
+        }
+      } finally {
+        triangle.length = phase.views.length = 0;
+        phase.values.length = 0;
+        phase.triangle = phase.values = undefined;
+      }
+    }
+    const result = gridResult(vertices, indices);
+    completed = true;
+    return result;
+  } catch (error) {
+    cleaned = true;
+    try {
+      releaseGridPixels(phase);
+    } catch {
+      /* Preserve original mesh factory/consumer failure. */
+    }
+    throw error;
+  } finally {
+    try {
+      if (!completed && !cleaned) releaseGridPixels(phase);
+    } finally {
+      releaseGridWork(phase);
+    }
   }
 }
 
@@ -292,29 +455,12 @@ export class WebglDepthImages {
       const grid = depthImageGrid();
       let vertices = grid.vertices;
       let indices = grid.indices;
+      let expanded: DepthGrid | undefined;
       try {
         if (!software) {
-          indices = allocateRenderPixels(
-            grid.indices.length * 2,
-            () => new Uint16Array(grid.indices.length),
-          );
-          vertices = allocateRenderPixels(
-            indices.length * 16 * 4,
-            () => new Float32Array(indices.length * 16),
-          );
-          for (let start = 0; start < indices.length; start += 3) {
-            const triangle = [0, 1, 2].map((corner) => {
-              const offset = grid.indices[start + corner]! * 4;
-              return grid.vertices.subarray(offset, offset + 4);
-            });
-            for (let corner = 0; corner < 3; corner++) {
-              const index = start + corner;
-              indices[index] = index;
-              vertices.set(triangle[corner]!, index * 16);
-              for (let other = 0; other < 3; other++)
-                vertices.set(triangle[other]!, index * 16 + 4 + other * 4);
-            }
-          }
+          expanded = hardwareDepthGrid(grid);
+          indices = expanded.indices;
+          vertices = expanded.vertices;
         }
         this.count = indices.length;
         this.vertex = createRenderStorage(
@@ -351,6 +497,8 @@ export class WebglDepthImages {
         releaseRenderPixels(indices);
         releaseRenderPixels(grid.vertices);
         releaseRenderPixels(grid.indices);
+        if (expanded) releaseRenderMetadata(expanded);
+        releaseRenderMetadata(grid);
       }
     } catch (error) {
       gl.deleteProgram(program);

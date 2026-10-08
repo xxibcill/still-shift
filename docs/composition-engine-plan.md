@@ -5133,14 +5133,15 @@ snapshot/call-input/controller/wrapper and device/native-surface/pool-key/array/
 row-view/swap/dirty-set/cached-color/clip-intersection, device shader-source/program/
 uniform/diagnostic, paint batch/geometry/shader/uniform/input, Gaussian kernel/
 rescale/box/fallback, managed plan/sum-shader cache, particle/Canvas/WebGL region,
-effect-paint/replace and seven built-in effect metadata pass 375 focused tests,
-complete audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
-snapshots. Actual fixed effect data and dynamic sweep matrices pre-admit, stay
-through consumers, then clear; borrowed values remain. Fifteen whole native traces/
-thirteen new tests pass; sine detachment and grain/glow cleanup preserve original
-null/retry. Fixture type/double-spy failures are retained. Native probes,
-WebGL/providers and 69 typography tests pass; glyph 1.395534× meets unchanged
-1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output. Recording/device/pool/shader/paint/
+effect-paint/replace, seven built-ins and depth mesh metadata pass 384 focused
+tests, complete audit, 22 moving/blurred and ten stationary native frames and 96
+owned RPC snapshots. Actual grid/set/triangle/view/result records pre-admit, stay
+through consumers/native upload, then clear. Four original buffer hashes/nine new
+tests pass, including partial/null/retry/scratch/allocator. Second-pixel fixture
+metadata 8→4096 preserves original 200000-pixel denial; glyph 1.52× failure retained
+and affected check retried at unchanged threshold. Native probes, WebGL/providers
+and 69 typography tests pass; glyph 1.432392× meets unchanged 1.5 maximum. All
+64 exports / 768 bodies/frames retain prior exact output. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

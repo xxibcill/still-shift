@@ -96,14 +96,15 @@ still hold before relying on them.
   pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback, managed plan/sum-shader cache, particle/
-  Canvas/WebGL region, effect-paint/replace and seven built-in effect metadata pass
-  375 focused tests, complete audit, 22 moving/blurred and ten stationary native
-  frames and 96 owned RPC snapshots. Actual fixed effect data and dynamic sweep
-  matrices pre-admit, stay through consumers, then clear; borrowed values remain.
-  Fifteen whole native traces/thirteen new tests pass; sine detachment and grain/
-  glow cleanup preserve original null/retry. Fixture type/double-spy failures are
-  retained. Native probes, WebGL/providers, 69 typography tests and 64 exports /
-  768 prior-exact bodies/frames pass; glyph 1.395534× meets unchanged 1.5 maximum.
+  Canvas/WebGL region, effect-paint/replace, seven built-ins and depth mesh metadata
+  pass 384 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Actual grid/set/triangle/view/result
+  records pre-admit, stay through consumers/native upload, then clear. Four original
+  buffer hashes/nine new tests pass, including partial/null/retry/scratch/allocator.
+  Second-pixel fixture metadata 8→4096 preserves original 200000-pixel denial;
+  glyph 1.52× failure retained and affected check retried without policy change.
+  Native probes, WebGL/providers, 69 typography tests and 64 exports / 768 prior-
+  exact bodies/frames pass; glyph 1.432392× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -339,6 +340,25 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual depth mesh data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `cc42056`.
+- **Done:** pre-admit actual grid/set/triangle/view controls and returned records;
+  retain through original copies/native upload, clear refs, release partial backing
+  storage and preserve original null/retry and borrowed input data.
+- **Results:** build/lint/boundaries, 384 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.432392× meets unchanged 1.5 maximum.
+- **Verification:** nine new tests/four complete original buffer hashes; quota/
+  consumer/null/partial/retry/scratch/allocator. Typed-spy/scratch API repaired.
+  Second-pixel fixture metadata 8→4096 preserves original 200000-pixel failure.
+  Glyph 1.52× failure retained; only affected timing retried at unchanged threshold.
+- **Next:** dedicated depth program/controller/cache/state, PNG/controllers/plugins/
+  provider/graph/font/common helper/registry/ledger/Node, production/full CE15, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [mesh evidence](./composition-ce15-depth-grid-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual built-in effect data
 
