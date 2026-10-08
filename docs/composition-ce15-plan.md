@@ -1973,6 +1973,26 @@ registry/error/class/depth sampling/provider/graph/font/common/ledger/Node and
 production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-stylize-canvas-metadata-results.json).
 
+## Accepted standalone chromatic offset result checkpoint — 2026-10-08
+
+Default active helper admits actual 272-byte two-number result before original
+root/child getters, rounds and array factory. Preserve original formulas/getter
+order and positive-zero behavior; original inactive and caller-admitted routes use
+the same producer with no extra caller lease. Keep actual result owned outside scope
+and while another scope is active until consumer/scratch/allocator cleanup. Clear
+actual output after adoption failure and preserve first null over secondary cleanup;
+successful cleanup null propagates after actual array clears.
+
+Build/lint/boundaries and 748 focused tests / 85 files pass on attempt 2 after exact
+test input tuple typing. Seven new tests preserve five original complete values/
+positive zero/getter sequences and cover quota/actual reservation/captured allocator/
+lifetime/producer/adoption/cleanup null/retry/caller. All 741 prior tests rerun.
+Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography tests
+and 64 prior-exact exports / 768 bodies/frames pass; glyph 1.422721× meets unchanged
+1.5 maximum. Other effects/cache/registry/error/class/depth sampling/provider/graph/
+font/common/ledger/Node and production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-stylize-offset-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

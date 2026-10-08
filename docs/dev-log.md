@@ -99,21 +99,20 @@ still hold before relying on them.
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
   mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work, managed plan/sum-shader cache, particle/
+  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
   texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 741 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. Stylize Canvas work admits before actual
-  offset/neutral/readback/view/sample/RGB/map/index/native factories, retains through
-  publication and clears actual RGB/key arrays and callbacks after each pixel.
-  Reuse one admitted sampling control with no extra per-pixel lease. Both original
-  stores retire even after first error; native detach failures still clear refs.
-  Twelve new tests / 16 original native traces/full pixels check quota/actual partial
-  and consumer refs/math/getter/native/adoption/cleanup null/retry. Review repair and
-  type failure retained; focused attempt 3 passes. Native probes, WebGL/providers
-  and 69 typography tests pass; glyph 1.357456× meets unchanged 1.5 maximum. All
-  64 exports / 768 bodies/frames retain prior exact output. Standalone offset and
-  other effects/cache/error/class/caller/depth sampling remain pending.
+  metadata pass 748 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Standalone chromatic offset admits actual
+  272-byte result before original getters/math/array factory; keep owned outside
+  scope and while another scope is active until consumer/scratch/allocator cleanup.
+  Original caller-admitted routes add no result lease. Seven new tests / five original
+  values/positive-zero/getter sequences check quota/actual reservation/captured
+  allocator/lifetime/producer/adoption/cleanup null/retry/caller. Type failure
+  retained; focused attempt 2 passes. Native probes, WebGL/providers and 69 typography
+  tests pass; glyph 1.422721× meets unchanged 1.5 maximum. All 64 exports / 768
+  bodies/frames retain prior exact output. Other effects/cache/error/class/caller/
+  depth sampling remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -349,6 +348,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual standalone chromatic offset result
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `5827df1e`.
+- **Done:** admit actual 272-byte result before original getters/math/array factory;
+  keep owned outside scope and while another scope is active until consumer cleanup.
+  Caller-admitted routes add no result lease; original inactive values stay exact.
+- **Results:** build/lint/boundaries, 748 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.422721×.
+- **Verification:** seven new tests / five original values/positive-zero/getter
+  sequences, quota/actual reservation/captured allocator/lifetime/null/adoption/
+  cleanup/retry/caller. All 741 prior tests rerun; type failure retained, attempt 2
+  passes.
+- **Next:** noise/color/transition/cache/class/depth sampling, provider/graph/font/
+  common/registry/ledger/Node, aggregate memory/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [offset result evidence](./composition-ce15-stylize-offset-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual stylize Canvas callback metadata
 

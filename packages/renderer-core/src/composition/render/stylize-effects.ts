@@ -186,6 +186,21 @@ export function chromaticOffset(
   p: Params,
   work?: StylizeOffsetControl,
 ): readonly [number, number] {
+  if (work || !renderMemory()) return produceChromaticOffset(p, work);
+  return allocateRenderMetadata<[number, number]>(
+    272,
+    () => produceChromaticOffset(p),
+    false,
+    clearChromaticOffset,
+  );
+}
+function clearChromaticOffset(value: [number, number]) {
+  (value as number[]).length = 0;
+}
+function produceChromaticOffset(
+  p: Params,
+  work?: StylizeOffsetControl,
+): [number, number] {
   const offset = p.offset as readonly number[];
   const value: [number, number] = [
     Math.round(offset[0]! * 16) / 16 || 0,
