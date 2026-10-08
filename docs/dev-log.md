@@ -43,6 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #45 rendered reveal-alpha repair complete (2026-10-08):** the first
+  P2 finding on reviewed `8ee9088` is posted inline and repaired in the commit
+  containing this checkpoint. Native reveal validation measures treated target
+  and combined foreground alpha at actual shutter exposures, including shared
+  ancestor treatments and drawable matte suppression. All 58 focused units,
+  TypeScript, focused lint/format and boundaries pass. Both backends pass 45
+  reveal cases (21 invalid rejected, 24 valid exact); 42 invalid exports publish
+  nothing, 20 valid repeat pairs and ten independent control exports are exact.
+  The separate focus-crossfade repair and final affected browser/export/frozen
+  checks remain in flight; one final normal push will deliver both commits.
+  No new full repository or timing gate is claimed; owner checkout is untouched
+  and Actions stay disabled. [Repair evidence](./pr-45-reveal-focus-fix-results.json).
+
 - **PR #45 alpha follow-up repairs verified (2026-10-08):** both new P2
   findings are posted inline on reviewed `76fb71b`, with one repair per commit.
   `737b0cc` preserves full evaluated reveal opacity; the commit containing this
@@ -889,6 +902,16 @@ still hold before relying on them.
 _Last updated 2026-10-08 by Codex for PR #45 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #45 rendered semantic reveal-alpha repair
+
+- **Agent / branch:** Codex on `codex/pr45-reveal-focus-fixes` from reviewed `8ee9088`.
+- **Scope:** first of two inline P2 findings; one finding per commit, one final push.
+- **Done:** measure rendered subject and combined occluder alpha at actual shutter states, preserve held clocks/shared ancestor isolation and node/frame diagnostics, and reject suppressed matte sources. Add decoded-PNG controls, document the rule and bump backend identities.
+- **Results:** three new unit regressions fail on reviewed source; all 58 focused units, TypeScript, focused lint/format and boundaries pass. Both backends pass 45 reveal cases; 42 invalid exports publish nothing, 20 valid repeat pairs and ten independent control exports are byte-identical. In-viewport edge samples pass while offscreen queries fail. Independent Standards and Spec reviews have no remaining findings.
+- **Rejected / do not repeat:** the first smooth-wall shutter fixture used the wrong key interpolation; corrected held-wall red confirms the defect. The temporary export runner’s initial control property was wrong; supplemental exports verify all controls. Keep caches and Python environment isolated.
+- **Open / next:** separate focus-crossfade repair, final scoped browser/export/frozen checks, then one normal push. No full `pnpm check` or timing matrix; Actions remain disabled.
+- **Records:** [repair evidence](./pr-45-reveal-focus-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
 
 ### 2026-10-08 — PR #45 rendered background-alpha repair and final verification
 

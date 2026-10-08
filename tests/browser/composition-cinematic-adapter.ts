@@ -25,6 +25,7 @@ import {
   cinematicFocusVariants,
 } from "../helpers/composition-cinematic-effects.ts";
 import { compositionCinematicCoverageAcceptance } from "../helpers/composition-cinematic-coverage-acceptance.ts";
+import { compositionCinematicRevealAcceptance } from "../helpers/composition-cinematic-reveal-acceptance.ts";
 import { cinematicInspectorAcceptance } from "./cinematic-inspector.ts";
 import {
   cameraHardwarePreview,
@@ -59,15 +60,16 @@ if (smoke)
   console.log(
     "Diagnostic smoke only: sampled pixels/seeks; full timelines, timing and exports remain pending.",
   );
+const directory = await mkdtemp(join(tmpdir(), "ce4c-preview-"));
 const server = await createServer({
   root,
   configFile: false,
+  cacheDir: join(directory, "vite-cache"),
   server: { host: "127.0.0.1", port: 0 },
   logLevel: "error",
 });
 await server.listen();
 const browser = await launchRenderBrowser();
-const directory = await mkdtemp(join(tmpdir(), "ce4c-preview-"));
 const reports: unknown[] = [],
   exports: unknown[] = [],
   hardwareFixtures: CameraFixture[] = [];
@@ -84,6 +86,12 @@ try {
     );
     console.log(`Cinematic coverage: ${JSON.stringify(coverage.reports)}`);
     reports.push({ id: "cinematic-coverage", reports: coverage.reports });
+    const reveal = await compositionCinematicRevealAcceptance(
+      coveragePage,
+      backends as Render.CompositionBackend[],
+    );
+    console.log(`Cinematic reveal: ${JSON.stringify(reveal.reports)}`);
+    reports.push({ id: "cinematic-reveal", reports: reveal.reports });
   } finally {
     await coveragePage.close();
   }

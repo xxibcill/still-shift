@@ -1,5 +1,8 @@
 import { z } from "zod";
-import type { Composition } from "@still-shift/scene-contract";
+import type {
+  Composition,
+  CompositionLayer,
+} from "@still-shift/scene-contract";
 import {
   prepareAlphaCoverage,
   type AlphaPixels,
@@ -7,6 +10,8 @@ import {
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import {
   inspectProjectedReveal,
+  RevealValidationError,
+  type RevealAlphaSampler,
   type RevealImageNode,
 } from "../../reveal-validation.ts";
 import { evaluateComp } from "../evaluate/evaluate.ts";
@@ -34,6 +39,50 @@ const declarationSchema = z.object({
     .optional(),
 });
 
+function hasAlphaTreatment(
+  layers: ReadonlyMap<string, CompositionLayer>,
+  id: string,
+) {
+  for (
+    let layer = layers.get(id);
+    layer;
+    layer = layer.parent ? layers.get(layer.parent) : undefined
+  ) {
+    if (
+      layer.masks?.length ||
+      layer.trackMatte ||
+      layer.effects?.some((effect) => effect.enabled !== false) ||
+      (layer.type === "group" && layer.clip)
+    )
+      return true;
+  }
+  return false;
+}
+
+/** Only treated reveal planes need backend alpha capture; ordinary recipes retain source sampling. */
+export function cinematicRenderedRevealRequirements(composition: Composition) {
+  const parsed = declarationSchema.safeParse(
+    composition.metadata?.cinematicCoverage,
+  );
+  if (!parsed.success || !parsed.data.reveal) return;
+  const { subject, occluders } = parsed.data.reveal;
+  const layers = new Map(composition.layers.map((layer) => [layer.id, layer]));
+  const focus = composition.layers.some(
+    (layer) => layer.type === "camera" && layer.depthOfField,
+  );
+  const shutter =
+    composition.motionBlur?.enabled && !!composition.motionBlur.shutterAngle;
+  return {
+    subject,
+    occluders,
+    layers: new Set(
+      [subject, ...occluders].filter(
+        (id) => focus || shutter || hasAlphaTreatment(layers, id),
+      ),
+    ),
+  };
+}
+
 /** Untreated planes are covered geometrically; alpha treatments require the rendered layer. */
 export function cinematicRenderedCoverageRequirements(
   composition: Composition,
@@ -44,21 +93,8 @@ export function cinematicRenderedCoverageRequirements(
   const requirements = new Map<string, string>();
   if (!parsed.success) return requirements;
   const layers = new Map(composition.layers.map((layer) => [layer.id, layer]));
-  for (
-    let layer = layers.get(parsed.data.background);
-    layer;
-    layer = layer.parent ? layers.get(layer.parent) : undefined
-  ) {
-    if (
-      layer.masks?.length ||
-      layer.trackMatte ||
-      layer.effects?.some((effect) => effect.enabled !== false) ||
-      (layer.type === "group" && layer.clip)
-    ) {
-      requirements.set(parsed.data.background, "metadata.cinematicCoverage");
-      break;
-    }
-  }
+  if (hasAlphaTreatment(layers, parsed.data.background))
+    requirements.set(parsed.data.background, "metadata.cinematicCoverage");
   return requirements;
 }
 
@@ -66,6 +102,7 @@ export function cinematicRenderedCoverageRequirements(
 export function validateCinematicCompositionCoverage(
   composition: Composition,
   readPixels: (assetId: string) => AlphaPixels,
+  sampleAlpha?: RevealAlphaSampler,
 ) {
   const declaration = composition.metadata?.cinematicCoverage;
   if (declaration === undefined) return;
@@ -200,6 +237,26 @@ export function validateCinematicCompositionCoverage(
     fail("Reveal settle frame exceeds the composition timeline");
   const subject = node(reveal.subject);
   const occluders = reveal.occluders.map(node);
+  for (const image of [subject, ...occluders]) {
+    for (
+      let layer = layers.get(image.id);
+      layer;
+      layer = layer.parent ? layers.get(layer.parent) : undefined
+    ) {
+      if (
+        matteSources.has(layer.id) &&
+        (layer.id === image.id || layer.type === "group")
+      )
+        fail("Cinematic reveal planes must remain drawable", image.id, 0);
+    }
+  }
+  const rendered = cinematicRenderedRevealRequirements(composition)!.layers;
+  if (rendered.size && !sampleAlpha)
+    fail(
+      "Cinematic reveal treatments require rendered alpha validation",
+      rendered.values().next().value,
+      0,
+    );
   for (const image of [subject, ...occluders])
     for (const source of image.states) pixels(source.asset);
   let previousFrame = NaN;
@@ -210,6 +267,8 @@ export function validateCinematicCompositionCoverage(
       previousFrame = frame;
     }
     const state = planeState(tree!, node, frame);
+    if (!state.drawable)
+      fail("Cinematic reveal planes must remain drawable", node.id, frame);
     if (state.opacity !== 1)
       fail(
         "Cinematic reveal requires full-opacity native planes",
@@ -229,9 +288,12 @@ export function validateCinematicCompositionCoverage(
       },
       images,
       project,
+      sampleAlpha,
     );
   } catch (error) {
     if (error instanceof PassageError) throw error;
+    if (error instanceof RevealValidationError)
+      fail(error.message, error.node, error.frame);
     fail(error instanceof Error ? error.message : String(error), subject.id);
   }
 }

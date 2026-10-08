@@ -1638,6 +1638,15 @@ native projection after JSON reload. Invalid declarations, transparent painted
 coverage and a reveal that does not clear fail with `comp-camera-coverage`.
 Declared reveal subjects and occluders retain the cinematic full-opacity rule at
 every integer frame, including keyed opacity and inherited group opacity.
+Masks, mattes, enabled effects, group ancestor treatments, focus and shutter blur
+also use isolated rendered alpha for semantic reveals. The original opaque target
+samples must remain opaque; suppressed matte sources cannot serve as a subject or
+occluder. Occluders are rendered together before exposure averaging, preserving
+overlap and shared ancestor treatments. Valid masks can reduce source occlusion
+into the allowed range. Treated declarations require a renderer; source-only
+validation rejects them instead of certifying an unmeasured reveal. Failures
+identify the semantic node and frame, including a remaining shutter occluder at
+the declared settle frame.
 Background masks, mattes, enabled effects and ancestor treatments additionally
 require rendered alpha coverage at actual shutter states. Other layers cannot
 hide a hole in the declared background. Fully covered treatments remain valid;

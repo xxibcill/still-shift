@@ -367,54 +367,48 @@ class GraphBuilder {
   coverageSurface(
     tree: EvaluatedLayerTree,
     def: CompositionScope,
-    id: string,
+    ids: readonly string[],
     prefix: string,
   ): SurfaceNode {
-    const state = tree.layers.find((state) => state.id === id)!;
+    const selected = tree.layers.filter((state) => ids.includes(state.id));
     const scope = this.scope(
       tree,
       def,
-      state.layer.type === "group" ? id : undefined,
+      selected.length === 1 && selected[0]!.layer.type === "group"
+        ? selected[0]!.id
+        : undefined,
     );
-    const coverageLayers = new Set([id]);
-    if (state.layer.type === "group")
-      for (const candidate of tree.layers)
-        for (
-          let parent = candidate.layer.parent;
-          parent;
-          parent = scope.byId.get(parent)!.layer.parent
-        )
-          if (parent === id) {
-            coverageLayers.add(candidate.id);
-            break;
-          }
-    for (
-      let parent = state.layer.parent;
-      parent;
-      parent = scope.byId.get(parent)!.layer.parent
-    )
-      coverageLayers.add(parent);
-    let root = state;
-    for (
-      let owner = scope.owners.get(root.id);
-      owner;
-      owner = scope.owners.get(root.id)
-    )
-      root = scope.byId.get(owner)!;
-    const ops =
-      root.visible && root.opacity > 0
-        ? this.layerOps(scope, root, {
-            coverageLayers,
-            matrix: IDENTITY,
-            transforms: [],
-            opacity: 1,
-            clips: [],
-            viewport: { width: tree.width, height: tree.height },
-            prefix,
-            background: null,
-            cull: false,
-          })
-        : [];
+    const coverageLayers = new Set(ids);
+    for (const state of selected) {
+      if (state.layer.type === "group")
+        for (const candidate of tree.layers)
+          for (
+            let parent = candidate.layer.parent;
+            parent;
+            parent = scope.byId.get(parent)!.layer.parent
+          )
+            if (parent === state.id) {
+              coverageLayers.add(candidate.id);
+              break;
+            }
+      for (
+        let parent = state.layer.parent;
+        parent;
+        parent = scope.byId.get(parent)!.layer.parent
+      )
+        coverageLayers.add(parent);
+    }
+    const ops = this.scopeLayers(scope, {
+      coverageLayers,
+      matrix: IDENTITY,
+      transforms: [],
+      opacity: 1,
+      clips: [],
+      viewport: { width: tree.width, height: tree.height },
+      prefix,
+      background: null,
+      cull: false,
+    });
     return {
       id: tree.id,
       width: tree.width,
@@ -1617,8 +1611,20 @@ export function buildLayerRenderGraph(
   prefix: string,
   options: RenderGraphOptions = {},
 ): RenderGraph {
+  return buildLayersRenderGraph(comp, tree, scope, [id], prefix, options);
+}
+
+/** Isolate selected planes together so shared ancestor treatments and exposure alpha compose once. */
+export function buildLayersRenderGraph(
+  comp: Composition,
+  tree: EvaluatedLayerTree,
+  scope: CompositionScope,
+  ids: readonly string[],
+  prefix: string,
+  options: RenderGraphOptions = {},
+): RenderGraph {
   const builder = new GraphBuilder(comp, tree.time, options);
-  const root = builder.coverageSurface(tree, scope, id, prefix);
+  const root = builder.coverageSurface(tree, scope, ids, prefix);
   return {
     root,
     culled: builder.culled,

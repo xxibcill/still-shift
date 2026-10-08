@@ -111,6 +111,66 @@ const images = () =>
 
 describe("foreground reveal", () => {
   it.each(["room", "wall"])(
+    "rejects a %s reveal plane suppressed directly or through a matte-source group",
+    (id) => {
+      for (const inherited of [false, true]) {
+        const composition = cinematicToComposition(
+          CinematicSceneSchema.parse(source()),
+        );
+        const layer = composition.layers.find((layer) => layer.id === id)!;
+        if (inherited) {
+          layer.parent = "reveal-group";
+          composition.layers.unshift({
+            id: "reveal-group",
+            type: "group",
+            size: [composition.width, composition.height],
+            transform: { anchor: [0, 0] },
+          });
+        }
+        composition.layers.unshift({
+          id: "consumer",
+          type: "solid",
+          size: [8, 8],
+          color: "#ffffff",
+          trackMatte: { layer: inherited ? "reveal-group" : id, mode: "alpha" },
+        });
+        const validated = validateComposition(
+          JSON.parse(JSON.stringify(composition)),
+        );
+        expect(validated.ok).toBe(true);
+        if (!validated.ok) throw Error("Invalid reveal matte-source fixture");
+        const assets = images();
+        expect(() =>
+          validateCinematicCompositionCoverage(
+            validated.composition,
+            (asset) => assets.get(asset)!,
+          ),
+        ).toThrow(/reveal.*drawable/);
+      }
+    },
+  );
+
+  it("requires rendered validation for native reveal alpha treatments", () => {
+    const composition = cinematicToComposition(
+      CinematicSceneSchema.parse(source()),
+    );
+    composition.layers.find((layer) => layer.id === "room")!.effects = [
+      {
+        id: "erase",
+        effect: "transition.linear-wipe",
+        params: { progress: 1 },
+      },
+    ];
+    const assets = images();
+    expect(() =>
+      validateCinematicCompositionCoverage(
+        composition,
+        (asset) => assets.get(asset)!,
+      ),
+    ).toThrow(/rendered alpha validation/);
+  });
+
+  it.each(["room", "wall"])(
     "rejects reduced %s opacity in persisted native reveal declarations",
     (id) => {
       const composition = cinematicToComposition(

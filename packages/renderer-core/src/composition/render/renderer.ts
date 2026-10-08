@@ -31,10 +31,8 @@ import {
 import { STORY_CONTENT_PROVIDERS } from "../adapters/story-providers.ts";
 import { validateRequiredCompositionCoverage } from "./required-coverage.ts";
 import { validateStoryCompositionCoverage } from "../adapters/story-coverage.ts";
-import {
-  validateCinematicCompositionCoverage,
-  cinematicRenderedCoverageRequirements,
-} from "../adapters/cinematic-coverage.ts";
+import { cinematicRenderedCoverageRequirements } from "../adapters/cinematic-coverage.ts";
+import { validateRenderedCinematicCompositionCoverage } from "./cinematic-reveal.ts";
 import { COMMERCE_CONTENT_PROVIDERS } from "../adapters/commerce-providers.ts";
 import { APPEARANCE_PROVIDERS } from "../adapters/appearance-providers.ts";
 import { MOTION_PATH_PROVIDERS } from "../adapters/motion-path.ts";
@@ -266,7 +264,6 @@ export function createCompositionPreview(
     return context.getImageData(0, 0, probe.width, probe.height);
   };
   validateStoryCompositionCoverage(composition, readAssetPixels);
-  validateCinematicCompositionCoverage(composition, readAssetPixels);
   const text = prepareCompositionText(composition, resources.fonts, ctx);
   const drawProvider = prepareCompositionProviders(
     composition,
@@ -326,6 +323,12 @@ export function createCompositionPreview(
       kind === "webgl2" ? {} : undefined;
     let coverageDiagnostics: PassageDiagnostic[];
     try {
+      validateRenderedCinematicCompositionCoverage(
+        composition,
+        readAssetPixels,
+        backend,
+        { textBounds: text.bounds },
+      );
       coverageDiagnostics = validateRequiredCompositionCoverage(
         composition,
         backend,

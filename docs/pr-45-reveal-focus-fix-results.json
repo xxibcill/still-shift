@@ -1,0 +1,1587 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/45",
+  "reviewedHead": "8ee90885dfc63e512e6ce6b15dd3d23195720a7b",
+  "scope": "Two scoped PR review repairs, one finding per commit and one final normal push. No new full repository or timing gate.",
+  "review": {
+    "reviewUrl": "https://github.com/xxibcill/still-shift/pull/45#pullrequestreview-5451197700",
+    "independentStandards": "No remaining actionable findings",
+    "independentSpec": "No remaining actionable findings"
+  },
+  "environment": {
+    "profile": "chromium-software-2",
+    "browserVersion": "151.0.7922.34",
+    "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+    "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "preflight": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": 1234,
+    "ffmpeg": "8.0.1",
+    "toolchainCheck": "passed",
+    "pythonImports": ["numpy", "PIL", "still_shift_depth"],
+    "isolatedWorktreeDependencies": true,
+    "isolatedViteCaches": true,
+    "isolatedPythonEnvironment": true
+  },
+  "finding1": {
+    "title": "Validate rendered reveal alpha after native edits",
+    "commentUrl": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4214474672",
+    "repair": "Measure opaque target samples and combined foreground alpha through the production render graph at actual shutter exposures. Preserve source sample lattice and reveal thresholds; reject suppressed direct/ancestor matte sources and unmeasured treated declarations.",
+    "red": {
+      "unitRegressions": 3,
+      "unitFailures": 3,
+      "existingPassed": 11,
+      "subjectMask": {
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "error": "Error: page.evaluate: Error: canvas2d/subject/subtract-mask: invalid rendered reveal was accepted\n    at eval (eval at evaluate (:311:30), <anonymous>:1:6735)\n    at async <anonymous>:337:30"
+      },
+      "shutter": {
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "sourceCheckpoint": "8ee90885dfc63e512e6ce6b15dd3d23195720a7b",
+        "results": [
+          {
+            "id": "wall/shutter-settle",
+            "backend": "canvas2d",
+            "accepted": true,
+            "diagnostics": [],
+            "frame": 1,
+            "pixel": [136, 136, 96, 255]
+          },
+          {
+            "id": "wall/shutter-settle",
+            "backend": "webgl2",
+            "accepted": true,
+            "diagnostics": [],
+            "frame": 1,
+            "pixel": [136, 136, 96, 255]
+          },
+          {
+            "id": "wall/correlated-shutter-occluders",
+            "backend": "canvas2d",
+            "accepted": false,
+            "diagnostics": [
+              {
+                "code": "comp-camera-coverage",
+                "severity": "error",
+                "message": "Reveal initial occlusion must be 10\u201335%; measured 50.00%",
+                "path": "metadata.cinematicCoverage",
+                "node": "subject"
+              }
+            ],
+            "frame": 0,
+            "pixel": [136, 136, 96, 255]
+          },
+          {
+            "id": "wall/correlated-shutter-occluders",
+            "backend": "webgl2",
+            "accepted": false,
+            "diagnostics": [
+              {
+                "code": "comp-camera-coverage",
+                "severity": "error",
+                "message": "Reveal initial occlusion must be 10\u201335%; measured 50.00%",
+                "path": "metadata.cinematicCoverage",
+                "node": "subject"
+              }
+            ],
+            "frame": 0,
+            "pixel": [136, 136, 96, 255]
+          }
+        ]
+      },
+      "viewportEdge": {
+        "error": "node:internal/modules/run_main:123\n    triggerUncaughtException(\n    ^\n\npage.evaluate: Error: canvas2d/subject/in-viewport-start-edge: valid treatment changed reveal pixels (0)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:12471)\n    at async <anonymous>:337:30\n    at compositionCinematicRevealAcceptance (/Users/jjae/.codex/worktrees/pr45-reveal-focus-fixes/still-shift/tests/helpers/composition-cinematic-reveal-acceptance.ts:14:15)\n    at <anonymous> (/private/tmp/still-shift-pr45-review-x4o1O8/scripts/pr45-reveal-acceptance-green.ts:15:23) {\n  log: []\n}\n\nNode.js v22.23.1\n",
+        "reason": "In-viewport target samples at0.1 were falsely interpolated against artificial offscreen transparency; corrected pixel-neighbor clamping preserves offscreen query rejection."
+      }
+    },
+    "focusedUnits": {
+      "files": 5,
+      "tests": 58,
+      "passed": 58,
+      "log": "/private/tmp/pr45-reveal-final-unit.log"
+    },
+    "checks": {
+      "typeScript": "passed",
+      "focusedLint": "passed",
+      "focusedFormatting": "passed",
+      "packageBoundaries": "passed",
+      "referenceGeneratedFromNotes": true
+    },
+    "preview": {
+      "casesPerBackend": 45,
+      "invalidRejectedPerBackend": 21,
+      "validExactPerBackend": 24,
+      "retainedPreview": "byte-identical",
+      "reports": [
+        {
+          "backend": "canvas2d",
+          "decodedPng": true,
+          "treatments": [
+            {
+              "id": "subject/subtract-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/track-matte",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/linear-wipe",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-clip",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-effect",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/matte-source",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Cinematic reveal planes must remain drawable",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-matte-source",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Cinematic reveal planes must remain drawable",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/full-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/full-matte",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/disabled-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/identity-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-full-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-full-matte",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-full-clip",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-disabled-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-identity-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/subtract-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/track-matte",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/linear-wipe",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-clip",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-effect",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/matte-source",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Cinematic reveal planes must remain drawable",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "wall",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-matte-source",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Cinematic reveal planes must remain drawable",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "wall",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/full-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/full-matte",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/disabled-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/identity-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-full-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-full-matte",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-full-clip",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-disabled-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-identity-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/later-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 1",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 1
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/mask-reduces-raw-occlusion",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/shutter-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/held-shutter-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/shutter-settle",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal does not clear the target by frame 1",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 1
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/correlated-shutter-occluders",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/shared-ancestor-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/in-viewport-start-edge",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/in-viewport-end-edge",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/outside-start-edge",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/outside-end-edge",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            }
+          ],
+          "retainedPreviewDelta": 0
+        },
+        {
+          "backend": "webgl2",
+          "decodedPng": true,
+          "treatments": [
+            {
+              "id": "subject/subtract-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/track-matte",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/linear-wipe",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-clip",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-effect",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/matte-source",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Cinematic reveal planes must remain drawable",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-matte-source",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Cinematic reveal planes must remain drawable",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/full-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/full-matte",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/disabled-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/identity-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-full-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-full-matte",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-full-clip",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-disabled-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/ancestor-identity-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/subtract-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/track-matte",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/linear-wipe",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-clip",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-effect",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/matte-source",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Cinematic reveal planes must remain drawable",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "wall",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-matte-source",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Cinematic reveal planes must remain drawable",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "wall",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/full-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/full-matte",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/disabled-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/identity-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-full-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-full-matte",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-full-clip",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-disabled-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/ancestor-identity-effect",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/later-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 1",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 1
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/mask-reduces-raw-occlusion",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/shutter-mask",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/held-shutter-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/shutter-settle",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal does not clear the target by frame 1",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 1
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/correlated-shutter-occluders",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "wall/shared-ancestor-mask",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/in-viewport-start-edge",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/in-viewport-end-edge",
+              "valid": true,
+              "diagnostics": [],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/outside-start-edge",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            },
+            {
+              "id": "subject/outside-end-edge",
+              "valid": false,
+              "diagnostics": [
+                {
+                  "code": "comp-camera-coverage",
+                  "severity": "error",
+                  "message": "Reveal rendered target must remain opaque at frame 0",
+                  "path": "metadata.cinematicCoverage",
+                  "node": "subject",
+                  "frame": 0
+                }
+              ],
+              "maxValidDelta": 0
+            }
+          ],
+          "retainedPreviewDelta": 0
+        }
+      ]
+    },
+    "exports": {
+      "protectedFailures": {
+        "mode": "reveal",
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "invalidAttempts": 38,
+        "validPairs": 10,
+        "reports": [
+          {
+            "id": "subject/subtract-mask",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/track-matte",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/linear-wipe",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/ancestor-mask",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/ancestor-clip",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/ancestor-effect",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/matte-source",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal planes must remain drawable",
+            "published": false
+          },
+          {
+            "id": "subject/ancestor-matte-source",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal planes must remain drawable",
+            "published": false
+          },
+          {
+            "id": "wall/subtract-mask",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/track-matte",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/linear-wipe",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/ancestor-mask",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/ancestor-clip",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/ancestor-effect",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/matte-source",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal planes must remain drawable",
+            "published": false
+          },
+          {
+            "id": "wall/ancestor-matte-source",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal planes must remain drawable",
+            "published": false
+          },
+          {
+            "id": "subject/later-mask",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 1",
+            "published": false
+          },
+          {
+            "id": "subject/shutter-mask",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "wall/shutter-settle",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal does not clear the target by frame 1",
+            "published": false
+          },
+          {
+            "id": "subject/full-mask",
+            "backend": "canvas2d",
+            "frames": 3,
+            "rendererVersion": "composition-canvas-1.42.5",
+            "checksum": "sha256:c169a527ff42af563bd4d6389dd864d70f330ee03a7e4764c9e42f61eb9eb2d4",
+            "repeat": "byte-identical"
+          },
+          {
+            "id": "subject/full-matte",
+            "backend": "canvas2d",
+            "frames": 3,
+            "rendererVersion": "composition-canvas-1.42.5",
+            "checksum": "sha256:c169a527ff42af563bd4d6389dd864d70f330ee03a7e4764c9e42f61eb9eb2d4",
+            "repeat": "byte-identical"
+          },
+          {
+            "id": "subject/disabled-effect",
+            "backend": "canvas2d",
+            "frames": 3,
+            "rendererVersion": "composition-canvas-1.42.5",
+            "checksum": "sha256:c169a527ff42af563bd4d6389dd864d70f330ee03a7e4764c9e42f61eb9eb2d4",
+            "repeat": "byte-identical"
+          },
+          {
+            "id": "subject/held-shutter-mask",
+            "backend": "canvas2d",
+            "frames": 3,
+            "rendererVersion": "composition-canvas-1.42.5",
+            "checksum": "sha256:c169a527ff42af563bd4d6389dd864d70f330ee03a7e4764c9e42f61eb9eb2d4",
+            "repeat": "byte-identical"
+          },
+          {
+            "id": "wall/correlated-shutter-occluders",
+            "backend": "canvas2d",
+            "frames": 3,
+            "rendererVersion": "composition-canvas-1.42.5",
+            "checksum": "sha256:3fcfa32776b838d6b4fdf5d039d58b51816707606e4a4773104675af90762237",
+            "repeat": "byte-identical"
+          },
+          {
+            "id": "subject/subtract-mask",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/track-matte",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/linear-wipe",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/ancestor-mask",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/ancestor-clip",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/ancestor-effect",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/matte-source",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal planes must remain drawable",
+            "published": false
+          },
+          {
+            "id": "subject/ancestor-matte-source",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal planes must remain drawable",
+            "published": false
+          },
+          {
+            "id": "wall/subtract-mask",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/track-matte",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/linear-wipe",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/ancestor-mask",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/ancestor-clip",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/ancestor-effect",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal initial occlusion must be 10\u201335%; measured 0.00%",
+            "published": false
+          },
+          {
+            "id": "wall/matte-source",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal planes must remain drawable",
+            "published": false
+          },
+          {
+            "id": "wall/ancestor-matte-source",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal planes must remain drawable",
+            "published": false
+          },
+          {
+            "id": "subject/later-mask",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 1",
+            "published": false
+          },
+          {
+            "id": "subject/shutter-mask",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "wall/shutter-settle",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal does not clear the target by frame 1",
+            "published": false
+          },
+          {
+            "id": "subject/full-mask",
+            "backend": "webgl2",
+            "frames": 3,
+            "rendererVersion": "composition-webgl2-0.57.5",
+            "checksum": "sha256:c169a527ff42af563bd4d6389dd864d70f330ee03a7e4764c9e42f61eb9eb2d4",
+            "repeat": "byte-identical"
+          },
+          {
+            "id": "subject/full-matte",
+            "backend": "webgl2",
+            "frames": 3,
+            "rendererVersion": "composition-webgl2-0.57.5",
+            "checksum": "sha256:c169a527ff42af563bd4d6389dd864d70f330ee03a7e4764c9e42f61eb9eb2d4",
+            "repeat": "byte-identical"
+          },
+          {
+            "id": "subject/disabled-effect",
+            "backend": "webgl2",
+            "frames": 3,
+            "rendererVersion": "composition-webgl2-0.57.5",
+            "checksum": "sha256:c169a527ff42af563bd4d6389dd864d70f330ee03a7e4764c9e42f61eb9eb2d4",
+            "repeat": "byte-identical"
+          },
+          {
+            "id": "subject/held-shutter-mask",
+            "backend": "webgl2",
+            "frames": 3,
+            "rendererVersion": "composition-webgl2-0.57.5",
+            "checksum": "sha256:c169a527ff42af563bd4d6389dd864d70f330ee03a7e4764c9e42f61eb9eb2d4",
+            "repeat": "byte-identical"
+          },
+          {
+            "id": "wall/correlated-shutter-occluders",
+            "backend": "webgl2",
+            "frames": 3,
+            "rendererVersion": "composition-webgl2-0.57.5",
+            "checksum": "sha256:3fcfa32776b838d6b4fdf5d039d58b51816707606e4a4773104675af90762237",
+            "repeat": "byte-identical"
+          }
+        ]
+      },
+      "independentControls": {
+        "mode": "reveal-controls",
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "invalidAttempts": 0,
+        "validPairs": 6,
+        "reports": [
+          {
+            "id": "wall/mask-reduces-raw-occlusion",
+            "backend": "canvas2d",
+            "frames": 3,
+            "rendererVersion": "composition-canvas-1.42.5",
+            "checksum": "sha256:3608569b40fb284edd03ec96ecd8e0c8401850fa3f3a769c3439c39b181fbbea",
+            "repeat": "byte-identical",
+            "referenceChecksum": "sha256:3608569b40fb284edd03ec96ecd8e0c8401850fa3f3a769c3439c39b181fbbea",
+            "reference": "byte-identical"
+          },
+          {
+            "id": "wall/correlated-shutter-occluders",
+            "backend": "canvas2d",
+            "frames": 3,
+            "rendererVersion": "composition-canvas-1.42.5",
+            "checksum": "sha256:3fcfa32776b838d6b4fdf5d039d58b51816707606e4a4773104675af90762237",
+            "repeat": "byte-identical",
+            "referenceChecksum": "sha256:3fcfa32776b838d6b4fdf5d039d58b51816707606e4a4773104675af90762237",
+            "reference": "byte-identical"
+          },
+          {
+            "id": "wall/shared-ancestor-mask",
+            "backend": "canvas2d",
+            "frames": 3,
+            "rendererVersion": "composition-canvas-1.42.5",
+            "checksum": "sha256:3fcfa32776b838d6b4fdf5d039d58b51816707606e4a4773104675af90762237",
+            "repeat": "byte-identical",
+            "referenceChecksum": "sha256:3fcfa32776b838d6b4fdf5d039d58b51816707606e4a4773104675af90762237",
+            "reference": "byte-identical"
+          },
+          {
+            "id": "wall/mask-reduces-raw-occlusion",
+            "backend": "webgl2",
+            "frames": 3,
+            "rendererVersion": "composition-webgl2-0.57.5",
+            "checksum": "sha256:3608569b40fb284edd03ec96ecd8e0c8401850fa3f3a769c3439c39b181fbbea",
+            "repeat": "byte-identical",
+            "referenceChecksum": "sha256:3608569b40fb284edd03ec96ecd8e0c8401850fa3f3a769c3439c39b181fbbea",
+            "reference": "byte-identical"
+          },
+          {
+            "id": "wall/correlated-shutter-occluders",
+            "backend": "webgl2",
+            "frames": 3,
+            "rendererVersion": "composition-webgl2-0.57.5",
+            "checksum": "sha256:3fcfa32776b838d6b4fdf5d039d58b51816707606e4a4773104675af90762237",
+            "repeat": "byte-identical",
+            "referenceChecksum": "sha256:3fcfa32776b838d6b4fdf5d039d58b51816707606e4a4773104675af90762237",
+            "reference": "byte-identical"
+          },
+          {
+            "id": "wall/shared-ancestor-mask",
+            "backend": "webgl2",
+            "frames": 3,
+            "rendererVersion": "composition-webgl2-0.57.5",
+            "checksum": "sha256:3fcfa32776b838d6b4fdf5d039d58b51816707606e4a4773104675af90762237",
+            "repeat": "byte-identical",
+            "referenceChecksum": "sha256:3fcfa32776b838d6b4fdf5d039d58b51816707606e4a4773104675af90762237",
+            "reference": "byte-identical"
+          }
+        ]
+      },
+      "viewportEdges": {
+        "mode": "reveal-edges",
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "invalidAttempts": 4,
+        "validPairs": 4,
+        "reports": [
+          {
+            "id": "subject/outside-start-edge",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/outside-end-edge",
+            "backend": "canvas2d",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/in-viewport-start-edge",
+            "backend": "canvas2d",
+            "frames": 3,
+            "rendererVersion": "composition-canvas-1.42.6",
+            "checksum": "sha256:d5f942569a5fafec07cb0ee45e8520b3b6763620a4309b31e59b25eb71bafcb0",
+            "repeat": "byte-identical",
+            "referenceChecksum": "sha256:d5f942569a5fafec07cb0ee45e8520b3b6763620a4309b31e59b25eb71bafcb0",
+            "reference": "byte-identical"
+          },
+          {
+            "id": "subject/in-viewport-end-edge",
+            "backend": "canvas2d",
+            "frames": 3,
+            "rendererVersion": "composition-canvas-1.42.6",
+            "checksum": "sha256:c1a8537843b2445a3ed68d1b0d9e6b2b759f835b25273fd984fc3a95c2a84cca",
+            "repeat": "byte-identical",
+            "referenceChecksum": "sha256:c1a8537843b2445a3ed68d1b0d9e6b2b759f835b25273fd984fc3a95c2a84cca",
+            "reference": "byte-identical"
+          },
+          {
+            "id": "subject/outside-start-edge",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/outside-end-edge",
+            "backend": "webgl2",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Reveal rendered target must remain opaque at frame 0",
+            "published": false
+          },
+          {
+            "id": "subject/in-viewport-start-edge",
+            "backend": "webgl2",
+            "frames": 3,
+            "rendererVersion": "composition-webgl2-0.57.6",
+            "checksum": "sha256:d5f942569a5fafec07cb0ee45e8520b3b6763620a4309b31e59b25eb71bafcb0",
+            "repeat": "byte-identical",
+            "referenceChecksum": "sha256:d5f942569a5fafec07cb0ee45e8520b3b6763620a4309b31e59b25eb71bafcb0",
+            "reference": "byte-identical"
+          },
+          {
+            "id": "subject/in-viewport-end-edge",
+            "backend": "webgl2",
+            "frames": 3,
+            "rendererVersion": "composition-webgl2-0.57.6",
+            "checksum": "sha256:c1a8537843b2445a3ed68d1b0d9e6b2b759f835b25273fd984fc3a95c2a84cca",
+            "repeat": "byte-identical",
+            "referenceChecksum": "sha256:c1a8537843b2445a3ed68d1b0d9e6b2b759f835b25273fd984fc3a95c2a84cca",
+            "reference": "byte-identical"
+          }
+        ]
+      },
+      "summary": {
+        "invalidRejectedWithoutPublication": 42,
+        "validRepeatedPairs": 20,
+        "independentControlExports": 10,
+        "allRepeatedAndControlOutputs": "byte-identical"
+      }
+    },
+    "rendererVersions": {
+      "canvas2d": "composition-canvas-1.42.5",
+      "webgl2": "composition-webgl2-0.57.5"
+    }
+  },
+  "finding2": {
+    "title": "Preserve focus overscan during image crossfades",
+    "commentUrl": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4214474675",
+    "status": "Repair implemented; separate commit and final focused verification pending"
+  },
+  "rejectedExperiments": [
+    {
+      "attempt": "Smooth-wall shutter fixture",
+      "reason": "Interpolation belongs to the destination key. The first fixture did not produce the intended held shutter history; exclude that failure from production red evidence."
+    },
+    {
+      "attempt": "Initial export control lookup",
+      "reason": "The temporary runner checked reference instead of the helper\u2019s controlDoc property. Original repeat-export evidence remains valid; six supplemental both-backend repeated/reference pairs verify all three independent controls."
+    },
+    {
+      "attempt": "First frozen-baseline run",
+      "reason": "34 items matched before editing the native edge sampler caused Vite to reload its imported module graph, destroying the evaluation context. Incomplete run is not counted as passed; rerun on frozen source."
+    }
+  ],
+  "finalVerification": {
+    "status": "pending",
+    "fullPnpmCheck": "not run (scoped PR repairs)",
+    "baselineRegeneration": false,
+    "githubActions": "disabled",
+    "ownerCheckout": "untouched"
+  }
+}
