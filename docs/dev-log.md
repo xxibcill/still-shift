@@ -97,14 +97,15 @@ still hold before relying on them.
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace, seven built-ins, depth mesh/texture/
-  retained multisample/uniform and PNG source/draw/coordinate metadata pass 446
+  retained multisample/uniform/draw and PNG source/draw/coordinate metadata pass 456
   focused tests, complete audit, 22 moving/blurred and ten stationary native frames
-  and 96 owned RPC snapshots. Actual uniform state/location/entry Maps and native/
-  name/slot refs pre-admit, stay through cache, then clear. Original six lookups/
-  ten new tests, quota/constructor/query/insert/null/retry/foreign/scope-exit/
-  allocator-first cleanup pass. Sampling query payload/program/draw remain pending.
-  Native probes, WebGL/providers, 69 typography tests and 64 exports / 768
-  prior-exact bodies/frames pass; glyph 1.425466× meets unchanged 1.5 maximum.
+  and 96 owned RPC snapshots. Actual depth draw layer/motion/asset/state/view/flag/
+  binding/placement/function/input/uniform refs pre-admit, stay through consumers,
+  then clear/detach. Three original traces/ten new tests, quota/partial/query/pass/
+  restore/release/null/retry/unreturned-output cleanup pass. Sampling query payload/
+  program/shader/renderer text/diagnostics remain pending. Native probes, WebGL/
+  providers, 69 typography tests and 64 exports / 768 prior-exact bodies/frames
+  pass; glyph 1.409524× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -340,6 +341,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual depth draw metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `6db615c`.
+- **Done:** pre-admit actual layer/motion/asset/state/view/flag/binding/placement/
+  function/input/uniform data, retain through consumers, clear/detach afterward;
+  preserve borrowed input, original native order and first-null/retry.
+- **Results:** build/lint/boundaries, 456 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.409524× meets unchanged 1.5 maximum.
+- **Verification:** ten new tests/three whole original prepared-program traces,
+  partial query/flag/binding/pass/restoration/release/null/retry, snapshot detachment
+  and unreturned-output cleanup. Type/lint failures retained. No full gate.
+- **Next:** class/caller, sampling query payload, depth program/shader/renderer text/
+  diagnostics, effects/provider/graph/font/common/registry/ledger/Node, CE15, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [depth draw evidence](./composition-ce15-depth-draw-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual depth uniform cache data
 

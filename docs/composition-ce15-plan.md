@@ -1402,6 +1402,27 @@ depth program/renderer text/draw, effects/plugins/provider/graph/font/common/
 registry/ledger/Node, production/aggregate and final gates remain pending.
 [Evidence](./composition-ce15-depth-uniform-metadata-results.json).
 
+## Accepted depth draw metadata checkpoint — 2026-10-08
+
+Admit actual draw phase at 8192 before layer/motion/asset/state/view/flag/binding/
+uniform/placement/input factories. Capture fresh data through original consumers;
+clear arrays/fields/functions/native refs afterward. Before native snapshot queries,
+admit the two fixed four-value 16-byte Int32/Float32 backings and view refs, keep
+them through original restoration, then detach managed backings. Borrowed content,
+motion/offset/resources/controls/native bindings remain unchanged. Partial query/
+flag/binding/pass failures restore captured state and visit both native surfaces
+despite first-null, preserving original error/retry. Restoration failure after a
+successful pass releases its unreturned output. Successful native order stays exact.
+
+Three complete original prepared-program traces stay exact: 230 depth and 218 each
+cover/stretch calls. Build/lint/boundaries, 456 focused / ten new tests, complete
+audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers and 69 typography
+tests pass; glyph 1.409524× meets unchanged 1.5 maximum. All 64 exports / 768
+bodies/frames match pushed `6db615c`. Class/caller, sampling-query backing/Array.from,
+depth program/shader/renderer text/diagnostics, effects/plugins/provider/graph/font/
+common/registry/ledger/Node, production/aggregate and final gates remain pending.
+[Evidence](./composition-ce15-depth-draw-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

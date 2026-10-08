@@ -388,6 +388,85 @@ export function hardwareDepthGrid(grid: DepthGrid) {
   }
 }
 
+type DepthDrawState = {
+  viewport: Int32Array;
+  clear: Float32Array;
+  [name: string]: ReturnType<WebGL2RenderingContext["getParameter"]>;
+};
+type DepthDrawLifetime = {
+  managed: boolean;
+  failed: boolean;
+  completed: boolean;
+  error?: unknown;
+  layer?: Record<string, unknown> | undefined;
+  motion?: Record<string, unknown> | undefined;
+  requiredAssets?: string[] | undefined;
+  depthAssets?: string[] | undefined;
+  old?: DepthDrawState | undefined;
+  viewport?: Int32Array | undefined;
+  clear?: Float32Array | undefined;
+  flagKinds?: number[] | undefined;
+  flagTuples: (readonly [number, boolean])[];
+  flags?: (readonly [number, boolean])[] | undefined;
+  bindingUnits?: number[] | undefined;
+  boundTextures: (WebGLTexture | null)[];
+  bindings?: (WebGLTexture | null)[] | undefined;
+  uniform?: ((name: string) => WebGLUniformLocation | null) | undefined;
+  cover?: { x: number; y: number } | undefined;
+  inputs?: WebglSurface[] | undefined;
+  uniforms?: { height?: number } | undefined;
+  output?: WebglSurface | undefined;
+  resolved?: WebglSurface | undefined;
+  cleanup?: ((work: () => void) => void) | undefined;
+  step?: (() => void) | undefined;
+};
+function clearDepthDraw(value: DepthDrawLifetime) {
+  if (value.managed) {
+    const viewport = value.viewport?.buffer;
+    if (viewport instanceof ArrayBuffer && viewport.byteLength)
+      (
+        viewport as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }
+      ).transfer(0);
+    const clear = value.clear?.buffer;
+    if (clear instanceof ArrayBuffer && clear.byteLength)
+      (
+        clear as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }
+      ).transfer(0);
+  }
+  for (const tuple of value.flagTuples)
+    (tuple as unknown as unknown[]).length = 0;
+  value.flagTuples.length = value.boundTextures.length = 0;
+  if (value.flagKinds) value.flagKinds.length = 0;
+  if (value.flags) value.flags.length = 0;
+  if (value.bindingUnits) value.bindingUnits.length = 0;
+  if (value.bindings) value.bindings.length = 0;
+  if (value.requiredAssets) value.requiredAssets.length = 0;
+  if (value.depthAssets) value.depthAssets.length = 0;
+  if (value.inputs) value.inputs.length = 0;
+  if (value.layer) for (const name in value.layer) delete value.layer[name];
+  if (value.motion) for (const name in value.motion) delete value.motion[name];
+  if (value.old) for (const name in value.old) delete value.old[name];
+  if (value.cover) {
+    delete (value.cover as Partial<typeof value.cover>).x;
+    delete (value.cover as Partial<typeof value.cover>).y;
+  }
+  if (value.uniforms) delete value.uniforms.height;
+  value.layer = value.motion = value.old = undefined;
+  value.viewport = value.clear = value.cover = undefined;
+  value.requiredAssets =
+    value.depthAssets =
+    value.flagKinds =
+    value.flags =
+      undefined;
+  value.bindingUnits =
+    value.bindings =
+    value.inputs =
+    value.uniforms =
+      undefined;
+  value.uniform = value.cleanup = value.step = undefined;
+  value.output = value.resolved = value.error = undefined;
+}
+
 type Multisample = {
   managed: boolean;
   memory: ReturnType<typeof renderMemory>;
@@ -933,7 +1012,113 @@ export class WebglDepthImages {
   }
 
   draw(content: DepthImageContent | ImageContent): WebglSurface {
-    const layer =
+    const phase = allocateRenderMetadata<DepthDrawLifetime>(
+      8192,
+      () => ({
+        managed: renderMemory() !== undefined,
+        completed: false,
+        failed: false,
+        flagTuples: [],
+        boundTextures: [],
+      }),
+      false,
+      clearDepthDraw,
+    );
+    let output: WebglSurface | undefined;
+    try {
+      output = this.drawOwned(content, phase);
+    } catch (error) {
+      phase.failed = true;
+      phase.error = error;
+    }
+    try {
+      this.restoreDraw(phase);
+    } catch (error) {
+      if (!phase.failed) {
+        phase.failed = true;
+        phase.error = error;
+      }
+    }
+    const failed = phase.failed,
+      first = phase.error;
+    try {
+      if (phase.managed) releaseRenderMetadata(phase);
+      else clearDepthDraw(phase);
+    } catch (error) {
+      if (!failed) throw error;
+    }
+    if (failed) throw first;
+    return output!;
+  }
+  private restoreDraw(phase: DepthDrawLifetime) {
+    const gl = this.device.gl;
+    const visit = (phase.cleanup = (work: () => void) => {
+      phase.step = work;
+      try {
+        work();
+      } catch (error) {
+        if (!phase.failed) {
+          phase.failed = true;
+          phase.error = error;
+        }
+      } finally {
+        phase.step = undefined;
+      }
+    });
+    const old = phase.old;
+    if (old) {
+      visit(() => gl.bindVertexArray(old.vao));
+      visit(() => gl.useProgram(old.program));
+      visit(() => gl.bindBuffer(gl.ARRAY_BUFFER, old.array));
+      visit(() => gl.bindRenderbuffer(gl.RENDERBUFFER, old.renderbuffer));
+      visit(() => gl.bindFramebuffer(gl.READ_FRAMEBUFFER, old.read));
+      visit(() => gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, old.draw));
+      visit(() =>
+        gl.viewport(
+          old.viewport[0]!,
+          old.viewport[1]!,
+          old.viewport[2]!,
+          old.viewport[3]!,
+        ),
+      );
+      visit(() =>
+        gl.clearColor(
+          old.clear[0]!,
+          old.clear[1]!,
+          old.clear[2]!,
+          old.clear[3]!,
+        ),
+      );
+      visit(() => gl.frontFace(old.face));
+      visit(() => gl.cullFace(old.cullMode));
+      for (const [flag, enabled] of phase.flags ?? phase.flagTuples)
+        visit(() => {
+          if (enabled) gl.enable(flag);
+          else gl.disable(flag);
+        });
+      for (let index = 0; index < phase.boundTextures.length; index++) {
+        visit(() => gl.activeTexture(gl.TEXTURE0 + index));
+        visit(() => gl.bindTexture(gl.TEXTURE_2D, phase.boundTextures[index]!));
+      }
+      visit(() => gl.activeTexture(old.active));
+      visit(() => gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, old.flip));
+      visit(() =>
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, old.premultiply),
+      );
+      visit(() =>
+        gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, old.colorspace),
+      );
+    }
+    if (phase.resolved) visit(() => this.device.release(phase.resolved!));
+    if ((!phase.completed || phase.failed) && phase.output)
+      visit(() => this.device.release(phase.output!));
+  }
+
+  private drawOwned(
+    content: DepthImageContent | ImageContent,
+    phase: DepthDrawLifetime,
+  ): WebglSurface {
+    const layer = (phase.layer =
       content.type === "depth-image"
         ? {
             id: content.layer.id,
@@ -966,14 +1151,14 @@ export class WebglDepthImages {
                   ? 2
                   : 0,
             revealProgress: content.plane!.motion.revealProgress,
-            motion: { ...content.plane!.motion, strength: 0 },
-          };
+            motion: (phase.motion = { ...content.plane!.motion, strength: 0 }),
+          });
     const gl = this.device.gl;
     validateImagePlaneSurface(content.width, content.height, layer.id);
-    const requiredAssets = [
+    const requiredAssets = (phase.requiredAssets = [
       layer.sourceAsset,
-      ...(layer.depth ? [layer.depth.asset] : []),
-    ];
+      ...(phase.depthAssets = layer.depth ? [layer.depth.asset] : []),
+    ]);
     let assetBytes = 0;
     for (const id of requiredAssets) {
       const size = this.images.sizes.get(id);
@@ -991,17 +1176,21 @@ export class WebglDepthImages {
         "Image-plane source/depth assets exceed the 128 MiB GPU texture budget",
         { node: layer.id },
       );
-    const output = this.device.surface(content.width, content.height);
-    let resolved: WebglSurface | undefined;
-    const old = {
+    const output = (phase.output = this.device.surface(
+      content.width,
+      content.height,
+    ));
+    phase.old = {
       vao: gl.getParameter(gl.VERTEX_ARRAY_BINDING),
       program: gl.getParameter(gl.CURRENT_PROGRAM),
       array: gl.getParameter(gl.ARRAY_BUFFER_BINDING),
       renderbuffer: gl.getParameter(gl.RENDERBUFFER_BINDING),
       read: gl.getParameter(gl.READ_FRAMEBUFFER_BINDING),
       draw: gl.getParameter(gl.DRAW_FRAMEBUFFER_BINDING),
-      viewport: gl.getParameter(gl.VIEWPORT) as Int32Array,
-      clear: gl.getParameter(gl.COLOR_CLEAR_VALUE) as Float32Array,
+      viewport: (phase.viewport = gl.getParameter(gl.VIEWPORT) as Int32Array),
+      clear: (phase.clear = gl.getParameter(
+        gl.COLOR_CLEAR_VALUE,
+      ) as Float32Array),
       face: gl.getParameter(gl.FRONT_FACE),
       cullMode: gl.getParameter(gl.CULL_FACE_MODE),
       active: gl.getParameter(gl.ACTIVE_TEXTURE),
@@ -1009,141 +1198,117 @@ export class WebglDepthImages {
       premultiply: gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL),
       colorspace: gl.getParameter(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL),
     };
-    const flags = [
+    const flags = (phase.flags = (phase.flagKinds = [
       gl.BLEND,
       gl.CULL_FACE,
       gl.DEPTH_TEST,
       gl.SCISSOR_TEST,
       gl.DITHER,
-    ].map((flag) => [flag, gl.isEnabled(flag)] as const);
-    const bindings = [gl.TEXTURE0, gl.TEXTURE1].map((unit) => {
-      gl.activeTexture(unit);
-      return gl.getParameter(gl.TEXTURE_BINDING_2D) as WebGLTexture | null;
-    });
-    let completed = false;
-    try {
-      this.initialize();
-      const target = this.antialias(content.width, content.height, layer.id);
-      gl.useProgram(this.program!);
-      gl.bindVertexArray(this.vao!);
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(
-        gl.TEXTURE_2D,
-        this.texture(layer.sourceAsset, layer.sourceHash, true, layer.id),
-      );
-      gl.activeTexture(gl.TEXTURE1);
-      gl.bindTexture(
-        gl.TEXTURE_2D,
-        layer.depth
-          ? this.texture(layer.depth.asset, layer.depthHash!, false, layer.id)
-          : this.texture(layer.sourceAsset, layer.sourceHash, true, layer.id),
-      );
-      const uniform = (name: string) => {
-        return this.uniform(name);
-      };
-      gl.uniform2f(uniform("rasterSize"), content.width, content.height);
-      gl.uniform1i(uniform("source"), 0);
-      gl.uniform1i(uniform("depth"), 1);
-      gl.uniform1f(uniform("revealMode"), layer.revealMode);
-      gl.uniform1f(uniform("revealProgress"), layer.revealProgress);
-      gl.uniform1f(
-        uniform("opaqueAlpha"),
-        layer.alphaMode === "opaque" ? 1 : 0,
-      );
-      const sourceSize = this.images.sizes.get(layer.sourceAsset)!;
-      const cover = coverFit(
-          sourceSize[0],
-          sourceSize[1],
-          content.width,
-          content.height,
-        ),
-        crop = layer.framing;
-      if (content.type === "image" && content.fit === "stretch") {
-        cover.x = 1;
-        cover.y = 1;
-      }
-      gl.uniform2f(uniform("cover"), cover.x, cover.y);
-      gl.uniform2f(
-        uniform("framing"),
-        crop ? (0.5 - crop.x - crop.width / 2) * 2 * cover.x : 0,
-        crop ? (crop.y + crop.height / 2 - 0.5) * 2 * cover.y : 0,
-      );
-      gl.uniform2f(
-        uniform("stepSize"),
-        Math.max(1 / sourceSize[0], 1 / PREVIEW_LIMITS.gridColumns),
-        Math.max(1 / sourceSize[1], 1 / PREVIEW_LIMITS.gridRows),
-      );
-      gl.uniform2fv(uniform("offset"), layer.motion.offset);
-      gl.uniform1f(uniform("overscan"), layer.overscan);
-      gl.uniform1f(uniform("scale"), layer.motion.scale);
-      gl.uniform1f(uniform("strength"), layer.motion.strength);
-      gl.uniform1f(uniform("roll"), (layer.motion.roll * Math.PI) / 180);
-      gl.uniform1f(uniform("edgeDamping"), layer.edgeDamping);
-      gl.bindFramebuffer(gl.FRAMEBUFFER, target.framebuffer);
-      gl.viewport(0, 0, content.width, content.height);
-      for (const [flag] of flags) gl.disable(flag);
-      gl.enable(gl.CULL_FACE);
-      gl.cullFace(gl.BACK);
-      gl.frontFace(gl.CCW);
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_SHORT, 0);
-      gl.bindFramebuffer(gl.READ_FRAMEBUFFER, target.framebuffer);
-      resolved = this.device.surface(content.width, content.height);
-      gl.bindFramebuffer(gl.READ_FRAMEBUFFER, target.framebuffer);
-      gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, resolved.framebuffer);
-      gl.blitFramebuffer(
-        0,
-        0,
+    ]).map((flag) => {
+      const tuple = [flag, gl.isEnabled(flag)] as const;
+      phase.flagTuples.push(tuple);
+      return tuple;
+    }));
+    phase.bindings = (phase.bindingUnits = [gl.TEXTURE0, gl.TEXTURE1]).map(
+      (unit) => {
+        gl.activeTexture(unit);
+        const texture = gl.getParameter(
+          gl.TEXTURE_BINDING_2D,
+        ) as WebGLTexture | null;
+        phase.boundTextures.push(texture);
+        return texture;
+      },
+    );
+    this.initialize();
+    const target = this.antialias(content.width, content.height, layer.id);
+    gl.useProgram(this.program!);
+    gl.bindVertexArray(this.vao!);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(
+      gl.TEXTURE_2D,
+      this.texture(layer.sourceAsset, layer.sourceHash, true, layer.id),
+    );
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(
+      gl.TEXTURE_2D,
+      layer.depth
+        ? this.texture(layer.depth.asset, layer.depthHash!, false, layer.id)
+        : this.texture(layer.sourceAsset, layer.sourceHash, true, layer.id),
+    );
+    const uniform = (phase.uniform = (name: string) => this.uniform(name));
+    gl.uniform2f(uniform("rasterSize"), content.width, content.height);
+    gl.uniform1i(uniform("source"), 0);
+    gl.uniform1i(uniform("depth"), 1);
+    gl.uniform1f(uniform("revealMode"), layer.revealMode);
+    gl.uniform1f(uniform("revealProgress"), layer.revealProgress);
+    gl.uniform1f(uniform("opaqueAlpha"), layer.alphaMode === "opaque" ? 1 : 0);
+    const sourceSize = this.images.sizes.get(layer.sourceAsset)!;
+    const cover = (phase.cover = coverFit(
+        sourceSize[0],
+        sourceSize[1],
         content.width,
         content.height,
-        0,
-        0,
-        content.width,
-        content.height,
-        gl.COLOR_BUFFER_BIT,
-        gl.NEAREST,
-      );
-      this.device.passes += 2;
-      gl.disable(gl.CULL_FACE);
-      this.device.pass(
-        "uniform float height; void main(){pixel=texelFetch(source,ivec2(int(gl_FragCoord.x),int(height)-1-int(gl_FragCoord.y)),0);}",
-        output,
-        [resolved],
-        { height: content.height },
-      );
-      completed = true;
-      return output;
-    } finally {
-      gl.bindVertexArray(old.vao);
-      gl.useProgram(old.program);
-      gl.bindBuffer(gl.ARRAY_BUFFER, old.array);
-      gl.bindRenderbuffer(gl.RENDERBUFFER, old.renderbuffer);
-      gl.bindFramebuffer(gl.READ_FRAMEBUFFER, old.read);
-      gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, old.draw);
-      gl.viewport(
-        old.viewport[0]!,
-        old.viewport[1]!,
-        old.viewport[2]!,
-        old.viewport[3]!,
-      );
-      gl.clearColor(old.clear[0]!, old.clear[1]!, old.clear[2]!, old.clear[3]!);
-      gl.frontFace(old.face);
-      gl.cullFace(old.cullMode);
-      flags.forEach(([flag, enabled]) =>
-        enabled ? gl.enable(flag) : gl.disable(flag),
-      );
-      bindings.forEach((texture, index) => {
-        gl.activeTexture(gl.TEXTURE0 + index);
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-      });
-      gl.activeTexture(old.active);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, old.flip);
-      gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, old.premultiply);
-      gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, old.colorspace);
-      if (resolved) this.device.release(resolved);
-      if (!completed) this.device.release(output);
+      )),
+      crop = layer.framing;
+    if (content.type === "image" && content.fit === "stretch") {
+      cover.x = 1;
+      cover.y = 1;
     }
+    gl.uniform2f(uniform("cover"), cover.x, cover.y);
+    gl.uniform2f(
+      uniform("framing"),
+      crop ? (0.5 - crop.x - crop.width / 2) * 2 * cover.x : 0,
+      crop ? (crop.y + crop.height / 2 - 0.5) * 2 * cover.y : 0,
+    );
+    gl.uniform2f(
+      uniform("stepSize"),
+      Math.max(1 / sourceSize[0], 1 / PREVIEW_LIMITS.gridColumns),
+      Math.max(1 / sourceSize[1], 1 / PREVIEW_LIMITS.gridRows),
+    );
+    gl.uniform2fv(uniform("offset"), layer.motion.offset);
+    gl.uniform1f(uniform("overscan"), layer.overscan);
+    gl.uniform1f(uniform("scale"), layer.motion.scale);
+    gl.uniform1f(uniform("strength"), layer.motion.strength);
+    gl.uniform1f(uniform("roll"), (layer.motion.roll * Math.PI) / 180);
+    gl.uniform1f(uniform("edgeDamping"), layer.edgeDamping);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, target.framebuffer);
+    gl.viewport(0, 0, content.width, content.height);
+    for (const [flag] of flags) gl.disable(flag);
+    gl.enable(gl.CULL_FACE);
+    gl.cullFace(gl.BACK);
+    gl.frontFace(gl.CCW);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawElements(gl.TRIANGLES, this.count, gl.UNSIGNED_SHORT, 0);
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, target.framebuffer);
+    const resolved = (phase.resolved = this.device.surface(
+      content.width,
+      content.height,
+    ));
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, target.framebuffer);
+    gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, resolved.framebuffer);
+    gl.blitFramebuffer(
+      0,
+      0,
+      content.width,
+      content.height,
+      0,
+      0,
+      content.width,
+      content.height,
+      gl.COLOR_BUFFER_BIT,
+      gl.NEAREST,
+    );
+    this.device.passes += 2;
+    gl.disable(gl.CULL_FACE);
+    this.device.pass(
+      "uniform float height; void main(){pixel=texelFetch(source,ivec2(int(gl_FragCoord.x),int(height)-1-int(gl_FragCoord.y)),0);}",
+      output,
+      (phase.inputs = [resolved]),
+      (phase.uniforms = { height: content.height }),
+    );
+    phase.completed = true;
+    return output;
   }
 
   dispose() {
