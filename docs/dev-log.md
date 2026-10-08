@@ -43,14 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #48 conflict integration in verification (2026-10-08):** isolated
+- **PR #48 conflicts resolved and reviewed (2026-10-08):** isolated
   worktree from CE13 `aedfc9eb` integrates `main` at `e249a5da`. All 23 conflicts
   combine native video/audio with reviewed renderer, passage and retained-draft
   behavior. Pinned startup/build/schema/lint, 2,560 unit / 46 runtime / 179 affected
   integration checks and 14 Python tests pass across focused runs. Independent
   review has one reproduced P2: active native capture URLs can expire before
-  replacement acceptance. Affected browser/baseline checks remain in flight. No full
-  repository gate is being run or claimed. Owner CE15 files are untouched.
+  replacement acceptance. All affected browser/timeline checks, 336 selected native
+  default frames and 176 frozen items / 36,061 frames pass. No full
+  repository gate was run or claimed. Owner CE15 files are untouched.
   [Evidence](./pr-48-conflict-resolution-results.json).
 
 - **CE13 complete (2026-10-07):** original acceptance at `01fbca2` passes the
@@ -73,21 +74,28 @@ still hold before relying on them.
 
 ## Entries
 
-### 2026-10-08 — PR #48 conflicts integrated for focused verification
+### 2026-10-08 — PR #48 conflicts resolved and independently reviewed
 
-- **Agent / branch:** Codex in isolated `pr48-conflict-review`, from `aedfc9eb`.
+- **Agent / branch:** Codex on isolated `codex/pr48-conflict-resolution`, from `aedfc9eb`.
 - **Done:** merged `main` at `e249a5da`; combined all 23 conflicts, preserved native
   media/audio and reviewed renderer/authoring/soundtrack behavior. Native draft
   preparation keeps per-draft leases; cinematic alpha checks await source frames.
 - **Results:** pinned toolchain/build/lint/schema, 2,560 units / 46 runtime /
   179 affected integration checks and 14 Python tests pass across focused runs.
-  Two integration expectations were repaired and rerun; browsers/baselines continue.
+  Two integration expectations were repaired and rerun. Affected media/passage/
+  renderer/timeline browsers, 336 selected native default frames and all 176 frozen
+  items / 36,061 frames pass without regeneration.
 - **Rejected:** initial build exposed duplicate CLI/Vitest imports, an invalid new
   image fixture and an unsafe async UI narrowing; repaired before regression checks.
 - **Review:** one reproduced P2: active native capture URLs expire after newer
   prepares; native caller-mutation candidate is suppressed by the immutable contract.
-- **Next:** finish affected browser/export/baseline checks and normal push.
-  No full `pnpm check` is being run or claimed; owner CE15 checkout is untouched.
+- **Scope correction:** interrupted the over-scoped full 15-fixture cinematic export
+  matrix after about 14 minutes; it is not passed. Existing exact coverage/reveal
+  helpers and 2 affected defaults pass; full default inventory is not rerun.
+- **Delivery / next:** merge `471582f5`, test repairs `749452d2` and final evidence
+  delivered through a normal push to PR #48; owner follow-up on the single P2
+  capture-lifetime finding. No verification job remains active.
+  No full `pnpm check` was run or claimed; owner CE15 checkout is untouched.
 - **Records:** [resolution evidence](./pr-48-conflict-resolution-results.json),
   [PR #48](https://github.com/xxibcill/still-shift/pull/48).
 
@@ -499,7 +507,7 @@ still hold before relying on them.
   the five failing frames. Diagnostic frame32 improves from delta3 /396 pixels above2 to delta1.
   Complete serial delivery is running; the unchanged near tier remains delta2.
 - **Failed / do not repeat:** the complete 4b99cad legacy gate failed; later depth delivery did not run.
-  All23 prepared depth timelines had passed exact forward/reverse parity before that failure.
+  All 23 prepared depth timelines had passed exact forward/reverse parity before that failure.
 - **Open / next:** focused/full legacy parity, native delivery, defaults and final full gate; then PR/CE13.
 - **Records:** [results](./composition-ce4d-results.json).
 

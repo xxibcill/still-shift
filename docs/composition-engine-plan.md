@@ -5415,6 +5415,33 @@ is retained; the serial passes do not replace a fresh complete local `pnpm check
 
 ---
 
+### CE13 PR #48 conflict integration and review (2026-10-08)
+
+CE13 `aedfc9eb` now integrates reviewed `main` at `e249a5da` through merge
+`471582f5`; test-contract follow-up is `749452d2`. All 23 conflicts retain native
+picture/PCM, main clock/coverage/bitmap fixes, saved soundtrack validation and
+retained-draft authoring. Reusable media ownership and per-frame cinematic alpha
+validation are explicit. Combined identities are evaluator 54 / Canvas 1.45.1 /
+WebGL2 0.66.1 / export 0.6.11. All 64 required parent commands remain available.
+
+Focused local verification passes build/lint/schema/boundaries, 2,560 units,
+46 runtime, 179 affected integrations across repaired focused runs, 14 Python tests,
+native media/audio authoring and exports, both native passage backends, affected
+renderer/camera/timeline checks, 336 selected native default frames and all 176 frozen
+items / 36,061 frames. All 215 main visual files remain exact. The full 15-fixture
+cinematic variant/export command was over-scoped and interrupted after about 14
+minutes; it is not passed. Existing exact coverage/reveal helpers and selected
+default cases pass instead. No complete production-default inventory or full
+`pnpm check` was rerun; original milestone evidence stays historical.
+
+Independent Standards review has no hard violation and one possible cache-transaction
+duplication concern. Spec review has one reproduced P2: native capture FIFO eviction
+can remove lazy frame URLs while their previous preview remains active. Root
+reproduction observes 404 for the first capture and 200 for the latest under the same
+retained lease. Tie captures to active/candidate ownership before merging. A
+caller-mutation clock candidate was suppressed by the documented immutable-object
+contract. [Resolution and review evidence](./pr-48-conflict-resolution-results.json).
+
 ## CE14 — Mesh warp and puppet pins
 
 **Outcome:** Still artwork bends, squashes and gestures without new poses, which is the
