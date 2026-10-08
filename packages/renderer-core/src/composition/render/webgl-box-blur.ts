@@ -8,6 +8,7 @@ import {
   releaseRenderMetadata,
   resizeRenderMetadata,
 } from "../../managed-metadata.ts";
+import type { ManagedMemory } from "../../managed-memory.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import type { WebglRect } from "./webgl-bounds.ts";
 
@@ -96,6 +97,98 @@ const PASS_COST = 0.38,
 const MAXIMUM_MULTIPLE = 8,
   MAXIMUM_EXTRA = 3;
 
+type Step = { multiple: number; extra: number };
+type ShaderLifetime = {
+  key: string;
+  body: string;
+  terms: string[];
+  parts: string[][];
+  fetches: string[];
+  slot: boolean;
+};
+type BoxCache = {
+  memory: ManagedMemory;
+  device?: WebglDevice | undefined;
+  bytes: number;
+  disposed: boolean;
+  plans: Map<number, Step[]>;
+  shaders: Map<string, ShaderLifetime>;
+};
+const managedCaches = new WeakMap<ManagedMemory, BoxCache>();
+const deviceCaches = new WeakMap<WebglDevice, BoxCache>();
+function changeCacheSlots(cache: BoxCache, bytes: number) {
+  if (cache.disposed) return;
+  resizeRenderMetadata(cache, cache.bytes + bytes);
+  cache.bytes += bytes;
+}
+function clearBoxCache(cache: BoxCache) {
+  cache.disposed = true;
+  if (cache.device) {
+    if (deviceCaches.get(cache.device) === cache)
+      deviceCaches.delete(cache.device);
+    cache.device = undefined;
+  } else if (managedCaches.get(cache.memory) === cache)
+    managedCaches.delete(cache.memory);
+  for (const steps of cache.plans.values()) releaseRenderMetadata(steps);
+  for (const shader of cache.shaders.values()) releaseRenderMetadata(shader);
+  cache.plans.clear();
+  cache.shaders.clear();
+}
+export function releaseDeviceBoxCache(device: WebglDevice) {
+  const cache = deviceCaches.get(device);
+  if (cache) releaseRenderMetadata(cache);
+}
+function boxCache(device?: WebglDevice) {
+  const memory = renderMemory();
+  if (!memory) return undefined;
+  const previous = device
+    ? deviceCaches.get(device)
+    : managedCaches.get(memory);
+  if (previous) {
+    if (previous.memory !== memory)
+      throw Error("Managed box cache belongs to another allocator");
+    return previous;
+  }
+  const cache = allocateRenderMetadata<BoxCache>(
+    // Actual holder/two Maps/registry entry and cache producer controls.
+    768,
+    () => ({
+      memory,
+      device,
+      bytes: 768,
+      disposed: false,
+      plans: new Map(),
+      shaders: new Map(),
+    }),
+    true,
+    clearBoxCache,
+  );
+  try {
+    if (device) deviceCaches.set(device, cache);
+    else managedCaches.set(memory, cache);
+    return cache;
+  } catch (error) {
+    try {
+      releaseRenderMetadata(cache);
+    } catch {
+      /* Preserve registry failure. */
+    }
+    throw error;
+  }
+}
+function releaseEmptyBoxCache(cache: BoxCache | undefined) {
+  if (cache && !cache.plans.size && !cache.shaders.size)
+    releaseRenderMetadata(cache);
+}
+function clearShaderWorking(value: ShaderLifetime) {
+  value.terms.length = 0;
+  for (const parts of value.parts) parts.length = 0;
+  value.parts.length = value.fetches.length = 0;
+}
+function shaderParts(phase: ShaderLifetime | undefined, value: string[]) {
+  phase?.parts.push(value);
+  return value;
+}
 const shaders = new Map<string, string>();
 /**
  * S(rc+e)(p) = Σj<r S(c)(p−jc) + Σi<e x(p−rc−i): exact integer box sums.
@@ -103,31 +196,72 @@ const shaders = new Map<string, string>();
  * selects and inactive uniform branches.
  */
 function sumShader(
+  device: WebglDevice,
   multiple: number,
   extra: number,
   sumBytes: boolean,
   baseBytes: boolean,
 ) {
-  const key = `${multiple}/${extra}/${sumBytes}/${baseBytes}`;
-  const cached = shaders.get(key);
-  if (cached) return cached;
-  const fetch = (sampler: string, bytes: boolean) =>
-    bytes
-      ? `floor(texelFetch(${sampler},p,0)*255.0+0.5)`
-      : `texelFetch(${sampler},p,0)`;
-  const terms = [
-    "sumAt(p+ivec2(sumOffset))",
-    ...Array.from(
-      { length: multiple - 1 },
-      (_, j) => `sumAt(p+ivec2(sumOffset-direction*(count*${j + 1}.0)))`,
-    ),
-    ...Array.from(
-      { length: extra },
-      (_, i) =>
-        `baseAt(p+ivec2(baseOffset-direction*(count*${multiple}.0+${i}.0)))`,
-    ),
-  ];
-  const shader = `uniform vec2 direction; uniform float count;
+  const cache = boxCache(device);
+  let phase: ShaderLifetime | undefined;
+  let retained = false;
+  try {
+    if (cache)
+      phase = allocateRenderMetadata<ShaderLifetime>(
+        // Renderer-generated specializations have <=11 terms; includes original
+        // intermediate UTF16 text, arrays/closures, full body and key production.
+        16384,
+        () => ({
+          key: "",
+          body: "",
+          terms: [],
+          parts: [],
+          fetches: [],
+          slot: false,
+        }),
+        false,
+        (value) => {
+          if (cache.shaders.get(value.key) === value)
+            cache.shaders.delete(value.key);
+          if (value.slot) {
+            value.slot = false;
+            changeCacheSlots(cache, -40);
+          }
+          clearShaderWorking(value);
+          value.key = value.body = "";
+        },
+      );
+    const key = `${multiple}/${extra}/${sumBytes}/${baseBytes}`;
+    if (phase) phase.key = key;
+    const cached = cache ? cache.shaders.get(key)?.body : shaders.get(key);
+    if (cached) return cached;
+    const fetch = (sampler: string, bytes: boolean) => {
+      const value = bytes
+        ? `floor(texelFetch(${sampler},p,0)*255.0+0.5)`
+        : `texelFetch(${sampler},p,0)`;
+      phase?.fetches.push(value);
+      return value;
+    };
+    const terms = [
+      "sumAt(p+ivec2(sumOffset))",
+      ...shaderParts(
+        phase,
+        Array.from(
+          { length: multiple - 1 },
+          (_, j) => `sumAt(p+ivec2(sumOffset-direction*(count*${j + 1}.0)))`,
+        ),
+      ),
+      ...shaderParts(
+        phase,
+        Array.from(
+          { length: extra },
+          (_, i) =>
+            `baseAt(p+ivec2(baseOffset-direction*(count*${multiple}.0+${i}.0)))`,
+        ),
+      ),
+    ];
+    if (phase) phase.terms = terms;
+    const shader = `uniform vec2 direction; uniform float count;
 uniform vec2 sumOffset; uniform vec2 baseOffset;
 uniform vec2 sumSize; uniform vec2 baseSize;
 vec4 sumAt(ivec2 p) {
@@ -142,21 +276,65 @@ void main() {
   ivec2 p=ivec2(gl_FragCoord.xy);
   pixel=${terms.join("+")};
 }`;
-  shaders.set(key, shader);
-  return shader;
+    if (cache && phase) {
+      phase.body = shader;
+      clearShaderWorking(phase);
+      resizeRenderMetadata(phase, 512 + 2 * (key.length + shader.length));
+      changeCacheSlots(cache, 40);
+      phase.slot = true;
+      cache.shaders.set(key, phase);
+      cache.memory.retain(phase);
+      retained = true;
+    } else shaders.set(key, shader);
+    return shader;
+  } finally {
+    try {
+      if (phase && !retained) releaseRenderMetadata(phase);
+    } finally {
+      releaseEmptyBoxCache(cache);
+    }
+  }
 }
 
-type Step = { multiple: number; extra: number };
+type PlanLifetime = {
+  from?: { previous: number; step: Step }[] | undefined;
+  cost?: Float64Array | undefined;
+};
+function clearPlanWorking(value: PlanLifetime) {
+  if (value.from) value.from.length = 0;
+  value.from = value.cost = undefined;
+}
 const plans = new Map<number, Step[]>();
 /** Cheapest exact sequence of steps from a one-pixel box to `length`. */
-export function boxSteps(length: number): Step[] {
-  const cached = plans.get(length);
+export function boxSteps(length: number, device?: WebglDevice): Step[] {
+  const cache = boxCache(device);
+  const target = cache?.plans ?? plans;
+  const cached = target.get(length);
   if (cached) return cached;
-  const cost = allocateRenderPixels((length + 1) * 8, () =>
-    new Float64Array(length + 1).fill(Infinity),
-  );
+  let phase: PlanLifetime | undefined;
+  let cost: Float64Array | undefined;
+  let steps: Step[] | undefined;
+  let retained = false,
+    slot = false;
   try {
-    const from: { previous: number; step: Step }[] = [];
+    const slots = Number.isFinite(length)
+      ? Math.max(0, Math.trunc(length + 1))
+      : 0;
+    phase = allocateRenderMetadata<PlanLifetime>(
+      // Actual predecessor slots/nodes/step objects, temporary overlap,
+      // cost view, holder and original plan producer controls.
+      512 + 256 * slots,
+      () => ({}),
+      false,
+      clearPlanWorking,
+    );
+    cost = allocateRenderPixels(
+      (length + 1) * 8,
+      () => new Float64Array(length + 1),
+    );
+    phase.cost = cost;
+    cost.fill(Infinity);
+    const from: { previous: number; step: Step }[] = (phase.from = []);
     cost[1] = 0;
     for (let count = 1; count < length; count++) {
       if (cost[count] === Infinity) continue;
@@ -176,13 +354,54 @@ export function boxSteps(length: number): Step[] {
           }
         }
     }
-    const steps: Step[] = [];
+    const countBound =
+      Number.isFinite(length) && length > 1 ? Math.ceil(Math.log2(length)) : 0;
+    steps = allocateRenderMetadata<Step[]>(
+      512 + 56 * countBound,
+      () => [],
+      false,
+      (value) => {
+        if (cache) {
+          if (target.get(length) === value) target.delete(length);
+          if (slot) {
+            slot = false;
+            changeCacheSlots(cache, -40);
+          }
+        }
+        value.length = 0;
+      },
+    );
     for (let count = length; count > 1; count = from[count]!.previous)
       steps.unshift(from[count]!.step);
-    plans.set(length, steps);
+    if (cache) {
+      resizeRenderMetadata(steps, 512 + 56 * steps.length);
+      changeCacheSlots(cache, 40);
+      slot = true;
+    }
+    target.set(length, steps);
+    if (cache) cache.memory.retain(steps);
+    retained = true;
     return steps;
+  } catch (error) {
+    try {
+      if (steps && !retained) releaseRenderMetadata(steps);
+    } catch {
+      /* Preserve original plan/factory/insert failure. */
+    }
+    throw error;
   } finally {
-    releaseRenderPixels(cost);
+    try {
+      releaseRenderPixels(cost);
+    } finally {
+      try {
+        if (phase) {
+          if (cache) releaseRenderMetadata(phase);
+          else clearPlanWorking(phase);
+        }
+      } finally {
+        releaseEmptyBoxCache(cache);
+      }
+    }
   }
 }
 const DIVIDE = `uniform vec2 offset; uniform float halfDivisor; uniform vec2 factorParts;
@@ -284,13 +503,13 @@ export function boxBlur(
             ? boxArray(phase, 2, () => [input.width, input.height])
             : extent;
         let count = 1;
-        for (const { multiple, extra } of boxSteps(length)) {
+        for (const { multiple, extra } of boxSteps(length, device)) {
           const next = buffers.find(
             (buffer) => buffer !== base && buffer !== current,
           )!;
           const initial = current === input;
           device.pass(
-            sumShader(multiple, extra, initial, base === input),
+            sumShader(device, multiple, extra, initial, base === input),
             next,
             boxInputs(phase, 2, () => [current, base]),
             boxUniforms(phase, () => ({

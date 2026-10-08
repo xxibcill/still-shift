@@ -106,7 +106,7 @@ it("denies the holder and fresh clip one byte before original geometry getters a
   }
 });
 
-it("denies fresh direction/input arrays before their original pass consumer and visits all four native surfaces", async () => {
+it("denies later working data before the original pass consumer and visits all four native surfaces", async () => {
   for (const length of kernel.lengths) boxSteps(length);
   for (const quota of [1296, 2015]) {
     const memory = new ManagedMemory({ ...limits, metadata: quota });
@@ -154,8 +154,9 @@ it("preserves whole original shader/math/uniform/clip/native traces and holds ge
       expect(h.dst.width).toBe(173);
       expect(kernel.lengths).toEqual([30, 30, 31]);
       expect(clip).toEqual(clip ? painted : undefined);
-      expect(memory.statistics.current.metadata).toBe(0);
+      expect(memory.statistics.current.metadata).toBeGreaterThan(0);
       memory.dispose();
+      expect(memory.statistics.current.metadata).toBe(0);
     });
   }
 });
@@ -190,9 +191,10 @@ it("preserves original painted getter order and null geometry failure while rest
       caught = error;
     }
     expect(caught).toBeNull();
-    expect(memory.statistics.current.metadata).toBe(0);
+    expect(memory.statistics.current.metadata).toBeGreaterThan(0);
     expect(boxBlur(h.gpu, h.dst, kernel)).toBe(true);
     memory.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
   });
 });
 
@@ -247,9 +249,10 @@ it("preserves original null pass over secondary cleanup, clears actual inputs an
     expect(caught).toBeNull();
     expect(h.device.release).toHaveBeenCalledTimes(4);
     expectCleared(h);
-    expect(memory.statistics.current.metadata).toBe(0);
+    expect(memory.statistics.current.metadata).toBeGreaterThan(0);
     expect(boxBlur(h.gpu, h.dst, kernel)).toBe(true);
     memory.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
   });
 });
 
@@ -269,8 +272,9 @@ it("visits all native intermediates on first null release and clears their actua
     expect(caught).toBeNull();
     expect(h.device.release).toHaveBeenCalledTimes(4);
     expectCleared(h);
-    expect(memory.statistics.current.metadata).toBe(0);
+    expect(memory.statistics.current.metadata).toBeGreaterThan(0);
     memory.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
     expect(memory.statistics.reservations).toBe(0);
   });
 });

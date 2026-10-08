@@ -1,3 +1,4 @@
+import { releaseDeviceBoxCache } from "./webgl-box-blur.ts";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
@@ -1284,15 +1285,25 @@ export class WebglDevice {
   }
 
   dispose() {
-    this.frameClip = undefined;
-    this.onScreenChange = undefined;
-    this.pooledBytes = 0;
-    this.dropSolid();
     try {
-      clearDeviceState(this.state);
-    } finally {
-      releaseRenderMetadata(this.state);
+      this.frameClip = undefined;
+      this.onScreenChange = undefined;
+      this.pooledBytes = 0;
+      this.dropSolid();
+      try {
+        clearDeviceState(this.state);
+      } finally {
+        releaseRenderMetadata(this.state);
+      }
+    } catch (error) {
+      try {
+        releaseDeviceBoxCache(this);
+      } catch {
+        /* Preserve original device/native disposal failure. */
+      }
+      throw error;
     }
+    releaseDeviceBoxCache(this);
   }
 
   private markDirty(surface: WebglSurface) {

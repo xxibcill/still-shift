@@ -95,14 +95,14 @@ still hold before relying on them.
   group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
   pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
-  Gaussian kernel/rescale and box-blur pass metadata now pass 313 focused tests,
-  the complete audit, 22 moving/blurred and ten stationary native frames and 96
-  owned RPC snapshots. Actual box geometry/vectors/uniforms/input/reference data
-  pre-admits, stays through original consumers, then clears; two complete original
-  native traces, getters/numerical/unsupported/null/unmanaged/retry behavior pass.
-  Native recording/shader probes, original WebGL/providers, 69 typography tests
-  and 64 exports / 768 prior-exact bodies/frames pass; glyph 1.419672× meets
-  unchanged 1.5 maximum.
+  Gaussian kernel/rescale, box-blur pass and managed plan/sum-shader cache metadata
+  now pass 329 focused tests, the complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Actual managed cache Maps/slots/plan/
+  predecessor/view/step/shader key/text/array data pre-admits, retains original cache
+  reuse across scratch and clears at original device/preview or helper allocator
+  disposal. Original full plan/shader/native traces, quota/lifetime/allocator/empty/invalid/null/retry behavior pass. Native
+  recording/shader probes, WebGL/providers, 69 typography tests and 64 exports /
+  768 prior-exact bodies/frames pass; glyph 1.418941× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -338,6 +338,26 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual managed box/shader caches
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `544abbf`.
+- **Done:** pre-admit actual managed cache Maps/slots, plan predecessors/views/
+  selected returned steps and specialized shader key/text/arrays. Retain original
+  cache data across scratch; clear at original device/preview or helper allocator
+  disposal and protect fill/late insert/null.
+- **Results:** build/lint/boundaries, 329 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, prior native traces/probes,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.418941× meets unchanged 1.5 maximum.
+- **Verification:** sixteen new tests; original 5768 steps through length 1500,
+  all 27 complete shader bodies, quota/lifetime/allocator/reuse/null/retry/cleanup.
+  Receiver/record types/tie fixture repaired; rejected allocator-only native cache
+  lifetime retained, original preview/device cleanup repaired and independently checked.
+- **Next:** common bootstrap/registry/ledger controls and remaining effect/image/
+  depth/controller/provider/graph/font/Node admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [cache evidence](./composition-ce15-box-cache-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual box-blur pass data
 

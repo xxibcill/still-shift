@@ -1157,6 +1157,33 @@ box-plan/sum-shader caches, effect/image/depth/controller/helper/runtime/Node da
 production/aggregate admission, speed and full gate remain pending.
 [Evidence](./composition-ce15-box-metadata-results.json).
 
+## Accepted managed box-plan/sum-shader cache checkpoint — 2026-10-08
+
+Managed caches own actual allocator/device-local holder/two Maps at 768 before native Map
+construction; 40 per actual cache slot before insertion. Original unmanaged cache
+identity remains; active allocators never borrow those cached arrays/text. Admit
+512+256*slots before original cost view/predecessor producers; actual Float64
+storage adopts before original fill for protected null detachment. Actual returned
+steps admit 512+56*bounded steps before original array/unshift, shrink and retain
+across scratch. Original DP/tie/cost arithmetic remains. Specialized shader working
+key/text/arrays/closures admit 16384 before original producers, capture original
+arrays/key/body, clear working references, then retain 512+2\*(key+body units).
+Actual native-device cache Maps/arrays/objects/text clear at original device/
+preview disposal (including scope-exit/allocator-first/null failure); direct helper
+plans retain allocator lifetime. Entry release also clears data; late
+insert failures/null/partial/fill retry preserves actual owners and native behavior.
+
+All 5768 original steps for 2..1500 and 27 complete original specialized bodies for
+4..1500 (maximum 1013 UTF16 units) remain exact. Build/lint/boundaries, 329 focused
+including sixteen new regressions, complete audit 144/8,000, 96 RPC snapshots,
+original native traces/probes/WebGL/providers and 69 typography tests pass; glyph
+1.418941× meets unchanged 1.5 maximum. All 64 exports / 768 complete bodies/frames
+match pushed `544abbf`. Test receiver/record/tie-fixture failures and rejected allocator-only native cache
+lifetime remain in evidence; native disposal was repaired and independently checked.
+Common bootstrap/registry/helper/lease/ledger controls, effects/images/depth/
+controllers/providers/graph/font/Node and production/aggregate admission, speed
+and full gate remain pending. [Evidence](./composition-ce15-box-cache-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
