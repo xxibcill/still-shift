@@ -94,14 +94,14 @@ still hold before relying on them.
   controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
   group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
   pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
-  shader-source/program/uniform/diagnostic and paint batch/geometry/shader/uniform/
-  input metadata now pass 289 focused tests, the complete audit, 22 moving/blurred
-  and ten stationary native frames and 96 owned RPC snapshots. Actual paint data
-  pre-admits, stays through original consumers, then clears; original shader hashes,
-  15+1 batches, borrowed inputs and numeric/native/null behavior pass. Native
-  recording/shader probes, original WebGL/providers, 69 typography tests and 64
-  exports / 768 prior-exact bodies/frames pass; glyph 1.430645× meets unchanged
-  1.5 maximum.
+  shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input
+  and Gaussian kernel/rescale metadata now pass 305 focused tests, the complete
+  audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
+  snapshots. Actual kernel/rescale arrays and records pre-admit, stay through
+  original consumers, then clear; original full kernel hashes/rescale native trace,
+  numerical/null/empty/unmanaged behavior pass. Native recording/shader probes,
+  original WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
+  bodies/frames pass; glyph 1.433007× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -337,6 +337,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual Gaussian kernel/rescale data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `ae1cbf9`.
+- **Done:** pre-admit actual Gaussian kernel/length/scale arrays and rescale
+  vectors/uniforms/inputs/native reference lists; clear after original consumers,
+  retain original numerical/shader/native order and protect null/all-owner cleanup.
+- **Results:** build/lint/boundaries, 305 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, prior native frames/probes,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.433007× meets unchanged 1.5 maximum.
+- **Verification:** nine new and seven existing blur/box tests; original full
+  kernel hashes and rescale native trace, pre-producer quotas, actual lifetimes,
+  NaN/empty/unmanaged/null/secondary cleanup/retry pass without threshold changes.
+- **Next:** remaining box-plan/global shader/effect/image/depth/controller/helper/
+  runtime/Node controls, production/aggregate admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [blur evidence](./composition-ce15-blur-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual paint batch/input controls
 

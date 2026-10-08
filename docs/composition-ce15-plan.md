@@ -1112,6 +1112,29 @@ pushed `201449e`. Other shader/effect/cache/controller/helper/runtime/Node/produ
 aggregate admission, speed and full gate remain pending.
 [Evidence](./composition-ce15-paint-metadata-results.json).
 
+## Accepted Gaussian kernel/rescale checkpoint — 2026-10-08
+
+Reserve 512 before original length/setup vectors, 512 + 8*length before original
+Gaussian weight/result factories, and 512 (+8*count) before original empty/scale
+arrays. Actual returned kernel owns original weights/lengths through consumers;
+WebglEffects releases it after original blur work. Actual setup/step references
+clear. NaN ToLength, sigma clamp, fround/Math/reduction/native arithmetic stay.
+Rescale reserves 1024 + 2048\*(steps+2) before original lists/vectors/maps/inputs/
+uniforms; actual arrays and records stay through original native/recursive/swap
+consumers then clear. Every native intermediate releases despite first failure;
+original null survives secondary cleanup. Original complete kernel hashes and
+rescale dimensions/shader/math/uniform/recursive/swap/release trace from pushed
+`ae1cbf9` remain exact, including unmanaged behavior.
+
+Build/lint/boundaries and 305 focused tests pass, including nine new and seven
+existing box-plan/large-blur regressions. Complete audit 144/8,000, 96 RPC snapshots,
+prior native frames and recording/shader probes, original WebGL, 69 typography
+checks/providers pass; glyph 1.433007× meets unchanged 1.5 maximum. All 64
+exports preserve 768 complete bodies/frames against pushed `ae1cbf9`. Box-plan/global
+shader caches, remaining effect/image/depth/controller/helper/runtime/Node/production/
+aggregate admission, speed and full gate remain pending.
+[Evidence](./composition-ce15-blur-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

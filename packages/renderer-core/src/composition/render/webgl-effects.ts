@@ -2,6 +2,7 @@ import {
   allocateRenderPixels,
   releaseRenderPixels,
 } from "../../managed-memory-context.ts";
+import { releaseRenderMetadata } from "../../managed-metadata.ts";
 import { renderGpuEffect } from "./effect-plugins.ts";
 import { FLOAT32_RATIONAL_SUM } from "./webgl-float-sum.ts";
 import { blurKernel } from "./webgl-blur-kernel.ts";
@@ -214,28 +215,29 @@ export class WebglEffects {
       return;
     }
     const kernel = blurKernel(sigma);
-    if (kernel.divisor === 1) return;
-    const region = this.bounds.region(dst);
-    if (region === null) return;
-    this.bounds.blur(dst, kernel.radius);
-    const outputRegion = this.bounds.region(dst);
-    if (boxBlur(this.device, dst, kernel, region)) return;
-    // Match the raster Gaussian's integer reciprocal division after each axis.
-    // Floating normalization accumulates visible errors in chained filters.
-    const factor = Math.round(4294967296 / kernel.divisor);
-    const source = this.device.surface(kernel.weights.length, 1, true);
-    const scratch = this.device.surface(dst.width, dst.height);
     try {
-      const values = allocateRenderPixels(
-        kernel.weights.length * 16,
-        () => new Float32Array(kernel.weights.flatMap((w) => [w, 0, 0, 1])),
-      );
+      if (kernel.divisor === 1) return;
+      const region = this.bounds.region(dst);
+      if (region === null) return;
+      this.bounds.blur(dst, kernel.radius);
+      const outputRegion = this.bounds.region(dst);
+      if (boxBlur(this.device, dst, kernel, region)) return;
+      // Match the raster Gaussian's integer reciprocal division after each axis.
+      // Floating normalization accumulates visible errors in chained filters.
+      const factor = Math.round(4294967296 / kernel.divisor);
+      const source = this.device.surface(kernel.weights.length, 1, true);
+      const scratch = this.device.surface(dst.width, dst.height);
       try {
-        this.device.uploadFloats(source, values);
-      } finally {
-        releaseRenderPixels(values);
-      }
-      const shader = `${SAMPLE}
+        const values = allocateRenderPixels(
+          kernel.weights.length * 16,
+          () => new Float32Array(kernel.weights.flatMap((w) => [w, 0, 0, 1])),
+        );
+        try {
+          this.device.uploadFloats(source, values);
+        } finally {
+          releaseRenderPixels(values);
+        }
+        const shader = `${SAMPLE}
       uniform float radius;
       uniform float halfDivisor;
       uniform vec2 factorParts;
@@ -258,35 +260,38 @@ export class WebglEffects {
         uint factor=uint(factorParts.x)+(uint(factorParts.y)<<16);
         pixel=vec4(multiplyHigh(sum.r,factor),multiplyHigh(sum.g,factor),multiplyHigh(sum.b,factor),multiplyHigh(sum.a,factor))/255.0;
       }`;
-      this.device.pass(
-        shader,
-        scratch,
-        [dst, source],
-        {
-          halfDivisor: Math.floor((kernel.divisor + 1) / 2),
-          factorParts: [factor & 65535, factor >>> 16],
-          radius: kernel.radius,
-          direction: [1, 0],
-        },
-        false,
-        outputRegion,
-      );
-      this.device.pass(
-        shader,
-        dst,
-        [scratch, source],
-        {
-          halfDivisor: Math.floor((kernel.divisor + 1) / 2),
-          factorParts: [factor & 65535, factor >>> 16],
-          radius: kernel.radius,
-          direction: [0, 1],
-        },
-        false,
-        outputRegion,
-      );
+        this.device.pass(
+          shader,
+          scratch,
+          [dst, source],
+          {
+            halfDivisor: Math.floor((kernel.divisor + 1) / 2),
+            factorParts: [factor & 65535, factor >>> 16],
+            radius: kernel.radius,
+            direction: [1, 0],
+          },
+          false,
+          outputRegion,
+        );
+        this.device.pass(
+          shader,
+          dst,
+          [scratch, source],
+          {
+            halfDivisor: Math.floor((kernel.divisor + 1) / 2),
+            factorParts: [factor & 65535, factor >>> 16],
+            radius: kernel.radius,
+            direction: [0, 1],
+          },
+          false,
+          outputRegion,
+        );
+      } finally {
+        this.device.release(source);
+        this.device.release(scratch);
+      }
     } finally {
-      this.device.release(source);
-      this.device.release(scratch);
+      releaseRenderMetadata(kernel);
     }
   }
 
