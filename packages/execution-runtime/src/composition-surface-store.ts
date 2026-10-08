@@ -65,7 +65,7 @@ export class CompositionSurfaceStore {
       options.workers > 4 ||
       !Number.isSafeInteger(options.byteLimit) ||
       options.byteLimit < 1 ||
-      options.byteLimit > 512 * 1024 * 1024 ||
+      options.byteLimit > 8 * 1024 ** 3 ||
       !Number.isInteger(entryLimit) ||
       entryLimit < 1 ||
       entryLimit > 4096

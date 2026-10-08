@@ -97,6 +97,21 @@ export async function captureFrame(
   }
 }
 
+/** Large ArrayBuffer fetch bodies exceed Chromium's single IPC message limit.
+ * Blob bodies stream through a native data pipe; reserve their snapshot before
+ * construction and keep it alive through the same frame acknowledgement.
+ */
+export async function frameUploadBody(
+  bytes: ArrayBuffer | Uint8Array<ArrayBuffer> | Blob,
+): Promise<ArrayBuffer | Uint8Array<ArrayBuffer> | Blob> {
+  if (bytes instanceof Blob || bytes.byteLength < 128 * 1024 ** 2) return bytes;
+  return allocateRenderStorageAsync(
+    bytes.byteLength,
+    async () => new Blob([bytes]),
+    () => {},
+  );
+}
+
 /** Frame scratch spans rendering, native capture and the complete consumer acknowledgement. */
 export async function withManagedFrame<T>(work: () => Promise<T>): Promise<T> {
   const memory = renderMemory();

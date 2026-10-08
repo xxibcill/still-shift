@@ -252,7 +252,7 @@ export class CompositionSurfaceCache<S extends Surface> {
       !checksumPattern.test(options.scopeKey) ||
       !Number.isSafeInteger(options.byteLimit) ||
       options.byteLimit < 1 ||
-      options.byteLimit > 128 * 1024 * 1024 ||
+      options.byteLimit > 2 * 1024 ** 3 ||
       !backend.captureSurface ||
       !backend.restoreSurface ||
       !backend.surfaceEncoding

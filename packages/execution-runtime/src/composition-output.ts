@@ -349,8 +349,6 @@ export function compositionOutputArguments(
       : ["-an"]),
     ...compositionOutputCodecArguments(profile),
     ...(profile.container === "image2" ? ["-start_number", "0"] : []),
-    "-frames:v",
-    String(input.frameCount),
     "-y",
     input.outputPath,
   ];

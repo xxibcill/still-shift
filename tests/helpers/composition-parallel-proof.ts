@@ -121,7 +121,7 @@ export function verifyParallelMetrics(
   assert.ok(memory);
   assert.equal(memory.workers.length, workers);
   assert.ok(
-    memory.sumOfWorkerPeakBytes + memory.reservedNodeBudgetBytes <=
+    memory.peakConcurrentWorkerBytes + memory.reservedNodeBudgetBytes <=
       memory.applicationLimitBytes,
   );
   for (const worker of memory.workers) {

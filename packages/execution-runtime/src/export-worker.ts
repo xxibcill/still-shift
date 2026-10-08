@@ -1,3 +1,6 @@
+import { compositionPcmBoundary } from "@still-shift/scene-contract";
+import { CompositionResultBudget } from "./composition-result-budget.ts";
+import { compositionResultSize } from "./composition-result-size.ts";
 import {
   spawnFfmpeg,
   ffmpegProcessUsage,
@@ -50,6 +53,7 @@ import { verifyCompositionOutputAudio } from "./composition-output-audio.ts";
 import {
   COMPOSITION_APPLICATION_MEMORY_LIMIT,
   COMPOSITION_NODE_MEMORY_ALLOWANCE,
+  compositionExecutionPolicy,
 } from "./composition-export-memory.ts";
 import { summarizeCompositionStatistics } from "./composition-export-statistics.ts";
 import { CompositionSurfaceStore } from "./composition-surface-store.ts";
@@ -169,12 +173,17 @@ export type ExportMetrics = {
     applicationLimitBytes: number;
     reservedNodeBudgetBytes: number;
     sumOfWorkerPeakBytes: number;
+    peakConcurrentWorkerBytes: number;
+    concurrentWorkers: number;
     workers: NonNullable<BrowserExportResult["memory"]>[];
+    nodeResults: CompositionResultBudget["statistics"];
   };
   work?: {
     version: "composition-render-work-1";
     workers: number;
     chunkFrames: 1;
+    distribution: "round-robin" | "contiguous";
+    concurrentWorkers: number;
     cacheStatic: boolean;
     scopeKey: string;
     orderedFrames: CompositionOrderedFrames["statistics"];
@@ -685,6 +694,14 @@ export const exportScene = async (
     throw Error(
       "Composition workers/cache options have invalid bounds or scene type",
     );
+  const executionPolicy =
+    "composition" in scene
+      ? compositionExecutionPolicy(
+          scene.canvas.width,
+          scene.canvas.height,
+          workOptions?.workers ?? 1,
+        )
+      : undefined;
   const profile =
     request.format === undefined
       ? undefined
@@ -718,8 +735,10 @@ export const exportScene = async (
   const nativeAudio =
     "composition" in scene &&
     scene.composition.assets.some((asset) => asset.type === "audio");
-  const expectedSamples =
-    (scene.timeline.frameCount * 48000) / scene.timeline.fps;
+  const expectedSamples = compositionPcmBoundary(
+    scene.timeline.frameCount,
+    scene.timeline.fps,
+  );
   if (nativeAudio && (!audioInput || !scene.preparedAudio))
     passageError(
       "comp-media-provenance",
@@ -899,6 +918,10 @@ export const exportScene = async (
   let cacheBroker: CompositionSurfaceBroker | undefined;
   let workFailure: { reason: unknown } | undefined;
   let workMetrics: ExportMetrics["work"];
+  const resultBudget =
+    "schemaVersion" in scene && scene.schemaVersion === "composition-scene-1"
+      ? new CompositionResultBudget(scene.timeline.frameCount)
+      : undefined;
   let viteCacheDirectory: string | undefined;
   const abort = () => {
     encoderProcess.kill();
@@ -978,15 +1001,16 @@ export const exportScene = async (
       orderedFrames = new CompositionOrderedFrames(
         scene.timeline.frameCount,
         workOptions.workers,
-        async (source, frame) => {
+        async (source, frame, worker) => {
           await readBodyToEncoder(
             source as IncomingMessage,
             outputInput?.input ?? encoder.stdin!,
             expectedBytes,
             maxFrameBytes,
           );
-          await request.verifyFrame?.(frame, frame % workOptions.workers);
+          await request.verifyFrame?.(frame, worker);
         },
+        executionPolicy!.distribution,
       );
     server = await createServer({
       root: projectRoot,
@@ -1093,7 +1117,7 @@ export const exportScene = async (
     if (workOptions?.cacheStatic) {
       surfaceStore = await CompositionSurfaceStore.create(viteCacheDirectory, {
         workers: workOptions.workers,
-        byteLimit: 512 * 1024 * 1024,
+        byteLimit: executionPolicy!.diskBytes,
       });
       cacheBroker = new CompositionSurfaceBroker(
         surfaceStore,
@@ -1112,32 +1136,54 @@ export const exportScene = async (
       );
       if (new Set(rendererIds).size !== rendererIds.length)
         throw Error("Composition workers share an actual renderer process");
-      const runs = await Promise.allSettled(
-        workers.map((worker, index) =>
-          runExportBrowserWorker(worker, {
-            scene,
-            hasDepth: request.depthPath !== null,
-            transport,
-            output: {
-              preserveAlpha: profile?.alpha ?? false,
-              canonicalCapture: profile !== undefined,
-              work: {
-                worker: index,
-                workers: workOptions.workers,
-                credential: credentials[index]!,
-                ...(workOptions.cacheStatic
-                  ? { surfaceCache: { scopeKey, byteLimit: 128 * 1024 * 1024 } }
-                  : {}),
-              },
-            },
-          }).catch((reason: unknown) => {
-            failWork(
-              orderedFrames?.hasFailed ? orderedFrames.failureReason : reason,
-            );
-            throw reason;
-          }),
-        ),
-      );
+      const runs: PromiseSettledResult<BrowserExportResult>[] = [];
+      for (
+        let offset = 0;
+        offset < workers.length;
+        offset += executionPolicy!.concurrentWorkers
+      ) {
+        assertWorkActive();
+        const batch = await Promise.allSettled(
+          workers
+            .slice(offset, offset + executionPolicy!.concurrentWorkers)
+            .map((worker, relative) => {
+              const index = offset + relative;
+              return runExportBrowserWorker(worker, {
+                resultBudget,
+                scene,
+                hasDepth: request.depthPath !== null,
+                transport,
+                output: {
+                  preserveAlpha: profile?.alpha ?? false,
+                  canonicalCapture: profile !== undefined,
+                  work: {
+                    worker: index,
+                    workers: workOptions.workers,
+                    concurrentWorkers: executionPolicy!.concurrentWorkers,
+                    distribution: executionPolicy!.distribution,
+                    credential: credentials[index]!,
+                    ...(workOptions.cacheStatic
+                      ? {
+                          surfaceCache: {
+                            scopeKey,
+                            byteLimit: executionPolicy!.cacheBytes,
+                          },
+                        }
+                      : {}),
+                  },
+                },
+              }).catch((reason: unknown) => {
+                failWork(
+                  orderedFrames?.hasFailed
+                    ? orderedFrames.failureReason
+                    : reason,
+                );
+                throw reason;
+              });
+            }),
+        );
+        runs.push(...batch);
+      }
       assertWorkActive();
       const results = runs.map((run) => {
         if (run.status !== "fulfilled") throw run.reason;
@@ -1163,6 +1209,8 @@ export const exportScene = async (
         version: "composition-render-work-1",
         workers: workOptions.workers,
         chunkFrames: 1,
+        distribution: executionPolicy!.distribution,
+        concurrentWorkers: executionPolicy!.concurrentWorkers,
         cacheStatic: workOptions.cacheStatic,
         scopeKey,
         orderedFrames: orderedFrames!.statistics,
@@ -1187,6 +1235,7 @@ export const exportScene = async (
       };
     } else {
       browserResult = await runExportBrowserWorker(workers[0]!, {
+        resultBudget,
         scene,
         hasDepth: request.depthPath !== null,
         transport,
@@ -1203,6 +1252,24 @@ export const exportScene = async (
       compositionStatistics = summarizeCompositionStatistics(
         [browserResult.compositionStatistics],
         scene.timeline.frameCount,
+      );
+    const concurrentWorkers = executionPolicy?.concurrentWorkers ?? 1;
+    const workerPeaks = workerMemory.map(
+      (worker) =>
+        worker.beforeAcknowledgement.peak.pixels +
+        worker.beforeAcknowledgement.peak.metadata,
+    );
+    let peakConcurrentWorkerBytes = 0;
+    for (
+      let offset = 0;
+      offset < workerPeaks.length;
+      offset += concurrentWorkers
+    )
+      peakConcurrentWorkerBytes = Math.max(
+        peakConcurrentWorkerBytes,
+        workerPeaks
+          .slice(offset, offset + concurrentWorkers)
+          .reduce((sum, bytes) => sum + bytes, 0),
       );
     if (outputInput) await outputInput.finish();
     else encoder.stdin?.end();
@@ -1355,6 +1422,8 @@ export const exportScene = async (
               scope: "declared-worker-application-bytes" as const,
               applicationLimitBytes: COMPOSITION_APPLICATION_MEMORY_LIMIT,
               reservedNodeBudgetBytes: COMPOSITION_NODE_MEMORY_ALLOWANCE,
+              concurrentWorkers,
+              peakConcurrentWorkerBytes,
               sumOfWorkerPeakBytes: workerMemory.reduce(
                 (sum, worker) =>
                   sum +
@@ -1363,6 +1432,7 @@ export const exportScene = async (
                 0,
               ),
               workers: workerMemory,
+              nodeResults: resultBudget!.statistics,
             },
           }
         : {}),
@@ -1413,11 +1483,29 @@ export const exportScene = async (
     };
     await request.validateResult?.(metrics);
     if (request.resultManifestContents) {
-      const contents = await request.resultManifestContents(metrics);
-      await writeFile(temporaryResultPath, contents, {
-        flag: "wx",
-        signal: request.signal,
-      });
+      const size = resultBudget ? compositionResultSize(metrics) : undefined;
+      // Pretty JSON whitespace and the public composition-result envelope.
+      const characters = size
+        ? size.characters + size.nodes * 132 + 65536
+        : undefined;
+      const textCapacity = characters
+        ? resultBudget!.reserveText(characters)
+        : undefined;
+      try {
+        if (metrics.compositionMemory)
+          metrics.compositionMemory.nodeResults = resultBudget!.statistics;
+        const contents = await request.resultManifestContents(metrics);
+        if (characters && contents.length > characters)
+          throw Error(
+            "Composition result manifest exceeds its admitted capacity",
+          );
+        await writeFile(temporaryResultPath, contents, {
+          flag: "wx",
+          signal: request.signal,
+        });
+      } finally {
+        textCapacity?.release();
+      }
     }
     clearInterval(memoryMonitor);
     await memorySample;
@@ -1455,6 +1543,7 @@ export const exportScene = async (
     if (orderedFrames?.hasFailed) throw orderedFrames.failureReason;
     throw error;
   } finally {
+    resultBudget?.dispose();
     request.signal?.removeEventListener("abort", abort);
     clearInterval(memoryMonitor);
     // The writer must exit before removing files it might still create.

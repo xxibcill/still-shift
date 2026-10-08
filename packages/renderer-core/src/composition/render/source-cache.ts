@@ -65,7 +65,7 @@ export class CompositionSourceCache {
       !/^sha256:[a-f0-9]{64}$/.test(options.scopeKey) ||
       !Number.isSafeInteger(options.byteLimit) ||
       options.byteLimit < 1 ||
-      options.byteLimit > 128 * 1024 * 1024
+      options.byteLimit > 2 * 1024 ** 3
     )
       throw Error("Composition preparation cache configuration is invalid");
     // Class/state controls plus the original two Maps/two Sets; grow before mutation.

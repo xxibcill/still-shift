@@ -43,6 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE15 delivery bounds and result transfer (2026-10-08):** isolated completion
+  worktree now accepts integer1–60fps with exact complete PCM boundaries, runs
+  full-area frames in bounded contiguous worker groups, and uses admitted Blob
+  uploads for large frame/cache bodies. Native prefix reuse handles procedural
+  motion and constant keys. Browser timing records and bounded Node result RPC/
+  summary/manifest capacities are admitted through acknowledgement/publication.
+  311 focused tests, static checks,36 dependency exports,105 rate/format exports
+  and8 result-memory exports pass. Full-area immutable rerun, authentic speed
+  proof and final full gate remain pending. Historical broad metadata-audit
+  proposals are not evidence of completed accounting; reported counters retain
+  their explicit declared-allocation scopes and separate native/RSS measurements.
+  [Evidence](./composition-ce15-completion-results.json).
+
 - **CE15 production admission wired (2026-10-08):** real export pages now use the
   managed allocator from resource loading through Node result acknowledgement.
   Eight one/four-worker Canvas/WebGL exports preserve exact output and retire
@@ -183,6 +196,21 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-08 — CE15 area, frame-rate and result-transfer checkpoint
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `18eae703`.
+- **Done:** bounded large-area scheduling/cache transport, integer1–60fps/PCM
+  boundaries, dependency-aware native prefixes and admitted chunked result RPC.
+- **Results:**311 focused tests and static checks pass;36 cache-dependency,
+  105 full format/rate and8 result-memory exports preserve exact worker output.
+  Four full-area Canvas cases pass. A48-case attempt passed36 before an interim
+  import edit interrupted it; an immutable complete rerun is still required.
+- **Rejected:** large ArrayBuffer fetch crashed Chromium; native Blob data-pipe
+  transport passes. Encoder frame cutoff lost fractional-rate audio; bounded
+  input EOF preserves every sample. No pixel/native thresholds were loosened.
+- **Next:** full-area matrix, isolated120-second speed proof, full local gate.
+- **Records:** [Completion evidence](./composition-ce15-completion-results.json).
 
 ### 2026-10-08 — CE15 production worker memory lifecycle
 

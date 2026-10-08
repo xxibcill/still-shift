@@ -1,3 +1,4 @@
+import { allocateRenderMetadata } from "../../renderer-core/src/managed-metadata.ts";
 import { assertCompositionEffectVersions } from "@still-shift/renderer-core";
 import {
   createRenderCanvas,
@@ -11,11 +12,19 @@ import {
   type CompositionScene,
   type CompositionPreview,
 } from "@still-shift/renderer-core";
+import {
+  compositionFrameAssignment,
+  type CompositionFrameDistribution,
+} from "./composition-frame-assignment.ts";
 import { CompositionExportMemory } from "./composition-export-memory.ts";
 import { compositionSurfaceExchange } from "./composition-surface-client.ts";
 import type { ExportableScene } from "./export-worker.ts";
 import type { FrameTransport } from "./transport.ts";
-import { captureFrame, withManagedFrame } from "./composition-frame-capture.ts";
+import {
+  captureFrame,
+  frameUploadBody,
+  withManagedFrame,
+} from "./composition-frame-capture.ts";
 
 import type { CompositionWorkerStatistics } from "./composition-export-statistics.ts";
 
@@ -52,6 +61,8 @@ export type BrowserFrameWork = {
   worker: number;
   workers: number;
   credential: string;
+  distribution?: CompositionFrameDistribution;
+  concurrentWorkers?: number;
   surfaceCache?: { scopeKey: string; byteLimit: number };
 };
 
@@ -63,6 +74,12 @@ export type BrowserCompositionOutput = {
 
 declare global {
   interface Window {
+    prepareStillShiftExportTransfer?: (
+      value: unknown,
+    ) => ReturnType<CompositionExportMemory["prepareTransfer"]>;
+    readStillShiftExportTransfer?: (
+      offset: number,
+    ) => ReturnType<CompositionExportMemory["readTransfer"]>;
     acknowledgeStillShiftExport?: () => Promise<ManagedMemory["statistics"]>;
     runStillShiftExport?: (
       scene: ExportableScene,
@@ -93,11 +110,16 @@ const isComposition = (scene: ExportableScene): scene is CompositionScene =>
   "schemaVersion" in scene && scene.schemaVersion === "composition-scene-1";
 
 const exportMemory = new CompositionExportMemory();
+window.prepareStillShiftExportTransfer = (value) =>
+  exportMemory.prepareTransfer(value);
+window.readStillShiftExportTransfer = (offset) =>
+  exportMemory.readTransfer(offset);
 window.acknowledgeStillShiftExport = () => exportMemory.acknowledge();
 window.runStillShiftExport = async (scene, hasDepth, transport, output) => {
   if (isComposition(scene)) {
-    const result = await exportMemory.run(output?.work?.workers ?? 1, () =>
-      exportComposition(scene, transport, output),
+    const result = await exportMemory.run(
+      output?.work?.concurrentWorkers ?? output?.work?.workers ?? 1,
+      () => exportComposition(scene, transport, output),
     );
     result.value.memory = { beforeAcknowledgement: result.memory };
     return result.value;
@@ -167,7 +189,11 @@ const exportComposition = async (
       work.workers > scene.timeline.frameCount ||
       !Number.isInteger(work.worker) ||
       work.worker < 0 ||
-      work.worker >= work.workers)
+      work.worker >= work.workers ||
+      (work.concurrentWorkers !== undefined &&
+        (!Number.isInteger(work.concurrentWorkers) ||
+          work.concurrentWorkers < 1 ||
+          work.concurrentWorkers > work.workers)))
   )
     throw Error("Composition browser frame assignment is invalid");
   assertCompositionEffectVersions(scene);
@@ -271,14 +297,37 @@ const renderFrames = async (
   capture?: () => Promise<ArrayBuffer | Blob>,
   work?: BrowserFrameWork,
 ): Promise<BrowserExportResult> => {
-  const timings: number[] = [];
-  const uploadTimings: number[] = [];
-  const frames: NonNullable<BrowserExportResult["work"]>["frames"] = [];
+  const assignment = compositionFrameAssignment(
+    frameCount,
+    work?.workers ?? 1,
+    work?.worker ?? 0,
+    work?.distribution,
+  );
+  const assignedFrames = Math.ceil(
+    (assignment.end - assignment.start) / assignment.step,
+  );
+  // Timing arrays, sort workspace and optional RPC rows remain owned until Node
+  // receives the result. Reserve their complete bounded capacity before rendering.
+  const records = allocateRenderMetadata(
+    512 + assignedFrames * (work ? 192 : 80),
+    () => ({
+      timings: [] as number[],
+      uploadTimings: [] as number[],
+      frames: [] as NonNullable<BrowserExportResult["work"]>["frames"],
+    }),
+    true,
+    (value) => {
+      value.timings.length = 0;
+      value.uploadTimings.length = 0;
+      value.frames.length = 0;
+    },
+  );
+  const { timings, uploadTimings, frames } = records;
   try {
     for (
-      let frameIndex = work?.worker ?? 0;
-      frameIndex < frameCount;
-      frameIndex += work?.workers ?? 1
+      let frameIndex = assignment.start;
+      frameIndex < assignment.end;
+      frameIndex += assignment.step
     ) {
       await withManagedFrame(async () => {
         const frameStart = performance.now();
@@ -300,7 +349,7 @@ const renderFrames = async (
                 }
               : {}),
           },
-          body: frameBytes,
+          body: await frameUploadBody(frameBytes),
         });
         if (!response.ok)
           throw new Error(

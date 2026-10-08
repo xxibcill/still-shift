@@ -1,3 +1,5 @@
+import { COMPOSITION_RESULT_CHUNK_CHARACTERS } from "./composition-result-size.ts";
+import type { CompositionResultBudget } from "./composition-result-budget.ts";
 import type { Browser, Page } from "playwright";
 import type {
   PassageDiagnostic,
@@ -97,9 +99,10 @@ export async function runExportBrowserWorker(
     hasDepth: boolean;
     transport: FrameTransport;
     output?: BrowserCompositionOutput;
+    resultBudget?: CompositionResultBudget | undefined;
   },
 ): Promise<BrowserExportResult> {
-  const outcome = await worker.page.evaluate(
+  const remote = await worker.page.evaluateHandle(
     async ({ scene, hasDepth, transport, output }) => {
       try {
         return {
@@ -118,31 +121,97 @@ export async function runExportBrowserWorker(
         return { ok: false as const, diagnostics };
       }
     },
-    { ...options, scene: options.scene as PreviewScene },
-  );
-  if (outcome.ok) {
-    if (outcome.value.memory)
-      outcome.value.memory.afterAcknowledgement = await worker.page.evaluate(
-        async () => {
-          if (!window.acknowledgeStillShiftExport)
-            throw Error("Composition export omitted memory acknowledgement");
-          return window.acknowledgeStillShiftExport();
-        },
-      );
-    return outcome.value;
-  }
-  const diagnostic = outcome.diagnostics[0]!;
-  throw new AnimationEngineError(
-    "RENDER_FAILED",
-    `${diagnostic.code}: ${diagnostic.message}`,
     {
-      diagnostic: diagnostic.code,
-      ...(diagnostic.node ? { node: diagnostic.node } : {}),
-      ...(diagnostic.path ? { path: diagnostic.path } : {}),
-      ...(diagnostic.frame === undefined ? {} : { frame: diagnostic.frame }),
-      diagnostics: JSON.stringify(outcome.diagnostics),
+      scene: options.scene as PreviewScene,
+      hasDepth: options.hasDepth,
+      transport: options.transport,
+      output: options.output,
     },
   );
+  let pendingAcknowledgement = false;
+  try {
+    let outcome: Awaited<ReturnType<typeof remote.jsonValue>>;
+    const transfer = await remote.evaluate(
+      (outcome) => outcome.ok && !!outcome.value.memory,
+    );
+    if (transfer) {
+      pendingAcknowledgement = true;
+      if (!options.resultBudget)
+        throw Error("Composition result has no Node admission budget");
+      const size = await remote.evaluate(async (outcome) => {
+        if (!outcome.ok || !window.prepareStillShiftExportTransfer)
+          throw Error("Composition result transfer is unavailable");
+        return window.prepareStillShiftExportTransfer(outcome.value);
+      });
+      const receive = options.resultBudget.receive(size);
+      try {
+        const chunks: string[] = [];
+        for (
+          let offset = 0;
+          offset < size.characters;
+          offset += COMPOSITION_RESULT_CHUNK_CHARACTERS
+        ) {
+          const chunk = await worker.page.evaluate(async (offset) => {
+            if (!window.readStillShiftExportTransfer)
+              throw Error("Composition result transfer is unavailable");
+            return window.readStillShiftExportTransfer(offset);
+          }, offset);
+          if (
+            chunk.length !==
+            Math.min(
+              COMPOSITION_RESULT_CHUNK_CHARACTERS,
+              size.characters - offset,
+            )
+          )
+            throw Error(
+              "Composition result transfer has an invalid chunk length",
+            );
+          chunks.push(chunk);
+        }
+        let text = chunks.join("");
+        chunks.length = 0;
+        const value = JSON.parse(text) as BrowserExportResult;
+        text = "";
+        if (!value.memory)
+          throw Error("Composition result lost its ownership descriptor");
+        value.memory.beforeAcknowledgement = size.memory;
+        outcome = { ok: true, value };
+        receive.complete();
+      } finally {
+        receive.dispose();
+      }
+    } else outcome = await remote.jsonValue();
+    if (outcome.ok) {
+      if (outcome.value.memory)
+        outcome.value.memory.afterAcknowledgement = await worker.page.evaluate(
+          async () => {
+            if (!window.acknowledgeStillShiftExport)
+              throw Error("Composition export omitted memory acknowledgement");
+            return window.acknowledgeStillShiftExport();
+          },
+        );
+      pendingAcknowledgement = false;
+      return outcome.value;
+    }
+    const diagnostic = outcome.diagnostics[0]!;
+    throw new AnimationEngineError(
+      "RENDER_FAILED",
+      `${diagnostic.code}: ${diagnostic.message}`,
+      {
+        diagnostic: diagnostic.code,
+        ...(diagnostic.node ? { node: diagnostic.node } : {}),
+        ...(diagnostic.path ? { path: diagnostic.path } : {}),
+        ...(diagnostic.frame === undefined ? {} : { frame: diagnostic.frame }),
+        diagnostics: JSON.stringify(outcome.diagnostics),
+      },
+    );
+  } finally {
+    if (pendingAcknowledgement)
+      await worker.page
+        .evaluate(async () => window.acknowledgeStillShiftExport?.())
+        .catch(() => undefined);
+    await remote.dispose().catch(() => undefined);
+  }
 }
 
 export function summarizeExportWorkers(

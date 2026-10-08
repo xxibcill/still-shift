@@ -2455,6 +2455,35 @@ production admission remain pending. These focused checks are not the final CE15
 gate or two-minute speed proof.
 [Evidence](./composition-ce15-color-canvas-lifetime-results.json).
 
+## Completion checkpoint — 2026-10-08
+
+The isolated PR completion branch now admits production browser storage and result
+owners through actual RPC acknowledgement. Frame timing arrays reserve their full
+assigned capacity before rendering. Plain result descriptors bound JSON and decoded
+records; Node reserves capacity before receiving64Ki-character chunks, parsing,
+exact-P95 summaries and result-manifest serialization. Native/RSS measurements remain
+separate from the declared allocator domains; these counters are not a total V8,
+browser-driver or FFmpeg heap guarantee.
+
+Full-area frames use contiguous ranges in bounded worker groups, avoiding ordered
+pipe starvation. Cache budgets admit full-area byte/float storage. Large upload
+bodies use admitted native Blob data pipes; the store keeps its64KiB copy bound
+regardless of network chunk coalescing. All integral rates1–60 are accepted; PCM
+boundaries use ceiling to the48kHz sample grid, and encoder input EOF drains the
+complete audio master. Old frame-rate clocks retain identical integer samples.
+
+Static independent surfaces, prepared sources and original-target prefixes remain
+the cache boundaries. A direct draw above an animated backdrop has a changing
+native destination dependency: isolating it would change rounding and is not a
+static rendered subtree. Unrelated drivers no longer suppress eligible prefixes;
+constant keys and constant expressions remain reusable, while changing evaluated
+closures invalidate reuse. Exact baseline comparisons cover both cases.
+
+311 focused tests and static checks pass, as do36 dependency-sensitive exports,
+105 format/rate/audio exports and8 production result-memory exports. The full-area
+matrix, isolated120-second speed comparison and full gate remain pending.
+[Evidence](./composition-ce15-completion-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

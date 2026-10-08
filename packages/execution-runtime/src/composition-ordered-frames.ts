@@ -1,6 +1,10 @@
+import {
+  compositionFrameAssignment,
+  type CompositionFrameDistribution,
+} from "./composition-frame-assignment.ts";
 import type { Readable } from "node:stream";
 
-type Worker = { next: number; pending: boolean };
+type Worker = { next: number; end: number; step: number; pending: boolean };
 type Turn = { resolve(): void; reject(reason: unknown): void };
 
 /** One-frame chunks distribute absolute time evenly without retaining complete Node frame bodies. */
@@ -14,11 +18,13 @@ export class CompositionOrderedFrames {
 
   constructor(
     private readonly frameCount: number,
-    private readonly workerCount: number,
+    workerCount: number,
     private readonly consume: (
       source: Readable,
       frame: number,
+      worker: number,
     ) => Promise<void>,
+    distribution: CompositionFrameDistribution = "round-robin",
   ) {
     if (
       !Number.isSafeInteger(frameCount) ||
@@ -29,10 +35,20 @@ export class CompositionOrderedFrames {
       workerCount > frameCount
     )
       throw Error("Composition parallel frame bounds are invalid");
-    this.workers = Array.from({ length: workerCount }, (_, worker) => ({
-      next: worker,
-      pending: false,
-    }));
+    this.workers = Array.from({ length: workerCount }, (_, worker) => {
+      const assignment = compositionFrameAssignment(
+        frameCount,
+        workerCount,
+        worker,
+        distribution,
+      );
+      return {
+        next: assignment.start,
+        end: assignment.end,
+        step: assignment.step,
+        pending: false,
+      };
+    });
   }
 
   get statistics() {
@@ -68,6 +84,7 @@ export class CompositionOrderedFrames {
       !Number.isSafeInteger(frame) ||
       frame < 0 ||
       frame >= this.frameCount ||
+      frame >= assignment.end ||
       frame !== assignment.next ||
       assignment.pending ||
       this.readers.has(source)
@@ -94,11 +111,11 @@ export class CompositionOrderedFrames {
     try {
       await this.waitForTurn(frame);
       this.assertOpen();
-      await this.consume(source, frame);
+      await this.consume(source, frame, worker);
       this.assertOpen();
       if (!source.readableEnded)
         throw Error("Encoder must consume the complete frame body");
-      assignment.next += this.workerCount;
+      assignment.next += assignment.step;
       this.next++;
       const turn = this.turns.get(this.next);
       this.turns.delete(this.next);

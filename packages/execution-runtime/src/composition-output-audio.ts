@@ -49,7 +49,7 @@ export async function verifyCompositionOutputAudio(
         audio.duration_ts !== source.sampleCount))
   )
     throw Error(
-      "Composition output audio codec or complete source clock differs",
+      `Composition output audio codec or complete source clock differs: expected ${codec}/${source.sampleCount} samples, received ${JSON.stringify(audio)}`,
     );
   if (codec === "aac") return { codec, sampleCount: source.sampleCount };
   signal?.throwIfAborted();

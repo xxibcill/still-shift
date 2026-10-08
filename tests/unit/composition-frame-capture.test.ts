@@ -6,6 +6,7 @@ import {
 } from "../../packages/renderer-core/src/managed-memory-context.ts";
 import {
   captureFrameBlob,
+  frameUploadBody,
   withManagedFrame,
 } from "../../packages/execution-runtime/src/composition-frame-capture.ts";
 
@@ -165,4 +166,48 @@ it("preserves original null from a native encoder invocation after admission", a
   } finally {
     memory.dispose();
   }
+});
+
+it("preserves small upload body identities and typed-array ranges", async () => {
+  const bytes = new Uint8Array([1, 2, 3, 4]);
+  const view = bytes.subarray(1, 3);
+  const blob = new Blob([view]);
+  expect(await frameUploadBody(view)).toBe(view);
+  expect(await frameUploadBody(bytes.buffer)).toBe(bytes.buffer);
+  expect(await frameUploadBody(blob)).toBe(blob);
+});
+it("admits a large Blob snapshot before native construction and retires it after acknowledgement", async () => {
+  const size = 128 * 1024 ** 2;
+  const bytes = new Uint8Array(size + 2);
+  bytes[1] = 79;
+  bytes[size] = 213;
+  const view = bytes.subarray(1, size + 1);
+  const denied = new ManagedMemory({ pixels: size - 1, metadata: 8 });
+  await withManagedMemory(denied, () =>
+    withManagedFrame(async () => {
+      await expect(frameUploadBody(view)).rejects.toThrow(
+        "aggregate worker quota",
+      );
+    }),
+  );
+  expect(denied.statistics.reservations).toBe(0);
+  denied.dispose();
+  const memory = new ManagedMemory({ pixels: size, metadata: 8 });
+  await withManagedMemory(memory, () =>
+    withManagedFrame(async () => {
+      const body = await frameUploadBody(view);
+      expect(body).toBeInstanceOf(Blob);
+      const blob = body as Blob;
+      expect(blob.size).toBe(size);
+      expect([...new Uint8Array(await blob.slice(0, 1).arrayBuffer())]).toEqual(
+        [79],
+      );
+      expect([...new Uint8Array(await blob.slice(-1).arrayBuffer())]).toEqual([
+        213,
+      ]);
+      expect(memory.statistics.current.pixels).toBe(size);
+    }),
+  );
+  expect(memory.statistics.reservations).toBe(0);
+  memory.dispose();
 });

@@ -1,3 +1,4 @@
+import { frameUploadBody } from "./composition-frame-capture.ts";
 import type {
   CompositionSurfaceExchange,
   CompositionSurfaceClaim,
@@ -24,7 +25,7 @@ export function compositionSurfaceExchange(options: {
     const response = await fetch(`${endpoint}/${route}`, {
       method: "POST",
       headers: { ...headers, ...extra },
-      body,
+      body: typeof body === "string" ? body : await frameUploadBody(body),
       signal: options.signal ?? null,
     });
     if (!response.ok)

@@ -132,11 +132,39 @@ describe("closed native prefixes", () => {
       ),
     ).toBeUndefined();
   });
+  it("recognizes constant keyed values but retains explicit tangent dependencies", () => {
+    const layer = {
+      ...fixed("floor"),
+      transform: {
+        position: {
+          keys: [
+            { frame: 0, value: [2, 3] },
+            { frame: 7, value: [2, 3] },
+          ],
+        },
+      },
+    } as CompositionLayer;
+    expect([...compositionPrefixLayers(doc([moving, layer]))]).toEqual([
+      "floor",
+    ]);
+    const handled = {
+      ...fixed("floor"),
+      transform: {
+        position: {
+          keys: [
+            { frame: 0, value: [2, 3], spatialOut: [3, 2] },
+            { frame: 7, value: [2, 3] },
+          ],
+        },
+      },
+    } as CompositionLayer;
+    expect([...compositionPrefixLayers(doc([moving, handled]))]).toEqual([]);
+  });
   it("rejects keyed ancestors even when a child has fixed artwork", () => {
     const composition = doc([{ ...fixed("child"), parent: "moving" }, moving]);
     expect([...compositionPrefixLayers(composition)]).toEqual([]);
   });
-  it("defers expressions, drivers, constraints, cameras and text animator scopes", () => {
+  it("keeps selection hints with drivers while evaluated closure keys authorize reuse", () => {
     for (const extra of [
       { expressions: { "layers.floor.transform.opacity": { source: "time" } } },
       { camera2d: { position: { keys: [{ frame: 0, value: [0, 0] }] } } },
@@ -153,7 +181,7 @@ describe("closed native prefixes", () => {
       { textAnimators: [{ node: "text", start: 0, end: 8 }] },
     ]) {
       const composition = doc([fixed("floor")], extra as Partial<Composition>);
-      expect([...compositionPrefixLayers(composition)]).toEqual([]);
+      expect([...compositionPrefixLayers(composition)]).toEqual(["floor"]);
     }
   });
   it("preserves a one-item solid's original draw and an isolate boundary", () => {

@@ -1,3 +1,4 @@
+import { Readable } from "node:stream";
 import { createReadStream } from "node:fs";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { pipeline } from "node:stream/promises";
@@ -90,7 +91,23 @@ export class CompositionSurfaceBroker {
       const checksum = request.headers["x-composition-cache-checksum"];
       if (typeof token !== "string" || typeof checksum !== "string")
         throw Error("Composition surface publication headers are missing");
-      await this.store.publish(worker, token, request, checksum);
+      // IncomingMessage may coalesce socket chunks above 64 KiB. Preserve the
+      // store's bounded-copy contract independently of network packetization.
+      const bounded = Readable.from(
+        (async function* () {
+          for await (const chunk of request) {
+            const bytes = chunk as Buffer;
+            for (let offset = 0; offset < bytes.length; offset += 65536)
+              yield bytes.subarray(offset, offset + 65536);
+          }
+        })(),
+        { objectMode: true, highWaterMark: 1 },
+      );
+      try {
+        await this.store.publish(worker, token, bounded, checksum);
+      } finally {
+        bounded.destroy();
+      }
       response.end("stored");
     } catch (error) {
       this.onFailure(error);

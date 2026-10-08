@@ -157,3 +157,29 @@ describe("bounded ordered composition frames", () => {
     expect(ordered.failureReason).toBe(null);
   });
 });
+
+it("drains contiguous workers in sequential groups without waiting on an unstarted owner", async () => {
+  const actual: number[] = [];
+  const ordered = new CompositionOrderedFrames(
+    11,
+    4,
+    async (source, frame, worker) => {
+      await capture(source);
+      expect(worker).toBe(frame < 2 ? 0 : frame < 5 ? 1 : frame < 8 ? 2 : 3);
+      actual.push(frame);
+    },
+    "contiguous",
+  );
+  const ranges = [
+    [0, 2],
+    [2, 5],
+    [5, 8],
+    [8, 11],
+  ] as const;
+  for (const [worker, [start, end]] of ranges.entries())
+    for (let index = start; index < end; index++)
+      await ordered.accept(worker, index, frame(index));
+  ordered.finish();
+  expect(actual).toEqual(Array.from({ length: 11 }, (_, i) => i));
+  expect(ordered.statistics.peakPendingFrames).toBe(1);
+});

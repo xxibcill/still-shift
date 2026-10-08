@@ -35,15 +35,13 @@
     }
   },
   "remaining": [
-    "production aggregate memory admission and lifetime completion",
-    "full static layer/precomp caching coverage",
-    "full area/fps/worker acceptance",
+    "complete immutable full-area matrix",
     "authentic >=120-second >=3x four-worker speed proof with identical output",
-    "final implementation review and required complete local pnpm check"
+    "final implementation review, legacy regression revalidation and complete local pnpm check"
   ],
   "productionMemory": {
-    "status": "production admission and acknowledgement focused acceptance passed; complete accounting and large-area admission pending",
-    "workerPolicy": "statically partition 7.5 GiB across 1\u20134 workers; reserve 512 MiB for Node (Node admission remains pending)",
+    "status": "production browser admission, retained timing/result records, bounded Node RPC/summary and manifest capacity implemented; complete area acceptance pending",
+    "workerPolicy": "reserve512MiB for bounded Node result transfer/summary; partition remaining7.5GiB across concurrently active workers; large frames run contiguous groups",
     "rpcLifetime": "browser result owners remain charged until Node acknowledges reception; then require zero reservations",
     "unitTests": 3,
     "focusedTestsIncludingCaptureAndStatistics": 21,
@@ -51,7 +49,7 @@
     "smokeLog": "/private/tmp/ce15-completion-memory-smoke.log",
     "formatLog": "/private/tmp/ce15-completion-memory-output.log",
     "legacyLog": "/private/tmp/ce15-completion-memory-legacy.log",
-    "applicationCoverage": "existing instrumented allocations only; remaining metadata ownership and Node admission are not claimed complete",
+    "applicationCoverage": "declared renderer storage and existing metadata owners plus frame result/RPC/summary capacities; native V8/browser/FFmpeg RSS measured separately, not an8GiB RSS guarantee",
     "expandedParallel": {
       "status": "passed",
       "log": "/private/tmp/ce15-completion-memory-parallel.log",
@@ -70,6 +68,67 @@
       "/private/tmp/ce15-completion-memory-output.log": "a49738e87cac289aec01c68e189ee1311840de8548a47959d9bd6771bf64bb31",
       "/private/tmp/ce15-completion-memory-legacy.log": "095479f0f35e73439becfe0d69b5b7631848d6f35de48633881dff073ecbd35a",
       "/private/tmp/ce15-completion-memory-parallel.log": "60bb4591e3525293e998c7e24f24aa8ef9f2cc03dc0ca543ea2692fb4f09caaa"
+    }
+  },
+  "completionCheckpoint": {
+    "status": "focused checks passed; area/speed/final gate pending",
+    "parent": "18eae703",
+    "changes": [
+      "full-area cache budgets and contiguous bounded worker groups",
+      "admitted Blob transport above128MiB;64KiB cache writes independent of socket chunk coalescing",
+      "integer1\u201360fps and exclusive-end PCM ceiling; encoder EOF drains all audio",
+      "dependency-aware native prefixes including constant keys and expression-only motion",
+      "admitted timing records and bounded browser-to-Node result transfer/manifest capacity"
+    ],
+    "focusedTests": 311,
+    "static": [
+      "build",
+      "schema:check",
+      "check:boundaries",
+      "changed-file eslint"
+    ],
+    "newBrowserProofs": [
+      {
+        "suite": "cache dependencies",
+        "exports": 36,
+        "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-cache-dependencies-NduPmd"
+      },
+      {
+        "suite": "fps/audio/all seven formats",
+        "exports": 105,
+        "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-fps-audio-wkegEs"
+      },
+      {
+        "suite": "Node/browser result memory",
+        "exports": 8,
+        "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-production-memory-Bt7hLK"
+      }
+    ],
+    "areaAttempts": {
+      "canvasQuick": {
+        "exports": 4,
+        "status": "passed",
+        "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-full-area-10ds76"
+      },
+      "fullMatrix": {
+        "passedBeforeFailure": 36,
+        "status": "interrupted by temporary export-page import error during subsequent edits; complete immutable rerun required"
+      }
+    },
+    "rejected": [
+      "256MiB raw ArrayBuffer fetch crashed Chromium after frame reception; Blob request data pipe passes",
+      "surface store received coalesced socket chunks above64KiB; bounded broker generator preserves original copy cap",
+      "encoder -frames:v truncated fractional-rate PCM at32768 of34286 samples; exact bounded input EOF preserves complete source"
+    ],
+    "logs": {
+      "/private/tmp/ce15-completion-focused-static.log": "2eb2bd93cc6b7bc0931ebfb438518e720580f43920c6c2c3a3953234bdb93704",
+      "/private/tmp/ce15-completion-focused-final.log": "ae790856c31efdd193324b6f46c8ed9c407150d8d9d2745a9feda18ce4730b4d",
+      "/private/tmp/ce15-driven-prefix-browser.log": "f2a8997836acd82d3cf6a0ac48025e034ae1cced59093bf0fed89f5e8f4cb90b",
+      "/private/tmp/ce15-fps-formats-complete.log": "9e634eff0c877cb35242b0939e7e4804d2361c4542d82a01d12d9aae9bae2f2f",
+      "/private/tmp/ce15-result-transfer-unit.log": "7734a6cc55a2a716ac7e0264c8c3a532b21acb930425f8299e36eb34ecedca35",
+      "/private/tmp/ce15-result-transfer-browser.log": "d5c54f96051caf80fb5760b30bed6b311f0c5d7fb9cb19fed226f1b7bd54343d",
+      "/private/tmp/ce15-area-full.log": "882dbd9ee8e14018772c7e1a18fbd96d0cbfdb99e0b6bf4b1f4961cd1cc8ada7",
+      "/private/tmp/ce15-area-quick-transport.log": "684395cc7f07c07d45930186b075f540a29ae8e0b1f6a6a81da52ec1deee3d53"
     }
   }
 }

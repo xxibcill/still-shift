@@ -72,7 +72,7 @@ export class CompositionRootCache<S extends Surface> {
       !/^sha256:[a-f0-9]{64}$/.test(options.scopeKey) ||
       !Number.isSafeInteger(options.byteLimit) ||
       options.byteLimit < 1 ||
-      options.byteLimit > 128 * 1024 * 1024
+      options.byteLimit > 2 * 1024 ** 3
     )
       throw Error("Composition root cache configuration is invalid");
     this.original = backend.renderRoot?.bind(backend);

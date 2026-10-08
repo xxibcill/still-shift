@@ -173,3 +173,10 @@ export type CompositionPreparedMedia = z.infer<
 export type CompositionPreparedMediaFrame = z.infer<
   typeof CompositionPreparedMediaFrameSchema
 >;
+
+/** First PCM sample on or after a picture boundary. A complete master includes
+ * exactly the samples whose timestamps precede the exclusive composition end.
+ */
+export function compositionPcmBoundary(frame: number, fps: number): number {
+  return Math.ceil((frame * 48000) / fps);
+}

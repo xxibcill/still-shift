@@ -665,8 +665,13 @@ structure only; use `validateComposition` for the full rules.
 | Layer order | `layers[0]` is the top layer, as in AE.                                                                                                                                                                    |
 | Time        | Integer frames. Layer time = `(compFrame − startFrame) / stretch`; `stretch: 2` plays at half speed, negative values play in reverse. `timeRemap` overrides both. In point inclusive, out point exclusive. |
 | Keys        | Key frames are integers in **layer time**. With `startFrame: 0` and no stretch, layer time equals composition time.                                                                                        |
-| Frame rates | 24, 25, 30, 50 or 60. A precomp with its own `fps` is sampled at the parent's time.                                                                                                                        |
+| Frame rates | Integers 1–60. A precomp with its own `fps` is sampled at the parent's time.                                                                                                                               |
 | Identifiers | `^[a-zA-Z][\w-]*$`, at most 128 characters. `comp` is reserved.                                                                                                                                            |
+
+Audio uses 48 kHz PCM. A picture boundary maps to the first sample on or after it
+(`ceil(frame * 48000 / fps)`); the complete master includes every sample before the
+exclusive composition end. This preserves exact existing-rate clocks and supports
+rates such as 7, 29 and 59 without dropping the final partial audio packet.
 
 ## Top-level fields
 
@@ -675,7 +680,7 @@ structure only; use `validateComposition` for the full rules.
 | `schemaVersion`                  | `"composition-1"`                                  | Required.                                                                                                             |
 | `id`, `name`                     | id, text                                           | `id` required.                                                                                                        |
 | `width`, `height`                | integer 16–8192                                    | Required.                                                                                                             |
-| `fps`                            | 24, 25, 30, 50, 60                                 | Required.                                                                                                             |
+| `fps`                            | Integer 1–60                                       | Required.                                                                                                             |
 | `frameCount`                     | integer 1–108,000                                  | Required.                                                                                                             |
 | `background`                     | colour or `null`                                   | `null` or absent: transparent.                                                                                        |
 | `format`                         | `landscape` or `vertical`                          | When set, `width` and `height` must match it.                                                                         |

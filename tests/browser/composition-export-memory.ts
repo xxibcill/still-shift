@@ -69,12 +69,17 @@ for (const backend of ["canvas2d", "webgl2"] as const) {
       assert.equal(memory.workers.length, workers);
       assert.ok(memory.sumOfWorkerPeakBytes > 0);
       assert.ok(
-        memory.sumOfWorkerPeakBytes + memory.reservedNodeBudgetBytes <=
+        memory.peakConcurrentWorkerBytes + memory.reservedNodeBudgetBytes <=
           memory.applicationLimitBytes,
       );
       for (const worker of memory.workers) {
         assert.ok(worker.beforeAcknowledgement.peak.pixels > 0);
         assert.ok(worker.beforeAcknowledgement.peak.metadata > 0);
+        assert.ok(
+          worker.beforeAcknowledgement.current.metadata >=
+            512 + (composition.frameCount / workers) * 192,
+          "frame result records remain admitted through RPC reception",
+        );
         assert.deepEqual(worker.afterAcknowledgement?.current, {
           pixels: 0,
           metadata: 0,

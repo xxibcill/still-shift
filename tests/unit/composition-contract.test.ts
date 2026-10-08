@@ -1631,3 +1631,20 @@ describe("passage diagnostics", () => {
     ).toBe("invalid-contract");
   });
 });
+
+describe("composition frame rates", () => {
+  it("accepts every integral rate from 1 through 60", () => {
+    for (let fps = 1; fps <= 60; fps++)
+      expect(
+        validateComposition({ ...minimalComposition(), fps }).ok,
+        `fps ${fps}`,
+      ).toBe(true);
+  });
+  it("rejects zero, excessive, fractional and non-finite rates", () => {
+    for (const fps of [0, -1, 61, 23.976, Infinity, NaN])
+      expect(
+        validateComposition({ ...minimalComposition(), fps }).ok,
+        `fps ${fps}`,
+      ).toBe(false);
+  });
+});
