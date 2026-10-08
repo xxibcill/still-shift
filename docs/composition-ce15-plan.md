@@ -1319,6 +1319,27 @@ controllers/cache/state, other controllers/provider/graph/font/common helper/reg
 ledger/Node, production/aggregate admission, speed/full gate remain pending.
 [Evidence](./composition-ce15-png-source-metadata-results.json).
 
+## Accepted PNG draw/coordinate metadata checkpoint — 2026-10-08
+
+Admit actual draw data at 4096 before fallback transform array, placement input/
+result, rect, input/uniform/vector factories. Capture actual fresh values through
+original consumers, then clear them; preserve borrowed content/transforms/matrix.
+Admit actual coordinate record/native/view control at 1024 before original native
+float surface and Float32 backing factories. Preserve exact coordinate math and
+uploaded bytes, same-width reuse and resize. Captured allocator releases backing
+after scope exit; native ownership prevents duplicate allocator-first release.
+Visit all owners despite first-null; preserve original setup/pass failure over
+secondary disable and allow retry. Active foreign controls fail before producers.
+
+Three original whole 26-call native traces stay exact. Build/lint/boundaries and
+all 411 focused tests, eleven new regressions, complete audit 144/8,000, 96 RPC
+snapshots, prior native probes, WebGL/providers and 69 typography tests pass;
+glyph 1.328205× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames
+match pushed `960a433`. Class/caller factories, dedicated depth program/controller/
+cache/state, effects/plugins/provider/graph/font/common helper/registry/ledger/Node,
+production/aggregate admission, speed/full gate remain pending.
+[Evidence](./composition-ce15-png-draw-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

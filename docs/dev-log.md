@@ -97,13 +97,13 @@ still hold before relying on them.
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace, seven built-ins, depth mesh and PNG
-  source cache metadata pass 400 focused tests, complete audit, 22 moving/blurred
-  and ten stationary native frames and 96 owned RPC snapshots. Actual source-cache
-  Maps/Set/key/entry/edge/native refs pre-admit, stay through consumers/cache, then
-  clear. Two original native traces/sixteen new tests, quota/1024 reject/LRU/border/
-  partial/null/retry/foreign/native allocator-first once-only release pass. Native
-  probes, WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
-  bodies/frames pass; glyph 1.376184× meets unchanged 1.5 maximum.
+  source/draw/coordinate metadata pass 411 focused tests, complete audit, 22 moving/
+  blurred and ten stationary native frames and 96 owned RPC snapshots. Actual PNG
+  placement/input/uniform/vector data and coordinate record/native/view pre-admit,
+  stay through consumers/cache, then clear. Three original draw traces/eleven new
+  tests, quota/scope-exit/resize/null/retry/foreign/native allocator-first once-only
+  release pass. Native probes, WebGL/providers, 69 typography tests and 64 exports /
+  768 prior-exact bodies/frames pass; glyph 1.328205× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -339,6 +339,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual PNG draw and coordinate data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `960a433`.
+- **Done:** pre-admit actual placement/input/uniform/vector data and retained
+  coordinate record/native/view; clear actual references after consumers/disposal,
+  preserve whole uploads, borrowed input, resize/reuse and original null/retry.
+- **Results:** build/lint/boundaries, 411 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.328205× meets unchanged 1.5 maximum.
+- **Verification:** eleven new tests/three whole original traces; real native
+  texture/backing once in both disposal orders, scope-exit detach, partial/null/
+  resize/retry, setup/pass cleanup and foreign guard. No full gate.
+- **Next:** class/caller factories, dedicated depth/controller/cache/state,
+  effects/provider/graph/font/common helper/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [PNG draw evidence](./composition-ce15-png-draw-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual PNG source cache data
 
