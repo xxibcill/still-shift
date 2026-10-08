@@ -20,7 +20,7 @@ import {
   type CinematicRenderScene,
 } from "./cinematic-scene.ts";
 
-export const ILLUSTRATED_RENDERER_VERSION = "illustrated-canvas-0.12.1";
+export const ILLUSTRATED_RENDERER_VERSION = "illustrated-canvas-0.12.2";
 export type Key = CurveKey & {
   time: number;
   value: number;

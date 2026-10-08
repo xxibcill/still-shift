@@ -193,3 +193,25 @@ it.each(
     usesSystemFonts: true,
   });
 });
+
+it.each(["constructor", "toString", "hasOwnProperty"])(
+  "preserves a valid unfollowed node named %s",
+  (id) => {
+    const input = source(
+      fixtures.find((fixture) => fixture.id === "legacy/comparison-build")!
+        .path,
+    );
+    const node = input.nodes.find((candidate) => candidate.id === "kicker")!;
+    const previousId = node.id;
+    node.id = id;
+    for (const child of input.nodes)
+      if (child.parent === previousId) child.parent = id;
+    const validated = PreparedSceneSchema.parse(input);
+    expect(Object.hasOwn(compilePreparedScene(validated).followers, id)).toBe(
+      false,
+    );
+    const composition = assertStates(validated);
+    expect(composition.layers.some((layer) => layer.id === id)).toBe(true);
+    expect(composition.constraints ?? []).toHaveLength(0);
+  },
+);

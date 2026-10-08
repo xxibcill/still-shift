@@ -91,11 +91,23 @@
           "command": "pnpm exec eslint apps/lab/src/main.ts tests/browser/lab-session.ts",
           "status": "pass"
         }
-      ]
+      ],
+      "commit": "6d7a71fd78a6c67e04395f09eea7091b73120f92"
     },
     {
       "id": 5,
-      "status": "pending"
+      "title": "Inherited legacy follower lookup",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4215761599",
+      "status": "implemented-focused-verified",
+      "change": "Only own follower bindings become native constraints; valid unbound constructor/toString/hasOwnProperty node ids retain all frames, inherited matrices and opacity after JSON reload. Adapter0.1.2 and illustrated renderer0.12.2 invalidate preparation caches.",
+      "checks": [
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-legacy-adapter.test.ts --maxWorkers=2",
+          "status": "pass",
+          "tests": 22,
+          "newTests": 3
+        }
+      ]
     },
     {
       "id": 6,
