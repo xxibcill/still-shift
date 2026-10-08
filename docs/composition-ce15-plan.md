@@ -1773,6 +1773,28 @@ Standalone mappings/helpers/other effects/cache/registry/error/class/depth sampl
 provider/graph/font/common/ledger/Node and production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-warp-canvas-metadata-results.json).
 
+## Accepted radial GPU factor work checkpoint — 2026-10-08
+
+Admit actual 16384-byte GPU work before selected control factories, then grow by
+exact 4× original factor count before the Int32 backing constructor. Capture actual
+partial factor view before loops, center/radius/controller, encoded table view and
+shader/input/uniform/native refs; keep through upload/pass then retire. Keep original
+encoded-table pixel admission. Retire both table and factor backing despite first
+cleanup failure, clear actual arrays/records/refs; original neutral creates no work.
+
+Build/lint/boundaries and 667 focused tests / 76 files pass. Nine new tests check
+21 whole original factor/table hashes and source points, 14 full native transactions,
+header/growth/pixel quotas, refs/partial/native/adoption/null/all cleanup/retry.
+Two original NaNs lost in JSON are restored using independently executed original
+numeric kinds; failed fixture/type attempts retained and final attempt 3 accepted.
+Maximum controls retain actual 741460 factor bytes / 742400 encoded bytes with exact
+hashes; full-size export/aggregate matrix remains pending. Complete audit 144/8,000,
+96 RPC snapshots, native probes, WebGL/providers, 69 typography and 64 prior-exact
+exports / 768 bodies/frames pass; glyph 1.247944× meets unchanged 1.5 maximum.
+Canvas/standalone controls/helpers/other effects/cache/registry/error/class/depth
+sampling/provider/graph/font/common/ledger/Node and production/final gates pending.
+[Evidence](./composition-ce15-radial-gpu-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
