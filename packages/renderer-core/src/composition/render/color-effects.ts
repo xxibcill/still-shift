@@ -809,6 +809,9 @@ type ColorCanvasWork = {
   managed: boolean;
   memory?: ManagedMemory | undefined;
   pixel: ColorPixelWork;
+  parentLease?: MemoryLease | undefined;
+  parentFinish?: (() => void) | undefined;
+  dependencies?: { lease: MemoryLease; finish: () => void }[] | undefined;
   input?: CanvasSurface | undefined;
   output?: CanvasSurface | undefined;
   image?: ImageData | undefined;
@@ -853,22 +856,14 @@ function clearColorCanvasWork(work: ColorCanvasWork) {
       failure = error;
     }
   }
-  try {
-    if (
-      work.memory &&
-      work.backing?.byteLength &&
-      !work.memory.owns(work.backing)
-    )
-      (
-        work.backing as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }
-      ).transfer(0);
-  } catch (error) {
-    if (!failed) {
-      failed = true;
-      failure = error;
-    }
-  }
   clearColorCanvasSample(work);
+  if (work.dependencies) {
+    for (const dependency of work.dependencies) {
+      delete (dependency as Partial<typeof dependency>).lease;
+      delete (dependency as Partial<typeof dependency>).finish;
+    }
+    work.dependencies.length = 0;
+  }
   if (work.gradient)
     for (const key in work.gradient)
       delete (work.gradient as Partial<GradientControls>)[
@@ -878,22 +873,125 @@ function clearColorCanvasWork(work: ColorCanvasWork) {
     delete (work as Partial<ColorCanvasWork>)[key as keyof ColorCanvasWork];
   if (failed) throw failure;
 }
+// The actual finite hold list is part of the admitted Canvas parent.
+const colorCanvasDependencyLimit = 8;
+function holdColorCanvasDependency(work: ColorCanvasWork, lease: MemoryLease) {
+  if (!work.parentLease?.active)
+    throw Error("Managed color Canvas work owner was disposed");
+  const dependencies = work.dependencies!;
+  for (const dependency of dependencies) if (dependency.lease === lease) return;
+  if (dependencies.length >= colorCanvasDependencyLimit)
+    throw Error("Managed color Canvas dependency controls exceed their bound");
+  const finish = lease.deferRelease();
+  try {
+    dependencies.push({ lease, finish });
+  } catch (error) {
+    try {
+      finish();
+    } catch {
+      /* Preserve the first admitted control publication failure. */
+    }
+    throw error;
+  }
+}
 function colorCanvasWork(): ColorCanvasWork {
   const memory = renderMemory();
-  return allocateRenderMetadata<ColorCanvasWork>(
-    16384,
-    () => ({ managed: !!memory, memory, pixel: {} }),
-    false,
-    clearColorCanvasWork,
-  );
+  if (!memory) return { managed: false, memory, pixel: {} };
+  let parentLease: MemoryLease | undefined,
+    parentFinish: (() => void) | undefined;
+  try {
+    return allocateManagedRenderMetadata<ColorCanvasWork>(
+      memory,
+      16384,
+      () => ({
+        managed: true,
+        memory,
+        pixel: {},
+        parentLease,
+        parentFinish,
+        dependencies: [],
+      }),
+      false,
+      clearColorCanvasWork,
+      (lease) => {
+        parentLease = lease;
+        parentFinish = lease.deferRelease();
+      },
+    );
+  } catch (error) {
+    try {
+      parentLease?.release();
+    } catch {
+      /* Preserve first parent construction/adoption failure. */
+    }
+    try {
+      parentFinish?.();
+    } catch {
+      /* A failed constructor leaves no native-body work owner to settle it. */
+    }
+    throw error;
+  }
 }
 function finishColorCanvasWork(work: ColorCanvasWork, failed: boolean) {
+  const parentFinish = work.parentFinish,
+    dependencies = work.dependencies;
+  let cleanupFailed = false,
+    failure: unknown;
   try {
     if (work.managed) releaseRenderMetadata(work);
     else clearColorCanvasWork(work);
   } catch (error) {
-    if (!failed) throw error;
+    cleanupFailed = true;
+    failure = error;
   }
+  if (dependencies)
+    for (let index = dependencies.length - 1; index >= 0; index--) {
+      try {
+        dependencies[index]!.finish();
+      } catch (error) {
+        if (!cleanupFailed) {
+          cleanupFailed = true;
+          failure = error;
+        }
+      }
+    }
+  try {
+    parentFinish?.();
+  } catch (error) {
+    if (!cleanupFailed) {
+      cleanupFailed = true;
+      failure = error;
+    }
+  }
+  if (cleanupFailed && !failed) throw failure;
+}
+/** Failure-only branded lookup avoids another original image.data/buffer Get. */
+function failedColorCanvasImageBacking(
+  image: ImageData,
+  data: Uint8ClampedArray | undefined,
+): ArrayBuffer | undefined {
+  const buffer = Object.getOwnPropertyDescriptor(
+    Object.getPrototypeOf(Uint8Array.prototype) as object,
+    "buffer",
+  )!.get!;
+  // A genuine native image carries its real view even if its original data Get
+  // was shadowed by a different known-owner view or an opaque product.
+  try {
+    const nativeData = Object.getOwnPropertyDescriptor(
+      ImageData.prototype,
+      "data",
+    )!.get!.call(image) as Uint8ClampedArray;
+    return buffer.call(nativeData) as ArrayBuffer;
+  } catch {
+    /* A captured genuine native view remains usable when image branding fails. */
+  }
+  if (data)
+    try {
+      return buffer.call(data) as ArrayBuffer;
+    } catch {
+      /* Unknown products require an explicit captured fresh backing contract. */
+    }
+  return undefined;
 }
 function colorCanvasImage(
   work: ColorCanvasWork,
@@ -901,29 +999,52 @@ function colorCanvasImage(
   width: number,
   height: number,
 ): ImageData {
-  if (!work.memory)
-    return (work.image = context.getImageData(0, 0, width, height));
-  const lease = (work.pixelLease = work.memory.reserve(
+  const memory = work.memory;
+  if (!memory) return (work.image = context.getImageData(0, 0, width, height));
+  if (!work.parentLease?.active)
+    throw Error("Managed color Canvas work owner was disposed");
+  const lease = (work.pixelLease = memory.reserve(
     "pixels",
     Math.abs(width * height) * 4,
   ));
+  let finish: (() => void) | undefined,
+    image: ImageData | undefined,
+    data: Uint8ClampedArray | undefined,
+    backing: ArrayBuffer | undefined,
+    adopted = false;
   try {
+    finish = lease.deferRelease();
+    holdColorCanvasDependency(work, lease);
     work.imageProducer = () =>
       (work.image = context.getImageData(0, 0, width, height));
-    const image = work.imageProducer(),
-      backing = (work.backing = image.data.buffer as ArrayBuffer);
-    work.memory.adopt(backing, lease, (value) => {
-      const buffer = value as ArrayBuffer & {
-        transfer(bytes: number): ArrayBuffer;
-      };
-      if (buffer.byteLength) buffer.transfer(0);
-    });
+    image = work.imageProducer();
+    data = image.data;
+    backing = work.backing = data.buffer as ArrayBuffer;
+    memory.adopt(backing, lease, destroyColorGpuCurveBacking);
+    adopted = true;
+    finish();
+    if (!lease.active || !work.parentLease.active)
+      throw Error("Managed color Canvas image owner was disposed");
     return image;
   } catch (error) {
     try {
+      if (!adopted) {
+        const owner =
+          (image && failedColorCanvasImageBacking(image, data)) ?? backing;
+        if (owner && !memory.owns(owner)) destroyColorGpuCurveBacking(owner);
+      }
+    } catch {
+      /* First native factory/identity/adoption failure owns this path. */
+    }
+    try {
       lease.release();
     } catch {
-      /* Preserve first native factory/adoption error. */
+      /* Preserve the first reason, including null. */
+    }
+    try {
+      finish?.();
+    } catch {
+      /* The captured callback dependency settles any adopted pending owner. */
     }
     throw error;
   }

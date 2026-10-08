@@ -43,10 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE15 chat recovery (2026-10-08):** old chat confirmed idle after interruption;
-  no CE15 verification processes remain. All 220 GPU lifetime source hashes,
-  21 logs and saved audit/export artifacts match their recorded evidence.
-  Recovered GPU slice is ready to checkpoint; Canvas draft remains unverified.
+- **CE15 recovered and Canvas lifetime verified (2026-10-08):** old chat is idle;
+  no old verification remains active. Recovered GPU slice is local commit `61d7b911`.
+  Canvas parent/native image holds now pass 999 focused tests, six genuine native
+  probes, complete 144-case / 8,000-frame audit and 64 prior-exact exports / 768
+  bodies/frames; glyph 1.376068× ≤ 1.5. Gradient/backend/params/production ownership,
+  aggregate/area/speed and final CE15 gate remain pending. Push authorization to
+  `https://github.com/xxibcill/still-shift` awaits the user after automatic approval
+  review rejected the external transfer. [Canvas evidence](./composition-ce15-color-canvas-lifetime-results.json).
 
 - **CE15 in progress (2026-10-08):** `codex/composition-ce15` from completed CE13
   `aedfc9e`; transparent renderer checkpoint `49e0543` is pushed. Seven explicit
@@ -359,6 +363,21 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 Canvas parent and native image lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15`, after recovered `61d7b911`.
+- **Done:** hold actual Canvas parent and image backing through native consumers;
+  recover failed native identity, preserve known aliases and first cleanup/null error.
+- **Results:** build/lint/boundaries, 999 focused / 69 typography tests, six genuine
+  native probes, 144 audit cases / 8,000 frames and 64 prior-exact exports / 768
+  bodies/frames pass. Glyph 1.376068× meets unchanged 1.5; no final gate or speed proof.
+- **Repairs:** corrected an unverified draft rounding expectation to original 127;
+  retained sandbox startup and browser callback-shim failures. Prior tests unchanged.
+- **Next:** gradient/backend/retained-graph and broader admission, aggregate/area/speed
+  acceptance, full CE15 gate/PR, then CE14. GitHub push awaits explicit approval.
+- **Records:** [Canvas lifetime evidence](./composition-ce15-color-canvas-lifetime-results.json),
+  [plan](./composition-ce15-plan.md).
 
 ### 2026-10-08 — CE15 GPU parent and child lifetime
 

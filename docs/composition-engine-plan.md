@@ -5157,6 +5157,11 @@ device, foreign/intrinsic/registry limits, global/bootstrap, retained graph, cal
 depth/provider/font/Node/production/aggregate/speed/final gates remain pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
+Canvas non-gradient parent/native image lifetime now passes 999 focused tests,
+six genuine native probes, the full 144-case / 8,000-frame audit and 64 prior-exact
+exports / 768 bodies/frames. Glyph 1.376068× meets unchanged 1.5. Gradient/backend/
+params and broader production admission remain incomplete.
+[Canvas lifetime evidence](./composition-ce15-color-canvas-lifetime-results.json).
 Aggregate limits, two-minute speed proof
 and final local gate remain pending.
 [Delivery plan](./composition-ce15-plan.md),

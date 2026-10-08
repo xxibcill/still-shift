@@ -2429,6 +2429,32 @@ borrowed params/values, backend/input/output/device, arbitrary replaced intrinsi
 foreign products and bootstrap/provider/font/Node/production/aggregate/speed/final
 gates remain pending. [Evidence](./composition-ce15-color-gpu-lifetime-results.json).
 
+## Accepted Canvas non-gradient callback dependency lifetime — 2026-10-08
+
+Hold the actual 16384-byte Canvas work parent before construction and independently
+hold the ImageData backing before its native producer. Keep both charged through
+sampling and putImageData, including direct release, scratch retirement and allocator
+disposal. Failed data/buffer identity recovers genuine native storage without repeating
+the original Get, preserves a known same-allocator alias and detaches fresh backing.
+Attempt child and parent cleanup independently, preserving the first error including
+null. GPU helpers, shaders, kernel wrappers, native render bodies and all prior tests
+remain byte exact.
+
+Build/lint/boundaries pass. Focused verification passes 999 tests across 107 files:
+985 in the integrated run plus 14 GPU lifetime regressions on the same frozen source.
+The 13 new Canvas tests fail 10 cases against the original source. Corrected one
+unverified draft expectation to preserve the original 127 rounding result; no original
+oracle changed. Six additional genuine Chromium ImageData/Canvas probes pass.
+Complete 144-case / 8,000-frame audit, 69 typography tests, original WebGL export
+and 64 public exports / 768 prior-exact encoded bodies and decoded frames pass.
+Glyph 1.376068× meets the unchanged 1.5 maximum. Sandbox startup and native-harness
+failures are retained alongside the passing reruns.
+
+Gradient/table dependencies, borrowed params, backend/input/output/device and broader
+production admission remain pending. These focused checks are not the final CE15
+gate or two-minute speed proof.
+[Evidence](./composition-ce15-color-canvas-lifetime-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
