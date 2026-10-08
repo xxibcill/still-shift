@@ -1045,6 +1045,24 @@ against pushed `4f74360`. Shader/program/clip and helper/remaining runtime/Node/
 production/aggregate admission, speed and full gate remain pending.
 [Evidence](./composition-ce15-solid-metadata-results.json).
 
+## Accepted clip-intersection checkpoint — 2026-10-08
+
+Admit the actual frame holder/Set at 256 and each original four-field box/Set entry
+at 104 before coordinate getters/Math.max/min. Retain actual completed distinct
+boxes through synchronous original draw/pass/native consumers and scratch, then
+clear the actual Set at frame reset, device/scope or allocator-first disposal.
+Failed/empty attempts roll back their own growth and release a new empty arena;
+previous boxes survive. Original borrowed/null branches, aliases, getter/math
+order, scissor and native pixel behavior remain unchanged.
+
+Build/lint/boundaries and 267 focused tests pass, including seven clip regressions.
+The complete 144/8,000 audit, 96 RPC snapshots, 22 moving/blurred and ten stationary
+native frames, native snapshots, original WebGL, 69 typography tests and providers
+pass; glyph 1.430669× meets unchanged 1.5 maximum. All 64 exports preserve 768
+complete bodies/frames against pushed `fc7999a`. Shader/helper/remaining runtime/
+Node/production/aggregate admission, speed and full gate remain pending.
+[Evidence](./composition-ce15-clip-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

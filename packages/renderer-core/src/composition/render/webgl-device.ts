@@ -51,6 +51,14 @@ type Program = {
   uniforms: Map<string, WebGLUniformLocation>;
 };
 
+type ClipLifetime = {
+  regions: Set<Bounds>;
+  bytes: number;
+};
+function clearClipLifetime(value: ClipLifetime) {
+  value.regions.clear();
+}
+
 type SolidLifetime = {
   sliced: number[] | undefined;
   scaled: number[] | undefined;
@@ -132,7 +140,20 @@ type DeviceState = {
   managed: boolean;
   dirtyCapacity: number;
   solid: SolidLifetime | undefined;
+  clips: ClipLifetime | undefined;
 };
+function rollbackClip(state: DeviceState, phase: ClipLifetime, before: number) {
+  try {
+    resizeRenderMetadata(phase, before);
+    phase.bytes = before;
+  } finally {
+    if (phase.regions.size === 0) {
+      state.clips = undefined;
+      if (state.managed) releaseRenderMetadata(phase);
+      else clearClipLifetime(phase);
+    }
+  }
+}
 function destroySurface(gl: WebGL2RenderingContext, surface: WebglSurface) {
   let failed = false;
   let first: unknown;
@@ -171,6 +192,12 @@ function clearDeviceState(state: DeviceState) {
     state.solid = undefined;
     if (state.managed) cleanup(() => releaseRenderMetadata(solid));
     else clearSolidLifetime(solid);
+  }
+  if (state.clips) {
+    const clips = state.clips;
+    state.clips = undefined;
+    if (state.managed) cleanup(() => releaseRenderMetadata(clips));
+    else clearClipLifetime(clips);
   }
   for (const surface of state.surfaces) {
     if (state.managed) cleanup(() => releaseRenderMetadata(surface));
@@ -213,6 +240,7 @@ export class WebglDevice {
       managed: renderMemory() !== undefined,
       dirtyCapacity: 0,
       solid: undefined,
+      clips: undefined,
     }),
     true,
     clearDeviceState,
@@ -241,6 +269,12 @@ export class WebglDevice {
   onScreenChange: ((region?: Bounds) => void) | undefined;
 
   setFrameClip(region?: Bounds | null) {
+    const clips = this.state.clips;
+    this.state.clips = undefined;
+    if (clips) {
+      if (this.state.managed) releaseRenderMetadata(clips);
+      else clearClipLifetime(clips);
+    }
     this.frameClip = region;
   }
 
@@ -253,15 +287,38 @@ export class WebglDevice {
     if (frame === null || clip === null) return null;
     if (!frame) return clip;
     if (!clip) return frame;
-    const result = {
-      left: Math.max(frame.left, clip.left),
-      top: Math.max(frame.top, clip.top),
-      right: Math.min(frame.right, clip.right),
-      bottom: Math.min(frame.bottom, clip.bottom),
-    };
-    return result.right <= result.left || result.bottom <= result.top
-      ? null
-      : result;
+    const phase = (this.state.clips ??= allocateRenderMetadata<ClipLifetime>(
+      // Actual holder 64, collection control 128 and lifecycle margin 64.
+      256,
+      () => ({ regions: new Set(), bytes: 256 }),
+      true,
+      clearClipLifetime,
+    ));
+    const before = phase.bytes;
+    try {
+      // The original four-field box 64 and actual Set entry 40 precede getters/math.
+      resizeRenderMetadata(phase, before + 104);
+      phase.bytes += 104;
+      const result = {
+        left: Math.max(frame.left, clip.left),
+        top: Math.max(frame.top, clip.top),
+        right: Math.min(frame.right, clip.right),
+        bottom: Math.min(frame.bottom, clip.bottom),
+      };
+      if (result.right <= result.left || result.bottom <= result.top) {
+        rollbackClip(this.state, phase, before);
+        return null;
+      }
+      phase.regions.add(result);
+      return result;
+    } catch (error) {
+      try {
+        rollbackClip(this.state, phase, before);
+      } catch {
+        /* Preserve the original clip admission/coordinate/Set failure. */
+      }
+      throw error;
+    }
   }
 
   constructor(

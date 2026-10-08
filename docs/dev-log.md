@@ -93,13 +93,13 @@ still hold before relying on them.
   Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
   controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
   group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
-  pool-key/array/pass/row-view/swap/dirty-set/cached-color metadata now pass 260
-  focused tests, the complete audit, 22 moving/blurred and ten stationary native
-  frames and 96 owned RPC snapshots. Actual color arrays/cache pre-admit, stay
-  across scratch/native consumers, then clear; original numeric/native/null/anonymous
-  wrapper behavior passes. Native snapshots, original WebGL/providers, 69 typography
-  tests and 64 exports / 768 prior-exact bodies/frames pass; glyph 1.417886× meets
-  unchanged 1.5 maximum.
+  pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection metadata
+  now pass 267 focused tests, the complete audit, 22 moving/blurred and ten
+  stationary native frames and 96 owned RPC snapshots. Actual clip boxes pre-admit
+  before getters/math, stay through scratch/original consumers, then clear at frame
+  reset; borrowed aliases and original numeric/native/null behavior pass. Native
+  snapshots, original WebGL/providers, 69 typography tests and 64 exports / 768
+  prior-exact bodies/frames pass; glyph 1.430669× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -335,6 +335,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual frame clip-intersection controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `fc7999a`.
+- **Done:** admit actual frame holder/Set and original clip boxes before getters/
+  math; retain through original consumers/scratch, then clear at frame reset or
+  final disposal. Borrowed aliases and original null/getter/native behavior stay.
+- **Results:** build/lint/boundaries, 267 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.430669× meets unchanged 1.5 maximum.
+- **Verification:** seven regressions cover pre-getter quota, aliases/order,
+  actual distinct boxes, empty/null rollback and scratch/frame/scope/allocator
+  lifetime; compile1 lint finding repaired and compile2 accepted.
+- **Next:** remaining shader/helper/runtime/Node controls, production/aggregate
+  admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [clip evidence](./composition-ce15-clip-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual cached screen-clear color controls
 
