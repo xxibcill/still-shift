@@ -1816,6 +1816,25 @@ other effects/cache/registry/error/class/depth sampling/provider/graph/font/comm
 ledger/Node and production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-radial-canvas-metadata-results.json).
 
+## Accepted standalone radial point result checkpoint — 2026-10-08
+
+Admit the actual 272-byte point result before original math/getters/array factory;
+hold the actual array outside render scope until explicit, scratch or allocator
+cleanup. Clear the actual result after adoption failure or retirement. Preserve
+original early/mid null over secondary cleanup. Borrowed controls/factors/vectors
+remain intact. Caller-admitted Canvas route adds no per-pixel reservation.
+
+Build/lint/boundaries and 683 focused tests / 78 files pass on attempt 1. Seven new
+tests check 105 original values/kinds/getter sequences including two NaNs, quota,
+actual owner/math/outside-scope/scratch/allocator lifetimes, failure/adoption/retry
+and already admitted caller cleanup. All 676 prior focused tests rerun unchanged.
+Complete audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers,
+69 typography and 64 prior-exact exports / 768 bodies/frames pass; glyph
+1.413165× meets unchanged 1.5 maximum. Standalone radial controls/table and warp
+mapping, other effects/cache/registry/error/class/depth sampling/provider/graph/font/
+common/ledger/Node and production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-radial-point-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

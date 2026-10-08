@@ -5134,18 +5134,19 @@ row-view/swap/dirty-set/cached-color/clip-intersection, device shader-source/pro
 uniform/diagnostic, paint batch/geometry/shader/uniform/input, Gaussian kernel/
 rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/default-
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
-standalone-channel-work/warp-GPU-Canvas-work/radial-GPU-Canvas-work, managed plan/sum-
-shader cache, particle/Canvas/WebGL region, effect-paint/replace/built-ins/callback-
-controls, depth mesh/texture/multisample/uniform/draw/text/native-controls and PNG
-source/draw/coordinate metadata pass 676 focused tests, complete audit, 22 moving/
-blurred and ten stationary native frames and 96 owned RPC snapshots. Radial Canvas
-factor/view/vector/controller/readback/premultiply/point/sample/index/native refs
-pre-admit, stay through consumers then retire three backings and actual refs.
-Nine new tests / seven full Canvas native/pixel oracles check quotas/refs/four point
-consumers/partial/native/adoption/null/all cleanup/retry. Standalone results/other
-effects/cache/error/class/caller/depth sampling remain pending. Native probes,
-WebGL/providers and 69 typography tests pass; glyph 1.461759× meets unchanged
-1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output. Recording/device/pool/shader/paint/
+standalone-channel-work/warp-GPU-Canvas-work/radial-GPU-Canvas-work/standalone-radial-
+point-result, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-
+paint/replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/
+text/native-controls and PNG source/draw/coordinate metadata pass 683 focused tests,
+complete audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
+snapshots. Radial point result admits before original math, stays outside scope
+through consumer cleanup then clears actual array. Seven new tests / 105 original
+values/kinds/getter sequences include two NaNs, quota/math/owner/lifetime/null/
+adoption/retry and caller cleanup without extra leases. Standalone radial controls/
+table, warp mapping, other effects/cache/error/class/caller/depth sampling remain
+pending. Native probes, WebGL/providers and 69 typography tests pass; glyph
+1.413165× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain
+prior exact output. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

@@ -98,17 +98,18 @@ still hold before relying on them.
   Gaussian kernel/rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/radial-GPU-Canvas-
-  work, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
-  replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/
-  text/native-controls and PNG source/draw/coordinate metadata pass 676 focused tests,
-  complete audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
-  snapshots. Radial Canvas factor/view/vector/controller/readback/premultiply/point/
-  sample/index/native refs pre-admit, stay through consumers then retire three
-  backings and actual refs. Nine new tests / seven whole Canvas native/pixel oracles
-  check quotas/refs/four point consumers/partial/native/adoption/null/all cleanup/
-  retry. Standalone results/other effects/cache/error/class/caller/depth sampling
-  remain pending. Native probes, WebGL/providers, 69 typography tests and 64 exports /
-  768 prior-exact bodies/frames pass; glyph 1.461759× meets unchanged 1.5 maximum.
+  work/standalone-radial-point-result, managed plan/sum-shader cache, particle/Canvas/
+  WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/texture/
+  multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
+  metadata pass 683 focused tests, complete audit, 22 moving/blurred and ten
+  stationary native frames and 96 owned RPC snapshots. Radial point result admits
+  before original math, stays outside scope through consumer cleanup then clears
+  actual array. Seven new tests / 105 original values/kinds/getter sequences include
+  two NaNs, quota/math/owner/lifetime/null/adoption/retry and caller cleanup without
+  extra leases. Standalone radial controls/table, warp mapping, other effects/cache/
+  error/class/caller/depth sampling remain pending. Native probes, WebGL/providers,
+  69 typography tests and 64 exports / 768 prior-exact bodies/frames pass; glyph
+  1.413165× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -344,6 +345,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual standalone radial point result
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `8da15083`.
+- **Done:** pre-admit actual point result, retain outside render scope through
+  explicit/scratch/allocator cleanup; clear actual adoption-failure/result arrays.
+  Preserve original borrowed control getters and caller route without extra leases.
+- **Results:** build/lint/boundaries, 683 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.413165×.
+- **Verification:** seven new tests / 105 original values/kinds/getter sequences,
+  two NaNs, quotas/owner/math/lifetime/null/adoption/retry/caller cleanup. Attempt 1
+  accepted. Aggregate integration and final full gate remain pending.
+- **Next:** standalone radial controls/table and warp mapping/other effects/cache/
+  class/depth sampling, provider/graph/font/common/registry/ledger/Node, CE15/CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [radial point evidence](./composition-ce15-radial-point-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual radial Canvas factor work
 

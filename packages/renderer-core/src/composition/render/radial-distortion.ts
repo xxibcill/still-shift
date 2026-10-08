@@ -239,6 +239,23 @@ export function radialSourcePoint(
   y: number,
   work?: RadialPointControl,
 ): readonly [number, number] {
+  if (work || !renderMemory()) return produceRadialSourcePoint(c, x, y, work);
+  return allocateRenderMetadata<[number, number]>(
+    272,
+    () => produceRadialSourcePoint(c, x, y),
+    false,
+    clearRadialPoint,
+  );
+}
+function clearRadialPoint(point: [number, number]) {
+  (point as number[]).length = 0;
+}
+function produceRadialSourcePoint(
+  c: RadialControls,
+  x: number,
+  y: number,
+  work?: RadialPointControl,
+): [number, number] {
   const dx = Math.round(x * 16) - c.center[0],
     dy = Math.round(y * 16) - c.center[1],
     index = radialFactorIndex(c, dx, dy),
