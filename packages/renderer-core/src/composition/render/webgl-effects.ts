@@ -25,6 +25,135 @@ import type { RenderEffect } from "./graph.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
+type BuiltinLifetime = {
+  managed: boolean;
+  bytes: number;
+  arrays: number[][];
+  inputs: WebglSurface[][];
+  uniforms: Record<string, number | number[]>[];
+  texts: string[];
+  boxes: Bounds[];
+  references: object[];
+  kinds?: string[] | undefined;
+  fallback?: object[] | undefined;
+  corners?: DOMPoint[] | undefined;
+  particles?: Partial<Parameters<typeof paintRisingParticles>[1]> | undefined;
+  values?: ArrayBufferView | undefined;
+  source?: WebglSurface | undefined;
+  cleanup?: "plain" | "grain" | "glow" | undefined;
+};
+function clearBuiltin(value: BuiltinLifetime) {
+  for (const array of value.arrays) array.length = 0;
+  for (const inputs of value.inputs) inputs.length = 0;
+  for (const uniforms of value.uniforms)
+    for (const name in uniforms) delete uniforms[name];
+  if (value.particles)
+    for (const name in value.particles)
+      delete value.particles[name as keyof typeof value.particles];
+  if (value.kinds) value.kinds.length = 0;
+  if (value.fallback) value.fallback.length = 0;
+  if (value.corners) value.corners.length = 0;
+  for (const reference of value.references)
+    if (Array.isArray(reference)) reference.length = 0;
+  value.arrays.length =
+    value.inputs.length =
+    value.uniforms.length =
+    value.texts.length =
+    value.boxes.length =
+    value.references.length =
+      0;
+  value.kinds = value.fallback = value.corners = value.particles = undefined;
+  value.values = value.source = value.cleanup = undefined;
+}
+function builtinLifetime(bytes = 65536) {
+  // Largest fixed generated body is directional blur (7222 UTF16 units).
+  // The arena covers intermediate text, fixed arrays/records/host references and controls.
+  return allocateRenderMetadata<BuiltinLifetime>(
+    bytes,
+    () => ({
+      managed: renderMemory() !== undefined,
+      bytes,
+      arrays: [],
+      inputs: [],
+      uniforms: [],
+      texts: [],
+      boxes: [],
+      references: [],
+    }),
+    false,
+    clearBuiltin,
+  );
+}
+function builtinArray(phase: BuiltinLifetime, value: number[]) {
+  phase.arrays.push(value);
+  return value;
+}
+function builtinInputs(phase: BuiltinLifetime, value: WebglSurface[]) {
+  phase.inputs.push(value);
+  return value;
+}
+function builtinUniforms(
+  phase: BuiltinLifetime,
+  value: Record<string, number | number[]>,
+) {
+  phase.uniforms.push(value);
+  return value;
+}
+function builtinText(phase: BuiltinLifetime, value: string) {
+  phase.texts.push(value);
+  return value;
+}
+function builtinBox(phase: BuiltinLifetime, value: Bounds) {
+  phase.boxes.push(value);
+  return value;
+}
+function builtinReference<T extends object>(phase: BuiltinLifetime, value: T) {
+  phase.references.push(value);
+  return value;
+}
+function admitBuiltinMatrix(phase: BuiltinLifetime) {
+  if (phase.managed) {
+    resizeRenderMetadata(phase, phase.bytes + 1280);
+    phase.bytes += 1280;
+  }
+}
+function releaseBuiltinNative(
+  device: WebglDevice,
+  bounds: WebglBounds,
+  phase: BuiltinLifetime,
+) {
+  const source = phase.source,
+    cleanup = phase.cleanup;
+  phase.source = phase.cleanup = undefined;
+  if (!source) return;
+  let failed = false,
+    first: unknown;
+  try {
+    if (cleanup === "grain") device.gl.disable(device.gl.BLEND);
+    else if (cleanup === "glow") bounds.release(source);
+  } catch (error) {
+    failed = true;
+    first = error;
+  }
+  try {
+    device.release(source);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  if (failed) throw first;
+}
+function finishBuiltinNative(
+  device: WebglDevice,
+  bounds: WebglBounds,
+  phase: BuiltinLifetime,
+  failed: boolean,
+) {
+  if (!failed) releaseBuiltinNative(device, bounds, phase);
+}
+
 type EffectPaintLifetime = {
   managed: boolean;
   shader?: string | undefined;
@@ -642,21 +771,27 @@ export class WebglEffects {
         continue;
       }
       const p = effect.params;
-      switch (effect.effect) {
-        case "light.radial": {
-          // Skia dithers the premultiplied gradient before source-over and clips
-          // its RGB to source alpha. Preserve that order at the radial boundary.
-          const center = [p.x as number, p.y as number],
-            radius = p.radius as number;
-          const uniforms = {
-            center,
-            radius,
-            strength: p.strength as number,
-            color: (p.color as Rgba).map(
-              (value) => Math.round(value * 255) / 255,
-            ),
-          };
-          const light = `uniform vec2 center; uniform float radius; uniform float strength; uniform vec4 color;
+      let phase: BuiltinLifetime | undefined;
+      try {
+        switch (effect.effect) {
+          case "light.radial": {
+            phase = builtinLifetime();
+            // Skia dithers the premultiplied gradient before source-over and clips
+            // its RGB to source alpha. Preserve that order at the radial boundary.
+            const center = builtinArray(phase, [p.x as number, p.y as number]),
+              radius = p.radius as number;
+            const uniforms = builtinUniforms(phase, {
+              center,
+              radius,
+              strength: p.strength as number,
+              color: builtinArray(
+                phase,
+                (p.color as Rgba).map((value) => Math.round(value * 255) / 255),
+              ),
+            });
+            const light = builtinText(
+              phase,
+              `uniform vec2 center; uniform float radius; uniform float strength; uniform vec4 color;
           vec4 radial() {
             float a=clamp(1.0-distance(gl_FragCoord.xy,center)/radius,0.0,1.0)*color.a*strength;
             vec4 result=vec4(color.rgb*a,a);
@@ -665,92 +800,119 @@ export class WebglEffects {
             float dither=(float(matrix)/64.0-63.0/128.0)/255.0;
             result.rgb=clamp(result.rgb+dither,vec3(0.0),vec3(result.a));
             return result;
-          }`;
-          // Pixels at or beyond the radius keep their stored bytes exactly.
-          const reach = {
-            left: Math.max(0, Math.floor(center[0]! - radius) - 1),
-            top: Math.max(0, Math.floor(center[1]! - radius) - 1),
-            right: Math.min(dst.width, Math.ceil(center[0]! + radius) + 1),
-            bottom: Math.min(dst.height, Math.ceil(center[1]! + radius) + 1),
-          };
-          const lit = !dst.screen
-            ? undefined
-            : reach.right <= reach.left || reach.bottom <= reach.top
-              ? null
-              : this.device.drawRegion(dst, reach);
-          if (lit === null) break;
-          const solid = lit ? this.device.solidColor(dst, lit) : undefined;
-          if (solid) {
-            // A freshly cleared opaque screen needs no snapshot: fetch its
-            // stored bytes from one texel, converted as any backdrop texel.
-            const backdrop = this.device.surface(1, 1);
-            try {
-              const bytes = allocateRenderPixels(
-                4,
-                () => new Uint8Array(solid),
-              );
+          }`,
+            );
+            // Pixels at or beyond the radius keep their stored bytes exactly.
+            const reach = builtinBox(phase, {
+              left: Math.max(0, Math.floor(center[0]! - radius) - 1),
+              top: Math.max(0, Math.floor(center[1]! - radius) - 1),
+              right: Math.min(dst.width, Math.ceil(center[0]! + radius) + 1),
+              bottom: Math.min(dst.height, Math.ceil(center[1]! + radius) + 1),
+            });
+            const lit = !dst.screen
+              ? undefined
+              : reach.right <= reach.left || reach.bottom <= reach.top
+                ? null
+                : this.device.drawRegion(dst, reach);
+            if (lit === null) break;
+            const solid = lit ? this.device.solidColor(dst, lit) : undefined;
+            if (solid) {
+              // A freshly cleared opaque screen needs no snapshot: fetch its
+              // stored bytes from one texel, converted as any backdrop texel.
+              phase.cleanup = "plain";
+              const backdrop = (phase.source = this.device.surface(1, 1));
+              let failed = false;
               try {
-                this.device.uploadBytes(backdrop, bytes);
-              } finally {
-                releaseRenderPixels(bytes);
-              }
-              this.device.pass(
-                `${light} void main() {
+                const bytes = allocateRenderPixels(
+                  4,
+                  () =>
+                    (phase!.values = new Uint8Array(
+                      solid,
+                    )) as Uint8Array<ArrayBuffer>,
+                );
+                try {
+                  this.device.uploadBytes(backdrop, bytes);
+                } finally {
+                  releaseRenderPixels(bytes);
+                  phase.values = undefined;
+                }
+                this.device.pass(
+                  builtinText(
+                    phase,
+                    `${light} void main() {
                 vec4 result=radial();
                 pixel=bytes(result+texelFetch(source,ivec2(0),0)*(1.0-result.a));
               }`,
-                dst,
-                [backdrop],
-                uniforms,
-                false,
-                lit,
-              );
-            } finally {
-              this.device.release(backdrop);
+                  ),
+                  dst,
+                  builtinInputs(phase, [backdrop]),
+                  uniforms,
+                  false,
+                  lit,
+                );
+              } catch (error) {
+                failed = true;
+                try {
+                  releaseBuiltinNative(this.device, this.bounds, phase);
+                } catch {
+                  /* Preserve original radial failure. */
+                }
+                throw error;
+              } finally {
+                finishBuiltinNative(this.device, this.bounds, phase, failed);
+              }
+              break;
             }
-            break;
-          }
-          this.replace(
-            dst,
-            `${light} void main() {
+            this.replace(
+              dst,
+              builtinText(
+                phase,
+                `${light} void main() {
             vec4 result=radial();
             pixel=bytes(result+texture(source,uv)*(1.0-result.a));
           }`,
-            [dst],
-            uniforms,
-            lit,
-          );
-          break;
-        }
-        case "particles.rise": {
-          const particles = {
-            progress: p.progress as number,
-            count: p.count as number,
-            radius: p.radius as number,
-            opacity: p.opacity as number,
-            seed: p.seed as number,
-            color: cssColor(p.color as Rgba),
-          };
-          if (dst.screen) this.particles(dst, particles);
-          else
-            this.paint(
-              dst,
-              (ctx) =>
-                paintRisingParticles(ctx, particles, dst.width, dst.height),
-              blendShader("normal", true),
+              ),
+              builtinInputs(phase, [dst]),
+              uniforms,
+              lit,
             );
-          break;
-        }
-        case "stylize.grain": {
-          const seed =
-            ((p.seed as number) + Math.floor(p.evolution as number) * 7919) >>>
-            0;
-          // The grain repeats every 128 pixels. Evaluate the generator once per
-          // tile texel, storing its exact byte alpha, instead of per frame pixel.
-          const tile = this.device.surface(128, 128);
-          try {
-            this.device.pass(
-              `uniform vec2 seedParts; uniform float amount;
+            break;
+          }
+          case "particles.rise": {
+            phase = builtinLifetime();
+            const particles = (phase.particles = {
+              progress: p.progress as number,
+              count: p.count as number,
+              radius: p.radius as number,
+              opacity: p.opacity as number,
+              seed: p.seed as number,
+              color: builtinText(phase, cssColor(p.color as Rgba)),
+            });
+            if (dst.screen) this.particles(dst, particles);
+            else
+              this.paint(
+                dst,
+                builtinReference(phase, (ctx: CanvasRenderingContext2D) =>
+                  paintRisingParticles(ctx, particles, dst.width, dst.height),
+                ),
+                builtinText(phase, blendShader("normal", true)),
+              );
+            break;
+          }
+          case "stylize.grain": {
+            phase = builtinLifetime();
+            const seed =
+              ((p.seed as number) +
+                Math.floor(p.evolution as number) * 7919) >>>
+              0;
+            // The grain repeats every 128 pixels. Evaluate the generator once per
+            // tile texel, storing its exact byte alpha, instead of per frame pixel.
+            phase.cleanup = "grain";
+            const tile = (phase.source = this.device.surface(128, 128));
+            let failed = false;
+            try {
+              this.device.pass(
+                `uniform vec2 seedParts; uniform float amount;
           uint advance(uint state,uint count) {
             uint a=1664525u,c=1013904223u,m=1u,b=0u;
             for(int i=0;i<16;i++) {
@@ -766,123 +928,182 @@ export class WebglEffects {
             uint next=value*1664525u+1013904223u;
             pixel=vec4(value<2147483648u?0.0:1.0,0.0,0.0,floor(float(next)*(1.0/4294967296.0)*amount*255.0+0.5)/255.0);
           }`,
-              tile,
-              [],
-              {
-                seedParts: [seed & 65535, seed >>> 16],
-                amount: p.amount as number,
-              },
-            );
-            // Fixed-function source-over equals bytes(g + d·(1−a)) for every
-            // grain byte and backdrop byte, without copying the backdrop.
-            const gl = this.device.gl;
-            gl.enable(gl.BLEND);
-            gl.blendEquation(gl.FUNC_ADD);
-            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-            this.device.pass(
-              `void main() {
+                tile,
+                builtinInputs(phase, []),
+                builtinUniforms(phase, {
+                  seedParts: builtinArray(phase, [seed & 65535, seed >>> 16]),
+                  amount: p.amount as number,
+                }),
+              );
+              // Fixed-function source-over equals bytes(g + d·(1−a)) for every
+              // grain byte and backdrop byte, without copying the backdrop.
+              const gl = this.device.gl;
+              gl.enable(gl.BLEND);
+              gl.blendEquation(gl.FUNC_ADD);
+              gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+              this.device.pass(
+                `void main() {
             vec4 grain=texelFetch(source,ivec2(uvec2(gl_FragCoord.xy)%128u),0);
             float a=floor(grain.a*255.0+0.5)/255.0;
             pixel=vec4(vec3(grain.r*a),a);
           }`,
-              dst,
-              [tile],
-              {},
-              true,
-            );
-          } finally {
-            this.device.gl.disable(this.device.gl.BLEND);
-            this.device.release(tile);
-          }
-          break;
-        }
-        case "light.sweep": {
-          if (!effect.placement)
-            throw new Error(
-              "comp-effect-space: light.sweep requires layer coordinates",
-            );
-          const placement = effect.placement;
-          const width = p.width as number,
-            height = p.height as number,
-            left = p.left as number,
-            top = p.top as number;
-          const regionWidth = p.regionWidth as number,
-            regionHeight = p.regionHeight as number,
-            band = p.band as number;
-          // The light is clipped to this placed rectangle; upload only its
-          // device bounds, padded beyond antialiased clip coverage.
-          const world = new DOMMatrix();
-          for (const matrix of placement.transforms ?? [placement.matrix])
-            world.multiplySelf(new DOMMatrix(matrix));
-          const corners = [
-            [left * width, top * height],
-            [(left + regionWidth) * width, top * height],
-            [(left + regionWidth) * width, (top + regionHeight) * height],
-            [left * width, (top + regionHeight) * height],
-          ].map(([x, y]) => world.transformPoint({ x: x!, y: y! }));
-          const painted = corners.every(
-            (point) => Number.isFinite(point.x) && Number.isFinite(point.y),
-          )
-            ? {
-                left: Math.floor(Math.min(...corners.map((c) => c.x))) - 2,
-                top: Math.floor(Math.min(...corners.map((c) => c.y))) - 2,
-                right: Math.ceil(Math.max(...corners.map((c) => c.x))) + 2,
-                bottom: Math.ceil(Math.max(...corners.map((c) => c.y))) + 2,
+                dst,
+                builtinInputs(phase, [tile]),
+                builtinUniforms(phase, {}),
+                true,
+              );
+            } catch (error) {
+              failed = true;
+              try {
+                releaseBuiltinNative(this.device, this.bounds, phase);
+              } catch {
+                /* Preserve original grain failure. */
               }
-            : undefined;
-          this.paint(
-            dst,
-            (ctx) => {
-              if (placement.transforms)
-                for (const matrix of placement.transforms)
-                  ctx.transform(...matrix);
-              else ctx.transform(...placement.matrix);
-              ctx.beginPath();
-              ctx.rect(
+              throw error;
+            } finally {
+              finishBuiltinNative(this.device, this.bounds, phase, failed);
+            }
+            break;
+          }
+          case "light.sweep": {
+            if (!effect.placement)
+              throw new Error(
+                "comp-effect-space: light.sweep requires layer coordinates",
+              );
+            phase = builtinLifetime();
+            const placement = effect.placement;
+            const width = p.width as number,
+              height = p.height as number,
+              left = p.left as number,
+              top = p.top as number;
+            const regionWidth = p.regionWidth as number,
+              regionHeight = p.regionHeight as number,
+              band = p.band as number;
+            // The light is clipped to this placed rectangle; upload only its
+            // device bounds, padded beyond antialiased clip coverage.
+            const world = builtinReference(phase, new DOMMatrix());
+            for (const matrix of placement.transforms ??
+              (phase.fallback = [placement.matrix])) {
+              admitBuiltinMatrix(phase);
+              world.multiplySelf(
+                builtinReference(phase, new DOMMatrix(matrix)),
+              );
+            }
+            const corners = (phase.corners = builtinReference(phase, [
+              builtinArray(phase, [left * width, top * height]),
+              builtinArray(phase, [(left + regionWidth) * width, top * height]),
+              builtinArray(phase, [
+                (left + regionWidth) * width,
+                (top + regionHeight) * height,
+              ]),
+              builtinArray(phase, [
                 left * width,
-                top * height,
-                regionWidth * width,
-                regionHeight * height,
-              );
-              ctx.clip();
-              const center =
-                  (left -
-                    band +
-                    (regionWidth + band * 2) * (p.progress as number)) *
-                  width,
-                radius = band * width;
-              const gradient = ctx.createLinearGradient(
-                center - radius,
-                0,
-                center + radius,
-                0,
-              );
-              gradient.addColorStop(0, "#FFFFFF00");
-              gradient.addColorStop(0.5, "#FFFFFF");
-              gradient.addColorStop(1, "#FFFFFF00");
-              ctx.fillStyle = gradient;
-              ctx.fillRect(0, 0, width, height);
-            },
-            `uniform float opacity; void main() {
+                (top + regionHeight) * height,
+              ]),
+            ]).map(([x, y]) =>
+              world.transformPoint(builtinReference(phase!, { x: x!, y: y! })),
+            ));
+            const painted = corners.every(
+              (point) => Number.isFinite(point.x) && Number.isFinite(point.y),
+            )
+              ? builtinBox(phase, {
+                  left:
+                    Math.floor(
+                      Math.min(
+                        ...builtinArray(
+                          phase,
+                          corners.map((c) => c.x),
+                        ),
+                      ),
+                    ) - 2,
+                  top:
+                    Math.floor(
+                      Math.min(
+                        ...builtinArray(
+                          phase,
+                          corners.map((c) => c.y),
+                        ),
+                      ),
+                    ) - 2,
+                  right:
+                    Math.ceil(
+                      Math.max(
+                        ...builtinArray(
+                          phase,
+                          corners.map((c) => c.x),
+                        ),
+                      ),
+                    ) + 2,
+                  bottom:
+                    Math.ceil(
+                      Math.max(
+                        ...builtinArray(
+                          phase,
+                          corners.map((c) => c.y),
+                        ),
+                      ),
+                    ) + 2,
+                })
+              : undefined;
+            this.paint(
+              dst,
+              builtinReference(phase, (ctx: CanvasRenderingContext2D) => {
+                if (placement.transforms)
+                  for (const matrix of placement.transforms)
+                    ctx.transform(...matrix);
+                else ctx.transform(...placement.matrix);
+                ctx.beginPath();
+                ctx.rect(
+                  left * width,
+                  top * height,
+                  regionWidth * width,
+                  regionHeight * height,
+                );
+                ctx.clip();
+                const center =
+                    (left -
+                      band +
+                      (regionWidth + band * 2) * (p.progress as number)) *
+                    width,
+                  radius = band * width;
+                const gradient = builtinReference(
+                  phase!,
+                  ctx.createLinearGradient(
+                    center - radius,
+                    0,
+                    center + radius,
+                    0,
+                  ),
+                );
+                gradient.addColorStop(0, "#FFFFFF00");
+                gradient.addColorStop(0.5, "#FFFFFF");
+                gradient.addColorStop(1, "#FFFFFF00");
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+              }),
+              `uniform float opacity; void main() {
             vec4 dst=texture(backdrop,uv), light=bytes(texture(source,uv)*dst.a);
             light=bytes(light*opacity);
             pixel=bytes(vec4(light.rgb*dst.a+dst.rgb*(1.0-light.a),dst.a));
           }`,
-            p.strength as number,
-            this.bounds.region(dst),
-            painted,
-          );
-          break;
-        }
-        case "blur.gaussian":
-          this.blur(dst, p.radius as number);
-          break;
-        case "blur.directional": {
-          if (!p.length) break;
-          this.bounds.blur(dst, Math.ceil((p.length as number) / 2) + 2);
-          this.replace(
-            dst,
-            `${SAMPLE}
+              p.strength as number,
+              this.bounds.region(dst),
+              painted,
+            );
+            break;
+          }
+          case "blur.gaussian":
+            this.blur(dst, p.radius as number);
+            break;
+          case "blur.directional": {
+            if (!p.length) break;
+            phase = builtinLifetime();
+            this.bounds.blur(dst, Math.ceil((p.length as number) / 2) + 2);
+            this.replace(
+              dst,
+              builtinText(
+                phase,
+                `${SAMPLE}
 ${FLOAT32_RATIONAL_SUM}
           uniform float length; uniform vec2 direction; uniform float samples;
           void main() {
@@ -902,70 +1123,99 @@ ${FLOAT32_RATIONAL_SUM}
             uvec3 rgb=sum.a>0.0 ? uvec3(straightByte(sum.r,sum.a),straightByte(sum.g,sum.a),straightByte(sum.b,sum.a)) : uvec3(0u);
             pixel=vec4(vec3((rgb*alpha+127u)/255u),float(alpha))/255.0;
           }`,
-            [dst],
-            {
-              length: p.length as number,
-              direction: [
-                Math.cos(((p.angle as number) * Math.PI) / 180),
-                Math.sin(((p.angle as number) * Math.PI) / 180),
-              ],
-              samples: p.samples as number,
-            },
-            this.bounds.region(dst),
-          );
-          break;
-        }
-        case "distort.sine": {
-          if (!p.amount) break;
-          this.bounds.blur(dst, Math.ceil(Math.abs(p.amount as number)) + 2);
-          // Offsets are scalar control data, computed with the same Math.sin as
-          // authored motion. SwiftShader's approximate sin can cross a 1/16-pixel
-          // sampling boundary even when the source double is on the other side.
-          const offsets = this.device.surface(1, dst.height, true);
-          try {
-            const values = allocateRenderPixels(
-              dst.height * 16,
-              () => new Float32Array(dst.height * 4),
+              ),
+              builtinInputs(phase, [dst]),
+              builtinUniforms(phase, {
+                length: p.length as number,
+                direction: builtinArray(phase, [
+                  Math.cos(((p.angle as number) * Math.PI) / 180),
+                  Math.sin(((p.angle as number) * Math.PI) / 180),
+                ]),
+                samples: p.samples as number,
+              }),
+              this.bounds.region(dst),
             );
-            for (let y = 0; y < dst.height; y++)
-              values[y * 4] =
-                Math.sin(
-                  (y / (p.wavelength as number)) * Math.PI * 2 +
-                    (p.phase as number),
-                ) * (p.amount as number);
+            break;
+          }
+          case "distort.sine": {
+            if (!p.amount) break;
+            phase = builtinLifetime();
+            this.bounds.blur(dst, Math.ceil(Math.abs(p.amount as number)) + 2);
+            // Offsets are scalar control data, computed with the same Math.sin as
+            // authored motion. SwiftShader's approximate sin can cross a 1/16-pixel
+            // sampling boundary even when the source double is on the other side.
+            phase.cleanup = "plain";
+            const offsets = (phase.source = this.device.surface(
+              1,
+              dst.height,
+              true,
+            ));
+            let failed = false;
             try {
-              this.device.uploadFloats(offsets, values);
-            } finally {
-              releaseRenderPixels(values);
-            }
-            this.replace(
-              dst,
-              `${HORIZONTAL_SAMPLE}
+              const values = allocateRenderPixels(
+                dst.height * 16,
+                () =>
+                  (phase!.values = new Float32Array(
+                    dst.height * 4,
+                  )) as Float32Array<ArrayBuffer>,
+              );
+              try {
+                for (let y = 0; y < dst.height; y++)
+                  values[y * 4] =
+                    Math.sin(
+                      (y / (p.wavelength as number)) * Math.PI * 2 +
+                        (p.phase as number),
+                    ) * (p.amount as number);
+                this.device.uploadFloats(offsets, values);
+              } finally {
+                releaseRenderPixels(values);
+                phase.values = undefined;
+              }
+              this.replace(
+                dst,
+                builtinText(
+                  phase,
+                  `${HORIZONTAL_SAMPLE}
             void main() {
               float shift=texelFetch(backdrop,ivec2(0,int(gl_FragCoord.y)),0).r;
               pixel=translatedX(shift);
             }`,
-              [dst, offsets],
-              {},
-              this.bounds.region(dst),
-            );
-          } finally {
-            this.device.release(offsets);
+                ),
+                builtinInputs(phase, [dst, offsets]),
+                builtinUniforms(phase, {}),
+                this.bounds.region(dst),
+              );
+            } catch (error) {
+              failed = true;
+              try {
+                releaseBuiltinNative(this.device, this.bounds, phase);
+              } catch {
+                /* Preserve original sine failure. */
+              }
+              throw error;
+            } finally {
+              finishBuiltinNative(this.device, this.bounds, phase, failed);
+            }
+            break;
           }
-          break;
-        }
-        case "light.glow": {
-          if (!p.radius || !p.intensity) break;
-          // Canvas filters the opacity-scaled input; scaling the blurred result
-          // changes byte rounding and can accumulate through a matte or effect stack.
-          const glow = this.device.surface(dst.width, dst.height);
-          const inputRegion = this.bounds.region(dst);
-          this.bounds.clear(glow, null);
-          if (inputRegion === undefined) this.bounds.full(glow);
-          else this.bounds.include(glow, inputRegion);
-          try {
-            this.device.pass(
-              `uniform float threshold; uniform float opacity;
+          case "light.glow": {
+            if (!p.radius || !p.intensity) break;
+            phase = builtinLifetime();
+            // Canvas filters the opacity-scaled input; scaling the blurred result
+            // changes byte rounding and can accumulate through a matte or effect stack.
+            phase.cleanup = "glow";
+            const glow = (phase.source = this.device.surface(
+              dst.width,
+              dst.height,
+            ));
+            let failed = false;
+            try {
+              const inputRegion = this.bounds.region(dst);
+              this.bounds.clear(glow, null);
+              if (inputRegion === undefined) this.bounds.full(glow);
+              else this.bounds.include(glow, inputRegion);
+              this.device.pass(
+                `uniform float threshold; uniform float opacity;
             void main() {
               vec4 value=texture(source,uv);
               vec3 rgb=value.a>0.0?bytes(vec4(value.rgb/value.a,1.0)).rgb:vec3(0.0);
@@ -974,47 +1224,61 @@ ${FLOAT32_RATIONAL_SUM}
               vec4 thresholded=floor(bytes(vec4(rgb*alpha,alpha))*255.0+0.5);
               pixel=floor(thresholded*(floor(opacity*255.0+0.5)+1.0)/256.0)/255.0;
             }`,
-              glow,
-              [dst],
-              {
-                threshold: p.threshold as number,
-                opacity: p.intensity as number,
-              },
-              false,
-              inputRegion,
-            );
-            this.blur(glow, p.radius as number);
-            this.bounds.include(dst, this.bounds.snapshot(glow));
-            this.replace(
-              dst,
-              blendShader("screen"),
-              [glow, dst],
-              {
-                opacity: 1,
-              },
-              this.bounds.region(dst),
-            );
-          } finally {
-            this.bounds.release(glow);
-            this.device.release(glow);
+                glow,
+                builtinInputs(phase, [dst]),
+                builtinUniforms(phase, {
+                  threshold: p.threshold as number,
+                  opacity: p.intensity as number,
+                }),
+                false,
+                inputRegion,
+              );
+              this.blur(glow, p.radius as number);
+              this.bounds.include(dst, this.bounds.snapshot(glow));
+              this.replace(
+                dst,
+                builtinText(phase, blendShader("screen")),
+                builtinInputs(phase, [glow, dst]),
+                builtinUniforms(phase, {
+                  opacity: 1,
+                }),
+                this.bounds.region(dst),
+              );
+            } catch (error) {
+              failed = true;
+              try {
+                releaseBuiltinNative(this.device, this.bounds, phase);
+              } catch {
+                /* Preserve original glow failure. */
+              }
+              throw error;
+            } finally {
+              finishBuiltinNative(this.device, this.bounds, phase, failed);
+            }
+            break;
           }
-          break;
+          default:
+            throw new Error(
+              `comp-webgl-effect: ${effect.effect} is not implemented`,
+            );
         }
-        default:
-          throw new Error(
-            `comp-webgl-effect: ${effect.effect} is not implemented`,
-          );
+        phase ??= builtinLifetime(1024);
+        if (
+          !(phase.kinds = [
+            "blur.gaussian",
+            "blur.directional",
+            "distort.sine",
+            "light.glow",
+            "light.sweep",
+          ]).includes(effect.effect)
+        )
+          this.bounds.full(dst);
+      } finally {
+        if (phase) {
+          if (phase.managed) releaseRenderMetadata(phase);
+          else clearBuiltin(phase);
+        }
       }
-      if (
-        ![
-          "blur.gaussian",
-          "blur.directional",
-          "distort.sine",
-          "light.glow",
-          "light.sweep",
-        ].includes(effect.effect)
-      )
-        this.bounds.full(dst);
     }
   }
 }

@@ -1251,6 +1251,28 @@ new paint tests. Remaining caller effects/images/depth/controllers/provider/grap
 font/common helper/registry/ledger/Node, production/aggregate admission, speed/full
 gate remain pending. [Evidence](./composition-ce15-effect-paint-metadata-results.json).
 
+## Accepted built-in effect metadata checkpoint — 2026-10-08
+
+Seven built-ins admit actual arena/lists/controls at 65536 before original fixed
+producers (largest body 7222 UTF16 units); capture actual radial vectors/maps/record/
+body/reach, particle parameter/CSS/callback/body, grain data, directional body/
+vector/inputs/uniforms and sine view reference. Sweep owns actual matrices/corners/
+points/maps/box/callback/gradient references; grow 1280 before each dynamic matrix.
+Final five-kind list admits 1024 before original factory even on zero-work routes.
+Keep through original consumers then clear owned data and drop references; borrowed
+params/colors/surfaces/placement/transforms remain. Sine generation failures detach
+actual pixel backing before upload; grain disable/source and glow early bounds/
+cleanup visit every owner and preserve original null over secondary failures.
+
+Fifteen whole original native traces remain exact. Build/lint/boundaries and all
+375 focused tests, thirteen new regressions, complete audit 144/8,000, 96 RPC
+snapshots, prior native probes, WebGL/providers and 69 typography tests pass; glyph
+1.395534× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames match
+pushed `dd4ec7b`. Strict fixture type and double-spy failures are retained. Remaining
+plugin/effect controllers/images/depth/provider/graph/font/checksum/common helper/
+registry/ledger/Node, production/aggregate admission, speed/full gate remain pending.
+[Evidence](./composition-ce15-builtins-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
