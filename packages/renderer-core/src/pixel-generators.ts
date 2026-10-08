@@ -1,5 +1,11 @@
 import { seededRandom } from "./commerce-effect-motion.ts";
 import type { PixelSurface } from "./pixel-effects.ts";
+import { renderMemory } from "./managed-memory-context.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+  resizeRenderMetadata,
+} from "./managed-metadata.ts";
 
 export function paintRadialLight(
   ctx: CanvasRenderingContext2D,
@@ -45,24 +51,59 @@ export function risingParticles(
   width: number,
   height: number,
 ) {
-  const random = seededRandom(effect.seed);
-  const progress = effect.progress;
-  const particles: { alpha: number; x: number; y: number; radius: number }[] =
-    [];
-  for (let index = 0; index < effect.count; index++) {
-    const x = random() * width,
-      offset = random(),
-      radius = effect.radius * (0.35 + random() * 0.65),
-      sway = 10 + random() * 30;
-    const phase = (offset + progress) % 1;
-    particles.push({
-      alpha: effect.opacity * Math.sin(phase * Math.PI) ** 2,
-      x: x + Math.sin(phase * Math.PI * 2) * sway,
-      y: height * (1 - phase),
-      radius,
-    });
+  const managed = renderMemory() !== undefined;
+  const setup = allocateRenderMetadata<{ random?: (() => number) | undefined }>(
+    512,
+    () => ({}),
+    false,
+    (value) => {
+      value.random = undefined;
+    },
+  );
+  let particles:
+    | { alpha: number; x: number; y: number; radius: number }[]
+    | undefined;
+  let bytes = 512;
+  try {
+    const random = (setup.random = seededRandom(effect.seed));
+    const progress = effect.progress;
+    particles = allocateRenderMetadata(
+      bytes,
+      () => [],
+      false,
+      (value) => {
+        value.length = 0;
+      },
+    );
+    for (let index = 0; index < effect.count; index++) {
+      if (managed) {
+        resizeRenderMetadata(particles, bytes + 128);
+        bytes += 128;
+      }
+      const x = random() * width,
+        offset = random(),
+        radius = effect.radius * (0.35 + random() * 0.65),
+        sway = 10 + random() * 30;
+      const phase = (offset + progress) % 1;
+      particles.push({
+        alpha: effect.opacity * Math.sin(phase * Math.PI) ** 2,
+        x: x + Math.sin(phase * Math.PI * 2) * sway,
+        y: height * (1 - phase),
+        radius,
+      });
+    }
+    return particles;
+  } catch (error) {
+    try {
+      if (particles) releaseRenderMetadata(particles);
+    } catch {
+      /* Preserve original particle/factory/getter failure. */
+    }
+    throw error;
+  } finally {
+    setup.random = undefined;
+    releaseRenderMetadata(setup);
   }
-  return particles;
 }
 
 export function paintRisingParticles(
@@ -72,14 +113,32 @@ export function paintRisingParticles(
   height: number,
 ) {
   ctx.save();
-  ctx.fillStyle = effect.color;
-  for (const particle of risingParticles(effect, width, height)) {
-    ctx.globalAlpha = particle.alpha;
-    ctx.beginPath();
-    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-    ctx.fill();
+  let particles: ReturnType<typeof risingParticles> | undefined;
+  let restored = false;
+  try {
+    ctx.fillStyle = effect.color;
+    particles = risingParticles(effect, width, height);
+    for (const particle of particles) {
+      ctx.globalAlpha = particle.alpha;
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  } catch (error) {
+    restored = true;
+    try {
+      ctx.restore();
+    } catch {
+      /* Preserve original particle/draw failure. */
+    }
+    throw error;
+  } finally {
+    try {
+      if (!restored) ctx.restore();
+    } finally {
+      if (particles) releaseRenderMetadata(particles);
+    }
   }
-  ctx.restore();
 }
 export function paintFilmGrain(
   ctx: CanvasRenderingContext2D,

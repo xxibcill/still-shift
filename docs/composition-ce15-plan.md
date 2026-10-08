@@ -1205,6 +1205,31 @@ image/depth/controller/provider/graph/font/common helper/registry/ledger/Node an
 production/aggregate admission, speed and full gate remain pending.
 [Evidence](./composition-ce15-gaussian-fallback-metadata-results.json).
 
+## Accepted seeded particle/consumer metadata checkpoint — 2026-10-08
+
+Admit 512 for actual seed setup/control before original seed/PRNG production;
+read original seed/progress then admit actual output array at 512. Grow actual
+array owner by 128 before each original particle producer, preserving original
+loop count/getters/four random draws/sine/modulo/numeric order. Output arrays/objects
+stay through consumers and clear after explicit/scratch/allocator cleanup. Canvas
+save/style/generation/draw/restore order stays; actual array releases after restore,
+including quota/draw failure, with original null preserved over secondary restore.
+WebGL region holder/lists/native pointers admit 1024 before factories, 128 before
+each actual box, 256 before each original union/splice. Capture actual boxes/lists/
+splice arrays, release generated particles after bounds consumption, retain boxes
+through native paints, then drop references without changing borrowed box values.
+Source/raster cleanup visits both despite first failure, preserving original null.
+
+Six complete original geometry/Canvas traces and three complete original WebGL
+traces (70/190/4014 calls) remain exact. Build/lint/boundaries, 351 focused including
+thirteen new tests, complete audit 144/8,000, 96 RPC snapshots, prior native probes,
+WebGL/providers and 69 typography tests pass; glyph 1.468647× meets unchanged
+1.5 maximum. All 64 exports / 768 bodies/frames match pushed `6c2f611`. Unused test
+binding failure is retained. Caller CSS/effect records and remaining effect/image/
+depth/controller/provider/graph/font/common helper/registry/ledger/Node, production/
+aggregate admission, speed/full gate remain pending.
+[Evidence](./composition-ce15-particles-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

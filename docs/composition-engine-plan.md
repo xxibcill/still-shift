@@ -5132,15 +5132,14 @@ raster/framebuffer/readback/path/paint-bound/replay/recording group/command/mark
 snapshot/call-input/controller/wrapper and device/native-surface/pool-key/array/pass/
 row-view/swap/dirty-set/cached-color/clip-intersection, device shader-source/program/
 uniform/diagnostic, paint batch/geometry/shader/uniform/input, Gaussian kernel/
-rescale/box/fallback and managed plan/sum-shader cache metadata now pass 338
-focused tests, the complete audit, 22 moving/blurred and ten stationary native
-frames and 96 owned RPC snapshots. Actual fallback weight part/flat-map/Float32-view/
-shader/vector/uniform/input/native-reference data pre-admits, stays through original
-consumers, then clears. Complete original sigma 2/16 native/Float32 traces and
-quota/lifetime/partial/constructor/pass/null/cleanup/retry pass. Native recording/
-shader/cache probes, WebGL/providers and 69 typography tests pass; glyph 1.430645×
-meets unchanged 1.5 maximum. All 64 exports / 768 bodies and frames retain prior
-exact output. Recording/device/pool/shader/paint/
+rescale/box/fallback, managed plan/sum-shader cache and particle/Canvas/WebGL region
+metadata now pass 351 focused tests, the complete audit, 22 moving/blurred and ten
+stationary native frames and 96 owned RPC snapshots. Actual particle arrays/objects/
+setup, boxes/unions/splice/native references pre-admit, stay through consumers, then
+clear. Six original geometry/Canvas and three WebGL traces, getters/four draws/count/
+quota/lifetime/null/retry pass. Native recording/shader/cache probes, WebGL/providers
+and 69 typography tests pass; glyph 1.468647× meets unchanged 1.5 maximum. All
+64 exports / 768 bodies and frames retain prior exact output. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

@@ -6,6 +6,7 @@ import {
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
+  resizeRenderMetadata,
 } from "../../managed-metadata.ts";
 import { renderGpuEffect } from "./effect-plugins.ts";
 import { FLOAT32_RATIONAL_SUM } from "./webgl-float-sum.ts";
@@ -86,6 +87,58 @@ function releaseGaussianSurfaces(device: WebglDevice, phase: GaussianLifetime) {
   if (failed) throw first;
 }
 
+type ParticleRegionsLifetime = {
+  managed: boolean;
+  bytes: number;
+  rects: Bounds[];
+  boxes: Bounds[];
+  removed: Bounds[][];
+  pixels?: ReturnType<Canvas2dBackend["createSurface"]> | undefined;
+  source?: WebglSurface | undefined;
+};
+function clearParticleRegions(value: ParticleRegionsLifetime) {
+  value.rects.length = value.boxes.length = 0;
+  for (const removed of value.removed) removed.length = 0;
+  value.removed.length = 0;
+  value.pixels = value.source = undefined;
+}
+function growParticleRegions(phase: ParticleRegionsLifetime, bytes: number) {
+  if (phase.managed) {
+    resizeRenderMetadata(phase, phase.bytes + bytes);
+    phase.bytes += bytes;
+  }
+}
+function releaseParticleNative(
+  device: WebglDevice,
+  raster: Canvas2dBackend,
+  phase: ParticleRegionsLifetime,
+) {
+  let failed = false;
+  let first: unknown;
+  const source = phase.source,
+    pixels = phase.pixels;
+  phase.source = phase.pixels = undefined;
+  if (source) {
+    try {
+      device.release(source);
+    } catch (error) {
+      failed = true;
+      first = error;
+    }
+  }
+  if (pixels) {
+    try {
+      raster.releaseSurface(pixels);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        first = error;
+      }
+    }
+  }
+  if (failed) throw first;
+}
+
 const SAMPLE = `
 vec2 pixelTranslation(vec2 offset) {
   vec2 integral=floor(offset+0.5);
@@ -157,55 +210,97 @@ export class WebglEffects {
     dst: WebglSurface,
     effect: Parameters<typeof paintRisingParticles>[1],
   ) {
-    const rects: Bounds[] = [];
-    for (const particle of risingParticles(effect, dst.width, dst.height)) {
-      let rect = {
-        left: Math.max(0, Math.floor(particle.x - particle.radius) - 2),
-        top: Math.max(0, Math.floor(particle.y - particle.radius) - 2),
-        right: Math.min(dst.width, Math.ceil(particle.x + particle.radius) + 2),
-        bottom: Math.min(
-          dst.height,
-          Math.ceil(particle.y + particle.radius) + 2,
-        ),
-      };
-      if (rect.right <= rect.left || rect.bottom <= rect.top) continue;
-      for (let i = 0; i < rects.length; ) {
-        const other = rects[i]!;
-        if (
-          other.left < rect.right &&
-          rect.left < other.right &&
-          other.top < rect.bottom &&
-          rect.top < other.bottom
-        ) {
-          rect = {
-            left: Math.min(rect.left, other.left),
-            top: Math.min(rect.top, other.top),
-            right: Math.max(rect.right, other.right),
-            bottom: Math.max(rect.bottom, other.bottom),
-          };
-          rects.splice(i, 1);
-          i = 0;
-        } else i++;
-      }
-      rects.push(rect);
-    }
-    const pixels = this.raster.createSurface(dst.width, dst.height);
+    const phase = allocateRenderMetadata<ParticleRegionsLifetime>(
+      1024,
+      () => ({
+        managed: renderMemory() !== undefined,
+        bytes: 1024,
+        rects: [],
+        boxes: [],
+        removed: [],
+      }),
+      false,
+      clearParticleRegions,
+    );
+    let particles: ReturnType<typeof risingParticles> | undefined;
+    let cleaned = false;
     try {
+      const rects = phase.rects;
+      particles = risingParticles(effect, dst.width, dst.height);
+      for (const particle of particles) {
+        growParticleRegions(phase, 128);
+        let rect = {
+          left: Math.max(0, Math.floor(particle.x - particle.radius) - 2),
+          top: Math.max(0, Math.floor(particle.y - particle.radius) - 2),
+          right: Math.min(
+            dst.width,
+            Math.ceil(particle.x + particle.radius) + 2,
+          ),
+          bottom: Math.min(
+            dst.height,
+            Math.ceil(particle.y + particle.radius) + 2,
+          ),
+        };
+        phase.boxes.push(rect);
+        if (rect.right <= rect.left || rect.bottom <= rect.top) continue;
+        for (let i = 0; i < rects.length; ) {
+          const other = rects[i]!;
+          if (
+            other.left < rect.right &&
+            rect.left < other.right &&
+            other.top < rect.bottom &&
+            rect.top < other.bottom
+          ) {
+            growParticleRegions(phase, 256);
+            rect = {
+              left: Math.min(rect.left, other.left),
+              top: Math.min(rect.top, other.top),
+              right: Math.max(rect.right, other.right),
+              bottom: Math.max(rect.bottom, other.bottom),
+            };
+            phase.boxes.push(rect);
+            phase.removed.push(rects.splice(i, 1));
+            i = 0;
+          } else i++;
+        }
+        rects.push(rect);
+      }
+      releaseRenderMetadata(particles);
+      particles = undefined;
+      const pixels = (phase.pixels = this.raster.createSurface(
+        dst.width,
+        dst.height,
+      ));
       paintRisingParticles(pixels.ctx, effect, dst.width, dst.height);
       for (const rect of rects) {
-        const source = this.device.surface(
+        const source = (phase.source = this.device.surface(
           rect.right - rect.left,
           rect.bottom - rect.top,
-        );
+        ));
+        this.device.uploadRegion(source, pixels.canvas, rect.left, rect.top);
+        this.paints.draw(source, dst, rect, true);
+        phase.source = undefined;
+        this.device.release(source);
+      }
+    } catch (error) {
+      cleaned = true;
+      try {
+        releaseParticleNative(this.device, this.raster, phase);
+      } catch {
+        /* Preserve original particle/region/draw/native failure. */
+      }
+      throw error;
+    } finally {
+      try {
+        if (!cleaned) releaseParticleNative(this.device, this.raster, phase);
+      } finally {
         try {
-          this.device.uploadRegion(source, pixels.canvas, rect.left, rect.top);
-          this.paints.draw(source, dst, rect, true);
+          if (particles) releaseRenderMetadata(particles);
         } finally {
-          this.device.release(source);
+          if (phase.managed) releaseRenderMetadata(phase);
+          else clearParticleRegions(phase);
         }
       }
-    } finally {
-      this.raster.releaseSurface(pixels);
     }
   }
 
