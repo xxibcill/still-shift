@@ -389,6 +389,9 @@ export function hardwareDepthGrid(grid: DepthGrid) {
 }
 
 type Multisample = {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  nativeOwned: boolean;
   framebuffer: WebGLFramebuffer;
   color: WebGLRenderbuffer;
   width: number;
@@ -707,14 +710,16 @@ export class WebglDepthImages {
 
   private antialias(width: number, height: number, node: string) {
     const gl = this.device.gl;
+    const memory = renderMemory();
+    if (this.textureState.closed) throw Error("Depth renderer is disposed");
+    if (memory && this.textureState.memory !== memory)
+      throw Error("Depth multisample control belongs to another allocator");
     if (this.multisample?.width === width && this.multisample.height === height)
       return this.multisample;
     if (this.multisample) {
-      gl.deleteFramebuffer(this.multisample.framebuffer);
-      releaseRenderStorage(this.multisample.color, (value) =>
-        gl.deleteRenderbuffer(value),
-      );
+      const previous = this.multisample;
       this.multisample = undefined;
+      this.releaseMultisample(previous);
     }
     const samples = gl.getInternalformatParameter(
       gl.RENDERBUFFER,
@@ -727,6 +732,53 @@ export class WebglDepthImages {
         "Depth-image parity requires four-sample local antialiasing",
         { node },
       );
+    return (this.multisample = allocateRenderMetadata<Multisample>(
+      1024,
+      () => this.multisampleRecord(width, height, node, memory),
+      true,
+      (value) => this.destroyMultisample(value),
+    ));
+  }
+  private destroyMultisample(value: Multisample) {
+    const { framebuffer, color, memory } = value;
+    if (this.multisample === value) this.multisample = undefined;
+    delete (value as Partial<Multisample>).framebuffer;
+    delete (value as Partial<Multisample>).color;
+    delete (value as Partial<Multisample>).width;
+    delete (value as Partial<Multisample>).height;
+    value.memory = undefined;
+    let failed = false,
+      first: unknown;
+    try {
+      this.device.gl.deleteFramebuffer(framebuffer);
+    } catch (error) {
+      failed = true;
+      first = error;
+    }
+    try {
+      if (!value.nativeOwned || memory?.owns(color))
+        releaseRenderStorage(color, (native) =>
+          this.device.gl.deleteRenderbuffer(native),
+        );
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        first = error;
+      }
+    }
+    if (failed) throw first;
+  }
+  private releaseMultisample(value: Multisample) {
+    if (value.managed) releaseRenderMetadata(value);
+    else this.destroyMultisample(value);
+  }
+  private multisampleRecord(
+    width: number,
+    height: number,
+    node: string,
+    memory: ReturnType<typeof renderMemory>,
+  ): Multisample {
+    const gl = this.device.gl;
     let framebuffer: WebGLFramebuffer | undefined;
     let color: WebGLRenderbuffer | undefined;
     try {
@@ -764,16 +816,27 @@ export class WebglDepthImages {
         },
         (color) => gl.deleteRenderbuffer(color),
       );
-      return (this.multisample = {
+      return {
+        managed: memory !== undefined,
+        memory,
+        nativeOwned: memory?.owns(color) ?? false,
         framebuffer: framebuffer!,
         color,
         width,
         height,
-      });
+      };
     } catch (error) {
-      if (framebuffer) gl.deleteFramebuffer(framebuffer);
-      if (color)
-        releaseRenderStorage(color, (value) => gl.deleteRenderbuffer(value));
+      try {
+        if (framebuffer) gl.deleteFramebuffer(framebuffer);
+      } catch {
+        /* Preserve original native/admission failure. */
+      }
+      try {
+        if (color)
+          releaseRenderStorage(color, (value) => gl.deleteRenderbuffer(value));
+      } catch {
+        /* Preserve original native/admission failure. */
+      }
       throw error;
     }
   }
@@ -1008,11 +1071,9 @@ export class WebglDepthImages {
     try {
       this.locations.clear();
       if (this.multisample) {
-        gl.deleteFramebuffer(this.multisample.framebuffer);
-        releaseRenderStorage(this.multisample.color, (value) =>
-          gl.deleteRenderbuffer(value),
-        );
+        const previous = this.multisample;
         this.multisample = undefined;
+        this.releaseMultisample(previous);
       }
       if (this.vertex)
         releaseRenderStorage(this.vertex, (value) => gl.deleteBuffer(value));

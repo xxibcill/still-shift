@@ -96,14 +96,15 @@ still hold before relying on them.
   pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback, managed plan/sum-shader cache, particle/
-  Canvas/WebGL region, effect-paint/replace, seven built-ins, depth mesh/texture and
-  PNG source/draw/coordinate metadata pass 425 focused tests, complete audit,
-  22 moving/blurred and ten stationary native frames and 96 owned RPC snapshots.
-  Actual depth texture Maps/key/entry/native refs pre-admit, stay through cache,
-  then clear. One original 24-call trace/fourteen new tests, quota/LRU/byte-budget/
-  partial/null/retry/foreign/scope-exit/native allocator-first once-only release
-  pass. Native probes, WebGL/providers, 69 typography tests and 64 exports / 768
-  prior-exact bodies/frames pass; glyph 1.392188× meets unchanged 1.5 maximum.
+  Canvas/WebGL region, effect-paint/replace, seven built-ins, depth mesh/texture/
+  retained multisample and PNG source/draw/coordinate metadata pass 436 focused
+  tests, complete audit, 22 moving/blurred and ten stationary native frames and
+  96 owned RPC snapshots. Actual multisample record/native controls pre-admit,
+  stay through reuse, then clear. One original 20-call trace/eleven new tests,
+  quota/storage/status/resize/null/retry/foreign/scope-exit/native allocator-first
+  once-only release pass. Sampling query backing/Array.from payload remain pending.
+  Native probes, WebGL/providers, 69 typography tests and 64 exports / 768
+  prior-exact bodies/frames pass; glyph 1.426357× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -339,6 +340,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual retained depth multisample controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `311c4cf`.
+- **Done:** pre-admit actual multisample record/native controls, retain through
+  scratch/reuse, clear actual native/dimension/allocator refs on resize/disposal;
+  preserve native order, MSAA pixels, source-first-null, partial/null/retry.
+- **Results:** build/lint/boundaries, 436 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.426357× meets unchanged 1.5 maximum.
+- **Verification:** eleven new tests/one whole original 20-call trace; record quota,
+  native partial/storage/status/resize/null/retry, scope-exit/allocator-first native
+  once-only release, early color retirement and foreign guard. No full gate.
+- **Next:** sampling query backing/Array.from payload, class/caller, depth program/
+  locations/renderer text/draw, effects/provider/graph/font/common/ledger/Node, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [multisample evidence](./composition-ce15-depth-multisample-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual depth texture cache data
 

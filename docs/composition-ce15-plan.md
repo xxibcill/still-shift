@@ -1361,6 +1361,26 @@ renderer text/multisample/draw state, effects/plugins/provider/graph/font/common
 helper/registry/ledger/Node, production/aggregate admission, speed/full gate pending.
 [Evidence](./composition-ce15-depth-texture-metadata-results.json).
 
+## Accepted retained depth multisample control checkpoint — 2026-10-08
+
+After unchanged sample-support query/filter, admit actual retained record and
+framebuffer/color controls at 1024 before original native factories. Preserve
+MSAA pixel charge width*height*16, native initialization/status and dimension reuse.
+Capture actual record/native/allocator refs; retain through scratch/cache, clear
+after resize/disposal. Visit color despite first-null framebuffer cleanup, preserve
+original null over secondary cleanup and allow retry. Actual native handles release
+once after scope exit or allocator-first disposal. Source-first-null disposal still
+visits multisample owners; foreign active controls fail before sampling/native calls.
+
+One complete original 20-call trace stays exact. Build/lint/boundaries and all
+436 focused tests, eleven new regressions, complete audit 144/8,000, 96 RPC
+snapshots, prior native probes, WebGL/providers and 69 typography tests pass;
+glyph 1.426357× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames
+match pushed `311c4cf`. Native sampling-query backing/Array.from payload, class/
+caller factories, depth program/locations/renderer text/draw, effects/plugins/
+provider/graph/font/common/registry/ledger/Node, production/aggregate and final gates
+remain pending. [Evidence](./composition-ce15-depth-multisample-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
