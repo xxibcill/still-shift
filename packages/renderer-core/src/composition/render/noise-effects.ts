@@ -8,9 +8,11 @@ import { colorEffectChannel } from "./color-effects.ts";
 import {
   samplePremultiplied,
   PREMULTIPLIED_SAMPLE_SHADER,
+  type PremultipliedSampleControl,
 } from "./sampled-blur.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 import type { WebglSurface } from "./webgl-device.ts";
+import type { CanvasSurface } from "./canvas2d.ts";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
@@ -41,12 +43,15 @@ type GpuNoiseWork = NoiseControlWork &
     effectUniforms?: Record<string, number | readonly number[]> | undefined;
     uniforms?: Record<string, number | readonly number[]> | undefined;
   };
-function clearGpuNoiseWork(work: GpuNoiseWork) {
+function clearNoiseControls(work: NoiseControlWork) {
   if (work.controls)
     for (const key in work.controls)
       delete (work.controls as Partial<NoiseControls>)[
         key as keyof NoiseControls
       ];
+}
+function clearGpuNoiseWork(work: GpuNoiseWork) {
+  clearNoiseControls(work);
   if (work.seedParts) work.seedParts.length = 0;
   if (work.zParts) work.zParts.length = 0;
   if (work.uniformBase)
@@ -106,6 +111,100 @@ function gpuNoiseUniforms(
     if (Object.hasOwn(extra, key)) result[key] = extra[key]!;
   return result;
 }
+type NoiseFieldWork = { plane?: ((z: number) => number) | undefined };
+type NoiseColorWork = {
+  colorProducer?: ((source: number, channel: number) => number) | undefined;
+  colorOutput?: number[] | undefined;
+};
+type CanvasNoiseWork = NoiseControlWork &
+  NoiseFieldWork &
+  NoiseColorWork & {
+    managed: boolean;
+    memory: ReturnType<typeof renderMemory>;
+    sampling: PremultipliedSampleControl;
+    input?: CanvasSurface | undefined;
+    output?: CanvasSurface | undefined;
+    image?: ImageData | undefined;
+    premultiplied?: Uint8Array<ArrayBuffer> | undefined;
+    sample?: number[] | undefined;
+    rgbKeys?: number[] | undefined;
+    rgb?: number[] | undefined;
+    rgbProducer?: ((channel: number) => number) | undefined;
+  };
+function clearNoisePixel(work: CanvasNoiseWork) {
+  if (work.rgbKeys) work.rgbKeys.length = 0;
+  if (work.rgb) work.rgb.length = 0;
+  if (work.colorOutput) work.colorOutput.length = 0;
+  work.rgbKeys = work.rgb = work.colorOutput = undefined;
+  work.rgbProducer = work.colorProducer = undefined;
+}
+function clearCanvasNoiseWork(work: CanvasNoiseWork) {
+  let failed = false,
+    first: unknown;
+  try {
+    if (work.image) work.memory?.release(work.image.data.buffer);
+  } catch (error) {
+    failed = true;
+    first = error;
+  }
+  try {
+    if (work.premultiplied) work.memory?.release(work.premultiplied.buffer);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  try {
+    if (
+      work.managed &&
+      work.premultiplied?.byteLength &&
+      !work.memory?.owns(work.premultiplied.buffer)
+    )
+      (
+        work.premultiplied.buffer as ArrayBuffer & {
+          transfer(bytes: number): ArrayBuffer;
+        }
+      ).transfer(0);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  clearNoisePixel(work);
+  clearNoiseControls(work);
+  if (work.sample) work.sample.length = 0;
+  work.sampling.index = undefined;
+  for (const key in work)
+    delete (work as Partial<CanvasNoiseWork>)[key as keyof CanvasNoiseWork];
+  if (failed) throw first;
+}
+function canvasNoiseWork(): CanvasNoiseWork {
+  const memory = renderMemory();
+  return allocateRenderMetadata<CanvasNoiseWork>(
+    16384,
+    () => ({ managed: memory !== undefined, memory, sampling: {} }),
+    false,
+    clearCanvasNoiseWork,
+  );
+}
+function finishCanvasNoiseWork(work: CanvasNoiseWork, failed: boolean) {
+  const managed = work.managed;
+  try {
+    if (managed) releaseRenderMetadata(work);
+    else clearCanvasNoiseWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
+function noiseColorProducer(
+  work: NoiseColorWork | undefined,
+  producer: (source: number, channel: number) => number,
+) {
+  if (work) work.colorProducer = producer;
+  return producer;
+}
 const scalar = (p: Params, name: string) => p[name] as number;
 const unit = (v: number) => Math.max(0, Math.min(1, v));
 /** 32-bit coordinate avalanche; integer wrap and low 16 output bits are intentional. */
@@ -149,6 +248,7 @@ function octaveNoise(
   y: number,
   octave: number,
   seed: number,
+  work?: NoiseFieldWork,
 ): number {
   const frequency = 2 ** octave,
     xFixed = Math.floor((x * 2 * c.inverseScale * frequency) / 8192),
@@ -171,13 +271,19 @@ function octaveNoise(
       ),
       wy,
     );
-  return interpolate(plane(c.z), plane((c.z + 1) >>> 0), c.zWeight);
+  if (work) work.plane = plane;
+  try {
+    return interpolate(plane(c.z), plane((c.z + 1) >>> 0), c.zWeight);
+  } finally {
+    if (work) work.plane = undefined;
+  }
 }
 export function noiseField(
   c: NoiseControls,
   x: number,
   y: number,
   seed = c.seed,
+  work?: NoiseFieldWork,
 ): number {
   let sum = 0;
   for (let octave = 0; octave < c.octaves; octave++)
@@ -188,6 +294,7 @@ export function noiseField(
         y,
         octave,
         (seed + Math.imul(octave, 0x9e3779b9)) >>> 0,
+        work,
       ) *
       2 ** (c.octaves - 1 - octave);
   const total = 2 ** c.octaves - 1;
@@ -226,6 +333,7 @@ export function fractalNoiseColor(
   value: number,
   p: Params,
   rgb: readonly number[],
+  work?: NoiseColorWork,
 ): number[] {
   const field = unit(
       (value / 65535 - 0.5) * scalar(p, "contrast") +
@@ -236,11 +344,16 @@ export function fractalNoiseColor(
     light = p.light as readonly number[],
     strength =
       scalar(p, "amount") * (dark[3]! + (light[3]! - dark[3]!) * field);
-  return rgb.map((source, c) =>
-    unit(
-      source + (dark[c]! + (light[c]! - dark[c]!) * field - source) * strength,
+  const result = rgb.map(
+    noiseColorProducer(work, (source, c) =>
+      unit(
+        source +
+          (dark[c]! + (light[c]! - dark[c]!) * field - source) * strength,
+      ),
     ),
   );
+  if (work) work.colorOutput = result;
+  return result;
 }
 export const NOISE_FIELD_SHADER = FIELD_SHADER;
 export const noiseFieldUniforms = uniforms;
@@ -293,68 +406,91 @@ export function noiseEffectKernel(
     renderCanvas(context, input, params) {
       const amount = scalar(params, "amount");
       if (amount === 0) return input;
-      const controls = noiseControls(params),
-        image = readRenderImageData(input.ctx, 0, 0, input.width, input.height),
-        premultiplied = turbulent
-          ? allocateRenderPixels(
-              image.data.length * 1,
-              () => new Uint8Array(image.data.length),
-            )
-          : undefined;
-      if (premultiplied)
-        for (let i = 0; i < image.data.length; i += 4) {
-          const alpha = image.data[i + 3]!;
-          for (let c = 0; c < 3; c++)
-            premultiplied[i + c] = Math.round(
-              (image.data[i + c]! * alpha) / 255,
-            );
-          premultiplied[i + 3] = alpha;
-        }
-      const sample = [0, 0, 0, 0],
-        amountFixed = Math.round(amount * 16);
-      for (let y = 0; y < input.height; y++)
-        for (let x = 0; x < input.width; x++) {
-          const index = (y * input.width + x) * 4,
-            value = noiseField(controls, x + 0.5, y + 0.5);
-          if (premultiplied) {
-            const dx = turbulentOffset(value, amountFixed),
-              dy = turbulentOffset(
-                noiseField(
-                  controls,
-                  x + 0.5,
-                  y + 0.5,
-                  (controls.seed ^ 0x68bc21eb) >>> 0,
-                ),
-                amountFixed,
+      const work = canvasNoiseWork();
+      let failed = false;
+      try {
+        work.input = input;
+        const controls = noiseControls(params, work),
+          image = (work.image = readRenderImageData(
+            input.ctx,
+            0,
+            0,
+            input.width,
+            input.height,
+          )),
+          premultiplied = turbulent
+            ? allocateRenderPixels(
+                image.data.length * 1,
+                () => (work.premultiplied = new Uint8Array(image.data.length)),
+              )
+            : undefined;
+        if (premultiplied)
+          for (let i = 0; i < image.data.length; i += 4) {
+            const alpha = image.data[i + 3]!;
+            for (let c = 0; c < 3; c++)
+              premultiplied[i + c] = Math.round(
+                (image.data[i + c]! * alpha) / 255,
               );
-            samplePremultiplied(
-              premultiplied,
-              input.width,
-              input.height,
-              x + 0.5 + dx / 16,
-              y + 0.5 + dy / 16,
-              sample,
-            );
-            for (let c = 0; c < 3; c++)
-              image.data[index + c] = sample[3]
-                ? Math.round((sample[c]! * 255) / sample[3])
-                : 0;
-            image.data[index + 3] = sample[3]!;
-          } else {
-            const rgb = [0, 1, 2].map((c) =>
-                colorEffectChannel(
-                  image.data[index + c]!,
-                  image.data[index + 3]!,
-                ),
-              ),
-              output = fractalNoiseColor(value, params, rgb);
-            for (let c = 0; c < 3; c++)
-              image.data[index + c] = Math.round(output[c]! * 255);
+            premultiplied[i + 3] = alpha;
           }
-        }
-      const output = context.createSurface(input.width, input.height);
-      output.ctx.putImageData(image, 0, 0);
-      return output;
+        const sample = (work.sample = [0, 0, 0, 0]),
+          amountFixed = Math.round(amount * 16);
+        for (let y = 0; y < input.height; y++)
+          for (let x = 0; x < input.width; x++) {
+            const index = (y * input.width + x) * 4,
+              value = noiseField(controls, x + 0.5, y + 0.5, undefined, work);
+            if (premultiplied) {
+              const dx = turbulentOffset(value, amountFixed),
+                dy = turbulentOffset(
+                  noiseField(
+                    controls,
+                    x + 0.5,
+                    y + 0.5,
+                    (controls.seed ^ 0x68bc21eb) >>> 0,
+                    work,
+                  ),
+                  amountFixed,
+                );
+              samplePremultiplied(
+                premultiplied,
+                input.width,
+                input.height,
+                x + 0.5 + dx / 16,
+                y + 0.5 + dy / 16,
+                sample,
+                work.sampling,
+              );
+              for (let c = 0; c < 3; c++)
+                image.data[index + c] = sample[3]
+                  ? Math.round((sample[c]! * 255) / sample[3])
+                  : 0;
+              image.data[index + 3] = sample[3]!;
+            } else {
+              const rgb = (work.rgb = (work.rgbKeys = [0, 1, 2]).map(
+                  (work.rgbProducer = (c) =>
+                    colorEffectChannel(
+                      image.data[index + c]!,
+                      image.data[index + 3]!,
+                    )),
+                )),
+                output = fractalNoiseColor(value, params, rgb, work);
+              for (let c = 0; c < 3; c++)
+                image.data[index + c] = Math.round(output[c]! * 255);
+            }
+            clearNoisePixel(work);
+          }
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        output.ctx.putImageData(image, 0, 0);
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishCanvasNoiseWork(work, failed);
+      }
     },
   } satisfies CompositionEffectPlugin);
   kernels.set(id, kernel);

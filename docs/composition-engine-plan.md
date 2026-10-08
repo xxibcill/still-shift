@@ -5136,20 +5136,21 @@ rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/d
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
 standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/late-point-results/
 radial-GPU-Canvas-work/standalone-radial-point/control/encoded-view-results/stylize-
-GPU-Canvas-work/standalone-offset-results/noise-GPU-work, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
+GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
 replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/
-native-controls and PNG source/draw/coordinate metadata pass 762 focused tests,
+native-controls and PNG source/draw/coordinate metadata pass 775 focused tests,
 complete audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
-snapshots. Noise GPU work admits actual controls/three uniform records/seed-z vectors/
-full shader/input/native refs before factories, keeps through original pass and
-clears actual partial records/vectors/refs. Preserve original amount/getter/key order
-and zero neutral paths; borrowed colors stay intact. Nine new tests / 38 original
-complete rows and 16 callback getter sequences check quota/actual refs/partial
-controls-uniforms/math/native/adoption/cleanup null/retry. Type failure retained;
-focused attempt 2 passes. Native probes, WebGL/providers and 69 typography tests pass;
-glyph 1.415045× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames
-retain prior exact output. Noise Canvas/default helpers and other effects/cache/
-error/class/caller/depth sampling remain pending. Recording/device/pool/shader/paint/
+snapshots. Noise Canvas admits controls/views/sample/RGB-color maps/octave plane/
+sampling/native refs before factories. Drop actual plane after each octave and clear
+actual pixel arrays/callbacks after each pixel. Keep views through publication;
+retire both original backings and actual refs even after native detach errors,
+preserving first null. No extra pixel/octave leases. Thirteen new tests / 38 complete
+original rows and 16 getter sequences check quota/actual partial-consumer refs/math/
+map/field/sampling/native/adoption/cleanup null/retry. Focused attempt 1 passes.
+Native probes, WebGL/providers and 69 typography tests pass; glyph 1.458716× meets
+unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output.
+Standalone noise helpers and other effects/cache/error/class/caller/depth sampling
+remain pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

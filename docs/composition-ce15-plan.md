@@ -2013,6 +2013,28 @@ error/class/depth sampling/provider/graph/font/common/ledger/Node and production
 aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-noise-gpu-metadata-results.json).
 
+## Accepted noise Canvas callback metadata checkpoint — 2026-10-08
+
+Reserve actual 16384-byte callback/sampling owner before original controls, readback/
+view/sample/RGB-color maps/octave plane/index/native factories. Track actual original
+plane closure through each octave and clear it afterward; clear actual RGB/key/color
+arrays and callbacks after each pixel. Retain controls/views/sample/native refs
+through publication and reuse one owner without extra per-pixel or per-octave leases.
+Preserve original formulas/getters/map lookup order/zero neutral and borrowed colors.
+Attempt both original backing releases even after first error; guard native detach
+failures and clear actual refs, preserving original null over secondary cleanup.
+Selected captured premultiply adoption repair leaves common allocator work pending.
+
+Build/lint/boundaries and 775 focused tests / 88 files pass on attempt 1. Thirteen new
+tests preserve all 38 complete original rows and 16 getter sequences and check exact
+quota, actual partial/consumer refs, math/map/channel/field/sampling/native/adoption/
+cleanup null and retry. All 762 prior tests rerun. Audit 144/8,000, 96 RPC snapshots,
+native probes, WebGL/providers, 69 typography tests and 64 prior-exact exports / 768
+bodies/frames pass; glyph 1.458716× meets unchanged 1.5 maximum. Standalone noise
+helpers, other effects/cache/registry/error/class/depth sampling/provider/graph/font/
+common/ledger/Node and production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-noise-canvas-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
