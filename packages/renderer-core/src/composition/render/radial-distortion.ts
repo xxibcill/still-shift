@@ -7,9 +7,11 @@ import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
   samplePremultiplied,
   PREMULTIPLIED_SAMPLE_SHADER,
+  type PremultipliedSampleControl,
 } from "./sampled-blur.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 import type { WebglSurface } from "./webgl-device.ts";
+import type { CanvasSurface } from "./canvas2d.ts";
 import {
   allocateRenderMetadata,
   resizeRenderMetadata,
@@ -39,6 +41,34 @@ type GpuRadialWork = {
   uniforms?: Record<string, number | readonly number[]> | undefined;
   shader?: string | undefined;
 };
+type RadialWork = Pick<
+  GpuRadialWork,
+  "managed" | "memory" | "factors" | "center" | "radius" | "controls"
+>;
+type RadialPointControl = { point?: number[] | undefined };
+function clearRadialControls(work: RadialWork) {
+  let failed = false,
+    first: unknown;
+  try {
+    if (work.managed && work.factors?.byteLength)
+      (
+        work.factors.buffer as ArrayBuffer & {
+          transfer(bytes: number): ArrayBuffer;
+        }
+      ).transfer(0);
+  } catch (error) {
+    failed = true;
+    first = error;
+  }
+  if (work.center) (work.center as number[]).length = 0;
+  if (work.radius) (work.radius as number[]).length = 0;
+  if (work.controls)
+    for (const key in work.controls)
+      delete (work.controls as Partial<RadialControls>)[
+        key as keyof RadialControls
+      ];
+  if (failed) throw first;
+}
 function clearGpuRadialWork(work: GpuRadialWork) {
   let failed = false,
     first: unknown;
@@ -49,27 +79,15 @@ function clearGpuRadialWork(work: GpuRadialWork) {
     first = error;
   }
   try {
-    if (work.managed && work.factors?.byteLength)
-      (
-        work.factors.buffer as ArrayBuffer & {
-          transfer(bytes: number): ArrayBuffer;
-        }
-      ).transfer(0);
+    clearRadialControls(work);
   } catch (error) {
     if (!failed) {
       failed = true;
       first = error;
     }
   }
-  if (work.center) (work.center as number[]).length = 0;
-  if (work.radius) (work.radius as number[]).length = 0;
   if (work.inputs) work.inputs.length = 0;
   if (work.uniforms) for (const key in work.uniforms) delete work.uniforms[key];
-  if (work.controls)
-    for (const key in work.controls)
-      delete (work.controls as Partial<RadialControls>)[
-        key as keyof RadialControls
-      ];
   for (const key in work)
     delete (work as Partial<GpuRadialWork>)[key as keyof GpuRadialWork];
   if (failed) throw first;
@@ -92,13 +110,72 @@ function finishGpuRadialWork(work: GpuRadialWork, failed: boolean) {
     if (!failed) throw error;
   }
 }
+type CanvasRadialWork = RadialWork &
+  RadialPointControl & {
+    input?: CanvasSurface | undefined;
+    output?: CanvasSurface | undefined;
+    image?: ImageData | undefined;
+    premultiplied?: Uint8Array<ArrayBuffer> | undefined;
+    sample?: number[] | undefined;
+    sampling: PremultipliedSampleControl;
+  };
+function clearCanvasRadialWork(work: CanvasRadialWork) {
+  let failed = false,
+    first: unknown;
+  try {
+    if (work.image) work.memory?.release(work.image.data.buffer);
+  } catch (error) {
+    failed = true;
+    first = error;
+  }
+  try {
+    if (work.premultiplied) work.memory?.release(work.premultiplied.buffer);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  try {
+    clearRadialControls(work);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  if (work.point) work.point.length = 0;
+  if (work.sample) work.sample.length = 0;
+  work.sampling.index = undefined;
+  for (const key in work)
+    delete (work as Partial<CanvasRadialWork>)[key as keyof CanvasRadialWork];
+  if (failed) throw first;
+}
+function canvasRadialWork(): CanvasRadialWork {
+  const memory = renderMemory();
+  return allocateRenderMetadata<CanvasRadialWork>(
+    16384,
+    () => ({ managed: memory !== undefined, memory, sampling: {} }),
+    false,
+    clearCanvasRadialWork,
+  );
+}
+function finishCanvasRadialWork(work: CanvasRadialWork, failed: boolean) {
+  const managed = work.managed;
+  try {
+    if (managed) releaseRenderMetadata(work);
+    else clearCanvasRadialWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
 /** Control-only radial factors in 1/4096 units; center and radii in 1/16 pixels. */
 export function radialDistortionControls(
   id: string,
   p: Params,
   w: number,
   h: number,
-  work?: GpuRadialWork,
+  work?: RadialWork,
 ): RadialControls {
   const point = p.center as readonly number[],
     bulge = id === "distort.bulge",
@@ -160,15 +237,18 @@ export function radialSourcePoint(
   c: RadialControls,
   x: number,
   y: number,
+  work?: RadialPointControl,
 ): readonly [number, number] {
   const dx = Math.round(x * 16) - c.center[0],
     dy = Math.round(y * 16) - c.center[1],
     index = radialFactorIndex(c, dx, dy),
     factor = index < 0 ? 4096 : c.factors[index]!;
-  return [
+  const point: [number, number] = [
     (c.center[0] + Math.floor((dx * factor) / 4096)) / 16,
     (c.center[1] + Math.floor((dy * factor) / 4096)) / 16,
   ];
+  if (work) work.point = point;
+  return point;
 }
 /** Exact square words and corrected root, including 8192-pixel diagonal coordinates. */
 export const RADIAL_INTEGER_SHADER = `
@@ -256,45 +336,68 @@ export function radialDistortionKernel(
     },
     renderCanvas(context, input, params) {
       if (neutral(params)) return input;
-      const controls = radialDistortionControls(
-          id,
-          params,
-          input.width,
-          input.height,
-        ),
-        image = readRenderImageData(input.ctx, 0, 0, input.width, input.height),
-        premultiplied = allocateRenderPixels(
-          image.data.length * 1,
-          () => new Uint8Array(image.data.length),
-        );
-      for (let i = 0; i < image.data.length; i += 4) {
-        const a = image.data[i + 3]!;
-        for (let c = 0; c < 3; c++)
-          premultiplied[i + c] = Math.round((image.data[i + c]! * a) / 255);
-        premultiplied[i + 3] = a;
-      }
-      const sample = [0, 0, 0, 0];
-      for (let y = 0; y < input.height; y++)
-        for (let x = 0; x < input.width; x++) {
-          const point = radialSourcePoint(controls, x + 0.5, y + 0.5);
-          samplePremultiplied(
-            premultiplied,
+      const work = canvasRadialWork();
+      let failed = false;
+      try {
+        work.input = input;
+        const controls = radialDistortionControls(
+            id,
+            params,
             input.width,
             input.height,
-            point[0],
-            point[1],
-            sample,
+            work,
+          ),
+          image = (work.image = readRenderImageData(
+            input.ctx,
+            0,
+            0,
+            input.width,
+            input.height,
+          )),
+          premultiplied = allocateRenderPixels(
+            image.data.length * 1,
+            () => (work.premultiplied = new Uint8Array(image.data.length)),
           );
-          const i = (y * input.width + x) * 4;
+        for (let i = 0; i < image.data.length; i += 4) {
+          const a = image.data[i + 3]!;
           for (let c = 0; c < 3; c++)
-            image.data[i + c] = sample[3]
-              ? Math.round((sample[c]! * 255) / sample[3])
-              : 0;
-          image.data[i + 3] = sample[3]!;
+            premultiplied[i + c] = Math.round((image.data[i + c]! * a) / 255);
+          premultiplied[i + 3] = a;
         }
-      const output = context.createSurface(input.width, input.height);
-      output.ctx.putImageData(image, 0, 0);
-      return output;
+        const sample = (work.sample = [0, 0, 0, 0]);
+        for (let y = 0; y < input.height; y++)
+          for (let x = 0; x < input.width; x++) {
+            const point = radialSourcePoint(controls, x + 0.5, y + 0.5, work);
+            samplePremultiplied(
+              premultiplied,
+              input.width,
+              input.height,
+              point[0],
+              point[1],
+              sample,
+              work.sampling,
+            );
+            const i = (y * input.width + x) * 4;
+            for (let c = 0; c < 3; c++)
+              image.data[i + c] = sample[3]
+                ? Math.round((sample[c]! * 255) / sample[3])
+                : 0;
+            image.data[i + 3] = sample[3]!;
+            if (work.point) work.point.length = 0;
+            work.point = undefined;
+          }
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        output.ctx.putImageData(image, 0, 0);
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishCanvasRadialWork(work, failed);
+      }
     },
   } satisfies CompositionEffectPlugin);
   kernels.set(id, kernel);
