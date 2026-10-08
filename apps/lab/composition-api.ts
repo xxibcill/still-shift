@@ -15,6 +15,7 @@ import { validateComposition } from "../../packages/scene-contract/src/index.ts"
 import { readCompositionSource } from "../../packages/animation-engine/src/composition-source.ts";
 import { prepareCompositionMedia } from "../../packages/animation-engine/src/composition-media.ts";
 import { prepareCompositionAudio } from "../../packages/animation-engine/src/composition-audio-mix.ts";
+import { compositionSequenceFramePath } from "../../packages/animation-engine/src/composition-media-sequence.ts";
 import {
   captureCompositionAssets,
   capturedMediaComposition,
@@ -126,16 +127,9 @@ export const compositionApi = (): Plugin => {
       if (asset.type === "sequence") {
         await check(resolve(dirname(scene), asset.manifestPath));
         const pattern = resolve(dirname(scene), asset.path);
-        const format = /%0([1-9])d/.exec(pattern)!;
         for (let ordinal = 0; ordinal < asset.frameCount; ordinal++)
           await check(
-            pattern.replace(
-              format[0],
-              String(asset.firstFrame + ordinal).padStart(
-                Number(format[1]),
-                "0",
-              ),
-            ),
+            compositionSequenceFramePath(pattern, asset.firstFrame + ordinal),
           );
       } else await check(resolve(dirname(scene), asset.path));
     }

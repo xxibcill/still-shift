@@ -43,17 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #48 inline review repairs verified (2026-10-08):** both inline findings
-  are posted on the reviewed conflict-resolution head `d62a7a4d`. Native capture
-  ownership now preserves active/candidate resources across peer prepares and
-  rejects new work at capacity; explicit disposal, canceled requests and disconnects
-  release their captures. A shared cache cleanup boundary always releases the lock.
-  Final fast checks pass 2,566 units, 17 CLI / 5 fixture / 34 cache integrations
-  pass, and native media/export/session browsers pass. Capture ownership is
-  `d0ce169c`; cache cleanup has its own following commit. Both deliver together in
-  one normal push; owner review/merge follows.
-  Owner CE15 files are untouched; no full repository gate is run or claimed.
-  [Repair evidence](./pr-48-review-fix-results.json).
+- **PR #48 second review repairs in progress (2026-10-08):** two new P2
+  findings are posted inline on `63766426`. Registered sequence authorization now
+  shares the bounded filename formatter; all seven fixture API checks pass,
+  including 10/99-digit preparation, resource serving and actual draft exports.
+  Exact nested audio visibility repair and boundary/PCM regressions are in flight.
+  One finding per commit, followed by one final normal push. Earlier capture/lock
+  repairs remain verified. Owner CE15 checkout is untouched; no full gate is run
+  or claimed. [Second review evidence](./pr-48-second-review-fix-results.json).
 
 - **CE13 complete (2026-10-07):** original acceptance at `01fbca2` passes the
   complete local `pnpm check` in 12825.81 seconds, all 63 required commands,
@@ -74,6 +71,22 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-08 — PR #48 second review findings and scoped repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr48-second-review-fixes`, from `63766426`.
+- **Scope:** both findings posted inline before repairs; one commit per finding,
+  one final normal push.
+- **Done:** registered sequence authorization shares the bounded formatter;
+  accepted 10/99-digit patterns prepare, serve and export correctly.
+- **Results:** both pre-fix API failures reproduced; all seven fixture API checks
+  pass with two actual MP4s, independent frame counts and decoded RGB checks.
+- **Rejected:** export oracle initially sampled outside naturally sized artwork;
+  authored explicit test placement and retained the source-color assertion.
+- **In flight / next:** exact nested audio visibility/PCM boundary repair, final
+  focused checks and the single final push. No full repository gate is claimed.
+- **Records:** [second review evidence](./pr-48-second-review-fix-results.json),
+  [PR #48](https://github.com/xxibcill/still-shift/pull/48).
 
 ### 2026-10-08 — PR #48 inline findings and scoped repairs
 

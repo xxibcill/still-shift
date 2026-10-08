@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-08",
+  "pr": "https://github.com/xxibcill/still-shift/pull/48",
+  "reviewedHead": "63766426d611dce8cabe707c3fce353d2f15e1d5",
+  "base": "e249a5dac2c720f388b44b4437ed3cb6643820f2",
+  "reviewId": 5456273884,
+  "deliveryPolicy": "Each finding posted inline before repair; one commit per finding; one final normal push.",
+  "worktree": "/Users/jjae/.codex/worktrees/pr48-second-review-fixes/still-shift",
+  "isolation": "Original clean review checkout was removed externally before edits. New managed worktree starts at the reviewed head, with separate pnpm/Vite caches and .venv. UV_CACHE_DIR=/private/tmp/pr48-uv-cache and soundtrack Python remain isolated from the owner CE15 checkout.",
+  "toolchain": "Node22.23.1/pnpm10.29.3/Python3.12.11/Playwright1.62.1/Chromium1234/FFmpeg8.0.1 verified locally.",
+  "findings": [
+    {
+      "id": "sequence-padding",
+      "priority": "P2",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/48#discussion_r4218678383",
+      "reviewThread": "PRRT_kwDOUNeEOM6qWKAU",
+      "path": "apps/lab/composition-api.ts",
+      "lineOnReviewedHead": 129,
+      "status": "fixed; focused verification passed; separate first commit pending",
+      "repair": "Fixture original authorization reuses compositionSequenceFramePath, applying the same bounded padding rules as validation and decoding.",
+      "before": {
+        "command": "pnpm exec vitest run tests/integration/composition-fixture-captures.test.ts --maxWorkers=1 --no-file-parallelism --testNamePattern 'digit padding'",
+        "exitCode": 1,
+        "testsFailed": 2,
+        "log": "/private/tmp/pr48-padding-before.log",
+        "evidence": "Both accepted 10-digit and99-digit patterns returned HTTP500 where HTTP200 was required."
+      },
+      "after": {
+        "command": "pnpm exec vitest run tests/integration/composition-fixture-captures.test.ts --maxWorkers=1 --no-file-parallelism",
+        "exitCode": 0,
+        "testsPassed": 7,
+        "log": "/private/tmp/pr48-padding-after.log",
+        "evidence": "Both accepted widths prepare and serve captured PNGs, and produce actual64x64 one-frame MP4 draft exports. Independent FFmpeg-decoded center RGB matches original source color within unchanged3-byte encoding tolerance. Existing capacity, owner/disconnect, duplicate and delayed cancellation tests pass."
+      },
+      "rejected": "Initial export pixel oracle sampled the center outside the naturally sized8x8 artwork. Added explicit64x64 stretch and center placement to the test fixture; kept the pixel assertion and reran all7 checks."
+    },
+    {
+      "id": "nested-audio-boundary",
+      "priority": "P2",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/48#discussion_r4218678369",
+      "reviewThread": "PRRT_kwDOUNeEOM6qWKAL",
+      "path": "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+      "lineOnReviewedHead": 619,
+      "status": "repair and exact boundary verification in progress",
+      "reviewReproduction": "Valid24fps root with25fps narration precomp hosted at frame7 and voice at childframe11 loses stereo sample35120: expected[0.75,-0.5], actual[0,0]. Following sample correct."
+    }
+  ],
+  "verificationScope": "Focused PR follow-up repair checks; no full pnpm check run or complete repository gate claimed. Existing frozen baselines and authored acceptance tolerances preserved.",
+  "githubActions": "Prohibited; no workflows added or enabled."
+}

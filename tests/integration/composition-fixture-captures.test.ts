@@ -1,17 +1,18 @@
 import { createHash, randomUUID } from "node:crypto";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, relative, resolve } from "node:path";
 import { createServer } from "vite";
 import { expect, it, vi } from "vitest";
 import { compositionApi } from "../../apps/lab/composition-api.ts";
+import { runProcess } from "@still-shift/execution-runtime/subprocess";
 import type { Composition } from "@still-shift/scene-contract";
 import {
   mediaPngChunk,
   mediaRgbaPng,
 } from "../helpers/composition-media-png.ts";
 
-async function fixturePreview() {
+async function fixturePreview(padding = 1) {
   const fixtures = resolve("benchmarks/fixtures/composition");
   const directory = await mkdtemp(join(fixtures, "capture-lifetime-"));
   const cache = await mkdtemp(join(tmpdir(), "fixture-capture-cache-"));
@@ -30,7 +31,10 @@ async function fixturePreview() {
       frames: [hash(png)],
     }),
   );
-  await writeFile(join(directory, "frame-0.png"), png);
+  await writeFile(
+    join(directory, `frame-${String(0).padStart(padding, "0")}.png`),
+    png,
+  );
   await writeFile(join(directory, "manifest.json"), manifest);
   const document: Composition = {
     schemaVersion: "composition-1",
@@ -43,7 +47,7 @@ async function fixturePreview() {
       {
         id: "frames",
         type: "sequence",
-        path: "frame-%01d.png",
+        path: `frame-%0${padding}d.png`,
         manifestPath: "manifest.json",
         firstFrame: 0,
         sha256: hash(manifest),
@@ -59,7 +63,16 @@ async function fixturePreview() {
         },
       },
     ],
-    layers: [{ id: "picture", type: "sequence", asset: "frames" }],
+    layers: [
+      {
+        id: "picture",
+        type: "sequence",
+        asset: "frames",
+        size: [64, 64],
+        fit: "stretch",
+        transform: { position: [32, 32] },
+      },
+    ],
   };
   const input = join(directory, "source.json");
   await writeFile(input, JSON.stringify(document));
@@ -86,6 +99,8 @@ async function fixturePreview() {
     server,
     base,
     document,
+    cache,
+    exportDraft: () => post("export", { document, backend: "canvas2d" }),
     prepare: (extra = {}) => post("prepare", { document, ...extra }),
     release: (capture: string, owner?: string) =>
       post("capture-release", { capture, ...(owner ? { owner } : {}) }),
@@ -267,3 +282,68 @@ it("keeps early cancellations bound to their owner and never evicts delayed canc
     await preview.close();
   }
 }, 30_000);
+
+it.each([10, 99])(
+  "prepares, serves and exports registered sequences with %i-digit padding",
+  async (padding) => {
+    const preview = await fixturePreview(padding);
+    try {
+      const response = await preview.prepare();
+      expect(response.status).toBe(200);
+      const capture = (await response.json()) as {
+        capture: string;
+        assets: Record<string, string>;
+      };
+      const frame = await preview.asset(capture.assets["__media:frames:0"]!);
+      expect(frame.status).toBe(200);
+      expect(frame.headers.get("content-type")).toBe("image/png");
+      expect(Buffer.from(await frame.arrayBuffer()).subarray(0, 8)).toEqual(
+        Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+      );
+      const exported = await preview.exportDraft();
+      expect(exported.status).toBe(200);
+      expect(exported.headers.get("content-type")).toBe("video/mp4");
+      const output = join(preview.cache, "padded-sequence.mp4");
+      await writeFile(output, Buffer.from(await exported.arrayBuffer()));
+      const probe = await runProcess("ffprobe", [
+        "-v",
+        "error",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height,nb_frames",
+        "-of",
+        "json",
+        output,
+      ]);
+      expect(JSON.parse(probe.stdout).streams).toEqual([
+        { width: 64, height: 64, nb_frames: "1" },
+      ]);
+      const decoded = join(preview.cache, "padded-sequence.rgb");
+      await runProcess("ffmpeg", [
+        "-v",
+        "error",
+        "-i",
+        output,
+        "-frames:v",
+        "1",
+        "-f",
+        "rawvideo",
+        "-pix_fmt",
+        "rgb24",
+        decoded,
+      ]);
+      const pixels = await readFile(decoded);
+      // Independent source-color oracle for the encoded frame's center pixel.
+      const center = (32 * 64 + 32) * 3;
+      for (const [channel, expected] of [24, 128, 64].entries())
+        expect(
+          Math.abs(pixels[center + channel]! - expected),
+        ).toBeLessThanOrEqual(3);
+      expect((await preview.release(capture.capture)).status).toBe(204);
+    } finally {
+      await preview.close();
+    }
+  },
+  60_000,
+);
