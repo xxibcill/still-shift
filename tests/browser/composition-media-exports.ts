@@ -20,6 +20,7 @@ import type {
   CompositionPreparedMedia,
 } from "@still-shift/scene-contract";
 import type * as Render from "../../packages/renderer-core/src/composition/render/index.ts";
+import type * as Evaluate from "../../packages/renderer-core/src/composition/evaluate/index.ts";
 import {
   mediaPngChunk,
   mediaRgbaPng,
@@ -180,6 +181,37 @@ export async function verifyNativeMediaExports(
       asset: "voice",
       role: "narration",
     });
+    if (source === "video") {
+      const voice = composition.layers.pop()!;
+      composition.precomps = [
+        ...(composition.precomps ?? []),
+        {
+          id: "audio-group",
+          width: 32,
+          height: 16,
+          frameCount: composition.frameCount,
+          layers: [
+            voice,
+            { id: "badge", type: "solid", size: [4, 4], color: "#ffffff" },
+          ],
+        },
+      ];
+      composition.layers.push(
+        { id: "audio-host", type: "precomp", comp: "audio-group" },
+        {
+          id: "native-label",
+          type: "text",
+          text: "PCM",
+          fontSize: 12,
+          color: "#ffffff",
+          transform: { position: [72, 48] },
+        },
+      );
+      composition.constraints = [
+        ...(composition.constraints ?? []),
+        { type: "attach", target: "audio-host", anchor: "native-label" },
+      ];
+    }
     composition.layers.push(
       {
         id: "moving-still",
@@ -252,6 +284,30 @@ export async function verifyNativeMediaExports(
           );
           const pngs: string[] = [];
           try {
+            if (composition.layers.some((layer) => layer.id === "audio-host")) {
+              const evaluatorUrl =
+                "/packages/renderer-core/src/composition/evaluate/index.ts";
+              const evaluator = (await import(evaluatorUrl)) as typeof Evaluate;
+              const bounds = preview.textBounds["native-label"]![0]!;
+              const tree = evaluator.evaluateComp(composition, 0, {
+                textBounds: preview.textBounds,
+              });
+              const host = tree.layers.find(
+                (layer) => layer.id === "audio-host",
+              )!;
+              const expected = [
+                72 + (bounds.left + bounds.right) / 2,
+                48 + (bounds.top + bounds.bottom) / 2,
+              ];
+              if (
+                host.transform.position.some(
+                  (value, axis) => value !== expected[axis],
+                )
+              )
+                throw Error(
+                  "Native audio host lost its measured text attachment",
+                );
+            }
             for (const frames of [
               [0, 1, 2, 3, 4, 5],
               [5, 4, 3, 2, 1, 0],
@@ -398,6 +454,12 @@ export async function verifyNativeMediaExports(
         masterPcm: "source-bit-identical including final sample",
         audioDecoded: "independent AAC sample-bit-identical",
         audioTrackClock: "exact 48k sample count",
+        ...(source === "video"
+          ? {
+              textConstrainedAudio:
+                "measured host placement preserved; exact complete PCM; both preview/export backends",
+            }
+          : {}),
         ...(source === "video" && backend === "webgl2"
           ? {
               transactionProof: await verifyNativeAudioTransactions(

@@ -5491,8 +5491,16 @@ hits when only the execution identity changes before the fix. Both OS and CPU
 variations now miss independently, preserve exact output bytes, and reuse the
 original entry after restoring its identity. All 37 affected cache integrations
 pass, including original relocation, provenance, bounds and cancellation checks.
-Text-constrained audio traversal remains in flight. Each finding receives its own
-commit, with one final normal push after focused verification; no full gate is run.
+Audio traversal now reads authored visibility and audio property stages without
+unrelated precomp/parent geometry. Actual drivers that read constrained geometry
+still require measured bounds; picture constraints remain intact. Evaluator 56
+invalidates prepared masters. Exact PCM regressions cover text-attached precomps,
+and the real video export cases preserve measured placement on Canvas and WebGL.
+Fast checks pass 2,616 units; 83 affected integrations and native media plus both
+576-frame passage browser checks pass. Independent standards/spec review finds no
+actionable concerns. All 176 frozen items / 36,061 frames match in 289.11 seconds;
+references and thresholds are unchanged. Each finding receives its own commit,
+with one final normal push; no full repository gate is run or claimed.
 [Third review evidence](./pr-48-third-review-fix-results.json).
 
 ## CE14 — Mesh warp and puppet pins

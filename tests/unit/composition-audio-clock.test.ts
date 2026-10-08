@@ -105,6 +105,104 @@ it("evaluates actual gain/pan/remap dependencies without unrelated picture layer
   expect(() => evaluateComp(comp, 0)).toThrow();
 });
 
+it.each(["host", "group", "sound"])(
+  "ignores a text attachment on %s while retaining audio clocks and picture layout",
+  (target) => {
+    const comp = document();
+    const sound = comp.layers[0]!;
+    comp.layers = [
+      {
+        id: "title",
+        type: "text",
+        text: "Title",
+        fontSize: 24,
+        color: "#ffffff",
+      },
+      { id: "group", type: "group", size: [64, 48] },
+      { id: "host", type: "precomp", comp: "nested", parent: "group" },
+    ];
+    if (target === "sound") {
+      sound.parent = "group";
+      comp.layers.push(sound);
+      comp.constraints = [{ type: "attach", target: "group", anchor: "title" }];
+    } else comp.constraints = [{ type: "attach", target, anchor: "title" }];
+    comp.precomps = [
+      {
+        id: "nested",
+        width: 64,
+        height: 48,
+        frameCount: 48,
+        layers: target === "sound" ? [] : [sound],
+      },
+    ];
+    expect(validateComposition(comp).ok).toBe(true);
+    expect(evaluateCompositionAudio(comp, 1)[0]).toMatchObject({
+      key: target === "sound" ? "sound" : "host/sound",
+      sourceSample: 124,
+      clipSample: 1,
+      gainDb: 0,
+      pan: 0,
+    });
+    expect(() => evaluateComp(comp, 0)).toThrow("measured layer bounds");
+    const measured = evaluateComp(comp, 0, {
+      textBounds: { title: [{ left: 0, top: 0, right: 40, bottom: 24 }] },
+    });
+    expect(
+      measured.layers.find(
+        (layer) => layer.id === (target === "sound" ? "group" : target),
+      )!.transform.position,
+    ).not.toEqual([0, 0]);
+  },
+);
+
+it("reads keyed, driven and expression audio properties without evaluating unrelated host expressions", () => {
+  const comp = document();
+  comp.layers = [
+    { id: "host", type: "precomp", comp: "nested" },
+    { id: "control", type: "null" },
+  ];
+  comp.precomps = [
+    {
+      id: "nested",
+      width: 64,
+      height: 48,
+      frameCount: 48,
+      layers: [
+        {
+          id: "sound",
+          type: "audio",
+          asset: "pcm",
+          gainDb: {
+            keys: [
+              { frame: 0, value: -6 },
+              { frame: 2, value: 0 },
+            ],
+          },
+        },
+      ],
+    },
+  ];
+  comp.drivers = [
+    { target: "host/sound.pan", source: "control.transform.position.x" },
+  ];
+  comp.expressions = {
+    "host.transform.rotation": { source: "1 / 0" },
+    "host.timeRemap": { source: "value + 1" },
+    "host/sound.gainDb": { source: "value - 1" },
+    "host/sound.pan": { source: "value + 0.25" },
+    "host/sound.timeRemap": { source: "value + 0.125" },
+  };
+  expect(validateComposition(comp).ok).toBe(true);
+  expect(evaluateCompositionAudio(comp, 0)[0]).toMatchObject({
+    key: "host/sound",
+    sourceSample: 8000,
+    clipSample: 2000,
+    gainDb: -4,
+    pan: 0.25,
+  });
+  expect(() => evaluateComp(comp, 0)).toThrow();
+});
+
 it("applies ordinary stretch and hold on the continuous source and local clip clocks", () => {
   const comp = document();
   comp.layers[0]!.stretch = 2;
@@ -118,6 +216,39 @@ it("applies ordinary stretch and hold on the continuous source and local clip cl
     sourceSample: 2123,
     clipSample: 2000,
   });
+});
+
+it("retains measured layout when an audio driver actually reads constrained geometry", () => {
+  const comp = document();
+  const sound = comp.layers[0]!;
+  comp.layers = [
+    {
+      id: "title",
+      type: "text",
+      text: "Title",
+      fontSize: 24,
+      color: "#ffffff",
+    },
+    { id: "host", type: "precomp", comp: "nested" },
+  ];
+  comp.precomps = [
+    { id: "nested", width: 64, height: 48, frameCount: 48, layers: [sound] },
+  ];
+  comp.constraints = [{ type: "attach", target: "host", anchor: "title" }];
+  comp.drivers = [
+    { target: "host/sound.gainDb", source: "host.transform.position.x" },
+  ];
+  expect(validateComposition(comp).ok).toBe(true);
+  expect(() => evaluateCompositionAudio(comp, 0)).toThrow(
+    "measured layer bounds",
+  );
+  const options = {
+    textBounds: { title: [{ left: 0, top: 0, right: 16, bottom: 24 }] },
+  };
+  const picture = evaluateComp(comp, 0, options);
+  expect(evaluateCompositionAudio(comp, 0, options)[0]!.gainDb).toBe(
+    picture.layers.find((layer) => layer.id === "host")!.transform.position[0],
+  );
 });
 
 it("preserves singleton PCM cycle length and ends finite cycles in silence", () => {
@@ -209,6 +340,74 @@ it("respects group and precomp visibility and retains distinct audio instance ro
     evaluateCompositionAudio(comp, 4000).map((state) => state.key),
   ).toEqual(["first/sound"]);
 });
+
+it.each([
+  ["disabled-group", false],
+  ["disabled-host", false],
+  ["disabled-audio", false],
+  ["guide-group", false],
+  ["guide-host", false],
+  ["guide-audio", false],
+  ["other-solo", false],
+  ["group-solo", true],
+  ["host-solo", true],
+  ["disabled-null", true],
+  ["guide-null", true],
+  ["disabled-matte-group", true],
+] as const)(
+  "preserves audio visibility for %s without picture evaluation",
+  (mode, audible) => {
+    const comp = document();
+    const sound = comp.layers[0]!;
+    const group = {
+      id: "group",
+      type: "group" as const,
+      size: [64, 48] as [number, number],
+    };
+    const bridge = { id: "bridge", type: "null" as const, parent: "group" };
+    const host = {
+      id: "host",
+      type: "precomp" as const,
+      comp: "nested",
+      parent: "bridge",
+    };
+    const other = {
+      id: "other",
+      type: "solid" as const,
+      size: [64, 48] as [number, number],
+      color: "#ffffff",
+    };
+    comp.layers = [group, bridge, host, other];
+    comp.precomps = [
+      { id: "nested", width: 64, height: 48, frameCount: 48, layers: [sound] },
+    ];
+    const selected = mode.endsWith("group")
+      ? group
+      : mode.endsWith("host")
+        ? host
+        : mode.endsWith("audio")
+          ? sound
+          : bridge;
+    if (mode.startsWith("disabled"))
+      Object.assign(selected, { enabled: false });
+    if (mode.startsWith("guide")) Object.assign(selected, { guide: true });
+    if (mode.endsWith("solo"))
+      Object.assign(
+        mode === "other-solo" ? other : mode === "host-solo" ? host : group,
+        { solo: true },
+      );
+    if (mode === "disabled-matte-group")
+      Object.assign(other, { trackMatte: { layer: "group", mode: "alpha" } });
+    expect(validateComposition(comp).ok).toBe(true);
+    expect(evaluateCompositionAudio(comp, 0).map((state) => state.key)).toEqual(
+      audible ? ["host/sound"] : [],
+    );
+    if (mode.startsWith("guide"))
+      expect(
+        evaluateCompositionAudio(comp, 0, { includeGuides: true }),
+      ).toHaveLength(1);
+  },
+);
 
 it("rejects baked source sample clocks for protected voice and its ancestor before ranges are selected", () => {
   const comp = document();

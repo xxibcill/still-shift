@@ -31,15 +31,30 @@
         "seconds": 12.44,
         "log": "/private/tmp/pr48-platform-after.log",
         "proof": "OS and architecture changes independently miss all three caches; restoring original identity hits original entries. Actual PCM bytes remain exact; relocation/provenance/bounds/cancellation tests pass."
-      }
+      },
+      "commit": "2fb40127"
     },
     {
       "id": "audio-visual-layout",
       "priority": "P2",
       "inlineComment": "https://github.com/xxibcill/still-shift/pull/48#discussion_r4219320574",
       "reviewThread": "PRRT_kwDOUNeEOM6qXux2",
-      "status": "pending second finding repair",
-      "reviewReproduction": "Valid audio precomp spatially attached to a text layer throws comp-text-layout-missing during actual 2000-sample master preparation; removing only the constraint yields exact0.25 amplitude."
+      "status": "fixed and verified; included in the second finding commit",
+      "reviewReproduction": "Valid audio precomp spatially attached to a text layer throws comp-text-layout-missing during actual 2000-sample master preparation; removing only the constraint yields exact0.25 amplitude.",
+      "repair": "Audio traversal reads visibility metadata and audio property stages without evaluating unrelated precomp/parent geometry. Actual driven geometry dependencies and picture layout remain intact. Evaluator identity advances 55 to 56.",
+      "before": {
+        "log": "/private/tmp/pr48-layout-before.log",
+        "proof": "Text-attached precomp/group cases and actual PCM preparation fail before repair. Initial sound-parent and driver fixtures required corrections documented below; the initial five-test failure count is not claimed as five independent product failures."
+      },
+      "after": {
+        "command": "pnpm exec vitest run tests/unit/composition-audio-clock.test.ts tests/integration/composition-audio-mix.test.ts --maxWorkers=1 --no-file-parallelism",
+        "exitCode": 0,
+        "testsPassed": 87,
+        "files": 2,
+        "seconds": 7.59,
+        "log": "/private/tmp/pr48-layout-after.log",
+        "proof": "Exact PCM through the final sample; host/group/audio-parent text constraints; preserved group/solo/guide/matte visibility; keyed, driven and expression audio controls; actual geometry drivers still require measured bounds."
+      }
     }
   ],
   "firstFindingStaticChecks": {
@@ -48,5 +63,67 @@
     "diffCheck": "passed"
   },
   "verificationScope": "Focused PR follow-up checks only; no full pnpm check run or complete repository gate claimed.",
-  "githubActions": "Prohibited; no workflows added or enabled."
+  "githubActions": "Prohibited; no workflows added or enabled.",
+  "finalChecks": {
+    "fast": {
+      "command": "pnpm check:fast",
+      "exitCode": 0,
+      "unitTests": 2616,
+      "unitFiles": 234,
+      "log": "/private/tmp/pr48-third-fast.log",
+      "scope": "Schema, package boundaries, formatting, lint, TypeScript build and all units."
+    },
+    "affectedIntegrations": {
+      "exitCode": 0,
+      "testsPassed": 83,
+      "files": 9,
+      "seconds": 85.48,
+      "log": "/private/tmp/pr48-third-integration.log",
+      "scope": "Native visual/source PCM/mix/platform caches, preview and fixture captures, passage native picture/audio and legacy passage audio."
+    },
+    "nativeMediaBrowser": {
+      "command": "pnpm test:browser:composition-media",
+      "exitCode": 0,
+      "log": "/private/tmp/pr48-third-media-browser.log",
+      "proof": "Sequence/video \u00d7 Canvas/WebGL preview/export matrix. Video cases now include a text-constrained audio precomp: measured host placement is retained; all 12,000 master samples are exact; repeated/independent/raw exports and independent decoded AAC are identical. Authoring covers save/reload/history, 96 exact reverse seeks, retained captures and source-change recovery. Playback uses 120 observations per backend with max frame difference 1 and max source-frame difference 0."
+    },
+    "passageCanvas": {
+      "command": "pnpm test:browser:composition-native-passage",
+      "exitCode": 0,
+      "log": "/private/tmp/pr48-third-passage-canvas.log",
+      "proof": "576-frame passage exports; narration, standalone encoded-beat identity, cache reuse and isolated edits, relocated assets, invalid inputs and Lab pixels/seeks."
+    },
+    "passageWebgl": {
+      "command": "pnpm test:browser:composition-native-passage:webgl",
+      "exitCode": 0,
+      "log": "/private/tmp/pr48-third-passage-webgl.log",
+      "proof": "576-frame passage exports; narration, standalone encoded-beat identity, cache reuse and isolated edits, relocated assets, invalid inputs and Lab pixels/seeks.",
+      "boundedPreviews": {
+        "beats": 20,
+        "edits": 8,
+        "peakActive": 4,
+        "remaining": 0,
+        "contextsCreated": 20
+      }
+    },
+    "frozenBaselines": {
+      "command": "pnpm test:browser:composition-baselines",
+      "exitCode": 0,
+      "items": 176,
+      "frames": 36061,
+      "seconds": 289.11,
+      "log": "/private/tmp/pr48-third-baselines.log",
+      "proof": "Existing frozen references match; no baseline regeneration or threshold changes."
+    },
+    "finalDocumentation": "Prettier and git diff --check pass after evidence updates; source/test code unchanged since passing verification."
+  },
+  "implementationReview": {
+    "standards": "No actionable findings; independent read-only review.",
+    "spec": "No actionable findings; independent read-only review."
+  },
+  "rejectedTestFixtures": [
+    "Corrected the sound-parent fixture to attach its group to a text anchor; the original non-text anchor did not exercise measured layout.",
+    "Used an independent driver control for the unrelated-host-expression test; reading host geometry intentionally evaluates host dependencies. Added a separate real constrained-driver case.",
+    "Kept the existing 12 dB gain clamp; changed the constrained-driver test bounds to produce 8 dB rather than expecting an unclamped 20 dB."
+  ]
 }

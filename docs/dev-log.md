@@ -43,12 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #48 third review repairs in progress (2026-10-08):** both findings are
-  posted inline on `1dae23c8`. Visual/source PCM/mix caches now share platform
-  and architecture identity; actual cache regressions fail before and pass after
-  the repair, with all 37 affected integrations passing. The text-constrained
-  audio precomp finding remains to fix and verify. One commit per finding;
-  push once after final verification. The owner CE15 checkout is untouched.
+- **PR #48 third review repairs verified (2026-10-08):** both P2 findings
+  posted inline on `1dae23c8` are fixed. Cache identity includes OS/architecture
+  (`2fb40127`); audio traversal avoids unrelated visual layout while preserving
+  actual dependencies and picture constraints (evaluator 56). Fast checks pass
+  2,616 units; 83 affected integrations and native media/Canvas/WebGL passage
+  browsers pass. All 176 frozen items / 36,061 frames match. Each finding has its
+  own commit, delivered in one normal push; owner review/merge is next. No full
+  repository gate is run or claimed. Owner CE15 checkout is untouched.
   [Third review evidence](./pr-48-third-review-fix-results.json).
 
 - **CE13 complete (2026-10-07):** original acceptance at `01fbca2` passes the
@@ -76,13 +78,16 @@ still hold before relying on them.
 - **Agent / branch:** Codex on isolated `codex/pr48-third-review-fixes`, from `1dae23c8`.
 - **Scope:** both P2 findings posted inline before repairs; one commit per finding,
   one final normal push.
-- **Done:** native visual/source PCM/mix cache keys share OS/architecture identity.
-  Two actual-media regressions reproduce cross-identity hits before the fix and
-  prove distinct misses plus original-platform reuse after it.
-- **Results:** pinned toolchain/browser startup and all 37 affected cache/PCM
-  integrations pass. Frozen references and numerical tolerances are unchanged.
-- **Open / next:** repair audio traversal of spatially text-constrained precomps,
-  complete focused verification, then push both commits. No full gate is planned.
+- **Done:** `2fb40127` partitions all native caches by OS/architecture; the audio
+  repair skips unrelated visual layout, retains actual dependencies and picture
+  placement, and advances evaluator identity to 56.
+- **Results:** fast checks pass 2,616 units; 83 affected integrations and native
+  media plus Canvas/WebGL passage browsers pass; 176 frozen items / 36,061 frames
+  match. Independent review finds no issues.
+- **Rejected:** corrected text-anchor/driver test fixtures and retained the existing
+  gain clamp. No pixel threshold, numerical tolerance or frozen reference changed.
+- **Delivery / next:** separate finding commits and one final normal push; owner
+  review/merge follows. No full repository gate is run or claimed.
 - **Records:** [third review evidence](./pr-48-third-review-fix-results.json),
   [PR #48](https://github.com/xxibcill/still-shift/pull/48).
 

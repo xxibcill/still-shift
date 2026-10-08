@@ -167,10 +167,16 @@ Audio cycle loops cover the full scope duration, including singleton scopes. Aud
 pingpong reflects at the final 48 kHz sample, and finite audio loops end in silence.
 The established picture loop/terminal-hold behavior stays unchanged.
 
+Audio visibility reads authored layer/group metadata without evaluating parent
+geometry. Spatial constraints on precomp hosts or parent groups therefore do not
+require measured text layout during PCM preparation. Actual audio drivers that
+read constrained geometry still evaluate that dependency and require its measured
+bounds; picture evaluation retains the complete visual constraints.
+
 Output samples must be nonnegative safe integers. Internal `scopeTimes` overrides
 reject in this API; authored ordinary source remap remains supported. Protected
 narration rejects baked `sampleTimes` on voice and ancestors, even when disabled, in
-addition to the previously prohibited source-clock changes. The evaluator is version 55. Continuous clock/dependency correctness, PCM decode/mix,
+addition to the previously prohibited source-clock changes. The evaluator is version 56. Continuous clock/dependency correctness, PCM decode/mix,
 waveforms, preview and matching-audio delivery are verified; passage mixing is verified.
 
 `prepareCompositionAudioSource` verifies the actual single mono/stereo source stream

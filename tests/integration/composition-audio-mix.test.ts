@@ -119,6 +119,36 @@ const pair = (pcm: Buffer, sample: number) => [
   pcm.readFloatLE(sample * 8),
   pcm.readFloatLE(sample * 8 + 4),
 ];
+
+it("preserves exact PCM when a native audio precomp is spatially attached to measured text", async () => {
+  const { asset, raw } = await source(
+    "text-attachment",
+    8000,
+    2,
+    (sample, channel) =>
+      sample === 7999 ? (channel ? -0.125 : 0.5) : channel ? -0.25 : 0.25,
+  );
+  const comp = document(asset);
+  const sound = comp.layers[0]!;
+  comp.layers = [
+    {
+      id: "title",
+      type: "text",
+      text: "Title",
+      fontSize: 24,
+      color: "#ffffff",
+    },
+    { id: "host", type: "precomp", comp: "nested" },
+  ];
+  comp.precomps = [
+    { id: "nested", width: 64, height: 48, frameCount: 4, layers: [sound] },
+  ];
+  comp.constraints = [{ type: "attach", target: "host", anchor: "title" }];
+  const actual = await render(comp, "text-attachment");
+  expect(actual.pcm).toEqual(raw);
+  expect(actual.preparedAudio.waveforms.processed[0]!.key).toBe("host/sound");
+});
+
 const failureCode = async (operation: Promise<unknown>) => {
   try {
     await operation;
