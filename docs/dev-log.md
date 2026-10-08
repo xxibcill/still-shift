@@ -93,12 +93,12 @@ still hold before relying on them.
   Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
   controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
   group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
-  pool-key/array metadata now pass 238 focused tests, the complete audit, 22 moving/
-  blurred and ten stationary native frames and 96 owned RPC snapshots. Actual
-  canonical pool keys/arrays/maximum live slots pre-admit, stay across scratch/native
-  reuse, then clear at disposal; original caps/native/null behavior passes. Native
-  snapshots, original WebGL/providers, 69 typography tests and 64 exports / 768
-  prior-exact bodies/frames pass; glyph 1.427885× meets unchanged 1.5 maximum.
+  pool-key/array/pass temporary metadata now pass 243 focused tests, the complete
+  audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
+  snapshots. Actual pass input Set/sampler and uniform tuple/outer arrays pre-admit,
+  stay through native draw, then clear; original getter/native/null behavior passes.
+  Native snapshots, original WebGL/providers, 69 typography tests and 64 exports /
+  768 prior-exact bodies/frames pass; glyph 1.384375× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -334,6 +334,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 original GPU pass temporaries
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `6edb907`.
+- **Done:** admit original pass input Set/sampler temporaries and actual uniform
+  tuples/outer arrays before production, retain through native GPU consumers,
+  then clear actual references while preserving borrowed inputs and native order.
+- **Results:** build/lint/boundaries, 243 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.384375× meets unchanged 1.5 maximum.
+- **Verification:** original getter executes once; actual Set/tuple arrays stay live
+  through native draw, then clear. Null getter/draw/scissor/completion checks pass.
+- **Next:** remaining device/shader/helper/runtime/Node controls, production/
+  aggregate admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [pass evidence](./composition-ce15-pass-metadata-results.json).
 
 ### 2026-10-08 — CE15 original GPU pool keys and arrays
 

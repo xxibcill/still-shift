@@ -51,6 +51,19 @@ type Program = {
   uniforms: Map<string, WebGLUniformLocation>;
 };
 
+type PassMetadata = {
+  inputs: Set<WebglSurface> | undefined;
+  uniforms: [string, UniformValue][] | undefined;
+};
+function clearPassMetadata(value: PassMetadata) {
+  value.inputs?.clear();
+  if (value.uniforms) {
+    for (const entry of value.uniforms) (entry as unknown[]).length = 0;
+    value.uniforms.length = 0;
+  }
+  value.inputs = undefined;
+  value.uniforms = undefined;
+}
 type PoolEntry = {
   key: string | undefined;
   surfaces: WebglSurface[] | undefined;
@@ -684,55 +697,72 @@ export class WebglDevice {
       inputs.some((input) => input.texture === target.texture)
     )
       throw new Error("comp-webgl-feedback: input and output textures overlap");
-    for (const input of new Set(inputs))
-      if (input.screen) this.resolveScreen(input);
-    gl.bindFramebuffer(
-      gl.FRAMEBUFFER,
-      target?.screen ? null : (target?.framebuffer ?? null),
+    let uniformCount = 0;
+    for (const name in uniforms)
+      if (Object.hasOwn(uniforms, name)) uniformCount++;
+    const temporary = allocateRenderMetadata<PassMetadata>(
+      // Holder/Set/outer array 512; input slots/sampler arrays/text 256 per input;
+      // original uniform tuples and outer pointer slots 64 per own enumerable field.
+      512 + 256 * inputs.length + 64 * uniformCount,
+      () => ({ inputs: undefined, uniforms: undefined }),
+      false,
+      clearPassMetadata,
     );
-    gl.viewport(
-      0,
-      0,
-      target?.width ?? this.canvas.width,
-      target?.height ?? this.canvas.height,
-    );
-    gl.useProgram(program.handle);
-    gl.bindVertexArray(this.vao);
-    for (let i = 0; i < inputs.length; i++) {
-      gl.activeTexture(gl.TEXTURE0 + i);
-      gl.bindTexture(gl.TEXTURE_2D, inputs[i]!.texture);
-      const location = program.uniforms.get(inputSampler(i));
-      if (location) gl.uniform1i(location, i);
-    }
-    for (const [name, value] of Object.entries(uniforms)) {
-      const location = program.uniforms.get(name);
-      if (!location) continue;
-      if (typeof value === "number") gl.uniform1f(location, value);
-      else if (value.length === 2) gl.uniform2fv(location, value);
-      else if (value.length === 3) gl.uniform3fv(location, value);
-      else if (value.length === 4) gl.uniform4fv(location, value);
-      else if (value.length === 9) gl.uniformMatrix3fv(location, false, value);
-      else throw new Error(`comp-webgl-uniform: unsupported ${name}`);
-    }
-    if (clip) {
-      gl.enable(gl.SCISSOR_TEST);
-      gl.scissor(
-        clip.left,
-        target?.screen ? target.height - clip.bottom : clip.top,
-        clip.right - clip.left,
-        clip.bottom - clip.top,
-      );
-    }
     try {
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      const unique = (temporary.inputs = new Set(inputs));
+      for (const input of unique) if (input.screen) this.resolveScreen(input);
+      gl.bindFramebuffer(
+        gl.FRAMEBUFFER,
+        target?.screen ? null : (target?.framebuffer ?? null),
+      );
+      gl.viewport(
+        0,
+        0,
+        target?.width ?? this.canvas.width,
+        target?.height ?? this.canvas.height,
+      );
+      gl.useProgram(program.handle);
+      gl.bindVertexArray(this.vao);
+      for (let i = 0; i < inputs.length; i++) {
+        gl.activeTexture(gl.TEXTURE0 + i);
+        gl.bindTexture(gl.TEXTURE_2D, inputs[i]!.texture);
+        const location = program.uniforms.get(inputSampler(i));
+        if (location) gl.uniform1i(location, i);
+      }
+      const entries = (temporary.uniforms = Object.entries(uniforms));
+      for (const [name, value] of entries) {
+        const location = program.uniforms.get(name);
+        if (!location) continue;
+        if (typeof value === "number") gl.uniform1f(location, value);
+        else if (value.length === 2) gl.uniform2fv(location, value);
+        else if (value.length === 3) gl.uniform3fv(location, value);
+        else if (value.length === 4) gl.uniform4fv(location, value);
+        else if (value.length === 9)
+          gl.uniformMatrix3fv(location, false, value);
+        else throw new Error(`comp-webgl-uniform: unsupported ${name}`);
+      }
+      if (clip) {
+        gl.enable(gl.SCISSOR_TEST);
+        gl.scissor(
+          clip.left,
+          target?.screen ? target.height - clip.bottom : clip.top,
+          clip.right - clip.left,
+          clip.bottom - clip.top,
+        );
+      }
+      try {
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      } finally {
+        if (clip) gl.disable(gl.SCISSOR_TEST);
+      }
+      if (target?.screen) {
+        this.dirtyScreens.add(target);
+        this.onScreenChange?.(clip);
+      }
+      this.passes++;
     } finally {
-      if (clip) gl.disable(gl.SCISSOR_TEST);
+      releaseRenderMetadata(temporary);
     }
-    if (target?.screen) {
-      this.dirtyScreens.add(target);
-      this.onScreenChange?.(clip);
-    }
-    this.passes++;
   }
 
   /** Byte color covering `region` of a screen cleared without later draws. */

@@ -959,6 +959,27 @@ solid/clip/pass/read/swap metadata, helper/remaining runtime/Node/production/agg
 admission, speed and full gate remain pending.
 [Evidence](./composition-ce15-pool-metadata-results.json).
 
+## Accepted GPU pass temporary checkpoint — 2026-10-08
+
+After unchanged shader/program/feedback checks, reserve 512 + 256*actual input
+count + 64*actual own enumerable uniform-field count before original Set/sampler/
+Object.entries producers. Original plain-key enumeration does not read values;
+original uniform getters run once. Hold actual Set, tuples and outer array through
+screen resolution, native textures/samplers, scalar/vector/matrix uploads and GPU
+draw/scissor consumers, then clear actual owned references in finally. Preserve
+original order, sampler keys, borrowed vector/matrix identity, native null failures
+and completion counter. Five regressions cover denial, exact native inputs/getters,
+actual live/cleared containers, original null getter/retry and draw/scissor failure.
+
+Build/lint/boundaries and 243 focused tests pass. Complete audit 144/8,000, 96 RPC
+snapshots, 22 moving/blurred and ten stationary native frames, native snapshots,
+original WebGL, 69 typography tests and provider fixtures pass; glyph 1.384375×
+meets unchanged 1.5 maximum. All 64 exports preserve 768 complete bodies/frames
+against pushed `6edb907`. Shader/program/compile/diagnostic/uniform-map/dirty/solid/
+clip/read/swap metadata, helper/remaining runtime/Node/production/aggregate
+admission, speed and full gate remain pending.
+[Evidence](./composition-ce15-pass-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -42,6 +42,21 @@ export function fakeWebglDevice() {
     deleteTexture: vi.fn(),
     deleteFramebuffer: vi.fn(),
     deleteProgram: vi.fn(),
+    viewport: vi.fn(),
+    useProgram: vi.fn(),
+    activeTexture: vi.fn(),
+    uniform1i: vi.fn(),
+    uniform1f: vi.fn(),
+    uniform2fv: vi.fn(),
+    uniform3fv: vi.fn(),
+    uniform4fv: vi.fn(),
+    uniformMatrix3fv: vi.fn(),
+    drawArrays: vi.fn(),
+    enable: vi.fn(),
+    scissor: vi.fn(),
+    TRIANGLES: 21,
+    TEXTURE0: 22,
+    SCISSOR_TEST: 23,
   };
   const getContext = vi.fn(() => gl);
   const canvas = {
