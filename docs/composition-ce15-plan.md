@@ -1512,6 +1512,28 @@ view/shader/native/cache/registry, remaining factories/provider/graph/font/commo
 ledger/Node and production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-shadow-kernel-metadata-results.json).
 
+## Accepted GPU shadow working checkpoint — 2026-10-08
+
+After original opacity/alpha guards admit actual 8192-byte GPU work before offset/
+mask-shader/pass-tuple/direction/input/uniform/upload-view/native-reference factories.
+Capture actual values through upload and all four original passes. Fixed original
+mask body stays 708 UTF16 units; all shader bodies/weight bytes/native order stay.
+Native surfaces remain owned by callback controller, upload backing keeps exact
+separate pixel admission. Clear actual fresh arrays/records/ref fields and release
+actual upload backing/Gaussian result after consumers. Visit both retirement paths
+and preserve original primary null over secondary errors; successful-return first
+retirement failure propagates after metadata clears. Inactive backing remains
+undetached. Partial/quota/math/native/pass failures clean selected owners and retry.
+
+Build/lint/boundaries, 533 focused / eleven new tests, complete audit 144/8,000,
+96 RPC snapshots, native probes, WebGL/providers and 69 typography tests pass;
+glyph 1.429870× meets unchanged 1.5 maximum. Both whole original GPU traces
+stay exact, with prior four GPU/Canvas and seven Gaussian traces rerun. All
+64 exports / 768 bodies/frames match `9459a4f`. Canvas shadow working/per-pixel/
+view/native, cache/registry, remaining factories/provider/graph/font/common/ledger/
+Node and production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-shadow-gpu-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

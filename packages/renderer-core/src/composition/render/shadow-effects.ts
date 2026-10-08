@@ -13,9 +13,104 @@ import {
   PREMULTIPLIED_SAMPLE_SHADER,
 } from "./sampled-blur.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
+import type { WebglSurface } from "./webgl-device.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
+type ShadowPass = [
+  WebglSurface | undefined,
+  WebglSurface | undefined,
+  number[] | undefined,
+];
+type GpuShadowWork = {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  offset?: number[] | undefined;
+  rows?: ShadowPass[] | undefined;
+  data?: Uint8Array<ArrayBuffer> | undefined;
+  kernel?: GaussianKernel | undefined;
+  shader?: string | undefined;
+  references: WebglSurface[];
+  inputs: WebglSurface[][];
+  uniforms: Record<string, number | readonly number[]>[];
+};
+function clearGpuShadow(work: GpuShadowWork) {
+  const data = work.data,
+    kernel = work.kernel,
+    memory = work.memory;
+  work.data = work.kernel = work.memory = undefined;
+  if (work.offset) work.offset.length = 0;
+  if (work.rows) {
+    for (const row of work.rows) {
+      if (row[2]) row[2].length = 0;
+      row[0] = row[1] = row[2] = undefined;
+    }
+    work.rows.length = 0;
+  }
+  for (const input of work.inputs) input.length = 0;
+  for (const uniforms of work.uniforms)
+    for (const name in uniforms) delete uniforms[name];
+  work.offset = work.rows = work.shader = undefined;
+  work.references.length = work.inputs.length = work.uniforms.length = 0;
+  let failed = false,
+    first: unknown;
+  try {
+    if (data) memory?.release(data.buffer);
+  } catch (error) {
+    failed = true;
+    first = error;
+  }
+  try {
+    if (kernel) releaseRenderMetadata(kernel);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  if (failed) throw first;
+}
+function gpuShadowWork() {
+  // Original generated mask body is 708 UTF16 units. This fixed arena also
+  // covers offset/directions, two pass tuples, four input/uniform records,
+  // the upload view and borrowed native/controller refs; pixels admit separately.
+  return allocateRenderMetadata<GpuShadowWork>(
+    8192,
+    () => ({
+      managed: renderMemory() !== undefined,
+      memory: renderMemory(),
+      references: [],
+      inputs: [],
+      uniforms: [],
+    }),
+    false,
+    clearGpuShadow,
+  );
+}
+function shadowInputs(work: GpuShadowWork, inputs: WebglSurface[]) {
+  work.inputs.push(inputs);
+  return inputs;
+}
+function shadowUniforms(
+  work: GpuShadowWork,
+  uniforms: Record<string, number | readonly number[]>,
+) {
+  work.uniforms.push(uniforms);
+  return uniforms;
+}
+function shadowReference(work: GpuShadowWork, surface: WebglSurface) {
+  work.references.push(surface);
+  return surface;
+}
+function finishGpuShadow(work: GpuShadowWork, primaryFailed: boolean) {
+  try {
+    if (work.managed) releaseRenderMetadata(work);
+    else clearGpuShadow(work);
+  } catch (error) {
+    if (!primaryFailed) throw error;
+  }
+}
+
 type GaussianKernel = { radius: number; weights: number[]; total: number };
 type KernelWork = {
   managed: boolean;
@@ -149,17 +244,28 @@ export function shadowEffectKernel(
       const color = params.color as readonly number[],
         opacity = params.opacity as number;
       if (opacity === 0 || color[3] === 0) return input;
-      const k = shadowGaussianKernel(params.blur as number);
+      const work = gpuShadowWork();
+      let failed = false;
       try {
-        const offset = (params.offset as readonly number[]).map(
+        const k = (work.kernel = shadowGaussianKernel(params.blur as number));
+        const offset = (work.offset = (params.offset as readonly number[]).map(
             (v) => Math.round(v * 16) / 16,
+          )),
+          mask = shadowReference(
+            work,
+            context.createSurface(input.width, input.height),
           ),
-          mask = context.createSurface(input.width, input.height),
-          scratch = context.createSurface(input.width, input.height),
-          table = context.createSurface(k.weights.length, 1),
+          scratch = shadowReference(
+            work,
+            context.createSurface(input.width, input.height),
+          ),
+          table = shadowReference(
+            work,
+            context.createSurface(k.weights.length, 1),
+          ),
           data = allocateRenderPixels(
             k.weights.length * 4 * 1,
-            () => new Uint8Array(k.weights.length * 4),
+            () => (work.data = new Uint8Array(k.weights.length * 4)),
           );
         for (let i = 0; i < k.weights.length; i++) {
           data[i * 4] = k.weights[i]! & 255;
@@ -167,29 +273,42 @@ export function shadowEffectKernel(
         }
         context.uploadBytes(table, data);
         context.pass(
-          `${PREMULTIPLIED_SAMPLE_SHADER}\nuniform vec2 offset;uniform float inner;void main(){float coverage=sampleBytes(gl_FragCoord.xy-offset).a/255.0;pixel=vec4(inner==1.0?1.0-coverage:coverage);}`,
+          (work.shader = `${PREMULTIPLIED_SAMPLE_SHADER}\nuniform vec2 offset;uniform float inner;void main(){float coverage=sampleBytes(gl_FragCoord.xy-offset).a/255.0;pixel=vec4(inner==1.0?1.0-coverage:coverage);}`),
           mask,
-          [input],
-          { offset, inner: inner ? 1 : 0 },
+          shadowInputs(work, [input]),
+          shadowUniforms(work, { offset, inner: inner ? 1 : 0 }),
         );
-        for (const [output, source, direction] of [
+        for (const [output, source, direction] of (work.rows = [
           [scratch, mask, [1, 0]],
           [mask, scratch, [0, 1]],
-        ] as const)
-          context.pass(GAUSSIAN, output, [source, table], {
-            radius: k.radius,
-            total: k.total,
-            direction,
-            padding: inner ? 255 : 0,
-          });
-        context.pass(COMPOSITE, scratch, [input, mask], {
-          color,
-          opacity,
-          inner: inner ? 1 : 0,
-        });
+        ]))
+          context.pass(
+            GAUSSIAN,
+            output!,
+            shadowInputs(work, [source!, table]),
+            shadowUniforms(work, {
+              radius: k.radius,
+              total: k.total,
+              direction: direction!,
+              padding: inner ? 255 : 0,
+            }),
+          );
+        context.pass(
+          COMPOSITE,
+          scratch,
+          shadowInputs(work, [input, mask]),
+          shadowUniforms(work, {
+            color,
+            opacity,
+            inner: inner ? 1 : 0,
+          }),
+        );
         return scratch;
+      } catch (error) {
+        failed = true;
+        throw error;
       } finally {
-        releaseRenderMetadata(k);
+        finishGpuShadow(work, failed);
       }
     },
     renderCanvas(context, input, params) {
