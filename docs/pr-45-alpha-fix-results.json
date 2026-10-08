@@ -1,0 +1,276 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/45",
+  "reviewedHead": "76fb71ba41e0daec65c2a73c635336aa9e22cd43",
+  "reviewId": 5450839600,
+  "status": "reveal-opacity repair verified; rendered background-alpha repair pending; no push yet",
+  "fullPnpmCheckRun": false,
+  "githubActionsEnabled": false,
+  "findings": [
+    {
+      "id": "reveal-opacity",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4214135363",
+      "status": "fixed in the commit containing this checkpoint",
+      "change": "Preserve the source cinematic full-opacity invariant for evaluated native reveal subjects and occluders at every integer frame; retain node/frame diagnostics.",
+      "red": "Three regressions fail on reviewed source with valid fixtures",
+      "focusedTests": 41,
+      "browserAndExport": {
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "browser": [
+          {
+            "backend": "canvas2d",
+            "decodedPng": true,
+            "rejections": [
+              {
+                "node": "wall",
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic reveal requires full-opacity native planes",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "wall",
+                    "frame": 0
+                  }
+                ]
+              },
+              {
+                "node": "subject",
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic reveal requires full-opacity native planes",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "subject",
+                    "frame": 0
+                  }
+                ]
+              }
+            ],
+            "maxRetainedDelta": 0
+          },
+          {
+            "backend": "webgl2",
+            "decodedPng": true,
+            "rejections": [
+              {
+                "node": "wall",
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic reveal requires full-opacity native planes",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "wall",
+                    "frame": 0
+                  }
+                ]
+              },
+              {
+                "node": "subject",
+                "diagnostics": [
+                  {
+                    "code": "comp-camera-coverage",
+                    "severity": "error",
+                    "message": "Cinematic reveal requires full-opacity native planes",
+                    "path": "metadata.cinematicCoverage",
+                    "node": "subject",
+                    "frame": 0
+                  }
+                ]
+              }
+            ],
+            "maxRetainedDelta": 0
+          }
+        ],
+        "exports": [
+          {
+            "backend": "canvas2d",
+            "node": "wall",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal requires full-opacity native planes",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "node": "wall",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal requires full-opacity native planes",
+            "published": false
+          },
+          {
+            "backend": "canvas2d",
+            "node": "subject",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal requires full-opacity native planes",
+            "published": false
+          },
+          {
+            "backend": "webgl2",
+            "node": "subject",
+            "rejection": "AnimationEngineError: comp-camera-coverage: Cinematic reveal requires full-opacity native planes",
+            "published": false
+          }
+        ]
+      },
+      "independentReviews": {
+        "Standards": "no actionable findings",
+        "Spec": "no actionable findings"
+      }
+    },
+    {
+      "id": "rendered-background-alpha",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/45#discussion_r4214135367",
+      "status": "pending"
+    }
+  ],
+  "checks": [
+    {
+      "label": "opacity-red",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/foreground-reveal.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 1,
+      "seconds": 2.46,
+      "log": "/private/tmp/pr45-alpha-opacity-red.log",
+      "logSha256": "ff6fac62bb9918629c32631e02dc914e0caa9ae8b83b602ab86d3ee8c39f1c83"
+    },
+    {
+      "label": "opacity-green",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/foreground-reveal.test.ts",
+        "tests/unit/composition-cinematic-coverage.test.ts",
+        "tests/unit/composition-cinematic-adapter.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 1,
+      "seconds": 3.19,
+      "log": "/private/tmp/pr45-alpha-opacity-green.log",
+      "logSha256": "c2692ede909e9ee4503b6316913d70f1112aa7c9f9f2c194216e4e9677ffb094"
+    },
+    {
+      "label": "preflight",
+      "command": ["pnpm", "toolchain:check"],
+      "exitCode": 0,
+      "seconds": 1.29,
+      "log": "/private/tmp/pr45-alpha-preflight.log",
+      "logSha256": "c36c4cb3862ba3812b8f943349125805446c040fe45058bdd7cc9f3a113186d9"
+    },
+    {
+      "label": "opacity-red-valid",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/foreground-reveal.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 1,
+      "seconds": 2.28,
+      "log": "/private/tmp/pr45-alpha-opacity-red-valid.log",
+      "logSha256": "76d1a7599d14486faaa92ab0308c0fa342b9a21d627015d6d5f365ee745ee04f"
+    },
+    {
+      "label": "opacity-green-valid",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/foreground-reveal.test.ts",
+        "tests/unit/composition-cinematic-coverage.test.ts",
+        "tests/unit/composition-cinematic-adapter.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0,
+      "seconds": 3.34,
+      "log": "/private/tmp/pr45-alpha-opacity-green-valid.log",
+      "logSha256": "ff574bf1cb3e8cab2600528d299f4089c4c18abf0963d411677a40793a465378"
+    },
+    {
+      "label": "opacity-browser",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/pr45-alpha-opacity-browser.mts"
+      ],
+      "exitCode": 0,
+      "seconds": 4.92,
+      "log": "/private/tmp/pr45-alpha-opacity-browser.log",
+      "logSha256": "6868bc4f8a0ffe43bea2af8322c9d5cdd6fa8826a51a581cb49e6fc408beeada"
+    },
+    {
+      "label": "opacity-format",
+      "command": [
+        "pnpm",
+        "exec",
+        "prettier",
+        "--write",
+        "tests/unit/foreground-reveal.test.ts",
+        "docs/composition-reference-notes.md",
+        "docs/composition-reference.md",
+        "packages/renderer-core/src/composition/adapters/cinematic-coverage.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 1.08,
+      "log": "/private/tmp/pr45-alpha-opacity-format.log",
+      "logSha256": "51ce20fd86111ba89d56d84b7339f632d3c9511512ecd48319949a2965c4ce8c"
+    },
+    {
+      "label": "opacity-build",
+      "command": ["pnpm", "build"],
+      "exitCode": 0,
+      "seconds": 5.8,
+      "log": "/private/tmp/pr45-alpha-opacity-build.log",
+      "logSha256": "c3e302e1e042b4da6ed01b6b2f4b3b741b0b12f4ac94a67dd0e9c1bcaa7e8ff6"
+    },
+    {
+      "label": "opacity-lint",
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "packages/renderer-core/src/composition/adapters/cinematic-coverage.ts",
+        "tests/unit/foreground-reveal.test.ts",
+        "packages/renderer-core/src/composition/render/version.ts",
+        "packages/renderer-core/src/composition/render/webgl2.ts",
+        "packages/execution-runtime/src/export-worker.ts"
+      ],
+      "exitCode": 0,
+      "seconds": 1.28,
+      "log": "/private/tmp/pr45-alpha-opacity-lint.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "rejectedAttempts": [
+    {
+      "attempt": "Sandboxed worktree test startup / Python setup",
+      "reason": "Sandbox prohibits Vite cache and environment writes outside its initial roots; rerun in attached isolated worktree through approved local commands."
+    },
+    {
+      "attempt": "First inherited-opacity test fixture",
+      "reason": "Group omitted required size; corrected fixture validates and repaired test passes. Corrected regressions were also checked against original source."
+    }
+  ],
+  "verificationPolicy": "Focused follow-up checks only. No full repository or timing gate is claimed. Frozen acceptance checks will run on final repair code."
+}

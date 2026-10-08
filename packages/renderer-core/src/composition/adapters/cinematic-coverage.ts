@@ -4,7 +4,7 @@ import {
   prepareAlphaCoverage,
   type AlphaPixels,
 } from "../../alpha-coverage.ts";
-import { passageError } from "../../passage-diagnostics.ts";
+import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import {
   inspectProjectedReveal,
   type RevealImageNode,
@@ -165,7 +165,14 @@ export function validateCinematicCompositionCoverage(
       tree = evaluateComp(composition, frame);
       previousFrame = frame;
     }
-    const matrix = planeState(tree!, node, frame).projection!.affineMatrix!;
+    const state = planeState(tree!, node, frame);
+    if (state.opacity !== 1)
+      fail(
+        "Cinematic reveal requires full-opacity native planes",
+        node.id,
+        frame,
+      );
+    const matrix = state.projection!.affineMatrix!;
     return { left: matrix[4], top: matrix[5], scale: matrix[0] };
   };
   try {
@@ -180,6 +187,7 @@ export function validateCinematicCompositionCoverage(
       project,
     );
   } catch (error) {
+    if (error instanceof PassageError) throw error;
     fail(error instanceof Error ? error.message : String(error), subject.id);
   }
 }

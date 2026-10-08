@@ -1636,6 +1636,8 @@ and recipe movement against the evaluated composition camera. Persisted
 semantic foreground-reveal target. Preview and export check decoded alpha and
 native projection after JSON reload. Invalid declarations, transparent painted
 coverage and a reveal that does not clear fail with `comp-camera-coverage`.
+Declared reveal subjects and occluders retain the cinematic full-opacity rule at
+every integer frame, including keyed opacity and inherited group opacity.
 Shared `effects-1` opt-in and target validation are preserved.
 
 ### Temporal echo (CE6 dependency slice)

@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #45 alpha follow-up repairs in flight (2026-10-08):** both new P2
+  findings are posted inline on `76fb71b`. The commit containing this checkpoint
+  preserves full evaluated opacity for persisted reveal subjects and occluders;
+  41 focused tests and decoded-PNG Canvas/WebGL rejection/retained-preview checks
+  pass, as do four protected export failures and independent repair reviews.
+  Rendered background alpha remains next. Use one commit per finding and one
+  final push after affected browser/export/baseline verification. No full
+  repository gate is claimed; owner checkout is untouched and Actions disabled.
+  [Alpha repair evidence](./pr-45-alpha-fix-results.json).
+
 - **PR #45 review repairs verified (2026-10-08):** both P2 findings are posted
   inline on reviewed `3545055` and repaired one per commit. `a99be1f` retains local
   primitive-blur scaling; the commit containing this entry validates actual mixed
@@ -875,6 +885,16 @@ still hold before relying on them.
 _Last updated 2026-10-08 by Codex for PR #45 review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #45 persisted reveal-opacity repair
+
+- **Agent / branch:** Codex on `codex/pr45-alpha-fixes` from reviewed `76fb71b`.
+- **Scope:** first of two new inline alpha-validation findings; one finding per commit.
+- **Done:** preserve full evaluated subject/occluder opacity and diagnostic node/frame after native reload; add static, keyed and inherited regressions and document the retained source rule.
+- **Results:** three new regressions fail on reviewed source; 41 focused tests, TypeScript and focused lint pass. Actual decoded-PNG Canvas/WebGL previews and four export attempts reject invalid opacity; valid retained previews stay exact. Independent Standards and Spec reviews have no findings.
+- **Rejected / do not repeat:** group fixtures require `size`; use the isolated worktree's caches and environment, with approved commands for sandbox-restricted startup.
+- **Open / next:** rendered background-alpha repair; then affected browser/export/frozen checks and one final push. No full `pnpm check` is claimed; Actions remain disabled.
+- **Records:** [alpha repair evidence](./pr-45-alpha-fix-results.json), [PR #45](https://github.com/xxibcill/still-shift/pull/45).
 
 ### 2026-10-08 — PR #45 shutter coverage repair and final verification
 
