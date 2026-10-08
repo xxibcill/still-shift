@@ -1950,6 +1950,29 @@ cache/registry/error/class/depth sampling/provider/graph/font/common/ledger/Node
 production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-stylize-gpu-metadata-results.json).
 
+## Accepted stylize Canvas callback metadata checkpoint — 2026-10-08
+
+Reserve 16384-byte actual callback owner before original offset, neutral, readback/
+view, sample, RGB key/map/result and index/native factories. Retain actual views,
+red/blue/offset/native refs through publication; clear each actual RGB/key array and
+callback after its pixel consumer. Reuse original sampling with one admitted control
+and no extra per-pixel lease. Preserve original amount and neutral allocation paths.
+Attempt both original backing releases after first failure, guard native detach
+cleanup, clear actual metadata refs and preserve first null over secondary cleanup.
+Captured unowned premultiply backing after adoption failure detaches; common generic
+readback/adoption/helper ownership remains pending.
+
+Build/lint/boundaries and 741 focused tests / 84 files pass on attempt 3 after review
+adds guarded native-detach cleanup and its regression plus test-only native prototype
+typing. Twelve new tests preserve 16 whole native traces/full pixels and cover exact
+quotas, actual consumer/partial refs, all selected null paths, cleanup and retry.
+All 729 prior tests rerun. Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/
+providers, 69 typography tests and 64 prior-exact exports / 768 bodies/frames pass;
+glyph 1.357456× meets unchanged 1.5 maximum. Standalone offset, other effects/cache/
+registry/error/class/depth sampling/provider/graph/font/common/ledger/Node and
+production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-stylize-canvas-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

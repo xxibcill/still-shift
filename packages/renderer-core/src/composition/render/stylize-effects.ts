@@ -8,9 +8,11 @@ import { colorEffectChannel } from "./color-effects.ts";
 import {
   samplePremultiplied,
   PREMULTIPLIED_SAMPLE_SHADER,
+  type PremultipliedSampleControl,
 } from "./sampled-blur.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 import type { WebglSurface } from "./webgl-device.ts";
+import type { CanvasSurface } from "./canvas2d.ts";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
@@ -71,6 +73,91 @@ function finishGpuStylizeWork(work: GpuStylizeWork, failed: boolean) {
   try {
     if (managed) releaseRenderMetadata(work);
     else clearGpuStylizeWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
+
+type CanvasStylizeWork = StylizeOffsetControl & {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  sampling: PremultipliedSampleControl;
+  neutral?: ((value: number) => boolean) | undefined;
+  input?: CanvasSurface | undefined;
+  output?: CanvasSurface | undefined;
+  image?: ImageData | undefined;
+  premultiplied?: Uint8Array<ArrayBuffer> | undefined;
+  red?: number[] | undefined;
+  blue?: number[] | undefined;
+  rgbKeys?: number[] | undefined;
+  rgb?: number[] | undefined;
+  rgbProducer?: ((channel: number) => number) | undefined;
+  color?: readonly number[] | undefined;
+};
+function clearStylizePixel(work: CanvasStylizeWork) {
+  if (work.rgbKeys) work.rgbKeys.length = 0;
+  if (work.rgb) work.rgb.length = 0;
+  work.rgbKeys = work.rgb = undefined;
+  work.rgbProducer = undefined;
+}
+function clearCanvasStylizeWork(work: CanvasStylizeWork) {
+  let failed = false,
+    first: unknown;
+  try {
+    if (work.image) work.memory?.release(work.image.data.buffer);
+  } catch (error) {
+    failed = true;
+    first = error;
+  }
+  try {
+    if (work.premultiplied) work.memory?.release(work.premultiplied.buffer);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  // A pixel factory captures its actual view before adoption can fail.
+  try {
+    if (
+      work.managed &&
+      work.premultiplied?.byteLength &&
+      !work.memory?.owns(work.premultiplied.buffer)
+    )
+      (
+        work.premultiplied.buffer as ArrayBuffer & {
+          transfer(bytes: number): ArrayBuffer;
+        }
+      ).transfer(0);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  clearStylizePixel(work);
+  if (work.offset) (work.offset as number[]).length = 0;
+  if (work.red) work.red.length = 0;
+  if (work.blue) work.blue.length = 0;
+  work.sampling.index = undefined;
+  for (const key in work)
+    delete (work as Partial<CanvasStylizeWork>)[key as keyof CanvasStylizeWork];
+  if (failed) throw first;
+}
+function canvasStylizeWork(): CanvasStylizeWork {
+  const memory = renderMemory();
+  return allocateRenderMetadata<CanvasStylizeWork>(
+    16384,
+    () => ({ managed: memory !== undefined, memory, sampling: {} }),
+    false,
+    clearCanvasStylizeWork,
+  );
+}
+function finishCanvasStylizeWork(work: CanvasStylizeWork, failed: boolean) {
+  const managed = work.managed;
+  try {
+    if (managed) releaseRenderMetadata(work);
+    else clearCanvasStylizeWork(work);
   } catch (error) {
     if (!failed) throw error;
   }
@@ -158,83 +245,104 @@ export function stylizeEffectKernel(
       }
     },
     renderCanvas(context, input, params) {
-      const amount = params.amount as number,
-        offset = vignette ? undefined : chromaticOffset(params);
-      if (amount === 0 || (offset && offset.every((v) => v === 0)))
-        return input;
-      const image = readRenderImageData(
-          input.ctx,
-          0,
-          0,
-          input.width,
-          input.height,
-        ),
-        premultiplied = offset
-          ? allocateRenderPixels(
-              image.data.length * 1,
-              () => new Uint8Array(image.data.length),
-            )
-          : undefined;
-      if (premultiplied)
-        for (let i = 0; i < image.data.length; i += 4) {
-          const alpha = image.data[i + 3]!;
-          for (let c = 0; c < 3; c++)
-            premultiplied[i + c] = Math.round(
-              (image.data[i + c]! * alpha) / 255,
-            );
-          premultiplied[i + 3] = alpha;
-        }
-      const red = [0, 0, 0, 0],
-        blue = [0, 0, 0, 0],
-        color = params.color as readonly number[] | undefined;
-      for (let y = 0; y < input.height; y++)
-        for (let x = 0; x < input.width; x++) {
-          const i = (y * input.width + x) * 4,
-            alpha = image.data[i + 3]!,
-            rgb = [0, 1, 2].map((c) =>
-              colorEffectChannel(image.data[i + c]!, alpha),
-            );
-          if (premultiplied && offset) {
-            samplePremultiplied(
-              premultiplied,
-              input.width,
-              input.height,
-              x + 0.5 + offset[0],
-              y + 0.5 + offset[1],
-              red,
-            );
-            samplePremultiplied(
-              premultiplied,
-              input.width,
-              input.height,
-              x + 0.5 - offset[0],
-              y + 0.5 - offset[1],
-              blue,
-            );
-            const r = red[3] ? Math.round((red[0]! * 255) / red[3]) / 255 : 0,
-              b = blue[3] ? Math.round((blue[2]! * 255) / blue[3]) / 255 : 0;
-            rgb[0] = rgb[0]! + (r - rgb[0]!) * amount;
-            rgb[2] = rgb[2]! + (b - rgb[2]!) * amount;
-          } else {
-            const strength =
-              vignetteStrength(
-                params,
-                x + 0.5,
-                y + 0.5,
+      const amount = params.amount as number;
+      if (vignette && amount === 0) return input;
+      const work = canvasStylizeWork();
+      let failed = false;
+      try {
+        work.input = input;
+        const offset = vignette ? undefined : chromaticOffset(params, work);
+        if (
+          amount === 0 ||
+          (offset && offset.every((work.neutral = (v) => v === 0)))
+        )
+          return input;
+        const image = (work.image = readRenderImageData(
+            input.ctx,
+            0,
+            0,
+            input.width,
+            input.height,
+          )),
+          premultiplied = offset
+            ? allocateRenderPixels(
+                image.data.length * 1,
+                () => (work.premultiplied = new Uint8Array(image.data.length)),
+              )
+            : undefined;
+        if (premultiplied)
+          for (let i = 0; i < image.data.length; i += 4) {
+            const alpha = image.data[i + 3]!;
+            for (let c = 0; c < 3; c++)
+              premultiplied[i + c] = Math.round(
+                (image.data[i + c]! * alpha) / 255,
+              );
+            premultiplied[i + 3] = alpha;
+          }
+        const red = (work.red = [0, 0, 0, 0]),
+          blue = (work.blue = [0, 0, 0, 0]),
+          color = (work.color = params.color as readonly number[] | undefined);
+        for (let y = 0; y < input.height; y++)
+          for (let x = 0; x < input.width; x++) {
+            const i = (y * input.width + x) * 4,
+              alpha = image.data[i + 3]!,
+              rgb = (work.rgb = (work.rgbKeys = [0, 1, 2]).map(
+                (work.rgbProducer = (c) =>
+                  colorEffectChannel(image.data[i + c]!, alpha)),
+              ));
+            if (premultiplied && offset) {
+              samplePremultiplied(
+                premultiplied,
                 input.width,
                 input.height,
-              ) * color![3]!;
+                x + 0.5 + offset[0],
+                y + 0.5 + offset[1],
+                red,
+                work.sampling,
+              );
+              samplePremultiplied(
+                premultiplied,
+                input.width,
+                input.height,
+                x + 0.5 - offset[0],
+                y + 0.5 - offset[1],
+                blue,
+                work.sampling,
+              );
+              const r = red[3] ? Math.round((red[0]! * 255) / red[3]) / 255 : 0,
+                b = blue[3] ? Math.round((blue[2]! * 255) / blue[3]) / 255 : 0;
+              rgb[0] = rgb[0]! + (r - rgb[0]!) * amount;
+              rgb[2] = rgb[2]! + (b - rgb[2]!) * amount;
+            } else {
+              const strength =
+                vignetteStrength(
+                  params,
+                  x + 0.5,
+                  y + 0.5,
+                  input.width,
+                  input.height,
+                ) * color![3]!;
+              for (let c = 0; c < 3; c++)
+                rgb[c] = rgb[c]! + (color![c]! - rgb[c]!) * strength;
+            }
             for (let c = 0; c < 3; c++)
-              rgb[c] = rgb[c]! + (color![c]! - rgb[c]!) * strength;
+              image.data[i + c] = Math.round(
+                Math.max(0, Math.min(1, rgb[c]!)) * 255,
+              );
+            clearStylizePixel(work);
           }
-          for (let c = 0; c < 3; c++)
-            image.data[i + c] = Math.round(
-              Math.max(0, Math.min(1, rgb[c]!)) * 255,
-            );
-        }
-      const output = context.createSurface(input.width, input.height);
-      output.ctx.putImageData(image, 0, 0);
-      return output;
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        output.ctx.putImageData(image, 0, 0);
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishCanvasStylizeWork(work, failed);
+      }
     },
   } satisfies CompositionEffectPlugin);
   kernels.set(id, kernel);

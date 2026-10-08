@@ -5136,20 +5136,21 @@ rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/d
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
 standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/late-point-results/
 radial-GPU-Canvas-work/standalone-radial-point/control/encoded-view-results/stylize-
-GPU-work, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
+GPU-Canvas-work, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
 replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/
-native-controls and PNG source/draw/coordinate metadata pass 729 focused tests,
+native-controls and PNG source/draw/coordinate metadata pass 741 focused tests,
 complete audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
-snapshots. Stylize GPU work admits before actual offset/predicate/uniform/dimension/
-shader/input factories, keeps refs through native pass then clears actual owned
-arrays/records/refs; borrowed vectors stay intact. Preserve original amount getter,
-zero vignette and neutral chromatic allocations. Nine new tests / 16 original native
-traces/full pixels check quota/actual refs/math/getter/partial uniforms/native/
-adoption/cleanup null/retry. Type failure retained; attempt 2 passes. Native probes,
-WebGL/providers and 69 typography tests pass; glyph 1.410180× meets unchanged 1.5
-maximum. All 64 exports / 768 bodies/frames retain prior exact output. Stylize Canvas/
-default offset and other effects/cache/error/class/caller/depth sampling remain
-pending. Recording/device/pool/shader/paint/
+snapshots. Stylize Canvas work admits before offset/neutral/readback/view/sample/
+RGB/map/index/native factories, retains through publication and clears actual RGB/
+key arrays and callbacks after each pixel. Reuse one admitted sampling control and
+no extra per-pixel lease. Both original stores retire even after first error;
+native detach failures still clear refs. Twelve new tests / 16 original native
+traces/full pixels check quota/actual partial and consumer refs/math/getter/native/
+adoption/cleanup null/retry. Review repair and type failure retained; focused
+attempt 3 passes. Native probes, WebGL/providers and 69 typography tests pass; glyph
+1.357456× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain
+prior exact output. Standalone offset and other effects/cache/error/class/caller/
+depth sampling remain pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof
