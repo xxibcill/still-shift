@@ -5135,19 +5135,21 @@ uniform/diagnostic, paint batch/geometry/shader/uniform/input, Gaussian kernel/
 rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/default-
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
 standalone-channel-work/warp-GPU-Canvas-work/radial-GPU-Canvas-work/standalone-radial-
-point/control-results, managed plan/sum-shader cache, particle/Canvas/WebGL region,
-effect-paint/replace/built-ins/callback-controls, depth mesh/texture/multisample/
-uniform/draw/text/native-controls and PNG source/draw/coordinate metadata pass 691
-focused tests, complete audit, 22 moving/blurred and ten stationary native frames and
-96 owned RPC snapshots. Standalone radial controls admit actual result/backing/view/
-vectors before factories, transfer refs outside scope until consumer cleanup.
-Eight new tests / 21 full original factor hashes/vectors/getter sequences check
-quotas/partial/transfer/null/adoption/all cleanup/retry/caller. Cast failure retained;
-focused attempt 2 passes, browser timing pending. Standalone table/warp mapping/other effects/cache/error/class/
-caller/depth sampling remain pending. Native probes, WebGL/providers and 69 typography
-unit tests/providers pass. Glyph fixture failed at displayed 1.52× versus unchanged
-1.5; affected repeat pending after observed external owner browser workload. Browser
-acceptance is incomplete. All 64 exports / 768 bodies/frames retain prior exact output. Recording/device/pool/shader/paint/
+point/control/encoded-view-results, managed plan/sum-shader cache, particle/Canvas/
+WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/texture/
+multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate metadata
+pass 701 focused tests, complete audit, 22 moving/blurred and ten stationary native
+frames and 96 owned RPC snapshots. Standalone encoded view admits before original
+producer, transfers actual view/backing to consumer cleanup. Selected radial GPU
+cleanup detaches actual unadopted encoded backing after pixel adoption null.
+Ten new tests / 21 whole original encoded hashes/getter sequences check quotas/refs/
+transfer/lifetime/null/adoption/all cleanup/retry/caller. Focused attempt 3 passes;
+prior failures retained. Original WebGL and 64 exports / 768 prior-exact bodies/frames
+pass. After observed owner browser workload ended, 69 source typography unit tests,
+providers and eight fixtures pass on unchanged current code; glyph 1.417742×
+meets unchanged 1.5. Prior displayed 1.52× failure stays retained without threshold/
+protocol/oracle/code adjustment. Standalone warp mapping/point, other effects/cache/error/
+class/caller/depth sampling remain pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

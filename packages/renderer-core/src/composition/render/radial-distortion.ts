@@ -79,6 +79,23 @@ function clearGpuRadialWork(work: GpuRadialWork) {
     first = error;
   }
   try {
+    if (
+      work.managed &&
+      work.data?.byteLength &&
+      !work.memory?.owns(work.data.buffer)
+    )
+      (
+        work.data.buffer as ArrayBuffer & {
+          transfer(bytes: number): ArrayBuffer;
+        }
+      ).transfer(0);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  try {
     clearRadialControls(work);
   } catch (error) {
     if (!failed) {
@@ -361,6 +378,49 @@ int scaledDelta(int delta,int factor){int product=delta*factor;uint magnitude=ui
 vec2 radialSource(ivec2 point){ivec2 center=ivec2(centerFixed),delta=point-center;int factor=factorAt(factorIndex(delta));return vec2(center+ivec2(scaledDelta(delta.x,factor),scaledDelta(delta.y,factor)))/16.0;}
 `;
 export function radialControlBytes(
+  c: RadialControls,
+  work?: GpuRadialWork,
+): Uint8Array<ArrayBuffer> {
+  if (work || !renderMemory()) return produceRadialControlBytes(c, work);
+  const phase = gpuRadialWork();
+  const memory = phase.memory!;
+  let result: Uint8Array<ArrayBuffer> | undefined,
+    failed = false,
+    failure: unknown;
+  try {
+    result = allocateRenderMetadata<Uint8Array<ArrayBuffer>>(
+      512,
+      () => produceRadialControlBytes(c, phase),
+      false,
+      (value) => {
+        memory.release(value.buffer);
+      },
+    );
+    phase.data = undefined;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      finishGpuRadialWork(phase, false);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the first producer or cleanup failure. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+function produceRadialControlBytes(
   c: RadialControls,
   work?: GpuRadialWork,
 ): Uint8Array<ArrayBuffer> {

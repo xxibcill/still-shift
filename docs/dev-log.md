@@ -98,20 +98,21 @@ still hold before relying on them.
   Gaussian kernel/rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/radial-GPU-Canvas-
-  work/standalone-radial-point/control-results, managed plan/sum-shader cache,
-  particle/Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls,
+  work/standalone-radial-point/control/encoded-view-results, managed plan/sum-shader
+  cache, particle/Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls,
   depth mesh/texture/multisample/uniform/draw/text/native-controls and PNG source/draw/
-  coordinate metadata pass 691 focused tests, complete audit, 22 moving/blurred and
-  ten stationary native frames and 96 owned RPC snapshots. Standalone radial controls
-  admit actual result/backing/view/vectors before factories, transfer refs outside
-  scope until consumer cleanup. Eight new tests / 21 full original factor hashes/
-  vectors/getter sequences check quotas/partial/transfer/null/adoption/all cleanup/
-  retry/caller. Cast failure retained, focused attempt 2 passes; browser timing pending. Standalone table/warp
-  mapping/other effects/cache/error/class/caller/depth sampling remain pending.
-  Native probes, WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
-  bodies/frames pass. Glyph fixture failed at displayed 1.52× versus unchanged 1.5;
-  affected repeat pending after observed external owner browser workload. Browser
-  acceptance is incomplete; no threshold/profile/code workaround.
+  coordinate metadata pass 701 focused tests, complete audit, 22 moving/blurred and
+  ten stationary native frames and 96 owned RPC snapshots. Standalone encoded view
+  admits before original producer, transfers actual view/backing to consumer cleanup.
+  Selected radial GPU cleanup detaches actual unadopted encoded backing after pixel
+  adoption null. Ten new tests / 21 whole original encoded hashes/getter sequences
+  check quotas/refs/transfer/lifetime/null/adoption/all cleanup/retry/caller. Focused
+  attempt 3 passes; prior failures retained. Original WebGL and 64 exports / 768
+  prior-exact bodies/frames pass. After observed owner browser workload ended,
+  69 source typography unit tests/providers/eight fixtures pass on unchanged current
+  code; glyph 1.417742× meets unchanged 1.5. Prior displayed 1.52× failure remains
+  retained without threshold/protocol/oracle/code adjustment. Standalone warp
+  mapping/point, other effects/cache/error/class/caller/depth sampling remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -347,6 +348,26 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual standalone radial encoded view
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `dbe4e0c4`.
+- **Done:** admit actual returned view before original producer; retain actual view/
+  original backing outside scope until consumer cleanup. Capture partial view;
+  detach actual unadopted radial backing after pixel-adoption failure.
+- **Results:** build/lint/boundaries, 701 focused tests / 80 files, complete 144-case
+  audit / 8,000 comparisons, 96 RPC snapshots, native probes, original WebGL and 64
+  prior-exact exports / 768 bodies/frames pass. After owner browser workload ended,
+  69 source typography unit tests/providers/eight fixtures pass on unchanged code;
+  glyph 1.417742× meets unchanged 1.5. Prior failure remains retained.
+- **Verification:** ten new tests / 21 whole original encoded hashes/getter sequences,
+  quotas/actual refs/transfer/lifetime/null/adoption/all cleanup/retry/caller. Attempts
+  1/2 failures retained; focused attempt 3 and affected typography repeat pass.
+  Final milestone full gate remains pending.
+- **Next:** standalone warp mapping/point, other effects/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, full CE15/CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [radial encoded-view evidence](./composition-ce15-radial-bytes-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual standalone radial control result
 

@@ -1858,6 +1858,31 @@ other effects/cache/registry/error/class/depth sampling/provider/graph/font/comm
 ledger/Node and production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-radial-controls-metadata-results.json).
 
+## Accepted standalone radial encoded view checkpoint — 2026-10-08
+
+Admit actual 16384-byte tracker and 512-byte returned view before original borrowed
+getters/ceil/pixel factory; preserve exact original pixel admission. Capture view
+before pixel adoption/encoding, transfer ref to result owner, retire tracker. Keep
+view and backing outside scope through explicit/scratch/allocator cleanup. Retire
+actual stores/refs and preserve first null after partial/getter/adoption/cleanup
+failure. Shared radial GPU cleanup now detaches an actual unadopted captured backing
+when generic pixel adoption fails. Common allocator cleanup remains pending.
+
+Build/lint/boundaries and 701 focused tests / 80 files pass on attempt 3. Ten new
+tests check 21 whole original encoded hashes/getter sequences, quotas, actual refs/
+transfer/lifetime, header/view/pixel adoption, null/all cleanup/retry/caller. Attempt
+1 test type casts and attempt 2 actual unadopted backing gap are retained. Complete
+144-case/8,000 audit, 96 RPC snapshots, native probes, original WebGL and 64 exports /
+768 prior-exact bodies/frames pass. After observed owner browser workload ended,
+69 source typography unit tests, providers and all eight typography fixtures pass
+on unchanged current code; glyph 1.417742× meets unchanged 1.5 maximum. Prior
+1.52× displayed failure stays retained; causality is not established. No threshold,
+protocol, oracle or code adjustment. Final milestone full gate remains pending.
+
+Standalone warp mapping/point, other effects/cache/registry/error/class/depth sampling/
+provider/graph/font/common/ledger/Node, production/aggregate/speed/final gates pending.
+[Evidence](./composition-ce15-radial-bytes-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
