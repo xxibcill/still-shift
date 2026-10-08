@@ -2532,6 +2532,17 @@ comparisons without baseline changes. Repair `7b889399` also passes complete
 depth acceptance and all 176 frozen baseline items (36,061 frames). Independent
 review found no remaining concrete blocker. No complete gate is claimed yet.
 
+## Browser diagnostic oracle — 2026-10-09
+
+Production checkpoint `21817411` passes the two-minute proof at **3.408×**
+(436.542 → 128.082 seconds), with identical encoded/frame/audio output. The full
+gate then found a browser helper still expecting the removed maximum-string
+reservation policy. The helper now verifies exact native diagnostic text, one
+log query, actual retained bytes, cached program reuse and final handle cleanup.
+Depth storage checks use a normal 128 KiB metadata quota. Typecheck, helper lint
+and the complete surface suite pass. Only tests and records changed after this
+speed proof; production code is unchanged.
+
 ## Remaining acceptance
 
 Complete the required pinned local `pnpm check` on the repaired checkpoint.

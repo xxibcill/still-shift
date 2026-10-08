@@ -194,6 +194,26 @@
         "all decoded RGBA frames",
         "complete decoded PCM"
       ]
+    },
+    "finalSpeed": {
+      "name": "speed",
+      "command": "pnpm benchmark:composition-speed",
+      "status": "passed",
+      "startedAt": "2026-10-09T01:54:56+0700",
+      "log": "/private/tmp/ce15-21817411-speed.log",
+      "exitCode": 0,
+      "elapsedSeconds": 573.1021861670306,
+      "finishedAt": "2026-10-09T02:04:29+0700",
+      "checkpoint": "218174118650e739173cd1ded7a6a4c75a92610f",
+      "speedup": 3.4082918819555004,
+      "oneWorkerMs": 436541.83775,
+      "fourWorkersMs": 128082.29250000004,
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-FBasPw",
+      "equality": [
+        "complete encoded file",
+        "all decoded RGBA frames",
+        "complete decoded PCM"
+      ]
     }
   },
   "referenceCheckpoint": {
@@ -298,6 +318,20 @@
         "8 maximum-area exports",
         "depth-motion browser"
       ]
+    },
+    {
+      "name": "gate",
+      "command": "pnpm check",
+      "status": "failed",
+      "startedAt": "2026-10-09T02:04:29+0700",
+      "log": "/private/tmp/ce15-21817411-gate.log",
+      "exitCode": 1,
+      "elapsedSeconds": 604.5070616670419,
+      "finishedAt": "2026-10-09T02:14:34+0700",
+      "checkpoint": "218174118650e739173cd1ded7a6a4c75a92610f",
+      "failure": "surface browser helper still expected old maximum-V8-string diagnostic denial before native log query",
+      "repair": "test exact native diagnostic, actual retained capacity, cache reuse and handle cleanup; normal 128 KiB depth metadata test quota",
+      "productionChanged": false
     }
   ],
   "nativeLoaderCheckpoint": {
@@ -361,5 +395,18 @@
     },
     "codeCheckpoint": "7b889399",
     "review": "No concrete correctness or standards blocker; native query, diagnostic and cleanup order preserved."
+  },
+  "nativeTextBrowserRepair": {
+    "status": "passed",
+    "productionChanged": false,
+    "checks": [
+      "typecheck",
+      "changed-helper lint",
+      "complete composition-surfaces browser suite"
+    ],
+    "logs": {
+      "/private/tmp/ce15-native-text-browser-static.log": "a7b7f717ddde363a75de3369b8e1fb6be1b450099a8c470912751ab671998849",
+      "/private/tmp/ce15-native-text-browser-surfaces.log": "2e83cd89b75eb96a650e451a1f0149d9d46a03c97752954bf31ebae5d992c158"
+    }
   }
 }

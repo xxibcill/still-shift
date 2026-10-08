@@ -317,6 +317,7 @@ async function checkShaderProgramMemory() {
       programDeletes = 0,
       logQueries = 0,
       exactBytes = 0;
+    let nativeLog: string | null = null;
     try {
       await withManagedMemory(memory, async () => {
         canvas = createRenderCanvas();
@@ -341,7 +342,7 @@ async function checkShaderProgramMemory() {
         };
         gl.getShaderInfoLog = function (shader) {
           logQueries++;
-          return getShaderInfoLog.call(this, shader);
+          return (nativeLog = getShaderInfoLog.call(this, shader));
         };
         const surface = device.surface(2, 2);
         const shader =
@@ -365,34 +366,38 @@ async function checkShaderProgramMemory() {
           checkPixels();
         });
         const before = memory.statistics.current;
-        let denied = false;
+        let diagnostic: Error | undefined;
         try {
           device.pass("void main() { pixel=; }", surface, []);
         } catch (error) {
-          denied = error instanceof Error && error.message.includes("metadata");
+          if (error instanceof Error) diagnostic = error;
         }
         if (
-          !denied ||
-          logQueries !== 0 ||
+          diagnostic?.message !== `comp-webgl-shader: ${nativeLog}` ||
+          logQueries !== 1 ||
           shaderCreates !== 4 ||
           shaderDeletes !== 4 ||
           programDeletes !== 0
         )
           throw Error(
-            "Native failed shader did not protect its log producer/actual handles",
+            "Native failed shader did not preserve its diagnostic and release actual handles",
           );
+        const retainedMetadata =
+          before.metadata + 512 + 2 * diagnostic!.message.length;
         if (
-          memory.statistics.current.metadata !== before.metadata ||
+          memory.statistics.current.metadata !== retainedMetadata ||
           memory.statistics.current.pixels !== before.pixels
         )
-          throw Error("Native failed shader changed prior cached owners");
+          throw Error(
+            "Native failed shader did not retain only its diagnostic beside cached owners",
+          );
         await withManagedFrame(async () => {
           device!.pass(shader, surface, []);
           checkPixels();
         });
         if (
           shaderCreates !== 4 ||
-          memory.statistics.current.metadata !== before.metadata
+          memory.statistics.current.metadata !== retainedMetadata
         )
           throw Error(
             "Native shader cache reuse changed compile count or retained owners",

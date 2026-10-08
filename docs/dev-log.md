@@ -43,14 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE15 final acceptance in progress (2026-10-09):** checkpoint `b2d7a6a1`
-  passes a 3.305× two-minute speed proof with identical encoded/frame/audio output.
+- **CE15 final acceptance in progress (2026-10-09):** production checkpoint `21817411`
+  passes a 3.408× two-minute speed proof with identical encoded/frame/audio output.
   The full gate passes all CE15 browser checks but stops at legacy depth startup:
   a short native renderer string incorrectly reserved 1 GiB. The repair uses
   actual returned-text admission, preserving queries, diagnostics and cleanup.
   44 focused tests, vertical/general exports, 30 golden comparisons, complete
   depth acceptance and all 176 frozen baseline items (36,061 frames) pass.
-  Repair `7b889399` is pushed; the complete final gate remains required.
+  Repair `7b889399` is pushed. The browser diagnostic oracle is now aligned
+  with actual-size admission and passes the full surface suite. Only tests and
+  records changed after the speed proof; the complete gate remains required.
   [Completion evidence](./composition-ce15-completion-results.json).
 - **Owner continuation (2026-10-09):** finish CE15, commit and push, then create
   a new branch and complete CE14 (mesh warp and puppet pins), following the
@@ -86,6 +88,16 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE15 native diagnostic browser regression
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `21817411`.
+- **Done:** assert original native diagnostics and actual retained bytes in the
+  browser helper; test depth initialization under a normal 128 KiB metadata quota.
+- **Results:** typecheck, helper lint and complete surface browser suite pass.
+  Production code is unchanged after the 3.408× exact-output speed proof.
+- **Next:** complete the required local gate, then CE14 on a separate branch.
+- **Record:** [completion evidence](./composition-ce15-completion-results.json).
 
 ### 2026-10-09 — CE15 native driver text admission repair
 

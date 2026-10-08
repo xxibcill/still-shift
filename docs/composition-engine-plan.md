@@ -5556,13 +5556,15 @@ decode-back pixel check.
 (frames on both sides of a boundary), cancellation during parallel export.
 
 **Final acceptance in progress (2026-10-09):** all CE15 features are implemented.
-Checkpoint `b2d7a6a1` passes the two-minute proof at **3.305×** with identical
+Production checkpoint `21817411` passes the two-minute proof at **3.408×** with identical
 encoded/frame/audio output. Its full gate passes all CE15 suites, including all
 formats, parallel cleanup, dependency caches, frame-rate/audio and 8192² checks,
 then exposes an oversized native-text reservation in legacy depth initialization.
 Repair `7b889399` passes 44 focused tests, vertical/general exports, golden
 parity, complete depth acceptance and 176 frozen baseline items (36,061 frames).
-The final complete gate remains required.
+The browser diagnostic oracle is aligned with actual-size admission and passes
+the complete surface suite. Production code is unchanged after the speed proof;
+the final complete gate remains required.
 
 Counters cover declared application allocations and retained native-returned
 text; native driver production and process RSS are separate. See the

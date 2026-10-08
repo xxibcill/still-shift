@@ -788,9 +788,8 @@ export async function checkManagedDepthStorage() {
   }
   const memory = new ManagedMemory({
     pixels: 16 * 1024 * 1024,
-    // Reach the original pixel/native checks after pre-admitting the pinned V8
-    // renderer DOMString bound; actual renderer text retires after its predicate.
-    metadata: 2 * 2 ** 29 + 128 * 1024,
+    // Actual native-returned text must fit a normal application metadata quota.
+    metadata: 128 * 1024,
   });
   try {
     return await withManagedMemory(memory, async () => {
