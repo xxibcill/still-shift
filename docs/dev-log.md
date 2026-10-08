@@ -43,6 +43,12 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE14 in progress (2026-10-09):** new `codex/composition-ce14` branch starts
+  from completed, pushed CE15 `efa42f42`. Animated point collections are implemented;
+  focused authoring tests pass. Solver, alpha triangulation, starch/overlap, both
+  backends, demo and final acceptance remain in flight. No blocker or owner
+  decision is pending. [CE14 plan](./composition-ce14-plan.md).
+
 - **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
   pinned local `pnpm check` in 13928.03 seconds. Production code `21817411` has a real
   two-minute benchmark that reaches **3.408×** with identical encoded/frame/audio output.
@@ -77,10 +83,21 @@ still hold before relying on them.
   remains owner-paused and deferred, with acceptance incomplete.
 
 - **Continuation:** CE15 implementation and acceptance are complete; the owner's
-  separate checkout is preserved. CE14 follows on a new branch. GitHub Actions
+  separate checkout is preserved. CE14 is active on its separate branch. GitHub Actions
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE14 animated point controls
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, from completed CE15 `efa42f42`.
+- **Done:** bounded animated point collections with indexed expressions, baking,
+  builder paths and Lab key tracks; existing color-curve semantics are preserved.
+- **Results:** 177 focused authoring tests, TypeScript, changed-file lint, schema
+  freshness and package boundaries pass.
+- **Next:** deterministic rigid MLS, alpha-outline meshes, Bezier controls,
+  starch/overlap and both renderers. Full milestone acceptance remains pending.
+- **Records:** [CE14 plan](./composition-ce14-plan.md).
 
 ### 2026-10-09 — CE15 completed acceptance
 

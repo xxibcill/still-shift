@@ -1,3 +1,4 @@
+import { effectPointIndex } from "./effect-points.ts";
 import { locateShapeProperty } from "./shape-properties.ts";
 import {
   effectCurvePointIndex,
@@ -24,7 +25,8 @@ export type PropertyValueType =
   | "color"
   | "discrete"
   | "path"
-  | "curve";
+  | "curve"
+  | "points";
 
 export type ResolvedProperty = {
   /** Canonical form: aliases expanded. */
@@ -247,8 +249,11 @@ function resolveSegments(
         return missing(text, "an effect parameter");
       const descriptor = definition.properties[next.name]!;
       const type = descriptor.type;
-      if (type === "curve" && next.index !== undefined) {
-        const index = effectCurvePointIndex(next.index);
+      if ((type === "curve" || type === "points") && next.index !== undefined) {
+        const index =
+          type === "curve"
+            ? effectCurvePointIndex(next.index)
+            : effectPointIndex(next.index);
         if (
           index === undefined ||
           index >=
@@ -257,7 +262,7 @@ function resolveSegments(
               descriptor.default,
             )
         )
-          return missing(text, "a color curve control point");
+          return missing(text, "an effect control point");
         return component("vec2", COMPONENTS.vec2, rest);
       }
       if (next.index !== undefined) return missing(text, "an effect parameter");

@@ -1,0 +1,47 @@
+{
+  "milestone": "CE14",
+  "status": "in-progress",
+  "date": "2026-10-09",
+  "base": "efa42f42e57958133dfcd268e2c7f68861c32319",
+  "pointCollections": {
+    "tests": 177,
+    "testFiles": 7,
+    "checks": [
+      {
+        "command": "pnpm exec vitest run tests/unit/composition-effect-points.test.ts tests/unit/composition-effect-curves.test.ts tests/unit/composition-effect-contract.test.ts tests/unit/composition-warp-effects.test.ts tests/unit/composition-bake.test.ts tests/unit/composition-keys.test.ts tests/unit/composition-expressions.test.ts --maxWorkers=4",
+        "status": "passed",
+        "logSha256": "6bad700ea8ac4dcc3c23c86771448bd76ba2f364b061a46b110b7ed090fd97d6"
+      },
+      {
+        "command": "pnpm exec tsc --noEmit",
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "command": "pnpm exec eslint <changed TypeScript files>",
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "command": "pnpm schema:check",
+        "status": "passed",
+        "logSha256": "fd0421a6b710ec75b9107d02b9ce77186844691d6d769187139d3bc9b65f5606"
+      },
+      {
+        "command": "pnpm check:boundaries",
+        "status": "passed",
+        "logSha256": "5c910c33392af699061309d6cedd4b1c9773841d34fd0a81402eebfe60700563"
+      }
+    ]
+  },
+  "remaining": [
+    "Bezier and puppet contracts",
+    "deterministic rigid MLS and alpha topology",
+    "starch and overlap",
+    "Canvas and WebGL rendering",
+    "pin-only arm and house demo",
+    "constraint/expression and story-acting integration",
+    "focused browser/export/flip acceptance",
+    "full local pnpm check"
+  ]
+}

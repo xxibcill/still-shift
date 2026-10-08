@@ -8,7 +8,7 @@
 import {
   COMPOSITION_LIMITS,
   compositionEffectDefinition,
-  effectCurvePointIndex,
+  effectPointIndex,
   splitEffectCurve,
   compileExpressions,
   formatJsonPath,
@@ -551,13 +551,13 @@ function write(
       if (next!.index !== undefined) {
         const descriptor = compositionEffectDefinition(effect.effect)!
           .properties[next!.name]!;
-        if (descriptor.type !== "curve")
+        if (descriptor.type !== "curve" && descriptor.type !== "points")
           throw Error("Unexpected indexed effect property");
         const points = splitEffectCurve(
           effect.params?.[next!.name],
           descriptor.default,
         );
-        points[effectCurvePointIndex(next!.index)!] = value;
+        points[effectPointIndex(next!.index)!] = value;
         effect.params = {
           ...(effect.params ?? {}),
           [next!.name]: points,

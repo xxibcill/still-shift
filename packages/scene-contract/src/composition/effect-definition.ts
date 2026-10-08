@@ -1,4 +1,9 @@
 import {
+  effectPointsSchema,
+  type EffectPointsProperty,
+} from "./effect-points.ts";
+export * from "./effect-points.ts";
+import {
   EffectCurveSchema,
   effectCurveIssue,
   type EffectCurveProperty,
@@ -27,7 +32,8 @@ export type EffectProperty =
   | EffectScalar
   | EffectColor
   | EffectPoint
-  | EffectCurveProperty;
+  | EffectCurveProperty
+  | EffectPointsProperty;
 export type EffectRect = {
   left: number;
   top: number;
@@ -58,6 +64,7 @@ export type CompositionEffectDefinition = {
 function propertySchema(property: EffectProperty): z.ZodType {
   if (property.type === "color") return AnimatableColorSchema;
   if (property.type === "curve") return EffectCurveSchema;
+  if (property.type === "points") return effectPointsSchema(property);
   if (property.type !== "scalar" && property.type !== "vec2")
     throw Error("comp-effect-definition: unknown parameter type");
   if (
@@ -127,7 +134,7 @@ export function defineCompositionEffect(
           "comp-effect-definition: curve defaults must be static bounded ordered points",
         );
       const value =
-        property.type === "curve"
+        property.type === "curve" || property.type === "points"
           ? {
               ...property,
               default: Object.freeze(

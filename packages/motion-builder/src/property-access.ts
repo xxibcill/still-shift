@@ -1,6 +1,6 @@
 import {
   compositionEffectDefinition,
-  effectCurvePointIndex,
+  effectPointIndex,
   splitEffectCurve,
   locateShapeProperty,
   parsePropertyPath,
@@ -54,7 +54,9 @@ export function propertyJsonPath(object: ObjectValue, path: string): string {
     },
   );
   const effect = effectProperty(object, path);
-  return effect?.descriptor.type === "curve" && effect.point !== undefined
+  return (effect?.descriptor.type === "curve" ||
+    effect?.descriptor.type === "points") &&
+    effect.point !== undefined
     ? emitted.replace(/\[p\d+\]/, `[${effect.point}]`)
     : emitted;
 }
@@ -83,7 +85,7 @@ function effectProperty(object: ObjectValue, path: string) {
         entry,
         descriptor,
         name: match[2]!,
-        point: effectCurvePointIndex(match[3]),
+        point: effectPointIndex(match[3]),
         axis: match[4],
       }
     : undefined;
@@ -114,7 +116,11 @@ export function readProperty(object: ObjectValue, path: string): unknown {
   const effect = effectProperty(object, path);
   if (effect) {
     let fallback: unknown = effect.descriptor.default;
-    if (effect.descriptor.type === "curve" && effect.point !== undefined) {
+    if (
+      (effect.descriptor.type === "curve" ||
+        effect.descriptor.type === "points") &&
+      effect.point !== undefined
+    ) {
       const raw = asObject(effect.entry.params)?.[effect.name];
       fallback = splitEffectCurve(raw, effect.descriptor.default)[effect.point];
     }
@@ -138,7 +144,11 @@ export function writeProperty(
   value: unknown,
 ): void {
   const effect = effectProperty(object, path);
-  if (effect?.descriptor.type === "curve" && effect.point !== undefined) {
+  if (
+    (effect?.descriptor.type === "curve" ||
+      effect?.descriptor.type === "points") &&
+    effect.point !== undefined
+  ) {
     const params = asObject(effect.entry.params) ?? {};
     params[effect.name] = splitEffectCurve(
       params[effect.name],
@@ -170,7 +180,8 @@ export function writeProperty(
     if (
       Array.isArray(old) &&
       (["masks", "effects", "contents", "stops"].includes(part) ||
-        (effect?.descriptor.type === "curve" &&
+        ((effect?.descriptor.type === "curve" ||
+          effect?.descriptor.type === "points") &&
           effect.point !== undefined &&
           part === effect.name))
     ) {

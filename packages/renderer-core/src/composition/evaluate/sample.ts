@@ -437,7 +437,7 @@ export function vector3(
   ) as Point3;
 }
 
-/** Stable-topology color curve points, keyed together or with per-point numeric clocks. */
+/** Stable-topology effect points, keyed together or with per-point numeric clocks. */
 export function effectCurve(
   value: unknown,
   time: number,

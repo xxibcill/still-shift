@@ -380,7 +380,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE11  | Lab composition inspector and graph editor     | C      | CE3, CE10                  | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
 | CE12  | Motion linting                                 | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   | Codex                  | `codex/composition-ce13`            | `[x]`  | [evidence](./composition-ce13-results.json)                                        |
-| CE14  | Mesh warp and puppet pins                      | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
+| CE14  | Mesh warp and puppet pins                      | D      | CE6                        | Codex                  | `codex/composition-ce14`            | `[~]`  | [Plan](./composition-ce14-plan.md)                                                 |
 | CE15  | Output formats, caching and parallel rendering | D      | CE3                        | Codex                  | `codex/composition-ce15`            | `[x]`  | [Completion evidence](./composition-ce15-completion-results.json)                  |
 | CE16  | Programmable soundtrack project and timeline   | D      | CE3; CE16-A                | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
 
@@ -5525,6 +5525,10 @@ pin ranges.
 
 **Verification:** Solver unit tests (rigid motion is preserved, pinned points hit their
 targets), flip detection, pixel tests on both backends.
+
+**Implementation in progress (2026-10-09):** animated point collections are the first
+checkpoint on a separate branch after completed CE15. Solver, rendering and all
+acceptance evidence remain pending. [CE14 plan](./composition-ce14-plan.md).
 
 **Completion record:** _to be filled in._
 

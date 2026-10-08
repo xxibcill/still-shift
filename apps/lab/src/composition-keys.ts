@@ -51,7 +51,8 @@ export type KeyTrack = {
     | "discrete"
     | "path"
     | "camera"
-    | "curve";
+    | "curve"
+    | "points";
   keys: Key[];
   raw: unknown;
   fps: number;
@@ -294,7 +295,10 @@ export function compositionTracks(document: Composition): KeyTrack[] {
         const raw = effect.params?.[name],
           property = `effects[${effect.id}].${name}`,
           json = [...path, "effects", i, "params", name];
-        if (spec.type === "curve" && Array.isArray(raw)) {
+        if (
+          (spec.type === "curve" || spec.type === "points") &&
+          Array.isArray(raw)
+        ) {
           raw.forEach((point, index) => {
             const at = [...json, index],
               name = `${property}[p${index}]`;
@@ -518,6 +522,8 @@ export function sampleTrack(track: KeyTrack, frame: number): number[] {
   }
   if (track.array) return [motionScalar(track.keys, frame, track.fps)];
   switch (track.kind) {
+    case "points":
+      return effectCurve(track.raw, frame, track.fps, []).flat();
     case "curve":
       return effectCurve(track.raw, frame, track.fps, [
         [0, 0],
@@ -559,9 +565,12 @@ export function editTemporalHandle(
 ) {
   if (["discrete", "path", "camera"].includes(track.kind))
     throw new Error("This track has no numeric temporal handle editor");
-  if (track.kind === "curve" && speed !== undefined)
+  if (
+    (track.kind === "curve" || track.kind === "points") &&
+    speed !== undefined
+  )
     throw Error(
-      "Whole color curves use shared easing; edit a point for numeric speeds",
+      "Whole point collections use shared easing; edit a point for numeric speeds",
     );
   const key = keysIn(draft, track)[index];
   if (!key) throw new Error("Key no longer exists");

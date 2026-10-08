@@ -173,7 +173,9 @@ async function reference(root: string): Promise<string> {
         code(property),
         descriptor.type,
         code(
-          descriptor.type === "vec2" || descriptor.type === "curve"
+          descriptor.type === "vec2" ||
+            descriptor.type === "curve" ||
+            descriptor.type === "points"
             ? JSON.stringify(descriptor.default)
             : descriptor.default,
         ),
@@ -183,7 +185,9 @@ async function reference(root: string): Promise<string> {
             ? `${descriptor.min}–${descriptor.max} per axis`
             : descriptor.type === "curve"
               ? "2–16 ordered points; x/y 0–1; endpoint x 0/1"
-              : "colour",
+              : descriptor.type === "points"
+                ? `${descriptor.minCount}–${descriptor.maxCount} points; ${descriptor.min}–${descriptor.max} per axis`
+                : "colour",
       ]),
   );
   return `# \`${COMPOSITION_SCHEMA_VERSION}\` reference
