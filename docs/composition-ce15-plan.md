@@ -1296,6 +1296,29 @@ state, PNG/other controllers/provider/graph/font/common helper/registry/ledger/N
 production/aggregate admission, speed/full gate remain pending.
 [Evidence](./composition-ce15-depth-grid-metadata-results.json).
 
+## Accepted PNG source-cache metadata checkpoint — 2026-10-08
+
+Admit actual cache state at 1536 before Maps/Set/header/query factories. Before
+original tuple/JSON key admit 2048+12*asset.length for worst-case JSON escape text
+and actual working edge/control/native refs; retain actual key/record/Map/Set slots
+at 592+2*key.length before insertion. Keys stay until original source or rejection
+cache eviction; hits retain canonical owners. Capture all four actual border reads,
+release actual edge pixels before native source production, and clean partial reads/
+upload/native/raster failures with original null/retry. Preserve source LRU/128 MiB,
+1024 oldest rejects and cache after successfully uploaded raster-release failure.
+Actual native device handles release once in cache-first/allocator-first disposal;
+foreign/unmanaged active cache containers fail before key factory. Allocator refs
+and actual container/entry/key/edge/native refs drop after consumers/cache retirement.
+
+Two original whole native traces stay exact. Build/lint/boundaries and all 400
+focused tests, sixteen new regressions, complete audit 144/8,000, 96 RPC snapshots,
+prior native probes, WebGL/providers and 69 typography tests pass; glyph
+1.376184× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames match
+pushed `3a90483`. PNG draw/placement/coordinate controls, dedicated depth programs/
+controllers/cache/state, other controllers/provider/graph/font/common helper/registry/
+ledger/Node, production/aggregate admission, speed/full gate remain pending.
+[Evidence](./composition-ce15-png-source-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

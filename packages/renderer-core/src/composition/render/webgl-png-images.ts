@@ -2,7 +2,13 @@ import {
   allocateRenderPixels,
   readRenderImageData,
   releaseRenderPixels,
+  renderMemory,
 } from "../../managed-memory-context.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+  resizeRenderMetadata,
+} from "../../managed-metadata.ts";
 import { imagePlacement, type Matrix } from "../../node-transform.ts";
 import type { Canvas2dBackend, CanvasImageResources } from "./canvas2d.ts";
 import type { ClipRect, ImageContent } from "./graph.ts";
@@ -23,10 +29,68 @@ void main() {
   pixel=floor(value*(floor(opacity*255.0+0.5)+1.0)/256.0)/255.0;
 }`;
 
+type PngSourceOwner = {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  key: string;
+  tuple: (string | number)[];
+  edges: ImageData[];
+  pixels?: ReturnType<Canvas2dBackend["createSurface"]> | undefined;
+  surface?: WebglSurface | undefined;
+  promoted: boolean;
+  nativeOwned: boolean;
+};
+type PngSourceState = {
+  sources: Map<string, WebglSurface>;
+  unsupported: Set<string>;
+  entries: Map<string, PngSourceOwner>;
+  managed: boolean;
+  closed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+};
+function clearPngSourceData(value: PngSourceOwner) {
+  value.tuple.length = value.edges.length = 0;
+  value.pixels = value.surface = undefined;
+  value.key = "";
+  value.memory = undefined;
+}
+function releasePngEdges(value: PngSourceOwner) {
+  let failed = false,
+    first: unknown;
+  for (const edge of value.edges) {
+    try {
+      releaseRenderPixels(edge.data);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        first = error;
+      }
+    }
+  }
+  value.edges.length = 0;
+  if (failed) throw first;
+}
 /** Native bitmap spans, restricted to downscaled PNG sprites with transparent borders. */
 export class WebglPngImages {
-  private readonly sources = new Map<string, WebglSurface>();
-  private readonly unsupported = new Set<string>();
+  private readonly sourceState = allocateRenderMetadata<PngSourceState>(
+    1536,
+    () => ({
+      sources: new Map(),
+      unsupported: new Set(),
+      entries: new Map(),
+      managed: renderMemory() !== undefined,
+      closed: false,
+      memory: renderMemory(),
+    }),
+    true,
+    (value) => this.clearSources(value),
+  );
+  private get sources() {
+    return this.sourceState.sources;
+  }
+  private get unsupported() {
+    return this.sourceState.unsupported;
+  }
   private bytes = 0;
   private control:
     | {
@@ -41,34 +105,167 @@ export class WebglPngImages {
     private readonly raster: Canvas2dBackend,
     private readonly resources: CanvasImageResources,
   ) {
-    this.maximum = Math.min(
-      16384,
-      device.gl.getParameter(device.gl.MAX_TEXTURE_SIZE) as number,
-    );
+    try {
+      this.maximum = Math.min(
+        16384,
+        device.gl.getParameter(device.gl.MAX_TEXTURE_SIZE) as number,
+      );
+    } catch (error) {
+      if (this.sourceState.managed) releaseRenderMetadata(this.sourceState);
+      else this.clearSources();
+      throw error;
+    }
   }
 
+  private destroySource(owner: PngSourceOwner) {
+    const key = owner.key;
+    if (this.sourceState.entries.get(key) === owner) {
+      this.sourceState.entries.delete(key);
+      this.unsupported.delete(key);
+      const surface = this.sources.get(key);
+      this.sources.delete(key);
+      if (surface) this.bytes -= surface.width * surface.height * 4;
+    }
+    const surface = owner.surface;
+    owner.surface = undefined;
+    try {
+      if (surface && (!owner.nativeOwned || owner.memory?.owns(surface)))
+        this.device.release(surface);
+    } finally {
+      clearPngSourceData(owner);
+    }
+  }
+  private releaseSourceOwner(owner: PngSourceOwner) {
+    if (owner.managed) releaseRenderMetadata(owner);
+    else this.destroySource(owner);
+  }
   private forget(key: string) {
     const surface = this.sources.get(key)!;
+    const owner = this.sourceState.entries.get(key);
     this.sources.delete(key);
+    this.sourceState.entries.delete(key);
     this.bytes -= surface.width * surface.height * 4;
-    this.device.release(surface);
-  }
-
-  private source(asset: string, level: number) {
-    const key = JSON.stringify([asset, level]);
-    if (this.unsupported.has(key)) return undefined;
-    const cached = this.sources.get(key);
-    if (cached) {
-      this.sources.delete(key);
-      this.sources.set(key, cached);
-      return cached;
-    }
-    const size = this.resources.sizes.get(asset)!;
-    const width = size[0] / 2 ** level,
-      height = size[1] / 2 ** level;
-    if (width < 6 || height < 6) return undefined;
-    const pixels = this.raster.createSurface(width, height);
+    if (owner) owner.surface = undefined;
     try {
+      this.device.release(surface);
+    } finally {
+      if (owner) this.releaseSourceOwner(owner);
+    }
+  }
+  private clearSources(state = this.sourceState) {
+    if (state.closed) return;
+    state.closed = true;
+    let failed = false,
+      first: unknown;
+    for (const key of state.sources.keys()) {
+      const owner = state.entries.get(key);
+      try {
+        if (owner) this.releaseSourceOwner(owner);
+        else this.forget(key);
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          first = error;
+        }
+      }
+    }
+    for (const owner of state.entries.values()) {
+      try {
+        this.releaseSourceOwner(owner);
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          first = error;
+        }
+      }
+    }
+    state.sources.clear();
+    state.unsupported.clear();
+    state.entries.clear();
+    this.bytes = 0;
+    state.memory = undefined;
+    if (failed) throw first;
+  }
+  private cleanupSource(owner: PngSourceOwner) {
+    let failed = false,
+      first: unknown;
+    try {
+      releasePngEdges(owner);
+    } catch (error) {
+      failed = true;
+      first = error;
+    }
+    const surface = owner.promoted ? undefined : owner.surface,
+      pixels = owner.pixels;
+    if (!owner.promoted) owner.surface = undefined;
+    owner.pixels = undefined;
+    if (surface) {
+      try {
+        this.device.release(surface);
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          first = error;
+        }
+      }
+    }
+    if (pixels) {
+      try {
+        this.raster.releaseSurface(pixels);
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          first = error;
+        }
+      }
+    }
+    owner.tuple.length = 0;
+    if (failed) throw first;
+  }
+  private promoteSource(owner: PngSourceOwner, surface?: WebglSurface) {
+    if (owner.managed) resizeRenderMetadata(owner, 592 + 2 * owner.key.length);
+    this.sourceState.entries.set(owner.key, owner);
+    if (surface) {
+      this.sources.set(owner.key, surface);
+      this.bytes += surface.width * surface.height * 4;
+    } else this.unsupported.add(owner.key);
+    owner.promoted = true;
+  }
+  private source(asset: string, level: number) {
+    if (this.sourceState.closed) throw Error("PNG source cache is disposed");
+    const memory = renderMemory();
+    if (memory && this.sourceState.memory !== memory)
+      throw Error("PNG source cache belongs to another allocator");
+    // Native JSON may escape each borrowed UTF16 unit to six output units.
+    const owner = allocateRenderMetadata<PngSourceOwner>(
+      2048 + 12 * asset.length,
+      () => ({
+        managed: renderMemory() !== undefined,
+        memory: renderMemory(),
+        key: "",
+        tuple: [],
+        edges: [],
+        promoted: false,
+        nativeOwned: false,
+      }),
+      true,
+      (value) => this.destroySource(value),
+    );
+    let cleaned = false;
+    try {
+      const key = (owner.key = JSON.stringify((owner.tuple = [asset, level])));
+      if (this.unsupported.has(key)) return undefined;
+      const cached = this.sources.get(key);
+      if (cached) {
+        this.sources.delete(key);
+        this.sources.set(key, cached);
+        return cached;
+      }
+      const size = this.resources.sizes.get(asset)!;
+      const width = size[0] / 2 ** level,
+        height = size[1] / 2 ** level;
+      if (width < 6 || height < 6) return undefined;
+      const pixels = (owner.pixels = this.raster.createSurface(width, height));
       pixels.ctx.drawImage(
         this.resources.images.get(asset)!,
         0,
@@ -76,39 +273,51 @@ export class WebglPngImages {
         width,
         height,
       );
-      // With effective mip scale >= 1/2, three transparent source rows/columns
-      // keep native rectangle/clip antialiasing outside all visible filtering.
-      const edges = [
-        readRenderImageData(pixels.ctx, 0, 0, width, 3),
+      // Preserve original four border reads and their short-circuit alpha test.
+      owner.edges.push(readRenderImageData(pixels.ctx, 0, 0, width, 3));
+      owner.edges.push(
         readRenderImageData(pixels.ctx, 0, height - 3, width, 3),
-        readRenderImageData(pixels.ctx, 0, 0, 3, height),
+      );
+      owner.edges.push(readRenderImageData(pixels.ctx, 0, 0, 3, height));
+      owner.edges.push(
         readRenderImageData(pixels.ctx, width - 3, 0, 3, height),
-      ];
-      const unsupported = edges.some(({ data }) =>
+      );
+      const unsupported = owner.edges.some(({ data }) =>
         data.some((value, i) => i % 4 === 3 && value !== 0),
       );
-      for (const edge of edges) releaseRenderPixels(edge.data);
+      releasePngEdges(owner);
       if (unsupported) {
-        if (this.unsupported.size >= 1024)
-          this.unsupported.delete(this.unsupported.values().next().value!);
-        this.unsupported.add(key);
+        if (this.unsupported.size >= 1024) {
+          const oldest = this.unsupported.values().next().value!;
+          this.unsupported.delete(oldest);
+          const old = this.sourceState.entries.get(oldest);
+          if (old) this.releaseSourceOwner(old);
+        }
+        this.promoteSource(owner);
         return undefined;
       }
       const bytes = width * height * 4;
       while (this.bytes + bytes > LIMIT && this.sources.size)
         this.forget(this.sources.keys().next().value!);
-      const surface = this.device.surface(width, height);
-      try {
-        this.device.upload(surface, pixels.canvas);
-      } catch (error) {
-        this.device.release(surface);
-        throw error;
-      }
-      this.sources.set(key, surface);
-      this.bytes += bytes;
+      const surface = (owner.surface = this.device.surface(width, height));
+      owner.nativeOwned = owner.memory?.owns(surface) ?? false;
+      this.device.upload(surface, pixels.canvas);
+      this.promoteSource(owner, surface);
       return surface;
+    } catch (error) {
+      cleaned = true;
+      try {
+        this.cleanupSource(owner);
+      } catch {
+        /* Preserve original read/native/quota/null failure. */
+      }
+      throw error;
     } finally {
-      this.raster.releaseSurface(pixels);
+      try {
+        if (!cleaned) this.cleanupSource(owner);
+      } finally {
+        if (!owner.promoted) this.releaseSourceOwner(owner);
+      }
     }
   }
 
@@ -279,12 +488,42 @@ export class WebglPngImages {
   }
 
   dispose() {
-    for (const key of this.sources.keys()) this.forget(key);
-    this.unsupported.clear();
-    if (this.control) {
-      this.device.release(this.control.surface);
-      releaseRenderPixels(this.control.values);
+    let failed = false,
+      first: unknown;
+    try {
+      this.clearSources();
+    } catch (error) {
+      failed = true;
+      first = error;
     }
+    try {
+      if (this.sourceState.managed) releaseRenderMetadata(this.sourceState);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        first = error;
+      }
+    }
+    const control = this.control;
     this.control = undefined;
+    if (control) {
+      try {
+        this.device.release(control.surface);
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          first = error;
+        }
+      }
+      try {
+        releaseRenderPixels(control.values);
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          first = error;
+        }
+      }
+    }
+    if (failed) throw first;
   }
 }

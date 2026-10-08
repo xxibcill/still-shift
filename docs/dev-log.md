@@ -96,15 +96,14 @@ still hold before relying on them.
   pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback, managed plan/sum-shader cache, particle/
-  Canvas/WebGL region, effect-paint/replace, seven built-ins and depth mesh metadata
-  pass 384 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. Actual grid/set/triangle/view/result
-  records pre-admit, stay through consumers/native upload, then clear. Four original
-  buffer hashes/nine new tests pass, including partial/null/retry/scratch/allocator.
-  Second-pixel fixture metadata 8→4096 preserves original 200000-pixel denial;
-  glyph 1.52× failure retained and affected check retried without policy change.
-  Native probes, WebGL/providers, 69 typography tests and 64 exports / 768 prior-
-  exact bodies/frames pass; glyph 1.432392× meets unchanged 1.5 maximum.
+  Canvas/WebGL region, effect-paint/replace, seven built-ins, depth mesh and PNG
+  source cache metadata pass 400 focused tests, complete audit, 22 moving/blurred
+  and ten stationary native frames and 96 owned RPC snapshots. Actual source-cache
+  Maps/Set/key/entry/edge/native refs pre-admit, stay through consumers/cache, then
+  clear. Two original native traces/sixteen new tests, quota/1024 reject/LRU/border/
+  partial/null/retry/foreign/native allocator-first once-only release pass. Native
+  probes, WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
+  bodies/frames pass; glyph 1.376184× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -340,6 +339,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual PNG source cache data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `3a90483`.
+- **Done:** pre-admit actual source cache Maps/Set/header, tuple/JSON key text,
+  entry slots/edge/native refs; retain through original cache/consumers, clear on
+  retirement; preserve LRU/reject policy, borrowed input and original null/retry.
+- **Results:** build/lint/boundaries, 400 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.376184× meets unchanged 1.5 maximum.
+- **Verification:** sixteen new tests/two whole original traces; 1024-entry reject/
+  source byte/LRU eviction, border detachment, partial/null/retry, constructor and
+  actual device/allocator-first once-only release; foreign cache guard. No full gate.
+- **Next:** PNG draw/placement/coordinate controls, dedicated depth/controller/cache/
+  state, provider/graph/font/common helper/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [PNG source evidence](./composition-ce15-png-source-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual depth mesh data
 
