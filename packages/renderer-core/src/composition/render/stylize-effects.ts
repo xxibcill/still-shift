@@ -1,6 +1,7 @@
 import {
   allocateRenderPixels,
   readRenderImageData,
+  renderMemory,
 } from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import { colorEffectChannel } from "./color-effects.ts";
@@ -9,7 +10,72 @@ import {
   PREMULTIPLIED_SAMPLE_SHADER,
 } from "./sampled-blur.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
+import type { WebglSurface } from "./webgl-device.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+} from "../../managed-metadata.ts";
 type Params = Parameters<CompositionEffectPlugin["renderGpu"]>[2];
+type StylizeOffsetControl = { offset?: [number, number] | undefined };
+type GpuStylizeWork = StylizeOffsetControl & {
+  managed: boolean;
+  neutral?: ((value: number) => boolean) | undefined;
+  input?: WebglSurface | undefined;
+  output?: WebglSurface | undefined;
+  inputs?: WebglSurface[] | undefined;
+  dimensions?: [number, number] | undefined;
+  uniforms?: Record<string, number | readonly number[]> | undefined;
+  shader?: string | undefined;
+};
+function clearGpuStylizeWork(work: GpuStylizeWork) {
+  if (work.offset) (work.offset as number[]).length = 0;
+  if (work.dimensions) (work.dimensions as number[]).length = 0;
+  if (work.inputs) work.inputs.length = 0;
+  if (work.uniforms) for (const k in work.uniforms) delete work.uniforms[k];
+  for (const k in work)
+    delete (work as Partial<GpuStylizeWork>)[k as keyof GpuStylizeWork];
+}
+function gpuStylizeUniforms(
+  work: GpuStylizeWork,
+  input: WebglSurface,
+  params: Params,
+  amount: number,
+  offset: readonly [number, number] | undefined,
+  vignette: boolean,
+): Record<string, number | readonly number[]> {
+  const uniforms = (work.uniforms = {}) as Record<
+    string,
+    number | readonly number[]
+  >;
+  uniforms.amount = amount;
+  if (vignette) {
+    uniforms.dimensions = work.dimensions = [input.width, input.height];
+    uniforms.center = params.center as readonly number[];
+    uniforms.radius = params.radius as readonly number[];
+    uniforms.softness = params.softness as number;
+    uniforms.color = params.color as readonly number[];
+  } else uniforms.offset = offset!;
+  return uniforms;
+}
+function gpuStylizeWork(): GpuStylizeWork {
+  const managed = renderMemory() !== undefined;
+  return allocateRenderMetadata<GpuStylizeWork>(
+    16384,
+    () => ({ managed }),
+    false,
+    clearGpuStylizeWork,
+  );
+}
+function finishGpuStylizeWork(work: GpuStylizeWork, failed: boolean) {
+  const managed = work.managed;
+  try {
+    if (managed) releaseRenderMetadata(work);
+    else clearGpuStylizeWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
+
 const f = Math.fround;
 export function vignetteStrength(
   p: Params,
@@ -29,12 +95,17 @@ export function vignetteStrength(
       f(p.amount as number),
   );
 }
-export function chromaticOffset(p: Params): readonly [number, number] {
+export function chromaticOffset(
+  p: Params,
+  work?: StylizeOffsetControl,
+): readonly [number, number] {
   const offset = p.offset as readonly number[];
-  return [
+  const value: [number, number] = [
     Math.round(offset[0]! * 16) / 16 || 0,
     Math.round(offset[1]! * 16) / 16 || 0,
   ];
+  if (work) work.offset = value;
+  return value;
 }
 const COMMON = `vec3 straightBytes(vec4 value){return value.a>0.0?floor(value.rgb*255.0/value.a+0.5)/255.0:vec3(0.0);}
 uniform float amount;
@@ -56,27 +127,35 @@ export function stylizeEffectKernel(
     id,
     definition: compositionEffectDefinition(id)!,
     renderGpu(context, input, params) {
-      const amount = params.amount as number,
-        offset = vignette ? undefined : chromaticOffset(params);
-      if (amount === 0 || (offset && offset.every((v) => v === 0)))
-        return input;
-      const output = context.createSurface(input.width, input.height);
-      context.pass(
-        `${COMMON}\n${vignette ? VIGNETTE : PREMULTIPLIED_SAMPLE_SHADER + CHROMATIC}`,
-        output,
-        [input],
-        vignette
-          ? {
-              amount,
-              dimensions: [input.width, input.height],
-              center: params.center as readonly number[],
-              radius: params.radius as readonly number[],
-              softness: params.softness as number,
-              color: params.color as readonly number[],
-            }
-          : { amount, offset: offset! },
-      );
-      return output;
+      const amount = params.amount as number;
+      if (vignette && amount === 0) return input;
+      const work = gpuStylizeWork();
+      let failed = false;
+      try {
+        work.input = input;
+        const offset = vignette ? undefined : chromaticOffset(params, work);
+        if (
+          amount === 0 ||
+          (offset && offset.every((work.neutral = (v) => v === 0)))
+        )
+          return input;
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        context.pass(
+          (work.shader = `${COMMON}\n${vignette ? VIGNETTE : PREMULTIPLIED_SAMPLE_SHADER + CHROMATIC}`),
+          output,
+          (work.inputs = [input]),
+          gpuStylizeUniforms(work, input, params, amount, offset, vignette),
+        );
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishGpuStylizeWork(work, failed);
+      }
     },
     renderCanvas(context, input, params) {
       const amount = params.amount as number,

@@ -1930,6 +1930,26 @@ snapshot, failed reports and affected successful repeat are retained without
 threshold/protocol/code adjustment or a claimed cause.
 [Evidence](./composition-ce15-warp-points-metadata-results.json).
 
+## Accepted stylize GPU callback metadata checkpoint — 2026-10-08
+
+Reserve 16384-byte actual callback owner before original offset, predicate,
+uniform/dimension, full shader and input tuple factories; retain actual refs through
+native pass, then clear owned vectors/records/refs. Preserve original amount scalar
+getter, allocation-free zero vignette and offset-producing neutral chromatic paths.
+Borrowed center/radius/color remain intact. Preserve original null over secondary
+cleanup and permit retry; success cleanup null propagates after refs retire.
+
+Build/lint/boundaries and 729 focused tests / 83 files pass on attempt 2 after tuple
+cleanup and descriptor typing fixes. Nine new tests preserve 16 original native
+traces/full pixels and cover exact quota, actual refs, early/mid math, every getter,
+partial uniforms, native/adoption/cleanup null and retry. All 720 prior tests rerun.
+Complete audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69
+typography tests and 64 prior-exact exports / 768 bodies/frames pass; glyph
+1.410180× meets unchanged 1.5 maximum. Stylize Canvas/default offset, other effects/
+cache/registry/error/class/depth sampling/provider/graph/font/common/ledger/Node,
+production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-stylize-gpu-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
