@@ -358,30 +358,31 @@ sign and for time remap. It does not change the layer's composition-time visibil
 
 ## Milestone tracker
 
-| ID    | Deliverable                                     | Phase  | Depends on           | Owner                  | Branch                              | Status | Completion evidence                                                                |
-| ----- | ----------------------------------------------- | ------ | -------------------- | ---------------------- | ----------------------------------- | ------ | ---------------------------------------------------------------------------------- |
-| CE0   | Baseline, parity harness and feature matrix     | A      | —                    | xxibcill (Claude Code) | `codex/composition-ce0`             | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)                     |
-| CE1   | `composition-1` contract and property paths     | A      | CE0                  | xxibcill (Claude Code) | `codex/composition-ce1`             | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
-| CE2   | Pure composition evaluator                      | A      | CE1                  | Codex                  | `codex/composition-ce2`             | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
-| CE3   | Render graph and Canvas 2D reference backend    | A      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce3`             | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
-| CE4a  | Story adapter with visual parity                | A      | CE3                  | Codex                  | `codex/composition-ce4a-completion` | `[x]`  | [Completion](#ce4a-completion-record-2026-10-05)                                   |
-| CE4b  | Commerce and reusable-component adapter         | A      | CE3, CE6 slices      | Codex                  | `codex/composition-ce4b`            | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
-| CE4c  | Cinematic adapter                               | A      | CE3, CE8             | Codex                  | `codex/composition-ce4c`            | `[x]`  | [evidence](./composition-ce4c-results.json)                                        |
-| CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c            |                        |                                     | `[ ]`  |                                                                                    |
-| CE5   | Shape layers                                    | B      | CE3                  | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
-| CE6   | WebGL2 backend and effect registry              | B      | CE3                  | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
-| CE6-P | WebGL performance acceptance                    | Future | CE6                  | Codex                  | `codex/composition-ce6p-compatible` | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
-| CE7   | Motion blur and time controls                   | B      | CE3                  | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
-| CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9        | Codex                  | `codex/composition-ce8`             | `[x]`  | [evidence](./composition-ce8-results.json)                                         |
-| CE8-L | Bounded lighting for 2.5D layers                | B      | CE8                  | Codex                  | `codex/composition-ce8-lighting`    | `[x]`  | [Evidence](./composition-ce8-lighting-results.json)                                |
-| CE9   | Expressions and motion behaviours               | C      | CE2                  | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
-| CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12 | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
-| CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10            | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
-| CE12  | Motion linting                                  | C      | CE2                  | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
-| CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7             |                        |                                     | `[ ]`  |                                                                                    |
-| CE14  | Mesh warp and puppet pins                       | D      | CE6                  |                        |                                     | `[ ]`  |                                                                                    |
-| CE15  | Output formats, caching and parallel rendering  | D      | CE3                  |                        |                                     | `[ ]`  |                                                                                    |
-| CE16  | Programmable soundtrack project and timeline    | D      | CE3; CE16-A          | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
+| ID    | Deliverable                                     | Phase  | Depends on                 | Owner                  | Branch                              | Status | Completion evidence                                                                |
+| ----- | ----------------------------------------------- | ------ | -------------------------- | ---------------------- | ----------------------------------- | ------ | ---------------------------------------------------------------------------------- |
+| CE0   | Baseline, parity harness and feature matrix     | A      | —                          | xxibcill (Claude Code) | `codex/composition-ce0`             | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)                     |
+| CE1   | `composition-1` contract and property paths     | A      | CE0                        | xxibcill (Claude Code) | `codex/composition-ce1`             | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
+| CE2   | Pure composition evaluator                      | A      | CE1                        | Codex                  | `codex/composition-ce2`             | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
+| CE3   | Render graph and Canvas 2D reference backend    | A      | CE2                        | xxibcill (Claude Code) | `codex/composition-ce3`             | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
+| CE4a  | Story adapter with visual parity                | A      | CE3                        | Codex                  | `codex/composition-ce4a-completion` | `[x]`  | [Completion](#ce4a-completion-record-2026-10-05)                                   |
+| CE4b  | Commerce and reusable-component adapter         | A      | CE3, CE6 slices            | Codex                  | `codex/composition-ce4b`            | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
+| CE4c  | Cinematic adapter                               | A      | CE3, CE8                   | Codex                  | `codex/composition-ce4c`            | `[x]`  | [evidence](./composition-ce4c-results.json)                                        |
+| CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c                  |                        |                                     | `[ ]`  |                                                                                    |
+| CE5   | Shape layers                                    | B      | CE3                        | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
+| CE5-X | Shape fidelity, connectors and strokes          | B      | CE5, CE4a, CE9, CE11, CE12 | Codex                  | `codex/composition-ce5x`            | `[~]`  | [Audit / scope stop](./composition-ce5x-results.json)                              |
+| CE6   | WebGL2 backend and effect registry              | B      | CE3                        | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
+| CE6-P | WebGL performance acceptance                    | Future | CE6                        | Codex                  | `codex/composition-ce6p-compatible` | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
+| CE7   | Motion blur and time controls                   | B      | CE3                        | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
+| CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9              | Codex                  | `codex/composition-ce8`             | `[x]`  | [evidence](./composition-ce8-results.json)                                         |
+| CE8-L | Bounded lighting for 2.5D layers                | B      | CE8                        | Codex                  | `codex/composition-ce8-lighting`    | `[x]`  | [Evidence](./composition-ce8-lighting-results.json)                                |
+| CE9   | Expressions and motion behaviours               | C      | CE2                        | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
+| CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12       | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
+| CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10                  | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
+| CE12  | Motion linting                                  | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
+| CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7                   |                        |                                     | `[ ]`  |                                                                                    |
+| CE14  | Mesh warp and puppet pins                       | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
+| CE15  | Output formats, caching and parallel rendering  | D      | CE3                        |                        |                                     | `[ ]`  |                                                                                    |
+| CE16  | Programmable soundtrack project and timeline    | D      | CE3; CE16-A                | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
 
 ### Phases and parallel work
 
@@ -403,7 +404,7 @@ CE0 → CE1 → CE2 → CE3
              └─ CE12
 
 CE3 ─┬─ CE4a
-     ├─ CE5
+     ├─ CE5 ── CE5-X (with CE4a, CE9, CE11, CE12)
      ├─ CE6 ─┬─ CE4b
      │       └─ CE14
      ├─ CE7 ── CE13
@@ -3086,6 +3087,226 @@ results on known polygons), pixel tests, animated trim/morph sequences.
 
 ---
 
+## CE5-X — Shape fidelity, connectors and expressive strokes
+
+**Outcome:** Native shapes stay smooth at any output scale, replace the remaining
+story/commerce path providers, and gain the stroke, connector and authoring tools
+motion designers use for diagrams and animated titles.
+
+**Status:** `[~]` on `codex/composition-ce5x` (Codex), from complete CE4c.
+The owner approved A2/A3/A8/B3/B4 gap closure on 2026-10-06. The initial audit
+triggered the requested scope stop: spatial/morph/appearance providers, product
+attachments and multi-vertex bound annotations exceed the named emission scope
+or B3 endpoint contract. See [audit evidence](./composition-ce5x-results.json).
+Runtime migration has not started; the remaining sequence position and A1 baseline
+question stay open ([Q9](#open-questions-for-the-owner)). CE5 and
+[PR #38](https://github.com/xxibcill/still-shift/pull/38) are closed as delivered;
+nothing here reopens CE5 or changes its recorded evidence.
+
+**Why:** CE5 met its plan, but four gaps remain:
+
+- Merge, offset and round-corner output stays faceted: curves are flattened at
+  a fixed 0.25 shape-local units and emitted as polylines. Facets show once the
+  result is scaled, exported above 1080p or approached by a CE8 camera.
+- Arrowheads, flows, text containers and annotations still use interim providers
+  even though the [migration appendix](#appendix--ce0-feature-matrix) targets
+  native shapes.
+- Strokes have no width profile.
+- Morph matching and path editing are manual.
+
+### Scope and limits
+
+- Every new field goes through the CE5 shape property registry, so nested builder
+  keys, `drawOn`, expression baking, inspector tracks/outlines, validation and
+  JSON Schema generation cover it without bespoke paths. Every numeric field has
+  explicit bounds. All work is charged to `ShapeGeometryBudget` and keeps its
+  code/node/frame diagnostics through export.
+- Existing documents keep their meaning. Optional fields default to CE5 behaviour.
+  Only A1 changes output for existing native shape documents, under a new geometry
+  version (see A1).
+- Frozen CE0 baselines, the 144 legacy plain/ink/brush connector frames and every
+  family tier stay unchanged. Native CE5 baselines change only where A1 requires,
+  with before/after diffs recorded.
+- **Non-goals:** Lottie or SVG import/export and text-to-outline conversion (they
+  need their own plan; see [Scope](#scope)); GPU path rasterization (it belongs
+  with [CE6-P](#ce6-p--deferred-webgl-performance-acceptance)); deforming meshes
+  (CE14); gradient dithering and high-bit-depth gradients (CE15 output formats);
+  deleting provider code (CE4d owns removal of old render paths).
+
+### Slice A — Fidelity and provider retirement
+
+- [ ] **A1 Resolution-aware flattening and curve recovery.**
+  - Derive the flattening tolerance in output pixels. Use the largest singular
+    value of the accumulated shape → layer → parent → camera affine at the
+    evaluated frame, times the render scale. For projected 3D layers, use a
+    conservative bound over their projected bounds.
+  - Snap the tolerance to power-of-two steps so per-frame results stay
+    deterministic and vertex counts don't shimmer during scale animation.
+  - Clamp local tolerance between the 1/1,024 polygon quantum and 4 units.
+    Include the step in render/cache identity.
+  - Tag clipper output vertices with their source contour, cubic and parameter,
+    using Clipper2 Z-values if `clipper2-ts` 2.0.1-18 exposes them (record the
+    finding). Rebuild consecutive runs from one source cubic as exact
+    de Casteljau subsegments; intersections become vertices.
+  - Where a run cannot be recovered, fit cubics within tolerance with a bounded
+    iteration count. Round joins and round-corner fillets are emitted directly as
+    cubic arcs.
+  - Replace the fixed 1,024-vertex per-operation cap with a measured cap (target
+    16,384) under the unchanged global vertex budget.
+  - Bump the evaluator and both renderer versions.
+- [ ] **A2 Stroke markers.**
+  - Add `startMarker` and `endMarker` on `stroke` and `gradient-stroke`:
+    - `kind`: `chevron | triangle | dot | bar`;
+    - `length` and `width` as animatable multiples of the stroke width;
+    - `orient`: `tangent`, or `chord` with a bounded span;
+    - `follows`: `trim` (default; the marker rides the trimmed end) or `full`;
+    - `reveal`: `always`, or `complete` (shown only when the trim reaches its
+      end).
+  - `ink` and `brush` markers reuse the stroke style (brush wings). Marker
+    geometry is included in shape bounds and the work budget.
+- [ ] **A3 `path-repeater` operator.**
+  - Distributes copies of upstream contents along a `guide` content ID in the
+    same shape layer. The guide is read after its own operators and is not
+    consumed.
+  - Fields:
+    - `copies`, and `travel` in animatable arc units;
+    - `direction`, and `orient` (rotate copies to the tangent);
+    - optional density `pinch` (`at`/`width`/`strength`), using the established
+      `storyBump` inverse-density warp;
+    - a normalized visibility `window` and an optional excluded `gap`
+      interval;
+    - `startOpacity` and `endOpacity`.
+  - Copies are spaced evenly by arc length on the guide's world-length table.
+- [ ] **A4 Animatable dashes.** `dashes` also accepts animatable per-entry
+      scalars with a fixed entry count (at most 32). Static arrays keep their CE5
+      semantics, including odd-array repetition and solid zero-total arrays.
+- [ ] **A5 Per-corner rectangle roundness.** `roundness` accepts a scalar or an
+      animatable `[topLeft, topRight, bottomRight, bottomLeft]`. Overlapping radii
+      scale down proportionally to fit the side, matching CSS `border-radius`.
+- [ ] **A6 Gradient upgrades.**
+  - Radial gradients get an optional `highlight` (`length` −1…1, `angle`
+    degrees), mapped to a focal point inside the end circle.
+  - Gradients get `interpolation: srgb | linear`. Linear-light mode inserts at
+    most 16 deterministic intermediate stops per authored interval, computed in
+    linear light, so both backends share one CPU preparation.
+- [ ] **A7 Geometry and length caching.**
+  - Cache compiled geometry per shape layer, keyed by a hash of its sampled
+    values, the A1 tolerance step and the evaluator/renderer versions.
+  - Share world arc-length tables between trim, `follow-path`, `path-repeater`
+    and B2 expressions.
+  - Output must be byte-identical with the cache disabled. Record hit rates and
+    1080p/4K costs. These measurements don't revive CE6-P targets.
+- [ ] **A8 Adapter emission.**
+  - The CE4a story adapter emits native shapes for plain/ink/brush paths with
+    `endArrow`, `gap`, `pinch` and `reveal`. Legacy arrows map to
+    `chevron`/`chord`/`complete` with their existing length and wing ratios.
+  - Story flows map to A3: speed integrates to `travel` keys baked linearly at
+    integer frames, which reproduces the provider's floor/ceil interpolation
+    exactly. Colour states become hold or linear colour keys; the 12-frame window
+    fade becomes keyed opacity.
+  - Retain `story.path@1.x` and `story.flow@1.x` as registered fallbacks until
+    CE4d's removal gate.
+
+**Slice A acceptance:**
+
+- **A1 fidelity:** a scale sweep (0.25×–16×, 1080p and 4K exports, and a CE8
+  dolly into a merged shape) keeps measured maximum deviation from the analytic
+  curve within 0.25 device pixels. Trim endpoints move less than 0.25 px across
+  tolerance-step boundaries.
+- **A1 baselines:** merge, offset and round-corner reference cells with known
+  analytic results pass. Changed CE5 cells are regenerated only with their
+  recorded before/after diff.
+- **Parity:** every story fixture with paths or flows renders through native
+  emission at its existing tier, with forward/reverse seeks and repeated exports
+  exact on the pinned profile. All 144 legacy connector frames stay exact.
+- **New features:** A2–A6 each have reference cells and an animated sequence in a
+  new [`ce5x`](../benchmarks/fixtures/composition/) fixture set with native
+  baselines on both backends and hardware comparisons under the existing policy.
+
+### Slice B — Expressive strokes and authoring
+
+- [ ] **B1 Width profile.**
+  - Add `taper` (`startLength`/`endLength` as fractions of path length,
+    `startWidth`/`endWidth` multipliers, `ease`) and `wave` (`amount`,
+    `frequency` per length or per count, `phase`). All are animatable on `stroke`
+    and `gradient-stroke`.
+  - Profiled strokes are outlined to filled geometry, reusing nib sampling.
+    Dashes cut the outline after the profile; caps and joins follow the stroke
+    settings.
+  - Uniform strokes keep native Canvas traces (unchanged output). `ink`, `brush`
+    and `pinch` keep their CE5 output; document how they map onto profiles.
+- [ ] **B2 Path expressions.**
+  - Add CE9 functions `pathPoint(ref, t)`, `pathTangent(ref, t)` and
+    `pathLength(ref)`. `ref` names a shape content's compiled first contour by
+    property path (`contents[id]`), in layer space; `toComp` converts it to
+    composition space.
+  - `t` is normalized arc length on the A7 tables.
+  - Dependency edges join the existing stage graph. A shape content that reads
+    its own layer's compiled geometry reports `comp-expression-cycle`. Baking
+    writes the resulting numeric keys.
+- [ ] **B3 `connector` primitive.**
+  - Produces an open path between `from` and `to` endpoints. Each endpoint is a
+    point, or a layer reference with `anchor`, a bounds side or a bounds point.
+  - Fields: `route` (`straight`, `arc` with `bend`, or `orthogonal` with corner
+    `radius`) and per-end `inset`. Endpoints resolve after the referenced layers'
+    constraint stage; cycles and missing layers report stable diagnostics.
+  - Commerce annotations migrate from baked `commerce.path@1.0.0` vertices to
+    connectors, at their existing tier.
+- [ ] **B4 Bound containers.** A `rect` with `fit` (a target layer, `padding` and
+      `minSize`) takes position and size from that layer's measured bounds each
+      frame. A connector with a `tail` endpoint style forms speech and thought
+      tails. Story text containers migrate to shape plus text layers at their
+      existing tier.
+- [ ] **B5 Automatic morph correspondence.**
+  - Path keys gain `match: explicit | auto` (default `explicit`, CE5 behaviour).
+  - `auto` resamples both keys to a common vertex count by splitting cubics at
+    arc-length parameters, which preserves shape.
+  - For closed paths, it chooses the first vertex and direction that minimize
+    summed squared distance, bounded at 1,024 vertices.
+  - Correspondence is computed once per key pair at compile time. Open/closed
+    mismatch remains an error.
+- [ ] **B6 Lab direct path editing.**
+  - Drag vertices and tangent handles (mirrored by default; a modifier breaks
+    them), and insert or delete vertices on the selected path.
+  - Edits go through the CE11 inspector selection, the key-at-playhead
+    semantics, undo/redo and source save. No separate editing path.
+  - Show A2 markers, A3 guides and B3 endpoints as handles.
+- [ ] **B7 Presets and lint.**
+  - Builder presets: `morphTo` (B5 auto), `flowAlong` (A3), `dashMarch` (A4),
+    `staggerReveal` (repeater offset with trim) and `connect` (B3).
+  - Extend the CE12 analysers. Do not create a new one:
+    - geometry exceeding 80% of the shape work budget on any sampled frame;
+    - a trim or deformer with no downstream paint;
+    - markers whose `reveal: complete` appearance trips the existing pop rule.
+  - Each rule gets a passing and a failing fixture.
+
+**Slice B acceptance:**
+
+- Analytic profile, connector-route and morph-correspondence tests pass.
+- Annotation and text-container fixtures meet their existing tiers through native
+  emission.
+- Expression results match baked keys exactly.
+- Auto morphs of mismatched key pairs render without self-intersection in the
+  reference set.
+- Lab path edits round-trip through undo, redo, save and reload.
+- Every preset produces lint-clean output.
+
+### Verification
+
+- Unit tests: flattening error against analytic curves, curve recovery on known
+  boolean cases, marker and repeater placement, dash/radius/gradient arithmetic,
+  profile outlines, path expressions and morph correspondence.
+- Browser tests: pixel tests in a new `test:browser:composition-shapes-x` group,
+  added to `pnpm test`; CE4a/CE4b parity against existing tiers; and the CE11
+  inspector flows.
+- Determinism checks: reverse/random seeks, repeated and independent exports,
+  cache-on/off identity, and hardware comparisons under the unchanged policy.
+- Record initial failures honestly in `docs/composition-ce5x-results.json`. Follow
+  the [verification efficiency](../AGENTS.md) rules: focused checks per slice and
+  one final `pnpm check` per slice on its final code checkpoint.
+
+---
+
 ## CE6 — WebGL2 backend and effect registry
 
 **Outcome:** Every layer can carry an effect stack, effects run on the GPU, and the
@@ -5220,6 +5441,7 @@ A milestone is complete when **all** of the following hold:
 
 | Date       | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Reason                                                                                                                                                                                                                                          | Superseded by               |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| 2026-10-06 | Q9 partial approval: start CE5-X gap closure A2, A3, A8, B3 and B4 on `codex/composition-ce5x` from CE4c; preserve provider fallbacks and frozen baselines. The sequence position of the remaining CE5-X scope and A1 baseline regeneration remain open.                                                                                                                                                                                                                                                                            | Owner explicitly approved this task. Audit stop conditions apply; additional provider/contract scope is not inferred.                                                                                                                           |                             |
 | 2026-09-30 | Introduce one `composition-1` contract; existing families become compilers into it                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Removes per-family duplication; every later feature is built once                                                                                                                                                                               |                             |
 | 2026-09-30 | Keep Canvas 2D as the reference backend and add WebGL2 as the production backend behind one interface                                                                                                                                                                                                                                                                                                                                                                                                                               | Preserves parity with existing output while enabling GPU effects and performance                                                                                                                                                                |                             |
 | 2026-09-30 | Expressions are a serialisable AST; JavaScript ergonomics live in the builder                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Determinism, sandbox safety in export workers, easy validation of agent output (see Q3)                                                                                                                                                         | Q3 entry below              |
@@ -5272,16 +5494,17 @@ A milestone is complete when **all** of the following hold:
 
 ## Open questions for the owner
 
-| ID  | Question                                                                                                                                                                                                                                                                                                                                       | Needed by                                                       | Answer                                                                                                                                                                                                                                                                    |
-| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Q1  | GPU determinism: pin export to a software GL path (SwiftShader, slower but reproducible), or accept `near`-tier tolerance across GPUs with hardware rendering?                                                                                                                                                                                 | CE0                                                             | 2026-09-30: hybrid (option C). See [GPU determinism policy](#gpu-determinism-policy)                                                                                                                                                                                      |
-| Q2  | Once adapters reach parity, should the four family schemas be frozen (still accepted, no new features) so new work targets `composition-1` only?                                                                                                                                                                                               | CE4d                                                            | 2026-10-01: option C — freeze the families' visual vocabulary; story-level features may still grow. See [decision log](#decision-log) and CE4d                                                                                                                            |
-| Q3  | Is an AST expression language acceptable, or must compositions accept raw JavaScript expressions (with a sandbox) for AE-style familiarity?                                                                                                                                                                                                    | CE9                                                             | 2026-09-30: text syntax parsed into an AST; no raw JavaScript. See [CE9 expression form](#expression-form)                                                                                                                                                                |
-| Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                                                                                                                                                                                                 | CE15                                                            | 2026-10-01: both — alpha formats for editors and social delivery formats ship together. See CE15                                                                                                                                                                          |
-| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                                                                                                                                                                                                          | Phase D                                                         |                                                                                                                                                                                                                                                                           |
-| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                                                                                                                                                                                                     | After CE8                                                       |                                                                                                                                                                                                                                                                           |
-| Q7  | Single-image depth animation (depth presets and flat editorial presets) uses a separate WebGL renderer. Should it become a composition layer type (for example a `depth-image` layer), or stay a separate path?                                                                                                                                | CE4d                                                            |                                                                                                                                                                                                                                                                           |
-| Q8  | Output is exact only within one operating system and CPU architecture (policy rule 6). Should one canonical render environment, for example the Linux container in `scripts/composition/linux/` on a fixed architecture, be used for CI, caches shared between machines and final exports, with macOS renders treated as development previews? | Before shared caches or CE15 parallel rendering across machines | 2026-10-01: Mac first — `darwin-arm64` is the reference environment for now; before supporting a second machine type, decide between B (canonical environment) and C (platform-independent text, preferred). See [GPU determinism policy](#gpu-determinism-policy) rule 6 |
+| ID  | Question                                                                                                                                                                                                                                                                                                                                                                                          | Needed by                                                       | Answer                                                                                                                                                                                                                                                                                                         |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q1  | GPU determinism: pin export to a software GL path (SwiftShader, slower but reproducible), or accept `near`-tier tolerance across GPUs with hardware rendering?                                                                                                                                                                                                                                    | CE0                                                             | 2026-09-30: hybrid (option C). See [GPU determinism policy](#gpu-determinism-policy)                                                                                                                                                                                                                           |
+| Q2  | Once adapters reach parity, should the four family schemas be frozen (still accepted, no new features) so new work targets `composition-1` only?                                                                                                                                                                                                                                                  | CE4d                                                            | 2026-10-01: option C — freeze the families' visual vocabulary; story-level features may still grow. See [decision log](#decision-log) and CE4d                                                                                                                                                                 |
+| Q3  | Is an AST expression language acceptable, or must compositions accept raw JavaScript expressions (with a sandbox) for AE-style familiarity?                                                                                                                                                                                                                                                       | CE9                                                             | 2026-09-30: text syntax parsed into an AST; no raw JavaScript. See [CE9 expression form](#expression-form)                                                                                                                                                                                                     |
+| Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                                                                                                                                                                                                                                                    | CE15                                                            | 2026-10-01: both — alpha formats for editors and social delivery formats ship together. See CE15                                                                                                                                                                                                               |
+| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                                                                                                                                                                                                                                                             | Phase D                                                         |                                                                                                                                                                                                                                                                                                                |
+| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                                                                                                                                                                                                                                                        | After CE8                                                       |                                                                                                                                                                                                                                                                                                                |
+| Q7  | Single-image depth animation (depth presets and flat editorial presets) uses a separate WebGL renderer. Should it become a composition layer type (for example a `depth-image` layer), or stay a separate path?                                                                                                                                                                                   | CE4d                                                            |                                                                                                                                                                                                                                                                                                                |
+| Q8  | Output is exact only within one operating system and CPU architecture (policy rule 6). Should one canonical render environment, for example the Linux container in `scripts/composition/linux/` on a fixed architecture, be used for CI, caches shared between machines and final exports, with macOS renders treated as development previews?                                                    | Before shared caches or CE15 parallel rendering across machines | 2026-10-01: Mac first — `darwin-arm64` is the reference environment for now; before supporting a second machine type, decide between B (canonical environment) and C (platform-independent text, preferred). See [GPU determinism policy](#gpu-determinism-policy) rule 6                                      |
+| Q9  | Approve [CE5-X](#ce5-x--shape-fidelity-connectors-and-expressive-strokes) and its sequence position (proposed: Slice A directly after CE4d, so provider retirement aligns with old-path removal; Slice B before CE13). A1 changes native CE5 merge/offset/round-corner output under a new geometry version; may those CE5 native baselines be regenerated with recorded diffs (CE0 stays frozen)? | CE5-X                                                           | 2026-10-06: approved only A2/A3/A8/B3/B4 gap closure from CE4c. The rest of CE5-X sequence and A1 baseline question remain open. Initial audit stopped migration for additional component motion providers, product attachments and multi-vertex annotations; see [evidence](./composition-ce5x-results.json). |
 
 ## Appendix — AE feature coverage map
 
@@ -5333,80 +5556,80 @@ with general primitives; the "Target" column names that later form.
 | SVG pre-rasterisation (`motionGrammar: "v2"`)              | Assets rasterised once at natural size                               | Image source option `rasterize: "natural-size"`                                         | CE1, CE3           |
 | Rect node (`fill`, `stroke`, `radius`)                     | `prepared.ts` rect                                                   | Native solid when plain and fully revealed; interim `story.rect@1.0.0`, then CE5 shapes | CE3 (interim), CE5 |
 | Path node: uniform, `ink`, `brush` line styles             | `ink-path.ts`, `brush-path.ts`                                       | Interim content provider `story.path@1.0.0`; target shape path with stroke styles       | CE4a, CE5          |
-| Path `endArrow`, `gap`, `pinch`, `reveal`                  | Path drawing in `illustrated-renderer.ts`                            | Interim provider; target stroke end cap, trim paths and width profile                   | CE4a, CE5          |
+| Path `endArrow`, `gap`, `pinch`, `reveal`                  | Path drawing in `illustrated-renderer.ts`                            | Interim provider; target stroke markers (A2), trim paths and width profile (B1)         | CE4a, CE5, CE5-X   |
 | Text node, fonts, `textBox`, `textLayout`, `align`, states | `typography-renderer.ts`, `text-layout.ts`                           | Text layer whose content is drawn by the existing typography renderer                   | CE3                |
 | Group node with `clip`                                     | `group` with optional clip                                           | Group layer (see parity note 1) with a rectangular mask when clipped                    | CE1, CE3           |
 | `parent` hierarchy                                         | `parent` on every node                                               | Layer `parent`, plus opacity inheritance option (parity note 1)                         | CE1–CE2            |
 | `initialState`                                             | Story `initialState`                                                 | Initial property values                                                                 | CE1                |
 | Plain legacy text, states, reveal and textLayout           | `story-text.ts`                                                      | Interim content provider `story.text@1.0.0`; target native text after parity            | CE4a               |
 | Commerce measured text (`textBox`)                         | `text-layout.ts`, `component-values.ts`                              | Interim provider `commerce.text@1.0.0`; target native text after parity                 | CE4b               |
-| Text containers (caption, speech, thought, tail side)      | `story-acting.ts`, `text-container.ts`                               | Interim content provider `text-container`; target shape layer plus text layer           | CE4a, CE5          |
+| Text containers (caption, speech, thought, tail side)      | `story-acting.ts`, `text-container.ts`                               | Interim content provider `text-container`; target bound container plus text layer (B4)  | CE4a, CE5, CE5-X   |
 
 ### Timing and animation
 
-| Feature                                                                 | Today                                                 | `composition-1` form                                        | Milestone    |
-| ----------------------------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------- | ------------ |
-| Keyed tracks (`x`, `y`, `scaleX/Y`, `rotation`, `opacity`, `reveal`, …) | `prepared-scene.ts` tracks, `frame-tracks.ts`         | Keyed properties addressed by property path                 | CE1–CE2      |
-| Legacy millisecond key times                                            | Legacy tracks keyed in milliseconds                   | Keys at fractional frames (parity note 2)                   | CE1, CE4d    |
-| Curve interpolation, temporal handles, springs, overshoot               | `curve.ts`, `motion-easing.ts`                        | Same key fields, extended to vectors and colours            | CE1–CE2      |
-| Story moves, emphasis, entrances (8 verbs, `parts`), exits (4 verbs)    | `story-motion.ts`, `story-choreography.ts`            | Compiled to keys by the existing story compiler             | CE4a         |
-| Story recipes (7 plus `generic`)                                        | `StoryRecipeSchema`                                   | Compiled                                                    | CE4a         |
-| Legacy presets (6)                                                      | `IllustratedRecipeSchema`                             | Compiled                                                    | CE4d         |
-| Commerce presets (H01, H03, H04, A01) and component demos               | `commerce-catalog.ts`, `buildCommerceScene`           | Compiled                                                    | CE4b         |
-| Commerce `events`                                                       | `CommerceEventSchema`                                 | Keys                                                        | CE4b         |
-| Legacy path followers                                                   | `followers`                                           | `follow-path` constraint with keyed progress                | CE2, CE4d    |
-| Motion layers (`action`/`response`/`current`/`carrier`), blend, weight  | `motion-craft.ts`                                     | Retained, keyed by property path                            | CE2          |
-| Signals, drivers, periodic motion                                       | `motion-craft.ts`                                     | Retained with property-path targets; later expression sugar | CE1–CE2, CE9 |
-| Constraints: attach, contact, look-at, follow-path, keep-in-safe-area   | `motion-craft.ts`                                     | Constraints with property paths (evaluation step 6)         | CE2          |
-| Spatial bezier paths                                                    | `spatialPaths`                                        | Position spatial tangents                                   | CE1–CE2      |
-| Path morphs                                                             | `pathMorphs`                                          | Interim provider; target shape path keys                    | CE4a, CE5    |
-| Text animators and range selectors                                      | `textAnimators`, `motion-text.ts`                     | Text layer animators (reused)                               | CE3          |
-| Intent presets, `entranceProfile`                                       | `intentPresets`                                       | Compiled                                                    | CE4a         |
-| Text styles, spans, decorations, transitions, text events               | `typography.ts`, `typography-*.ts`                    | Text layer content (reused typography engine)               | CE3          |
-| Narration timing and word anchors                                       | `narrationTiming`                                     | Composition markers; text events resolved at compile        | CE1, CE4a    |
-| Character actions (walk, knock, offer, receive, react)                  | `character-actions.ts`, resolved into poses and moves | Compiled to state keys and transforms                       | CE4a         |
-| Prop attachments to hand anchors and transfers                          | `story-props.ts`                                      | `attach` constraint to a state-dependent anchor             | CE2, CE4a    |
+| Feature                                                                 | Today                                                 | `composition-1` form                                          | Milestone        |
+| ----------------------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------- | ---------------- |
+| Keyed tracks (`x`, `y`, `scaleX/Y`, `rotation`, `opacity`, `reveal`, …) | `prepared-scene.ts` tracks, `frame-tracks.ts`         | Keyed properties addressed by property path                   | CE1–CE2          |
+| Legacy millisecond key times                                            | Legacy tracks keyed in milliseconds                   | Keys at fractional frames (parity note 2)                     | CE1, CE4d        |
+| Curve interpolation, temporal handles, springs, overshoot               | `curve.ts`, `motion-easing.ts`                        | Same key fields, extended to vectors and colours              | CE1–CE2          |
+| Story moves, emphasis, entrances (8 verbs, `parts`), exits (4 verbs)    | `story-motion.ts`, `story-choreography.ts`            | Compiled to keys by the existing story compiler               | CE4a             |
+| Story recipes (7 plus `generic`)                                        | `StoryRecipeSchema`                                   | Compiled                                                      | CE4a             |
+| Legacy presets (6)                                                      | `IllustratedRecipeSchema`                             | Compiled                                                      | CE4d             |
+| Commerce presets (H01, H03, H04, A01) and component demos               | `commerce-catalog.ts`, `buildCommerceScene`           | Compiled                                                      | CE4b             |
+| Commerce `events`                                                       | `CommerceEventSchema`                                 | Keys                                                          | CE4b             |
+| Legacy path followers                                                   | `followers`                                           | `follow-path` constraint with keyed progress                  | CE2, CE4d        |
+| Motion layers (`action`/`response`/`current`/`carrier`), blend, weight  | `motion-craft.ts`                                     | Retained, keyed by property path                              | CE2              |
+| Signals, drivers, periodic motion                                       | `motion-craft.ts`                                     | Retained with property-path targets; later expression sugar   | CE1–CE2, CE9     |
+| Constraints: attach, contact, look-at, follow-path, keep-in-safe-area   | `motion-craft.ts`                                     | Constraints with property paths (evaluation step 6)           | CE2              |
+| Spatial bezier paths                                                    | `spatialPaths`                                        | Position spatial tangents                                     | CE1–CE2          |
+| Path morphs                                                             | `pathMorphs`                                          | Interim provider; target shape path keys; auto match in CE5-X | CE4a, CE5, CE5-X |
+| Text animators and range selectors                                      | `textAnimators`, `motion-text.ts`                     | Text layer animators (reused)                                 | CE3              |
+| Intent presets, `entranceProfile`                                       | `intentPresets`                                       | Compiled                                                      | CE4a             |
+| Text styles, spans, decorations, transitions, text events               | `typography.ts`, `typography-*.ts`                    | Text layer content (reused typography engine)                 | CE3              |
+| Narration timing and word anchors                                       | `narrationTiming`                                     | Composition markers; text events resolved at compile          | CE1, CE4a        |
+| Character actions (walk, knock, offer, receive, react)                  | `character-actions.ts`, resolved into poses and moves | Compiled to state keys and transforms                         | CE4a             |
+| Prop attachments to hand anchors and transfers                          | `story-props.ts`                                      | `attach` constraint to a state-dependent anchor               | CE2, CE4a        |
 
 ### Components (`scene-components-1..3`)
 
-| Feature                                           | Today                                                  | `composition-1` form                                                                 | Milestone        |
-| ------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------ | ---------------- |
-| Values and numeric text bindings (formatting)     | `component-values.ts`                                  | Interim provider for formatted text; target expression bound to text source          | CE4a/b, CE9      |
-| Property bindings                                 | `component-values.ts`                                  | Driver / expression                                                                  | CE2, CE9         |
-| State schedules (cuts, ramp)                      | `component-state.ts`                                   | `state` keys with hold interpolation; ramp as `stateMix` keys                        | CE1–CE3          |
-| Travels along paths                               | `component-travel.ts`                                  | `follow-path` constraint with keyed progress                                         | CE2              |
-| Visibility windows                                | `component-visibility.ts`                              | Layer in/out points; multiple windows as hold-keyed opacity                          | CE1              |
-| Pins                                              | `component-pin.ts`                                     | `attach` constraint                                                                  | CE2              |
-| Text fits                                         | `component-text-fit.ts`                                | Text layer fit option resolved at compile with measured fonts                        | CE3              |
-| Masks (`invert`)                                  | `component-mask.ts`                                    | Track matte (`alpha` / `alpha-inverted`)                                             | CE3              |
-| Annotations (anchored leaders, protected regions) | `component-annotations.ts`                             | Commerce: `commerce.path@1.0.0` baked vertices; target expression-driven shape paths | CE4a/b, CE5, CE9 |
-| Relationships and instances                       | `component-relationships.ts`, `component-instances.ts` | Compiled                                                                             | CE4a/b           |
+| Feature                                           | Today                                                  | `composition-1` form                                                                                                                                           | Milestone               |
+| ------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| Values and numeric text bindings (formatting)     | `component-values.ts`                                  | Interim provider for formatted text; target expression bound to text source                                                                                    | CE4a/b, CE9             |
+| Property bindings                                 | `component-values.ts`                                  | Driver / expression                                                                                                                                            | CE2, CE9                |
+| State schedules (cuts, ramp)                      | `component-state.ts`                                   | `state` keys with hold interpolation; ramp as `stateMix` keys                                                                                                  | CE1–CE3                 |
+| Travels along paths                               | `component-travel.ts`                                  | `follow-path` constraint with keyed progress                                                                                                                   | CE2                     |
+| Visibility windows                                | `component-visibility.ts`                              | Layer in/out points; multiple windows as hold-keyed opacity                                                                                                    | CE1                     |
+| Pins                                              | `component-pin.ts`                                     | `attach` constraint                                                                                                                                            | CE2                     |
+| Text fits                                         | `component-text-fit.ts`                                | Text layer fit option resolved at compile with measured fonts                                                                                                  | CE3                     |
+| Masks (`invert`)                                  | `component-mask.ts`                                    | Track matte (`alpha` / `alpha-inverted`)                                                                                                                       | CE3                     |
+| Annotations (anchored leaders, protected regions) | `component-annotations.ts`                             | Commerce: `commerce.path@1.0.0` baked vertices; B3 connector target, with multi-vertex bracket/outline audit gap ([evidence](./composition-ce5x-results.json)) | CE4a/b, CE5, CE9, CE5-X |
+| Relationships and instances                       | `component-relationships.ts`, `component-instances.ts` | Compiled                                                                                                                                                       | CE4a/b                  |
 
 ### Story-only rendering
 
-| Feature                                                       | Today                      | `composition-1` form                                                                       | Milestone    |
-| ------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------ | ------------ |
-| Story camera keys (`x`, `y`, `zoom`), ease flags, tangents    | `story-camera.ts`          | Composition 2D camera with per-layer depth factor (parity note 3); later CE8 camera        | CE1–CE2, CE8 |
-| Camera `depth` per root and `cover` list                      | `StoryCameraSchema`        | Layer depth factor; `cover` as coverage-required layers                                    | CE1, CE8     |
-| Camera jolts                                                  | `jolts`                    | Evaluated in the 2D camera step; later `camera-shake` behaviour                            | CE2, CE9     |
-| Flows (dots/dashes along a path, speed, colour states, pinch) | `story-flows.ts`           | Interim provider `story.flow@1.0.0`; target shape repeater along trimmed path              | CE4a, CE5    |
-| Connectors (anchor-to-anchor paths with bend)                 | `connectors`               | Baked endpoints via `story.path@1.1.0` / `story.flow@1.1.0`; target expression-driven path | CE4a, CE9    |
-| Safe zones, `safeInset`, review metadata, focal events        | `story.ts`                 | Composition metadata; checked by lint                                                      | CE1, CE12    |
-| Semantic checks (`stable-anchors`, `clearance`)               | `motion-craft.ts` `checks` | Lint rules                                                                                 | CE12         |
-| Shared effects (`effects-1`)                                  | `shared-effects.ts`        | Effect registry                                                                            | CE6          |
+| Feature                                                       | Today                      | `composition-1` form                                                                       | Milestone        |
+| ------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------ | ---------------- |
+| Story camera keys (`x`, `y`, `zoom`), ease flags, tangents    | `story-camera.ts`          | Composition 2D camera with per-layer depth factor (parity note 3); later CE8 camera        | CE1–CE2, CE8     |
+| Camera `depth` per root and `cover` list                      | `StoryCameraSchema`        | Layer depth factor; `cover` as coverage-required layers                                    | CE1, CE8         |
+| Camera jolts                                                  | `jolts`                    | Evaluated in the 2D camera step; later `camera-shake` behaviour                            | CE2, CE9         |
+| Flows (dots/dashes along a path, speed, colour states, pinch) | `story-flows.ts`           | Interim provider `story.flow@1.0.0`; target `path-repeater` (A3)                           | CE4a, CE5, CE5-X |
+| Connectors (anchor-to-anchor paths with bend)                 | `connectors`               | Baked endpoints via `story.path@1.1.0` / `story.flow@1.1.0`; target expression-driven path | CE4a, CE9        |
+| Safe zones, `safeInset`, review metadata, focal events        | `story.ts`                 | Composition metadata; checked by lint                                                      | CE1, CE12        |
+| Semantic checks (`stable-anchors`, `clearance`)               | `motion-craft.ts` `checks` | Lint rules                                                                                 | CE12             |
+| Shared effects (`effects-1`)                                  | `shared-effects.ts`        | Effect registry                                                                            | CE6              |
 
 ### Commerce-only rendering
 
-| Feature                                                                                                                         | Today                                                 | `composition-1` form                                                       | Milestone |
-| ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------- | --------- |
-| Effects: directional blur, focus blur, glow, grain, light sweep, background light, displacement, echo, particles, height shadow | `commerce-effects.ts`, `commerce-effects-renderer.ts` | Effect registry entries                                                    | CE6       |
-| Effect: motion blur (shutter angle, samples)                                                                                    | `commerce-effects.ts`                                 | Composition/layer motion blur                                              | CE7       |
-| Effects: overshoot, drift, parallax                                                                                             | `commerce-effect-motion.ts`                           | Behaviours or compiled keys, not pixel effects                             | CE9       |
-| Geometry (anchors, protected regions) and attachments                                                                           | `commerce-spatial.ts`, `commerce-geometry.ts`         | Asset anchors; baked vertices via `commerce.path@1.0.0`, later expressions | CE4b, CE9 |
-| Mattes (`invert`, `order: after-effects`)                                                                                       | `commerce-spatial.ts`                                 | Track mattes                                                               | CE3       |
-| Visibility windows, text fits                                                                                                   | `commerce-spatial.ts`                                 | In/out points; text fit option                                             | CE1, CE3  |
-| Layout, product preparation, shadow textures, floating hand                                                                     | `commerce-*.ts`, `animation-engine/commerce-*.ts`     | Compiled; generated shadows are prepared files referenced as assets        | CE4b      |
-| Registration, claims and source metadata                                                                                        | `metadata`                                            | Composition metadata passthrough                                           | CE1       |
+| Feature                                                                                                                         | Today                                                 | `composition-1` form                                                                                                                                  | Milestone |
+| ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| Effects: directional blur, focus blur, glow, grain, light sweep, background light, displacement, echo, particles, height shadow | `commerce-effects.ts`, `commerce-effects-renderer.ts` | Effect registry entries                                                                                                                               | CE6       |
+| Effect: motion blur (shutter angle, samples)                                                                                    | `commerce-effects.ts`                                 | Composition/layer motion blur                                                                                                                         | CE7       |
+| Effects: overshoot, drift, parallax                                                                                             | `commerce-effect-motion.ts`                           | Behaviours or compiled keys, not pixel effects                                                                                                        | CE9       |
+| Geometry (anchors, protected regions) and attachments                                                                           | `commerce-spatial.ts`, `commerce-geometry.ts`         | Asset anchors; `commerce.path@1.0.0` includes product attachments beyond annotation-only B3; audit stop ([evidence](./composition-ce5x-results.json)) | CE4b, CE9 |
+| Mattes (`invert`, `order: after-effects`)                                                                                       | `commerce-spatial.ts`                                 | Track mattes                                                                                                                                          | CE3       |
+| Visibility windows, text fits                                                                                                   | `commerce-spatial.ts`                                 | In/out points; text fit option                                                                                                                        | CE1, CE3  |
+| Layout, product preparation, shadow textures, floating hand                                                                     | `commerce-*.ts`, `animation-engine/commerce-*.ts`     | Compiled; generated shadows are prepared files referenced as assets                                                                                   | CE4b      |
+| Registration, claims and source metadata                                                                                        | `metadata`                                            | Composition metadata passthrough                                                                                                                      | CE1       |
 
 ### Cinematic-only rendering
 
