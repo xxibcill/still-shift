@@ -51,6 +51,23 @@ type Program = {
   uniforms: Map<string, WebGLUniformLocation>;
 };
 
+type SolidLifetime = {
+  sliced: number[] | undefined;
+  scaled: number[] | undefined;
+  bytes: number[] | undefined;
+  solid: { surface: WebglSurface; color: number[]; region: Bounds } | undefined;
+};
+function clearSolidWorking(value: SolidLifetime) {
+  if (value.sliced) value.sliced.length = 0;
+  if (value.scaled) value.scaled.length = 0;
+  if (value.bytes) value.bytes.length = 0;
+  value.sliced = value.scaled = value.bytes = undefined;
+}
+function clearSolidLifetime(value: SolidLifetime) {
+  clearSolidWorking(value);
+  if (value.solid) value.solid.color.length = 0;
+  value.solid = undefined;
+}
 type SurfaceSwap = {
   textures: [WebGLTexture, WebGLTexture] | undefined;
   framebuffers: [WebGLFramebuffer, WebGLFramebuffer] | undefined;
@@ -114,6 +131,7 @@ type DeviceState = {
   bytes: number;
   managed: boolean;
   dirtyCapacity: number;
+  solid: SolidLifetime | undefined;
 };
 function destroySurface(gl: WebGL2RenderingContext, surface: WebglSurface) {
   let failed = false;
@@ -148,6 +166,12 @@ function clearDeviceState(state: DeviceState) {
       }
     }
   };
+  if (state.solid) {
+    const solid = state.solid;
+    state.solid = undefined;
+    if (state.managed) cleanup(() => releaseRenderMetadata(solid));
+    else clearSolidLifetime(solid);
+  }
   for (const surface of state.surfaces) {
     if (state.managed) cleanup(() => releaseRenderMetadata(surface));
     else if (gl) cleanup(() => destroySurface(gl, surface));
@@ -188,6 +212,7 @@ export class WebglDevice {
       bytes: 1024,
       managed: renderMemory() !== undefined,
       dirtyCapacity: 0,
+      solid: undefined,
     }),
     true,
     clearDeviceState,
@@ -198,9 +223,17 @@ export class WebglDevice {
   private readonly vao: WebGLVertexArrayObject;
   private readonly dirtyScreens = this.state.dirtyScreens;
   /** Exact opaque bytes of the latest screen clear while nothing has drawn over it. */
-  private solid:
-    | { surface: WebglSurface; color: number[]; region: Bounds }
-    | undefined;
+  private get solid() {
+    return this.state.solid?.solid;
+  }
+  private dropSolid() {
+    const prior = this.state.solid;
+    this.state.solid = undefined;
+    if (prior) {
+      if (this.state.managed) releaseRenderMetadata(prior);
+      else clearSolidLifetime(prior);
+    }
+  }
   passes = 0;
   private pooledBytes = 0;
 
@@ -380,7 +413,14 @@ export class WebglDevice {
               committed = true;
               return surface;
             } catch (error) {
-              if (surface) this.dirtyScreens.delete(surface);
+              if (surface) {
+                this.dirtyScreens.delete(surface);
+                try {
+                  if (this.solid?.surface === surface) this.dropSolid();
+                } catch {
+                  /* Preserve the original surface failure. */
+                }
+              }
               try {
                 if (texture)
                   releaseRenderStorage(texture, (value) =>
@@ -512,25 +552,51 @@ export class WebglDevice {
     if (surface.screen) {
       // Opaque screens store whole channel values; only exact byte colors are
       // known without reading the framebuffer back.
-      const bytes = color
-        .slice(0, 3)
-        .map((value) => value * a * 255)
-        .concat(255);
-      this.solid =
-        surface.opaque && bytes.every((v) => Math.abs(v - Math.round(v)) < 1e-6)
-          ? {
-              surface,
-              color: bytes.map(Math.round),
-              region: clip ?? {
-                left: 0,
-                top: 0,
-                right: surface.width,
-                bottom: surface.height,
-              },
-            }
-          : undefined;
-      this.markDirty(surface);
-      this.onScreenChange?.(clip);
+      const phase = allocateRenderMetadata<SolidLifetime>(
+        // Holder 64 + four array headers/slots 240 + solid/box 144
+        // + original map/every callbacks and iteration capacity 320.
+        768,
+        () => ({
+          sliced: undefined,
+          scaled: undefined,
+          bytes: undefined,
+          solid: undefined,
+        }),
+        true,
+        clearSolidLifetime,
+      );
+      let retained = false;
+      try {
+        phase.sliced = color.slice(0, 3);
+        phase.scaled = phase.sliced.map((value) => value * a * 255);
+        const bytes = (phase.bytes = phase.scaled.concat(255));
+        phase.solid =
+          surface.opaque &&
+          bytes.every((v) => Math.abs(v - Math.round(v)) < 1e-6)
+            ? {
+                surface,
+                color: bytes.map(Math.round),
+                region: clip ?? {
+                  left: 0,
+                  top: 0,
+                  right: surface.width,
+                  bottom: surface.height,
+                },
+              }
+            : undefined;
+        clearSolidWorking(phase);
+        if (phase.solid) {
+          resizeRenderMetadata(phase, 384);
+          this.dropSolid();
+          this.state.solid = phase;
+          retained = true;
+        } else this.dropSolid();
+        this.markDirty(surface);
+        this.onScreenChange?.(clip);
+      } finally {
+        clearSolidWorking(phase);
+        if (!retained) releaseRenderMetadata(phase);
+      }
     }
   }
 
@@ -640,7 +706,7 @@ export class WebglDevice {
   ) {
     if (target?.screen) clip = this.screenRegion(clip);
     if (clip === null) return;
-    if (target?.screen) this.solid = undefined;
+    if (target?.screen) this.dropSolid();
     const gl = this.gl;
     if (target?.screen) {
       // Keep every shader in top-left image coordinates while the canvas's
@@ -964,7 +1030,7 @@ export class WebglDevice {
 
   present(surface: WebglSurface) {
     if (surface.screen) return;
-    this.solid = undefined;
+    this.dropSolid();
     const gl = this.gl;
     gl.bindFramebuffer(gl.READ_FRAMEBUFFER, surface.framebuffer);
     gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
@@ -987,7 +1053,7 @@ export class WebglDevice {
     this.frameClip = undefined;
     this.onScreenChange = undefined;
     this.pooledBytes = 0;
-    this.solid = undefined;
+    this.dropSolid();
     try {
       clearDeviceState(this.state);
     } finally {

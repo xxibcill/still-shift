@@ -1022,6 +1022,29 @@ solid/clip and helper/remaining runtime/Node/production/aggregate admission, spe
 and full gate remain pending.
 [Evidence](./composition-ce15-dirty-metadata-results.json).
 
+## Accepted screen-clear color checkpoint — 2026-10-08
+
+After original native clear/scissor, reserve 768 before original slice/map/concat/
+every/final map and cached-color/region factories. Hold actual produced arrays/
+result through original consumers; clear working arrays after original result.
+Retain actual cached color/record/fresh region controls at 384 across scratch,
+then clear at replacement/native pass/present invalidation/disposal, including
+scope exit or allocator-first cleanup. Existing clip aliases/input colors stay
+borrowed. Original native values, fractional predicate, Math.round and callback/
+dirty order remain. Failed Surface callback clears its own actual color/dirty
+references and preserves dirty peak/native cleanup. Dirty Set one-byte fixture
+adds live original working arena. Concise recording methods use an empty literal
+key to preserve original anonymous name alongside prior zero length/native binding.
+
+Build/lint/boundaries and 260 focused tests pass, including six cached-color
+regressions and permanent wrapper-name assertion. Complete audit 144/8,000, 96 RPC
+snapshots, 22 moving/blurred and ten stationary native frames, native snapshots,
+original WebGL, 69 typography tests and provider fixtures pass; glyph 1.417886×
+meets unchanged 1.5 maximum. All 64 exports preserve 768 complete bodies/frames
+against pushed `4f74360`. Shader/program/clip and helper/remaining runtime/Node/
+production/aggregate admission, speed and full gate remain pending.
+[Evidence](./composition-ce15-solid-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

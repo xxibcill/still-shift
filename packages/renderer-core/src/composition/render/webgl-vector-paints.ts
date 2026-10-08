@@ -268,7 +268,7 @@ export function recordVectorPaints(
           grow(256);
           try {
             return {
-              invoke() {
+              ""() {
                 // Rest parameters allocate before admission; borrow the VM call input instead.
                 // eslint-disable-next-line prefer-rest-params
                 const received = arguments;
@@ -471,7 +471,7 @@ export function recordVectorPaints(
                   releaseRenderMetadata(call);
                 }
               },
-            }.invoke;
+            }[""];
           } catch (error) {
             try {
               rollback(before);

@@ -113,6 +113,7 @@ it("preserves detached native method binding, dense arguments, zero function len
     const { ctx, fillRect } = setup(),
       recording = recordVectorPaints(ctx, fallback),
       method = recording.context.fillRect;
+    expect(method.name).toBe("");
     expect(method.length).toBe(0);
     expect(() => Reflect.construct(method, [1, 2, 3, 4])).toThrow(TypeError);
     Reflect.apply(method, null, [1, 2, 3, 4]);

@@ -17,7 +17,7 @@ function resolve(device: WebglDevice, surface: WebglSurface) {
   ).resolveScreen(surface);
 }
 it("admits original dirty Set entry before add and cleans incomplete actual native screen on one-byte denial", async () => {
-  const memory = new ManagedMemory({ pixels: 65536, metadata: 2639 });
+  const memory = new ManagedMemory({ pixels: 65536, metadata: 3407 });
   await withManagedMemory(memory, async () => {
     const { canvas, gl } = fakeWebglDevice();
     const device = new WebglDevice(canvas);

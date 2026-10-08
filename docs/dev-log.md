@@ -93,12 +93,13 @@ still hold before relying on them.
   Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
   controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
   group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
-  pool-key/array/pass/row-view/swap/dirty-set metadata now pass 254 focused tests,
-  the complete audit, 22 moving/blurred and ten stationary native frames and 96
-  owned RPC snapshots. Actual dirty Set capacity pre-admits and reuses maximum live
-  slots; original native/null/partial cleanup/retry behavior passes. Native snapshots,
-  original WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
-  bodies/frames pass; glyph 1.460133× meets unchanged 1.5 maximum.
+  pool-key/array/pass/row-view/swap/dirty-set/cached-color metadata now pass 260
+  focused tests, the complete audit, 22 moving/blurred and ten stationary native
+  frames and 96 owned RPC snapshots. Actual color arrays/cache pre-admit, stay
+  across scratch/native consumers, then clear; original numeric/native/null/anonymous
+  wrapper behavior passes. Native snapshots, original WebGL/providers, 69 typography
+  tests and 64 exports / 768 prior-exact bodies/frames pass; glyph 1.417886× meets
+  unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -334,6 +335,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual cached screen-clear color controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `4f74360`.
+- **Done:** admit original working color arrays/result, retain actual cached color/
+  region across scratch, clear actual references at invalidation/disposal/failure;
+  preserve original native/numeric/predicate/callback order and wrapper names.
+- **Results:** build/lint/boundaries, 260 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.417886× meets unchanged 1.5 maximum.
+- **Verification:** exact original bytes/predicate, actual working/prior/cached
+  reference cleanup, quota/null retry, scratch/scope/allocator and failed native
+  callback lifetimes pass; original empty wrapper name asserted permanently.
+- **Next:** remaining device/shader/helper/runtime/Node controls, production/
+  aggregate admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [cached-color evidence](./composition-ce15-solid-metadata-results.json).
 
 ### 2026-10-08 — CE15 original dirty-screen Set capacity
 
