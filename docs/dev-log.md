@@ -46,8 +46,10 @@ still hold before relying on them.
 - **PR #48 conflict integration in verification (2026-10-08):** isolated
   worktree from CE13 `aedfc9eb` integrates `main` at `e249a5da`. All 23 conflicts
   combine native video/audio with reviewed renderer, passage and retained-draft
-  behavior. Pinned startup, schema, boundaries and merged build pass; focused
-  regressions and independent Standards/Spec review remain in flight. No full
+  behavior. Pinned startup/build/schema/lint, 2,560 unit / 46 runtime / 179 affected
+  integration checks and 14 Python tests pass across focused runs. Independent
+  review has one reproduced P2: active native capture URLs can expire before
+  replacement acceptance. Affected browser/baseline checks remain in flight. No full
   repository gate is being run or claimed. Owner CE15 files are untouched.
   [Evidence](./pr-48-conflict-resolution-results.json).
 
@@ -77,11 +79,14 @@ still hold before relying on them.
 - **Done:** merged `main` at `e249a5da`; combined all 23 conflicts, preserved native
   media/audio and reviewed renderer/authoring/soundtrack behavior. Native draft
   preparation keeps per-draft leases; cinematic alpha checks await source frames.
-- **Results:** pinned toolchain/browser/Python imports, schema, boundaries and
-  merged build pass. Focused regressions and independent review are in flight.
+- **Results:** pinned toolchain/build/lint/schema, 2,560 units / 46 runtime /
+  179 affected integration checks and 14 Python tests pass across focused runs.
+  Two integration expectations were repaired and rerun; browsers/baselines continue.
 - **Rejected:** initial build exposed duplicate CLI/Vitest imports, an invalid new
   image fixture and an unsafe async UI narrowing; repaired before regression checks.
-- **Next:** finish affected browser/export/baseline checks, review and normal push.
+- **Review:** one reproduced P2: active native capture URLs expire after newer
+  prepares; native caller-mutation candidate is suppressed by the immutable contract.
+- **Next:** finish affected browser/export/baseline checks and normal push.
   No full `pnpm check` is being run or claimed; owner CE15 checkout is untouched.
 - **Records:** [resolution evidence](./pr-48-conflict-resolution-results.json),
   [PR #48](https://github.com/xxibcill/still-shift/pull/48).

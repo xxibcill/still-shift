@@ -474,7 +474,10 @@ it("keeps retained native prepare captures and still assets through rebuilds and
     for (const lease of leases) {
       const response = await fetch(base + "/composition/program-prepare", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-still-shift-composition": "1",
+        },
         body: JSON.stringify({
           revision: first.revision,
           document: first.document,

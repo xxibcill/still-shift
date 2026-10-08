@@ -4,7 +4,7 @@
   "originalHead": "aedfc9eb98a60d3278385b476c8c9024143e5b7b",
   "integratedMain": "e249a5dac2c720f388b44b4437ed3cb6643820f2",
   "scope": "Focused PR conflict repair and review. No new milestone or complete repository gate.",
-  "status": "verification-in-progress",
+  "status": "affected-browser-and-baseline-verification-in-progress",
   "conflictsResolved": 17,
   "conflictFiles": [
     "apps/lab/composition-api.ts",
@@ -51,7 +51,376 @@
     "distinctLogEntries": 326,
     "actionsEnabled": false,
     "ownerCheckoutEdited": false,
-    "fullPnpmCheckRun": false
+    "fullPnpmCheckRun": false,
+    "mainVisualFilesExact": 215,
+    "baselineRegenerated": false
   },
-  "verification": []
+  "verification": [
+    {
+      "label": "schema",
+      "command": ["pnpm", "schema:check"],
+      "exitCode": 0,
+      "seconds": 1.88,
+      "log": "/private/tmp/pr48-schema.log",
+      "logSha256": "958d091fc83659b2b9767c93f09935f2ba92d9113de79b78988a8cfccb744dcb"
+    },
+    {
+      "label": "boundaries",
+      "command": ["pnpm", "check:boundaries"],
+      "exitCode": 0,
+      "seconds": 0.9,
+      "log": "/private/tmp/pr48-boundaries.log",
+      "logSha256": "c0f0812000cf5e481290ae682a18628f57fde2c067ef90960e29fac2ead128c8"
+    },
+    {
+      "label": "build-initial",
+      "command": ["pnpm", "build"],
+      "exitCode": 2,
+      "seconds": 8.39,
+      "log": "/private/tmp/pr48-build-initial.log",
+      "logSha256": "55e076e7bd6d638ed62c76715e320aa7850230ae2d9197081df3c611e11a2ff3"
+    },
+    {
+      "label": "build-merged",
+      "command": ["pnpm", "build"],
+      "exitCode": 0,
+      "seconds": 11.3,
+      "log": "/private/tmp/pr48-build-merged.log",
+      "logSha256": "1863f157b66468b73610f71f817b859d6ea6aee511952915c9c2f4909e8421a2"
+    },
+    {
+      "label": "format-ts",
+      "command": ["pnpm", "format:check:ts"],
+      "exitCode": 0,
+      "seconds": 15.84,
+      "log": "/private/tmp/pr48-format-ts.log",
+      "logSha256": "cb6291d8e6986a6c5f221fa92b8ae053827cce025e0c5e401c5dff3f994a56a0"
+    },
+    {
+      "label": "lint",
+      "command": ["pnpm", "lint"],
+      "exitCode": 0,
+      "seconds": 9.17,
+      "log": "/private/tmp/pr48-lint.log",
+      "logSha256": "6cf13d3bc9a0532262c5d7187f1f3b30d778f0248a394c3706a61e12b19fbdb6"
+    },
+    {
+      "label": "units",
+      "command": ["pnpm", "test:unit"],
+      "exitCode": 0,
+      "seconds": 23.02,
+      "log": "/private/tmp/pr48-units.log",
+      "logSha256": "1b091f5b2496777c170cd9790d69ac48e998cea35b23b6e04356918063c1324c"
+    },
+    {
+      "label": "runtime",
+      "command": ["pnpm", "test:runtime"],
+      "exitCode": 0,
+      "seconds": 12.9,
+      "log": "/private/tmp/pr48-runtime.log",
+      "logSha256": "967df32003fccb50b789c2a6fcf5f0b43bb2513ab4a172c64882e904ef422410"
+    },
+    {
+      "label": "affected-integrations",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/integration/composition-audio-mix.test.ts",
+        "tests/integration/composition-media-audio.test.ts",
+        "tests/integration/composition-media-cache.test.ts",
+        "tests/integration/composition-media-probe.test.ts",
+        "tests/integration/composition-media-source.test.ts",
+        "tests/integration/composition-preview.test.ts",
+        "tests/integration/composition-program.test.ts",
+        "tests/integration/composition-save.test.ts",
+        "tests/integration/composition-export-owner.test.ts",
+        "tests/integration/passage-native-audio.test.ts",
+        "tests/integration/passage-native-media.test.ts",
+        "tests/integration/passage-compositions.test.ts",
+        "tests/integration/passage-lab.test.ts",
+        "tests/integration/passage-cli-native.test.ts",
+        "tests/integration/export-renderer.test.ts",
+        "tests/integration/export-transaction.test.ts",
+        "tests/integration/export-cancellation.test.ts",
+        "tests/integration/soundtrack.test.ts",
+        "tests/integration/soundtrack-api.test.ts",
+        "tests/integration/soundtrack-api-concurrency.test.ts",
+        "tests/integration/passage-audio.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 1,
+      "seconds": 161.41,
+      "log": "/private/tmp/pr48-affected-integrations.log",
+      "logSha256": "33e46777097c619d1dde58ec2b78d6c4b461209c9e9e20ab4b79f89d4908bbf4"
+    },
+    {
+      "label": "review-capture-repro",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/pr48-native-capture-expiry-repro.mts"
+      ],
+      "exitCode": 0,
+      "seconds": 1.62,
+      "log": "/private/tmp/pr48-review-capture-repro.log",
+      "logSha256": "061d57c7a3a7586d44b1c4004e8cf5ebdb7adbbe4ee561a83115b772a1740ab4"
+    },
+    {
+      "label": "review-clock-repro",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/pr48-native-clock-repro.mts"
+      ],
+      "exitCode": 0,
+      "seconds": 0.63,
+      "log": "/private/tmp/pr48-review-clock-repro.log",
+      "logSha256": "28c73fdf92e9e4300aac9ff869f202146af8aa0ff5fca36b5083cf4605bbb077"
+    },
+    {
+      "label": "preview-regression",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/integration/composition-preview.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0,
+      "seconds": 26.09,
+      "log": "/private/tmp/pr48-preview-regression.log",
+      "logSha256": "4bf9288a6d2081fc933e358ee1ffde7c9148a9373fa7c6c9f0a6443562df91d3"
+    },
+    {
+      "label": "python-depth",
+      "command": ["pnpm", "test:depth"],
+      "exitCode": 0,
+      "seconds": 2.1,
+      "log": "/private/tmp/pr48-python-depth.log",
+      "logSha256": "fbbe6fb535bd8479cf485c031f2a99aa11575a6108e48c6576030efc65dd4881"
+    },
+    {
+      "label": "export-owner-regression",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/integration/composition-export-owner.test.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0,
+      "seconds": 3.36,
+      "log": "/private/tmp/pr48-export-owner-regression.log",
+      "logSha256": "e14f810035027bcc6504f10b5ca0b95c691eb24aa4ac8e8de55aa039d06d4272"
+    },
+    {
+      "label": "browser-native-media",
+      "command": ["pnpm", "test:browser:composition-media"],
+      "exitCode": 0,
+      "seconds": 30.93,
+      "log": "/private/tmp/pr48-browser-native-media.log",
+      "logSha256": "c2f3a21c0e8de58154b9f0e937cb6a0a6dedff232ff50dd847039f0c51289f86"
+    },
+    {
+      "label": "browser-composition-session",
+      "command": ["pnpm", "test:browser:composition-session"],
+      "exitCode": 0,
+      "seconds": 2.05,
+      "log": "/private/tmp/pr48-browser-composition-session.log",
+      "logSha256": "b1f17fcba0c373b1a727e691773f106b5a97d13549c04aa78097df89b29a8c73"
+    },
+    {
+      "label": "browser-soundtrack",
+      "command": ["pnpm", "test:browser:soundtrack"],
+      "exitCode": 0,
+      "seconds": 16.88,
+      "log": "/private/tmp/pr48-browser-soundtrack.log",
+      "logSha256": "bb11b18d1298473d4b330e105498db852689acdcf1889ff26e59e6f39b9ab52a"
+    },
+    {
+      "label": "browser-native-passage",
+      "command": ["pnpm", "test:browser:composition-native-passage"],
+      "exitCode": 0,
+      "seconds": 51.24,
+      "log": "/private/tmp/pr48-browser-native-passage.log",
+      "logSha256": "b5e715699620cb8c3a78f4e03e745c62c2b7159515380f34ef94c044c5521a22"
+    },
+    {
+      "label": "browser-native-passage-webgl",
+      "command": ["pnpm", "test:browser:composition-native-passage:webgl"],
+      "exitCode": 0,
+      "seconds": 85.8,
+      "log": "/private/tmp/pr48-browser-native-passage-webgl.log",
+      "logSha256": "b97e3f07a38d848a1a07a78aa2068adfc663429c69fdb16cd1801ed754be5ce2"
+    },
+    {
+      "label": "browser-webgl-export",
+      "command": ["pnpm", "test:browser:composition-webgl-export"],
+      "exitCode": 0,
+      "seconds": 29.75,
+      "log": "/private/tmp/pr48-browser-webgl-export.log",
+      "logSha256": "dfb58745ded0b248d057dcc7df7e7c6cbe796e3a25f90eb86c54f797b84427f6"
+    },
+    {
+      "label": "browser-exposure",
+      "command": ["pnpm", "test:browser:composition-exposure"],
+      "exitCode": 0,
+      "seconds": 20.61,
+      "log": "/private/tmp/pr48-browser-exposure.log",
+      "logSha256": "8a051a4891db0c23f861044d19813152d92970a3be5fdf4b54dd8b0489157d9b"
+    },
+    {
+      "label": "browser-camera",
+      "command": ["pnpm", "test:browser:composition-camera"],
+      "exitCode": 0,
+      "seconds": 78.33,
+      "log": "/private/tmp/pr48-browser-camera.log",
+      "logSha256": "94ec4f5c9692654e273fc67ed74527f4e7ec1ae68aa6380060b119701cbc85ae"
+    }
+  ],
+  "resolutions": [
+    "Preserve reviewed main camera/clocks/coverage/bitmap/native defaults while retaining CE13 video/sequence/audio evaluation and exports.",
+    "Integrate reusable prepared previews with borrowed native-media ownership and bounded async cinematic frame coverage; synchronous still checks stay intact.",
+    "Keep main early saved soundtrack/event validation and CE13 protected narration, full native PCM stems and source hash validation.",
+    "Keep export ownership before asset reads and native capture; preserve structured diagnostics.",
+    "Propagate retained program lease through native preparation, source URLs and captured media; partition candidate captures across leases.",
+    "Union all64 required parent test commands; preserve326 distinct development history headings and all215 main visual files.",
+    "Remove duplicate automatic-merge CLI imports/Vitest alias; advance combined evaluator/renderer/export identities and exact batch identity fixture."
+  ],
+  "review": {
+    "checkpoint": "471582f5a94835ad3c44467c24ae221ba622b0c3",
+    "base": "e249a5dac2c720f388b44b4437ed3cb6643820f2",
+    "standards": {
+      "hardViolations": 0,
+      "judgementFindings": [
+        {
+          "name": "Possible Duplicated Code",
+          "files": [
+            "packages/animation-engine/src/composition-media-cache.ts",
+            "packages/animation-engine/src/composition-media-audio.ts",
+            "packages/animation-engine/src/composition-audio-mix.ts"
+          ],
+          "detail": "Repeated lock/stage/manifest/verify/rename/cleanup transactions have divergent cleanup; a shared transaction boundary could prevent divergence. This is a heuristic, not a documented violation."
+        }
+      ]
+    },
+    "spec": {
+      "findings": [
+        {
+          "priority": 2,
+          "title": "Retain active native captures until their previews release ownership",
+          "files": [
+            {
+              "path": "tools/still-shift-cli/src/composition/preview.ts",
+              "start": 358,
+              "end": 362
+            },
+            {
+              "path": "apps/lab/composition-api.ts",
+              "start": 233,
+              "end": 234
+            }
+          ],
+          "requirement": "docs/composition-media.md:137 and141-143 preserve last valid preview through failed readiness and cancel stale candidates.",
+          "trigger": "An active edited CLI preview retains its program lease while two later native preparations fail or are superseded in browser readiness; registered Lab previews also share an unrelated global FIFO of4 captures.",
+          "consequence": "The still-active preview loses its captured native URL and its next uncached seek returns404.",
+          "reproduction": "Real synthetic sequence and HMR program lease:3 preparations under one retained lease; first native frame URL returns404, latest returns200.",
+          "recommendedRepair": "Tie each active/candidate capture to explicit preview ownership; evict only unowned captures.",
+          "status": "open; reported by review, not changed in conflict repair"
+        }
+      ]
+    },
+    "renderer": {
+      "actionableFindings": 0,
+      "suppressedCandidate": {
+        "title": "Native clocks after in-place caller mutation",
+        "reason": "Reproduction mutates objects forbidden by the documented immutable composition contract (composition-reference.md:1340); prepareCompositionPreview is internal and production callers only use still illustrated windows. Suppressed as insufficient actionable evidence."
+      }
+    },
+    "githubReviewPosted": false
+  },
+  "rendererFocusedRegressions": {
+    "scope": "PR #48 renderer conflict resolution focused regressions",
+    "worktree": "/Users/jjae/.codex/worktrees/pr48-conflict-review/still-shift",
+    "toolchain": "Node 22.23.1; pnpm 10.29.3; Vitest 3.2.4",
+    "runs": [
+      {
+        "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm exec vitest run tests/unit/composition-media-cinematic-coverage.test.ts tests/unit/composition-cinematic-coverage.test.ts tests/unit/composition-family-preparation.test.ts tests/unit/composition-audio-clock.test.ts tests/unit/composition-time-controls.test.ts tests/unit/motion-builder.test.ts --maxWorkers=1 --no-file-parallelism",
+        "exitCode": 1,
+        "durationSeconds": 4.67,
+        "testFiles": 6,
+        "passedTests": 80,
+        "failedTests": 3,
+        "existingSuites": {
+          "motion-builder": 31,
+          "composition-time-controls": 18,
+          "composition-cinematic-coverage": 11,
+          "composition-audio-clock": 17,
+          "composition-family-preparation": 2
+        },
+        "failures": [
+          "New hybrid fixture initially omitted explicit camera plane anchor and geometric background coverage rejected all 3 media tests. Borrowed resource ownership regression passed. Existing 79 tests passed."
+        ]
+      },
+      {
+        "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm exec vitest run tests/unit/composition-media-cinematic-coverage.test.ts --maxWorkers=1 --no-file-parallelism",
+        "exitCode": 1,
+        "durationSeconds": 1.56,
+        "passedTests": 3,
+        "failedTests": 1,
+        "failures": [
+          "Synthetic test backend compared undefined ordinal to undefined transparentFrame, incorrectly making all still source alpha zero. Fixed fixture condition to require a native ordinal. No production code repair."
+        ]
+      },
+      {
+        "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH pnpm exec vitest run tests/unit/composition-media-cinematic-coverage.test.ts --maxWorkers=1 --no-file-parallelism",
+        "exitCode": 0,
+        "durationSeconds": 1.62,
+        "testFiles": 1,
+        "passedTests": 4,
+        "failedTests": 0,
+        "verified": [
+          "Native matte frames prepared before rendered reveal sampling; native checkedFrames2 results equal untreated still gate.",
+          "Later native alpha loss rejected at frame1 with metadata.cinematicCoverage path.",
+          "Preparation error closes yielded validation and backend endFrame(false).",
+          "Temporary and recreated reusable backends do not dispose borrowed media."
+        ]
+      }
+    ],
+    "recommendedBrowserChecks": [
+      "test:browser:composition-media",
+      "test:browser:composition-camera",
+      "test:browser:composition-cinematic-adapter",
+      "test:browser:composition-family-timeline"
+    ],
+    "changes": [
+      "Preserve main scope-clock override short-circuit and settled camera validation while retaining continuous CE13 audio sampling.",
+      "Explicit audioClock field avoids constructor parameter property Node stripping failure.",
+      "Combine main root cinematic declaration/validationFrames with CE13 isolated graph reusable validator.",
+      "Await native frame readiness across rendered cinematic reveal via bounded frame iterator; keep exact still gates synchronous.",
+      "Keep reusable prepared media caller-owned; normal previews retain CE13 disposal ownership.",
+      "Merged identities evaluator54/canvas1.45.1/webgl0.66.1."
+    ],
+    "unresolvedFindings": []
+  },
+  "verificationRepairs": [
+    {
+      "failure": "Initial TypeScript build duplicate CLI import, unsafe asynchronous UI narrowing, invalid new native image test fixture",
+      "repair": "Removed duplicate; used known savedProgram revision; used native image sources+size schema."
+    },
+    {
+      "failure": "Affected integration aggregate177 passed,2 failed",
+      "repair": "New native prepare test includes existing required local header. Existing export owner regression asserts no second read before firstI/O release and2 legitimate sequential provenance/capture reads after completion; both affected files rerun."
+    }
+  ],
+  "productionFingerprint": "a493ff36d74a549c21fac121b4297dc8500b1a03460d6351a6761e8d802a2529"
 }
