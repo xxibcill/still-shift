@@ -373,6 +373,10 @@ type ColorGpuWork = {
   managed: boolean;
   memory?: ManagedMemory | undefined;
   pixel: ColorPixelWork;
+  parentLease?: MemoryLease | undefined;
+  parentFinish?: (() => void) | undefined;
+  dependencies?: { lease: MemoryLease; finish: () => void }[] | undefined;
+  backing?: ArrayBuffer | undefined;
   entryCount: number;
   entryBytes: number;
   entriesLease?: MemoryLease | undefined;
@@ -476,13 +480,13 @@ function clearColorGpuWork(work: ColorGpuWork) {
   }
   try {
     if (
-      work.bytes &&
+      work.backing &&
       work.memory &&
-      !work.memory.owns(work.bytes.buffer) &&
-      work.bytes.byteLength
+      !work.memory.owns(work.backing) &&
+      work.backing.byteLength
     )
       (
-        work.bytes.buffer as ArrayBuffer & {
+        work.backing as ArrayBuffer & {
           transfer(bytes: number): ArrayBuffer;
         }
       ).transfer(0);
@@ -491,6 +495,13 @@ function clearColorGpuWork(work: ColorGpuWork) {
       failed = true;
       failure = error;
     }
+  }
+  if (work.dependencies) {
+    for (const dependency of work.dependencies) {
+      delete (dependency as Partial<typeof dependency>).lease;
+      delete (dependency as Partial<typeof dependency>).finish;
+    }
+    work.dependencies.length = 0;
   }
   if (work.enumerationKeys) work.enumerationKeys.length = 0;
   if (work.descriptor)
@@ -503,31 +514,135 @@ function clearColorGpuWork(work: ColorGpuWork) {
     delete (work as Partial<ColorGpuWork>)[key as keyof ColorGpuWork];
   if (failed) throw failure;
 }
+// Eight admitted slots cover the parent-owned hold controls for the fixed
+// entries/filter/uniform/curve producers. Nested callbacks own separate parents.
+const colorGpuDependencyLimit = 8;
+function holdColorGpuDependency(work: ColorGpuWork, lease: MemoryLease) {
+  if (!work.parentLease?.active)
+    throw Error("Managed color GPU work owner was disposed");
+  const dependencies = work.dependencies!;
+  for (const dependency of dependencies) if (dependency.lease === lease) return;
+  if (dependencies.length >= colorGpuDependencyLimit)
+    throw Error("Managed color GPU dependency controls exceed their bound");
+  const finish = lease.deferRelease();
+  try {
+    dependencies.push({ lease, finish });
+  } catch (error) {
+    try {
+      finish();
+    } catch {
+      /* Preserve the first admitted control publication failure. */
+    }
+    throw error;
+  }
+}
+function allocateColorGpuMetadata<T extends object>(
+  work: ColorGpuWork,
+  bytes: number,
+  factory: () => T,
+  destroy: (value: T) => void,
+  admitted?: (lease: MemoryLease) => void,
+): T {
+  const memory = work.memory;
+  if (!memory) return factory();
+  if (!work.parentLease?.active)
+    throw Error("Managed color GPU work owner was disposed");
+  return allocateManagedRenderMetadata(
+    memory,
+    bytes,
+    factory,
+    false,
+    destroy,
+    (lease) => {
+      holdColorGpuDependency(work, lease);
+      admitted?.(lease);
+    },
+  );
+}
 function colorGpuWork(): ColorGpuWork {
   const memory = renderMemory();
-  return allocateRenderMetadata<ColorGpuWork>(
-    16384,
-    () => ({
-      managed: !!memory,
+  if (!memory)
+    return {
+      managed: false,
       memory,
       pixel: {},
       entryCount: 0,
       entryBytes: 512,
-    }),
-    false,
-    clearColorGpuWork,
-  );
+    };
+  let parentLease: MemoryLease | undefined,
+    parentFinish: (() => void) | undefined;
+  try {
+    return allocateManagedRenderMetadata<ColorGpuWork>(
+      memory,
+      16384,
+      () => ({
+        managed: true,
+        memory,
+        pixel: {},
+        entryCount: 0,
+        entryBytes: 512,
+        parentLease,
+        parentFinish,
+        dependencies: [],
+      }),
+      false,
+      clearColorGpuWork,
+      (lease) => {
+        parentLease = lease;
+        parentFinish = lease.deferRelease();
+      },
+    );
+  } catch (error) {
+    try {
+      parentLease?.release();
+    } catch {
+      /* Preserve the first parent construction/adoption failure. */
+    }
+    try {
+      parentFinish?.();
+    } catch {
+      /* No returned work owner exists for the native body's finally. */
+    }
+    throw error;
+  }
 }
 function finishColorGpuWork(work: ColorGpuWork, failed: boolean) {
+  const parentFinish = work.parentFinish,
+    dependencies = work.dependencies;
+  let cleanupFailed = false,
+    failure: unknown;
   try {
     if (work.managed) releaseRenderMetadata(work);
     else clearColorGpuWork(work);
   } catch (error) {
-    if (!failed) throw error;
+    cleanupFailed = true;
+    failure = error;
   }
+  if (dependencies)
+    for (let index = dependencies.length - 1; index >= 0; index--) {
+      try {
+        dependencies[index]!.finish();
+      } catch (error) {
+        if (!cleanupFailed) {
+          cleanupFailed = true;
+          failure = error;
+        }
+      }
+    }
+  try {
+    parentFinish?.();
+  } catch (error) {
+    if (!cleanupFailed) {
+      cleanupFailed = true;
+      failure = error;
+    }
+  }
+  if (cleanupFailed && !failed) throw failure;
 }
 function colorGpuEntries(work: ColorGpuWork, params: Params): ColorGpuEntries {
   if (!work.memory) return (work.entries = Object.entries(params));
+  if (!work.parentLease?.active)
+    throw Error("Managed color GPU work owner was disposed");
   work.handler = {
     ownKeys() {
       return (work.enumerationKeys = Reflect.ownKeys(params));
@@ -549,12 +664,11 @@ function colorGpuEntries(work: ColorGpuWork, params: Params): ColorGpuEntries {
     },
   };
   work.receiver = new Proxy({}, work.handler);
-  return allocateManagedRenderMetadata<ColorGpuEntries>(
-    work.memory,
+  return allocateColorGpuMetadata<ColorGpuEntries>(
+    work,
     512,
     (work.entriesProducer = () =>
       (work.entries = Object.entries(work.receiver!))),
-    false,
     clearColorGpuEntries,
     (lease) => {
       work.entriesLease = lease;
@@ -568,23 +682,23 @@ function colorGpuUniforms(
 ): ColorGpuUniforms {
   const entries = colorGpuEntries(work, params);
   const count = work.memory ? work.entryCount : entries.length;
-  const filtered = allocateRenderMetadata<ColorGpuEntries>(
+  const filtered = allocateColorGpuMetadata<ColorGpuEntries>(
+    work,
     512 + 16 * count,
     (work.filterProducer = () =>
       (work.filtered = entries.filter(
         (work.filterCallback = ([name]) =>
           definition.properties[name]!.type !== "curve"),
       ))),
-    false,
     (value) => {
       value.length = 0;
     },
   );
-  return allocateRenderMetadata<ColorGpuUniforms>(
+  return allocateColorGpuMetadata<ColorGpuUniforms>(
+    work,
     512 + 256 * count,
     (work.uniformsProducer = () =>
       (work.uniforms = Object.fromEntries(filtered) as ColorGpuUniforms)),
-    false,
     clearColorGpuUniforms,
   );
 }
@@ -605,28 +719,87 @@ function colorGpuCombined(
     clearColorGpuUniforms,
   );
 }
+function colorGpuCurveBacking(bytes: Uint8Array<ArrayBuffer>): ArrayBuffer {
+  return Object.getOwnPropertyDescriptor(
+    Object.getPrototypeOf(Uint8Array.prototype) as object,
+    "buffer",
+  )!.get!.call(bytes) as ArrayBuffer;
+}
+function destroyColorGpuCurveBacking(value: object) {
+  const backing = value as ArrayBuffer & {
+    transfer(bytes: number): ArrayBuffer;
+  };
+  try {
+    if (backing.byteLength) backing.transfer(0);
+  } catch (error) {
+    try {
+      const length = Object.getOwnPropertyDescriptor(
+        ArrayBuffer.prototype,
+        "byteLength",
+      )!.get!.call(backing) as number;
+      if (length)
+        (
+          ArrayBuffer.prototype as ArrayBuffer & {
+            transfer(bytes: number): ArrayBuffer;
+          }
+        ).transfer.call(backing, 0);
+    } catch {
+      /* Preserve the original native backing destructor error. */
+    }
+    throw error;
+  }
+}
 function colorGpuCurveBytes(work: ColorGpuWork): Uint8Array<ArrayBuffer> {
-  if (!work.memory)
+  const memory = work.memory;
+  if (!memory)
     return (work.bytes = allocateRenderPixels(
       1024,
       () => new Uint8Array(1024),
     ));
-  const lease = (work.pixelLease = work.memory.reserve("pixels", 1024));
+  if (!work.parentLease?.active)
+    throw Error("Managed color GPU work owner was disposed");
+  const lease = (work.pixelLease = memory.reserve("pixels", 1024));
+  let finish: (() => void) | undefined,
+    bytes: Uint8Array<ArrayBuffer> | undefined,
+    backing: ArrayBuffer | undefined,
+    adopted = false;
   try {
+    finish = lease.deferRelease();
+    holdColorGpuDependency(work, lease);
     work.pixelProducer = () => (work.bytes = new Uint8Array(1024));
-    const bytes = work.pixelProducer();
-    work.memory.adopt(bytes.buffer, lease, (value) => {
-      const backing = value as ArrayBuffer & {
-        transfer(bytes: number): ArrayBuffer;
-      };
-      if (backing.byteLength) backing.transfer(0);
-    });
+    bytes = work.pixelProducer();
+    backing = work.backing = bytes.buffer;
+    memory.adopt(backing, lease, destroyColorGpuCurveBacking);
+    adopted = true;
+    finish();
+    if (!lease.active || !work.parentLease.active)
+      throw Error("Managed color curve backing owner was disposed");
     return bytes;
   } catch (error) {
+    try {
+      if (!adopted) {
+        let owner = backing;
+        if (bytes) {
+          try {
+            owner = colorGpuCurveBacking(bytes);
+          } catch {
+            /* Opaque producer products require their captured identity contract. */
+          }
+        }
+        if (owner && !memory.owns(owner)) destroyColorGpuCurveBacking(owner);
+      }
+    } catch {
+      /* Preserve first factory/identity/adoption error, including null. */
+    }
     try {
       lease.release();
     } catch {
       /* Preserve first factory/adoption error. */
+    }
+    try {
+      finish?.();
+    } catch {
+      /* Callback dependency owns any still-pending adopted resource. */
     }
     throw error;
   }

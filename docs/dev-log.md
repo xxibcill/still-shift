@@ -43,6 +43,11 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE15 chat recovery (2026-10-08):** old chat confirmed idle after interruption;
+  no CE15 verification processes remain. All 220 GPU lifetime source hashes,
+  21 logs and saved audit/export artifacts match their recorded evidence.
+  Recovered GPU slice is ready to checkpoint; Canvas draft remains unverified.
+
 - **CE15 in progress (2026-10-08):** `codex/composition-ce15` from completed CE13
   `aedfc9e`; transparent renderer checkpoint `49e0543` is pushed. Seven explicit
   BT709 output profiles now pass 44 production exports, 14 independent preview
@@ -99,28 +104,26 @@ still hold before relying on them.
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
   mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work/Canvas-color-source-gradient-image-work/common-memory-native-retirement/allocation-identity-adoption-failure-cleanup/color-kernel-construction-cache-state/common-metadata-factory-registry-handoff, managed plan/sum-shader cache, particle/
+  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work/Canvas-color-source-gradient-image-work/common-memory-native-retirement/allocation-identity-adoption-failure-cleanup/color-kernel-construction-cache-state/common-metadata-factory-registry-handoff/GPU-nongradient-parent-child-native-consumer-holds, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
   texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 972 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. Fixed color kernel construction/cache/state
-  remains admitted with exact ten original complete constructor/shader oracles. Common
-  metadata helper takes its own hold before admitted hook/factory, keeps actual owner/
-  record/charge through adoption/registry/destruction, rejects known active/retiring
-  global metadata aliases across allocators and preserves fresh producer/Get order.
-  Association remains discoverable through destructor; independent release/settlement
-  preserves first null, completed adoption prevents double destruction and retired
-  successful output is rejected. 15 new units/all 957 prior tests pass; ten old helper
-  tests byte exact. Both integrated attempts pass build/lint/boundaries and 972/105;
-  final attempt corrects stale kernel association comments. Private 48/3 passes and
-  original-source RED 11/25 retains earlier fixture hash caveat. Native probes,
-  WebGL/providers/69 typography tests pass; glyph 1.423015× meets unchanged 1.5.
-  All 64 exports / 768 bodies/frames retain prior exact output. Pre-mutating registry
-  set plus external hold can leave adopted unregistered owner; pre-mutating delete
-  can leave stale inactive association. These intrinsic/foreign limits, callback
-  parent/curve/image/gradient/control/table/key/cache native-consumer lifetime,
-  escaped immutable wrapper/closure/global/bootstrap, params/retained-graph capacity,
-  caller/depth/provider/font/Node/production/aggregate/speed/final gates remain pending.
+  metadata pass 986 focused tests, complete audit, 22 moving/blurred and ten
+  stationary native frames and 96 owned RPC snapshots. Fixed color kernel and common
+  metadata factory/registry holds remain verified. GPU parent 16384 now holds before
+  factory, with independently captured entries/filter/uniform and curve 1024 holds
+  before their producers. Eight dependency-control slots are admitted in parent.
+  Local failed construction settlement and reverse child-then-parent cleanup retain
+  actual refs/records/charge through direct child release, scratch or disposal and
+  preserve first null. Native-first failed curve identity recovery preserves known
+  reported backing A and detaches fresh B. Cached generated-view cleanup removes its
+  buffer re-Get; original params/native bodies/shader/wrapper oracles remain exact.
+  Ten prior GPU units byte exact; 14 new/all 972 prior tests pass, as do
+  build/lint/boundaries and 986/106. Native probes, WebGL/providers and 69
+  typography tests pass; glyph 1.319629× meets unchanged 1.5. All 64 exports / 768
+  bodies/frames retain prior exact output. Gradient combined/control/uniform/table/
+  cache/entry/key/backing, Canvas/image, borrowed params/values, backend/input/output/
+  device, foreign/intrinsic/registry limits, global/bootstrap, retained graph, caller/
+  depth/provider/font/Node/production/aggregate/speed/final gates remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -356,6 +359,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 GPU parent and child lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `f848b9a1`.
+- **Recovery:** fresh chat independently matched all 220 source fingerprints,
+  21 logs and audit/export result hashes after the old chat stopped.
+- **Done:** pre-hold actual GPU parent and independent entries/filter/uniform/curve
+  owners; attempt all child settlers before parent while preserving first null.
+- **Review:** repair failed native curve identity cleanup and the prior kernel
+  disposal ledger expectation; preserve known backing
+  and detach actual fresh backing. Prior native bodies and GPU units remain exact.
+- **Results:** build/lint/boundaries, 986 focused / 69 typography tests,
+  complete 144-case audit / 8,000 comparisons and 64 prior-exact exports / 768
+  bodies/frames pass. Glyph 1.319629×; full gate and speed remain pending.
+- **Next:** gradient/Canvas/backend and params/retained-graph lifetime, bootstrap/
+  Node/production/aggregate ownership and final gates, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [GPU lifetime evidence](./composition-ce15-color-gpu-lifetime-results.json).
 
 ### 2026-10-08 — CE15 common metadata factory lifetime
 

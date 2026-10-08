@@ -2037,11 +2037,16 @@ it("holds captured shader/state through reentrant allocator disposal from native
       memory.dispose();
       expect(state.lease!.active).toBe(false);
       expect(memory.owns(state)).toBe(true);
-      expect(memory.statistics.current.metadata).toBe(STATE);
+      // The GPU callback now independently holds its actual parent16384,
+      // entries780, filtered528 and uniforms768 alongside kernel state8192.
+      expect(memory.statistics.current.metadata).toBe(
+        STATE + 16384 + 780 + 528 + 768,
+      );
       expect(shader).toBe(state.shader);
       fullShader(state, original);
-      // Deliberately throw. Child work lifetime/successful reentrant callback
-      // behavior is a separate pending repair and is not asserted here.
+      // Preserve the original native null over the late state destructor error.
+      // Selected GPU dependency success is covered in color-gpu-lifetime;
+      // gradient/Canvas/backend dependency lifetimes remain pending.
       throw null;
     });
     expect(
