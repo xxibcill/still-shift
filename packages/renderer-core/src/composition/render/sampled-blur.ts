@@ -59,6 +59,9 @@ export function blurSampleTransforms(
   });
 }
 /** Bilinear premultiplied byte interpolation with 1/16 weights and transparent padding. */
+export type PremultipliedSampleControl = {
+  index?: ((tx: number, ty: number) => number) | undefined;
+};
 export function samplePremultiplied(
   pixels: Uint8Array | Uint8ClampedArray,
   w: number,
@@ -66,6 +69,7 @@ export function samplePremultiplied(
   x: number,
   y: number,
   output: number[] = [0, 0, 0, 0],
+  control?: PremultipliedSampleControl,
 ): number[] {
   const left = Math.floor(x - 0.5),
     top = Math.floor(y - 0.5),
@@ -73,24 +77,29 @@ export function samplePremultiplied(
     wy = Math.floor((y - 0.5 - top) * 16);
   const index = (tx: number, ty: number) =>
     tx >= 0 && ty >= 0 && tx < w && ty < h ? (ty * w + tx) * 4 : -1;
-  const first = index(left, top),
-    second = index(left + 1, top),
-    third = index(left, top + 1),
-    fourth = index(left + 1, top + 1);
-  const firstWeight = (16 - wx) * (16 - wy),
-    secondWeight = wx * (16 - wy),
-    thirdWeight = (16 - wx) * wy,
-    fourthWeight = wx * wy;
-  for (let channel = 0; channel < 4; channel++)
-    output[channel] = Math.floor(
-      ((first < 0 ? 0 : pixels[first + channel]!) * firstWeight +
-        (second < 0 ? 0 : pixels[second + channel]!) * secondWeight +
-        (third < 0 ? 0 : pixels[third + channel]!) * thirdWeight +
-        (fourth < 0 ? 0 : pixels[fourth + channel]!) * fourthWeight) /
-        256 +
-        0.5,
-    );
-  return output;
+  if (control) control.index = index;
+  try {
+    const first = index(left, top),
+      second = index(left + 1, top),
+      third = index(left, top + 1),
+      fourth = index(left + 1, top + 1);
+    const firstWeight = (16 - wx) * (16 - wy),
+      secondWeight = wx * (16 - wy),
+      thirdWeight = (16 - wx) * wy,
+      fourthWeight = wx * wy;
+    for (let channel = 0; channel < 4; channel++)
+      output[channel] = Math.floor(
+        ((first < 0 ? 0 : pixels[first + channel]!) * firstWeight +
+          (second < 0 ? 0 : pixels[second + channel]!) * secondWeight +
+          (third < 0 ? 0 : pixels[third + channel]!) * thirdWeight +
+          (fourth < 0 ? 0 : pixels[fourth + channel]!) * fourthWeight) /
+          256 +
+          0.5,
+      );
+    return output;
+  } finally {
+    if (control) control.index = undefined;
+  }
 }
 export const PREMULTIPLIED_SAMPLE_SHADER = `
 vec4 pixelAt(ivec2 point){ivec2 size=textureSize(source,0);if(any(lessThan(point,ivec2(0)))||any(greaterThanEqual(point,size)))return vec4(0.0);return floor(texelFetch(source,point,0)*255.0+0.5);}

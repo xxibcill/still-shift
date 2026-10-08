@@ -1534,6 +1534,28 @@ view/native, cache/registry, remaining factories/provider/graph/font/common/ledg
 Node and production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-shadow-gpu-metadata-results.json).
 
+## Accepted Canvas shadow working checkpoint — 2026-10-08
+
+After original opacity/alpha guards admit actual 8192-byte Canvas work before
+readback/views/offset/sample/direction/blur-producer/per-pixel/native-ref factories.
+Keep original pixel admissions. Reuse caller-admitted sampling-index/composite/
+subview ref slots, capture actual arrays/closures through each pixel consumer then
+clear. No per-pixel lease. Capture blur output views inside pixel factories before
+loops, so unreturned horizontal/vertical outputs retire after failure. Visit all
+five actual stores/Gaussian after publication or failure, detach managed backings,
+clear selected container/ref/function slots and preserve primary null over cleanup.
+Original math/argument creation/native order/output bytes stay exact; inactive
+stores retain legacy bytes. Standalone/default helper admission remains pending.
+
+Build/lint/boundaries, 545 main + 20 affected sampler tests (565 / 65 distinct files),
+twelve new tests, complete audit 144/8,000, 96 RPC snapshots, native probes,
+WebGL/providers and 69 typography tests pass; glyph 1.434650× meets unchanged
+1.5 maximum. Both whole original Canvas traces and 32 independent composite results
+stay exact, with prior Gaussian/GPU traces rerun. All 64 exports / 768 bodies/frames
+match `7e22ec9`. Remaining helper/effect/cache/registry/class/caller/sampling/provider/
+graph/font/common/ledger/Node and production/aggregate/speed/final gates pending.
+[Evidence](./composition-ce15-shadow-canvas-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

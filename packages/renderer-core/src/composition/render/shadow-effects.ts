@@ -11,8 +11,10 @@ import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
   samplePremultiplied,
   PREMULTIPLIED_SAMPLE_SHADER,
+  type PremultipliedSampleControl,
 } from "./sampled-blur.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
+import type { CanvasSurface } from "./canvas2d.ts";
 import type { WebglSurface } from "./webgl-device.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
@@ -111,6 +113,109 @@ function finishGpuShadow(work: GpuShadowWork, primaryFailed: boolean) {
   }
 }
 
+type CompositeWork = {
+  channels?: number[] | undefined;
+  mapped?: number[] | undefined;
+  output?: number[] | undefined;
+};
+function clearCompositeWork(work: CompositeWork) {
+  if (work.channels) work.channels.length = 0;
+  if (work.mapped) work.mapped.length = 0;
+  if (work.output) work.output.length = 0;
+  work.channels = work.mapped = work.output = undefined;
+}
+type CanvasShadowWork = {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  image?: ImageData | undefined;
+  premultiplied?: Uint8Array<ArrayBuffer> | undefined;
+  mask?: Uint8Array<ArrayBuffer> | undefined;
+  horizontal?: Uint8Array<ArrayBuffer> | undefined;
+  blurred?: Uint8Array<ArrayBuffer> | undefined;
+  offset?: number[] | undefined;
+  sample?: number[] | undefined;
+  view?: Uint8Array<ArrayBuffer> | undefined;
+  directions?: number[][] | undefined;
+  kernel?: GaussianKernel | undefined;
+  output?: CanvasSurface | undefined;
+  blurControls: [ShadowBlurControl, ShadowBlurControl];
+  composite: CompositeWork;
+  sampling: PremultipliedSampleControl;
+};
+function clearCanvasShadow(work: CanvasShadowWork) {
+  let failed = false,
+    first: unknown;
+  const visit = (value: ArrayBuffer | undefined) => {
+    try {
+      if (value) work.memory?.release(value);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        first = error;
+      }
+    }
+  };
+  visit(work.image?.data.buffer as ArrayBuffer | undefined);
+  visit(work.premultiplied?.buffer);
+  visit(work.mask?.buffer);
+  visit((work.horizontal ?? work.blurControls[0].value)?.buffer);
+  visit((work.blurred ?? work.blurControls[1].value)?.buffer);
+  try {
+    if (work.kernel) releaseRenderMetadata(work.kernel);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  if (work.offset) work.offset.length = 0;
+  if (work.sample) work.sample.length = 0;
+  if (work.directions) {
+    for (const direction of work.directions) direction.length = 0;
+  }
+  work.blurControls[0].value = work.blurControls[1].value = undefined;
+  clearCompositeWork(work.composite);
+  work.sampling.index = undefined;
+  work.image =
+    work.premultiplied =
+    work.mask =
+    work.horizontal =
+    work.blurred =
+      undefined;
+  work.offset =
+    work.sample =
+    work.view =
+    work.directions =
+    work.kernel =
+    work.output =
+    work.memory =
+      undefined;
+  if (failed) throw first;
+}
+function canvasShadowWork() {
+  // One fixed arena reuses per-pixel ref slots; actual pixel stores admit separately.
+  return allocateRenderMetadata<CanvasShadowWork>(
+    8192,
+    () => ({
+      managed: renderMemory() !== undefined,
+      memory: renderMemory(),
+      composite: {},
+      sampling: {},
+      blurControls: [{}, {}],
+    }),
+    false,
+    clearCanvasShadow,
+  );
+}
+function finishCanvasShadow(work: CanvasShadowWork, primaryFailed: boolean) {
+  try {
+    if (work.managed) releaseRenderMetadata(work);
+    else clearCanvasShadow(work);
+  } catch (error) {
+    if (!primaryFailed) throw error;
+  }
+}
+
 type GaussianKernel = { radius: number; weights: number[]; total: number };
 type KernelWork = {
   managed: boolean;
@@ -168,6 +273,7 @@ export function shadowGaussianKernel(sigma: number): GaussianKernel {
     else clearKernelWork(work);
   }
 }
+type ShadowBlurControl = { value?: Uint8Array<ArrayBuffer> | undefined };
 export function blurShadowMask(
   input: Uint8Array,
   w: number,
@@ -175,11 +281,13 @@ export function blurShadowMask(
   k: GaussianKernel,
   direction: readonly [number, number],
   padding: number,
+  control?: ShadowBlurControl,
 ): Uint8Array<ArrayBuffer> {
-  const output = allocateRenderPixels(
-    input.length * 1,
-    () => new Uint8Array(input.length),
-  );
+  const output = allocateRenderPixels(input.length * 1, () => {
+    const value = new Uint8Array(input.length);
+    if (control) control.value = value;
+    return value;
+  });
   for (let y = 0; y < h; y++)
     for (let x = 0; x < w; x++) {
       let sum = 0;
@@ -201,27 +309,37 @@ export function shadowCompositePixel(
   src: readonly number[] | Uint8Array,
   mask: number,
   p: Params,
+  work?: CompositeWork,
 ): number[] {
   const color = p.color as readonly number[],
     strength = (mask / 255) * color[3]! * (p.opacity as number),
     alpha = src[3]!;
   if (inner) {
-    return [0, 1, 2]
-      .map((c) => {
-        const straight = alpha ? Math.round((src[c]! * 255) / alpha) : 0;
-        return Math.round(
-          (Math.round(straight + (color[c]! * 255 - straight) * strength) *
-            alpha) /
-            255,
-        );
-      })
-      .concat(alpha);
+    const channels = [0, 1, 2];
+    if (work) work.channels = channels;
+    const mapped = channels.map((c) => {
+      const straight = alpha ? Math.round((src[c]! * 255) / alpha) : 0;
+      return Math.round(
+        (Math.round(straight + (color[c]! * 255 - straight) * strength) *
+          alpha) /
+          255,
+      );
+    });
+    if (work) work.mapped = mapped;
+    const output = mapped.concat(alpha);
+    if (work) work.output = output;
+    return output;
   }
-  const shadowAlpha = Math.round(strength * 255),
-    shadowRgb = [0, 1, 2].map((c) => Math.round(color[c]! * shadowAlpha));
-  return Array.from(src, (v, c) =>
+  const shadowAlpha = Math.round(strength * 255);
+  const channels = [0, 1, 2];
+  if (work) work.channels = channels;
+  const shadowRgb = channels.map((c) => Math.round(color[c]! * shadowAlpha));
+  if (work) work.mapped = shadowRgb;
+  const output = Array.from(src, (v, c) =>
     Math.round(v + (c === 3 ? shadowAlpha : shadowRgb[c]!) * (1 - alpha / 255)),
   );
+  if (work) work.output = output;
+  return output;
 }
 const GAUSSIAN = `uniform float radius;uniform float total;uniform vec2 direction;uniform float padding;
 uint exactDivideShadow(uint n,uint d){uint q=uint(floor(float(n)/float(d)));if(q*d>n)q--;if((q+1u)*d<=n)q++;return q;}
@@ -315,79 +433,99 @@ export function shadowEffectKernel(
       const color = params.color as readonly number[],
         opacity = params.opacity as number;
       if (opacity === 0 || color[3] === 0) return input;
-      const image = readRenderImageData(
-          input.ctx,
-          0,
-          0,
-          input.width,
-          input.height,
-        ),
-        premultiplied = allocateRenderPixels(
-          image.data.length * 1,
-          () => new Uint8Array(image.data.length),
-        ),
-        offset = (params.offset as readonly number[]).map(
-          (v) => Math.round(v * 16) / 16,
-        ),
-        sample = [0, 0, 0, 0];
-      for (let i = 0; i < image.data.length; i += 4) {
-        const alpha = image.data[i + 3]!;
-        for (let c = 0; c < 3; c++)
-          premultiplied[i + c] = Math.round((image.data[i + c]! * alpha) / 255);
-        premultiplied[i + 3] = alpha;
-      }
-      const mask = allocateRenderPixels(
-        input.width * input.height * 1,
-        () => new Uint8Array(input.width * input.height),
-      );
-      for (let y = 0; y < input.height; y++)
-        for (let x = 0; x < input.width; x++) {
-          samplePremultiplied(
-            premultiplied,
+      const work = canvasShadowWork();
+      let failed = false;
+      try {
+        const image = (work.image = readRenderImageData(
+            input.ctx,
+            0,
+            0,
             input.width,
             input.height,
-            x + 0.5 - offset[0]!,
-            y + 0.5 - offset[1]!,
-            sample,
-          );
-          mask[y * input.width + x] = inner ? 255 - sample[3]! : sample[3]!;
+          )),
+          premultiplied = allocateRenderPixels(
+            image.data.length * 1,
+            () => (work.premultiplied = new Uint8Array(image.data.length)),
+          ),
+          offset = (work.offset = (params.offset as readonly number[]).map(
+            (v) => Math.round(v * 16) / 16,
+          )),
+          sample = (work.sample = [0, 0, 0, 0]);
+        for (let i = 0; i < image.data.length; i += 4) {
+          const alpha = image.data[i + 3]!;
+          for (let c = 0; c < 3; c++)
+            premultiplied[i + c] = Math.round(
+              (image.data[i + c]! * alpha) / 255,
+            );
+          premultiplied[i + 3] = alpha;
         }
-      const k = shadowGaussianKernel(params.blur as number);
-      try {
-        const horizontal = blurShadowMask(
+        const mask = allocateRenderPixels(
+          input.width * input.height * 1,
+          () => (work.mask = new Uint8Array(input.width * input.height)),
+        );
+        for (let y = 0; y < input.height; y++)
+          for (let x = 0; x < input.width; x++) {
+            samplePremultiplied(
+              premultiplied,
+              input.width,
+              input.height,
+              x + 0.5 - offset[0]!,
+              y + 0.5 - offset[1]!,
+              sample,
+              work.sampling,
+            );
+            mask[y * input.width + x] = inner ? 255 - sample[3]! : sample[3]!;
+          }
+        const k = (work.kernel = shadowGaussianKernel(params.blur as number));
+
+        const horizontal = (work.horizontal = blurShadowMask(
             mask,
             input.width,
             input.height,
             k,
-            [1, 0],
+            (work.directions = [[1, 0]])[0] as [number, number],
             inner ? 255 : 0,
-          ),
-          blurred = blurShadowMask(
+            work.blurControls[0],
+          )),
+          blurred = (work.blurred = blurShadowMask(
             horizontal,
             input.width,
             input.height,
             k,
-            [0, 1],
+            (work.directions![1] = [0, 1]) as [number, number],
             inner ? 255 : 0,
-          );
+            work.blurControls[1],
+          ));
         for (let i = 0; i < premultiplied.length; i += 4) {
-          const out = shadowCompositePixel(
-            inner,
-            premultiplied.subarray(i, i + 4),
-            blurred[i / 4]!,
-            params,
-          );
-          for (let c = 0; c < 3; c++)
-            image.data[i + c] = out[3]
-              ? Math.round((out[c]! * 255) / out[3])
-              : 0;
-          image.data[i + 3] = out[3]!;
+          try {
+            const out = shadowCompositePixel(
+              inner,
+              (work.view = premultiplied.subarray(i, i + 4)),
+              blurred[i / 4]!,
+              params,
+              work.composite,
+            );
+            for (let c = 0; c < 3; c++)
+              image.data[i + c] = out[3]
+                ? Math.round((out[c]! * 255) / out[3])
+                : 0;
+            image.data[i + 3] = out[3]!;
+          } finally {
+            clearCompositeWork(work.composite);
+            work.view = undefined;
+          }
         }
-        const output = context.createSurface(input.width, input.height);
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
         output.ctx.putImageData(image, 0, 0);
         return output;
+      } catch (error) {
+        failed = true;
+        throw error;
       } finally {
-        releaseRenderMetadata(k);
+        finishCanvasShadow(work, failed);
       }
     },
   } satisfies CompositionEffectPlugin);
