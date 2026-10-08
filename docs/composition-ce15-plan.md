@@ -2460,16 +2460,16 @@ gate or two-minute speed proof.
 The isolated PR completion branch now admits production browser storage and result
 owners through actual RPC acknowledgement. Frame timing arrays reserve their full
 assigned capacity before rendering. Plain result descriptors bound JSON and decoded
-records; Node reserves capacity before receiving64Ki-character chunks, parsing,
+records; Node reserves capacity before receiving 64Ki-character chunks, parsing,
 exact-P95 summaries and result-manifest serialization. Native/RSS measurements remain
 separate from the declared allocator domains; these counters are not a total V8,
 browser-driver or FFmpeg heap guarantee.
 
 Full-area frames use contiguous ranges in bounded worker groups, avoiding ordered
 pipe starvation. Cache budgets admit full-area byte/float storage. Large upload
-bodies use admitted native Blob data pipes; the store keeps its64KiB copy bound
-regardless of network chunk coalescing. All integral rates1–60 are accepted; PCM
-boundaries use ceiling to the48kHz sample grid, and encoder input EOF drains the
+bodies use admitted native Blob data pipes; the store keeps its 64KiB copy bound
+regardless of network chunk coalescing. All integral rates 1–60 are accepted; PCM
+boundaries use ceiling to the 48kHz sample grid, and encoder input EOF drains the
 complete audio master. Old frame-rate clocks retain identical integer samples.
 
 Static independent surfaces, prepared sources and original-target prefixes remain
@@ -2479,26 +2479,38 @@ static rendered subtree. Unrelated drivers no longer suppress eligible prefixes;
 constant keys and constant expressions remain reusable, while changing evaluated
 closures invalidate reuse. Exact baseline comparisons cover both cases.
 
-311 focused tests and static checks pass, as do36 dependency-sensitive exports,
-105 format/rate/audio exports and8 production result-memory exports. The full-area
-matrix, isolated120-second speed comparison and full gate remain pending.
+311 focused tests and static checks pass, as do 36 dependency-sensitive exports,
+105 format/rate/audio exports and 8 production result-memory exports. The full-area
+matrix, isolated 120-second speed comparison and full gate remain pending.
 [Evidence](./composition-ce15-completion-results.json).
 
-## Remaining implementation and acceptance
+## Final code checkpoint — 2026-10-09
 
-1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
-2. Retain static layer and precomp surfaces once per export globally. Include
-   coverage preflight painting, late visibility, nested effects/mattes, actual
-   ownership counters, bounded memory and cached/uncached pixel equality.
-3. Keep accepted worker/format/native/boundary/lifecycle parity while completing
-   the remaining global cache, allocation and statistics work.
-4. Record actual per-layer submission/render timings, cache hits and owned bytes.
-   Measure a real two-minute export end-to-end with one and four workers under the
-   same profile and cache policy, without competing workloads. Require identical
-   output and at least 3× speedup.
-5. Review implementation, run affected checks, then run the complete pinned local
-   `pnpm check` on an immutable final checkpoint. Create and attach the CE15 PR,
-   then continue all CE14 work on a new branch.
+The complete maximum-area matrix passes at `adfb9592`: 48 exports at 8192×8192,
+both backends, 1/24/60 fps, one through four workers and caching on/off. Every
+encoded body and decoded pixel matches; all admitted owners retire after RPC
+acknowledgement. Maximum admitted concurrent worker capacity is 1,611,154,210
+bytes; sampled process-tree RSS is reported separately (maximum 7,578,714,112 bytes).
 
-GitHub Actions remain disabled. CE5-X/Q9, CE6-P and separate owner work remain
-pending. No milestone or PR is merged by this mission.
+The real two-minute benchmark also passes at that checkpoint: one worker takes
+455.407 seconds and four take 131.242 seconds, a **3.470×** end-to-end speedup.
+The complete encoded file, every one of 2,880 decoded frames and complete decoded
+audio match under the same pinned renderer profile and cache policy.
+
+Final review repairs property-reference selection, constant expression overrides,
+implicit anchor/clock/camera dependencies and shared-track handling. Property
+analysis is memoized. All 21 focused units and 72 Canvas/WebGL dependency exports
+pass, including actual once-global prefix painting. The preceding regression
+chain passes all 28 format cases, expanded parallel/native/cache checks, 24 live
+failures and four legacy WebGL fixtures. Detailed checkpoint evidence and logs
+are in [completion results](./composition-ce15-completion-results.json).
+
+## Remaining acceptance
+
+1. Repeat the two-minute speed proof on the final code checkpoint.
+2. Run the complete pinned local `pnpm check` on that immutable checkpoint, then
+   record completion and update PR #49. The full gate is required for milestone
+   acceptance; focused results do not replace it.
+
+GitHub Actions remain disabled. CE14, CE5-X/Q9, CE6-P and separate owner work are
+outside this completion task. No milestone or PR is merged by this task.

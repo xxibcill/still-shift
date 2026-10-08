@@ -2,7 +2,7 @@
   "milestone": "CE15",
   "status": "in-progress",
   "base": "671caf2f4c34b58189a167b52fbbe2ddbea8e2e3",
-  "date": "2026-10-08",
+  "date": "2026-10-09",
   "statistics": {
     "status": "focused acceptance passed, including expanded parallel suite",
     "unitTests": 12,
@@ -35,12 +35,11 @@
     }
   },
   "remaining": [
-    "complete immutable full-area matrix",
-    "authentic >=120-second >=3x four-worker speed proof with identical output",
-    "final implementation review, legacy regression revalidation and complete local pnpm check"
+    "repeat authentic speed acceptance on the final code checkpoint",
+    "complete required local pnpm check on the immutable final code checkpoint"
   ],
   "productionMemory": {
-    "status": "production browser admission, retained timing/result records, bounded Node RPC/summary and manifest capacity implemented; complete area acceptance pending",
+    "status": "production browser admission, bounded Node result transfer and complete 48-case area matrix passed",
     "workerPolicy": "reserve512MiB for bounded Node result transfer/summary; partition remaining7.5GiB across concurrently active workers; large frames run contiguous groups",
     "rpcLifetime": "browser result owners remain charged until Node acknowledges reception; then require zero reservations",
     "unitTests": 3,
@@ -76,7 +75,7 @@
     "changes": [
       "full-area cache budgets and contiguous bounded worker groups",
       "admitted Blob transport above128MiB;64KiB cache writes independent of socket chunk coalescing",
-      "integer1\u201360fps and exclusive-end PCM ceiling; encoder EOF drains all audio",
+      "integer1–60fps and exclusive-end PCM ceiling; encoder EOF drains all audio",
       "dependency-aware native prefixes including constant keys and expression-only motion",
       "admitted timing records and bounded browser-to-Node result transfer/manifest capacity"
     ],
@@ -129,6 +128,83 @@
       "/private/tmp/ce15-result-transfer-browser.log": "d5c54f96051caf80fb5760b30bed6b311f0c5d7fb9cb19fed226f1b7bd54343d",
       "/private/tmp/ce15-area-full.log": "882dbd9ee8e14018772c7e1a18fbd96d0cbfdb99e0b6bf4b1f4961cd1cc8ada7",
       "/private/tmp/ce15-area-quick-transport.log": "684395cc7f07c07d45930186b075f540a29ae8e0b1f6a6a81da52ec1deee3d53"
+    }
+  },
+  "acceptance": {
+    "area": {
+      "status": "passed",
+      "checkpoint": "adfb9592",
+      "exports": 48,
+      "dimensions": [8192, 8192],
+      "backends": ["canvas2d", "webgl2"],
+      "fps": [1, 24, 60],
+      "workers": [1, 2, 3, 4],
+      "cacheStatic": [false, true],
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-full-area-IyAUKF",
+      "peakConcurrentAdmittedWorkerBytes": 1611154210,
+      "peakSampledProcessTreeRssBytes": 7578714112
+    },
+    "speed": {
+      "status": "passed",
+      "checkpoint": "adfb9592",
+      "durationSeconds": 120,
+      "frames": 2880,
+      "fps": 24,
+      "oneWorkerMs": 455406.718042,
+      "fourWorkersMs": 131241.70675000007,
+      "speedup": 3.469984727564508,
+      "equality": [
+        "complete encoded file",
+        "all decoded RGBA frames",
+        "complete decoded PCM"
+      ],
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-51jG1R"
+    },
+    "finalGate": {
+      "status": "pending",
+      "command": "pnpm check"
+    }
+  },
+  "referenceCheckpoint": {
+    "parent": "adfb9592",
+    "status": "focused checks passed",
+    "unitTests": 21,
+    "dependencyExports": 72,
+    "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-cache-dependencies-96LegH",
+    "changes": [
+      "property-level constant reference and expression override eligibility",
+      "implicit anchor/clock/camera dependencies and original value semantics",
+      "memoized property analysis and alias-safe whole-track overrides"
+    ],
+    "static": [
+      "build",
+      "changed-file eslint",
+      "earlier full formatting/lint preflight"
+    ],
+    "precedingRegressionChain": {
+      "formats": 28,
+      "parallel": {
+        "primaryReports": 51,
+        "nativeCases": 8,
+        "sourceCases": 8,
+        "tintCases": 16,
+        "rootCases": 16,
+        "prefixCases": 8,
+        "liveFailures": 24
+      },
+      "legacyWebglFixtures": 4
+    },
+    "logs": {
+      "/private/tmp/ce15-reference-final-unit.log": "b2d882c82ee8eaef4c8e4c973695cb0713ab1ad358189a896bedabe3537effe7",
+      "/private/tmp/ce15-reference-final-build.log": "a7b7f717ddde363a75de3369b8e1fb6be1b450099a8c470912751ab671998849",
+      "/private/tmp/ce15-reference-final-browser.log": "6a02e35ddc8fdabfebbd0e7db79d64b3770c04de51ac8347b2cd55bfd54dc5db",
+      "/private/tmp/ce15-final-output.log": "49f7132a489ef9a215f563425112a10db6bd969bd0e16d162ed574bfc3e57dfa",
+      "/private/tmp/ce15-final-parallel.log": "b49cb3f17136f35507f55bc9839935769a0c0dd643bee9ce08e0d4ae73ec9d21",
+      "/private/tmp/ce15-final-legacy.log": "095479f0f35e73439becfe0d69b5b7631848d6f35de48633881dff073ecbd35a",
+      "/private/tmp/ce15-adfb9592-area.log": "ba1f02860c14f22cd078be95f48cd6cb89eaaa20b291fee09a1fbe9a79606fa2",
+      "/private/tmp/ce15-adfb9592-speed.log": "5d061ea973fee66dd7658984e5b974f15e92f1148bbf30f9d7e3a2a17e9de4a8",
+      "/private/tmp/ce15-final-static.log": "52aec4dfd502596d28811f717cc635436afc4d9bfd7709a1ecc0f1c66eeee9db",
+      "/private/tmp/ce15-final-soundtrack-preflight.log": "d7687b7f3bdef78a0cd58be2ffd460b818aafa0e33d3ed89ce0981bf8ec05661"
     }
   }
 }

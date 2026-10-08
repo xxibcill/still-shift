@@ -1,30 +1,4 @@
-import {
-  compileExpressions,
-  parsePropertyPath,
-  isPropertyPathError,
-  type ExpressionAst,
-} from "@still-shift/scene-contract";
-
-const clockFunctions = new Set([
-  "wiggle",
-  "valueAtTime",
-  "velocityAtTime",
-  "loopIn",
-  "loopOut",
-  "smooth",
-  "inertia",
-  "anticipate",
-  "rove",
-]);
-function readsClock(ast: ExpressionAst): boolean {
-  if ("id" in ast) return ast.id === "time" || ast.id === "frame";
-  if ("call" in ast)
-    return clockFunctions.has(ast.call) || ast.args.some(readsClock);
-  if ("op" in ast) return ast.args.some(readsClock);
-  if ("vec" in ast) return ast.vec.some(readsClock);
-  if ("member" in ast) return readsClock(ast.of);
-  return false;
-}
+import { compositionLayerVariation } from "./prefix-dependencies.ts";
 import type {
   Composition,
   CompositionLayer,
@@ -34,52 +8,10 @@ import type { RenderBackend, Surface } from "./backend.ts";
 import { renderBatches } from "./batches.ts";
 import type { RenderOp, SurfaceNode } from "./graph.ts";
 
-function hasVaryingKeys(value: unknown): boolean {
-  if (value === null || typeof value !== "object") return false;
-  if (Array.isArray(value)) return value.some(hasVaryingKeys);
-  const record = value as Record<string, unknown>;
-  if (Object.hasOwn(record, "keys")) {
-    if (!Array.isArray(record.keys) || !record.keys.length) return true;
-    const first = JSON.stringify(record.keys[0].value);
-    for (const key of record.keys) {
-      // Explicit temporal speed/spatial handles can move between equal endpoints.
-      if (
-        JSON.stringify(key.value) !== first ||
-        key.in ||
-        key.out ||
-        key.spatialIn ||
-        key.spatialOut
-      )
-        return true;
-    }
-    return false;
-  }
-  return Object.values(record).some(hasVaryingKeys);
-}
-
 /** Selection hints only: complete evaluated closure keys still authorize every reuse. */
 export function compositionPrefixLayers(composition: Composition) {
   const candidates = new Set<string>();
-  const driven = new Set<string>();
-  const mark = (text: string) => {
-    const path = parsePropertyPath(text);
-    if (!isPropertyPathError(path))
-      driven.add([...path.scope, path.layer].join("/"));
-  };
-  for (const expression of compileExpressions(composition))
-    if (
-      expression.reads.length ||
-      expression.signals.length ||
-      readsClock(expression.ast)
-    )
-      driven.add(
-        [...expression.target.path.scope, expression.target.path.layer].join(
-          "/",
-        ),
-      );
-  for (const driver of composition.drivers ?? []) mark(driver.target);
-  for (const periodic of composition.periodic ?? [])
-    mark(periodic.target ?? `${periodic.node}.${periodic.property}`);
+  const varies = compositionLayerVariation(composition);
   // Expressions, constraints and cameras elsewhere in the document do not
   // invalidate a fixed prefix. The cache compares the complete evaluated native
   // closure on every frame, including transforms and prepared content identity.
@@ -93,8 +25,7 @@ export function compositionPrefixLayers(composition: Composition) {
       if (seen.has(layer.id)) return false;
       seen.add(layer.id);
       if (
-        driven.has(prefix + layer.id) ||
-        hasVaryingKeys(layer) ||
+        varies(layer, prefix + layer.id) ||
         layer.threeD ||
         layer.receivesLight ||
         (layer.effects?.length ?? 0) > 0 ||

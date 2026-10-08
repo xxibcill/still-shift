@@ -43,129 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE15 delivery bounds and result transfer (2026-10-08):** isolated completion
-  worktree now accepts integer1–60fps with exact complete PCM boundaries, runs
-  full-area frames in bounded contiguous worker groups, and uses admitted Blob
-  uploads for large frame/cache bodies. Native prefix reuse handles procedural
-  motion and constant keys. Browser timing records and bounded Node result RPC/
-  summary/manifest capacities are admitted through acknowledgement/publication.
-  311 focused tests, static checks,36 dependency exports,105 rate/format exports
-  and8 result-memory exports pass. Full-area immutable rerun, authentic speed
-  proof and final full gate remain pending. Historical broad metadata-audit
-  proposals are not evidence of completed accounting; reported counters retain
-  their explicit declared-allocation scopes and separate native/RSS measurements.
-  [Evidence](./composition-ce15-completion-results.json).
-
-- **CE15 production admission wired (2026-10-08):** real export pages now use the
-  managed allocator from resource loading through Node result acknowledgement.
-  Eight one/four-worker Canvas/WebGL exports preserve exact output and retire
-  every admitted owner; 28 format cases and legacy WebGL exports pass. Node and
-  remaining metadata admission, full-area scheduling, static coverage and speed/
-  final acceptance remain pending. Expanded parallel verification passes, including all 24 live failures after
-  repairing the forced-browser-close diagnostic race.
-  [Evidence](./composition-ce15-completion-results.json).
-
-- **CE15 completion resumed (2026-10-08):** isolated worktree starts from PR #49
-  head `671caf2f`. Ordinary exports now report measured per-type submission times
-  and explicit cache state/hits, sharing aggregation with parallel exports. The
-  output-format and legacy WebGL export regressions pass; production memory,
-  full static coverage, area acceptance, authentic speed proof and final gate
-  remain in flight. [Completion evidence](./composition-ce15-completion-results.json).
-
-- **PR #49 conflict repair (2026-10-08):** main `118927de` is integrated with
-  CE15 `8faae4be` in an isolated worktree. Fourteen conflicts are resolved;
-  3,524 units, affected integrations/browser/exports and frozen subsets pass. CE15 milestone ownership/aggregate/speed
-  and final gate remain pending. [Conflict evidence](./pr-49-conflict-resolution-results.json).
-
-- **CE15 recovered and Canvas lifetime verified (2026-10-08):** old chat is idle;
-  no old verification remains active. Recovered GPU slice is local commit `61d7b911`.
-  Canvas parent/native image holds now pass 999 focused tests, six genuine native
-  probes, complete 144-case / 8,000-frame audit and 64 prior-exact exports / 768
-  bodies/frames; glyph 1.376068× ≤ 1.5. Gradient/backend/params/production ownership,
-  aggregate/area/speed and final CE15 gate remain pending. GPU and Canvas checkpoints `61d7b911` and `8faae4be` are pushed to PR #49. [Canvas evidence](./composition-ce15-color-canvas-lifetime-results.json).
-
-- **CE15 in progress (2026-10-08):** `codex/composition-ce15` from completed CE13
-  `aedfc9e`; transparent renderer checkpoint `49e0543` is pushed. Seven explicit
-  BT709 output profiles now pass 44 production exports, 14 independent preview
-  encodes, native alpha-depth checks, 2 CLI deliveries, 18 dimension cases and 16
-  protected failures. PNG8/16 reimport, complete PCM, AAC/Opus clocks and sequence
-  completion order pass. Build/lint, 39 focused units/runtime tests, 65 affected
-  media/CLI tests and existing WebGL export/native-media browser regressions pass.
-  Rejected implicit precision/tag/alpha conversions and H264 CRF18 are retained.
-  Surface-store foundation `5b20c86` is pushed. The opt-in renderer integration
-  passes 24 four-page cases / 1,248 exact frame comparisons, native byte/float
-  transfer and 12 protected failures. Public/CLI parallel export now passes 111
-  successful exports, eight native timing cases, 24 live failures and complete
-  media/frame/audio parity; all worker counts, old format/legacy suites, 32 focused
-  tests and build/lint/boundaries pass. New Canvas isolation and synchronous binary
-  XHR remain rejected. Native preparation sources now pass 1,664 exact audit
-  frames, 32 production exports / 256 decoded frames, 11 protected failures and 63
-  focused tests plus original typography checks. Original-target roots and coverage
-  now pass 2,912 exact audit frames, exhaustive byte/float storage, 14 root failures,
-  207 production exports / 1,656 decoded frames and 24 live failures. Held outline
-  clocks are repaired under strict count checks. Closed native prefixes now pass
-  104 audit cases / 5,408 exact frames and 32 production exports / 256 decoded
-  frames, with whole original batches and actual once-global native painting.
-  Actual submission phase/type spans now pass 57 tests, the complete pixel audit,
-  32 prefix exports and ten coverage/nested/original/cached exports. Mixed overhead
-  retains its original membership. Complete FFmpeg command CPU and actual timer/
-  encoder group reaping now pass 23 focused / 20 CLI tests, 56 baseline-parity
-  exports / 448 frames and 24 protected live failures with observed process IDs.
-  Shared runtime tints, real variable axes/corrections and both crossfade inputs
-  now pass 100 focused / 67 typography tests, 120 audit cases / 6,496 exact frames
-  and 64 public exports / 768 decoded frames with actual once-global native counts.
-  Canvas ownership and bounded receive now pass 37 admission/cache/exposure,
-  90 effect/pool and 67 typography tests; 132 audit cases / 7,248 exact frames,
-  including twelve managed cases / 752 frames. Native detachment/pool/body failures
-  release actual storage. All 64 public exports / 768 bodies/frames match the prior
-  accepted checkpoint; glyph ratio 1.291824× remains under unchanged 1.5×.
-  GPU storage admission now passes 54 admission/cache/exposure/depth and 119 focused
-  tests; 144 audit cases / 8,000 frames include 24 managed cases / 1,504 comparisons.
-  Native byte/float/depth/PNG storage and deletion checks, complete original WebGL,
-  17 default depth timelines / 1,530 zero-delta frames and 64 public exports / 768
-  prior-checkpoint-exact bodies/frames pass. Verified asset/font/media admission now
-  passes 64 admission / 86 affected / 67 typography tests, the complete 144-case /
-  8,000-frame audit, 15 native resource failures and all original provider, typography,
-  media, illustrated and story commands. Managed cases load assets/fonts inside
-  their scopes; borrowed faces, late cleanup and exact public body/frame parity pass.
-  Glyph 1.383989× meets unchanged 1.5×. Native capture/upload admission now passes
-  70 tests, the complete audit, six native complete-body oracles, twelve failure
-  cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
-  Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
-  controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
-  group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
-  pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
-  shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
-  Gaussian kernel/rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-
-  shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
-  map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
-  mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work/Canvas-color-source-gradient-image-work/common-memory-native-retirement/allocation-identity-adoption-failure-cleanup/color-kernel-construction-cache-state/common-metadata-factory-registry-handoff/GPU-nongradient-parent-child-native-consumer-holds, managed plan/sum-shader cache, particle/
-  Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
-  texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 986 focused tests, complete audit, 22 moving/blurred and ten
-  stationary native frames and 96 owned RPC snapshots. Fixed color kernel and common
-  metadata factory/registry holds remain verified. GPU parent 16384 now holds before
-  factory, with independently captured entries/filter/uniform and curve 1024 holds
-  before their producers. Eight dependency-control slots are admitted in parent.
-  Local failed construction settlement and reverse child-then-parent cleanup retain
-  actual refs/records/charge through direct child release, scratch or disposal and
-  preserve first null. Native-first failed curve identity recovery preserves known
-  reported backing A and detaches fresh B. Cached generated-view cleanup removes its
-  buffer re-Get; original params/native bodies/shader/wrapper oracles remain exact.
-  Ten prior GPU units byte exact; 14 new/all 972 prior tests pass, as do
-  build/lint/boundaries and 986/106. Native probes, WebGL/providers and 69
-  typography tests pass; glyph 1.319629× meets unchanged 1.5. All 64 exports / 768
-  bodies/frames retain prior exact output. Gradient combined/control/uniform/table/
-  cache/entry/key/backing, Canvas/image, borrowed params/values, backend/input/output/
-  device, foreign/intrinsic/registry limits, global/bootstrap, retained graph, caller/
-  depth/provider/font/Node/production/aggregate/speed/final gates remain pending.
-  Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
-  Node metadata, production admission, aggregate memory, the actual
-  two-minute speed proof and final full gate remain in
-  flight. No owner decision blocks CE15 → CE14. CE5-X/Q9 and separate CE6-P remain
-  pending. [Plan](./composition-ce15-plan.md),
-  [format evidence](./composition-ce15-format-results.json).
+- **CE15 final acceptance in progress (2026-10-09):** PR #49 now implements the
+  delivery bounds, statistics, production admission and cache-reference repairs.
+  All 48 maximum-area exports pass. The two-minute proof at `adfb9592` measures
+  **3.470×** with exact encoded/frame/audio parity. Final reference selection passes
+  21 units and 72 exports; all-format, expanded parallel/live-failure and legacy
+  export regressions pass. Repeat the speed proof and run the complete local gate
+  on the immutable final code checkpoint before marking CE15 complete.
+  [Completion evidence](./composition-ce15-completion-results.json).
 
 - **PR #48 third review repairs verified (2026-10-08):** both P2 findings
   posted inline on `1dae23c8` are fixed. Cache identity includes OS/architecture
@@ -191,11 +76,24 @@ still hold before relying on them.
   The approved CE5-X scope retains its audit stop/Q9 owner decisions; CE6-P
   remains owner-paused and deferred, with acceptance incomplete.
 
-- **Continuation:** the owner's separate CE15 checkout remains in progress;
-  continue CE15 → CE14. No owner decision blocks that order. GitHub Actions
+- **Continuation:** finish CE15 in the isolated PR worktree, preserving the
+  owner's separate checkout. CE14 remains separate future work. GitHub Actions
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE15 maximum-area and speed acceptance; final reference repairs
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `adfb9592`.
+- **Done:** property-level reference caching, constant overwrite and implicit
+  dependency handling; memoized analysis and shared-track protection.
+- **Results:** 21 units and 72 dependency exports pass. The preceding format,
+  expanded parallel/24 live failures and legacy WebGL regressions pass. All 48
+  maximum-area cases and a 3.470× exact-output two-minute proof pass at `adfb9592`.
+- **Open / next:** repeat speed acceptance on this final code checkpoint and run
+  the complete pinned local `pnpm check`. No full gate is claimed yet.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [completion evidence](./composition-ce15-completion-results.json).
 
 ### 2026-10-08 — CE15 area, frame-rate and result-transfer checkpoint
 

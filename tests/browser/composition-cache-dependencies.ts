@@ -20,6 +20,12 @@ for (const backend of ["canvas2d", "webgl2"] as const)
     "expression-only-motion",
     "constant-expression",
     "constant-keys",
+    "overridden-floor",
+    "value-reference",
+    "constant-reference",
+    "chained-reference",
+    "overridden-reference",
+    "changing-reference",
     "changing-expression",
     "changing-camera",
   ] as const) {
@@ -99,6 +105,90 @@ for (const backend of ["canvas2d", "webgl2"] as const)
         ],
       };
     }
+    if (
+      [
+        "constant-reference",
+        "chained-reference",
+        "overridden-reference",
+        "changing-reference",
+      ].includes(variant)
+    ) {
+      composition.layers.push({
+        id: "control",
+        type: "null",
+        transform: {
+          rotation:
+            variant === "changing-reference" ||
+            variant === "overridden-reference"
+              ? {
+                  keys: [
+                    { frame: 0, value: 17.3 },
+                    { frame: 7, value: 47.3 },
+                  ],
+                }
+              : 17.3,
+          position: {
+            x: 2,
+            y: {
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 7, value: 10 },
+              ],
+            },
+          },
+        },
+      });
+      composition.expressions = {
+        "floor.transform.rotation": {
+          source: "ref('control.transform.rotation')",
+        },
+        ...(variant === "chained-reference"
+          ? {
+              "control.transform.rotation": {
+                source: "ref('control.transform.position.x') * 8.65",
+              },
+            }
+          : variant === "overridden-reference"
+            ? {
+                "control.transform.rotation": { source: "17.3" },
+              }
+            : {}),
+      };
+    }
+    if (variant === "overridden-floor") {
+      composition.layers[1]!.transform!.rotation = {
+        keys: [
+          { frame: 0, value: 17.3 },
+          { frame: 7, value: 47.3 },
+        ],
+      };
+      composition.expressions = {
+        "floor.transform.rotation": { source: "17.3" },
+      };
+    }
+    if (variant === "value-reference") {
+      composition.layers.push({
+        id: "control",
+        type: "null",
+        transform: {
+          anchor: {
+            x: {
+              keys: [
+                { frame: 0, value: 17.3 },
+                { frame: 7, value: 47.3 },
+              ],
+            },
+            y: 0,
+          },
+        },
+      });
+      composition.expressions = {
+        "control.constraintReference.x": { source: "value" },
+        "floor.transform.rotation": {
+          source: "ref('control.constraintReference.x')",
+        },
+      };
+    }
     const path = join(directory, `${backend}-${variant}.json`);
     await writeFile(path, JSON.stringify(composition));
     let expected;
@@ -125,7 +215,11 @@ for (const backend of ["canvas2d", "webgl2"] as const)
             (worker) => worker.result.rootStatistics!.roots,
           )
           .filter((root) => root.phase === "prefix");
-        if (variant !== "changing-expression")
+        if (
+          variant !== "changing-expression" &&
+          variant !== "changing-reference" &&
+          variant !== "value-reference"
+        )
           assert.equal(
             prefixes.reduce((sum, row) => sum + row.paints, 0),
             1,
@@ -134,7 +228,11 @@ for (const backend of ["canvas2d", "webgl2"] as const)
           variant === "unrelated-expression" ||
           variant === "expression-only-motion" ||
           variant === "constant-expression" ||
-          variant === "constant-keys"
+          variant === "constant-keys" ||
+          variant === "overridden-floor" ||
+          variant === "constant-reference" ||
+          variant === "chained-reference" ||
+          variant === "overridden-reference"
         ) {
           assert.equal(
             prefixes.reduce((sum, row) => sum + row.restores, 0),
