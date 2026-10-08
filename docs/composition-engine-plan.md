@@ -5482,6 +5482,19 @@ unchanged. Each posted finding has a separate commit, delivered in one final nor
 push; this scoped follow-up does not run or claim a full repository gate.
 [Second review repair evidence](./pr-48-second-review-fix-results.json).
 
+### CE13 PR #48 third review repairs — 2026-10-08
+
+Both P2 findings are posted inline on `1dae23c8`. Native picture/source PCM/mix
+caches now share an identity builder that always includes OS and CPU architecture.
+Actual sequence/PCM/mix tests with a fixed FFmpeg build reproduce incorrect cache
+hits when only the execution identity changes before the fix. Both OS and CPU
+variations now miss independently, preserve exact output bytes, and reuse the
+original entry after restoring its identity. All 37 affected cache integrations
+pass, including original relocation, provenance, bounds and cancellation checks.
+Text-constrained audio traversal remains in flight. Each finding receives its own
+commit, with one final normal push after focused verification; no full gate is run.
+[Third review evidence](./pr-48-third-review-fix-results.json).
+
 ## CE14 — Mesh warp and puppet pins
 
 **Outcome:** Still artwork bends, squashes and gestures without new poses, which is the

@@ -35,6 +35,7 @@ import {
 import { compositionMediaChecksum } from "./composition-media-probe.ts";
 import {
   compositionMediaCacheDirectory,
+  compositionMediaCacheIdentity,
   compositionMediaCacheLock,
   finishCompositionMediaCacheTransaction,
   compositionMediaCacheSize,
@@ -370,7 +371,7 @@ export async function prepareCompositionAudio(
       ffmpegIdentity: source.ffmpegIdentity,
     }),
   );
-  const identity = JSON.stringify({
+  const identity = compositionMediaCacheIdentity({
     evaluatorVersion: COMPOSITION_EVALUATOR_VERSION,
     mixerVersion: COMPOSITION_AUDIO_MIXER_VERSION,
     decoderVersion: COMPOSITION_AUDIO_DECODER_VERSION,

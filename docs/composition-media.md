@@ -79,7 +79,10 @@ metadata must be supported. Prepared pixels are converted into canonical sRGB RG
 private cache directory. Video selection uses FFmpeg frame ordinal `n`, with no
 browser video seeking. Source SHA, verified rational timing and color, selected
 ordinals, optional mapping SHA, decoder version and actual FFmpeg runtime identity
-form the key; relocated physical paths do not. Prepared PNG hashes, byte counts,
+form the key; relocated physical paths do not. Visual, source PCM and mixed-audio
+cache identities also pin the operating system and CPU architecture through one
+shared identity builder. Copying a cache across platforms cannot authorize reuse;
+returning to the original platform still reuses its verified entries. Prepared PNG hashes, byte counts,
 dimensions and canonical layout verify on every hit. Modified entries reject.
 
 Source range/matrix is converted to full RGB. BT.709 transfer is decoded and then

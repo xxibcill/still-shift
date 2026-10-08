@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-08",
+  "pr": "https://github.com/xxibcill/still-shift/pull/48",
+  "reviewedHead": "1dae23c894ca06af4ffe1b89a6bbdea8b396c0e6",
+  "reviewId": 5457066499,
+  "branch": "codex/pr48-third-review-fixes",
+  "deliveryPolicy": "Each finding posted inline before repair; one commit per finding; one final normal push.",
+  "toolchain": "Node22.23.1/pnpm10.29.3/Python3.12.11/Playwright1.62.1/Chromium1234/FFmpeg8.0.1 verified locally.",
+  "isolation": "Managed worktree with its own pnpm/Vite caches and copied Python environment rebound to local depth source. Owner CE15 checkout is unchanged by this work.",
+  "findings": [
+    {
+      "id": "native-cache-platform",
+      "priority": "P2",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/48#discussion_r4219320568",
+      "reviewThread": "PRRT_kwDOUNeEOM6qXuxz",
+      "status": "fixed and verified; included in the first finding commit",
+      "repair": "Shared native cache identity includes process.platform and process.arch for visual, source PCM and mix preparation.",
+      "before": {
+        "command": "pnpm exec vitest run tests/integration/composition-media-platform.test.ts --configLoader runner --maxWorkers=1 --no-file-parallelism",
+        "exitCode": 1,
+        "testsFailed": 2,
+        "failedAssertions": 12,
+        "log": "/private/tmp/pr48-platform-before.log",
+        "proof": "Both platform and arch changes incorrectly reused all three cache entries with unchanged FFmpeg inputs/build."
+      },
+      "after": {
+        "command": "pnpm exec vitest run tests/integration/composition-media-platform.test.ts tests/integration/composition-media-cache.test.ts tests/integration/composition-media-audio.test.ts tests/integration/composition-audio-mix.test.ts --configLoader runner --maxWorkers=1 --no-file-parallelism",
+        "exitCode": 0,
+        "testsPassed": 37,
+        "files": 4,
+        "seconds": 12.44,
+        "log": "/private/tmp/pr48-platform-after.log",
+        "proof": "OS and architecture changes independently miss all three caches; restoring original identity hits original entries. Actual PCM bytes remain exact; relocation/provenance/bounds/cancellation tests pass."
+      }
+    },
+    {
+      "id": "audio-visual-layout",
+      "priority": "P2",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/48#discussion_r4219320574",
+      "reviewThread": "PRRT_kwDOUNeEOM6qXux2",
+      "status": "pending second finding repair",
+      "reviewReproduction": "Valid audio precomp spatially attached to a text layer throws comp-text-layout-missing during actual 2000-sample master preparation; removing only the constraint yields exact0.25 amplitude."
+    }
+  ],
+  "firstFindingStaticChecks": {
+    "build": "passed",
+    "scopedEslint": "passed",
+    "diffCheck": "passed"
+  },
+  "verificationScope": "Focused PR follow-up checks only; no full pnpm check run or complete repository gate claimed.",
+  "githubActions": "Prohibited; no workflows added or enabled."
+}

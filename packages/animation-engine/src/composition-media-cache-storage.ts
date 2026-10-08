@@ -13,6 +13,18 @@ import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 
 const checksum = (value: string) =>
   "sha256:" + createHash("sha256").update(value).digest("hex");
+
+/** Native decoded and mixed bytes are reusable only on the same execution platform. */
+export function compositionMediaCacheIdentity(
+  identity: Record<string, unknown>,
+) {
+  return JSON.stringify({
+    ...identity,
+    platform: process.platform,
+    arch: process.arch,
+  });
+}
+
 export function compositionMediaCacheDirectory(directory?: string) {
   return (
     directory ??

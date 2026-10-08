@@ -43,16 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #48 second review repairs verified (2026-10-08):** both new findings
-  are posted inline on `63766426`. Sequence authorization shares the bounded
-  formatter (`0a4e975c`); exact PCM visibility preserves the first/last nested
-  samples and advances evaluator identity 54→55 to invalidate stale masters.
-  Final fast checks pass 2,599 units; 80 affected native/cache/passage integrations
-  and media/authoring/export/session browsers pass. Independent final review has
-  no remaining actionable concerns. Both findings have separate commits and one
-  final normal push; owner review/merge follows. Earlier capture/lock repairs hold.
-  Owner CE15 checkout is untouched; no full gate is run or claimed.
-  [Second review evidence](./pr-48-second-review-fix-results.json).
+- **PR #48 third review repairs in progress (2026-10-08):** both findings are
+  posted inline on `1dae23c8`. Visual/source PCM/mix caches now share platform
+  and architecture identity; actual cache regressions fail before and pass after
+  the repair, with all 37 affected integrations passing. The text-constrained
+  audio precomp finding remains to fix and verify. One commit per finding;
+  push once after final verification. The owner CE15 checkout is untouched.
+  [Third review evidence](./pr-48-third-review-fix-results.json).
 
 - **CE13 complete (2026-10-07):** original acceptance at `01fbca2` passes the
   complete local `pnpm check` in 12825.81 seconds, all 63 required commands,
@@ -73,6 +70,21 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-08 — PR #48 third review findings and scoped repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr48-third-review-fixes`, from `1dae23c8`.
+- **Scope:** both P2 findings posted inline before repairs; one commit per finding,
+  one final normal push.
+- **Done:** native visual/source PCM/mix cache keys share OS/architecture identity.
+  Two actual-media regressions reproduce cross-identity hits before the fix and
+  prove distinct misses plus original-platform reuse after it.
+- **Results:** pinned toolchain/browser startup and all 37 affected cache/PCM
+  integrations pass. Frozen references and numerical tolerances are unchanged.
+- **Open / next:** repair audio traversal of spatially text-constrained precomps,
+  complete focused verification, then push both commits. No full gate is planned.
+- **Records:** [third review evidence](./pr-48-third-review-fix-results.json),
+  [PR #48](https://github.com/xxibcill/still-shift/pull/48).
 
 ### 2026-10-08 — PR #48 second review findings and scoped repairs
 

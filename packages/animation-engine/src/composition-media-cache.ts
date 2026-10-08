@@ -31,6 +31,7 @@ import {
 } from "./composition-media-color.ts";
 
 import {
+  compositionMediaCacheIdentity,
   compositionMediaCacheLock,
   finishCompositionMediaCacheTransaction,
   compositionMediaCacheSize,
@@ -345,7 +346,7 @@ export async function prepareCompositionVisualMedia(
     maxBuffer: 128 * 1024,
   });
   const ffmpegIdentity = hash(runtime.stdout);
-  const identity = JSON.stringify({
+  const identity = compositionMediaCacheIdentity({
     decoderVersion: COMPOSITION_MEDIA_DECODER_VERSION,
     ffmpegIdentity,
     source: inspected.provenance,
