@@ -35,7 +35,6 @@
     ]
   },
   "remaining": [
-    "alpha topology and bounded mesh refinement",
     "Canvas and WebGL rendering",
     "pin-only arm and house demo",
     "constraint/expression and story-acting integration",
@@ -70,5 +69,41 @@
       }
     },
     "rendering": "pending"
+  },
+  "topology": {
+    "status": "focused-passed",
+    "tests": 29,
+    "testFiles": 3,
+    "exhaustiveBinaryMasks": 512,
+    "triangulator": {
+      "package": "earcut",
+      "version": "3.0.2",
+      "license": "ISC",
+      "notice": "docs/licenses/earcut-3.0.2.txt"
+    },
+    "limits": {
+      "contourEdges": 65536,
+      "outlineVertices": 8192,
+      "meshVertices": 32768,
+      "triangles": 65536
+    },
+    "checks": {
+      "tests": {
+        "status": "passed",
+        "logSha256": "4b220602ebca87f8a07635825bf709bbe9362b38972efa1e8ff83b02bda9fb7b"
+      },
+      "types": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lint": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "boundaries": {
+        "status": "passed",
+        "logSha256": "5c910c33392af699061309d6cedd4b1c9773841d34fd0a81402eebfe60700563"
+      }
+    }
   }
 }

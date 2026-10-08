@@ -45,8 +45,8 @@ still hold before relying on them.
 
 - **CE14 in progress (2026-10-09):** new `codex/composition-ce14` branch starts
   from completed, pushed CE15 `efa42f42`. Animated controls, mesh contracts and deterministic
-  geometry are implemented; focused tests and static checks pass. Alpha topology,
-  both backends, demo and final acceptance remain in flight. No blocker or owner
+  geometry and alpha topology are implemented; focused tests and static checks
+  pass. Both backends, demo and final acceptance remain in flight. No blocker or owner
   decision is pending. [CE14 plan](./composition-ce14-plan.md).
 
 - **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
@@ -87,6 +87,16 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE14 alpha-outline topology
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, after `cfc89aed`.
+- **Done:** exact alpha-cell contours, holes/islands, pinned ISC Earcut dependency,
+  pin insertion and fixed conforming refinement with explicit geometry limits.
+- **Results:** 29 focused tests pass, including all 512 binary 3×3 masks checked
+  against independent coverage/area; TypeScript, lint and boundaries pass.
+- **Next:** Canvas/WebGL mesh rendering, memory admission, visual and export proof.
+- **Records:** [CE14 plan](./composition-ce14-plan.md), [licence](./licenses/earcut-3.0.2.txt).
 
 ### 2026-10-09 — CE14 deterministic mesh geometry
 

@@ -20,9 +20,9 @@ There is no iterative convergence criterion or parallel reduction. See
 Record degenerate-fit behavior, topology limits and flip diagnostics with the
 solver implementation and verify exact pin targets and rigid-motion preservation.
 
-The intended outline triangulator is [Mapbox Earcut 3.0.2](https://github.com/mapbox/earcut/tree/v3.0.2),
-under its ISC licence. Dependency installation, alpha-contour extraction, holes,
-disjoint islands and bounded refinement remain implementation work. Pin positions
+The pinned outline triangulator is [Mapbox Earcut 3.0.2](https://github.com/mapbox/earcut/tree/v3.0.2),
+under its [bundled ISC licence](./licenses/earcut-3.0.2.txt). Alpha-contour extraction,
+holes, disjoint islands, pin insertion and bounded refinement are implemented. Pin positions
 and mesh controls use a bounded `points` effect descriptor, retaining existing
 per-point property paths, keyframes, expressions, baking and timeline editing.
 
@@ -68,13 +68,33 @@ changed-file lint, generated schema/reference freshness and boundaries pass.
 This is a geometry checkpoint: native rendering and alpha topology are not yet
 implemented, so no visual or milestone acceptance is claimed.
 
+### 2026-10-09 — Alpha topology and triangulation
+
+Exact thresholded pixel-cell boundaries retain transparent holes and disconnected
+islands, including diagonal contacts and opaque islands nested inside holes.
+Collinear boundary segments are removed without changing coverage. Earcut 3.0.2
+triangulates each outer contour with its owned holes; an area-deviation check
+rejects invalid output. Source pin positions must lie on/in the alpha silhouette;
+shared-edge insertion splits every incident face. Zero to three fixed midpoint
+refinement passes retain shared vertices and pin coordinates.
+
+Limits are explicit: 65,536 boundary edges, 8,192 simplified outline vertices,
+32,768 mesh vertices and 65,536 triangles. Exceeding a limit produces a diagnostic;
+the engine does not truncate the silhouette. Highly fragmented masks are covered
+by a budget-failure regression. The renderer integration must admit temporary
+geometry capacity and pixel buffers before invoking these routines.
+
+All 29 focused topology, solver and native-contract tests pass, including every
+one of the 512 binary 3×3 masks checked against independent pixel coverage and
+area. TypeScript, changed-file lint and package boundaries pass. Pixel rendering,
+production export and complete milestone acceptance remain pending.
+
 ## Remaining acceptance
 
-1. Add alpha-outline extraction, licensed triangulation and bounded refinement.
-2. Implement starch, overlap and Canvas/WebGL textured mesh rendering with bounded
+1. Implement starch, overlap and Canvas/WebGL textured mesh rendering with bounded
    allocations and cleanup; preserve CE15 cache/dependency behavior.
-3. Add the native arm/house demo, expression/constraint example and story-acting
+2. Add the native arm/house demo, expression/constraint example and story-acting
    documentation; test the complete authored pin ranges for triangle flips.
-4. Run focused solver, authoring, browser, export and baseline checks; review the
+3. Run focused solver, authoring, browser, export and baseline checks; review the
    complete implementation before the required final local gate.
-5. Complete `pnpm check` on the final code checkpoint, record evidence and push.
+4. Complete `pnpm check` on the final code checkpoint, record evidence and push.

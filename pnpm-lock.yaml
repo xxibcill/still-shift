@@ -109,9 +109,16 @@ importers:
       clipper2-ts:
         specifier: 2.0.1-18
         version: 2.0.1-18
+      earcut:
+        specifier: 3.0.2
+        version: 3.0.2
       zod:
         specifier: 4.1.5
         version: 4.1.5
+    devDependencies:
+      "@types/earcut":
+        specifier: 3.0.0
+        version: 3.0.0
 
   packages/scene-contract:
     dependencies:
@@ -965,6 +972,12 @@ packages:
         integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==,
       }
 
+  "@types/earcut@3.0.0":
+    resolution:
+      {
+        integrity: sha512-k/9fOUGO39yd2sCjrbAJvGDEQvRwRnQIZlBz43roGwUZo5SHAmyVvSFyaVVZkicRVCaDXPKlbxrUcBuJoSWunQ==,
+      }
+
   "@types/estree@1.0.9":
     resolution:
       {
@@ -1305,6 +1318,12 @@ packages:
     resolution:
       {
         integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==,
+      }
+
+  earcut@3.0.2:
+    resolution:
+      {
+        integrity: sha512-X7hshQbLyMJ/3RPhyObLARM2sNxxmRALLKx1+NVFFnQ9gKzmCrxm9+uLIAdBcvc8FNLpctqlQ2V6AE92Ol9UDQ==,
       }
 
   es-module-lexer@1.7.0:
@@ -2425,6 +2444,8 @@ snapshots:
 
   "@types/deep-eql@4.0.2": {}
 
+  "@types/earcut@3.0.0": {}
+
   "@types/estree@1.0.9": {}
 
   "@types/json-schema@7.0.15": {}
@@ -2659,6 +2680,8 @@ snapshots:
   deep-eql@5.0.2: {}
 
   deep-is@0.1.4: {}
+
+  earcut@3.0.2: {}
 
   es-module-lexer@1.7.0: {}
 
