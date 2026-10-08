@@ -134,9 +134,8 @@ function programDiagnostic(
     log: string | null | undefined;
     error: Error | undefined;
   }>(
-    // WebGL removes log-length queries. The pinned 64-bit V8 profile allows fewer
-    // than 2^29 UTF16 units: reserve both original log and Error.message first.
-    4 * 2 ** 29 + 1024,
+    // Native driver text is charged at its returned size below.
+    1024,
     () => ({ log: undefined, error: undefined }),
     true,
     (value) => {
@@ -149,6 +148,8 @@ function programDiagnostic(
       ? gl.getShaderInfoLog(handle)
       : gl.getProgramInfoLog(handle);
     deleteHandle();
+    // Include retained native log, prefixed message and Error before construction.
+    resizeRenderMetadata(phase, 1024 + 4 * (phase.log?.length ?? 4));
     phase.error = new Error(
       shader
         ? `comp-webgl-shader: ${phase.log}`

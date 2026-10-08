@@ -91,8 +91,8 @@ export function depthTextHarness(software = true) {
   };
 }
 
-const textBound = 2 * 2 ** 29 + 1024,
-  diagnosticBound = 4 * 2 ** 29 + 1024;
+const textBound = 1024,
+  diagnosticBound = 1024;
 const limits = {
   pixels: 16 * 1024 * 1024,
   metadata: diagnosticBound + 128 * 1024,
@@ -205,7 +205,7 @@ it("admits actual extension/probe/RegExp controls before the original extension 
   });
   memory.dispose();
 });
-it("admits native renderer DOMString capacity before query and conversion", async () => {
+it("admits renderer text controls before query and conversion", async () => {
   const memory = new ManagedMemory({
     ...limits,
     metadata: 1024 + textBound - 1,
@@ -228,7 +228,9 @@ it("holds exact original renderer string through predicate and releases text/pro
       return 'Renderer "😀 SwiftShader';
     });
     expect(depthSoftwareRenderer(h.native)).toBe(true);
-    expect(memory.statistics.peak.metadata).toBe(textBound + 1024);
+    expect(memory.statistics.peak.metadata).toBe(
+      textBound + 1024 + 2 * 'Renderer "😀 SwiftShader'.length,
+    );
     empty(memory);
   });
   memory.dispose();
@@ -265,7 +267,7 @@ it("cleans actual renderer probe and text after extension, query and original St
   });
   memory.dispose();
 });
-it("admits complete original shader/program log and Error message before native diagnostic query", async () => {
+it("admits diagnostic controls before native diagnostic query", async () => {
   for (const shader of [false, true]) {
     const memory = new ManagedMemory({
       ...limits,
@@ -306,7 +308,9 @@ it("preserves original complete diagnostic/fallback/empty text and retains the a
       expect(memory.statistics.current.metadata).toBe(
         512 + 2 * expected.length,
       );
-      expect(memory.statistics.peak.metadata).toBe(diagnosticBound);
+      expect(memory.statistics.peak.metadata).toBe(
+        diagnosticBound + 4 * (log?.length ?? 32),
+      );
     });
     memory.dispose();
     expect(owner!.error).toBeUndefined();
@@ -410,4 +414,21 @@ it("retains actual diagnostic Error through original shader/link rejection and n
     memory.dispose();
     empty(memory);
   }
+});
+
+it("rejects oversized returned renderer text and native logs without retaining owners", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 4096 });
+  await withManagedMemory(memory, async () => {
+    const h = renderer("x".repeat(4096));
+    expect(() => depthSoftwareRenderer(h.native)).toThrow(/metadata/);
+    expect(h.gl.getParameter).toHaveBeenCalledTimes(1);
+    empty(memory);
+    const d = diagnostic("x".repeat(4096));
+    expect(() => depthProgramDiagnostic(d.native, {}, true)).toThrow(
+      /metadata/,
+    );
+    expect(d.gl.getShaderInfoLog).toHaveBeenCalledTimes(1);
+    empty(memory);
+  });
+  memory.dispose();
 });

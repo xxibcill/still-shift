@@ -5555,26 +5555,19 @@ decode-back pixel check.
 **Verification:** Format tests, alpha round-trip test, chunk-boundary parity test
 (frames on both sides of a boundary), cancellation during parallel export.
 
-**Final acceptance in progress (2026-10-09):** all delivery, statistics, caching
-and worker features are implemented in PR #49. The 48-case 8192×8192 matrix passes
-on both backends, all worker counts and cached/uncached paths. Two-minute proofs
-pass at 3.470× (`adfb9592`) and 3.437× (`24378343`) with identical encoded output,
-every decoded frame and audio. Final reference selection passes 21 units and 72
-production exports.
+**Final acceptance in progress (2026-10-09):** all CE15 features are implemented.
+Checkpoint `b2d7a6a1` passes the two-minute proof at **3.305×** with identical
+encoded/frame/audio output. Its full gate passes all CE15 suites, including all
+formats, parallel cleanup, dependency caches, frame-rate/audio and 8192² checks,
+then exposes an oversized native-text reservation in legacy depth initialization.
+The repair passes 44 focused tests, vertical/general exports and golden parity;
+depth/baseline checks and a final complete gate remain required.
 
-The complete gate exposed old frame-rate assertions and native Lab loading of
-CE15 Node constructor syntax. Those repairs now pass actual bundled Vite startup,
-71 focused tests, all 314 integrations, eight production memory exports and the
-expanded parallel/native/cache suite, including 24 live failures. A fresh speed
-proof and complete local `pnpm check` on the repaired checkpoint remain required;
-CE15 is not yet marked complete.
-
-Declared application allocations remain admitted through acknowledgement and
-publication; native browser/driver/FFmpeg RSS is measured separately. Historical
-implementation details and checkpoint-specific proof remain in the
-[delivery plan](./composition-ce15-plan.md),
-[completion evidence](./composition-ce15-completion-results.json) and linked
-records.
+Counters cover declared application allocations and retained native-returned
+text; native driver production and process RSS are separate. See the
+[delivery plan](./composition-ce15-plan.md) and
+[completion evidence](./composition-ce15-completion-results.json).
+After CE15 is complete and pushed, the owner requests a new branch for CE14.
 
 **Completion record:** _to be filled in._
 

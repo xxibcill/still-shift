@@ -196,13 +196,14 @@ it("cleans both original shaders and incomplete native program after original nu
   });
 });
 
-it("rejects unknown diagnostic capacity before native log production and clears incomplete native shader for retry", async () => {
+it("rejects oversized returned diagnostic text and clears incomplete native shader for retry", async () => {
   const memory = new ManagedMemory(limits);
   await withManagedMemory(memory, async () => {
     const { device, gl } = setup();
     gl.getShaderParameter.mockReturnValueOnce(false);
+    gl.getShaderInfoLog.mockReturnValueOnce("x".repeat(limits.metadata));
     expect(() => device.pass(body, null, [])).toThrow("metadata");
-    expect(gl.getShaderInfoLog).not.toHaveBeenCalled();
+    expect(gl.getShaderInfoLog).toHaveBeenCalledTimes(1);
     expect(gl.deleteShader).toHaveBeenCalledTimes(1);
     expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1024 });
     device.pass(body, null, []);
@@ -211,8 +212,8 @@ it("rejects unknown diagnostic capacity before native log production and clears 
   });
 });
 
-it("admits original native diagnostic and propagated Error before production and retains exact message until final allocator cleanup", async () => {
-  const memory = new ManagedMemory({ pixels: 65536, metadata: 2 ** 32 });
+it("admits actual returned native text and propagated Error before Error construction and retains exact message until final allocator cleanup", async () => {
+  const memory = new ManagedMemory(limits);
   await withManagedMemory(memory, async () => {
     const { device, gl } = setup();
     gl.getShaderParameter.mockReturnValueOnce(false);
@@ -228,7 +229,7 @@ it("admits original native diagnostic and propagated Error before production and
     expect((caught as Error).message).toBe(message);
     expect(gl.getShaderInfoLog).toHaveBeenCalledTimes(1);
     expect(gl.deleteShader).toHaveBeenCalledTimes(1);
-    expect(memory.statistics.peak.metadata).toBeGreaterThan(2 ** 31);
+    expect(memory.statistics.peak.metadata).toBeLessThan(16384);
     expect(memory.statistics.current.metadata).toBe(
       1024 + 512 + 2 * message.length,
     );
@@ -241,7 +242,7 @@ it("admits original native diagnostic and propagated Error before production and
 });
 
 it("preserves original native link diagnostic and deletes the actual linked handle and both shaders once", async () => {
-  const memory = new ManagedMemory({ pixels: 65536, metadata: 2 ** 32 });
+  const memory = new ManagedMemory(limits);
   await withManagedMemory(memory, async () => {
     const { device, gl } = setup();
     gl.getProgramParameter.mockReturnValueOnce(false);

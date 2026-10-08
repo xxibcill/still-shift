@@ -29,9 +29,9 @@ export function depthSoftwareRenderer(gl: WebGL2RenderingContext) {
     if (!info) return info;
     phase.test = /SwiftShader/;
     const text = allocateRenderMetadata<{ value?: string | undefined }>(
-      // The extension returns DOMString; String(string) keeps the same value.
-      // The pinned 64-bit V8 profile permits fewer than 2^29 UTF16 units.
-      2 * 2 ** 29 + 1024,
+      // Native-returned DOMString storage is outside application admission until
+      // returned; charge its actual retained size before consuming it.
+      1024,
       () => ({}),
       false,
       (value) => {
@@ -40,6 +40,7 @@ export function depthSoftwareRenderer(gl: WebGL2RenderingContext) {
     );
     try {
       text.value = String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL));
+      resizeRenderMetadata(text, 1024 + 2 * text.value.length);
       return phase.test.test(text.value);
     } finally {
       if (phase.managed) releaseRenderMetadata(text);
@@ -61,7 +62,7 @@ export function depthProgramDiagnostic(
     log: string | null | undefined;
     error: Error | undefined;
   }>(
-    4 * 2 ** 29 + 1024,
+    1024,
     () => ({ log: undefined, error: undefined }),
     true,
     (value) => {
@@ -72,6 +73,9 @@ export function depthProgramDiagnostic(
     phase.log = shader
       ? gl.getShaderInfoLog(handle)
       : gl.getProgramInfoLog(handle);
+    // The driver owns native query production. Admit retained text and the
+    // application Error before constructing it; never reserve V8's maximum string.
+    resizeRenderMetadata(phase, 1024 + 4 * (phase.log?.length ?? 32));
     phase.error = new Error(
       phase.log ??
         (shader

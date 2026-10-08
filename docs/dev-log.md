@@ -43,16 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE15 final acceptance in progress (2026-10-09):** PR #49's Node helpers now
-  load through the pinned runtime's bundled Lab configuration. Explicit fields
-  and narrow allocator imports preserve the original execution/lifetime behavior.
-  71 focused tests, all 314 integration tests, eight production memory exports and
-  expanded parallel/native/cache/24 cleanup failures pass. Two earlier full-gate
-  attempts stopped at obsolete frame-rate assertions and native loader syntax;
-  both are recorded. Repeat the speed proof and complete the full local gate on
-  this repaired immutable checkpoint. Historical area and 3.437× proofs remain
-  recorded with their exact code checkpoints.
+- **CE15 final acceptance in progress (2026-10-09):** checkpoint `b2d7a6a1`
+  passes a 3.305× two-minute speed proof with identical encoded/frame/audio output.
+  The full gate passes all CE15 browser checks but stops at legacy depth startup:
+  a short native renderer string incorrectly reserved 1 GiB. The repair uses
+  actual returned-text admission, preserving queries, diagnostics and cleanup.
+  44 focused tests, vertical/general exports and 30 golden comparisons pass;
+  depth acceptance and frozen baselines are running before the final full gate.
   [Completion evidence](./composition-ce15-completion-results.json).
+- **Owner continuation (2026-10-09):** finish CE15, commit and push, then create
+  a new branch and complete CE14 (mesh warp and puppet pins), following the
+  approved execution sequence. Make meaningful checkpoint commits and pushes.
+  This is active work; do not schedule it.
 
 - **PR #48 third review repairs verified (2026-10-08):** both P2 findings
   posted inline on `1dae23c8` are fixed. Cache identity includes OS/architecture
@@ -83,6 +85,18 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE15 native driver text admission repair
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `b2d7a6a1`.
+- **Done:** charge actual native-returned renderer/log text and application Error
+  capacity, replacing impossible maximum-V8-string reservations.
+- **Results:** 44 focused tests, build/lint, vertical/general exports and 30 golden
+  comparisons pass. Depth acceptance and frozen baselines are still running.
+- **Rejected:** increasing worker quotas to accommodate theoretical 1–2 GiB
+  diagnostic strings; native production and application retention are distinct.
+- **Next:** final CE15 gate/commit/push, then a new CE14 branch, as requested.
+- **Record:** [completion evidence](./composition-ce15-completion-results.json).
 
 ### 2026-10-09 — CE15 native Lab loader compatibility
 

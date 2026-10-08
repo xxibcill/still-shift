@@ -87,7 +87,7 @@ function depthTextHarness(software = true) {
   };
 }
 
-const limits = { pixels: 16 * 1024 * 1024, metadata: 4 * 2 ** 29 + 128 * 1024 };
+const limits = { pixels: 16 * 1024 * 1024, metadata: 128 * 1024 };
 type Work = {
   shaders: (WebGLShader | null)[];
   codes?: [number, string][];

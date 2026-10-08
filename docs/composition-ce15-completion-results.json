@@ -35,8 +35,8 @@
     }
   },
   "remaining": [
-    "repeat authentic speed acceptance on the native-loader repair checkpoint",
-    "complete required local pnpm check on the immutable native-loader repair checkpoint"
+    "finish native text focused depth and baseline checks",
+    "complete required local pnpm check on the final repair checkpoint"
   ],
   "productionMemory": {
     "status": "production browser admission, bounded Node result transfer and complete 48-case area matrix passed",
@@ -175,6 +175,26 @@
       "speedup": 3.4369701827350774,
       "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-vWH8VX",
       "logSha256": "caf64f3cfa0503f1c81f0c2ff39a14049659c7a685b616ee9bc598e0a4a6b0fd"
+    },
+    "speedBeforeNativeTextRepair": {
+      "name": "speed",
+      "command": "pnpm benchmark:composition-speed",
+      "status": "passed",
+      "startedAt": "2026-10-09T01:02:08+0700",
+      "log": "/private/tmp/ce15-b2d7a6a1-speed.log",
+      "exitCode": 0,
+      "elapsedSeconds": 582.1183191250311,
+      "finishedAt": "2026-10-09T01:11:50+0700",
+      "checkpoint": "b2d7a6a1175c3d7ad89280e8e736aab0d1eb0348",
+      "speedup": 3.3050290505121662,
+      "oneWorkerMs": 440402.565833,
+      "fourWorkersMs": 133252.25258300005,
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-vryzYZ",
+      "equality": [
+        "complete encoded file",
+        "all decoded RGBA frames",
+        "complete decoded PCM"
+      ]
     }
   },
   "referenceCheckpoint": {
@@ -251,6 +271,34 @@
         "integrationSetupSkipped": 29
       },
       "repair": "explicit constructor fields and narrow allocator/context imports; 61-fps range rejection fixtures; real bundled config startup and all integrations pass"
+    },
+    {
+      "name": "gate",
+      "command": "pnpm check",
+      "status": "failed",
+      "startedAt": "2026-10-09T01:11:50+0700",
+      "log": "/private/tmp/ce15-b2d7a6a1-gate.log",
+      "exitCode": 1,
+      "elapsedSeconds": 1389.4984891669592,
+      "finishedAt": "2026-10-09T01:35:00+0700",
+      "checkpoint": "b2d7a6a1175c3d7ad89280e8e736aab0d1eb0348",
+      "failure": "legacy vertical-image depth initialization reserved 1 GiB for a short native renderer string, exceeding normal metadata admission",
+      "repair": "admit small native query holders, then actual returned text and application Error capacity; do not raise worker quotas",
+      "passedBeforeFailure": [
+        "3555 unit tests",
+        "83 runtime tests",
+        "314 integrations",
+        "depth Python",
+        "soundtrack/media/alpha",
+        "28 output exports",
+        "surfaces",
+        "expanded parallel and 24 failures",
+        "8 production memory exports",
+        "72 dependency-cache exports",
+        "105 frame-rate/audio exports",
+        "8 maximum-area exports",
+        "depth-motion browser"
+      ]
     }
   ],
   "nativeLoaderCheckpoint": {
@@ -286,6 +334,31 @@
       "/private/tmp/ce15-native-loader-integration.log": "d11b9a2b09f812908ee205cd8626245937270f67f63ee506bbbebaf49df8866a",
       "/private/tmp/ce15-native-loader-browser-memory.log": "ce8219ea20f44b51608c111d31b8da78796f779825d529b21e272c36bab70720",
       "/private/tmp/ce15-native-loader-parallel.log": "a997632ac82a7e4f8c38ef9cf90fc634d8c3f37cbe5f3365f5e683028be0b7bc"
+    }
+  },
+  "nativeTextCheckpoint": {
+    "parent": "b2d7a6a1175c3d7ad89280e8e736aab0d1eb0348",
+    "status": "focused verification in progress",
+    "scope": "native driver production is outside application admission; returned text is charged before application consumption/message construction",
+    "focusedTests": 44,
+    "passed": [
+      "build",
+      "changed-file lint",
+      "vertical-image: 1080x1920, 90 frames",
+      "export: 150 frames, transports, fallback, cleanup",
+      "golden: 30 comparisons, no baseline changes"
+    ],
+    "remaining": [
+      "composition depth acceptance",
+      "frozen composition baselines",
+      "final complete gate"
+    ],
+    "logs": {
+      "/private/tmp/ce15-native-text-unit.log": "46925969a8dd755335c01b9d2eb1e18246008a070f6ae30a392681f39fc3b00a",
+      "/private/tmp/ce15-native-text-static.log": "a7b7f717ddde363a75de3369b8e1fb6be1b450099a8c470912751ab671998849",
+      "/private/tmp/ce15-native-text-vertical.log": "b5e0ffd98f3ab41ff18f02619834cd04476dcda38708d683214726b5257401db",
+      "/private/tmp/ce15-native-text-export.log": "6c1ea6efb09a190c6e1fc1054b7cdb6f02c7e99e03d1f4bcef1fb5db264805eb",
+      "/private/tmp/ce15-native-text-golden.log": "9db239bc46b8d8bc93a50631b9eb1be7045cfe261512a8efca67842233721b91"
     }
   }
 }

@@ -2517,12 +2517,23 @@ checks pass 71 tests; eight production memory exports and the expanded parallel
 suite (including all 24 live failures) also pass. Initialization/import identity
 review found no concrete regression.
 
+## Native text checkpoint — 2026-10-09
+
+Checkpoint `b2d7a6a1` passes the authentic speed proof at **3.305×** (440.403 →
+133.252 seconds) with identical encoded/frame/audio output. Its complete gate
+passes all CE15 suites, then finds a legacy depth initialization regression:
+reserving the theoretical V8 maximum for a native renderer string exceeds normal
+worker admission. Small query holders now charge actual returned text before
+application consumption/message construction. Native driver production remains
+outside declared application admission; worker quotas are unchanged.
+
+The repair passes 44 focused tests, vertical/general exports and 30 golden
+comparisons without baseline changes. Depth acceptance and frozen baselines are
+running. No complete gate is claimed yet.
+
 ## Remaining acceptance
 
-Repeat the authentic two-minute speed proof, then run the complete pinned local
-`pnpm check` on the repaired immutable checkpoint. Previous speed proofs remain
-checkpoint-specific evidence; failed full-gate attempts are retained in
-[completion results](./composition-ce15-completion-results.json).
-
-GitHub Actions remain disabled. CE14, CE5-X/Q9, CE6-P and separate owner work are
-outside this completion task. No milestone or PR is merged by this task.
+Finish focused depth/baseline verification, commit the repaired checkpoint and
+complete the required pinned local `pnpm check`. Preserve failed gate evidence.
+After CE15 completion and push, continue on a new CE14 branch under the owner's
+2026-10-09 instruction. GitHub Actions remain prohibited; no work is scheduled.
