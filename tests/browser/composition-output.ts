@@ -250,6 +250,19 @@ for (const backend of ["canvas2d", "webgl2"] as const)
         cacheDirectory: join(directory, "media-cache"),
       });
       const pixels = verifyPixels(outputPath, profile);
+      const stats = result.metrics.compositionStatistics;
+      assert.ok(stats, "ordinary composition exports include statistics");
+      assert.equal(stats.frameCount, result.metrics.frameCount);
+      assert.equal(stats.cacheEnabled, false);
+      assert.equal(stats.cacheHits, 0);
+      assert.ok(stats.byLayerType.length > 0);
+      assert.ok(
+        stats.byLayerType.every(
+          (row) =>
+            row.submissionWallMsPerOutputFrame ===
+            row.submissionWallMs / stats.frameCount,
+        ),
+      );
       const previewKey = `${backend}/${format}`;
       if (!previewChecksums.has(previewKey)) {
         const previewPath = join(

@@ -1,0 +1,38 @@
+{
+  "milestone": "CE15",
+  "status": "in-progress",
+  "base": "671caf2f4c34b58189a167b52fbbe2ddbea8e2e3",
+  "date": "2026-10-08",
+  "statistics": {
+    "status": "focused checks passed; parallel shared aggregation follow-up pending",
+    "unitTests": 12,
+    "static": ["build", "lint changed files", "check:boundaries"],
+    "browser": [
+      {
+        "command": "pnpm test:browser:composition-output",
+        "status": "passed",
+        "log": "/private/tmp/ce15-completion-statistics-output.log",
+        "formatBackendTransportCases": 28
+      },
+      {
+        "command": "pnpm test:browser:composition-webgl-export",
+        "status": "passed",
+        "log": "/private/tmp/ce15-completion-statistics-legacy.log",
+        "fixtures": [
+          "ce6/echo",
+          "ce6/generators",
+          "ce7/exposure",
+          "ce4a/providers"
+        ]
+      }
+    ],
+    "scope": "synchronous-submission-wall-time, not GPU completion time"
+  },
+  "remaining": [
+    "production aggregate memory admission and lifetime completion",
+    "full static layer/precomp caching coverage",
+    "full area/fps/worker acceptance",
+    "authentic >=120-second >=3x four-worker speed proof with identical output",
+    "final implementation review and required complete local pnpm check"
+  ]
+}

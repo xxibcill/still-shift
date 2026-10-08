@@ -14,7 +14,10 @@ import type { ExportableScene } from "./export-worker.ts";
 import type { FrameTransport } from "./transport.ts";
 import { captureFrame, withManagedFrame } from "./composition-frame-capture.ts";
 
+import type { CompositionWorkerStatistics } from "./composition-export-statistics.ts";
+
 export type BrowserExportResult = {
+  compositionStatistics?: CompositionWorkerStatistics;
   frameRenderAverageMs: number;
   frameRenderP95Ms: number;
   frameUploadAverageMs: number;
@@ -165,7 +168,7 @@ const exportComposition = async (
       : createCompositionPreview
   )(canvas, scene.composition, resources, {
     backend: scene.backend ?? "canvas2d",
-    collectStatistics: output?.work !== undefined,
+    collectStatistics: true,
     ...(output ? { preserveAlpha: output.preserveAlpha } : {}),
     ...(output?.work?.surfaceCache
       ? {
@@ -222,6 +225,14 @@ const exportComposition = async (
       : undefined,
     output?.work,
   );
+  if (!renderStatistics)
+    throw Error("Composition export omitted submission statistics");
+  result.compositionStatistics = {
+    render: renderStatistics,
+    ...(cacheStatistics ? { surfaces: cacheStatistics } : {}),
+    ...(sourceStatistics ? { sources: sourceStatistics } : {}),
+    ...(rootStatistics ? { roots: rootStatistics } : {}),
+  };
   if (result.work && cacheStatistics)
     result.work.cacheStatistics = cacheStatistics;
   if (result.work && sourceStatistics)

@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE15 completion resumed (2026-10-08):** isolated worktree starts from PR #49
+  head `671caf2f`. Ordinary exports now report measured per-type submission times
+  and explicit cache state/hits, sharing aggregation with parallel exports. The
+  output-format and legacy WebGL export regressions pass; production memory,
+  full static coverage, area acceptance, authentic speed proof and final gate
+  remain in flight. [Completion evidence](./composition-ce15-completion-results.json).
+
 - **PR #49 conflict repair (2026-10-08):** main `118927de` is integrated with
   CE15 `8faae4be` in an isolated worktree. Fourteen conflicts are resolved;
   3,524 units, affected integrations/browser/exports and frozen subsets pass. CE15 milestone ownership/aggregate/speed
@@ -167,6 +174,18 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-08 — CE15 ordinary export statistics
+
+- **Done:** collect and publish composition statistics for ordinary exports, with
+  per-output-frame exclusive submission times, explicit cache state/hit semantics
+  and detailed worker snapshots. Parallel and ordinary exports share aggregation.
+- **Verification:** 12 focused tests, build/lint/boundaries, all 28 format cases
+  and legacy WebGL export regressions pass. Existing byte/pixel/audio oracles hold.
+  Installed current frozen-lockfile dependencies after old snapshot lacked clipper2-ts.
+- **Next:** production memory admission, complete caching/area coverage, speed proof
+  and final immutable local gate. This is focused evidence, not CE15 acceptance.
+- **Record:** [Completion evidence](./composition-ce15-completion-results.json).
 
 ### 2026-10-08 — PR #49 merge-conflict resolution
 

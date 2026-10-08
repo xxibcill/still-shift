@@ -116,6 +116,19 @@ try {
     const first = JSON.parse(output) as CompositionRenderResult;
     assert.equal(first.rendererVersion, COMPOSITION_WEBGL_RENDERER_VERSION);
     assert.match(first.metrics.gpuRenderer, /SwiftShader/);
+    const stats = first.metrics.compositionStatistics;
+    assert.ok(stats, "ordinary composition exports include statistics");
+    assert.equal(stats.frameCount, first.metrics.frameCount);
+    assert.equal(stats.cacheEnabled, false);
+    assert.equal(stats.cacheHits, 0);
+    assert.ok(stats.byLayerType.length > 0);
+    assert.ok(
+      stats.byLayerType.every(
+        (row) =>
+          row.submissionWallMsPerOutputFrame ===
+          row.submissionWallMs / stats.frameCount,
+      ),
+    );
     const manifest = JSON.parse(
       await readFile(first.sceneManifestPath, "utf8"),
     );

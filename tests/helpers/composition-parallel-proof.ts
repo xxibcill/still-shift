@@ -143,6 +143,13 @@ export function verifyParallelMetrics(
     }
   }
   const submission = work.submissionStatistics;
+  assert.ok(metrics.compositionStatistics);
+  assert.deepEqual(
+    metrics.compositionStatistics.byLayerType,
+    submission.byLayerType,
+  );
+  assert.equal(metrics.compositionStatistics.cacheEnabled, cacheStatic);
+  assert.equal(metrics.compositionStatistics.frameCount, metrics.frameCount);
   assert.equal(submission.scope, "synchronous-submission-wall-time");
   assert.ok(submission.byLayerType.length > 0);
   for (const row of submission.byLayerType) {

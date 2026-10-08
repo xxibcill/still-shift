@@ -47,6 +47,7 @@ import {
 import { compositionOutputInput } from "./composition-output-input.ts";
 import { prepareCompositionOutputArtifacts } from "./composition-output-artifacts.ts";
 import { verifyCompositionOutputAudio } from "./composition-output-audio.ts";
+import { summarizeCompositionStatistics } from "./composition-export-statistics.ts";
 import { CompositionSurfaceStore } from "./composition-surface-store.ts";
 import { CompositionSurfaceBroker } from "./composition-surface-broker.ts";
 import { CompositionOrderedFrames } from "./composition-ordered-frames.ts";
@@ -158,6 +159,7 @@ export type ExportMetrics = {
   ffmpegVersion: string;
   ffmpegCodec: string;
   frameTransport: FrameTransport;
+  compositionStatistics?: ReturnType<typeof summarizeCompositionStatistics>;
   work?: {
     version: "composition-render-work-1";
     workers: number;
@@ -1091,6 +1093,7 @@ export const exportScene = async (
     request.signal?.throwIfAborted();
     encodePathStart = performance.now();
     let browserResult: BrowserExportResult;
+    let compositionStatistics: ExportMetrics["compositionStatistics"];
     if (workOptions) {
       const rendererIds = workers.flatMap(
         (worker) => worker.rendererProcessIds,
@@ -1131,29 +1134,14 @@ export const exportScene = async (
       orderedFrames!.finish();
       frameState.nextIndex = orderedFrames!.statistics.deliveredFrames;
       browserResult = summarizeExportWorkers(results);
-      const submissionTypes = new Map<
-        string,
-        { phase: string; type: string; calls: number; submissionWallMs: number }
-      >();
-      for (const result of results) {
-        const measured = result.work?.renderStatistics;
-        if (!measured || measured.scope !== "synchronous-submission-wall-time")
-          throw Error(
-            "Composition worker omitted actual submission statistics",
-          );
-        for (const row of measured.byLayerType) {
-          const key = JSON.stringify([row.phase, row.type]);
-          const combined = submissionTypes.get(key) ?? {
-            phase: row.phase,
-            type: row.type,
-            calls: 0,
-            submissionWallMs: 0,
-          };
-          combined.calls += row.calls;
-          combined.submissionWallMs += row.submissionWallMs;
-          submissionTypes.set(key, combined);
-        }
-      }
+      compositionStatistics = summarizeCompositionStatistics(
+        results.map((result) => {
+          if (!result.compositionStatistics)
+            throw Error("Composition worker omitted statistics");
+          return result.compositionStatistics;
+        }),
+        scene.timeline.frameCount,
+      );
       workMetrics = {
         version: "composition-render-work-1",
         workers: workOptions.workers,
@@ -1164,15 +1152,8 @@ export const exportScene = async (
         ...(surfaceStore ? { surfaceStore: surfaceStore.statistics } : {}),
         submissionStatistics: {
           scope: "synchronous-submission-wall-time",
-          totalSubmissionWallMs: [...submissionTypes.values()].reduce(
-            (sum, row) => sum + row.submissionWallMs,
-            0,
-          ),
-          byLayerType: [...submissionTypes.values()].map((row) => ({
-            ...row,
-            submissionWallMsPerOutputFrame:
-              row.submissionWallMs / scene.timeline.frameCount,
-          })),
+          totalSubmissionWallMs: compositionStatistics.totalSubmissionWallMs,
+          byLayerType: compositionStatistics.byLayerType,
         },
         workersDetail: workers.map((worker, index) => {
           const result = results[index]!.work;
@@ -1200,6 +1181,11 @@ export const exportScene = async (
     if (frameState.error) throw frameState.error;
     if (frameState.nextIndex !== scene.timeline.frameCount)
       throw new Error("Not all frames reached the encoder");
+    if (!compositionStatistics && browserResult.compositionStatistics)
+      compositionStatistics = summarizeCompositionStatistics(
+        [browserResult.compositionStatistics],
+        scene.timeline.frameCount,
+      );
     if (outputInput) await outputInput.finish();
     else encoder.stdin?.end();
     await encoderClosed;
@@ -1344,6 +1330,7 @@ export const exportScene = async (
       ).join(" "),
       frameTransport: transport,
       ...(workMetrics ? { work: workMetrics } : {}),
+      ...(compositionStatistics ? { compositionStatistics } : {}),
       ...(audioInput
         ? {
             audio: {
