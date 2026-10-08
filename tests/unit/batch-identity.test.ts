@@ -40,7 +40,7 @@ describe("batch evidence identity", () => {
     const identity = () => new WebGLAnimationEngine().requestIdentity(request);
     const baseline = identity();
     expect(baseline).toBe(
-      "sha256:ee67818f0cc2f3c583b3e771b68c2b9893b574593f6dfeb1a2ba30b4d9c3051f",
+      "sha256:72abb1eb4e41d13eac9166e5eb33b18c3835f2c921f936a0d27980c350ffc8ec",
     );
     expect(identity()).toBe(baseline);
 

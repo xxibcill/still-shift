@@ -1,3 +1,4 @@
+import { compileFamilyTimeline } from "./timeline.ts";
 import type { IllustratedScene } from "../../prepared-scene.ts";
 import type { Images } from "./illustrated-assets.ts";
 import type { CompositionResources } from "../render/renderer.ts";
@@ -38,7 +39,9 @@ export function prepareIllustratedComposition(
       return {
         scene,
         typography,
-        composition: compiledStoryToComposition(scene),
+        ...compileFamilyTimeline(scene.frameCount, (window) =>
+          compiledStoryToComposition(scene, {}, window),
+        ),
       };
     }
     if (input.schemaVersion === "commerce-scene-1") {
@@ -52,7 +55,9 @@ export function prepareIllustratedComposition(
         typography: scene.typography
           ? prepareTypography(scene, fonts)
           : undefined,
-        composition: compiledCommerceToComposition(scene, { textLayout }),
+        ...compileFamilyTimeline(scene.frameCount, (window) =>
+          compiledCommerceToComposition(scene, { textLayout }, window),
+        ),
       };
     }
     return {
@@ -66,10 +71,14 @@ export function prepareIllustratedComposition(
   })();
   // Styles and animated font axes were verified and loaded by asset preparation.
   // Match variants by their immutable source bytes, preserving provider isolation.
+  const documents =
+    "windows" in prepared && prepared.windows
+      ? prepared.windows.map((window) => window.composition)
+      : [prepared.composition];
   const providerFonts: NonNullable<CompositionResources["providerFonts"]> =
     new Map(
-      [prepared.composition, ...(prepared.composition.precomps ?? [])].flatMap(
-        (scope, index) =>
+      documents.flatMap((composition) =>
+        [composition, ...(composition.precomps ?? [])].flatMap((scope, index) =>
           scope.layers.flatMap((layer) => {
             if (layer.type !== "provider") return [];
             const declared = new Set(layer.assets ?? []);
@@ -90,6 +99,7 @@ export function prepareIllustratedComposition(
               ] as const,
             ];
           }),
+        ),
       ),
     );
   const resources: CompositionResources = {
@@ -102,6 +112,7 @@ export function prepareIllustratedComposition(
   };
   return {
     composition: prepared.composition,
+    ...("windows" in prepared ? { windows: prepared.windows } : {}),
     resources,
     typography: prepared.typography,
     resolvedTextSizes: Object.fromEntries(

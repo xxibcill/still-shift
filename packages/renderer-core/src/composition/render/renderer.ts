@@ -236,6 +236,8 @@ export function createCompositionPreview(
     createCanvas?: (width: number, height: number) => HTMLCanvasElement;
     providers?: readonly CanvasContentProvider[];
     coverageSeverity?: "error" | "warning";
+    /** Exact integer frames owned by an independently bounded family timeline window. */
+    validationFrames?: readonly number[];
   } = {},
 ): CompositionPreview {
   const validation = validateComposition(composition);
@@ -269,12 +271,35 @@ export function createCompositionPreview(
     context.drawImage(image, 0, 0);
     return context.getImageData(0, 0, probe.width, probe.height);
   };
-  validateStoryCompositionCoverage(composition, readAssetPixels);
+  validateStoryCompositionCoverage(
+    composition,
+    readAssetPixels,
+    options.validationFrames,
+  );
   const text = prepareCompositionText(
     composition,
     resources.fonts,
     ctx,
-    undefined,
+    options.validationFrames
+      ? Object.fromEntries(
+          composition.layers.flatMap((layer) =>
+            layer.type === "text"
+              ? [
+                  [
+                    layer.id,
+                    [
+                      ...new Set(
+                        (layer.sampleTimes ?? options.validationFrames!).map(
+                          Math.round,
+                        ),
+                      ),
+                    ],
+                  ],
+                ]
+              : [],
+          ),
+        )
+      : undefined,
     resources.textProbe,
   );
   const drawProvider = prepareCompositionProviders(
@@ -347,6 +372,7 @@ export function createCompositionPreview(
         { textBounds: text.bounds },
         options.coverageSeverity ?? "error",
         cinematicRenderedCoverageRequirements(composition),
+        options.validationFrames,
       );
     } catch (error) {
       backend.dispose();

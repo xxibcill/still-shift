@@ -79,7 +79,10 @@ export function evaluateComponentAnnotation(
 }
 
 /** Validate the same exposure windows the commerce renderer samples; direct seeks validate again. */
-export function validateComponentAnnotations(scene: Scene) {
+export function validateComponentAnnotations(
+  scene: Scene,
+  window: readonly [number, number] = [0, scene.frameCount],
+) {
   const paths = scene.nodes.filter(
     (n): n is PreparedPath =>
       n.type === "path" &&
@@ -99,7 +102,7 @@ export function validateComponentAnnotations(scene: Scene) {
       e.active ? [e.active.start, e.active.end] : [],
     ),
   ];
-  for (let frame = 0; frame < scene.frameCount; frame++) {
+  for (let frame = window[0]; frame < window[1]; frame++) {
     const lower = Math.max(...cuts.filter((c) => c <= frame)),
       upper = Math.min(...cuts.filter((c) => c > frame));
     const times = [

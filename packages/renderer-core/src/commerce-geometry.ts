@@ -211,7 +211,10 @@ export function evaluateAttachedPath(
 }
 
 /** Check every displayed frame plus exposure samples before enabling preview/export. Runtime checks cover arbitrary seeks. */
-export function validateAttachedPaths(scene: CommerceRenderScene) {
+export function validateAttachedPaths(
+  scene: CommerceRenderScene,
+  window: readonly [number, number] = [0, scene.frameCount],
+) {
   if (!scene.attachments?.length) return;
   const paths = scene.nodes.filter(
     (node): node is Extract<PreparedNode, { type: "path" }> =>
@@ -227,7 +230,7 @@ export function validateAttachedPaths(scene: CommerceRenderScene) {
       e.active ? [e.active.start, e.active.end] : [],
     ),
   ];
-  for (let frame = 0; frame < scene.frameCount; frame++) {
+  for (let frame = window[0]; frame < window[1]; frame++) {
     const lower = Math.max(...cuts.filter((c) => c <= frame)),
       upper = Math.min(...cuts.filter((c) => c > frame));
     const samples = blur

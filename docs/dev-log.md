@@ -43,13 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #47 review repairs in progress (2026-10-08):** isolated
-  `codex/pr47-review-fixes` from reviewed `ed4034c`. All six findings are posted
-  inline. Boxed/container text and GPU-only image-plane preflight are repaired;
-  each passes 19 focused units, quality passes 118 affected units, and text passes
-  50 native/oracle pixel/seek comparisons on both backends. Lab source ownership and pending seek races also pass the complete Lab session browser suite. Inherited follower lookups are guarded and three valid prototype-named nodes pass all-frame state parity. The long-scene repair and final focused browser/export/frozen-baseline verification remain.
-  One finding per commit; one final normal push. Owner CE15 checkout is untouched;
-  no new full repository gate is claimed. [Evidence](./pr-47-fix-results.json).
+- **PR #47 review repairs verified (2026-10-08):** isolated
+  `codex/pr47-review-fixes` from reviewed `ed4034c`. Six inline findings are fixed
+  in six separate commits: boxed text, image-plane preflight, quality clocks,
+  Lab source races, own follower lookup and bounded long native timelines.
+  Fast checks pass 2,487 units; 46 runtime / 65 affected integration tests,
+  affected Lab/depth/exposure/export browsers, long-scene selected raw/seek checks
+  and complete boxed-text delivery pass. All 176 defaults and 176 frozen items /
+  36,061 frames pass without regeneration. Canvas timing stays below 1.25×;
+  WebGL timing remains CE6-P deferred. Delivery uses one final normal push after
+  all six commits; owner review/merge remains. Owner CE15 checkout is untouched; no full
+  repository gate is claimed. [Evidence](./pr-47-fix-results.json).
 
 - **PR #47 conflicts resolved and locally verified (2026-10-08):** isolated
   `codex/pr47-conflict-resolution` integrates `main` at `8cc7b14f` into CE4d
@@ -971,20 +975,17 @@ _Last updated 2026-10-08 by Codex for PR #47 conflict resolution._
 ### 2026-10-08 — PR #47 review repairs
 
 - **Agent / branch:** Codex on isolated `codex/pr47-review-fixes`, from `ed4034c`.
-- **Scope:** six posted inline review findings, one finding per commit.
-- **Done:** boxed/container legacy text uses existing bounded local text providers;
-  pure 2D image planes preflight backend/storage capability before painting,
-  including every shutter sample. Quality signatures now include evaluated local
-  image motion without suppressing actual held tails. Adapter/renderer identities
-  invalidate caches. Lab pending preparation now retains source ownership while
-  adopting the latest renderer controls and seek. Only own legacy follower bindings
-  become constraints; valid prototype-named nodes retain all-frame parity.
-- **Results:** text and image-plane preflight each pass 19 focused units; build
-  and 50 sampled native/oracle frames with
-  reverse seeks pass; Canvas delta 0 and WebGL delta 1. Independent source review
-  has no remaining finding in this repair. No full repository gate was run.
-- **Open / next:** finish long-scene repair, scoped browser/export/frozen-baseline checks,
-  then push all six commits once. No owner decision blocks these authorized fixes.
+- **Scope:** six posted inline review findings, one finding per commit, one final push.
+- **Done:** bounded boxed/container text; GPU image-plane preflight; actual local
+  quality clocks; Lab source ownership and pending seeks; own follower bindings;
+  long story/commerce timelines split into bounded native windows with global clocks.
+- **Results:** 2,487 units / 46 runtime / 65 affected integrations pass, as do
+  affected browsers, selected long-scene raw/seek/disposal checks and complete
+  boxed-text delivery. All 176 defaults and frozen items / 36,061 frames pass.
+  Canvas maximum 1.0532× is below unchanged 1.25×; no full repository gate was run.
+- **Rejected / do not repeat:** initial fast check exposed the expected changed
+  batch identity hash; corrected that snapshot only. Frozen visual files are exact.
+- **Open / next:** owner review/merge of PR #47; delivery uses one final normal push.
 - **Records:** [repair evidence](./pr-47-fix-results.json),
   [inline review](https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5452665143).
 
