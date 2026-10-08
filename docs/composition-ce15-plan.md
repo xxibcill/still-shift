@@ -1423,6 +1423,29 @@ depth program/shader/renderer text/diagnostics, effects/plugins/provider/graph/f
 common/registry/ledger/Node, production/aggregate and final gates remain pending.
 [Evidence](./composition-ce15-depth-draw-metadata-results.json).
 
+## Accepted depth renderer/diagnostic text checkpoint — 2026-10-08
+
+Before original extension query admit actual probe/RegExp/extension refs at 1024.
+Before native renderer DOMString/String factory admit 2*2^29+1024 using the pinned
+V8 UTF16 ceiling; keep actual text through original SwiftShader predicate, then
+drop text/probe refs. Before native shader/program log/Error factory admit
+4*2^29+1024; preserve original fallback/null/empty messages, capture actual returned
+Error, drop separate log ref, shrink to 512+2\*message.length and retain through
+scratch/scope exit until allocator cleanup. Original native text/factory null cleans
+selected owners and permits retry. Original native handle cleanup order stays.
+
+Two whole original initialization traces stay exact: 31 software / 37 hardware
+calls, complete shader and uploaded mesh hashes. Build/lint/boundaries, 468 focused /
+twelve new tests, complete audit 144/8,000, 96 RPC snapshots, native probes,
+WebGL/providers and 69 typography tests pass; glyph 1.416013× meets unchanged
+1.5 maximum. All 64 exports / 768 bodies/frames match `7773c8b`; owner documentation
+commit `633aba3` is preserved. Only depth pixel-fixture metadata headroom increases
+to 2\*2^29+128 KiB; original 16 MiB pixels/native sizes/protected source/root/PNG
+quotas remain unchanged. Class/caller/program/shader/native controls, sampling query
+payload, effects/provider/graph/font/common/registry/ledger/Node, production/
+aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-depth-text-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

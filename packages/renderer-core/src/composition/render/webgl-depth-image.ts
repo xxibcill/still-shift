@@ -14,6 +14,10 @@ import { passageError } from "../../passage-diagnostics.ts";
 import type { CanvasImageResources } from "./canvas2d.ts";
 import type { DepthImageContent, ImageContent } from "./graph.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
+import {
+  depthSoftwareRenderer,
+  depthProgramDiagnostic,
+} from "./webgl-depth-text.ts";
 
 export const DEPTH_IMAGE_SHADER_VERSION = "composition-image-plane-0.4.0";
 const IMAGE_PLANE_BYTE_LIMIT = 128 * 1024 * 1024;
@@ -628,12 +632,7 @@ export class WebglDepthImages {
   private initialize() {
     if (this.program) return;
     const gl = this.device.gl;
-    const rendererInfo = gl.getExtension("WEBGL_debug_renderer_info");
-    const software =
-      rendererInfo &&
-      /SwiftShader/.test(
-        String(gl.getParameter(rendererInfo.UNMASKED_RENDERER_WEBGL)),
-      );
+    const software = depthSoftwareRenderer(gl);
     const shaders: WebGLShader[] = [];
     const program = gl.createProgram()!;
     try {
@@ -646,16 +645,12 @@ export class WebglDepthImages {
         gl.shaderSource(shader, code);
         gl.compileShader(shader);
         if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-          throw new Error(
-            gl.getShaderInfoLog(shader) ?? "Depth shader compilation failed",
-          );
+          throw depthProgramDiagnostic(gl, shader, true);
         gl.attachShader(program, shader);
       }
       gl.linkProgram(program);
       if (!gl.getProgramParameter(program, gl.LINK_STATUS))
-        throw new Error(
-          gl.getProgramInfoLog(program) ?? "Depth shader link failed",
-        );
+        throw depthProgramDiagnostic(gl, program, false);
       this.program = program;
       this.vao = gl.createVertexArray()!;
       gl.bindVertexArray(this.vao);
