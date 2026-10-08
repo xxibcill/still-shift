@@ -1001,6 +1001,27 @@ clip and helper/remaining runtime/Node/production/aggregate admission, speed and
 full gate remain pending.
 [Evidence](./composition-ce15-device-views-metadata-results.json).
 
+## Accepted original dirty-screen Set checkpoint — 2026-10-08
+
+Before original dirty Set insertion, grow retained actual device owner 40 per new
+maximum simultaneous slot. Duplicate adds and original resolve/delete/re-add reuse
+capacity; retain it through native/scratch/scope use until final device disposal.
+Preserve original Set/native clear/draw/blit/callback order. Null insertion failure
+rolls back newly admitted capacity; failed Surface creation removes its actual dirty
+reference and rolls back only its attempted Surface slot, preserving independently
+successful dirty peak capacity. Native texture/framebuffer/control cleanup stays.
+
+Build/lint/boundaries and 254 focused tests pass, including five dirty regressions.
+First build caught an omitted local Surface declaration; complete declaration and
+late Surface-registration cleanup/regression precede final compile2. Failed attempt
+is retained. Complete audit 144/8,000, 96 RPC snapshots, 22 moving/blurred and ten
+stationary native frames, native snapshots, original WebGL, 69 typography tests
+and provider fixtures pass; glyph 1.460133× meets unchanged 1.5 maximum. All 64
+exports preserve 768 complete bodies/frames against pushed `d4a41d9`. Shader/program/
+solid/clip and helper/remaining runtime/Node/production/aggregate admission, speed
+and full gate remain pending.
+[Evidence](./composition-ce15-dirty-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

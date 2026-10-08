@@ -113,6 +113,7 @@ type DeviceState = {
   vao: WebGLVertexArrayObject | undefined;
   bytes: number;
   managed: boolean;
+  dirtyCapacity: number;
 };
 function destroySurface(gl: WebGL2RenderingContext, surface: WebglSurface) {
   let failed = false;
@@ -186,6 +187,7 @@ export class WebglDevice {
       vao: undefined,
       bytes: 1024,
       managed: renderMemory() !== undefined,
+      dirtyCapacity: 0,
     }),
     true,
     clearDeviceState,
@@ -309,6 +311,7 @@ export class WebglDevice {
           () => {
             let framebuffer: WebGLFramebuffer | undefined;
             let texture: WebGLTexture | undefined;
+            let surface: WebglSurface | undefined;
             try {
               texture = createRenderStorage(
                 width * height * (floating ? 16 : 4),
@@ -363,7 +366,7 @@ export class WebglDevice {
                 },
                 (texture) => gl.deleteTexture(texture),
               );
-              const surface: WebglSurface = {
+              surface = {
                 width,
                 height,
                 floating,
@@ -377,6 +380,7 @@ export class WebglDevice {
               committed = true;
               return surface;
             } catch (error) {
+              if (surface) this.dirtyScreens.delete(surface);
               try {
                 if (texture)
                   releaseRenderStorage(texture, (value) =>
@@ -405,8 +409,8 @@ export class WebglDevice {
       } catch (error) {
         if (!committed) {
           try {
-            resizeRenderMetadata(this.state, before);
-            this.state.bytes = before;
+            resizeRenderMetadata(this.state, this.state.bytes - 40);
+            this.state.bytes -= 40;
           } catch {
             /* Preserve original native surface/admission failure. */
           }
@@ -525,7 +529,7 @@ export class WebglDevice {
               },
             }
           : undefined;
-      this.dirtyScreens.add(surface);
+      this.markDirty(surface);
       this.onScreenChange?.(clip);
     }
   }
@@ -766,7 +770,7 @@ export class WebglDevice {
         if (clip) gl.disable(gl.SCISSOR_TEST);
       }
       if (target?.screen) {
-        this.dirtyScreens.add(target);
+        this.markDirty(target);
         this.onScreenChange?.(clip);
       }
       this.passes++;
@@ -988,6 +992,33 @@ export class WebglDevice {
       clearDeviceState(this.state);
     } finally {
       releaseRenderMetadata(this.state);
+    }
+  }
+
+  private markDirty(surface: WebglSurface) {
+    const needed =
+      this.dirtyScreens.size + (this.dirtyScreens.has(surface) ? 0 : 1);
+    const before = this.state.bytes,
+      capacity = this.state.dirtyCapacity;
+    if (needed > capacity) {
+      const bytes = 40 * (needed - capacity);
+      resizeRenderMetadata(this.state, before + bytes);
+      this.state.bytes += bytes;
+      this.state.dirtyCapacity = needed;
+    }
+    try {
+      this.dirtyScreens.add(surface);
+    } catch (error) {
+      if (needed > capacity) {
+        try {
+          resizeRenderMetadata(this.state, before);
+          this.state.bytes = before;
+          this.state.dirtyCapacity = capacity;
+        } catch {
+          /* Preserve original dirty Set failure. */
+        }
+      }
+      throw error;
     }
   }
 
