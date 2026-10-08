@@ -1,3 +1,8 @@
+import { renderMemory } from "../../managed-memory-context.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+} from "../../managed-metadata.ts";
 import { mapEffectKernel } from "./map-effects.ts";
 import { shadowEffectKernel } from "./shadow-effects.ts";
 import { radialDistortionKernel } from "./radial-distortion.ts";
@@ -86,46 +91,178 @@ export const compositionEffectPlugin = (id: string) =>
   shadowEffectKernel(id) ??
   mapEffectKernel(id);
 
+type EffectControl<S extends { width: number; height: number }> = {
+  managed: boolean;
+  surfaces?: EffectSurfaces<S> | undefined;
+  inputs?: Map<string, S> | undefined;
+  context?: GpuEffectContext | CanvasEffectContext | undefined;
+  copy?: S[] | undefined;
+  slots?: string[] | undefined;
+  input?: S | undefined;
+  output?: S | undefined;
+};
+function clearEffectControl<S extends { width: number; height: number }>(
+  phase: EffectControl<S>,
+) {
+  phase.surfaces?.clearReferences();
+  phase.inputs?.clear();
+  if (phase.copy) phase.copy.length = 0;
+  if (phase.slots) phase.slots.length = 0;
+  if (phase.context) {
+    const context = phase.context as unknown as Record<string, unknown>;
+    for (const name in context) delete context[name];
+  }
+  phase.surfaces =
+    phase.inputs =
+    phase.context =
+    phase.copy =
+    phase.slots =
+      undefined;
+  phase.input = phase.output = undefined;
+}
+function effectControl<S extends { width: number; height: number }>() {
+  // Original callback limit is 32 surfaces: Set/snapshot slots, at most 31
+  // copied-layer Map entries, and fixed controller/context/function/view refs.
+  return allocateRenderMetadata<EffectControl<S>>(
+    8192,
+    () => ({ managed: renderMemory() !== undefined }),
+    false,
+    clearEffectControl,
+  );
+}
+function finishEffectControl<S extends { width: number; height: number }>(
+  phase: EffectControl<S>,
+  primaryFailed: boolean,
+) {
+  let failed = false,
+    first: unknown;
+  try {
+    phase.surfaces?.dispose();
+  } catch (error) {
+    failed = true;
+    first = error;
+  }
+  try {
+    if (phase.managed) releaseRenderMetadata(phase);
+    else clearEffectControl(phase);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  if (failed && !primaryFailed) throw first;
+}
+function effectCopy(
+  phase: EffectControl<WebglSurface>,
+  device: WebglDevice,
+  output: WebglSurface,
+  source: WebglSurface,
+) {
+  try {
+    device.pass(COPY, output, (phase.copy = [source]));
+  } finally {
+    if (phase.copy) phase.copy.length = 0;
+    phase.copy = undefined;
+  }
+}
+
 /** A callback owns at most 32 surfaces and 128 MiB (or four full-size frames). */
 class EffectSurfaces<S extends { width: number; height: number }> {
-  private readonly owned = new Set<S>();
+  private owned: Set<S> | undefined = new Set<S>();
+  private dimensions: number[] | undefined;
+  private snapshot: S[] | undefined;
   private pixels = 0;
+  private closed = false;
   private readonly maximum: number;
   constructor(
     input: S,
-    private readonly allocate: (width: number, height: number) => S,
-    private readonly release: (surface: S) => void,
+    private allocate: ((width: number, height: number) => S) | undefined,
+    private release: ((surface: S) => void) | undefined,
   ) {
     this.maximum = Math.max(32 * 1024 * 1024, input.width * input.height * 4);
   }
   create = (width: number, height: number): S => {
-    if (
-      ![width, height].every(
-        (n) => Number.isSafeInteger(n) && n > 0 && n <= 8192,
-      ) ||
-      this.owned.size >= 32 ||
-      this.pixels + width * height > this.maximum
-    )
-      throw Error("comp-effect-surface: scratch surface budget exceeded");
-    const surface = this.allocate(width, height);
-    this.owned.add(surface);
-    this.pixels += width * height;
-    return surface;
+    if (this.closed)
+      throw Error("comp-effect-surface: callback controls are disposed");
+    try {
+      this.dimensions = [width, height];
+      if (
+        !this.dimensions.every(
+          (n) => Number.isSafeInteger(n) && n > 0 && n <= 8192,
+        ) ||
+        this.owned!.size >= 32 ||
+        this.pixels + width * height > this.maximum
+      )
+        throw Error("comp-effect-surface: scratch surface budget exceeded");
+      const surface = this.allocate!(width, height);
+      try {
+        this.owned!.add(surface);
+      } catch (error) {
+        try {
+          this.owned!.delete(surface);
+        } catch {
+          /* Preserve original Set insertion failure. */
+        }
+        try {
+          this.release!(surface);
+        } catch {
+          /* Preserve original Set insertion failure. */
+        }
+        throw error;
+      }
+      this.pixels += width * height;
+      return surface;
+    } finally {
+      if (this.dimensions) this.dimensions.length = 0;
+      this.dimensions = undefined;
+    }
   };
   require(surface: S): void {
-    if (!this.owned.has(surface))
+    if (!this.owned?.has(surface))
       throw Error(
         "comp-effect-surface: surface must belong to this callback and remain unreleased",
       );
   }
   remove = (surface: S): void => {
     this.require(surface);
-    this.owned.delete(surface);
+    this.owned!.delete(surface);
     this.pixels -= surface.width * surface.height;
-    this.release(surface);
+    this.release!(surface);
   };
   dispose(): void {
-    for (const surface of [...this.owned]) this.remove(surface);
+    if (this.closed) return;
+    let failed = false,
+      first: unknown;
+    this.snapshot = [...this.owned!];
+    for (const surface of this.snapshot) {
+      try {
+        this.remove(surface);
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          first = error;
+        }
+      }
+    }
+    this.snapshot.length = 0;
+    this.snapshot = undefined;
+    if (failed) throw first;
+  }
+  clearReferences(): void {
+    this.closed = true;
+    this.owned?.clear();
+    if (this.dimensions) this.dimensions.length = 0;
+    if (this.snapshot) this.snapshot.length = 0;
+    this.owned =
+      this.dimensions =
+      this.snapshot =
+      this.allocate =
+      this.release =
+        undefined;
+    this.pixels = 0;
+    delete (this as Partial<EffectSurfaces<S>>).create;
+    delete (this as Partial<EffectSurfaces<S>>).remove;
   }
 }
 function checkedPlugin(effect: RenderEffect) {
@@ -151,16 +288,18 @@ export function renderGpuEffect(
 ): boolean {
   const plugin = checkedPlugin(effect);
   if (!plugin) return false;
-  const surfaces = new EffectSurfaces(
-    target,
-    (w, h) => device.surface(w, h),
-    (s) => device.release(s),
-  );
+  const phase = effectControl<WebglSurface>();
+  let failed = false;
   try {
-    const input = surfaces.create(target.width, target.height);
-    device.pass(COPY, input, [target]);
-    const inputs = new Map<string, WebglSurface>();
-    for (const slot of plugin.definition.requiresLayers ?? []) {
+    const surfaces = (phase.surfaces = new EffectSurfaces(
+      target,
+      (w, h) => device.surface(w, h),
+      (s) => device.release(s),
+    ));
+    const input = (phase.input = surfaces.create(target.width, target.height));
+    effectCopy(phase, device, input, target);
+    const inputs = (phase.inputs = new Map<string, WebglSurface>());
+    for (const slot of plugin.definition.requiresLayers ?? (phase.slots = [])) {
       const source = layers?.get(slot);
       if (
         !source ||
@@ -171,10 +310,10 @@ export function renderGpuEffect(
           `comp-effect-layer: missing or incompatible input "${slot}"`,
         );
       const copy = surfaces.create(source.width, source.height);
-      device.pass(COPY, copy, [source]);
+      effectCopy(phase, device, copy, source);
       inputs.set(slot, copy);
     }
-    const context: GpuEffectContext = {
+    const context: GpuEffectContext = (phase.context = {
       layers: inputs,
       createSurface: surfaces.create,
       releaseSurface: surfaces.remove,
@@ -197,17 +336,24 @@ export function renderGpuEffect(
         }
         device.pass(fragment, output, inputs, uniforms);
       },
-    };
-    const output = plugin.renderGpu(context, input, effect.params);
+    });
+    const output = (phase.output = plugin.renderGpu(
+      context,
+      input,
+      effect.params,
+    ));
     surfaces.require(output);
     if (output.width !== target.width || output.height !== target.height)
       throw Error(
         "comp-effect-surface: output must match the input dimensions",
       );
-    device.pass(COPY, target, [output]);
+    effectCopy(phase, device, target, output);
     return true;
+  } catch (error) {
+    failed = true;
+    throw error;
   } finally {
-    surfaces.dispose();
+    finishEffectControl(phase, failed);
   }
 }
 
@@ -224,16 +370,18 @@ export function renderCanvasEffect(
     throw Error(
       `comp-effect-unavailable: ${effect.effect} has no Canvas implementation`,
     );
-  const surfaces = new EffectSurfaces(
-    target,
-    (w, h) => context.createSurface(w, h),
-    (s) => context.releaseSurface(s),
-  );
+  const phase = effectControl<CanvasSurface>();
+  let failed = false;
   try {
-    const input = surfaces.create(target.width, target.height);
+    const surfaces = (phase.surfaces = new EffectSurfaces(
+      target,
+      (w, h) => context.createSurface(w, h),
+      (s) => context.releaseSurface(s),
+    ));
+    const input = (phase.input = surfaces.create(target.width, target.height));
     input.ctx.drawImage(target.canvas, 0, 0);
-    const inputs = new Map<string, CanvasSurface>();
-    for (const slot of plugin.definition.requiresLayers ?? []) {
+    const inputs = (phase.inputs = new Map<string, CanvasSurface>());
+    for (const slot of plugin.definition.requiresLayers ?? (phase.slots = [])) {
       const source = layers?.get(slot);
       if (
         !source ||
@@ -247,8 +395,8 @@ export function renderCanvasEffect(
       copy.ctx.drawImage(source.canvas, 0, 0);
       inputs.set(slot, copy);
     }
-    const output = plugin.renderCanvas(
-      {
+    const output = (phase.output = plugin.renderCanvas(
+      (phase.context = {
         layers: inputs,
         createSurface: surfaces.create,
         releaseSurface: surfaces.remove,
@@ -256,10 +404,10 @@ export function renderCanvasEffect(
           surfaces.require(surface);
           context.clear(surface, background);
         },
-      },
+      }),
       input,
       effect.params,
-    );
+    ));
     surfaces.require(output);
     if (output.width !== target.width || output.height !== target.height)
       throw Error(
@@ -268,7 +416,10 @@ export function renderCanvasEffect(
     context.clear(target, null);
     target.ctx.drawImage(output.canvas, 0, 0);
     return true;
+  } catch (error) {
+    failed = true;
+    throw error;
   } finally {
-    surfaces.dispose();
+    finishEffectControl(phase, failed);
   }
 }

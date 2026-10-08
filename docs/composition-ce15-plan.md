@@ -1468,6 +1468,29 @@ sampling query payload, effects/provider/graph/font/common/registry/ledger/Node,
 production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-depth-native-metadata-results.json).
 
+## Accepted effect callback control checkpoint — 2026-10-08
+
+After original plugin/version/optional-Canvas guards, admit actual 8192-byte
+callback owner before EffectSurfaces class/Set/functions, copied-layer Map/entries,
+GPU/Canvas context/functions, dimension arrays, empty fallback and cleanup snapshot.
+Original 32-surface limit bounds controls and at most 31 copied-layer Map entries.
+Capture actual COPY input arrays through native consumers then clear each; retain
+actual controller/context/Map/input/output through publication and native cleanup.
+Visit every scratch release even after an earlier failure, preserve primary null,
+propagate first cleanup failure after success, and clear all selected refs/functions.
+Partial Set/Map insertion and publication failures clean owned native copies and
+permit retry. Borrowed plugin/params/source/layer maps and custom callback values
+remain unchanged. Global registry/cached kernel/shader and Error/text factories
+remain pending separately.
+
+Build/lint/boundaries, 509 focused / thirteen new plus eleven existing plugin tests,
+complete audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers and
+69 typography tests pass; glyph 1.216981× meets unchanged 1.5 maximum. Both
+complete original GPU/Canvas native traces stay exact (14/16 calls). All 64 exports /
+768 bodies/frames match `6bbf7eb`. Remaining factory/kernel/provider/graph/font/
+common/registry/ledger/Node, production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-effect-controls-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
