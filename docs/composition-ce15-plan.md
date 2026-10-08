@@ -1556,6 +1556,27 @@ match `7e22ec9`. Remaining helper/effect/cache/registry/class/caller/sampling/pr
 graph/font/common/ledger/Node and production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-shadow-canvas-metadata-results.json).
 
+## Accepted standalone shadow helper checkpoint — 2026-10-08
+
+Admit actual 1024-byte composite work before channel/map factories and returned
+array capacity before composite production. Transfer actual result out of working
+refs, clear working arrays, hold returned array until release/scratch/allocator.
+Admit actual 512-byte blur view/controller before pixel/partial factories, preserve
+separate exact backing admission, capture partial output before loops and retire
+on failure. Actual returned view/backing stays through consumers outside scope;
+release detaches backing. Null and secondary cleanup preserve the first failure.
+Canvas keeps its existing reused caller-admitted controls. Borrowed data stays intact.
+
+Build/lint/boundaries and 575 focused tests / 66 files pass, including ten new tests
+and all five existing sampler consumer suites. All 32 original composite outputs
+and 16 original complete blur masks match active/inactive scopes. Complete audit
+144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography and
+64 exports / 768 prior-exact encoded bodies and decoded frames pass. Glyph
+1.395023× meets unchanged 1.5 maximum. Attempt 1 lint failure retained; attempt 2
+accepted. Default sampler/cache/registry/error/class/caller/depth sampling/provider/
+graph/font/common/ledger/Node and production/aggregate/speed/final gates pending.
+[Evidence](./composition-ce15-shadow-helpers-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

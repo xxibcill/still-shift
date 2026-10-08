@@ -5132,18 +5132,17 @@ raster/framebuffer/readback/path/paint-bound/replay/recording group/command/mark
 snapshot/call-input/controller/wrapper and device/native-surface/pool-key/array/pass/
 row-view/swap/dirty-set/cached-color/clip-intersection, device shader-source/program/
 uniform/diagnostic, paint batch/geometry/shader/uniform/input, Gaussian kernel/
-rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow, managed plan/sum-shader cache,
-particle/Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls,
-depth mesh/texture/multisample/uniform/draw/text/native-controls and PNG source/
-draw/coordinate metadata pass 565 focused tests (545 main + 20 sampler), complete
+rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results,
+managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/replace/
+built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/native-
+controls and PNG source/draw/coordinate metadata pass 575 focused tests, complete
 audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC snapshots.
-Actual Canvas shadow view/vector/sample/blur-producer/per-pixel/native refs pre-admit,
-stay through consumers then clear; five backings/Gaussian retire after publication/
-failure. Two whole Canvas traces/32 pixel cases/twelve tests cover quotas, refs,
-closures, partial/native/producer/publication/null/retry and every backing cleanup.
-Standalone/default helpers/cache/error/class/caller and depth sampling factories
+Actual standalone composite arrays and blur view/controllers pre-admit, stay through
+consumers then clear/detach; partial producer/adoption/null/cleanup/retry paths retire
+actual outputs. Ten new tests reconfirm 32 original composite and 16 complete blur
+outputs. Default sampler/cache/error/class/caller and depth sampling factories
 remain pending. Native probes, WebGL/providers and 69 typography tests pass;
-glyph 1.434650× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames
+glyph 1.395023× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames
 retain prior exact output. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.

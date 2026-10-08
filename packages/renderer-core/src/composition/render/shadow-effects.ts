@@ -283,6 +283,30 @@ export function blurShadowMask(
   padding: number,
   control?: ShadowBlurControl,
 ): Uint8Array<ArrayBuffer> {
+  if (!control) {
+    const memory = renderMemory();
+    let partial: ShadowBlurControl | undefined;
+    try {
+      const value = allocateRenderMetadata<Uint8Array<ArrayBuffer>>(
+        512,
+        () =>
+          blurShadowMask(input, w, h, k, direction, padding, (partial = {})),
+        false,
+        (view) => memory?.release(view.buffer),
+      );
+      partial!.value = undefined;
+      partial = undefined;
+      return value;
+    } catch (error) {
+      try {
+        if (partial?.value) memory?.release(partial.value.buffer);
+      } catch {
+        /* Preserve original pixel/metadata/math failure. */
+      }
+      if (partial) partial.value = undefined;
+      throw error;
+    }
+  }
   const output = allocateRenderPixels(input.length * 1, () => {
     const value = new Uint8Array(input.length);
     if (control) control.value = value;
@@ -311,6 +335,54 @@ export function shadowCompositePixel(
   p: Params,
   work?: CompositeWork,
 ): number[] {
+  if (!work) {
+    const managed = renderMemory() !== undefined;
+    const phase = allocateRenderMetadata<CompositeWork>(
+      1024,
+      () => ({}),
+      false,
+      clearCompositeWork,
+    );
+    let failed = false;
+    let failure: unknown;
+    let result: number[] | undefined;
+    try {
+      result = allocateRenderMetadata<number[]>(
+        256 + 8 * (inner ? 4 : src.length),
+        () => shadowCompositePixel(inner, src, mask, p, phase),
+        false,
+        (output) => {
+          output.length = 0;
+        },
+      );
+      phase.output = undefined;
+    } catch (error) {
+      failed = true;
+      failure = error;
+    } finally {
+      try {
+        if (managed) releaseRenderMetadata(phase);
+        else clearCompositeWork(phase);
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          failure = error;
+        }
+      }
+    }
+    if (failed) {
+      if (result) {
+        try {
+          if (managed) releaseRenderMetadata(result);
+          else result.length = 0;
+        } catch {
+          /* Preserve the first producer or cleanup failure. */
+        }
+      }
+      throw failure;
+    }
+    return result!;
+  }
   const color = p.color as readonly number[],
     strength = (mask / 255) * color[3]! * (p.opacity as number),
     alpha = src[3]!;
