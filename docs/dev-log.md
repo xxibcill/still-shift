@@ -44,13 +44,17 @@ still hold before relying on them.
 ## Current state
 
 - **PR #47 follow-up review repairs in progress (2026-10-08):** isolated
-  `codex/pr47-second-review-fixes` from reviewed `787ded34`. Three inline findings
-  cover timeline-window preparation, the accepted legacy input envelope and bitmap
-  texture orientation/alpha. Repairs use one finding per commit and one final push.
-  Window preparation is fixed: 103 affected units and selected long-timeline
-  browser/raw/seek checks pass with zero playback preparation. Other repairs and
-  final focused verification remain in flight. Owner CE15 checkout
-  is untouched; no new full repository gate is planned or claimed.
+  `codex/pr47-second-review-fixes` from reviewed `787ded34`. Window preparation and
+  the reported legacy source/identifier/asset/parent compatibility cases are fixed
+  in separate commits; long-ID text probes also retain exact ink/container output.
+  Final fast checks pass all 2,498 units. Legacy delivery passes 26 backend cases /
+  3,552 forward and reverse frames, 26 independent encodes / 78 production-repeat-raw
+  exports and 102 hardware comparisons. Worst Canvas median ratio is 1.1839 against
+  unchanged 1.25; WebGL timing remains CE6-P deferred. All 176 family defaults and
+  176 frozen items / 36,061 frames pass; final probe amendment has 36 exact targeted
+  comparisons after those inventory checks. Bitmap checks pass both GPU profiles;
+  its separate commit and one final push remain. Owner CE15 checkout is untouched;
+  no new full repository gate is planned or claimed.
   [Evidence](./pr-47-followup-fix-results.json).
 
 - **PR #47 review repairs verified (2026-10-08):** isolated
@@ -978,9 +982,26 @@ still hold before relying on them.
   must not use TypeScript constructor parameter properties: Node's strip-only mode
   rejects them and five Lab integration suites fail.
 
-_Last updated 2026-10-08 by Codex for PR #47 conflict resolution._
+_Last updated 2026-10-08 by Codex for PR #47 follow-up review repairs._
 
 ## Entries
+
+### 2026-10-08 — PR #47 legacy compatibility repair
+
+- **Agent / branch:** Codex on isolated `codex/pr47-second-review-fixes`.
+- **Done:** compacted reachable states, pruned unused assets, bound long image/font
+  IDs through source ordinals and preserved deep clips/followers in collapsed scopes.
+  Collision-safe payload IDs and copied ink/container probes preserve diagnostics.
+- **Results:** 53 final focused units / 36 exact probe comparisons; final fast checks
+  pass all 2,498 units. Complete affected delivery passes 26 backend cases / 3,552
+  forward and reverse frames, 26 independent encodes / 78 production-repeat-raw
+  exports and 102 hardware comparisons. Worst Canvas median ratio 1.1839 stays
+  below 1.25. All 176 family defaults and frozen items / 36,061 frames pass.
+- **Rejected:** initial source-budget/pose/metadata corners and final aliased probes
+  failed; regressions now pass. Full inventory/export checks preceded the probe-only
+  amendment; final focused probes and fast checks verify it. No full `pnpm check` run.
+- **Next:** commit bitmap repair separately, then make one final normal push.
+- **Records:** [evidence](./pr-47-followup-fix-results.json).
 
 ### 2026-10-08 — PR #47 follow-up review repairs
 

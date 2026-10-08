@@ -6,6 +6,10 @@ import { compiledStoryToComposition } from "./story.ts";
 import { compiledCommerceToComposition } from "./commerce.ts";
 import { compiledCinematicToComposition } from "./cinematic.ts";
 import { compiledLegacyToComposition } from "./legacy.ts";
+import {
+  legacyResourceAliases,
+  legacyTextProbe,
+} from "./legacy-compatibility.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { validateStoryTextLayout } from "../../story-text-layout.ts";
@@ -21,7 +25,7 @@ export function prepareIllustratedComposition(
   images: Images,
   context: CanvasRenderingContext2D,
 ) {
-  const fonts = images.fonts ?? new Map();
+  const fonts = new Map(images.fonts ?? []);
   const textLayout = { context, fonts };
   const prepared = (() => {
     if (input.schemaVersion === "story-scene-1") {
@@ -75,6 +79,19 @@ export function prepareIllustratedComposition(
     "windows" in prepared && prepared.windows
       ? prepared.windows.map((window) => window.composition)
       : [prepared.composition];
+  const nativeImages = new Map(
+    [...images].map(([id, image]) => [id, images.rasters?.get(id) ?? image]),
+  );
+  for (const document of documents)
+    for (const [native, original] of legacyResourceAliases(document, [
+      ...input.assets,
+      ...(input.fonts ?? []),
+    ])) {
+      const image = nativeImages.get(original);
+      if (image) nativeImages.set(native, image);
+      const font = fonts.get(original);
+      if (font) fonts.set(native, font);
+    }
   const providerFonts: NonNullable<CompositionResources["providerFonts"]> =
     new Map(
       documents.flatMap((composition) =>
@@ -102,11 +119,14 @@ export function prepareIllustratedComposition(
         ),
       ),
     );
+  const textProbe = images.textProbe
+    ? input.schemaVersion === "illustrated-scene-1"
+      ? legacyTextProbe(prepared.composition, input.nodes, images.textProbe)
+      : images.textProbe
+    : undefined;
   const resources: CompositionResources = {
-    ...(images.textProbe ? { textProbe: images.textProbe } : {}),
-    images: new Map(
-      [...images].map(([id, image]) => [id, images.rasters?.get(id) ?? image]),
-    ),
+    ...(textProbe ? { textProbe } : {}),
+    images: nativeImages,
     fonts,
     providerFonts,
   };
