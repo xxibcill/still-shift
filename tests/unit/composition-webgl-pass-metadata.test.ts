@@ -53,7 +53,10 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 it("denies temporary input/entry capacity before original Set and entry getters/native GPU consumers", async () => {
-  const memory = new ManagedMemory({ pixels: 65536, metadata: 1855 });
+  const memory = new ManagedMemory({
+    pixels: 65536,
+    metadata: 1855 + 4096 + 12 * body.length,
+  });
   await withManagedMemory(memory, async () => {
     const { device, gl, input } = setup();
     const inputs = [input];

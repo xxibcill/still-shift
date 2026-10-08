@@ -1063,6 +1063,35 @@ complete bodies/frames against pushed `fc7999a`. Shader/helper/remaining runtime
 Node/production/aggregate admission, speed and full gate remain pending.
 [Evidence](./composition-ce15-clip-metadata-results.json).
 
+## Accepted device shader/program checkpoint — 2026-10-08
+
+Admit 4096 + 12*input body length before original device transformations/header
+concatenation and shader/program/record/Map controls. Capture actual native handles
+before subsequent calls and clear incomplete children despite secondary failures.
+Before each active-info/name/location/Map query, admit 1024 for renderer-produced
+flat names; retain 192 + 2*name length per entry. Actual cached body/program/Map/
+handle/entry controls retain 768 + 2\*body length + entries through scratch and
+original 64-program eviction/disposal. Original text, native order and cache hits
+stay. Attempted empty Map keys and null failures clean actual owners and retry.
+
+WebGL removes diagnostic length queries. The pinned 64-bit V8 text maximum supplies
+conservative log/Error pre-admission (4*2^29 + 1024 logical bytes). Quota denial
+precedes native log creation and cleans handles. With admission, retain original
+Error text at 512 + 2*message length until allocator cleanup. Native depth/PNG
+pixel-storage fixtures now allow 128KiB metadata (peaks 13,822/21,416); their original
+16MiB/8MiB pixel quotas, native bytes and exact pixels stay. Explicit 8KiB metadata
+and one-byte denial checks stay. This is not aggregate admission proof.
+
+Build/lint/boundaries and 280 focused tests pass, including 13 new regressions.
+Complete audit 144/8,000, 96 RPC snapshots, prior native frames/snapshots, original
+WebGL, 69 typography tests/providers pass; glyph 1.446429× meets unchanged 1.5
+maximum. New real shader probe adds four exact frames/64 bytes, two protected native
+compile failures, zero denied log queries, original cache reuse and both final
+cleanup orders. All 64 exports preserve 768 complete bodies/frames against pushed
+`f02068d`. Other shader/helper/paint/runtime/Node/production/aggregate admission,
+speed and full gate remain pending.
+[Evidence](./composition-ce15-program-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

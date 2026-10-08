@@ -49,7 +49,107 @@ type UniformValue = number | readonly number[];
 type Program = {
   handle: WebGLProgram;
   uniforms: Map<string, WebGLUniformLocation>;
+  lifetime?: ProgramLifetime | undefined;
 };
+type ProgramLifetime = {
+  gl: WebGL2RenderingContext;
+  programs: Map<string, Program>;
+  body: string | undefined;
+  transformed: string | undefined;
+  vertexText: string | undefined;
+  fragmentText: string | undefined;
+  vertex: WebGLShader | undefined;
+  fragment: WebGLShader | undefined;
+  handle: WebGLProgram | undefined;
+  info: WebGLActiveInfo | undefined;
+  program: Program | undefined;
+};
+function clearProgramLifetime(value: ProgramLifetime) {
+  let failed = false;
+  let first: unknown;
+  const cleanup = (action: () => void) => {
+    try {
+      action();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        first = error;
+      }
+    }
+  };
+  if (
+    value.body !== undefined &&
+    value.programs.get(value.body)?.lifetime === value
+  )
+    value.programs.delete(value.body);
+  const vertex = value.vertex,
+    fragment = value.fragment,
+    handle = value.handle;
+  value.vertex = value.fragment = value.handle = undefined;
+  if (vertex) cleanup(() => value.gl.deleteShader(vertex));
+  if (fragment) cleanup(() => value.gl.deleteShader(fragment));
+  if (handle) cleanup(() => value.gl.deleteProgram(handle));
+  if (value.program) {
+    value.program.uniforms.clear();
+    value.program.lifetime = undefined;
+    value.program = undefined;
+  }
+  value.body =
+    value.transformed =
+    value.vertexText =
+    value.fragmentText =
+      undefined;
+  value.info = undefined;
+  if (failed) throw first;
+}
+function releaseProgramLifetime(value: ProgramLifetime, managed: boolean) {
+  if (managed) releaseRenderMetadata(value);
+  else clearProgramLifetime(value);
+}
+
+function programDiagnostic(
+  gl: WebGL2RenderingContext,
+  handle: WebGLShader | WebGLProgram,
+  shader: boolean,
+  deleteHandle: () => void,
+) {
+  const phase = allocateRenderMetadata<{
+    log: string | null | undefined;
+    error: Error | undefined;
+  }>(
+    // WebGL removes log-length queries. The pinned 64-bit V8 profile allows fewer
+    // than 2^29 UTF16 units: reserve both original log and Error.message first.
+    4 * 2 ** 29 + 1024,
+    () => ({ log: undefined, error: undefined }),
+    true,
+    (value) => {
+      value.log = undefined;
+      value.error = undefined;
+    },
+  );
+  try {
+    phase.log = shader
+      ? gl.getShaderInfoLog(handle)
+      : gl.getProgramInfoLog(handle);
+    deleteHandle();
+    phase.error = new Error(
+      shader
+        ? `comp-webgl-shader: ${phase.log}`
+        : `comp-webgl-program: ${phase.log}`,
+    );
+    phase.log = undefined;
+    resizeRenderMetadata(phase, 512 + 2 * phase.error.message.length);
+    // The actual propagated Error remains in the allocator until export cleanup.
+    return phase.error;
+  } catch (error) {
+    try {
+      releaseRenderMetadata(phase);
+    } catch {
+      /* Preserve the original native diagnostic/Error factory failure. */
+    }
+    throw error;
+  }
+}
 
 type ClipLifetime = {
   regions: Set<Bounds>;
@@ -204,8 +304,13 @@ function clearDeviceState(state: DeviceState) {
     else if (gl) cleanup(() => destroySurface(gl, surface));
   }
   if (gl) {
-    for (const program of state.programs.values())
-      cleanup(() => gl.deleteProgram(program.handle));
+    for (const program of state.programs.values()) {
+      const lifetime = program.lifetime;
+      if (lifetime) {
+        if (state.managed) cleanup(() => releaseRenderMetadata(lifetime));
+        else cleanup(() => clearProgramLifetime(lifetime));
+      } else cleanup(() => gl.deleteProgram(program.handle));
+    }
     if (state.vao) cleanup(() => gl.deleteVertexArray(state.vao!));
   }
   for (const entry of state.pool.values()) {
@@ -765,140 +870,212 @@ export class WebglDevice {
     if (clip === null) return;
     if (target?.screen) this.dropSolid();
     const gl = this.gl;
-    if (target?.screen) {
-      // Keep every shader in top-left image coordinates while the canvas's
-      // physical framebuffer has its origin at the bottom left.
-      body =
-        "vec4 pixelPosition;\n" +
-        body
-          .replaceAll("gl_FragCoord", "pixelPosition")
-          .replace("void main()", "void shade()") +
-        `\nvoid main() { pixelPosition=vec4(gl_FragCoord.x,${target.height}.0-gl_FragCoord.y,gl_FragCoord.zw); shade(); ${blended || !target.opaque ? "" : "pixel.a=1.0;"} }`;
-    } else if (target?.opaque && !blended)
-      body =
-        body.replace("void main()", "void shade()") +
-        "\nvoid main() { shade(); pixel.a = 1.0; }";
-    let program = this.programs.get(body);
-    if (!program) {
-      const compile = (type: number, source: string) => {
-        const shader = gl.createShader(type)!;
-        gl.shaderSource(shader, source);
-        gl.compileShader(shader);
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-          const error = gl.getShaderInfoLog(shader);
-          gl.deleteShader(shader);
-          throw new Error(`comp-webgl-shader: ${error}`);
-        }
-        return shader;
-      };
-      const vertex = compile(
-        gl.VERTEX_SHADER,
-        target?.screen
-          ? VERTEX.replace("uv = p;", "uv = vec2(p.x, 1.0-p.y);")
-          : VERTEX,
-      );
-      const fragment = compile(gl.FRAGMENT_SHADER, FRAGMENT_HEADER + body);
-      const handle = gl.createProgram()!;
-      gl.attachShader(handle, vertex);
-      gl.attachShader(handle, fragment);
-      gl.linkProgram(handle);
-      gl.deleteShader(vertex);
-      gl.deleteShader(fragment);
-      if (!gl.getProgramParameter(handle, gl.LINK_STATUS)) {
-        const error = gl.getProgramInfoLog(handle);
-        gl.deleteProgram(handle);
-        throw new Error(`comp-webgl-program: ${error}`);
-      }
-      program = { handle, uniforms: new Map() };
-      for (
-        let i = 0;
-        i < gl.getProgramParameter(handle, gl.ACTIVE_UNIFORMS);
-        i++
-      ) {
-        const info = gl.getActiveUniform(handle, i)!;
-        program.uniforms.set(
-          info.name,
-          gl.getUniformLocation(handle, info.name)!,
-        );
-      }
-      if (this.programs.size >= 64) {
-        const oldest = this.programs.keys().next().value!;
-        gl.deleteProgram(this.programs.get(oldest)!.handle);
-        this.programs.delete(oldest);
-      }
-      this.programs.set(body, program);
-    }
-    if (
-      target &&
-      !target.screen &&
-      inputs.some((input) => input.texture === target.texture)
-    )
-      throw new Error("comp-webgl-feedback: input and output textures overlap");
-    let uniformCount = 0;
-    for (const name in uniforms)
-      if (Object.hasOwn(uniforms, name)) uniformCount++;
-    const temporary = allocateRenderMetadata<PassMetadata>(
-      // Holder/Set/outer array 512; input slots/sampler arrays/text 256 per input;
-      // original uniform tuples and outer pointer slots 64 per own enumerable field.
-      512 + 256 * inputs.length + 64 * uniformCount,
-      () => ({ inputs: undefined, uniforms: undefined }),
-      false,
-      clearPassMetadata,
+    const workingBytes = 4096 + 12 * body.length;
+    const phase = allocateRenderMetadata<ProgramLifetime>(
+      // Controls/native handles/fixed shader text 4096. At most six input-length
+      // UTF16 copies cover original replacements, final body and fragment source.
+      workingBytes,
+      () => ({
+        gl,
+        programs: this.programs,
+        body: undefined,
+        transformed: undefined,
+        vertexText: undefined,
+        fragmentText: undefined,
+        vertex: undefined,
+        fragment: undefined,
+        handle: undefined,
+        info: undefined,
+        program: undefined,
+      }),
+      true,
+      clearProgramLifetime,
     );
+    let retained = false,
+      released = false;
     try {
-      const unique = (temporary.inputs = new Set(inputs));
-      for (const input of unique) if (input.screen) this.resolveScreen(input);
-      gl.bindFramebuffer(
-        gl.FRAMEBUFFER,
-        target?.screen ? null : (target?.framebuffer ?? null),
-      );
-      gl.viewport(
-        0,
-        0,
-        target?.width ?? this.canvas.width,
-        target?.height ?? this.canvas.height,
-      );
-      gl.useProgram(program.handle);
-      gl.bindVertexArray(this.vao);
-      for (let i = 0; i < inputs.length; i++) {
-        gl.activeTexture(gl.TEXTURE0 + i);
-        gl.bindTexture(gl.TEXTURE_2D, inputs[i]!.texture);
-        const location = program.uniforms.get(inputSampler(i));
-        if (location) gl.uniform1i(location, i);
-      }
-      const entries = (temporary.uniforms = Object.entries(uniforms));
-      for (const [name, value] of entries) {
-        const location = program.uniforms.get(name);
-        if (!location) continue;
-        if (typeof value === "number") gl.uniform1f(location, value);
-        else if (value.length === 2) gl.uniform2fv(location, value);
-        else if (value.length === 3) gl.uniform3fv(location, value);
-        else if (value.length === 4) gl.uniform4fv(location, value);
-        else if (value.length === 9)
-          gl.uniformMatrix3fv(location, false, value);
-        else throw new Error(`comp-webgl-uniform: unsupported ${name}`);
-      }
-      if (clip) {
-        gl.enable(gl.SCISSOR_TEST);
-        gl.scissor(
-          clip.left,
-          target?.screen ? target.height - clip.bottom : clip.top,
-          clip.right - clip.left,
-          clip.bottom - clip.top,
-        );
-      }
-      try {
-        gl.drawArrays(gl.TRIANGLES, 0, 3);
-      } finally {
-        if (clip) gl.disable(gl.SCISSOR_TEST);
-      }
       if (target?.screen) {
-        this.markDirty(target);
-        this.onScreenChange?.(clip);
+        // Keep every shader in top-left image coordinates while the canvas's
+        // physical framebuffer has its origin at the bottom left.
+        body =
+          "vec4 pixelPosition;\n" +
+          (phase.transformed = body.replaceAll(
+            "gl_FragCoord",
+            "pixelPosition",
+          )).replace("void main()", "void shade()") +
+          `\nvoid main() { pixelPosition=vec4(gl_FragCoord.x,${target.height}.0-gl_FragCoord.y,gl_FragCoord.zw); shade(); ${blended || !target.opaque ? "" : "pixel.a=1.0;"} }`;
+      } else if (target?.opaque && !blended)
+        body =
+          body.replace("void main()", "void shade()") +
+          "\nvoid main() { shade(); pixel.a = 1.0; }";
+      phase.body = body;
+      let program = this.programs.get(body);
+      if (!program) {
+        const compile = (type: number, source: string) => {
+          const shader = gl.createShader(type)!;
+          if (type === gl.VERTEX_SHADER) phase.vertex = shader;
+          else phase.fragment = shader;
+          gl.shaderSource(shader, source);
+          gl.compileShader(shader);
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            throw programDiagnostic(gl, shader, true, () => {
+              if (type === gl.VERTEX_SHADER) phase.vertex = undefined;
+              else phase.fragment = undefined;
+              gl.deleteShader(shader);
+            });
+          }
+          return shader;
+        };
+        const vertex = compile(
+          gl.VERTEX_SHADER,
+          (phase.vertexText = target?.screen
+            ? VERTEX.replace("uv = p;", "uv = vec2(p.x, 1.0-p.y);")
+            : VERTEX),
+        );
+        const fragment = compile(
+          gl.FRAGMENT_SHADER,
+          (phase.fragmentText = FRAGMENT_HEADER + body),
+        );
+        const handle = (phase.handle = gl.createProgram()!);
+        gl.attachShader(handle, vertex);
+        gl.attachShader(handle, fragment);
+        gl.linkProgram(handle);
+        phase.vertex = undefined;
+        gl.deleteShader(vertex);
+        phase.fragment = undefined;
+        gl.deleteShader(fragment);
+        if (!gl.getProgramParameter(handle, gl.LINK_STATUS)) {
+          throw programDiagnostic(gl, handle, false, () => {
+            phase.handle = undefined;
+            gl.deleteProgram(handle);
+          });
+        }
+        program = phase.program = {
+          handle,
+          uniforms: new Map(),
+          lifetime: phase,
+        };
+        let uniformBytes = 0;
+        for (
+          let i = 0;
+          i < gl.getProgramParameter(handle, gl.ACTIVE_UNIFORMS);
+          i++
+        ) {
+          // Renderer-produced shaders use flat names below 256 units, including
+          // generated numeric suffixes. Admit info/name/location/Map entry first.
+          resizeRenderMetadata(phase, workingBytes + uniformBytes + 1024);
+          const info = (phase.info = gl.getActiveUniform(handle, i)!);
+          program.uniforms.set(
+            info.name,
+            gl.getUniformLocation(handle, info.name)!,
+          );
+          uniformBytes += 192 + 2 * info.name.length;
+          phase.info = undefined;
+          resizeRenderMetadata(phase, workingBytes + uniformBytes);
+        }
+        phase.transformed = phase.vertexText = phase.fragmentText = undefined;
+        // Actual holder/program/Map/handle/key/cache-entry/cleanup controls 768;
+        // retain original body text and actual uniform name/location entries.
+        resizeRenderMetadata(phase, 768 + 2 * body.length + uniformBytes);
+        if (this.programs.size >= 64) {
+          const oldest = this.programs.keys().next().value!;
+          const previous = this.programs.get(oldest)!;
+          gl.deleteProgram(previous.handle);
+          if (previous.lifetime) previous.lifetime.handle = undefined;
+          this.programs.delete(oldest);
+          if (previous.lifetime)
+            releaseProgramLifetime(previous.lifetime, this.state.managed);
+        }
+        this.programs.set(body, program);
+        retained = true;
       }
-      this.passes++;
+      if (
+        target &&
+        !target.screen &&
+        inputs.some((input) => input.texture === target.texture)
+      )
+        throw new Error(
+          "comp-webgl-feedback: input and output textures overlap",
+        );
+      let uniformCount = 0;
+      for (const name in uniforms)
+        if (Object.hasOwn(uniforms, name)) uniformCount++;
+      const temporary = allocateRenderMetadata<PassMetadata>(
+        // Holder/Set/outer array 512; input slots/sampler arrays/text 256 per input;
+        // original uniform tuples and outer pointer slots 64 per own enumerable field.
+        512 + 256 * inputs.length + 64 * uniformCount,
+        () => ({ inputs: undefined, uniforms: undefined }),
+        false,
+        clearPassMetadata,
+      );
+      try {
+        const unique = (temporary.inputs = new Set(inputs));
+        for (const input of unique) if (input.screen) this.resolveScreen(input);
+        gl.bindFramebuffer(
+          gl.FRAMEBUFFER,
+          target?.screen ? null : (target?.framebuffer ?? null),
+        );
+        gl.viewport(
+          0,
+          0,
+          target?.width ?? this.canvas.width,
+          target?.height ?? this.canvas.height,
+        );
+        gl.useProgram(program.handle);
+        gl.bindVertexArray(this.vao);
+        for (let i = 0; i < inputs.length; i++) {
+          gl.activeTexture(gl.TEXTURE0 + i);
+          gl.bindTexture(gl.TEXTURE_2D, inputs[i]!.texture);
+          const location = program.uniforms.get(inputSampler(i));
+          if (location) gl.uniform1i(location, i);
+        }
+        const entries = (temporary.uniforms = Object.entries(uniforms));
+        for (const [name, value] of entries) {
+          const location = program.uniforms.get(name);
+          if (!location) continue;
+          if (typeof value === "number") gl.uniform1f(location, value);
+          else if (value.length === 2) gl.uniform2fv(location, value);
+          else if (value.length === 3) gl.uniform3fv(location, value);
+          else if (value.length === 4) gl.uniform4fv(location, value);
+          else if (value.length === 9)
+            gl.uniformMatrix3fv(location, false, value);
+          else throw new Error(`comp-webgl-uniform: unsupported ${name}`);
+        }
+        if (clip) {
+          gl.enable(gl.SCISSOR_TEST);
+          gl.scissor(
+            clip.left,
+            target?.screen ? target.height - clip.bottom : clip.top,
+            clip.right - clip.left,
+            clip.bottom - clip.top,
+          );
+        }
+        try {
+          gl.drawArrays(gl.TRIANGLES, 0, 3);
+        } finally {
+          if (clip) gl.disable(gl.SCISSOR_TEST);
+        }
+        if (target?.screen) {
+          this.markDirty(target);
+          this.onScreenChange?.(clip);
+        }
+        this.passes++;
+      } finally {
+        releaseRenderMetadata(temporary);
+      }
+    } catch (error) {
+      if (!retained) {
+        released = true;
+        try {
+          releaseProgramLifetime(phase, this.state.managed);
+        } catch {
+          /* Preserve the original shader/program/native/admission failure. */
+        }
+      }
+      throw error;
     } finally {
-      releaseRenderMetadata(temporary);
+      if (!retained && !released)
+        releaseProgramLifetime(phase, this.state.managed);
     }
   }
 

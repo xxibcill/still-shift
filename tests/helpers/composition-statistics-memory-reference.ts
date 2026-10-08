@@ -19,6 +19,7 @@ import {
   recordVectorPaints,
   replayVectorPaints,
 } from "../../packages/renderer-core/src/composition/render/webgl-vector-paints.ts";
+import { WebglDevice } from "../../packages/renderer-core/src/composition/render/webgl-device.ts";
 
 type Snapshot = ReturnType<NonNullable<CompositionPreview["renderStatistics"]>>;
 let pending: { memory: ManagedMemory; snapshot: Snapshot } | undefined;
@@ -302,6 +303,136 @@ async function checkRecordingSnapshotMemory() {
   };
 }
 
+async function checkShaderProgramMemory() {
+  const reports = [];
+  for (const allocatorFirst of [false, true]) {
+    const memory = new ManagedMemory({
+      pixels: 64 * 1024 * 1024,
+      metadata: 4 * 1024 * 1024,
+    });
+    let device: WebglDevice | undefined;
+    let canvas: HTMLCanvasElement | undefined;
+    let shaderCreates = 0,
+      shaderDeletes = 0,
+      programDeletes = 0,
+      logQueries = 0,
+      exactBytes = 0;
+    try {
+      await withManagedMemory(memory, async () => {
+        canvas = createRenderCanvas();
+        canvas.width = canvas.height = 2;
+        device = new WebglDevice(canvas, true);
+        const gl = device.gl;
+        const createShader = gl.createShader,
+          deleteShader = gl.deleteShader,
+          deleteProgram = gl.deleteProgram,
+          getShaderInfoLog = gl.getShaderInfoLog;
+        gl.createShader = function (type) {
+          shaderCreates++;
+          return createShader.call(this, type);
+        };
+        gl.deleteShader = function (shader) {
+          shaderDeletes++;
+          return deleteShader.call(this, shader);
+        };
+        gl.deleteProgram = function (program) {
+          programDeletes++;
+          return deleteProgram.call(this, program);
+        };
+        gl.getShaderInfoLog = function (shader) {
+          logQueries++;
+          return getShaderInfoLog.call(this, shader);
+        };
+        const surface = device.surface(2, 2);
+        const shader =
+          "void main() { pixel=vec4(51.0/255.0,102.0/255.0,153.0/255.0,1.0); }";
+        const expected = [51, 102, 153, 255];
+        const checkPixels = () => {
+          const pixels = device!.read(surface);
+          try {
+            if (pixels.length !== 16)
+              throw Error("Native shader pixel length differs");
+            for (let byte = 0; byte < pixels.length; byte++)
+              if (pixels[byte] !== expected[byte % 4])
+                throw Error("Native shader exact byte differs");
+            exactBytes += pixels.length;
+          } finally {
+            releaseRenderPixels(pixels);
+          }
+        };
+        await withManagedFrame(async () => {
+          device!.pass(shader, surface, []);
+          checkPixels();
+        });
+        const before = memory.statistics.current;
+        let denied = false;
+        try {
+          device.pass("void main() { pixel=; }", surface, []);
+        } catch (error) {
+          denied = error instanceof Error && error.message.includes("metadata");
+        }
+        if (
+          !denied ||
+          logQueries !== 0 ||
+          shaderCreates !== 4 ||
+          shaderDeletes !== 4 ||
+          programDeletes !== 0
+        )
+          throw Error(
+            "Native failed shader did not protect its log producer/actual handles",
+          );
+        if (
+          memory.statistics.current.metadata !== before.metadata ||
+          memory.statistics.current.pixels !== before.pixels
+        )
+          throw Error("Native failed shader changed prior cached owners");
+        await withManagedFrame(async () => {
+          device!.pass(shader, surface, []);
+          checkPixels();
+        });
+        if (
+          shaderCreates !== 4 ||
+          memory.statistics.current.metadata !== before.metadata
+        )
+          throw Error(
+            "Native shader cache reuse changed compile count or retained owners",
+          );
+      });
+      if (allocatorFirst) memory.dispose();
+      device!.dispose();
+      releaseRenderCanvas(canvas!);
+      memory.dispose();
+      if (
+        programDeletes !== 1 ||
+        shaderDeletes !== 4 ||
+        memory.statistics.current.metadata ||
+        memory.statistics.current.pixels ||
+        memory.statistics.reservations
+      )
+        throw Error(
+          "Native shader final lifetime did not release every owner once",
+        );
+      reports.push({
+        allocatorFirst,
+        frames: 2,
+        exactBytes,
+        protectedFailures: 1,
+        shaderCreates,
+        shaderDeletes,
+        programDeletes,
+        logQueries,
+        originalCacheReuse: true,
+        after: memory.statistics,
+      });
+    } finally {
+      device?.dispose();
+      if (canvas) releaseRenderCanvas(canvas);
+      memory.dispose();
+    }
+  }
+  return { status: "passed", reports };
+}
+
 /** The actual page result retains its owned snapshot until the Node caller acknowledges its completed RPC. */
 export async function checkManagedSubmissionMemory(
   backend: "canvas2d" | "webgl2",
@@ -310,6 +441,8 @@ export async function checkManagedSubmissionMemory(
     throw Error("A native statistics RPC is still awaiting acknowledgement");
   const recordingSnapshots =
     backend === "webgl2" ? await checkRecordingSnapshotMemory() : undefined;
+  const shaderPrograms =
+    backend === "webgl2" ? await checkShaderProgramMemory() : undefined;
   const stationaryFrames = await checkStationaryFrameMemory(backend);
   const resources = await loadCompositionResources(fixture, (id) => id);
   const baseline = createCompositionPreview(
@@ -386,6 +519,7 @@ export async function checkManagedSubmissionMemory(
         frameChecks,
         stationaryFrames,
         recordingSnapshots,
+        shaderPrograms,
         exactOriginalNativePixels: true,
         ownedThroughRpc: memory.owns(snapshot),
         beforeRpc: memory.statistics,

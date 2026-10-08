@@ -93,13 +93,15 @@ still hold before relying on them.
   Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
   controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
   group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
-  pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection metadata
-  now pass 267 focused tests, the complete audit, 22 moving/blurred and ten
-  stationary native frames and 96 owned RPC snapshots. Actual clip boxes pre-admit
-  before getters/math, stay through scratch/original consumers, then clear at frame
-  reset; borrowed aliases and original numeric/native/null behavior pass. Native
+  pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection and device
+  shader-source/program/uniform/diagnostic metadata now pass 280 focused tests, the
+  complete audit, 22 moving/blurred and ten stationary native frames and 96 owned
+  RPC snapshots. Actual device shader text/native/cache/uniform/Error lifetimes
+  pre-admit, retain through original consumers/scratch, then clear. New real shader
+  oracle adds four exact frames/64 bytes, two protected compile failures and both
+  disposal orders. Original numeric/native/null/cache behavior passes. Native
   snapshots, original WebGL/providers, 69 typography tests and 64 exports / 768
-  prior-exact bodies/frames pass; glyph 1.430669× meets unchanged 1.5 maximum.
+  prior-exact bodies/frames pass; glyph 1.446429× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -335,6 +337,25 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual device shader/program controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `f02068d`.
+- **Done:** pre-admit actual device shader text/native controls/uniform Map/cache
+  and diagnostic Error lifetime; preserve original successful text/native/cache
+  behavior, clean incomplete actual handles and preserve original null/retry.
+- **Results:** build/lint/boundaries, 280 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, prior native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.446429× meets unchanged 1.5 maximum.
+- **Verification:** 13 regressions plus real four-frame/64-byte shader oracle,
+  two protected native compile failures, no denied log query, original cache reuse
+  and both disposal orders. Pixel fixtures permit 128KiB shader metadata; original
+  pixel/native-byte and explicit metadata-denial checks stay. Failed attempts kept.
+- **Next:** remaining paint/other shader/helper/runtime/Node controls, production/
+  aggregate admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [shader/program evidence](./composition-ce15-program-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual frame clip-intersection controls
 

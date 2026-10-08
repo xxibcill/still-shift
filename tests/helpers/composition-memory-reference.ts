@@ -466,7 +466,9 @@ export async function checkManagedDepthStorage() {
   }
   const memory = new ManagedMemory({
     pixels: 16 * 1024 * 1024,
-    metadata: 8192,
+    // This fixture checks pixel/native storage; complete shader metadata needs
+    // room independently of its unchanged pixel quota and native byte assertions.
+    metadata: 128 * 1024,
   });
   try {
     return await withManagedMemory(memory, async () => {
@@ -629,7 +631,10 @@ export async function checkManagedPngStorage() {
   const expected = scales.map((scale) => draw(baseline, scale));
   baseline.dispose();
   baselineCanvas.width = baselineCanvas.height = 0;
-  const memory = new ManagedMemory({ pixels: 8 * 1024 * 1024, metadata: 8192 });
+  const memory = new ManagedMemory({
+    pixels: 8 * 1024 * 1024,
+    metadata: 128 * 1024,
+  });
   try {
     return await withManagedMemory(memory, async () => {
       const canvas = createRenderCanvas();

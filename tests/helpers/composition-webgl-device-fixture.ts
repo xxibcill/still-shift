@@ -65,6 +65,31 @@ export function fakeWebglDevice() {
     UNSIGNED_BYTE: 26,
     NO_ERROR: 0,
     getError: vi.fn(() => 0),
+    VERTEX_SHADER: 28,
+    FRAGMENT_SHADER: 29,
+    COMPILE_STATUS: 30,
+    LINK_STATUS: 31,
+    ACTIVE_UNIFORMS: 32,
+    createShader: vi.fn((type: number) => ({ type })),
+    shaderSource: vi.fn(),
+    compileShader: vi.fn(),
+    getShaderParameter: vi.fn(() => true),
+    getShaderInfoLog: vi.fn(() => "original native compile failure"),
+    deleteShader: vi.fn(),
+    createProgram: vi.fn(() => ({})),
+    attachShader: vi.fn(),
+    linkProgram: vi.fn(),
+    getProgramParameter: vi.fn(
+      (_handle: unknown, name: number): boolean | number =>
+        name === 31 ? true : 0,
+    ),
+    getProgramInfoLog: vi.fn(() => "original native link failure"),
+    getActiveUniform: vi.fn((_handle: unknown, index: number) => ({
+      name: index === 0 ? "source" : "gain",
+      size: 1,
+      type: 0,
+    })),
+    getUniformLocation: vi.fn((_handle: unknown, name: string) => ({ name })),
     readPixels: vi.fn((...args: unknown[]) => {
       const pixels = args[6] as Uint8Array;
       for (let i = 0; i < pixels.length; i++) pixels[i] = i % 256;
