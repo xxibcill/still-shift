@@ -14,6 +14,9 @@ export {
 } from "./keys.ts";
 export * from "./layers.ts";
 export * from "./depth-image.ts";
+export * from "./media.ts";
+export * from "./audio.ts";
+export * from "./audio-pcm.ts";
 export * from "./shapes.ts";
 export * from "./shape-properties.ts";
 export * from "./property-path.ts";
@@ -27,3 +30,8 @@ export * from "./expression-check.ts";
 export * from "./behaviours.ts";
 export * from "./expressions.ts";
 export * from "./camera-dependencies.ts";
+
+export {
+  compositionProtectedNarration,
+  type CompositionProtectedNarration,
+} from "./validate-media.ts";

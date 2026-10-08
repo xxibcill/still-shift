@@ -5,6 +5,7 @@ import {
   AnimationEngineError,
   type CompositionDiagnostic,
 } from "@still-shift/scene-contract";
+import type { CompositionMediaPreparationOptions } from "./composition-media.ts";
 import { COMPOSITION_EVALUATOR_VERSION } from "../../renderer-core/src/composition/evaluate/evaluate.ts";
 import {
   compositionScene,
@@ -31,9 +32,17 @@ export type LoadedComposition = CompositionSource & { scene: CompositionScene };
 export async function loadComposition(
   compositionPath: string,
   backend: CompositionBackend = "canvas2d",
+  options: CompositionMediaPreparationOptions = {},
 ): Promise<LoadedComposition> {
-  const source = await readCompositionSource(compositionPath);
-  return { ...source, scene: compositionScene(source.composition, backend) };
+  const source = await readCompositionSource(compositionPath, options);
+  return {
+    ...source,
+    scene: {
+      ...compositionScene(source.composition, backend),
+      ...(source.preparedMedia ? { preparedMedia: source.preparedMedia } : {}),
+      ...(source.preparedAudio ? { preparedAudio: source.preparedAudio } : {}),
+    },
+  };
 }
 
 export type CompositionRenderResult = {
@@ -63,11 +72,18 @@ export async function renderComposition(request: {
   signal?: AbortSignal | undefined;
   transport?: ExportRequest["transport"];
   backend?: CompositionBackend;
+  cacheDirectory?: string;
 }): Promise<CompositionRenderResult> {
   request.signal?.throwIfAborted();
   const loaded = await loadComposition(
     request.compositionPath,
     request.backend,
+    {
+      signal: request.signal,
+      ...(request.cacheDirectory
+        ? { cacheDirectory: request.cacheDirectory }
+        : {}),
+    },
   );
   const { width, height } = loaded.scene.canvas;
   if (width % 2 !== 0 || height % 2 !== 0)
@@ -113,6 +129,16 @@ export async function renderComposition(request: {
     sourcePath: loaded.sourcePath,
     depthPath: null,
     assetPaths: loaded.assetPaths,
+    ...(loaded.preparedAudio
+      ? {
+          audioInput: {
+            path: loaded.assetPaths[loaded.preparedAudio.resource.id]!,
+            sha256: loaded.preparedAudio.resource.sha256,
+            byteLength: loaded.preparedAudio.resource.byteLength,
+            sampleCount: loaded.preparedAudio.sampleCount,
+          },
+        }
+      : {}),
     outputPath,
     sceneManifestContents: manifestBytes,
     transport: request.transport ?? "png_pipe",

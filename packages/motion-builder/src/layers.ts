@@ -39,6 +39,7 @@ export class Layer<K extends Kind = Kind> {
   readonly location: SourceLocation;
   autoId = false;
   inferImageSize = false;
+  inferMediaSize = false;
   pendingAnchor: NamedAnchor | undefined;
   imageAsset: ImageAsset | undefined;
   preparedAssets: CompositionAsset[] = [];
@@ -78,6 +79,7 @@ export class Layer<K extends Kind = Kind> {
     } else {
       if (
         this.inferImageSize ||
+        this.inferMediaSize ||
         (this.draft.type === "precomp" && !this.nested)
       ) {
         this.pendingAnchor = x;
@@ -116,7 +118,10 @@ export class Layer<K extends Kind = Kind> {
     return this;
   }
   with(options: Partial<Omit<Native<K>, "id" | "type">>): this {
-    if ("size" in options) this.inferImageSize = false;
+    if ("size" in options) {
+      this.inferImageSize = false;
+      this.inferMediaSize = false;
+    }
     if (options.transform?.anchor !== undefined) this.pendingAnchor = undefined;
     Object.assign(this.draft, structuredClone(options));
     return this;
@@ -329,22 +334,51 @@ export function light(
 }
 export function video(
   id: string,
-  asset: string,
+  asset: string | Extract<CompositionAsset, { type: "video" }>,
   options: Partial<Options<"video">> = {},
 ): Layer<"video"> {
-  return new Layer({ type: "video", id, asset, ...options });
+  const node = new Layer({
+    type: "video",
+    id,
+    asset: typeof asset === "string" ? asset : asset.id,
+    ...(typeof asset === "string"
+      ? {}
+      : { size: [asset.width, asset.height] as [number, number] }),
+    ...options,
+  });
+  node.inferMediaSize = typeof asset === "string" && options.size === undefined;
+  if (typeof asset !== "string") node.preparedAssets.push(asset);
+  return node;
 }
 export function sequence(
   id: string,
-  asset: string,
+  asset: string | Extract<CompositionAsset, { type: "sequence" }>,
   options: Partial<Options<"sequence">> = {},
 ): Layer<"sequence"> {
-  return new Layer({ type: "sequence", id, asset, ...options });
+  const node = new Layer({
+    type: "sequence",
+    id,
+    asset: typeof asset === "string" ? asset : asset.id,
+    ...(typeof asset === "string"
+      ? {}
+      : { size: [asset.width, asset.height] as [number, number] }),
+    ...options,
+  });
+  node.inferMediaSize = typeof asset === "string" && options.size === undefined;
+  if (typeof asset !== "string") node.preparedAssets.push(asset);
+  return node;
 }
 export function audio(
   id: string,
-  asset: string,
+  asset: string | Extract<CompositionAsset, { type: "audio" }>,
   options: Partial<Options<"audio">> = {},
 ): Layer<"audio"> {
-  return new Layer({ type: "audio", id, asset, ...options });
+  const node = new Layer({
+    type: "audio",
+    id,
+    asset: typeof asset === "string" ? asset : asset.id,
+    ...options,
+  });
+  if (typeof asset !== "string") node.preparedAssets.push(asset);
+  return node;
 }

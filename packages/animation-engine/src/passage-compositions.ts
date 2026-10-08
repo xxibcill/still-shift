@@ -15,6 +15,8 @@ export {
   type PassageCompositions,
 } from "@still-shift/renderer-core/passage-compositions";
 import { readCompositionSource } from "./composition-source.ts";
+import { compositionSequenceFramePath } from "./composition-media-sequence.ts";
+import type { CompositionMediaPreparationOptions } from "./composition-media.ts";
 import type { PreparedPassage } from "./story-passage-io.ts";
 
 /** A companion map assigns native composition files without extending frozen family schemas. */
@@ -23,7 +25,9 @@ export async function loadPassageCompositions(
   passage: Pick<PreparedPassage, "beats"> &
     Partial<Pick<PreparedPassage, "audio">>,
   allowPath?: (path: string) => Promise<unknown>,
+  options: CompositionMediaPreparationOptions = {},
 ) {
+  options.signal?.throwIfAborted();
   const sourcePath = resolve(path);
   await allowPath?.(sourcePath);
   const input = await readReferenceJson(sourcePath);
@@ -48,6 +52,7 @@ export async function loadPassageCompositions(
     });
   const compositions: Record<string, Composition> = Object.create(null);
   for (const [id, reference] of Object.entries(parsed.data)) {
+    options.signal?.throwIfAborted();
     const file = resolve(dirname(sourcePath), reference);
     await allowPath?.(file);
     const result = validateComposition(await readReferenceJson(file, id));
@@ -59,21 +64,56 @@ export async function loadPassageCompositions(
           sourcePath: file,
         })),
       );
-    for (const asset of result.composition.assets)
-      await allowPath?.(resolve(dirname(file), asset.path));
-    const loaded = await readCompositionSource(file).catch((error) =>
-      passageError(
+    if (allowPath)
+      for (const asset of result.composition.assets) {
+        options.signal?.throwIfAborted();
+        const source = resolve(dirname(file), asset.path);
+        if (asset.type === "sequence") {
+          await allowPath(resolve(dirname(file), asset.manifestPath));
+          for (let ordinal = 0; ordinal < asset.frameCount; ordinal++) {
+            options.signal?.throwIfAborted();
+            await allowPath(
+              compositionSequenceFramePath(source, asset.firstFrame + ordinal),
+            );
+          }
+        } else await allowPath(source);
+      }
+    const loaded = await readCompositionSource(file, options).catch((error) => {
+      options.signal?.throwIfAborted();
+      return passageError(
         "comp-passage-reference",
         `Cannot prepare ${file}: ${error.message}`,
         { beat: id, path: file },
-      ),
-    );
+      );
+    });
     compositions[id] = {
       ...loaded.composition,
-      assets: loaded.composition.assets.map((asset) => ({
-        ...asset,
-        path: loaded.assetPaths[asset.id]!,
-      })),
+      assets: loaded.composition.assets.map((asset) => {
+        if (
+          asset.type === "video" ||
+          asset.type === "sequence" ||
+          asset.type === "audio"
+        ) {
+          const original = loaded.mediaSourcePaths?.[asset.id];
+          if (
+            !original ||
+            (asset.type === "sequence" && !original.manifestPath)
+          )
+            passageError(
+              "comp-passage-reference",
+              "Prepared native source binding is unavailable",
+              { beat: id, path: asset.id },
+            );
+          return {
+            ...asset,
+            path: original.path,
+            ...(asset.type === "sequence"
+              ? { manifestPath: original.manifestPath! }
+              : {}),
+          };
+        }
+        return { ...asset, path: loaded.assetPaths[asset.id]! };
+      }),
     };
   }
   return validatePassageCompositions(passage, compositions);

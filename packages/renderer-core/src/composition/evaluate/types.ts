@@ -16,6 +16,7 @@ import type {
 import type { SampledCameraControls } from "./spatial-state.ts";
 import type { SampledLight, WorldLight } from "./lighting.ts";
 import type { SampledDepthMotion, SampledImagePlane } from "./depth-image.ts";
+import type { SampledCompositionMedia } from "./media.ts";
 
 export type Rgba = [number, number, number, number];
 export type Bounds = {
@@ -88,6 +89,9 @@ export type EvaluatedLayer = {
   reveal?: number;
   text?: string;
   timeRemap?: number;
+  gainDb?: number;
+  pan?: number;
+  media?: SampledCompositionMedia;
   precomp?: EvaluatedLayerTree;
   /** The unmixed scope used by this layer's exposure sample. */
   exposure?: { tree: EvaluatedLayerTree; rootTime: number };

@@ -1,16 +1,10 @@
 import type { Composition } from "@still-shift/scene-contract";
 import { compileComposition } from "../evaluate/compile.ts";
-import {
-  compositionExposureFrames,
-  evaluateCompositionExposure,
-} from "../evaluate/exposure.ts";
+import { compositionExposureFrames } from "../evaluate/exposure.ts";
+import { compositionRenderGraphs } from "./graphs.ts";
 import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
 import type { PassageDiagnostic } from "../../passage-diagnostics.ts";
-import {
-  buildRenderGraph,
-  type RenderGraphOptions,
-  type SurfaceNode,
-} from "./graph.ts";
+import { type RenderGraphOptions, type SurfaceNode } from "./graph.ts";
 import { executeGraph, type RenderBackend, type Surface } from "./backend.ts";
 
 /** Definitions are immutable shared references; only per-sample draw values differ. */
@@ -50,18 +44,8 @@ export function renderCompositionExposure<S extends Surface>(
   cache?: CompositionFrameCache,
 ) {
   const sampleFrames = compositionExposureFrames(comp, frame, options);
-  const graphs = function* () {
-    for (const tree of evaluateCompositionExposure(
-      comp,
-      frame,
-      options,
-      sampleFrames,
-    ))
-      yield {
-        graph: buildRenderGraph(comp, tree, options),
-        diagnostics: tree.diagnostics,
-      };
-  };
+  const graphs = () =>
+    compositionRenderGraphs(comp, frame, options, sampleFrames);
   const candidates = graphs();
   const first = candidates.next().value!;
   const firstKey = backend.frameKey?.(first.graph.root);

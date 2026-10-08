@@ -1,2 +1,2 @@
 /** Canvas 2D reference backend version; part of export manifests and cache identity. */
-export const COMPOSITION_RENDERER_VERSION = "composition-canvas-1.44.3";
+export const COMPOSITION_RENDERER_VERSION = "composition-canvas-1.45.1";

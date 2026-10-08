@@ -71,3 +71,7 @@ export type {
   CompiledShapes,
   SampledShapeContent,
 } from "../shapes/types.ts";
+
+export * from "./graphs.ts";
+
+export * from "./media-resources.ts";

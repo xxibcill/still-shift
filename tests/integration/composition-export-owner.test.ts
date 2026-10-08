@@ -110,6 +110,7 @@ it("rejects a second fixture export while the first is still reading its assets"
       second.then((response) => response.status),
       duplicatedRead,
     ]);
+    expect(assetRead.count).toBe(1);
     release();
     const replies = await Promise.all([first, second]);
     const bodies = await Promise.all(
@@ -122,7 +123,8 @@ it("rejects a second fixture export while the first is still reading its assets"
     expect(
       JSON.parse(Buffer.from(bodies[1]!).toString()).diagnostics,
     ).toMatchObject([{ code: "comp-edit-busy", severity: "error" }]);
-    expect(assetRead.count).toBe(1);
+    // The accepted export verifies provenance, then captures the same pinned bytes.
+    expect(assetRead.count).toBe(2);
   } finally {
     release();
     assetRead.path = "";

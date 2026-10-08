@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, expect, it } from "vitest";
 import { loadProgram } from "../../tools/still-shift-cli/src/composition/program.ts";
+import { portableComposition } from "../../tools/still-shift-cli/src/composition/files.ts";
 const directories: string[] = [];
 async function directory() {
   const root = await mkdtemp(join(tmpdir(), "composition-program-"));
@@ -26,6 +27,51 @@ const empty = {
   layers: [],
   assets: [],
 };
+it("resolves and relocates both sequence pattern and manifest bindings", async () => {
+  const root = await directory();
+  const input = join(root, "sequence.json");
+  await writeFile(
+    input,
+    JSON.stringify({
+      ...empty,
+      assets: [
+        {
+          id: "clip",
+          type: "sequence",
+          path: "frame_%02d.png",
+          manifestPath: "manifest.json",
+          firstFrame: 11,
+          width: 32,
+          height: 16,
+          frameCount: 12,
+          frameRate: { numerator: 12, denominator: 1 },
+          sha256: `sha256:${"0".repeat(64)}`,
+          color: {
+            primaries: "bt709",
+            transfer: "iec61966-2-1",
+            matrix: "gbr",
+            range: "pc",
+          },
+        },
+      ],
+    }),
+  );
+  const loaded = await loadProgram(input);
+  expect(loaded.composition.assets[0]).toMatchObject({
+    path: join(await realpath(root), "frame_%02d.png"),
+    manifestPath: join(await realpath(root), "manifest.json"),
+  });
+  expect(
+    portableComposition(
+      loaded.composition,
+      join(await realpath(root), "output"),
+    ).assets[0],
+  ).toMatchObject({
+    path: "../frame_%02d.png",
+    manifestPath: "../manifest.json",
+    firstFrame: 11,
+  });
+});
 it("loads JSON with native diagnostics and absolute asset paths", async () => {
   const root = await directory(),
     input = join(root, "input.json");

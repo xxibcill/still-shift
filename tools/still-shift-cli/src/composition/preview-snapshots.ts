@@ -2,18 +2,17 @@ import { randomUUID } from "node:crypto";
 import type { ProgramSnapshot } from "./preview.ts";
 import { CompositionSaveError } from "./save.ts";
 
-export type SnapshotBytes = {
+export type SnapshotBytes<Asset = { bytes: Buffer; type: string }> = {
   snapshot: ProgramSnapshot;
-  bytes: Map<string, { bytes: Buffer; type: string }>;
+  bytes: Map<string, Asset>;
 };
 /** Recent revisions are bounded independently of resources owned by live drafts. */
-export class ProgramSnapshots {
-  private recent = new Map<number, SnapshotBytes>();
-  private retained = new Map<
-    string,
-    { captured: SnapshotBytes; owner: object }
-  >();
-  add(captured: SnapshotBytes) {
+export class ProgramSnapshots<
+  Captured extends SnapshotBytes<unknown> = SnapshotBytes,
+> {
+  private recent = new Map<number, Captured>();
+  private retained = new Map<string, { captured: Captured; owner: object }>();
+  add(captured: Captured) {
     this.recent.set(captured.snapshot.revision, captured);
     while (this.recent.size > 2)
       this.recent.delete(this.recent.keys().next().value!);

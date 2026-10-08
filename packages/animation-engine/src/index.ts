@@ -44,8 +44,18 @@ export {
   readCompositionSource,
   type CompositionSource,
 } from "./composition-source.ts";
+
 export * from "./soundtrack-project-io.ts";
 
 export * from "./soundtrack-render.ts";
+export * from "./composition-media-probe.ts";
 
 export * from "./soundtrack-passage.ts";
+
+export * from "./composition-media-cache.ts";
+
+export * from "./composition-media.ts";
+
+export * from "./composition-media-audio.ts";
+
+export * from "./composition-audio-mix.ts";

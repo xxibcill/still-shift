@@ -3,6 +3,7 @@ import type { AlphaPixels } from "../../alpha-coverage.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import {
   cinematicRenderedRevealRequirements,
+  cinematicCompositionCoverageFrames,
   validateCinematicCompositionCoverage,
 } from "../adapters/cinematic-coverage.ts";
 import { evaluateCompositionExposure } from "../evaluate/exposure.ts";
@@ -40,7 +41,7 @@ export function sampleRenderedRevealAlpha(
 }
 
 /** Measure only treated planes, using the same isolated alpha and shutter clocks as production. */
-export function validateRenderedCinematicCompositionCoverage<S extends Surface>(
+function* renderedCinematicCompositionCoverageFrames<S extends Surface>(
   composition: Composition,
   readPixels: (assetId: string) => AlphaPixels,
   backend: RenderBackend<S>,
@@ -102,7 +103,7 @@ export function validateRenderedCinematicCompositionCoverage<S extends Surface>(
     }
   };
   try {
-    return validateCinematicCompositionCoverage(composition, readPixels, {
+    return yield* cinematicCompositionCoverageFrames(composition, readPixels, {
       sample: (node, frame, x, y) =>
         node.id === requirements.subject && required.has(node.id)
           ? sampleRenderedRevealAlpha(capture([node.id], frame), x, y)
@@ -122,5 +123,51 @@ export function validateRenderedCinematicCompositionCoverage<S extends Surface>(
     pixels.clear();
     exposures = [];
     backend.endFrame?.(false);
+  }
+}
+
+/** Still content follows the existing synchronous preparation contract. */
+export function validateRenderedCinematicCompositionCoverage<S extends Surface>(
+  composition: Composition,
+  readPixels: (assetId: string) => AlphaPixels,
+  backend: RenderBackend<S>,
+  options: EvaluationOptions = {},
+) {
+  const frames = renderedCinematicCompositionCoverageFrames(
+    composition,
+    readPixels,
+    backend,
+    options,
+  );
+  for (;;) {
+    const step = frames.next();
+    if (step.done) return step.value;
+  }
+}
+
+/** Await the complete native media set before capturing each reveal frame's alpha. */
+export async function validateRenderedCinematicCompositionCoverageAsync<
+  S extends Surface,
+>(
+  composition: Composition,
+  readPixels: (assetId: string) => AlphaPixels,
+  backend: RenderBackend<S>,
+  prepareFrame: (frame: number) => Promise<void>,
+  options: EvaluationOptions = {},
+) {
+  const frames = renderedCinematicCompositionCoverageFrames(
+    composition,
+    readPixels,
+    backend,
+    options,
+  );
+  try {
+    for (;;) {
+      const step = frames.next();
+      if (step.done) return step.value;
+      await prepareFrame(step.value);
+    }
+  } finally {
+    frames.return(undefined);
   }
 }

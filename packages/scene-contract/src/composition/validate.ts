@@ -24,6 +24,11 @@ import {
   spatialLayer,
 } from "./validate-spatial.ts";
 import { checkTextAnimatorAxes } from "./text-axes.ts";
+import {
+  checkMediaAssets,
+  checkMediaLayer,
+  checkProtectedNarration,
+} from "./validate-media.ts";
 
 const L = COMPOSITION_LIMITS;
 type Path = (string | number)[];
@@ -435,6 +440,7 @@ function checkLayer(
     case "sequence":
     case "audio":
       asset(layer.asset, layer.type, ["asset"]);
+      checkMediaLayer(layer, assets.get(layer.asset), path, fail);
       break;
   }
 }
@@ -1006,18 +1012,8 @@ export function validateCompositionSemantics(
       );
   });
   const assets = new Map(comp.assets.map((a) => [a.id, a]));
-  comp.assets.forEach((asset, i) => {
-    if (
-      asset.type === "video" ||
-      asset.type === "sequence" ||
-      asset.type === "audio"
-    )
-      fail(
-        "comp-feature-unavailable",
-        ["assets", i, "type"],
-        `${asset.type} assets are not available until CE13`,
-      );
-  });
+  checkMediaAssets(comp, fail);
+  checkProtectedNarration(comp, fail);
   const signals = new Set(comp.signals?.map((s) => s.id));
   for (const [id, style] of Object.entries(comp.textStyles ?? {})) {
     if (!style.fontAsset) continue;

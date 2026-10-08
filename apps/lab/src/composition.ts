@@ -7,6 +7,8 @@ import {
 import {
   validateComposition,
   type Composition,
+  type CompositionPreparedMedia,
+  type CompositionPreparedAudio,
 } from "../../../packages/scene-contract/src/index.ts";
 import {
   createCompositionPreview,
@@ -21,7 +23,13 @@ import {
 } from "./composition-document.ts";
 import { createCompositionInspector } from "./composition-inspector.ts";
 import { createCompositionOverlay } from "./composition-overlay.ts";
+import { CompositionAudioPreviewLoader } from "./composition-audio-player.ts";
+import {
+  presentCompositionAudioWaveforms,
+  positionCompositionAudioWaveforms,
+} from "./composition-audio-waveforms.ts";
 import { createPreviewSession } from "./preview-session.ts";
+import { retainFixtureOwner } from "./composition-fixture-assets.ts";
 import {
   retainProgramSnapshot,
   releaseProgramSnapshot,
@@ -129,7 +137,9 @@ type CompositionSnapshot = {
   warnings: string[];
   program: ProgramResponse["snapshot"];
   accept: () => void;
+  audio?: CompositionPreparedAudio;
 };
+const audioLoader = new CompositionAudioPreviewLoader();
 let comp: Composition | undefined;
 let preview: CompositionPreview | undefined;
 let generation = 0;
@@ -211,6 +221,7 @@ const session = createPreviewSession<CompositionSnapshot>({
   },
   ready(snapshot) {
     snapshot.accept();
+    presentCompositionAudioWaveforms(snapshot.audio);
     comp = snapshot.composition;
     preview = snapshot.preview;
     error.textContent = "";
@@ -263,6 +274,7 @@ const session = createPreviewSession<CompositionSnapshot>({
           : "Download preserves native source fields. Place JSON beside the original fixture to retain relative asset paths.";
   },
   frameChanged(frame, snapshot) {
+    positionCompositionAudioWaveforms(frame, snapshot.scene.frameCount);
     for (const marker of el(
       "lint-timeline",
     ).querySelectorAll<HTMLButtonElement>("button"))
@@ -308,6 +320,7 @@ async function load(
   path: string,
   edit: {
     document?: Composition;
+    program?: OwnedProgramSnapshot;
     proposal?: DocumentProposal;
     preserveHistory?: boolean;
     frame?: number;
@@ -320,17 +333,23 @@ async function load(
   lintAbort?.abort();
   error.textContent = "";
   status.textContent = `Loading ${path}…`;
-  let retainedProgram: OwnedProgramSnapshot | undefined;
+  let retainedProgram = edit.program;
   const accepted = await session.load(async (ownership) => {
     const query = `scene=${encodeURIComponent(path)}`;
-    const response = edit.document
-      ? undefined
-      : await fetch(
-          programMode ? "/composition/program" : `/composition/scene?${query}`,
-        );
+    const response =
+      edit.document || edit.program
+        ? undefined
+        : await fetch(
+            programMode
+              ? "/composition/program"
+              : `/composition/scene?${query}`,
+            { signal: ownership.signal },
+          );
     let value: unknown;
-    let program: ProgramResponse["snapshot"] = currentProgram;
+    let program: ProgramResponse["snapshot"] = edit.program ?? currentProgram;
     if (edit.document) value = edit.document;
+    else if (edit.program)
+      value = edit.program.document ?? edit.program.composition;
     else if (programMode) {
       const payload = (await response!.json()) as ProgramResponse;
       if (payload.diagnostics.length)
@@ -361,11 +380,100 @@ async function load(
         : new CompositionDocument(structuredClone(value) as Composition);
     if (edit.proposal && !nextHistory.accepts(edit.proposal))
       throw new Error("A newer document superseded this edit");
+    let capture: {
+      preparedMedia?: CompositionPreparedMedia;
+      preparedAudio?: CompositionPreparedAudio;
+      assets: Record<string, string>;
+    } = {
+      ...(program?.preparedAudio
+        ? { preparedAudio: program.preparedAudio }
+        : {}),
+      ...(program?.preparedMedia
+        ? { preparedMedia: program.preparedMedia }
+        : {}),
+      assets: program?.assets ?? {},
+    };
+    if (
+      (result.composition.assets.some((asset) => asset.type === "audio") &&
+        (!capture.preparedAudio || edit.document)) ||
+      (result.composition.assets.some(
+        (asset) => asset.type === "video" || asset.type === "sequence",
+      ) &&
+        (!capture.preparedMedia || edit.document))
+    ) {
+      const owner = programMode ? undefined : await retainFixtureOwner();
+      ownership.signal.throwIfAborted();
+      const captureId = crypto.randomUUID();
+      const binding = programMode
+        ? { revision: program!.revision, lease: program!.lease }
+        : { owner };
+      ownership.onDispose(() => {
+        void fetch(
+          programMode
+            ? "/composition/program-capture-release"
+            : `/composition/capture-release?${query}`,
+          {
+            method: "POST",
+            keepalive: true,
+            headers: {
+              "Content-Type": "application/json",
+              "x-still-shift-composition": "1",
+            },
+            body: JSON.stringify({ ...binding, capture: captureId }),
+          },
+        ).catch(() => {});
+      });
+      const response = await fetch(
+        programMode
+          ? "/composition/program-prepare"
+          : `/composition/prepare?${query}`,
+        {
+          method: "POST",
+          signal: ownership.signal,
+          headers: {
+            "Content-Type": "application/json",
+            "x-still-shift-composition": "1",
+          },
+          body: JSON.stringify({
+            ...binding,
+            capture: captureId,
+            document: value,
+          }),
+        },
+      );
+      if (!response.ok) throw new Error(await response.text());
+      capture = (await response.json()) as typeof capture;
+    }
+    ownership.signal.throwIfAborted();
+    if (capture.preparedAudio) {
+      const url = capture.assets[capture.preparedAudio.resource.id];
+      if (!url) throw new Error("Native audio master is unavailable");
+      ownership.audio(
+        await audioLoader.prepare(
+          result.composition,
+          capture.preparedAudio,
+          url,
+          ownership.signal,
+        ),
+      );
+    } else if (
+      result.composition.assets.some((asset) => asset.type === "audio")
+    ) {
+      throw new Error(
+        "Native audio preview requires a prepared complete master",
+      );
+    }
     const resources = await loadCompositionResources(
       result.composition,
       (id) =>
-        program?.assets[id] ??
+        capture.assets[id] ??
         `/composition/asset?${query}&id=${encodeURIComponent(id)}`,
+      {
+        ...(capture.preparedMedia
+          ? { preparedMedia: capture.preparedMedia }
+          : {}),
+        signal: ownership.signal,
+      },
     );
     const nextCanvas = canvas.cloneNode(false) as HTMLCanvasElement;
     const renderer = createCompositionPreview(
@@ -383,6 +491,7 @@ async function load(
       path,
       backend,
       program,
+      ...(capture.preparedAudio ? { audio: capture.preparedAudio } : {}),
       accept() {
         if (currentProgram?.lease !== program?.lease)
           releaseProgramSnapshot(currentProgram);
@@ -398,6 +507,9 @@ async function load(
     };
     ownership.renderer(
       {
+        ...(resources.media
+          ? { prepareFrame: (frame: number) => renderer.prepareFrame(frame) }
+          : {}),
         renderFrame(frame: number) {
           return (snapshot.report = renderer.renderFrame(frame));
         },
@@ -522,13 +634,28 @@ saveButton.onclick = async () => {
               .join("\n") || "Save failed",
           );
         const savedProgram = await retainProgramSnapshot(payload.snapshot);
-        releaseProgramSnapshot(currentProgram);
-        currentProgram = savedProgram;
+        if (savedProgram.preparedMedia || savedProgram.preparedAudio) {
+          if (
+            !(await load("program", {
+              program: savedProgram,
+              preserveHistory: true,
+              frame: session.frame,
+            }))
+          ) {
+            showLoadError(
+              "Source saved, but its native preview could not reload.",
+            );
+            return "Source saved; reload to inspect the native preview.";
+          }
+        } else {
+          releaseProgramSnapshot(currentProgram);
+          currentProgram = savedProgram;
+        }
         const snapshot = session.snapshot;
         if (snapshot) snapshot.program = currentProgram;
         documentHistory.markSaved();
         inspector.refresh(documentHistory);
-        status.dataset.revision = String(currentProgram.revision);
+        status.dataset.revision = String(savedProgram.revision);
         return "JSON source saved.";
       } finally {
         pendingSave = undefined;

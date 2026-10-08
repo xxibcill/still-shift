@@ -27,7 +27,126 @@ export function uncoveredViewportPixel(
       return [pixel % width, Math.floor(pixel / width)];
   return null;
 }
-/** Render each required layer's actual alpha alone, including source states, effects, masks and mattes. */
+export function hasRequiredCompositionCoverage(
+  comp: Composition,
+  requiredRootLayers: ReadonlyMap<string, string> = new Map(),
+) {
+  return (
+    requiredRootLayers.size > 0 ||
+    [comp, ...(comp.precomps ?? [])].some((scope) =>
+      scope.layers.some((layer) => layer.coverage === "required"),
+    )
+  );
+}
+
+/** The same isolated graphs drive readiness and actual coverage validation. */
+export function* compositionRequiredCoverageGraphs(
+  comp: Composition,
+  frame: number,
+  options: EvaluationOptions = {},
+  requiredRootLayers: ReadonlyMap<string, string> = new Map(),
+) {
+  const definitions = new Map(
+    (comp.precomps ?? []).map((scope) => [scope.id, scope]),
+  );
+  function* visit(
+    tree: EvaluatedLayerTree,
+    scope: CompositionScope,
+    route: string,
+  ): Generator<{
+    node: string;
+    declarationPath?: string;
+    scope: CompositionScope;
+    graph: ReturnType<typeof buildLayerRenderGraph>;
+  }> {
+    for (const state of tree.layers) {
+      const node = route + state.id;
+      const declarationPath =
+        route === "" ? requiredRootLayers.get(state.id) : undefined;
+      if (state.layer.coverage === "required" || declarationPath !== undefined)
+        yield {
+          node,
+          ...(declarationPath !== undefined ? { declarationPath } : {}),
+          scope,
+          graph: buildLayerRenderGraph(
+            comp,
+            tree,
+            scope,
+            state.id,
+            route,
+            options,
+          ),
+        };
+      if (state.precomp && state.visible && state.opacity > 0)
+        yield* visit(
+          state.precomp,
+          definitions.get(state.precomp.id)!,
+          node + "/",
+        );
+    }
+  }
+  for (const tree of evaluateCompositionExposure(comp, frame, options))
+    yield* visit(tree, comp, "");
+}
+
+export function createCompositionCoverageValidator<S extends Surface>(
+  comp: Composition,
+  backend: RenderBackend<S>,
+  options: EvaluationOptions = {},
+  severity: "error" | "warning" = "error",
+  requiredRootLayers: ReadonlyMap<string, string> = new Map(),
+) {
+  const failed = new Set<string>();
+  return (frame: number): PassageDiagnostic[] => {
+    const diagnostics: PassageDiagnostic[] = [];
+    for (const {
+      node,
+      declarationPath,
+      scope,
+      graph,
+    } of compositionRequiredCoverageGraphs(
+      comp,
+      frame,
+      options,
+      requiredRootLayers,
+    )) {
+      if (failed.has(node)) continue;
+      const target = backend.createSurface(scope.width, scope.height);
+      let pixel: [number, number] | null;
+      try {
+        executeGraph(backend, graph, target);
+        pixel = uncoveredViewportPixel(
+          backend.readPixels(target),
+          scope.width,
+          scope.height,
+        );
+      } finally {
+        backend.releaseSurface(target);
+      }
+      if (!pixel) continue;
+      const message = `Required camera coverage on ${node} exposes the owning scope at frame ${frame}, pixel ${pixel[0]},${pixel[1]}`;
+      const path = declarationPath ?? node + ".coverage";
+      if (severity === "error" || declarationPath !== undefined)
+        passageError("comp-camera-coverage", message, {
+          node,
+          path,
+          frame,
+        });
+      diagnostics.push({
+        code: "comp-camera-coverage",
+        severity,
+        message,
+        node,
+        path,
+        frame,
+      });
+      failed.add(node);
+    }
+    return diagnostics;
+  };
+}
+
+/** Render every required layer's actual alpha alone, with its source/effects/matte. */
 export function validateRequiredCompositionCoverage<S extends Surface>(
   comp: Composition,
   backend: RenderBackend<S>,
@@ -36,91 +155,21 @@ export function validateRequiredCompositionCoverage<S extends Surface>(
   requiredRootLayers: ReadonlyMap<string, string> = new Map(),
   frames?: readonly number[],
 ): PassageDiagnostic[] {
-  const scopes = [comp, ...(comp.precomps ?? [])];
-  if (
-    !requiredRootLayers.size &&
-    !scopes.some((scope) =>
-      scope.layers.some((layer) => layer.coverage === "required"),
-    )
-  )
-    return [];
-  const diagnostics: PassageDiagnostic[] = [],
-    definitions = new Map(
-      (comp.precomps ?? []).map((scope) => [scope.id, scope]),
-    );
-  const failed = new Set<string>();
-  const visit = (
-    tree: EvaluatedLayerTree,
-    scope: CompositionScope,
-    route: string,
-    frame: number,
-  ) => {
-    for (const state of tree.layers) {
-      const node = route + state.id;
-      const declarationPath =
-        route === "" ? requiredRootLayers.get(state.id) : undefined;
-      if (
-        (state.layer.coverage === "required" ||
-          declarationPath !== undefined) &&
-        !failed.has(node)
-      ) {
-        const graph = buildLayerRenderGraph(
-          comp,
-          tree,
-          scope,
-          state.id,
-          route,
-          options,
-        );
-        const target = backend.createSurface(scope.width, scope.height);
-        let pixel: [number, number] | null;
-        try {
-          executeGraph(backend, graph, target);
-          pixel = uncoveredViewportPixel(
-            backend.readPixels(target),
-            scope.width,
-            scope.height,
-          );
-        } finally {
-          backend.releaseSurface(target);
-        }
-        if (pixel) {
-          const message = `Required camera coverage on ${node} exposes the owning scope at frame ${frame}, pixel ${pixel[0]},${pixel[1]}`;
-          const path = declarationPath ?? node + ".coverage";
-          if (severity === "error" || declarationPath !== undefined)
-            passageError("comp-camera-coverage", message, {
-              node,
-              path,
-              frame,
-            });
-          diagnostics.push({
-            code: "comp-camera-coverage",
-            severity,
-            message,
-            node,
-            path,
-            frame,
-          });
-          failed.add(node);
-        }
-      }
-      if (state.precomp && state.visible && state.opacity > 0)
-        visit(
-          state.precomp,
-          definitions.get(state.precomp.id)!,
-          node + "/",
-          frame,
-        );
-    }
-  };
+  if (!hasRequiredCompositionCoverage(comp, requiredRootLayers)) return [];
+  const validate = createCompositionCoverageValidator(
+    comp,
+    backend,
+    options,
+    severity,
+    requiredRootLayers,
+  );
+  const diagnostics: PassageDiagnostic[] = [];
   try {
     for (const frame of frames ??
-      Array.from({ length: comp.frameCount }, (_, frame) => frame)) {
-      for (const tree of evaluateCompositionExposure(comp, frame, options))
-        visit(tree, comp, "", frame);
-    }
+      Array.from({ length: comp.frameCount }, (_, frame) => frame))
+      diagnostics.push(...validate(frame));
+    return diagnostics;
   } finally {
     backend.endFrame?.(false);
   }
-  return diagnostics;
 }

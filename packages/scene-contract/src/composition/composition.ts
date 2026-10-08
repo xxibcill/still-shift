@@ -28,8 +28,13 @@ import {
   label,
   metadata,
   sha256,
-  size2,
 } from "./primitives.ts";
+import {
+  CompositionVideoAssetSchema,
+  CompositionSequenceAssetSchema,
+  CompositionAudioAssetSchema,
+  CompositionMediaLimitsSchema,
+} from "./media.ts";
 import { validateCompositionSemantics } from "./validate.ts";
 import { CompositionBehaviourSchema } from "./behaviours.ts";
 import { EXPRESSION_LIMITS } from "./expression-ast.ts";
@@ -77,18 +82,9 @@ export const CompositionAssetSchema = z.discriminatedUnion("type", [
       variable: CompositionFontAxesSchema.optional(),
     })
     .strict(),
-  // Media assets are completed in CE13.
-  ...(["video", "sequence", "audio"] as const).map((type) =>
-    z
-      .object({
-        id: compositionId,
-        type: z.literal(type),
-        path: assetPath,
-        sha256,
-        size: size2.optional(),
-      })
-      .strict(),
-  ),
+  CompositionVideoAssetSchema,
+  CompositionSequenceAssetSchema,
+  CompositionAudioAssetSchema,
 ]);
 
 export const CompositionMarkerSchema = z
@@ -202,6 +198,7 @@ const compositionShape = z
     fps: CompositionFpsSchema,
     format: OutputFormatSchema.optional(),
     colorSpace: z.enum(["srgb", "linear-srgb"]).optional(),
+    mediaLimits: CompositionMediaLimitsSchema.optional(),
     motionBlur: z
       .object({
         enabled: z.boolean(),

@@ -1,7 +1,9 @@
-import { createHash } from "node:crypto";
+import { randomUUID } from "node:crypto";
+import { createReadStream } from "node:fs";
 import { readFile, realpath } from "node:fs/promises";
 import { createServer as createSocketServer } from "node:net";
-import { extname, resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { pipeline } from "node:stream/promises";
 import {
   createServer,
   type Plugin,
@@ -10,20 +12,32 @@ import {
 } from "vite";
 import { ProgramSnapshots, type SnapshotBytes } from "./preview-snapshots.ts";
 import { passageDiagnostics } from "../../../../packages/renderer-core/src/passage-diagnostics.ts";
-import { readCompositionSource } from "@still-shift/animation-engine";
+import {
+  readCompositionSource,
+  prepareCompositionMedia,
+  prepareCompositionAudio,
+} from "@still-shift/animation-engine";
 import type {
   Composition,
   CompositionDiagnostic,
+  CompositionPreparedMedia,
+  CompositionPreparedAudio,
 } from "@still-shift/scene-contract";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { loadProgram } from "./program.ts";
 import { exportCompositionDraft } from "./draft-export.ts";
+import {
+  captureCompositionAssets,
+  capturedMediaComposition,
+  type DraftAsset,
+} from "./captured-assets.ts";
 import { withProgramFile } from "./files.ts";
 import {
   CompositionSaveError,
   readEditRequest,
   saveCompositionDocument,
   sourceHash,
+  editableDocument,
   sendCompositionEditError,
 } from "./save.ts";
 export type ProgramSnapshot = {
@@ -34,21 +48,27 @@ export type ProgramSnapshot = {
   source: "json" | "builder";
   input: string;
   assets: Record<string, string>;
+  preparedMedia?: CompositionPreparedMedia;
+  preparedAudio?: CompositionPreparedAudio;
   diagnostics: CompositionDiagnostic[];
 };
-const types: Record<string, string> = {
-  ".svg": "image/svg+xml",
-  ".png": "image/png",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".webp": "image/webp",
-  ".gif": "image/gif",
-  ".bmp": "image/bmp",
-  ".ttf": "font/ttf",
-  ".otf": "font/otf",
-  ".woff": "font/woff",
-  ".woff2": "font/woff2",
+type NativeSnapshotBytes = SnapshotBytes<DraftAsset> & {
+  sourcePaths: Record<string, string>;
 };
+type NativeOwner = { revision: number; lease?: string };
+type NativeCapture = NativeOwner & {
+  controller: AbortController;
+  paths?: Record<string, string>;
+};
+const CAPTURE_LIMIT = 64;
+const CANCELLATION_LIMIT = 128;
+const ownerKey = (owner: NativeOwner) =>
+  `${owner.revision}:${owner.lease ?? "recent"}`;
+const sameOwner = (left: NativeOwner, right: NativeOwner) =>
+  left.revision === right.revision && left.lease === right.lease;
+const captureId = (value: unknown): value is string =>
+  typeof value === "string" &&
+  /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
 async function availablePort() {
   const socket = createSocketServer();
   await new Promise<void>((resolve, reject) => {
@@ -75,8 +95,31 @@ export async function createProgramPreview(
     input = await realpath(sourceInput).catch(() => sourceInput);
   const root = resolve(import.meta.dirname, "../../../../");
   const watched = new Set<string>([input]),
-    snapshots = new ProgramSnapshots();
-  let current: SnapshotBytes | undefined,
+    snapshots = new ProgramSnapshots<NativeSnapshotBytes>();
+  const sequencePatterns = new Map<string, RegExp>();
+  const preparing = new Set<AbortController>();
+  const captures = new Map<string, NativeCapture>();
+  const leaseOwners = new Map<string, WebSocketClient>();
+  const cancellations = new Map<string, NativeOwner>();
+  const blockedOwners = new Map<string, NativeOwner>();
+  const releaseCapture = (id: string) => {
+    const capture = captures.get(id);
+    if (!capture) return;
+    captures.delete(id);
+    capture.controller.abort();
+  };
+  const releaseLease = (lease: string, owner: WebSocketClient) => {
+    if (leaseOwners.get(lease) !== owner) return;
+    for (const [id, capture] of captures)
+      if (capture.lease === lease) releaseCapture(id);
+    for (const [id, cancelled] of cancellations)
+      if (cancelled.lease === lease) cancellations.delete(id);
+    for (const [key, blocked] of blockedOwners)
+      if (blocked.lease === lease) blockedOwners.delete(key);
+    snapshots.release(lease, owner);
+    leaseOwners.delete(lease);
+  };
+  let current: NativeSnapshotBytes | undefined,
     revision = 0,
     pending = false,
     closed = false;
@@ -102,31 +145,23 @@ export async function createProgramPreview(
       addDependencies([
         ...program.dependencies,
         ...program.composition.assets.map((asset) => asset.path),
+        ...program.composition.assets.flatMap((asset) =>
+          asset.type === "sequence" ? [asset.manifestPath] : [],
+        ),
       ]);
-      const source = await withProgramFile(
-        program,
-        sourceInput,
-        readCompositionSource,
+      sequencePatterns.clear();
+      for (const asset of program.composition.assets)
+        if (asset.type === "sequence") {
+          const pattern = asset.path
+            .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+            .replace(/%0[1-9]\d?d/, "[0-9]+");
+          sequencePatterns.set(asset.id, new RegExp(`^${pattern}$`));
+          server.watcher.add(dirname(asset.path));
+        }
+      const source = await withProgramFile(program, sourceInput, (path) =>
+        readCompositionSource(path, { signal: controller.signal }),
       );
-      const bytes = new Map<string, { bytes: Buffer; type: string }>();
-      for (const asset of program.composition.assets) {
-        const data = await readFile(source.assetPaths[asset.id]!);
-        if (
-          `sha256:${createHash("sha256").update(data).digest("hex")}` !==
-          asset.sha256
-        )
-          programError(
-            "comp-program-asset-race",
-            `Asset ${asset.id} changed during rebuild`,
-            asset.path,
-          );
-        bytes.set(asset.id, {
-          bytes: data,
-          type:
-            types[extname(asset.path).toLowerCase()] ??
-            "application/octet-stream",
-        });
-      }
+      const bytes = await captureCompositionAssets(source);
       if (
         program.sourceSha256 &&
         sourceHash(await readFile(input)) !== program.sourceSha256
@@ -147,15 +182,33 @@ export async function createProgramPreview(
         source: program.source,
         input: sourceInput,
         diagnostics: source.warnings,
+        ...(source.preparedAudio
+          ? { preparedAudio: source.preparedAudio }
+          : {}),
+        ...(source.preparedMedia
+          ? { preparedMedia: source.preparedMedia }
+          : {}),
         assets: Object.fromEntries(
-          [...bytes.keys()].map((id) => [
+          Object.keys(source.assetPaths).map((id) => [
             id,
-            `/composition/program-asset?revision=${revision}&id=${encodeURIComponent(id)}`,
+            `/composition/program-asset?revision=${revision}&capture=source&id=${encodeURIComponent(id)}`,
           ]),
         ),
       };
-      current = { snapshot, bytes };
+      current = {
+        snapshot,
+        bytes,
+        sourcePaths: source.assetPaths,
+      };
       snapshots.add(current);
+      for (const [id, capture] of captures)
+        if (!snapshots.get(capture.revision, capture.lease)) releaseCapture(id);
+      for (const [id, cancelled] of cancellations)
+        if (!snapshots.get(cancelled.revision, cancelled.lease))
+          cancellations.delete(id);
+      for (const [key, blocked] of blockedOwners)
+        if (!snapshots.get(blocked.revision, blocked.lease))
+          blockedOwners.delete(key);
       failure = [];
       server.ws.send({
         type: "custom",
@@ -203,7 +256,12 @@ export async function createProgramPreview(
     if (
       !options.watch ||
       !["add", "change", "unlink"].includes(event) ||
-      !watched.has(resolve(path))
+      !(
+        watched.has(resolve(path)) ||
+        [...sequencePatterns.values()].some((pattern) =>
+          pattern.test(resolve(path)),
+        )
+      )
     )
       return;
     if (resolve(path) === input && event !== "unlink") {
@@ -248,9 +306,13 @@ export async function createProgramPreview(
                 "Use a positive source revision",
               );
             const lease = snapshots.retain(data.revision as number, client);
+            leaseOwners.set(lease, client);
             if (!owners.has(client)) {
               owners.add(client);
-              client.socket.once("close", () => snapshots.releaseOwner(client));
+              client.socket.once("close", () => {
+                for (const [lease, owner] of leaseOwners)
+                  if (owner === client) releaseLease(lease, client);
+              });
             }
             client.send("composition-program:retained", {
               request: data.request,
@@ -269,7 +331,7 @@ export async function createProgramPreview(
         "composition-program:release",
         (data: { lease?: unknown }, client) => {
           if (data && typeof data.lease === "string" && data.lease.length <= 64)
-            snapshots.release(data.lease, client);
+            releaseLease(data.lease, client);
         },
       );
       server.middlewares.use((request, response, next) => {
@@ -280,10 +342,226 @@ export async function createProgramPreview(
             "/composition/program-asset",
             "/composition/program-save",
             "/composition/program-export",
+            "/composition/program-prepare",
+            "/composition/program-capture-release",
           ].includes(url.pathname)
         )
           return next();
         response.setHeader("Cache-Control", "no-store");
+        if (url.pathname === "/composition/program-capture-release") {
+          void (async () => {
+            try {
+              const body = (await readEditRequest(request)) as {
+                revision?: number;
+                lease?: string;
+                capture?: unknown;
+              };
+              if (
+                !body ||
+                Object.keys(body).some(
+                  (key) => !["revision", "lease", "capture"].includes(key),
+                ) ||
+                !Number.isSafeInteger(body.revision) ||
+                body.revision! < 1 ||
+                !captureId(body.capture) ||
+                (body.lease !== undefined &&
+                  (typeof body.lease !== "string" || body.lease.length > 64))
+              )
+                throw new CompositionSaveError(
+                  400,
+                  "comp-edit-request",
+                  "Use revision, lease and capture",
+                );
+              const owner: NativeOwner = {
+                revision: body.revision!,
+                ...(body.lease !== undefined ? { lease: body.lease } : {}),
+              };
+              const capture = captures.get(body.capture);
+              const cancelled = cancellations.get(body.capture);
+              if (
+                (capture && !sameOwner(capture, owner)) ||
+                (cancelled && !sameOwner(cancelled, owner))
+              )
+                throw new CompositionSaveError(
+                  403,
+                  "comp-edit-capture",
+                  "Native capture belongs to a different preview owner",
+                );
+              if (capture) releaseCapture(body.capture);
+              else if (snapshots.get(owner.revision, owner.lease)) {
+                // Release may arrive before the corresponding prepare body. Never
+                // evict a cancellation while that request can still arrive.
+                if (cancellations.size >= CANCELLATION_LIMIT && !cancelled)
+                  blockedOwners.set(ownerKey(owner), owner);
+                else if (!blockedOwners.has(ownerKey(owner)))
+                  cancellations.set(body.capture, owner);
+              }
+              response.statusCode = 204;
+              response.end();
+            } catch (error) {
+              sendCompositionEditError(response, error, input);
+            }
+          })();
+          return;
+        }
+        if (url.pathname === "/composition/program-prepare") {
+          void (async () => {
+            const controller = new AbortController();
+            const abort = () => {
+              if (!response.writableEnded) controller.abort();
+            };
+            preparing.add(controller);
+            response.on("close", abort);
+            let capture: string | undefined;
+            let reservation: NativeCapture | undefined;
+            let published = false;
+            try {
+              const body = (await readEditRequest(request)) as {
+                revision?: number;
+                document?: unknown;
+                lease?: string;
+                capture?: unknown;
+              };
+              controller.signal.throwIfAborted();
+              if (
+                !body ||
+                Object.keys(body).some(
+                  (key) =>
+                    !["revision", "document", "lease", "capture"].includes(key),
+                ) ||
+                (body.capture !== undefined && !captureId(body.capture))
+              )
+                throw new CompositionSaveError(
+                  400,
+                  "comp-edit-request",
+                  "Use revision, document, lease and optional capture",
+                );
+              const captured = snapshots.get(body.revision ?? -1, body.lease);
+              if (!captured)
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-revision",
+                  "Source asset revision expired; reload before preparing",
+                );
+              const owner: NativeOwner = {
+                revision: captured.snapshot.revision,
+                ...(body.lease !== undefined ? { lease: body.lease } : {}),
+              };
+              const cancelled = body.capture
+                ? cancellations.get(body.capture)
+                : undefined;
+              if (cancelled) {
+                if (!sameOwner(cancelled, owner))
+                  throw new CompositionSaveError(
+                    403,
+                    "comp-edit-capture",
+                    "Native capture belongs to a different preview owner",
+                  );
+                cancellations.delete(body.capture!);
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-capture",
+                  "This native capture was released before preparation",
+                );
+              }
+              if (blockedOwners.has(ownerKey(owner)))
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-limit",
+                  "This preview has too many pending cancellations; reload before preparing again",
+                );
+              const document = editableDocument(
+                body.document,
+                captured.snapshot.document ?? captured.snapshot.composition,
+              );
+              const nativeDocument = capturedMediaComposition(
+                document,
+                captured.bytes,
+              );
+              if (captures.size >= CAPTURE_LIMIT)
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-limit",
+                  "The preview already has 64 native captures; close an unused preview before preparing another",
+                );
+              capture =
+                typeof body.capture === "string" ? body.capture : randomUUID();
+              if (captures.has(capture))
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-capture",
+                  "This native capture is already owned by a preview",
+                );
+              reservation = {
+                revision: captured.snapshot.revision,
+                ...(body.lease !== undefined ? { lease: body.lease } : {}),
+                controller,
+              };
+              captures.set(capture, reservation);
+              const prepared = await prepareCompositionMedia(
+                nativeDocument,
+                dirname(sourceInput),
+                { signal: controller.signal },
+              );
+              const audio = await prepareCompositionAudio(
+                nativeDocument,
+                dirname(sourceInput),
+                { signal: controller.signal },
+              );
+              const paths = { ...prepared?.assetPaths, ...audio?.assetPaths };
+              controller.signal.throwIfAborted();
+              if (
+                captures.get(capture) !== reservation ||
+                snapshots.get(body.revision ?? -1, body.lease) !== captured
+              )
+                throw new CompositionSaveError(
+                  409,
+                  "comp-edit-revision",
+                  "Preview owner was released during native preparation",
+                );
+              reservation.paths = paths;
+              response.setHeader("Content-Type", "application/json");
+              response.end(
+                JSON.stringify({
+                  capture,
+                  preparedMedia: prepared?.preparedMedia,
+                  preparedAudio: audio?.preparedAudio,
+                  assets: {
+                    ...Object.fromEntries(
+                      Object.entries(captured.snapshot.assets).map(
+                        ([id, path]) => [
+                          id,
+                          body.lease
+                            ? `${path}&lease=${encodeURIComponent(body.lease)}`
+                            : path,
+                        ],
+                      ),
+                    ),
+                    ...Object.fromEntries(
+                      Object.keys(paths).map((id) => [
+                        id,
+                        `/composition/program-asset?revision=${captured.snapshot.revision}&capture=${capture}&id=${encodeURIComponent(id)}${body.lease ? `&lease=${encodeURIComponent(body.lease)}` : ""}`,
+                      ]),
+                    ),
+                  },
+                }),
+              );
+              published = true;
+            } catch (error) {
+              sendCompositionEditError(response, error, input);
+            } finally {
+              if (
+                !published &&
+                capture &&
+                captures.get(capture) === reservation
+              )
+                releaseCapture(capture);
+              response.off("close", abort);
+              preparing.delete(controller);
+            }
+          })();
+          return;
+        }
         if (url.pathname === "/composition/program-export") {
           void (async () => {
             try {
@@ -423,13 +701,33 @@ export async function createProgramPreview(
           );
           return;
         }
-        const asset = snapshots
-          .get(
-            Number(url.searchParams.get("revision")),
-            url.searchParams.get("lease") ?? undefined,
-          )
-          ?.bytes.get(url.searchParams.get("id") ?? "");
-        if (!asset) {
+        const captured = snapshots.get(
+          Number(url.searchParams.get("revision")),
+          url.searchParams.get("lease") ?? undefined,
+        );
+        const id = url.searchParams.get("id") ?? "";
+        const asset = captured?.bytes.get(id);
+        const capture = url.searchParams.get("capture") ?? "source";
+        const prepared = captures.get(capture);
+        const paths =
+          capture === "source"
+            ? captured?.sourcePaths
+            : prepared?.revision === captured?.snapshot.revision &&
+                prepared?.lease === (url.searchParams.get("lease") ?? undefined)
+              ? prepared?.paths
+              : undefined;
+        const path = paths?.[id];
+        if ((id.startsWith("__media:") || id === "__audio:mix") && path) {
+          response.setHeader(
+            "Content-Type",
+            id === "__audio:mix" ? "audio/wav" : "image/png",
+          );
+          void pipeline(createReadStream(path), response).catch(() =>
+            response.destroy(),
+          );
+          return;
+        }
+        if (!asset || !("bytes" in asset)) {
           response.statusCode = 404;
           response.end();
           return;
@@ -474,6 +772,11 @@ export async function createProgramPreview(
       closed = true;
       clearTimeout(timer);
       abort?.abort();
+      for (const controller of preparing) controller.abort();
+      for (const id of captures.keys()) releaseCapture(id);
+      leaseOwners.clear();
+      cancellations.clear();
+      blockedOwners.clear();
       server.watcher.off("all", changed);
       await active;
       await saving;

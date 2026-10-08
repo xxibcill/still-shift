@@ -43,6 +43,11 @@ export function layerSize(
   layer: CompositionLayer,
 ): Point {
   if ("size" in layer && layer.size) return [...layer.size];
+  if (layer.type === "video" || layer.type === "sequence") {
+    const asset = comp.assets.find((a) => a.id === layer.asset)!;
+    if (asset.type === "video" || asset.type === "sequence")
+      return [asset.width, asset.height];
+  }
   if (layer.type === "precomp") {
     const precomp = comp.precomps!.find((p) => p.id === layer.comp)!;
     return [precomp.width, precomp.height];
@@ -77,7 +82,7 @@ export function localBounds(
   options: EvaluationOptions,
 ): Bounds | null {
   const layer = state.layer;
-  if (layer.type === "null") return null;
+  if (layer.type === "null" || layer.type === "audio") return null;
   if (layer.type === "shape") return state.shapes?.bounds ?? null;
   if (layer.type === "provider") {
     const b = layer.bounds;
@@ -94,6 +99,26 @@ export function localBounds(
     return blendedBounds(current, prior, state.stateMix ?? 1);
   }
   const [width, height] = layerSize(comp, scope, layer);
+  if (
+    (layer.type === "video" || layer.type === "sequence") &&
+    (layer.fit ?? "contain") === "contain"
+  ) {
+    const asset = comp.assets.find((a) => a.id === layer.asset)!;
+    if (asset.type === "video" || asset.type === "sequence") {
+      const p = imagePlacement({ width, height, fit: "contain" }, [
+        0,
+        0,
+        asset.width,
+        asset.height,
+      ]);
+      return {
+        left: p.x,
+        top: p.y,
+        right: p.x + p.width,
+        bottom: p.y + p.height,
+      };
+    }
+  }
   if (layer.type !== "image" || (layer.fit ?? "contain") !== "contain")
     return { left: 0, top: 0, right: width, bottom: height };
   const sourceBounds = (index: number) => {

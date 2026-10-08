@@ -1,7 +1,7 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-10-08
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE5, CE6, CE7, CE8, CE8-L, CE10 and CE11 complete (2026-10-06). CE4c complete (2026-10-06); CE4d complete (2026-10-07). CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE5, CE6, CE7, CE8, CE8-L, CE10 and CE11 complete (2026-10-06). CE4c complete (2026-10-06); CE4d and CE13 complete (2026-10-07). CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
   2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q6 open; Q7 decided 2026-10-05 and migration complete 2026-10-07.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
@@ -379,7 +379,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE10  | TypeScript builder API and CLI                 | C      | CE3, CE4a, CE9, CE12       | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
 | CE11  | Lab composition inspector and graph editor     | C      | CE3, CE10                  | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
 | CE12  | Motion linting                                 | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
-| CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   |                        |                                     | `[ ]`  |                                                                                    |
+| CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   | Codex                  | `codex/composition-ce13`            | `[x]`  | [evidence](./composition-ce13-results.json)                                        |
 | CE14  | Mesh warp and puppet pins                      | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
 | CE15  | Output formats, caching and parallel rendering | D      | CE3                        |                        |                                     | `[ ]`  |                                                                                    |
 | CE16  | Programmable soundtrack project and timeline   | D      | CE3; CE16-A                | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
@@ -5078,20 +5078,20 @@ remains pending. [Evidence](./pr-34-20261006-fix-results.json).
 **Outcome:** Compositions mix supplied video clips (including AI-generated ones),
 image sequences and sound with stills and graphics.
 
-- [ ] Video layer: SHA-256-pinned file, source frame rate and duration probed with
+- [x] Video layer: SHA-256-pinned file, source frame rate and duration probed with
       ffprobe, time remap/stretch, frame blending from CE7, trimming by in/out.
-- [ ] Deterministic decoding: pre-decode the frames each composition needs with FFmpeg
+- [x] Deterministic decoding: pre-decode the frames each composition needs with FFmpeg
       into a content-addressed cache (keyed by file hash, time mapping, size and pixel
       format) and load them as image frames in the browser. Do not use `<video>`
       element seeking for export. Record whether WebCodecs is acceptable for preview.
-- [ ] Image-sequence layer (`frame_%04d.png` with explicit count and rate).
-- [ ] Audio layers: gain/pan (Animatable), fades, time remap, mixed with the existing
+- [x] Image-sequence layer (`frame_%04d.png` with explicit count and rate).
+- [x] Audio layers: gain/pan (Animatable), fades, time remap, mixed with the existing
       [passage audio](./passage-audio.md) pipeline in FFmpeg; waveform data for CE11.
-- [ ] Colour handling: detect source colour metadata and convert to the composition
+- [x] Colour handling: detect source colour metadata and convert to the composition
       space; reject unsupported inputs with a diagnostic.
-- [ ] Limits: maximum duration, resolution and total decoded-cache size, configurable.
+- [x] Limits: maximum duration, resolution and total decoded-cache size, configurable.
 
-- [ ] Complete CE11's audio waveform lane using decoded native audio source data.
+- [x] Complete CE11's audio waveform lane using decoded native audio source data.
 
 **Acceptance:** A composition combining a video clip with time remap, a still with
 motion and a lower-third shape layer exports with correct sync (± 0 frames) and
@@ -5100,9 +5100,408 @@ matching audio.
 **Verification:** Frame-accurate tests on a synthetic video with burnt-in frame numbers,
 variable-frame-rate rejection or conversion tests, cache reuse tests, audio sync test.
 
-**Completion record:** _to be filled in._
+**Start record (2026-10-07):** Codex on `codex/composition-ce13` from CE4d
+`adf6cea`. Merged CE16 PR #33 / `65f2ebe4` is audited and attached; its soundtrack
+contract, IO, worker, passage, CLI and optional timeline are reused through scoped
+integration. Fresh checks pass 88 soundtrack / 46 runtime / 40 passage-CLI tests and
+real browser playback/full-range mux. Native media implementation and full acceptance were pending at this start checkpoint. Historical CE16 reports are references only. [Current evidence](./composition-ce13-results.json).
+
+### CE13 contract and source-clock checkpoint (2026-10-07)
+
+Native pinned descriptors, rational source rates, sequence manifests, bounded trims,
+source-second remap after drivers/expressions, frame-pair graph identity, audio controls,
+whole-project protected narration and typed builders are implemented. Static checks
+and all 2,060 unit tests / 204 files pass. Actual decoding/color conversion, bounded
+browser resources, continuous native PCM/waveforms and complete acceptance remain
+pending. [Contract](./composition-media.md), [evidence](./composition-ce13-results.json).
+
+### CE13 actual source-probe checkpoint (2026-10-07)
+
+The actual file is hashed before/after ffprobe. Original integer presentation
+PTS must match one exact rational CFR quantizer; picture coverage excludes longer
+container audio. Authored dimensions/rate/count/color are verified. Real FFmpeg
+fixtures reject VFR gaps, rotation, non-square pixels, unknown color and limits.
+All 12 focused tests and static checks pass; actual SDR conversion, frame cache,
+PCM, browser and full acceptance remain pending. [Evidence](./composition-ce13-results.json).
+
+### CE13 actual color and cache checkpoint (2026-10-07)
+
+FFmpeg selects original presentation ordinals and converts actual source SDR samples
+through a 16-bit intermediate to canonical sRGB RGBA8, with linear alpha and truthful
+PNG tags. Sequence originals all verify, including unselected files. Content/decoder/
+mapping keys exclude physical paths. Root locking, conservative cumulative reservations,
+verified cache hits, atomic publication and cancellation cleanup are implemented.
+All 23 focused tests and static checks pass, including burnt-in 30000/1001 frame numbers,
+independent RGB/YUV/alpha ramps, exact sequence pixels, relocation, tamper, concurrent
+preparation and cancellation. Browser resources, PCM and full acceptance remain pending.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 bounded browser readiness checkpoint (2026-10-07)
+
+Preparation and drawing share exposure/history graph generation, including nested
+surfaces, mattes, effect inputs and isolated required coverage. Complete frame sets
+stay pinned in a bounded decoded-bitmap LRU; encoded fetches verify pinned bytes.
+Stale seeks and disposal cannot publish old images. Native GPU raster caches have
+separate configurable bounds and delete evicted textures instead of pooling them.
+Real Canvas/WebGL alpha/color proofs pass; scaled/history frames match byte for byte
+and held-frame pixels remain seek-independent. CPU peaks at 16 KiB and native GPU at
+30,208 bytes under 32 KiB, returning to zero on disposal in the proof. All 2,077 units,
+46 runtime / 13 media regressions, static checks and existing CE7/CE8 browser acceptance
+pass. Source/export/Lab hookup, PCM/waveforms and full acceptance remain pending.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 production picture export checkpoint (2026-10-07)
+
+The Node source loader now collects complete-document native dependencies and prepares
+verified immutable PNG manifests. Original media paths remain separate from drawable
+resource IDs. Unused sources still verify provenance without pixel allocation, and
+relocated sources reuse the same captures. Export awaits native readiness for every
+frame; still-only callbacks remain synchronous. Canvas 1.45 / WebGL2 0.66 identify the
+new pipeline. Actual video and sequence fixtures include an animated still and shape
+lower third; both backends match independently encoded preview frames, repeated MP4s
+and raw/PNG transport byte for byte. Eighteen source/cache/probe/examples tests and all
+static checks pass. Lab/CLI preview/drafts, continuous PCM/waveforms, native passage
+mixing and complete matching-audio/full acceptance remain pending.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 native authoring checkpoint (2026-10-07)
+
+CLI and registered Lab fixtures now prepare edited native source clocks and serve
+only captured frame IDs. Native originals stay on disk and reverify their pinned
+bytes before preparation/export. Sequence pattern and manifest bindings resolve and
+relocate together, including macOS aliases. Optional asynchronous session readiness
+preserves the synchronous still path; staged first frames, seeks, playback and early
+stale disposal have generation/cancellation guards. A real inspector remap edit
+prepares a previously uncaptured original; undo/redo, save/reload, backend switch,
+playback and fixture preview retain exact pixels. Native draft MP4 matches direct
+render; changed originals reject and restoration recovers. Forty-eight focused units,
+23 CLI-preview-save tests, static checks and existing session/Lab/builder/inspector
+browser suites pass. Continuous PCM/waveforms, native passage mixing and matching
+audio/video plus the final full gate remain pending.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 continuous audio clock checkpoint (2026-10-07)
+
+The shared evaluator projects audio instances and their actual dependencies at integer
+48 kHz output samples. Nested audio scopes retain the final PCM sample without the
+picture frameCount-1 clamp; picture evaluation remains unchanged. Audio loops cover
+the complete source scope (including singletons), pingpong reflects at its final PCM
+sample and finite loops end in silence. Keys/drivers/expressions, visibility and
+instance routes remain shared. Protected narration and its ancestors also reject baked
+sampleTimes; output-sample evaluation rejects scope clock overrides. Evaluator 52,
+all 2,089 units / 208 files and static checks pass; CE7 picture acceptance remains
+exact with independent/repeated/raw exports and unchanged hardware policy. The literal
+batch identity expectation now reflects the earlier WebGL 0.66 bump, independently
+verified as the sole digest difference. Actual decode/mix, audio loading/export,
+waveforms, native passage mixing and complete full acceptance remain pending.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 actual PCM preparation checkpoint (2026-10-07)
+
+Actual audio bytes now verify against the authored SHA before/after probe and decode.
+One actual mono/stereo stream is decoded to interleaved 48 kHz Float32 PCM; original
+sample ordinal zero is explicit. Actual decoded count/channels and every finite sample
+verify before atomic publication. PCM preparation is streamed with a conservative
+256 KiB + 4 byte working-buffer reservation; its reported peak excludes FFmpeg RSS and
+non-PCM metadata. Actual FFmpeg identity, source provenance and output profile form
+the key without physical paths. Visual and audio entries share the same root lock and
+cumulative disk accounting. Cache hits reverify original bytes, manifest and finite
+payload hash/count. Active decoder cancellation kills/reaps before cleanup. All 25
+focused source/cache/probe tests and static checks pass, including exact mono/stereo
+bits, real resampling, relocation, malformed sources, tampering and concurrent misses.
+Bounded mix/waveforms, audio loader/preview/export, native passage mixing, matching-audio
+production acceptance and the final full gate remain pending.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 bounded native mix checkpoint (2026-10-07)
+
+Complete native audio now streams through the shared continuous evaluator into one
+48 kHz stereo Float32 master. Fixed source-page buffers are reused on eviction,
+file handles and output blocks are bounded, and PCM-derived waveform storage is
+reserved before allocation. Gain/pan, multiplicative linear/equal-power fades and
+Float32 stage/order rounding match CE16: both independent reference WAVs are
+byte-identical. Actual source/processed-per-route/mix waveform capture permits at most
+1,024 points each and 131,072 total; shared capture validation checks their clocks,
+bindings and headroom. No normalization runs. Full protected-narration validation
+precedes source preparation and the complete mix precedes any export-range selection.
+Visual, source PCM and mix WAV entries share cache locking/disk accounting and atomic
+publication. Hits reverify data/provenance; source races and cancellation reject.
+An actual singleton pingpong proof found floating point terminal drift; Q16 PCM loop
+arithmetic and five fps regressions repair it under evaluator 53. Picture loop behavior
+is unchanged. All 60 focused checks / 6 files, 2,094 units / 208 files and static checks
+pass. The actual 96,000-sample test uses 491,578 / 524,288 PCM working bytes with 24
+loads and 16 reusable evictions. Loader/preview/mux, waveform presentation, native
+passage mixing, matching-audio production acceptance and final full gate remain pending.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 native audio loader/export checkpoint (2026-10-07)
+
+Actual native audio now loads with the complete verified Float32 master and waveform
+capture. Original bindings remain separate from the captured WAV. Canonical mapping
+and evaluator pinning reject stale captures; the shared runtime PCM verifier checks
+header/count/finite samples/hash before and after export encoding. AAC mux is inside
+the existing MP4/scene/result publication transaction. Native audio uses a 48 kHz
+movie clock/edit list for exact duration; absent-audio arguments remain unchanged.
+Evaluator 53 / mixer 2 / export worker 0.6.7 / decoder 1 are current. Four actual
+sequence/video × Canvas/WebGL cases with animated still/lower third preserve all
+12,000 master samples/channel and yield 12 repeated/independent/raw-PNG byte-identical
+production MP4s. AAC tracks have exact rate/channels/timebase/count and independent
+decoded sample equality. Post-mux cancellation or validation rejection leaves no MP4,
+sidecar or stage; absent/stale/tampered master rejects before artifact creation. All
+91 runtime/media checks / 14 files, 2,094 units / 208 files and static checks pass.
+Audio playback/waveform presentation, native whole-passage mixing/path routing,
+remaining production acceptance and complete final gate remain pending.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 verified playback/waveform checkpoint (2026-10-07)
+
+CLI/Lab captures now include the complete checked master, and previews transfer exact
+Float32 samples into a verified 48 kHz stereo AudioBuffer. Candidate and active PCM
+reservations share the configured limit; checksum-copy/planar/header space and a fixed
+64 KiB BYOB page are counted before fetch. CE16 and native rendered masters share one
+sample-boundary scheduler. Audio clocks advance pictures and retain the complete final
+interval. Source/processed/mix lanes show actual peaks/clocks/headroom; native gain/pan
+keys use existing inspector/history/trusted draft operations. All 2,101 units / 209
+files, 46 runtime, 53 media/authoring checks and static checks pass. Complete native
+media and preview lifecycle suites pass on final source. Real 96,000-sample stereo
+buffers and an offline seek through the distinct last samples are exact; A/V remains
+within one frame across two seconds. Gain/pan changes, exact undo/redo/save/reload,
+byte-identical draft export, changed-source stop/preserved pixels/restoration and
+stale/failed/replaced audio retirement pass. A hardcoded revision2 assertion was
+replaced by the actual returned revision/document check; the combined pass returned3.
+Whole-passage native PCM/path routing, remaining acceptance and final local gate are
+pending. [Evidence](./composition-ce13-results.json).
+
+### CE13 native passage binding checkpoint (2026-10-07)
+
+Native beat references now retain original video/sequence/audio bindings and absolute
+sequence manifest paths independently of browser rendering resources. Optional source
+authorization checks every actual original PNG and its manifest before preparation;
+private cache/AbortSignal options propagate and original cancellation reasons survive.
+One bounded filename formatter drives decoding and authorization; contract two-digit
+padding widths also work in CLI original-source watching. All 35 relevant regressions
+/ 5 files and static checks pass, including six actual-media reference/authorization/
+embedded video-PCM/padding/watch/cancellation cases. Source JSON and pixel/PCM laws are
+unchanged; decoder versions remain 1. Whole-passage native PCM, matching-audio passage
+transactions/production proof and the complete final gate remain pending. Broad unit/
+runtime/full gate were not repeated for this path-only slice.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 whole-passage PCM checkpoint (2026-10-07)
+
+Complete verified native beat masters now mix in authored beat order at compiled sample
+placements, including outgoing tails, before selecting any range. Bounded disk pages
+retain Float32 addition/master gain and the exact last sample. All originals and every
+protected interval are verified before jobs/crops and rechecked before publication.
+Matching native narration replaces only its authorized global intervals. Saved CE16
+projects receive separate complete native voice/non-voice stems in a private validated
+project; narration stays in its saved track filters/ducking before master limiting.
+Original project/revision/source guards and the default optional-backend boundary hold.
+Native picture caches accept their AAC stream but passage mixing uses complete PCM;
+final/delivery AAC clocks are exact and delivery uses original PCM. Canonical native
+cache2 excludes physical sequence names and pins complete decoder builds/helpers.
+All 72 relevant tests / 7 files, static checks and both complete native-passage browser
+suites pass. Real root/range/repeat samples, independent AAC/CE16 DSP, active cancel,
+disabled/out-of-range provenance and 3600-second preflight bounds pass. Actual default
+exports work with optional Python unavailable. Assembly reserves 327,684 PCM bytes.
+Earlier fixture/oracle failures remain recorded. Frozen visuals and renderer/evaluator/
+mixer laws remain unchanged; combined preview/decoder decision and the complete final
+CE13 gate remain pending. [Evidence](./composition-ce13-results.json).
+
+### CE13 combined preview and decoder checkpoint (2026-10-07)
+
+The authoring acceptance now combines a real 24-frame numbered FFV1 video at 12 fps,
+explicit linear reverse remap, animated still, lower third and matching 96,000-sample
+stereo PCM. The complete mandatory native-media browser suite passes: both backends
+retain zero source-frame offset through 96 exact reverse seeks and 480 audio-clock
+playback observations. Browser scheduling stays within its existing one-frame
+presentation allowance; production picture/source mapping remains exact. Buffer/offline
+PCM, edits/history/save/reload, byte-identical draft exports and source-change stop/
+retained-picture/restoration all pass. Fixture z-order, implicit easing and surface/
+invalidation timing mistakes are recorded; no product law or tolerance changed.
+Preview uses canonical verified FFmpeg PNGs shared with export. WebCodecs is not adopted
+for this milestone because no equivalent source ordinal/color/alpha parity proof is
+implemented. This is a pipeline decision, with no universal browser-support claim.
+The complete final immutable local `pnpm check` and PR remain pending.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 native-loader repair after first gate (2026-10-07)
+
+The first complete local gate at `b88f196` exited 1 in integration after static checks,
+2,103 unit tests / 209 files and 46 runtime tests / 9 files passed. The runner passed
+an optional environment directory instead of its Python executable. Vite config startup
+also exposed a new PCM parameter property and broad module imports under Node22's
+native strip-only loader. Ordinary PCM fields, narrow Lab/runtime imports and a pure
+re-exported evaluator identity now pass actual native config startup without tsx.
+The exact optional executable path is verified before starting the next gate. All
+114 affected tests / 12 files pass, including the 25 Lab tests previously skipped by
+startup failure and actual saved/native audio DSP/export proofs. The failed gate and
+intermediate loader diagnostics remain in the evidence. No suite, timeout, tolerance,
+frozen visual, PCM law or output version changed. A fresh immutable complete local
+`pnpm check` is required before milestone completion/PR.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 synchronous still preview repair (2026-10-07)
+
+The second complete local gate at `dd2627b` passed static checks and 26 mandatory
+commands, including 2,103 unit / 46 runtime / 247 integration / 14 Python depth tests,
+then stopped at Commerce's exact backward-seek comparison. Still-only family previews
+exposed an always-async readiness hook, so an input event captured the previous frame
+before the requested frame appeared. No-media readiness now returns synchronously;
+native media preserves its async initialization/coverage/preparation and stale guards.
+Actual H03 immediate and backward capture, both backend readiness, complete native-media
+and session suites and all 21 Commerce fixtures / 126 parity frames / 21 exact backward
+seeks pass. Both failed complete logs are retained. No assertion, tolerance, frozen byte
+or output version changed. Fresh immutable complete local `pnpm check` remains required.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 interrupted third gate (2026-10-07)
+
+The immutable full gate at `fa72fce` ended during a deliberate chat-turn interruption.
+No gate or snapshot process survived; its complete partial log and fingerprint are
+retained. Static checks and 52 of 63 required commands completed, including 2,103 unit /
+46 runtime / 247 integration / 14 depth tests and complete native-media, native-passage,
+WebGL and Story adapter gates. Commerce completed 48 Canvas cases with exact pixels
+and a worst ratio of 1.113 under the unchanged 1.25 policy; its remaining cases and
+later required commands did not complete. No terminal exit code is available, so this
+attempt is interrupted and incomplete. A fresh complete local gate is required;
+partial commands are not substituted for full acceptance. Source and tests are unchanged.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 fourth gate timing diagnostic (2026-10-07)
+
+The immutable `b8f18e2` full gate exited 1 after 1770.03 seconds at the existing
+typography glyph timing check: reported 1.55× versus its unchanged 1.5 limit. Static
+checks and 35 required commands passed, including complete native media, Commerce
+21 fixtures / 126 parity frames and all relocated reusable packages. The same
+unchanged source previously measured 1.469× and then passed four isolated complete
+serial fixture runs at 1.376–1.414×. All eight fixtures and every captured PNG are
+exact across those diagnostics. No cause is claimed for the timing variation.
+Source, tests, fixtures, baselines and assertions remain unchanged. The failed gate
+is retained; the serial passes do not replace a fresh complete local `pnpm check`.
+[Evidence](./composition-ce13-results.json).
+
+### CE13 completion record (2026-10-07)
+
+- **Owner / branch:** Codex on `codex/composition-ce13`, from CE4d `adf6cea`.
+  Final verified source `01fbca2`; audited merged CE16 PR #33 is integrated.
+- **Delivered:** SHA-pinned CFR video and numbered PNG sequences, rational source
+  clocks, trims/remap/blending, actual SDR conversion, bounded verified frame/PCM
+  caches, shared Canvas/WebGL loading/export, native gain/pan/fades and waveforms.
+  Lab audio-clock playback preserves actual source frames, edits/history/saves and
+  draft export; still-only seeks retain synchronous presentation.
+- **Audio integration:** full 48 kHz stereo masters mix before range selection,
+  including outgoing tails and matching native narration without double counting.
+  Protected narration retains its original clock. The private saved CE16 adapter
+  preserves filters, ducking and limiting; default native audio needs no optional DSP.
+  Original-source verification, active cancellation and transactional publication protect
+  final picture/audio/scene/result products.
+- **Acceptance:** actual numbered reverse-remapped video, moving still, lower third
+  and audio pass both backends: 96 exact reverse seeks / 480 playback observations
+  have zero source-frame offset. All stereo samples, final samples, repeated/independent/
+  raw-PNG exports and independent decoded AAC references pass. Preview and export use
+  verified FFmpeg frames; WebCodecs is unadopted without equivalent parity proof.
+- **Complete verification:** immutable `01fbca2` passes pinned local `pnpm check`
+  in 12825.81s, all 63 mandatory commands, 2,103 unit / 46 runtime / 247
+  integration / 14 Python depth tests, every browser/export group, 176 actual family
+  defaults and 176 frozen items / 36,061 frames. Four Canvas family matrices retain
+  1.25× timing policy; all 141 prior visual reference files and the complete tracked
+  snapshot remain exact. Three failed complete gates, the interrupted third attempt and repair diagnostics are retained.
+- **Policy / next:** Actions remain disabled; no tolerance, frozen baseline or native
+  media guard was weakened. [PR #48](https://github.com/xxibcill/still-shift/pull/48) is open and attached
+  against CE4d PR #47. Continue CE15 followed by CE14 on new branches. CE5-X/Q9 and separate CE6-P remain pending.
+- **Evidence:** [complete results](./composition-ce13-results.json),
+  [native media contract](./composition-media.md).
 
 ---
+
+### CE13 PR #48 conflict integration and review (2026-10-08)
+
+CE13 `aedfc9eb` now integrates reviewed `main` at `e249a5da` through merge
+`471582f5`; test-contract follow-up is `749452d2`. All 23 conflicts retain native
+picture/PCM, main clock/coverage/bitmap fixes, saved soundtrack validation and
+retained-draft authoring. Reusable media ownership and per-frame cinematic alpha
+validation are explicit. Combined identities are evaluator 54 / Canvas 1.45.1 /
+WebGL2 0.66.1 / export 0.6.11. All 64 required parent commands remain available.
+
+Focused local verification passes build/lint/schema/boundaries, 2,560 units,
+46 runtime, 179 affected integrations across repaired focused runs, 14 Python tests,
+native media/audio authoring and exports, both native passage backends, affected
+renderer/camera/timeline checks, 336 selected native default frames and all 176 frozen
+items / 36,061 frames. All 215 main visual files remain exact. The full 15-fixture
+cinematic variant/export command was over-scoped and interrupted after about 14
+minutes; it is not passed. Existing exact coverage/reveal helpers and selected
+default cases pass instead. No complete production-default inventory or full
+`pnpm check` was rerun; original milestone evidence stays historical.
+
+Independent Standards review has no hard violation and one possible cache-transaction
+duplication concern. Spec review has one reproduced P2: native capture FIFO eviction
+can remove lazy frame URLs while their previous preview remains active. Root
+reproduction observes 404 for the first capture and 200 for the latest under the same
+retained lease. Tie captures to active/candidate ownership before merging. A
+caller-mutation clock candidate was suppressed by the documented immutable-object
+contract. [Resolution and review evidence](./pr-48-conflict-resolution-results.json).
+
+### CE13 PR #48 inline review repairs — 2026-10-08
+
+Both follow-ups are posted as inline comments on `d62a7a4d`: active native capture
+expiry and the visual cache's lock-release gap when staging cleanup throws. Repairs
+bind prepared captures to candidate/active ownership with explicit disposal,
+owner disconnect, cancellation and capacity guards; a shared cleanup boundary always
+releases the visual/PCM/mix artifact lock. Source verification, publication,
+renderer versions, pixel thresholds and frozen baselines are unchanged.
+
+The CLI and fixture expiry regressions fail before the repair; the real-lock cleanup
+fault leaves `.media.lock` before the repair. Ownership/API and existing 34 cache
+integrations pass after the changes. Final fast check passes 2,566 units; 17 CLI /
+5 fixture integrations and native browser/export/session checks pass. Six peer
+prepares and three failed replacements preserve uncached/reverse seeks exactly.
+Capture ownership is committed as `d0ce169c`; cache cleanup has its own following
+commit. Both deliver in one final normal push;
+this scoped follow-up does not run or claim a full repository gate.
+[Repair evidence](./pr-48-review-fix-results.json).
+
+### CE13 PR #48 second review repairs — 2026-10-08
+
+The second independent review posts two new P2 findings inline on `63766426`:
+accepted two-digit sequence padding fails registered fixture authorization, and
+mixed-rate nested audio loses an exact boundary sample. Sequence authorization now
+reuses `compositionSequenceFramePath` (`0a4e975c`); audio visibility compares Q16
+PCM positions against exact half-open scope/layer/group bounds while authored
+property times and ordinary picture clocks remain unchanged. Evaluator identity
+advances 54→55 so an incorrect previously cached master is rebuilt.
+
+Both accepted padding regressions fail before repair. The actual nested narration
+master loses its first stereo sample at output 35,120 before repair. Final code
+preserves all 40,000 master samples against independent source placement, including
+first/last impulses and surrounding silence. Fast checks pass 2,599 units; 80
+focused cache/preview/native/passage integrations and native media/authoring/export/
+session browsers pass. Independent final implementation review has no actionable
+concerns. Frozen visuals, source-clock quantizer laws and acceptance tolerances are
+unchanged. Each posted finding has a separate commit, delivered in one final normal
+push; this scoped follow-up does not run or claim a full repository gate.
+[Second review repair evidence](./pr-48-second-review-fix-results.json).
+
+### CE13 PR #48 third review repairs — 2026-10-08
+
+Both P2 findings are posted inline on `1dae23c8`. Native picture/source PCM/mix
+caches now share an identity builder that always includes OS and CPU architecture.
+Actual sequence/PCM/mix tests with a fixed FFmpeg build reproduce incorrect cache
+hits when only the execution identity changes before the fix. Both OS and CPU
+variations now miss independently, preserve exact output bytes, and reuse the
+original entry after restoring its identity. All 37 affected cache integrations
+pass, including original relocation, provenance, bounds and cancellation checks.
+Audio traversal now reads authored visibility and audio property stages without
+unrelated precomp/parent geometry. Actual drivers that read constrained geometry
+still require measured bounds; picture constraints remain intact. Evaluator 56
+invalidates prepared masters. Exact PCM regressions cover text-attached precomps,
+and the real video export cases preserve measured placement on Canvas and WebGL.
+Fast checks pass 2,616 units; 83 affected integrations and native media plus both
+576-frame passage browser checks pass. Independent standards/spec review finds no
+actionable concerns. All 176 frozen items / 36,061 frames match in 289.11 seconds;
+references and thresholds are unchanged. Each finding receives its own commit,
+with one final normal push; no full repository gate is run or claimed.
+[Third review evidence](./pr-48-third-review-fix-results.json).
 
 ## CE14 — Mesh warp and puppet pins
 

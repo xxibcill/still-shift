@@ -195,6 +195,13 @@ export class WebglDevice {
     return surface;
   }
 
+  /** Permanently release a separately budgeted native texture, bypassing the general pool. */
+  discard(surface: WebglSurface) {
+    this.gl.deleteTexture(surface.texture);
+    this.gl.deleteFramebuffer(surface.framebuffer);
+    this.surfaces.delete(surface);
+  }
+
   release(surface: WebglSurface) {
     const key = `${surface.width}x${surface.height}/${surface.floating}/${surface.opaque}/${surface.screen}`;
     const list = this.pool.get(key) ?? [];

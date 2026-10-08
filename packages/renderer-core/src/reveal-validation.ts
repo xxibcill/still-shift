@@ -122,7 +122,7 @@ export function inspectForegroundReveal(
 }
 
 /** The alpha gate consumes projected image geometry from either renderer. */
-export function inspectProjectedReveal(
+export function* inspectProjectedRevealFrames(
   declaration: {
     region: Point[];
     subject: RevealImageNode;
@@ -162,6 +162,7 @@ export function inspectProjectedReveal(
     throw new Error("Reveal target has too few opaque samples");
   const coverage: number[] = [];
   for (let frame = 0; frame < frameCount; frame++) {
+    yield frame;
     const target = project(subject, frame);
     const foreground = occluders.map((node) => ({
       node,
@@ -245,4 +246,15 @@ export function inspectProjectedReveal(
     targetSamples: points.length,
     coverage,
   };
+}
+
+/** Synchronous sources consume the same frame iterator without awaiting preparation. */
+export function inspectProjectedReveal(
+  ...args: Parameters<typeof inspectProjectedRevealFrames>
+) {
+  const frames = inspectProjectedRevealFrames(...args);
+  for (;;) {
+    const step = frames.next();
+    if (step.done) return step.value;
+  }
 }

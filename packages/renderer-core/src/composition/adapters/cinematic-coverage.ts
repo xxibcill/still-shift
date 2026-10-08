@@ -9,7 +9,7 @@ import {
 } from "../../alpha-coverage.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import {
-  inspectProjectedReveal,
+  inspectProjectedRevealFrames,
   RevealValidationError,
   type RevealAlphaSampler,
   type RevealImageNode,
@@ -99,7 +99,7 @@ export function cinematicRenderedCoverageRequirements(
 }
 
 /** Persisted alpha declarations are checked against decoded assets and native camera states. */
-export function validateCinematicCompositionCoverage(
+export function* cinematicCompositionCoverageFrames(
   composition: Composition,
   readPixels: (assetId: string) => AlphaPixels,
   sampleAlpha?: RevealAlphaSampler,
@@ -279,7 +279,7 @@ export function validateCinematicCompositionCoverage(
     return { left: matrix[4], top: matrix[5], scale: matrix[0] };
   };
   try {
-    return inspectProjectedReveal(
+    return yield* inspectProjectedRevealFrames(
       {
         ...reveal,
         subject,
@@ -295,5 +295,16 @@ export function validateCinematicCompositionCoverage(
     if (error instanceof RevealValidationError)
       fail(error.message, error.node, error.frame);
     fail(error instanceof Error ? error.message : String(error), subject.id);
+  }
+}
+
+/** Persisted still coverage remains synchronous; media can prepare each yielded frame. */
+export function validateCinematicCompositionCoverage(
+  ...args: Parameters<typeof cinematicCompositionCoverageFrames>
+) {
+  const frames = cinematicCompositionCoverageFrames(...args);
+  for (;;) {
+    const step = frames.next();
+    if (step.done) return step.value;
   }
 }

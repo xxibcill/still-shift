@@ -31,6 +31,7 @@ try {
     const picture = document.createElement("div");
     host.append(picture);
     const disposed: string[] = [],
+      audioDisposed: string[] = [],
       callbacks: string[] = [],
       errors: string[] = [];
     let ready = "";
@@ -62,16 +63,33 @@ try {
       if (!value) throw new Error(message);
     };
     const pixels = () => picture.querySelector("canvas")!.toDataURL();
+    let audioFrame = 0;
+    let resumeAudio: Promise<boolean> | undefined;
     const load = (
       name: string,
       frames: number,
       fail = false,
       gate?: Promise<void>,
+      prepareFrame?: (frame: number) => Promise<void>,
     ) =>
       session.load(async (resources) => {
+        if (name.startsWith("audio-"))
+          resources.audio({
+            get frame() {
+              return audioFrame;
+            },
+            play() {
+              return resumeAudio ?? Promise.resolve(true);
+            },
+            stop() {},
+            dispose() {
+              audioDisposed.push(name);
+            },
+          });
         const canvas = document.createElement("canvas");
         canvas.width = canvas.height = 32;
         const renderer = {
+          ...(prepareFrame ? { prepareFrame } : {}),
           renderFrame(frame: number) {
             if (fail) throw new Error("Invalid staged frame");
             const context = canvas.getContext("2d")!;
@@ -164,8 +182,59 @@ try {
       !edit.disabled && !dynamicInput.matches(":disabled"),
       "Export lock must release",
     );
+    const initialGate = deferred<void>();
+    const stalePreparation = load(
+      "async-stale",
+      8,
+      false,
+      undefined,
+      () => initialGate.promise,
+    );
+    await Promise.resolve();
+    check(
+      pixels() === latest,
+      "Pending native first frame must preserve active pixels",
+    );
+    const seekGate = deferred<void>(),
+      clearGate = deferred<void>();
+    check(
+      await load("async-native", 8, false, undefined, (frame) => {
+        if (frame === 4) return seekGate.promise;
+        if (frame === 7) return clearGate.promise;
+        if (frame === 6)
+          return Promise.reject(Error("Native preparation failed"));
+        return Promise.resolve();
+      }),
+      "Ready native candidate must commit",
+    );
+    initialGate.resolve();
+    check(
+      !(await stalePreparation),
+      "Late native first-frame preparation must not commit",
+    );
+    const pendingSeek = session.show(4);
+    check(
+      session.frame === 1,
+      "Pending native seek must retain displayed frame",
+    );
+    await session.show(2);
+    const newestPixels = pixels();
+    seekGate.resolve();
+    await pendingSeek;
+    check(
+      session.frame === 2 && pixels() === newestPixels,
+      "Late native seek must not replace newer pixels or position",
+    );
+    await session.show(6);
+    check(
+      session.frame === 2 && pixels() === newestPixels,
+      "Failed native seek must retain exact valid pixels",
+    );
+    const clearSeek = session.show(7);
     session.pause();
     session.clear();
+    clearGate.resolve();
+    await clearSeek;
     check(
       session.snapshot === undefined && play.disabled,
       "Clear must retire the active snapshot",
@@ -178,19 +247,75 @@ try {
       disposed.filter((name) => name === "stale").length === 1,
       "Stale renderer must be disposed once",
     );
+    check(
+      disposed.filter((name) => name === "async-stale").length === 1 &&
+        disposed.filter((name) => name === "async-native").length === 1,
+      "Stale and accepted native renderers must dispose exactly once",
+    );
+    const audioGate = deferred<void>();
+    const staleAudio = load("audio-stale", 4, false, audioGate.promise);
+    check(await load("audio-active", 4), "Audio candidate must commit");
+    audioGate.resolve();
+    check(!(await staleAudio), "Stale audio candidate must not commit");
+    const resumeGate = deferred<boolean>();
+    resumeAudio = resumeGate.promise;
+    session.show(0);
+    play.click();
+    check(
+      await load("audio-next", 4),
+      "New audio revision must replace pending playback",
+    );
+    resumeGate.resolve(true);
+    await Promise.resolve();
+    check(
+      play.textContent === "Play",
+      "Late resume must not restart a replaced revision",
+    );
+    resumeAudio = undefined;
+    audioFrame = 3;
+    play.click();
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+    check(
+      session.frame === 3 && play.textContent === "Pause",
+      "Audio must retain the final picture until its complete interval ends",
+    );
+    audioFrame = 4;
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+    check(
+      play.textContent === "Play",
+      "Audio must stop at the complete sample clock",
+    );
+    session.clear();
+    session.clear();
+    check(
+      audioDisposed.length === 3 && new Set(audioDisposed).size === 3,
+      "Active, stale and replaced audio masters must dispose exactly once",
+    );
     return {
+      audioResources: true,
+      lateAudioResumeIgnored: true,
+      completeAudioInterval: true,
       failedFrameRetained: true,
       staleIgnored: true,
       shorterClamped: true,
       rendererIdentity: true,
       callbackOrder: true,
       dynamicExportLock: true,
+      nativeInitialReadiness: true,
+      nativeStaleSeekIgnored: true,
+      nativeFailureRetained: true,
+      nativePendingClear: true,
       errors,
       disposed,
     };
   }, "/src/preview-session.ts");
-  assert.equal(report.errors.length, 1);
+  assert.equal(report.errors.length, 2);
   assert.match(report.errors[0]!, /Invalid staged frame.*preserved/);
+  assert.match(report.errors[1]!, /Native preparation failed.*preserved/);
   console.log("Composition session:", JSON.stringify(report));
 } finally {
   await browser?.close();

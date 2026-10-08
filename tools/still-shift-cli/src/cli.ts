@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import { runSoundtrackCli } from "./soundtrack-cli.ts";
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
+import { runSoundtrackCli } from "./soundtrack-cli.ts";
 import { prepareCommerceFile } from "../../../packages/animation-engine/src/commerce-preparation.ts";
 import { pathToFileURL } from "node:url";
 import { readStoryPassage } from "../../../packages/animation-engine/src/story-passage-io.ts";

@@ -8,6 +8,8 @@ import type { RenderBackend, Surface } from "./backend.ts";
 import {
   validateComposition,
   type Composition,
+  type CompositionPreparedMedia,
+  type CompositionPreparedAudio,
 } from "@still-shift/scene-contract";
 import { sha256Hex } from "../../browser-checksum.ts";
 import {
@@ -33,10 +35,22 @@ import {
   type CanvasContentProvider,
 } from "./providers.ts";
 import { STORY_CONTENT_PROVIDERS } from "../adapters/story-providers.ts";
-import { validateRequiredCompositionCoverage } from "./required-coverage.ts";
+import {
+  createCompositionMediaResources,
+  type CompositionMediaResources,
+} from "./media-resources.ts";
+import { resolveCompositionMediaLimits } from "@still-shift/scene-contract";
+import {
+  hasRequiredCompositionCoverage,
+  createCompositionCoverageValidator,
+  validateRequiredCompositionCoverage,
+} from "./required-coverage.ts";
 import { validateStoryCompositionCoverage } from "../adapters/story-coverage.ts";
 import { cinematicRenderedCoverageRequirements } from "../adapters/cinematic-coverage.ts";
-import { validateRenderedCinematicCompositionCoverage } from "./cinematic-reveal.ts";
+import {
+  validateRenderedCinematicCompositionCoverage,
+  validateRenderedCinematicCompositionCoverageAsync,
+} from "./cinematic-reveal.ts";
 import { COMMERCE_CONTENT_PROVIDERS } from "../adapters/commerce-providers.ts";
 import { APPEARANCE_PROVIDERS } from "../adapters/appearance-providers.ts";
 import { MOTION_PATH_PROVIDERS } from "../adapters/motion-path.ts";
@@ -112,6 +126,8 @@ export type CompositionScene = {
   effectVersions?: Readonly<Record<string, string>>;
   backend?: CompositionBackend;
   composition: Composition;
+  preparedMedia?: CompositionPreparedMedia;
+  preparedAudio?: CompositionPreparedAudio;
   canvas: { width: number; height: number };
   timeline: { fps: number; frameCount: number; durationMs: number };
 };
@@ -141,6 +157,8 @@ export type CompositionResources = {
   /** Optional local glyph/container diagnostic; never part of a saved document. */
   textProbe?: TextProbe;
   images: Map<string, CanvasImageSource>;
+  media?: CompositionMediaResources;
+  preparedMedia?: CompositionPreparedMedia;
   /** PNG signatures verified from asset bytes, independent of filenames and URLs. */
   pngImages?: ReadonlySet<string>;
   fonts: Map<string, LoadedFont>;
@@ -151,14 +169,32 @@ export type CompositionResources = {
 export async function loadCompositionResources(
   composition: Composition,
   assetUrl: (id: string) => string,
-  options: { providers?: readonly CanvasContentProvider[] } = {},
+  options: {
+    providers?: readonly CanvasContentProvider[];
+    preparedMedia?: CompositionPreparedMedia;
+    signal?: AbortSignal;
+  } = {},
 ): Promise<CompositionResources> {
+  options.signal?.throwIfAborted();
+  if (
+    !options.preparedMedia &&
+    composition.assets.some(
+      (asset) => asset.type === "video" || asset.type === "sequence",
+    )
+  )
+    passageError(
+      "comp-media-not-ready",
+      "Capture native source frames before loading composition resources",
+      { path: "preparedMedia" },
+    );
   const images = new Map<string, CanvasImageSource>();
   const pngImages = new Set<string>();
   await Promise.all(
     composition.assets.map(async (asset) => {
       if (asset.type !== "image") return;
-      const response = await fetch(assetUrl(asset.id));
+      const response = await fetch(assetUrl(asset.id), {
+        signal: options.signal ?? null,
+      });
       if (!response.ok) throw new Error(`Asset unavailable: ${asset.id}`);
       const bytes = await response.arrayBuffer();
       if (`sha256:${await sha256Hex(bytes)}` !== asset.sha256)
@@ -173,6 +209,7 @@ export async function loadCompositionResources(
       image.src = url;
       try {
         await image.decode();
+        options.signal?.throwIfAborted();
       } finally {
         URL.revokeObjectURL(url);
       }
@@ -192,8 +229,21 @@ export async function loadCompositionResources(
     }),
   );
   const fonts = await loadCompositionFonts(composition, assetUrl);
+  options.signal?.throwIfAborted();
   return {
     images,
+    ...(options.preparedMedia
+      ? {
+          preparedMedia: options.preparedMedia,
+          media: createCompositionMediaResources(
+            composition,
+            options.preparedMedia,
+            assetUrl,
+            images,
+            pngImages,
+          ),
+        }
+      : {}),
     pngImages,
     fonts,
     providerFonts: await loadProviderFonts(composition, fonts, [
@@ -217,6 +267,8 @@ export type CompositionPreview = {
   readPixels(): Uint8ClampedArray;
   /** Measured local text bounds per state, as supplied to the evaluator. */
   textBounds: Record<string, Bounds[]>;
+  /** Still-only frames are ready synchronously; native media returns its loading promise. */
+  prepareFrame(frame: number): Promise<void> | void;
   renderFrame(frame: number): CompositionFrameReport;
   dispose(): void;
 };
@@ -252,6 +304,7 @@ export function prepareCompositionPreview(
       snapshot,
       resources,
       options,
+      false,
     );
     prepared.preview.dispose();
     return { create: prepared.createPreview };
@@ -285,6 +338,7 @@ function prepareCompositionPreviewOnCanvas(
   composition: Composition,
   resources: CompositionResources,
   options: CompositionPreviewOptions,
+  ownsMedia = true,
 ) {
   const validation = validateComposition(composition);
   if (!validation.ok) throw new PassageError(validation.diagnostics);
@@ -358,22 +412,31 @@ function prepareCompositionPreviewOnCanvas(
     [...BUILTIN_PROVIDERS, ...(options.providers ?? [])],
   );
   const backendOptions = {
+    nativeImageByteLimit: resolveCompositionMediaLimits(composition.mediaLimits)
+      .decodedTextureBytes,
     ...(composition.colorSpace ? { colorSpace: composition.colorSpace } : {}),
     softwareRaster,
     images: {
       images: resources.images,
       ...(resources.pngImages ? { pngImages: resources.pngImages } : {}),
-      sizes: new Map(
-        composition.assets.flatMap((a) =>
-          a.type === "image" ? [[a.id, [a.width, a.height] as const]] : [],
+      sizes: new Map([
+        ...composition.assets.flatMap((a) =>
+          a.type === "image"
+            ? [[a.id, [a.width, a.height] as const] as const]
+            : [],
         ),
-      ),
+        ...(resources.preparedMedia?.frames ?? []).map(
+          (frame) => [frame.id, [frame.width, frame.height] as const] as const,
+        ),
+      ]),
     },
     drawText: text.draw,
     drawProvider,
     ...(options.createCanvas ? { createCanvas: options.createCanvas } : {}),
   };
   let coverageDiagnostics: PassageDiagnostic[] = [];
+  let initialization: Promise<void> | undefined;
+  const requiredRootLayers = cinematicRenderedCoverageRequirements(composition);
   return { preview: createPreview(canvas, true), createPreview };
 
   function createPreview(
@@ -426,7 +489,7 @@ function prepareCompositionPreviewOnCanvas(
       // The GPU backend retains bounded readback bytes; graph reuse skips identical draws.
       const cache: CompositionFrameCache | undefined =
         kind === "webgl2" ? {} : undefined;
-      if (validateCoverage)
+      if (validateCoverage && !resources.media)
         try {
           validateRenderedCinematicCompositionCoverage(
             composition,
@@ -439,7 +502,7 @@ function prepareCompositionPreviewOnCanvas(
             backend,
             { textBounds: text.bounds },
             options.coverageSeverity ?? "error",
-            cinematicRenderedCoverageRequirements(composition),
+            requiredRootLayers,
             options.validationFrames,
           );
         } catch (error) {
@@ -451,7 +514,57 @@ function prepareCompositionPreviewOnCanvas(
         rendererVersion: backend.version,
         readPixels: () => backend.readPixels(target),
         textBounds: text.bounds,
+        prepareFrame(frame) {
+          if (!resources.media) return;
+          if (!initialization)
+            initialization = (async () => {
+              const required = hasRequiredCompositionCoverage(
+                composition,
+                requiredRootLayers,
+              );
+              const frames =
+                options.validationFrames ??
+                Array.from({ length: composition.frameCount }, (_, at) => at);
+              const selected = new Set(frames);
+              const validated = new Set<number>();
+              const validate = createCompositionCoverageValidator(
+                composition,
+                backend,
+                { textBounds: text.bounds },
+                options.coverageSeverity ?? "error",
+                requiredRootLayers,
+              );
+              const prepare = async (at: number) => {
+                await resources.media!.prepareFrame(at, {
+                  textBounds: text.bounds,
+                  cull: false,
+                });
+                if (required && selected.has(at)) {
+                  coverageDiagnostics.push(...validate(at));
+                  validated.add(at);
+                }
+              };
+              try {
+                await validateRenderedCinematicCompositionCoverageAsync(
+                  composition,
+                  readAssetPixels,
+                  backend,
+                  prepare,
+                  { textBounds: text.bounds },
+                );
+                if (required)
+                  for (const at of frames)
+                    if (!validated.has(at)) await prepare(at);
+              } finally {
+                backend.endFrame?.(false);
+              }
+            })();
+          return initialization.then(() =>
+            resources.media!.prepareFrame(frame, { textBounds: text.bounds }),
+          );
+        },
         renderFrame(frame) {
+          resources.media?.assertReady(frame);
           if (
             !Number.isInteger(frame) ||
             frame < 0 ||
@@ -482,6 +595,7 @@ function prepareCompositionPreviewOnCanvas(
             cache.key = undefined;
           }
           backend.dispose();
+          if (ownsMedia) resources.media?.dispose();
           targetCanvas.width = composition.width;
         },
       };

@@ -566,7 +566,14 @@ describe("composition-1 fixtures", () => {
         (key) => !used(objects).has(key) && !exempt.includes(key),
       );
 
-    expect(missing(CompositionSchema, [doc])).toEqual([]);
+    const nativeMedia = JSON.parse(
+      readFileSync(
+        resolve(root, "benchmarks/fixtures/composition/ce13/contract.json"),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(nativeMedia).ok).toBe(true);
+    expect(missing(CompositionSchema, [doc, nativeMedia])).toEqual([]);
     expect(missing(PrecompSchema, doc.precomps!)).toEqual([]);
     expect(
       missing(CompositionMarkerSchema, [
@@ -576,16 +583,17 @@ describe("composition-1 fixtures", () => {
     ).toEqual([]);
     for (const option of CompositionAssetSchema.options) {
       const type = option.shape.type.value;
-      if (["video", "sequence", "audio"].includes(type)) continue;
       expect(
         missing(
           option,
-          doc.assets.filter((a) => a.type === type),
+          [...doc.assets, ...nativeMedia.assets].filter((a) => a.type === type),
         ),
         type,
       ).toEqual([]);
     }
-    const allLayers = [doc, ...doc.precomps!].flatMap((s) => s.layers);
+    const allLayers = [doc, ...doc.precomps!, nativeMedia].flatMap(
+      (s) => s.layers,
+    );
     // CE4 providers have their own fixture; keep the CE1 acceptance file unchanged.
     const providers = JSON.parse(
       readFileSync(
@@ -1361,15 +1369,25 @@ const invalid: Mutation[] = [
     "textAnimators[0].selector.start.signal",
   ],
   [
-    "video asset",
+    "unreduced video rate",
     (d) =>
       d.assets.push({
         id: "clip",
         type: "video",
         path: "clip.mp4",
         sha256: `sha256:${"0".repeat(64)}`,
+        width: 160,
+        height: 100,
+        frameCount: 60,
+        frameRate: { numerator: 60, denominator: 2 },
+        color: {
+          primaries: "bt709",
+          transfer: "bt709",
+          matrix: "bt709",
+          range: "tv",
+        },
       }),
-    "comp-feature-unavailable",
+    "comp-media-rate",
   ],
 ];
 

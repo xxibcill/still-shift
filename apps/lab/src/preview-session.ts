@@ -7,7 +7,17 @@ type DisabledControl =
   | HTMLInputElement
   | HTMLSelectElement
   | HTMLFieldSetElement;
-type PreviewRenderer = { renderFrame(frame: number): unknown; dispose(): void };
+type PreviewRenderer = {
+  prepareFrame?(frame: number): Promise<void> | void;
+  renderFrame(frame: number): unknown;
+  dispose(): void;
+};
+type PreviewAudio = {
+  readonly frame: number | undefined;
+  play(frame: number): Promise<boolean>;
+  stop(): void;
+  dispose(): void;
+};
 type PreviewControls = {
   play: HTMLButtonElement;
   scrub: HTMLInputElement;
@@ -33,24 +43,51 @@ type SessionOptions<T> = {
 
 /** Resources belong to a candidate until its first frame can replace the active preview. */
 function previewResources() {
+  const controller = new AbortController();
+  let disposed = false;
   const urls: string[] = [];
+  const releases: (() => void)[] = [];
+  let audio: PreviewAudio | undefined;
   const surfaces: {
     renderer: PreviewRenderer;
     present: () => void;
     visible: () => boolean;
   }[] = [];
   return {
+    signal: controller.signal,
+    onDispose(release: () => void) {
+      if (disposed) release();
+      else releases.push(release);
+    },
+    audio(player: PreviewAudio) {
+      if (disposed) player.dispose();
+      else if (audio) {
+        player.dispose();
+        throw new Error("A preview already owns an audio master");
+      } else audio = player;
+    },
+    startAudio(frame: number) {
+      return audio?.play(frame);
+    },
+    stopAudio() {
+      audio?.stop();
+    },
+    audioFrame() {
+      return audio?.frame;
+    },
     renderer<R extends PreviewRenderer>(
       renderer: R,
       present: () => void,
       visible = () => true,
     ): R {
-      surfaces.push({ renderer, present, visible });
+      if (disposed) renderer.dispose();
+      else surfaces.push({ renderer, present, visible });
       return renderer;
     },
     url(blob: Blob) {
       const url = URL.createObjectURL(blob);
-      urls.push(url);
+      if (disposed) URL.revokeObjectURL(url);
+      else urls.push(url);
       return url;
     },
     preview(
@@ -61,6 +98,10 @@ function previewResources() {
     ) {
       const staging = document.createElement("canvas");
       const renderer = createIllustratedPreview(staging, scene, images);
+      if (disposed) {
+        renderer.dispose();
+        return renderer;
+      }
       surfaces.push({
         renderer,
         visible,
@@ -72,6 +113,16 @@ function previewResources() {
       });
       return renderer;
     },
+    prepare(frame: number, validateAll = false) {
+      controller.signal.throwIfAborted();
+      const pending: Promise<void>[] = [];
+      for (const surface of surfaces)
+        if (validateAll || surface.visible()) {
+          const readiness = surface.renderer.prepareFrame?.(frame);
+          if (readiness) pending.push(readiness);
+        }
+      return pending.length ? Promise.all(pending).then(() => {}) : undefined;
+    },
     render(frame: number, validateAll = false) {
       for (const surface of surfaces)
         if (validateAll || surface.visible())
@@ -81,14 +132,30 @@ function previewResources() {
       for (const surface of surfaces) if (surface.visible()) surface.present();
     },
     dispose() {
-      for (const { renderer } of surfaces) renderer.dispose();
-      for (const url of urls) URL.revokeObjectURL(url);
+      if (disposed) return;
+      disposed = true;
+      const errors: unknown[] = [];
+      const release = (dispose: () => void) => {
+        try {
+          dispose();
+        } catch (error) {
+          errors.push(error);
+        }
+      };
+      release(() => controller.abort());
+      if (audio) release(() => audio!.dispose());
+      audio = undefined;
+      for (const { renderer } of surfaces) release(() => renderer.dispose());
+      for (const url of urls) release(() => URL.revokeObjectURL(url));
+      for (const callback of releases.splice(0)) release(callback);
+      if (errors.length)
+        throw new AggregateError(errors, "Preview resources could not dispose");
     },
   };
 }
 type PreviewResources = Pick<
   ReturnType<typeof previewResources>,
-  "url" | "preview" | "renderer"
+  "url" | "preview" | "renderer" | "signal" | "audio" | "onDispose"
 >;
 
 export function createPreviewSession<T extends PreviewSnapshot>(
@@ -100,6 +167,9 @@ export function createPreviewSession<T extends PreviewSnapshot>(
     | undefined;
   let frame = 0;
   let generation = 0;
+  let frameGeneration = 0;
+  let playbackGeneration = 0;
+  const candidates = new Set<ReturnType<typeof previewResources>>();
   let dirty = true;
   let exporting = false;
   let playing = false;
@@ -125,18 +195,43 @@ export function createPreviewSession<T extends PreviewSnapshot>(
       controls.update.disabled = !(options.canUpdate?.() ?? true);
   }
   function pause() {
+    frameGeneration++;
+    playbackGeneration++;
     playing = false;
+    active?.resources.stopAudio();
     cancelAnimationFrame(animation);
     controls.play.textContent = "Play";
   }
   function show(index: number) {
     if (!active) return;
-    const { scene } = active.snapshot;
-    frame = Math.max(0, Math.min(Math.round(index), scene.frameCount - 1));
-    active.resources.render(frame);
-    active.resources.present();
-    syncPosition();
-    options.frameChanged?.(frame, active.snapshot);
+    const selected = active;
+    const run = ++frameGeneration;
+    const { scene } = selected.snapshot;
+    const requested = Math.max(
+      0,
+      Math.min(Math.round(index), scene.frameCount - 1),
+    );
+    const present = () => {
+      if (selected !== active || run !== frameGeneration) return;
+      selected.resources.render(requested);
+      frame = requested;
+      selected.resources.present();
+      syncPosition();
+      options.frameChanged?.(frame, selected.snapshot);
+    };
+    const rejected = (error: unknown) => {
+      if (selected !== active || run !== frameGeneration) return;
+      pause();
+      syncPosition();
+      failed(error);
+    };
+    try {
+      const readiness = selected.resources.prepare(requested);
+      if (readiness) return readiness.then(present).catch(rejected);
+      present();
+    } catch (error) {
+      rejected(error);
+    }
   }
   function syncPosition() {
     if (!active) return;
@@ -148,6 +243,7 @@ export function createPreviewSession<T extends PreviewSnapshot>(
   }
   function invalidate() {
     generation++;
+    for (const resources of candidates) resources.dispose();
     dirty = true;
     pause();
     syncControls();
@@ -167,6 +263,7 @@ export function createPreviewSession<T extends PreviewSnapshot>(
   ) {
     const run = invalidate();
     const resources = previewResources();
+    candidates.add(resources);
     let committed = false;
     try {
       const candidate = await prepare(resources);
@@ -179,6 +276,9 @@ export function createPreviewSession<T extends PreviewSnapshot>(
         ),
       );
       // Validate every staged surface before touching the last valid preview.
+      const readiness = resources.prepare(initialFrame, true);
+      if (readiness) await readiness;
+      if (run !== generation) return false;
       resources.render(initialFrame, true);
       const previous = active;
       active = { snapshot: candidate.snapshot, resources };
@@ -198,6 +298,7 @@ export function createPreviewSession<T extends PreviewSnapshot>(
         failed(error);
       }
     } finally {
+      candidates.delete(resources);
       if (!committed) resources.dispose();
       syncControls();
     }
@@ -256,26 +357,63 @@ export function createPreviewSession<T extends PreviewSnapshot>(
   controls.play.addEventListener("click", () => {
     if (!active || dirty) return;
     if (playing) return pause();
-    if (
+    const run = ++playbackGeneration;
+    const restarting =
       (options.restartOnFirstPlay && !hasPlayed) ||
-      frame >= active.snapshot.scene.frameCount - 1
-    )
-      show(0);
+      frame >= active.snapshot.scene.frameCount - 1;
     hasPlayed = true;
     playing = true;
     controls.play.textContent = "Pause";
-    const startFrame = frame;
-    const start = performance.now();
-    const tick = (now: number) => {
-      if (!active || !playing) return;
-      show(
-        startFrame +
-          Math.floor(((now - start) * active.snapshot.scene.fps) / 1000),
-      );
-      if (frame >= active.snapshot.scene.frameCount - 1) pause();
-      else animation = requestAnimationFrame(tick);
+    const startPlayback = async () => {
+      if (!active || !playing || dirty || run !== playbackGeneration) return;
+      const selected = active;
+      const startFrame = frame;
+      const start = performance.now();
+      const pendingAudio = selected.resources.startAudio(startFrame);
+      if (pendingAudio) {
+        try {
+          if (!(await pendingAudio)) return;
+        } catch (error) {
+          if (run === playbackGeneration) {
+            pause();
+            failed(error);
+          }
+          return;
+        }
+      }
+      if (
+        selected !== active ||
+        !playing ||
+        dirty ||
+        run !== playbackGeneration
+      )
+        return;
+      const next = () => {
+        if (!active || !playing || dirty || run !== playbackGeneration) return;
+        const audioFrame = selected.resources.audioFrame();
+        if (
+          audioFrame === undefined
+            ? frame >= active.snapshot.scene.frameCount - 1
+            : audioFrame >= active.snapshot.scene.frameCount
+        )
+          pause();
+        else animation = requestAnimationFrame(tick);
+      };
+      const tick = (now: number) => {
+        if (!active || !playing || dirty || run !== playbackGeneration) return;
+        const readiness = show(
+          selected.resources.audioFrame() ??
+            startFrame +
+              Math.floor(((now - start) * active.snapshot.scene.fps) / 1000),
+        );
+        if (readiness) void readiness.then(next);
+        else next();
+      };
+      animation = requestAnimationFrame(tick);
     };
-    animation = requestAnimationFrame(tick);
+    const readiness = restarting ? show(0) : undefined;
+    if (readiness) void readiness.then(startPlayback);
+    else void startPlayback();
   });
   window.addEventListener("pagehide", (event) => {
     pause();

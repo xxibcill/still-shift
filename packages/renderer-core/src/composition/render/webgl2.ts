@@ -40,7 +40,7 @@ import { blendShader } from "./webgl-blend.ts";
 import { FLAT_LIGHTING_SHADER, flatLightingUniforms } from "./flat-lighting.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.65.4" as const;
+  "composition-webgl2-0.66.1" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -61,12 +61,14 @@ void main() {
 export type Webgl2Backend = RenderBackend<WebglSurface> & {
   readonly target: WebglSurface;
   readonly allocated: number;
+  readonly nativeImageAllocated: number;
   readonly passes: number;
   present(): void;
   dispose(): void;
 };
 
 export type Webgl2BackendOptions = Canvas2dBackendOptions & {
+  nativeImageByteLimit?: number;
   boundedCanvas?: (content: ProviderContent | TextContent) => boolean;
   singleImage?: (content: ProviderContent | TextContent) => boolean;
   stableImages?: (content: ProviderContent | TextContent) => boolean;
@@ -97,6 +99,7 @@ export function createWebgl2Backend(
     raster,
     paint,
     options.images.pngImages,
+    options.nativeImageByteLimit,
   );
   const depthImages = new WebglDepthImages(device, options.images);
   const pngImages = new WebglPngImages(device, raster, options.images);
@@ -486,6 +489,9 @@ export function createWebgl2Backend(
       }
     },
     target,
+    get nativeImageAllocated() {
+      return images.nativeAllocated;
+    },
     get allocated() {
       return device.allocated + depthImages.allocated;
     },
@@ -1049,6 +1055,7 @@ export function createWebgl2Backend(
     },
     present: () => device.present(target),
     dispose() {
+      images.dispose();
       damage.reset();
       readback.dispose();
       isolates.dispose();

@@ -24,6 +24,12 @@ export type ProgramLimits = {
   maxOutputBytes?: number;
   signal?: AbortSignal;
 };
+async function assetPath(path: string) {
+  return realpath(path).catch(async () => {
+    const parent = await realpath(dirname(path)).catch(() => undefined);
+    return parent ? join(parent, basename(path)) : path;
+  });
+}
 export async function loadProgram(
   path: string,
   limits: ProgramLimits = {},
@@ -210,12 +216,14 @@ export async function loadProgram(
       const resolved = resolve(assetDirectory, asset.path);
       return {
         ...asset,
-        path: await realpath(resolved).catch(async () => {
-          const parent = await realpath(dirname(resolved)).catch(
-            () => undefined,
-          );
-          return parent ? join(parent, basename(resolved)) : resolved;
-        }),
+        path: await assetPath(resolved),
+        ...(asset.type === "sequence"
+          ? {
+              manifestPath: await assetPath(
+                resolve(assetDirectory, asset.manifestPath),
+              ),
+            }
+          : {}),
       };
     }),
   );
