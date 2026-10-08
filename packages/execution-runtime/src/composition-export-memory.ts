@@ -11,9 +11,9 @@ import {
 import type { CompositionFrameDistribution } from "./composition-frame-assignment.ts";
 import {
   ManagedMemory,
-  withManagedMemory,
   type MemoryLimits,
-} from "@still-shift/renderer-core";
+} from "../../renderer-core/src/managed-memory.ts";
+import { withManagedMemory } from "../../renderer-core/src/managed-memory-context.ts";
 
 const GiB = 1024 ** 3;
 export const COMPOSITION_APPLICATION_MEMORY_LIMIT = 8 * GiB;

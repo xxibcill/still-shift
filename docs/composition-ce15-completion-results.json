@@ -35,7 +35,8 @@
     }
   },
   "remaining": [
-    "complete required local pnpm check after correcting the obsolete 17-fps rejection test"
+    "repeat authentic speed acceptance on the native-loader repair checkpoint",
+    "complete required local pnpm check on the immutable native-loader repair checkpoint"
   ],
   "productionMemory": {
     "status": "production browser admission, bounded Node result transfer and complete 48-case area matrix passed",
@@ -163,7 +164,7 @@
       "status": "pending",
       "command": "pnpm check"
     },
-    "finalSpeed": {
+    "speedBeforeNativeLoaderRepair": {
       "status": "passed",
       "checkpoint": "24378343364dc61e094d4d6b62ab8ac5b2b8e065",
       "durationSeconds": 120,
@@ -230,6 +231,61 @@
       "finishedAt": "2026-10-09T00:32:58+0700",
       "failure": "one obsolete evaluator test still expected17fps rejection; production now correctly supports integer1\u201360",
       "repair": "test61fps range rejection and17fps success;219 affected tests pass; production code unchanged"
+    },
+    {
+      "name": "gate",
+      "command": "pnpm check",
+      "checkpoint": "54b8053cdf4398315d24e5163be314e88028483d",
+      "status": "failed",
+      "startedAt": "2026-10-09T00:35:36+0700",
+      "log": "/private/tmp/ce15-54b8053c-gate.log",
+      "exitCode": 1,
+      "elapsedSeconds": 370.57669466594234,
+      "finishedAt": "2026-10-09T00:41:47+0700",
+      "failure": "five Lab suites could not load CE15 TypeScript parameter properties through native bundled Vite configuration; two integration assertions still rejected valid 13 fps",
+      "results": {
+        "unitTests": 3555,
+        "runtimeTests": 83,
+        "integrationPassed": 283,
+        "integrationFailed": 2,
+        "integrationSetupSkipped": 29
+      },
+      "repair": "explicit constructor fields and narrow allocator/context imports; 61-fps range rejection fixtures; real bundled config startup and all integrations pass"
     }
-  ]
+  ],
+  "nativeLoaderCheckpoint": {
+    "parent": "54b8053c",
+    "status": "focused acceptance passed",
+    "changes": [
+      "explicit fields in CE15 Node stream/store/broker/ordered receiver and shared allocator constructors",
+      "narrow allocator/context imports for native Lab configuration loading",
+      "replace obsolete invalid13fps fixtures with61fps range diagnostics"
+    ],
+    "bundledViteConfigWithoutTsx": "passed",
+    "focusedTests": 71,
+    "integrationTests": 314,
+    "integrationFiles": 54,
+    "integrationSkipped": 0,
+    "productionMemoryExports": 8,
+    "parallel": {
+      "status": "passed",
+      "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-parallel-GXe3JS",
+      "exports": 51,
+      "nativeCases": 8,
+      "sourceCases": 8,
+      "tintCases": 16,
+      "rootCases": 16,
+      "prefixCases": 8,
+      "failures": 24
+    },
+    "review": "no concrete initialization or import-identity regression found",
+    "logs": {
+      "/private/tmp/ce15-native-loader-probe.log": "b4ed8d878ed2003a5ba272e2229188f953ddd0a4392e176a499ee5ff95f3d8d1",
+      "/private/tmp/ce15-native-loader-unit.log": "5125670c99233e38d825ee4263da424ccf97cbcfcf9e3e1fa08707d3f9e1d6f9",
+      "/private/tmp/ce15-native-loader-static.log": "33381326c96ec1130806b75128c1f5f11d662bef7a0d9cb46a68de6b37c14e5b",
+      "/private/tmp/ce15-native-loader-integration.log": "d11b9a2b09f812908ee205cd8626245937270f67f63ee506bbbebaf49df8866a",
+      "/private/tmp/ce15-native-loader-browser-memory.log": "ce8219ea20f44b51608c111d31b8da78796f779825d529b21e272c36bab70720",
+      "/private/tmp/ce15-native-loader-parallel.log": "a997632ac82a7e4f8c38ef9cf90fc634d8c3f37cbe5f3365f5e683028be0b7bc"
+    }
+  }
 }

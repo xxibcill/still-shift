@@ -84,7 +84,7 @@ it("keeps source bytes for no-op saves, raw fields for edited saves and rejects 
     await expect(
       saveCompositionDocument(input, source, loaded.sourceSha256!, {
         ...source,
-        fps: 13,
+        fps: 61,
       }),
     ).rejects.toMatchObject({ status: 422 });
     await expect(

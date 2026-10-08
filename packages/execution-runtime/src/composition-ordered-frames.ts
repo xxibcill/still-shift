@@ -4,6 +4,12 @@ import {
 } from "./composition-frame-assignment.ts";
 import type { Readable } from "node:stream";
 
+type FrameConsumer = (
+  source: Readable,
+  frame: number,
+  worker: number,
+) => Promise<void>;
+
 type Worker = { next: number; end: number; step: number; pending: boolean };
 type Turn = { resolve(): void; reject(reason: unknown): void };
 
@@ -16,16 +22,17 @@ export class CompositionOrderedFrames {
   private next = 0;
   private peakPending = 0;
 
+  private readonly frameCount: number;
+  private readonly consume: FrameConsumer;
+
   constructor(
-    private readonly frameCount: number,
+    frameCount: number,
     workerCount: number,
-    private readonly consume: (
-      source: Readable,
-      frame: number,
-      worker: number,
-    ) => Promise<void>,
+    consume: FrameConsumer,
     distribution: CompositionFrameDistribution = "round-robin",
   ) {
+    this.frameCount = frameCount;
+    this.consume = consume;
     if (
       !Number.isSafeInteger(frameCount) ||
       frameCount < 1 ||

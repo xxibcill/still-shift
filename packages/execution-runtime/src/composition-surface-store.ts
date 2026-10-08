@@ -47,12 +47,22 @@ export class CompositionSurfaceStore {
   private publishedSurfaces = 0;
   private dynamicPaths = 0;
 
+  private readonly directory: string;
+  private readonly workers: number;
+  private readonly byteLimit: number;
+  private readonly entryLimit: number;
+
   private constructor(
-    private readonly directory: string,
-    private readonly workers: number,
-    private readonly byteLimit: number,
-    private readonly entryLimit: number,
-  ) {}
+    directory: string,
+    workers: number,
+    byteLimit: number,
+    entryLimit: number,
+  ) {
+    this.directory = directory;
+    this.workers = workers;
+    this.byteLimit = byteLimit;
+    this.entryLimit = entryLimit;
+  }
 
   static async create(
     parent: string,

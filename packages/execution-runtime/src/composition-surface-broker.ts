@@ -27,11 +27,16 @@ async function readIdentity(
 /** Local, export-owned rendezvous; credentials bind every request to its assigned worker. */
 export class CompositionSurfaceBroker {
   private readonly credentials: readonly string[];
+  private readonly store: CompositionSurfaceStore;
+  private readonly onFailure: (error: unknown) => void;
+
   constructor(
-    private readonly store: CompositionSurfaceStore,
+    store: CompositionSurfaceStore,
     credentials: readonly string[],
-    private readonly onFailure: (error: unknown) => void,
+    onFailure: (error: unknown) => void,
   ) {
+    this.store = store;
+    this.onFailure = onFailure;
     if (
       !credentials.length ||
       credentials.length > 4 ||

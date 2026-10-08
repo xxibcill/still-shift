@@ -13,11 +13,11 @@ export class CompositionOutputInput extends Transform {
   private received = 0;
   private readonly conversion;
 
-  constructor(
-    profile: CompositionOutputProfile,
-    private readonly expectedBytes: number,
-  ) {
+  private readonly expectedBytes: number;
+
+  constructor(profile: CompositionOutputProfile, expectedBytes: number) {
     super({ readableHighWaterMark: 65536, writableHighWaterMark: 65536 });
+    this.expectedBytes = expectedBytes;
     this.conversion = createCompositionOutputConversion(profile);
   }
 

@@ -2505,17 +2505,24 @@ chain passes all 28 format cases, expanded parallel/native/cache checks, 24 live
 failures and four legacy WebGL fixtures. Detailed checkpoint evidence and logs
 are in [completion results](./composition-ce15-completion-results.json).
 
+## Native loader checkpoint — 2026-10-09
+
+The complete gate exposed obsolete evaluator/program/save frame-rate assertions
+and a native TypeScript loading regression in CE15's Node helpers. Constructors
+now use explicit fields, and production memory imports the exact allocator/context
+modules rather than the renderer barrel. Actual Vite config bundling/importing
+passes without TSX environment workarounds. All 314 integration tests now run and
+pass, including the 29 previously blocked Lab assertions. Focused ownership/stream
+checks pass 71 tests; eight production memory exports and the expanded parallel
+suite (including all 24 live failures) also pass. Initialization/import identity
+review found no concrete regression.
+
 ## Remaining acceptance
 
-The final production checkpoint `24378343` repeats the speed proof at **3.437×**
-(422.877 → 123.038 seconds), with exact encoded/frame/audio equality. The first
-full gate stopped at an obsolete evaluator assertion rejecting 17 fps after
-3,554 passing units. The assertion now checks accepted 17 fps and rejected 61 fps;
-219 affected tests pass. Production and benchmark code are unchanged.
-
-Run the complete pinned local `pnpm check` on the corrected checkpoint, then
-record completion and update PR #49. The full gate is required for milestone
-acceptance; focused results do not replace it.
+Repeat the authentic two-minute speed proof, then run the complete pinned local
+`pnpm check` on the repaired immutable checkpoint. Previous speed proofs remain
+checkpoint-specific evidence; failed full-gate attempts are retained in
+[completion results](./composition-ce15-completion-results.json).
 
 GitHub Actions remain disabled. CE14, CE5-X/Q9, CE6-P and separate owner work are
 outside this completion task. No milestone or PR is merged by this task.

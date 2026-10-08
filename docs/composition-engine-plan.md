@@ -5556,23 +5556,25 @@ decode-back pixel check.
 (frames on both sides of a boundary), cancellation during parallel export.
 
 **Final acceptance in progress (2026-10-09):** all delivery, statistics, caching
-and worker features are implemented in PR #49. Production browser storage and
-bounded Node result transfer remain admitted through acknowledgement/publication.
-Counters cover declared application allocations; native browser/driver/FFmpeg RSS
-is measured separately. The 48-case 8192×8192 matrix passes on both backends, all
-worker counts and cached/uncached paths. The two-minute proof passes at `adfb9592`
-with **3.470×** speedup and identical encoded output, every decoded frame and audio.
+and worker features are implemented in PR #49. The 48-case 8192×8192 matrix passes
+on both backends, all worker counts and cached/uncached paths. Two-minute proofs
+pass at 3.470× (`adfb9592`) and 3.437× (`24378343`) with identical encoded output,
+every decoded frame and audio. Final reference selection passes 21 units and 72
+production exports.
 
-Final reference-cache review repairs pass 21 units and 72 production exports.
-All seven formats, native depth/alpha/audio checks, parallel boundaries and 24
-live cleanup failures pass focused regressions. Final production code `24378343` repeats the speed proof at **3.437×** with
-exact output. Its first full gate stopped at an obsolete 17-fps rejection test;
-the corrected assertion and 219 affected tests pass. The complete local gate
-is restarting; CE15 is not yet marked complete. Historical implementation details and checkpoint-specific proof
-remain in the [delivery plan](./composition-ce15-plan.md),
+The complete gate exposed old frame-rate assertions and native Lab loading of
+CE15 Node constructor syntax. Those repairs now pass actual bundled Vite startup,
+71 focused tests, all 314 integrations, eight production memory exports and the
+expanded parallel/native/cache suite, including 24 live failures. A fresh speed
+proof and complete local `pnpm check` on the repaired checkpoint remain required;
+CE15 is not yet marked complete.
+
+Declared application allocations remain admitted through acknowledgement and
+publication; native browser/driver/FFmpeg RSS is measured separately. Historical
+implementation details and checkpoint-specific proof remain in the
+[delivery plan](./composition-ce15-plan.md),
 [completion evidence](./composition-ce15-completion-results.json) and linked
-records. Historical speculative metadata-audit lists are not claims of measured
-process-wide allocation coverage.
+records.
 
 **Completion record:** _to be filled in._
 

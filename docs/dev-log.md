@@ -43,15 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE15 final acceptance in progress (2026-10-09):** PR #49 now implements the
-  delivery bounds, statistics, production admission and cache-reference repairs.
-  All 48 maximum-area exports pass. The two-minute proof at `adfb9592` measures
-  **3.470×** with exact encoded/frame/audio parity. Final reference selection passes
-  21 units and 72 exports; all-format, expanded parallel/live-failure and legacy
-  export regressions pass. Final production code `24378343` repeats the speed proof at **3.437×**.
-  The full gate stopped after 3,554 unit passes on an obsolete 17-fps rejection
-  assertion; the corrected test and 219 affected tests pass. Restart the complete
-  gate; production code is unchanged.
+- **CE15 final acceptance in progress (2026-10-09):** PR #49's Node helpers now
+  load through the pinned runtime's bundled Lab configuration. Explicit fields
+  and narrow allocator imports preserve the original execution/lifetime behavior.
+  71 focused tests, all 314 integration tests, eight production memory exports and
+  expanded parallel/native/cache/24 cleanup failures pass. Two earlier full-gate
+  attempts stopped at obsolete frame-rate assertions and native loader syntax;
+  both are recorded. Repeat the speed proof and complete the full local gate on
+  this repaired immutable checkpoint. Historical area and 3.437× proofs remain
+  recorded with their exact code checkpoints.
   [Completion evidence](./composition-ce15-completion-results.json).
 
 - **PR #48 third review repairs verified (2026-10-08):** both P2 findings
@@ -83,6 +83,19 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE15 native Lab loader compatibility
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `54b8053c`.
+- **Done:** replace Node-incompatible parameter properties with explicit fields;
+  narrow allocator/context imports; correct two obsolete 13-fps rejection tests.
+- **Results:** actual bundled Vite config import, 71 focused tests, all 314
+  integrations, eight memory exports and expanded parallel/24 live failures pass.
+- **Preflight lesson:** import the bundled Lab configuration with native Node;
+  a TSX-only import hides the unsupported-syntax path. No loader workaround used.
+- **Open / next:** repeat speed acceptance and complete the required full local
+  gate on the repaired immutable checkpoint. No complete gate claimed yet.
+- **Record:** [completion evidence](./composition-ce15-completion-results.json).
 
 ### 2026-10-09 — CE15 gate frame-rate assertion repair
 

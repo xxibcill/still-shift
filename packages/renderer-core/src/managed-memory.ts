@@ -22,7 +22,9 @@ export class ManagedMemory {
   private closed = false;
   private scratchActive = false;
 
-  constructor(readonly limits: Readonly<MemoryLimits>) {
+  readonly limits: Readonly<MemoryLimits>;
+
+  constructor(limits: Readonly<MemoryLimits>) {
     for (const limit of [limits.pixels, limits.metadata])
       if (!Number.isSafeInteger(limit) || limit < 1)
         throw Error("Managed memory limits must be positive safe integers");
