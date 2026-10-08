@@ -93,15 +93,15 @@ still hold before relying on them.
   Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
   controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
   group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
-  pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection and device
-  shader-source/program/uniform/diagnostic metadata now pass 280 focused tests, the
-  complete audit, 22 moving/blurred and ten stationary native frames and 96 owned
-  RPC snapshots. Actual device shader text/native/cache/uniform/Error lifetimes
-  pre-admit, retain through original consumers/scratch, then clear. New real shader
-  oracle adds four exact frames/64 bytes, two protected compile failures and both
-  disposal orders. Original numeric/native/null/cache behavior passes. Native
-  snapshots, original WebGL/providers, 69 typography tests and 64 exports / 768
-  prior-exact bodies/frames pass; glyph 1.446429× meets unchanged 1.5 maximum.
+  pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
+  shader-source/program/uniform/diagnostic and paint batch/geometry/shader/uniform/
+  input metadata now pass 289 focused tests, the complete audit, 22 moving/blurred
+  and ten stationary native frames and 96 owned RPC snapshots. Actual paint data
+  pre-admits, stays through original consumers, then clears; original shader hashes,
+  15+1 batches, borrowed inputs and numeric/native/null behavior pass. Native
+  recording/shader probes, original WebGL/providers, 69 typography tests and 64
+  exports / 768 prior-exact bodies/frames pass; glyph 1.430645× meets unchanged
+  1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -337,6 +337,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual paint batch/input controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `201449e`.
+- **Done:** pre-admit actual filter/batch/geometry/shader/uniform/input data,
+  hold through original consumers, then clear generated references; preserve
+  original shader hashes, numeric/native ordering and borrowed parts/rectangles.
+- **Results:** build/lint/boundaries, 289 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, prior native frames/probes,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.430645× meets unchanged 1.5 maximum.
+- **Verification:** nine regressions cover original full shader hashes/15+1
+  batches, pre-factory denial, actual array lifetimes, numeric/blend/screen/empty
+  paths and original null/secondary cleanup/getter/output/retry behavior.
+- **Next:** remaining effect/other shader/cache/controller/helper/runtime/Node
+  controls, production/aggregate admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [paint evidence](./composition-ce15-paint-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual device shader/program controls
 

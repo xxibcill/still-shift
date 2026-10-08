@@ -1092,6 +1092,26 @@ cleanup orders. All 64 exports preserve 768 complete bodies/frames against pushe
 speed and full gate remain pending.
 [Evidence](./composition-ce15-program-metadata-results.json).
 
+## Accepted paint metadata checkpoint — 2026-10-08
+
+Reserve 1024 + 8*parts length before original filtering, and 2048 + 4096*batch
+capacity (at most 15) before original slice/map/union/uniform/shader/input factories.
+Actual copied arrays, union/clip boxes, numeric uniforms, shader text fragments/
+joins and input maps stay through original GPU consumers, then clear. Single draws
+reserve 1536 after original active-region test and before native blend/framebuffer
+or original input/uniform/box factories. Borrowed parts/rectangles/surfaces stay.
+Original complete shader hashes from pushed `201449e`, 15-sampler grouping, single
+remainder, numeric/native order and byte formulas stay. Failed uniform factories
+release original native output; null survives secondary cleanup and retry works.
+
+Build/lint/boundaries and 289 focused tests pass, including nine paint regressions.
+Complete audit 144/8,000, 96 RPC snapshots, prior native frames and recording/shader
+probes, original WebGL, 69 typography tests/providers pass; glyph 1.430645× meets
+unchanged 1.5 maximum. All 64 exports preserve 768 complete bodies/frames against
+pushed `201449e`. Other shader/effect/cache/controller/helper/runtime/Node/production/
+aggregate admission, speed and full gate remain pending.
+[Evidence](./composition-ce15-paint-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
