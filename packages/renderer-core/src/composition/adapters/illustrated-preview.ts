@@ -1,11 +1,11 @@
 import type { IllustratedScene } from "../../prepared-scene.ts";
 import {
   createCompositionPreview,
+  prepareCompositionPreview,
   type CompositionPreview,
 } from "../render/renderer.ts";
 import { prepareIllustratedComposition } from "./illustrated.ts";
 import { familyCompositionWindowAt } from "./timeline.ts";
-import { validateStoryCompositionCoverage } from "./story-coverage.ts";
 import type { Images } from "./illustrated-assets.ts";
 
 /** Preparation once, then the shared native frame path; retains the authoring inspector metadata. */
@@ -20,52 +20,31 @@ export function createPreparedIllustratedPreview(
   if (!context) throw Error("Canvas 2D is unavailable");
   const prepared = prepareIllustratedComposition(scene, images, context);
   const windows = prepared.windows;
-  const create = (composition = prepared.composition, frames?: number[]) =>
-    createCompositionPreview(canvas, composition, prepared.resources, {
-      backend: "canvas2d",
-      ...(frames ? { validationFrames: frames } : {}),
-    });
-  const frames = (start: number, end: number) =>
-    Array.from({ length: end - start }, (_, i) => start + i);
-  if (windows && prepared.composition.metadata?.storyCameraCover) {
-    const pixels = new Map<string, ImageData>();
-    const readPixels = (id: string) => {
-      const existing = pixels.get(id);
-      if (existing) return existing;
-      const asset = prepared.composition.assets.find(
-        (asset) => asset.id === id,
-      )!;
-      if (asset.type !== "image")
-        throw new Error(`Cover asset is not an image: ${id}`);
-      const image = prepared.resources.images.get(id);
-      if (!image) throw new Error(`Cover image was not loaded: ${id}`);
-      const probe = document.createElement("canvas");
-      probe.width = asset.width;
-      probe.height = asset.height;
-      try {
-        const ctx = probe.getContext("2d", { willReadFrequently: true });
-        if (!ctx) throw new Error("Canvas 2D is unavailable");
-        ctx.drawImage(image, 0, 0);
-        const result = ctx.getImageData(0, 0, probe.width, probe.height);
-        pixels.set(id, result);
-        return result;
-      } finally {
-        probe.width = probe.height = 0;
-      }
-    };
-    // Preparation checks every owned frame before any seek or export can use it.
-    for (const window of windows)
-      validateStoryCompositionCoverage(
-        window.composition,
-        readPixels,
-        frames(window.start, window.end),
-      );
-  }
-  let activeWindow = windows?.[0];
-  let preview: CompositionPreview = create(
-    prepared.composition,
-    activeWindow ? frames(activeWindow.start, activeWindow.end) : undefined,
+  // Validate and measure all windows before exposing playback. Temporary backends
+  // are released immediately; only local content is retained across seeks.
+  const preparedWindows = new Map(
+    windows?.map((window) => [
+      window,
+      prepareCompositionPreview(window.composition, prepared.resources, {
+        backend: "canvas2d",
+        validationFrames: Array.from(
+          { length: window.end - window.start },
+          (_, i) => window.start + i,
+        ),
+      }),
+    ]),
   );
+  let activeWindow = windows?.[0];
+  let preview: CompositionPreview = activeWindow
+    ? preparedWindows.get(activeWindow)!.create(canvas)
+    : createCompositionPreview(
+        canvas,
+        prepared.composition,
+        prepared.resources,
+        {
+          backend: "canvas2d",
+        },
+      );
   let disposed = false;
   return {
     backend: preview.backend,
@@ -85,10 +64,7 @@ export function createPreparedIllustratedPreview(
       if (windows) {
         const window = familyCompositionWindowAt(windows, frame);
         if (window !== activeWindow) {
-          const next = create(
-            window.composition,
-            frames(window.start, window.end),
-          );
+          const next = preparedWindows.get(window)!.create(canvas);
           preview.dispose();
           preview = next;
           activeWindow = window;
@@ -100,6 +76,7 @@ export function createPreparedIllustratedPreview(
       if (disposed) return;
       disposed = true;
       preview.dispose();
+      preparedWindows.clear();
     },
   };
 }

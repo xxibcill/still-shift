@@ -221,6 +221,45 @@ export type CompositionPreview = {
   dispose(): void;
 };
 
+type CompositionPreviewOptions = {
+  backend?: CompositionBackend;
+  createCanvas?: (width: number, height: number) => HTMLCanvasElement;
+  providers?: readonly CanvasContentProvider[];
+  coverageSeverity?: "error" | "warning";
+  /** Exact integer frames owned by an independently bounded family timeline window. */
+  validationFrames?: readonly number[];
+};
+
+/** Prepared local content and coverage, reusable without retaining a backend's surfaces. */
+export type PreparedCompositionPreview = {
+  create(canvas: HTMLCanvasElement): CompositionPreview;
+};
+
+export function prepareCompositionPreview(
+  composition: Composition,
+  resources: CompositionResources,
+  options: CompositionPreviewOptions = {},
+): PreparedCompositionPreview {
+  // Keep compiled clocks and prepared drawers tied to the same immutable source,
+  // even when an author edits the document after preparing another preview.
+  const snapshot = structuredClone(composition);
+  const canvas = options.createCanvas
+    ? options.createCanvas(snapshot.width, snapshot.height)
+    : document.createElement("canvas");
+  try {
+    const prepared = prepareCompositionPreviewOnCanvas(
+      canvas,
+      snapshot,
+      resources,
+      options,
+    );
+    prepared.preview.dispose();
+    return { create: prepared.createPreview };
+  } finally {
+    canvas.width = canvas.height = 0;
+  }
+}
+
 /**
  * Render with the selected backend (Canvas 2D by default). Preview and export
  * share the evaluator, graph, prepared content and exposure sampling.
@@ -231,15 +270,22 @@ export function createCompositionPreview(
   canvas: HTMLCanvasElement,
   composition: Composition,
   resources: CompositionResources,
-  options: {
-    backend?: CompositionBackend;
-    createCanvas?: (width: number, height: number) => HTMLCanvasElement;
-    providers?: readonly CanvasContentProvider[];
-    coverageSeverity?: "error" | "warning";
-    /** Exact integer frames owned by an independently bounded family timeline window. */
-    validationFrames?: readonly number[];
-  } = {},
+  options: CompositionPreviewOptions = {},
 ): CompositionPreview {
+  return prepareCompositionPreviewOnCanvas(
+    canvas,
+    composition,
+    resources,
+    options,
+  ).preview;
+}
+
+function prepareCompositionPreviewOnCanvas(
+  canvas: HTMLCanvasElement,
+  composition: Composition,
+  resources: CompositionResources,
+  options: CompositionPreviewOptions,
+) {
   const validation = validateComposition(composition);
   if (!validation.ok) throw new PassageError(validation.diagnostics);
   canvas.width = composition.width;
@@ -268,8 +314,12 @@ export function createCompositionPreview(
     probe.height = asset.height;
     const context = probe.getContext("2d", { willReadFrequently: true });
     if (!context) throw new Error("Canvas 2D is unavailable");
-    context.drawImage(image, 0, 0);
-    return context.getImageData(0, 0, probe.width, probe.height);
+    try {
+      context.drawImage(image, 0, 0);
+      return context.getImageData(0, 0, probe.width, probe.height);
+    } finally {
+      probe.width = probe.height = 0;
+    }
   };
   validateStoryCompositionCoverage(
     composition,
@@ -323,99 +373,118 @@ export function createCompositionPreview(
     drawProvider,
     ...(options.createCanvas ? { createCanvas: options.createCanvas } : {}),
   };
-  if (kind === "webgl2") {
-    const backend = createWebgl2Backend(canvas, {
-      ...backendOptions,
-      boundedCanvas: (content) =>
-        content.type === "text" || drawProvider.boundedCanvas(content),
-      singleImage: (content) =>
-        content.type === "provider"
-          ? drawProvider.singleImage(content)
-          : text.singleImage(content),
-      stableImages: (content) =>
-        content.type === "provider"
-          ? drawProvider.stableImages(content)
-          : text.stableImages(content),
-      contentKey: (content) =>
-        content.type === "provider"
-          ? drawProvider.contentKey(content)
-          : text.contentKey(content),
-      contentBounds: (content) =>
-        content.type === "provider"
-          ? drawProvider.contentBounds(content)
-          : text.contentBounds(content),
-    });
-    return preview(backend, backend.target, () => backend.present());
-  }
-  const backend = createCanvas2dBackend(backendOptions);
-  return preview(backend, backend.wrap(canvas, ctx), () => {});
+  let coverageDiagnostics: PassageDiagnostic[] = [];
+  return { preview: createPreview(canvas, true), createPreview };
 
-  function preview<S extends Surface>(
-    backend: RenderBackend<S> & { dispose(): void },
-    target: S,
-    present: () => void,
+  function createPreview(
+    targetCanvas: HTMLCanvasElement,
+    validateCoverage = false,
   ): CompositionPreview {
-    // The GPU backend retains bounded readback bytes; graph reuse skips identical draws.
-    const cache: CompositionFrameCache | undefined =
-      kind === "webgl2" ? {} : undefined;
-    let coverageDiagnostics: PassageDiagnostic[];
-    try {
-      validateRenderedCinematicCompositionCoverage(
-        composition,
-        readAssetPixels,
-        backend,
-        { textBounds: text.bounds },
-      );
-      coverageDiagnostics = validateRequiredCompositionCoverage(
-        composition,
-        backend,
-        { textBounds: text.bounds },
-        options.coverageSeverity ?? "error",
-        cinematicRenderedCoverageRequirements(composition),
-        options.validationFrames,
-      );
-    } catch (error) {
-      backend.dispose();
-      throw error;
+    targetCanvas.width = composition.width;
+    targetCanvas.height = composition.height;
+    if (kind === "webgl2") {
+      const backend = createWebgl2Backend(targetCanvas, {
+        ...backendOptions,
+        boundedCanvas: (content) =>
+          content.type === "text" || drawProvider.boundedCanvas(content),
+        singleImage: (content) =>
+          content.type === "provider"
+            ? drawProvider.singleImage(content)
+            : text.singleImage(content),
+        stableImages: (content) =>
+          content.type === "provider"
+            ? drawProvider.stableImages(content)
+            : text.stableImages(content),
+        contentKey: (content) =>
+          content.type === "provider"
+            ? drawProvider.contentKey(content)
+            : text.contentKey(content),
+        contentBounds: (content) =>
+          content.type === "provider"
+            ? drawProvider.contentBounds(content)
+            : text.contentBounds(content),
+      });
+      return preview(backend, backend.target, () => backend.present());
     }
-    return {
-      backend: kind,
-      rendererVersion: backend.version,
-      readPixels: () => backend.readPixels(target),
-      textBounds: text.bounds,
-      renderFrame(frame) {
-        if (
-          !Number.isInteger(frame) ||
-          frame < 0 ||
-          frame >= composition.frameCount
-        )
-          throw new Error("Frame index outside composition timeline");
-        const report = renderCompositionExposure(
-          backend,
-          target,
-          composition,
-          frame,
-          {
-            textBounds: text.bounds,
-          },
-          cache,
-        );
-        if (report.samples > 0) present();
-        return coverageDiagnostics.length
-          ? {
-              ...report,
-              diagnostics: [...report.diagnostics, ...coverageDiagnostics],
-            }
-          : report;
-      },
-      dispose() {
-        if (cache) {
-          cache.root = undefined;
-          cache.key = undefined;
+    const targetContext = targetCanvas.getContext("2d", {
+      alpha: false,
+      ...(softwareRaster ? { willReadFrequently: true } : {}),
+    });
+    if (!targetContext) throw new Error("Canvas 2D is unavailable");
+    const backend = createCanvas2dBackend(backendOptions);
+    return preview(
+      backend,
+      backend.wrap(targetCanvas, targetContext),
+      () => {},
+    );
+
+    function preview<S extends Surface>(
+      backend: RenderBackend<S> & { dispose(): void },
+      target: S,
+      present: () => void,
+    ): CompositionPreview {
+      // The GPU backend retains bounded readback bytes; graph reuse skips identical draws.
+      const cache: CompositionFrameCache | undefined =
+        kind === "webgl2" ? {} : undefined;
+      if (validateCoverage)
+        try {
+          validateRenderedCinematicCompositionCoverage(
+            composition,
+            readAssetPixels,
+            backend,
+            { textBounds: text.bounds },
+          );
+          coverageDiagnostics = validateRequiredCompositionCoverage(
+            composition,
+            backend,
+            { textBounds: text.bounds },
+            options.coverageSeverity ?? "error",
+            cinematicRenderedCoverageRequirements(composition),
+            options.validationFrames,
+          );
+        } catch (error) {
+          backend.dispose();
+          throw error;
         }
-        backend.dispose();
-        canvas.width = composition.width;
-      },
-    };
+      return {
+        backend: kind,
+        rendererVersion: backend.version,
+        readPixels: () => backend.readPixels(target),
+        textBounds: text.bounds,
+        renderFrame(frame) {
+          if (
+            !Number.isInteger(frame) ||
+            frame < 0 ||
+            frame >= composition.frameCount
+          )
+            throw new Error("Frame index outside composition timeline");
+          const report = renderCompositionExposure(
+            backend,
+            target,
+            composition,
+            frame,
+            {
+              textBounds: text.bounds,
+            },
+            cache,
+          );
+          if (report.samples > 0) present();
+          return coverageDiagnostics.length
+            ? {
+                ...report,
+                diagnostics: [...report.diagnostics, ...coverageDiagnostics],
+              }
+            : report;
+        },
+        dispose() {
+          if (cache) {
+            cache.root = undefined;
+            cache.key = undefined;
+          }
+          backend.dispose();
+          targetCanvas.width = composition.width;
+        },
+      };
+    }
   }
 }

@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #47 follow-up review repairs in progress (2026-10-08):** isolated
+  `codex/pr47-second-review-fixes` from reviewed `787ded34`. Three inline findings
+  cover timeline-window preparation, the accepted legacy input envelope and bitmap
+  texture orientation/alpha. Repairs use one finding per commit and one final push.
+  Window preparation is fixed: 103 affected units and selected long-timeline
+  browser/raw/seek checks pass with zero playback preparation. Other repairs and
+  final focused verification remain in flight. Owner CE15 checkout
+  is untouched; no new full repository gate is planned or claimed.
+  [Evidence](./pr-47-followup-fix-results.json).
+
 - **PR #47 review repairs verified (2026-10-08):** isolated
   `codex/pr47-review-fixes` from reviewed `ed4034c`. Six inline findings are fixed
   in six separate commits: boxed text, image-plane preflight, quality clocks,
@@ -971,6 +981,19 @@ still hold before relying on them.
 _Last updated 2026-10-08 by Codex for PR #47 conflict resolution._
 
 ## Entries
+
+### 2026-10-08 — PR #47 follow-up review repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr47-second-review-fixes`, from `787ded34`.
+- **Scope:** three posted inline findings; one finding per commit, one final push.
+- **Done:** posted the three code comments; cached window text/provider preparation
+  and coverage before playback, released temporary backends, advanced cache versions.
+- **Results:** pinned toolchain/build, 103 affected units and two long-timeline browser
+  fixtures pass; boundary playback repeats no preparation and pixels remain exact.
+  Other repairs and final focused verification remain in flight.
+- **Next:** finish each repair and focused verification, then push all three commits once.
+- **Records:** [evidence](./pr-47-followup-fix-results.json),
+  [inline review](https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5453536103).
 
 ### 2026-10-08 — PR #47 review repairs
 

@@ -18,6 +18,7 @@ import {
 } from "@still-shift/scene-contract";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as Oracle from "../helpers/legacy-illustrated-oracle.ts";
+import type { CanvasContentProvider } from "../../packages/renderer-core/src/composition/render/providers.ts";
 
 type Preview = ReturnType<typeof Render.createIllustratedPreview>;
 type Probe = {
@@ -32,6 +33,8 @@ type Probe = {
   setGeneration(frame: number): void;
   setTracking(enabled: boolean): void;
   restoreCreateElement(): void;
+  preparationCalls(): { providers: number; fontMeasurements: number };
+  restorePreparationProbes(): void;
   hashes: Map<number, string>;
 };
 declare global {
@@ -269,11 +272,66 @@ try {
               surfaces.push({ generation, canvas: new WeakRef(element) });
             return element;
           }) as typeof document.createElement;
+          const storyProvidersUrl =
+            "/packages/renderer-core/src/composition/adapters/story-providers.ts";
+          const commerceProvidersUrl =
+            "/packages/renderer-core/src/composition/adapters/commerce-providers.ts";
+          const typographyProvidersUrl =
+            "/packages/renderer-core/src/composition/adapters/numeric-typography.ts";
+          const motionProvidersUrl =
+            "/packages/renderer-core/src/composition/adapters/motion-path.ts";
+          const appearanceProvidersUrl =
+            "/packages/renderer-core/src/composition/adapters/appearance-providers.ts";
+          const typography = await import(typographyProvidersUrl);
+          const providers: readonly CanvasContentProvider[] = [
+            ...(await import(storyProvidersUrl)).STORY_CONTENT_PROVIDERS,
+            ...(await import(commerceProvidersUrl)).COMMERCE_CONTENT_PROVIDERS,
+            typography.NUMERIC_TYPOGRAPHY_PROVIDER,
+            typography.RICH_TYPOGRAPHY_PROVIDER,
+            ...(await import(motionProvidersUrl)).MOTION_PATH_PROVIDERS,
+            ...(await import(appearanceProvidersUrl)).APPEARANCE_PROVIDERS,
+          ];
+          let providerPreparations = 0;
+          let fontMeasurements = 0;
+          const originals = providers.map((provider) => {
+            const prepare = provider.prepare;
+            provider.prepare = (layer, resources, path) => {
+              providerPreparations++;
+              return prepare.call(provider, layer, resources, path);
+            };
+            return { provider, prepare };
+          });
+          const measureText = CanvasRenderingContext2D.prototype.measureText;
+          CanvasRenderingContext2D.prototype.measureText = function (text) {
+            const stack = new Error().stack ?? "";
+            if (
+              [
+                "preparedTextBounds",
+                "prepareMeasuredText",
+                "prepareTextFits",
+                "prepareTypography",
+                "prepareCompositionText",
+              ].some((preparation) => stack.includes(preparation))
+            )
+              fontMeasurements++;
+            return measureText.call(this, text);
+          };
           const preview = render.createIllustratedPreview(
             canvas,
             scene,
             images,
           );
+          if (
+            (preview.windows?.some((window) =>
+              window.composition.layers.some(
+                (layer) => layer.type === "provider",
+              ),
+            ) &&
+              providerPreparations === 0) ||
+            (source.nodes.some((node) => node.type === "text") &&
+              fontMeasurements === 0)
+          )
+            throw new Error("Preparation probes did not observe initial work");
           tracking = false;
           if (preview.backend !== "canvas2d" || !preview.windows?.length)
             throw new Error(
@@ -306,6 +364,18 @@ try {
             },
             restoreCreateElement() {
               document.createElement = createElement;
+            },
+            preparationCalls() {
+              return {
+                providers: providerPreparations,
+                fontMeasurements,
+              };
+            },
+            restorePreparationProbes() {
+              originals.forEach(({ provider, prepare }) => {
+                provider.prepare = prepare;
+              });
+              CanvasRenderingContext2D.prototype.measureText = measureText;
             },
           };
           return preview.windows.map(({ start, end }) => ({ start, end }));
@@ -346,11 +416,20 @@ try {
           )!;
           p.setGeneration(selected.start);
           p.setTracking(true);
+          const before = p.preparationCalls();
           try {
             p.preview.renderFrame(frame);
           } finally {
             p.setTracking(false);
           }
+          const after = p.preparationCalls();
+          if (
+            after.providers !== before.providers ||
+            after.fontMeasurements !== before.fontMeasurements
+          )
+            throw new Error(
+              `Frame ${frame} repeated provider/font preparation during playback`,
+            );
           if (p.preview.composition !== selected.composition)
             throw new Error(
               `Frame ${frame} selected the wrong native document`,
@@ -422,7 +501,16 @@ try {
             if (preview.windows!.at(-1)!.end !== p.scene.timeline.frameCount)
               throw new Error("Raw capture shortened the source timeline");
             for (const frame of frames) {
+              const before = p.preparationCalls();
               preview.renderFrame(frame);
+              const after = p.preparationCalls();
+              if (
+                after.providers !== before.providers ||
+                after.fontMeasurements !== before.fontMeasurements
+              )
+                throw new Error(
+                  `Raw export frame ${frame} repeated preparation during playback`,
+                );
               const bytes = preview.readPixels();
               let binary = "";
               for (let offset = 0; offset < bytes.length; offset += 32768)
@@ -457,6 +545,7 @@ try {
         p.preview.dispose();
         p.legacy.dispose();
         p.restoreCreateElement();
+        p.restorePreparationProbes();
         try {
           p.preview.renderFrame(0);
         } catch (error) {
@@ -493,6 +582,7 @@ try {
         minPsnr,
         independentRepeatedRawFrames: exportFrames.length,
         disposedWindowSurfaces: "released",
+        playbackPreparationCalls: 0,
         environment,
       });
       console.log(

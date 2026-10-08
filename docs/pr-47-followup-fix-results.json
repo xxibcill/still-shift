@@ -1,0 +1,95 @@
+{
+  "pr": 47,
+  "date": "2026-10-08",
+  "reviewHead": "787ded34df3c0c605c8e01db98c761665d9e9999",
+  "base": "8cc7b14f7090896a755080461b248ac6b2a0eb6f",
+  "branch": "codex/pr47-second-review-fixes",
+  "status": "repairs-in-progress",
+  "deliveryPolicy": "One finding per commit; one final normal push to codex/composition-ce4d.",
+  "review": "https://github.com/xxibcill/still-shift/pull/47#pullrequestreview-5453536103",
+  "scope": "Three scoped follow-up review repairs. No new milestone or complete repository gate is claimed.",
+  "toolchain": {
+    "status": "pass",
+    "command": "pnpm toolchain:check",
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "isolation": "Managed worktree with local Vite optimizer/config caches; pinned dependencies linked read-only, existing Python environment used with UV_NO_SYNC=1 and separate UV cache."
+  },
+  "findings": [
+    {
+      "id": 1,
+      "title": "Prepare timeline-window text before frame rendering",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4216462774",
+      "status": "fixed-focused-verification-passed",
+      "checks": [
+        {
+          "command": "pnpm exec vitest run tests/unit/composition-family-preparation.test.ts tests/unit/composition-family-timeline.test.ts tests/unit/composition-depth-image.test.ts tests/unit/composition-image-plane-backend.test.ts --maxWorkers=2 --no-file-parallelism --cache=false",
+          "status": "pass",
+          "tests": 26
+        },
+        {
+          "command": "pnpm build",
+          "status": "pass-checkpoint"
+        },
+        {
+          "command": "focused ESLint and Prettier",
+          "status": "pass"
+        },
+        {
+          "command": "pnpm test:browser:composition-family-timeline",
+          "status": "pass-focused-selected-frames",
+          "fixtures": 2,
+          "sourceFrameCountEach": 2101,
+          "parityVisitsEach": 21,
+          "maxChannelDelta": 0,
+          "independentRepeatedRawFramesEach": 4,
+          "providerAndFontPreparationsDuringRendering": 0,
+          "surfacesReleased": true,
+          "log": "/private/tmp/pr47-second-window-browser-final.log",
+          "scope": "Selected boundary/late/reverse visits and independent repeat raw captures on the complete source timeline; no complete long-timeline encoded export is claimed."
+        },
+        {
+          "command": "focused ten-file unit selection",
+          "status": "pass",
+          "tests": 103,
+          "log": "/private/tmp/pr47-second-window-units-final.log"
+        },
+        {
+          "command": "pnpm exec vitest run tests/unit/batch-identity.test.ts tests/unit/composition-family-preparation.test.ts tests/unit/composition-family-timeline.test.ts --maxWorkers=2 --no-file-parallelism --cache=false",
+          "status": "pass",
+          "tests": 12
+        }
+      ],
+      "change": "Each native window retains detached prepared text/provider content and validated coverage. Preparation backends are released immediately; rendering switches only the current backend and reuses prepared content. Canvas1.44.3/WebGL0.65.3/illustrated0.12.3 invalidate previous cache identity.",
+      "regressionBeforeFix": "New unit regression expected two upfront provider preparations but original code prepared only the first window; repeated boundary seeks triggered additional preparation.",
+      "rejectedDiagnostic": "Initial final browser instrumentation required positive provider counts on an image-only commerce window. Scoped that assertion to provider-bearing windows; production code unchanged and the final regression passes."
+    },
+    {
+      "id": 2,
+      "title": "Preserve accepted legacy input envelope",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4216462782",
+      "status": "in-progress",
+      "checks": []
+    },
+    {
+      "id": 3,
+      "title": "Normalize ImageBitmap texture orientation and alpha",
+      "comment": "https://github.com/xxibcill/still-shift/pull/47#discussion_r4216462791",
+      "status": "in-progress",
+      "checks": []
+    }
+  ],
+  "finalVerification": {
+    "status": "pending",
+    "fullPnpmCheck": "not-run-scoped-follow-up-policy"
+  },
+  "preservation": {
+    "ownerCheckoutEdited": false,
+    "frozenVisualFilesRegenerated": false,
+    "githubActionsEnabled": false
+  }
+}
