@@ -7,9 +7,11 @@ import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
   PREMULTIPLIED_SAMPLE_SHADER,
   samplePremultiplied,
+  type PremultipliedSampleControl,
 } from "./sampled-blur.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 import type { WebglSurface } from "./webgl-device.ts";
+import type { CanvasSurface } from "./canvas2d.ts";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
@@ -24,6 +26,7 @@ type Mapping = {
 };
 type WarpMappingWork = {
   arrays: number[][];
+  point?: number[] | undefined;
   keys?: string[] | undefined;
   points?: (readonly number[])[] | undefined;
   pointProducer?: ((key: string) => readonly number[]) | undefined;
@@ -40,16 +43,20 @@ type GpuWarpWork = WarpMappingWork & {
   inputs?: WebglSurface[] | undefined;
   shader?: string | undefined;
 };
-function clearGpuWarpWork(work: GpuWarpWork) {
+function clearWarpMappingWork(work: WarpMappingWork) {
   for (const values of work.arrays) values.length = 0;
   work.arrays.length = 0;
   if (work.keys) work.keys.length = 0;
   if (work.points) work.points.length = 0;
-  if (work.inputs) work.inputs.length = 0;
+  if (work.point) work.point.length = 0;
   if (work.uniforms) for (const key in work.uniforms) delete work.uniforms[key];
   if (work.mapping)
     for (const key in work.mapping)
       delete (work.mapping as Partial<Mapping>)[key as keyof Mapping];
+}
+function clearGpuWarpWork(work: GpuWarpWork) {
+  clearWarpMappingWork(work);
+  if (work.inputs) work.inputs.length = 0;
   for (const key in work)
     delete (work as Partial<GpuWarpWork>)[key as keyof GpuWarpWork];
 }
@@ -70,6 +77,62 @@ function finishGpuWarpWork(work: GpuWarpWork, failed: boolean) {
   } catch (error) {
     if (!failed) throw error;
   }
+}
+type CanvasWarpWork = WarpMappingWork & {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  input?: CanvasSurface | undefined;
+  output?: CanvasSurface | undefined;
+  image?: ImageData | undefined;
+  premultiplied?: Uint8Array<ArrayBuffer> | undefined;
+  sample?: number[] | undefined;
+  sampling: PremultipliedSampleControl;
+};
+function clearCanvasWarpWork(work: CanvasWarpWork) {
+  let failed = false,
+    first: unknown;
+  try {
+    if (work.image) work.memory?.release(work.image.data.buffer);
+  } catch (error) {
+    failed = true;
+    first = error;
+  }
+  try {
+    if (work.premultiplied) work.memory?.release(work.premultiplied.buffer);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
+  }
+  clearWarpMappingWork(work);
+  if (work.sample) work.sample.length = 0;
+  work.sampling.index = undefined;
+  for (const key in work)
+    delete (work as Partial<CanvasWarpWork>)[key as keyof CanvasWarpWork];
+  if (failed) throw first;
+}
+function canvasWarpWork(): CanvasWarpWork {
+  const memory = renderMemory();
+  return allocateRenderMetadata<CanvasWarpWork>(
+    16384,
+    () => ({ managed: memory !== undefined, memory, arrays: [], sampling: {} }),
+    false,
+    clearCanvasWarpWork,
+  );
+}
+function finishCanvasWarpWork(work: CanvasWarpWork, failed: boolean) {
+  const managed = work.managed;
+  try {
+    if (managed) releaseRenderMetadata(work);
+    else clearCanvasWarpWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
+function warpPoint(value: number[], work?: WarpMappingWork): number[] {
+  if (work) work.point = value;
+  return value;
 }
 function warpValues(values: number[], work?: WarpMappingWork): number[] {
   if (work) work.arrays.push(values);
@@ -224,10 +287,14 @@ float affineRow(vec2 point,vec2 coefficients,vec4 translation){
  return highest*131072.0+(high-floor(high/1024.0)*1024.0)*128.0+floor((middle-floor(middle/1024.0)*1024.0)/8.0);
 }
 vec2 sourcePoint(vec2 point){return vec2(affineRow(point*2.0,rowX,translationX),affineRow(point*2.0,rowY,translationY))/16.0;}`,
-        sourcePoint: (x, y) => [
-          (2 * x * a + 2 * y * c + tx) / 131072,
-          (2 * x * b + 2 * y * d + ty) / 131072,
-        ],
+        sourcePoint: (x, y) =>
+          warpPoint(
+            [
+              (2 * x * a + 2 * y * c + tx) / 131072,
+              (2 * x * b + 2 * y * d + ty) / 131072,
+            ],
+            work,
+          ),
       },
       work,
     );
@@ -252,10 +319,13 @@ vec2 sourcePoint(vec2 point){return vec2(affineRow(point*2.0,rowX,translationX),
           weight = row(rowW, px, py);
         return Math.abs(weight) < 1e-6
           ? undefined
-          : [
-              f(f(row(rowX, px, py) / weight) * w),
-              f(f(row(rowY, px, py) / weight) * h),
-            ];
+          : warpPoint(
+              [
+                f(f(row(rowX, px, py) / weight) * w),
+                f(f(row(rowY, px, py) / weight) * h),
+              ],
+              work,
+            );
       },
     },
     work,
@@ -304,42 +374,72 @@ export function warpEffectKernel(
       }
     },
     renderCanvas(context, input, params) {
-      const mapping = warpMapping(id, params, input.width, input.height),
-        image = readRenderImageData(input.ctx, 0, 0, input.width, input.height),
-        premultiplied = allocateRenderPixels(
-          image.data.length * 1,
-          () => new Uint8Array(image.data.length),
-        );
-      for (let i = 0; i < image.data.length; i += 4) {
-        const alpha = image.data[i + 3]!;
-        for (let c = 0; c < 3; c++)
-          premultiplied[i + c] = Math.round((image.data[i + c]! * alpha) / 255);
-        premultiplied[i + 3] = alpha;
-      }
-      const sample = [0, 0, 0, 0];
-      for (let y = 0; y < input.height; y++)
-        for (let x = 0; x < input.width; x++) {
-          const source = mapping.sourcePoint(x + 0.5, y + 0.5);
-          if (source)
-            samplePremultiplied(
-              premultiplied,
-              input.width,
-              input.height,
-              source[0]!,
-              source[1]!,
-              sample,
-            );
-          else sample.fill(0);
-          const i = (y * input.width + x) * 4;
+      const work = canvasWarpWork();
+      let failed = false;
+      try {
+        work.input = input;
+        const mapping = warpMapping(
+            id,
+            params,
+            input.width,
+            input.height,
+            work,
+          ),
+          image = (work.image = readRenderImageData(
+            input.ctx,
+            0,
+            0,
+            input.width,
+            input.height,
+          )),
+          premultiplied = allocateRenderPixels(
+            image.data.length * 1,
+            () => (work.premultiplied = new Uint8Array(image.data.length)),
+          );
+        for (let i = 0; i < image.data.length; i += 4) {
+          const alpha = image.data[i + 3]!;
           for (let c = 0; c < 3; c++)
-            image.data[i + c] = sample[3]
-              ? Math.round((sample[c]! * 255) / sample[3])
-              : 0;
-          image.data[i + 3] = sample[3]!;
+            premultiplied[i + c] = Math.round(
+              (image.data[i + c]! * alpha) / 255,
+            );
+          premultiplied[i + 3] = alpha;
         }
-      const output = context.createSurface(input.width, input.height);
-      output.ctx.putImageData(image, 0, 0);
-      return output;
+        const sample = (work.sample = [0, 0, 0, 0]);
+        for (let y = 0; y < input.height; y++)
+          for (let x = 0; x < input.width; x++) {
+            const source = mapping.sourcePoint(x + 0.5, y + 0.5);
+            if (source)
+              samplePremultiplied(
+                premultiplied,
+                input.width,
+                input.height,
+                source[0]!,
+                source[1]!,
+                sample,
+                work.sampling,
+              );
+            else sample.fill(0);
+            const i = (y * input.width + x) * 4;
+            for (let c = 0; c < 3; c++)
+              image.data[i + c] = sample[3]
+                ? Math.round((sample[c]! * 255) / sample[3])
+                : 0;
+            image.data[i + 3] = sample[3]!;
+            if (work.point) work.point.length = 0;
+            work.point = undefined;
+          }
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        output.ctx.putImageData(image, 0, 0);
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishCanvasWarpWork(work, failed);
+      }
     },
   } satisfies CompositionEffectPlugin);
   kernels.set(id, kernel);

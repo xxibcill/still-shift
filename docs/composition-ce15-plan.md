@@ -1752,6 +1752,27 @@ effects/cache/registry/error/class/depth sampling/provider/graph/font/common/led
 Node and production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-warp-gpu-metadata-results.json).
 
+## Accepted warp Canvas mapping work checkpoint — 2026-10-08
+
+Admit actual 16384-byte Canvas mapping/readback/view/sample/index/native work;
+keep two original exact pixel admissions. Capture the actual partial premultiplied
+view before loops. Keep each original source-point array with reused index control
+through its pixel consumer, clear it before the next pixel. No per-pixel lease or
+accumulating point list. Hold both stores/views/mapping/sample/native refs through
+publication, visit both backings after failure/success even after first cleanup null,
+clear actual arrays/records/functions/refs. Managed stores detach, inactive bytes exact.
+
+Build/lint/boundaries and 658 focused tests / 75 files pass. Ten new tests check
+seven whole original Canvas traces/pixels, quota/actual refs/two pixel cuts/four
+point consumers/partial premultiply/source-point/sampling/native/adoption/null/all
+cleanup/retry. Prior mapping/GPU/signed-zero oracles rerun. Initial unused fixture
+import lint failure retained; final attempt 2 accepted. Complete audit 144/8,000,
+96 RPC snapshots, native probes, WebGL/providers, 69 typography and 64 prior-exact
+exports / 768 bodies/frames pass; glyph 1.390805× meets unchanged 1.5 maximum.
+Standalone mappings/helpers/other effects/cache/registry/error/class/depth sampling/
+provider/graph/font/common/ledger/Node and production/aggregate/speed/final gates pending.
+[Evidence](./composition-ce15-warp-canvas-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
