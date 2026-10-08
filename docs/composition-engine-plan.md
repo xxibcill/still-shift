@@ -5134,22 +5134,20 @@ row-view/swap/dirty-set/cached-color/clip-intersection, device shader-source/pro
 uniform/diagnostic, paint batch/geometry/shader/uniform/input, Gaussian kernel/
 rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/default-
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
-standalone-channel-work/warp-GPU-Canvas-work/radial-GPU-Canvas-work/standalone-radial-
-point/control/encoded-view-results, managed plan/sum-shader cache, particle/Canvas/
-WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/texture/
-multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate metadata
-pass 701 focused tests, complete audit, 22 moving/blurred and ten stationary native
-frames and 96 owned RPC snapshots. Standalone encoded view admits before original
-producer, transfers actual view/backing to consumer cleanup. Selected radial GPU
-cleanup detaches actual unadopted encoded backing after pixel adoption null.
-Ten new tests / 21 whole original encoded hashes/getter sequences check quotas/refs/
-transfer/lifetime/null/adoption/all cleanup/retry/caller. Focused attempt 3 passes;
-prior failures retained. Original WebGL and 64 exports / 768 prior-exact bodies/frames
-pass. After observed owner browser workload ended, 69 source typography unit tests,
-providers and eight fixtures pass on unchanged current code; glyph 1.417742×
-meets unchanged 1.5. Prior displayed 1.52× failure stays retained without threshold/
-protocol/oracle/code adjustment. Standalone warp mapping/point, other effects/cache/error/
-class/caller/depth sampling remain pending. Recording/device/pool/shader/paint/
+standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/radial-GPU-Canvas-
+work/standalone-radial-point/control/encoded-view-results, managed plan/sum-shader
+cache, particle/Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls,
+depth mesh/texture/multisample/uniform/draw/text/native-controls and PNG source/draw/
+coordinate metadata pass 710 focused tests, complete audit, 22 moving/blurred and
+ten stationary native frames and 96 owned RPC snapshots. Standalone warp mapping
+admits before original factories, holds actual matrices/vectors/records/closures
+through outside-scope consumers then clears refs. Nine new tests / 21 full original
+mappings/getter sequences/18 signed zeros check quotas/roots/partial/null/adoption/
+retry/lifetime/caller. Harness failures retained; focused attempt 3 passes. Native
+probes, WebGL/providers and 69 typography tests pass; glyph 1.382429× meets
+unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output.
+Later warp point results, other effects/cache/error/class/caller/depth sampling remain
+pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

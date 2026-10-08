@@ -1883,6 +1883,28 @@ Standalone warp mapping/point, other effects/cache/registry/error/class/depth sa
 provider/graph/font/common/ledger/Node, production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-radial-bytes-metadata-results.json).
 
+## Accepted standalone warp mapping result checkpoint — 2026-10-08
+
+Admit actual 16384-byte mapping result before original validation/getters/matrix/
+vector/uniform/shader/closure factories. Capture nested work and all actual four
+or seven numeric arrays/roots/records/producer refs, keep through outside-scope
+sourcePoint consumers. Clear actual owned arrays/records/refs on result cleanup or
+partial/adoption failure; preserve original null over secondary cleanup. Borrowed
+point children remain intact. Caller-admitted GPU/Canvas route adds no new lease.
+Later sourcePoint result arrays still lack standalone independent ownership.
+
+Build/lint/boundaries and 710 focused tests / 81 files pass on attempt 3. Nine new
+tests check 21 complete original mappings/getter sequences and 18 signed zeros,
+quotas/actual roots/partial/null/adoption/retry/lifetime/caller. Interrupted recursive
+spy harness and unrelated spy argument-array failure remain retained. Harness repairs
+and exact original shader lengths 1158/347 change no production math or behavior.
+Complete audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers,
+69 typography and 64 prior-exact exports / 768 bodies/frames pass; glyph
+1.382429× meets unchanged 1.5 maximum. Later point results, other effects/cache/
+registry/error/class/depth sampling/provider/graph/font/common/ledger/Node and
+production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-warp-mapping-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

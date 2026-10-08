@@ -235,6 +235,38 @@ export function warpMapping(
   h: number,
   work?: WarpMappingWork,
 ): Mapping {
+  if (work || !renderMemory()) return produceWarpMapping(id, p, w, h, work);
+  let partial: GpuWarpWork | undefined;
+  try {
+    return allocateRenderMetadata<Mapping>(
+      16384,
+      () => {
+        partial = { managed: true, arrays: [] };
+        return produceWarpMapping(id, p, w, h, partial);
+      },
+      false,
+      () => {
+        if (partial) clearGpuWarpWork(partial);
+        partial = undefined;
+      },
+    );
+  } catch (error) {
+    try {
+      if (partial) clearGpuWarpWork(partial);
+    } catch {
+      /* Preserve the original mapping or admission failure. */
+    }
+    partial = undefined;
+    throw error;
+  }
+}
+function produceWarpMapping(
+  id: string,
+  p: Params,
+  w: number,
+  h: number,
+  work?: WarpMappingWork,
+): Mapping {
   compositionEffectDefinition(id)!.validateParams?.(p);
   if (id === "distort.transform") {
     const anchor = point(p, "anchor"),
