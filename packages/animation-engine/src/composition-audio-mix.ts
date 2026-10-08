@@ -36,6 +36,7 @@ import { compositionMediaChecksum } from "./composition-media-probe.ts";
 import {
   compositionMediaCacheDirectory,
   compositionMediaCacheLock,
+  finishCompositionMediaCacheTransaction,
   compositionMediaCacheSize,
   compositionMediaMappingIdentity,
 } from "./composition-media-cache-storage.ts";
@@ -559,10 +560,6 @@ export async function prepareCompositionAudio(
     if (published) await rm(directory, { recursive: true, force: true });
     throw error;
   } finally {
-    try {
-      if (stage) await rm(stage, { recursive: true, force: true });
-    } finally {
-      await release();
-    }
+    await finishCompositionMediaCacheTransaction(release, stage);
   }
 }

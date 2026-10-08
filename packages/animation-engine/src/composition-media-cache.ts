@@ -32,6 +32,7 @@ import {
 
 import {
   compositionMediaCacheLock,
+  finishCompositionMediaCacheTransaction,
   compositionMediaCacheSize,
 } from "./composition-media-cache-storage.ts";
 
@@ -574,7 +575,6 @@ export async function prepareCompositionVisualMedia(
     if (published) await rm(directory, { recursive: true, force: true });
     throw error;
   } finally {
-    if (stage) await rm(stage, { recursive: true, force: true });
-    await release();
+    await finishCompositionMediaCacheTransaction(release, stage);
   }
 }

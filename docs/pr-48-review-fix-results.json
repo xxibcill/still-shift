@@ -6,7 +6,9 @@
   "base": "e249a5dac2c720f388b44b4437ed3cb6643820f2",
   "delivery": {
     "policy": "One finding per commit; one normal push after the final commit",
-    "state": "Capture finding verified for its commit; cache finding verified and awaiting its separate commit; final push follows both."
+    "captureCommit": "d0ce169c2c28ffa462698b13402a701206ebd53f",
+    "cacheCommit": "Separate successor commit containing the four cache modules and fault regression; see PR history.",
+    "state": "Final code verified for a single normal push; remote head confirmation and resolved-thread replies follow publication."
   },
   "findings": [
     {
@@ -15,7 +17,7 @@
       "comment": "https://github.com/xxibcill/still-shift/pull/48#discussion_r4217967159",
       "path": "tools/still-shift-cli/src/composition/preview.ts",
       "line": 361,
-      "status": "fixed and verified; capture commit prepared",
+      "status": "fixed and verified",
       "reproduction": "Third same-lease CLI prepare and sixth peer fixture prepare expire the first uncached native resource URL while the owning preview remains active.",
       "implementation": "Candidate/active preview disposal owns a UUID capture; explicit release, failed/superseded candidate, program lease release and fixture socket disconnect remove/abort only owned work. Pending/live allocations are capped at64 and fail new work without evicting active URLs. Bounded cancellation markers reject a released delayed prepare, with owner-specific refusal on overflow.",
       "files": [
@@ -124,7 +126,8 @@
           "sequenceOriginalWatch": "changed bytes rejected; restored pixels exact"
         }
       },
-      "independentReview": "Final CLI/Lab capture patch independently reviewed; duplicate cleanup, close-listener and cancellation-owner gaps fixed before final verification. No remaining actionable finding."
+      "independentReview": "Final CLI/Lab capture patch independently reviewed; duplicate cleanup, close-listener and cancellation-owner gaps fixed before final verification. No remaining actionable finding.",
+      "commit": "d0ce169c2c28ffa462698b13402a701206ebd53f"
     },
     {
       "id": "cache-lock-cleanup",
@@ -132,7 +135,7 @@
       "comment": "https://github.com/xxibcill/still-shift/pull/48#discussion_r4217967164",
       "path": "packages/animation-engine/src/composition-media-cache.ts",
       "line": 577,
-      "status": "implemented; pending separate commit",
+      "status": "fixed and verified; separate cache cleanup commit prepared",
       "implementation": "Shared finishCompositionMediaCacheTransaction(release, stage) removes staging in try and always releases in finally. All three finally blocks use it; source validation, cache hit, stage preparation, atomic rename publication and rollback remain specific to each source cache.",
       "files": [
         "packages/animation-engine/src/composition-media-cache-storage.ts",
@@ -189,7 +192,8 @@
           "command": "git diff --check",
           "exitCode": 0
         }
-      ]
+      ],
+      "remainingWork": "Normal final push and PR thread replies after this finding-specific commit."
     }
   ],
   "preflight": {

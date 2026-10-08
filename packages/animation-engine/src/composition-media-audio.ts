@@ -27,6 +27,7 @@ export { verifyCompositionAudioPcm } from "@still-shift/execution-runtime/pcm";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import {
   compositionMediaCacheLock,
+  finishCompositionMediaCacheTransaction,
   compositionMediaCacheSize,
 } from "./composition-media-cache-storage.ts";
 import {
@@ -499,10 +500,6 @@ export async function prepareCompositionAudioSource(
     if (published) await rm(directory, { recursive: true, force: true });
     throw error;
   } finally {
-    try {
-      if (stage) await rm(stage, { recursive: true, force: true });
-    } finally {
-      await release();
-    }
+    await finishCompositionMediaCacheTransaction(release, stage);
   }
 }

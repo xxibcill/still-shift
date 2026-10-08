@@ -43,14 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #48 capture repair verified; cache commit pending (2026-10-08):** both inline findings
+- **PR #48 inline review repairs verified (2026-10-08):** both inline findings
   are posted on the reviewed conflict-resolution head `d62a7a4d`. Native capture
   ownership now preserves active/candidate resources across peer prepares and
   rejects new work at capacity; explicit disposal, canceled requests and disconnects
   release their captures. A shared cache cleanup boundary always releases the lock.
   Final fast checks pass 2,566 units, 17 CLI / 5 fixture / 34 cache integrations
-  pass, and native media/export/session browsers pass. Capture ownership is ready
-  for its commit; cache cleanup follows in a separate commit, then one normal push.
+  pass, and native media/export/session browsers pass. Capture ownership is
+  `d0ce169c`; cache cleanup has its own following commit. Both deliver together in
+  one normal push; owner review/merge follows.
   Owner CE15 files are untouched; no full repository gate is run or claimed.
   [Repair evidence](./pr-48-review-fix-results.json).
 
@@ -78,16 +79,17 @@ still hold before relying on them.
 
 - **Agent / branch:** Codex on isolated `codex/pr48-conflict-resolution`, from `d62a7a4d`.
 - **Scope:** two posted inline findings; one finding per commit, one final normal push.
-- **Done:** explicit native capture ownership/release, bounded pending/live resources,
-  canceled-request guards and disconnect cleanup; shared visual/PCM/mix lock cleanup.
+- **Done:** capture lifetime `d0ce169c` adds ownership/release, bounded pending/live
+  resources, cancellation guards and disconnect cleanup. The following finding commit
+  shares visual/PCM/mix lock cleanup and adds the real-lock fault regression.
 - **Results:** pre-fix URL expiry and lingering-lock failures reproduced; CLI preview
   integrations, 5 fixture / 34 cache integrations and 2,566 units pass. Native
   browser/export/session checks pass, including uncached and reverse seek retention.
 - **Rejected:** initial fast build found an implicit array type in the new CLI regression;
   added the explicit capture-array type. A formatting scan overlapped with temporary
   fixture API test files; rerun sequentially after cleanup, never format generated fixtures.
-- **Next:** commit capture ownership, then cache cleanup separately; push both once.
-  No full `pnpm check` is run or claimed.
+- **Delivery / next:** one finding per commit, one final normal push; owner review/merge.
+  No full `pnpm check` was run or claimed; no verification job remains active.
 - **Records:** [repair evidence](./pr-48-review-fix-results.json),
   [PR #48](https://github.com/xxibcill/still-shift/pull/48).
 
