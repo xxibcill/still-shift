@@ -6,6 +6,7 @@ import type {
   CommerceScene,
   StoryScene,
   CinematicScene,
+  PreparedScene,
 } from "@still-shift/scene-contract";
 import { renderComposition } from "@still-shift/animation-engine";
 import type { CompositionBackend } from "@still-shift/renderer-core";
@@ -13,7 +14,7 @@ import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 
 /** Verify that compiled adapter scenes remain portable through CLI JSON and export. */
 export async function assertAdapterExport(
-  source: CommerceScene | StoryScene | CinematicScene,
+  source: CommerceScene | StoryScene | CinematicScene | PreparedScene,
   sourceDirectory: string,
   id: string,
   backend: CompositionBackend = "canvas2d",
@@ -85,7 +86,28 @@ export async function assertAdapterExport(
         `${id}/${backend} raw/PNG transport`,
       );
     }
-    assert.deepEqual(first.systemFontLayers, []);
+    if (source.schemaVersion === "illustrated-scene-1")
+      assert.deepEqual(
+        first.systemFontLayers.sort(),
+        source.nodes
+          .filter((node) => node.type === "text" && !node.fontAsset)
+          .map((node) => {
+            for (const scope of [exported, ...(exported.precomps ?? [])])
+              for (const layer of scope.layers)
+                if (
+                  layer.type === "provider" &&
+                  (layer.params.node?.id === node.id ||
+                    exported.metadata?.legacyLayerAliases?.[layer.id] ===
+                      source.nodes.indexOf(node))
+                )
+                  return scope === exported
+                    ? layer.id
+                    : `${scope.id}/${layer.id}`;
+            throw new Error(`Missing exported system-font node ${node.id}`);
+          })
+          .sort(),
+      );
+    else assert.deepEqual(first.systemFontLayers, []);
     assert.equal(await runCli(args, { stdout: () => {}, stderr: () => {} }), 1);
     console.log(
       `Adapter ${backend} ${id} export: ${frameCount} frames, two byte-identical MP4s; relocated assets and overwrite protection pass`,

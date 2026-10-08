@@ -23,6 +23,7 @@ import type { Bounds } from "../evaluate/types.ts";
 import type { ProviderContent, TextContent } from "./graph.ts";
 import { WebglBounds } from "./webgl-bounds.ts";
 import { WebglImages } from "./webgl-images.ts";
+import { WebglDepthImages } from "./webgl-depth-image.ts";
 import { WebglPngImages } from "./webgl-png-images.ts";
 import { WebglEffects } from "./webgl-effects.ts";
 import type { CompositionBlendMode } from "@still-shift/scene-contract";
@@ -39,7 +40,7 @@ import { blendShader } from "./webgl-blend.ts";
 import { FLAT_LIGHTING_SHADER, flatLightingUniforms } from "./flat-lighting.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.57.6" as const;
+  "composition-webgl2-0.65.4" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -91,7 +92,13 @@ export function createWebgl2Backend(
   const bounds = new WebglBounds(target);
   const effects = new WebglEffects(device, raster, bounds);
   const paint = new WebglPaint(device, bounds);
-  const images = new WebglImages(device, raster, paint);
+  const images = new WebglImages(
+    device,
+    raster,
+    paint,
+    options.images.pngImages,
+  );
+  const depthImages = new WebglDepthImages(device, options.images);
   const pngImages = new WebglPngImages(device, raster, options.images);
   const keys = new WebglVisualKey(options.contentKey);
   const damage = new WebglDamage(keys, options.contentBounds);
@@ -480,7 +487,7 @@ export function createWebgl2Backend(
     },
     target,
     get allocated() {
-      return device.allocated;
+      return device.allocated + depthImages.allocated;
     },
     get passes() {
       return device.passes;
@@ -566,6 +573,26 @@ export function createWebgl2Backend(
       transforms,
       paintBlur,
     ) {
+      if (content.plane) {
+        const source = depthImages.draw(content);
+        bounds.full(source);
+        try {
+          backend.composite(
+            source,
+            dst,
+            mode,
+            opacity,
+            matrix,
+            clips,
+            transforms,
+            paintBlur,
+          );
+        } finally {
+          bounds.release(source);
+          device.release(source);
+        }
+        return;
+      }
       if (paintBlur) bounds.full(dst);
       else bounds.draw(dst, matrix, content.width, content.height);
       if (
@@ -593,6 +620,34 @@ export function createWebgl2Backend(
         false,
         paintBlur,
       );
+    },
+    drawDepthImage(
+      dst,
+      content,
+      matrix,
+      opacity,
+      mode,
+      clips,
+      transforms,
+      paintBlur,
+    ) {
+      const source = depthImages.draw(content);
+      bounds.full(source);
+      try {
+        backend.composite(
+          source,
+          dst,
+          mode,
+          opacity,
+          matrix,
+          clips,
+          transforms,
+          paintBlur,
+        );
+      } finally {
+        bounds.release(source);
+        device.release(source);
+      }
     },
     drawText(
       dst,
@@ -999,6 +1054,7 @@ export function createWebgl2Backend(
       isolates.dispose();
       vectors.dispose();
       pngImages.dispose();
+      depthImages.dispose();
       raster.dispose();
       device.dispose();
     },

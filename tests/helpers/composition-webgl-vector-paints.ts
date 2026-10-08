@@ -6,6 +6,92 @@ import { createCompositionPreview } from "../../packages/renderer-core/src/compo
 import { preparedProvider } from "../../packages/renderer-core/src/composition/render/providers.ts";
 import type { Composition } from "../../packages/scene-contract/src/index.ts";
 
+/** Shadow and source must reach an opaque backdrop in order, including off-canvas geometry. */
+export function checkProviderShadowPaints() {
+  const composition: Composition = {
+    schemaVersion: "composition-1",
+    id: "provider-shadow-paints",
+    width: 256,
+    height: 128,
+    fps: 30,
+    frameCount: 4,
+    background: "#e8dfc9",
+    assets: [],
+    layers: [
+      {
+        id: "marks",
+        type: "provider",
+        provider: "test.shadows@1.0.0",
+        params: {},
+      },
+    ],
+  };
+  const make = (backend: "canvas2d" | "webgl2") =>
+    createCompositionPreview(
+      document.createElement("canvas"),
+      composition,
+      { images: new Map(), fonts: new Map() },
+      {
+        backend,
+        providers: [
+          {
+            id: "test.shadows@1.0.0",
+            prepare: () =>
+              preparedProvider((ctx, time) => {
+                ctx.save();
+                ctx.setTransform(new DOMMatrix([1, 0, 0, 1, time / 4, 0]));
+                ctx.shadowColor = "#8b3f36";
+                ctx.shadowOffsetX = (5 * (time + 1)) / 4;
+                ctx.shadowOffsetY = (-3 * (time + 1)) / 4;
+                ctx.strokeStyle = "#b47a2a";
+                ctx.lineWidth = 16;
+                ctx.lineCap = "round";
+                ctx.lineJoin = "round";
+                ctx.beginPath();
+                ctx.moveTo(20, 60);
+                ctx.lineTo(72.14, 11.9);
+                ctx.lineTo(85.52, 1.07);
+                ctx.lineTo(150.14, 50.67);
+                ctx.stroke();
+                ctx.restore();
+                ctx.save();
+                ctx.resetTransform();
+                ctx.shadowColor = "#477d659a";
+                ctx.shadowOffsetX = -3.25;
+                ctx.shadowOffsetY = 2.5;
+                ctx.fillStyle = "#b739636d";
+                // Source coverage extends well beyond the preparation canvas.
+                ctx.fillRect(140, 72, 10000, 18);
+                ctx.restore();
+              }, {}),
+          },
+        ],
+      },
+    );
+  const gpu = make("webgl2"),
+    reference = make("canvas2d");
+  let maxDelta = 0;
+  try {
+    for (const frame of [0, 1, 2, 3, 0]) {
+      gpu.renderFrame(frame);
+      reference.renderFrame(frame);
+      const actual = gpu.readPixels(),
+        expected = reference.readPixels();
+      for (let index = 0; index < actual.length; index++)
+        maxDelta = Math.max(
+          maxDelta,
+          Math.abs(actual[index]! - expected[index]!),
+        );
+    }
+    if (maxDelta > 2)
+      throw new Error(`Provider shadow paints differ by ${maxDelta}`);
+    return { frames: 5, maxDelta };
+  } finally {
+    gpu.dispose();
+    reference.dispose();
+  }
+}
+
 /** Single-image preparation must preserve the paint even if its source later changes. */
 export function checkSingleImageProvider(stable = false) {
   const composition: Composition = {

@@ -24,6 +24,7 @@ import {
   homographicVelocityPoints,
   normalizedHomography,
 } from "./projective-quality.ts";
+import { receiverLightingState } from "./quality-lighting.ts";
 import { passageError } from "../passage-diagnostics.ts";
 import { typographyClock } from "./render/text-clock.ts";
 
@@ -305,6 +306,9 @@ export function compositionQualityFrame(
           effects,
           content,
           clock,
+          ...(state.depthMotion ? [state.depthMotion] : []),
+          ...(state.imagePlane ? [state.imagePlane] : []),
+          ...(layer.receivesLight ? [receiverLightingState(state, scope)] : []),
           ...(homography
             ? [normalizedHomography(homography), state.focusBlur ?? 0]
             : []),

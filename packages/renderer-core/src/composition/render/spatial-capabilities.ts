@@ -1,4 +1,8 @@
 import { passageError } from "../../passage-diagnostics.ts";
+import {
+  validateImagePlaneSurface,
+  validateImagePlaneAssets,
+} from "./webgl-depth-image.ts";
 import type { RenderOp, SurfaceNode } from "./graph.ts";
 import { validateFlatLighting } from "./flat-lighting.ts";
 import {
@@ -11,6 +15,7 @@ export function requireSpatialCapabilities(
   capabilities: {
     projective: boolean;
     lighting?: boolean;
+    depthImage?: boolean;
     validateSurface?:
       | ((width: number, height: number, node: string) => void)
       | undefined;
@@ -72,6 +77,51 @@ export function requireSpatialCapabilities(
         capabilities.validateSurface?.(screen.width, screen.height, op.layer);
         visit(op.surface.ops, op.surface.width, op.surface.height);
       } else if (op.kind === "draw") {
+        if (op.content.type === "depth-image") {
+          validateImagePlaneSurface(
+            op.content.width,
+            op.content.height,
+            op.layer,
+          );
+          const depth = [
+            op.content.layer.depth.width,
+            op.content.layer.depth.height,
+          ] as const;
+          validateImagePlaneAssets(op.content.sourceSize, depth, op.layer);
+          capabilities.validateSurface?.(...op.content.sourceSize, op.layer);
+          capabilities.validateSurface?.(...depth, op.layer);
+        } else if (op.content.type === "image" && op.content.plane) {
+          validateImagePlaneSurface(
+            op.content.width,
+            op.content.height,
+            op.layer,
+          );
+          validateImagePlaneAssets(
+            op.content.plane.sourceSize,
+            undefined,
+            op.layer,
+          );
+          capabilities.validateSurface?.(
+            ...op.content.plane.sourceSize,
+            op.layer,
+          );
+        }
+        if (
+          op.content.type === "image" &&
+          op.content.plane &&
+          !capabilities.depthImage
+        )
+          passageError(
+            "comp-feature-backend",
+            "Linear-light image planes require the composition WebGL2 backend",
+            { node: op.layer },
+          );
+        if (op.content.type === "depth-image" && !capabilities.depthImage)
+          passageError(
+            "comp-feature-backend",
+            "Depth displacement requires the composition WebGL2 backend; prepare an explicit flat-image equivalent for Canvas",
+            { node: op.layer },
+          );
         if (op.projection) check(op.projection, op.layer);
         if (op.content.type === "surface")
           visit(

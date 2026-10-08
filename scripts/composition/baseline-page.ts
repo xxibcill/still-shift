@@ -1,8 +1,8 @@
 import {
   createIllustratedPreview,
   loadIllustratedImages,
-  type IllustratedScene,
-} from "../../packages/renderer-core/src/index.ts";
+} from "../../tests/helpers/legacy-illustrated-oracle.ts";
+import type { IllustratedScene } from "../../packages/renderer-core/src/index.ts";
 
 export type BaselineRenderOptions = {
   /** Frames uploaded at full size when `uploadSampleFrames` is set. */
@@ -78,8 +78,8 @@ const base64 = (bytes: Uint8Array) => {
   return btoa(binary);
 };
 
-// Mirrors packages/execution-runtime/src/export-page.ts so baselines measure the same
-// renderer path as MP4 export, before encoding.
+// Independent old-renderer oracle retained for every frozen CE0 frame.
+// CE4d separately verifies native defaults and production exports against this path.
 window.runCompositionBaseline = async (scene, options) => {
   const canvas = document.createElement("canvas");
   canvas.width = scene.canvas.width;

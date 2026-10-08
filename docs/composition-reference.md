@@ -141,6 +141,51 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `stateFrom`           | no       | integer or object                                                                                                                                                                                     |
 | `stateMix`            | no       | number or object                                                                                                                                                                                      |
 | `rasterize`           | no       | `draw`, `natural-size`                                                                                                                                                                                |
+| `sampling`            | no       | `linear-srgb`                                                                                                                                                                                         |
+| `alphaMode`           | no       | `preserve`, `opaque`                                                                                                                                                                                  |
+| `plane`               | no       | object                                                                                                                                                                                                |
+
+### `depth-image` contract
+
+| Field                 | Required | JSON form                                                                                                                                                                                             |
+| --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                  | yes      | string                                                                                                                                                                                                |
+| `name`                | no       | string                                                                                                                                                                                                |
+| `inPoint`             | no       | integer                                                                                                                                                                                               |
+| `outPoint`            | no       | integer                                                                                                                                                                                               |
+| `startFrame`          | no       | integer                                                                                                                                                                                               |
+| `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
+| `sampleTimes`         | no       | array                                                                                                                                                                                                 |
+| `parent`              | no       | string                                                                                                                                                                                                |
+| `enabled`             | no       | boolean                                                                                                                                                                                               |
+| `solo`                | no       | boolean                                                                                                                                                                                               |
+| `guide`               | no       | boolean                                                                                                                                                                                               |
+| `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
+| `receivesLight`       | no       | boolean                                                                                                                                                                                               |
+| `transform`           | no       | object                                                                                                                                                                                                |
+| `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
+| `blendMode`           | no       | `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`, `color-dodge`, `color-burn`, `hard-light`, `soft-light`, `difference`, `exclusion`, `hue`, `saturation`, `color`, `luminosity`, `add` |
+| `trackMatte`          | no       | object                                                                                                                                                                                                |
+| `masks`               | no       | array                                                                                                                                                                                                 |
+| `effects`             | no       | array                                                                                                                                                                                                 |
+| `motionBlur`          | no       | boolean                                                                                                                                                                                               |
+| `cameraDepth`         | no       | number                                                                                                                                                                                                |
+| `coverage`            | no       | `required`, `optional`                                                                                                                                                                                |
+| `qualification`       | no       | string                                                                                                                                                                                                |
+| `source`              | no       | object                                                                                                                                                                                                |
+| `metadata`            | no       | object                                                                                                                                                                                                |
+| `type`                | yes      | `depth-image`                                                                                                                                                                                         |
+| `size`                | yes      | [number, number]                                                                                                                                                                                      |
+| `alphaMode`           | no       | `preserve`, `opaque`                                                                                                                                                                                  |
+| `sourceAsset`         | yes      | string                                                                                                                                                                                                |
+| `depth`               | yes      | object                                                                                                                                                                                                |
+| `overscan`            | yes      | number                                                                                                                                                                                                |
+| `edgeDamping`         | no       | number                                                                                                                                                                                                |
+| `framing`             | no       | object                                                                                                                                                                                                |
+| `motion`              | no       | object                                                                                                                                                                                                |
 
 ### `text` contract
 
@@ -1047,6 +1092,9 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-effect-registration`         | Effect registration requires a unique ID, valid definition and GPU callback.                             |
 | `comp-effect-surface`              | Effect scratch textures and output must belong to the current callback and meet size/budget constraints. |
 | `comp-effect-version`              | Registered effect versions differ from the captured export snapshot.                                     |
+| `comp-depth-motion`                | Depth-image local motion exceeds its safe bounded envelope.                                              |
+| `comp-depth-provenance`            | Prepared depth motion, dimensions or request provenance are inconsistent.                                |
+| `comp-image-plane`                 | Image-plane local sampling controls exceed their bounded envelope.                                       |
 | `comp-effect-params`               | Check evaluated effect controls and their cross-parameter invariants.                                    |
 | `comp-effect-curve`                | Evaluated color curve points must be bounded, ordered and span the input domain.                         |
 | `comp-effect-bounds`               | An effect bounds callback failed or returned a non-finite/reversed rectangle.                            |
@@ -3004,16 +3052,27 @@ and `cut-*` ids). Generic markers and hold keys do not waive findings. Optional
 ```sh
 pnpm --silent still-shift comp lint --input composition.json
 pnpm --silent still-shift comp lint --input composition.json --policy lint-policy.json --pixels true
+pnpm --silent still-shift comp lint --input composition.json --pixels true --backend webgl2
 ```
 
 The CLI emits one JSON report and exits **1** on errors, invalid input/policy or
 failed measurement; warnings alone exit **0**. State-only lint verifies pinned
 assets but does not launch a browser. `--pixels true` uses pinned export Chromium,
-measures text bounds, and samples every rendered frame at full resolution. Its
+measures text bounds, and samples every rendered frame at full resolution. Select
+`--backend canvas2d|webgl2` explicitly (default: `canvas2d`); lighting and true
+perspective require `webgl2`. Unsupported Canvas scenes fail without switching
+backends. Rendered reports record the actual `backend` and `rendererVersion`;
+state-only reports do not claim renderer measurement. Pixel lint uses a fresh,
+temporary Vite cache for each call and cleans it after measurement. Its
 shared grayscale-energy defaults are a channel delta **> 4** and **≥ 200** changed
 pixels, configurable via `pixelChannelThreshold` and `pixelMinimumChanges`.
 `analyzeRenderedCompositionQuality(comp, preview, policy?, { signal, onFrame })`
 provides the same browser measurement and supports cancellation.
+
+Visible receiving layers include their evaluated scoped illumination in stillness
+signatures. Disabled/guide lights, unlit or offscreen receivers, zero-energy lights
+and light controls unused by the diffuse model do not establish state motion.
+Pixel stillness remains an independent full-resolution check.
 
 For already rendered evidence, pass `pixelChangedCounts` (one integer per frame,
 first entry 0), or `pixelHashes` (one nonempty hash per frame). Hashes detect exact

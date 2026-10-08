@@ -7,12 +7,13 @@ import type { CinematicRenderScene } from "../../cinematic-scene.ts";
 import type { CommerceRenderScene } from "../../commerce-scene.ts";
 import { sourceExposureTimeline } from "../../commerce-exposure.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
-import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./family-state.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 
 /** Compile every reachable shutter/history time once; rendering uses only native data. */
 export function compileFamilyExposure(
   scene: CommerceRenderScene | StoryRenderScene | CinematicRenderScene,
+  window?: readonly [number, number],
 ):
   | {
       times: number[];
@@ -21,7 +22,7 @@ export function compileFamilyExposure(
   | undefined {
   const blur = scene.effects?.find((effect) => effect.type === "motion-blur");
   if (!blur || !blur.shutterAngle) return undefined;
-  const { cuts, times } = sourceExposureTimeline(scene);
+  const { cuts, times } = sourceExposureTimeline(scene, window);
   const frameCount = scene.timeline.frameCount;
   const components = componentCapabilities(
     "componentData" in scene ? scene.componentData : undefined,
@@ -49,7 +50,7 @@ export function compileFamilyExposure(
     );
   let previous: string | undefined;
   const ordered = times.filter((time) => {
-    if (!canHold) return true;
+    if (!canHold || window) return true;
     const pose = JSON.stringify(
       scene.nodes.map((node) => evaluatePreparedNodeAtTime(scene, node, time)),
     );

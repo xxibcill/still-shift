@@ -263,6 +263,11 @@ export const STORY_CONTENT_PROVIDERS: readonly CanvasContentProvider[] = [
       return preparedProvider(
         (ctx, time) => {
           const state = sample(samples, time);
+          if (
+            resources.textProbe?.node === node.id &&
+            resources.textProbe.mode === "container-only"
+          )
+            return;
           ctx.fillStyle = node.color;
           ctx.font = font
             ? `${font.weight} ${node.fontSize}px "${font.family}"`

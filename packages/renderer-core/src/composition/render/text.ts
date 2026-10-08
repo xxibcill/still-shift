@@ -45,6 +45,8 @@ import { preparedTextBounds } from "./text-bounds.ts";
 import { typographyClock } from "./text-clock.ts";
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
+/** Preparation-only diagnostic draw, used to measure glyph contrast. */
+export type TextProbe = { node: string; mode: "ink-only" | "container-only" };
 type TypographyScene = Parameters<typeof prepareTypography>[0];
 
 export type CompositionText = {
@@ -313,6 +315,7 @@ export function prepareCompositionText(
     fonts,
     measureContext,
   ),
+  textProbe?: TextProbe,
 ): CompositionText {
   const entries = new Map<string, Entry>();
   const bounds: Record<string, Bounds[]> = {};
@@ -432,6 +435,7 @@ export function prepareCompositionText(
     const color = cssColor(content.color);
     const node =
       color === entry.node.color ? entry.node : { ...entry.node, color };
+    const probe = textProbe?.node === node.id ? textProbe.mode : undefined;
     if (entry.kind === "typography") {
       drawTypography(
         ctx,
@@ -439,6 +443,7 @@ export function prepareCompositionText(
         { state: content.state, reveal: content.reveal },
         entry.prepared,
         content.time,
+        probe,
       );
       return;
     }
@@ -447,8 +452,9 @@ export function prepareCompositionText(
     ctx.font = `${node.weight} ${node.fontSize}px ${node.font}`;
     ctx.textAlign = node.align;
     ctx.textBaseline = "top";
-    if (node.container && content.reveal > 0)
+    if (node.container && content.reveal > 0 && probe !== "ink-only")
       drawTextContainer(ctx, node, text);
+    if (probe === "container-only") return;
     drawStoryText(ctx, node, text, content.reveal);
   };
   return {
@@ -456,6 +462,7 @@ export function prepareCompositionText(
     draw,
     singleImage(content) {
       const entry = entries.get(content.key);
+      if (textProbe?.node === entry?.node.id) return false;
       return entry?.kind === "typography" && entry.singleImage;
     },
     stableImages(content) {
@@ -465,8 +472,11 @@ export function prepareCompositionText(
     contentKey(content) {
       const entry = entries.get(content.key);
       if (!entry) return undefined;
-      if (entry.kind === "system") return "static";
-      return String(entry.clock(content.time));
+      const probe =
+        textProbe?.node === entry.node.id ? textProbe.mode : undefined;
+      const key =
+        entry.kind === "system" ? "static" : String(entry.clock(content.time));
+      return probe ? `${probe}:${key}` : key;
     },
     contentBounds(content) {
       const states = bounds[content.key];

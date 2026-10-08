@@ -11,6 +11,12 @@ For AI-assisted guidance, use the **[ask-still-shift skill](./skills/ask-still-s
 `Use $ask-still-shift to explain which features fit what I want to make.`
 The guide includes [installation and example questions](./docs/user-guide.md#ask-an-ai-about-still-shift).
 
+For custom visual work, use `composition-1` JSON or the TypeScript composition
+builder. Story and commerce formats provide recipe/component authoring; cinematic
+inputs retain their camera recipes. Their visual vocabulary is frozen, and
+`illustrated-scene-1` is frozen entirely. New rendering capabilities belong in
+`composition-1`; see the [format and contribution rules](./docs/composition-contributing.md).
+
 ## Product direction
 
 Still Shift aims to lower the cost of faceless YouTube videos by automatically mixing

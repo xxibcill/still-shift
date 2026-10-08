@@ -157,6 +157,57 @@ export function compositionTracks(document: Composition): KeyTrack[] {
         name === "scale" ? 1 : 0,
       );
     }
+    if (layer.type === "image" && layer.sampling === "linear-srgb") {
+      for (const name of ["scale", "roll"] as const)
+        add(
+          layer.plane?.motion?.[name],
+          [...path, "plane", "motion", name],
+          `plane.motion.${name}`,
+          "scalar",
+          scope,
+          layer.id,
+          fps,
+        );
+      add(
+        layer.plane?.motion?.offset,
+        [...path, "plane", "motion", "offset"],
+        "plane.motion.offset",
+        "vector",
+        scope,
+        layer.id,
+        fps,
+      );
+      add(
+        layer.plane?.reveal?.progress,
+        [...path, "plane", "reveal", "progress"],
+        "plane.reveal.progress",
+        "scalar",
+        scope,
+        layer.id,
+        fps,
+      );
+    }
+    if (layer.type === "depth-image") {
+      for (const name of ["scale", "strength", "roll"] as const)
+        add(
+          layer.motion?.[name],
+          [...path, "motion", name],
+          `motion.${name}`,
+          "scalar",
+          scope,
+          layer.id,
+          fps,
+        );
+      add(
+        layer.motion?.offset,
+        [...path, "motion", "offset"],
+        "motion.offset",
+        "vector",
+        scope,
+        layer.id,
+        fps,
+      );
+    }
     if (layer.type === "camera") {
       for (const name of ["pointOfInterest", "viewOffset"] as const)
         add(

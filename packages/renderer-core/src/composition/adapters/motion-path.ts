@@ -40,7 +40,11 @@ const fields = {
   motion: z
     .object({
       fps: z.number().positive().max(240),
-      frameCount: z.number().int().positive().max(COMPOSITION_LIMITS.maxKeys),
+      frameCount: z
+        .number()
+        .int()
+        .positive()
+        .max(COMPOSITION_LIMITS.maxFrameCount),
       spatial: SpatialPathSchema.optional(),
       morph: PathMorphSchema.optional(),
     })

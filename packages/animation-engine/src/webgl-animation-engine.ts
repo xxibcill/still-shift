@@ -6,11 +6,15 @@ import { performance } from "node:perf_hooks";
 import { promisify } from "node:util";
 
 import {
+  compositionRendererVersion,
+  DEPTH_ADAPTER_VERSION,
+  SHADER_VERSION,
   analyzeDepthSafety,
   applySafetyToScene,
   fallback2DScene,
   isFlatPreset,
   resolvePreviewScene,
+  resolveDepthPreviewPreset,
   type PreviewPreset,
   type PreviewScene,
   type PreviewWarning,
@@ -46,10 +50,11 @@ import {
 import { exportScene } from "@still-shift/execution-runtime/export";
 
 import type { AnimationEngine } from "./animation-engine.ts";
+import { prepareDepthExportComposition } from "./composition-depth.ts";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = resolve(import.meta.dirname, "../../..");
-const PIPELINE_VERSION = "animation-pipeline-0.11.0";
+const PIPELINE_VERSION = "animation-pipeline-0.13.0";
 export const resolveFrameTransport = (): "png_pipe" | "jpeg_pipe" => {
   const value = process.env.STILL_SHIFT_FRAME_TRANSPORT ?? "png_pipe";
   if (value !== "png_pipe" && value !== "jpeg_pipe")
@@ -304,15 +309,13 @@ const choosePreset = (
   request: AnimationRequest,
   normalizedSourceHash: string,
 ): PreviewPreset => {
-  if (request.preset !== "auto") return request.preset;
-  if (request.height > request.width) return "horizontal_drift";
-  const presets: PreviewPreset[] = [
-    "slow_push",
-    "horizontal_drift",
-    "cinematic_float",
-  ];
-  const hashPrefix = Number.parseInt(normalizedSourceHash.slice(7, 15), 16);
-  return presets[((hashPrefix ^ request.seed) >>> 0) % presets.length]!;
+  return resolveDepthPreviewPreset(
+    request.preset,
+    request.seed,
+    request.width,
+    request.height,
+    normalizedSourceHash,
+  );
 };
 
 const fileExists = async (path: string): Promise<boolean> => {
@@ -335,6 +338,10 @@ export class WebGLAnimationEngine implements AnimationEngine {
     return sha256(
       JSON.stringify({
         engineVersion: ENGINE_VERSION,
+        pipelineVersion: PIPELINE_VERSION,
+        rendererVersion: compositionRendererVersion("webgl2"),
+        depthAdapterVersion: DEPTH_ADAPTER_VERSION,
+        shaderVersion: SHADER_VERSION,
         ...(this.frameTransport === "png_pipe"
           ? {}
           : { frameTransport: this.frameTransport }),
@@ -487,6 +494,16 @@ export class WebGLAnimationEngine implements AnimationEngine {
         ...prepared.normalizationWarnings.map(normalizationWarning),
       ],
     };
+    const native = await prepareDepthExportComposition(scene, {
+      id: "depth-animation",
+      sourcePath: prepared.sourcePath,
+      depthPath: scene.motion.mode === "depth" ? prepared.depthPath : null,
+      expectedSourceHash: normalizedSourceHash,
+      ...(depthHash ? { expectedDepthHash: depthHash } : {}),
+      requestedPreset: request.preset,
+      requestedIntensity: request.intensity,
+      originalSourceHash: sourceHash,
+    });
     const sceneBuildMs = performance.now() - sceneStarted;
     const warnings: AnimationWarning[] = scene.warnings;
     const manifest = SceneManifestSchema.parse({
@@ -495,7 +512,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
       normalizedSourceHash,
       pipelineVersion: PIPELINE_VERSION,
       model: prepared.model,
-      rendererVersion: scene.rendererVersion,
+      rendererVersion: native.scene.rendererVersion,
       ...(scene.format ? { format: scene.format } : {}),
       timeline: scene.timeline,
       canvas: scene.canvas,
@@ -520,7 +537,8 @@ export class WebGLAnimationEngine implements AnimationEngine {
         fallback: scene.motion.mode === "fallback_2d",
         warnings,
       },
-      renderScene: scene,
+      renderScene: { ...scene, rendererVersion: native.scene.rendererVersion },
+      composition: native.composition,
       execution: { adapter: "webgl", producesVideo: true, frameTransport },
     });
     const serializedScene = `${JSON.stringify(manifest, null, 2)}\n`;
@@ -591,7 +609,7 @@ export class WebGLAnimationEngine implements AnimationEngine {
             engine: ENGINE_VERSION,
             pipeline: PIPELINE_VERSION,
             model: prepared.model,
-            renderer: scene.rendererVersion,
+            renderer: native.scene.rendererVersion,
             browser: exported.browserVersion,
             ffmpeg: exported.ffmpegVersion,
           },
@@ -607,7 +625,8 @@ export class WebGLAnimationEngine implements AnimationEngine {
     let result!: AnimationResult;
     try {
       await exportScene({
-        scene,
+        scene: native.scene,
+        assetPaths: native.assetPaths,
         sourcePath: prepared.sourcePath,
         depthPath: scene.motion.mode === "depth" ? prepared.depthPath : null,
         outputPath,

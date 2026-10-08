@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CompositionSchema } from "./composition/composition.ts";
 import {
   formatSize,
   isOutputSize,
@@ -407,6 +408,8 @@ export const SceneManifestSchema = z
       warnings: z.array(AnimationWarningSchema),
     }),
     renderScene: RenderSceneSchema.optional(),
+    /** Native picture data compiled from prepared depth/flat inputs; old manifests remain accepted. */
+    composition: CompositionSchema.optional(),
     execution: z.discriminatedUnion("adapter", [
       z.object({ adapter: z.literal("noop"), producesVideo: z.literal(false) }),
       z.object({
@@ -418,6 +421,20 @@ export const SceneManifestSchema = z
   })
   .superRefine((manifest, context) => {
     validateSceneFormat(manifest, context);
+    const composition = manifest.composition;
+    if (
+      composition &&
+      (composition.width !== manifest.canvas.width ||
+        composition.height !== manifest.canvas.height ||
+        composition.fps !== manifest.timeline.fps ||
+        composition.frameCount !== manifest.timeline.frameCount)
+    )
+      context.addIssue({
+        code: "custom",
+        path: ["composition"],
+        message:
+          "Native composition dimensions and timeline must match the manifest",
+      });
     const scene = manifest.renderScene;
     if (manifest.execution.adapter === "webgl" && !scene) {
       context.addIssue({

@@ -60,6 +60,36 @@ const measureMarkers = async (
     return { red: redSum / redCount, green: greenSum / greenCount };
   });
 
+const ready = (page: Page) =>
+  page.waitForFunction(
+    () =>
+      document.querySelector("#status")?.textContent?.includes("ready") &&
+      document.querySelector("#preview-stage")?.getAttribute("aria-busy") ===
+        "false",
+  );
+
+type DepthRefreshWindow = Window & {
+  depthRefresh: { started: boolean; release: () => void };
+};
+
+async function holdDepthRefresh(page: Page) {
+  await page.evaluate(() => {
+    let release!: () => void;
+    const blocked = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const state = { started: false, release };
+    (window as unknown as DepthRefreshWindow).depthRefresh = state;
+    const decode = HTMLImageElement.prototype.decode;
+    HTMLImageElement.prototype.decode = async function () {
+      HTMLImageElement.prototype.decode = decode;
+      state.started = true;
+      await decode.call(this);
+      await blocked;
+    };
+  });
+}
+
 let server: ViteDevServer | undefined;
 let browser: Browser | undefined;
 try {
@@ -90,11 +120,16 @@ try {
     null,
     { timeout: 15_000 },
   );
+  const initialParameters = JSON.parse(
+    (await page.locator("#parameters").textContent()) ?? "{}",
+  );
+  assert.match(initialParameters.rendererVersion, /^composition-webgl2-/);
   const first = await measureMarkers(page);
   await page.locator("#output-format").selectOption("vertical");
   await page.locator("#focus-mode").selectOption("manual");
   await page.locator("#focus-x").fill("0.75");
   await page.locator("#focus-x").press("Tab");
+  await ready(page);
   assert.deepEqual(
     await page
       .locator("#preview")
@@ -103,13 +138,30 @@ try {
   );
   const reframed = await measureMarkers(page);
   assert.ok(Number.isNaN(reframed.red) && Number.isFinite(reframed.green));
+  await holdDepthRefresh(page);
   await page.locator("#output-format").selectOption("landscape");
+  await page.waitForFunction(
+    () => (window as unknown as DepthRefreshWindow).depthRefresh.started,
+  );
+  assert.equal(
+    await page.locator("#preview-stage").getAttribute("aria-busy"),
+    "true",
+  );
   await page.evaluate(() => {
     const slider = document.querySelector<HTMLInputElement>("#frame");
     if (!slider) throw new Error("Frame slider is missing");
     slider.value = slider.max;
     slider.dispatchEvent(new Event("input", { bubbles: true }));
   });
+  await page.evaluate(() =>
+    (window as unknown as DepthRefreshWindow).depthRefresh.release(),
+  );
+  await ready(page);
+  assert.equal(
+    await page.locator("#frame").inputValue(),
+    await page.locator("#frame").getAttribute("max"),
+    "A seek during preparation must survive the committed refresh",
+  );
   const last = await measureMarkers(page);
   const farTravel = first.red - last.red;
   const nearTravel = last.green - first.green;
@@ -124,6 +176,7 @@ try {
   );
 
   await page.locator("#preset").selectOption("horizontal_drift");
+  await ready(page);
   const driftLast = await measureMarkers(page);
   await page.evaluate(() => {
     const slider = document.querySelector<HTMLInputElement>("#frame");
@@ -191,6 +244,7 @@ try {
   );
 
   await page.locator("#preset").selectOption("comparison_step");
+  await ready(page);
   await page.evaluate(() => {
     const slider = document.querySelector<HTMLInputElement>("#frame")!;
     slider.value = "0";
@@ -214,6 +268,7 @@ try {
   );
 
   await page.locator("#preset").selectOption("locked_hold");
+  await ready(page);
   const holdLast = await measureMarkers(page);
   await page.evaluate(() => {
     const slider = document.querySelector<HTMLInputElement>("#frame")!;
@@ -359,7 +414,7 @@ try {
         requestedDepthStrength: 0.03,
         requestedLateralTravel: 0,
       });
-      const edgePreview = createWebGLPreview(
+      const edgePreview = await createWebGLPreview(
         edgeCanvas,
         edgeScene,
         source,

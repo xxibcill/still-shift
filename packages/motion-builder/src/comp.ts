@@ -115,6 +115,7 @@ export class CompositionBuilder {
         node.location,
       );
     if (node.imageAsset) this.asset(node.imageAsset);
+    node.preparedAssets.forEach((asset) => this.asset(asset));
     const draft: CompositionLayer = node.draft;
     if (draft.type === "image") {
       for (const source of draft.sources) {

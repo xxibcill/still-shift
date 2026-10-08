@@ -9,6 +9,8 @@ import { chromium } from "playwright";
 import { WebGLAnimationEngine } from "../../packages/animation-engine/src/webgl-animation-engine.ts";
 import { SceneManifestSchema } from "../../packages/scene-contract/src/contracts.ts";
 
+import { compositionRendererVersion } from "@still-shift/renderer-core";
+
 const run = promisify(execFile);
 const directory = await mkdtemp(join(tmpdir(), "vertical-image-"));
 const oldAdapter = process.env.STILL_SHIFT_DEPTH_ADAPTER;
@@ -35,7 +37,17 @@ try {
   const manifest = SceneManifestSchema.parse(
     JSON.parse(await readFile(result.sceneManifestPath, "utf8")),
   );
-  assert.equal(manifest.renderScene?.rendererVersion, "preview-render-0.6.0");
+  assert.equal(
+    manifest.renderScene?.rendererVersion,
+    compositionRendererVersion("webgl2"),
+  );
+  assert.equal(manifest.rendererVersion, result.metrics.versions.renderer);
+  assert.ok(manifest.composition);
+  assert.equal(manifest.composition.frameCount, 90);
+  assert.equal(
+    manifest.composition.metadata?.requestedPreset,
+    "horizontal_drift",
+  );
   assert.equal(manifest.format, "vertical");
   assert.equal(manifest.renderScene?.format, "vertical");
   assert.equal(manifest.framing?.source, "provided");

@@ -19,6 +19,9 @@ importers:
       "@types/node":
         specifier: 22.20.1
         version: 22.20.1
+      "@types/three":
+        specifier: 0.186.0
+        version: 0.186.0
       eslint:
         specifier: 9.39.5
         version: 9.39.5
@@ -31,6 +34,9 @@ importers:
       prettier:
         specifier: 3.6.2
         version: 3.6.2
+      three:
+        specifier: 0.186.0
+        version: 0.186.0
       tsx:
         specifier: 4.20.5
         version: 4.20.5
@@ -103,16 +109,9 @@ importers:
       clipper2-ts:
         specifier: 2.0.1-18
         version: 2.0.1-18
-      three:
-        specifier: 0.186.0
-        version: 0.186.0
       zod:
         specifier: 4.1.5
         version: 4.1.5
-    devDependencies:
-      "@types/three":
-        specifier: 0.186.0
-        version: 0.186.0
 
   packages/scene-contract:
     dependencies:

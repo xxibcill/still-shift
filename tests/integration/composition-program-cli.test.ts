@@ -289,3 +289,25 @@ it("reports the legacy pinned-font checksum through an aliased scene directory",
   });
   await expect(readFile(output)).rejects.toMatchObject({ code: "ENOENT" });
 });
+
+it("validates explicit lint backend selection before reading a source", async () => {
+  const result = await run([
+    "lint",
+    "--input",
+    "unused.json",
+    "--pixels",
+    "true",
+    "--backend",
+    "invalid",
+  ]);
+  expect(result.code).toBe(1);
+  expect(JSON.parse(result.stderr)).toMatchObject({
+    diagnostics: [
+      {
+        code: "comp-program-option",
+        path: "backend",
+        message: "Composition backend must be canvas2d or webgl2",
+      },
+    ],
+  });
+});

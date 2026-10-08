@@ -33,6 +33,12 @@ export const COMPOSITION_DIAGNOSTICS = {
     "Effect scratch textures and output must belong to the current callback and meet size/budget constraints.",
   "comp-effect-version":
     "Registered effect versions differ from the captured export snapshot.",
+  "comp-depth-motion":
+    "Depth-image local motion exceeds its safe bounded envelope.",
+  "comp-depth-provenance":
+    "Prepared depth motion, dimensions or request provenance are inconsistent.",
+  "comp-image-plane":
+    "Image-plane local sampling controls exceed their bounded envelope.",
   "comp-effect-params":
     "Check evaluated effect controls and their cross-parameter invariants.",
   "comp-effect-curve":

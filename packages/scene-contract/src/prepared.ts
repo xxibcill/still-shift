@@ -227,6 +227,7 @@ export const ILLUSTRATED_PRESETS: IllustratedPreset[] = [
 
 export const PreparedImageSchema = PreparedNodeSchema.options[0];
 
+/** illustrated-scene-1 is frozen entirely (Q2); new rendering and authoring use composition-1. */
 const preparedShape = z
   .object({
     schemaVersion: z.literal("illustrated-scene-1"),

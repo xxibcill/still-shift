@@ -1,7 +1,7 @@
 import { nodeMatrix, transformPoint } from "./node-transform.ts";
 import type { PreparedPath } from "../../scene-contract/src/prepared.ts";
 import { projectStoryPoint } from "./story-camera.ts";
-import { evaluatePreparedNodeAtTime } from "./prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./composition/adapters/family-state.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import { connectorPoints } from "./connector-points.ts";
 

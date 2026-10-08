@@ -1,3 +1,4 @@
+import { sourceExposureTimeline } from "../../commerce-exposure.ts";
 import { compileFamilyEffects } from "./effects.ts";
 import { compileCommerceExposure } from "./exposure.ts";
 import {
@@ -8,7 +9,10 @@ import {
   type Composition,
   type CompositionLayer,
 } from "@still-shift/scene-contract";
-import { compileCommerceScene } from "../../commerce-scene.ts";
+import {
+  compileCommerceScene,
+  type CommerceRenderScene,
+} from "../../commerce-scene.ts";
 import {
   requiresCompositionTextLayout,
   type CompositionTextLayout,
@@ -28,7 +32,7 @@ import { componentTextLayer } from "./component-text.ts";
 import { componentCapabilities } from "../../component-capabilities.ts";
 import { validateAttachedPaths } from "../../commerce-geometry.ts";
 import { validateComponentAnnotations } from "../../component-annotations.ts";
-import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./family-state.ts";
 import { passageError, PassageError } from "../../passage-diagnostics.ts";
 import { params, preparedNodeLayer, type Samples } from "./prepared.ts";
 import { compileAttachedPathGeometry } from "./commerce-path.ts";
@@ -36,7 +40,7 @@ import { prepareCommerceTextFits } from "../../commerce-layout.ts";
 import { prepareComponentTextFits } from "../../component-text-fit.ts";
 import { loadPreparedFonts } from "../../prepared-fonts.ts";
 
-export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.17.0";
+export const COMMERCE_ADAPTER_VERSION = "commerce-composition-0.17.1";
 
 export type CommerceCompositionOptions = {
   id?: string;
@@ -52,8 +56,11 @@ function unsupported(path: string, feature: string): never {
   );
 }
 
-function checkSupported(scene: CommerceScene) {
-  if (scene.frameCount > COMPOSITION_LIMITS.maxKeys)
+function checkSupported(
+  scene: CommerceScene,
+  window?: readonly [number, number],
+) {
+  if (!window && scene.frameCount > COMPOSITION_LIMITS.maxKeys)
     passageError(
       "comp-adapter-limit",
       `The commerce adapter bakes at most ${COMPOSITION_LIMITS.maxKeys} frames`,
@@ -140,8 +147,29 @@ export function commerceToComposition(
       fonts,
     );
   }
-  validateAttachedPaths(scene);
-  validateComponentAnnotations(scene);
+  return compiledCommerceToComposition(scene, options);
+}
+
+/** Preparation-only entry point; text fitting has already resolved node geometry. */
+export function compiledCommerceToComposition(
+  scene: CommerceRenderScene,
+  options: CommerceCompositionOptions = {},
+  window?: readonly [number, number],
+): Composition {
+  checkSupported(scene, window);
+  if (
+    window &&
+    (!Number.isInteger(window[0]) ||
+      !Number.isInteger(window[1]) ||
+      window[0] < 0 ||
+      window[1] <= window[0] ||
+      window[1] > scene.frameCount)
+  )
+    passageError("comp-adapter-limit", "Invalid native source sample window", {
+      path: "frameCount",
+    });
+  validateAttachedPaths(scene, window);
+  validateComponentAnnotations(scene, window);
   const visibility = new Map<string, { start: number; end: number }>([
     ...(scene.visibility ?? []).map((gate) => [gate.target, gate] as const),
     ...componentCapabilities(scene.componentData).visibility.map(
@@ -149,16 +177,22 @@ export function commerceToComposition(
     ),
   ]);
   const layers: CompositionLayer[] = [];
-  const exposure = compileCommerceExposure(scene);
+  const exposure = compileCommerceExposure(scene, window);
   const times =
-    exposure?.times ??
+    (window ? sourceExposureTimeline(scene, window).times : exposure?.times) ??
     Array.from({ length: scene.frameCount }, (_, frame) => frame);
+  if (times.length > COMPOSITION_LIMITS.maxKeys)
+    passageError(
+      "comp-adapter-limit",
+      "The native sample window exceeds the key limit",
+      { path: "frameCount" },
+    );
   const visit = (parent: string | undefined) => {
     for (const node of scene.nodes.filter((node) => node.parent === parent)) {
       const samples: Samples = times.map((time) =>
         evaluatePreparedNodeAtTime(scene, node, time),
       );
-      if (exposure) samples.times = times;
+      if (exposure || window) samples.times = times;
       const appearance = compileAppearance(scene, node, samples);
       // Keep path-based rectangle rasterization and parent transform concatenation.
       let layer =
@@ -193,7 +227,7 @@ export function commerceToComposition(
         const geometry = compileAttachedPathGeometry(
           scene,
           node,
-          exposure?.times,
+          exposure || window ? times : undefined,
         );
         if (geometry) {
           layer.provider = "commerce.path@1.0.0";
@@ -229,11 +263,16 @@ export function commerceToComposition(
       mode: mask.invert ? "alpha-inverted" : "alpha",
     };
   }
-  compileFamilyEffects(scene, layers, undefined, exposure?.times);
-  if (exposure)
+  compileFamilyEffects(
+    scene,
+    layers,
+    undefined,
+    exposure || window ? times : undefined,
+  );
+  if (exposure || window)
     for (const layer of layers) {
       layer.sampleTimes = times;
-      layer.motionBlur = true;
+      if (exposure) layer.motionBlur = true;
     }
   const { markers, cueIds } = compileAdapterMarkers(
     scene.typography

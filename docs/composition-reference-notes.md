@@ -1840,16 +1840,27 @@ and `cut-*` ids). Generic markers and hold keys do not waive findings. Optional
 ```sh
 pnpm --silent still-shift comp lint --input composition.json
 pnpm --silent still-shift comp lint --input composition.json --policy lint-policy.json --pixels true
+pnpm --silent still-shift comp lint --input composition.json --pixels true --backend webgl2
 ```
 
 The CLI emits one JSON report and exits **1** on errors, invalid input/policy or
 failed measurement; warnings alone exit **0**. State-only lint verifies pinned
 assets but does not launch a browser. `--pixels true` uses pinned export Chromium,
-measures text bounds, and samples every rendered frame at full resolution. Its
+measures text bounds, and samples every rendered frame at full resolution. Select
+`--backend canvas2d|webgl2` explicitly (default: `canvas2d`); lighting and true
+perspective require `webgl2`. Unsupported Canvas scenes fail without switching
+backends. Rendered reports record the actual `backend` and `rendererVersion`;
+state-only reports do not claim renderer measurement. Pixel lint uses a fresh,
+temporary Vite cache for each call and cleans it after measurement. Its
 shared grayscale-energy defaults are a channel delta **> 4** and **≥ 200** changed
 pixels, configurable via `pixelChannelThreshold` and `pixelMinimumChanges`.
 `analyzeRenderedCompositionQuality(comp, preview, policy?, { signal, onFrame })`
 provides the same browser measurement and supports cancellation.
+
+Visible receiving layers include their evaluated scoped illumination in stillness
+signatures. Disabled/guide lights, unlit or offscreen receivers, zero-energy lights
+and light controls unused by the diffuse model do not establish state motion.
+Pixel stillness remains an independent full-resolution check.
 
 For already rendered evidence, pass `pixelChangedCounts` (one integer per frame,
 first entry 0), or `pixelHashes` (one nonempty hash per frame). Hashes detect exact

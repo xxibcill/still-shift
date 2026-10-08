@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "pixel-lint-backend-gap",
+  "width": 320,
+  "height": 180,
+  "frameCount": 24,
+  "background": "#13242d",
+  "layers": [
+    {
+      "id": "ambient",
+      "transform": {},
+      "type": "light",
+      "lightType": "ambient",
+      "intensity": 0.25
+    },
+    {
+      "id": "key",
+      "transform": {
+        "position": {
+          "x": {
+            "keys": [
+              {
+                "frame": 0,
+                "value": 80
+              },
+              {
+                "frame": 23,
+                "value": 240
+              }
+            ]
+          },
+          "y": 90,
+          "z": -240
+        }
+      },
+      "type": "light",
+      "lightType": "point",
+      "intensity": 1.4,
+      "range": 700
+    },
+    {
+      "id": "plate",
+      "threeD": true,
+      "receivesLight": true,
+      "transform": {
+        "anchor": [90, 55],
+        "position": [160, 90, 0],
+        "scale": [1, 1],
+        "rotation": 0,
+        "opacity": 1
+      },
+      "type": "solid",
+      "size": [180, 110],
+      "color": "#d69455"
+    }
+  ],
+  "fps": 24,
+  "assets": [],
+  "metadata": {
+    "builder": {
+      "paths": ["transform.position.x"],
+      "tracks": [[-1, 1, 0, 0, 1, 0]],
+      "version": "motion-builder-1",
+      "files": [
+        "/Users/jjae/Documents/obsidian/ai-business/YouTube Workflow Experiments/2026-10-06-zipper-final/repros/lit-plane.ts"
+      ],
+      "sites": [
+        [0, 9, 20],
+        [0, 4, 16],
+        [0, 5, 9],
+        [0, 6, 21],
+        [0, 7, 9]
+      ],
+      "nodes": {
+        "comp": 1,
+        "layers": [2, 3, 4],
+        "assets": [],
+        "markers": [],
+        "precomps": [],
+        "drivers": [],
+        "behaviours": [],
+        "periodic": [],
+        "signals": [],
+        "constraints": [],
+        "textAnimators": [],
+        "textStyles": [],
+        "expressions": []
+      }
+    }
+  }
+}

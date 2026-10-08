@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "depth-image",
+  "width": 640,
+  "height": 360,
+  "fps": 30,
+  "frameCount": 90,
+  "background": "#141414",
+  "assets": [
+    {
+      "id": "source",
+      "type": "image",
+      "path": "source.svg",
+      "sha256": "sha256:e52fa36d26ec51ff99b2b6620e184f9dea598925e9a33afb0546f5ca004113a4",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "depth",
+      "type": "image",
+      "path": "depth.svg",
+      "sha256": "sha256:0a2be673e655b62a2ba9c8e63ef810cdcb92701e87f2b8940f6bae5854703754",
+      "width": 1600,
+      "height": 900
+    }
+  ],
+  "layers": [
+    {
+      "id": "photo",
+      "type": "depth-image",
+      "size": [640, 360],
+      "sourceAsset": "source",
+      "depth": {
+        "asset": "depth",
+        "encoding": "r8-unorm",
+        "width": 1600,
+        "height": 900
+      },
+      "overscan": 0.1,
+      "edgeDamping": 0,
+      "framing": {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 1
+      },
+      "motion": {
+        "scale": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 1
+            },
+            {
+              "frame": 89,
+              "value": 1.03
+            }
+          ]
+        },
+        "strength": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 89,
+              "value": 0.03
+            }
+          ]
+        },
+        "offset": [0, 0],
+        "roll": 0
+      },
+      "transform": {
+        "anchor": [0, 0]
+      },
+      "alphaMode": "opaque"
+    }
+  ]
+}

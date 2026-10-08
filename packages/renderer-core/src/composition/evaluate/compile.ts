@@ -50,6 +50,8 @@ export type CompiledComposition = {
   shapeWork: boolean;
   /** Ordinary 2D scopes do not allocate spatial world/camera geometry. */
   spatialScopes: Set<CompositionScope>;
+  /** Local GPU image planes need preflight without allocating 3D geometry. */
+  imagePlanes: boolean;
   paths: Map<string, PropertyPath>;
   /** Static per-scope selections, so time-shifted evaluations stay cheap. */
   solo: Map<CompositionScope, Set<string> | null>;
@@ -111,6 +113,13 @@ export function compileComposition(comp: Composition): CompiledComposition {
             layer.type === "camera" ||
             layer.type === "light",
         ),
+      ),
+    ),
+    imagePlanes: scopes.some((scope) =>
+      scope.layers.some(
+        (layer) =>
+          layer.type === "depth-image" ||
+          (layer.type === "image" && layer.sampling === "linear-srgb"),
       ),
     ),
     solo: new Map(),

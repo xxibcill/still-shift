@@ -210,6 +210,10 @@ function prepareText(
       const text = numeric
         ? numeric.samples[Math.min(numeric.samples.length - 1, frame)]!
         : (node.states?.[contentState ?? state.state] ?? node.text);
+      const probe =
+        resources.textProbe?.node === node.id
+          ? resources.textProbe.mode
+          : undefined;
       const layout = layouts?.get(text);
       ctx.fillStyle = node.color;
       ctx.font = font
@@ -218,8 +222,9 @@ function prepareText(
       ctx.textAlign = node.align;
       if (extended) {
         ctx.textBaseline = "top";
-        if (node.container && state.reveal > 0)
+        if (node.container && state.reveal > 0 && probe !== "ink-only")
           drawTextContainer(ctx, node, text);
+        if (probe === "container-only") return;
         const blending = params.blendWindows?.some(
           ([start, end]) =>
             (sourceTime ?? time) >= start && (sourceTime ?? time) < end,
@@ -241,6 +246,7 @@ function prepareText(
           return;
         }
       }
+      if (probe === "container-only") return;
       if (!layout)
         passageError("comp-provider-params", "Text state was not prepared", {
           path,

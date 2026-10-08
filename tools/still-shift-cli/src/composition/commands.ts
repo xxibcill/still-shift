@@ -11,12 +11,15 @@ import {
 import {
   bakeExpressions,
   cinematicToComposition,
+  legacyToComposition,
   CompositionQualityPolicySchema,
   passageDiagnostics,
+  type CompositionBackend,
 } from "@still-shift/renderer-core";
 import {
   CommerceSceneSchema,
   CinematicSceneSchema,
+  PreparedSceneSchema,
   StorySceneSchema,
   normalizeExpressions,
   type CompositionDiagnostic,
@@ -47,6 +50,16 @@ const booleanOption = (values: Map<string, string>, name: string) => {
     );
   return value === "true";
 };
+function backendOption(values: Map<string, string>): CompositionBackend {
+  const backend = values.get("backend") ?? "canvas2d";
+  if (backend !== "canvas2d" && backend !== "webgl2")
+    programError(
+      "comp-program-option",
+      "Composition backend must be canvas2d or webgl2",
+      "backend",
+    );
+  return backend;
+}
 function diagnostics(error: unknown): CompositionDiagnostic[] {
   if (error instanceof CompositionProgramError) return error.diagnostics;
   if (
@@ -142,6 +155,13 @@ export async function runCompositionCommand(
           composition = cinematicToComposition(
             CinematicSceneSchema.parse(value),
           );
+        else if (
+          value &&
+          typeof value === "object" &&
+          "schemaVersion" in value &&
+          value.schemaVersion === "illustrated-scene-1"
+        )
+          composition = legacyToComposition(PreparedSceneSchema.parse(value));
         else
           composition =
             value &&
@@ -232,8 +252,10 @@ export async function runCompositionCommand(
           "input",
           "policy",
           "pixels",
+          "backend",
         ]),
         input = requireArgument(values, "input");
+      const backend = backendOption(values);
       const pixels = booleanOption(values, "pixels"),
         path = values.get("policy");
       const policy = path
@@ -243,7 +265,7 @@ export async function runCompositionCommand(
         : {};
       const program = await loadProgram(input);
       const report = await withProgramFile(program, input, (path) =>
-        lintCompositionFile(path, policy, { pixels }),
+        lintCompositionFile(path, policy, { pixels, backend }),
       );
       io.stdout(json(report));
       return report.status === "failed" ? 1 : 0;
@@ -255,13 +277,7 @@ export async function runCompositionCommand(
           "backend",
         ]),
         input = requireArgument(values, "input");
-      const backend = values.get("backend") ?? "canvas2d";
-      if (backend !== "canvas2d" && backend !== "webgl2")
-        programError(
-          "comp-program-option",
-          "Composition backend must be canvas2d or webgl2",
-          "backend",
-        );
+      const backend = backendOption(values);
       const program = await loadProgram(input);
       const result = await withProgramFile(program, input, (path) =>
         renderComposition({

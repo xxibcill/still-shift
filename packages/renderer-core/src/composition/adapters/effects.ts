@@ -7,7 +7,7 @@ import { baked } from "./prepared.ts";
 import type { CommerceRenderScene } from "../../commerce-scene.ts";
 import type { StoryRenderScene } from "../../story-scene.ts";
 import type { CinematicRenderScene } from "../../cinematic-scene.ts";
-import { evaluatePreparedNodeAtTime } from "../../prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./family-state.ts";
 
 type EffectScene =
   | CommerceRenderScene

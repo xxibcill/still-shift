@@ -440,15 +440,22 @@ export function createCompositionInspector(options: {
         : history!.document.precomps?.find(
             (scope) => scope.id === current.scope,
           );
-    if (
-      ownerScope?.layers.find((layer) => layer.id === current.owner)?.type ===
-        "light" &&
-      ["scalar", "color", "vector"].includes(current.kind)
-    ) {
-      const value = textInput("Light key value", key.value);
+    const ownerLayer = ownerScope?.layers.find(
+      (layer) => layer.id === current.owner,
+    );
+    const keyValueLabel =
+      ownerLayer?.type === "light"
+        ? "Light key value"
+        : ownerLayer?.type === "depth-image"
+          ? "Depth key value"
+          : ownerLayer?.type === "image" && ownerLayer.plane
+            ? "Image plane key value"
+            : undefined;
+    if (keyValueLabel && ["scalar", "color", "vector"].includes(current.kind)) {
+      const value = textInput(keyValueLabel, key.value);
       area.append(
         value.label,
-        button("Apply light key value", () => {
+        button(`Apply ${keyValueLabel.toLowerCase()}`, () => {
           const authored =
             current.kind === "color"
               ? value.input.value.trim()

@@ -75,11 +75,13 @@ export function renderCompositionExposure<S extends Surface>(
       stationary = false;
       break;
     }
-  // All spatial shutter samples must pass before accumulation can touch the retained frame.
-  if (compileComposition(comp).spatialScopes.size)
+  // Check every GPU-only shutter sample before accumulation touches the retained frame.
+  const compiled = compileComposition(comp);
+  if (compiled.spatialScopes.size || compiled.imagePlanes)
     for (const candidate of graphs())
       if (candidate.graph.spatial)
         requireSpatialCapabilities(candidate.graph.root, {
+          depthImage: !!backend.drawDepthImage,
           lighting: !!backend.applyLighting,
           projective: !!backend.project && !!backend.applyProjectiveClips,
           validateSurface: backend.validateSpatialSurface,

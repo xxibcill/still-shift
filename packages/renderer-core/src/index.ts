@@ -81,6 +81,10 @@ export {
   cinematicToComposition,
   CINEMATIC_ADAPTER_VERSION,
 } from "./composition/adapters/cinematic.ts";
+export {
+  legacyToComposition,
+  LEGACY_ADAPTER_VERSION,
+} from "./composition/adapters/legacy.ts";
 export * from "./motion-craft.ts";
 export * from "./motion-appearance.ts";
 export * from "./motion-inspector.ts";
@@ -144,5 +148,11 @@ export {
   type CompositionEffectPlugin,
   type GpuEffectContext,
 } from "./composition/render/effect-plugins.ts";
+export {
+  depthToComposition,
+  resolveDepthPreviewPreset,
+  DEPTH_ADAPTER_VERSION,
+  type DepthCompositionOptions,
+} from "./composition/adapters/depth.ts";
 
 export * from "./soundtrack-edits.ts";

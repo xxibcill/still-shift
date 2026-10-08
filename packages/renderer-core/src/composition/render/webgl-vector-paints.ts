@@ -5,12 +5,19 @@ import { CanvasPathBounds } from "./webgl-path-bounds.ts";
 type Command =
   | { method: string; args: unknown[] }
   | { property: string; value: unknown };
-type Paint = { command: number; bounds: Bounds; primitive: boolean };
+type Paint = {
+  command: number;
+  bounds: Bounds;
+  primitive: boolean;
+  shadowRight?: number;
+};
 export type VectorPaintGroup = {
   commands: Command[];
   selected: Set<number>;
   primitive: boolean;
   bounds: Bounds;
+  shadow?: "only" | "none";
+  shadowRight?: number;
 };
 const paints = new Set([
   "fill",
@@ -152,10 +159,21 @@ export function recordVectorPaints(
               typeof target.strokeStyle !== "string"
             )
               invalidate();
-            const mark = {
+            const shadow =
+              target.filter === "none" &&
+              (target.shadowBlur !== 0 ||
+                target.shadowOffsetX !== 0 ||
+                target.shadowOffsetY !== 0);
+            const shadowRight = shadow
+              ? paintBounds(target, name, args, undefined, path.bounds)?.right
+              : undefined;
+            const mark: Paint = {
               command: commands.length,
               primitive: name !== "drawImage" && target.filter === "none",
-              bounds: paintBounds(target, name, args, fallback, path.bounds),
+              bounds: paintBounds(target, name, args, fallback, path.bounds)!,
+              ...(shadowRight !== undefined && Number.isFinite(shadowRight)
+                ? { shadowRight }
+                : {}),
             };
             if (
               options.deferPaints &&
@@ -217,6 +235,8 @@ export function recordVectorPaints(
         if (
           previous &&
           previous.marks[0]!.primitive === mark.primitive &&
+          (previous.marks[0]!.shadowRight === undefined) ===
+            (mark.shadowRight === undefined) &&
           previous.marks.every(
             (prior) => !boundsOverlap(prior.bounds, mark.bounds),
           )
@@ -225,12 +245,30 @@ export function recordVectorPaints(
           previous.bounds = unionBounds(previous.bounds, mark.bounds);
         } else groups.push({ marks: [mark], bounds: mark.bounds });
       }
-      return groups.map((group) => ({
-        commands,
-        selected: new Set(group.marks.map((mark) => mark.command)),
-        primitive: group.marks[0]!.primitive,
-        bounds: group.bounds,
-      }));
+      const clipped = commands.some(
+        (command) => "method" in command && command.method === "clip",
+      );
+      return groups.flatMap((group): VectorPaintGroup[] => {
+        const base: VectorPaintGroup = {
+          commands,
+          selected: new Set(group.marks.map((mark) => mark.command)),
+          primitive: group.marks[0]!.primitive,
+          bounds: group.bounds,
+        };
+        if (
+          clipped ||
+          group.marks.some((mark) => mark.shadowRight === undefined)
+        )
+          return [base];
+        // Canvas composites shadow and source separately over the destination.
+        const shadowRight = Math.max(
+          ...group.marks.map((mark) => mark.shadowRight!),
+        );
+        return [
+          { ...base, shadow: "only", shadowRight },
+          { ...base, shadow: "none" },
+        ];
+      });
     },
   };
 }
@@ -244,12 +282,27 @@ export function replayVectorPaints(
   let depth = 0;
   ctx.save();
   ctx.beginPath();
+  // Move source coverage off-canvas while returning its native shadow in place.
+  const shift =
+    group.shadow === "only"
+      ? ctx.canvas.width + Math.max(0, group.shadowRight!) + 256
+      : 0;
+  if (shift) {
+    ctx.translate(-shift, 0);
+    ctx.shadowOffsetX = shift;
+  }
+  if (group.shadow === "none") ctx.shadowColor = "rgba(0,0,0,0)";
   try {
     const end = Math.max(...group.selected);
     for (let index = 0; index <= end; index++) {
       const command = group.commands[index]!;
       if ("property" in command) {
-        target[command.property] = command.value;
+        target[command.property] =
+          command.property === "shadowOffsetX" && shift
+            ? Number(command.value) + shift
+            : command.property === "shadowColor" && group.shadow === "none"
+              ? "rgba(0,0,0,0)"
+              : command.value;
         continue;
       }
       if (paints.has(command.method) && !group.selected.has(index)) continue;
@@ -257,6 +310,21 @@ export function replayVectorPaints(
       if (command.method === "restore") {
         if (!depth) continue;
         depth--;
+      }
+      if (shift && command.method === "resetTransform") {
+        ctx.setTransform(1, 0, 0, 1, -shift, 0);
+        continue;
+      }
+      if (shift && command.method === "setTransform") {
+        const matrix =
+          command.args.length === 1
+            ? DOMMatrix.fromMatrix(command.args[0] as DOMMatrixInit)
+            : command.args.length
+              ? new DOMMatrix(command.args as number[])
+              : new DOMMatrix();
+        matrix.e -= shift;
+        ctx.setTransform(matrix);
+        continue;
       }
       Reflect.apply(
         target[command.method] as (...args: unknown[]) => unknown,
@@ -275,9 +343,9 @@ function paintBounds(
   ctx: CanvasRenderingContext2D,
   method: string,
   args: unknown[],
-  fallback: Bounds,
+  fallback: Bounds | undefined,
   path?: Bounds,
-): Bounds {
+): Bounds | undefined {
   let box: Bounds | undefined;
   const deviceSpace =
     (method === "fill" || method === "stroke") && !(args[0] instanceof Path2D);
@@ -357,19 +425,19 @@ function paintBounds(
     Math.abs(ctx.shadowOffsetY);
   return {
     left: Math.max(
-      fallback.left,
+      fallback?.left ?? -Infinity,
       Math.floor(Math.min(...corners.map((p) => p.x)) - padding),
     ),
     top: Math.max(
-      fallback.top,
+      fallback?.top ?? -Infinity,
       Math.floor(Math.min(...corners.map((p) => p.y)) - padding),
     ),
     right: Math.min(
-      fallback.right,
+      fallback?.right ?? Infinity,
       Math.ceil(Math.max(...corners.map((p) => p.x)) + padding),
     ),
     bottom: Math.min(
-      fallback.bottom,
+      fallback?.bottom ?? Infinity,
       Math.ceil(Math.max(...corners.map((p) => p.y)) + padding),
     ),
   };

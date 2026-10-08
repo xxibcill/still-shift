@@ -1,31 +1,33 @@
+/** CE4d test-only independent old Canvas oracle, preserved from 0d23767.
+ * Frozen CE0 hashes verify this path; production must never import it. */
 import {
   paintRadialLight,
   paintRisingParticles,
   paintFilmGrain,
-} from "./pixel-generators.ts";
+} from "../../packages/renderer-core/src/pixel-generators.ts";
 import {
   glow,
   directionalBlur,
   sineDisplacement,
   lightSweep as paintLightSweep,
-} from "./pixel-effects.ts";
-import type { CinematicRenderScene } from "./cinematic-scene.ts";
-import { storyCameraTransform } from "./story-camera.ts";
-import { componentMasks, compositeRootMask } from "./component-mask.ts";
-import { componentVisibilityCuts } from "./component-visibility.ts";
-import { componentStateCuts } from "./component-state.ts";
-import { nodeMatrix } from "./node-transform.ts";
-import type { StoryRenderScene } from "./story-scene.ts";
-import type { CommerceRenderScene } from "./commerce-scene.ts";
-import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
-import type { EffectOf } from "../../scene-contract/src/commerce-effects.ts";
-import { evaluatePreparedNodeAtTime } from "./prepared-scene.ts";
+} from "../../packages/renderer-core/src/pixel-effects.ts";
+import type { CinematicRenderScene } from "../../packages/renderer-core/src/cinematic-scene.ts";
+import { storyCameraTransform } from "../../packages/renderer-core/src/story-camera.ts";
+import { componentMasks, compositeRootMask } from "./legacy-mask-oracle.ts";
+import { componentVisibilityCuts } from "../../packages/renderer-core/src/component-visibility.ts";
+import { componentStateCuts } from "../../packages/renderer-core/src/component-state.ts";
+import { nodeMatrix } from "../../packages/renderer-core/src/node-transform.ts";
+import type { StoryRenderScene } from "../../packages/renderer-core/src/story-scene.ts";
+import type { CommerceRenderScene } from "../../packages/renderer-core/src/commerce-scene.ts";
+import type { PreparedNode } from "../../packages/scene-contract/src/prepared.ts";
+import type { EffectOf } from "../../packages/scene-contract/src/commerce-effects.ts";
+import { evaluatePreparedNodeAtTime } from "./legacy-recipe-oracle.ts";
 import {
   effectPhase,
   effectProgress,
   exposureFrames,
   isEffectActive,
-} from "./commerce-effect-motion.ts";
+} from "../../packages/renderer-core/src/commerce-effect-motion.ts";
 
 type Surface = { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D };
 type Paint = (

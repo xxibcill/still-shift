@@ -1,9 +1,9 @@
 import { spawn } from "node:child_process";
 import { createReadStream } from "node:fs";
-import { mkdir, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, stat, writeFile } from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { availableParallelism, cpus } from "node:os";
-import { basename, dirname, extname, resolve } from "node:path";
+import { availableParallelism, cpus, tmpdir } from "node:os";
+import { basename, dirname, extname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { createHash, randomUUID } from "node:crypto";
 
@@ -38,7 +38,7 @@ export type ExportableScene =
   | IllustratedScene
   | CompositionScene;
 
-const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.9";
+const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.10";
 
 export type ExportRequest = {
   runtime?: BrowserRuntimeOptions;
@@ -527,6 +527,7 @@ export const exportScene = async (
       : null;
   let server: ViteDevServer | undefined;
   let browser: Browser | undefined;
+  let viteCacheDirectory: string | undefined;
   const abort = () => {
     encoder.kill("SIGKILL");
     void browser?.close().catch(() => undefined);
@@ -559,9 +560,13 @@ export const exportScene = async (
   const memoryMonitor = setInterval(() => void sampleMemory(), 500);
   void sampleMemory();
   try {
+    viteCacheDirectory = await mkdtemp(
+      join(tmpdir(), "still-shift-export-vite-"),
+    );
     server = await createServer({
       root: projectRoot,
       configFile: false,
+      cacheDir: viteCacheDirectory,
       logLevel: "silent",
       plugins: [assetPlugin(request, encoder, expectedBytes, frameState)],
       server: {
@@ -580,8 +585,32 @@ export const exportScene = async (
     const page = await browser.newPage({
       viewport: { width: scene.canvas.width, height: scene.canvas.height },
     });
+    const startupErrors: string[] = [];
+    page.on("pageerror", (error) => startupErrors.push(error.message));
+    page.on("console", (message) => {
+      if (message.type() === "error")
+        startupErrors.push(message.text().slice(0, 1024));
+    });
+    page.on("response", (response) => {
+      if (response.status() >= 400)
+        startupErrors.push(
+          `${response.status()} ${response.url().slice(0, 256)}`,
+        );
+    });
+    page.on("requestfailed", (failed) =>
+      startupErrors.push(
+        `${failed.url().slice(0, 256)}: ${failed.failure()?.errorText ?? "request failed"}`,
+      ),
+    );
     await page.goto(runtimeBrowserUrl(baseUrl, "export"));
-    await page.waitForFunction(() => Boolean(window.runStillShiftExport));
+    try {
+      await page.waitForFunction(() => Boolean(window.runStillShiftExport));
+    } catch (cause) {
+      throw new Error(
+        `Export browser did not initialize${startupErrors.length ? `: ${startupErrors.join("; ")}` : ": no browser error reported"}`,
+        { cause },
+      );
+    }
     const renderEnvironment = await probeRenderEnvironment(
       page,
       browserProfile,
@@ -731,7 +760,14 @@ export const exportScene = async (
     const cleanup = await Promise.allSettled([
       published ? null : memorySample,
       published ? null : browser?.close(),
-      published ? null : server?.close(),
+      (async () => {
+        try {
+          await server?.close();
+        } finally {
+          if (viteCacheDirectory)
+            await rm(viteCacheDirectory, { recursive: true, force: true });
+        }
+      })(),
       rm(temporaryPath, { force: true }),
       rm(temporaryScenePath, { force: true }),
       rm(temporaryResultPath, { force: true }),

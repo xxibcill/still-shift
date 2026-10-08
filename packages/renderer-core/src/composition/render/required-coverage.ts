@@ -34,6 +34,7 @@ export function validateRequiredCompositionCoverage<S extends Surface>(
   options: EvaluationOptions = {},
   severity: "error" | "warning" = "error",
   requiredRootLayers: ReadonlyMap<string, string> = new Map(),
+  frames?: readonly number[],
 ): PassageDiagnostic[] {
   const scopes = [comp, ...(comp.precomps ?? [])];
   if (
@@ -113,7 +114,8 @@ export function validateRequiredCompositionCoverage<S extends Surface>(
     }
   };
   try {
-    for (let frame = 0; frame < comp.frameCount; frame++) {
+    for (const frame of frames ??
+      Array.from({ length: comp.frameCount }, (_, frame) => frame)) {
       for (const tree of evaluateCompositionExposure(comp, frame, options))
         visit(tree, comp, "", frame);
     }

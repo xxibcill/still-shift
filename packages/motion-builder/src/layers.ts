@@ -41,6 +41,7 @@ export class Layer<K extends Kind = Kind> {
   inferImageSize = false;
   pendingAnchor: NamedAnchor | undefined;
   imageAsset: ImageAsset | undefined;
+  preparedAssets: CompositionAsset[] = [];
   nested: Composition | Precomp | undefined;
   constructor(draft: Native<K>, location = sourceLocation()) {
     if (!/^[a-zA-Z][\w-]*$/.test(draft.id))
@@ -228,6 +229,30 @@ export function image(
   });
   node.inferImageSize = typeof asset === "string" && options.size === undefined;
   if (typeof asset !== "string") node.imageAsset = asset;
+  return node;
+}
+/** Prepared source/depth assets are registered together; inference is external. */
+export function depthImage(
+  id: string,
+  source: ImageAsset,
+  depth: ImageAsset,
+  options: Partial<Omit<Options<"depth-image">, "sourceAsset" | "depth">> = {},
+): Layer<"depth-image"> {
+  const node = new Layer<"depth-image">({
+    type: "depth-image",
+    id,
+    size: [source.width, source.height],
+    sourceAsset: source.id,
+    depth: {
+      asset: depth.id,
+      encoding: "r8-unorm",
+      width: depth.width,
+      height: depth.height,
+    },
+    overscan: 0.1,
+    ...options,
+  });
+  node.preparedAssets = [source, depth];
   return node;
 }
 export function text(

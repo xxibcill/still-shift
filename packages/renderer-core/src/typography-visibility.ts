@@ -2,7 +2,7 @@ import type { CommerceRenderScene } from "./commerce-scene.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { ShapedLayout } from "./shaped-text.ts";
 import type { TextNode } from "./typography-style.ts";
-import { evaluatePreparedNodeAtTime } from "./prepared-scene.ts";
+import { samplePreparedFamilyState as evaluatePreparedNodeAtTime } from "./composition/adapters/family-state.ts";
 import { componentText } from "./component-values.ts";
 import {
   activeTextTransition,

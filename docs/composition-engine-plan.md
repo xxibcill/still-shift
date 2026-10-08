@@ -1,8 +1,8 @@
 # Programmable composition engine — implementation plan
 
 - **Updated:** 2026-10-08
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE5, CE6, CE7, CE8, CE8-L, CE10 and CE11 complete (2026-10-06). CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
-  2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q7 open.
+- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE5, CE6, CE7, CE8, CE8-L, CE10 and CE11 complete (2026-10-06). CE4c complete (2026-10-06); CE4d complete (2026-10-07). CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
+  2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q6 open; Q7 decided 2026-10-05 and migration complete 2026-10-07.
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
 
@@ -358,31 +358,31 @@ sign and for time remap. It does not change the layer's composition-time visibil
 
 ## Milestone tracker
 
-| ID    | Deliverable                                     | Phase  | Depends on                 | Owner                  | Branch                              | Status | Completion evidence                                                                |
-| ----- | ----------------------------------------------- | ------ | -------------------------- | ---------------------- | ----------------------------------- | ------ | ---------------------------------------------------------------------------------- |
-| CE0   | Baseline, parity harness and feature matrix     | A      | —                          | xxibcill (Claude Code) | `codex/composition-ce0`             | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)                     |
-| CE1   | `composition-1` contract and property paths     | A      | CE0                        | xxibcill (Claude Code) | `codex/composition-ce1`             | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
-| CE2   | Pure composition evaluator                      | A      | CE1                        | Codex                  | `codex/composition-ce2`             | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
-| CE3   | Render graph and Canvas 2D reference backend    | A      | CE2                        | xxibcill (Claude Code) | `codex/composition-ce3`             | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
-| CE4a  | Story adapter with visual parity                | A      | CE3                        | Codex                  | `codex/composition-ce4a-completion` | `[x]`  | [Completion](#ce4a-completion-record-2026-10-05)                                   |
-| CE4b  | Commerce and reusable-component adapter         | A      | CE3, CE6 slices            | Codex                  | `codex/composition-ce4b`            | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
-| CE4c  | Cinematic adapter                               | A      | CE3, CE8                   | Codex                  | `codex/composition-ce4c`            | `[x]`  | [evidence](./composition-ce4c-results.json)                                        |
-| CE4d  | Legacy illustrated adapter and old-path removal | A      | CE4a–CE4c                  |                        |                                     | `[ ]`  |                                                                                    |
-| CE5   | Shape layers                                    | B      | CE3                        | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
-| CE5-X | Shape fidelity, connectors and strokes          | B      | CE5, CE4a, CE9, CE11, CE12 | Codex                  | `codex/composition-ce5x`            | `[~]`  | [Audit / scope stop](./composition-ce5x-results.json)                              |
-| CE6   | WebGL2 backend and effect registry              | B      | CE3                        | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
-| CE6-P | WebGL performance acceptance                    | Future | CE6                        | Codex                  | `codex/composition-ce6p-compatible` | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
-| CE7   | Motion blur and time controls                   | B      | CE3                        | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
-| CE8   | 2.5D layers and unified camera                  | B      | CE3, CE6, CE9              | Codex                  | `codex/composition-ce8`             | `[x]`  | [evidence](./composition-ce8-results.json)                                         |
-| CE8-L | Bounded lighting for 2.5D layers                | B      | CE8                        | Codex                  | `codex/composition-ce8-lighting`    | `[x]`  | [Evidence](./composition-ce8-lighting-results.json)                                |
-| CE9   | Expressions and motion behaviours               | C      | CE2                        | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
-| CE10  | TypeScript builder API and CLI                  | C      | CE3, CE4a, CE9, CE12       | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
-| CE11  | Lab composition inspector and graph editor      | C      | CE3, CE10                  | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
-| CE12  | Motion linting                                  | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
-| CE13  | Video, image-sequence and audio layers          | D      | CE3, CE7                   |                        |                                     | `[ ]`  |                                                                                    |
-| CE14  | Mesh warp and puppet pins                       | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
-| CE15  | Output formats, caching and parallel rendering  | D      | CE3                        |                        |                                     | `[ ]`  |                                                                                    |
-| CE16  | Programmable soundtrack project and timeline    | D      | CE3; CE16-A                | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
+| ID    | Deliverable                                    | Phase  | Depends on                 | Owner                  | Branch                              | Status | Completion evidence                                                                |
+| ----- | ---------------------------------------------- | ------ | -------------------------- | ---------------------- | ----------------------------------- | ------ | ---------------------------------------------------------------------------------- |
+| CE0   | Baseline, parity harness and feature matrix    | A      | —                          | xxibcill (Claude Code) | `codex/composition-ce0`             | `[x]`  | [CE0 record](#ce0--baseline-parity-harness-and-feature-matrix)                     |
+| CE1   | `composition-1` contract and property paths    | A      | CE0                        | xxibcill (Claude Code) | `codex/composition-ce1`             | `[x]`  | [CE1 record](#ce1--composition-1-contract-and-property-paths)                      |
+| CE2   | Pure composition evaluator                     | A      | CE1                        | Codex                  | `codex/composition-ce2`             | `[x]`  | [CE2 record](#ce2--pure-composition-evaluator)                                     |
+| CE3   | Render graph and Canvas 2D reference backend   | A      | CE2                        | xxibcill (Claude Code) | `codex/composition-ce3`             | `[x]`  | [CE3 record](#ce3--render-graph-and-canvas-2d-reference-backend); merged in PR #28 |
+| CE4a  | Story adapter with visual parity               | A      | CE3                        | Codex                  | `codex/composition-ce4a-completion` | `[x]`  | [Completion](#ce4a-completion-record-2026-10-05)                                   |
+| CE4b  | Commerce and reusable-component adapter        | A      | CE3, CE6 slices            | Codex                  | `codex/composition-ce4b`            | `[x]`  | [CE4b completion record](#ce4b-completion-record-2026-10-03)                       |
+| CE4c  | Cinematic adapter                              | A      | CE3, CE8                   | Codex                  | `codex/composition-ce4c`            | `[x]`  | [evidence](./composition-ce4c-results.json)                                        |
+| CE4d  | Legacy/depth adapters and old-path removal     | A      | CE4a–CE4c                  | Codex                  | `codex/composition-ce4d`            | `[x]`  | [evidence](./composition-ce4d-results.json)                                        |
+| CE5   | Shape layers                                   | B      | CE3                        | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
+| CE5-X | Shape fidelity, connectors and strokes         | B      | CE5, CE4a, CE9, CE11, CE12 | Codex                  | `codex/composition-ce5x`            | `[~]`  | [Audit / scope stop](./composition-ce5x-results.json)                              |
+| CE6   | WebGL2 backend and effect registry             | B      | CE3                        | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
+| CE6-P | WebGL performance acceptance                   | Future | CE6                        | Codex                  | `codex/composition-ce6p-compatible` | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
+| CE7   | Motion blur and time controls                  | B      | CE3                        | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
+| CE8   | 2.5D layers and unified camera                 | B      | CE3, CE6, CE9              | Codex                  | `codex/composition-ce8`             | `[x]`  | [evidence](./composition-ce8-results.json)                                         |
+| CE8-L | Bounded lighting for 2.5D layers               | B      | CE8                        | Codex                  | `codex/composition-ce8-lighting`    | `[x]`  | [Evidence](./composition-ce8-lighting-results.json)                                |
+| CE9   | Expressions and motion behaviours              | C      | CE2                        | xxibcill (Claude Code) | `codex/composition-ce9`             | `[x]`  | [CE9 record](#ce9--expressions-and-motion-behaviours)                              |
+| CE10  | TypeScript builder API and CLI                 | C      | CE3, CE4a, CE9, CE12       | Codex                  | `codex/composition-ce10`            | `[x]`  | [evidence](./composition-ce10-results.json)                                        |
+| CE11  | Lab composition inspector and graph editor     | C      | CE3, CE10                  | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
+| CE12  | Motion linting                                 | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
+| CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   |                        |                                     | `[ ]`  |                                                                                    |
+| CE14  | Mesh warp and puppet pins                      | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
+| CE15  | Output formats, caching and parallel rendering | D      | CE3                        |                        |                                     | `[ ]`  |                                                                                    |
+| CE16  | Programmable soundtrack project and timeline   | D      | CE3; CE16-A                | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
 
 ### Phases and parallel work
 
@@ -1430,17 +1430,17 @@ These are scoped PR follow-up checks; the original full gate above remains histo
 
 ### CE4d — Legacy illustrated and removal
 
-- [ ] Map the six legacy presets.
-- [ ] Switch the Lab and CLI default to the composition path for all families.
-- [ ] Remove per-family branches from `illustrated-renderer.ts` and
+- [x] Map the six legacy presets.
+- [x] Switch the Lab and CLI default to the composition path for all families.
+- [x] Remove per-family branches from `illustrated-renderer.ts` and
       `evaluatePreparedNodeAtTime`, leaving family modules as adapters. Target: zero
       `schemaVersion` comparisons in the render path.
-- [ ] Freeze the visual vocabulary of the four family schemas (Q2, option C): add a
+- [x] Freeze the visual vocabulary of the four family schemas (Q2, option C): add a
       schema comment and a contributor note that rendering features land only in
       `composition-1`, while story-level additions (recipes, actions, presets, passage
       features) remain allowed if they compile to existing composition features.
       Mark `illustrated-scene-1` as frozen entirely.
-- [ ] Update [user guide](./user-guide.md) and README, including which format to use
+- [x] Update [user guide](./user-guide.md) and README, including which format to use
       for which kind of work after the freeze.
 
 **Acceptance (each part):** All fixtures in that family meet their tolerance tiers;
@@ -1464,6 +1464,34 @@ and results that applied when they were written.
 
 **Verification:** Family browser tests re-run on the composition path; baseline
 comparisons; the full `pnpm check`.
+
+### CE4d completion record (2026-10-07)
+
+- **Owner / branch:** Codex on `codex/composition-ce4d`, from CE4c `17666eb`.
+- **Delivered:** six illustrated presets, all four family defaults and depth-animation
+  presets prepare inspectable native compositions and render through the shared graph.
+  Native `depth-image` owns local displacement, framing, safety and provenance;
+  transforms, masks/mattes, effects, precomp clocks, cameras and optional flat-surface
+  lighting use the common backend. The separate production family and Three painters
+  are retired. Public inputs, flat/editorial/fallback modes and recipe metadata remain.
+- **Integration:** content-based assets preserve Node manifest/cache identity across
+  relocation; pipeline 0.13 captures actual native versions. Depth Lab candidates paint
+  before commit, retain pending seeks and expose truthful readiness/version. Canvas
+  1.44, WebGL2 0.65, image-plane shader 0.4 and depth adapter 0.1 are current.
+- **Verification:** immutable `ae2e1f0` passes complete pinned local `pnpm check`
+  (11705.18 seconds): 2,005 unit / 46 runtime / 143 integration / 14 Python tests,
+  all 61 required test commands and all 176 frozen items / 36,061 frames. Actual
+  defaults pass all 176 items with forward/reverse parity and unchanged oracle hashes;
+  four Canvas family matrices retain the strict 1.25× timing limit. All 141 prior
+  visual reference files remain exact. Independent/repeat/raw exports, hardware,
+  native depth inspector, legacy delivery and resource checks pass; measured reports are retained.
+- **Policy:** WebGL timing overruns remain CE6-P under the existing approved split;
+  no correctness threshold, Canvas target or frozen reference changed. Both failed
+  full gates and rejected diagnostics remain recorded. GitHub Actions stay disabled.
+- **PR / next:** [#47](https://github.com/xxibcill/still-shift/pull/47), open and attached against CE4c.
+  Continue CE13 → CE15 → CE14, auditing and reusing existing CE16 during CE13.
+  CE5-X/Q9 remains pending.
+- **Evidence:** [complete results](./composition-ce4d-results.json).
 
 ### CE4a completion record (2026-10-05)
 
@@ -5502,7 +5530,7 @@ A milestone is complete when **all** of the following hold:
 | Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                                                                                                                                                                                                                                                    | CE15                                                            | 2026-10-01: both — alpha formats for editors and social delivery formats ship together. See CE15                                                                                                                                                                                                               |
 | Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                                                                                                                                                                                                                                                             | Phase D                                                         |                                                                                                                                                                                                                                                                                                                |
 | Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                                                                                                                                                                                                                                                        | After CE8                                                       |                                                                                                                                                                                                                                                                                                                |
-| Q7  | Single-image depth animation (depth presets and flat editorial presets) uses a separate WebGL renderer. Should it become a composition layer type (for example a `depth-image` layer), or stay a separate path?                                                                                                                                                                                   | CE4d                                                            |                                                                                                                                                                                                                                                                                                                |
+| Q7  | Single-image depth animation (depth presets and flat editorial presets) uses a separate WebGL renderer. Should it become a composition layer type (for example a `depth-image` layer), or stay a separate path?                                                                                                                                                                                   | CE4d                                                            | 2026-10-05: native depth-image integration approved; migration complete 2026-10-07. See [CE4d completion](#ce4d-completion-record-2026-10-07).                                                                                                                                                                 |
 | Q8  | Output is exact only within one operating system and CPU architecture (policy rule 6). Should one canonical render environment, for example the Linux container in `scripts/composition/linux/` on a fixed architecture, be used for CI, caches shared between machines and final exports, with macOS renders treated as development previews?                                                    | Before shared caches or CE15 parallel rendering across machines | 2026-10-01: Mac first — `darwin-arm64` is the reference environment for now; before supporting a second machine type, decide between B (canonical environment) and C (platform-independent text, preferred). See [GPU determinism policy](#gpu-determinism-policy) rule 6                                      |
 | Q9  | Approve [CE5-X](#ce5-x--shape-fidelity-connectors-and-expressive-strokes) and its sequence position (proposed: Slice A directly after CE4d, so provider retirement aligns with old-path removal; Slice B before CE13). A1 changes native CE5 merge/offset/round-corner output under a new geometry version; may those CE5 native baselines be regenerated with recorded diffs (CE0 stays frozen)? | CE5-X                                                           | 2026-10-06: approved only A2/A3/A8/B3/B4 gap closure from CE4c. The rest of CE5-X sequence and A1 baseline question remain open. Initial audit stopped migration for additional component motion providers, product attachments and multi-vertex annotations; see [evidence](./composition-ce5x-results.json). |
 
@@ -5651,11 +5679,11 @@ with general primitives; the "Target" column names that later form.
 | Narration import, audio cues, SFX                       | `narration-timing.ts`, `passage-audio.ts` | Unchanged; audio layers may later carry per-composition sound    | CE13      |
 | Incremental render cache and jobs                       | `passage-cache.ts`, `passage-job.ts`      | Unchanged; cache identity gains the composition renderer version | CE3       |
 
-### Not mapped
+### Additional depth mapping
 
-| Feature                                                                                                              | Today                                            | Status                                                                                             |
-| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
-| Single-image depth animation (`slow_push`, `horizontal_drift`, `cinematic_float`, `auto`) and flat editorial presets | `webgl-renderer.ts`, `webgl-animation-engine.ts` | Separate WebGL renderer, outside CE4. Owner decision needed ([Q7](#open-questions-for-the-owner)). |
+| Feature                                                                                                              | Today                                            | Status                                                                                                                                                                               |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Single-image depth animation (`slow_push`, `horizontal_drift`, `cinematic_float`, `auto`) and flat editorial presets | `webgl-renderer.ts`, `webgl-animation-engine.ts` | Q7 complete: native depth-image/flat compatibility via the shared composition graph; separate production painter retired. See [CE4d completion](#ce4d-completion-record-2026-10-07). |
 
 ### Parity notes for adapter work
 

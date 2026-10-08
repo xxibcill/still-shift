@@ -1,4 +1,9 @@
 import type { CompiledShapes } from "../shapes/types.ts";
+import { DEPTH_IMAGE_SHADER_VERSION } from "./webgl-depth-image.ts";
+import type {
+  SampledDepthMotion,
+  SampledImagePlane,
+} from "../evaluate/depth-image.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
   primitiveBlurEffect,
@@ -50,6 +55,16 @@ export type RenderEffect = EvaluatedEffect & {
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
 type ImageLayer = Extract<CompositionLayer, { type: "image" }>;
+function imageAssetSize(comp: Composition, id: string): [number, number] {
+  const asset = comp.assets.find((asset) => asset.id === id);
+  if (asset?.type !== "image")
+    passageError(
+      "comp-asset-type",
+      `Image-plane asset "${id}" is not an image`,
+      { path: "assets" },
+    );
+  return [asset.width, asset.height];
+}
 
 /** An axis-aligned rectangle `[0, width] × [0, height]` in the space of `matrix`. */
 export type ClipRect = {
@@ -93,6 +108,26 @@ export type ImageContent = {
   state: number;
   stateFrom?: number;
   stateMix?: number;
+  plane?: {
+    shaderVersion: string;
+    owner: string;
+    sourceHash: string;
+    sourceSize: [number, number];
+    alphaMode: "preserve" | "opaque";
+    controls: ImageLayer["plane"];
+    motion: SampledImagePlane;
+  };
+};
+export type DepthImageContent = {
+  shaderVersion: string;
+  type: "depth-image";
+  width: number;
+  height: number;
+  layer: Extract<CompositionLayer, { type: "depth-image" }>;
+  motion: SampledDepthMotion;
+  sourceHash: string;
+  sourceSize: [number, number];
+  depthHash: string;
 };
 export type TextContent = {
   type: "text";
@@ -124,6 +159,7 @@ export type LayerContent =
   | ShapeContent
   | SolidContent
   | ImageContent
+  | DepthImageContent
   | TextContent
   | ProviderContent
   | SurfaceContent;
@@ -855,6 +891,7 @@ class GraphBuilder {
           color: state.color!,
         };
       case "image":
+        if (layer.sampling === "linear-srgb") this.spatial = true;
         return {
           type: "image",
           width: layer.size[0],
@@ -863,9 +900,44 @@ class GraphBuilder {
           rasterize: layer.rasterize ?? "draw",
           sources: layer.sources,
           state: state.state ?? 0,
+          ...(layer.sampling === "linear-srgb"
+            ? {
+                plane: {
+                  owner: layer.id,
+                  shaderVersion: DEPTH_IMAGE_SHADER_VERSION,
+                  sourceSize: imageAssetSize(
+                    this.comp,
+                    layer.sources[0]!.asset,
+                  ),
+                  sourceHash: this.comp.assets.find(
+                    (asset) => asset.id === layer.sources[0]!.asset,
+                  )!.sha256,
+                  alphaMode: layer.alphaMode ?? "preserve",
+                  controls: layer.plane,
+                  motion: state.imagePlane!,
+                },
+              }
+            : {}),
           ...(state.stateFrom !== undefined && state.stateMix !== undefined
             ? { stateFrom: state.stateFrom, stateMix: state.stateMix }
             : {}),
+        };
+      case "depth-image":
+        this.spatial = true;
+        return {
+          shaderVersion: DEPTH_IMAGE_SHADER_VERSION,
+          sourceSize: imageAssetSize(this.comp, layer.sourceAsset),
+          type: "depth-image",
+          width: layer.size[0],
+          height: layer.size[1],
+          layer,
+          motion: state.depthMotion!,
+          sourceHash: this.comp.assets.find(
+            (asset) => asset.id === layer.sourceAsset,
+          )!.sha256,
+          depthHash: this.comp.assets.find(
+            (asset) => asset.id === layer.depth.asset,
+          )!.sha256,
         };
       case "text":
         return {

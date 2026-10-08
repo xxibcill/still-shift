@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "perspective-plane",
+  "width": 320,
+  "height": 180,
+  "frameCount": 24,
+  "background": "#13242d",
+  "layers": [
+    {
+      "id": "plate",
+      "threeD": true,
+      "receivesLight": false,
+      "transform": {
+        "anchor": [90, 55],
+        "position": [160, 90, 0],
+        "scale": [1, 1],
+        "rotation": 0,
+        "opacity": 1,
+        "rotationY": {
+          "keys": [
+            {
+              "frame": 0,
+              "value": 20
+            },
+            {
+              "frame": 23,
+              "value": 65,
+              "interpolation": "linear"
+            }
+          ]
+        }
+      },
+      "type": "solid",
+      "size": [180, 110],
+      "color": "#ffffff"
+    }
+  ],
+  "fps": 24,
+  "assets": []
+}

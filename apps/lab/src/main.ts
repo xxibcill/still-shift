@@ -43,7 +43,7 @@ const byId = <T extends HTMLElement>(id: string): T => {
   return element as T;
 };
 
-const canvas = byId<HTMLCanvasElement>("preview");
+let canvas = byId<HTMLCanvasElement>("preview");
 const guides = byId<HTMLCanvasElement>("preview-guides");
 const formatSelect = byId<HTMLSelectElement>("output-format");
 const focusModeSelect = byId<HTMLSelectElement>("focus-mode");
@@ -73,6 +73,7 @@ let renderer: WebGLPreview | null = null;
 let timer: number | null = null;
 let currentFrame = 0;
 let localUrls: string[] = [];
+let sourceRequestId = 0;
 let previewRequestId = 0;
 let activeImages: {
   name: string;
@@ -130,7 +131,7 @@ const showFrame = (frameIndex: number): void => {
     `${formatTime(frameIndex, scene.timeline.fps)} / ${formatTime(scene.timeline.frameCount, scene.timeline.fps)}`;
   parameters.textContent = JSON.stringify(
     {
-      rendererVersion: scene.rendererVersion,
+      rendererVersion: renderer.rendererVersion,
       presetVersion: scene.presetVersion,
       source: scene.source,
       canvas: scene.canvas,
@@ -289,24 +290,54 @@ const loadScene = async (pair: PreviewPair) => {
   return {
     source,
     depth,
-    resolvedScene: resolveLabScene(source, depth, pair.durationMs),
   };
 };
 
-const activateScene = (
+const beginSourceRequest = (): number => {
+  previewRequestId += 1;
+  return ++sourceRequestId;
+};
+
+const activateScene = async (
   name: string,
   pair: PreviewPair,
   source: HTMLImageElement,
   depth: HTMLImageElement | null,
   nextScene: PreviewScene,
-  frameIndex = 0,
-): void => {
+  isCurrent: () => boolean,
+  frameIndex: number | (() => number) = 0,
+): Promise<void> => {
+  // Prepare on a private canvas. A superseded async load must not alter the
+  // active canvas or dispose the newer scene's GPU resources.
+  const nextCanvas = canvas.cloneNode(false) as HTMLCanvasElement;
+  nextCanvas.width = nextScene.canvas.width;
+  nextCanvas.height = nextScene.canvas.height;
+  const nextRenderer = await createWebGLPreview(
+    nextCanvas,
+    nextScene,
+    source,
+    depth,
+  );
+  if (!isCurrent()) {
+    nextRenderer.dispose();
+    return;
+  }
+  const nextFrame = Math.min(
+    typeof frameIndex === "function" ? frameIndex() : frameIndex,
+    nextScene.timeline.frameCount - 1,
+  );
+  try {
+    nextRenderer.renderFrame(nextFrame);
+  } catch (error) {
+    nextRenderer.dispose();
+    throw error;
+  }
   stop();
   renderer?.dispose();
-  canvas.width = nextScene.canvas.width;
-  canvas.height = nextScene.canvas.height;
+  canvas.replaceWith(nextCanvas);
+  canvas = nextCanvas;
   setPreviewAspect(previewStage, nextScene.canvas);
-  renderer = createWebGLPreview(canvas, nextScene, source, depth);
+  renderer = nextRenderer;
   scene = nextScene;
   activeImages = { name, pair, source, depth };
   byId<HTMLElement>("scene-name").textContent = name;
@@ -320,7 +351,8 @@ const activateScene = (
   frameSlider.max = String(nextScene.timeline.frameCount - 1);
   frameSlider.disabled = false;
   playButton.disabled = false;
-  showFrame(Math.min(frameIndex, nextScene.timeline.frameCount - 1));
+  showFrame(nextFrame);
+  previewStage.setAttribute("aria-busy", "false");
   status.classList.remove("error");
   status.textContent = `${name} ready · ${nextScene.canvas.width} × ${nextScene.canvas.height} · ${nextScene.motion.preset} / ${nextScene.motion.intensity} · ${nextScene.motion.mode} · ${nextScene.timeline.frameCount} frames · ${nextScene.warnings.length} warnings`;
 };
@@ -330,23 +362,60 @@ const inspectPair = async (
   pair: PreviewPair,
   requestId: number,
 ): Promise<void> => {
-  if (requestId !== previewRequestId) return;
+  if (requestId !== sourceRequestId) return;
   stop();
   status.textContent = `Loading ${name}…`;
-  const { source, depth, resolvedScene } = await loadScene(pair);
-  if (requestId !== previewRequestId) return;
-  activateScene(name, pair, source, depth, resolvedScene);
+  previewStage.setAttribute("aria-busy", "true");
+  try {
+    const { source, depth } = await loadScene(pair);
+    // Controls may update the displayed source while this request loads. Keep
+    // its source ownership and prepare again with the latest controls if needed.
+    while (requestId === sourceRequestId) {
+      const candidateId = ++previewRequestId;
+      const isCurrent = () =>
+        requestId === sourceRequestId && candidateId === previewRequestId;
+      try {
+        const nextScene = resolveLabScene(source, depth, pair.durationMs);
+        await activateScene(name, pair, source, depth, nextScene, isCurrent);
+      } catch (error) {
+        if (requestId !== sourceRequestId) return;
+        if (candidateId !== previewRequestId) continue;
+        throw error;
+      }
+      if (candidateId === previewRequestId) return;
+    }
+  } catch (error) {
+    if (requestId !== sourceRequestId) return;
+    previewStage.setAttribute("aria-busy", "false");
+    throw error;
+  }
 };
 
 const refreshScene = (): void => {
   if (!activeImages) return;
-  try {
-    const { name, pair, source, depth } = activeImages;
-    const nextScene = resolveLabScene(source, depth, pair.durationMs);
-    activateScene(name, pair, source, depth, nextScene, currentFrame);
-  } catch (error) {
-    showError(error);
-  }
+  const requestId = ++previewRequestId;
+  const { name, pair, source, depth } = activeImages;
+  void (async () => {
+    try {
+      const nextScene = resolveLabScene(source, depth, pair.durationMs);
+      status.textContent = `Updating ${name}…`;
+      previewStage.setAttribute("aria-busy", "true");
+      await activateScene(
+        name,
+        pair,
+        source,
+        depth,
+        nextScene,
+        () => requestId === previewRequestId,
+        () => currentFrame,
+      );
+    } catch (error) {
+      if (requestId === previewRequestId) {
+        previewStage.setAttribute("aria-busy", "false");
+        showError(error);
+      }
+    }
+  })();
 };
 
 const fetchJson = async <T extends z.ZodType>(
@@ -397,18 +466,18 @@ const showError = (error: unknown): void => {
 const prepareSelected = async (): Promise<void> => {
   const id = select.value;
   if (!id) return;
-  const requestId = ++previewRequestId;
+  const requestId = beginSourceRequest();
   status.classList.remove("error");
   prepareButton.disabled = true;
   status.textContent = `Preparing ${id}…`;
   try {
     const prepared = await prepareEntry(id);
-    if (requestId !== previewRequestId) return;
+    if (requestId !== sourceRequestId) return;
     await inspectPair(prepared.id, prepared, requestId);
   } catch (error) {
-    if (requestId === previewRequestId) showError(error);
+    if (requestId === sourceRequestId) showError(error);
   } finally {
-    if (requestId === previewRequestId) prepareButton.disabled = !select.value;
+    if (requestId === sourceRequestId) prepareButton.disabled = !select.value;
   }
 };
 
@@ -504,7 +573,7 @@ const buildGallery = async (): Promise<void> => {
             );
             posterCanvas.width = resolvedScene.canvas.width;
             posterCanvas.height = resolvedScene.canvas.height;
-            const posterRenderer = createWebGLPreview(
+            const posterRenderer = await createWebGLPreview(
               posterCanvas,
               resolvedScene,
               source,
@@ -590,7 +659,8 @@ if (OutputFormatSchema.safeParse(requestedFormat).success)
 updateFormatNote();
 
 select.addEventListener("change", () => {
-  previewRequestId += 1;
+  beginSourceRequest();
+  previewStage.setAttribute("aria-busy", "false");
   prepareButton.disabled = !select.value;
   status.textContent = select.value
     ? `${select.value} selected. Prepare to inspect its preview.`
@@ -603,7 +673,7 @@ galleryButton.addEventListener("click", () => {
   void buildGallery();
 });
 byId<HTMLButtonElement>("load-local").addEventListener("click", () => {
-  void loadLocal().catch(showError);
+  void loadLocal();
 });
 
 const loadLocal = async (): Promise<void> => {
@@ -613,7 +683,7 @@ const loadLocal = async (): Promise<void> => {
   localUrls.forEach((url) => URL.revokeObjectURL(url));
   localUrls = [URL.createObjectURL(source)];
   if (depth) localUrls.push(URL.createObjectURL(depth));
-  const requestId = ++previewRequestId;
+  const requestId = beginSourceRequest();
   prepareButton.disabled = !select.value;
   status.classList.remove("error");
   const pair: PreviewPair = {
@@ -621,7 +691,11 @@ const loadLocal = async (): Promise<void> => {
     depthUrl: localUrls[1] ?? null,
     durationMs: 5000,
   };
-  await inspectPair(source.name, pair, requestId);
+  try {
+    await inspectPair(source.name, pair, requestId);
+  } catch (error) {
+    if (requestId === sourceRequestId) showError(error);
+  }
 };
 frameSlider.addEventListener("input", () => {
   stop();

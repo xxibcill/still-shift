@@ -1,3 +1,4 @@
+import type * as LegacyOracle from "../helpers/legacy-illustrated-oracle.ts";
 import { CompositionAcceptance } from "../helpers/composition-acceptance.ts";
 import { commerceEffectVariants } from "../helpers/composition-effects.ts";
 import { commerceExposureVariants } from "../helpers/composition-commerce-exposure.ts";
@@ -192,11 +193,13 @@ try {
             typeof Render.compileCommerceScene
           >;
           const composition = JSON.parse(compositionJson) as Composition;
+          const oracleUrl = "/tests/helpers/legacy-illustrated-oracle.ts";
+          const oracle = (await import(oracleUrl)) as typeof LegacyOracle;
           const moduleUrl = "/packages/renderer-core/src/index.ts";
           const m = (await import(moduleUrl)) as typeof Render;
           const legacyCanvas = document.createElement("canvas"),
             canvas = document.createElement("canvas");
-          const legacy = m.createIllustratedPreview(
+          const legacy = oracle.createIllustratedPreview(
             legacyCanvas,
             scene,
             await m.loadIllustratedImages(scene, (id) => urls[id]!),
