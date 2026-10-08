@@ -5136,24 +5136,24 @@ rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/d
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
 standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/late-point-results/
 radial-GPU-Canvas-work/standalone-radial-point/control/encoded-view-results/stylize-
-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
+GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
 replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/
-native-controls and PNG source/draw/coordinate metadata pass 783 focused tests,
+native-controls and PNG source/draw/coordinate metadata pass 791 focused tests,
 complete audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
-snapshots. Standalone noiseControls admits actual 1024-byte temporary producer/
-partial record and independent 512-byte result before original getters/math/record
-factories. Transfer result out of phase and retain captured allocator ownership
-outside scope until consumer/scratch/allocator cleanup. Preserve original formulas/
-getters/borrowed params and inactive/caller route without extra leases. Clear actual
-partial/result/producer refs after null, preserve first null over secondary cleanup
-and exact retry. Eight new tests preserve six original controls/uniform tables and
-30 fields/exact getters, plus quota/partial-producer refs/captured lifetime/adoption/
-cleanup/retry/caller. All 775 prior tests rerun, with two affected tests releasing
-newly owned controls and using the same frozen oracle. Focused attempt 1 passes.
-Native probes, WebGL/providers and 69 typography tests pass; glyph 1.470339× meets
-unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output.
-Uniform/field/color helpers and other effects/cache/error/class/caller/depth sampling
-remain pending. Recording/device/pool/shader/paint/
+snapshots. Standalone noiseFieldUniforms admits actual 1024-byte temporary producer/
+partial record-vectors and independent 1536-byte uniform record/vector result before
+original getter/factories. Capture empty actual seed/z vectors before element reads,
+retaining exact seven-read getter order/field insertion. Transfer completed record/
+vectors out of phase, retire producer and retain captured allocator ownership outside
+scope until consumer/scratch/allocator cleanup. Preserve inactive/caller route without
+extra leases, borrowed controls, first null over secondary cleanup and exact retry.
+Eight new tests retain six independent complete uniform/getter tables and verify
+quota/actual partial vectors/producer/lifetime/all getter cuts/adoption/cleanup/retry/
+caller. All 783 prior tests rerun; two affected tests release newly owned uniforms
+after unchanged frozen assertions. Focused attempt 1 passes. Native probes,
+WebGL/providers and 69 typography tests pass; glyph 1.368082× meets unchanged 1.5
+maximum. All 64 exports / 768 bodies/frames retain prior exact output. Field/color
+helpers and other effects/cache/error/class/caller/depth sampling remain pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

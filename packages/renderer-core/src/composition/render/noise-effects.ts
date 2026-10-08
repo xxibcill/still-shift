@@ -50,12 +50,22 @@ function clearNoiseControlResult(value: NoiseControls) {
 function clearNoiseControls(work: NoiseControlWork) {
   if (work.controls) clearNoiseControlResult(work.controls);
 }
-function clearGpuNoiseWork(work: GpuNoiseWork) {
-  clearNoiseControls(work);
+function clearNoiseUniformWork(work: NoiseUniformWork) {
   if (work.seedParts) work.seedParts.length = 0;
   if (work.zParts) work.zParts.length = 0;
   if (work.uniformBase)
     for (const key in work.uniformBase) delete work.uniformBase[key];
+}
+function clearNoiseUniformResult(
+  value: Record<string, number | readonly number[]>,
+) {
+  if (Array.isArray(value.seedParts)) value.seedParts.length = 0;
+  if (Array.isArray(value.zParts)) value.zParts.length = 0;
+  for (const key in value) delete value[key];
+}
+function clearGpuNoiseWork(work: GpuNoiseWork) {
+  clearNoiseControls(work);
+  clearNoiseUniformWork(work);
   if (work.effectUniforms)
     for (const key in work.effectUniforms) delete work.effectUniforms[key];
   if (work.uniforms) for (const key in work.uniforms) delete work.uniforms[key];
@@ -372,15 +382,76 @@ function uniforms(
   c: NoiseControls,
   work?: NoiseUniformWork,
 ): Record<string, number | readonly number[]> {
+  if (work || !renderMemory()) return produceNoiseUniforms(c, work);
+  const phase = allocateRenderMetadata<NoiseUniformsPhase>(
+    1024,
+    () => ({ managed: true }),
+    false,
+    clearNoiseUniformsPhase,
+  );
+  let result: Record<string, number | readonly number[]> | undefined,
+    failed = false,
+    failure: unknown;
+  try {
+    result = allocateRenderMetadata<Record<string, number | readonly number[]>>(
+      1536,
+      (phase.producer = () => produceNoiseUniforms(c, phase)),
+      false,
+      clearNoiseUniformResult,
+    );
+    phase.uniformBase = phase.seedParts = phase.zParts = undefined;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      releaseRenderMetadata(phase);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the first producer/admission/cleanup error. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+type NoiseUniformsPhase = NoiseUniformWork & {
+  managed: boolean;
+  producer?: (() => Record<string, number | readonly number[]>) | undefined;
+};
+function clearNoiseUniformsPhase(phase: NoiseUniformsPhase) {
+  clearNoiseUniformWork(phase);
+  for (const key in phase)
+    delete (phase as Partial<NoiseUniformsPhase>)[
+      key as keyof NoiseUniformsPhase
+    ];
+}
+function produceNoiseUniforms(
+  c: NoiseControls,
+  work?: NoiseUniformWork,
+): Record<string, number | readonly number[]> {
   const result = {} as Record<string, number | readonly number[]>;
   if (work) work.uniformBase = result;
   result.inverseScale = c.inverseScale;
   result.octaves = c.octaves;
-  const seed = [c.seed & 65535, c.seed >>> 16];
+  const seed: number[] = [];
   if (work) work.seedParts = seed;
+  seed[0] = c.seed & 65535;
+  seed[1] = c.seed >>> 16;
   result.seedParts = seed;
-  const z = [c.z & 65535, c.z >>> 16, c.zWeight];
+  const z: number[] = [];
   if (work) work.zParts = z;
+  z[0] = c.z & 65535;
+  z[1] = c.z >>> 16;
+  z[2] = c.zWeight;
   result.zParts = z;
   return result;
 }

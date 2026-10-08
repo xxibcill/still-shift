@@ -2058,6 +2058,27 @@ depth sampling/provider/graph/font/common/ledger/Node and production/aggregate/s
 final gates remain pending.
 [Evidence](./composition-ce15-noise-controls-metadata-results.json).
 
+## Accepted standalone noise-uniform metadata checkpoint — 2026-10-08
+
+Default active helper admits actual 1024-byte temporary producer/partial record and
+independent 1536-byte uniform record/vector result before original getter/factories.
+Capture empty actual seed/z vectors before original element reads, preserving the
+seven-read getter order and field insertion. Transfer completed record and vectors
+out of phase, retire producer and retain captured allocator ownership outside scope
+until consumer/scratch/allocator cleanup. Preserve inactive/caller route without extra
+leases, borrowed controls, first null over secondary cleanup and exact retry.
+
+Build/lint/boundaries and 791 focused tests / 90 files pass on attempt 1. Eight new
+tests retain six independently frozen complete uniform/getter tables and verify
+quota/actual partial record-vectors/producer/captured lifetime/each getter/adoption/
+cleanup null/retry/caller. All 783 prior tests rerun; two affected tests release the
+newly owned uniforms after their unchanged frozen assertions. Audit 144/8,000,
+96 RPC snapshots, native probes, WebGL/providers, 69 typography tests and 64 prior-
+exact exports / 768 bodies/frames pass; glyph 1.368082× meets unchanged 1.5 maximum.
+Field/color helpers, other effects/cache/registry/error/class/depth sampling/provider/
+graph/font/common/ledger/Node and production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-noise-uniforms-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -176,7 +176,9 @@ it("preserves all 16 original native callbacks/full pixels, six controls/uniform
               }),
               controls = noiseControls(p);
             expect(controls).toEqual(row.controls);
-            expect(noiseFieldUniforms(controls)).toEqual(row.uniforms);
+            const fieldUniforms = noiseFieldUniforms(controls);
+            expect(fieldUniforms).toEqual(row.uniforms);
+            releaseRenderMetadata(fieldUniforms);
             const fields = [
               [0.5, 0.5],
               [1.5, 1.5],
