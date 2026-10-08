@@ -99,24 +99,26 @@ still hold before relying on them.
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
   mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer, managed plan/sum-shader cache, particle/
+  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
   texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 799 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. Standalone noiseField admits actual
-  1024-byte producer/plane owner before original octave getters/math/plane factories.
-  Default seed scalar retains original parameter evaluation, one read and allocation-
-  free getter failure. Hold producer through final scalar consumer, drop each actual
-  original plane after its octave even on null and retire phase. Preserve inactive/
-  caller route without extra leases, borrowed controls, first null and exact retry.
-  Eight new tests retain 60 independent original field value/getter/math-count rows,
-  quota/default seed/actual producer-plane refs/all getters/math/adoption/cleanup/
-  retry/caller. All 791 prior tests rerun unchanged. Attempt 1 builds but lint rejects
-  throw from finally; first error now propagates after cleanup. Attempt 2 passes.
-  Native probes, WebGL/providers and 69 typography tests pass; glyph 1.407681×
-  meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact
-  output. Color helper and other effects/cache/error/class/caller/depth sampling
-  remain pending.
+  metadata pass 810 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Standalone native fractalNoiseColor admits
+  actual 4096-byte producer/map-handler/receiver/callback/arguments and independent
+  512-byte result capacity before factories. Original native length read/coercion
+  grows result capacity to 512+8\*n before output creation; preserve original getter
+  receiver/order/has/constructor/channels/sparse holes without another length read.
+  Transfer completed result, clear phase/tuple/handler refs, keep actual result under
+  captured allocator outside scope until consumer; preserve inactive/caller route
+  and first null. Eleven new tests / 22 original color/getter/sparse/length rows,
+  quota/actual refs/lifetime/all getter-clamp cuts/adoption/cleanup/retry/caller/native
+  coercion/admission hook/custom-map bound. All 799 prior tests rerun. Attempt 1
+  test-only const lint and attempt 2 Vitest proxy-inspection recursion (809 pass)
+  repaired; attempt 3 passes. Native probes, WebGL/providers/69 typography tests
+  pass; glyph 1.410120× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/
+  frames retain prior exact output. Non-native map full-array bound exceeds eventual
+  8-GiB quotas; arbitrary map/species intermediates need ownership contracts. Other
+  effects/cache/error/class/caller/depth sampling remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -352,6 +354,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual standalone native noise-color metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `5330322a`.
+- **Done:** admit actual map producer/receiver/handler/arguments and native length-
+  sized result before factories; retain actual result outside scope until consumer.
+- **Results:** build/lint/boundaries, 810 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.410120×.
+- **Verification:** eleven new tests / 22 original complete color/getter/has/sparse/
+  length rows, quota/actual refs/lifetime/getter-clamp/adoption/cleanup/retry/caller/
+  native coercion/admission hook/custom-map bound; all 799 prior tests rerun.
+- **Rejected / repaired:** test-only const lint in attempt 1; recursive Vitest proxy
+  observer in attempt 2 (809 pass). Boolean identity repair; attempt 3 passes.
+- **Next:** arbitrary map/species intermediate contracts, other effects/cache/class/
+  provider/graph/font/common/registry/ledger/Node, aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [noise color evidence](./composition-ce15-noise-color-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual standalone noise-field metadata
 

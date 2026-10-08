@@ -2100,6 +2100,32 @@ and 64 prior-exact exports / 768 bodies/frames pass; glyph 1.407681× meets unch
 provider/graph/font/common/ledger/Node and production/aggregate/speed/final gates
 remain pending. [Evidence](./composition-ce15-noise-field-metadata-results.json).
 
+## Accepted standalone native noise-color metadata checkpoint — 2026-10-08
+
+Default active helper admits actual 4096-byte producer/map-handler/receiver/callback/
+argument phase and independent 512-byte result before factories. Native map's original
+length read/coercion grows capacity to 512+8\*n before output creation, with original
+getter receiver/order/has/constructor/channel reads and sparse holes; no extra length
+read or fixed RGB-length assumption. Transfer actual completed result out of phase,
+clear tuple/handler/producer refs and retain captured allocator ownership outside
+scope until consumer/scratch/allocator clears actual result. Preserve inactive and
+admitted Canvas caller route without extra leases, borrowed colors and first null.
+
+Build/lint/boundaries and 810 focused tests / 92 files pass on attempt 3. Attempt 1
+has test-only const lint errors; attempt 2 has one recursive Vitest proxy-observer
+assertion, with 809 tests passing. Boolean identity assertion repairs the observer.
+Eleven new tests retain 22 original complete color/getter/has/sparse/length rows and
+verify quota/actual refs/captured lifetime/all getter-clamp cuts/adoption/cleanup/
+retry/caller/native length coercion/admission hook/conservative custom-map bound.
+All 799 prior tests rerun; two affected tests release results after unchanged oracles.
+Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography tests
+and 64 prior-exact exports / 768 bodies/frames pass; glyph 1.410120× meets unchanged
+1.5 maximum. Non-native borrowed map reserves full ordinary-array maximum before
+invocation, exceeding eventual 8-GiB quotas. Arbitrary map/species intermediates still
+need ownership contracts. Other effects/cache/class/provider/common/ledger/Node and
+production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-noise-color-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

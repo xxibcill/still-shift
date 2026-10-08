@@ -15,8 +15,10 @@ import type { WebglSurface } from "./webgl-device.ts";
 import type { CanvasSurface } from "./canvas2d.ts";
 import {
   allocateRenderMetadata,
+  allocateManagedRenderMetadata,
   releaseRenderMetadata,
 } from "../../managed-metadata.ts";
+import type { MemoryLease } from "../../managed-memory.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
@@ -506,6 +508,119 @@ export function fractalNoiseColor(
   rgb: readonly number[],
   work?: NoiseColorWork,
 ): number[] {
+  const memory = renderMemory();
+  if (work || !memory) return produceFractalNoiseColor(value, p, rgb, work);
+  const phase = allocateRenderMetadata<NoiseColorPhase>(
+    4096,
+    () => ({ managed: true }),
+    false,
+    clearNoiseColorPhase,
+  );
+  let result: number[] | undefined,
+    failed = false,
+    failure: unknown;
+  try {
+    result = allocateManagedRenderMetadata<number[]>(
+      memory,
+      512,
+      (phase.producer = () =>
+        produceFractalNoiseColor(value, p, rgb, phase, phase)),
+      false,
+      clearNoiseColorResult,
+      (phase.admitted = (lease) => {
+        phase.resultLease = lease;
+      }),
+    );
+    phase.colorOutput = undefined;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      releaseRenderMetadata(phase);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the first producer/admission/cleanup error. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+type NoiseColorPhase = NoiseColorWork & {
+  managed: boolean;
+  producer?: (() => number[]) | undefined;
+  admitted?: ((lease: MemoryLease) => void) | undefined;
+  resultLease?: MemoryLease | undefined;
+  mapper?: (readonly number[])["map"] | undefined;
+  receiver?: readonly number[] | undefined;
+  arguments?: [NonNullable<NoiseColorWork["colorProducer"]>] | undefined;
+  handler?: ProxyHandler<readonly number[]> | undefined;
+};
+const nativeNoiseColorMap = Array.prototype.map;
+function clearNoiseColorResult(result: number[]) {
+  result.length = 0;
+}
+function clearNoiseColorPhase(phase: NoiseColorPhase) {
+  if (phase.colorOutput) clearNoiseColorResult(phase.colorOutput);
+  if (phase.arguments) (phase.arguments as unknown[]).length = 0;
+  if (phase.handler) delete phase.handler.get;
+  for (const key in phase)
+    delete (phase as Partial<NoiseColorPhase>)[key as keyof NoiseColorPhase];
+}
+function managedNoiseColorMap(
+  phase: NoiseColorPhase,
+  rgb: readonly number[],
+  field: number,
+  dark: readonly number[],
+  light: readonly number[],
+  strength: number,
+): number[] {
+  const mapper = (phase.mapper = rgb.map);
+  const producer = (phase.colorProducer = (source, c) =>
+    unit(
+      source + (dark[c]! + (light[c]! - dark[c]!) * field - source) * strength,
+    ));
+  phase.arguments = [producer];
+  if (mapper === nativeNoiseColorMap) {
+    phase.handler = {
+      get(target, key) {
+        const value: unknown = Reflect.get(target, key, target);
+        if (key !== "length") return value;
+        // Native map reads/coerces length once before creating its output.
+        const numeric = +(value as number);
+        const length = !(numeric > 0)
+          ? 0
+          : numeric >= 9007199254740991
+            ? 9007199254740991
+            : numeric - (numeric % 1);
+        phase.resultLease!.resize(512 + length * 8);
+        return length;
+      },
+    };
+    phase.receiver = new Proxy(rgb, phase.handler);
+  } else {
+    // A borrowed arbitrary map has no declared length-based producer bound.
+    phase.resultLease!.resize(512 + 8 * 4294967295);
+    phase.receiver = rgb;
+  }
+  return Reflect.apply(mapper, phase.receiver, phase.arguments) as number[];
+}
+function produceFractalNoiseColor(
+  value: number,
+  p: Params,
+  rgb: readonly number[],
+  work?: NoiseColorWork,
+  phase?: NoiseColorPhase,
+): number[] {
   const field = unit(
       (value / 65535 - 0.5) * scalar(p, "contrast") +
         0.5 +
@@ -515,14 +630,16 @@ export function fractalNoiseColor(
     light = p.light as readonly number[],
     strength =
       scalar(p, "amount") * (dark[3]! + (light[3]! - dark[3]!) * field);
-  const result = rgb.map(
-    noiseColorProducer(work, (source, c) =>
-      unit(
-        source +
-          (dark[c]! + (light[c]! - dark[c]!) * field - source) * strength,
-      ),
-    ),
-  );
+  const result = phase
+    ? managedNoiseColorMap(phase, rgb, field, dark, light, strength)
+    : rgb.map(
+        noiseColorProducer(work, (source, c) =>
+          unit(
+            source +
+              (dark[c]! + (light[c]! - dark[c]!) * field - source) * strength,
+          ),
+        ),
+      );
   if (work) work.colorOutput = result;
   return result;
 }

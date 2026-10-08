@@ -33,17 +33,21 @@ export function allocateRenderMetadata<T extends object>(
     destroy,
   );
 }
-/** Keep late consumer results under their actual captured allocator outside render scope. */
+/** Keep late results under their captured allocator; an admitted hook can grow
+ * capacity during a native producer's original extent read before its factory.
+ */
 export function allocateManagedRenderMetadata<T extends object>(
   memory: ManagedMemory,
   bytes: number,
   factory: () => T,
   retained = false,
   destroy?: (value: T) => void,
+  admitted?: (lease: MemoryLease) => void,
 ): T {
   const lease = memory.reserve("metadata", bytes, undefined, retained);
   let value: T | undefined;
   try {
+    admitted?.(lease);
     value = factory();
     const owner = value;
     memory.adopt(owner, lease, () => {

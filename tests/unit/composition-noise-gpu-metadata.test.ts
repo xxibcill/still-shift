@@ -201,9 +201,9 @@ it("preserves all 16 original native callbacks/full pixels, six controls/uniform
             releaseRenderMetadata(controls);
           } else {
             const rgb = structuredClone(row.rgb!);
-            expect(fractalNoiseColor(row.value!, params, rgb)).toEqual(
-              row.output,
-            );
+            const color = fractalNoiseColor(row.value!, params, rgb);
+            expect(color).toEqual(row.output);
+            releaseRenderMetadata(color);
             expect(rgb).toEqual(row.rgb);
           }
         };
