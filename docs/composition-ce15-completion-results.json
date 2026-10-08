@@ -35,8 +35,7 @@
     }
   },
   "remaining": [
-    "finish native text focused depth and baseline checks",
-    "complete required local pnpm check on the final repair checkpoint"
+    "complete required pinned local pnpm check on the final native-text repair checkpoint"
   ],
   "productionMemory": {
     "status": "production browser admission, bounded Node result transfer and complete 48-case area matrix passed",
@@ -338,7 +337,7 @@
   },
   "nativeTextCheckpoint": {
     "parent": "b2d7a6a1175c3d7ad89280e8e736aab0d1eb0348",
-    "status": "focused verification in progress",
+    "status": "focused acceptance passed",
     "scope": "native driver production is outside application admission; returned text is charged before application consumption/message construction",
     "focusedTests": 44,
     "passed": [
@@ -346,19 +345,21 @@
       "changed-file lint",
       "vertical-image: 1080x1920, 90 frames",
       "export: 150 frames, transports, fallback, cleanup",
-      "golden: 30 comparisons, no baseline changes"
+      "golden: 30 comparisons, no baseline changes",
+      "complete composition depth acceptance",
+      "176 frozen baseline items / 36061 frames"
     ],
-    "remaining": [
-      "composition depth acceptance",
-      "frozen composition baselines",
-      "final complete gate"
-    ],
+    "remaining": ["final complete local gate"],
     "logs": {
       "/private/tmp/ce15-native-text-unit.log": "46925969a8dd755335c01b9d2eb1e18246008a070f6ae30a392681f39fc3b00a",
       "/private/tmp/ce15-native-text-static.log": "a7b7f717ddde363a75de3369b8e1fb6be1b450099a8c470912751ab671998849",
       "/private/tmp/ce15-native-text-vertical.log": "b5e0ffd98f3ab41ff18f02619834cd04476dcda38708d683214726b5257401db",
       "/private/tmp/ce15-native-text-export.log": "6c1ea6efb09a190c6e1fc1054b7cdb6f02c7e99e03d1f4bcef1fb5db264805eb",
-      "/private/tmp/ce15-native-text-golden.log": "9db239bc46b8d8bc93a50631b9eb1be7045cfe261512a8efca67842233721b91"
-    }
+      "/private/tmp/ce15-native-text-golden.log": "9db239bc46b8d8bc93a50631b9eb1be7045cfe261512a8efca67842233721b91",
+      "/private/tmp/ce15-native-text-depth.log": "b742ef713fc9efbb0ae4770582f1bb432ac98cac344b680fb9a9fa25a3aff5f4",
+      "/private/tmp/ce15-native-text-baselines.log": "66f9d49607a22a23afcddd040c323227d48b053a3d0d95311a2b3478b3213ea3"
+    },
+    "codeCheckpoint": "7b889399",
+    "review": "No concrete correctness or standards blocker; native query, diagnostic and cleanup order preserved."
   }
 }

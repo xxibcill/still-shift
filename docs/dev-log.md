@@ -48,8 +48,9 @@ still hold before relying on them.
   The full gate passes all CE15 browser checks but stops at legacy depth startup:
   a short native renderer string incorrectly reserved 1 GiB. The repair uses
   actual returned-text admission, preserving queries, diagnostics and cleanup.
-  44 focused tests, vertical/general exports and 30 golden comparisons pass;
-  depth acceptance and frozen baselines are running before the final full gate.
+  44 focused tests, vertical/general exports, 30 golden comparisons, complete
+  depth acceptance and all 176 frozen baseline items (36,061 frames) pass.
+  Repair `7b889399` is pushed; the complete final gate remains required.
   [Completion evidence](./composition-ce15-completion-results.json).
 - **Owner continuation (2026-10-09):** finish CE15, commit and push, then create
   a new branch and complete CE14 (mesh warp and puppet pins), following the
@@ -92,7 +93,8 @@ still hold before relying on them.
 - **Done:** charge actual native-returned renderer/log text and application Error
   capacity, replacing impossible maximum-V8-string reservations.
 - **Results:** 44 focused tests, build/lint, vertical/general exports and 30 golden
-  comparisons pass. Depth acceptance and frozen baselines are still running.
+  comparisons, complete depth acceptance and all 176 frozen baseline items
+  (36,061 frames) pass. Independent review found no remaining concrete blocker.
 - **Rejected:** increasing worker quotas to accommodate theoretical 1–2 GiB
   diagnostic strings; native production and application retention are distinct.
 - **Next:** final CE15 gate/commit/push, then a new CE14 branch, as requested.

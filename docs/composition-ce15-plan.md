@@ -2528,12 +2528,14 @@ application consumption/message construction. Native driver production remains
 outside declared application admission; worker quotas are unchanged.
 
 The repair passes 44 focused tests, vertical/general exports and 30 golden
-comparisons without baseline changes. Depth acceptance and frozen baselines are
-running. No complete gate is claimed yet.
+comparisons without baseline changes. Repair `7b889399` also passes complete
+depth acceptance and all 176 frozen baseline items (36,061 frames). Independent
+review found no remaining concrete blocker. No complete gate is claimed yet.
 
 ## Remaining acceptance
 
-Finish focused depth/baseline verification, commit the repaired checkpoint and
-complete the required pinned local `pnpm check`. Preserve failed gate evidence.
+Complete the required pinned local `pnpm check` on the repaired checkpoint.
+Focused depth/baseline verification and review are complete; preserve failed gate
+evidence.
 After CE15 completion and push, continue on a new CE14 branch under the owner's
 2026-10-09 instruction. GitHub Actions remain prohibited; no work is scheduled.

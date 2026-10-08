@@ -5560,8 +5560,9 @@ Checkpoint `b2d7a6a1` passes the two-minute proof at **3.305×** with identical
 encoded/frame/audio output. Its full gate passes all CE15 suites, including all
 formats, parallel cleanup, dependency caches, frame-rate/audio and 8192² checks,
 then exposes an oversized native-text reservation in legacy depth initialization.
-The repair passes 44 focused tests, vertical/general exports and golden parity;
-depth/baseline checks and a final complete gate remain required.
+Repair `7b889399` passes 44 focused tests, vertical/general exports, golden
+parity, complete depth acceptance and 176 frozen baseline items (36,061 frames).
+The final complete gate remains required.
 
 Counters cover declared application allocations and retained native-returned
 text; native driver production and process RSS are separate. See the
