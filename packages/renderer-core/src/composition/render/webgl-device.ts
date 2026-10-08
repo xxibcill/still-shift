@@ -51,6 +51,16 @@ type Program = {
   uniforms: Map<string, WebGLUniformLocation>;
 };
 
+type SurfaceSwap = {
+  textures: [WebGLTexture, WebGLTexture] | undefined;
+  framebuffers: [WebGLFramebuffer, WebGLFramebuffer] | undefined;
+};
+function clearSurfaceSwap(value: SurfaceSwap) {
+  if (value.textures) (value.textures as unknown[]).length = 0;
+  if (value.framebuffers) (value.framebuffers as unknown[]).length = 0;
+  value.textures = undefined;
+  value.framebuffers = undefined;
+}
 type PassMetadata = {
   inputs: Set<WebglSurface> | undefined;
   uniforms: [string, UniformValue][] | undefined;
@@ -791,11 +801,23 @@ export class WebglDevice {
       throw new Error(
         "comp-webgl-size: cannot exchange differently sized surfaces",
       );
-    [first.texture, second.texture] = [second.texture, first.texture];
-    [first.framebuffer, second.framebuffer] = [
-      second.framebuffer,
-      first.framebuffer,
-    ];
+    const temporary = allocateRenderMetadata<SurfaceSwap>(
+      256,
+      () => ({ textures: undefined, framebuffers: undefined }),
+      false,
+      clearSurfaceSwap,
+    );
+    try {
+      const textures = (temporary.textures = [second.texture, first.texture]);
+      [first.texture, second.texture] = textures;
+      const framebuffers = (temporary.framebuffers = [
+        second.framebuffer,
+        first.framebuffer,
+      ]);
+      [first.framebuffer, second.framebuffer] = framebuffers;
+    } finally {
+      releaseRenderMetadata(temporary);
+    }
   }
 
   copyRegion(surface: WebglSurface, rect: Bounds) {
@@ -899,7 +921,23 @@ export class WebglDevice {
             top < bottom;
             top++, bottom--
           ) {
-            row.set(pixels.subarray(top * stride, (top + 1) * stride));
+            const current = allocateRenderMetadata<{
+              view: Uint8Array<ArrayBuffer> | undefined;
+            }>(
+              128,
+              () => ({
+                view: pixels.subarray(top * stride, (top + 1) * stride),
+              }),
+              false,
+              (value) => {
+                value.view = undefined;
+              },
+            );
+            try {
+              row.set(current.view!);
+            } finally {
+              releaseRenderMetadata(current);
+            }
             pixels.copyWithin(
               top * stride,
               bottom * stride,

@@ -57,6 +57,15 @@ export function fakeWebglDevice() {
     TRIANGLES: 21,
     TEXTURE0: 22,
     SCISSOR_TEST: 23,
+    READ_FRAMEBUFFER: 24,
+    RGBA: 25,
+    UNSIGNED_BYTE: 26,
+    NO_ERROR: 0,
+    getError: vi.fn(() => 0),
+    readPixels: vi.fn((...args: unknown[]) => {
+      const pixels = args[6] as Uint8Array;
+      for (let i = 0; i < pixels.length; i++) pixels[i] = i % 256;
+    }),
   };
   const getContext = vi.fn(() => gl);
   const canvas = {

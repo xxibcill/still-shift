@@ -980,6 +980,27 @@ clip/read/swap metadata, helper/remaining runtime/Node/production/aggregate
 admission, speed and full gate remain pending.
 [Evidence](./composition-ce15-pass-metadata-results.json).
 
+## Accepted GPU row-view/swap checkpoint — 2026-10-08
+
+Reserve 128 before each original readback subarray view. Hold actual alias through
+original row.set, then clear/release before unchanged copyWithin/second row.set;
+borrow its existing parent backing without duplicate pixel charge. Original native
+read count, row order, top-down byte sequence and pixel peak remain. After original
+swap validation, reserve 256 before both original two-element native handle tuple
+arrays, retain through unchanged destructuring assignments, then clear actual
+references. Original handle identity/native cleanup/failure order stays. Six
+regressions cover before-producer denial, native bytes/peak, null failures/retry,
+before-getter swap denial and exact identity/native disposal.
+
+Build/lint/boundaries and 249 focused tests pass. Complete audit 144/8,000, 96 RPC
+snapshots, 22 moving/blurred and ten stationary native frames, native snapshots,
+original WebGL, 69 typography tests and provider fixtures pass; glyph 1.424242×
+meets unchanged 1.5 maximum. All 64 exports preserve 768 complete bodies/frames
+against pushed `c648f28`. Primary returned view, shader/program/uniform/dirty/solid/
+clip and helper/remaining runtime/Node/production/aggregate admission, speed and
+full gate remain pending.
+[Evidence](./composition-ce15-device-views-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

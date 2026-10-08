@@ -5129,12 +5129,12 @@ native complete-body oracles, twelve failure cases, original media/WebGL export
 commands and 64 prior-exact public exports / 768 bodies and frames. Owned submission/
 source/root/surface metadata, cache checksums, WebGL keys/controls and vector/
 raster/framebuffer/readback/path/paint-bound/replay/recording group/command/mark/
-snapshot/call-input/controller/wrapper and device/native-surface/pool-key/array/pass
-temporary metadata now pass 243 focused tests, the complete audit, 22 moving/blurred
-and ten stationary native frames and 96 owned RPC snapshots. Actual pass input Set/
-sampler and uniform tuple/outer arrays pre-admit, stay through native draw, then
-clear; original getter/native/null behavior passes. Native snapshots, original
-WebGL/providers and 69 typography tests pass; glyph 1.384375× meets unchanged
+snapshot/call-input/controller/wrapper and device/native-surface/pool-key/array/pass/
+row-view/swap metadata now pass 249 focused tests, the complete audit, 22 moving/
+blurred and ten stationary native frames and 96 owned RPC snapshots. Actual row
+views/swap tuples pre-admit, stay through original consumers, then clear; original
+bytes/read count/pixel peak/native/null behavior passes. Native snapshots, original
+WebGL/providers and 69 typography tests pass; glyph 1.424242× meets unchanged
 1.5 maximum. All 64 exports / 768 bodies and frames retain prior exact output. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
