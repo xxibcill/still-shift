@@ -1,8 +1,9 @@
 # CE15 delivery plan
 
-Codex is working on `codex/composition-ce15` from completed CE13 `aedfc9e`.
-CE13 PR #48 is open and attached. CE15 remains in progress; its first focused
-renderer checkpoint and all seven explicit delivery profiles pass focused acceptance.
+CE15 is complete in PR #49 (`codex/composition-ce15`). The final gate and speed
+proof are recorded under [completed acceptance](#completed-acceptance--2026-10-09).
+The dated checkpoints below preserve the implementation history and rejected
+experiments; their pending items are resolved by the final acceptance record.
 
 ## Accepted renderer checkpoint — 2026-10-07
 
@@ -2552,10 +2553,15 @@ The outer budget now allows setup, while the six-second assertion is unchanged.
 All 17 preview integration tests pass. This is a test-only repair; production and
 the `21817411` speed proof remain unchanged.
 
-## Remaining acceptance
+## Completed acceptance — 2026-10-09
 
-Complete the required pinned local `pnpm check` on the repaired checkpoint.
-Focused depth/baseline verification and review are complete; preserve failed gate
-evidence.
-After CE15 completion and push, continue on a new CE14 branch under the owner's
-2026-10-09 instruction. GitHub Actions remain prohibited; no work is scheduled.
+Final gate checkpoint `ae1a05bb` passes the complete local `pnpm check` in
+13928.03 seconds. Production code `21817411` has a 120-second speed proof measuring **3.408×**
+(436.542 → 128.082 seconds) with exact encoded, frame and audio equality.
+The required format, alpha, parallel-boundary, cancellation and frozen-baseline
+checks pass in the complete gate. Full-area smoke checks also pass on this code.
+
+All CE15 requirements and final acceptance are complete. PR #49 contains the
+implementation and [checkpoint-specific evidence](./composition-ce15-completion-results.json).
+GitHub Actions remain disabled. CE14 follows this checkpoint on a separate branch under the expanded goal.
+CE5-X/Q9, CE6-P and separate owner work remain outside scope. No PR is merged.

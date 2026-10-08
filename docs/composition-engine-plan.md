@@ -381,7 +381,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE12  | Motion linting                                 | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   | Codex                  | `codex/composition-ce13`            | `[x]`  | [evidence](./composition-ce13-results.json)                                        |
 | CE14  | Mesh warp and puppet pins                      | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
-| CE15  | Output formats, caching and parallel rendering | D      | CE3                        | Codex                  | `codex/composition-ce15`            | `[~]`  | [Format/alpha proof](./composition-ce15-results.json)                              |
+| CE15  | Output formats, caching and parallel rendering | D      | CE3                        | Codex                  | `codex/composition-ce15`            | `[x]`  | [Completion evidence](./composition-ce15-completion-results.json)                  |
 | CE16  | Programmable soundtrack project and timeline   | D      | CE3; CE16-A                | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
 
 ### Phases and parallel work
@@ -5555,21 +5555,24 @@ decode-back pixel check.
 **Verification:** Format tests, alpha round-trip test, chunk-boundary parity test
 (frames on both sides of a boundary), cancellation during parallel export.
 
-**Final acceptance in progress (2026-10-09):** all CE15 features are implemented.
-Production checkpoint `21817411` passes the two-minute proof at **3.408×** with
-identical encoded/frame/audio output. Focused output, cache, parallel/memory,
-maximum-area, native loader/text, depth and frozen-baseline checks pass. Final
-gate attempts and their repairs are recorded; no complete gate is claimed yet.
-The latest test-only repair preserves the six-second preview recovery assertion
-while giving its enclosing test enough setup time; all 17 preview tests pass.
+**Completion record (2026-10-09):** CE15 is complete in PR #49. Final code
+checkpoint `ae1a05bb` passes the complete pinned local `pnpm check` in
+13928.03 seconds, including format/alpha/native-depth checks, parallel
+boundary/cancellation regressions and frozen baselines. Production checkpoint `21817411` has a
+120-second, 2,880-frame benchmark that measures **3.408×** end-to-end speedup
+(436.542 → 128.082 seconds) with identical complete encoded output, decoded
+frames and audio. The full 48-case 8192×8192 matrix passes at `adfb9592`; final
+maximum-area smoke checks also pass in the full gate.
 
-Counters cover declared application allocations and retained native-returned
-text; native driver production and process RSS are separate. See the
-[delivery plan](./composition-ce15-plan.md) and
-[completion evidence](./composition-ce15-completion-results.json).
-After CE15 is complete and pushed, continue CE14 on a new branch as requested.
+Static cache selection covers constant references, expression overrides and
+implicit dependencies; complete evaluated content keys authorize every reuse.
+Production browser storage and bounded Node result transfer stay admitted through
+acknowledgement/publication. Counters cover declared application allocations;
+native browser/driver/FFmpeg RSS is measured separately.
 
-**Completion record:** _to be filled in._
+[Completion evidence](./composition-ce15-completion-results.json),
+[delivery plan](./composition-ce15-plan.md),
+[format evidence](./composition-ce15-format-results.json).
 
 ---
 

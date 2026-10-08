@@ -1,6 +1,6 @@
 {
   "milestone": "CE15",
-  "status": "in-progress",
+  "status": "complete",
   "base": "671caf2f4c34b58189a167b52fbbe2ddbea8e2e3",
   "date": "2026-10-09",
   "statistics": {
@@ -34,9 +34,7 @@
       "repair": "accept transport reset only when the intended browser emitted disconnected; keep all cleanup assertions"
     }
   },
-  "remaining": [
-    "complete required pinned local pnpm check on the final native-text repair checkpoint"
-  ],
+  "remaining": [],
   "productionMemory": {
     "status": "production browser admission, bounded Node result transfer and complete 48-case area matrix passed",
     "workerPolicy": "reserve512MiB for bounded Node result transfer/summary; partition remaining7.5GiB across concurrently active workers; large frames run contiguous groups",
@@ -74,7 +72,7 @@
     "changes": [
       "full-area cache budgets and contiguous bounded worker groups",
       "admitted Blob transport above128MiB;64KiB cache writes independent of socket chunk coalescing",
-      "integer1\u201360fps and exclusive-end PCM ceiling; encoder EOF drains all audio",
+      "integer1–60fps and exclusive-end PCM ceiling; encoder EOF drains all audio",
       "dependency-aware native prefixes including constant keys and expression-only motion",
       "admitted timing records and bounded browser-to-Node result transfer/manifest capacity"
     ],
@@ -160,8 +158,99 @@
       "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-51jG1R"
     },
     "finalGate": {
-      "status": "pending",
-      "command": "pnpm check"
+      "name": "gate",
+      "command": "pnpm check",
+      "checkpoint": "ae1a05bb35fe287ea591cc8fb6ba705569f7d4e5",
+      "status": "passed",
+      "startedAt": "2026-10-09T02:30:31+0700",
+      "log": "/private/tmp/ce15-ae1a05bb-gate.log",
+      "exitCode": 0,
+      "elapsedSeconds": 13928.032605165965,
+      "finishedAt": "2026-10-09T06:22:39+0700",
+      "logSha256": "8c9811450a2374a2ea5b0daae2ab14b8011e105189024f4e6e8c7c36ead0a1d1",
+      "completedPackageCommands": [
+        "check",
+        "toolchain:check",
+        "schema:check",
+        "check:boundaries",
+        "format:check",
+        "lint",
+        "soundtrack:lint",
+        "build",
+        "test",
+        "test:unit",
+        "test:runtime",
+        "test:integration",
+        "test:depth",
+        "test:browser:soundtrack",
+        "test:browser:composition-media",
+        "test:browser:composition-alpha",
+        "test:browser:composition-output",
+        "test:browser:composition-surfaces",
+        "test:browser:composition-parallel",
+        "test:browser:composition-export-memory",
+        "test:browser:composition-cache-dependencies",
+        "test:browser:composition-fps-audio",
+        "test:browser:composition-area",
+        "test:browser:depth",
+        "test:browser:vertical-image",
+        "test:browser:export",
+        "test:golden",
+        "test:browser:cli",
+        "test:browser:batch",
+        "test:browser:illustrated",
+        "test:browser:illustrated:vertical",
+        "test:browser:cinematic",
+        "test:browser:cinematic:vertical",
+        "test:browser:threshold",
+        "test:browser:dolly",
+        "test:browser:lateral",
+        "test:browser:reveal",
+        "test:browser:story",
+        "test:browser:story:activity",
+        "test:browser:story:continuous",
+        "test:browser:passage:authoring",
+        "test:browser:lab-session",
+        "test:browser:composition-session",
+        "test:browser:commerce",
+        "test:browser:commerce-components",
+        "test:browser:commerce-effects",
+        "test:browser:commerce-spatial",
+        "test:browser:reusable-components",
+        "test:browser:reusable-package",
+        "test:browser:reusable-behavior-package",
+        "test:browser:reusable-timing-package",
+        "test:browser:typography",
+        "test:browser:typography:fixtures",
+        "test:browser:composition-evaluator",
+        "test:browser:composition-expressions",
+        "test:browser:composition-quality",
+        "test:browser:composition",
+        "test:browser:composition-webgl",
+        "test:browser:composition-camera",
+        "test:browser:composition-lighting",
+        "test:browser:composition-shapes",
+        "test:browser:composition-webgl-export",
+        "test:browser:composition-exposure",
+        "test:browser:composition-effects",
+        "test:browser:composition-story-adapter",
+        "test:browser:composition-native-passage",
+        "test:browser:composition-native-passage:webgl",
+        "test:browser:composition-passage",
+        "test:browser:composition-story-fixtures",
+        "test:browser:composition-commerce-adapter",
+        "test:browser:composition-cinematic-adapter",
+        "test:browser:composition-typography-adapter",
+        "test:browser:composition-provider-typography",
+        "test:browser:composition-program",
+        "test:browser:composition-inspector",
+        "test:browser:composition-builder",
+        "test:browser:composition-depth",
+        "test:browser:composition-legacy-adapter",
+        "test:browser:composition-family-timeline",
+        "test:browser:composition-family-defaults",
+        "test:browser:composition-baselines"
+      ]
     },
     "speedBeforeNativeLoaderRepair": {
       "status": "passed",
@@ -196,24 +285,22 @@
       ]
     },
     "finalSpeed": {
-      "name": "speed",
-      "command": "pnpm benchmark:composition-speed",
       "status": "passed",
-      "startedAt": "2026-10-09T01:54:56+0700",
-      "log": "/private/tmp/ce15-21817411-speed.log",
-      "exitCode": 0,
-      "elapsedSeconds": 573.1021861670306,
-      "finishedAt": "2026-10-09T02:04:29+0700",
       "checkpoint": "218174118650e739173cd1ded7a6a4c75a92610f",
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-FBasPw",
       "speedup": 3.4082918819555004,
+      "durationSeconds": 120,
+      "frames": 2880,
+      "fps": 24,
       "oneWorkerMs": 436541.83775,
       "fourWorkersMs": 128082.29250000004,
-      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-FBasPw",
       "equality": [
         "complete encoded file",
         "all decoded RGBA frames",
         "complete decoded PCM"
-      ]
+      ],
+      "encodedSha256": "0c7f13f24ea32235af29034feb6ffeb3319100f7a60496ea3d753e94d5c85e5a",
+      "logSha256": "eb1d65a7d18357219c1e0a91ed900a225c0b374c6d52d13bd51f2dc795bfc254"
     }
   },
   "referenceCheckpoint": {
@@ -268,8 +355,8 @@
       "exitCode": 1,
       "elapsedSeconds": 85.60022845806088,
       "finishedAt": "2026-10-09T00:32:58+0700",
-      "failure": "one obsolete evaluator test still expected17fps rejection; production now correctly supports integer1\u201360",
-      "repair": "test61fps range rejection and17fps success;219 affected tests pass; production code unchanged"
+      "failure": "one obsolete evaluator test still expected 17 fps rejection; production now correctly supports integer 1–60",
+      "repair": "test 61 fps range rejection and 17 fps success; 219 affected tests pass; production code unchanged"
     },
     {
       "name": "gate",
@@ -430,5 +517,7 @@
     "preserved": "6000 ms recovery assertion",
     "log": "/private/tmp/ce15-preview-timeout-fixed.log",
     "logSha256": "38c43f4145a4c50961eb2afe8632684bf4391013fa4f80b567ed06e3d4882e67"
-  }
+  },
+  "finalCodeCheckpoint": "ae1a05bb35fe287ea591cc8fb6ba705569f7d4e5",
+  "productionCheckpoint": "218174118650e739173cd1ded7a6a4c75a92610f"
 }

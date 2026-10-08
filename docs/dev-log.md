@@ -43,18 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE15 final acceptance in progress (2026-10-09):** production checkpoint
-  `21817411` passes a 3.408× two-minute proof with exact encoded/frame/audio output.
-  Delivery, cache, worker/memory and native loading/text repairs are implemented.
-  Focused depth acceptance, 176 frozen baselines and the corrected native surface
-  suite pass. The latest gate hit a preview test's five-second outer timeout,
-  shorter than its six-second assertion; the outer budget is repaired and all 17
-  preview integrations pass. Production is unchanged; a complete gate is pending.
+- **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
+  pinned local `pnpm check` in 13928.03 seconds. Production code `21817411` has a real
+  two-minute benchmark that reaches **3.408×** with identical encoded/frame/audio output.
+  All delivery formats, statistics, caching, bounded worker/result admission and
+  area requirements are implemented. The 48-case maximum-area matrix, final area
+  smoke checks, native/parallel cleanup and frozen baselines pass. PR review/merge
+  is the owner's next step; CE14 is the next authorized milestone on a separate branch.
   [Completion evidence](./composition-ce15-completion-results.json).
-- **Owner continuation (2026-10-09):** finish CE15, commit and push, then create
-  a new branch and complete CE14 (mesh warp and puppet pins), following the
-  approved execution sequence. Make meaningful checkpoint commits and pushes.
-  This is active work; do not schedule it.
 
 - **PR #48 third review repairs verified (2026-10-08):** both P2 findings
   posted inline on `1dae23c8` are fixed. Cache identity includes OS/architecture
@@ -80,11 +76,21 @@ still hold before relying on them.
   The approved CE5-X scope retains its audit stop/Q9 owner decisions; CE6-P
   remains owner-paused and deferred, with acceptance incomplete.
 
-- **Continuation:** finish CE15 in the isolated PR worktree, preserving the
-  owner's separate checkout. CE14 remains separate future work. GitHub Actions
+- **Continuation:** CE15 implementation and acceptance are complete; the owner's
+  separate checkout is preserved. CE14 follows on a new branch. GitHub Actions
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE15 completed acceptance
+
+- **Agent / branch:** Codex on `codex/ce15-completion`; final gate `ae1a05bb`; production `21817411`.
+- **Results:** complete local `pnpm check` passes in 13928.03 seconds;
+  two-minute one/four-worker proof passes at **3.408×** with exact output.
+- **Done:** all CE15 implementation, review repairs and required final acceptance.
+- **Next:** PR #49 remains open; complete CE14 on a separate branch, with meaningful commits and pushes. No merge or scheduling.
+- **Records:** [completion evidence](./composition-ce15-completion-results.json),
+  [plan](./composition-ce15-plan.md).
 
 ### 2026-10-09 — CE15 preview recovery test budget
 
