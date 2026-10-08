@@ -935,6 +935,30 @@ pool/shader/uniform/dirty/solid/clip/pass/read/swap metadata, helper/remaining r
 Node/production/aggregate admission, speed and full gate remain pending.
 [Evidence](./composition-ce15-device-metadata-results.json).
 
+## Accepted GPU pool key/array checkpoint — 2026-10-08
+
+Reserve 512 before the original width/height/flags key template and optional empty
+pool array. Actual typed numeric/boolean inputs bound generated UTF16 output.
+Retain the actual key holder through original lookup/native creation/clear. First
+original insertion keeps that same canonical holder/key/array: resident 256 +
+2*key length + 8*maximum actual live slots, plus Map slot 40 before insertion.
+Grow before push; preserve original pop/push order, sixteen-surface and 128MiB
+pixel-byte policies. Canonical key/array capacity remains stable on reuse and
+retained across scratch; final disposal deletes Map references and clears actual
+owned key/array data. Failed lookup/slot quota preserves prior owners and null,
+frees attempted temporary storage, and permits original retry.
+
+Build/lint/boundaries and 238 focused tests pass, including six pool regressions.
+Existing selected Surface quota includes the live lookup arena so the same native
+producer remains exactly one byte short; frozen/pixel/timing limits stay unchanged.
+Complete audit 144/8,000, 96 RPC snapshots, 22 moving/blurred and ten stationary
+native frames, native snapshots, original WebGL, 69 typography tests and provider
+fixtures pass. Glyph 1.427885× meets unchanged 1.5 maximum. All 64 exports preserve
+768 complete bodies/frames against pushed `6ccd94c`. Shader/program/uniform/dirty/
+solid/clip/pass/read/swap metadata, helper/remaining runtime/Node/production/aggregate
+admission, speed and full gate remain pending.
+[Evidence](./composition-ce15-pool-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

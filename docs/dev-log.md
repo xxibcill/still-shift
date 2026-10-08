@@ -92,13 +92,13 @@ still hold before relying on them.
   cases, original media/WebGL exports and 64 prior-exact public exports / 768 frames.
   Owned submission/source/root/surface metadata, cache checksums, WebGL keys/
   controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
-  group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface
-  metadata now pass 232 focused tests, the complete audit, 22 moving/blurred and ten
-  stationary native frames and 96 owned RPC snapshots. Actual device containers/
-  VAO/Surface/framebuffer controls pre-admit and stay through native reuse, then
-  release after scope/allocator exit; original native/null behavior passes. Native
+  group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
+  pool-key/array metadata now pass 238 focused tests, the complete audit, 22 moving/
+  blurred and ten stationary native frames and 96 owned RPC snapshots. Actual
+  canonical pool keys/arrays/maximum live slots pre-admit, stay across scratch/native
+  reuse, then clear at disposal; original caps/native/null behavior passes. Native
   snapshots, original WebGL/providers, 69 typography tests and 64 exports / 768
-  prior-exact bodies/frames pass; glyph 1.384365× meets unchanged 1.5 maximum.
+  prior-exact bodies/frames pass; glyph 1.427885× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -334,6 +334,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 original GPU pool keys and arrays
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `6ccd94c`.
+- **Done:** admit original key template, canonical entry/array and maximum actual
+  live slots before producers; retain across scratch/native reuse, clear actual
+  key/list references at disposal. Original sixteen-surface/pixel-byte caps stay.
+- **Results:** build/lint/boundaries, 238 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.427885× meets unchanged 1.5 maximum.
+- **Verification:** protected slot denial precedes push and preserves owners/retry;
+  canonical key/list/capacity stays stable on reuse; scope/allocator cleanup passes.
+- **Next:** shader/program/dirty/solid/clip/pass/read/swap metadata, helper and
+  remaining runtime/Node controls, production/aggregate admission, speed/gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [pool evidence](./composition-ce15-pool-metadata-results.json).
 
 ### 2026-10-08 — CE15 WebGL device and native surface controls
 

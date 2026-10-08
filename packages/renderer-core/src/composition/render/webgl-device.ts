@@ -51,10 +51,40 @@ type Program = {
   uniforms: Map<string, WebGLUniformLocation>;
 };
 
+type PoolEntry = {
+  key: string | undefined;
+  surfaces: WebglSurface[] | undefined;
+  capacity: number;
+};
+function clearPoolEntry(value: PoolEntry) {
+  if (value.surfaces) value.surfaces.length = 0;
+  value.surfaces = undefined;
+  value.key = undefined;
+}
+function poolKey(
+  width: number,
+  height: number,
+  floating: boolean,
+  opaque: boolean,
+  screen: boolean,
+) {
+  // Numeric dimensions need at most 24 UTF16 units each; flags/separators at most 20.
+  // Holder/text/list controls plus that original template output fit before production.
+  return allocateRenderMetadata<PoolEntry>(
+    512,
+    () => ({
+      key: `${width}x${height}/${floating}/${opaque}/${screen}`,
+      surfaces: undefined,
+      capacity: 0,
+    }),
+    true,
+    clearPoolEntry,
+  );
+}
 type DeviceState = {
   programs: Map<string, Program>;
   surfaces: Set<WebglSurface>;
-  pool: Map<string, WebglSurface[]>;
+  pool: Map<string, PoolEntry>;
   dirtyScreens: Set<WebglSurface>;
   gl: WebGL2RenderingContext | undefined;
   vao: WebGLVertexArrayObject | undefined;
@@ -103,7 +133,11 @@ function clearDeviceState(state: DeviceState) {
       cleanup(() => gl.deleteProgram(program.handle));
     if (state.vao) cleanup(() => gl.deleteVertexArray(state.vao!));
   }
-  for (const list of state.pool.values()) list.length = 0;
+  for (const entry of state.pool.values()) {
+    state.pool.delete(entry.key!);
+    if (state.managed) cleanup(() => releaseRenderMetadata(entry));
+    else clearPoolEntry(entry);
+  }
   state.surfaces.clear();
   state.pool.clear();
   state.programs.clear();
@@ -223,138 +257,141 @@ export class WebglDevice {
     opaque = false,
     screen = false,
   ): WebglSurface {
-    const cached = this.pool
-      .get(`${width}x${height}/${floating}/${opaque}/${screen}`)
-      ?.pop();
-    if (cached) {
-      this.pooledBytes -= width * height * (floating ? 16 : 4);
-      this.clear(cached);
-      return cached;
-    }
-    const gl = this.gl;
-    if (
-      width > gl.getParameter(gl.MAX_TEXTURE_SIZE) ||
-      height > gl.getParameter(gl.MAX_TEXTURE_SIZE)
-    )
-      throw new Error("comp-webgl-size: surface exceeds MAX_TEXTURE_SIZE");
-    if (floating && !gl.getExtension("EXT_color_buffer_float"))
-      throw new Error(
-        "comp-webgl-float: float accumulation surfaces are unavailable",
-      );
-    const before = this.state.bytes;
-    resizeRenderMetadata(this.state, before + 40);
-    this.state.bytes += 40;
-    let committed = false;
+    const key = poolKey(width, height, floating, opaque, screen);
     try {
-      return allocateRenderMetadata<WebglSurface>(
-        // Actual surface fields/handle controls and native setup closure capacity.
-        1024,
-        () => {
-          let framebuffer: WebGLFramebuffer | undefined;
-          let texture: WebGLTexture | undefined;
-          try {
-            texture = createRenderStorage(
-              width * height * (floating ? 16 : 4),
-              () => gl.createTexture(),
-              (texture) => {
-                framebuffer = gl.createFramebuffer() ?? undefined;
-                if (!framebuffer)
-                  throw Error("Native render framebuffer creation failed");
-                gl.bindTexture(gl.TEXTURE_2D, texture);
-                gl.texParameteri(
-                  gl.TEXTURE_2D,
-                  gl.TEXTURE_MIN_FILTER,
-                  floating ? gl.NEAREST : gl.LINEAR,
-                );
-                gl.texParameteri(
-                  gl.TEXTURE_2D,
-                  gl.TEXTURE_MAG_FILTER,
-                  floating ? gl.NEAREST : gl.LINEAR,
-                );
-                gl.texParameteri(
-                  gl.TEXTURE_2D,
-                  gl.TEXTURE_WRAP_S,
-                  gl.CLAMP_TO_EDGE,
-                );
-                gl.texParameteri(
-                  gl.TEXTURE_2D,
-                  gl.TEXTURE_WRAP_T,
-                  gl.CLAMP_TO_EDGE,
-                );
-                gl.texStorage2D(
-                  gl.TEXTURE_2D,
-                  1,
-                  floating ? gl.RGBA32F : gl.RGBA8,
-                  width,
-                  height,
-                );
-                gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-                gl.framebufferTexture2D(
-                  gl.FRAMEBUFFER,
-                  gl.COLOR_ATTACHMENT0,
-                  gl.TEXTURE_2D,
-                  texture,
-                  0,
-                );
-                if (
-                  gl.checkFramebufferStatus(gl.FRAMEBUFFER) !==
-                  gl.FRAMEBUFFER_COMPLETE
-                )
-                  throw new Error(
-                    "comp-webgl-framebuffer: incomplete render surface",
-                  );
-              },
-              (texture) => gl.deleteTexture(texture),
-            );
-            const surface: WebglSurface = {
-              width,
-              height,
-              floating,
-              opaque,
-              screen,
-              texture,
-              framebuffer: framebuffer!,
-            };
-            this.clear(surface);
-            this.surfaces.add(surface);
-            committed = true;
-            return surface;
-          } catch (error) {
-            try {
-              if (texture)
-                releaseRenderStorage(texture, (value) =>
-                  gl.deleteTexture(value),
-                );
-            } catch {
-              /* Preserve the original surface failure. */
-            }
-            try {
-              if (framebuffer) gl.deleteFramebuffer(framebuffer);
-            } catch {
-              /* Preserve the original surface failure. */
-            }
-            throw error;
-          }
-        },
-        true,
-        (surface) => {
-          try {
-            destroySurface(gl, surface);
-          } finally {
-            this.surfaces.delete(surface);
-          }
-        },
-      );
-    } catch (error) {
-      if (!committed) {
-        try {
-          resizeRenderMetadata(this.state, before);
-          this.state.bytes = before;
-        } catch {
-          /* Preserve original native surface/admission failure. */
-        }
+      const cached = this.pool.get(key.key!)?.surfaces?.pop();
+      if (cached) {
+        this.pooledBytes -= width * height * (floating ? 16 : 4);
+        this.clear(cached);
+        return cached;
       }
-      throw error;
+      const gl = this.gl;
+      if (
+        width > gl.getParameter(gl.MAX_TEXTURE_SIZE) ||
+        height > gl.getParameter(gl.MAX_TEXTURE_SIZE)
+      )
+        throw new Error("comp-webgl-size: surface exceeds MAX_TEXTURE_SIZE");
+      if (floating && !gl.getExtension("EXT_color_buffer_float"))
+        throw new Error(
+          "comp-webgl-float: float accumulation surfaces are unavailable",
+        );
+      const before = this.state.bytes;
+      resizeRenderMetadata(this.state, before + 40);
+      this.state.bytes += 40;
+      let committed = false;
+      try {
+        return allocateRenderMetadata<WebglSurface>(
+          // Actual surface fields/handle controls and native setup closure capacity.
+          1024,
+          () => {
+            let framebuffer: WebGLFramebuffer | undefined;
+            let texture: WebGLTexture | undefined;
+            try {
+              texture = createRenderStorage(
+                width * height * (floating ? 16 : 4),
+                () => gl.createTexture(),
+                (texture) => {
+                  framebuffer = gl.createFramebuffer() ?? undefined;
+                  if (!framebuffer)
+                    throw Error("Native render framebuffer creation failed");
+                  gl.bindTexture(gl.TEXTURE_2D, texture);
+                  gl.texParameteri(
+                    gl.TEXTURE_2D,
+                    gl.TEXTURE_MIN_FILTER,
+                    floating ? gl.NEAREST : gl.LINEAR,
+                  );
+                  gl.texParameteri(
+                    gl.TEXTURE_2D,
+                    gl.TEXTURE_MAG_FILTER,
+                    floating ? gl.NEAREST : gl.LINEAR,
+                  );
+                  gl.texParameteri(
+                    gl.TEXTURE_2D,
+                    gl.TEXTURE_WRAP_S,
+                    gl.CLAMP_TO_EDGE,
+                  );
+                  gl.texParameteri(
+                    gl.TEXTURE_2D,
+                    gl.TEXTURE_WRAP_T,
+                    gl.CLAMP_TO_EDGE,
+                  );
+                  gl.texStorage2D(
+                    gl.TEXTURE_2D,
+                    1,
+                    floating ? gl.RGBA32F : gl.RGBA8,
+                    width,
+                    height,
+                  );
+                  gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+                  gl.framebufferTexture2D(
+                    gl.FRAMEBUFFER,
+                    gl.COLOR_ATTACHMENT0,
+                    gl.TEXTURE_2D,
+                    texture,
+                    0,
+                  );
+                  if (
+                    gl.checkFramebufferStatus(gl.FRAMEBUFFER) !==
+                    gl.FRAMEBUFFER_COMPLETE
+                  )
+                    throw new Error(
+                      "comp-webgl-framebuffer: incomplete render surface",
+                    );
+                },
+                (texture) => gl.deleteTexture(texture),
+              );
+              const surface: WebglSurface = {
+                width,
+                height,
+                floating,
+                opaque,
+                screen,
+                texture,
+                framebuffer: framebuffer!,
+              };
+              this.clear(surface);
+              this.surfaces.add(surface);
+              committed = true;
+              return surface;
+            } catch (error) {
+              try {
+                if (texture)
+                  releaseRenderStorage(texture, (value) =>
+                    gl.deleteTexture(value),
+                  );
+              } catch {
+                /* Preserve the original surface failure. */
+              }
+              try {
+                if (framebuffer) gl.deleteFramebuffer(framebuffer);
+              } catch {
+                /* Preserve the original surface failure. */
+              }
+              throw error;
+            }
+          },
+          true,
+          (surface) => {
+            try {
+              destroySurface(gl, surface);
+            } finally {
+              this.surfaces.delete(surface);
+            }
+          },
+        );
+      } catch (error) {
+        if (!committed) {
+          try {
+            resizeRenderMetadata(this.state, before);
+            this.state.bytes = before;
+          } catch {
+            /* Preserve original native surface/admission failure. */
+          }
+        }
+        throw error;
+      }
+    } finally {
+      releaseRenderMetadata(key);
     }
   }
 
@@ -369,15 +406,50 @@ export class WebglDevice {
   }
 
   release(surface: WebglSurface) {
-    const key = `${surface.width}x${surface.height}/${surface.floating}/${surface.opaque}/${surface.screen}`;
-    const list = this.pool.get(key) ?? [];
-    const bytes = surface.width * surface.height * (surface.floating ? 16 : 4);
-    if (list.length < 16 && this.pooledBytes + bytes <= this.poolByteLimit) {
-      this.pooledBytes += bytes;
-      list.push(surface);
-      this.pool.set(key, list);
-    } else {
-      this.discard(surface);
+    const key = poolKey(
+      surface.width,
+      surface.height,
+      surface.floating,
+      surface.opaque,
+      surface.screen,
+    );
+    let retained = false;
+    const before = this.state.bytes;
+    let admitted = false,
+      committed = false;
+    try {
+      const existing = this.pool.get(key.key!);
+      const list = existing?.surfaces ?? (key.surfaces = []);
+      const bytes =
+        surface.width * surface.height * (surface.floating ? 16 : 4);
+      if (list.length < 16 && this.pooledBytes + bytes <= this.poolByteLimit) {
+        const entry = existing ?? key;
+        const capacity = Math.max(entry.capacity, list.length + 1);
+        resizeRenderMetadata(entry, 256 + 2 * entry.key!.length + 8 * capacity);
+        if (!existing) {
+          resizeRenderMetadata(this.state, before + 40);
+          this.state.bytes += 40;
+          admitted = true;
+        }
+        entry.capacity = capacity;
+        this.pooledBytes += bytes;
+        list.push(surface);
+        this.pool.set(entry.key!, entry);
+        committed = true;
+        retained = !existing;
+      } else this.discard(surface);
+    } catch (error) {
+      if (admitted && !committed) {
+        try {
+          resizeRenderMetadata(this.state, before);
+          this.state.bytes = before;
+        } catch {
+          /* Preserve the original pool failure. */
+        }
+      }
+      throw error;
+    } finally {
+      if (!retained) releaseRenderMetadata(key);
     }
   }
 

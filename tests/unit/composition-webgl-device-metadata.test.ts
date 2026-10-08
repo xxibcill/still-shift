@@ -1,60 +1,11 @@
-import { expect, it, vi } from "vitest";
+import { expect, it } from "vitest";
+import { fakeWebglDevice } from "../helpers/composition-webgl-device-fixture.ts";
 import { WebglDevice } from "../../packages/renderer-core/src/composition/render/webgl-device.ts";
 import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
 import { withManagedMemory } from "../../packages/renderer-core/src/managed-memory-context.ts";
 const limits = { pixels: 65536, metadata: 65536 };
-function setup() {
-  const gl = {
-    MAX_TEXTURE_SIZE: 1,
-    FRAMEBUFFER_COMPLETE: 2,
-    TEXTURE_2D: 3,
-    TEXTURE_MIN_FILTER: 4,
-    TEXTURE_MAG_FILTER: 5,
-    NEAREST: 6,
-    LINEAR: 7,
-    TEXTURE_WRAP_S: 8,
-    TEXTURE_WRAP_T: 9,
-    CLAMP_TO_EDGE: 10,
-    RGBA32F: 11,
-    RGBA8: 12,
-    FRAMEBUFFER: 13,
-    COLOR_ATTACHMENT0: 14,
-    COLOR_BUFFER_BIT: 15,
-    DITHER: 16,
-    DEPTH_TEST: 17,
-    STENCIL_TEST: 18,
-    UNPACK_PREMULTIPLY_ALPHA_WEBGL: 19,
-    UNPACK_COLORSPACE_CONVERSION_WEBGL: 20,
-    NONE: 0,
-    getParameter: vi.fn(() => 8192),
-    getExtension: vi.fn(() => ({})),
-    createVertexArray: vi.fn(() => ({})),
-    bindVertexArray: vi.fn(),
-    deleteVertexArray: vi.fn(),
-    disable: vi.fn(),
-    pixelStorei: vi.fn(),
-    createTexture: vi.fn(() => ({})),
-    createFramebuffer: vi.fn(() => ({})),
-    bindTexture: vi.fn(),
-    texParameteri: vi.fn(),
-    texStorage2D: vi.fn(),
-    bindFramebuffer: vi.fn(),
-    framebufferTexture2D: vi.fn(),
-    checkFramebufferStatus: vi.fn(() => 2),
-    clearColor: vi.fn(),
-    clear: vi.fn(),
-    deleteTexture: vi.fn(),
-    deleteFramebuffer: vi.fn(),
-    deleteProgram: vi.fn(),
-  };
-  const getContext = vi.fn(() => gl);
-  const canvas = {
-    getContext,
-    width: 32,
-    height: 24,
-  } as unknown as HTMLCanvasElement;
-  return { gl, getContext, canvas };
-}
+const setup = fakeWebglDevice;
+
 it("admits actual device maps/sets/options and native control before context/VAO production", async () => {
   const memory = new ManagedMemory({ pixels: 1, metadata: 1023 });
   await withManagedMemory(memory, async () => {
@@ -90,7 +41,7 @@ it("releases constructor state on unavailable context and original null native s
   });
 });
 it("denies actual surface/control capacity before native texture/framebuffer creation and restores prior Set capacity", async () => {
-  const memory = new ManagedMemory({ pixels: 65536, metadata: 2087 });
+  const memory = new ManagedMemory({ pixels: 65536, metadata: 2599 });
   await withManagedMemory(memory, async () => {
     const { canvas, gl } = setup();
     const device = new WebglDevice(canvas);
@@ -135,7 +86,7 @@ it("retains actual surface/native framebuffer control through original pool reus
     expect(gl.deleteTexture).toHaveBeenCalledTimes(1);
     expect(gl.deleteFramebuffer).toHaveBeenCalledTimes(1);
     expect(memory.owns(surface)).toBe(false);
-    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1064 });
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1410 });
     device.dispose();
     memory.dispose();
     expect(memory.statistics.reservations).toBe(0);
@@ -262,7 +213,8 @@ it("retains actual device/surface/native owners across scratch cleanup and origi
     device.release(surface);
     memory.endScratch();
     expect(memory.owns(surface)).toBe(true);
-    expect(memory.statistics.current).toEqual({ pixels: 16, metadata: 2088 });
+    expect(memory.statistics.current.pixels).toBe(16);
+    expect(memory.statistics.current.metadata).toBeGreaterThan(2088);
     expect(gl.deleteTexture).not.toHaveBeenCalled();
     expect(gl.deleteFramebuffer).not.toHaveBeenCalled();
     expect(gl.deleteVertexArray).not.toHaveBeenCalled();

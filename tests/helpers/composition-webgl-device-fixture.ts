@@ -1,0 +1,53 @@
+import { vi } from "vitest";
+export function fakeWebglDevice() {
+  const gl = {
+    MAX_TEXTURE_SIZE: 1,
+    FRAMEBUFFER_COMPLETE: 2,
+    TEXTURE_2D: 3,
+    TEXTURE_MIN_FILTER: 4,
+    TEXTURE_MAG_FILTER: 5,
+    NEAREST: 6,
+    LINEAR: 7,
+    TEXTURE_WRAP_S: 8,
+    TEXTURE_WRAP_T: 9,
+    CLAMP_TO_EDGE: 10,
+    RGBA32F: 11,
+    RGBA8: 12,
+    FRAMEBUFFER: 13,
+    COLOR_ATTACHMENT0: 14,
+    COLOR_BUFFER_BIT: 15,
+    DITHER: 16,
+    DEPTH_TEST: 17,
+    STENCIL_TEST: 18,
+    UNPACK_PREMULTIPLY_ALPHA_WEBGL: 19,
+    UNPACK_COLORSPACE_CONVERSION_WEBGL: 20,
+    NONE: 0,
+    getParameter: vi.fn(() => 8192),
+    getExtension: vi.fn(() => ({})),
+    createVertexArray: vi.fn(() => ({})),
+    bindVertexArray: vi.fn(),
+    deleteVertexArray: vi.fn(),
+    disable: vi.fn(),
+    pixelStorei: vi.fn(),
+    createTexture: vi.fn(() => ({})),
+    createFramebuffer: vi.fn(() => ({})),
+    bindTexture: vi.fn(),
+    texParameteri: vi.fn(),
+    texStorage2D: vi.fn(),
+    bindFramebuffer: vi.fn(),
+    framebufferTexture2D: vi.fn(),
+    checkFramebufferStatus: vi.fn(() => 2),
+    clearColor: vi.fn(),
+    clear: vi.fn(),
+    deleteTexture: vi.fn(),
+    deleteFramebuffer: vi.fn(),
+    deleteProgram: vi.fn(),
+  };
+  const getContext = vi.fn(() => gl);
+  const canvas = {
+    getContext,
+    width: 32,
+    height: 24,
+  } as unknown as HTMLCanvasElement;
+  return { gl, getContext, canvas };
+}
