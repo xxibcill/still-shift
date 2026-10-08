@@ -128,26 +128,111 @@ export function gradientRank(
   if (c.mode === 2) return value === 0 ? 32768 : value > 0 ? 65535 : 0;
   return Math.max(0, Math.min(65535, Math.floor(value / 2 ** c.divisorBits)));
 }
+type GradientUniformWork = {
+  uniforms?: Record<string, number | readonly number[]> | undefined;
+  row?: number[] | undefined;
+  translation?: number[] | undefined;
+  divisors?: number[] | undefined;
+};
+type GradientUniformPhase = GradientUniformWork & {
+  managed: boolean;
+  producer?: (() => Record<string, number | readonly number[]>) | undefined;
+};
+function clearGradientUniformWork(work: GradientUniformWork) {
+  if (work.row) work.row.length = 0;
+  if (work.translation) work.translation.length = 0;
+  if (work.divisors) work.divisors.length = 0;
+  if (work.uniforms) for (const key in work.uniforms) delete work.uniforms[key];
+}
+function clearGradientUniformPhase(phase: GradientUniformPhase) {
+  clearGradientUniformWork(phase);
+  for (const key in phase)
+    delete (phase as Partial<GradientUniformPhase>)[
+      key as keyof GradientUniformPhase
+    ];
+}
+function clearGradientUniformResult(
+  value: Record<string, number | readonly number[]>,
+) {
+  if (Array.isArray(value.gradientRow)) value.gradientRow.length = 0;
+  if (Array.isArray(value.gradientTranslation))
+    value.gradientTranslation.length = 0;
+  if (Array.isArray(value.gradientDivisors)) value.gradientDivisors.length = 0;
+  for (const key in value) delete value[key];
+}
 export function gradientUniforms(
   c: GradientControls,
+  work?: GradientUniformWork,
+): Record<string, number | readonly number[]> {
+  if (work || !renderMemory()) return produceGradientUniforms(c, work);
+  const phase = allocateRenderMetadata<GradientUniformPhase>(
+    1024,
+    () => ({ managed: true }),
+    false,
+    clearGradientUniformPhase,
+  );
+  let result: Record<string, number | readonly number[]> | undefined,
+    failed = false,
+    failure: unknown;
+  try {
+    result = allocateRenderMetadata<Record<string, number | readonly number[]>>(
+      2048,
+      (phase.producer = () => produceGradientUniforms(c, phase)),
+      false,
+      clearGradientUniformResult,
+    );
+    phase.uniforms = phase.row = phase.translation = phase.divisors = undefined;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      releaseRenderMetadata(phase);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the first producer/admission/cleanup error. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+function produceGradientUniforms(
+  c: GradientControls,
+  work?: GradientUniformWork,
 ): Record<string, number | readonly number[]> {
   const t = c.translation;
-  return {
-    gradientRow: [c.a, c.b],
-    gradientTranslation: [
-      t - Math.floor(t / 1024) * 1024,
-      Math.floor(t / 1024) - Math.floor(t / 1048576) * 1024,
-      Math.floor(t / 1048576) - Math.floor(t / 1073741824) * 1024,
-      Math.floor(t / 1073741824),
-    ],
-    gradientMode: c.mode,
-    gradientDivisors: [
-      2 ** (30 - c.divisorBits),
-      2 ** (20 - c.divisorBits),
-      2 ** (10 - c.divisorBits),
-      2 ** -c.divisorBits,
-    ],
-  };
+  const result = {} as Record<string, number | readonly number[]>;
+  if (work) work.uniforms = result;
+  const row: number[] = [];
+  if (work) work.row = row;
+  row[0] = c.a;
+  row[1] = c.b;
+  result.gradientRow = row;
+  const translation: number[] = [];
+  if (work) work.translation = translation;
+  translation[0] = t - Math.floor(t / 1024) * 1024;
+  translation[1] = Math.floor(t / 1024) - Math.floor(t / 1048576) * 1024;
+  translation[2] = Math.floor(t / 1048576) - Math.floor(t / 1073741824) * 1024;
+  translation[3] = Math.floor(t / 1073741824);
+  result.gradientTranslation = translation;
+  result.gradientMode = c.mode;
+  const divisors: number[] = [];
+  if (work) work.divisors = divisors;
+  divisors[0] = 2 ** (30 - c.divisorBits);
+  divisors[1] = 2 ** (20 - c.divisorBits);
+  divisors[2] = 2 ** (10 - c.divisorBits);
+  divisors[3] = 2 ** -c.divisorBits;
+  result.gradientDivisors = divisors;
+  return result;
 }
 export const GRADIENT_RANK_SHADER = `uniform vec2 gradientRow;uniform vec4 gradientTranslation;uniform float gradientMode;uniform vec4 gradientDivisors;
 int gradientRank(vec2 point){if(gradientMode==0.0)return 0;point*=2.0;vec2 pointHigh=floor(point/1024.0),pointLow=point-pointHigh*1024.0;vec2 highCoefficients=floor(gradientRow/1048576.0),middleCoefficients=floor(gradientRow/1024.0)-highCoefficients*1024.0,lowCoefficients=gradientRow-floor(gradientRow/1024.0)*1024.0;

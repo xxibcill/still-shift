@@ -5136,26 +5136,27 @@ rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/d
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
 standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/late-point-results/
 radial-GPU-Canvas-work/standalone-radial-point/control/encoded-view-results/stylize-
-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control-results, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
+GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
 replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/
-native-controls and PNG source/draw/coordinate metadata pass 835 focused tests,
+native-controls and PNG source/draw/coordinate metadata pass 844 focused tests,
 complete audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
-snapshots. Standalone gradientControls admits actual 1024-byte producer/borrowed
-endpoint/partial record phase and independent 512-byte result before original getters/
-math/factories. Capture a/b before translation round; preserve original formulas/
-getters/signed zeros and transfer completed result with captured ownership outside
-scope. GPU color caller retires controls after uniform consumer; Canvas retains
-through rank/pixel/publication then retires. Preserve inactive/caller route, borrowed
-endpoints and first null. Nine new tests retain eight original controls/uniform/getter
-tables, 40 ranks and 46 full native traces/uploads/pixels, plus quota/actual refs/
-lifetime/getter-math/adoption/cleanup/retry/caller/native consumer null. All 810 prior
-and 16 original color/gradient tests rerun. Attempt 1 fixture typing; harness/endpoint
-observations isolated. Attempt 2 original negative zeros lost by JSON (828 pass);
-four expected signs restored from original only. Attempt 3 passes. Native probes,
-WebGL/providers and 69 typography tests pass; glyph 1.439883× meets unchanged 1.5
-maximum. All 64 exports / 768 bodies/frames retain prior exact output. Gradient
-uniforms/tables/cache and remaining color callback arrays/stores, arbitrary borrowed
-factories and other effects/cache/error/class/caller/depth sampling remain pending. Recording/device/pool/shader/paint/
+snapshots. Standalone gradientUniforms admits actual 1024-byte producer/partial
+record/three-vector phase and independent 2048-byte result before original getters/
+six floor calls/factories. Capture row/translation/divisors before original reads/
+math, preserve formulas/getters/signed zeros and transfer completed result out of
+phase with captured ownership outside scope. GPU caller holds actual record/shared
+vectors through native pass then retires; controls cleanup null after successful
+uniform adoption retires independent result before first error. Preserve inactive/
+caller route and borrowed controls. Nine new tests retain eight original complete
+uniform/getter tables/six floors, four whole native gradient GPU upload/getter hashes
+and quota/actual refs/lifetime/getter-math/adoption/cleanup/retry/caller/native consumer
+null. All 835 prior including 46 full native color callbacks rerun. Attempt 1 fixture
+proxy type; attempt 2 hash comparison omits original getters (843 pass); test repairs
+only, attempt 3 passes. Native probes, WebGL/providers and 69 typography tests pass;
+glyph 1.304455× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames
+retain prior exact output. Gradient tables/cache and remaining color callback arrays/
+stores, arbitrary borrowed factories and other effects/cache/error/class/caller/
+depth sampling remain pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

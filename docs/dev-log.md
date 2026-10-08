@@ -99,27 +99,28 @@ still hold before relying on them.
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
   map-GPU-Canvas-work/standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-
   mapping/late-point-results/radial-GPU-Canvas-work/standalone-radial-point/control/
-  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control-results, managed plan/sum-shader cache, particle/
+  encoded-view-results/stylize-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
   texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 835 focused tests, complete audit, 22 moving/blurred and ten stationary
-  native frames and 96 owned RPC snapshots. Standalone gradientControls admits actual
-  1024-byte producer/borrowed endpoint/partial record phase and independent 512-byte
-  result before original getters/math/factories. Capture a/b before translation round;
-  preserve original formulas/getters/signed zeros and transfer completed result out
-  of phase with captured ownership outside scope. GPU color caller retires controls
-  at uniform consumer; Canvas retains through rank/pixel/publication then retires.
-  Preserve inactive/caller route, borrowed endpoints and first null. Nine new tests /
-  eight original controls/uniform/getter tables, 40 ranks and 46 full native traces/
-  uploads/Canvas pixels, quota/actual refs/lifetime/getter-math/adoption/cleanup/retry/
-  caller/native consumer null. All 810 prior and 16 original color/gradient tests
-  rerun. Attempt 1 fixture typing; harness/endpoint observations isolated. Attempt 2
-  JSON loses original negative zeros (828 pass); four expected signs restored from
-  original only. Attempt 3 passes. Native probes, WebGL/providers/69 typography
-  tests pass; glyph 1.439883× meets unchanged 1.5 maximum. All 64 exports / 768
-  bodies/frames retain prior exact output. Gradient uniforms/tables/cache and other
-  color callback arrays/stores, arbitrary borrowed factories and other effects/
-  cache/error/class/caller/depth sampling remain pending.
+  metadata pass 844 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Standalone gradientUniforms admits actual
+  1024-byte producer/partial record/three-vector phase and independent 2048-byte
+  result before original getters/six floor calls/factories. Capture row/translation/
+  divisors before original reads/math and transfer completed result out of phase;
+  retain captured ownership outside scope until consumer clears record/three vectors.
+  GPU color caller holds shared vectors through native pass. Controls cleanup null
+  after successful uniform adoption retires independent result before first error.
+  Preserve formulas/getters/signed zeros, inactive/caller route and borrowed controls.
+  Nine new tests / eight original complete uniform/getter tables/six floors, four
+  whole native gradient GPU upload/getter hashes, quota/actual refs/lifetime/getter-
+  math/adoption/cleanup/retry/caller/native consumer. All 835 prior tests including
+  46 full native color callbacks rerun. Attempt 1 fixture proxy type; attempt 2
+  comparison omits original getter hash input (843 pass); repaired tests only and
+  attempt 3 passes. Native probes, WebGL/providers/69 typography tests pass; glyph
+  1.304455× meets unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain
+  prior exact output. Gradient tables/cache and remaining color callback arrays/
+  stores, arbitrary borrowed factories and other effects/cache/error/class/caller/
+  depth sampling remain pending.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -355,6 +356,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual standalone gradient-uniform metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `7e5d176c`.
+- **Done:** admit actual producer/partial uniform record/three vectors and independent
+  result; retain shared vectors through GPU pass and retire on controls cleanup null.
+- **Results:** build/lint/boundaries, 844 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.304455×.
+- **Verification:** nine new tests / eight original uniform/getter tables/six floors,
+  four full native GPU upload/getter hashes, quota/actual refs/lifetime/getter-math/
+  adoption/cleanup/retry/caller; all 835 prior including 46 full native color cases.
+- **Rejected / repaired:** attempt 1 fixture proxy typing; attempt 2 hash input omits
+  original getter sequence (843 pass); fixed comparison only. Attempt 3 passes.
+- **Next:** gradient table/cache and color callback ownership, arbitrary borrowed
+  factories/common/Node, aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [gradient uniforms evidence](./composition-ce15-gradient-uniforms-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual standalone gradient-control metadata
 

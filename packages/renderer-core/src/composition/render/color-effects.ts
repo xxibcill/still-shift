@@ -19,8 +19,8 @@ import { releaseRenderMetadata } from "../../managed-metadata.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
-function finishColorGradientControls(
-  controls: GradientControls | undefined,
+function finishColorGradientMetadata(
+  controls: object | undefined,
   failed: boolean,
 ) {
   try {
@@ -31,15 +31,33 @@ function finishColorGradientControls(
 }
 function colorGradientUniforms(params: Params) {
   const controls = gradientControls(params);
-  let failed = false;
+  let result: ReturnType<typeof gradientUniforms> | undefined,
+    failed = false,
+    failure: unknown;
   try {
-    return gradientUniforms(controls);
+    result = gradientUniforms(controls);
   } catch (error) {
     failed = true;
-    throw error;
+    failure = error;
   } finally {
-    finishColorGradientControls(controls, failed);
+    try {
+      releaseRenderMetadata(controls);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
   }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the original producer/controls cleanup error. */
+    }
+    throw failure;
+  }
+  return result!;
 }
 const unit = (v: number) => Math.max(0, Math.min(1, v));
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -265,10 +283,19 @@ export function colorEffectKernel(
       if (id === "color.gradient-ramp") {
         const transfer = context.createSurface(256, 256);
         context.uploadBytes(transfer, gradientColorTable(params));
-        context.pass(shader, output, [input, transfer], {
-          ...uniforms,
-          ...colorGradientUniforms(params),
-        });
+        let gradient: ReturnType<typeof gradientUniforms> | undefined,
+          failed = false;
+        try {
+          context.pass(shader, output, [input, transfer], {
+            ...uniforms,
+            ...(gradient = colorGradientUniforms(params)),
+          });
+        } catch (error) {
+          failed = true;
+          throw error;
+        } finally {
+          finishColorGradientMetadata(gradient, failed);
+        }
       } else if (id === "color.curves") {
         // A 256-entry transfer is control data; all image pixels are transformed on the GPU.
         const bytes = allocateRenderPixels(
@@ -340,7 +367,7 @@ export function colorEffectKernel(
         failed = true;
         throw error;
       } finally {
-        finishColorGradientControls(gradient, failed);
+        finishColorGradientMetadata(gradient, failed);
       }
     },
   } satisfies CompositionEffectPlugin);

@@ -2151,6 +2151,30 @@ unchanged 1.5 maximum. Gradient uniforms/tables/cache and other color callback a
 stores, arbitrary borrowed factories, common/Node and production/aggregate/speed/final
 gates remain pending. [Evidence](./composition-ce15-gradient-controls-metadata-results.json).
 
+## Accepted standalone gradient-uniform metadata checkpoint — 2026-10-08
+
+Default active helper admits actual 1024-byte producer/partial record/vector phase
+and independent 2048-byte record/three-vector result capacity before original getters,
+six floor calls or factories. Capture actual row/translation/divisors before their
+original reads/math; preserve formulas, insertion/getter order and signed zeros.
+Transfer completed record/vectors out of phase with captured ownership outside scope.
+GPU color caller retains actual result and shared spread vectors through native pass
+then retires. Controls cleanup failure after successful uniform adoption also retires
+the independent uniform result before propagating first error. Preserve inactive/
+caller route and borrowed controls; every getter/math/adoption/cleanup null retries.
+
+Build/lint/boundaries and 844 focused tests / 96 files pass on attempt 3. Attempt 1
+fixture proxy type and attempt 2 records-only comparison against original combined
+native/getter hash are repaired in test code; original expected data and implementation
+remain unchanged. Nine new tests preserve eight complete original uniform records/
+getter tables/six floors/signed zeros and four whole native gradient GPU upload/getter
+hashes; all 835 prior tests including 46 full native color callbacks rerun. Audit
+144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography tests and
+64 prior-exact exports / 768 bodies/frames pass; glyph 1.304455× meets unchanged
+1.5 maximum. Gradient tables/cache, remaining color callbacks/stores, arbitrary
+borrowed factories, common/Node, aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-gradient-uniforms-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
