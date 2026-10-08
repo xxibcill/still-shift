@@ -1687,6 +1687,31 @@ cache/registry/class/caller/depth sampling/provider/graph/font/common/ledger/Nod
 production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-map-gpu-metadata-results.json).
 
+## Accepted map-effect Canvas work checkpoint — 2026-10-08
+
+Admit actual 16384-byte Canvas work before neutral/readback/view/premultiply/vector/
+channel/sampling/native-ref factories. Keep four original separate pixel admissions;
+capture actual partial premultiply view inside each factory before original loops.
+Reuse caller-admitted channel/index/field subview refs through each pixel then clear.
+No per-pixel lease. Keep four store/view/vector/native refs through publication,
+visit every backing after success/failure even after first cleanup null, clear actual
+arrays and drop nested refs. Managed stores detach, inactive bytes stay exact;
+borrowed source/map/params remain intact. Original native order/math/pixels preserved.
+
+Build/lint/boundaries and 633 focused tests / 72 files pass. Twelve new tests cover
+actual refs/detachment/partial producer/quota/readback/channel/sampling/adoption/
+native/publication/null/all backing cleanup/retry. All 11 full original Canvas
+traces/pixels match active/inactive scopes; prior GPU/helper oracles rerun. Initial
+transparent-pixel observer failure retained; attempt 2 checks all four views via
+actual channel/sampling consumers. First glyph timing fails at 1.52×; retained
+with later read-only process snapshot. Affected typography rerun keeps original
+code, protocol and 1.5 maximum. Audit 144/8,000, 96 RPC snapshots, native probes,
+WebGL/providers, 69 typography and 64 prior-exact exports / 768 bodies/frames pass;
+glyph 1.500000× meets unchanged 1.5 maximum. Remaining standalone helpers/other
+effects/cache/registry/class/caller/depth sampling/provider/graph/font/common/ledger/
+Node and production/aggregate/speed/final gates pending.
+[Evidence](./composition-ce15-map-canvas-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -7,9 +7,11 @@ import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
   samplePremultiplied,
   PREMULTIPLIED_SAMPLE_SHADER,
+  type PremultipliedSampleControl,
 } from "./sampled-blur.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 import type { WebglSurface } from "./webgl-device.ts";
+import type { CanvasSurface } from "./canvas2d.ts";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
@@ -52,17 +54,99 @@ function finishGpuMapWork(work: GpuMapWork, failed: boolean) {
     if (!failed) throw error;
   }
 }
+type MapChannelControl = {
+  straight?: ((channel: number) => number) | undefined;
+};
+type PremultiplyControl = { value?: Uint8Array<ArrayBuffer> | undefined };
+type CanvasMapWork = MapNeutralControl & {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  input?: CanvasSurface | undefined;
+  map?: CanvasSurface | undefined;
+  output?: CanvasSurface | undefined;
+  image?: ImageData | undefined;
+  mapImage?: ImageData | undefined;
+  source?: Uint8Array<ArrayBuffer> | undefined;
+  field?: Uint8Array<ArrayBuffer> | undefined;
+  amount?: number[] | undefined;
+  amountProducer?: ((value: number) => number) | undefined;
+  sample?: number[] | undefined;
+  view?: Uint8Array<ArrayBuffer> | undefined;
+  sourceControl: PremultiplyControl;
+  fieldControl: PremultiplyControl;
+  sampling: PremultipliedSampleControl;
+  channel: MapChannelControl;
+};
+function clearCanvasMapWork(work: CanvasMapWork) {
+  let failed = false,
+    first: unknown;
+  const visit = (value: ArrayBufferLike | undefined) => {
+    try {
+      if (value) work.memory?.release(value);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        first = error;
+      }
+    }
+  };
+  visit(work.image?.data.buffer);
+  visit((work.source ?? work.sourceControl.value)?.buffer);
+  visit(work.mapImage?.data.buffer);
+  visit((work.field ?? work.fieldControl.value)?.buffer);
+  if (work.amount) work.amount.length = 0;
+  if (work.sample) work.sample.length = 0;
+  work.sourceControl.value = work.fieldControl.value = undefined;
+  work.sampling.index = work.channel.straight = undefined;
+  for (const key in work)
+    delete (work as Partial<CanvasMapWork>)[key as keyof CanvasMapWork];
+  if (failed) throw first;
+}
+function canvasMapWork(): CanvasMapWork {
+  const memory = renderMemory();
+  return allocateRenderMetadata<CanvasMapWork>(
+    16384,
+    () => ({
+      managed: memory !== undefined,
+      memory,
+      sourceControl: {},
+      fieldControl: {},
+      sampling: {},
+      channel: {},
+    }),
+    false,
+    clearCanvasMapWork,
+  );
+}
+function finishCanvasMapWork(work: CanvasMapWork, failed: boolean) {
+  const managed = work.managed;
+  try {
+    if (managed) releaseRenderMetadata(work);
+    else clearCanvasMapWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
 type Params = Parameters<CompositionEffectPlugin["renderGpu"]>[2];
 /** Channels 0–3 = RGBA; 4 = byte-weighted encoded-sRGB luminance. Input is premultiplied. */
-export function mapChannel(pixel: ArrayLike<number>, channel: number): number {
+export function mapChannel(
+  pixel: ArrayLike<number>,
+  channel: number,
+  control?: MapChannelControl,
+): number {
   if (channel === 3) return pixel[3]!;
   const a = pixel[3]!;
   const straight = (c: number) => (a ? Math.round((pixel[c]! * 255) / a) : 0);
-  return channel === 4
-    ? Math.floor(
-        (54 * straight(0) + 183 * straight(1) + 19 * straight(2) + 128) / 256,
-      )
-    : straight(channel);
+  if (control) control.straight = straight;
+  try {
+    return channel === 4
+      ? Math.floor(
+          (54 * straight(0) + 183 * straight(1) + 19 * straight(2) + 128) / 256,
+        )
+      : straight(channel);
+  } finally {
+    if (control) control.straight = undefined;
+  }
 }
 /** Signed alpha-gated source offset in sixteenths of a pixel. */
 export const mapDisplacement = (
@@ -97,11 +181,15 @@ const DISPLACE = `${MAP_DISPLACEMENT_SHADER}
 void main(){uvec4 map=mapBytes();ivec2 delta=ivec2(displaced(selectedChannel(map,int(channelX)),map.a,int(amountFixed.x)),displaced(selectedChannel(map,int(channelY)),map.a,int(amountFixed.y)));pixel=sampleBytes(vec2(ivec2(gl_FragCoord.xy*16.0)+delta)/16.0)/255.0;}`;
 const WIPE = `uniform float progress;uniform float softness;uniform float channel;uniform float invert;
 void main(){uvec4 map=mapBytes();uint value=selectedChannel(map,int(channel));if(invert==1.0)value=255u-value;float rank=float(exactDivideMap(value*map.a+255u*(255u-map.a)+127u,255u))/255.0;float coverage=progress==0.0?1.0:progress==1.0?0.0:softness==0.0?step(progress,rank):clamp((rank-progress)/softness+0.5,0.0,1.0);coverage=floor(coverage*255.0+0.5)/255.0;pixel=bytes(texelFetch(source,ivec2(gl_FragCoord.xy),0)*coverage);}`;
-function premultiply(pixels: Uint8ClampedArray): Uint8Array<ArrayBuffer> {
-  const output = allocateRenderPixels(
-    pixels.length * 1,
-    () => new Uint8Array(pixels.length),
-  );
+function premultiply(
+  pixels: Uint8ClampedArray,
+  control?: PremultiplyControl,
+): Uint8Array<ArrayBuffer> {
+  const output = allocateRenderPixels(pixels.length * 1, () => {
+    const value = new Uint8Array(pixels.length);
+    if (control) control.value = value;
+    return value;
+  });
   for (let i = 0; i < pixels.length; i += 4) {
     const a = pixels[i + 3]!;
     for (let c = 0; c < 3; c++)
@@ -171,61 +259,93 @@ export function mapEffectKernel(
       }
     },
     renderCanvas(context, input, params) {
-      if (neutral(params)) return input;
-      const map = context.layers!.get("map")!,
-        image = readRenderImageData(input.ctx, 0, 0, input.width, input.height),
-        source = premultiply(image.data),
-        field = premultiply(
-          readRenderImageData(map.ctx, 0, 0, map.width, map.height).data,
-        ),
-        amount = displace
-          ? (params.amount as readonly number[]).map((v) => Math.round(v * 16))
-          : [],
-        midpoint = displace ? Math.round((params.midpoint as number) * 255) : 0,
-        sample = [0, 0, 0, 0];
-      for (let y = 0; y < input.height; y++)
-        for (let x = 0; x < input.width; x++) {
-          const i = (y * input.width + x) * 4,
-            pixel = field.subarray(i, i + 4);
-          if (displace) {
-            const dx = mapDisplacement(
-                mapChannel(pixel, params.channelX as number),
-                pixel[3]!,
-                midpoint,
-                amount[0]!,
-              ),
-              dy = mapDisplacement(
-                mapChannel(pixel, params.channelY as number),
-                pixel[3]!,
-                midpoint,
-                amount[1]!,
+      const work = canvasMapWork();
+      let failed = false;
+      try {
+        work.input = input;
+        if (neutral(params, work)) return input;
+        const map = (work.map = context.layers!.get("map")!),
+          image = (work.image = readRenderImageData(
+            input.ctx,
+            0,
+            0,
+            input.width,
+            input.height,
+          )),
+          source = (work.source = premultiply(image.data, work.sourceControl)),
+          field = (work.field = premultiply(
+            (work.mapImage = readRenderImageData(
+              map.ctx,
+              0,
+              0,
+              map.width,
+              map.height,
+            )).data,
+            work.fieldControl,
+          )),
+          amount = (work.amount = displace
+            ? (params.amount as readonly number[]).map(
+                (work.amountProducer = (v) => Math.round(v * 16)),
+              )
+            : []),
+          midpoint = displace
+            ? Math.round((params.midpoint as number) * 255)
+            : 0,
+          sample = (work.sample = [0, 0, 0, 0]);
+        for (let y = 0; y < input.height; y++)
+          for (let x = 0; x < input.width; x++) {
+            const i = (y * input.width + x) * 4,
+              pixel = (work.view = field.subarray(i, i + 4));
+            if (displace) {
+              const dx = mapDisplacement(
+                  mapChannel(pixel, params.channelX as number, work.channel),
+                  pixel[3]!,
+                  midpoint,
+                  amount[0]!,
+                ),
+                dy = mapDisplacement(
+                  mapChannel(pixel, params.channelY as number, work.channel),
+                  pixel[3]!,
+                  midpoint,
+                  amount[1]!,
+                );
+              samplePremultiplied(
+                source,
+                input.width,
+                input.height,
+                x + 0.5 + dx / 16,
+                y + 0.5 + dy / 16,
+                sample,
+                work.sampling,
               );
-            samplePremultiplied(
-              source,
-              input.width,
-              input.height,
-              x + 0.5 + dx / 16,
-              y + 0.5 + dy / 16,
-              sample,
-            );
-          } else {
-            const coverage = wipeCoverage(
-              mapChannel(pixel, params.channel as number),
-              pixel[3]!,
-              params,
-            );
-            for (let c = 0; c < 4; c++)
-              sample[c] = Math.round((source[i + c]! * coverage) / 255);
+            } else {
+              const coverage = wipeCoverage(
+                mapChannel(pixel, params.channel as number, work.channel),
+                pixel[3]!,
+                params,
+              );
+              for (let c = 0; c < 4; c++)
+                sample[c] = Math.round((source[i + c]! * coverage) / 255);
+            }
+            for (let c = 0; c < 3; c++)
+              image.data[i + c] = sample[3]
+                ? Math.round((sample[c]! * 255) / sample[3])
+                : 0;
+            image.data[i + 3] = sample[3]!;
+            work.view = undefined;
           }
-          for (let c = 0; c < 3; c++)
-            image.data[i + c] = sample[3]
-              ? Math.round((sample[c]! * 255) / sample[3])
-              : 0;
-          image.data[i + 3] = sample[3]!;
-        }
-      const output = context.createSurface(input.width, input.height);
-      output.ctx.putImageData(image, 0, 0);
-      return output;
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        output.ctx.putImageData(image, 0, 0);
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishCanvasMapWork(work, failed);
+      }
     },
   } satisfies CompositionEffectPlugin);
   kernels.set(id, kernel);
