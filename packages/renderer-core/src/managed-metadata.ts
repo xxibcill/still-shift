@@ -149,12 +149,23 @@ export function serializeManagedMetadata(
   memory: ManagedMemory,
   value: unknown,
   replacer?: MetadataReplacer,
+  readArrayExtent = true,
 ): ManagedMetadataText {
   const lease = memory.reserve("metadata", textControlBytes);
   const record: { value: string | undefined } = { value: "" };
-  memory.adopt(record, lease, () => {
+  try {
+    memory.adopt(record, lease, () => {
+      record.value = undefined;
+    });
+  } catch (error) {
     record.value = undefined;
-  });
+    try {
+      lease.release();
+    } catch {
+      /* Preserve the first record adoption error. */
+    }
+    throw error;
+  }
   const previous = serialization;
   const phase: Serialization = { memory, temporary: [] };
   serialization = phase;
@@ -184,7 +195,8 @@ export function serializeManagedMetadata(
           typeof normalized === "symbol"
         )
           admit(8);
-        else if (Array.isArray(normalized)) admit(2 * (normalized.length + 1));
+        else if (Array.isArray(normalized))
+          admit(readArrayExtent ? 2 * (normalized.length + 1) : 4);
         else if (typeof normalized === "object") admit(4);
         return normalized;
       },

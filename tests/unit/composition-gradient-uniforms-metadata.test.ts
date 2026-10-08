@@ -543,7 +543,7 @@ it("holds actual gradient uniform record and shared vectors through four origina
         if (active) {
           vi.spyOn(memory, "adopt").mockImplementation(
             (value, lease, destroy) => {
-              if (lease.bytes === 2048) {
+              if (lease.bytes === 2048 && "gradientRow" in value) {
                 actual = value as Uniforms;
                 refs = vectors(actual);
               }
@@ -553,7 +553,10 @@ it("holds actual gradient uniform record and shared vectors through four origina
           const pass = h.context.pass;
           vi.spyOn(h.context, "pass").mockImplementation((...v) => {
             expect(memory.owns(actual!)).toBe(true);
-            expect(memory.statistics.current.metadata).toBe(2048);
+            expect(memory.statistics.current.metadata).toBeGreaterThanOrEqual(
+              8192,
+            );
+            expect(memory.statistics.current.metadata).toBeLessThan(10240);
             const uniforms = v[3] as Uniforms;
             for (const key of [
               "gradientRow",
@@ -574,7 +577,12 @@ it("holds actual gradient uniform record and shared vectors through four origina
             },
           }),
         );
-        expect(memory.statistics.current.metadata).toBe(0);
+        if (active) {
+          expect(memory.statistics.current.metadata).toBeGreaterThanOrEqual(
+            6144,
+          );
+          expect(memory.statistics.current.metadata).toBeLessThan(8192);
+        } else expect(memory.statistics.current.metadata).toBe(0);
       };
       if (active) await withManagedMemory(memory, run);
       else await run();
@@ -599,14 +607,14 @@ it("holds actual gradient uniform record and shared vectors through four origina
     await withManagedMemory(memory, async () => {
       vi.spyOn(memory, "adopt").mockImplementation((value, lease, destroy) => {
         if (lease.bytes === 512) controls = value;
-        if (lease.bytes === 2048) {
+        if (lease.bytes === 2048 && "gradientRow" in value) {
           actual = value as Uniforms;
           refs = vectors(actual);
         }
         return adopt(
           value,
           lease,
-          lease.bytes === 2048
+          lease.bytes === 2048 && "gradientRow" in value
             ? (v) => {
                 destroy?.(v);
                 throw cut === "uniform-cleanup"
@@ -643,7 +651,8 @@ it("holds actual gradient uniform record and shared vectors through four origina
       expect(controls).toEqual({});
       expect(actual).toEqual({});
       for (const v of refs) expect(v).toEqual([]);
-      expect(memory.statistics.current.metadata).toBe(0);
+      expect(memory.statistics.current.metadata).toBeGreaterThanOrEqual(6144);
+      expect(memory.statistics.current.metadata).toBeLessThan(8192);
     });
     memory.dispose();
     empty(memory);

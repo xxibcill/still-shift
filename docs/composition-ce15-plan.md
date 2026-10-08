@@ -2175,6 +2175,33 @@ hashes; all 835 prior tests including 46 full native color callbacks rerun. Audi
 borrowed factories, common/Node, aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-gradient-uniforms-metadata-results.json).
 
+## Accepted gradient-table cache/key/view metadata checkpoint — 2026-10-08
+
+Active helper admits actual 8192-byte producer/borrowed-color/tuple/key/iterator/view
+phase, 4096-byte retained Map/cache control and 2048-byte retained entry control.
+Dynamic UTF16 key admission preserves original native JSON reads/toJSON/coercion
+without another array-length read; serializer adoption null releases its record.
+Explicit 262144-byte backing admission captures actual view before adoption and
+guards failed adoption/detachment. Preserve original formulas, table bytes, cache
+hits/eight-entry eviction order and inactive native route. Captured allocator keeps
+actual Map/entry/key/view/backing outside scope; disposal clears all despite errors.
+Capture rollback key before Map mutation. Insertion/eviction/late cleanup null rolls
+back candidate/new cache, preserves valid prior entries and first null, then retries.
+
+Build/lint/boundaries and 854 focused tests / 97 files pass on final attempt 6. Earlier
+preparation/observer typing/counter/unused hashing failures remain recorded; no test
+timeout, expected original data or timing/pixel thresholds change. Ten new tests
+retain 16 independently original complete table/getter hashes, quota/actual roots/
+captured lifetime/JSON and interpolation cuts/all adoptions/Map pre/post-mutation/
+eviction/cleanup/retry and native boxed/toJSON/sparse serialization. All 844 prior
+including 46 full native color trace/upload/pixel oracles rerun; consumer checks now
+observe retained table metadata and distinguish table entries from uniform results.
+Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers, 69 typography tests,
+64 prior-exact exports / 768 bodies/frames pass; glyph 1.440780× meets unchanged
+1.5 maximum. Broader color callbacks/stores, arbitrary borrowed factories, module
+bootstrap/common/Node, production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-gradient-table-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

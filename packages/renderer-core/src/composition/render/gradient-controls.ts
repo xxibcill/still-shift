@@ -1,3 +1,4 @@
+import type { ManagedMemory, MemoryLease } from "../../managed-memory.ts";
 import {
   allocateRenderPixels,
   releaseRenderPixels,
@@ -6,6 +7,8 @@ import {
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
+  serializeManagedMetadata,
+  type ManagedMetadataText,
 } from "../../managed-metadata.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
@@ -239,17 +242,306 @@ int gradientRank(vec2 point){if(gradientMode==0.0)return 0;point*=2.0;vec2 point
 float low=dot(pointLow,lowCoefficients)+gradientTranslation.x;float middle=dot(pointHigh,lowCoefficients)+dot(pointLow,middleCoefficients)+gradientTranslation.y+floor(low/1024.0);float high=dot(pointHigh,middleCoefficients)+dot(pointLow,highCoefficients)+gradientTranslation.z+floor(middle/1024.0);float highest=dot(pointHigh,highCoefficients)+gradientTranslation.w+floor(high/1024.0);float remainderHigh=high-floor(high/1024.0)*1024.0,remainderMiddle=middle-floor(middle/1024.0)*1024.0,remainderLow=low-floor(low/1024.0)*1024.0;
 if(highest<0.0)return 0;if(gradientMode==2.0)return highest==0.0&&remainderHigh==0.0&&remainderMiddle==0.0&&remainderLow==0.0?32768:65535;float rank=highest*gradientDivisors.x+floor(remainderHigh*gradientDivisors.y)+floor(remainderMiddle*gradientDivisors.z)+floor(remainderLow*gradientDivisors.w);return int(min(65535.0,rank));}`;
 const tables = new Map<string, Uint8Array<ArrayBuffer>>();
-const scopedTables = new WeakMap<
-  object,
-  Map<string, Uint8Array<ArrayBuffer>>
->();
+type GradientTableEntry = {
+  memory?: ManagedMemory | undefined;
+  key?: ManagedMetadataText | undefined;
+  bytes?: Uint8Array<ArrayBuffer> | undefined;
+};
+type GradientTableCache = {
+  memory?: ManagedMemory | undefined;
+  entries?: Map<string, GradientTableEntry> | undefined;
+  retire?: ((entry: GradientTableEntry) => void) | undefined;
+  failed?: boolean | undefined;
+  failure?: unknown;
+};
+type GradientTablePhase = {
+  managed: boolean;
+  memory?: ManagedMemory | undefined;
+  cache?: GradientTableCache | undefined;
+  newCache?: boolean | undefined;
+  committed?: boolean | undefined;
+  start?: readonly number[] | undefined;
+  end?: readonly number[] | undefined;
+  tuple?: readonly unknown[] | undefined;
+  key?: ManagedMetadataText | undefined;
+  bytes?: Uint8Array<ArrayBuffer> | undefined;
+  entry?: GradientTableEntry | undefined;
+  inserted?: string | undefined;
+  iterator?: MapIterator<string> | undefined;
+  producer?: (() => Uint8Array<ArrayBuffer>) | undefined;
+  pixelProducer?: (() => Uint8Array<ArrayBuffer>) | undefined;
+  pixelLease?: MemoryLease | undefined;
+  entryProducer?: (() => GradientTableEntry) | undefined;
+};
+const scopedTables = new WeakMap<object, GradientTableCache>();
+function retireGradientTablePixels(
+  memory: ManagedMemory,
+  bytes: Uint8Array<ArrayBuffer>,
+) {
+  let failed = false,
+    failure: unknown;
+  try {
+    memory.release(bytes.buffer);
+  } catch (error) {
+    failed = true;
+    failure = error;
+  }
+  try {
+    if (!memory.owns(bytes.buffer) && bytes.byteLength)
+      (
+        bytes.buffer as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }
+      ).transfer(0);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      failure = error;
+    }
+  }
+  if (failed) throw failure;
+}
+function clearGradientTableEntry(entry: GradientTableEntry) {
+  let failed = false,
+    failure: unknown;
+  try {
+    entry.key?.release();
+  } catch (error) {
+    failed = true;
+    failure = error;
+  }
+  try {
+    if (entry.memory && entry.bytes)
+      retireGradientTablePixels(entry.memory, entry.bytes);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      failure = error;
+    }
+  }
+  for (const key in entry) delete entry[key as keyof GradientTableEntry];
+  if (failed) throw failure;
+}
+function clearGradientTableCache(cache: GradientTableCache) {
+  if (cache.entries && cache.retire) cache.entries.forEach(cache.retire);
+  cache.entries?.clear();
+  if (cache.memory && scopedTables.get(cache.memory) === cache)
+    scopedTables.delete(cache.memory);
+  const failed = cache.failed,
+    failure = cache.failure;
+  for (const key in cache) delete cache[key as keyof GradientTableCache];
+  if (failed) throw failure;
+}
+function clearGradientTablePhase(phase: GradientTablePhase) {
+  let failed = false,
+    failure: unknown;
+  if (!phase.committed) {
+    try {
+      if (phase.entry) releaseRenderMetadata(phase.entry);
+    } catch (error) {
+      failed = true;
+      failure = error;
+    }
+    if (phase.inserted) phase.cache?.entries?.delete(phase.inserted);
+    try {
+      phase.key?.release();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    try {
+      if (phase.memory && phase.bytes)
+        retireGradientTablePixels(phase.memory, phase.bytes);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    try {
+      if (phase.newCache && phase.cache) releaseRenderMetadata(phase.cache);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (phase.tuple) (phase.tuple as unknown[]).length = 0;
+  for (const key in phase)
+    delete (phase as Partial<GradientTablePhase>)[
+      key as keyof GradientTablePhase
+    ];
+  if (failed) throw failure;
+}
 export function gradientColorTable(p: Params): Uint8Array<ArrayBuffer> {
   const memory = renderMemory();
-  let cache = tables;
-  if (memory) {
-    cache = scopedTables.get(memory) ?? new Map();
+  if (!memory) return unmanagedGradientColorTable(p);
+  const phase = allocateRenderMetadata<GradientTablePhase>(
+    8192,
+    () => ({ managed: true, memory }),
+    false,
+    clearGradientTablePhase,
+  );
+  let result: Uint8Array<ArrayBuffer> | undefined,
+    cache: GradientTableCache | undefined,
+    entry: GradientTableEntry | undefined,
+    inserted: string | undefined,
+    newCache = false,
+    failed = false,
+    failure: unknown;
+  try {
+    phase.producer = () => produceGradientColorTable(p, phase);
+    result = phase.producer();
+    cache = phase.cache;
+    entry = phase.entry;
+    inserted = phase.inserted;
+    newCache = !!phase.newCache;
+    phase.committed = true;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      releaseRenderMetadata(phase);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (entry) releaseRenderMetadata(entry);
+    } catch {
+      /* Preserve the first producer/admission/cleanup error. */
+    }
+    if (inserted) cache?.entries?.delete(inserted);
+    try {
+      if (newCache && cache) releaseRenderMetadata(cache);
+    } catch {
+      /* Preserve the first producer/admission/cleanup error. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+function produceGradientColorTable(
+  p: Params,
+  phase: GradientTablePhase,
+): Uint8Array<ArrayBuffer> {
+  const memory = phase.memory!;
+  let cache = scopedTables.get(memory);
+  if (!cache) {
+    phase.newCache = true;
+    cache = allocateRenderMetadata<GradientTableCache>(
+      4096,
+      () => {
+        const owner: GradientTableCache = {
+          memory,
+          entries: new Map(),
+          failed: false,
+        };
+        phase.cache = owner;
+        owner.retire = (entry) => {
+          try {
+            releaseRenderMetadata(entry);
+          } catch (error) {
+            if (!owner.failed) {
+              owner.failed = true;
+              owner.failure = error;
+            }
+          }
+        };
+        return owner;
+      },
+      true,
+      clearGradientTableCache,
+    );
     scopedTables.set(memory, cache);
   }
+  phase.cache = cache;
+  const start = p.startColor as readonly number[];
+  phase.start = start;
+  const end = p.endColor as readonly number[];
+  phase.end = end;
+  const tuple = (phase.tuple = [start, end]);
+  const text = (phase.key = serializeManagedMetadata(
+    memory,
+    tuple,
+    undefined,
+    false,
+  ));
+  const key = text.value!;
+  const found = cache.entries!.get(key);
+  if (found) {
+    text.release();
+    phase.key = undefined;
+    return found.bytes!;
+  }
+  const entry = allocateRenderMetadata<GradientTableEntry>(
+    2048,
+    (phase.entryProducer = () => {
+      const owner: GradientTableEntry = { memory, key: text };
+      phase.entry = owner;
+      return owner;
+    }),
+    true,
+    clearGradientTableEntry,
+  );
+  const lease = (phase.pixelLease = memory.reserve(
+    "pixels",
+    65536 * 4,
+    undefined,
+    true,
+  ));
+  let bytes: Uint8Array<ArrayBuffer>;
+  try {
+    phase.pixelProducer = () => (phase.bytes = new Uint8Array(65536 * 4));
+    bytes = phase.pixelProducer();
+    memory.adopt(bytes.buffer, lease, (value) => {
+      const backing = value as ArrayBuffer & {
+        transfer(bytes: number): ArrayBuffer;
+      };
+      if (backing.byteLength) backing.transfer(0);
+    });
+    entry.bytes = bytes;
+  } catch (error) {
+    try {
+      lease.release();
+    } catch {
+      /* Preserve the original pixel factory/adoption error. */
+    }
+    throw error;
+  }
+  for (let i = 0; i < 65536; i++)
+    for (let c = 0; c < 4; c++)
+      bytes[i * 4 + c] = Math.round(
+        (start[c]! + ((end[c]! - start[c]!) * i) / 65535) * 255,
+      );
+  if (cache.entries!.size >= 8) {
+    phase.iterator = cache.entries!.keys();
+    const oldest = phase.iterator.next().value!;
+    let failed = false,
+      failure: unknown;
+    try {
+      releaseRenderMetadata(cache.entries!.get(oldest)!);
+    } catch (error) {
+      failed = true;
+      failure = error;
+    }
+    cache.entries!.delete(oldest);
+    if (failed) throw failure;
+  }
+  phase.inserted = key;
+  cache.entries!.set(key, entry);
+  text.retain();
+  return bytes;
+}
+
+function unmanagedGradientColorTable(p: Params): Uint8Array<ArrayBuffer> {
+  const cache = tables;
   const start = p.startColor as readonly number[],
     end = p.endColor as readonly number[],
     key = JSON.stringify([start, end]);
