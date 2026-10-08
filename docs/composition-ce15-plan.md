@@ -1577,6 +1577,26 @@ accepted. Default sampler/cache/registry/error/class/caller/depth sampling/provi
 graph/font/common/ledger/Node and production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-shadow-helpers-metadata-results.json).
 
+## Accepted default sampler result checkpoint — 2026-10-08
+
+Replace the pre-body default array with an undefined-output branch. Admit actual
+1024-byte default result/control capacity before array/index/control/math factories;
+run original interpolation, drop transient refs and shrink actual result to 288.
+Keep returned array owned through consumers outside scope until release/scratch/
+allocator, then clear. Actual partial/completed arrays retire after producer/adoption/
+shrink failures, preserving first null over secondary cleanup. Supplied outputs keep
+the original route without per-pixel leases. Other caller controls remain pending.
+
+Build/lint/boundaries and all 583 focused tests / 67 files pass, including eight new
+tests and 80 full original default results in active/inactive scopes. Attempt 1 was
+incomplete because the launcher omitted ten prior shadow-helper tests; attempt 2
+reruns the complete set. Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/
+providers, 69 typography and 64 exports / 768 prior-exact encoded bodies and decoded
+frames pass. Glyph 1.361893× meets unchanged 1.5 maximum. Remaining supplied-output/
+transform/effect/cache/registry/error/class/caller/depth sampling/provider/graph/font/
+common/ledger/Node and production/aggregate/speed/final gates pending.
+[Evidence](./composition-ce15-sampler-default-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

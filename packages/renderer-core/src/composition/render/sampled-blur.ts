@@ -2,6 +2,11 @@ import {
   allocateRenderPixels,
   readRenderImageData,
 } from "../../managed-memory-context.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+  resizeRenderMetadata,
+} from "../../managed-metadata.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 type Params = Readonly<
@@ -68,9 +73,49 @@ export function samplePremultiplied(
   h: number,
   x: number,
   y: number,
-  output: number[] = [0, 0, 0, 0],
+  output?: number[],
   control?: PremultipliedSampleControl,
 ): number[] {
+  if (output === undefined) {
+    let partial: number[] | undefined;
+    let sampling: PremultipliedSampleControl | undefined;
+    let result: number[] | undefined;
+    try {
+      result = allocateRenderMetadata<number[]>(
+        1024,
+        () =>
+          samplePremultiplied(
+            pixels,
+            w,
+            h,
+            x,
+            y,
+            (partial = [0, 0, 0, 0]),
+            (sampling = control ?? {}),
+          ),
+        false,
+        (value) => {
+          value.length = 0;
+        },
+      );
+      sampling = undefined;
+      partial = undefined;
+      resizeRenderMetadata(result, 288);
+      return result;
+    } catch (error) {
+      try {
+        if (result) releaseRenderMetadata(result);
+      } catch {
+        /* Preserve the original sampling/adoption/resize failure. */
+      }
+      if (partial) partial.length = 0;
+      throw error;
+    } finally {
+      if (sampling && sampling !== control) sampling.index = undefined;
+      sampling = undefined;
+      partial = undefined;
+    }
+  }
   const left = Math.floor(x - 0.5),
     top = Math.floor(y - 0.5),
     wx = Math.floor((x - 0.5 - left) * 16),

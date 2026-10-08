@@ -96,17 +96,17 @@ still hold before relying on them.
   pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-
-  shadow-results, managed plan/sum-shader cache, particle/Canvas/WebGL region,
-  effect-paint/replace/built-ins/callback-controls, depth mesh/texture/multisample/
-  uniform/draw/text/native-controls and PNG source/draw/coordinate metadata pass
-  575 focused tests, complete audit, 22 moving/blurred and ten stationary native
-  frames and 96 owned RPC snapshots. Actual standalone composite arrays and blur
-  view/controllers pre-admit, stay through consumers then clear/detach; partial
-  producer/adoption/null/cleanup/retry paths retire actual outputs. Ten new tests
-  reconfirm 32 original composite and 16 complete blur outputs. Default sampling,
-  cache/error/class/caller and depth sampling factories remain pending. Native
-  probes, WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
-  bodies/frames pass; glyph 1.395023× meets unchanged 1.5 maximum.
+  shadow-results/default-sampler-results, managed plan/sum-shader cache, particle/
+  Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
+  texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
+  metadata pass 583 focused tests, complete audit, 22 moving/blurred and ten stationary
+  native frames and 96 owned RPC snapshots. Default sampler arrays/control refs
+  pre-admit; actual results shrink after production, stay through consumers then
+  clear. Eight new tests / 80 original full results cover quotas/refs/producer/
+  adoption/shrink/null/retry and actual retirement. Supplied-output callers,
+  transforms/cache/error/class/caller and depth sampling admission remain pending.
+  Native probes, WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
+  bodies/frames pass; glyph 1.361893× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -342,6 +342,25 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual default sampler results
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `02ee590`.
+- **Done:** admit default sampling array/working controls before factories; shrink
+  actual result after original interpolation, retain through consumers and retire
+  partial/completed arrays after producer/adoption/shrink failure. Supplied outputs
+  keep original route without per-pixel leases; other caller admission pending.
+- **Results:** build/lint/boundaries, 583 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.361893×.
+- **Verification:** eight new tests / 80 original full outputs, pre-math quotas,
+  actual consumer closure/capacity, null/adoption/shrink/secondary cleanup/retry,
+  outside-scope lifetime, scratch/allocator cleanup and borrowed output/bytes.
+  Launcher omission retained as incomplete attempt 1; complete attempt 2 accepted.
+- **Next:** caller/transform/effect/cache/class/depth sampling factories, provider/
+  graph/font/common/registry/ledger/Node, full CE15, then CE14. No full gate yet.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [default sampler evidence](./composition-ce15-sampler-default-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual standalone shadow helper results
 
