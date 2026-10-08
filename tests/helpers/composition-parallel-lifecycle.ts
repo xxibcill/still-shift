@@ -182,17 +182,29 @@ export async function verifyParallelLifecycle(
       ),
   );
   const pages: Page[] = [];
+  let forcedDisconnect = false;
   await failure(
     "browser-close",
     {
       verifyWorker: async (page, worker) => {
         pages[worker] = page;
+        if (worker === 1)
+          page
+            .context()
+            .browser()!
+            .once("disconnected", () => {
+              forcedDisconnect = true;
+            });
       },
       verifyFrame: async (frame) => {
         if (frame === 0) await pages[1]!.context().browser()!.close();
       },
     },
-    (error) => error instanceof Error && /closed/i.test(error.message),
+    (error) =>
+      forcedDisconnect &&
+      error instanceof Error &&
+      (/closed/i.test(error.message) ||
+        (error as NodeJS.ErrnoException).code === "ECONNRESET"),
   );
   for (const fault of ["index", "body", "credential", "duplicate"] as const)
     await failure(

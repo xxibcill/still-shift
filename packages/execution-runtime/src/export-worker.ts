@@ -47,6 +47,10 @@ import {
 import { compositionOutputInput } from "./composition-output-input.ts";
 import { prepareCompositionOutputArtifacts } from "./composition-output-artifacts.ts";
 import { verifyCompositionOutputAudio } from "./composition-output-audio.ts";
+import {
+  COMPOSITION_APPLICATION_MEMORY_LIMIT,
+  COMPOSITION_NODE_MEMORY_ALLOWANCE,
+} from "./composition-export-memory.ts";
 import { summarizeCompositionStatistics } from "./composition-export-statistics.ts";
 import { CompositionSurfaceStore } from "./composition-surface-store.ts";
 import { CompositionSurfaceBroker } from "./composition-surface-broker.ts";
@@ -160,6 +164,13 @@ export type ExportMetrics = {
   ffmpegCodec: string;
   frameTransport: FrameTransport;
   compositionStatistics?: ReturnType<typeof summarizeCompositionStatistics>;
+  compositionMemory?: {
+    scope: "declared-worker-application-bytes";
+    applicationLimitBytes: number;
+    reservedNodeBudgetBytes: number;
+    sumOfWorkerPeakBytes: number;
+    workers: NonNullable<BrowserExportResult["memory"]>[];
+  };
   work?: {
     version: "composition-render-work-1";
     workers: number;
@@ -1093,6 +1104,7 @@ export const exportScene = async (
     request.signal?.throwIfAborted();
     encodePathStart = performance.now();
     let browserResult: BrowserExportResult;
+    let workerMemory: NonNullable<BrowserExportResult["memory"]>[] = [];
     let compositionStatistics: ExportMetrics["compositionStatistics"];
     if (workOptions) {
       const rendererIds = workers.flatMap(
@@ -1134,6 +1146,11 @@ export const exportScene = async (
       orderedFrames!.finish();
       frameState.nextIndex = orderedFrames!.statistics.deliveredFrames;
       browserResult = summarizeExportWorkers(results);
+      workerMemory = results.map((result) => {
+        if (!result.memory?.afterAcknowledgement)
+          throw Error("Composition worker omitted memory retirement");
+        return result.memory;
+      });
       compositionStatistics = summarizeCompositionStatistics(
         results.map((result) => {
           if (!result.compositionStatistics)
@@ -1181,6 +1198,7 @@ export const exportScene = async (
     if (frameState.error) throw frameState.error;
     if (frameState.nextIndex !== scene.timeline.frameCount)
       throw new Error("Not all frames reached the encoder");
+    if (browserResult.memory) workerMemory = [browserResult.memory];
     if (!compositionStatistics && browserResult.compositionStatistics)
       compositionStatistics = summarizeCompositionStatistics(
         [browserResult.compositionStatistics],
@@ -1331,6 +1349,23 @@ export const exportScene = async (
       frameTransport: transport,
       ...(workMetrics ? { work: workMetrics } : {}),
       ...(compositionStatistics ? { compositionStatistics } : {}),
+      ...(workerMemory.length
+        ? {
+            compositionMemory: {
+              scope: "declared-worker-application-bytes" as const,
+              applicationLimitBytes: COMPOSITION_APPLICATION_MEMORY_LIMIT,
+              reservedNodeBudgetBytes: COMPOSITION_NODE_MEMORY_ALLOWANCE,
+              sumOfWorkerPeakBytes: workerMemory.reduce(
+                (sum, worker) =>
+                  sum +
+                  worker.beforeAcknowledgement.peak.pixels +
+                  worker.beforeAcknowledgement.peak.metadata,
+                0,
+              ),
+              workers: workerMemory,
+            },
+          }
+        : {}),
       ...(audioInput
         ? {
             audio: {

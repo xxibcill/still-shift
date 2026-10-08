@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **CE15 production admission wired (2026-10-08):** real export pages now use the
+  managed allocator from resource loading through Node result acknowledgement.
+  Eight one/four-worker Canvas/WebGL exports preserve exact output and retire
+  every admitted owner; 28 format cases and legacy WebGL exports pass. Node and
+  remaining metadata admission, full-area scheduling, static coverage and speed/
+  final acceptance remain pending. Expanded parallel verification passes, including all 24 live failures after
+  repairing the forced-browser-close diagnostic race.
+  [Evidence](./composition-ce15-completion-results.json).
+
 - **CE15 completion resumed (2026-10-08):** isolated worktree starts from PR #49
   head `671caf2f`. Ordinary exports now report measured per-type submission times
   and explicit cache state/hits, sharing aggregation with parallel exports. The
@@ -174,6 +183,22 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-08 — CE15 production worker memory lifecycle
+
+- **Done:** activate managed admission in real exports; partition worker capacity,
+  retain RPC result owners through acknowledgement and require complete retirement.
+  Report declared worker peaks separately from measured process RSS and Node allowance.
+- **Verified:** 21 focused tests, build/lint/boundaries, eight actual cached/uncached
+  one/four-worker Canvas/WebGL exports, 28 format cases and legacy WebGL regressions.
+- **Repair:** parallel acceptance reached browser-close and observed ECONNRESET
+  before the expected Playwright diagnostic. The test now requires the intended
+  browser's actual disconnected event and accepts either transport; all cleanup
+  and process-reaping assertions remain. The expanded rerun passes all format,
+  native/source/tint/root/prefix parity cases and all 24 live failures.
+- **Remaining:** complete metadata/Node admission, full-area scheduling and caches,
+  authentic speed acceptance and final local gate. No whole-memory or CE15 completion claim.
+- **Record:** [Completion evidence](./composition-ce15-completion-results.json).
 
 ### 2026-10-08 — CE15 ordinary export statistics
 

@@ -120,7 +120,17 @@ export async function runExportBrowserWorker(
     },
     { ...options, scene: options.scene as PreviewScene },
   );
-  if (outcome.ok) return outcome.value;
+  if (outcome.ok) {
+    if (outcome.value.memory)
+      outcome.value.memory.afterAcknowledgement = await worker.page.evaluate(
+        async () => {
+          if (!window.acknowledgeStillShiftExport)
+            throw Error("Composition export omitted memory acknowledgement");
+          return window.acknowledgeStillShiftExport();
+        },
+      );
+    return outcome.value;
+  }
   const diagnostic = outcome.diagnostics[0]!;
   throw new AnimationEngineError(
     "RENDER_FAILED",

@@ -1,5 +1,7 @@
 import { assertCompositionEffectVersions } from "@still-shift/renderer-core";
 import {
+  createRenderCanvas,
+  type ManagedMemory,
   createCompositionPreview,
   createCompositionPreviewAsync,
   createWebGLPreview,
@@ -9,6 +11,7 @@ import {
   type CompositionScene,
   type CompositionPreview,
 } from "@still-shift/renderer-core";
+import { CompositionExportMemory } from "./composition-export-memory.ts";
 import { compositionSurfaceExchange } from "./composition-surface-client.ts";
 import type { ExportableScene } from "./export-worker.ts";
 import type { FrameTransport } from "./transport.ts";
@@ -18,6 +21,10 @@ import type { CompositionWorkerStatistics } from "./composition-export-statistic
 
 export type BrowserExportResult = {
   compositionStatistics?: CompositionWorkerStatistics;
+  memory?: {
+    beforeAcknowledgement: ManagedMemory["statistics"];
+    afterAcknowledgement?: ManagedMemory["statistics"];
+  };
   frameRenderAverageMs: number;
   frameRenderP95Ms: number;
   frameUploadAverageMs: number;
@@ -56,6 +63,7 @@ export type BrowserCompositionOutput = {
 
 declare global {
   interface Window {
+    acknowledgeStillShiftExport?: () => Promise<ManagedMemory["statistics"]>;
     runStillShiftExport?: (
       scene: ExportableScene,
       hasDepth: boolean,
@@ -84,8 +92,16 @@ const summarizeTimings = (timings: number[]) => {
 const isComposition = (scene: ExportableScene): scene is CompositionScene =>
   "schemaVersion" in scene && scene.schemaVersion === "composition-scene-1";
 
+const exportMemory = new CompositionExportMemory();
+window.acknowledgeStillShiftExport = () => exportMemory.acknowledge();
 window.runStillShiftExport = async (scene, hasDepth, transport, output) => {
-  if (isComposition(scene)) return exportComposition(scene, transport, output);
+  if (isComposition(scene)) {
+    const result = await exportMemory.run(output?.work?.workers ?? 1, () =>
+      exportComposition(scene, transport, output),
+    );
+    result.value.memory = { beforeAcknowledgement: result.memory };
+    return result.value;
+  }
   if (output)
     throw Error("Composition output profiles require a composition scene");
   const illustrated = "recipe" in scene;
@@ -160,7 +176,7 @@ const exportComposition = async (
     (id) => `/_export/assets/${id}`,
     scene.preparedMedia ? { preparedMedia: scene.preparedMedia } : {},
   );
-  const canvas = document.createElement("canvas");
+  const canvas = createRenderCanvas();
   document.body.append(canvas);
   const preview = await (
     output?.work?.surfaceCache

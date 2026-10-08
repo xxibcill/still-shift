@@ -4,7 +4,7 @@
   "base": "671caf2f4c34b58189a167b52fbbe2ddbea8e2e3",
   "date": "2026-10-08",
   "statistics": {
-    "status": "focused checks passed; parallel shared aggregation follow-up pending",
+    "status": "focused acceptance passed, including expanded parallel suite",
     "unitTests": 12,
     "static": ["build", "lint changed files", "check:boundaries"],
     "browser": [
@@ -26,7 +26,13 @@
         ]
       }
     ],
-    "scope": "synchronous-submission-wall-time, not GPU completion time"
+    "scope": "synchronous-submission-wall-time, not GPU completion time",
+    "parallelAttempt": {
+      "status": "failed",
+      "log": "/private/tmp/ce15-completion-statistics-parallel.log",
+      "failure": "forced browser disconnect reached Node as ECONNRESET aborted before Playwright closed diagnostic",
+      "repair": "accept transport reset only when the intended browser emitted disconnected; keep all cleanup assertions"
+    }
   },
   "remaining": [
     "production aggregate memory admission and lifetime completion",
@@ -34,5 +40,36 @@
     "full area/fps/worker acceptance",
     "authentic >=120-second >=3x four-worker speed proof with identical output",
     "final implementation review and required complete local pnpm check"
-  ]
+  ],
+  "productionMemory": {
+    "status": "production admission and acknowledgement focused acceptance passed; complete accounting and large-area admission pending",
+    "workerPolicy": "statically partition 7.5 GiB across 1\u20134 workers; reserve 512 MiB for Node (Node admission remains pending)",
+    "rpcLifetime": "browser result owners remain charged until Node acknowledges reception; then require zero reservations",
+    "unitTests": 3,
+    "focusedTestsIncludingCaptureAndStatistics": 21,
+    "nativeSmokeExports": 8,
+    "smokeLog": "/private/tmp/ce15-completion-memory-smoke.log",
+    "formatLog": "/private/tmp/ce15-completion-memory-output.log",
+    "legacyLog": "/private/tmp/ce15-completion-memory-legacy.log",
+    "applicationCoverage": "existing instrumented allocations only; remaining metadata ownership and Node admission are not claimed complete",
+    "expandedParallel": {
+      "status": "passed",
+      "log": "/private/tmp/ce15-completion-memory-parallel.log",
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-parallel-dsrBVQ",
+      "primaryReports": 51,
+      "nativeCases": 8,
+      "sourceCases": 8,
+      "tintCases": 16,
+      "rootCases": 16,
+      "prefixCases": 8,
+      "liveFailures": 24
+    },
+    "logs": {
+      "/private/tmp/ce15-completion-memory-focused.log": "b29c1fe75513bce7440d94ef88f65923f1ca8e1570fc3a75dc75b575d5e0b905",
+      "/private/tmp/ce15-completion-memory-smoke.log": "1ad0965b1c32afa644d93f406ec5226397571492069ef58cc565503cb9ba6e4b",
+      "/private/tmp/ce15-completion-memory-output.log": "a49738e87cac289aec01c68e189ee1311840de8548a47959d9bd6771bf64bb31",
+      "/private/tmp/ce15-completion-memory-legacy.log": "095479f0f35e73439becfe0d69b5b7631848d6f35de48633881dff073ecbd35a",
+      "/private/tmp/ce15-completion-memory-parallel.log": "60bb4591e3525293e998c7e24f24aa8ef9f2cc03dc0ca543ea2692fb4f09caaa"
+    }
+  }
 }

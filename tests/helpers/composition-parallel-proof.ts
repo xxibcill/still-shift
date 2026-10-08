@@ -117,6 +117,20 @@ export function verifyParallelMetrics(
   assert.ok(work);
   assert.equal(work.version, "composition-render-work-1");
   assert.equal(work.workers, workers);
+  const memory = metrics.compositionMemory;
+  assert.ok(memory);
+  assert.equal(memory.workers.length, workers);
+  assert.ok(
+    memory.sumOfWorkerPeakBytes + memory.reservedNodeBudgetBytes <=
+      memory.applicationLimitBytes,
+  );
+  for (const worker of memory.workers) {
+    assert.deepEqual(worker.afterAcknowledgement?.current, {
+      pixels: 0,
+      metadata: 0,
+    });
+    assert.equal(worker.afterAcknowledgement?.reservations, 0);
+  }
   assert.equal(work.cacheStatic, cacheStatic);
   assert.equal(work.chunkFrames, 1);
   assert.equal(work.orderedFrames.deliveredFrames, metrics.frameCount);

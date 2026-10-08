@@ -255,6 +255,14 @@ for (const backend of ["canvas2d", "webgl2"] as const)
       assert.equal(stats.frameCount, result.metrics.frameCount);
       assert.equal(stats.cacheEnabled, false);
       assert.equal(stats.cacheHits, 0);
+      const memory = result.metrics.compositionMemory;
+      assert.ok(memory);
+      assert.equal(memory.workers.length, 1);
+      assert.deepEqual(memory.workers[0]!.afterAcknowledgement?.current, {
+        pixels: 0,
+        metadata: 0,
+      });
+      assert.equal(memory.workers[0]!.afterAcknowledgement?.reservations, 0);
       assert.ok(stats.byLayerType.length > 0);
       assert.ok(
         stats.byLayerType.every(
