@@ -121,7 +121,9 @@ export class ManagedMemory {
     return lease;
   }
 
-  /** Reserve before calling an allocator, and release admission if it throws. */
+  /** Hold admission through construction and cleanup. A failed identity needs
+   * an explicit captured-product backing lookup; never repeat its original Get.
+   */
   allocate<T extends object>(
     kind: MemoryKind,
     bytes: number,
@@ -129,15 +131,45 @@ export class ManagedMemory {
     retained = false,
     identity: (value: T) => object = (value) => value,
     destroy?: (value: object) => void,
+    failedIdentity?: (value: T) => object | undefined,
   ): T {
     const lease = this.reserve(kind, bytes, undefined, retained);
+    const finish = lease.deferRelease();
+    let value: T | undefined,
+      owner: object | undefined,
+      adopted = false;
     try {
-      const value = factory();
-      const owner = identity(value);
+      value = factory();
+      owner = identity(value);
       this.adopt(owner, lease, destroy);
+      adopted = true;
+      finish();
+      if (!lease.active) throw Error("Managed allocation owner was disposed");
       return value;
     } catch (error) {
-      lease.release();
+      if (!adopted) {
+        let cleanup = owner;
+        try {
+          if (value && failedIdentity) cleanup = failedIdentity(value) ?? owner;
+        } catch {
+          /* Preserve the original identity/admission failure. */
+        }
+        try {
+          if (cleanup && !this.owns(cleanup)) destroy?.(cleanup);
+        } catch {
+          /* Fresh storage cleanup is secondary to the original failure. */
+        }
+      }
+      try {
+        lease.release();
+      } catch {
+        /* Preserve the original producer/identity/admission failure. */
+      }
+      try {
+        finish();
+      } catch {
+        /* Deferred resource cleanup remains secondary. */
+      }
       throw error;
     }
   }
@@ -153,8 +185,17 @@ export class ManagedMemory {
       throw Error("Managed reservation already has a resource owner");
     if (this.ownership.has(value))
       throw Error("Managed allocation returned an already owned resource");
-    this.ownership.set(value, lease);
-    this.resources.set(lease, { value, ...(destroy ? { destroy } : {}) });
+    const resource = { value, ...(destroy ? { destroy } : {}) };
+    try {
+      this.ownership.set(value, lease);
+      this.resources.set(lease, resource);
+    } catch (error) {
+      if (this.ownership.get(value) === lease) this.ownership.delete(value);
+      if (this.resources.get(lease) === resource) this.resources.delete(lease);
+      delete (resource as Partial<typeof resource>).value;
+      delete resource.destroy;
+      throw error;
+    }
   }
 
   retain(value: object): void {

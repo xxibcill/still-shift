@@ -2309,6 +2309,32 @@ Generic allocation/identity/adoption cleanup, lease/ledger/control bootstrap, co
 kernel/registry and other backend/class/provider/font/Node/production/aggregate/speed/final
 gates remain pending. [Evidence](./composition-ce15-memory-retirement-results.json).
 
+## Accepted generic/native allocation failure checkpoint — 2026-10-08
+
+Hold actual admission through factory, identity, adoption and failure cleanup, including
+reentrant producer disposal. Capture product/owner before failure, recover fresh native
+backing without repeating original user Gets, preserve captured-allocator aliases and
+first error including null, and attempt release/final hold separately. Transactional
+adoption preserves original ownership-before-resource insertion and clears actual partial
+records after pre/post WeakMap/Map mutation failure. Reject successfully retired outputs;
+do not recover or destroy again after completed adoption. Preserve successful/inactive
+method/data/buffer receiver and Get order. Capture original completed image view, use
+failure-only genuine native accessors, and detach actual backing after primary cleanup
+failure before returning its admission.
+
+Build/lint/boundaries and 934 focused tests / 103 files pass on attempt 1. Twenty-two
+new units / all 912 prior tests pass; 67 targeted lifecycle checks pass after independent
+review repairs. Ten genuine native cuts preserve actual 160 channels, prior 10240 Canvas
+channels, original reads, held 1040-byte admission, nine first nulls and inactive-factory
+rejection; backing detaches and no failed owner remains. Complete 144-case / 8,000-frame
+audit, 96 RPC snapshots, native probes, WebGL/providers, 69 typography tests and 64
+prior-exact exports / 768 bodies/frames pass; glyph 1.395620× stays within 1.5.
+
+Foreign-allocator/opaque/shared/fake product identity contracts, native class/accessor and
+common control/ledger bootstrap, color key-list/kernel/registry, backend/caller/font/
+provider/Node/production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-allocation-failure-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

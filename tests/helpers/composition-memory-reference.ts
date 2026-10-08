@@ -250,6 +250,327 @@ export async function checkManagedMemoryPrimitives() {
         throw Error(
           "Managed response replaced the original null failure or retained storage",
         );
+      const allocationFailures = [];
+      const committedContext = committed.getContext("2d")!;
+      const nativeGetImageData = committedContext.getImageData;
+      const nativeData = Object.getOwnPropertyDescriptor(
+        ImageData.prototype,
+        "data",
+      )!.get!;
+      const nativeBuffer = Object.getOwnPropertyDescriptor(
+        Object.getPrototypeOf(Uint8ClampedArray.prototype) as object,
+        "buffer",
+      )!.get!;
+      const nativeByteLength = Object.getOwnPropertyDescriptor(
+        ArrayBuffer.prototype,
+        "byteLength",
+      )!.get!;
+      const transferDescriptor = Object.getOwnPropertyDescriptor(
+        ArrayBuffer.prototype,
+        "transfer",
+      )!;
+      const nativeTransfer = transferDescriptor.value as (
+        this: ArrayBuffer,
+        bytes: number,
+      ) => ArrayBuffer;
+      const originalAdopt = memory.adopt;
+      const requireAllocationProof = (valid: boolean, message: string) => {
+        if (!valid)
+          throw Error(`Managed native allocation failure: ${message}`);
+      };
+      for (const cut of [
+        "image-data-null",
+        "image-buffer-null",
+        "typed-buffer-null",
+        "image-adopt-before-null",
+        "image-adopt-after-null",
+        "typed-adopt-before-null",
+        "typed-adopt-after-null",
+        "backing-byteLength-null",
+        "backing-transfer-null",
+        "factory-ends-scratch",
+      ] as const) {
+        const prior = memory.statistics;
+        const events: string[] = [];
+        const overrides: [
+          object,
+          PropertyKey,
+          PropertyDescriptor | undefined,
+        ][] = [];
+        let image: ImageData | undefined,
+          data: Uint8ClampedArray | undefined,
+          backing: ArrayBuffer | undefined,
+          nativePixels = 0,
+          failure: unknown = "not thrown";
+        const held = () => {
+          requireAllocationProof(
+            memory.statistics.current.pixels === prior.current.pixels + 16 &&
+              memory.statistics.reservations === prior.reservations + 1,
+            `${cut} released admission before native work finished`,
+          );
+        };
+        const override = (
+          target: object,
+          key: PropertyKey,
+          replacement: PropertyDescriptor,
+        ) => {
+          overrides.push([
+            target,
+            key,
+            Object.getOwnPropertyDescriptor(target, key),
+          ]);
+          Object.defineProperty(target, key, replacement);
+        };
+        const transfer = function (this: ArrayBuffer, bytes: number) {
+          if (this === backing) {
+            events.push("nativeTransfer");
+            held();
+            requireAllocationProof(
+              bytes === 0,
+              "native detach changed its size",
+            );
+          }
+          return nativeTransfer.call(this, bytes);
+        };
+        memory.beginScratch();
+        try {
+          override(ArrayBuffer.prototype, "transfer", {
+            ...transferDescriptor,
+            value: transfer,
+          });
+          override(committedContext, "getImageData", {
+            configurable: true,
+            get(this: CanvasRenderingContext2D) {
+              events.push("method");
+              held();
+              requireAllocationProof(
+                this === committedContext,
+                "image method receiver changed",
+              );
+              return function (
+                this: CanvasRenderingContext2D,
+                x: number,
+                y: number,
+                width: number,
+                height: number,
+              ) {
+                events.push("factory");
+                held();
+                requireAllocationProof(
+                  this === committedContext &&
+                    x === 0 &&
+                    y === 0 &&
+                    width === 2 &&
+                    height === 2,
+                  "native image factory changed its receiver or rectangle",
+                );
+                image = nativeGetImageData.call(this, x, y, width, height);
+                data = nativeData.call(image) as Uint8ClampedArray;
+                backing = nativeBuffer.call(data) as ArrayBuffer;
+                requireAllocationProof(
+                  nativeByteLength.call(backing) === 16,
+                  "native image did not allocate its actual sixteen-byte backing",
+                );
+                for (let row = 0; row < 2; row++)
+                  for (let column = 0; column < 2; column++)
+                    for (let channel = 0; channel < 4; channel++) {
+                      requireAllocationProof(
+                        data[(row * 2 + column) * 4 + channel] ===
+                          expected[(row * 16 + column) * 4 + channel],
+                        "native image factory changed an original pixel",
+                      );
+                      nativePixels++;
+                    }
+                const actualImage = image,
+                  actualData = data,
+                  actualBacking = backing;
+                override(actualImage, "data", {
+                  configurable: true,
+                  get(this: ImageData) {
+                    events.push("data");
+                    held();
+                    requireAllocationProof(
+                      this === actualImage,
+                      "image data receiver changed",
+                    );
+                    if (cut === "image-data-null") throw null;
+                    return actualData;
+                  },
+                });
+                override(actualData, "buffer", {
+                  configurable: true,
+                  get(this: Uint8ClampedArray) {
+                    events.push("buffer");
+                    held();
+                    requireAllocationProof(
+                      this === actualData,
+                      "typed backing receiver changed",
+                    );
+                    if (
+                      cut === "image-buffer-null" ||
+                      cut === "typed-buffer-null"
+                    )
+                      throw null;
+                    return actualBacking;
+                  },
+                });
+                override(actualBacking, "byteLength", {
+                  configurable: true,
+                  get(this: ArrayBuffer) {
+                    events.push("byteLength");
+                    held();
+                    requireAllocationProof(
+                      this === actualBacking,
+                      "backing length receiver changed",
+                    );
+                    if (cut === "backing-byteLength-null") throw null;
+                    return nativeByteLength.call(this) as number;
+                  },
+                });
+                override(actualBacking, "transfer", {
+                  configurable: true,
+                  get(this: ArrayBuffer) {
+                    events.push("transfer");
+                    held();
+                    requireAllocationProof(
+                      this === actualBacking,
+                      "backing transfer receiver changed",
+                    );
+                    if (cut === "backing-transfer-null") throw null;
+                    if (
+                      cut !== "backing-byteLength-null" &&
+                      cut !== "factory-ends-scratch"
+                    )
+                      throw Error("secondary native cleanup failure");
+                    return transfer;
+                  },
+                });
+                if (cut === "factory-ends-scratch") {
+                  events.push("endScratch");
+                  memory.endScratch();
+                  held();
+                  requireAllocationProof(
+                    !memory.hasScratch && committed.width === 16,
+                    "factory retirement discarded the old committed Canvas",
+                  );
+                }
+                return actualImage;
+              };
+            },
+          });
+          if (cut.includes("adopt"))
+            override(memory, "adopt", {
+              configurable: true,
+              value: (...args: Parameters<ManagedMemory["adopt"]>) => {
+                events.push("adopt");
+                held();
+                requireAllocationProof(
+                  args[0] === backing && args[1].bytes === 16,
+                  "adoption changed its original owner or capacity",
+                );
+                if (cut.includes("before")) throw null;
+                Reflect.apply(originalAdopt, memory, args);
+                throw null;
+              },
+            });
+          try {
+            if (cut.startsWith("typed"))
+              allocateRenderPixels(
+                16,
+                () => committedContext.getImageData(0, 0, 2, 2).data,
+              );
+            else readRenderImageData(committedContext, 0, 0, 2, 2);
+            if (cut.startsWith("backing")) {
+              requireAllocationProof(
+                backing !== undefined && memory.owns(backing),
+                "successful image lost its original backing owner",
+              );
+              memory.release(backing!);
+            }
+          } catch (error) {
+            failure = error;
+          }
+          if (memory.hasScratch) memory.endScratch();
+          const expectedEvents = ["method", "factory"];
+          if (cut === "factory-ends-scratch") expectedEvents.push("endScratch");
+          expectedEvents.push("data");
+          if (cut !== "image-data-null") expectedEvents.push("buffer");
+          if (cut.includes("adopt")) expectedEvents.push("adopt");
+          expectedEvents.push("byteLength");
+          if (cut !== "backing-byteLength-null")
+            expectedEvents.push("transfer");
+          expectedEvents.push("nativeTransfer");
+          requireAllocationProof(
+            cut === "factory-ends-scratch"
+              ? /no active owner/.test(String(failure))
+              : failure === null,
+            `${cut} replaced its original failure`,
+          );
+          requireAllocationProof(
+            events.join("|") === expectedEvents.join("|"),
+            `${cut} repeated or reordered original Gets: ${events.join("|")}`,
+          );
+          requireAllocationProof(
+            backing !== undefined &&
+              nativeByteLength.call(backing) === 0 &&
+              nativePixels === 16 &&
+              memory.statistics.current.pixels === prior.current.pixels &&
+              memory.statistics.current.metadata === prior.current.metadata &&
+              memory.statistics.reservations === prior.reservations &&
+              committed.width === 16 &&
+              committed.height === 16 &&
+              memory.owns(committed),
+            `${cut} retained failed storage or changed the prior Canvas owner`,
+          );
+          const protectedImage = nativeGetImageData.call(
+            committedContext,
+            0,
+            0,
+            16,
+            16,
+          );
+          const protectedPixels = nativeData.call(
+            protectedImage,
+          ) as Uint8ClampedArray;
+          for (let byte = 0; byte < expected.length; byte++)
+            requireAllocationProof(
+              protectedPixels[byte] === expected[byte],
+              `${cut} changed committed Canvas byte ${byte}`,
+            );
+          nativeTransfer.call(
+            nativeBuffer.call(protectedPixels) as ArrayBuffer,
+            0,
+          );
+          allocationFailures.push({
+            cut,
+            nativePixelComparisons: nativePixels,
+            originalReadSequence: events,
+            heldPixelBytes: prior.current.pixels + 16,
+            backingByteLengthAfter: nativeByteLength.call(backing),
+            originalNullPreserved: cut !== "factory-ends-scratch",
+            factoryRetirementRejected: cut === "factory-ends-scratch",
+            failedReservations: 0,
+            protectedCanvasChannels: expected.length,
+            prior: prior.current,
+            after: memory.statistics.current,
+          });
+        } finally {
+          if (memory.hasScratch) {
+            try {
+              memory.endScratch();
+            } catch {
+              /* Fixture cleanup must preserve its failing proof. */
+            }
+          }
+          for (let index = overrides.length - 1; index >= 0; index--) {
+            const [target, key, original] = overrides[index]!;
+            if (original) Object.defineProperty(target, key, original);
+            else Reflect.deleteProperty(target, key);
+          }
+          if (backing && nativeByteLength.call(backing))
+            nativeTransfer.call(backing, 0);
+        }
+      }
       const before = memory.statistics;
       memory.dispose();
       if (
@@ -269,6 +590,7 @@ export async function checkManagedMemoryPrimitives() {
         exactResponseBytes: responseBytes,
         scratchResponseDetached: true,
         responseFailures,
+        allocationFailures,
         originalNullStreamFailurePreserved: true,
         before,
         after: memory.statistics,

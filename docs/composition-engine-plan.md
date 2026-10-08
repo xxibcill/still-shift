@@ -5136,25 +5136,25 @@ rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-shadow-results/d
 sampler-results/sampled-GPU-Canvas-work/transform-results/map-GPU-Canvas-work/
 standalone-channel-work/warp-GPU-Canvas-work/standalone-warp-mapping/late-point-results/
 radial-GPU-Canvas-work/standalone-radial-point/control/encoded-view-results/stylize-
-GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work/Canvas-color-source-gradient-image-work/common-memory-native-retirement, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
+GPU-Canvas-work/standalone-offset-results/noise-GPU-Canvas-work/standalone-noise-controls/uniform-results/field-producer/native-color-results/gradient-control/uniform-results/table-cache-key-entry-view/standalone-color-pixel-results/GPU-color-tuple-uniform-curve-work/Canvas-color-source-gradient-image-work/common-memory-native-retirement/allocation-identity-adoption-failure-cleanup, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/
 replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/
-native-controls and PNG source/draw/coordinate metadata pass 912 focused tests, complete audit, 22 moving/blurred and ten stationary
-native frames and 96 owned RPC snapshots. Common pixel/metadata and native retirement
-retain actual charge, ownership, resource records and lease lookup through original
-destructors; mark inactive before cleanup, attempt both destructors, preserve first null
-and clear actual resource refs before returning admission. Reentrant release/disposal
-cannot destroy twice or expose old capacity before physical cleanup. Successful adoption
-and captured async lease prevent already-retired handle fallback. Defer native retirement
-through already-started initialization; late registration stays charged and is destroyed
-once after final idempotent producer hold settles. Nineteen new tests / all 893 prior
-tests pass, including unchanged late-registration protection. Preserve initial lint,
-three-case review red regression and 908/909 failure; final attempt 4 passes 912/102.
-Native probes, WebGL/providers/69 typography tests pass; glyph 1.415644× meets
-unchanged 1.5 maximum. All 64 exports / 768 bodies/frames retain prior exact output.
-First glyph run 1.56× fails; retain evidence and unchanged-source/threshold retry.
-Generic allocate/identity/adopt backing cleanup and actual lease/control/ledger bootstrap,
-color GPU ownKeys key-list/kernel/shader/registry, arbitrary borrowed methods/species,
-backend/class/caller/depth sampling/provider/font/Node remain pending. Recording/device/pool/shader/paint/
+native-controls and PNG source/draw/coordinate metadata pass 934 focused tests, complete audit, 22 moving/blurred and ten stationary
+native frames and 96 owned RPC snapshots. Generic/native producer holds keep actual
+admission through factory/identity/adoption/cleanup, even after reentrant disposal.
+Capture completed product/owner, retire fresh unowned native backing without repeated
+user Gets, preserve captured-allocator aliases and first null over secondary cleanup.
+Transactional pre/post WeakMap/Map registration rollback clears actual partial record
+refs and preserves old owners/direct lease retry. Reject successfully retired outputs;
+completed adoption invokes no recovery or repeated destruction. Successful/inactive
+method/data/buffer receiver and reads stay unchanged. Failure-only native view/ImageData
+accessors and primary destructor fallback detach actual backing while charged. Twenty-two
+new units/all 912 prior tests/67 targeted checks pass; ten genuine native cuts preserve
+actual 160/prior 10240 channels, held 1040-byte admission, first null and original Gets.
+Build/lint/boundaries and 934/103 pass on attempt 1. Native probes, WebGL/providers/69
+typography tests pass; glyph 1.395620× meets unchanged 1.5 maximum. All 64 exports /
+768 bodies/frames retain prior exact output. Foreign allocator/opaque/shared/fake product
+identity, native accessor/class/control/ledger bootstrap, color key-list/kernel/registry,
+backend/caller/depth sampling/provider/font/Node remain pending. Recording/device/pool/shader/paint/
 provider/graph/font/checksum/pixel-view/ledger/Node metadata and production admission
 remain pending.
 Aggregate limits, two-minute speed proof

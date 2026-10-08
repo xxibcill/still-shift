@@ -2,11 +2,57 @@ import type { ManagedMemory, MemoryLease } from "./managed-memory.ts";
 
 let active: ManagedMemory | undefined;
 const destroyPixelBacking = (value: object) => {
-  if (value instanceof ArrayBuffer && value.byteLength)
-    (value as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }).transfer(
-      0,
-    );
+  try {
+    if (value instanceof ArrayBuffer && value.byteLength)
+      (
+        value as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }
+      ).transfer(0);
+  } catch (error) {
+    try {
+      const bytes = Object.getOwnPropertyDescriptor(
+        ArrayBuffer.prototype,
+        "byteLength",
+      )!.get!.call(value) as number;
+      if (bytes)
+        (
+          ArrayBuffer.prototype as ArrayBuffer & {
+            transfer(bytes: number): ArrayBuffer;
+          }
+        ).transfer.call(value, 0);
+    } catch {
+      /* Preserve the original destructor failure. */
+    }
+    throw error;
+  }
 };
+
+/** Failure-only native backing lookup never repeats the original user property Get. */
+function failedPixelIdentity(value: object): object | undefined {
+  if (ArrayBuffer.isView(value)) {
+    for (const prototype of [
+      Object.getPrototypeOf(Uint8Array.prototype) as object,
+      DataView.prototype,
+    ]) {
+      try {
+        return Object.getOwnPropertyDescriptor(prototype, "buffer")!.get!.call(
+          value,
+        ) as object;
+      } catch {
+        /* The other native view accessor may accept this product. */
+      }
+    }
+  }
+  try {
+    Object.getOwnPropertyDescriptor(
+      ArrayBuffer.prototype,
+      "byteLength",
+    )!.get!.call(value);
+    return value;
+  } catch {
+    /* Opaque products require an explicit producer-captured identity contract. */
+    return undefined;
+  }
+}
 
 /** A pinned export page owns exactly one allocator scope through all asynchronous frame uploads. */
 export async function withManagedMemory<T>(
@@ -45,6 +91,7 @@ export function allocateRenderPixels<T extends ArrayBuffer | ArrayBufferView>(
     retained,
     (value) => (ArrayBuffer.isView(value) ? value.buffer : value),
     destroyPixelBacking,
+    failedPixelIdentity,
   );
 }
 
@@ -69,6 +116,7 @@ export function createRenderStorage<T extends object>(
 ): T {
   const memory = active;
   const lease = memory?.reserve("pixels", bytes, undefined, retained);
+  const finish = lease?.deferRelease();
   let value: T | undefined,
     adopted = false;
   try {
@@ -87,6 +135,9 @@ export function createRenderStorage<T extends object>(
       storageLeases.set(resource, lease);
     }
     initialize(resource);
+    finish?.();
+    if (memory && !lease?.active)
+      throw Error("Managed native storage owner was disposed");
     return resource;
   } catch (error) {
     // Cleanup must preserve the original native/admission failure, including null.
@@ -99,6 +150,11 @@ export function createRenderStorage<T extends object>(
       lease?.release();
     } catch {
       /* Preserve the original failure. */
+    }
+    try {
+      finish?.();
+    } catch {
+      /* Preserve the original failure through deferred producer cleanup. */
     }
     throw error;
   }
@@ -148,6 +204,7 @@ export async function allocateRenderStorageAsync<T extends object>(
   const memory = active;
   if (!memory) return factory();
   const lease = memory.reserve("pixels", bytes, undefined, retained);
+  const finish = lease.deferRelease();
   let value: T | undefined,
     adopted = false;
   try {
@@ -162,6 +219,8 @@ export async function allocateRenderStorageAsync<T extends object>(
     });
     adopted = true;
     storageLeases.set(resource, lease);
+    finish();
+    if (!lease.active) throw Error("Managed native storage owner was disposed");
     return resource;
   } catch (error) {
     try {
@@ -173,6 +232,11 @@ export async function allocateRenderStorageAsync<T extends object>(
       lease.release();
     } catch {
       /* Preserve the original producer failure. */
+    }
+    try {
+      finish();
+    } catch {
+      /* Preserve the original producer failure through deferred cleanup. */
     }
     throw error;
   }
@@ -272,13 +336,30 @@ export function readRenderImageData(
   height: number,
 ): ImageData {
   if (!active) return context.getImageData(x, y, width, height);
+  let data: Uint8ClampedArray | undefined;
   return active.allocate(
     "pixels",
     Math.abs(width * height) * 4,
     () => context.getImageData(x, y, width, height),
     false,
-    (image) => image.data.buffer,
+    (image) => {
+      data = image.data;
+      return data.buffer;
+    },
     destroyPixelBacking,
+    (image) => {
+      if (data) return failedPixelIdentity(data);
+      try {
+        const nativeData = Object.getOwnPropertyDescriptor(
+          ImageData.prototype,
+          "data",
+        )!.get!.call(image) as Uint8ClampedArray;
+        return failedPixelIdentity(nativeData);
+      } catch {
+        /* A failed opaque data getter needs a producer-captured backing contract. */
+        return undefined;
+      }
+    },
   );
 }
 
