@@ -1230,6 +1230,27 @@ depth/controller/provider/graph/font/common helper/registry/ledger/Node, product
 aggregate admission, speed/full gate remain pending.
 [Evidence](./composition-ce15-particles-metadata-results.json).
 
+## Accepted effect paint/replace metadata checkpoint — 2026-10-08
+
+Before original normal shader/native/data factories, admit actual paint lifetime
+at 16384 for fixed shader intermediate UTF16 text and fresh inputs, opacity record,
+upload bounds and native pointers. Capture actual data through original consumers;
+clear fresh arrays/record fields and drop pointers afterward. Replace admits 1024
+before fresh default uniforms/output; borrowed inputs/uniforms/vectors/region stay
+unchanged. Undefined-only defaults and method arity remain original. Partial native
+creation, first-null raster release, draw/restore and native failures release every
+owner and preserve original null reasons over secondary cleanup, then allow retry.
+
+Four whole original native traces and 1161-unit shader remain exact. Build/lint/
+boundaries and all 362 focused tests, eleven new regressions, complete audit
+144/8,000, 96 RPC snapshots, prior native probes, WebGL/providers and 69 typography
+tests pass; glyph 1.400636× meets unchanged 1.5 maximum. All 64 exports / 768
+bodies/frames match pushed `ebeb0f7`. Private verification path omission in attempt
+1 is retained as incomplete; corrected attempt 2 includes both prior particles and
+new paint tests. Remaining caller effects/images/depth/controllers/provider/graph/
+font/common helper/registry/ledger/Node, production/aggregate admission, speed/full
+gate remain pending. [Evidence](./composition-ce15-effect-paint-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

@@ -25,6 +25,71 @@ import type { RenderEffect } from "./graph.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
 
+type EffectPaintLifetime = {
+  managed: boolean;
+  shader?: string | undefined;
+  inputs?: WebglSurface[] | undefined;
+  uniforms?: { opacity: number } | undefined;
+  area?: Bounds | undefined;
+  pixels?: ReturnType<Canvas2dBackend["createSurface"]> | undefined;
+  source?: WebglSurface | undefined;
+};
+function clearEffectPaint(value: EffectPaintLifetime) {
+  if (value.inputs) value.inputs.length = 0;
+  if (value.uniforms)
+    delete (value.uniforms as Partial<{ opacity: number }>).opacity;
+  value.shader = value.inputs = value.uniforms = value.area = undefined;
+  value.pixels = value.source = undefined;
+}
+function releaseEffectPaintNative(
+  device: WebglDevice,
+  raster: Canvas2dBackend,
+  value: EffectPaintLifetime,
+) {
+  const pixels = value.pixels,
+    source = value.source;
+  value.pixels = value.source = undefined;
+  let failed = false,
+    first: unknown;
+  if (pixels) {
+    try {
+      raster.releaseSurface(pixels);
+    } catch (error) {
+      failed = true;
+      first = error;
+    }
+  }
+  if (source) {
+    try {
+      device.release(source);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        first = error;
+      }
+    }
+  }
+  if (failed) throw first;
+}
+type EffectReplaceLifetime = {
+  managed: boolean;
+  output?: WebglSurface | undefined;
+  uniforms?: NonNullable<Parameters<WebglDevice["pass"]>[3]> | undefined;
+};
+function clearEffectReplace(value: EffectReplaceLifetime) {
+  if (value.uniforms)
+    for (const name in value.uniforms) delete value.uniforms[name];
+  value.output = value.uniforms = undefined;
+}
+function releaseEffectReplaceNative(
+  device: WebglDevice,
+  value: EffectReplaceLifetime,
+) {
+  const output = value.output;
+  value.output = undefined;
+  if (output) device.release(output);
+}
+
 type GaussianLifetime = {
   managed: boolean;
   owned: WebglSurface[];
@@ -308,35 +373,78 @@ export class WebglEffects {
   private paint(
     dst: WebglSurface,
     draw: (ctx: CanvasRenderingContext2D) => void,
-    shader = blendShader("normal"),
+    shader: string | undefined = undefined,
     opacity = 1,
     region?: Bounds | null,
     painted?: Bounds,
   ) {
-    const pixels = this.raster.createSurface(dst.width, dst.height);
-    const source = this.device.surface(dst.width, dst.height);
+    // Covers the fixed normal shader's intermediate UTF16 text, fresh data and controls.
+    const phase = allocateRenderMetadata<EffectPaintLifetime>(
+      16384,
+      () => ({ managed: renderMemory() !== undefined }),
+      false,
+      clearEffectPaint,
+    );
+    let cleaned = false;
     try {
+      const body = (phase.shader =
+        shader === undefined ? blendShader("normal") : shader);
+      const pixels = (phase.pixels = this.raster.createSurface(
+        dst.width,
+        dst.height,
+      ));
+      const source = (phase.source = this.device.surface(
+        dst.width,
+        dst.height,
+      ));
       pixels.ctx.save();
+      let drawFailed = false;
       try {
         draw(pixels.ctx);
+      } catch (error) {
+        drawFailed = true;
+        try {
+          pixels.ctx.restore();
+        } catch {
+          /* Preserve the original draw failure. */
+        }
+        throw error;
       } finally {
-        pixels.ctx.restore();
+        if (!drawFailed) pixels.ctx.restore();
       }
       if (!painted) this.device.upload(source, pixels.canvas);
       else {
-        const area = {
+        const area = (phase.area = {
           left: Math.max(0, painted.left),
           top: Math.max(0, painted.top),
           right: Math.min(dst.width, painted.right),
           bottom: Math.min(dst.height, painted.bottom),
-        };
+        });
         if (area.right > area.left && area.bottom > area.top)
           this.device.uploadArea(source, pixels.canvas, area);
       }
-      this.replace(dst, shader, [source, dst], { opacity }, region);
+      this.replace(
+        dst,
+        body,
+        (phase.inputs = [source, dst]),
+        (phase.uniforms = { opacity }),
+        region,
+      );
+    } catch (error) {
+      cleaned = true;
+      try {
+        releaseEffectPaintNative(this.device, this.raster, phase);
+      } catch {
+        /* Preserve the original creation/draw/upload/pass failure. */
+      }
+      throw error;
     } finally {
-      this.raster.releaseSurface(pixels);
-      this.device.release(source);
+      try {
+        if (!cleaned) releaseEffectPaintNative(this.device, this.raster, phase);
+      } finally {
+        if (phase.managed) releaseRenderMetadata(phase);
+        else clearEffectPaint(phase);
+      }
     }
   }
 
@@ -344,24 +452,45 @@ export class WebglEffects {
     dst: WebglSurface,
     shader: string,
     inputs: WebglSurface[],
-    uniforms: Parameters<WebglDevice["pass"]>[3] = {},
+    uniforms: Parameters<WebglDevice["pass"]>[3] = undefined,
     region?: Bounds | null,
   ) {
-    if (dst.screen) {
-      this.device.pass(shader, dst, inputs, uniforms, false, region);
-      return;
-    }
-    const output = this.device.surface(
-      dst.width,
-      dst.height,
+    const phase = allocateRenderMetadata<EffectReplaceLifetime>(
+      1024,
+      () => ({ managed: renderMemory() !== undefined }),
       false,
-      dst.opaque,
+      clearEffectReplace,
     );
+    let cleaned = false;
     try {
-      this.device.pass(shader, output, inputs, uniforms, false, region);
+      const values = uniforms === undefined ? (phase.uniforms = {}) : uniforms;
+      if (dst.screen) {
+        this.device.pass(shader, dst, inputs, values, false, region);
+        return;
+      }
+      const output = (phase.output = this.device.surface(
+        dst.width,
+        dst.height,
+        false,
+        dst.opaque,
+      ));
+      this.device.pass(shader, output, inputs, values, false, region);
       this.device.swap(dst, output);
+    } catch (error) {
+      cleaned = true;
+      try {
+        releaseEffectReplaceNative(this.device, phase);
+      } catch {
+        /* Preserve the original pass/swap failure. */
+      }
+      throw error;
     } finally {
-      this.device.release(output);
+      try {
+        if (!cleaned) releaseEffectReplaceNative(this.device, phase);
+      } finally {
+        if (phase.managed) releaseRenderMetadata(phase);
+        else clearEffectReplace(phase);
+      }
     }
   }
 

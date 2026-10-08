@@ -95,15 +95,15 @@ still hold before relying on them.
   group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
   pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
-  Gaussian kernel/rescale/box/fallback, managed plan/sum-shader cache and particle/
-  Canvas/WebGL region metadata now pass 351 focused tests, the complete audit,
-  22 moving/blurred and ten stationary native frames and 96 owned RPC snapshots.
-  Actual particle arrays/objects/setup, boxes/unions/splice/native references
-  pre-admit, stay through original consumers, then clear. Six original geometry/
-  Canvas and three WebGL traces, getters/four draws/count/quota/lifetime/null/retry
-  pass. Native recording/shader/cache probes, WebGL/providers, 69 typography tests
-  and 64 exports / 768 prior-exact bodies/frames pass; glyph 1.468647× meets
-  unchanged 1.5 maximum.
+  Gaussian kernel/rescale/box/fallback, managed plan/sum-shader cache, particle/
+  Canvas/WebGL region and effect-paint/replace metadata pass 362 focused tests,
+  complete audit, 22 moving/blurred and ten stationary native frames and 96 owned
+  RPC snapshots. Default shader/input/uniform/upload-bound/native-reference data
+  pre-admit, stay through consumers, then clear; borrowed values and original null
+  cleanup/retry remain. Four whole paint traces/eleven new tests pass. Private
+  script test path omission repaired; incomplete attempt retained. Native probes,
+  WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact bodies/
+  frames pass; glyph 1.400636× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -339,6 +339,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual effect paint and replace data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `ebeb0f7`.
+- **Done:** pre-admit paint default shader, fresh input/uniform/upload-bound data
+  and native references; replace output/default controls; preserve original native
+  consumers, borrowed values, undefined defaults, arity and null cleanup/retry.
+- **Results:** build/lint/boundaries, 362 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.400636× meets unchanged 1.5 maximum.
+- **Verification:** eleven new tests/four whole original traces; quotas/lifetimes/
+  native partial/secondary/null/retry. Private test path omission repaired; first
+  attempt retained as incomplete. No acceptance policy changed; no full gate.
+- **Next:** caller effects/images/depth/controllers/provider/graph/font/common
+  helper/registry/ledger/Node, production/full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [effect-paint evidence](./composition-ce15-effect-paint-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual particle and region data
 
