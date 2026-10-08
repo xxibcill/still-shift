@@ -1135,6 +1135,28 @@ shader caches, remaining effect/image/depth/controller/helper/runtime/Node/produ
 aggregate admission, speed and full gate remain pending.
 [Evidence](./composition-ce15-blur-metadata-results.json).
 
+## Accepted box-blur pass metadata checkpoint — 2026-10-08
+
+Admit 1024 for actual box-blur holder/lists/native surface pointers before original
+geometry production; grow 128 per actual region/clip, 128+8\*slots per original
+numeric/input array, and 512 before each original fixed uniform record. Every
+actual generated vector/record/reference stays through original native consumers,
+then clears. Borrowed destination/painted/kernel/cache data stays unchanged.
+Original arithmetic/getters/pool bounds/shader/uniform/native pass order stays
+exact against two complete traces from pushed `c744384`. Native cleanup visits all
+three buffers then scratch despite first null failure; original failures survive
+secondary cleanup. Rejection and unmanaged native output remain.
+
+Build/lint/boundaries, 313 focused tests including eight new regressions, complete
+audit 144/8,000, 96 RPC snapshots, original native frames/recording/shader probes,
+WebGL/providers and 69 typography tests pass. Glyph 1.419672× meets unchanged
+1.5 maximum. All 64 exports / 768 complete bodies/frames match pushed `c744384`.
+Type/new rejection-fixture failures and first glyph timing 1.52× are retained in
+evidence; affected typography rerun passes unchanged policy. Original global
+box-plan/sum-shader caches, effect/image/depth/controller/helper/runtime/Node data,
+production/aggregate admission, speed and full gate remain pending.
+[Evidence](./composition-ce15-box-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

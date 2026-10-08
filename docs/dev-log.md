@@ -94,14 +94,15 @@ still hold before relying on them.
   controls and vector/raster/framebuffer/readback/path/paint-bound/replay/recording
   group/command/mark/snapshot/call-input/controller/wrapper and device/native-surface/
   pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
-  shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input
-  and Gaussian kernel/rescale metadata now pass 305 focused tests, the complete
-  audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC
-  snapshots. Actual kernel/rescale arrays and records pre-admit, stay through
-  original consumers, then clear; original full kernel hashes/rescale native trace,
-  numerical/null/empty/unmanaged behavior pass. Native recording/shader probes,
-  original WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
-  bodies/frames pass; glyph 1.433007× meets unchanged 1.5 maximum.
+  shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
+  Gaussian kernel/rescale and box-blur pass metadata now pass 313 focused tests,
+  the complete audit, 22 moving/blurred and ten stationary native frames and 96
+  owned RPC snapshots. Actual box geometry/vectors/uniforms/input/reference data
+  pre-admits, stays through original consumers, then clears; two complete original
+  native traces, getters/numerical/unsupported/null/unmanaged/retry behavior pass.
+  Native recording/shader probes, original WebGL/providers, 69 typography tests
+  and 64 exports / 768 prior-exact bodies/frames pass; glyph 1.419672× meets
+  unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -337,6 +338,25 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual box-blur pass data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `c744384`.
+- **Done:** pre-admit actual box-blur geometry/vector/uniform/input/reference data;
+  hold through original consumers, clear afterward and visit every native owner
+  despite first failure, preserving original null and successful native/math order.
+- **Results:** build/lint/boundaries, 313 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, prior native frames/probes,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.419672× meets unchanged 1.5 maximum.
+- **Verification:** eight new regressions, two original full native-call hashes,
+  pre-producer quotas, lifetimes, getter/partial/pass/null/all-owner cleanup/retry.
+  Type/precision fixtures repaired; glyph timing 1.52× retained, affected rerun
+  passes unchanged 1.5× policy.
+- **Next:** global box-plan/sum-shader caches and remaining effect/image/depth/
+  controller/helper/runtime/Node controls, production/speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [box evidence](./composition-ce15-box-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual Gaussian kernel/rescale data
 
