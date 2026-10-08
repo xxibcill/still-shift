@@ -97,17 +97,18 @@ still hold before relying on them.
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-
   shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
-  map-GPU-Canvas-work/standalone-channel-work, managed plan/sum-shader cache, particle/
-  Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls, depth mesh/
-  texture/multisample/uniform/draw/text/native-controls and PNG source/draw/coordinate
-  metadata pass 640 focused tests, complete audit, 22 moving/blurred and ten
-  stationary native frames and 96 owned RPC snapshots. Standalone map-channel actual
-  controller/closure pre-admit, stay through consumers, clear then retire; original
-  alpha no-op and getter order preserved. Canvas adds no per-pixel lease. Seven new
-  tests / 40 original scalar/getter oracles check quotas/refs/null/cleanup/retry.
-  Other helpers/effects/cache/error/class/caller/depth sampling remain pending.
-  Native probes, WebGL/providers, 69 typography tests and 64 exports / 768 prior-exact
-  bodies/frames pass; glyph 1.408163× meets unchanged 1.5 maximum.
+  map-GPU-Canvas-work/standalone-channel-work/warp-GPU-work, managed plan/sum-shader
+  cache, particle/Canvas/WebGL region, effect-paint/replace/built-ins/callback-controls,
+  depth mesh/texture/multisample/uniform/draw/text/native-controls and PNG source/draw/
+  coordinate metadata pass 648 focused tests, complete audit, 22 moving/blurred and
+  ten stationary native frames and 96 owned RPC snapshots. Warp GPU actual matrices/
+  vectors/keys/borrowed-point root/mapping/uniform/producers/shader/input/native refs
+  pre-admit, stay through original pass then clear. Eight new tests / 21 mapping
+  tables / 18 signed zeros / 14 full native traces check quota/refs/partial/native/
+  adoption/null/cleanup/retry. Canvas/standalone mappings/other effects/cache/error/
+  class/caller/depth sampling remain pending. Native probes, WebGL/providers,
+  69 typography tests and 64 exports / 768 prior-exact bodies/frames pass; glyph
+  1.382883× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -343,6 +344,23 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual warp GPU mapping work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `dd1e1e4`.
+- **Done:** pre-admit actual matrices/vectors/keys/borrowed-point root, mapping/
+  uniform records, producers/closures/shader/input/native refs; keep through pass
+  then clear actual containers/refs, including partial affine uniform production.
+- **Results:** build/lint/boundaries, 648 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.382883×.
+- **Verification:** eight new tests / 21 full mapping tables / 18 signed zeros /
+  14 complete native traces, quota/refs/partial/native/adoption/null/cleanup/retry.
+  Initial fixture decimal lint failures retained; final attempt 3 accepted. No full gate.
+- **Next:** Canvas/standalone mapping/helpers/other effects/cache/class/depth
+  sampling, provider/graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [warp GPU evidence](./composition-ce15-warp-gpu-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual standalone map-channel work
 

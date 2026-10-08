@@ -1731,6 +1731,27 @@ Other helpers/effects/cache/registry/class/caller/depth sampling/provider/graph/
 common/ledger/Node and production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-map-channel-metadata-results.json).
 
+## Accepted warp GPU mapping work checkpoint — 2026-10-08
+
+Admit actual 16384-byte GPU work before mapping/matrix/vector/producer/closure/
+uniform/shader/input/native refs. Capture actual four affine or seven corner
+numeric arrays, key/borrowed-point root, mapping/uniform records and producers;
+keep through original pass then clear actual containers and drop refs. Capture
+partial uniform record before filling fields; no per-vector lease. Borrowed params/
+point children/source remain intact; original formulas/native order/pixels exact.
+
+Build/lint/boundaries and 648 focused tests / 74 files pass. Eight new tests check
+21 full original mapping tables / 18 signed-zero positions and 14 complete native
+traces, quotas/actual refs/consumers/partial split/matrix/validation/native/adoption/
+null/secondary/successful cleanup/retry. Initial decimal-literal lint attempts
+retained; exact Number(string) representation preserves original IEEE values.
+Complete audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers,
+69 typography and 64 prior-exact exports / 768 bodies/frames pass; glyph
+1.382883× meets unchanged 1.5 maximum. Canvas/standalone mapping/helpers/other
+effects/cache/registry/error/class/depth sampling/provider/graph/font/common/ledger/
+Node and production/aggregate/speed/final gates pending.
+[Evidence](./composition-ce15-warp-gpu-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
