@@ -1835,6 +1835,29 @@ mapping, other effects/cache/registry/error/class/depth sampling/provider/graph/
 common/ledger/Node and production/aggregate/speed/final gates remain pending.
 [Evidence](./composition-ce15-radial-point-metadata-results.json).
 
+## Standalone radial control implementation checkpoint — 2026-10-08
+
+Admit actual 16384-byte temporary tracker before original borrowed getters/count;
+compute original count once, admit actual result at 1024 + 4\*count before factor
+constructor/loops/vectors/record. Transfer actual refs to returned owner; retire
+tracker. Keep result backing/view/vectors outside scope through explicit/scratch/
+allocator cleanup; detach backing and clear actual vectors/record. Failed partial
+math/adoption or successful tracker cleanup retires all actual stores/refs and
+preserves first null. Caller-admitted GPU/Canvas growth adds no standalone leases.
+
+Build/lint/boundaries and 691 focused tests / 79 files pass on attempt 2 after
+correcting TypeScript readonly tuple cleanup casts. Eight new tests check 21 full
+original factor hashes/vectors/getter sequences, exact quotas, partial and transferred
+owners, null/adoption/all cleanup/retry/caller routes. All 683 prior tests rerun.
+Complete audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers,
+69 typography unit tests/providers and 64 prior-exact exports / 768 bodies/frames
+pass. Glyph fixture displayed 1.52× against unchanged 1.5 maximum and failed.
+Affected repeat remains pending after an observed external owner browser workload;
+causality is not established. No timing/threshold/profile change or acceptance claim. Standalone encoded table/warp mapping,
+other effects/cache/registry/error/class/depth sampling/provider/graph/font/common/
+ledger/Node and production/aggregate/speed/final gates remain pending.
+[Evidence](./composition-ce15-radial-controls-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

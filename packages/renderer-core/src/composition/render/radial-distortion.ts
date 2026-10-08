@@ -177,11 +177,91 @@ export function radialDistortionControls(
   h: number,
   work?: RadialWork,
 ): RadialControls {
+  if (work || !renderMemory())
+    return produceRadialDistortionControls(id, p, w, h, work);
+  const phase = gpuRadialWork();
+  let result: RadialControls | undefined,
+    failed = false,
+    failure: unknown;
+  try {
+    result = produceRadialDistortionControls(id, p, w, h, phase, true);
+    phase.factors = phase.center = phase.radius = phase.controls = undefined;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      finishGpuRadialWork(phase, false);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the first producer or cleanup failure. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+function clearRadialControlResult(c: RadialControls) {
+  let failed = false,
+    first: unknown;
+  try {
+    if (c.factors.byteLength)
+      (
+        c.factors.buffer as ArrayBuffer & {
+          transfer(bytes: number): ArrayBuffer;
+        }
+      ).transfer(0);
+  } catch (error) {
+    failed = true;
+    first = error;
+  }
+  (c.center as unknown as number[]).length = 0;
+  (c.radius as unknown as number[]).length = 0;
+  for (const key in c)
+    delete (c as Partial<RadialControls>)[key as keyof RadialControls];
+  if (failed) throw first;
+}
+function produceRadialDistortionControls(
+  id: string,
+  p: Params,
+  w: number,
+  h: number,
+  work?: RadialWork,
+  ownResult = false,
+): RadialControls {
   const point = p.center as readonly number[],
     bulge = id === "distort.bulge",
     radius = p.radius as readonly number[] | undefined;
   const count = bulge ? 65537 : Math.ceil(Math.hypot(w, h) * 16) + 1;
+  if (ownResult)
+    return allocateRenderMetadata<RadialControls>(
+      1024 + count * 4,
+      () =>
+        produceRadialControlValues(p, w, h, point, bulge, radius, count, work),
+      false,
+      clearRadialControlResult,
+    );
   if (work?.managed) resizeRenderMetadata(work, 16384 + count * 4);
+  return produceRadialControlValues(p, w, h, point, bulge, radius, count, work);
+}
+function produceRadialControlValues(
+  p: Params,
+  w: number,
+  h: number,
+  point: readonly number[],
+  bulge: boolean,
+  radius: readonly number[] | undefined,
+  count: number,
+  work?: RadialWork,
+): RadialControls {
   const factors = new Int32Array(count);
   if (work) work.factors = factors;
   for (let i = 0; i < factors.length; i++) {
