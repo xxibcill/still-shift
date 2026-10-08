@@ -1664,6 +1664,29 @@ registry/class/caller/depth sampling/provider/graph/font/common/ledger/Node and
 production/aggregate/speed/final gates pending.
 [Evidence](./composition-ce15-transform-results-metadata-results.json).
 
+## Accepted map-effect GPU work checkpoint — 2026-10-08
+
+Admit actual 16384-byte GPU work before neutral callback/amount-map/uniform/shader/
+input/native-reference factories. Keep original neutral early return and receiver/
+argument order; no layer/native allocations after neutral match. Hold actual fresh
+mapped vector/record/input arrays/shader strings/callback/native refs through pass,
+then clear arrays/record and drop all work fields. Preserve borrowed params/input/
+map/layer registry. Producer/layer/native/adoption/null/secondary-cleanup failures
+retire selected work and permit retry; first successful-pass cleanup null propagates
+after refs clear. Native payload remains in parent effect surface ownership.
+
+Build/lint/boundaries and 621 focused tests / 71 files pass. Eight new tests cover
+quotas, actual consumer refs/neutral callback, partial/producer/native/adoption/null/
+cleanup/retry. All 22 whole original GPU/Canvas traces, original shader lengths/
+hashes and Canvas bytes stay exact. Initial additional segment length assertion
+error retained; attempt 2 verifies the actual consumed suffix and full original
+hashes. Audit 144/8,000, 96 RPC snapshots, native probes, WebGL/providers,
+69 typography and 64 prior-exact exports / 768 bodies/frames pass; glyph
+1.361355× meets unchanged 1.5 maximum. Remaining map Canvas/helpers/other effects/
+cache/registry/class/caller/depth sampling/provider/graph/font/common/ledger/Node and
+production/aggregate/speed/final gates pending.
+[Evidence](./composition-ce15-map-gpu-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

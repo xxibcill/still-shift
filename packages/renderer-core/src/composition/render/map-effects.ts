@@ -1,6 +1,7 @@
 import {
   allocateRenderPixels,
   readRenderImageData,
+  renderMemory,
 } from "../../managed-memory-context.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
@@ -8,6 +9,49 @@ import {
   PREMULTIPLIED_SAMPLE_SHADER,
 } from "./sampled-blur.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
+import type { WebglSurface } from "./webgl-device.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+} from "../../managed-metadata.ts";
+type MapNeutralControl = { every?: ((value: number) => boolean) | undefined };
+type GpuMapWork = MapNeutralControl & {
+  managed: boolean;
+  input?: WebglSurface | undefined;
+  field?: WebglSurface | undefined;
+  output?: WebglSurface | undefined;
+  mapProducer?: ((value: number) => number) | undefined;
+  amountFixed?: number[] | undefined;
+  uniforms?: Record<string, number | readonly number[]> | undefined;
+  segment?: string | undefined;
+  shader?: string | undefined;
+  inputs?: WebglSurface[] | undefined;
+};
+function clearGpuMapWork(work: GpuMapWork) {
+  if (work.amountFixed) work.amountFixed.length = 0;
+  if (work.inputs) work.inputs.length = 0;
+  if (work.uniforms) for (const key in work.uniforms) delete work.uniforms[key];
+  for (const key in work)
+    delete (work as Partial<GpuMapWork>)[key as keyof GpuMapWork];
+}
+function gpuMapWork(): GpuMapWork {
+  const managed = renderMemory() !== undefined;
+  return allocateRenderMetadata<GpuMapWork>(
+    16384,
+    () => ({ managed }),
+    false,
+    clearGpuMapWork,
+  );
+}
+function finishGpuMapWork(work: GpuMapWork, failed: boolean) {
+  const managed = work.managed;
+  try {
+    if (managed) releaseRenderMetadata(work);
+    else clearGpuMapWork(work);
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
 type Params = Parameters<CompositionEffectPlugin["renderGpu"]>[2];
 /** Channels 0–3 = RGBA; 4 = byte-weighted encoded-sRGB luminance. Input is premultiplied. */
 export function mapChannel(pixel: ArrayLike<number>, channel: number): number {
@@ -75,39 +119,56 @@ export function mapEffectKernel(
   let kernel = kernels.get(id);
   if (kernel) return kernel;
   const displace = id === "distort.displacement-map";
-  const neutral = (p: Params) =>
-    displace
-      ? (p.amount as readonly number[]).every((v) => v === 0)
-      : p.progress === 0;
+  const neutral = (p: Params, control?: MapNeutralControl) => {
+    if (!displace) return p.progress === 0;
+    return (p.amount as readonly number[]).every(
+      control
+        ? (control.every = (value: number) => value === 0)
+        : (value) => value === 0,
+    );
+  };
   kernel = Object.freeze({
     id,
     definition: compositionEffectDefinition(id)!,
     renderGpu(context, input, params) {
-      if (neutral(params)) return input;
-      const map = context.layers.get("map")!,
-        output = context.createSurface(input.width, input.height),
-        uniforms = displace
-          ? {
-              amountFixed: (params.amount as readonly number[]).map((v) =>
-                Math.round(v * 16),
-              ),
-              midpoint: Math.round((params.midpoint as number) * 255),
-              channelX: params.channelX as number,
-              channelY: params.channelY as number,
-            }
-          : {
-              progress: params.progress as number,
-              softness: params.softness as number,
-              channel: params.channel as number,
-              invert: params.invert as number,
-            };
-      context.pass(
-        `${MAP_CHANNEL_SHADER}\n${displace ? PREMULTIPLIED_SAMPLE_SHADER + DISPLACE : WIPE}`,
-        output,
-        [input, map],
-        uniforms,
-      );
-      return output;
+      const work = gpuMapWork();
+      let failed = false;
+      try {
+        work.input = input;
+        if (neutral(params, work)) return input;
+        const map = (work.field = context.layers.get("map")!),
+          output = (work.output = context.createSurface(
+            input.width,
+            input.height,
+          )),
+          uniforms = (work.uniforms = displace
+            ? {
+                amountFixed: (work.amountFixed = (
+                  params.amount as readonly number[]
+                ).map((work.mapProducer = (v) => Math.round(v * 16)))),
+                midpoint: Math.round((params.midpoint as number) * 255),
+                channelX: params.channelX as number,
+                channelY: params.channelY as number,
+              }
+            : {
+                progress: params.progress as number,
+                softness: params.softness as number,
+                channel: params.channel as number,
+                invert: params.invert as number,
+              });
+        context.pass(
+          (work.shader = `${MAP_CHANNEL_SHADER}\n${(work.segment = displace ? PREMULTIPLIED_SAMPLE_SHADER + DISPLACE : WIPE)}`),
+          output,
+          (work.inputs = [input, map]),
+          uniforms,
+        );
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishGpuMapWork(work, failed);
+      }
     },
     renderCanvas(context, input, params) {
       if (neutral(params)) return input;

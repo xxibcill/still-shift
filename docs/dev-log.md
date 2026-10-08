@@ -96,18 +96,17 @@ still hold before relying on them.
   pool-key/array/pass/row-view/swap/dirty-set/cached-color/clip-intersection, device
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback/shadow-kernel/GPU-Canvas-shadow/standalone-
-  shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results,
-  managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-paint/replace/
-  built-ins/callback-controls, depth mesh/texture/multisample/uniform/draw/text/native-
-  controls and PNG source/draw/coordinate metadata pass 613 focused tests, complete
-  audit, 22 moving/blurred and ten stationary native frames and 96 owned RPC snapshots.
-  Standalone transform roots/child vectors/working refs pre-admit; actual results
-  stay through consumers then clear on release/scratch/allocator. Nine new tests /
-  36 original full tables / 230 signed zeros check quotas/refs/partial/producer/
-  adoption/null/cleanup/retry and lifetime. Other sampling/cache/error/class/caller/
-  depth sampling remain pending. Native probes, WebGL/providers, 69 typography tests
-  and 64 exports / 768 prior-exact bodies/frames pass; glyph 1.422481× meets
-  unchanged 1.5 maximum.
+  shadow-results/default-sampler-results/sampled-GPU-Canvas-work/transform-results/
+  map-GPU-work, managed plan/sum-shader cache, particle/Canvas/WebGL region, effect-
+  paint/replace/built-ins/callback-controls, depth mesh/texture/multisample/uniform/
+  draw/text/native-controls and PNG source/draw/coordinate metadata pass 621 focused
+  tests, complete audit, 22 moving/blurred and ten stationary native frames and
+  96 owned RPC snapshots. Map GPU neutral/vector/uniform/shader/input/native refs
+  pre-admit, stay through original consumers then clear. Eight new tests / 22 whole
+  original native traces check quotas/neutral/refs/producer/layer/native/adoption/
+  null/cleanup/retry. Map Canvas/helpers/cache/error/class/caller/depth sampling
+  remain pending. Native probes, WebGL/providers, 69 typography tests and 64 exports /
+  768 prior-exact bodies/frames pass; glyph 1.361355× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -343,6 +342,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual map-effect GPU work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `501f75a`.
+- **Done:** pre-admit actual neutral/amount-map/uniform/shader/input/native refs;
+  keep through original consumer/early return, clear actual arrays/records and drop
+  callbacks/text/native refs after success/failure without changing borrowed inputs.
+- **Results:** build/lint/boundaries, 621 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.361355×.
+- **Verification:** eight new tests / 22 whole original GPU/Canvas native traces,
+  shader lengths/hashes/pixels, quota/neutral/actual refs/producer/layer/native/
+  adoption/null/secondary cleanup/retry. Initial extra segment assertion error
+  retained, attempt 2 accepted with consumed suffix/full frozen hashes; no full gate.
+- **Next:** map Canvas/helpers/other effects/cache/class/depth sampling, provider/
+  graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [map GPU evidence](./composition-ce15-map-gpu-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual standalone transform results
 
