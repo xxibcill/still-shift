@@ -110,13 +110,13 @@ it("preserves the complete original multisample create, repeat, resize and nativ
   }
 });
 it("admits actual returned/native controls before renderbuffer or framebuffer factories", async () => {
-  const memory = new ManagedMemory({ ...limits, metadata: 1536 + 1023 });
+  const memory = new ManagedMemory({ ...limits, metadata: 3072 + 1023 });
   await withManagedMemory(memory, async () => {
     const h = setup();
     expect(() => h.run()).toThrow(/metadata/);
     expect(h.records).toEqual([["samples", 1, 2, 3]]);
     expect(h.private.multisample).toBeUndefined();
-    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1536 });
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 3072 });
     h.p.dispose();
   });
   empty(memory);
@@ -130,7 +130,7 @@ it("keeps actual record and native references through storage and original cache
       () => {
         expect(memory.statistics.current).toEqual({
           pixels: 16 * 12 * 16,
-          metadata: 1536 + 1024,
+          metadata: 3072 + 1024,
         });
       },
     );
@@ -158,7 +158,7 @@ it("preserves original MSAA pixel quota ahead of native factories and allows a s
     const h = setup();
     expect(() => h.run()).toThrow(/pixels/);
     expect(h.records).toEqual([["samples", 1, 2, 3]]);
-    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1536 });
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 3072 });
     expect(h.run(8, 8)).toBeDefined();
     h.p.dispose();
   });
@@ -195,7 +195,7 @@ it("visits partial native framebuffer and renderbuffer after original null stora
     expect(rb).toHaveBeenCalledTimes(1);
     expect(fb).toHaveBeenCalledTimes(1);
     expect(h.private.multisample).toBeUndefined();
-    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1536 });
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 3072 });
     expect(h.run()).toBeDefined();
     h.p.dispose();
   });
@@ -210,12 +210,12 @@ it("cleans original framebuffer creation and incomplete-status failures then per
       .spyOn(h.device.gl, "createFramebuffer")
       .mockReturnValueOnce(null as never);
     expect(() => h.run()).toThrow(/framebuffer creation/);
-    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1536 });
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 3072 });
     const status = vi
       .spyOn(h.device.gl, "checkFramebufferStatus")
       .mockReturnValueOnce(0);
     expect(() => h.run()).toThrow(/incomplete/);
-    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1536 });
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 3072 });
     expect(h.private.multisample).toBeUndefined();
     expect(h.run()).toBeDefined();
     expect(fb).toHaveBeenCalledTimes(3);
@@ -252,7 +252,7 @@ it("drops old resize references and visits color despite first-null framebuffer 
     expect(a.framebuffer).toBeUndefined();
     expect(a.color).toBeUndefined();
     expect(h.private.multisample).toBeUndefined();
-    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1536 });
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 3072 });
     expect(h.run(8, 8)).toBeDefined();
     h.p.dispose();
   });

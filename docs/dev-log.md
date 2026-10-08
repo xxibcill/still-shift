@@ -97,14 +97,14 @@ still hold before relying on them.
   shader-source/program/uniform/diagnostic, paint batch/geometry/shader/uniform/input,
   Gaussian kernel/rescale/box/fallback, managed plan/sum-shader cache, particle/
   Canvas/WebGL region, effect-paint/replace, seven built-ins, depth mesh/texture/
-  retained multisample and PNG source/draw/coordinate metadata pass 436 focused
-  tests, complete audit, 22 moving/blurred and ten stationary native frames and
-  96 owned RPC snapshots. Actual multisample record/native controls pre-admit,
-  stay through reuse, then clear. One original 20-call trace/eleven new tests,
-  quota/storage/status/resize/null/retry/foreign/scope-exit/native allocator-first
-  once-only release pass. Sampling query backing/Array.from payload remain pending.
+  retained multisample/uniform and PNG source/draw/coordinate metadata pass 446
+  focused tests, complete audit, 22 moving/blurred and ten stationary native frames
+  and 96 owned RPC snapshots. Actual uniform state/location/entry Maps and native/
+  name/slot refs pre-admit, stay through cache, then clear. Original six lookups/
+  ten new tests, quota/constructor/query/insert/null/retry/foreign/scope-exit/
+  allocator-first cleanup pass. Sampling query payload/program/draw remain pending.
   Native probes, WebGL/providers, 69 typography tests and 64 exports / 768
-  prior-exact bodies/frames pass; glyph 1.426357× meets unchanged 1.5 maximum.
+  prior-exact bodies/frames pass; glyph 1.425466× meets unchanged 1.5 maximum.
   Recording/device/pool/shader/paint/provider/graph/font/checksum/pixel-view/ledger/
   Node metadata, production admission, aggregate memory, the actual
   two-minute speed proof and final full gate remain in
@@ -340,6 +340,24 @@ _Last updated 2026-10-06 by Codex for CE4c closeout; prior work retained._
   rejects them and five Lab integration suites fail.
 
 ## Entries
+
+### 2026-10-08 — CE15 actual depth uniform cache data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `e937529`.
+- **Done:** pre-admit actual location/entry Maps/header and native/name/entry/slot
+  references; retain through cache/scratch, clear on retirement; preserve original
+  native identity/query order/null hits and constructor/query/insert/null/retry.
+- **Results:** build/lint/boundaries, 446 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.425466× meets unchanged 1.5 maximum.
+- **Verification:** ten new tests/original six lookup sequence, pre-native quota,
+  scope-exit/allocator-first/foreign guard and earlier-header constructor cleanup.
+  Focused texture/MSAA quotas include actual new header; pixel checks unchanged.
+- **Next:** sampling query payload, class/caller, depth program/renderer text/draw,
+  effects/provider/graph/font/common/registry/ledger/Node, CE15 final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [uniform evidence](./composition-ce15-depth-uniform-metadata-results.json).
 
 ### 2026-10-08 — CE15 actual retained depth multisample controls
 

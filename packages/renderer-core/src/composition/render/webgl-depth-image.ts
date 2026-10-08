@@ -414,6 +414,18 @@ type DepthTextureState = {
   sizes: Map<string, number>;
   entries: Map<string, DepthTextureEntry>;
 };
+type DepthUniformEntry = {
+  managed: boolean;
+  name?: string | undefined;
+  location?: WebGLUniformLocation | null | undefined;
+};
+type DepthUniformState = {
+  managed: boolean;
+  memory: ReturnType<typeof renderMemory>;
+  closed: boolean;
+  locations: Map<string, WebGLUniformLocation | null>;
+  entries: Map<string, DepthUniformEntry>;
+};
 
 /** Layer-local GPU content, owned by the shared composition device. */
 export class WebglDepthImages {
@@ -441,7 +453,10 @@ export class WebglDepthImages {
   private get textureSizes() {
     return this.textureState.sizes;
   }
-  private readonly locations = new Map<string, WebGLUniformLocation | null>();
+  private readonly uniformState = this.createUniformState();
+  private get locations() {
+    return this.uniformState.locations;
+  }
   private multisample: Multisample | undefined;
   private count = 0;
   constructor(
@@ -453,6 +468,82 @@ export class WebglDepthImages {
     return (
       (this.program ? 4 : 0) + this.textures.size + (this.multisample ? 2 : 0)
     );
+  }
+
+  private createUniformState() {
+    try {
+      return allocateRenderMetadata<DepthUniformState>(
+        1536,
+        () => ({
+          managed: renderMemory() !== undefined,
+          memory: renderMemory(),
+          closed: false,
+          locations: new Map(),
+          entries: new Map(),
+        }),
+        true,
+        (value) => this.clearUniforms(value),
+      );
+    } catch (error) {
+      try {
+        if (this.textureState.managed) releaseRenderMetadata(this.textureState);
+        else this.clearTextures(this.textureState);
+      } catch {
+        /* Preserve original constructor/container failure. */
+      }
+      throw error;
+    }
+  }
+  private clearUniformEntry(value: DepthUniformEntry) {
+    if (
+      value.name !== undefined &&
+      this.uniformState.entries.get(value.name) === value
+    ) {
+      this.uniformState.entries.delete(value.name);
+      this.locations.delete(value.name);
+    }
+    value.name = value.location = undefined;
+  }
+  private releaseUniformEntry(value: DepthUniformEntry) {
+    if (value.managed) releaseRenderMetadata(value);
+    else this.clearUniformEntry(value);
+  }
+  private clearUniforms(state: DepthUniformState) {
+    for (const entry of state.entries.values()) this.releaseUniformEntry(entry);
+    state.locations.clear();
+    state.entries.clear();
+    state.memory = undefined;
+    state.closed = true;
+  }
+  private uniform(name: string): WebGLUniformLocation | null {
+    const state = this.uniformState,
+      memory = renderMemory();
+    if (state.closed) throw Error("Depth uniform cache is disposed");
+    if (memory && state.memory !== memory)
+      throw Error("Depth uniform cache belongs to another allocator");
+    if (this.locations.has(name)) return this.locations.get(name)!;
+    const entry = allocateRenderMetadata<DepthUniformEntry>(
+      384 + 2 * name.length,
+      () => ({
+        managed: memory !== undefined,
+        name,
+        location: this.device.gl.getUniformLocation(this.program!, name),
+      }),
+      true,
+      (value) => this.clearUniformEntry(value),
+    );
+    try {
+      state.entries.set(name, entry);
+      this.locations.set(name, entry.location!);
+      return entry.location!;
+    } catch (error) {
+      try {
+        this.releaseUniformEntry(entry);
+      } catch {
+        /* Preserve original cache insertion failure. */
+      }
+      throw error;
+    }
   }
 
   private initialize() {
@@ -948,9 +1039,7 @@ export class WebglDepthImages {
           : this.texture(layer.sourceAsset, layer.sourceHash, true, layer.id),
       );
       const uniform = (name: string) => {
-        if (!this.locations.has(name))
-          this.locations.set(name, gl.getUniformLocation(this.program!, name));
-        return this.locations.get(name)!;
+        return this.uniform(name);
       };
       gl.uniform2f(uniform("rasterSize"), content.width, content.height);
       gl.uniform1i(uniform("source"), 0);
@@ -1069,7 +1158,8 @@ export class WebglDepthImages {
       first = error;
     }
     try {
-      this.locations.clear();
+      if (this.uniformState.managed) releaseRenderMetadata(this.uniformState);
+      else if (!this.uniformState.closed) this.clearUniforms(this.uniformState);
       if (this.multisample) {
         const previous = this.multisample;
         this.multisample = undefined;

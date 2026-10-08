@@ -1381,6 +1381,27 @@ caller factories, depth program/locations/renderer text/draw, effects/plugins/
 provider/graph/font/common/registry/ledger/Node, production/aggregate and final gates
 remain pending. [Evidence](./composition-ce15-depth-multisample-metadata-results.json).
 
+## Accepted depth uniform-cache metadata checkpoint — 2026-10-08
+
+Admit actual uniform state/location/entry Maps at 1536 before factories; constructor
+failure releases the earlier texture header. Admit actual returned native location/
+name/entry/Map-slot references at 384+2\*name.length before original native query.
+Retain actual entries through cache/scratch, including original cached null hits;
+clear actual names/locations/Maps/allocator refs on scope-exit/allocator disposal.
+Original query/insert null preserves earlier cache and permits retry; foreign active
+cache fails before native queries. Native locations remain owned by their program.
+
+The original six lookup/return sequence stays exact, including native identity and
+null reuse. Build/lint/boundaries and all 446 focused tests, ten new regressions,
+complete audit 144/8,000, 96 RPC snapshots, prior native probes, WebGL/providers
+and 69 typography tests pass; glyph 1.425466× meets unchanged 1.5 maximum.
+All 64 exports / 768 bodies/frames match pushed `e937529`. Focused texture/MSAA
+fixtures include the new 1536 header while retaining their exact producer quota
+cuts and pixel/native checks. Class/caller, sampling-query backing/Array.from,
+depth program/renderer text/draw, effects/plugins/provider/graph/font/common/
+registry/ledger/Node, production/aggregate and final gates remain pending.
+[Evidence](./composition-ce15-depth-uniform-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.

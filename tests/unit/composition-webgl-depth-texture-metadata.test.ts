@@ -156,7 +156,7 @@ it("denies actual key/native/cache entry production before template coercion or 
   const id = { length: 5, [Symbol.toPrimitive]: vi.fn(() => "photo") };
   const memory = new ManagedMemory({
     ...limits,
-    metadata: 1536 + 2048 + 4 * (5 + 7) - 1,
+    metadata: 3072 + 2048 + 4 * (5 + 7) - 1,
   });
   await withManagedMemory(memory, async () => {
     const h = setup();
@@ -179,7 +179,7 @@ it("retains the actual key, Maps, entry and native owner through upload and cach
       .spyOn(h.device.gl, "texImage2D")
       .mockImplementation(() => {
         expect(memory.statistics.current.metadata).toBe(
-          1536 + 2048 + 4 * (5 + 7),
+          3072 + 2048 + 4 * (5 + 7),
         );
         expect(memory.statistics.current.pixels).toBe(64 * 48 * 4);
       });
@@ -195,7 +195,7 @@ it("retains the actual key, Maps, entry and native owner through upload and cach
     expect(h.run()).toBe(texture);
     expect(state.entries.get(key)).toBe(owner);
     expect(upload).toHaveBeenCalledTimes(1);
-    expect(memory.statistics.current.metadata).toBe(1536 + 2048 + 4 * (5 + 7));
+    expect(memory.statistics.current.metadata).toBe(3072 + 2048 + 4 * (5 + 7));
     h.p.dispose();
     expect(owner.key).toBeUndefined();
     expect(owner.texture).toBeUndefined();
@@ -214,7 +214,7 @@ it("keeps native pixel denial ahead of texture factories and permits retry", asy
     const h = setup();
     expect(() => h.run()).toThrow(/pixels/);
     expect(h.records).toEqual([["parameter", 1]]);
-    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1536 });
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 3072 });
     expect(h.private.textureState.entries.size).toBe(0);
     h.sizes.set("photo", [16, 12]);
     expect(h.run()).toBeDefined();
@@ -246,7 +246,7 @@ it("preserves original null upload over secondary native deletion, releases part
     expect(failure).toBeNull();
     expect(remove).toHaveBeenCalledTimes(1);
     expect(h.private.textureState.entries.size).toBe(0);
-    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1536 });
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 3072 });
     expect(h.run()).toBeDefined();
     expect(upload).toHaveBeenCalledTimes(2);
     h.p.dispose();
@@ -317,7 +317,7 @@ it("retires an eviction whose native deletion throws null and permits clean retr
     expect(owner.texture).toBeUndefined();
     expect(h.private.textureBytes).toBe(0);
     expect(h.private.textureState.entries.size).toBe(0);
-    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1536 });
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 3072 });
     expect(h.run("depth", "new", false)).toBeDefined();
     h.p.dispose();
   });
@@ -436,7 +436,7 @@ it("releases actual uploaded texture and partial cache references after either o
       expect(h.private.textureState.textures.size).toBe(0);
       expect(h.private.textureState.sizes.size).toBe(0);
       expect(h.private.textureBytes).toBe(0);
-      expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1536 });
+      expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 3072 });
       expect(h.run()).toBeDefined();
       expect(write).toHaveBeenCalledTimes(2);
       h.p.dispose();
@@ -485,7 +485,7 @@ it("releases working key records after original coercion, resource query and nat
       }
       expect(failed).toBe(true);
       expect(h.private.textureState.entries.size).toBe(0);
-      expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 1536 });
+      expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 3072 });
     }
     expect(h.run()).toBeDefined();
     h.p.dispose();
