@@ -1,8 +1,12 @@
 import {
   allocateRenderPixels,
   releaseRenderPixels,
+  renderMemory,
 } from "../../managed-memory-context.ts";
-import { releaseRenderMetadata } from "../../managed-metadata.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+} from "../../managed-metadata.ts";
 import { renderGpuEffect } from "./effect-plugins.ts";
 import { FLOAT32_RATIONAL_SUM } from "./webgl-float-sum.ts";
 import { blurKernel } from "./webgl-blur-kernel.ts";
@@ -19,6 +23,68 @@ import type { Bounds, Rgba } from "../evaluate/types.ts";
 import type { RenderEffect } from "./graph.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import { blendShader } from "./webgl-blend.ts";
+
+type GaussianLifetime = {
+  managed: boolean;
+  owned: WebglSurface[];
+  weights: number[];
+  parts: number[][];
+  arrays: number[][];
+  inputs: WebglSurface[][];
+  uniforms: Record<string, number | number[]>[];
+  shader: string;
+  values?: Float32Array | undefined;
+};
+function clearGaussianWeights(value: GaussianLifetime) {
+  value.weights.length = 0;
+  for (const part of value.parts) part.length = 0;
+  value.parts.length = 0;
+}
+function clearGaussianLifetime(value: GaussianLifetime) {
+  clearGaussianWeights(value);
+  for (const array of value.arrays) array.length = 0;
+  for (const inputs of value.inputs) inputs.length = 0;
+  for (const uniforms of value.uniforms)
+    for (const name in uniforms) delete uniforms[name];
+  value.arrays.length =
+    value.inputs.length =
+    value.uniforms.length =
+    value.owned.length =
+      0;
+  value.shader = "";
+  value.values = undefined;
+}
+function gaussianArray(phase: GaussianLifetime, value: number[]) {
+  phase.arrays.push(value);
+  return value;
+}
+function gaussianInputs(phase: GaussianLifetime, value: WebglSurface[]) {
+  phase.inputs.push(value);
+  return value;
+}
+function gaussianUniforms(
+  phase: GaussianLifetime,
+  value: Record<string, number | number[]>,
+) {
+  phase.uniforms.push(value);
+  return value;
+}
+function releaseGaussianSurfaces(device: WebglDevice, phase: GaussianLifetime) {
+  let failed = false;
+  let first: unknown;
+  for (const surface of phase.owned) {
+    try {
+      device.release(surface);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        first = error;
+      }
+    }
+  }
+  phase.owned.length = 0;
+  if (failed) throw first;
+}
 
 const SAMPLE = `
 vec2 pixelTranslation(vec2 offset) {
@@ -224,20 +290,53 @@ export class WebglEffects {
       if (boxBlur(this.device, dst, kernel, region)) return;
       // Match the raster Gaussian's integer reciprocal division after each axis.
       // Floating normalization accumulates visible errors in chained filters.
-      const factor = Math.round(4294967296 / kernel.divisor);
-      const source = this.device.surface(kernel.weights.length, 1, true);
-      const scratch = this.device.surface(dst.width, dst.height);
+      const phase = allocateRenderMetadata<GaussianLifetime>(
+        // Original temporary RGBA result/part arrays and pointer capacity per
+        // weight; fixed original shader/vectors/uniforms/native references/controls.
+        16384 + 160 * kernel.weights.length,
+        () => ({
+          managed: renderMemory() !== undefined,
+          owned: [],
+          weights: [],
+          parts: [],
+          arrays: [],
+          inputs: [],
+          uniforms: [],
+          shader: "",
+        }),
+        false,
+        clearGaussianLifetime,
+      );
+      let cleaned = false;
       try {
+        const factor = Math.round(4294967296 / kernel.divisor);
+        const source = this.device.surface(kernel.weights.length, 1, true);
+        phase.owned.push(source);
+        const scratch = this.device.surface(dst.width, dst.height);
+        phase.owned.push(scratch);
         const values = allocateRenderPixels(
           kernel.weights.length * 16,
-          () => new Float32Array(kernel.weights.flatMap((w) => [w, 0, 0, 1])),
+          () =>
+            new Float32Array(
+              (phase.weights = kernel.weights.flatMap((w) => {
+                const part = [w, 0, 0, 1];
+                phase.parts.push(part);
+                return part;
+              })),
+            ),
         );
+        phase.values = values;
         try {
           this.device.uploadFloats(source, values);
         } finally {
-          releaseRenderPixels(values);
+          try {
+            releaseRenderPixels(values);
+          } finally {
+            phase.values = undefined;
+            clearGaussianWeights(phase);
+          }
         }
-        const shader = `${SAMPLE}
+        const shader = (phase.shader = `${SAMPLE}
       uniform float radius;
       uniform float halfDivisor;
       uniform vec2 factorParts;
@@ -259,36 +358,48 @@ export class WebglEffects {
         }
         uint factor=uint(factorParts.x)+(uint(factorParts.y)<<16);
         pixel=vec4(multiplyHigh(sum.r,factor),multiplyHigh(sum.g,factor),multiplyHigh(sum.b,factor),multiplyHigh(sum.a,factor))/255.0;
-      }`;
+      }`);
         this.device.pass(
           shader,
           scratch,
-          [dst, source],
-          {
+          gaussianInputs(phase, [dst, source]),
+          gaussianUniforms(phase, {
             halfDivisor: Math.floor((kernel.divisor + 1) / 2),
-            factorParts: [factor & 65535, factor >>> 16],
+            factorParts: gaussianArray(phase, [factor & 65535, factor >>> 16]),
             radius: kernel.radius,
-            direction: [1, 0],
-          },
+            direction: gaussianArray(phase, [1, 0]),
+          }),
           false,
           outputRegion,
         );
         this.device.pass(
           shader,
           dst,
-          [scratch, source],
-          {
+          gaussianInputs(phase, [scratch, source]),
+          gaussianUniforms(phase, {
             halfDivisor: Math.floor((kernel.divisor + 1) / 2),
-            factorParts: [factor & 65535, factor >>> 16],
+            factorParts: gaussianArray(phase, [factor & 65535, factor >>> 16]),
             radius: kernel.radius,
-            direction: [0, 1],
-          },
+            direction: gaussianArray(phase, [0, 1]),
+          }),
           false,
           outputRegion,
         );
+      } catch (error) {
+        cleaned = true;
+        try {
+          releaseGaussianSurfaces(this.device, phase);
+        } catch {
+          /* Preserve original weight/shader/pass/native failure. */
+        }
+        throw error;
       } finally {
-        this.device.release(source);
-        this.device.release(scratch);
+        try {
+          if (!cleaned) releaseGaussianSurfaces(this.device, phase);
+        } finally {
+          if (phase.managed) releaseRenderMetadata(phase);
+          else clearGaussianLifetime(phase);
+        }
       }
     } finally {
       releaseRenderMetadata(kernel);

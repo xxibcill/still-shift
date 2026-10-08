@@ -1184,6 +1184,27 @@ Common bootstrap/registry/helper/lease/ledger controls, effects/images/depth/
 controllers/providers/graph/font/Node and production/aggregate admission, speed
 and full gate remain pending. [Evidence](./composition-ce15-box-cache-metadata-results.json).
 
+## Accepted Gaussian fallback data checkpoint — 2026-10-08
+
+After original early/rescale/kernel/bounds/box decisions, admit 16384+160\*weights
+for actual fallback holder/ordinary RGBA part and flat-map arrays, Float32 view,
+generated shader/vector/uniform/input data and original source/scratch references.
+Original [w,0,0,1]/Float32 upload and complete shader/numeric/bounds/native/pass/
+release order remain. Actual copied arrays stay through upload then clear after
+pixel release; actual backing detaches, view drops. Pass data stays through original
+native consumers then clears. Partial scratch creation releases source; native
+cleanup visits both in source/scratch order despite first null. Original errors
+survive secondary cleanup and actual ownership restores for retry.
+
+Two full original native traces from pushed `6a9e0ce` (sigma 2/16, all Float32 bytes)
+remain exact. Build/lint/boundaries, 338 focused including nine new tests, complete
+audit 144/8,000, 96 RPC snapshots, prior native frames/recording/shader/cache probes,
+WebGL/providers and 69 typography tests pass; glyph 1.430645× meets unchanged
+1.5 maximum. All 64 exports / 768 bodies/frames match pushed `6a9e0ce`. Other effect/
+image/depth/controller/provider/graph/font/common helper/registry/ledger/Node and
+production/aggregate admission, speed and full gate remain pending.
+[Evidence](./composition-ce15-gaussian-fallback-metadata-results.json).
+
 ## Remaining implementation and acceptance
 
 1. Establish aggregate pixel/worker memory limits and verify the full area matrix.
