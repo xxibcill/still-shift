@@ -1,11 +1,12 @@
 # Mechanism Shorts production plan
 
-**Created:** 2026-10-07. **Status:** active; MS0 audit complete, MS1 next (2026-10-09).
+**Created:** 2026-10-07. **Status:** active; MS0 audit complete; MS1 bridge implementation active (2026-10-09).
 **Updated:** 2026-10-08 — supported Three.js integration, then native 3D composition;
 all nine feedback audit amendments incorporated into planned tasks and acceptance.
 **Start:** after the current [composition engine plan](./composition-engine-plan.md)
 is complete under its approved scope and acceptance rules.
-**Implementation owner and branch:** Codex, `codex/mechanism-ms0` from `main` `e6eb7b06`.
+**Implementation owner and branch:** Codex, `codex/mechanism-ms1` from `main`
+`e6eb7b06`, carrying exact MS0 prerequisite `d55908fa` ([PR #51](https://github.com/xxibcill/still-shift/pull/51)).
 
 **Restored and reconciled:** 2026-10-09 from the historical plan backup, checked
 amendment diffs and the final recorded gate correction. The core composition
@@ -438,7 +439,7 @@ with its decision recorded after the pilot. Audit/code completion and product re
 | ID   | Deliverable                                              | Depends on                                    | Status            | Completion record                                   |
 | ---- | -------------------------------------------------------- | --------------------------------------------- | ----------------- | --------------------------------------------------- |
 | MS0  | Completed-composition audit and E01 baseline             | Composition completion gate                   | `[x]`             | [MS0 evidence](./mechanism-shorts-ms0-results.json) |
-| MS1  | Supported bridge and portable E01                        | MS0                                           | `[ ]`             | Pending                                             |
+| MS1  | Supported bridge and portable E01                        | MS0                                           | In progress       | MS1 contract/one-frame slice                        |
 | MS1N | Native 3D composition using shared scene and assets      | MS1                                           | `[ ]`             | Pending                                             |
 | MS2  | Reusable packs, rigs, shots, labels and cue-driven edits | MS1N                                          | `[ ]`             | Pending                                             |
 | MS3  | Episode lifecycle and ten-episode pilot                  | MS2                                           | `[ ]`             | Pending                                             |

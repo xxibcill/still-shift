@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "mechanism-milestone-results-1",
+  "milestone": "MS1",
+  "date": "2026-10-09",
+  "status": "in-progress",
+  "owner": "Codex",
+  "branch": "codex/mechanism-ms1",
+  "base": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
+  "prerequisite": {
+    "commit": "d55908fa",
+    "pr": "https://github.com/xxibcill/still-shift/pull/51",
+    "merged": false
+  },
+  "checkpoints": [],
+  "verification": [],
+  "renderEvidence": [],
+  "failedRuns": [],
+  "review": {
+    "sampledVisual": "not-reviewed",
+    "continuousMotion": "not-reviewed",
+    "listening": "not-reviewed",
+    "humanCreativeAcceptance": "not-reviewed"
+  },
+  "limits": [
+    "No MS1 acceptance or MS1N implementation complete.",
+    "Customer source media remains outside Git."
+  ]
+}

@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS1 bridge active (2026-10-09):** separate `codex/mechanism-ms1` branch from
+  `main` `e6eb7b06` carries exact MS0 prerequisite `d55908fa`; MS0
+  [PR #51](https://github.com/xxibcill/still-shift/pull/51) is open and unmerged.
+  Begin shared contracts, portable geometry and one-frame/contact-shot proof,
+  then complete E01/lifecycle/repair acceptance before MS1 PR. No MS1 render or
+  native MS1N implementation is complete. Original checkout edits are preserved.
+
 - **MS0 audit complete (2026-10-09):** Codex on `codex/mechanism-ms0` from
   `main` `e6eb7b06`; separate milestone PR follows verification. Original E01
   inputs are recovered: 27 dependencies, all 25 ZIP manifest identities and 13
@@ -154,6 +161,17 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-09 — Start MS1 supported bridge after MS0 PR
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`, created from `main` and
+  fast-forwarded to exact MS0 prerequisite `d55908fa`; MS0 PR #51 is open.
+- **Scope:** shared versioned scene/rig/asset contracts, reusable E01 geometry and
+  first-party capture/overlay/lifecycle path; no episode-owned capture server.
+- **Next:** one-frame proof, complete contact shot, then nine-shot portable E01,
+  diagnostics/font/reading/repair evidence and required local full gate.
+- **Records:** [MS0 PR](https://github.com/xxibcill/still-shift/pull/51),
+  [production plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-09 — Complete MS0 baseline and input audit
 
