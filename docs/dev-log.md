@@ -43,6 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS0 audit complete (2026-10-09):** Codex on `codex/mechanism-ms0` from
+  `main` `e6eb7b06`; separate milestone PR follows verification. Original E01
+  inputs are recovered: 27 dependencies, all 25 ZIP manifest identities and 13
+  original-copy receipts match; actual Plex static cut/copy coverage passes.
+  Current composition source is unchanged from release, and five stored gate
+  artifacts match their recorded hashes. Rubric, protocol, boundaries and
+  provisional budgets are frozen. Exact historical Arial/GPU identities, public
+  customer-media redistribution and human review remain limited. Original local
+  edits are preserved. Next: MS1 contract/one-frame/contact-shot bridge proof.
+  [Results](./mechanism-shorts-ms0-results.json),
+  [baseline protocol](./mechanism-shorts-ms0-baseline.md),
+  [ordered plan](./mechanism-shorts-production-plan.md).
+
 - **Development/release branches established (2026-10-09):** `production` and
   annotated `v0.1.0` are pushed at `db28a938`, containing the source for the
   published release. `main` remains the default development branch and receives
@@ -141,6 +154,36 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-09 — Complete MS0 baseline and input audit
+
+- **Agent / branch:** Codex on `codex/mechanism-ms0` from `main` `e6eb7b06`.
+- **Done:** restore required plans in `2b72ae42`; recover/hash original E01 inputs,
+  verify font cut/cmap, freeze nine-shot/label/event map and physical contact names.
+  Publish current API/font audits, visual rubric, comparable telemetry protocol,
+  package boundaries, provisional resource limits and milestone slice estimates.
+- **Verification:** pinned toolchain/real browser startup, document formatting and
+  references; five historical gate artifacts rehashed. Source/build inputs unchanged
+  from released checkpoint. Independent review's three findings repaired and verified.
+- **Failures / limits:** initial link-check regex failed; corrected run found two
+  references, now fixed. No new software gate, episode render or human acceptance;
+  historical release remains passed in stages. Tokens/labor savings remain null.
+- **Next:** create MS0 PR, then a separate MS1 branch carrying its exact dependency.
+- **Records:** [results](./mechanism-shorts-ms0-results.json),
+  [inventory](./mechanism-shorts-ms0-inputs.json), [protocol](./mechanism-shorts-ms0-baseline.md).
+
+### 2026-10-09 — Activate ordered mechanism implementation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms0`, based on `main` `e6eb7b06`.
+- **Scope:** owner-authorized MS0 audit, then MS1 → MS1N → MS2 → MS3; one branch
+  and PR for each milestone. Active goal created; isolated worktree preserves
+  unrelated original edits. Restore only the required mechanism/typography plans.
+- **Progress:** three parallel read-only audits cover original E01 inputs, current
+  composition APIs and typography/probe routes. Customer source project is found.
+- **Verification / next:** locked dependencies installed offline; record actual
+  source/input hashes, current closure evidence and baseline protocol before MS0 PR.
+- **Records:** [production plan](./mechanism-shorts-production-plan.md),
+  [feedback coverage](./mechanism-shorts-feedback-coverage-audit-2026-10-07.md).
 
 ### 2026-10-09 — Adopt release branches and contribution rules
 
