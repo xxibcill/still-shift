@@ -43,11 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #50 completeness review repairs (2026-10-09):** raster-only degeneracy
-  is fixed on `codex/pr50-ce14-repairs` from `958e623a`; 44 units and 18 exact
-  Canvas/WebGL identity pixel comparisons plus reverse seeks pass. Structured
-  diagnostic repair and final focused browser/export/catalogue checks remain
-  in flight. Each finding gets one commit; one push follows the final commit.
+- **PR #50 completeness review repairs verified (2026-10-09):** both posted P2
+  findings are fixed on `codex/pr50-ce14-repairs` from `958e623a`. Raster-only
+  degeneracy preserves valid deformation; structured diagnostics retain code,
+  node, frame and exact authored field path through preview and production export.
+  112 focused units, complete mesh/export checks and all seven native-effects
+  catalogues pass. Existing references and thresholds are unchanged. One finding
+  per commit, with a single final push; owner review/merge is next. No full
+  repository gate is run or claimed.
   [Repair evidence](./pr-50-ce14-review-repairs-results.json).
 
 - **CE14 complete (2026-10-09):** `codex/composition-ce14` code checkpoint
@@ -95,6 +98,21 @@ still hold before relying on them.
   remain disabled; all verification was local. No work was scheduled or merged.
 
 ## Entries
+
+### 2026-10-09 — PR #50 structured mesh diagnostic repair
+
+- **Agent / branch:** Codex on `codex/pr50-ce14-repairs`, after `d67e2b09`.
+- **Done:** structured mesh errors retain code, instance node, root frame and
+  authored parameter path in both backends; location stays out of visual caches.
+- **Results:** 112 focused units; complete mesh browser checks, eight valid and
+  eight failed production exports; all seven native-effects catalogues and six
+  repeated native exports pass. Types, changed-file lint and boundaries pass.
+- **Rejected:** a three-frame diagnostic fixture with four workers tested option
+  validation; four frames now verify the intended mesh errors and output cleanup.
+- **Delivery:** two findings, one commit each and one final push; owner review/merge
+  is next. Existing references/thresholds stay frozen; no full gate is claimed.
+- **Records:** [CE14 plan](./composition-ce14-plan.md),
+  [repair evidence](./pr-50-ce14-review-repairs-results.json).
 
 ### 2026-10-09 — PR #50 raster degeneracy repair
 

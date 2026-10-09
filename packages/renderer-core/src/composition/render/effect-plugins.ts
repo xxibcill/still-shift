@@ -1,3 +1,7 @@
+import {
+  locateMeshError,
+  MESH_DIAGNOSTIC_LOCATION,
+} from "../mesh/diagnostics.ts";
 import { meshEffectKernel } from "./mesh-effects.ts";
 import { drawTexturedMesh } from "./webgl-mesh.ts";
 import { releaseRenderPixels } from "../../managed-memory-context.ts";
@@ -404,7 +408,7 @@ export function renderGpuEffect(
     return true;
   } catch (error) {
     failed = true;
-    throw error;
+    throw locateMeshError(error, effect[MESH_DIAGNOSTIC_LOCATION]);
   } finally {
     finishEffectControl(phase, failed);
   }
@@ -472,7 +476,7 @@ export function renderCanvasEffect(
     return true;
   } catch (error) {
     failed = true;
-    throw error;
+    throw locateMeshError(error, effect[MESH_DIAGNOSTIC_LOCATION]);
   } finally {
     finishEffectControl(phase, failed);
   }

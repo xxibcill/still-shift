@@ -1,3 +1,4 @@
+import { meshError } from "./diagnostics.ts";
 import type { Point } from "../../node-transform.ts";
 export type PuppetPin = { rest: Point; target: Point };
 export type StarchRegion = { center: Point; radius: number; strength: number };
@@ -58,8 +59,10 @@ function rigidFit(point: Point, pins: readonly PuppetPin[]): RigidFit {
   }
   const length = Math.hypot(dot, cross);
   if (!Number.isFinite(length) || length <= Number.EPSILON * scale || !length)
-    throw Error(
-      "comp-mesh-solver: collapsed rigid fit; separate the pin targets",
+    meshError(
+      "comp-mesh-solver",
+      "collapsed rigid fit; separate the pin targets",
+      "pins",
     );
   return { source, target, cosine: dot / length, sine: cross / length };
 }
@@ -119,8 +122,10 @@ export function bezierMeshPoint(
     rows > 8 ||
     controls.length !== rows * columns
   )
-    throw Error(
-      "comp-mesh-grid: a 2x2 through 8x8 grid needs one control per vertex",
+    meshError(
+      "comp-mesh-grid",
+      "a 2x2 through 8x8 grid needs one control per vertex",
+      "controls",
     );
   const point: Point = [0, 0];
   for (let row = 0; row < rows; row++)
@@ -147,8 +152,9 @@ export function triangleFlips(
     indices.length % 3 ||
     indices.some((i) => !Number.isInteger(i) || i < 0 || i >= rest.length)
   )
-    throw Error(
-      "comp-mesh-topology: inconsistent vertices and triangle indices",
+    meshError(
+      "comp-mesh-topology",
+      "inconsistent vertices and triangle indices",
     );
   const flips: number[] = [];
   for (let i = 0; i < indices.length; i += 3) {

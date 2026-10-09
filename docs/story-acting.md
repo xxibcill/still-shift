@@ -335,6 +335,11 @@ workspace before allocation. Excessive complexity or raster work produces
 `comp-mesh-budget`; a rest pin outside the silhouette produces `comp-mesh-pin`.
 A deformation that flips or collapses triangles produces `comp-mesh-flip`: reduce
 motion, adjust rest pins, add support pins or revise the source silhouette.
+Mesh failures expose structured diagnostics in preview and production exports,
+including the stable code, node, frame and authored parameter path. For example,
+an invalid rest pin points to `layers.0.effects.0.params.rest.0`; nested artwork
+uses its `precomps` definition path and full instance node name. Pin-target solver
+failures point to `pins`, and invalid Bezier deformation points to `controls`.
 The pinned renderer delivers vertices on a 1/16-pixel grid (at most 1/32 pixel
 rounding per axis). The flip guard validates continuous deformation before raster
 rounding; faces that collapse or reverse solely during raster delivery are omitted

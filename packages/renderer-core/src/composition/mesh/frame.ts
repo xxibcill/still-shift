@@ -1,3 +1,4 @@
+import { meshError } from "./diagnostics.ts";
 import {
   inverseMatrix,
   transformPoint,
@@ -40,8 +41,10 @@ export function meshFrame(
   // Validate the authored deformation before float/raster delivery can collapse faces.
   const flips = triangleFlips(mesh.source, mesh.destination, mesh.indices);
   if (flips.length)
-    throw Error(
-      `comp-mesh-flip: ${flips.length} flipped or collapsed triangles (first ${flips[0]}); reduce the pin/control deformation`,
+    meshError(
+      "comp-mesh-flip",
+      `${flips.length} flipped or collapsed triangles (first ${flips[0]}); reduce the pin/control deformation`,
+      effect === "distort.puppet" ? "pins" : "controls",
     );
   for (const points of [mesh.source, mesh.destination])
     for (const point of points) {

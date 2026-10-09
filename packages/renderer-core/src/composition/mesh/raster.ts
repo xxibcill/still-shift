@@ -1,3 +1,4 @@
+import { meshError } from "./diagnostics.ts";
 import type { Point } from "../../node-transform.ts";
 import type { DeformedMesh } from "./frame.ts";
 import { triangleArea } from "./geometry.ts";
@@ -42,7 +43,7 @@ export function rasterizeMesh(
       );
     samples += Math.max(0, right - left + 1) * Math.max(0, bottom - top + 1);
     if (samples > width * height * 32 + 1000000)
-      throw Error("comp-mesh-budget: raster sample budget exceeded");
+      meshError("comp-mesh-budget", "raster sample budget exceeded");
     for (let y = top; y <= bottom; y++)
       for (let x = left; x <= right; x++) {
         const wa = edge(b, c, x + 0.5, y + 0.5),

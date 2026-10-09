@@ -1,3 +1,4 @@
+import { meshError } from "./diagnostics.ts";
 import { improveMeshTriangles } from "./quality.ts";
 import earcut, { deviation } from "earcut";
 import type { Point } from "../../node-transform.ts";
@@ -32,7 +33,7 @@ export function alphaMesh(
     refinement > 3 ||
     (options.pins?.length ?? 0) > 32
   )
-    throw Error("comp-mesh-topology: invalid refinement or pin count");
+    meshError("comp-mesh-topology", "invalid refinement or pin count");
   const contours = traceAlphaContours(
     pixels,
     width,
@@ -46,8 +47,8 @@ export function alphaMesh(
     pinVertices: [],
   };
   triangulateContours(mesh);
-  for (const point of options.pins ?? [])
-    mesh.pinVertices.push(insertPin(mesh, point));
+  for (const [index, point] of (options.pins ?? []).entries())
+    mesh.pinVertices.push(insertPin(mesh, point, index));
   improveMeshTriangles(mesh.vertices, mesh.indices);
   for (let pass = 0; pass < refinement; pass++) {
     refine(mesh);
@@ -71,7 +72,7 @@ function triangulateContours(mesh: MeshTopology) {
       )
       .sort((a, b) => a.area - b.area)[0];
     if (!owner)
-      throw Error("comp-mesh-alpha: a hole has no containing silhouette");
+      meshError("comp-mesh-alpha", "a hole has no containing silhouette");
     owner.holes.push(hole.points);
   }
   for (const outline of outer) {
@@ -85,8 +86,9 @@ function triangulateContours(mesh: MeshTopology) {
       indices = earcut(data, holes, 2);
     const error = deviation(data, holes, 2, indices);
     if (!Number.isFinite(error) || error > 1e-10)
-      throw Error(
-        "comp-mesh-alpha: triangulation does not cover the alpha outline",
+      meshError(
+        "comp-mesh-alpha",
+        "triangulation does not cover the alpha outline",
       );
     const base = mesh.vertices.length;
     mesh.vertices.push(...vertices);
@@ -104,15 +106,16 @@ function triangulateContours(mesh: MeshTopology) {
 }
 function appendVertex(mesh: MeshTopology, point: Point): number {
   if (mesh.vertices.length >= MAX_MESH_VERTICES)
-    throw Error(
-      "comp-mesh-budget: vertex budget exceeded; reduce refinement or alpha complexity",
+    meshError(
+      "comp-mesh-budget",
+      "vertex budget exceeded; reduce refinement or alpha complexity",
     );
   mesh.vertices.push(point);
   return mesh.vertices.length - 1;
 }
-function insertPin(mesh: MeshTopology, point: Point): number {
+function insertPin(mesh: MeshTopology, point: Point, index: number): number {
   if (!point.every(Number.isFinite))
-    throw Error("comp-mesh-pin: nonfinite pin position");
+    meshError("comp-mesh-pin", "nonfinite pin position", `rest.${index}`);
   const existing = mesh.vertices.findIndex(
     (vertex) => Math.hypot(vertex[0] - point[0], vertex[1] - point[1]) < 1e-9,
   );
@@ -147,16 +150,21 @@ function insertPin(mesh: MeshTopology, point: Point): number {
     }
   }
   if (inserted < 0)
-    throw Error("comp-mesh-pin: rest pin is outside the alpha silhouette");
+    meshError(
+      "comp-mesh-pin",
+      "rest pin is outside the alpha silhouette",
+      `rest.${index}`,
+    );
   if (result.length / 3 > MAX_MESH_TRIANGLES)
-    throw Error("comp-mesh-budget: triangle budget exceeded");
+    meshError("comp-mesh-budget", "triangle budget exceeded");
   mesh.indices = result;
   return inserted;
 }
 function refine(mesh: MeshTopology) {
   if ((mesh.indices.length / 3) * 4 > MAX_MESH_TRIANGLES)
-    throw Error(
-      "comp-mesh-budget: triangle budget exceeded; reduce refinement or alpha complexity",
+    meshError(
+      "comp-mesh-budget",
+      "triangle budget exceeded; reduce refinement or alpha complexity",
     );
   const midpoint = new Map<number, number>(),
     result: number[] = [];

@@ -1,3 +1,4 @@
+import { meshError } from "./diagnostics.ts";
 import type { Point } from "../../node-transform.ts";
 export const MAX_CONTOUR_EDGES = 65536;
 export const MAX_OUTLINE_VERTICES = 8192;
@@ -16,7 +17,7 @@ export function traceAlphaContours(
     threshold < 1 ||
     threshold > 255
   )
-    throw Error("comp-mesh-alpha: invalid alpha image or threshold");
+    meshError("comp-mesh-alpha", "invalid alpha image or threshold");
   const edges = new Set<number>(),
     stride = width + 1;
   const opaque = (x: number, y: number) =>
@@ -27,7 +28,7 @@ export function traceAlphaContours(
     pixels[(y * width + x) * 4 + 3]! >= threshold;
   const add = (x: number, y: number, direction: number) => {
     if (edges.size >= MAX_CONTOUR_EDGES)
-      throw Error("comp-mesh-budget: alpha contour edge budget exceeded");
+      meshError("comp-mesh-budget", "alpha contour edge budget exceeded");
     edges.add((y * stride + x) * 4 + direction);
   };
   for (let y = 0; y < height; y++)
@@ -53,7 +54,7 @@ export function traceAlphaContours(
         direction = edge % 4;
       if (direction !== previous) {
         if (++count > MAX_OUTLINE_VERTICES)
-          throw Error("comp-mesh-budget: alpha outline vertex budget exceeded");
+          meshError("comp-mesh-budget", "alpha outline vertex budget exceeded");
         contour.push([vertex % stride, Math.floor(vertex / stride)]);
       }
       edges.delete(edge);
@@ -74,11 +75,11 @@ export function traceAlphaContours(
         (direction + 2) % 4,
       ].find((candidate) => edges.has(next * 4 + candidate));
       if (nextDirection === undefined)
-        throw Error("comp-mesh-alpha: open alpha contour");
+        meshError("comp-mesh-alpha", "open alpha contour");
       edge = next * 4 + nextDirection;
     }
     if (contour.length < 3)
-      throw Error("comp-mesh-alpha: collapsed alpha contour");
+      meshError("comp-mesh-alpha", "collapsed alpha contour");
     contours.push(contour);
   }
   return contours;

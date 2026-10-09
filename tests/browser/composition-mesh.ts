@@ -8,9 +8,13 @@ import {
   assertPinnedRenderEnvironment,
 } from "@still-shift/execution-runtime";
 import type * as MemoryChecks from "../helpers/composition-mesh-memory-reference.ts";
-import { checkMeshExports } from "../helpers/composition-mesh-export.ts";
+import {
+  checkMeshExports,
+  checkMeshDiagnosticExports,
+} from "../helpers/composition-mesh-export.ts";
 import type * as Offscreen from "../helpers/composition-mesh-offscreen.ts";
 import type * as Demo from "../helpers/composition-puppet-demo.ts";
+import type * as Diagnostics from "../helpers/composition-mesh-diagnostic-reference.ts";
 import type * as Raster from "../helpers/composition-mesh-raster-reference.ts";
 import type * as Checks from "../helpers/composition-mesh-reference.ts";
 const root = resolve(import.meta.dirname, "../.."),
@@ -42,6 +46,10 @@ try {
     const path = "/tests/helpers/composition-mesh-offscreen.ts";
     return ((await import(path)) as typeof Offscreen).checkOffscreenMeshes();
   });
+  const diagnostics = await page.evaluate(async () => {
+    const path = "/tests/helpers/composition-mesh-diagnostic-reference.ts";
+    return ((await import(path)) as typeof Diagnostics).checkMeshDiagnostics();
+  });
   const memory = await page.evaluate(async () => {
     const path = "/tests/helpers/composition-mesh-memory-reference.ts";
     const checks = (await import(path)) as typeof MemoryChecks;
@@ -67,6 +75,7 @@ try {
       memory,
       offscreen,
       raster,
+      diagnostics,
       demo: demo.map(({ picture: _picture, ...proof }) => proof),
     }),
   );
@@ -82,3 +91,13 @@ await writeFile(
   JSON.stringify(exports, null, 2),
 );
 console.log("Mesh production exports passed:", join(scratch, "exports.json"));
+
+const diagnosticExports = await checkMeshDiagnosticExports(scratch);
+await writeFile(
+  join(scratch, "diagnostic-exports.json"),
+  JSON.stringify(diagnosticExports, null, 2),
+);
+console.log(
+  "Mesh diagnostic production exports passed:",
+  join(scratch, "diagnostic-exports.json"),
+);

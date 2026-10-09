@@ -242,6 +242,28 @@ now pass. Eighteen independent ordinary-image comparisons (small animated scales
 near-edge pins and 1°/2°/12° rotations) are byte exact on both backends, with exact
 reverse seeks. Pinned toolchain, TypeScript, changed-file lint and boundaries pass.
 The first pixel probe exposed seven-byte identity sampling drift; matching identity
-source coordinates fixed it, without changing the oracle. Structured diagnostics
-and final combined browser/export/catalogue verification remain pending.
+source coordinates fixed it, without changing the oracle.
+
+The diagnostic repair converts mesh-origin failures to structured `PassageError`
+records. Both renderer backends attach the full instance node, root frame and
+authored parameter path, including nested precomp definitions and the invalid
+rest-pin index. Symbol metadata carries location through effect stacks without
+changing visual cache keys. Unrelated native/ownership failures remain unchanged.
+
+All 112 focused units, TypeScript, changed-file lint and boundaries pass. The
+complete mesh browser command passes its pixels, 46 offscreen comparisons, 18
+exact identity comparisons, twelve preview diagnostic cases, twelve ownership
+cases and both 48-frame demos with exact reverse seeks. Eight valid production
+exports match encoded bodies and all decoded frames across repeats, one/four
+workers and cache modes. Eight invalid exports preserve structured pin/fold
+diagnostics and leave no video or sidecars. All seven native-effects catalogues
+match frozen references; 42 hardware comparisons retain the existing policy and
+six native fixtures have byte-identical repeated 60-frame exports.
+
+Three initial combined runs stopped in the new diagnostic fixture: four workers
+were requested for three frames, so option validation correctly rejected it.
+A four-frame fixture exercises the intended mesh failure; no export-worker repair
+was required. The final combined command passes. Existing thresholds and baselines
+remain unchanged. These are scoped follow-up checks, not a repeated full milestone
+gate. Both posted findings have one dedicated commit, followed by one final push.
 Detailed evidence: [completeness-review repairs](./pr-50-ce14-review-repairs-results.json).

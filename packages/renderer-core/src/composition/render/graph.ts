@@ -1,3 +1,7 @@
+import {
+  MESH_DIAGNOSTIC_LOCATION,
+  type MeshDiagnosticLocation,
+} from "../mesh/diagnostics.ts";
 import { isMeshEffect, meshOutputBounds } from "../mesh/bounds.ts";
 import type { CompiledShapes } from "../shapes/types.ts";
 import { DEPTH_IMAGE_SHADER_VERSION } from "./webgl-depth-image.ts";
@@ -60,6 +64,7 @@ export type EffectWindow = {
   height: number;
 };
 export type RenderEffect = EvaluatedEffect & {
+  [MESH_DIAGNOSTIC_LOCATION]?: MeshDiagnosticLocation;
   window?: EffectWindow;
   placement?: { matrix: Matrix; transforms: Matrix[] };
   /** Input slots rendered independently at this scope and clock. */
@@ -555,12 +560,44 @@ class GraphBuilder {
     }
     return false;
   }
+  private meshDiagnosticLocation(
+    scope: Scope,
+    state: EvaluatedLayer,
+    frame: Frame,
+    effect: EvaluatedEffect,
+  ): MeshDiagnosticLocation {
+    const precomp =
+      this.comp.precomps?.findIndex((definition) => definition === scope.def) ??
+      -1;
+    const prefix = precomp < 0 ? "" : `precomps.${precomp}.`;
+    const layer = scope.def.layers.findIndex((layer) => layer.id === state.id);
+    const slot = state.layer.effects!.findIndex(
+      (item) => item.id === effect.id,
+    );
+    return {
+      node: frame.prefix + state.id,
+      frame: this.time,
+      path: `${prefix}layers.${layer}.effects.${slot}.params`,
+    };
+  }
   private effectInputs(
     scope: Scope,
-    effect: EvaluatedEffect,
+    original: EvaluatedEffect,
     frame: Frame,
     seen: Set<string>,
+    state: EvaluatedLayer,
   ): RenderEffect {
+    const effect: RenderEffect = isMeshEffect(original)
+      ? {
+          ...original,
+          [MESH_DIAGNOSTIC_LOCATION]: this.meshDiagnosticLocation(
+            scope,
+            state,
+            frame,
+            original,
+          ),
+        }
+      : original;
     if (!effect.inputs || !Object.keys(effect.inputs).length) return effect;
     const layerInputs: Record<string, RenderOp[]> = {};
     for (const [slot, id] of Object.entries(effect.inputs)) {
@@ -1334,6 +1371,7 @@ class GraphBuilder {
           effect,
           localFrame,
           seen,
+          state,
         );
         if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
           return captured;
@@ -1548,7 +1586,14 @@ class GraphBuilder {
       passageError(
         "comp-mesh-budget",
         "Complete mesh input and viewport exceed 8192 pixels per axis",
-        { node: frame.prefix + state.id },
+        this.meshDiagnosticLocation(
+          scope,
+          state,
+          frame,
+          state.effects.find(
+            (effect) => effect.enabled && isMeshEffect(effect),
+          )!,
+        ),
       );
     return { origin: [left, top] as [number, number], width, height };
   }
@@ -1725,6 +1770,7 @@ class GraphBuilder {
           original,
           frame,
           seen,
+          state,
         );
         if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
           return frame.effectWindow
