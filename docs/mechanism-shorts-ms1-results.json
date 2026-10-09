@@ -25,6 +25,13 @@
       "status": "implemented-focused-verified",
       "behavior": "Versioned bounded scene/mesh/episode/sidecar/frame contracts, immutable prepared mesh catalog, independent pure hierarchy/camera/contact/rivet state, strict opt-in actual-font identity/copy preflight, reusable solid tape-hook geometry. Through-slot endpoint bevel clearance widened from illustrative source 0.095 to 0.115 after an actual mesh intersection negative. No manufacturing claim or full E01 render acceptance.",
       "fullGate": "not-run-in-this-checkpoint"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "first-party-bounded-capture-and-independent-mechanics",
+      "status": "implemented-focused-verified",
+      "behavior": "Pinned software Three.js capture with manifest/sidecar/PNG identities, bounded requests, cancellation/failure retention and immutable validated cache. Independent checker reconstructs authored transforms, controls, contact faces, travel and stationary rivets rather than trusting copied assertion flags. Real nine-shot portrait probe and contact export performed; full E01 and final acceptance remain in flight.",
+      "fullGate": "not-run-in-this-checkpoint"
     }
   ],
   "verification": [
@@ -63,9 +70,47 @@
       "command": "owned-file lint/format, font package boundaries and diff hygiene",
       "status": "passed",
       "details": "docs/mechanism-shorts-ms1-font-results.json"
+    },
+    {
+      "command": "focused geometry/assertions/capture",
+      "status": "passed",
+      "files": 3,
+      "tests": 24,
+      "seconds": 20.49,
+      "details": "mechanism-shorts-ms1-capture-results.json"
     }
   ],
-  "renderEvidence": [],
+  "renderEvidence": [
+    {
+      "kind": "first-portrait-frame",
+      "sourceFrame": 138,
+      "new3dRenders": 1,
+      "wallSeconds": 3.012054458,
+      "nodeRssBytesSample": 711262208,
+      "rgbaPngSha256": "sha256:74d78a4f52f6163305d4c99c289a2254d014c50035b451a5478c172946ad3e33",
+      "review": "Solids, through-slots, curved blade, bevel/environment highlights and contact shadow inspected. Physical inner face correctly occluded; separate external proof-anchor treatment required."
+    },
+    {
+      "kind": "nine-shot-probe",
+      "sourceFrames": [0, 138, 223, 306, 380, 445, 500, 565, 675],
+      "new3dRenders": 9,
+      "wallSeconds": 4.747,
+      "nodeRssBytesSample": 566673408,
+      "independentProjectionMaxErrorPixels": 1.833e-12,
+      "independentAnchorVisibilityStates": 99,
+      "review": "External datum anchor at445 hidden by contact board; move along existing datum tube. Continuous/human acceptance not inferred."
+    },
+    {
+      "kind": "contact-shot-native-export",
+      "frames": 85,
+      "captureWallSeconds": 15.108,
+      "preparationWallSeconds": 15.5379,
+      "new3dRenders": 85,
+      "repeatNew3dRenders": 0,
+      "output": "/tmp/still-shift-ms1-contact-proof-render-v2/episode.mp4",
+      "check": "Mechanical pass; measured PULL hold72frames and no layout errors after repairs. CE12 unchanged evaluated-state contact hold errors retained; overall acceptance pending."
+    }
+  ],
   "failedRuns": [
     {
       "command": "focused failure-diagnostics initial run",
@@ -97,10 +142,22 @@
       "reason": "See complete retained record in mechanism-shorts-ms1-font-results.json.",
       "repair": "Parser, narrowing, correction fixture and temp type config repaired.",
       "rerun": "75 focused tests and scoped checks pass"
+    },
+    {
+      "command": "contact native export first attempt",
+      "reason": "Sequence implicit center anchor left half of viewport uncovered. Coverage guard rejected export.",
+      "repair": "Native full-frame sequence explicitly anchored at[0,0] and positioned[0,0].",
+      "rerun": "Native85frameexport succeeded; later pixel-check failure retained separately."
+    },
+    {
+      "command": "contact export final pixel check second attempt",
+      "reason": "Lint eagerly embedded all85preparedPNGbytes in page.evaluate and omitted preparedMedia; browser closed.",
+      "repair": "Known-resource loopback streaming and preparedMedia supplied to existing bounded native frame LRU. No pixel check skipped.",
+      "rerun": "Measured full85framecheck completed; purposeful contact-hold policy findings remain."
     }
   ],
   "review": {
-    "sampledVisual": "not-reviewed",
+    "sampledVisual": "first-frame-and-nine-shot-probe-in-progress",
     "continuousMotion": "not-reviewed",
     "listening": "not-reviewed",
     "humanCreativeAcceptance": "not-reviewed"

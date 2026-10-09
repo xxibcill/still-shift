@@ -46,10 +46,12 @@ still hold before relying on them.
 - **MS1 bridge active (2026-10-09):** separate `codex/mechanism-ms1` branch from
   `main` `e6eb7b06` carries exact MS0 prerequisite `d55908fa`; MS0
   [PR #51](https://github.com/xxibcill/still-shift/pull/51) is open and unmerged.
-  Shared contracts, pure rig evaluation, solid geometry and strict opt-in font
-  preflight are implemented and focused checks pass. Complete one-frame/contact-shot proof,
-  then complete E01/lifecycle/repair acceptance before MS1 PR. No MS1 render or
-  native MS1N implementation is complete. Original checkout edits are preserved.
+  Shared contracts, pure rigs, solid geometry, strict font preflight, bounded
+  first-party plate capture and independent mechanical checks are implemented.
+  Contact-shot native export completed in stages; measured label layout passes,
+  CE12 static proof-hold policy remains in flight. Nine-shot probe caught a
+  board-occluded datum label anchor. Complete E01/lifecycle/repair, isolated package
+  and full local gate before MS1 PR. MS1N has not started. Original edits preserved.
 
 - **MS0 audit complete (2026-10-09):** Codex on `codex/mechanism-ms0` from
   `main` `e6eb7b06`; separate milestone PR follows verification. Original E01
@@ -162,6 +164,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1 bounded capture and independent mechanics
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`, exact MS0 prerequisite.
+- **Done:** first-party pinned Three.js plate capture, immutable verified cache,
+  manifest/sidecar receipts, retained cancellation/failure attempts; independent
+  transform/contact/travel/rivet checks including rotated and scaled parents.
+- **Results:** 24 focused checks pass. One portrait frame, a nine-shot probe and
+  85-frame native contact export complete. Repeated preparation adds zero 3D work.
+- **Rejected:** implicit plate anchor failed coverage; eager plate embedding
+  crashed pixel lint. Explicit origin and bounded resource delivery repair these.
+- **Open / next:** static contact-hold policy, full E01, portable lifecycle, repair
+  acceptance and full gate. Human motion/listening review remains pending.
+- **Records:** [MS1 results](./mechanism-shorts-ms1-results.json),
+  [capture evidence](./mechanism-shorts-ms1-capture-results.json).
 
 ### 2026-10-10 — MS1 shared scene, geometry and font slice
 

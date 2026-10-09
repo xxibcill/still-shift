@@ -5,9 +5,11 @@ import {
   Float32BufferAttribute,
   Matrix4,
   Path,
+  Quaternion,
   Shape,
   SphereGeometry,
   TorusGeometry,
+  Vector3,
 } from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { mergeVertices } from "three/addons/utils/BufferGeometryUtils.js";
@@ -45,6 +47,9 @@ export type TapeHookDimensions = {
   slotWidth: number;
   slotEndClearance: number;
   rivetStemRadius: number;
+  datumMarkerMidpoint: GeometryVector3;
+  thicknessMarkerMidpoint: GeometryVector3;
+  travelMarkerMidpoint: GeometryVector3;
   scale: number;
 };
 export type TapeHookGeometry = Omit<
@@ -82,6 +87,13 @@ export const TAPE_HOOK_RIVET_MESH_IDS = [
   "rivet-2-ring",
 ] as const;
 
+/** Explanatory marker hierarchy; each marker geometry remains part-local at the origin. */
+export const TAPE_HOOK_MARKER_PARTS = {
+  datum: { id: "datum" },
+  thickness: { id: "thickness", parent: "hook" },
+  travel: { id: "travel", parent: "model" },
+} as const;
+
 export const TAPE_HOOK_LIGHTING_PROFILE = {
   background: "#cbd1d1",
   environment: "room",
@@ -110,6 +122,7 @@ export function createTapeHookGeometry(
     ...bladeMeshes(model),
     ...housingMeshes(),
     ...contactMeshes(),
+    ...markerMeshes(model),
   ].map((mesh) =>
     serializeMesh(
       mesh,
@@ -239,6 +252,17 @@ function catalogDimensions(model: ModelDimensions): TapeHookDimensions {
     slotWidth: scaled(0.23),
     slotEndClearance: scaled(SLOT_END_CLEARANCE),
     rivetStemRadius: scaled(0.085),
+    datumMarkerMidpoint: [0, scaled(1.375), scaled(1.15)],
+    thicknessMarkerMidpoint: [
+      scaled(-model.hookThickness / 2),
+      scaled(1.18),
+      scaled(1.2),
+    ],
+    travelMarkerMidpoint: [
+      scaled(0.72 - model.hookThickness / 2),
+      scaled(2.22),
+      scaled(0.47),
+    ],
     scale: model.scale,
   };
 }
@@ -347,6 +371,77 @@ function rivetMeshes(center: number, index: number): MeshSpecification[] {
       ),
     },
   ];
+}
+
+/** Solid source markers; the decorative face-glow plane is omitted to preserve physical visibility. */
+function markerMeshes(model: ModelDimensions): MeshSpecification[] {
+  const thickness = model.hookThickness;
+  return [
+    markerTube(
+      "datum-line",
+      "datum",
+      [0, -1.15, -0.05],
+      [0, -1.15, 2.8],
+      0.012,
+    ),
+    markerTube(
+      "thickness-crossbar",
+      "thickness",
+      [-thickness, -1.2, 1.18],
+      [0, -1.2, 1.18],
+      0.009,
+    ),
+    ...[-thickness, 0].map((x, index) =>
+      markerTube(
+        `thickness-tick-${index + 1}`,
+        "thickness",
+        [x, -1.2, 1],
+        [x, -1.2, 1.36],
+        0.009,
+      ),
+    ),
+    markerTube(
+      "travel-crossbar",
+      "travel",
+      [0.72 - thickness, -0.47, 2.22],
+      [0.72, -0.47, 2.22],
+      0.008,
+    ),
+    ...[0.72 - thickness, 0.72].map((x, index) =>
+      markerTube(
+        `travel-tick-${index + 1}`,
+        "travel",
+        [x, -0.53, 2.22],
+        [x, -0.41, 2.22],
+        0.008,
+      ),
+    ),
+  ];
+}
+
+function markerTube(
+  id: string,
+  partId: string,
+  start: GeometryVector3,
+  end: GeometryVector3,
+  radius: number,
+): MeshSpecification {
+  const a = new Vector3(...start),
+    b = new Vector3(...end);
+  const direction = b.clone().sub(a);
+  const midpoint = a.clone().add(b).multiplyScalar(0.5);
+  const rotation = new Quaternion().setFromUnitVectors(
+    new Vector3(0, 1, 0),
+    direction.clone().normalize(),
+  );
+  return {
+    id,
+    partId,
+    materialId: "teal",
+    geometry: new CylinderGeometry(radius, radius, direction.length(), 12)
+      .applyQuaternion(rotation)
+      .translate(...midpoint.toArray()),
+  };
 }
 
 function housingMeshes(): MeshSpecification[] {

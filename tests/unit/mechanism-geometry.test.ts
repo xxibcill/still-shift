@@ -1,8 +1,19 @@
+import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { MechanismGeometrySchema } from "@still-shift/scene-contract";
+import {
+  MechanismGeometrySchema,
+  MechanismSceneSchema,
+} from "@still-shift/scene-contract";
+import {
+  canonicalMechanismJson,
+  prepareMechanismScene,
+  evaluateMechanismFrame,
+} from "@still-shift/renderer-core";
 import {
   createTapeHookGeometry,
   createTapeHookMaterials,
+  TAPE_HOOK_MARKER_PARTS,
+  TAPE_HOOK_RIVET_MESH_IDS,
   type GeometryVector3,
   type IndexedMechanismMesh,
 } from "../../packages/animation-engine/src/mechanism/geometry.ts";
@@ -250,6 +261,171 @@ describe("reusable tape-hook geometry", () => {
       metalness: 0.4,
     });
     expect(createTapeHookGeometry().meshes).toEqual(original.meshes);
+  });
+
+  it("serializes solid explanatory markers at original Y-up coordinates without changing physical mesh dimensions", () => {
+    for (const hookThickness of [0.04, 0.18, 0.35]) {
+      const catalog = createTapeHookGeometry({ hookThickness });
+      expect(TAPE_HOOK_MARKER_PARTS).toEqual({
+        datum: { id: "datum" },
+        thickness: { id: "thickness", parent: "hook" },
+        travel: { id: "travel", parent: "model" },
+      });
+      const markers = catalog.meshes.filter((mesh) =>
+        ["datum", "thickness", "travel"].includes(mesh.partId),
+      );
+      expect(markers).toHaveLength(7);
+      expect(markers.every((mesh) => mesh.materialId === "teal")).toBe(true);
+      for (const marker of markers)
+        expect(new Set(positionalEdges(marker).values()), marker.id).toEqual(
+          new Set([2]),
+        );
+      const datum = meshById(markers, "datum-line");
+      expect(datum.bounds.min[1]).toBeCloseTo(-0.05, 6);
+      expect(datum.bounds.max[1]).toBeCloseTo(2.8, 6);
+      expect(datum.bounds.min[0]).toBeCloseTo(-0.012, 6);
+      expect(datum.bounds.max[0]).toBeCloseTo(0.012, 6);
+      expect((datum.bounds.min[2] + datum.bounds.max[2]) / 2).toBeCloseTo(
+        1.15,
+        6,
+      );
+      const thickness = meshById(markers, "thickness-crossbar");
+      const travel = meshById(markers, "travel-crossbar");
+      expect(thickness.bounds.min[0]).toBeCloseTo(-hookThickness, 6);
+      expect(thickness.bounds.max[0]).toBeCloseTo(0, 6);
+      expect(travel.bounds.min[0]).toBeCloseTo(0.72 - hookThickness, 6);
+      expect(travel.bounds.max[0]).toBeCloseTo(0.72, 6);
+      expect(thickness.bounds.max[0] - thickness.bounds.min[0]).toBeCloseTo(
+        catalog.dimensions.hookThickness,
+        6,
+      );
+      expect(travel.bounds.max[0] - travel.bounds.min[0]).toBeCloseTo(
+        catalog.dimensions.hookTravel,
+        6,
+      );
+      expect(catalog.dimensions.datumMarkerMidpoint).toEqual([0, 1.375, 1.15]);
+      expect(catalog.dimensions.thicknessMarkerMidpoint).toEqual([
+        -hookThickness / 2,
+        1.18,
+        1.2,
+      ]);
+      expect(catalog.dimensions.travelMarkerMidpoint).toEqual([
+        0.72 - hookThickness / 2,
+        2.22,
+        0.47,
+      ]);
+      for (const [mesh, midpoint] of [
+        [datum, catalog.dimensions.datumMarkerMidpoint],
+        [thickness, catalog.dimensions.thicknessMarkerMidpoint],
+        [travel, catalog.dimensions.travelMarkerMidpoint],
+      ] as const)
+        for (let axis = 0; axis < 3; axis++)
+          expect(
+            (mesh.bounds.min[axis]! + mesh.bounds.max[axis]!) / 2,
+          ).toBeCloseTo(midpoint[axis]!, 6);
+    }
+    const original = createTapeHookGeometry();
+    const styled = createTapeHookMaterials({
+      steelColor: "#ffffff",
+      steelMetalness: 0,
+    });
+    expect(styled.find((material) => material.id === "teal")).toEqual(
+      original.materials.find((material) => material.id === "teal"),
+    );
+    expect(createTapeHookGeometry().meshes).toEqual(original.meshes);
+    expect(original.meshes.some((mesh) => mesh.id.includes("glow"))).toBe(
+      false,
+    );
+  });
+
+  it("moves thickness with the hook while travel follows the model and the world datum stays fixed", () => {
+    const catalog = createTapeHookGeometry();
+    const scene = MechanismSceneSchema.parse({
+      schemaVersion: "mechanism-scene-1",
+      id: "marker-rig",
+      coordinateSystem: "right-handed-y-up",
+      units: { kind: "illustrative", scaleToMeters: 0.01 },
+      geometry: catalog,
+      geometrySha256: `sha256:${createHash("sha256").update(canonicalMechanismJson(catalog)).digest("hex")}`,
+      parts: [
+        { id: "model" },
+        { id: "hook", parent: "model" },
+        { id: "blade", parent: "model" },
+        { id: "housing", parent: "model" },
+        { id: "board" },
+        { id: "wall" },
+        { id: "floor" },
+        ...Object.values(TAPE_HOOK_MARKER_PARTS),
+      ],
+      rigs: [
+        {
+          id: "slider",
+          type: "tape-hook-slider",
+          rootPart: "model",
+          hookPart: "hook",
+          bladePart: "blade",
+          rivetMeshIds: [...TAPE_HOOK_RIVET_MESH_IDS],
+          thickness: 0.18,
+          contactMode: "free",
+        },
+      ],
+      anchors: [
+        {
+          id: "hook.innerFace",
+          part: "hook",
+          position: [0, 1.25, 0],
+          role: "physical-inner-face",
+        },
+        {
+          id: "hook.outerFace",
+          part: "hook",
+          position: [-0.18, 1.25, 0],
+          role: "physical-outer-face",
+        },
+      ],
+      camera: {
+        position: [-4, 5, 6],
+        target: [0.8, 1.25, 0],
+        fovDegrees: 36,
+        near: 0.03,
+        far: 100,
+      },
+      profile: {
+        toneMapping: "aces-filmic",
+        exposure: 1.14,
+        output: "srgb-rgba8-straight",
+      },
+      lights: [],
+    });
+    const prepared = prepareMechanismScene(scene);
+    for (const contactMode of ["free", "pull", "push"] as const) {
+      const at = (travel: number) =>
+        evaluateMechanismFrame(prepared, {
+          frame: 0,
+          width: 160,
+          height: 284,
+          controls: { slider: { travel, contactMode } },
+        });
+      const first = at(0),
+        last = at(1);
+      const displacement = (part: string) =>
+        last.parts[part]!.worldMatrix[12]! -
+        first.parts[part]!.worldMatrix[12]!;
+      expect(displacement("datum")).toBeCloseTo(0, 8);
+      expect(displacement("travel")).toBeCloseTo(
+        contactMode === "free" ? 0 : -0.18,
+        8,
+      );
+      expect(displacement("thickness")).toBeCloseTo(
+        contactMode === "free" ? 0.18 : 0,
+        8,
+      );
+      expect(displacement("blade")).toBeCloseTo(displacement("model"), 8);
+      expect(first.assertions.every((assertion) => assertion.passed)).toBe(
+        true,
+      );
+      expect(last.assertions.every((assertion) => assertion.passed)).toBe(true);
+    }
   });
 
   it("rejects invalid or unbounded dimensions at their model paths", () => {
