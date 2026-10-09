@@ -4,15 +4,15 @@ Use the pinned Node and pnpm versions in `toolchain.json` for every tier. Runtim
 checks additionally require the pinned Python/uv environment, FFmpeg/FFprobe,
 and installed Playwright Chromium. `pnpm toolchain:check` verifies them.
 
-| Command                   | Purpose                                                                                                     | Prerequisites                                    |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| `pnpm check:fast`         | Generated schema, package boundaries, TypeScript formatting/lint/type checks, and unit behavior tests       | Node, pnpm, installed workspace dependencies     |
-| `pnpm test:runtime`       | Filesystem/process locks, cancellation, cache recovery, and FFmpeg evidence tests                           | Python, FFmpeg; OS process inspection permitted  |
-| `pnpm test:integration`   | Real CLI, Python protocol, API, browser, and export transaction tests                                       | Full pinned toolchain and Python environment     |
-| `pnpm test:browser:smoke` | Three Lab session workflows, component playback/pixel checks, and representative Commerce/Story MP4 exports | Full pinned toolchain                            |
-| `pnpm check:runtime`      | Toolchain check plus all three runtime groups and Python tests, sequentially                                | Full pinned toolchain                            |
-| `pnpm check`              | Existing full render matrix plus format/lint/type/schema/boundary gates                                     | Full pinned toolchain                            |
-| `pnpm check:all`          | Full check, benchmark, and real-corpus readiness gate                                                       | Full pinned toolchain and frozen reviewed corpus |
+| Command                   | Purpose                                                                                                     | Prerequisites                                   |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| `pnpm check:fast`         | Generated schema, package boundaries, TypeScript formatting/lint/type checks, and unit behavior tests       | Node, pnpm, installed workspace dependencies    |
+| `pnpm test:runtime`       | Filesystem/process locks, cancellation, cache recovery, and FFmpeg evidence tests                           | Python, FFmpeg; OS process inspection permitted |
+| `pnpm test:integration`   | Real CLI, Python protocol, API, browser, and export transaction tests                                       | Full pinned toolchain and Python environment    |
+| `pnpm test:browser:smoke` | Three Lab session workflows, component playback/pixel checks, and representative Commerce/Story MP4 exports | Full pinned toolchain                           |
+| `pnpm check:runtime`      | Toolchain check plus all three runtime groups and Python tests, sequentially                                | Full pinned toolchain                           |
+| `pnpm check`              | Existing full render matrix plus format/lint/type/schema/boundary gates                                     | Full pinned toolchain                           |
+| `pnpm check:all`          | Full software check and benchmark; the production technical release gate                                    | Full pinned toolchain                           |
 
 `test:unit` remains an alias for the unit group. Tests that spawn processes moved
 from `tests/unit` to `tests/runtime`; no lock-recovery or media assertions were
@@ -110,9 +110,16 @@ Run the verification tiers locally with the pinned toolchain and locked dependen
 Use `pnpm check:fast`, `pnpm check:runtime`, and `pnpm check:all` for the fast,
 runtime, and full release gates respectively.
 
-The release gate intentionally retains `corpus:check`. The currently incomplete
-real-media corpus must fail this gate until its reviewed inputs exist. Fixture
-renders cannot replace corpus acceptance.
+**Owner decision (2026-10-09):** discard the retired Phase 0 corpus requirement
+for production release. `pnpm check:all` now runs `pnpm check && pnpm benchmark`.
+All existing software correctness, schema, baseline, lifecycle and benchmark
+checks remain required. `pnpm corpus:check` stays available as a standalone
+historical check; the archived experiment remains incomplete and unverified.
+
+The [release preparation](./production-release-preparation.md#release-gate-for-private-local-composition-use)
+records the current technical gate and the remaining production-project review.
+Removing the corpus requirement does not mark the full technical gate, human
+visual/listening review or release activation complete.
 
 ## Local sandbox execution
 

@@ -250,7 +250,7 @@ function splitDeepGroups(composition: Composition) {
 export function fitLegacyComposition(
   composition: Composition,
   sourceNodes: readonly { id: string }[],
-) {
+): Composition {
   const assetIndices = new Map(
     composition.assets.map((asset, index) => [asset.id, index]),
   );

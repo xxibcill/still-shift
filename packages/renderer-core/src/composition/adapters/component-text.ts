@@ -23,7 +23,7 @@ export function componentTextLayer(
   layoutResolved: boolean,
   samples: Samples,
   appearance?: Appearance,
-) {
+): Extract<CompositionLayer, { type: "provider" }> {
   const components = componentCapabilities(scene.componentData);
   const fit = [
     ...("textFits" in scene ? (scene.textFits ?? []) : []),

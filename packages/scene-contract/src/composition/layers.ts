@@ -458,7 +458,26 @@ export const AudioLayerSchema = mediaLayer("audio").extend({
   fadeOutCurve: SoundtrackFadeCurveSchema.optional(),
 });
 
-export const CompositionLayerSchema = z.discriminatedUnion("type", [
+export const CompositionLayerSchema: z.ZodDiscriminatedUnion<
+  [
+    typeof SolidLayerSchema,
+    typeof ImageLayerSchema,
+    typeof DepthImageLayerSchema,
+    typeof TextLayerSchema,
+    typeof NullLayerSchema,
+    typeof ProviderLayerSchema,
+    typeof GroupLayerSchema,
+    typeof PrecompLayerSchema,
+    typeof AdjustmentLayerSchema,
+    typeof ShapeLayerSchema,
+    typeof CameraLayerSchema,
+    typeof LightLayerSchema,
+    typeof VideoLayerSchema,
+    typeof SequenceLayerSchema,
+    typeof AudioLayerSchema,
+  ],
+  "type"
+> = z.discriminatedUnion("type", [
   SolidLayerSchema,
   ImageLayerSchema,
   DepthImageLayerSchema,

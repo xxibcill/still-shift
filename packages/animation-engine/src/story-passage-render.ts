@@ -40,6 +40,7 @@ import assert from "node:assert/strict";
 import { readFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
+import { fileURLToPath } from "node:url";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
 import { publishArtifacts } from "@still-shift/execution-runtime/publication";
 import {
@@ -753,7 +754,7 @@ export async function renderStoryPassage(
     ? {
         project: soundtrack,
         worker: await soundtrackChecksum(
-          new URL("./soundtrack-worker.py", import.meta.url).pathname,
+          fileURLToPath(new URL("./soundtrack-worker.py", import.meta.url)),
         ),
         python: soundtrackPython(),
         packages: (

@@ -150,7 +150,7 @@ export async function passageRenderRuntime(
     })) {
       const name = join(directory, entry.name);
       if (entry.isDirectory()) await visit(name);
-      else if (/\.(ts|json)$/.test(name)) files.push(name);
+      else if (/\.(ts|js|json)$/.test(name)) files.push(name);
     }
   };
   for (const directory of [

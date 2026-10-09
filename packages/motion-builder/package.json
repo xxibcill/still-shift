@@ -9,5 +9,6 @@
   },
   "dependencies": {
     "@still-shift/scene-contract": "workspace:*"
-  }
+  },
+  "license": "GPL-3.0-only"
 }

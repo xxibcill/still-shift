@@ -107,7 +107,35 @@ type KeyedOptions = {
   dimensions?: number;
 };
 
-function keyed<T extends z.ZodType>(value: T, options: KeyedOptions = {}) {
+type KeyShape<T extends z.ZodType> = {
+  frame: typeof keyFrame;
+  value: T;
+} & Omit<typeof compositionCurveFields, "in" | "out"> &
+  (
+    | Pick<typeof compositionCurveFields, "in" | "out">
+    | {
+        in: z.ZodOptional<typeof GroupedTemporalHandleSchema>;
+        out: z.ZodOptional<typeof GroupedTemporalHandleSchema>;
+      }
+  ) &
+  (
+    | Record<never, never>
+    | {
+        spatialIn: z.ZodOptional<z.ZodType>;
+        spatialOut: z.ZodOptional<z.ZodType>;
+      }
+  );
+type KeyedSchema<T extends z.ZodType> = z.ZodObject<
+  {
+    keys: z.ZodArray<z.ZodObject<KeyShape<T>, z.core.$strict>>;
+  },
+  z.core.$strict
+>;
+
+function keyed<T extends z.ZodType>(
+  value: T,
+  options: KeyedOptions = {},
+): KeyedSchema<T> {
   const spatial = options.spatial
     ? {
         spatialIn: options.spatial.optional(),
@@ -120,20 +148,17 @@ function keyed<T extends z.ZodType>(value: T, options: KeyedOptions = {}) {
         in: GroupedTemporalHandleSchema.optional(),
         out: GroupedTemporalHandleSchema.optional(),
       };
+  const fields: KeyShape<T> = {
+    frame: keyFrame,
+    value,
+    ...compositionCurveFields,
+    ...handles,
+    ...spatial,
+  };
   return z
     .object({
       keys: z
-        .array(
-          z
-            .object({
-              frame: keyFrame,
-              value,
-              ...compositionCurveFields,
-              ...handles,
-              ...spatial,
-            })
-            .strict(),
-        )
+        .array(z.object(fields).strict())
         .min(1)
         .max(COMPOSITION_LIMITS.maxKeys)
         .superRefine(checkKeys(options.scalar ?? false, options.dimensions)),

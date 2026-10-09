@@ -447,5 +447,13 @@ built-in high/low-pass filters (all routing and mixing are NumPy). Replacing it
 would need a new DSP version and listening, because filter output would change.
 Subprocess separation is not asserted to exempt distribution from those
 obligations.
+
+Owner update (2026-10-09): release the application under **GPL-3.0-only** and
+include soundtrack support with a **separately installed audio runtime**.
+The npm package includes worker source and pinned installation requirements;
+it contains no DawDreamer, NumPy or SciPy binaries. The distribution includes
+the application license, corresponding source and third-party notices. See the
+[npm release plan](./npm-release-plan.md) for packaging and validation status.
+
 Technical PCM/FFprobe acceptance does not establish creative quality: listening,
 audiovisual QA and GUI inspection have not been performed.

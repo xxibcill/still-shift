@@ -1,9 +1,14 @@
-import type { CompositionAsset } from "@still-shift/scene-contract";
+import type {
+  CompositionAsset,
+  Composition,
+} from "@still-shift/scene-contract";
 import { sha256Hex } from "../../browser-checksum.ts";
 import type { PreviewScene } from "../../scene.ts";
 import {
   loadCompositionResources,
   createCompositionPreview,
+  type CompositionPreview,
+  type CompositionResources,
 } from "../render/renderer.ts";
 import { depthToComposition, type DepthCompositionOptions } from "./depth.ts";
 
@@ -55,7 +60,7 @@ export async function prepareDepthComposition(
   source: HTMLImageElement,
   depth: HTMLImageElement | null,
   options: DepthPreviewProvenance = {},
-) {
+): Promise<{ composition: Composition; resources: CompositionResources }> {
   if (!depth && scene.motion.mode === "depth")
     throw Error("Depth image is required for depth motion");
   const temporaryUrls: string[] = [];
@@ -110,7 +115,7 @@ export async function createPreparedDepthPreview(
   source: HTMLImageElement,
   depth: HTMLImageElement | null,
   options: DepthPreviewProvenance = {},
-) {
+): Promise<CompositionPreview & { composition: Composition }> {
   const prepared = await prepareDepthComposition(scene, source, depth, options);
   return {
     ...createCompositionPreview(

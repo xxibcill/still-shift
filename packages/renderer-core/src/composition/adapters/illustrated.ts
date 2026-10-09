@@ -1,4 +1,8 @@
-import { compileFamilyTimeline } from "./timeline.ts";
+import {
+  compileFamilyTimeline,
+  type FamilyCompositionWindow,
+} from "./timeline.ts";
+import type { Composition } from "@still-shift/scene-contract";
 import type { IllustratedScene } from "../../prepared-scene.ts";
 import type { Images } from "./illustrated-assets.ts";
 import type { CompositionResources } from "../render/renderer.ts";
@@ -16,15 +20,24 @@ import { validateStoryTextLayout } from "../../story-text-layout.ts";
 import { validateTypographySafeArea } from "../../typography-safe-area.ts";
 import {
   prepareTypography,
+  type PreparedTypography,
   resolveTypographyNodes,
 } from "../../typography-renderer.ts";
+
+export type PreparedIllustratedComposition = {
+  composition: Composition;
+  windows?: FamilyCompositionWindow[];
+  resources: CompositionResources;
+  typography: PreparedTypography | undefined;
+  resolvedTextSizes: Record<string, number>;
+};
 
 /** Family dispatch and font measurement happen once, outside native frame rendering. */
 export function prepareIllustratedComposition(
   input: IllustratedScene,
   images: Images,
   context: CanvasRenderingContext2D,
-) {
+): PreparedIllustratedComposition {
   const fonts = new Map(images.fonts ?? []);
   const textLayout = { context, fonts };
   const prepared = (() => {

@@ -5,7 +5,7 @@ import {
   effectCurvePointCount,
 } from "./effect-curves.ts";
 import { compositionEffectDefinition } from "./effects.ts";
-import type { Composition, CompositionScope } from "./composition.ts";
+import type { Composition, CompositionScope, Precomp } from "./composition.ts";
 import type { CompositionLayer } from "./layers.ts";
 import {
   COMPOSITION_PATH_ROOT,
@@ -59,7 +59,7 @@ const COMPONENTS = { vec2: ["x", "y"], vec3: ["x", "y", "z"] } as const;
 const COLOR_COMPONENTS = ["r", "g", "b", "a"];
 
 /** Precomp source definitions, including unused ones, keyed by definition id. */
-export function precompsById(comp: Composition) {
+export function precompsById(comp: Composition): Map<string, Precomp> {
   return new Map((comp.precomps ?? []).map((p) => [p.id, p]));
 }
 

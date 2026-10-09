@@ -43,109 +43,271 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #50 stack/scale repairs verified (2026-10-09):** both findings posted on
-  `8fe1f832` are repaired on `codex/pr50-stack-scale-fixes`, one per commit. Owner
-  mesh stacks retain required intermediates; tiny nonzero scales and pinned empty
-  input preserve raster output and recovery validation. 100 focused units,
-  TypeScript/lint/boundaries/formatting, complete mesh/export and native-effect
-  checks pass. New oracles: 128 stack comparisons / 384 seeks, 142 scale checks
-  and 32 exports across repeat/worker/cache modes. Frozen references remain exact.
-  One final normal push delivers both commits; owner review/merge is next. No full
-  repository gate rerun or claimed. [Repair evidence](./pr-50-stack-scale-fix-results.json).
+- **Development/release branch policy adopted (2026-10-09):** owner requested
+  implementation. Keep `main` as the default development branch; `production`
+  holds approved releases, starting with the published `0.1.0` source. Feature PRs
+  target `main`; release promotions and hotfixes target `production`, and hotfixes
+  return to `main`. Source comparison confirms all 591 packaged source files match
+  the prepared checkout. Checkpoint commit, Git refs and push are in flight.
+  [Contribution guide](../CONTRIBUTING.md), [agent rules](../AGENTS.md),
+  [release flow](./npm-release-plan.md#development-and-release-branches).
 
-- **PR #50 main conflicts resolved (2026-10-09):** integrate merged CE15 review
-  fixes from `main` `43d57709` into reviewed CE14 head `2d49e192`. Both parents'
-  production changes remain exact; all 74 test commands retain their order.
-  Build/boundaries, 333 unit / 12 runtime / 24 mixer tests and complete mesh,
-  tint-capacity and native media/audio browser/export checks pass. All 216 visual
-  references and both unit snapshots remain exact. Normal PR branch delivery;
-  owner review/merge is next. No full repository gate rerun or claimed.
-  [Conflict evidence](./pr-50-main-conflict-results.json).
+- **npm release published and verified (2026-10-09):** one public
+  `still-shift@0.1.0` archive is built from the public root manifest and six
+  private internal workspaces. The owner confirmed one public npm package;
+  root pnpm publication targets `dist/npm` and builds it before packing.
+  Owner selected GPL-3.0-only and soundtrack support with a separately installed
+  audio runtime. JavaScript/declarations, CLI setup, runtime assets, license and
+  corresponding source are included. All 26 final installed-package checks pass,
+  including browser/depth/audio setup, both render backends, preview and source rebuild.
+  All required software checks passed in stages, including 3,664 units and 176 frozen baselines.
+  Patched `image-size` to 2.0.4; the locked production audit reports zero known
+  vulnerabilities. A panel timing outlier passed focused and complete-suite reruns
+  without threshold changes; the continuation's browser-installer bug is repaired.
+  Failed runs and the final archive checksum are preserved. The owner confirmed
+  catalog authorship; it is included under GPL-3.0-only. The owner published
+  `0.1.0`; the public registry tags it `latest`. Its downloaded archive is byte-for-byte
+  identical to the tested candidate, with matching registry integrity. The release
+  source checkpoint and version-tag setup are in flight under the adopted branch policy.
+  [npm release plan](./npm-release-plan.md), [results](./npm-release-results.json).
 
-- **PR #50 collapsed owner repair verified (2026-10-09):** the single posted P2
-  finding on `3002f0d1` is fixed on `codex/pr50-collapsed-mesh-fix`. Exact zero-scale
-  provenance survives rotated parent/child chains; collapse/recovery preserves
-  effect order and external coordinate spaces. 126 focused units, 88 byte-exact
-  frame comparisons, 24 new exports and the complete mesh/native-effects commands
-  pass. Existing references and thresholds are unchanged. One finding per commit,
-  with one final normal push; owner review/merge is next. No full repository gate
-  is run or claimed. [Repair evidence](./pr-50-collapsed-mesh-fix-results.json).
+- **Earlier private-local production preparation (2026-10-09):** candidate
+  source remains `bd0197cd`. Pinned toolchain, 85 runtime / 14 depth / 48 audio
+  integration tests and Lab/export smoke checks pass. The local soundtrack runtime
+  is installed; four native puppet exports preserve complete encoded and decoded
+  output within each backend across one/four workers and cache off/on. Release
+  packet, measured results and operating/rollback proposal are available.
+  The npm verification above supersedes this earlier software checkpoint;
+  real-project human production review remains pending.
+  [Release preparation](./production-release-preparation.md),
+  [results](./production-release-results.json).
 
-- **PR #50 completeness review repairs verified (2026-10-09):** both posted P2
-  findings are fixed on `codex/pr50-ce14-repairs` from `958e623a`. Raster-only
-  degeneracy preserves valid deformation; structured diagnostics retain code,
-  node, frame and exact authored field path through preview and production export.
-  112 focused units, complete mesh/export checks and all seven native-effects
-  catalogues pass. Existing references and thresholds are unchanged. One finding
-  per commit, with a single final push; owner review/merge is next. No full
-  repository gate is run or claimed.
-  [Repair evidence](./pr-50-ce14-review-repairs-results.json).
+- **Core composition features merged (2026-10-09):** core source baseline is `bd0197cd`
+  (PR #50 / CE14), following CE15 PR #49 at `43d57709`. All 21 core feature
+  tracker entries are complete, including native media, mesh deformation, output
+  formats, caching, parallel rendering and soundtrack projects. PR #50's stack,
+  scale, collapse, diagnostics and conflict repairs are merged; its owner merge
+  is no longer pending. [CE14 records](./composition-ce14-plan.md),
+  [CE15 records](./composition-ce15-plan.md).
 
-- **CE14 complete (2026-10-09):** `codex/composition-ce14` code checkpoint
-  `f78a9e26` passes the complete local `pnpm check` in 14,375.23 seconds: all 82
-  commands, 3,597 units, 83 runtime and 314 integration tests, every browser/export
-  check, and 176 frozen items / 36,061 frames. Both 48-frame demos, twelve ownership
-  cases and eight production exports pass. No CE14 blocker or owner decision remains;
-  branch review/merge is the owner's next step. [CE14 plan](./composition-ce14-plan.md).
+- **Readiness verified with limits (2026-10-09):** completion checkpoints are
+  ancestors of `main`; saved CE14/CE15 full-gate logs match their recorded hashes.
+  Fresh schema/boundaries/format/lint/build and all 3,662 units pass in stages.
+  Missing locked `earcut` packages were installed offline; two sandbox-blocked
+  process-lock tests pass on a focused rerun outside the sandbox. No new full
+  `pnpm check` or uninterrupted `check:fast` pass is claimed.
+  [Readiness review](./composition-engine-plan.md#readiness-review--2026-10-09).
 
-- **PR #49 second review repairs (2026-10-09):** All three findings posted on
-  `2cd76eca` are repaired and verified, with one commit per finding and one
-  final normal push to the PR branch. PR #49 merged into `main` at
-  `43d57709` on 2026-10-09; its fixes are integrated in PR #50.
-  Focused follow-up checks only; no full repository gate run or claimed.
-  [Second review evidence](./pr-49-second-review-fix-results.json).
+- **CE5-X blocked at the approved audit stop:** A2/A3/A8/B3/B4 migration has not
+  started. Owner Q9 must resolve additional component motion providers, product
+  attachments and multi-vertex annotation scope/contracts. Remaining CE5-X scope,
+  sequence and A1 baseline regeneration still need decisions. PR #46 merged the
+  audit/preparation only. [Audit evidence](./composition-ce5x-results.json).
 
-- **PR #49 review repairs verified (2026-10-09):** both P2 findings posted
-  inline at `efa42f42` are fixed, with one commit per finding and one final normal
-  push to the PR branch. Cache fallback `7b0d546f` passes 101 focused units,
-  384 exact preview comparisons, eight production exports / 512 decoded frames,
-  144 existing surface cases / 8,000 checks, eight typography fixtures and eight
-  frozen typography items / 1,309 frames. The PCM preview repair passes 48 focused
-  tests and real Lab Canvas/WebGL playback at 7, 29 and 59 fps with exact full
-  master/suffix PCM and final intervals. Build, scoped lint, formatting and package
-  boundaries pass. PR #49 is merged into `main`. No full repository gate was
-  run or claimed for these scoped repairs; owner checkout remains untouched.
-  [Review repair evidence](./pr-49-review-fix-results.json).
+- **Follow-ups remain:** CE6-P is owner-paused and deferred; strict timing/native
+  2× acceptance remains incomplete. CE9-F1 retains runtime expression-sugar work.
+  CE8-L-F has isolated cast-shadow preparation; production integration/acceptance
+  and advanced surface shading remain outstanding. CE16 technical completion
+  does not include human listening. The owner selected a separately installed
+  soundtrack runtime for npm; backend binaries are not bundled.
+  [Composition plan](./composition-engine-plan.md).
 
-- **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
-  pinned local `pnpm check` in 13928.03 seconds. Production code `21817411` has a real
-  two-minute benchmark that reaches **3.408×** with identical encoded/frame/audio output.
-  All delivery formats, statistics, caching, bounded worker/result admission and
-  area requirements are implemented. The 48-case maximum-area matrix, final area
-  smoke checks, native/parallel cleanup and frozen baselines pass. PR #49 merged
-  into `main` at `43d57709`; CE14 is complete and awaits PR #50 review/merge.
-  [Completion evidence](./composition-ce15-completion-results.json).
+- **Retired corpus requirement removed (2026-10-09):** owner explicitly requested
+  “discard requirement of retired corpus.” `pnpm check:all` now runs
+  `pnpm check && pnpm benchmark`; all software checks remain. Standalone
+  `corpus:check` and archived evidence remain historical and do not block release.
+  The updated release-script regression fails before the command change and passes
+  afterward (2 tests). The named mechanism-production/authoring records are still
+  absent; production inputs/review remain separate. Final npm technical verification
+  is complete in stages.
+  [Release decision](./production-release-preparation.md#retired-corpus-requirement-removed).
 
-- **PR #48 third review repairs verified (2026-10-08):** both P2 findings
-  posted inline on `1dae23c8` are fixed. Cache identity includes OS/architecture
-  (`2fb40127`); audio traversal avoids unrelated visual layout while preserving
-  actual dependencies and picture constraints (evaluator 56). Fast checks pass
-  2,616 units; 83 affected integrations and native media/Canvas/WebGL passage
-  browsers pass. All 176 frozen items / 36,061 frames match. Each finding has its
-  own commit, delivered in one normal push; owner review/merge is next. No full
-  repository gate is run or claimed. Owner CE15 checkout is untouched.
-  [Third review evidence](./pr-48-third-review-fix-results.json).
-
-- **CE13 complete (2026-10-07):** original acceptance at `01fbca2` passes the
-  complete local `pnpm check` in 12825.81 seconds, all 63 required commands,
-  2,103 unit / 46 runtime / 247 integration / 14 depth tests, 176 defaults and
-  176 frozen items / 36,061 frames. Native picture/PCM, waveforms/playback and
-  complete passage masters are delivered; exact reverse-seek/export evidence
-  remains in [CE13 results](./composition-ce13-results.json).
-  [PR #48](https://github.com/xxibcill/still-shift/pull/48) targets `main`.
-
-- **Prerequisites integrated:** CE4d PR #47 and earlier reviewed feature PRs are
-  merged into `main`. PR #47 review repairs and frozen/default verification are
-  recorded in [follow-up evidence](./pr-47-followup-fix-results.json).
-  The approved CE5-X scope retains its audit stop/Q9 owner decisions; CE6-P
-  remains owner-paused and deferred, with acceptance incomplete.
-
-- **Continuation:** the requested CE15 and CE14 implementation, acceptance and branch
-  delivery are complete. The owner's separate checkout is preserved. GitHub Actions
-  remain disabled; all verification was local. PR #49 is merged; PR #50 awaits
-  owner review/merge. No work was scheduled.
+- **Continuation:** npm release readiness and publication verification are complete. One public package
+  and GPLv3/separate-audio-runtime decisions supersede the provisional private-local
+  target. Technical verification is complete; catalog authorship is confirmed,
+  and the owner published the tested `0.1.0` archive. Earlier placeholder and empty
+  staged-list observations remain historical evidence. The branch policy is
+  adopted; checkpointing the prepared release and publishing its Git refs are
+  in flight. Manual publication and registry verification records are in the npm release plan.
+  Separate real-project visual/listening acceptance is not
+  established by software tests. This session verified the owner's npm publication;
+  branch setup performs no npm publication, activation or scheduled work.
+  GitHub Actions remain prohibited; no workflow files were added and remote
+  settings were not changed. Software checks ran locally; publication verification
+  used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-09 — Adopt release branches and contribution rules
+
+- **Agent / branch:** Codex on `main`, starting from `bd0197cd`.
+- **Scope / done:** owner adopts `main` for development and `production` for
+  releases. Add CONTRIBUTING.md, rewrite AGENTS.md and connect composition/README
+  guidance; retain local checks, fixed tags and hotfix propagation.
+- **Evidence:** all 591 archive source files match the prepared checkout; the
+  published archive retains SHA-256 `48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c`.
+- **Verification:** fresh `pnpm check:fast` passes all 3,664 units and software
+  checks outside the sandbox; retain the first run's two sandbox-blocked `ps`
+  failures. Guide links, formatting and whitespace pass; no archive rebuild.
+- **Open / next:** commit the verified source, create
+  `production`/`v0.1.0`, and push while retaining `main` as the default branch.
+- **Records:** [contribution guide](../CONTRIBUTING.md),
+  [release flow](./npm-release-plan.md#development-and-release-branches).
+
+### 2026-10-09 — Verify published npm release
+
+- **Agent / branch:** Codex on `main` at `bd0197cd`, preserving existing edits.
+- **Scope / result:** verify the owner's publication of `still-shift@0.1.0`.
+  The public registry tags it `latest`; its archive and registry integrity match
+  the candidate that passed all 26 installed-package checks. SHA-256:
+  `48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c`.
+- **Verification / limits:** exact-version metadata and archive download only;
+  byte identity makes another software rerun unnecessary. Updated release docs
+  and checked their formatting and whitespace. No publication or Git refs changed
+  by this session; source preparation remains uncommitted.
+- **Open / next:** branch-policy adoption and separate real-project human review
+  remain owner decisions; future npm releases need a new version and verification.
+- **Records:** [published verification](./npm-release-plan.md#published-release-verification),
+  [results](./npm-release-results.json); local evidence in
+  `benchmarks/results/npm-release-20261009/published/`.
+
+### 2026-10-09 — Recommend development and production branches
+
+- **Agent / branch:** Codex on `main` at `bd0197cd`, preserving existing edits.
+- **Scope / result:** assess the owner's proposed `main`/`production` split;
+  document release promotion, version tags and hotfix propagation as a proposal.
+- **Open / next:** adopt the policy and commit the prepared release before creating
+  `production`; current HEAD omits the uncommitted npm preparation.
+- **Verification / limits:** documentation formatting and whitespace checks only;
+  no new software verification, Git refs, publication or remote setting changes.
+- **Records:** [adopted flow](./npm-release-plan.md#development-and-release-branches).
+
+### 2026-10-09 — Verify the linked npm package listing
+
+- **Agent / branch:** Codex on `main` at `bd0197cd`, preserving release edits.
+- **Result:** npm exposes the `0.0.0-stage` placeholder (2 files / 333 unpacked
+  bytes); `still-shift@0.1.0` returns ETARGET and is not publicly available.
+- **Checks:** current login is a maintainer; authenticated `npm stage list
+still-shift --json` returns `[]`. The verified local archive hash still matches.
+- **Limits / next:** no staged payload exists to compare or approve in this list.
+  Owner can publish the prepared archive with the documented command. No
+  publication, approval, rejection or credential inspection performed.
+- **Records:** [npm release results](./npm-release-results.json),
+  [manual publication steps](./npm-release-plan.md#publish-the-verified-archive-manually).
+
+### 2026-10-09 — Document manual npm publication
+
+- **Agent / branch:** Codex on `main` at `bd0197cd`, preserving release edits.
+- **Done:** verify the prepared archive hash and npm's current login/publication
+  documentation; record browser login, 2FA, dry-run, tarball publish and registry check.
+- **Verification / limits:** documentation formatting and diff whitespace checks;
+  archive unchanged. No login, credential access or publication attempted.
+- **Records:** [manual publication steps](./npm-release-plan.md#publish-the-verified-archive-manually).
+
+### 2026-10-09 — Confirm commerce catalog ownership for npm release
+
+- **Agent / branch:** Codex on `main` at `bd0197cd`, preserving release edits.
+- **Decision / done:** owner confirms they created the commerce catalog. Record
+  authorship and the selected GPL-3.0-only distribution in included provenance
+  and notices; clear the pending catalog decision in release documentation.
+- **Verification:** all 26 final archive checks pass again, including frozen
+  source rebuild. Included ownership notices and the new checksum are verified;
+  only three provenance/notice files changed. Runtime code and dependencies are unchanged.
+- **Open / next:** npm publication using an authorized account. Nothing published;
+  real-project visual/listening review remains separate.
+- **Records:** [npm release plan](./npm-release-plan.md), [results](./npm-release-results.json),
+  [catalog provenance](../catalogs/ecommerce-motion/source/v1.0/SOURCE.md).
+
+### 2026-10-09 — Make the single npm package public
+
+- **Agent / branch:** Codex on `main` at `bd0197cd`, preserving release edits.
+- **Decision / done:** owner confirmed one public `still-shift` package. Set the
+  root manifest public and configure pnpm's distribution directory/public access;
+  `prepack` builds the distribution. Six internal modules remain development workspaces.
+- **Verification:** root pnpm packing selects the compiled distribution; all 26
+  clean installed archive checks pass again, including frozen source rebuild.
+  Synchronize publication-directory lock metadata after the first recheck exposed
+  the missing entry; dependency versions stay unchanged. Fix omitted npm runtime
+  shrinkwrap with an explicit files entry and a packing guard; all 26 corrected
+  archive checks pass, and installed lock bytes match. Records retain failures.
+- **Clarification / open:** commerce catalog means the supplied product-ad idea
+  library (40 formats, 12 techniques, 8 recipes, 16 links); H01/H03/H04 are implemented.
+  Catalog redistribution confirmation remains pending. No npm publication performed.
+- **Records:** [npm release plan](./npm-release-plan.md), [results](./npm-release-results.json).
+
+### 2026-10-09 — npm package implementation and release verification
+
+- **Agent / branch:** Codex on `main` at `bd0197cd`, preserving prior release edits.
+- **Done:** build one ESM/declaration archive with CLI, runtime assets, shrinkwrap,
+  GPLv3 license/source and opt-in audio setup; make declarations portable and fix
+  installed runtime paths, legacy authoring imports and preview command copy.
+- **Results:** all software checks pass in stages, including 3,664 units and 176
+  frozen baselines / 36,061 frames. All 26 final package checks pass, including
+  strict consumer types, three runtime setups, exact render parity and source rebuild.
+- **Security:** stop the first full gate after its dependency audit finds the
+  image-size parser advisory; pin 2.0.4 and verify zero known production findings.
+- **Failures / repairs:** panel timing outlier passes focused and complete commerce
+  reruns (127 items / 28,200 frames), with unchanged thresholds. Repair installed
+  browser setup after the continuation exposed Playwright's unexported CLI path;
+  retain failed runs and verify the final archive. No uninterrupted gate pass claimed.
+- **Open / next:** catalog redistribution confirmation; npm account publication
+  access remains untested. Nothing published or tagged.
+- **Records:** [npm release plan](./npm-release-plan.md), [results](./npm-release-results.json); raw logs under
+  `benchmarks/results/npm-release-20261009/` and `/private/tmp/still-shift-npm-release-final.log`.
+
+### 2026-10-09 — npm publication readiness audit
+
+- **Agent / branch:** Codex on `main` at `bd0197cd` with existing release edits.
+- **Result:** not ready for npm. Inspect all seven private manifests, build and
+  entry points, repository-relative runtime paths and distribution policy.
+- **Verification:** CLI pack dry-run succeeds with 21 source/metadata files and
+  no emitted build; no archive, installed-package test or publication was made.
+- **Open / next:** implement distributable packages and runtime assets, resolve
+  license/soundtrack scope, test a clean external install and run final checks.
+  Retired corpus remains outside the release gate; GitHub Actions remain prohibited.
+- **Records:** [audit](./production-release-preparation.md#npm-publication-readiness--2026-10-09),
+  [evidence](./production-release-results.json).
+
+### 2026-10-09 — Retire corpus requirement from production release
+
+- **Agent / branch:** Codex on `main` at `bd0197cd` with the release preparation.
+- **Decision / done:** owner explicitly discarded the retired corpus requirement.
+  Remove `corpus:check` from `check:all`; retain `pnpm check && pnpm benchmark`.
+  Update the existing policy test, active guides, plan, release packet and results.
+- **Results:** updated regression fails under the old command and passes after
+  removal (2 tests); scoped lint, formatting and diff checks pass.
+- **Preserved / open:** standalone historical corpus check and archived evidence;
+  full technical verification and real production review remain pending. No full
+  gate run, release activation or GitHub Actions change is claimed.
+- **Records:** [decision](./production-release-preparation.md#retired-corpus-requirement-removed),
+  [verification](./production-release-results.json).
+
+### 2026-10-09 — Local production release preparation
+
+- **Agent / branch:** Codex on `main` at `bd0197cd`; production code stays fixed.
+- **Done:** install pinned opt-in audio runtime; prepare candidate identity,
+  release scope/gate proposal, operating steps, rollback notes and measured evidence.
+  Reconcile stale roadmap completion states and unavailable source-document links.
+- **Results:** toolchain, 85 runtime, 14 depth, 48 audio integration, Lab/export
+  smoke and no-op benchmark pass. Four exports retain exact encoded and all decoded
+  frames within each backend across one/four workers and cache modes.
+- **Correction / open:** roadmap archives Phase 0 while `check:all` retains its
+  gate; request release scope and production inputs rather than revive retired media.
+  Full final-candidate gate and human review remain pending; nothing published.
+- **Records:** [release packet](./production-release-preparation.md),
+  [measured results](./production-release-results.json).
+
+### 2026-10-09 — Composition plan readiness verification
+
+- **Agent / branch:** Codex on `main` at `bd0197cd` (merged PR #50).
+- **Done:** verify milestone ancestry and CE14/CE15 gate-log hashes; reconcile
+  status, CE5-X blockage, first-slice completion, next steps and Q5/Q6 answers.
+- **Results:** static checks/build and all 3,662 units pass in stages. Restore two
+  missing locked packages offline; rerun two `ps`-blocked tests outside sandbox.
+  Existing fixtures, references, production source and lockfile remain unchanged.
+- **Open:** CE5-X/Q9, deferred CE6-P and recorded follow-ups remain outstanding.
+  Release corpus check fails for missing real inputs/review; no full gate rerun.
+- **Records:** [readiness review](./composition-engine-plan.md#readiness-review--2026-10-09).
 
 ### 2026-10-09 — PR #50 small nonzero mesh scale repair
 

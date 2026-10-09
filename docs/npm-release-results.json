@@ -1,0 +1,870 @@
+{
+  "date": "2026-10-09",
+  "status": "published-and-verified",
+  "baseCommit": "bd0197cdcbef7ef78f84d41d55c3dad508c34b7f",
+  "workingTree": "Uncommitted release preparation on main; final archive hash identifies the exact distribution.",
+  "distribution": {
+    "name": "still-shift",
+    "version": "0.1.0",
+    "license": "GPL-3.0-only",
+    "publicPackageCount": 1,
+    "privateDevelopmentManifestCount": 6,
+    "soundtrack": "Included, with separately installed audio runtime",
+    "published": true,
+    "publicRootManifest": true,
+    "publishedAt": "2026-10-09T15:25:03.607Z",
+    "latest": "0.1.0"
+  },
+  "ownerDecisions": [
+    "GPL-3.0-only",
+    "Include soundtrack with separately installed audio runtime",
+    "Retired corpus is not a release requirement",
+    "One public still-shift package containing all seven repository parts",
+    "Owner created the commerce catalog; include its descriptive content under GPL-3.0-only"
+  ],
+  "pendingDecision": null,
+  "fullReleaseGate": {
+    "command": "pnpm release:check",
+    "startedAt": "2026-10-09T09:49:23.531002+00:00",
+    "baseCommit": "bd0197cdcbef7ef78f84d41d55c3dad508c34b7f",
+    "trackedDiffSha256": "91787f54c9a875a0d2b7b46ce626d2262b2ca4e948a80a523e888dce01165516",
+    "log": "benchmarks/results/npm-release-20261009/full-gate.log",
+    "status": "failed",
+    "exitCode": 1,
+    "elapsedSeconds": 5860.625,
+    "finishedAt": "2026-10-09T11:27:04.141985+00:00",
+    "logSha256": "d48e240eb3367bf8202695aaffd20b20dce2f237bd344e2ed597ed0baf69e34a",
+    "failure": "commerce/atom-panel render + readback median ratio 1.2667984198048172 exceeds the unchanged 1.25 limit; pixel parity passed."
+  },
+  "completedTestGroups": {
+    "unit": 3664,
+    "runtime": 85,
+    "integration": 318,
+    "depth": 14,
+    "frozenBaselines": {
+      "items": 176,
+      "frames": 36061,
+      "seconds": 279.29,
+      "regenerated": false
+    }
+  },
+  "packageCheckpoint": {
+    "status": "passed",
+    "archive": "benchmarks/results/npm-release-20261009/package-checkpoint.tgz",
+    "archiveSha256": "e2286b71720ad619016c179284f8f49cd18401452deb40904b4f24e0889cf76e",
+    "checkCount": 22,
+    "note": "Earlier 22-check archive retained as historical evidence; superseded by finalPackage after help, setup, audit and cache-file repairs."
+  },
+  "productionDependencyAudit": {
+    "status": "passed",
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "repair": "image-size 2.0.2 -> 2.0.4",
+    "evidence": "benchmarks/results/npm-release-20261009/catalog-confirmed/production-audit-final.json"
+  },
+  "verificationChanges": [
+    "Renderer and engine source remained unchanged during the full software run and continuation.",
+    "Installed CLI help now uses the npm package version and npx commands; final installed checks pass.",
+    "Browser setup resolves Playwright's declared bin through its exported package.json instead of a non-exported subpath; final installed setup passes.",
+    "Generated Python cache/bytecode files are excluded from runtime/source copies and rejected by the pack inventory guard.",
+    "Final installed tests cover explicit browser, depth and soundtrack setup, both render backends, preview, consumer declarations and corresponding-source rebuild.",
+    "Root publication metadata and its pnpm lock entry changed after the prior archive. All runtime source hashes remain unchanged; final package/source-rebuild checks were rerun against the new archive.",
+    "Comparison of root pnpm and npm archives exposed omitted npm-shrinkwrap.json. The files allowlist now explicitly includes it; pack fails if absent. Verify identical lock bytes in the final archive and installed consumer.",
+    "Owner-confirmed catalog provenance and GPLv3 notices are included in the final archive; only three provenance/notice files differ from the preceding verified archive."
+  ],
+  "limits": [
+    "Production platform verified only on macOS Apple Silicon with the pinned toolchain.",
+    "Software verification does not establish human visual/listening acceptance of a particular production project.",
+    "CE6-P WebGL adapter timing remains owner-paused/deferred under the existing gate; this release does not claim that performance target is met."
+  ],
+  "history": [
+    "Initial gate deliberately interrupted to repair a high-severity dependency advisory.",
+    "One restart failed on pnpm-lock.yaml formatting; formatting repaired before the current gate.",
+    "Full gate stopped after 5860.625 seconds on panel timing; exact pixels passed. Focused rerun, complete commerce suite and every remaining software check then passed without changing thresholds.",
+    "Software continuation completed every remaining software command, including 176 frozen baselines and benchmark, then package setup failed on the non-exported Playwright ./cli path. Preserve this failure; final package rerun after repair passes 26 checks.",
+    "Owner confirmed one public package. Root private is false and pnpm publishing targets dist/npm. First rerun exposed missing publishDirectory lock metadata; synchronized offline without dependency changes. Root pnpm packing and all 26 final npm consumer checks then passed.",
+    "Runtime lock inventory regression reproduced: pnpm pack:release failed on the missing npm-shrinkwrap.json before the files allowlist repair. All 26 clean checks then passed on the corrected archive; installed runtime lock bytes match the source release lock.",
+    "Owner confirmed catalog authorship on 2026-10-09, resolving the pending distribution decision. Included provenance/notices updated; all 26 final archive checks pass again without runtime code or dependency changes.",
+    "Owner shared the npm package page. Public registry exposes only 0.0.0-stage; verified 0.1.0 is unavailable (ETARGET). Authenticated maintainer stage list is empty. No publication or approval performed; local archive unchanged.",
+    "After the owner reported publication, the public registry returned still-shift@0.1.0 as latest; its downloaded archive exactly matches the final tested candidate. Earlier placeholder and ETARGET observations remain historical evidence."
+  ],
+  "evidenceDirectory": "benchmarks/results/npm-release-20261009",
+  "githubActions": "Prohibited; verification is local and no workflows were added.",
+  "continuation": {
+    "commands": [
+      "pnpm test:browser:composition-commerce-adapter",
+      "pnpm test:browser:composition-cinematic-adapter",
+      "pnpm test:browser:composition-typography-adapter",
+      "pnpm test:browser:composition-provider-typography",
+      "pnpm test:browser:composition-program",
+      "pnpm test:browser:composition-inspector",
+      "pnpm test:browser:composition-builder",
+      "pnpm test:browser:composition-depth",
+      "pnpm test:browser:composition-legacy-adapter",
+      "pnpm test:browser:composition-family-timeline",
+      "pnpm test:browser:composition-family-defaults",
+      "pnpm test:browser:composition-baselines",
+      "pnpm benchmark",
+      "pnpm test:package"
+    ],
+    "startedAt": "2026-10-09T11:28:47.913435+00:00",
+    "baseCommit": "bd0197cdcbef7ef78f84d41d55c3dad508c34b7f",
+    "log": "benchmarks/results/npm-release-20261009/continuation.log",
+    "status": "failed",
+    "completedCommands": [
+      {
+        "command": "pnpm test:browser:composition-commerce-adapter",
+        "exitCode": 0,
+        "seconds": 2576.553
+      },
+      {
+        "command": "pnpm test:browser:composition-cinematic-adapter",
+        "exitCode": 0,
+        "seconds": 3891.173
+      },
+      {
+        "command": "pnpm test:browser:composition-typography-adapter",
+        "exitCode": 0,
+        "seconds": 199.165
+      },
+      {
+        "command": "pnpm test:browser:composition-provider-typography",
+        "exitCode": 0,
+        "seconds": 10.148
+      },
+      {
+        "command": "pnpm test:browser:composition-program",
+        "exitCode": 0,
+        "seconds": 14.424
+      },
+      {
+        "command": "pnpm test:browser:composition-inspector",
+        "exitCode": 0,
+        "seconds": 18.672
+      },
+      {
+        "command": "pnpm test:browser:composition-builder",
+        "exitCode": 0,
+        "seconds": 27.248
+      },
+      {
+        "command": "pnpm test:browser:composition-depth",
+        "exitCode": 0,
+        "seconds": 520.715
+      },
+      {
+        "command": "pnpm test:browser:composition-legacy-adapter",
+        "exitCode": 0,
+        "seconds": 1510.48
+      },
+      {
+        "command": "pnpm test:browser:composition-family-timeline",
+        "exitCode": 0,
+        "seconds": 15.186
+      },
+      {
+        "command": "pnpm test:browser:composition-family-defaults",
+        "exitCode": 0,
+        "seconds": 1325.746
+      },
+      {
+        "command": "pnpm test:browser:composition-baselines",
+        "exitCode": 0,
+        "seconds": 286.034
+      },
+      {
+        "command": "pnpm benchmark",
+        "exitCode": 0,
+        "seconds": 2.761
+      },
+      {
+        "command": "pnpm test:package",
+        "exitCode": 1,
+        "seconds": 41.64
+      }
+    ],
+    "reason": "Rerun the full commerce suite after a panel timing outlier, then every remaining release check without changing thresholds.",
+    "exitCode": 1,
+    "elapsedSeconds": 10439.963,
+    "finishedAt": "2026-10-09T14:22:47.954318+00:00",
+    "logSha256": "92133a67f7784dd766c06b132b2091a8f95ada8fd52a3be8a805bdda1387013e"
+  },
+  "focusedPanelRerun": {
+    "status": "passed",
+    "items": 2,
+    "frames": 480,
+    "panelRatio": 1.1758345952640203,
+    "appearanceRatio": 1.0601067879252333,
+    "maxPixelDelta": 0,
+    "log": "benchmarks/results/npm-release-20261009/panel-rerun.log"
+  },
+  "commerceRerun": {
+    "status": "passed",
+    "items": 127,
+    "frames": 28200,
+    "seconds": 2576.553,
+    "panelRatio": 1.1506124217602107,
+    "limit": 1.25,
+    "pixelFailures": 0,
+    "acceptanceThresholdsChanged": false
+  },
+  "finishedAt": "2026-10-09T14:59:55.824666+00:00",
+  "technicalVerification": {
+    "status": "passed-in-stages",
+    "softwareGate": "pnpm check && pnpm benchmark",
+    "packageGate": "pnpm test:package",
+    "uninterruptedAggregatePass": false,
+    "explanation": "All required software checks passed across the initial run and complete failed-suite rerun/continuation. The initial panel timing outlier passed focused and complete-suite reruns without threshold changes. The continuation then exposed an installed browser-setup path bug; after repair, all 26 final archive checks passed. After making the root package public, synchronize the pnpm publication lock metadata and repair missing runtime shrinkwrap inclusion. Root packing and all 26 corrected archive checks pass; renderer/engine sources and dependency versions remain unchanged."
+  },
+  "finalPackage": {
+    "status": "passed",
+    "command": "pnpm test:package",
+    "exitCode": 0,
+    "archive": "dist/releases/still-shift-0.1.0.tgz",
+    "archiveSha256": "48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c",
+    "sizeBytes": 2724418,
+    "unpackedBytes": 19961632,
+    "fileCount": 1570,
+    "checkCount": 26,
+    "runtimeLockIncluded": true,
+    "catalogOwnershipNoticeIncluded": true,
+    "record": "benchmarks/results/npm-release-20261009/catalog-confirmed/package-final.json",
+    "log": "benchmarks/results/npm-release-20261009/catalog-confirmed/package-final.log",
+    "checks": [
+      {
+        "name": "locked production dependency audit",
+        "seconds": 0.474
+      },
+      {
+        "name": "install archive outside repository (npm)",
+        "seconds": 6.067
+      },
+      {
+        "name": "installed command help",
+        "seconds": 1.496
+      },
+      {
+        "name": "installed command version",
+        "seconds": 0.386
+      },
+      {
+        "name": "consumer TypeScript declarations",
+        "seconds": 7.154
+      },
+      {
+        "name": "consumer bundler declarations",
+        "seconds": 7.018
+      },
+      {
+        "name": "TypeScript program validation",
+        "seconds": 1.116
+      },
+      {
+        "name": "legacy motion import in installed program",
+        "seconds": 0.745
+      },
+      {
+        "name": "JSON program validation",
+        "seconds": 0.405
+      },
+      {
+        "name": "installed API imports",
+        "seconds": 0.406
+      },
+      {
+        "name": "opt-in browser runtime setup",
+        "seconds": 0.622
+      },
+      {
+        "name": "opt-in depth runtime setup",
+        "seconds": 1.407
+      },
+      {
+        "name": "installed depth worker command",
+        "seconds": 16.75
+      },
+      {
+        "name": "installed canvas2d export",
+        "seconds": 1.999
+      },
+      {
+        "name": "canvas2d frame count",
+        "seconds": 0.017
+      },
+      {
+        "name": "canvas2d source comparison",
+        "seconds": 2.565
+      },
+      {
+        "name": "installed webgl2 export",
+        "seconds": 1.659
+      },
+      {
+        "name": "webgl2 frame count",
+        "seconds": 0.017
+      },
+      {
+        "name": "webgl2 source comparison",
+        "seconds": 2.413
+      },
+      {
+        "name": "installed preview page and seeking",
+        "seconds": 1.643
+      },
+      {
+        "name": "opt-in soundtrack runtime setup",
+        "seconds": 0.833
+      },
+      {
+        "name": "soundtrack fixture",
+        "seconds": 0.018
+      },
+      {
+        "name": "installed soundtrack worker and API",
+        "seconds": 3.448
+      },
+      {
+        "name": "installed soundtrack CLI",
+        "seconds": 0.399
+      },
+      {
+        "name": "corresponding source dependencies",
+        "seconds": 0.791
+      },
+      {
+        "name": "corresponding source rebuild",
+        "seconds": 8.168
+      }
+    ]
+  },
+  "finalSourceValidation": {
+    "typescript": "passed",
+    "releaseScriptsLint": "passed",
+    "releaseScriptsFormatting": "passed",
+    "note": "Runtime sources and dependencies remain unchanged from the staged full software gate. All 26 final package checks pass after updating the included owner-confirmed catalog provenance and GPLv3 notices. Final document formatting and diff whitespace checks pass.",
+    "releaseDocumentFormatting": "passed",
+    "diffWhitespaceCheck": "passed",
+    "sourceHashesVerified": 50
+  },
+  "evidenceFiles": {
+    "benchmarks/results/npm-release-20261009/candidate-sources.json": "55cb0b3c3d2f9dfc647dcd9ce3e3c9fd6cc431a48ffea422981329e72ae6144d",
+    "benchmarks/results/npm-release-20261009/continuation.json": "f6db929f262366bd2364274f1b9f0eb55ee3d2a79df88fe1f388966c9def4ac9",
+    "benchmarks/results/npm-release-20261009/continuation.log": "92133a67f7784dd766c06b132b2091a8f95ada8fd52a3be8a805bdda1387013e",
+    "benchmarks/results/npm-release-20261009/final-format.log": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+    "benchmarks/results/npm-release-20261009/final-lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "benchmarks/results/npm-release-20261009/final-types.log": "7e7b43df66aed1ec019e820fe9200fa9baaf11e90bd89f9e1179b1e6053131de",
+    "benchmarks/results/npm-release-20261009/full-gate.json": "34debec41d97f3653a009cd3ec7cf98b7b91d1cb368f20f3d3c64b20103b2445",
+    "benchmarks/results/npm-release-20261009/full-gate.log": "d48e240eb3367bf8202695aaffd20b20dce2f237bd344e2ed597ed0baf69e34a",
+    "benchmarks/results/npm-release-20261009/lock-format-check.json": "1439f843f84ea4d75b71ac80f8c83af519cb38167288b2ed2821f2b523388b0b",
+    "benchmarks/results/npm-release-20261009/lock-format-check.log": "e35270834b49195927dc0527fced1447de8c0beaf286d8f347427a072dfbe0f6",
+    "benchmarks/results/npm-release-20261009/pack-final.json": "b0e824091a2647fb3035118d75278a694b605f43dc05295b77d613c06c38ed8d",
+    "benchmarks/results/npm-release-20261009/package-browser-setup-failure.json": "d609707ba405da0b98d09da0ab852728ec106a4629cba7ab4b0a80ff2b5692bb",
+    "benchmarks/results/npm-release-20261009/package-checkpoint.json": "d0371e529b4ae35f598eaec5726725a0fc3616e377bbfeeb995cf47c998de8d2",
+    "benchmarks/results/npm-release-20261009/package-checkpoint.log": "945398ce83c4c09257b906d027cfb2f47df3b06d0d74e3f196043de58cf81730",
+    "benchmarks/results/npm-release-20261009/package-checkpoint.tgz": "e2286b71720ad619016c179284f8f49cd18401452deb40904b4f24e0889cf76e",
+    "benchmarks/results/npm-release-20261009/package-final.json": "4dc7fbabe231317b7f193c5ff3d33777baec547744997b6ff88b95b900c09ed2",
+    "benchmarks/results/npm-release-20261009/package-final.log": "894c827caf7cc9a98b57f9a41c58d5a42eea85472f330a93391f6585e606cf86",
+    "benchmarks/results/npm-release-20261009/package-manifest.json": "a0004710ecdc8714f1e64fa80f5595e671f057846fa0c0c3d3e142b27345ff69",
+    "benchmarks/results/npm-release-20261009/panel-rerun.log": "9e847b6313ace8b7867a8febb8ea8f4c946472b7ef3f0e8621e6299fd50dc799",
+    "benchmarks/results/npm-release-20261009/production-audit-final.json": "1ac415316d405c9e4d8839813dd03e86eb724afbcaa844ccbdb9c0888f70044e",
+    "benchmarks/results/npm-release-20261009/public-types.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "benchmarks/results/npm-release-20261009/still-shift-0.1.0.tgz": "dbaf7f81a911a22846da182c3f8e7f23318c4de7d2d6995a08eb1ac68544a74b",
+    "benchmarks/results/npm-release-20261009/still-shift-npm-audit-patched.json": "1ac415316d405c9e4d8839813dd03e86eb724afbcaa844ccbdb9c0888f70044e",
+    "benchmarks/results/npm-release-20261009/still-shift-npm-audit.json": "311f1be2ffe249d41e2849b8fd7793208604070750d536c0736ef2eebf620d43",
+    "benchmarks/results/npm-release-20261009/still-shift-npm-fast.log": "44ed519481ceff8cc2dc1728cf960b9d0c506535958b1732afcfa6092101b0cb",
+    "benchmarks/results/npm-release-20261009/still-shift-npm-release-check.json": "f91f0aaf46db11d9b74ea7bcb2fff930eb240c9e092b329f988a49f1573f25ba",
+    "benchmarks/results/npm-release-20261009/still-shift-npm-release-check.log": "69e30dcb8190804484b3735a9016be96e27adc36cb63475aa1793a30030fca03",
+    "benchmarks/results/npm-release-20261009/final-docs.log": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+    "benchmarks/results/npm-release-20261009/public-package/package-manifest.json": "a32d2eb09fbb0fe64f768ab5669d8c1e9686edd5edc20cca4bbac5446500fa14",
+    "benchmarks/results/npm-release-20261009/public-package/candidate-sources.json": "87c4d31749ee542ca1a4d1e778a0b867f57eb0d42e156e3fd32e31da1cc322d7",
+    "benchmarks/results/npm-release-20261009/public-package/package-final.json": "a655e3d1d9cdec4ab4ad00c3a29378d31f7c3b314eb9a3d578451c55132d99ce",
+    "benchmarks/results/npm-release-20261009/public-package/production-audit-final.json": "1ac415316d405c9e4d8839813dd03e86eb724afbcaa844ccbdb9c0888f70044e",
+    "benchmarks/results/npm-release-20261009/public-package/package-final.log": "894c827caf7cc9a98b57f9a41c58d5a42eea85472f330a93391f6585e606cf86",
+    "benchmarks/results/npm-release-20261009/public-package/initial-check.log": "b358ac87270e0b0d6435980767420c7bbdaf7efd18ea5470214af10b3fdd11ad",
+    "benchmarks/results/npm-release-20261009/public-package/still-shift-0.1.0.tgz": "fb4464710c0d4104cea2326e01a5e379278a3f1ae559ee4374ab6c08d577413b",
+    "benchmarks/results/npm-release-20261009/public-package/initial-check.json": "e123afd8e3ea886728c23b16ae17a5f2494b567ec5cb4064e9426a67607bb448",
+    "benchmarks/results/npm-release-20261009/public-package/root-pack.json": "a71d4abfa170157d1441d6a948bdac79307f7f3e56f85030fbac23edd9808113",
+    "benchmarks/results/npm-release-20261009/public-package/pack-final.json": "7ceda63fa297c7ba0aeb8a8e2811d1d3459878a1995f8b167bd4af459e5cb17e",
+    "benchmarks/results/npm-release-20261009/public-package/root-pack.log": "ef63b9d0707dd0d66569b631af9e2a916edb5cdd77a4605e95147fbabb01a001",
+    "benchmarks/results/npm-release-20261009/public-package/missing-lock-guard.log": "81ad924ef5e5ceb04bc25df364b25a039afd8e1dd008e40423caa5e3a8d08ba6",
+    "benchmarks/results/npm-release-20261009/public-package/runtime-lock.json": "375afc8a54bac481e355f24176607062517732650bbab064be32a65960e5d071",
+    "benchmarks/results/npm-release-20261009/public-package/format-final.log": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+    "benchmarks/results/npm-release-20261009/public-package/types-final.log": "7e7b43df66aed1ec019e820fe9200fa9baaf11e90bd89f9e1179b1e6053131de",
+    "benchmarks/results/npm-release-20261009/public-package/lint-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "benchmarks/results/npm-release-20261009/public-package/package-before-lock.tgz": "161c839cc89cfb8a2aa07afa26583f63d070a20af771d3ad8db3ee2493dadd0f",
+    "benchmarks/results/npm-release-20261009/public-package/package-before-lock.json": "43274c0de09c9c528fbc05b7534bce624c49d196fdd699b7e502183b6fa2784e",
+    "benchmarks/results/npm-release-20261009/public-package/docs-final.log": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+    "benchmarks/results/npm-release-20261009/catalog-confirmed/package-manifest.json": "a32d2eb09fbb0fe64f768ab5669d8c1e9686edd5edc20cca4bbac5446500fa14",
+    "benchmarks/results/npm-release-20261009/catalog-confirmed/candidate-sources.json": "72fa51801c57a7fa08f6262b91ceb1eefa3c7fc13d743c32e53ede7abca772d5",
+    "benchmarks/results/npm-release-20261009/catalog-confirmed/package-final.json": "6e6394774ea707c80150c1dce94346fe25fbc8c1bb4221772ce77c6b8c024d78",
+    "benchmarks/results/npm-release-20261009/catalog-confirmed/format-final.log": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+    "benchmarks/results/npm-release-20261009/catalog-confirmed/production-audit-final.json": "1ac415316d405c9e4d8839813dd03e86eb724afbcaa844ccbdb9c0888f70044e",
+    "benchmarks/results/npm-release-20261009/catalog-confirmed/package-final.log": "894c827caf7cc9a98b57f9a41c58d5a42eea85472f330a93391f6585e606cf86",
+    "benchmarks/results/npm-release-20261009/catalog-confirmed/still-shift-0.1.0.tgz": "48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c",
+    "benchmarks/results/npm-release-20261009/catalog-confirmed/pack-final.json": "9f37eca98b3a97d75cc5b9d192f793528799ddf1ab4fa1a4cd5dd693ed274882",
+    "benchmarks/results/npm-release-20261009/catalog-confirmed/root-pack.json": "a16afd1bc8d1af0a765702a316007224cd10ad068e9f80b5b27084b79f8d8035",
+    "benchmarks/results/npm-release-20261009/catalog-confirmed/root-pack.log": "d0ceeeb84b7c107d74089d5635f572b2a284db96636e5b683e60e002de252c31",
+    "benchmarks/results/npm-release-20261009/catalog-confirmed/docs-final.log": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+    "benchmarks/results/npm-release-20261009/registry-placeholder/registry-verification.json": "194b07b39d566c81dfc04a9c60b6908fc109a65de1d5e2fafd55e3fd7c0a2dd9",
+    "benchmarks/results/npm-release-20261009/published/pack.json": "9f37eca98b3a97d75cc5b9d192f793528799ddf1ab4fa1a4cd5dd693ed274882",
+    "benchmarks/results/npm-release-20261009/published/registry-metadata.json": "8429a6eb5a02a96010626cfba0d665b6f494931d3a7fd570ba915a672f13762a",
+    "benchmarks/results/npm-release-20261009/published/registry-verification.json": "639dda0309a7e5b6a8cebc309ce1c87cfe088565efdbd47474418645728a6ce8",
+    "benchmarks/results/npm-release-20261009/published/still-shift-0.1.0.tgz": "48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c"
+  },
+  "previousFinalPackage": {
+    "status": "passed",
+    "command": "pnpm test:package",
+    "exitCode": 0,
+    "archive": "dist/releases/still-shift-0.1.0.tgz",
+    "archiveSha256": "dbaf7f81a911a22846da182c3f8e7f23318c4de7d2d6995a08eb1ac68544a74b",
+    "sizeBytes": 2712341,
+    "unpackedBytes": 19909616,
+    "fileCount": 1569,
+    "checkCount": 26,
+    "record": "benchmarks/results/npm-release-20261009/package-final.json",
+    "log": "benchmarks/results/npm-release-20261009/package-final.log",
+    "checks": [
+      {
+        "name": "locked production dependency audit",
+        "seconds": 0.551
+      },
+      {
+        "name": "install archive outside repository (npm)",
+        "seconds": 1.701
+      },
+      {
+        "name": "installed command help",
+        "seconds": 4.364
+      },
+      {
+        "name": "installed command version",
+        "seconds": 0.396
+      },
+      {
+        "name": "consumer TypeScript declarations",
+        "seconds": 10.172
+      },
+      {
+        "name": "consumer bundler declarations",
+        "seconds": 8.929
+      },
+      {
+        "name": "TypeScript program validation",
+        "seconds": 1.131
+      },
+      {
+        "name": "legacy motion import in installed program",
+        "seconds": 0.774
+      },
+      {
+        "name": "JSON program validation",
+        "seconds": 0.421
+      },
+      {
+        "name": "installed API imports",
+        "seconds": 0.413
+      },
+      {
+        "name": "opt-in browser runtime setup",
+        "seconds": 1.425
+      },
+      {
+        "name": "opt-in depth runtime setup",
+        "seconds": 1.429
+      },
+      {
+        "name": "installed depth worker command",
+        "seconds": 16.852
+      },
+      {
+        "name": "installed canvas2d export",
+        "seconds": 2.151
+      },
+      {
+        "name": "canvas2d frame count",
+        "seconds": 0.018
+      },
+      {
+        "name": "canvas2d source comparison",
+        "seconds": 2.785
+      },
+      {
+        "name": "installed webgl2 export",
+        "seconds": 1.776
+      },
+      {
+        "name": "webgl2 frame count",
+        "seconds": 0.018
+      },
+      {
+        "name": "webgl2 source comparison",
+        "seconds": 2.598
+      },
+      {
+        "name": "installed preview page and seeking",
+        "seconds": 1.771
+      },
+      {
+        "name": "opt-in soundtrack runtime setup",
+        "seconds": 0.85
+      },
+      {
+        "name": "soundtrack fixture",
+        "seconds": 0.017
+      },
+      {
+        "name": "installed soundtrack worker and API",
+        "seconds": 3.728
+      },
+      {
+        "name": "installed soundtrack CLI",
+        "seconds": 0.424
+      },
+      {
+        "name": "corresponding source dependencies",
+        "seconds": 0.811
+      },
+      {
+        "name": "corresponding source rebuild",
+        "seconds": 9.815
+      }
+    ],
+    "note": "Historical archive; superseded after public-root selection and the later runtime lock inclusion repair."
+  },
+  "publicationConfiguration": {
+    "rootPrivate": false,
+    "publicPackageCount": 1,
+    "internalPrivateManifestCount": 6,
+    "publishConfig": {
+      "access": "public",
+      "registry": "https://registry.npmjs.org/",
+      "directory": "dist/npm",
+      "linkDirectory": false
+    },
+    "prepack": "pnpm build:package",
+    "rootPackCheck": "benchmarks/results/npm-release-20261009/catalog-confirmed/root-pack.json",
+    "metadataChangeOnly": false,
+    "dependenciesChanged": false,
+    "sourceChanges": [
+      "package.json",
+      "pnpm-lock.yaml",
+      "npm-release.json",
+      "scripts/release/pack-package.ts"
+    ],
+    "runtimeSourcesChanged": false,
+    "runtimeLockInventoryGuard": "Required npm-shrinkwrap.json in archive; regression reproduced before adding files allowlist entry."
+  },
+  "packageBeforeLock": {
+    "status": "passed",
+    "command": "pnpm test:package",
+    "exitCode": 0,
+    "archive": "dist/releases/still-shift-0.1.0.tgz",
+    "archiveSha256": "161c839cc89cfb8a2aa07afa26583f63d070a20af771d3ad8db3ee2493dadd0f",
+    "sizeBytes": 2712405,
+    "unpackedBytes": 19909838,
+    "fileCount": 1569,
+    "checkCount": 26,
+    "record": "benchmarks/results/npm-release-20261009/public-package/package-final.json",
+    "log": "benchmarks/results/npm-release-20261009/public-package/package-final.log",
+    "checks": [
+      {
+        "name": "locked production dependency audit",
+        "seconds": 0.469
+      },
+      {
+        "name": "install archive outside repository (npm)",
+        "seconds": 1.798
+      },
+      {
+        "name": "installed command help",
+        "seconds": 1.224
+      },
+      {
+        "name": "installed command version",
+        "seconds": 0.401
+      },
+      {
+        "name": "consumer TypeScript declarations",
+        "seconds": 9.025
+      },
+      {
+        "name": "consumer bundler declarations",
+        "seconds": 8.654
+      },
+      {
+        "name": "TypeScript program validation",
+        "seconds": 1.176
+      },
+      {
+        "name": "legacy motion import in installed program",
+        "seconds": 0.746
+      },
+      {
+        "name": "JSON program validation",
+        "seconds": 0.425
+      },
+      {
+        "name": "installed API imports",
+        "seconds": 0.392
+      },
+      {
+        "name": "opt-in browser runtime setup",
+        "seconds": 0.624
+      },
+      {
+        "name": "opt-in depth runtime setup",
+        "seconds": 0.961
+      },
+      {
+        "name": "installed depth worker command",
+        "seconds": 17.433
+      },
+      {
+        "name": "installed canvas2d export",
+        "seconds": 1.851
+      },
+      {
+        "name": "canvas2d frame count",
+        "seconds": 0.017
+      },
+      {
+        "name": "canvas2d source comparison",
+        "seconds": 2.655
+      },
+      {
+        "name": "installed webgl2 export",
+        "seconds": 1.73
+      },
+      {
+        "name": "webgl2 frame count",
+        "seconds": 0.017
+      },
+      {
+        "name": "webgl2 source comparison",
+        "seconds": 2.488
+      },
+      {
+        "name": "installed preview page and seeking",
+        "seconds": 1.704
+      },
+      {
+        "name": "opt-in soundtrack runtime setup",
+        "seconds": 0.473
+      },
+      {
+        "name": "soundtrack fixture",
+        "seconds": 0.016
+      },
+      {
+        "name": "installed soundtrack worker and API",
+        "seconds": 3.196
+      },
+      {
+        "name": "installed soundtrack CLI",
+        "seconds": 0.402
+      },
+      {
+        "name": "corresponding source dependencies",
+        "seconds": 0.768
+      },
+      {
+        "name": "corresponding source rebuild",
+        "seconds": 9.766
+      }
+    ],
+    "note": "These consumer checks passed, but comparison with root pnpm packing exposed an omitted runtime npm-shrinkwrap.json. Superseded by the final archive after adding the lock to the files allowlist and enforcing its presence."
+  },
+  "catalogOwnership": {
+    "status": "confirmed",
+    "date": "2026-10-09",
+    "confirmedBy": "repository owner",
+    "statement": "I create the commerce catalog myself",
+    "license": "GPL-3.0-only",
+    "source": "catalogs/ecommerce-motion/source/v1.0/SOURCE.md",
+    "licenseContext": "Owner previously selected GPL-3.0-only for this public release and confirmed authorship in response to the catalog redistribution question."
+  },
+  "preCatalogConfirmationPackage": {
+    "status": "passed",
+    "command": "pnpm test:package",
+    "exitCode": 0,
+    "archive": "dist/releases/still-shift-0.1.0.tgz",
+    "archiveSha256": "fb4464710c0d4104cea2326e01a5e379278a3f1ae559ee4374ab6c08d577413b",
+    "sizeBytes": 2723872,
+    "unpackedBytes": 19960383,
+    "fileCount": 1570,
+    "checkCount": 26,
+    "runtimeLockIncluded": true,
+    "installedRuntimeLockMatches": true,
+    "record": "benchmarks/results/npm-release-20261009/public-package/package-final.json",
+    "log": "benchmarks/results/npm-release-20261009/public-package/package-final.log",
+    "checks": [
+      {
+        "name": "locked production dependency audit",
+        "seconds": 0.467
+      },
+      {
+        "name": "install archive outside repository (npm)",
+        "seconds": 8.871
+      },
+      {
+        "name": "installed command help",
+        "seconds": 1.461
+      },
+      {
+        "name": "installed command version",
+        "seconds": 0.401
+      },
+      {
+        "name": "consumer TypeScript declarations",
+        "seconds": 8.457
+      },
+      {
+        "name": "consumer bundler declarations",
+        "seconds": 8.101
+      },
+      {
+        "name": "TypeScript program validation",
+        "seconds": 1.446
+      },
+      {
+        "name": "legacy motion import in installed program",
+        "seconds": 0.783
+      },
+      {
+        "name": "JSON program validation",
+        "seconds": 0.413
+      },
+      {
+        "name": "installed API imports",
+        "seconds": 0.413
+      },
+      {
+        "name": "opt-in browser runtime setup",
+        "seconds": 0.618
+      },
+      {
+        "name": "opt-in depth runtime setup",
+        "seconds": 1.078
+      },
+      {
+        "name": "installed depth worker command",
+        "seconds": 16.048
+      },
+      {
+        "name": "installed canvas2d export",
+        "seconds": 2.05
+      },
+      {
+        "name": "canvas2d frame count",
+        "seconds": 0.017
+      },
+      {
+        "name": "canvas2d source comparison",
+        "seconds": 2.736
+      },
+      {
+        "name": "installed webgl2 export",
+        "seconds": 1.903
+      },
+      {
+        "name": "webgl2 frame count",
+        "seconds": 0.018
+      },
+      {
+        "name": "webgl2 source comparison",
+        "seconds": 2.646
+      },
+      {
+        "name": "installed preview page and seeking",
+        "seconds": 1.736
+      },
+      {
+        "name": "opt-in soundtrack runtime setup",
+        "seconds": 0.515
+      },
+      {
+        "name": "soundtrack fixture",
+        "seconds": 0.017
+      },
+      {
+        "name": "installed soundtrack worker and API",
+        "seconds": 3.392
+      },
+      {
+        "name": "installed soundtrack CLI",
+        "seconds": 0.411
+      },
+      {
+        "name": "corresponding source dependencies",
+        "seconds": 0.762
+      },
+      {
+        "name": "corresponding source rebuild",
+        "seconds": 8.897
+      }
+    ]
+  },
+  "catalogConfirmationVerification": {
+    "runtimeFilesUnchanged": true,
+    "changedArchiveFiles": [
+      "source/catalogs/ecommerce-motion/source/v1.0/SOURCE.md",
+      "source/docs/npm-third-party-notices.md",
+      "THIRD-PARTY-NOTICES.md"
+    ],
+    "packageCheckCount": 26,
+    "passed": true
+  },
+  "registryVerification": {
+    "verifiedAt": "2026-10-09T15:32:04.957748+00:00",
+    "packageUrl": "https://www.npmjs.com/package/still-shift",
+    "name": "still-shift",
+    "publicVersion": "0.1.0",
+    "distTags": {
+      "latest": "0.1.0"
+    },
+    "releaseVersion": "0.1.0",
+    "releasePubliclyAvailable": true,
+    "publishedAt": "2026-10-09T15:25:03.607Z",
+    "license": "GPL-3.0-only",
+    "node": ">=22.23.1 <23",
+    "fileCount": 1570,
+    "sizeBytes": 2724418,
+    "unpackedSize": 19961632,
+    "tarballUrl": "https://registry.npmjs.org/still-shift/-/still-shift-0.1.0.tgz",
+    "registryIntegrity": "sha512-xfBPZ8TE3uD0w/3GQaykkbLLIHAXJI3M4hg1sJ4tZIV08gdGekMw8socgc053JqYDVp5lptkwHliYnJJYmLp1g==",
+    "localArchiveSha256": "48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c",
+    "publishedArchiveSha256": "48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c",
+    "archivesIdentical": true,
+    "registryIntegrityMatches": true,
+    "comparison": "Downloaded public 0.1.0 archive is byte-for-byte identical to the candidate that passed all 26 installed-package checks.",
+    "newSoftwareTestsRun": false,
+    "verification": "Read-only exact-version registry query and npm pack with lifecycle scripts disabled; no publication, stage approval or Git reference changes performed by this session.",
+    "evidenceDirectory": "benchmarks/results/npm-release-20261009/published"
+  },
+  "previousRegistryVerification": {
+    "verifiedAt": "2026-10-09T15:25:15.451562+00:00",
+    "packageUrl": "https://www.npmjs.com/package/still-shift",
+    "name": "still-shift",
+    "publicVersion": "0.0.0-stage",
+    "distTags": {
+      "latest": "0.0.0-stage"
+    },
+    "versions": ["0.0.0-stage"],
+    "stub": true,
+    "fileCount": 2,
+    "unpackedSize": 333,
+    "releaseVersion": "0.1.0",
+    "releasePubliclyAvailable": false,
+    "releaseFetchError": "ETARGET",
+    "currentLoginIsMaintainer": true,
+    "stagedPackages": [],
+    "localArchiveSha256": "48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c",
+    "comparison": "No staged/published 0.1.0 archive available; public metadata is a staging placeholder."
+  }
+}

@@ -3,12 +3,14 @@ import { readFile } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
 
 describe("release checks", () => {
-  it("includes corpus readiness in check:all", async () => {
+  it("runs software release checks without requiring the retired corpus", async () => {
     const packageJson = JSON.parse(await readFile("package.json", "utf8")) as {
       scripts: Record<string, string>;
     };
 
-    expect(packageJson.scripts["check:all"]).toContain("pnpm corpus:check");
+    expect(packageJson.scripts["check:all"]).toBe(
+      "pnpm check && pnpm benchmark",
+    );
   });
 
   it("checks that the generated corpus schema is current", async () => {

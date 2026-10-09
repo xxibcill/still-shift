@@ -1,5 +1,38 @@
 # Still Shift
 
+## npm release
+
+[still-shift@0.1.0](https://www.npmjs.com/package/still-shift) is published with the CLI and composition APIs,
+licensed under GPL-3.0-only. The root package is public; the six internal workspace
+modules remain private. Build and test
+the archive locally with `pnpm test:package`; use `pnpm release:check` for the full
+software and installed-package release gate. The public registry's `latest` tag
+points to `0.1.0`; its downloaded archive exactly matches the tested release.
+Technical verification passed in stages, with all 26 final package checks passing.
+The owner confirmed catalog authorship; it is included under GPL-3.0-only. See the
+[release plan](./docs/npm-release-plan.md), [verification record](./docs/npm-release-results.json) and
+[package usage guide](./docs/npm-package-readme.md). Soundtrack support uses an
+explicitly installed audio runtime; no backend binaries ship in the archive.
+
+With Node 22.23.1 or newer in the Node 22 series:
+
+```sh
+npm install still-shift@0.1.0
+npx still-shift --version
+```
+
+## Development and releases
+
+`main` is the default branch for development. `production` holds the latest
+approved release checkpoint, starting with the source for the published `0.1.0`
+release. Feature and documentation PRs target `main`; reviewed release promotions
+and urgent hotfixes target `production`. Fixed version tags identify individual
+releases, and released hotfixes return to `main` before the next regular release.
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the branch workflow, local checks and
+manual release process, and [AGENTS.md](./AGENTS.md) for repository instructions.
+GitHub Actions remain disabled.
+
 ## Start here
 
 Read the **[user guide and feature map](./docs/user-guide.md)** to choose a workflow,
@@ -163,23 +196,27 @@ for the engineering findings, completed fixes, and verification limits.
 
 Start with `pnpm check:fast` for normal edits and `pnpm check:runtime` for changes
 to workers, exports, or Lab workflows. See [verification tiers](./docs/verification.md)
-for prerequisites, bounded concurrency, CI, and the full release gate.
+for prerequisites, bounded concurrency, local verification and the full release gate.
 
-Run the software-only foundation checks while the corpus is being assembled:
+Run the software checks individually:
 
 ```bash
 pnpm check
 pnpm benchmark
 ```
 
-Run the complete v0.1 release-readiness gate with:
+Run the complete local technical release gate with:
 
 ```bash
 pnpm check:all
 ```
 
-`check:all` includes `corpus:check` and intentionally remains non-zero until the real
-explainer corpus is reviewed and frozen.
+`check:all` runs `pnpm check && pnpm benchmark`. The owner discarded the retired
+Phase 0 corpus requirement on 2026-10-09. `pnpm corpus:check` remains available
+only for that historical experiment; it no longer blocks production release.
+For measured checks and remaining production inputs/review, see the
+[production release preparation](./docs/production-release-preparation.md).
+Passing software checks does not imply human production acceptance.
 
 Individual commands are also available:
 
@@ -262,6 +299,9 @@ This requirement belongs to the archived Phase 0 experiment. Its unfinished gate
 remain unverified; reopening it requires an explicit scope decision and
 representative inputs. Current milestone fixtures and acceptance checks are
 tracked in their owning plans.
+
+The owner removed this corpus requirement from production release on 2026-10-09.
+The following procedure is retained for historical reproduction only.
 
 [`benchmarks/corpus-manifest.json`](./benchmarks/corpus-manifest.json) is a valid v0.1
 manifest, but it is intentionally marked `incomplete`: the repository does not contain

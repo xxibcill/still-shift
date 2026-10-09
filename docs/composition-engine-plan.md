@@ -1,8 +1,7 @@
 # Programmable composition engine — implementation plan
 
-- **Updated:** 2026-10-08
-- **Status:** CE0–CE3 complete (2026-10-01); CE9 complete (2026-10-04); CE12 complete (2026-10-05); CE4b complete under the approved timing split (2026-10-03); CE4a complete (2026-10-05); CE5, CE6, CE7, CE8, CE8-L, CE10 and CE11 complete (2026-10-06). CE4c complete (2026-10-06); CE4d and CE13 complete (2026-10-07). CE6-P WebGL performance work is paused and deferred again to an unscheduled future version (owner request 2026-10-07); its acceptance remains incomplete. Q1 and Q3 decided
-  2026-09-30; Q2, Q4 and Q8 decided 2026-10-01; Q5–Q6 open; Q7 decided 2026-10-05 and migration complete 2026-10-07.
+- **Updated:** 2026-10-09
+- **Status:** Core CE0–CE16 feature milestones, including CE4a–CE4d and CE8-L, are complete: 21 tracker entries. Local `main` includes CE15 PR #49 (`43d57709`) and CE14 PR #50 (`bd0197cd`) with their review repairs. CE5-X is blocked at its owner-requested scope audit; Q9 remains partially open. CE6-P is owner-paused and deferred, with acceptance incomplete. CE9-F1 and CE8-L-F production integration remain follow-ups. Q5 is covered by the approved execution sequence; Q6 by delivered bounded lighting and the recorded advanced-lighting scope. See the [readiness review](#readiness-review--2026-10-09).
 - **Baseline:** `6772717` — `Merge pull request #22 from xxibcill/codex/still-shift-plan-completion`
 - **Tracker owner:** unassigned. Record the owner and branch per milestone in the [tracker](#milestone-tracker).
 
@@ -64,23 +63,87 @@ the owner's requirement that every second moves with meaning (see the
 Status legend: `[ ]` planned, `[~]` in progress, `[x]` complete, `[!]` blocked with a
 recorded reason, `[d]` deferred to a future version with a recorded owner decision.
 
+## Readiness review — 2026-10-09
+
+**Verdict:** The delivered core feature scope has completion evidence and is merged
+into local `main` at `bd0197cd`. The expanded plan still has unresolved scope and
+deferred acceptance. The owner discarded the retired corpus requirement on
+2026-10-09; `pnpm check:all` now runs the full software check and benchmark.
+See the [release decision](./production-release-preparation.md#retired-corpus-requirement-removed).
+The archived corpus no longer blocks production release. This review does not
+resume or approve any remaining feature milestone.
+
+**npm follow-up:** the owner now requests an npm release and selected
+`GPL-3.0-only` with a separately installed soundtrack runtime. One public
+`still-shift` archive is implemented. The [npm release plan](./npm-release-plan.md)
+and [results](./npm-release-results.json) record completed software verification
+in stages, the timing outlier and successful complete commerce rerun, 26 passing
+final package checks and confirmed owner authorship of the GPLv3 commerce catalog.
+The owner published `still-shift@0.1.0`; it is public as `latest`, and the downloaded
+archive exactly matches the verified candidate. The source-checkout review below
+is the earlier audit checkpoint, not the current package verification record.
+
+- **Remaining feature scope:** CE5-X's approved A2/A3/A8/B3/B4 implementation has
+  not started. Its audit found additional component motion providers, product
+  attachments and multi-vertex annotations beyond the approved contract. Q9 must
+  resolve that scope before migration resumes. PR #46 merged the audit/preparation,
+  not the migration. Current adapters still emit story/commerce path and flow
+  providers, and the shape schema lacks the proposed marker/repeater/connector
+  fields. [Audit and stop condition](./composition-ce5x-results.json).
+- **Preserved follow-ups:** CE6-P's strict timing targets remain deferred by the
+  owner. CE9-F1 retains the runtime expression-sugar migration. CE8-L-F has an
+  isolated bounded cast-shadow prototype; production integration/acceptance and
+  advanced surface shading remain outstanding. These do not invalidate the
+  completed core milestones. CE16's completion is technical; its evidence does
+  not claim listening acceptance or approval to redistribute backend binaries.
+- **Completion evidence checked:** CE14 `f78a9e26`, CE15 `ae1a05bb`, the CE15
+  production benchmark checkpoint `21817411`, CE16 `974dfdf` and the final PR #50
+  repairs are ancestors of this `main`. The saved CE14 and CE15 full `pnpm check`
+  logs exist and match their recorded SHA-256 hashes. CE14 records 176 frozen
+  items / 36,061 frames; CE15 records a 3.408× production benchmark with identical
+  encoded/frame/audio output. Existing frozen references and composition fixtures
+  are unchanged since the CE14 full-gate checkpoint.
+- **Fresh local checks:** use Node 22.23.1 and pnpm 10.29.3. `pnpm check:fast`
+  passed schema, boundaries, formatting and lint, then stopped at a missing local
+  `earcut` installation. Offline frozen-lockfile installation from the existing
+  pnpm store restored the two already-pinned packages without source/lock changes.
+  `pnpm build` then passed. `pnpm test:fast` passed 3,660 of 3,662 tests; the two
+  cache-cleanup tests were blocked by sandbox denial of `ps` and both passed on
+  an unchanged focused rerun outside the sandbox. All fast-tier checks are covered
+  in stages; no uninterrupted aggregate pass or new full `pnpm check` is claimed.
+- **Historical corpus check (before owner retirement):** `pnpm corpus:check` ran
+  outside the sandbox after `tsx` IPC
+  was denied in the first attempt. It exits 1 for the existing empty corpus:
+  at least 30 real images, category coverage, resolved requirements and approved
+  human review/freeze are missing. See [verification policy](./verification.md#local-verification-remains-required)
+  and [manifest](../benchmarks/corpus-manifest.json). The owner subsequently removed
+  this requirement from production release; the standalone check retains its
+  historical meaning. No full `pnpm check:all` release pass is claimed.
+- **Bookkeeping reconciled:** the header, next-step guidance, first-slice checklist,
+  CE5-X blocked status and Q5/Q6 answers now reflect the recorded evidence. The
+  removed commerce-renderer file in the baseline table is identified as historical.
+  Local file-link targets were checked. Dated completion/start records retain
+  their original branch and next-step context; use the current tracker for present
+  status. No GitHub Actions workflow exists in this checkout; remote Actions
+  settings were not re-queried or changed.
+
 ## Baseline
 
 What exists at `6772717`, and how it maps to After Effects.
 
 ### Strengths to preserve and reuse
 
-| Capability                                                                                          | Location                                                                                                                                                                  | AE equivalent                            |
-| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| Keyframes with hold/linear/bezier/smooth interpolation, temporal handles, springs, overshoot        | [`curve.ts`](../packages/renderer-core/src/curve.ts), [`motion-easing.ts`](../packages/scene-contract/src/motion-easing.ts)                                               | Graph editor, keyframe velocity          |
-| Signals, drivers (range map, clamp, lag, delay, sum), noise and oscillators                         | [`motion-craft.ts` contract](../packages/scene-contract/src/motion-craft.ts)                                                                                              | Pick-whip links, `linear()`, `wiggle()`  |
-| Constraints: attach, contact, look-at, follow-path, keep-in-safe-area                               | same file, `ConstraintSchema`                                                                                                                                             | Parenting, auto-orient, Duik constraints |
-| Additive motion layers (`action`, `response`, `current`, `carrier`) with replace/add/multiply blend | same file, `MotionLayerSchema`                                                                                                                                            | No native equivalent                     |
-| Text animators with range selectors, glyph/word/line units, variable-font axes                      | same file, `TextAnimatorSchema`; [`typography-renderer.ts`](../packages/renderer-core/src/typography-renderer.ts)                                                         | Text animators, range selectors          |
-| Trim paths, path morph, spatial bezier paths                                                        | same file, `NumericMotionPropertySchema`, `PathMorphSchema`, `SpatialPathSchema`                                                                                          | Trim Paths, path keyframes               |
-| Cue and narration-word timing, linked retiming, passages                                            | [story engine tooling](./story-engine-tooling.md)                                                                                                                         | Manual markers only                      |
-| Shutter-based motion blur, glow, grain, light sweep, displacement and more — commerce only          | [`commerce-effects.ts`](../packages/scene-contract/src/commerce-effects.ts), [`commerce-effects-renderer.ts`](../packages/renderer-core/src/commerce-effects-renderer.ts) | Effects, but not a general stack         |
-| Deterministic export, transactional publication, golden sample parity, quality analysers            | [execution runtime](../packages/execution-runtime/README.md), [`golden-parity.ts`](../tests/browser/golden-parity.ts), `story-quality.ts`                                 | Not available in AE                      |
+| Capability                                                                                          | Location                                                                                                                                      | AE equivalent                            |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| Keyframes with hold/linear/bezier/smooth interpolation, temporal handles, springs, overshoot        | [`curve.ts`](../packages/renderer-core/src/curve.ts), [`motion-easing.ts`](../packages/scene-contract/src/motion-easing.ts)                   | Graph editor, keyframe velocity          |
+| Signals, drivers (range map, clamp, lag, delay, sum), noise and oscillators                         | [`motion-craft.ts` contract](../packages/scene-contract/src/motion-craft.ts)                                                                  | Pick-whip links, `linear()`, `wiggle()`  |
+| Constraints: attach, contact, look-at, follow-path, keep-in-safe-area                               | same file, `ConstraintSchema`                                                                                                                 | Parenting, auto-orient, Duik constraints |
+| Additive motion layers (`action`, `response`, `current`, `carrier`) with replace/add/multiply blend | same file, `MotionLayerSchema`                                                                                                                | No native equivalent                     |
+| Text animators with range selectors, glyph/word/line units, variable-font axes                      | same file, `TextAnimatorSchema`; [`typography-renderer.ts`](../packages/renderer-core/src/typography-renderer.ts)                             | Text animators, range selectors          |
+| Trim paths, path morph, spatial bezier paths                                                        | same file, `NumericMotionPropertySchema`, `PathMorphSchema`, `SpatialPathSchema`                                                              | Trim Paths, path keyframes               |
+| Cue and narration-word timing, linked retiming, passages                                            | [story engine tooling](./story-engine-tooling.md)                                                                                             | Manual markers only                      |
+| Shutter-based motion blur, glow, grain, light sweep, displacement and more — commerce only          | [`commerce-effects.ts`](../packages/scene-contract/src/commerce-effects.ts), `commerce-effects-renderer.ts` at the baseline (retired by CE4d) | Effects, but not a general stack         |
+| Deterministic export, transactional publication, golden sample parity, quality analysers            | [execution runtime](../packages/execution-runtime/README.md), [`golden-parity.ts`](../tests/browser/golden-parity.ts), `story-quality.ts`     | Not available in AE                      |
 
 ### Structural gaps
 
@@ -369,7 +432,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE4c  | Cinematic adapter                              | A      | CE3, CE8                   | Codex                  | `codex/composition-ce4c`            | `[x]`  | [evidence](./composition-ce4c-results.json)                                        |
 | CE4d  | Legacy/depth adapters and old-path removal     | A      | CE4a–CE4c                  | Codex                  | `codex/composition-ce4d`            | `[x]`  | [evidence](./composition-ce4d-results.json)                                        |
 | CE5   | Shape layers                                   | B      | CE3                        | Codex                  | `codex/composition-ce5`             | `[x]`  | [evidence](./composition-ce5-results.json)                                         |
-| CE5-X | Shape fidelity, connectors and strokes         | B      | CE5, CE4a, CE9, CE11, CE12 | Codex                  | `codex/composition-ce5x`            | `[~]`  | [Audit / scope stop](./composition-ce5x-results.json)                              |
+| CE5-X | Shape fidelity, connectors and strokes         | B      | CE5, CE4a, CE9, CE11, CE12 | Codex                  | `codex/composition-ce5x`            | `[!]`  | [Audit / scope stop](./composition-ce5x-results.json)                              |
 | CE6   | WebGL2 backend and effect registry             | B      | CE3                        | xxibcill (Claude Code) | `codex/composition-ce6-completion`  | `[x]`  | [CE6 completion](#ce6-completion-record-2026-10-06)                                |
 | CE6-P | WebGL performance acceptance                   | Future | CE6                        | Codex                  | `codex/composition-ce6p-compatible` | `[d]`  | [Performance deferral](#ce6-p--deferred-webgl-performance-acceptance)              |
 | CE7   | Motion blur and time controls                  | B      | CE3                        | Codex                  | `codex/composition-ce7`             | `[x]`  | [evidence](./composition-ce7-results.json)                                         |
@@ -439,16 +502,18 @@ prioritizes CE6-P again.
 
 Keep the accepted renderer improvements, benchmark assertions, original baselines
 and raw results. Pixel parity, evaluated-state agreement, seeking, export
-determinism and hardware-preview agreement remain required. CE6's outstanding
-effect catalogue and backend features remain incomplete; performance deferral
-does not mark them complete. CE8 and CE14 still require their actual CE6 feature
-dependencies, but do not wait for CE6-P. Other existing performance requirements,
+determinism and hardware-preview agreement remain required. CE6's effect catalogue
+and backend features subsequently completed on 2026-10-06; performance deferral
+itself did not satisfy those gates. CE8 and CE14 have also completed their actual
+feature dependencies without waiting for CE6-P. Other existing performance requirements,
 including the Canvas adapter gate, retain their current scope.
 
-**Recommended next milestone:** finish CE4a's remaining story feature/parity
-work to unblock CE10. CE9 expressions and baking and CE12 motion linting are
-complete. CE5 shape layers and CE7 time controls are also ready to start. This
-priority does not start or mark any new milestone in progress.
+**Current next step (2026-10-09):** resolve CE5-X's recorded Q9 scope/contract
+stop before resuming its approved migration. All core feature milestones in the
+execution sequence below are complete. CE6-P remains owner-paused; CE8-L-F and
+CE9-F1 retain their recorded follow-up scope. Production release uses the complete
+software check and benchmark after the owner removed the retired corpus
+requirement; see the [release preparation](./production-release-preparation.md).
 
 ## First implementation slice
 
@@ -467,8 +532,11 @@ through the story adapter with recorded parity.
       with the parity result recorded.
 - [x] CE9 expressions and baking as prerequisites for the CE10 CLI.
 - [x] CE12 linting as a prerequisite for the CE10 CLI.
-- [ ] CE10 builder and CLI, including `comp render`, after CE4a, CE9 and CE12.
-- [ ] Record commands, results and limitations here before marking the slice complete.
+- [x] CE10 builder and CLI, including `comp render`, after CE4a, CE9 and CE12.
+- [x] Commands, results and limitations are recorded in the
+      [CE10 completion record](#ce10-completion-record-2026-10-05) and
+      [verification evidence](./composition-ce10-results.json), alongside the
+      completed CE0–CE4a records above.
 
 ### Recommended execution sequence
 
@@ -3121,7 +3189,7 @@ results on known polygons), pixel tests, animated trim/morph sequences.
 story/commerce path providers, and gain the stroke, connector and authoring tools
 motion designers use for diagrams and animated titles.
 
-**Status:** `[~]` on `codex/composition-ce5x` (Codex), from complete CE4c.
+**Status:** `[!]` blocked after audit on `codex/composition-ce5x` (Codex), from complete CE4c.
 The owner approved A2/A3/A8/B3/B4 gap closure on 2026-10-06. The initial audit
 triggered the requested scope stop: spatial/morph/appearance providers, product
 attachments and multi-vertex bound annotations exceed the named emission scope
@@ -5896,6 +5964,7 @@ A milestone is complete when **all** of the following hold:
 
 | Date       | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Reason                                                                                                                                                                                                                                          | Superseded by               |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| 2026-10-09 | Remove the retired Phase 0 corpus requirement from production release. `pnpm check:all` runs `pnpm check && pnpm benchmark`; retain standalone `corpus:check` for historical reproduction.                                                                                                                                                                                                                                                                                                                                          | Owner explicitly requested “discard requirement of retired corpus.” All software correctness and baseline checks remain required; historical Phase 0 acceptance stays unverified.                                                               |                             |
 | 2026-10-08 | CE15 extends composition frame rates to every integer from 1 through 60, including precomps. Existing rates and time sampling remain unchanged.                                                                                                                                                                                                                                                                                                                                                                                     | Completes CE15's frame-rate range and supports low-rate procedural/editor delivery. Legacy non-composition contracts keep their original rates.                                                                                                 |                             |
 | 2026-10-06 | Q9 partial approval: start CE5-X gap closure A2, A3, A8, B3 and B4 on `codex/composition-ce5x` from CE4c; preserve provider fallbacks and frozen baselines. The sequence position of the remaining CE5-X scope and A1 baseline regeneration remain open.                                                                                                                                                                                                                                                                            | Owner explicitly approved this task. Audit stop conditions apply; additional provider/contract scope is not inferred.                                                                                                                           |                             |
 | 2026-09-30 | Introduce one `composition-1` contract; existing families become compilers into it                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Removes per-family duplication; every later feature is built once                                                                                                                                                                               |                             |
@@ -5956,8 +6025,8 @@ A milestone is complete when **all** of the following hold:
 | Q2  | Once adapters reach parity, should the four family schemas be frozen (still accepted, no new features) so new work targets `composition-1` only?                                                                                                                                                                                                                                                  | CE4d                                                            | 2026-10-01: option C — freeze the families' visual vocabulary; story-level features may still grow. See [decision log](#decision-log) and CE4d                                                                                                                                                                 |
 | Q3  | Is an AST expression language acceptable, or must compositions accept raw JavaScript expressions (with a sandbox) for AE-style familiarity?                                                                                                                                                                                                                                                       | CE9                                                             | 2026-09-30: text syntax parsed into an AST; no raw JavaScript. See [CE9 expression form](#expression-form)                                                                                                                                                                                                     |
 | Q4  | Which output formats matter first: alpha for editors (ProRes 4444/PNG), social delivery (H.264/HEVC), or both?                                                                                                                                                                                                                                                                                    | CE15                                                            | 2026-10-01: both — alpha formats for editors and social delivery formats ship together. See CE15                                                                                                                                                                                                               |
-| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                                                                                                                                                                                                                                                             | Phase D                                                         |                                                                                                                                                                                                                                                                                                                |
-| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                                                                                                                                                                                                                                                        | After CE8                                                       |                                                                                                                                                                                                                                                                                                                |
+| Q5  | Priority between mesh deformation (CE14) and video layers (CE13) for the faceless-video product goal.                                                                                                                                                                                                                                                                                             | Phase D                                                         | 2026-10-05: approved sequence places CE13 before CE15 and CE14. All three completed by 2026-10-09; see [execution sequence](#recommended-execution-sequence).                                                                                                                                                  |
+| Q6  | Should lights and 3D shading be planned after CE8, or is 2.5D without lighting sufficient?                                                                                                                                                                                                                                                                                                        | After CE8                                                       | Owner-approved bounded ambient/point/spot lighting completed as CE8-L on 2026-10-06. Advanced lighting remains CE8-L-F: bounded cast-shadow preparation exists; production integration and surface shading remain outstanding. See [bounded lighting](#ce8-l--bounded-lighting-for-25d-layers).                |
 | Q7  | Single-image depth animation (depth presets and flat editorial presets) uses a separate WebGL renderer. Should it become a composition layer type (for example a `depth-image` layer), or stay a separate path?                                                                                                                                                                                   | CE4d                                                            | 2026-10-05: native depth-image integration approved; migration complete 2026-10-07. See [CE4d completion](#ce4d-completion-record-2026-10-07).                                                                                                                                                                 |
 | Q8  | Output is exact only within one operating system and CPU architecture (policy rule 6). Should one canonical render environment, for example the Linux container in `scripts/composition/linux/` on a fixed architecture, be used for CI, caches shared between machines and final exports, with macOS renders treated as development previews?                                                    | Before shared caches or CE15 parallel rendering across machines | 2026-10-01: Mac first — `darwin-arm64` is the reference environment for now; before supporting a second machine type, decide between B (canonical environment) and C (platform-independent text, preferred). See [GPU determinism policy](#gpu-determinism-policy) rule 6                                      |
 | Q9  | Approve [CE5-X](#ce5-x--shape-fidelity-connectors-and-expressive-strokes) and its sequence position (proposed: Slice A directly after CE4d, so provider retirement aligns with old-path removal; Slice B before CE13). A1 changes native CE5 merge/offset/round-corner output under a new geometry version; may those CE5 native baselines be regenerated with recorded diffs (CE0 stays frozen)? | CE5-X                                                           | 2026-10-06: approved only A2/A3/A8/B3/B4 gap closure from CE4c. The rest of CE5-X sequence and A1 baseline question remain open. Initial audit stopped migration for additional component motion providers, product attachments and multi-vertex annotations; see [evidence](./composition-ce5x-results.json). |

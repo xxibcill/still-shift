@@ -4,7 +4,10 @@ import {
   prepareCompositionPreview,
   type CompositionPreview,
 } from "../render/renderer.ts";
-import { prepareIllustratedComposition } from "./illustrated.ts";
+import {
+  prepareIllustratedComposition,
+  type PreparedIllustratedComposition,
+} from "./illustrated.ts";
 import { familyCompositionWindowAt } from "./timeline.ts";
 import type { Images } from "./illustrated-assets.ts";
 
@@ -13,7 +16,8 @@ export function createPreparedIllustratedPreview(
   canvas: HTMLCanvasElement,
   scene: IllustratedScene,
   images: Images,
-) {
+): Omit<CompositionPreview, "prepareFrame"> &
+  Omit<PreparedIllustratedComposition, "resources"> {
   canvas.width = scene.width;
   canvas.height = scene.height;
   const context = canvas.getContext("2d", { alpha: false });

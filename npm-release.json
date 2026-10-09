@@ -1,0 +1,35 @@
+{
+  "name": "still-shift",
+  "version": "0.1.0",
+  "description": "Deterministic composition authoring, preview and video rendering",
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": ">=22.23.1 <23"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xxibcill/still-shift.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "files": [
+    "bin/",
+    "packages/",
+    "tools/",
+    "apps/",
+    "scripts/",
+    "catalogs/",
+    "services/",
+    "assets/",
+    "source/",
+    "toolchain.json",
+    "npm-shrinkwrap.json",
+    "pnpm-lock.yaml",
+    "pyproject.toml",
+    "uv.lock",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "keywords": ["animation", "composition", "video", "motion", "rendering"]
+}

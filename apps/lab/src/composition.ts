@@ -38,6 +38,11 @@ import {
 import { passageDiagnostics } from "../../../packages/renderer-core/src/passage-diagnostics.ts";
 import type { ProgramSnapshot } from "../../../tools/still-shift-cli/src/composition/preview.ts";
 
+declare const __STILL_SHIFT_COMMAND__: string | undefined;
+const cliCommand =
+  typeof __STILL_SHIFT_COMMAND__ === "string"
+    ? __STILL_SHIFT_COMMAND__
+    : "pnpm --silent still-shift";
 const programMode = new URLSearchParams(location.search).has("program");
 type ProgramResponse = {
   snapshot?: ProgramSnapshot & { lease?: string };
@@ -232,7 +237,7 @@ const session = createPreviewSession<CompositionSnapshot>({
       program?.source === "builder",
     );
     el("command").textContent =
-      `pnpm --silent still-shift comp render --input ${program ? JSON.stringify(program.input) : `benchmarks/fixtures/composition/${snapshot.path}`} --output ${comp.id}.mp4 --backend ${snapshot.backend}`;
+      `${cliCommand} comp render --input ${program ? JSON.stringify(program.input) : `benchmarks/fixtures/composition/${snapshot.path}`} --output ${comp.id}.mp4 --backend ${snapshot.backend}`;
     // Lint is advisory: a lint failure must not stop the composition previewing.
     lintAvailable = false;
     try {

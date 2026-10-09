@@ -8,7 +8,11 @@ import {
   requiresCompositionTextLayout,
   PassageError,
 } from "@still-shift/renderer-core";
-import type { CommerceScene, StoryScene } from "@still-shift/scene-contract";
+import type {
+  CommerceScene,
+  StoryScene,
+  Composition,
+} from "@still-shift/scene-contract";
 import { launchRenderBrowser } from "@still-shift/execution-runtime/render-browser";
 import {
   defaultBrowserProjectRoot,
@@ -21,14 +25,14 @@ export async function compileCommerceComposition(
   scene: CommerceScene,
   assetDirectory: string,
   runtime: BrowserRuntimeOptions = {},
-) {
+): Promise<Composition> {
   return compileFamilyComposition(scene, assetDirectory, runtime);
 }
 export async function compileStoryComposition(
   scene: StoryScene,
   assetDirectory: string,
   runtime: BrowserRuntimeOptions = {},
-) {
+): Promise<Composition> {
   return compileFamilyComposition(scene, assetDirectory, runtime);
 }
 async function compileFamilyComposition(

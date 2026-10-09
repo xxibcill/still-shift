@@ -63,7 +63,7 @@ export async function captureCompositionAssets(source: CompositionSource) {
 export function capturedMediaComposition(
   document: Composition,
   assets: ReadonlyMap<string, DraftAsset>,
-) {
+): Composition {
   const composition = structuredClone(document);
   for (const asset of composition.assets) {
     if (

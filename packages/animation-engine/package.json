@@ -8,9 +8,10 @@
     "@still-shift/execution-runtime": "workspace:*",
     "@still-shift/renderer-core": "workspace:*",
     "@still-shift/scene-contract": "workspace:*",
-    "image-size": "2.0.2",
+    "image-size": "2.0.4",
     "playwright": "1.62.1",
     "vite": "7.3.6",
     "zod": "4.1.5"
-  }
+  },
+  "license": "GPL-3.0-only"
 }

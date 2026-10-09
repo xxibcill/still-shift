@@ -1,10 +1,12 @@
 # Still Shift — Active roadmap
 
-**Updated:** 2026-10-08
+**Updated:** 2026-10-09
 
-**Current engineering:** CE15 in progress; CE14 follows under the approved order.
+**Current engineering:** core composition milestones are merged through CE14/CE15
+on `main` `bd0197cd`; local production release preparation is recorded.
 
-**Next product proof:** a portable mechanism Short after composition completion.
+**Next product proof:** a portable mechanism Short after its missing authoritative
+plan and source inputs are restored. The retired corpus is no longer a release requirement.
 
 ## Product outcome
 
@@ -41,43 +43,55 @@ activity; a completed milestone branch does not by itself establish delivery on
 
 | Area                                                     | Recorded state                                                                                                                                           | Source                                                                                                                                       |
 | -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Composition foundation, adapters and CE13 media          | Implementation and milestone verification complete; consult the tracker and delivery records for integration status.                                     | [Composition tracker](./docs/composition-engine-plan.md#milestone-tracker)                                                                   |
-| CE15 output, caching and parallel rendering              | In progress. Focused checkpoints are recorded; aggregate memory, complete cache/statistics coverage, the speed proof and final acceptance remain open.   | [CE15 delivery plan](./docs/composition-ce15-plan.md)                                                                                        |
-| CE14 mesh warp and puppet pins                           | Planned after CE15 in the approved main lane.                                                                                                            | [CE14 scope](./docs/composition-engine-plan.md#ce14--mesh-warp-and-puppet-pins)                                                              |
-| CE16 soundtrack                                          | Delivered audio work is reused in CE13; reconcile the stale tracker with its acceptance and integration evidence before composition closeout.            | [CE13 completion](./docs/composition-engine-plan.md#ce13-completion-record-2026-10-07)                                                       |
+| Composition foundation, adapters and CE13 media          | Core implementation and milestone verification are complete and merged; the release candidate is main bd0197cd.                                          | [Composition tracker](./docs/composition-engine-plan.md#milestone-tracker)                                                                   |
+| CE15 output, caching and parallel rendering              | Complete and merged in PR #49; review repairs are integrated on main. The recorded production benchmark reaches 3.408× with identical output.            | [CE15 delivery plan](./docs/composition-ce15-plan.md)                                                                                        |
+| CE14 mesh warp and puppet pins                           | Complete and merged in PR #50 with stack, scale, collapse and diagnostic review repairs.                                                                 | [CE14 scope](./docs/composition-engine-plan.md#ce14--mesh-warp-and-puppet-pins)                                                              |
+| CE16 soundtrack                                          | Technically complete and merged in PR #33; local opt-in runtime prepared. Human listening and public backend distribution are separate decisions.        | [CE13 completion](./docs/composition-engine-plan.md#ce13-completion-record-2026-10-07)                                                       |
 | Story tooling, reusable components and vertical delivery | Implemented foundations available for production proofs.                                                                                                 | [Story tooling](./docs/story-engine-tooling.md), [components](./docs/reusable-components.md), [vertical plan](./docs/vertical-video-plan.md) |
 | Existing cinematic, story and commerce studies           | Retained capabilities and regression evidence. Technical fixtures do not establish product or creative acceptance; commerce formats remain Experimental. | [Archived study status](./docs/archive/roadmap-phase-0-2026-10-08.md)                                                                        |
 
-## Now — finish approved composition work
+## Now — prepare the npm composition release
 
-Follow **CE15 → CE14**, then close out the approved composition baseline. This
-revision retains that order and each milestone's acceptance requirements.
+CE15 and CE14 completed the approved main implementation lane. The
+[npm release plan](./docs/npm-release-plan.md) records the current target: one
+`still-shift` package, GPL-3.0-only and a separately installed soundtrack runtime.
+The package is technically verified; the [release results](./docs/npm-release-results.json)
+record staged software completion, 26 passing final package checks and the
+resolved catalog ownership decision. `still-shift@0.1.0` is published as `latest`;
+the downloaded npm archive exactly matches the tested release.
 
-1. Complete CE15's remaining implementation, parity, lifecycle and memory checks.
-   Prove the required two-minute one-worker/four-worker export comparison with
-   identical output and at least 3× speedup under the same measured conditions.
-2. Complete CE14 against its existing scope and acceptance checks.
-3. Record the integrated baseline, versions, required local gate results and
-   remaining limitations. Reconcile CE16's tracker with the delivered evidence.
+1. The owner discarded the retired corpus requirement on 2026-10-09.
+   `pnpm check:all` now runs the complete software check and benchmark. Retain
+   the archived experiment and its standalone check as historical evidence.
+2. Local software verification and clean installed-archive checks are complete
+   in stages. The results retain the exact archive checksum and all failed runs
+   and reruns; no acceptance threshold was changed.
+3. The owner confirmed catalog authorship for GPL-3.0-only distribution and
+   published the verified archive. Public registry metadata and archive identity
+   are recorded in the release results.
+
+Real-project inputs and visual/listening review remain part of the separate
+production workflow proof below.
 
 CE6-P and CE8-L-F retain their recorded deferrals. CE5-X/Q9, CE9-F1 and unscheduled
 feature proposals do not become prerequisites by appearing in a planning document.
 See the [approved execution sequence](./docs/composition-engine-plan.md#recommended-execution-sequence)
-and [composition completion gate](./docs/mechanism-shorts-production-plan.md#composition-completion-gate).
+and [npm release procedure](./docs/npm-release-plan.md#local-release-procedure).
 
 ## Next — prove one supported production workflow
 
 The next planned application is explanatory mechanism Shorts, starting with the
-customer's tape-hook E01. Implementation starts after the composition completion
-gate. The [mechanism production plan](./docs/mechanism-shorts-production-plan.md)
-owns detailed requirements and acceptance; this roadmap does not start a
-production or publication run.
+customer's tape-hook E01. Its named detailed production plan is absent from this
+checkout. Restore that authority and its project inputs before claiming the
+workflow is ready or starting its production proof. The stage descriptions below
+are retained roadmap scope, not a replacement approved implementation plan.
+See the [missing-records audit](./docs/production-release-preparation.md#missing-production-proof-records).
 
-| Stage   | Product proof                                                                                                                                                   | Detailed scope                                                                                                                                                                                   |
-| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| MS0–MS1 | Resolve original inputs and deliver one portable E01 project that can be loaded, edited, saved, reopened, rendered and reviewed through the supported workflow. | [Baseline audit](./docs/mechanism-shorts-production-plan.md#ms0-baseline-and-dependency-audit), [portable E01](./docs/mechanism-shorts-production-plan.md#ms1-supported-bridge-and-portable-e01) |
-| MS2     | Transfer packs, rigs, camera/annotation recipes and narration-linked timing across three distinct mechanism families.                                           | [Reusable authoring](./docs/mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring)                                                                                   |
-| MS3     | Run the ten-episode pilot and measure authoring effort, repair burden, technical completion and reviewed output quality.                                        | [Production pilot](./docs/mechanism-shorts-production-plan.md#ms3-production-lifecycle-and-ten-episode-pilot)                                                                                    |
+| Stage   | Product proof                                                                                                                                                   | Detailed scope                                                                       |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| MS0–MS1 | Resolve original inputs and deliver one portable E01 project that can be loaded, edited, saved, reopened, rendered and reviewed through the supported workflow. | Baseline audit (source record unavailable), portable E01 (source record unavailable) |
+| MS2     | Transfer packs, rigs, camera/annotation recipes and narration-linked timing across three distinct mechanism families.                                           | Reusable authoring (source record unavailable)                                       |
+| MS3     | Run the ten-episode pilot and measure authoring effort, repair burden, technical completion and reviewed output quality.                                        | Production pilot (source record unavailable)                                         |
 
 Use the supported Three.js preparation bridge for the first solid-object proof,
 feeding the existing composition media pipeline. Reuse typography, audio and
@@ -87,7 +101,7 @@ shared depth, transparent interleaving or camera interaction.
 The 300-job stress test, explanation-view/native-mesh decision and 30-episode
 cohort remain later planned stages behind their existing prerequisites. Evaluate
 the pilot before scheduling expansion. Their acceptance checks remain in the
-[mechanism tracker](./docs/mechanism-shorts-production-plan.md#milestone-tracker).
+mechanism tracker (source record unavailable).
 
 ## One bounded authoring experiment
 
@@ -102,8 +116,8 @@ readability, continuous playback, listening and technical validity separately.
 Retain practices that improve the result without loss of meaning or quality.
 One passage establishes feasibility, not broad productivity claims.
 
-The [authoring study](./docs/veymelo-lessons-for-still-shift.md#a-bounded-first-experiment)
-owns the full comparison and evidence requirements. Automate only repeated friction
+The named authoring-study record is also unavailable in this checkout; restore
+its full comparison and evidence requirements before starting the experiment. Automate only repeated friction
 shown by the trial, using existing lifecycle tooling and its implementation gates.
 
 ## Conditional future investment
@@ -111,12 +125,12 @@ shown by the trial, using existing lifecycle tooling and its implementation gate
 These ideas have no assigned start date. Schedule a bounded addition only when a
 named production proof exposes a need and existing capabilities are inadequate.
 
-| Candidate                                                | Evidence needed before scheduling                                                                                                                                 | Scope reference                                                                                                              |
-| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Native solid geometry and advanced materials/shadows     | A required explanation cannot be represented adequately by the bridge or authored assets. Consolidate overlapping 3D proposals under one recorded scope decision. | [Conditional mesh decision](./docs/mechanism-shorts-production-plan.md#ms4b-explanation-views-and-native-mesh-composition)   |
-| Procedural deformation beyond CE14                       | A named shot needs controlled bending that existing poses, paths, rigs or pins cannot provide adequately.                                                         | [Deformation proposal](./docs/composition-engine-plan.md#procedural-deformation)                                             |
-| Additional recipes, visual templates or commerce formats | Existing treatments cannot express a required explanation; a short proof and materially different reuse justify expansion.                                        | [Visual-template study](./docs/veymelo-video-style-distillation.md), [commerce proof](./docs/commerce-real-product-proof.md) |
-| Shape refinements and further renderer performance work  | Located production defects or measured bottlenecks justify a scoped task and its cost; recorded owner decisions govern activation.                                | [Composition tracker](./docs/composition-engine-plan.md#milestone-tracker)                                                   |
+| Candidate                                                | Evidence needed before scheduling                                                                                                                                 | Scope reference                                                                                            |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Native solid geometry and advanced materials/shadows     | A required explanation cannot be represented adequately by the bridge or authored assets. Consolidate overlapping 3D proposals under one recorded scope decision. | Conditional mesh decision (source record unavailable)                                                      |
+| Procedural deformation beyond CE14                       | A named shot needs controlled bending that existing poses, paths, rigs or pins cannot provide adequately.                                                         | [Deformation proposal](./docs/composition-engine-plan.md#procedural-deformation)                           |
+| Additional recipes, visual templates or commerce formats | Existing treatments cannot express a required explanation; a short proof and materially different reuse justify expansion.                                        | Visual-template study (source record unavailable), [commerce proof](./docs/commerce-real-product-proof.md) |
+| Shape refinements and further renderer performance work  | Located production defects or measured bottlenecks justify a scoped task and its cost; recorded owner decisions govern activation.                                | [Composition tracker](./docs/composition-engine-plan.md#milestone-tracker)                                 |
 
 ## Measures of success
 

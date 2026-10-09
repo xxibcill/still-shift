@@ -16,7 +16,11 @@ type PreparedAdapterScene = {
 export type Samples = ReturnType<typeof evaluatePreparedNode>[] & {
   times?: readonly number[];
 };
-export function params(value: unknown, path: string, node?: string) {
+export function params(
+  value: unknown,
+  path: string,
+  node?: string,
+): Extract<CompositionLayer, { type: "provider" }>["params"] {
   const result = ProviderLayerSchema.shape.params.safeParse(
     JSON.parse(JSON.stringify(value)),
   );

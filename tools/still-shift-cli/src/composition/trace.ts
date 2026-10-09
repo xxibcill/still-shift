@@ -10,13 +10,19 @@ export function initialize(data: { trace: string; motion: string }) {
   motion = data.motion;
 }
 export const resolve: ResolveHookSync = (specifier, context, nextResolve) => {
-  const alias =
-    specifier === "@still-shift/motion"
-      ? "index.ts"
-      : specifier === "@still-shift/motion/node"
-        ? "node.ts"
-        : undefined;
-  const requested = alias ? new URL(alias, motion).href : specifier;
+  const alias = [
+    "@still-shift/motion",
+    "still-shift",
+    "still-shift/motion",
+  ].includes(specifier)
+    ? "index"
+    : ["@still-shift/motion/node", "still-shift/motion/node"].includes(
+          specifier,
+        )
+      ? "node"
+      : undefined;
+  const extension = import.meta.url.endsWith(".js") ? ".js" : ".ts";
+  const requested = alias ? new URL(alias + extension, motion).href : specifier;
   let requestedPath: string | undefined;
   if (
     trace &&

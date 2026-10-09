@@ -26,7 +26,7 @@ export async function loadPassageCompositions(
     Partial<Pick<PreparedPassage, "audio">>,
   allowPath?: (path: string) => Promise<unknown>,
   options: CompositionMediaPreparationOptions = {},
-) {
+): Promise<ReturnType<typeof validatePassageCompositions>> {
   options.signal?.throwIfAborted();
   const sourcePath = resolve(path);
   await allowPath?.(sourcePath);

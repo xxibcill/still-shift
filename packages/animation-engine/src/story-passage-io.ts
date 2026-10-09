@@ -9,7 +9,10 @@ import {
   type PassageTemplate,
 } from "../../renderer-core/src/story-template.ts";
 import { validatePreparedAssets } from "./prepared-animation-engine.ts";
-import { compileStoryPassage } from "../../renderer-core/src/story-passage.ts";
+import {
+  compileStoryPassage,
+  type CompiledStoryPassage,
+} from "../../renderer-core/src/story-passage.ts";
 import { validatePassageText } from "./passage-text-validation.ts";
 import { isStoryWorkspacePackage } from "../../scene-contract/src/story-workspace.ts";
 import { loadStoryWorkspaceInput } from "./story-workspace-manifest.ts";
@@ -28,7 +31,7 @@ export const writePassageJson = (path: string, value: unknown) =>
 export async function readStoryPassage(
   planPath: string,
   options: PassageReadOptions = {},
-) {
+): Promise<PreparedPassage> {
   const path = resolve(planPath);
   const bytes = await readFile(path);
   return prepareStoryPassageInput(
@@ -46,7 +49,7 @@ export async function prepareStoryPassageInput(
   checksum?: string,
   allowPath?: (path: string) => Promise<unknown>,
   options: PassageReadOptions = {},
-) {
+): Promise<PreparedPassage> {
   const started = performance.now();
   if (isStoryWorkspacePackage(input)) {
     const workspace = await loadStoryWorkspaceInput(input, planPath, allowPath);
@@ -131,7 +134,15 @@ export async function prepareStoryPassageInput(
   };
 }
 
-export type PreparedPassage = Awaited<ReturnType<typeof readStoryPassage>>;
+export type PreparedPassage = CompiledStoryPassage & {
+  lintDiagnostics?: Awaited<ReturnType<typeof validatePassageText>>;
+  templates: Map<string, PassageTemplate>;
+  inputs: {
+    plan: { path: string; sha256: string };
+    templates: { reference: string; path: string; sha256: string }[];
+  };
+  preparationMs: number;
+};
 
 export async function writePreparedPassage(
   output: string,

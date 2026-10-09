@@ -2,16 +2,30 @@ import {
   parsePassagePlan,
   type PassagePlan,
 } from "../../scene-contract/src/story-authoring.ts";
-import { compileStoryPassage } from "./story-passage.ts";
+import {
+  compileStoryPassage,
+  type CompiledStoryPassage,
+} from "./story-passage.ts";
 import type { PassageTemplate } from "./story-template.ts";
 import type { OutputFormat } from "../../scene-contract/src/output-format.ts";
+
+export type PassageEditor = {
+  readonly passage: CompiledStoryPassage;
+  readonly format: OutputFormat;
+  readonly canUndo: boolean;
+  readonly canRedo: boolean;
+  setFormat(format: OutputFormat): CompiledStoryPassage;
+  edit(change: (draft: PassagePlan) => void): CompiledStoryPassage;
+  undo(): CompiledStoryPassage;
+  redo(): CompiledStoryPassage;
+};
 
 /** Edits commit only after successful compilation; failed drafts never enter history. */
 export function createPassageEditor(
   input: unknown,
   templates: ReadonlyMap<string, PassageTemplate>,
   options: { format?: OutputFormat } = {},
-) {
+): PassageEditor {
   let format = options.format ?? "landscape";
   let passage = compileStoryPassage(input, templates, { format });
   const undo: PassagePlan[] = [],

@@ -1,0 +1,447 @@
+{
+  "kind": "production-release-preparation",
+  "date": "2026-10-09",
+  "status": "prepared-awaiting-production-inputs-and-full-verification",
+  "releaseApproved": false,
+  "target": {
+    "platform": "darwin-arm64",
+    "mode": "private local source checkout",
+    "confirmedByOwner": false
+  },
+  "source": {
+    "commit": "bd0197cdcbef7ef78f84d41d55c3dad508c34b7f",
+    "tree": "3fff7bddd2d92243caf0b5868a3be4afd68d726a",
+    "productionCodeChanged": false,
+    "candidateVersionAssigned": false,
+    "publicReleaseCreated": false,
+    "identityFiles": {
+      "pnpm-lock.yaml": "0c93b5da26d498c8dc9c1523327c13d43cd36ea462edf4773fd703b88e9b18d9",
+      "uv.lock": "4623b1249123da0f9e4132447f2908c78f6196e3bb9aeec2a1fc07b310c18d1f",
+      "toolchain.json": "4329ec000367b7c96c18900dffd57aee4651136ff8f3f8008f508ec43b77aaf5",
+      "package.json": "2b5aca80774b0617bf260963a5a91727298d344a1e08fb918f14e62e540e3d84",
+      "packages/renderer-core/src/composition/evaluate/version.ts": "b0b3f85ff8c05d2b365583fd212095fe764ca61a4ab3367f83ceec43bb5da9af",
+      "packages/renderer-core/src/composition/render/version.ts": "6e63248deaa847bf6c9714be29d63aa6e0062653b75d1dc4017c67475da84648",
+      "packages/renderer-core/src/composition/render/webgl2.ts": "96afde79d995224c29eb9a3bfbc6f503ccf586084f7d8ee38361ec52b993d7cc"
+    },
+    "identityFilesCheckpoint": "Preparation snapshot before the owner-approved retired-corpus requirement removal; retained hashes describe that snapshot.",
+    "releaseConfigurationChanged": true,
+    "releaseConfigurationChanges": [
+      "package.json: remove corpus:check from check:all",
+      "tests/unit/package-scripts.test.ts: enforce the updated release command"
+    ]
+  },
+  "toolchain": {
+    "command": "pnpm toolchain:check",
+    "status": "passed",
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "chromiumVersion": "151.0.7922.34",
+    "ffmpeg": "8.0.1"
+  },
+  "runtime": {
+    "command": "pnpm test:runtime",
+    "exitCode": 0,
+    "files": 13,
+    "tests": 85,
+    "elapsedSeconds": 15.26,
+    "log": "/private/tmp/still-shift-release-runtime-20261009.log",
+    "logSha256": "0be9e67c1f4e0d3c39f091e1041db1cd2a53e1ee2cdcc355e5e3369a4a3976ab"
+  },
+  "artifactDirectory": "benchmarks/results/production-release-20261009-c4hsl76l",
+  "checks": [
+    {
+      "name": "depth",
+      "command": ["pnpm", "test:depth"],
+      "exitCode": 0,
+      "elapsedSeconds": 1.241,
+      "log": "benchmarks/results/production-release-20261009-c4hsl76l/depth.log",
+      "logSha256": "0de42d1ddc0338b0d561658b03b17052bb1d3fda6c0d10edcfb67261aac6cda4"
+    },
+    {
+      "name": "soundtrack-setup",
+      "command": ["pnpm", "soundtrack:setup"],
+      "exitCode": 0,
+      "elapsedSeconds": 0.549,
+      "log": "benchmarks/results/production-release-20261009-c4hsl76l/soundtrack-setup.log",
+      "logSha256": "0ac80d7e57cd8de5a0edadc4490ad931e9397653eab5da553c34a72f58d7ce99"
+    },
+    {
+      "name": "audio-integration",
+      "command": ["pnpm", "test:integration:command"],
+      "exitCode": 0,
+      "elapsedSeconds": 44.472,
+      "log": "benchmarks/results/production-release-20261009-c4hsl76l/audio-integration.log",
+      "logSha256": "b0ebf59845990f121a87a365020a2884719a95ea6f189bdaf88d46bd06b24fb4"
+    },
+    {
+      "name": "lab-smoke",
+      "command": ["pnpm", "test:browser:smoke"],
+      "exitCode": 0,
+      "elapsedSeconds": 32.7,
+      "log": "benchmarks/results/production-release-20261009-c4hsl76l/lab-smoke.log",
+      "logSha256": "e354aa80f65500697ae9fd2d33a9070f52eb86702130b1dc54ba15fe9dc2808d"
+    },
+    {
+      "name": "composition-validate",
+      "command": [
+        "pnpm",
+        "--silent",
+        "still-shift",
+        "comp",
+        "validate",
+        "--input",
+        "examples/composition/12-puppet-acting/composition.json"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 1.974,
+      "log": "benchmarks/results/production-release-20261009-c4hsl76l/composition-validate.log",
+      "logSha256": "2e9845fb167de721b5afdcfb8da58c2c65b3d200ee1463ef0fc0bb4b1a0f5fad"
+    },
+    {
+      "name": "canvas2d-one-worker",
+      "command": [
+        "pnpm",
+        "--silent",
+        "still-shift",
+        "comp",
+        "render",
+        "--input",
+        "examples/composition/12-puppet-acting/composition.json",
+        "--output",
+        "benchmarks/results/production-release-20261009-c4hsl76l/canvas2d-one-worker.mp4",
+        "--backend",
+        "canvas2d",
+        "--workers",
+        "1",
+        "--cache-static",
+        "false"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 2.565,
+      "log": "benchmarks/results/production-release-20261009-c4hsl76l/canvas2d-one-worker.log",
+      "logSha256": "7ff8469ba3d416d4c431fa949e5cba5cdad5f662c200225b070b57053e90a09e"
+    },
+    {
+      "name": "canvas2d-four-workers",
+      "command": [
+        "pnpm",
+        "--silent",
+        "still-shift",
+        "comp",
+        "render",
+        "--input",
+        "examples/composition/12-puppet-acting/composition.json",
+        "--output",
+        "benchmarks/results/production-release-20261009-c4hsl76l/canvas2d-four-workers.mp4",
+        "--backend",
+        "canvas2d",
+        "--workers",
+        "4",
+        "--cache-static",
+        "true"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 2.782,
+      "log": "benchmarks/results/production-release-20261009-c4hsl76l/canvas2d-four-workers.log",
+      "logSha256": "ed76327e24d71efd9364245a3edeb3c114d910dae75cb19664dcfd34905e3a46"
+    },
+    {
+      "name": "webgl2-one-worker",
+      "command": [
+        "pnpm",
+        "--silent",
+        "still-shift",
+        "comp",
+        "render",
+        "--input",
+        "examples/composition/12-puppet-acting/composition.json",
+        "--output",
+        "benchmarks/results/production-release-20261009-c4hsl76l/webgl2-one-worker.mp4",
+        "--backend",
+        "webgl2",
+        "--workers",
+        "1",
+        "--cache-static",
+        "false"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 2.656,
+      "log": "benchmarks/results/production-release-20261009-c4hsl76l/webgl2-one-worker.log",
+      "logSha256": "385bad7732214c7e1d0d04e268ce28cde7216185322fa3dce9de3039a0fb60d3"
+    },
+    {
+      "name": "webgl2-four-workers",
+      "command": [
+        "pnpm",
+        "--silent",
+        "still-shift",
+        "comp",
+        "render",
+        "--input",
+        "examples/composition/12-puppet-acting/composition.json",
+        "--output",
+        "benchmarks/results/production-release-20261009-c4hsl76l/webgl2-four-workers.mp4",
+        "--backend",
+        "webgl2",
+        "--workers",
+        "4",
+        "--cache-static",
+        "true"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 2.941,
+      "log": "benchmarks/results/production-release-20261009-c4hsl76l/webgl2-four-workers.log",
+      "logSha256": "b2d6d55682ec808da4e85194845cd8d5f2dc69ecd698ae78639f36f729feefa9"
+    },
+    {
+      "name": "benchmark",
+      "command": ["pnpm", "benchmark"],
+      "exitCode": 0,
+      "elapsedSeconds": 2.483,
+      "log": "benchmarks/results/production-release-20261009-c4hsl76l/benchmark.log",
+      "logSha256": "481177f455f0a7fd1f44c16cc0413ac0a4206eea1a50dbedb2b811c0c956e7a7"
+    }
+  ],
+  "exports": [
+    {
+      "backend": "canvas2d",
+      "workers": 1,
+      "cacheStatic": false,
+      "encodedSha256": "23dd80d3578f3d293b53750b33e87aed979a3a70419490cf7253e18185134860",
+      "decodedRgbaSha256": "37813f02fe77cfc618fc2ffdcdbfe62a3a95ee9b22fc34820500e9458df0e64b",
+      "decodedBytes": 11796480,
+      "path": "benchmarks/results/production-release-20261009-c4hsl76l/canvas2d-one-worker.mp4",
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "width": 320,
+      "height": 192,
+      "frames": 48,
+      "fps": "24/1",
+      "durationSeconds": 2.0
+    },
+    {
+      "backend": "canvas2d",
+      "workers": 4,
+      "cacheStatic": true,
+      "encodedSha256": "23dd80d3578f3d293b53750b33e87aed979a3a70419490cf7253e18185134860",
+      "decodedRgbaSha256": "37813f02fe77cfc618fc2ffdcdbfe62a3a95ee9b22fc34820500e9458df0e64b",
+      "decodedBytes": 11796480,
+      "path": "benchmarks/results/production-release-20261009-c4hsl76l/canvas2d-four-workers.mp4",
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "width": 320,
+      "height": 192,
+      "frames": 48,
+      "fps": "24/1",
+      "durationSeconds": 2.0
+    },
+    {
+      "backend": "webgl2",
+      "workers": 1,
+      "cacheStatic": false,
+      "encodedSha256": "8aa6717591c54d5c822cbf0157cb137f00fcec36927103b0b5dc105cd609858c",
+      "decodedRgbaSha256": "7c0d4009adc75d36b432ac26e60049130d8d68e9e73e7da569e4bdb0d739a619",
+      "decodedBytes": 11796480,
+      "path": "benchmarks/results/production-release-20261009-c4hsl76l/webgl2-one-worker.mp4",
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "width": 320,
+      "height": 192,
+      "frames": 48,
+      "fps": "24/1",
+      "durationSeconds": 2.0
+    },
+    {
+      "backend": "webgl2",
+      "workers": 4,
+      "cacheStatic": true,
+      "encodedSha256": "8aa6717591c54d5c822cbf0157cb137f00fcec36927103b0b5dc105cd609858c",
+      "decodedRgbaSha256": "7c0d4009adc75d36b432ac26e60049130d8d68e9e73e7da569e4bdb0d739a619",
+      "decodedBytes": 11796480,
+      "path": "benchmarks/results/production-release-20261009-c4hsl76l/webgl2-four-workers.mp4",
+      "codec": "h264",
+      "pixelFormat": "yuv420p",
+      "width": 320,
+      "height": 192,
+      "frames": 48,
+      "fps": "24/1",
+      "durationSeconds": 2.0
+    }
+  ],
+  "comparisons": [
+    {
+      "backend": "canvas2d",
+      "independentEncodedAndDecodedExact": true,
+      "expectedFramesAndFps": true
+    },
+    {
+      "backend": "webgl2",
+      "independentEncodedAndDecodedExact": true,
+      "expectedFramesAndFps": true
+    }
+  ],
+  "summary": {
+    "depthTests": 14,
+    "audioIntegrationTests": 48,
+    "labSmoke": "passed; three session workflows, depth Lab controls and reusable component UI export/seek cases",
+    "sampleExports": 4,
+    "sampleFramesPerExport": 48,
+    "encodedAndAllDecodedFramesExactWithinEachBackend": true,
+    "benchmark": "existing no-op benchmark passed; not a production throughput claim"
+  },
+  "limitations": {
+    "fullCurrentHeadPnpmCheck": "not-run in this preparation; prior CE14/CE15 full-gate evidence belongs to earlier named checkpoints",
+    "checkAll": "not-run after the approved corpus requirement removal; full software check and benchmark remain required",
+    "humanVisualReview": "not-performed",
+    "humanListeningReview": "not-performed; sample puppet exports are silent",
+    "realProductionProject": "not-supplied"
+  },
+  "scopeDecision": {
+    "status": "owner-approved-corpus-removal",
+    "date": "2026-10-09",
+    "instruction": "discard requirement of retired corpus",
+    "releaseCommand": "pnpm check:all",
+    "commandExpansion": "pnpm check && pnpm benchmark",
+    "retiredCorpusRequired": false,
+    "historicalCorpusCheck": "pnpm corpus:check remains standalone; archived experiment stays unverified",
+    "gateChanged": true,
+    "otherReleaseRequirementsCompleted": false
+  },
+  "missingRoadmapRecords": [
+    "docs/mechanism-shorts-production-plan.md",
+    "docs/veymelo-lessons-for-still-shift.md",
+    "docs/veymelo-video-style-distillation.md"
+  ],
+  "deferredOrBlockedFeaturesResumed": false,
+  "githubActions": {
+    "workflowsAdded": false,
+    "remoteSettingsChanged": false
+  },
+  "completedAt": "2026-10-09T08:34:06.598452+00:00",
+  "corpusRemovalVerification": {
+    "command": "pnpm exec vitest run tests/unit/package-scripts.test.ts",
+    "beforeScriptChange": {
+      "exitCode": 1,
+      "passed": 1,
+      "failed": 1,
+      "reason": "updated policy regression rejects the previous corpus dependency"
+    },
+    "afterScriptChange": {
+      "exitCode": 0,
+      "passed": 2,
+      "failed": 0
+    },
+    "fullGateRun": false
+  },
+  "npmReadiness": {
+    "date": "2026-10-09",
+    "status": "not-ready",
+    "packages": [
+      {
+        "path": "package.json",
+        "name": "still-shift",
+        "version": "0.1.0",
+        "private": true,
+        "bin": null,
+        "files": null,
+        "license": null
+      },
+      {
+        "path": "packages/animation-engine/package.json",
+        "name": "@still-shift/animation-engine",
+        "version": "0.1.0",
+        "private": true,
+        "bin": null,
+        "files": null,
+        "license": null
+      },
+      {
+        "path": "packages/execution-runtime/package.json",
+        "name": "@still-shift/execution-runtime",
+        "version": "0.1.0",
+        "private": true,
+        "bin": null,
+        "files": null,
+        "license": null
+      },
+      {
+        "path": "packages/motion-builder/package.json",
+        "name": "@still-shift/motion",
+        "version": "0.1.0",
+        "private": true,
+        "bin": null,
+        "files": null,
+        "license": null
+      },
+      {
+        "path": "packages/renderer-core/package.json",
+        "name": "@still-shift/renderer-core",
+        "version": "0.3.0",
+        "private": true,
+        "bin": null,
+        "files": null,
+        "license": null
+      },
+      {
+        "path": "packages/scene-contract/package.json",
+        "name": "@still-shift/scene-contract",
+        "version": "0.1.0",
+        "private": true,
+        "bin": null,
+        "files": null,
+        "license": null
+      },
+      {
+        "path": "tools/still-shift-cli/package.json",
+        "name": "@still-shift/cli",
+        "version": "0.1.0",
+        "private": true,
+        "bin": null,
+        "files": null,
+        "license": null
+      }
+    ],
+    "allPackagesPrivate": true,
+    "rootBuild": "tsc --noEmit",
+    "rootLicenseFilePresent": false,
+    "cliPackDryRun": {
+      "command": "npm --cache /private/tmp/still-shift-npm-audit-cache pack --dry-run --ignore-scripts --json",
+      "cwd": "tools/still-shift-cli",
+      "exitCode": 0,
+      "log": "benchmarks/results/production-release-20261009-c4hsl76l/npm-cli-pack-dry-run.json",
+      "logSha256": "67909fbef7278101f6b2d9675b5c8229c74123ba6ae3638a9849a2a7ecd6412b",
+      "name": "@still-shift/cli",
+      "version": "0.1.0",
+      "entryCount": 21,
+      "sizeBytes": 31779,
+      "unpackedSizeBytes": 125516,
+      "fileExtensions": [".json", ".md", ".ts"],
+      "compiledOutputIncluded": false,
+      "siblingEngineSourceIncluded": false,
+      "archiveCreated": false,
+      "installedPackageExecuted": false
+    },
+    "blockers": [
+      "All seven manifests are private; public package scope and publication metadata are not configured.",
+      "No emitted distribution build or CLI bin mapping; library exports target TypeScript sources without a tested installed distribution contract.",
+      "CLI and rendering runtime imports and asset paths assume the repository directory layout.",
+      "No package files allowlists or license fields; soundtrack publishing scope requires the recorded owner distribution decision.",
+      "Clean external packed-install validation and final-candidate full release checks are pending."
+    ],
+    "registryOwnershipVersionAndAccessChecked": false,
+    "fullReleaseGateRun": false,
+    "retiredCorpusRequired": false,
+    "privacyFlagsChanged": false,
+    "licenseSelected": false,
+    "publicationAttempted": false,
+    "sources": [
+      "https://docs.npmjs.com/cli/v11/configuring-npm/package-json/#private",
+      "https://docs.npmjs.com/cli/v11/commands/npm-pack/",
+      "https://pnpm.io/workspaces#publishing-workspace-packages"
+    ]
+  }
+}

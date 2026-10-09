@@ -1,5 +1,13 @@
 # Composition and family schema contributions
 
+Follow the repository [contribution guide](../CONTRIBUTING.md) for setup, branches,
+PRs and local verification. New composition features start from `main` and their
+PRs target `main`. `production` advances through reviewed release promotions and
+urgent hotfixes; version tags preserve individual release checkpoints. Merge
+released hotfixes back into `main` before the next regular release.
+
+## Rendering and schema rules
+
 New rendering features belong in `composition-1`: define their bounded contract,
 pure evaluation, shared render-graph behavior and supported backends together.
 Implement frame rendering through the composition evaluator and graph. Asset decoding, font

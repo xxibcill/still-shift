@@ -26,8 +26,8 @@ importers:
         specifier: 9.39.5
         version: 9.39.5
       image-size:
-        specifier: 2.0.2
-        version: 2.0.2
+        specifier: 2.0.4
+        version: 2.0.4
       playwright:
         specifier: 1.62.1
         version: 1.62.1
@@ -55,6 +55,7 @@ importers:
       zod:
         specifier: 4.1.5
         version: 4.1.5
+    publishDirectory: dist/npm
 
   packages/animation-engine:
     dependencies:
@@ -68,8 +69,8 @@ importers:
         specifier: workspace:*
         version: link:../scene-contract
       image-size:
-        specifier: 2.0.2
-        version: 2.0.2
+        specifier: 2.0.4
+        version: 2.0.4
       playwright:
         specifier: 1.62.1
         version: 1.62.1
@@ -1565,12 +1566,12 @@ packages:
       }
     engines: { node: ">= 4" }
 
-  image-size@2.0.2:
+  image-size@2.0.4:
     resolution:
       {
-        integrity: sha512-IRqXKlaXwgSMAMtpNzZa1ZAe8m+Sa1770Dhk8VkSsP9LS+iHD62Zd8FQKs8fbPiagBE7BzoFX23cxFnwshpV6w==,
+        integrity: sha512-QRUkFFsRV/6fuESxb9Vkq+a0LkSrgKXuc2NEqfikiXxxN/G3tjWt5EVUlMaImRBZRZK/jRBEbYvpPYZL8t08Zw==,
       }
-    engines: { node: ">=16.x" }
+    engines: { node: ">=18" }
     hasBin: true
 
   import-fresh@3.3.1:
@@ -2869,7 +2870,7 @@ snapshots:
 
   ignore@7.0.8: {}
 
-  image-size@2.0.2: {}
+  image-size@2.0.4: {}
 
   import-fresh@3.3.1:
     dependencies:

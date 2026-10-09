@@ -95,7 +95,7 @@ function previewResources() {
       scene: Parameters<typeof createIllustratedPreview>[1],
       images: Parameters<typeof createIllustratedPreview>[2],
       visible = () => true,
-    ) {
+    ): ReturnType<typeof createIllustratedPreview> {
       const staging = document.createElement("canvas");
       const renderer = createIllustratedPreview(staging, scene, images);
       if (disposed) {

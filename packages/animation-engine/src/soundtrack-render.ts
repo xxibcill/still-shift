@@ -1,5 +1,7 @@
 import { soundtrackState } from "@still-shift/renderer-core/soundtrack";
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
+import { homedir } from "node:os";
 import { createHash, randomUUID } from "node:crypto";
 import {
   lstat,
@@ -32,7 +34,9 @@ const worker = fileURLToPath(
 const repository = fileURLToPath(new URL("../../../", import.meta.url));
 export const soundtrackPython = () =>
   process.env.STILL_SHIFT_SOUNDTRACK_PYTHON ??
-  join(repository, "benchmarks/results/composition-ce16/runtime/bin/python");
+  (existsSync(join(repository, "npm-release.json"))
+    ? join(repository, "benchmarks/results/composition-ce16/runtime/bin/python")
+    : join(homedir(), ".cache/still-shift/soundtrack/bin/python"));
 const manifestSchema = z
   .object({
     protocol: z.literal("soundtrack-worker-1"),

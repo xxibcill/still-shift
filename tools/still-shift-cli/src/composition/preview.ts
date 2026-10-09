@@ -745,6 +745,13 @@ export async function createProgramPreview(
     root: resolve(root, "apps/lab"),
     configFile: false,
     logLevel: "silent",
+    define: {
+      __STILL_SHIFT_COMMAND__: JSON.stringify(
+        import.meta.url.endsWith(".js")
+          ? "npx still-shift"
+          : "pnpm --silent still-shift",
+      ),
+    },
     plugins: [plugin],
     server: {
       host: "127.0.0.1",

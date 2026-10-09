@@ -162,7 +162,21 @@ export const ExpressionSchema = z
   .strict();
 
 /** Fields shared by the root composition and every precomp. */
-const scopeFields = {
+type ScopeFields = {
+  id: typeof compositionId;
+  name: z.ZodOptional<typeof label>;
+  width: typeof dimension;
+  height: typeof dimension;
+  frameCount: z.ZodNumber;
+  background: z.ZodOptional<z.ZodNullable<typeof compositionColor>>;
+  layers: z.ZodArray<typeof CompositionLayerSchema>;
+  markers: z.ZodOptional<z.ZodArray<typeof CompositionMarkerSchema>>;
+  constraints: z.ZodOptional<z.ZodArray<typeof CompositionConstraintSchema>>;
+  textAnimators: z.ZodOptional<
+    z.ZodArray<typeof CompositionTextAnimatorSchema>
+  >;
+};
+const scopeFields: ScopeFields = {
   id: compositionId,
   name: label.optional(),
   width: dimension,
@@ -181,60 +195,80 @@ const scopeFields = {
     .optional(),
 };
 
-export const PrecompSchema = z
-  .object({ ...scopeFields, fps: CompositionFpsSchema.optional() })
+export const PrecompSchema: z.ZodObject<
+  ScopeFields & {
+    fps: z.ZodOptional<typeof CompositionFpsSchema>;
+  },
+  z.core.$strict
+> = z.object({ ...scopeFields, fps: CompositionFpsSchema.optional() }).strict();
+
+const precomps: z.ZodOptional<z.ZodArray<typeof PrecompSchema>> = z
+  .array(PrecompSchema)
+  .max(L.maxPrecomps)
+  .optional();
+const compositionFields = {
+  schemaVersion: z.literal(COMPOSITION_SCHEMA_VERSION),
+  fps: CompositionFpsSchema,
+  format: OutputFormatSchema.optional(),
+  colorSpace: z.enum(["srgb", "linear-srgb"]).optional(),
+  mediaLimits: CompositionMediaLimitsSchema.optional(),
+  motionBlur: z
+    .object({
+      enabled: z.boolean(),
+      shutterAngle: finite.min(0).max(720),
+      shutterPhase: finite.min(-360).max(360),
+      samples: finite.int().min(2).max(64),
+      /** Deterministic screen-space velocity reduction; samples remains the cap. */
+      adaptive: z.boolean().optional(),
+      inPoint: compFrame.optional(),
+      outPoint: compFrame.optional(),
+      cuts: z.array(compFrame).max(L.maxKeys).optional(),
+    })
+    .strict()
+    .optional(),
+  assets: z.array(CompositionAssetSchema).max(L.maxAssets),
+  precomps,
+  textStyles: z.record(compositionId, CompositionTextStyleSchema).optional(),
+  signals: z.array(CompositionSignalSchema).max(L.maxSignals).optional(),
+  drivers: z.array(CompositionDriverSchema).max(L.maxDrivers).optional(),
+  periodic: z.array(CompositionPeriodicSchema).max(L.maxPeriodic).optional(),
+  expressions: z
+    .record(PropertyPathSchema, ExpressionSchema)
+    .refine((value) => Object.keys(value).length <= L.maxExpressions, {
+      message: `at most ${L.maxExpressions} expressions`,
+      params: { diagnosticCode: "comp-limit" },
+    })
+    .optional(),
+  /** CE9 motion behaviours; each compiles to expressions. */
+  behaviours: z
+    .array(CompositionBehaviourSchema)
+    .max(L.maxBehaviours)
+    .optional(),
+  camera2d: Camera2dSchema.optional(),
+  metadata: metadata.optional(),
+};
+type CompositionFields = Omit<typeof compositionFields, "precomps"> & {
+  precomps: z.ZodOptional<z.ZodArray<typeof PrecompSchema>>;
+};
+const compositionShape: z.ZodObject<
+  ScopeFields & CompositionFields,
+  z.core.$strict
+> = z
+  .object(
+    Object.assign(
+      { schemaVersion: compositionFields.schemaVersion },
+      scopeFields,
+      compositionFields,
+    ),
+  )
   .strict();
 
-const compositionShape = z
-  .object({
-    schemaVersion: z.literal(COMPOSITION_SCHEMA_VERSION),
-    ...scopeFields,
-    fps: CompositionFpsSchema,
-    format: OutputFormatSchema.optional(),
-    colorSpace: z.enum(["srgb", "linear-srgb"]).optional(),
-    mediaLimits: CompositionMediaLimitsSchema.optional(),
-    motionBlur: z
-      .object({
-        enabled: z.boolean(),
-        shutterAngle: finite.min(0).max(720),
-        shutterPhase: finite.min(-360).max(360),
-        samples: finite.int().min(2).max(64),
-        /** Deterministic screen-space velocity reduction; samples remains the cap. */
-        adaptive: z.boolean().optional(),
-        inPoint: compFrame.optional(),
-        outPoint: compFrame.optional(),
-        cuts: z.array(compFrame).max(L.maxKeys).optional(),
-      })
-      .strict()
-      .optional(),
-    assets: z.array(CompositionAssetSchema).max(L.maxAssets),
-    precomps: z.array(PrecompSchema).max(L.maxPrecomps).optional(),
-    textStyles: z.record(compositionId, CompositionTextStyleSchema).optional(),
-    signals: z.array(CompositionSignalSchema).max(L.maxSignals).optional(),
-    drivers: z.array(CompositionDriverSchema).max(L.maxDrivers).optional(),
-    periodic: z.array(CompositionPeriodicSchema).max(L.maxPeriodic).optional(),
-    expressions: z
-      .record(PropertyPathSchema, ExpressionSchema)
-      .refine((value) => Object.keys(value).length <= L.maxExpressions, {
-        message: `at most ${L.maxExpressions} expressions`,
-        params: { diagnosticCode: "comp-limit" },
-      })
-      .optional(),
-    /** CE9 motion behaviours; each compiles to expressions. */
-    behaviours: z
-      .array(CompositionBehaviourSchema)
-      .max(L.maxBehaviours)
-      .optional(),
-    camera2d: Camera2dSchema.optional(),
-    metadata: metadata.optional(),
-  })
-  .strict();
-
-export const CompositionSchema = compositionShape.superRefine((comp, ctx) => {
-  // Size failures are nonfatal in Zod; do not traverse an unbounded invalid graph.
-  if (ctx.issues.length) return;
-  validateCompositionSemantics(comp, ctx);
-});
+export const CompositionSchema: typeof compositionShape =
+  compositionShape.superRefine((comp, ctx) => {
+    // Size failures are nonfatal in Zod; do not traverse an unbounded invalid graph.
+    if (ctx.issues.length) return;
+    validateCompositionSemantics(comp, ctx);
+  });
 
 export type Composition = z.infer<typeof compositionShape>;
 export type Precomp = z.infer<typeof PrecompSchema>;

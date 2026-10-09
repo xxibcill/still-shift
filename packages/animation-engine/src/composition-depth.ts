@@ -5,6 +5,7 @@ import { imageSize } from "image-size";
 import {
   AnimationEngineError,
   type CompositionAsset,
+  type Composition,
 } from "@still-shift/scene-contract";
 import {
   depthToComposition,
@@ -27,7 +28,11 @@ type DepthExportOptions = Pick<
 export async function prepareDepthExportComposition(
   scene: PreviewScene,
   options: DepthExportOptions,
-) {
+): Promise<{
+  composition: Composition;
+  scene: ReturnType<typeof compositionScene>;
+  assetPaths: Record<string, string>;
+}> {
   const assetPaths: Record<string, string> = {};
   const readAsset = async (
     id: string,

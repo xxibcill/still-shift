@@ -124,7 +124,9 @@ export function createCompositionInspector(options: {
       ),
     );
   }
-  function viewDocument(document = history!.document) {
+  function viewDocument(
+    document: Composition = history!.document,
+  ): Composition {
     const draft = structuredClone(document);
     for (const [path, state] of visibility)
       Object.assign(

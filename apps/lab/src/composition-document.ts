@@ -95,7 +95,7 @@ export class CompositionDocument {
       );
     return { document: validated(document), label, serialized, bytes };
   }
-  get document() {
+  get document(): Composition {
     return this.entries[this.cursor]!.document;
   }
   get version() {
@@ -155,7 +155,7 @@ export class CompositionDocument {
   accepts(proposal: DocumentProposal) {
     return this.proposals.has(proposal) && proposal.version === this.generation;
   }
-  commit(proposal: DocumentProposal) {
+  commit(proposal: DocumentProposal): Composition {
     if (!this.accepts(proposal))
       fail(
         "comp-inspector-stale",
