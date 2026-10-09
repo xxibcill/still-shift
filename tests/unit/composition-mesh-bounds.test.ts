@@ -2,6 +2,7 @@ import { expect, it } from "vitest";
 import { meshOutputBounds } from "../../packages/renderer-core/src/composition/mesh/bounds.ts";
 import {
   bezierMeshPoint,
+  isCollapsedMeshPlacement,
   deformPuppetPoint,
 } from "../../packages/renderer-core/src/composition/mesh/geometry.ts";
 import {
@@ -106,4 +107,48 @@ it("encloses nonuniform rigid MLS and starch output under affine placement", () 
           transformPoint(matrix, deformPuppetPoint([x, y], pins, starch)),
         );
   }
+});
+
+it("does not invert collapsed descendant owners when retaining parent mesh input", () => {
+  const effect = puppet(
+    [
+      [0, 0],
+      [16, 16],
+    ],
+    [
+      [0, 0],
+      [20, 12],
+    ],
+  );
+  for (const owner of [
+    [0, 0, 0, 0, 10, 10],
+    [0, 0, 0, 1, 10, 10],
+    [1, 0, 0, 0, 10, 10],
+    [1, 1, 2, 2, 10, 10],
+  ] as Matrix[])
+    expect(
+      meshOutputBounds(
+        input,
+        effect,
+        owner,
+        isCollapsedMeshPlacement(owner),
+        true,
+      ),
+    ).toEqual(input);
+});
+
+it("keeps external mesh-space bounds for scope-generated input under a collapsed owner", () => {
+  const effect = puppet(
+    [
+      [0, 0],
+      [16, 16],
+    ],
+    [
+      [0, 0],
+      [20, 12],
+    ],
+  );
+  expect(meshOutputBounds(input, effect, identity, true, false)).toEqual(
+    meshOutputBounds(input, effect, identity),
+  );
 });

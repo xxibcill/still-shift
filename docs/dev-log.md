@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #50 collapsed owner repair verified (2026-10-09):** the single posted P2
+  finding on `3002f0d1` is fixed on `codex/pr50-collapsed-mesh-fix`. Exact zero-scale
+  provenance survives rotated parent/child chains; collapse/recovery preserves
+  effect order and external coordinate spaces. 126 focused units, 88 byte-exact
+  frame comparisons, 24 new exports and the complete mesh/native-effects commands
+  pass. Existing references and thresholds are unchanged. One finding per commit,
+  with one final normal push; owner review/merge is next. No full repository gate
+  is run or claimed. [Repair evidence](./pr-50-collapsed-mesh-fix-results.json).
+
 - **PR #50 completeness review repairs verified (2026-10-09):** both posted P2
   findings are fixed on `codex/pr50-ce14-repairs` from `958e623a`. Raster-only
   degeneracy preserves valid deformation; structured diagnostics retain code,
@@ -98,6 +107,22 @@ still hold before relying on them.
   remain disabled; all verification was local. No work was scheduled or merged.
 
 ## Entries
+
+### 2026-10-09 — PR #50 collapsed mesh owner repair
+
+- **Agent / branch:** Codex on `codex/pr50-collapsed-mesh-fix` from `3002f0d1`.
+- **Done:** the posted zero-scale owner finding is fixed, including rotated ancestry
+  and descendant bounds; renderer/cache identities advance to Canvas 1.47.5 / WebGL 0.68.5.
+- **Results:** 126 focused units; 88 exact frames, 24 new exports, all existing mesh
+  checks and seven native-effect catalogues with repeated exports pass. Types,
+  boundaries and changed-file lint pass; original visual references are unchanged.
+- **Rejected:** skipping the owner suppresses later generators; multiplied-matrix
+  determinants lose original zero factors through rounding. Retain factor provenance.
+- **Open / next:** one finding, one commit and one final normal push to PR #50;
+  owner review/merge next. No full repository gate rerun or claimed.
+- **Records:** [plan](./composition-ce14-plan.md#pr-50-collapsed-owner-repair--2026-10-09),
+  [evidence](./pr-50-collapsed-mesh-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/50#discussion_r4227184424).
 
 ### 2026-10-09 — PR #50 structured mesh diagnostic repair
 

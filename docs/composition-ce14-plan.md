@@ -267,3 +267,47 @@ was required. The final combined command passes. Existing thresholds and baselin
 remain unchanged. These are scoped follow-up checks, not a repeated full milestone
 gate. Both posted findings have one dedicated commit, followed by one final push.
 Detailed evidence: [completeness-review repairs](./pr-50-ce14-review-repairs-results.json).
+
+## PR #50 collapsed owner repair — 2026-10-09
+
+The [posted P2 finding](https://github.com/xxibcill/still-shift/pull/50#discussion_r4227184424)
+reproduced twelve valid identity-mesh failures on `3002f0d1`: owner scale `[0,0]`,
+`[0,1]` or `[1,0]` aborted both mesh types/backends while ordinary artwork rendered
+transparent. Mesh evaluation and descendant bounds now preserve exact collapse
+from the original transform factors, returning empty before inversion or fold
+validation. This also handles a zero-scaled parent rotated 37° with a child rotated
+29°, whose multiplied matrix can acquire a tiny nonzero determinant from rounding.
+No epsilon classification is introduced.
+
+Owner collapse and coordinate-reference collapse remain separate. Earlier scope
+generators can supply visible input in a valid external space; later effects still
+run. Nonzero recovery restores deformation/pin checks. Small nonzero scales,
+reflections and genuine authored fold rejection retain the existing rules.
+Renderer identities advance to Canvas 1.47.5 / WebGL2 0.68.5 to invalidate caches.
+
+Final focused checks pass: 126 units in sixteen files, TypeScript, package
+boundaries and changed-file lint. The complete mesh browser command includes
+76 new cases / 88 byte-exact ordinary-render frame comparisons and twenty exact
+reverse/random seeks. It preserves all previous pixel, raster, offscreen,
+diagnostic, ownership and 48-frame demo checks. Sixteen direct-collapse and eight
+rotated-parent production exports match independent ordinary-layer outputs for
+all four decoded frames, including empty frames and visible recovery. Repeats,
+one/four workers and cache variants retain identical encoded/frame proofs within
+each backend and mesh kind. The existing eight 48-frame export proofs also match
+the previous accepted repair exactly; eight invalid exports preserve diagnostics
+and cleanup.
+
+All seven native-effects catalogues, 42 hardware comparisons under the unchanged
+policy and six repeated 60-frame native export fixtures pass. All 216 tracked
+visual-reference files are byte-identical to the reviewed head. No existing
+threshold, frozen reference, acceptance command or GitHub Actions policy changes.
+This is focused repair verification; no complete repository gate is rerun or
+claimed. The historical milestone gate retains its named checkpoint above.
+
+The initial regression run failed three tests as expected. An intermediate
+external-space test incorrectly demanded empty geometry instead of empty raster
+output, and the new helper initially used the wrong erased typed-array annotation;
+both are corrected. Independent review caught the rounded-product provenance
+case before delivery, and final checks rerun after that production change.
+One finding is delivered in one commit followed by one final normal push. Detailed
+logs, artifacts and source fingerprints: [collapsed-mesh repair evidence](./pr-50-collapsed-mesh-fix-results.json).

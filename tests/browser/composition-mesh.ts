@@ -11,11 +11,14 @@ import type * as MemoryChecks from "../helpers/composition-mesh-memory-reference
 import {
   checkMeshExports,
   checkMeshDiagnosticExports,
+  checkCollapsedMeshExports,
+  checkRotatedParentMeshExports,
 } from "../helpers/composition-mesh-export.ts";
 import type * as Offscreen from "../helpers/composition-mesh-offscreen.ts";
 import type * as Demo from "../helpers/composition-puppet-demo.ts";
 import type * as Diagnostics from "../helpers/composition-mesh-diagnostic-reference.ts";
 import type * as Raster from "../helpers/composition-mesh-raster-reference.ts";
+import type * as Collapsed from "../helpers/composition-mesh-collapsed-reference.ts";
 import type * as Checks from "../helpers/composition-mesh-reference.ts";
 const root = resolve(import.meta.dirname, "../.."),
   scratch = await mkdtemp(join(tmpdir(), "ce14-mesh-"));
@@ -41,6 +44,10 @@ try {
   const raster = await page.evaluate(async () => {
     const path = "/tests/helpers/composition-mesh-raster-reference.ts";
     return ((await import(path)) as typeof Raster).checkMeshRasterDegeneracy();
+  });
+  const collapsed = await page.evaluate(async () => {
+    const path = "/tests/helpers/composition-mesh-collapsed-reference.ts";
+    return ((await import(path)) as typeof Collapsed).checkCollapsedMeshes();
   });
   const offscreen = await page.evaluate(async () => {
     const path = "/tests/helpers/composition-mesh-offscreen.ts";
@@ -75,6 +82,7 @@ try {
       memory,
       offscreen,
       raster,
+      collapsed,
       diagnostics,
       demo: demo.map(({ picture: _picture, ...proof }) => proof),
     }),
@@ -100,4 +108,24 @@ await writeFile(
 console.log(
   "Mesh diagnostic production exports passed:",
   join(scratch, "diagnostic-exports.json"),
+);
+
+const collapsedExports = await checkCollapsedMeshExports(scratch);
+await writeFile(
+  join(scratch, "collapsed-exports.json"),
+  JSON.stringify(collapsedExports, null, 2),
+);
+console.log(
+  "Collapsed mesh production exports passed:",
+  join(scratch, "collapsed-exports.json"),
+);
+
+const rotatedParentExports = await checkRotatedParentMeshExports(scratch);
+await writeFile(
+  join(scratch, "rotated-parent-exports.json"),
+  JSON.stringify(rotatedParentExports, null, 2),
+);
+console.log(
+  "Rotated parent mesh production exports passed:",
+  join(scratch, "rotated-parent-exports.json"),
 );

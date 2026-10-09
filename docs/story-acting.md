@@ -346,6 +346,12 @@ rounding; faces that collapse or reverse solely during raster delivery are omitt
 in stable draw order. Identity meshes retain exact pixel-center sampling. Solver
 target positions remain exact. Always sweep the full authored range before export.
 
+A zero scale on an affine 2D mesh owner or its ancestor makes that mesh stage
+transparent, including rotated parent/child chains. Returning to a nonzero scale
+restores ordinary deformation and pin validation. Later scope effects still run;
+visible input generated before the mesh can deform in a valid external coordinate
+space. Small nonzero scales and reflections retain their normal behavior.
+
 For rectangular artwork, `distort.mesh-warp` offers tensor-product Bezier control
 grids with 2–8 rows and columns. Supply `columns`, `rows`, layer-local `origin` and
 `size`, and row-major normalized `controls` (exactly `rows * columns` points).

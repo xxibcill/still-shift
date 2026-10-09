@@ -9,6 +9,7 @@ import type { EffectParameters } from "@still-shift/scene-contract";
 import { alphaMesh } from "./topology.ts";
 import {
   bezierMeshPoint,
+  isCollapsedMeshPlacement,
   deformPuppetPoint,
   orderMeshTriangles,
   triangleFlips,
@@ -33,7 +34,21 @@ export function meshFrame(
   height: number,
   pixels?: Uint8Array,
   matrix: Matrix = identity,
+  ownerCollapsed = isCollapsedMeshPlacement(matrix),
+  referenceCollapsed = isCollapsedMeshPlacement(matrix),
 ): DeformedMesh {
+  // Coordinate references can differ from the owner. A prior scope effect may
+  // paint visible input in that external space even when owner artwork collapses.
+  if (
+    ownerCollapsed &&
+    (referenceCollapsed ||
+      (effect === "distort.puppet" &&
+        !pixels!.some(
+          (value, index) =>
+            index % 4 === 3 && value >= (params.alphaThreshold as number),
+        )))
+  )
+    return { source: [], destination: [], indices: [] };
   const mesh =
     effect === "distort.mesh-warp"
       ? bezierFrame(params, matrix)

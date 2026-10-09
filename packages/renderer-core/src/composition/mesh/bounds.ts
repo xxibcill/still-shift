@@ -4,6 +4,7 @@ import {
   type Matrix,
   type Point,
 } from "../../node-transform.ts";
+import { isCollapsedMeshPlacement } from "./geometry.ts";
 import { projectBounds } from "../evaluate/geometry.ts";
 import type { Bounds } from "../evaluate/types.ts";
 import type { EvaluatedEffect } from "../evaluate/effects.ts";
@@ -19,7 +20,11 @@ export function meshOutputBounds(
   input: Bounds,
   effect: EvaluatedEffect,
   matrix: Matrix,
+  ownerCollapsed = isCollapsedMeshPlacement(matrix),
+  referenceCollapsed = isCollapsedMeshPlacement(matrix),
 ): Bounds {
+  // Retain the conservative input enclosure without inverting a collapsed owner.
+  if (ownerCollapsed && referenceCollapsed) return input;
   const params = effect.params;
   if (effect.effect === "distort.mesh-warp") {
     const origin = params.origin as Point,

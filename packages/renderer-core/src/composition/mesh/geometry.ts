@@ -1,8 +1,22 @@
 import { meshError } from "./diagnostics.ts";
-import type { Point } from "../../node-transform.ts";
+import type { Matrix, Point } from "../../node-transform.ts";
 export type PuppetPin = { rest: Point; target: Point };
 export type StarchRegion = { center: Point; radius: number; strength: number };
 export type OverlapRegion = { center: Point; radius: number; depth: number };
+/** Exact rank collapse; small nonzero scales and reflections remain valid. */
+export function isCollapsedMeshPlacement(
+  matrix: Matrix,
+  transforms?: readonly Matrix[],
+): boolean {
+  return (
+    matrix[0] * matrix[3] - matrix[1] * matrix[2] === 0 ||
+    (transforms?.some(
+      (value) => value[0] * value[3] - value[1] * value[2] === 0,
+    ) ??
+      false)
+  );
+}
+
 type RigidFit = { source: Point; target: Point; cosine: number; sine: number };
 
 /** Closed-form rigid MLS, with serial reductions in authored pin order. */

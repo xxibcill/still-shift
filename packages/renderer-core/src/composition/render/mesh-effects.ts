@@ -100,6 +100,8 @@ export function meshEffectKernel(
           input.height,
           pixels,
           context.placement?.matrix,
+          context.placement?.ownerCollapsed,
+          context.placement?.referenceCollapsed,
         ));
         const vertices = (work.vertices = allocateRenderPixels(
           mesh.indices.length * 16,
@@ -154,6 +156,8 @@ export function meshEffectKernel(
           input.height,
           source,
           context.placement?.matrix,
+          context.placement?.ownerCollapsed,
+          context.placement?.referenceCollapsed,
         ));
         const output = (work.output = allocateRenderPixels(
           source.length,

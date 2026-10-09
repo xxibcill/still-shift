@@ -2,6 +2,7 @@ import {
   MESH_DIAGNOSTIC_LOCATION,
   type MeshDiagnosticLocation,
 } from "../mesh/diagnostics.ts";
+import { isCollapsedMeshPlacement } from "../mesh/geometry.ts";
 import { isMeshEffect, meshOutputBounds } from "../mesh/bounds.ts";
 import type { CompiledShapes } from "../shapes/types.ts";
 import { DEPTH_IMAGE_SHADER_VERSION } from "./webgl-depth-image.ts";
@@ -66,7 +67,12 @@ export type EffectWindow = {
 export type RenderEffect = EvaluatedEffect & {
   [MESH_DIAGNOSTIC_LOCATION]?: MeshDiagnosticLocation;
   window?: EffectWindow;
-  placement?: { matrix: Matrix; transforms: Matrix[] };
+  placement?: {
+    matrix: Matrix;
+    transforms: Matrix[];
+    ownerCollapsed?: boolean;
+    referenceCollapsed?: boolean;
+  };
   /** Input slots rendered independently at this scope and clock. */
   layerInputs?: Readonly<Record<string, RenderOp[]>>;
 };
@@ -1401,7 +1407,16 @@ class GraphBuilder {
         }
         return {
           ...captured,
-          placement: { matrix: effectMatrix, transforms: [effectMatrix] },
+          placement: {
+            matrix: effectMatrix,
+            transforms: [effectMatrix],
+            ...(isMeshEffect(effect)
+              ? {
+                  ownerCollapsed: isCollapsedMeshPlacement(matrix),
+                  referenceCollapsed: isCollapsedMeshPlacement(effectMatrix),
+                }
+              : {}),
+          },
         };
       });
     const masks = options.raw ? [] : this.masks(state, matrix, transforms);
@@ -1537,6 +1552,14 @@ class GraphBuilder {
                 input,
                 effect,
                 multiplyMatrix(frame.matrix, space.screenMatrix),
+                isCollapsedMeshPlacement(
+                  multiplyMatrix(frame.matrix, current.screenMatrix),
+                  this.transforms(scope, current, frame),
+                ),
+                isCollapsedMeshPlacement(
+                  multiplyMatrix(frame.matrix, space.screenMatrix),
+                  this.transforms(scope, space, frame),
+                ),
               )
             : (effectBounds(input, [effect]) ?? input);
           retain();
@@ -1787,11 +1810,22 @@ class GraphBuilder {
             { node: key, path: effect.id, frame: this.time },
           );
         const source = effect.space ? scope.byId.get(effect.space)! : state;
+        const effectMatrix = multiplyMatrix(frame.matrix, source.screenMatrix),
+          effectTransforms = this.transforms(scope, source, frame);
         return {
           ...effect,
           placement: {
-            matrix: multiplyMatrix(frame.matrix, source.screenMatrix),
-            transforms: this.transforms(scope, source, frame),
+            matrix: effectMatrix,
+            transforms: effectTransforms,
+            ...(isMeshEffect(effect)
+              ? {
+                  ownerCollapsed: isCollapsedMeshPlacement(matrix, transforms),
+                  referenceCollapsed: isCollapsedMeshPlacement(
+                    effectMatrix,
+                    effectTransforms,
+                  ),
+                }
+              : {}),
           },
         };
       });
