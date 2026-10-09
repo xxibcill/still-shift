@@ -52,7 +52,10 @@ still hold before relying on them.
   OS-denied consumer exports, including TRAVEL RANGE with69 readable frames and
   unchanged clean plates. Earlier failed archives/final QA and explicit consumer
   libproc process-inspection exception are retained. Full local `pnpm check` is
-  running; then MS1 PR and MS1N implementation. Full baseline refresh changes
+  stopped at an existing metadata trace timeout; focused circular suffix recorder
+  repair passes all10 assertions with unchanged5s limit. Linked quantity/intact-phrase
+  encoded evidence packet and complete gate rerun remain before MS1 PR/MS1N.
+  Full baseline refresh changes
   only29 editorial frames for the reproduced mask fix. Human continuous/listening
   review remains pending. Original checkout edits preserved.
   [Results](./mechanism-shorts-ms1-results.json),
@@ -166,6 +169,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Full-gate metadata trace timeout
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` (from `4c590ef3`).
+- **Results:** first complete-gate attempt passes toolchain/schema/boundaries,
+  format/lint/build and3748 units, then stops at existing gradient trace5s timeout.
+  Focused unchanged rerun reproduces5.399s; later groups were not run.
+- **Done:** test-only32-entry circular suffix buffer removes repeated Array.shift;
+  all16 frozen table/getter hashes, counts/order and5s timeout stay unchanged.
+  Independent review passes;10 focused tests pass, first2.729s.
+- **Open / next:** complete missing linked quantity/intact-phrase encoded packet,
+  then full-gate rerun. Installed archive/E01 proof remains separately accepted.
+- **Records:** [MS1 results](./mechanism-shorts-ms1-results.json).
 
 ### 2026-10-10 — Installed archive and isolated final acceptance
 

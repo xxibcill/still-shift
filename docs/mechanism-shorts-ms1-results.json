@@ -276,6 +276,34 @@
         "mechanism-shorts-ms1-installed-e01-results.json"
       ],
       "notes": "Separate staged attempts retained. Source-byte OS denial with explicit process-runtime exception. Human continuous playback/listening remains pending."
+    },
+    {
+      "command": "pnpm check attempt1",
+      "status": "failed",
+      "sourceCodeCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
+      "log": "/tmp/still-shift-ms1-full-check-1.log",
+      "completed": [
+        "toolchain",
+        "schemas",
+        "boundaries",
+        "format",
+        "lint",
+        "build"
+      ],
+      "unitPassed": 3748,
+      "unitFailed": 1,
+      "remainingRuntimeIntegrationBrowserGroups": "not-run-after-unit-stop",
+      "reason": "Existing gradient metadata original table/getter trace test exceeds unchanged5000ms timeout."
+    },
+    {
+      "command": "focused gradient metadata unchanged rerun then bounded trace suffix repair",
+      "status": "passed-after-test-instrumentation-repair",
+      "tests": 10,
+      "failedLog": "/tmp/still-shift-ms1-gradient-timeout-rerun.log",
+      "passedLog": "/tmp/still-shift-ms1-gradient-trace-ring-rerun.log",
+      "firstTestMillisecondsBefore": 5399,
+      "firstTestMillisecondsAfter": 2729,
+      "notes": "Only32-entry suffix recorder replaces per-getter Array.shift with circular buffer. All16 frozen complete output/getter hashes, counts/order, prefix/suffix assertions and5000ms timeout unchanged; production gradient implementation unchanged. Independent review confirms chronological suffix equivalence."
     }
   ],
   "renderEvidence": [
@@ -443,7 +471,7 @@
     "humanCreativeAcceptance": "not-reviewed"
   },
   "limits": [
-    "Required full pnpm check is in progress on final code checkpoint ff82eae9; installed package and isolated E01 software acceptance pass separately.",
+    "Full gate attempt1 stops at one existing metadata trace timeout; focused test instrumentation repair passes. Complete gate rerun and missing linked quantity/intact-phrase encoded evidence packet remain in progress. Installed archive and isolated E01 acceptance pass separately.",
     "Customer source media remains outside Git; public redistribution is not established.",
     "Human continuous motion, listening and creative acceptance remain pending."
   ],
