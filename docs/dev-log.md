@@ -45,25 +45,20 @@ still hold before relying on them.
 
 - **MS1 bridge verification (2026-10-10):** `codex/mechanism-ms1` carries exact
   MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
-  is open/unmerged. Current `b4f0119d` archive passes26 offline package checks and
-  both OS-denied consumer E01 exports. Baseline and TRAVEL RANGE reproduce exact
-  accepted video bytes, reuse all696 clean3D frames with0 new renders, and pass
-  mechanics/layout/audio/report closure. All1672 installed files,625 committed
-  sources,737 delivery files and723 copied captures remain unchanged; native
-  frame/audio caches are fresh. Live-libproc process inspection is an explicit
-  consumer exception; failed setup/initial invocation and predecessor proofs remain.
-  E01's legacy semantic report is unassessed. Separate strict-context packet now
-  has24 cases: historical and hermetic encoded runs pass expected outcomes. Complete
-  quantity/color-only controls require overall quality passes; intact phrases retain
-  eligible76-frame holds and their original full-report entry/frozen faults.
-  Semantic display repair passes127 focused tests. Full `pnpm check` attempt1
-  stopped at an existing gradient trace timeout; focused ring recorder repair
-  passes10 assertions without changing the5s limit. Attempt2 then passes3771 units/148 runtime checks but stops at40 integration failures: missing soundtrack runtime36, bare-Python NumPy2 and unchanged depth timeouts2. Offline setup plus unchanged77 audio/5 depth reruns pass; attempt3 is next.
-  Full baseline refresh changes only29 editorial frames for reproduced mask loss.
-  Human continuous playback/listening remains pending; original checkout edits
-  are preserved. MS1 PR and MS1N implementation wait for the final software gate.
+  remains open/unmerged. Current `b4f0119d` archive passes26 offline package checks
+  and both OS-denied installed E01 exports, reusing all696 exact clean3D frames
+  with0 new3D renders. The separate24-case historical/hermetic typography packets
+  pass expected outcomes; E01 legacy semantic context remains unassessed. Full
+  `pnpm check` attempt3 passes3771 units,148 runtime,318 integrations,14 Python
+  tests and61 required groups, then stops at Canvas story-visibility timing1.351
+  against1.25 with exact pixels. Unchanged focused rerun passes1.144; cause remains
+  unproven. Complete story matrix plus14 remaining groups now run sequentially;
+  staged coverage will remain separate from the failed aggregate. Attempts1/2,
+  setup recoveries, consumer libproc exception and29 intentional mask-baseline
+  frame changes remain retained. Human playback/listening and MS1 PR are pending;
+  MS1N implementation waits for that PR. Original checkout edits are preserved.
   [Results](./mechanism-shorts-ms1-results.json),
-  [installed consumer](./mechanism-shorts-ms1-installed-e01-results.json).
+  [gate history](./mechanism-shorts-ms1-full-gate-results.json).
 
 - **MS0 audit complete (2026-10-09):** `codex/mechanism-ms0` audit is committed
   at `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51) is open.
@@ -173,6 +168,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Canvas timing failure retained; staged completion running
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` from `09ce824b`.
+- **Results:** full gate attempt3 passes all initial checks and61 test groups,
+  then Canvas `story-visibility` timing1.351 exceeds the required1.25 limit;
+  all192 pixels match. The unchanged focused fixture passes1.144. No source,
+  assertion, timing region or limit changes; prior timing cause remains unproven.
+- **Next:** rerun the complete story matrix and14 remaining groups sequentially.
+  Keep failed aggregate exits and staged coverage distinct; do not claim a full
+  uninterrupted pass. MS1 PR waits for required-group completion; native code has
+  not begun. Human continuous playback/listening remains pending.
+- **Records:** [full gate history](./mechanism-shorts-ms1-full-gate-results.json),
+  [MS1 evidence](./mechanism-shorts-ms1-results.json).
 
 ### 2026-10-10 — Full gate setup failures retained and recovered
 

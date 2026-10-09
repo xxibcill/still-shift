@@ -1,7 +1,7 @@
 {
   "schemaVersion": "mechanism-ms1-full-gate-results-1",
-  "status": "final-complete-rerun-pending",
-  "codeCheckpoint": "4d289b3f02bd3889aa13cb29b3103db68f81b431",
+  "status": "remaining-required-groups-running",
+  "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
   "productionArchiveSource": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
   "attempts": [
     {
@@ -71,6 +71,115 @@
         }
       ],
       "downstream": "depth-Python/browser/frozen-baseline groups not run after integration stop"
+    },
+    {
+      "attempt": 3,
+      "status": "failed-at-canvas-story-timing",
+      "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+      "exitCode": 1,
+      "log": "/tmp/still-shift-ms1-full-check-3.log",
+      "logSha256": "sha256:cb701bafcf558de17513fbbe1f2c30a0ef699717b750bc179bf504aaaf4e832f",
+      "logBytes": 3180533,
+      "completed": [
+        "toolchain",
+        "schema",
+        "boundaries",
+        "format",
+        "lint",
+        "build"
+      ],
+      "completedTestGroups": [
+        "test:unit",
+        "test:runtime",
+        "test:integration",
+        "test:depth",
+        "test:browser:soundtrack",
+        "test:browser:composition-media",
+        "test:browser:composition-alpha",
+        "test:browser:composition-output",
+        "test:browser:composition-surfaces",
+        "test:browser:composition-parallel",
+        "test:browser:composition-tint-capacity",
+        "test:browser:composition-export-memory",
+        "test:browser:composition-cache-dependencies",
+        "test:browser:composition-fps-audio",
+        "test:browser:composition-area",
+        "test:browser:depth",
+        "test:browser:vertical-image",
+        "test:browser:export",
+        "test:golden",
+        "test:browser:cli",
+        "test:browser:batch",
+        "test:browser:illustrated",
+        "test:browser:illustrated:vertical",
+        "test:browser:cinematic",
+        "test:browser:cinematic:vertical",
+        "test:browser:threshold",
+        "test:browser:dolly",
+        "test:browser:lateral",
+        "test:browser:reveal",
+        "test:browser:story",
+        "test:browser:story:activity",
+        "test:browser:story:continuous",
+        "test:browser:passage:authoring",
+        "test:browser:lab-session",
+        "test:browser:composition-session",
+        "test:browser:commerce",
+        "test:browser:commerce-components",
+        "test:browser:commerce-effects",
+        "test:browser:commerce-spatial",
+        "test:browser:reusable-components",
+        "test:browser:reusable-package",
+        "test:browser:reusable-behavior-package",
+        "test:browser:reusable-timing-package",
+        "test:browser:typography",
+        "test:browser:typography:fixtures",
+        "test:browser:composition-evaluator",
+        "test:browser:composition-expressions",
+        "test:browser:composition-quality",
+        "test:browser:composition",
+        "test:browser:composition-webgl",
+        "test:browser:composition-camera",
+        "test:browser:composition-lighting",
+        "test:browser:composition-shapes",
+        "test:browser:composition-webgl-export",
+        "test:browser:composition-exposure",
+        "test:browser:composition-effects",
+        "test:browser:composition-mesh",
+        "test:browser:composition-story-adapter",
+        "test:browser:composition-native-passage",
+        "test:browser:composition-native-passage:webgl",
+        "test:browser:composition-passage"
+      ],
+      "unit": {
+        "files": 357,
+        "passed": 3771,
+        "seconds": 34.11
+      },
+      "runtime": {
+        "files": 22,
+        "passed": 148,
+        "seconds": 58.67
+      },
+      "integration": {
+        "files": 54,
+        "passed": 318,
+        "seconds": 284.21
+      },
+      "depthPythonPassed": 14,
+      "failingGroup": "test:browser:composition-story-fixtures",
+      "failure": {
+        "fixture": "component/story-visibility",
+        "backend": "canvas2d",
+        "frames": 192,
+        "maxPixelDelta": 0,
+        "pixelFailures": [],
+        "renderReadbackRatio": 1.3510960029139472,
+        "requiredMaximumRatio": 1.25,
+        "deferred": false,
+        "cause": "not-established-by-focused-rerun"
+      },
+      "downstream": "14 remaining groups not run after story matrix stop"
     }
   ],
   "recovery": {
@@ -113,13 +222,60 @@
       "diagnosticSha256": "sha256:3324e6b0c1317a4bdd466ad7f06e206f35a22a4590b406c184b1ee80b2ddd5c6",
       "limits": "Warmed105..123ms worker observations localize import overhead but do not reproduce or prove the earlier4..5s variance."
     },
-    "sourceAndTestChanges": "none; environment setup only; all verification assertions and limits retained"
+    "sourceAndTestChanges": "none; environment setup only; all verification assertions and limits retained",
+    "canvasStoryVisibility": {
+      "command": "node --import tsx tests/browser/composition-story-fixtures.ts --only component/story-visibility --profile",
+      "status": "passed",
+      "exitCode": 0,
+      "log": "/tmp/still-shift-ms1-story-visibility-focused-1.log",
+      "logSha256": "sha256:ec2b7ad25de212fcd2193596e4781aa2c1a2ae5023e92fb243b4d3dec8394b8b",
+      "frames": 192,
+      "maxPixelDelta": 0,
+      "ratio": 1.1443214495713567,
+      "requiredMaximumRatio": 1.25,
+      "legacyMilliseconds": 243.89999949932098,
+      "compositionMilliseconds": 279.1000009775162,
+      "legacyRenderMilliseconds": 15.000000715255737,
+      "compositionRenderMilliseconds": 66.40000092983246,
+      "evaluationMilliseconds": 4.799999833106995,
+      "graphMilliseconds": 1.3000001907348633,
+      "changes": "none; original source, assertions, timing region and limit",
+      "limits": "One isolated pass does not establish prior timing cause or full matrix completion."
+    }
   },
   "finalCompleteRun": {
     "attempt": 3,
-    "status": "pending",
-    "log": "/tmp/still-shift-ms1-full-check-3.log"
+    "status": "failed",
+    "exitCode": 1,
+    "details": "attempts[2]",
+    "uninterruptedPass": false
   },
   "humanReview": "continuous visual/listening pending",
-  "publication": "not-requested"
+  "publication": "not-requested",
+  "requiredGroupCompletion": {
+    "status": "in-progress",
+    "method": "staged-unchanged-source",
+    "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+    "totalRequiredGroups": 76,
+    "completedPrefixGroups": 61,
+    "rerunAndRemainingGroups": [
+      "test:browser:composition-story-fixtures",
+      "test:browser:composition-commerce-adapter",
+      "test:browser:composition-cinematic-adapter",
+      "test:browser:composition-typography-adapter",
+      "test:browser:composition-provider-typography",
+      "test:browser:composition-program",
+      "test:browser:composition-inspector",
+      "test:browser:composition-builder",
+      "test:browser:composition-depth",
+      "test:browser:composition-legacy-adapter",
+      "test:browser:composition-family-timeline",
+      "test:browser:composition-family-defaults",
+      "test:browser:mechanism-typography",
+      "test:browser:mechanism-portrait",
+      "test:browser:composition-baselines"
+    ],
+    "log": "/tmp/still-shift-ms1-remaining-required-groups-1.log",
+    "notes": "The failed aggregate remains failed. Full story matrix and all14 downstream groups run sequentially without production/test changes. Only actual successful exits can close staged required-group coverage."
+  }
 }

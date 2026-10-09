@@ -384,6 +384,32 @@
       "depthTests": 5,
       "details": "./mechanism-shorts-ms1-full-gate-results.json",
       "notes": "Project Python and isolated soundtrack environment corrected; no source/test or timeout changes. Original depth timing cause remains unproven; complete gate attempt3 is next."
+    },
+    {
+      "command": "pnpm check attempt3",
+      "status": "failed-at-canvas-story-timing",
+      "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+      "completedRequiredTestGroups": 61,
+      "unitPassed": 3771,
+      "runtimePassed": 148,
+      "integrationPassed": 318,
+      "depthPythonPassed": 14,
+      "fixture": "component/story-visibility",
+      "maxPixelDelta": 0,
+      "ratio": 1.3510960029139472,
+      "limit": 1.25,
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "notes": "Canvas timing is required, not deferred WebGL performance. All14 downstream groups remain unrun in this failed aggregate."
+    },
+    {
+      "command": "Unchanged focused Canvas story-visibility rerun",
+      "status": "passed",
+      "frames": 192,
+      "maxPixelDelta": 0,
+      "ratio": 1.1443214495713567,
+      "limit": 1.25,
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "notes": "Prior timing cause remains unproven. Complete matrix plus14 downstream groups now run sequentially; staged completion will not be described as an uninterrupted pnpm check pass."
     }
   ],
   "renderEvidence": [
@@ -551,7 +577,9 @@
     "humanCreativeAcceptance": "not-reviewed"
   },
   "limits": [
-    "Complete gate rerun and linked quantity/intact-phrase encoded packet remain in progress. Semantic policy repair changes archive inputs, so ff82eae9 installed/E01 proof remains a retained predecessor; refresh final archive verification before PR.",
+    "Required software-group completion remains in progress after attempt3 Canvas timing failure; completed encoded typography/current installed archive proofs are retained.",
+    "E01 semantic profile remains legacy/unassessed; strict-context acceptance is a separate authored fixture packet.",
+    "Isolated consumer uses the documented live-libproc process-inspection runtime exception; installed package bytes remain unchanged.",
     "Customer source media remains outside Git; public redistribution is not established.",
     "Human continuous motion, listening and creative acceptance remain pending."
   ],
@@ -638,7 +666,8 @@
     "bytes": 535346887,
     "manifestSha256": "sha256:80d22abd1f378d92277b054e44fc5549d708ace777f3e7a2f17ffec8262b418a",
     "finalSha256": "sha256:e0c369e69b76bc73ba81a59930d89ae432d91035c64a531a51e8699b53eb632d",
-    "verification": "Actual CLI relocation/deps/validate/summary/save/reload and all declared hashes pass under application admission guard; OS-isolated installed-archive lifecycle pending.",
-    "evidence": "/tmp/still-shift-ms1-v6-package-handoff.md"
+    "verification": "Actual CLI relocation/deps/validate/summary/save/reload and all737 declared hashes pass. Current b4f0119d archive also passes OS-denied installed E01/edit lifecycle; consumer process-inspection runtime exception remains explicit.",
+    "evidence": "/tmp/still-shift-ms1-v6-package-handoff.md",
+    "installedEvidence": "./mechanism-shorts-ms1-installed-e01-results.json"
   }
 }
