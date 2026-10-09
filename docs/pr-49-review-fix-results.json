@@ -1,0 +1,134 @@
+{
+  "date": "2026-10-09",
+  "pr": "https://github.com/xxibcill/still-shift/pull/49",
+  "reviewedHead": "efa42f42e57958133dfcd268e2c7f68861c32319",
+  "reviewId": 5465933687,
+  "branch": "codex/pr49-review-fixes",
+  "deliveryPolicy": "Each finding posted inline before repair; one commit per finding; one normal push after the final commit.",
+  "toolchain": "Node 22.23.1 / pnpm 10.29.3 / Python 3.12.11 / Playwright 1.62.1 / Chromium 151.0.7922.34 (revision 1234) / FFmpeg 8.0.1.",
+  "isolation": "Restored managed review worktree at the exact PR head, independent offline-installed pnpm dependencies and Vite caches. Owner checkout is untouched.",
+  "verificationScope": "Focused PR follow-up regressions; no full pnpm check or new milestone gate run or claimed.",
+  "githubActions": "Prohibited; no workflows added or enabled.",
+  "findings": [
+    {
+      "id": "tint-cache-capacity",
+      "priority": "P2",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/49#discussion_r4226806097",
+      "status": "fixed and verified; first finding commit",
+      "before": "Visible 1024x512, 64-frame, 300px native text red-to-blue animation completes uncached but cached rendering fails at frame 19 after retaining 123948400 bytes.",
+      "repair": "Shared tint admission falls back to the original painter when the byte or entry limit is reached. Typography keeps its original 16-slot color map and public map type, tracks locally owned canvases internally, and retires them on eviction/disposal. Shared sources remain owned by the source cache. Counters expose uncached paint count and submission time.",
+      "units": {
+        "uniqueTests": 101,
+        "runs": [
+          {
+            "tests": 48,
+            "files": 6
+          },
+          {
+            "tests": 63,
+            "files": 7
+          }
+        ],
+        "scope": "Source metadata/preparation, export statistics, family preparation, managed allocation/retirement, typography events/contract/layout and composition typography adapter."
+      },
+      "newBrowserRegression": {
+        "command": "pnpm test:browser:composition-tint-capacity",
+        "status": "passed",
+        "previewComparisons": 384,
+        "previews": [
+          {
+            "backend": "canvas2d",
+            "comparedFrames": 192,
+            "retainedCanvasBytes": 123948400,
+            "uncachedPaints": 116,
+            "memory": {
+              "scope": "declared-application-owned-bytes",
+              "limits": {
+                "pixels": 536870912,
+                "metadata": 16777216
+              },
+              "current": {
+                "pixels": 0,
+                "metadata": 0
+              },
+              "peak": {
+                "pixels": 298235176,
+                "metadata": 237714
+              },
+              "reservations": 0
+            }
+          },
+          {
+            "backend": "webgl2",
+            "comparedFrames": 192,
+            "retainedCanvasBytes": 123948400,
+            "uncachedPaints": 116,
+            "memory": {
+              "scope": "declared-application-owned-bytes",
+              "limits": {
+                "pixels": 536870912,
+                "metadata": 16777216
+              },
+              "current": {
+                "pixels": 0,
+                "metadata": 0
+              },
+              "peak": {
+                "pixels": 307500328,
+                "metadata": 255006
+              },
+              "reservations": 0
+            }
+          }
+        ],
+        "exports": 8,
+        "decodedFrames": 512,
+        "proof": "Complete encoded checksums and every decoded pixel match the uncached reference across one/four/repeated workers on Canvas and WebGL. Both managed preview scopes and every export acknowledge zero bytes/reservations.",
+        "log": "/private/tmp/pr49-tint-capacity-final.log",
+        "completeReport": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/pr49-tint-capacity-S1x9Qa/results.json"
+      },
+      "existingSurfaceRegression": {
+        "command": "pnpm test:browser:composition-surfaces",
+        "status": "passed",
+        "cases": 144,
+        "frameChecks": 8000,
+        "scope": "Four-page static/native/root/prefix ownership, exact seeks, checksums, metadata, native resource failures and cleanup.",
+        "log": "/private/tmp/pr49-surfaces.log"
+      },
+      "existingTypography": {
+        "command": "pnpm test:browser:typography:fixtures",
+        "status": "passed",
+        "fixtures": 8,
+        "glyphPerformanceRatio": 1.3958060275250874,
+        "unchangedLimit": 1.5,
+        "log": "/private/tmp/pr49-typography-fixtures.log"
+      },
+      "frozenBaselines": {
+        "command": "pnpm test:browser:composition-baselines --family typography",
+        "status": "passed",
+        "items": 8,
+        "frames": 1309,
+        "regenerated": false,
+        "log": "/private/tmp/pr49-typography-baselines.log"
+      },
+      "staticChecks": {
+        "build": "passed",
+        "changedFileEslint": "passed",
+        "packageBoundaries": "passed",
+        "diffCheck": "passed"
+      },
+      "testHarnessCorrections": [
+        "Initial typed statistics fixture needed the two new zero-valued counters; the new test broker endpoint was corrected before browser acceptance.",
+        "The existing small-fixture decoder buffers at most 16 MiB; the new large-frame regression now hashes complete decoded frames through a bounded stream. Earlier diagnostic logs are retained separately."
+      ]
+    },
+    {
+      "id": "preview-pcm-boundary",
+      "priority": "P2",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/49#discussion_r4226806101",
+      "status": "pending second finding commit",
+      "before": "Five frames at 29 fps produce 8276 samples; Lab compares against 8275.862068965518 and rejects the prepared master before fetching it."
+    }
+  ],
+  "delivery": "Both findings are commented; first repair ready to commit, second repair and final push pending."
+}

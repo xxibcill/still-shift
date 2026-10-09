@@ -21,6 +21,16 @@ import {
   type CompositionSurfaceCacheOptions,
 } from "./surface-cache.ts";
 
+type SourceCounts = {
+  paints: number;
+  restores: number;
+  reuses: number;
+  paintAndReadbackMs: number;
+  restoreMs: number;
+  uncachedPaints: number;
+  uncachedPaintMs: number;
+};
+
 type Request = {
   signature: ManagedMetadataText;
   kind: string;
@@ -43,16 +53,7 @@ export class CompositionSourceCache {
       string,
       { canvas: HTMLCanvasElement; signature: ManagedMetadataText }
     >;
-    counts: Map<
-      string,
-      {
-        paints: number;
-        restores: number;
-        reuses: number;
-        paintAndReadbackMs: number;
-        restoreMs: number;
-      }
-    >;
+    counts: Map<string, SourceCounts>;
     active: Set<HTMLCanvasElement>;
     pending: Set<PendingSource>;
   };
@@ -135,14 +136,30 @@ export class CompositionSourceCache {
       request.width < 1 ||
       request.height < 1 ||
       !Number.isInteger(request.width) ||
-      !Number.isInteger(request.height) ||
-      this.state.entries.size >= 4096 ||
-      bytes * 2 + this.retainedBytes > this.options.byteLimit
+      !Number.isInteger(request.height)
     ) {
       signature.release();
       throw Error(
         "Composition preparation pixels exceed their local byte/entry bound",
       );
+    }
+    if (
+      this.state.entries.size >= 4096 ||
+      bytes * 2 + this.retainedBytes > this.options.byteLimit
+    ) {
+      signature.release();
+      if (request.kind !== "glyph-tint")
+        throw Error(
+          "Composition preparation pixels exceed their local byte/entry bound",
+        );
+      // A changing tint can use typography's original bounded color cache. Its
+      // caller owns this canvas; optional shared capacity never grows to hold it.
+      const counts = this.countsFor(request.kind);
+      const start = performance.now();
+      const canvas = paint();
+      counts.uncachedPaintMs += performance.now() - start;
+      counts.uncachedPaints++;
+      return canvas;
     }
     let pending: PendingSource | undefined;
     try {
@@ -174,6 +191,37 @@ export class CompositionSourceCache {
     }
     throw pending;
   };
+  private countsFor(kind: string) {
+    const existing = this.state.counts.get(kind);
+    if (existing) return existing;
+    this.resize(undefined, this.state.counts.size + 1);
+    let counts: SourceCounts | undefined;
+    try {
+      counts = allocateRenderMetadata(
+        176,
+        () => ({
+          paints: 0,
+          restores: 0,
+          reuses: 0,
+          paintAndReadbackMs: 0,
+          restoreMs: 0,
+          uncachedPaints: 0,
+          uncachedPaintMs: 0,
+        }),
+        true,
+      );
+      this.state.counts.set(kind, counts);
+      return counts;
+    } catch (error) {
+      if (counts) releaseRenderMetadata(counts);
+      try {
+        this.resize();
+      } catch {
+        /* Preserve the original allocation error. */
+      }
+      throw error;
+    }
+  }
   private assertOpen() {
     this.options.signal?.throwIfAborted();
     if (this.closed) throw Error("Composition preparation cache is disposed");
@@ -215,32 +263,7 @@ export class CompositionSourceCache {
         releaseRenderMetadata(body);
       }
       this.assertOpen();
-      let counts = this.state.counts.get(request.kind);
-      if (!counts) {
-        this.resize(undefined, this.state.counts.size + 1);
-        try {
-          counts = allocateRenderMetadata(
-            144,
-            () => ({
-              paints: 0,
-              restores: 0,
-              reuses: 0,
-              paintAndReadbackMs: 0,
-              restoreMs: 0,
-            }),
-            true,
-          );
-          this.state.counts.set(request.kind, counts);
-        } catch (error) {
-          if (counts) releaseRenderMetadata(counts);
-          try {
-            this.resize();
-          } catch {
-            /* Preserve the original allocation error. */
-          }
-          throw error;
-        }
-      }
+      const counts = this.countsFor(request.kind);
       let canvas: HTMLCanvasElement;
       if (claim.kind === "uncached")
         throw Error(
@@ -363,7 +386,7 @@ export class CompositionSourceCache {
   }
   get statistics() {
     return allocateRenderMetadata(
-      192 + this.state.counts.size * 224,
+      192 + this.state.counts.size * 256,
       () => ({
         retainedCanvasBytes: this.retainedBytes,
         peakPayloadBytes: this.peakPayloadBytes,

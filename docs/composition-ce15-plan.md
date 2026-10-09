@@ -2565,3 +2565,22 @@ All CE15 requirements and final acceptance are complete. PR #49 contains the
 implementation and [checkpoint-specific evidence](./composition-ce15-completion-results.json).
 GitHub Actions remain disabled. CE14 follows this checkpoint on a separate branch under the expanded goal.
 CE5-X/Q9, CE6-P and separate owner work remain outside scope. No PR is merged.
+
+## PR #49 review repairs — 2026-10-09
+
+Both P2 findings are posted inline on `efa42f42`. The first repair keeps shared
+source limits fixed and routes excess glyph tints through the original 16-slot
+local color map. Local canvases retire on eviction/disposal; shared canvases keep
+cache ownership. Fallback count and submission time are explicit in statistics.
+
+The 64-frame failure at frame 19 now passes 384 exact forward/reverse/repeated
+preview comparisons and eight production exports / 512 completely decoded frames
+across both backends and one/four/repeated workers. All 144 existing surface cases /
+8,000 frame checks, 101 focused units, eight typography fixtures and all eight frozen
+typography items / 1,309 frames pass. Glyph ratio is 1.395806× under the unchanged 1.5×
+assertion. Build, scoped lint and package boundaries pass. Test broker/decoder
+corrections and complete local evidence are in [review repair results](./pr-49-review-fix-results.json).
+
+The fractional PCM Lab preview repair remains pending. These are scoped PR
+follow-ups under the repository verification policy; no new full repository gate
+is run or claimed. One commit per finding and one final push are authorized.

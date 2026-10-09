@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { CompositionSourceCache } from "../../packages/renderer-core/src/composition/render/source-cache.ts";
 import { compositionSurfaceVisualKey } from "../../packages/renderer-core/src/composition/render/surface-cache.ts";
 import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
@@ -111,4 +111,73 @@ it("preserves a null claim failure after cache disposal and ends its owned prepa
     expect(memory.statistics.reservations).toBe(0);
     memory.dispose();
   });
+});
+
+it("uses the original tint painter when shared capacity is exhausted without retaining its canvas", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 8192 });
+  await withManagedMemory(memory, async () => {
+    const claim = vi.fn(async () => {
+      throw Error("An uncached tint must not claim shared storage");
+    });
+    const source = new CompositionSourceCache({
+      scopeKey,
+      byteLimit: 16,
+      exchange: {
+        claim,
+        async publish() {
+          unexpected();
+        },
+      },
+    });
+    const canvas = { width: 2, height: 2 } as HTMLCanvasElement;
+    const paint = vi.fn(() => canvas);
+    memory.beginScratch();
+    expect(
+      source.read({ ...request, kind: "glyph-tint" }, paint, unexpected),
+    ).toBe(canvas);
+    memory.endScratch();
+    const statistics = source.statistics;
+    expect(statistics.retainedCanvasBytes).toBe(0);
+    expect(statistics.sources).toEqual([
+      expect.objectContaining({
+        kind: "glyph-tint",
+        paints: 0,
+        uncachedPaints: 1,
+      }),
+    ]);
+    expect(paint).toHaveBeenCalledOnce();
+    expect(claim).not.toHaveBeenCalled();
+    source.dispose();
+    expect(canvas.width).toBe(2);
+    memory.dispose();
+    expect(memory.statistics.reservations).toBe(0);
+  });
+});
+
+it("keeps invalid tint sizes and oversized immutable sources fail-closed", () => {
+  const source = new CompositionSourceCache({
+    scopeKey,
+    byteLimit: 16,
+    exchange: {
+      async claim() {
+        return unexpected();
+      },
+      async publish() {
+        unexpected();
+      },
+    },
+  });
+  const paint = vi.fn(unexpected);
+  expect(() => source.read(request, paint, unexpected)).toThrow(
+    /byte\/entry bound/,
+  );
+  expect(() =>
+    source.read(
+      { ...request, kind: "glyph-tint", width: 0 },
+      paint,
+      unexpected,
+    ),
+  ).toThrow(/byte\/entry bound/);
+  expect(paint).not.toHaveBeenCalled();
+  source.dispose();
 });

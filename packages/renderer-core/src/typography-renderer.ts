@@ -43,6 +43,9 @@ import { sourceExposureTimeline } from "./commerce-exposure.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { CommerceRenderScene } from "./commerce-scene.ts";
 
+// Only canvases returned from the local painter belong to the bounded color map.
+const localColorCanvases = new WeakSet<HTMLCanvasElement>();
+
 export type TextRaster = {
   layout: ShapedLayout;
   canvas: HTMLCanvasElement;
@@ -478,9 +481,14 @@ export function disposeTypography(prepared: PreparedTypography): void {
     seen.add(raster);
     if (!raster.sourceCanvas) {
       releaseRenderCanvas(raster.canvas);
-      for (const canvas of raster.colors.values()) releaseRenderCanvas(canvas);
       for (const canvas of raster.strokes.values()) releaseRenderCanvas(canvas);
     }
+    for (const canvas of raster.colors.values())
+      if (!raster.sourceCanvas || localColorCanvases.has(canvas)) {
+        localColorCanvases.delete(canvas);
+        releaseRenderCanvas(canvas);
+      }
+    raster.colors.clear();
     for (const variant of raster.variants.values()) release(variant);
   };
   for (const rasters of prepared.nodes.values())
@@ -543,63 +551,69 @@ function coloredRaster(
   source = raster.canvas,
   key = color,
 ) {
-  let canvas = raster.colors.get(key);
-  if (!canvas) {
-    const paint = () => {
-      const canvas = surface(
-        raster.canvas.width,
-        raster.canvas.height,
-        raster.softwareRaster,
-      );
-      const ctx = canvas.getContext("2d")!;
-      ctx.drawImage(source, 0, 0);
-      ctx.globalCompositeOperation = "source-in";
-      ctx.fillStyle = color;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      return canvas;
-    };
-    canvas = raster.sourceCanvas
-      ? raster.sourceCanvas(
-          {
-            kind: "glyph-tint",
-            input: [raster.sourceInput, color, key],
-            width: raster.canvas.width,
-            height: raster.canvas.height,
-          },
-          paint,
-          (pixels) => {
-            const canvas = surface(
-              raster.canvas.width,
-              raster.canvas.height,
-              raster.softwareRaster,
-            );
-            canvas
-              .getContext("2d")!
-              .putImageData(
-                new ImageData(
-                  new Uint8ClampedArray(
-                    pixels.buffer,
-                    pixels.byteOffset,
-                    pixels.byteLength,
-                  ),
-                  canvas.width,
-                  canvas.height,
+  const cached = raster.colors.get(key);
+  if (cached) return cached;
+  let owned = false;
+  const paint = () => {
+    owned = true;
+    const canvas = surface(
+      raster.canvas.width,
+      raster.canvas.height,
+      raster.softwareRaster,
+    );
+    const ctx = canvas.getContext("2d")!;
+    ctx.drawImage(source, 0, 0);
+    ctx.globalCompositeOperation = "source-in";
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    return canvas;
+  };
+  const canvas = raster.sourceCanvas
+    ? raster.sourceCanvas(
+        {
+          kind: "glyph-tint",
+          input: [raster.sourceInput, color, key],
+          width: raster.canvas.width,
+          height: raster.canvas.height,
+        },
+        paint,
+        (pixels) => {
+          const canvas = surface(
+            raster.canvas.width,
+            raster.canvas.height,
+            raster.softwareRaster,
+          );
+          canvas
+            .getContext("2d")!
+            .putImageData(
+              new ImageData(
+                new Uint8ClampedArray(
+                  pixels.buffer,
+                  pixels.byteOffset,
+                  pixels.byteLength,
                 ),
-                0,
-                0,
-              );
-            return canvas;
-          },
-        )
-      : paint();
-    if (raster.colors.size >= 16) {
-      const oldest = raster.colors.keys().next().value!;
-      if (!raster.sourceCanvas) releaseRenderCanvas(raster.colors.get(oldest)!);
-      raster.colors.delete(oldest);
+                canvas.width,
+                canvas.height,
+              ),
+              0,
+              0,
+            );
+          return canvas;
+        },
+      )
+    : paint();
+  if (raster.colors.size >= 16) {
+    const oldest = raster.colors.keys().next().value!;
+    const canvas = raster.colors.get(oldest)!;
+    if (!raster.sourceCanvas || localColorCanvases.has(canvas)) {
+      localColorCanvases.delete(canvas);
+      releaseRenderCanvas(canvas);
     }
-    retainRenderCanvas(canvas);
-    raster.colors.set(key, canvas);
+    raster.colors.delete(oldest);
   }
+  retainRenderCanvas(canvas);
+  if (owned) localColorCanvases.add(canvas);
+  raster.colors.set(key, canvas);
   return canvas;
 }
 function renderStrokedRaster(

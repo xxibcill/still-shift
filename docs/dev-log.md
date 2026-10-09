@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #49 review repairs in progress (2026-10-09):** both P2 findings are
+  posted inline at `efa42f42`. The cache-capacity fix passes 101 focused units,
+  384 new exact preview comparisons, eight production exports / 512 decoded
+  frames, all 144 existing surface cases / 8,000 frame checks, eight typography
+  fixtures and eight frozen typography items / 1,309 frames. Shared tint capacity
+  stays bounded; local 16-slot eviction and native retirement are verified.
+  The fractional-PCM Lab preview fix is next. One commit per finding and one
+  final push are authorized. No full repository gate is run or claimed.
+  [Review repair evidence](./pr-49-review-fix-results.json).
+
 - **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
   pinned local `pnpm check` in 13928.03 seconds. Production code `21817411` has a real
   two-minute benchmark that reaches **3.408×** with identical encoded/frame/audio output.
@@ -81,6 +91,19 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — PR #49 bounded tint fallback
+
+- **Agent / branch:** Codex on `codex/pr49-review-fixes` from `efa42f42`.
+- **Done:** post both findings inline; fall back from full shared tint storage to
+  typography's original bounded color map, with explicit local native ownership.
+- **Results:** 101 focused units; 384 exact preview comparisons; eight exact
+  production exports / 512 frames; all 144 surface cases / 8,000 checks; eight
+  typography fixtures and 1,309 frozen frames pass. Glyph ratio 1.395806× ≤ 1.5.
+- **Scope:** focused follow-up verification, build/lint/boundaries; no full gate.
+- **Next:** fix fractional PCM preview validation in its own commit, then push once.
+- **Records:** [review repair evidence](./pr-49-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-review-repairs--2026-10-09).
 
 ### 2026-10-09 — CE15 completed acceptance
 
