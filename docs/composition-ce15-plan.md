@@ -2602,9 +2602,44 @@ untouched, and GitHub Actions remain prohibited.
 
 ## PR #49 second review repairs — 2026-10-09
 
-Three P2 findings are posted inline on `2cd76eca`; each repair has its own commit.
-Evidence is in [second review results](./pr-49-second-review-fix-results.json).
-These are scoped follow-ups; no full repository gate is run or claimed.
+Three P2 findings are posted inline on `2cd76eca`; each repair has its own
+commit. Evidence is in [second review
+results](./pr-49-second-review-fix-results.json). These are scoped follow-ups;
+no full repository gate is run or claimed.
 
-The shared store returns a typed capacity denial only for opted-in glyph tints. Other identity, integrity, cancellation and lifecycle errors remain failures. A saturated page stops new shared tint claims and uses typography's original 16-color cache; managed optional retention stops at 2,048 entries within the unchanged 8,192-control allocator bound. Mandatory source, byte and 4,096-entry shared limits remain unchanged. The default global entry limit is exercised across four independent pages; byte pressure and the complete 256-frame entry fixture also pass public one/four/repeated-worker exports on both backends. All owners retire, and all encoded bodies and decoded frames match the uncached baselines. Frozen typography references and the original 1.5 glyph ratio assertion remain unchanged.
-Protected narration validation now uses exact rational origins and an absolute ceiling for scope, layer and inherited group windows. Nested placements round their sum once, preserving the last valid PCM sample without accepting real cropping. All 33 focused tests pass, including full-master and one-sample overrun checks at nine rates, altered/disabled voice checks, mixed-rate ancestry and signed precision cases. The original schema reproduces the rejection of full 7/29/59 fps masters; the repaired schema accepts the same complete documents.
+The shared store returns a typed capacity denial only for opted-in glyph tints.
+Other identity, integrity, cancellation and lifecycle errors remain failures. A
+saturated page stops new shared tint claims and uses typography's original
+16-color cache; managed optional retention stops at 2,048 entries within the
+unchanged 8,192-control allocator bound. Mandatory source, byte and 4,096-entry
+shared limits remain unchanged. The default global entry limit is exercised
+across four independent pages; byte pressure and the complete 256-frame entry
+fixture also pass public one/four/repeated-worker exports on both backends. All
+owners retire, and all encoded bodies and decoded frames match the uncached
+baselines. Frozen typography references and the original 1.5 glyph ratio
+assertion remain unchanged.
+
+Protected narration validation now uses exact rational origins and an absolute
+ceiling for scope, layer and inherited group windows. Nested placements round
+their sum once, preserving the last valid PCM sample without accepting real
+cropping. All 33 focused tests pass, including full-master and one-sample
+overrun checks at nine rates, altered/disabled voice checks, mixed-rate ancestry
+and signed precision cases. The original schema reproduces the rejection of full
+7/29/59 fps masters; the repaired schema accepts the same complete documents.
+
+Natural audio now subtracts its once-rounded absolute PCM onset from the
+original output sample. Mixed-rate nested origins remain exact; source trimming
+and inherited visibility use the same clock. Explicit retiming and property
+reads retain their existing Q16 path. Bounded memoization avoids repeated
+rational work, and evaluator version 57 invalidates prepared audio built with
+the former origin. All 243 affected units and all 24 actual mixer tests pass.
+Four new complete-PCM tests fail on the review head and preserve every source
+bit after repair. Native media/Lab playback and all 105 format/rate/worker
+exports pass with exact encoded, decoded-frame and complete-audio parity.
+Existing CE16 linear and equal-power laws remain byte-identical. Independent
+review finds no remaining actionable problem; build, scoped lint, formatting and
+package boundaries pass.
+
+Deliver all three findings in one final normal push to `codex/composition-ce15`.
+Owner review/merge is next; the owner checkout remains untouched and GitHub
+Actions remain prohibited.

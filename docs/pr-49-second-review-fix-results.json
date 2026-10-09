@@ -2087,12 +2087,890 @@
           "path": "tests/unit/composition-narration-clock.test.ts",
           "sha256": "521e46f137b426b5a6efd65a0d00ab329ec57e084f28453ff1f9792c1727493e"
         }
-      ]
+      ],
+      "commit": "e213f02684549daf6813dda131a95f4dffaf1fd4"
+    },
+    "3": {
+      "finding": "Preserve integer PCM origins for naturally placed audio",
+      "sourceFingerprints": [
+        {
+          "path": "packages/renderer-core/src/composition/evaluate/evaluate.ts",
+          "sha256": "dfc67326979450593306c5e09cacc152937f0d52614c28dd81a2d9689e628dcf"
+        },
+        {
+          "path": "packages/renderer-core/src/composition/evaluate/media-clock.ts",
+          "sha256": "d417685676e06948fe736cd749f9b1bd7855bf11c2be1b3d0562f9c2f18b56a3"
+        },
+        {
+          "path": "packages/renderer-core/src/composition/evaluate/version.ts",
+          "sha256": "b0b3f85ff8c05d2b365583fd212095fe764ca61a4ab3367f83ceec43bb5da9af"
+        },
+        {
+          "path": "tests/unit/composition-natural-audio-clock.test.ts",
+          "sha256": "9ad72f02e6e5470cf808caf8b6cfe105af098ffb513b64b19ff1462195fde0c8"
+        },
+        {
+          "path": "tests/integration/composition-audio-mix.test.ts",
+          "sha256": "f9f6b5924e85a78fd16242719c980046e07bef1c928a5f369aa1f392016c2dd3"
+        }
+      ],
+      "evaluatorVersion": "composition-evaluator-57",
+      "naturalPaths": "Exact original output sample minus once-rounded absolute origin; source trimming preserved.",
+      "retimedPaths": "Explicit remap, stretch, hold, posterize, sampleTimes, loops and timeRemap writers retain original Q16 interpolation and property clocks.",
+      "memoizationBounds": {
+        "scopeRoutes": 1024,
+        "frameBoundariesPerRoute": 128
+      },
+      "red": {
+        "actualMixerTestsFailedAgainstReviewHead": 4,
+        "log": "/private/tmp/pr49-placement-mixer-red.log"
+      },
+      "focusedUnits": {
+        "tests": 243,
+        "files": 6,
+        "status": "passed"
+      },
+      "mixerAndClockRegressions": {
+        "tests": 107,
+        "status": "passed"
+      },
+      "finalAffectedTestsAfterMemoizationBounds": {
+        "tests": 31,
+        "files": 2,
+        "status": "passed",
+        "log": "/private/tmp/pr49-placement-final-focused.log"
+      },
+      "completePcmRegressions": "Every stereo PCM bit and first impulse match the original 32-sample source at 7/29/59 fps and nested 29/31/7 placement; exact silence outside source bounds.",
+      "ce16Laws": {
+        "linearByteIdentical": true,
+        "equalPowerByteIdentical": true,
+        "worstAbsoluteSampleDelta": 0
+      },
+      "nativeMedia": {
+        "status": "passed",
+        "log": "/private/tmp/pr49-media-browser.log",
+        "audioAuthoring": {
+          "fractionalBoundaries": [
+            {
+              "fps": 7,
+              "backend": "canvas2d",
+              "samples": 34286,
+              "startSample": 6858,
+              "master": "sha256:09daf286c6729864e0077bdd28758f940803ed47470f3e7e2603127438ff4dcb",
+              "offline": "sha256:f3cb1bc90771ed9aa886fb0de706362b826b8b7fce9a71b9f9facb79a7cfffb2",
+              "last": [0.0625, -0.125]
+            },
+            {
+              "fps": 7,
+              "backend": "webgl2",
+              "samples": 34286,
+              "startSample": 6858,
+              "master": "sha256:09daf286c6729864e0077bdd28758f940803ed47470f3e7e2603127438ff4dcb",
+              "offline": "sha256:f3cb1bc90771ed9aa886fb0de706362b826b8b7fce9a71b9f9facb79a7cfffb2",
+              "last": [0.0625, -0.125]
+            },
+            {
+              "fps": 29,
+              "backend": "canvas2d",
+              "samples": 8276,
+              "startSample": 1656,
+              "master": "sha256:0d98fe67b27c0c1298f5a9303de1f78b63211eea90af868f4612cddd933173c0",
+              "offline": "sha256:e7d64a853753309f467f3a7c974558f3722852f723427029bc9944c3cfce808f",
+              "last": [0.0625, -0.125]
+            },
+            {
+              "fps": 29,
+              "backend": "webgl2",
+              "samples": 8276,
+              "startSample": 1656,
+              "master": "sha256:0d98fe67b27c0c1298f5a9303de1f78b63211eea90af868f4612cddd933173c0",
+              "offline": "sha256:e7d64a853753309f467f3a7c974558f3722852f723427029bc9944c3cfce808f",
+              "last": [0.0625, -0.125]
+            },
+            {
+              "fps": 59,
+              "backend": "canvas2d",
+              "samples": 4068,
+              "startSample": 814,
+              "master": "sha256:91980558b7c8ce42852ac6fe80478bec578fbb60dd84e3028a3f6d632f193392",
+              "offline": "sha256:7aac0cd3232bae8e40d3f115413300ec74a2b589ed005ed4aecb73c6a52bd77a",
+              "last": [0.0625, -0.125]
+            },
+            {
+              "fps": 59,
+              "backend": "webgl2",
+              "samples": 4068,
+              "startSample": 814,
+              "master": "sha256:91980558b7c8ce42852ac6fe80478bec578fbb60dd84e3028a3f6d632f193392",
+              "offline": "sha256:7aac0cd3232bae8e40d3f115413300ec74a2b589ed005ed4aecb73c6a52bd77a",
+              "last": [0.0625, -0.125]
+            }
+          ],
+          "sync": {
+            "samples": 120,
+            "maxFrameDifference": 1,
+            "maxSourceFrameDifference": 0
+          },
+          "webglSync": {
+            "samples": 120,
+            "maxFrameDifference": 1,
+            "maxSourceFrameDifference": 0
+          },
+          "sourcePixels": [
+            {
+              "backend": "webgl2",
+              "exactReverseSeeks": 48
+            },
+            {
+              "backend": "canvas2d",
+              "exactReverseSeeks": 48
+            }
+          ],
+          "combinedMedia": "24 frame-numbered FFV1 frames at12fps; reverse remap; animated still and lower third; matching stereo PCM",
+          "savedRevision": 3,
+          "sampleCount": 96000,
+          "rate": 48000,
+          "channels": 2,
+          "master": "all PCM sample bits exact",
+          "offlineSeek": "frame 6 through distinct last samples exact",
+          "playback": "audio clock; full final interval; seek/pause exact",
+          "gainPanEdit": "waveform changes; undo/redo exact; saved master bits exact",
+          "draftExport": "byte-identical",
+          "fixtureWaveforms": "source/processed/mix",
+          "registeredMaster": "WAV with exact captured checksum",
+          "originalAudioNotServed": true,
+          "sourceWatch": "changed source stops sound and preserves valid pixels; restored source reloads"
+        },
+        "exports": [
+          {
+            "source": "sequence",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit WAV asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          },
+          {
+            "source": "sequence",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit WAV asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count"
+          },
+          {
+            "source": "video",
+            "backend": "canvas2d",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit embedded PCM asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count",
+            "textConstrainedAudio": "measured host placement preserved; exact complete PCM; both preview/export backends"
+          },
+          {
+            "source": "video",
+            "backend": "webgl2",
+            "frames": 6,
+            "originalFrames": [0, 1, 2],
+            "repeatedMp4": "byte-identical",
+            "independentPreviewMp4": "byte-identical",
+            "rawPngTransport": "byte-identical",
+            "audioSource": "explicit embedded PCM asset",
+            "masterSamples": 12000,
+            "masterPcm": "source-bit-identical including final sample",
+            "audioDecoded": "independent AAC sample-bit-identical",
+            "audioTrackClock": "exact 48k sample count",
+            "textConstrainedAudio": "measured host placement preserved; exact complete PCM; both preview/export backends",
+            "transactionProof": "post-mux cancellation and validation rejection publish no MP4/sidecars; stages removed"
+          }
+        ]
+      },
+      "productionFpsExports": {
+        "count": 105,
+        "status": "passed",
+        "rates": [1, 7, 29, 59, 60],
+        "formats": 7,
+        "workers": ["baseline", 1, 4],
+        "matchingProofs": {
+          "1/prores4444": {
+            "proof": {
+              "encoded": [
+                "sha256:fbe707b9b0e98fa203a3ca6297a996580229e7cb7e91f00101e1946f35634afd"
+              ],
+              "decodedFrames": [
+                "sha256:d0b96fc6ed752f7790213d2991b344c8324c01997233a21428c1ef12c7d88b17",
+                "sha256:71be8a18fa56d8282b481e25fc3f5ed2cebcf9e6515fba2c5d8baed87095e5da",
+                "sha256:a318ca6f67c49aa475dec65dbfed57fd5ee1773959da9f4e47b430c93e85ce29",
+                "sha256:7f9d2a51d92d07761f92a880829d9dad6673665ada7de99bf64b7d81177640c5",
+                "sha256:4cdcbdde4bb4484b84074f0864ffb2fb2f6ed05f5b5db33f6c019ac1a02c616c"
+              ],
+              "decodedAudio": "sha256:ee8f8b89bb127c4bcf2516b574c7e442d03bbd89b5375ad00cc9736c398af723",
+              "decodedAudioBytes": 1920000
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "1/png8": {
+            "proof": {
+              "encoded": [
+                "sha256:bc6e422d2b369b9959d4bc4d543ec42de2427df0bbf21faa3ec313c4acc1ce92",
+                "sha256:d2fd8be7f23dee5d01518af30999953146f4c3ef8abdb6cf791e62b6fb546e27",
+                "sha256:967e8fc427a8e6456f6c32d15ac00f0e8120aaedb062289e12480d785852b9d7",
+                "sha256:9cd888217ebc9ccf7f7b82440c9a5934c986b259b534918aa9c7b9d0ee9f3bc8",
+                "sha256:083d8e2b6f0ff88d01383f14c9f69c65b41719538458b3dd86e19244ee1dc726"
+              ],
+              "decodedFrames": [
+                "sha256:72ffea2d70ef023bfeaf1c85c4f87498fa30b18e6093a107741ddccaa0365a71",
+                "sha256:26eb50603c73e781bd7d4f84256d324331c18e29d7192b88c01d9204c96199c2",
+                "sha256:0a5a13ceb4d530f318d95bbe1ddc96e6d11c7412381676edebf4c780d74e6047",
+                "sha256:dbc06e39c87be1a1b66477e79d784b0613e49e992a6f327e1e0ea3810903a862",
+                "sha256:38dae5a020a17f49a36002eadd5be80a94646cfee50860fc7132f0c53fdd65e9"
+              ],
+              "decodedAudio": "sha256:ee8f8b89bb127c4bcf2516b574c7e442d03bbd89b5375ad00cc9736c398af723",
+              "decodedAudioBytes": 1920000,
+              "audioBody": "sha256:3d2f72849be0e837f573c37bf4e71bf6f12e03256a4f0270ff6afda97625a3fa"
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "1/png16": {
+            "proof": {
+              "encoded": [
+                "sha256:a2cd0eb067de75227320dd6000b9046dfe95042c3728956b6a346ddd7620f0de",
+                "sha256:ed2185a7cfe5517643b30615dc8cefd58dbbd47776c07ebd04adff573130803e",
+                "sha256:fcc7556783285bd7454461b2fbda0001d74d4bdc04e6be03474c0a1353681821",
+                "sha256:c903f91cc1d21729252fb3654ad6024bc742005bd4f8ed77f9f8c83f6c954334",
+                "sha256:b2249b5a5d19a931bb008a7895f28f915e0ef2de41649d839ce38139217cc303"
+              ],
+              "decodedFrames": [
+                "sha256:aa131c3a9c08c9602b7a9f1cd90ac8f5eedf52349a78d36fa38a472da0d080f3",
+                "sha256:4267ec582919fe3ffd992ad39a8da640e3be48abd80b0fdf9d7b71faf92ab5c2",
+                "sha256:717cdba1aba8db88003a94d5aa9c5563a41309c7373423acc789bf1d0d9999f7",
+                "sha256:bbbdfd9754bcc19591cf4d330e546bdbd092b145a052188c4fac38d44baa1132",
+                "sha256:085c319d6befc0e4c73f0f7767fc8dd32643190cf4934e818dd06d1363c02f32"
+              ],
+              "decodedAudio": "sha256:ee8f8b89bb127c4bcf2516b574c7e442d03bbd89b5375ad00cc9736c398af723",
+              "decodedAudioBytes": 1920000,
+              "audioBody": "sha256:3d2f72849be0e837f573c37bf4e71bf6f12e03256a4f0270ff6afda97625a3fa"
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "1/h264": {
+            "proof": {
+              "encoded": [
+                "sha256:fcd316bcc8b0c37610bc84a6fd7b74c8818ec7d1217f7ccc02670e0fb63c7d93"
+              ],
+              "decodedFrames": [
+                "sha256:092af2943a55b5f59b735075eac512c73aaef3111199067a229b9ef68231acab",
+                "sha256:c90057db2e3e495fcdda54dafd05ffb3be1779ce98d67758016852b58b102802",
+                "sha256:70395718dfbc46f220197c22824e181ab7ac95ab9be63758acb41746eb584ce9",
+                "sha256:d2ed122d29496e51834da8764535e08148f824bca4820893b15fe43c7661aafe",
+                "sha256:67a06032cc29671785ea624c1241a21298ba1c63fe81514203a86cbf8df614fd"
+              ],
+              "decodedAudio": "sha256:8e4d9a993151beeb53b05c5294d75b563175c19c46ca307fa566b2c9bdfe984a",
+              "decodedAudioBytes": 1925120
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "1/hevc10": {
+            "proof": {
+              "encoded": [
+                "sha256:035eed382771cc0196b6fcece0c92737d38d601863a8ca61b1eb0764b96fd208"
+              ],
+              "decodedFrames": [
+                "sha256:7a0695777ad84324974205bedb5a82e037feaf37dedf5bc15e473d679c6c1a12",
+                "sha256:ccf91b1fd4e8d78929b83449894edc092db7d25c063c4506d45353249de7a8b4",
+                "sha256:fd0a0dbae865f79d2462c20dc6934acc941e875131601c6237bea620d68408b9",
+                "sha256:27ef92aa9e7816483dc74e9180f85b0679c10e63bf6f186ba8dd3b06e478b484",
+                "sha256:924a76968cd713f6099bd56e88915bc790b4715f08a26f3884e377a8aa96c5a0"
+              ],
+              "decodedAudio": "sha256:8e4d9a993151beeb53b05c5294d75b563175c19c46ca307fa566b2c9bdfe984a",
+              "decodedAudioBytes": 1925120
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "1/prores422hq": {
+            "proof": {
+              "encoded": [
+                "sha256:315d0ed3422982967124caa3e6224b0a6914e8868a321eeea17ceee206452654"
+              ],
+              "decodedFrames": [
+                "sha256:660be0a7a749817a0e9c4ca70d18eb62f8788cd5a425db0dfc918cdf934bd416",
+                "sha256:32fb67b480e23bd9d21ae0adbdf3565f8819630a19c510025286514669010868",
+                "sha256:2f9a80c89e670e2687755e8e0a8e979a430914fb88e7e8f24727a85898ccf73a",
+                "sha256:b9587f6afd78d18ccc436a74ca62c039a087f1519db5f4d22cafb2ffb1839316",
+                "sha256:b1575b3a1c51b43fa7f7e74a72bcd9188798acfc1ebbfa51ffe26ebdea862151"
+              ],
+              "decodedAudio": "sha256:ee8f8b89bb127c4bcf2516b574c7e442d03bbd89b5375ad00cc9736c398af723",
+              "decodedAudioBytes": 1920000
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "1/vp9alpha": {
+            "proof": {
+              "encoded": [
+                "sha256:eee3563a2a81fbea115fe8e4d027b9ce7d46dca99acb4787d15575109767b841"
+              ],
+              "decodedFrames": [
+                "sha256:bee23c8db1be21cd4e9d52a3e8f7411b87c3bbddc1bc2adf7061909475f2da2a",
+                "sha256:c78993e6aa75ba2c763af4ffa23ab762aabbeead457c831f5cec0634550cac2a",
+                "sha256:298ef46530371ffb927da4a0de18244c06099602da8b91d8dc14740ac9eb2e13",
+                "sha256:3985d68195147e7028f859824c947559ae80dca8f9bae9af7039ebc1ef2b0d78",
+                "sha256:2fc93d7257e69a2b46ed8f850ddb8584f59914b4ec1d3a90b4acad3b5b214bea"
+              ],
+              "decodedAudio": "sha256:c6818c3b00df23e8b95573a54b43b672ff4fc24f441cb8dc2b38a40a4ed6de92",
+              "decodedAudioBytes": 1920000
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "7/prores4444": {
+            "proof": {
+              "encoded": [
+                "sha256:f11f2010428ae59910eb8f091d5d9bd28a90523ccb8802c59c9f9a45f7e1e116"
+              ],
+              "decodedFrames": [
+                "sha256:d0b96fc6ed752f7790213d2991b344c8324c01997233a21428c1ef12c7d88b17",
+                "sha256:71be8a18fa56d8282b481e25fc3f5ed2cebcf9e6515fba2c5d8baed87095e5da",
+                "sha256:a318ca6f67c49aa475dec65dbfed57fd5ee1773959da9f4e47b430c93e85ce29",
+                "sha256:7f9d2a51d92d07761f92a880829d9dad6673665ada7de99bf64b7d81177640c5",
+                "sha256:4cdcbdde4bb4484b84074f0864ffb2fb2f6ed05f5b5db33f6c019ac1a02c616c"
+              ],
+              "decodedAudio": "sha256:a36c85c3c820169c9a326f23095c59ff850e94d1c4c1a4d69a5e665e6a395d84",
+              "decodedAudioBytes": 274288
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "7/png8": {
+            "proof": {
+              "encoded": [
+                "sha256:bc6e422d2b369b9959d4bc4d543ec42de2427df0bbf21faa3ec313c4acc1ce92",
+                "sha256:d2fd8be7f23dee5d01518af30999953146f4c3ef8abdb6cf791e62b6fb546e27",
+                "sha256:967e8fc427a8e6456f6c32d15ac00f0e8120aaedb062289e12480d785852b9d7",
+                "sha256:9cd888217ebc9ccf7f7b82440c9a5934c986b259b534918aa9c7b9d0ee9f3bc8",
+                "sha256:083d8e2b6f0ff88d01383f14c9f69c65b41719538458b3dd86e19244ee1dc726"
+              ],
+              "decodedFrames": [
+                "sha256:72ffea2d70ef023bfeaf1c85c4f87498fa30b18e6093a107741ddccaa0365a71",
+                "sha256:26eb50603c73e781bd7d4f84256d324331c18e29d7192b88c01d9204c96199c2",
+                "sha256:0a5a13ceb4d530f318d95bbe1ddc96e6d11c7412381676edebf4c780d74e6047",
+                "sha256:dbc06e39c87be1a1b66477e79d784b0613e49e992a6f327e1e0ea3810903a862",
+                "sha256:38dae5a020a17f49a36002eadd5be80a94646cfee50860fc7132f0c53fdd65e9"
+              ],
+              "decodedAudio": "sha256:a36c85c3c820169c9a326f23095c59ff850e94d1c4c1a4d69a5e665e6a395d84",
+              "decodedAudioBytes": 274288,
+              "audioBody": "sha256:408645dec5e411d7907acfb01df9351eb08475f60c35b3143e0a4934b38c4914"
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "7/png16": {
+            "proof": {
+              "encoded": [
+                "sha256:a2cd0eb067de75227320dd6000b9046dfe95042c3728956b6a346ddd7620f0de",
+                "sha256:ed2185a7cfe5517643b30615dc8cefd58dbbd47776c07ebd04adff573130803e",
+                "sha256:fcc7556783285bd7454461b2fbda0001d74d4bdc04e6be03474c0a1353681821",
+                "sha256:c903f91cc1d21729252fb3654ad6024bc742005bd4f8ed77f9f8c83f6c954334",
+                "sha256:b2249b5a5d19a931bb008a7895f28f915e0ef2de41649d839ce38139217cc303"
+              ],
+              "decodedFrames": [
+                "sha256:aa131c3a9c08c9602b7a9f1cd90ac8f5eedf52349a78d36fa38a472da0d080f3",
+                "sha256:4267ec582919fe3ffd992ad39a8da640e3be48abd80b0fdf9d7b71faf92ab5c2",
+                "sha256:717cdba1aba8db88003a94d5aa9c5563a41309c7373423acc789bf1d0d9999f7",
+                "sha256:bbbdfd9754bcc19591cf4d330e546bdbd092b145a052188c4fac38d44baa1132",
+                "sha256:085c319d6befc0e4c73f0f7767fc8dd32643190cf4934e818dd06d1363c02f32"
+              ],
+              "decodedAudio": "sha256:a36c85c3c820169c9a326f23095c59ff850e94d1c4c1a4d69a5e665e6a395d84",
+              "decodedAudioBytes": 274288,
+              "audioBody": "sha256:408645dec5e411d7907acfb01df9351eb08475f60c35b3143e0a4934b38c4914"
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "7/h264": {
+            "proof": {
+              "encoded": [
+                "sha256:a68ea8b4f3b9f4919984bfde4ade8317ef8ae3d319b90d66ad28575c66dbeaaf"
+              ],
+              "decodedFrames": [
+                "sha256:ea5675d47003a85941f3045bb7fc64dd77180e524e571415035e4a17c394613f",
+                "sha256:896d08ba9a70978a4e61863391fb77f7e6911f7cbabb3acfbace9fce03938a13",
+                "sha256:c557a30e2da5378ebb0409520318c241f690de79c3c083924b34f551360052cb",
+                "sha256:320bb455ae5fed733a4a47bea2ea60b64c24bc662dc680676bbb31eddfa53f9b",
+                "sha256:b2bcf12c2d3f016e202033f3a16e91cf774661dfc91de1df7146dad72107e38b"
+              ],
+              "decodedAudio": "sha256:e5848f0d37e11438cd7888fd64c1248be1f4f07773f63a7226908e7455481db7",
+              "decodedAudioBytes": 278528
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "7/hevc10": {
+            "proof": {
+              "encoded": [
+                "sha256:08f39b33ba727361a447afb2a57cdde796909d8ff4ec6be38421082cc9683899"
+              ],
+              "decodedFrames": [
+                "sha256:49730073fd2cc04620c5336dd18083b8b2c58fbfa22cb84aaa7992c033ae6871",
+                "sha256:365decf784fbb4245692661a95aa1ea5085683aadab98eec5ed9b895dc3219be",
+                "sha256:3aeb02ddeac3515b06d3d2d925d2c6c708582e32df1bb8831d38117571753bb7",
+                "sha256:28d848d61f97571a4d514c906eba156243f1a84a5dad3f9139de89c19ed4579a",
+                "sha256:23211d24b36ae769c981d01248eea1e320ce9080402bca9491f530365363876d"
+              ],
+              "decodedAudio": "sha256:e5848f0d37e11438cd7888fd64c1248be1f4f07773f63a7226908e7455481db7",
+              "decodedAudioBytes": 278528
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "7/prores422hq": {
+            "proof": {
+              "encoded": [
+                "sha256:d7f822ca20209f90e576dcf5fbc1ae60ecae9307d602631819a940c9f307427e"
+              ],
+              "decodedFrames": [
+                "sha256:660be0a7a749817a0e9c4ca70d18eb62f8788cd5a425db0dfc918cdf934bd416",
+                "sha256:32fb67b480e23bd9d21ae0adbdf3565f8819630a19c510025286514669010868",
+                "sha256:2f9a80c89e670e2687755e8e0a8e979a430914fb88e7e8f24727a85898ccf73a",
+                "sha256:b9587f6afd78d18ccc436a74ca62c039a087f1519db5f4d22cafb2ffb1839316",
+                "sha256:b1575b3a1c51b43fa7f7e74a72bcd9188798acfc1ebbfa51ffe26ebdea862151"
+              ],
+              "decodedAudio": "sha256:a36c85c3c820169c9a326f23095c59ff850e94d1c4c1a4d69a5e665e6a395d84",
+              "decodedAudioBytes": 274288
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "7/vp9alpha": {
+            "proof": {
+              "encoded": [
+                "sha256:d1440381db9a364dae6e787e8e45cea62945a00fdcf783a1f21cc828fce4088c"
+              ],
+              "decodedFrames": [
+                "sha256:bee23c8db1be21cd4e9d52a3e8f7411b87c3bbddc1bc2adf7061909475f2da2a",
+                "sha256:c78993e6aa75ba2c763af4ffa23ab762aabbeead457c831f5cec0634550cac2a",
+                "sha256:298ef46530371ffb927da4a0de18244c06099602da8b91d8dc14740ac9eb2e13",
+                "sha256:3985d68195147e7028f859824c947559ae80dca8f9bae9af7039ebc1ef2b0d78",
+                "sha256:2fc93d7257e69a2b46ed8f850ddb8584f59914b4ec1d3a90b4acad3b5b214bea"
+              ],
+              "decodedAudio": "sha256:3ac6184d2a31c201bb203c6282d79ec37084801deede35885e3052344a893d21",
+              "decodedAudioBytes": 274288
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "29/prores4444": {
+            "proof": {
+              "encoded": [
+                "sha256:272f8c0be64c2a80bc41c549edfb8123133783ba20fada93220ea9896c15acc9"
+              ],
+              "decodedFrames": [
+                "sha256:d0b96fc6ed752f7790213d2991b344c8324c01997233a21428c1ef12c7d88b17",
+                "sha256:71be8a18fa56d8282b481e25fc3f5ed2cebcf9e6515fba2c5d8baed87095e5da",
+                "sha256:a318ca6f67c49aa475dec65dbfed57fd5ee1773959da9f4e47b430c93e85ce29",
+                "sha256:7f9d2a51d92d07761f92a880829d9dad6673665ada7de99bf64b7d81177640c5",
+                "sha256:4cdcbdde4bb4484b84074f0864ffb2fb2f6ed05f5b5db33f6c019ac1a02c616c"
+              ],
+              "decodedAudio": "sha256:dbd2aa8cd09e3ee8d3b505d12259338d81d747b3a336a7a100e70741695a2b49",
+              "decodedAudioBytes": 66208
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "29/png8": {
+            "proof": {
+              "encoded": [
+                "sha256:bc6e422d2b369b9959d4bc4d543ec42de2427df0bbf21faa3ec313c4acc1ce92",
+                "sha256:d2fd8be7f23dee5d01518af30999953146f4c3ef8abdb6cf791e62b6fb546e27",
+                "sha256:967e8fc427a8e6456f6c32d15ac00f0e8120aaedb062289e12480d785852b9d7",
+                "sha256:9cd888217ebc9ccf7f7b82440c9a5934c986b259b534918aa9c7b9d0ee9f3bc8",
+                "sha256:083d8e2b6f0ff88d01383f14c9f69c65b41719538458b3dd86e19244ee1dc726"
+              ],
+              "decodedFrames": [
+                "sha256:72ffea2d70ef023bfeaf1c85c4f87498fa30b18e6093a107741ddccaa0365a71",
+                "sha256:26eb50603c73e781bd7d4f84256d324331c18e29d7192b88c01d9204c96199c2",
+                "sha256:0a5a13ceb4d530f318d95bbe1ddc96e6d11c7412381676edebf4c780d74e6047",
+                "sha256:dbc06e39c87be1a1b66477e79d784b0613e49e992a6f327e1e0ea3810903a862",
+                "sha256:38dae5a020a17f49a36002eadd5be80a94646cfee50860fc7132f0c53fdd65e9"
+              ],
+              "decodedAudio": "sha256:dbd2aa8cd09e3ee8d3b505d12259338d81d747b3a336a7a100e70741695a2b49",
+              "decodedAudioBytes": 66208,
+              "audioBody": "sha256:870844654689a3b75f2d47c1953790950671bc54de4466846131ec645164a3af"
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "29/png16": {
+            "proof": {
+              "encoded": [
+                "sha256:a2cd0eb067de75227320dd6000b9046dfe95042c3728956b6a346ddd7620f0de",
+                "sha256:ed2185a7cfe5517643b30615dc8cefd58dbbd47776c07ebd04adff573130803e",
+                "sha256:fcc7556783285bd7454461b2fbda0001d74d4bdc04e6be03474c0a1353681821",
+                "sha256:c903f91cc1d21729252fb3654ad6024bc742005bd4f8ed77f9f8c83f6c954334",
+                "sha256:b2249b5a5d19a931bb008a7895f28f915e0ef2de41649d839ce38139217cc303"
+              ],
+              "decodedFrames": [
+                "sha256:aa131c3a9c08c9602b7a9f1cd90ac8f5eedf52349a78d36fa38a472da0d080f3",
+                "sha256:4267ec582919fe3ffd992ad39a8da640e3be48abd80b0fdf9d7b71faf92ab5c2",
+                "sha256:717cdba1aba8db88003a94d5aa9c5563a41309c7373423acc789bf1d0d9999f7",
+                "sha256:bbbdfd9754bcc19591cf4d330e546bdbd092b145a052188c4fac38d44baa1132",
+                "sha256:085c319d6befc0e4c73f0f7767fc8dd32643190cf4934e818dd06d1363c02f32"
+              ],
+              "decodedAudio": "sha256:dbd2aa8cd09e3ee8d3b505d12259338d81d747b3a336a7a100e70741695a2b49",
+              "decodedAudioBytes": 66208,
+              "audioBody": "sha256:870844654689a3b75f2d47c1953790950671bc54de4466846131ec645164a3af"
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "29/h264": {
+            "proof": {
+              "encoded": [
+                "sha256:f19c93bebdcb64f391ba7be1385ff9488c29191302307df296245f8862d53973"
+              ],
+              "decodedFrames": [
+                "sha256:16c96b20495e1f580961145c4afd9490aba09da23fd1a50ce1f9d7b56e67582a",
+                "sha256:1a261153e530f087296a73e2854c6c7090427b5fab76bd052cdadbb1a3bdc919",
+                "sha256:d461fd6d04a7b84ba1e8a15059e0e5d15c1dd8e4e9d637e8786c4f37846f3609",
+                "sha256:0acedae66a91a522c7ab6e21a6132d53d03302a978e338aeef771f15053aae4a",
+                "sha256:ff7cdd2a56c33ef82a39e3431447227f25d962ede17f6adaa992a51c1f219e23"
+              ],
+              "decodedAudio": "sha256:2d4f235e871b557af5cd81860f70c308e687d5b2a7f675d61af6910ffb909875",
+              "decodedAudioBytes": 73728
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "29/hevc10": {
+            "proof": {
+              "encoded": [
+                "sha256:1bdd8fb983bc96c38586b8805027b318a3734a62c4af2b1285edc5171db84e9a"
+              ],
+              "decodedFrames": [
+                "sha256:8c8614d3ce3f9d40e2cb4789287aa3b3feb7a6da58a9d4a5f21ef2485f276839",
+                "sha256:369fef25fa15e50317c6054d56a50bd67ca5b94e0bf6e379539b53254d5c9135",
+                "sha256:419da5adb2daca15db7dc1859bbc188f53f793ad7df828a4f580abd4491fa028",
+                "sha256:a4d1f3f0ad562df0a699d17a1c9d7eeafcbd973b7868a3fb967560956a40ae94",
+                "sha256:a17e1162a2d90460857f8162592bde0b8bc279d557423e6a3c578b521e93a366"
+              ],
+              "decodedAudio": "sha256:2d4f235e871b557af5cd81860f70c308e687d5b2a7f675d61af6910ffb909875",
+              "decodedAudioBytes": 73728
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "29/prores422hq": {
+            "proof": {
+              "encoded": [
+                "sha256:6684ec43cf824c8306261c303f4dc77dbd2b6f72af8091d8587f3d9a822b4586"
+              ],
+              "decodedFrames": [
+                "sha256:660be0a7a749817a0e9c4ca70d18eb62f8788cd5a425db0dfc918cdf934bd416",
+                "sha256:32fb67b480e23bd9d21ae0adbdf3565f8819630a19c510025286514669010868",
+                "sha256:2f9a80c89e670e2687755e8e0a8e979a430914fb88e7e8f24727a85898ccf73a",
+                "sha256:b9587f6afd78d18ccc436a74ca62c039a087f1519db5f4d22cafb2ffb1839316",
+                "sha256:b1575b3a1c51b43fa7f7e74a72bcd9188798acfc1ebbfa51ffe26ebdea862151"
+              ],
+              "decodedAudio": "sha256:dbd2aa8cd09e3ee8d3b505d12259338d81d747b3a336a7a100e70741695a2b49",
+              "decodedAudioBytes": 66208
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "29/vp9alpha": {
+            "proof": {
+              "encoded": [
+                "sha256:77e875c786bb6b58762aa3f66839678fd180c3302f0ba9c9c6d3f1975a5b32c5"
+              ],
+              "decodedFrames": [
+                "sha256:bee23c8db1be21cd4e9d52a3e8f7411b87c3bbddc1bc2adf7061909475f2da2a",
+                "sha256:c78993e6aa75ba2c763af4ffa23ab762aabbeead457c831f5cec0634550cac2a",
+                "sha256:298ef46530371ffb927da4a0de18244c06099602da8b91d8dc14740ac9eb2e13",
+                "sha256:3985d68195147e7028f859824c947559ae80dca8f9bae9af7039ebc1ef2b0d78",
+                "sha256:2fc93d7257e69a2b46ed8f850ddb8584f59914b4ec1d3a90b4acad3b5b214bea"
+              ],
+              "decodedAudio": "sha256:f5d67961e379f820992dd1f83a42ca7bdbac99090713e576c93cb717245f388a",
+              "decodedAudioBytes": 66208
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "59/prores4444": {
+            "proof": {
+              "encoded": [
+                "sha256:7f2b2c31d03cf719dbbc66ddee1125e7a8fa067332beee12fac28a11c16855bb"
+              ],
+              "decodedFrames": [
+                "sha256:d0b96fc6ed752f7790213d2991b344c8324c01997233a21428c1ef12c7d88b17",
+                "sha256:71be8a18fa56d8282b481e25fc3f5ed2cebcf9e6515fba2c5d8baed87095e5da",
+                "sha256:a318ca6f67c49aa475dec65dbfed57fd5ee1773959da9f4e47b430c93e85ce29",
+                "sha256:7f9d2a51d92d07761f92a880829d9dad6673665ada7de99bf64b7d81177640c5",
+                "sha256:4cdcbdde4bb4484b84074f0864ffb2fb2f6ed05f5b5db33f6c019ac1a02c616c"
+              ],
+              "decodedAudio": "sha256:4c692f01f477fb34623aa2559e42dee95824d3c38218432882613b7f9be975ab",
+              "decodedAudioBytes": 32544
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "59/png8": {
+            "proof": {
+              "encoded": [
+                "sha256:bc6e422d2b369b9959d4bc4d543ec42de2427df0bbf21faa3ec313c4acc1ce92",
+                "sha256:d2fd8be7f23dee5d01518af30999953146f4c3ef8abdb6cf791e62b6fb546e27",
+                "sha256:967e8fc427a8e6456f6c32d15ac00f0e8120aaedb062289e12480d785852b9d7",
+                "sha256:9cd888217ebc9ccf7f7b82440c9a5934c986b259b534918aa9c7b9d0ee9f3bc8",
+                "sha256:083d8e2b6f0ff88d01383f14c9f69c65b41719538458b3dd86e19244ee1dc726"
+              ],
+              "decodedFrames": [
+                "sha256:72ffea2d70ef023bfeaf1c85c4f87498fa30b18e6093a107741ddccaa0365a71",
+                "sha256:26eb50603c73e781bd7d4f84256d324331c18e29d7192b88c01d9204c96199c2",
+                "sha256:0a5a13ceb4d530f318d95bbe1ddc96e6d11c7412381676edebf4c780d74e6047",
+                "sha256:dbc06e39c87be1a1b66477e79d784b0613e49e992a6f327e1e0ea3810903a862",
+                "sha256:38dae5a020a17f49a36002eadd5be80a94646cfee50860fc7132f0c53fdd65e9"
+              ],
+              "decodedAudio": "sha256:4c692f01f477fb34623aa2559e42dee95824d3c38218432882613b7f9be975ab",
+              "decodedAudioBytes": 32544,
+              "audioBody": "sha256:a8ded3967816444ac42285148ea45361b1f7b5c717aa9a6a35cd609b2c7e24b9"
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "59/png16": {
+            "proof": {
+              "encoded": [
+                "sha256:a2cd0eb067de75227320dd6000b9046dfe95042c3728956b6a346ddd7620f0de",
+                "sha256:ed2185a7cfe5517643b30615dc8cefd58dbbd47776c07ebd04adff573130803e",
+                "sha256:fcc7556783285bd7454461b2fbda0001d74d4bdc04e6be03474c0a1353681821",
+                "sha256:c903f91cc1d21729252fb3654ad6024bc742005bd4f8ed77f9f8c83f6c954334",
+                "sha256:b2249b5a5d19a931bb008a7895f28f915e0ef2de41649d839ce38139217cc303"
+              ],
+              "decodedFrames": [
+                "sha256:aa131c3a9c08c9602b7a9f1cd90ac8f5eedf52349a78d36fa38a472da0d080f3",
+                "sha256:4267ec582919fe3ffd992ad39a8da640e3be48abd80b0fdf9d7b71faf92ab5c2",
+                "sha256:717cdba1aba8db88003a94d5aa9c5563a41309c7373423acc789bf1d0d9999f7",
+                "sha256:bbbdfd9754bcc19591cf4d330e546bdbd092b145a052188c4fac38d44baa1132",
+                "sha256:085c319d6befc0e4c73f0f7767fc8dd32643190cf4934e818dd06d1363c02f32"
+              ],
+              "decodedAudio": "sha256:4c692f01f477fb34623aa2559e42dee95824d3c38218432882613b7f9be975ab",
+              "decodedAudioBytes": 32544,
+              "audioBody": "sha256:a8ded3967816444ac42285148ea45361b1f7b5c717aa9a6a35cd609b2c7e24b9"
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "59/h264": {
+            "proof": {
+              "encoded": [
+                "sha256:49089ffd0225b4b1b3ae60fc35570144e8584a5f6b07a9884b8f208e7ef7206e"
+              ],
+              "decodedFrames": [
+                "sha256:ab199f914eccf3d42468a1613cd372ccd142bde17571c8dbb03e57350d83383b",
+                "sha256:ab2af6055257d239542203aa1ee30a3d8a146a9963bbc6fb6fb1236cf91de1b6",
+                "sha256:1b3888ac0151d98b635874c0251091e2273385488aa76278a28449b7cd9ccb4a",
+                "sha256:db194629fc38dfb83792ccd0872169907a55a1c62634bee81e3b861ca0bc6f2d",
+                "sha256:bf2e8c2c06dd7d36bb027f31f596632cd9aded499192a4d4afc11dcff5618d6f"
+              ],
+              "decodedAudio": "sha256:8519cc8db5d358ae741e2f32084e192ec7213783bb51f3a73a7a2333f9ef8542",
+              "decodedAudioBytes": 32768
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "59/hevc10": {
+            "proof": {
+              "encoded": [
+                "sha256:e96831b1e4458882d80f878111c6593a04bfc68653c369455614e7158ce9b16b"
+              ],
+              "decodedFrames": [
+                "sha256:f10b4bbea7913add4f66c23f185951c31abe72cffad212ddb5816c6bd5ab8306",
+                "sha256:ba75a39ff53322daaa24f1faf994e937e535aada2444f8fdf27f9d62d0490a2b",
+                "sha256:30a541761cfcf7d7bc1ba8730a04bcebef17eb375cf67060b6e7cc50973f46d2",
+                "sha256:9fd973f9ba4e5cd085e8b703b18ab5cc8fc1a30c8fc2c45ea5aa498a3ba19e71",
+                "sha256:9f046cd7ca650f0a0e93721ce9fa3bedbb3960c65984d708b379dcf34dc353b9"
+              ],
+              "decodedAudio": "sha256:8519cc8db5d358ae741e2f32084e192ec7213783bb51f3a73a7a2333f9ef8542",
+              "decodedAudioBytes": 32768
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "59/prores422hq": {
+            "proof": {
+              "encoded": [
+                "sha256:4ecef8e93d5c819ddd4935fdc82bc20e4253acbde13ab76c41e113c18cfdb46a"
+              ],
+              "decodedFrames": [
+                "sha256:660be0a7a749817a0e9c4ca70d18eb62f8788cd5a425db0dfc918cdf934bd416",
+                "sha256:32fb67b480e23bd9d21ae0adbdf3565f8819630a19c510025286514669010868",
+                "sha256:2f9a80c89e670e2687755e8e0a8e979a430914fb88e7e8f24727a85898ccf73a",
+                "sha256:b9587f6afd78d18ccc436a74ca62c039a087f1519db5f4d22cafb2ffb1839316",
+                "sha256:b1575b3a1c51b43fa7f7e74a72bcd9188798acfc1ebbfa51ffe26ebdea862151"
+              ],
+              "decodedAudio": "sha256:4c692f01f477fb34623aa2559e42dee95824d3c38218432882613b7f9be975ab",
+              "decodedAudioBytes": 32544
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "59/vp9alpha": {
+            "proof": {
+              "encoded": [
+                "sha256:e935834fb5730da07b62a69293b06b28b36490ff0bcce9ca4be8077dbe2db4c2"
+              ],
+              "decodedFrames": [
+                "sha256:bee23c8db1be21cd4e9d52a3e8f7411b87c3bbddc1bc2adf7061909475f2da2a",
+                "sha256:c78993e6aa75ba2c763af4ffa23ab762aabbeead457c831f5cec0634550cac2a",
+                "sha256:298ef46530371ffb927da4a0de18244c06099602da8b91d8dc14740ac9eb2e13",
+                "sha256:3985d68195147e7028f859824c947559ae80dca8f9bae9af7039ebc1ef2b0d78",
+                "sha256:2fc93d7257e69a2b46ed8f850ddb8584f59914b4ec1d3a90b4acad3b5b214bea"
+              ],
+              "decodedAudio": "sha256:fc5c8a73340c2ef0d95318f3eda2d85ef8c2c81fa29ada3acac64e4ed12db3c3",
+              "decodedAudioBytes": 32544
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "60/prores4444": {
+            "proof": {
+              "encoded": [
+                "sha256:f26547061a339d1084c3de08178d49ee401d27a2b5f238f6903cb363a56b9c83"
+              ],
+              "decodedFrames": [
+                "sha256:d0b96fc6ed752f7790213d2991b344c8324c01997233a21428c1ef12c7d88b17",
+                "sha256:71be8a18fa56d8282b481e25fc3f5ed2cebcf9e6515fba2c5d8baed87095e5da",
+                "sha256:a318ca6f67c49aa475dec65dbfed57fd5ee1773959da9f4e47b430c93e85ce29",
+                "sha256:7f9d2a51d92d07761f92a880829d9dad6673665ada7de99bf64b7d81177640c5",
+                "sha256:4cdcbdde4bb4484b84074f0864ffb2fb2f6ed05f5b5db33f6c019ac1a02c616c"
+              ],
+              "decodedAudio": "sha256:d8fe10ce9257bd97f61a4d537eacc4d34219302a44abe9042185bf2b39200e69",
+              "decodedAudioBytes": 32000
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "60/png8": {
+            "proof": {
+              "encoded": [
+                "sha256:bc6e422d2b369b9959d4bc4d543ec42de2427df0bbf21faa3ec313c4acc1ce92",
+                "sha256:d2fd8be7f23dee5d01518af30999953146f4c3ef8abdb6cf791e62b6fb546e27",
+                "sha256:967e8fc427a8e6456f6c32d15ac00f0e8120aaedb062289e12480d785852b9d7",
+                "sha256:9cd888217ebc9ccf7f7b82440c9a5934c986b259b534918aa9c7b9d0ee9f3bc8",
+                "sha256:083d8e2b6f0ff88d01383f14c9f69c65b41719538458b3dd86e19244ee1dc726"
+              ],
+              "decodedFrames": [
+                "sha256:72ffea2d70ef023bfeaf1c85c4f87498fa30b18e6093a107741ddccaa0365a71",
+                "sha256:26eb50603c73e781bd7d4f84256d324331c18e29d7192b88c01d9204c96199c2",
+                "sha256:0a5a13ceb4d530f318d95bbe1ddc96e6d11c7412381676edebf4c780d74e6047",
+                "sha256:dbc06e39c87be1a1b66477e79d784b0613e49e992a6f327e1e0ea3810903a862",
+                "sha256:38dae5a020a17f49a36002eadd5be80a94646cfee50860fc7132f0c53fdd65e9"
+              ],
+              "decodedAudio": "sha256:d8fe10ce9257bd97f61a4d537eacc4d34219302a44abe9042185bf2b39200e69",
+              "decodedAudioBytes": 32000,
+              "audioBody": "sha256:f2027ea0b485baff3143c1079dcdd2465963ee809cbe60976c7449ec58d977be"
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "60/png16": {
+            "proof": {
+              "encoded": [
+                "sha256:a2cd0eb067de75227320dd6000b9046dfe95042c3728956b6a346ddd7620f0de",
+                "sha256:ed2185a7cfe5517643b30615dc8cefd58dbbd47776c07ebd04adff573130803e",
+                "sha256:fcc7556783285bd7454461b2fbda0001d74d4bdc04e6be03474c0a1353681821",
+                "sha256:c903f91cc1d21729252fb3654ad6024bc742005bd4f8ed77f9f8c83f6c954334",
+                "sha256:b2249b5a5d19a931bb008a7895f28f915e0ef2de41649d839ce38139217cc303"
+              ],
+              "decodedFrames": [
+                "sha256:aa131c3a9c08c9602b7a9f1cd90ac8f5eedf52349a78d36fa38a472da0d080f3",
+                "sha256:4267ec582919fe3ffd992ad39a8da640e3be48abd80b0fdf9d7b71faf92ab5c2",
+                "sha256:717cdba1aba8db88003a94d5aa9c5563a41309c7373423acc789bf1d0d9999f7",
+                "sha256:bbbdfd9754bcc19591cf4d330e546bdbd092b145a052188c4fac38d44baa1132",
+                "sha256:085c319d6befc0e4c73f0f7767fc8dd32643190cf4934e818dd06d1363c02f32"
+              ],
+              "decodedAudio": "sha256:d8fe10ce9257bd97f61a4d537eacc4d34219302a44abe9042185bf2b39200e69",
+              "decodedAudioBytes": 32000,
+              "audioBody": "sha256:f2027ea0b485baff3143c1079dcdd2465963ee809cbe60976c7449ec58d977be"
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "60/h264": {
+            "proof": {
+              "encoded": [
+                "sha256:9507c938af80d2bd3dac3697e62f13f34754fb772addd4b1230bfeab7ee026de"
+              ],
+              "decodedFrames": [
+                "sha256:ab199f914eccf3d42468a1613cd372ccd142bde17571c8dbb03e57350d83383b",
+                "sha256:d1a4da5e1bbbfaf4ea3dd5e201e21de171e9e34e5cf4565a3145cdcc3ad9f8fa",
+                "sha256:fa3de1b1e977df7835a14bb88cc0611b6a0418a3500d1f6e10f95ba16c4e37ee",
+                "sha256:aab822ad1f2869cc96170002340dd596b3c673191591670846fffb203ef77853",
+                "sha256:0a78ad6e56b6fd5003a62f7b50a38eb27b3947183bf78779be875278791aa354"
+              ],
+              "decodedAudio": "sha256:f63b0ed6725f6315621cfb386addbd8ce5e45c66e3731321e105a3aefdadc122",
+              "decodedAudioBytes": 32768
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "60/hevc10": {
+            "proof": {
+              "encoded": [
+                "sha256:f6f723b02715c14df41e3e235b05c6f7341aa9fdc790be2f0e99a6ad98f3e554"
+              ],
+              "decodedFrames": [
+                "sha256:fa034773ee4d2501c359a9f3e0e259022ee621d07a1a5e4dd2a194bbd1966a59",
+                "sha256:813a32fab681414af3bc48deba5ae90fcb4714f3673e318dd8410c539200aa8c",
+                "sha256:9067b63a6b5a0402fbf799b937df734ce6c7adbb18dc9537882b1ec858bf0e3a",
+                "sha256:f9ed30d18230ff8c88aff55910f3b4f89c2af931e518c243a406a5c31de535b8",
+                "sha256:874f15d88da08831c240aac47b9cfaf13a4a3102fff66e935c7a6c547d2b2155"
+              ],
+              "decodedAudio": "sha256:f63b0ed6725f6315621cfb386addbd8ce5e45c66e3731321e105a3aefdadc122",
+              "decodedAudioBytes": 32768
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "60/prores422hq": {
+            "proof": {
+              "encoded": [
+                "sha256:5e34a45364adaf138bee36fb6f8d5c35395f0b96d114f709f192d53f5c9afe84"
+              ],
+              "decodedFrames": [
+                "sha256:660be0a7a749817a0e9c4ca70d18eb62f8788cd5a425db0dfc918cdf934bd416",
+                "sha256:32fb67b480e23bd9d21ae0adbdf3565f8819630a19c510025286514669010868",
+                "sha256:2f9a80c89e670e2687755e8e0a8e979a430914fb88e7e8f24727a85898ccf73a",
+                "sha256:b9587f6afd78d18ccc436a74ca62c039a087f1519db5f4d22cafb2ffb1839316",
+                "sha256:b1575b3a1c51b43fa7f7e74a72bcd9188798acfc1ebbfa51ffe26ebdea862151"
+              ],
+              "decodedAudio": "sha256:d8fe10ce9257bd97f61a4d537eacc4d34219302a44abe9042185bf2b39200e69",
+              "decodedAudioBytes": 32000
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          },
+          "60/vp9alpha": {
+            "proof": {
+              "encoded": [
+                "sha256:173925f88e638c73b599e25e37d4e7bacd7df4448007904add10f385c024a2e0"
+              ],
+              "decodedFrames": [
+                "sha256:bee23c8db1be21cd4e9d52a3e8f7411b87c3bbddc1bc2adf7061909475f2da2a",
+                "sha256:c78993e6aa75ba2c763af4ffa23ab762aabbeead457c831f5cec0634550cac2a",
+                "sha256:298ef46530371ffb927da4a0de18244c06099602da8b91d8dc14740ac9eb2e13",
+                "sha256:3985d68195147e7028f859824c947559ae80dca8f9bae9af7039ebc1ef2b0d78",
+                "sha256:2fc93d7257e69a2b46ed8f850ddb8584f59914b4ec1d3a90b4acad3b5b214bea"
+              ],
+              "decodedAudio": "sha256:ed241c58ab0191dd2e48838a8bfa01b19fed8af52e8466c058089423f2a0c546",
+              "decodedAudioBytes": 32000
+            },
+            "passedWorkers": ["baseline", 1, 4]
+          }
+        },
+        "log": "/private/tmp/pr49-fps-audio-browser.log"
+      },
+      "independentReview": "No actionable findings remain in all three repair diffs.",
+      "staticChecks": {
+        "build": "passed",
+        "scopedLint": "passed",
+        "format": "passed",
+        "packageBoundaries": "passed",
+        "diffWhitespace": "passed"
+      }
     }
   },
   "delivery": {
     "policy": "One finding per commit; one normal push after final commit",
-    "status": "pending"
+    "status": "All three findings verified; this final finding commit is the delivery checkpoint for one normal push to codex/composition-ce15."
   },
   "reviewComments": {
     "1": "https://github.com/xxibcill/still-shift/pull/49#discussion_r4227044481",

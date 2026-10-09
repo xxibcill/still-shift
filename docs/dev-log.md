@@ -43,7 +43,10 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #49 second review repairs (2026-10-09):** Shared tint capacity and protected narration validation are repaired. Natural PCM placement is the remaining finding commit; verification is complete and one normal push follows that commit.
+- **PR #49 second review repairs (2026-10-09):** All three findings posted on
+  `2cd76eca` are repaired and verified, with one commit per finding and one
+  final normal push to the PR branch. Owner review/merge is next; the owner
+  checkout is untouched.
   Focused follow-up checks only; no full repository gate run or claimed.
   [Second review evidence](./pr-49-second-review-fix-results.json).
 
@@ -98,21 +101,48 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-09 — PR #49 exact natural audio origins
+
+- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head
+  `2cd76eca`.
+- **Done:** Preserve complete natural PCM using exact accumulated placement
+  origins; retain authored property/remapping clocks and bump evaluator
+  compatibility to 57.
+- **Results:** 243 audio/media/evaluator/expression units, 24 actual mixer
+  tests, native media playback and 105 production format/rate exports pass. Four
+  new complete-PCM mixer regressions fail before repair and pass afterward; CE16
+  mixing laws remain byte-identical.
+- **Scope / next:** Focused PR follow-up; no full gate. All three finding
+  commits are ready for one final normal push; owner review/merge follows.
+- **Records:** [second review evidence](./pr-49-second-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-second-review-repairs--2026-10-09).
+
 ### 2026-10-09 — PR #49 protected narration boundaries
 
-- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head `2cd76eca`.
-- **Done:** Accumulate exact rational scope origins and round absolute narration and inherited visibility bounds once on the PCM grid.
-- **Results:** All 33 focused narration/media tests pass; valid full masters at 7/29/59 fps fail before the fix and pass afterward. Real cropping, retiming and one-sample overruns remain rejected.
-- **Scope / next:** Focused PR follow-up; no full gate. Record natural PCM placement in the third finding commit, then push all three commits once.
+- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head
+  `2cd76eca`.
+- **Done:** Accumulate exact rational scope origins and round absolute narration
+  and inherited visibility bounds once on the PCM grid.
+- **Results:** All 33 focused narration/media tests pass; valid full masters at
+  7/29/59 fps fail before the fix and pass afterward. Real cropping, retiming
+  and one-sample overruns remain rejected.
+- **Scope / next:** Focused PR follow-up; no full gate. Record natural PCM
+  placement in the third finding commit, then push all three commits once.
 - **Records:** [second review evidence](./pr-49-second-review-fix-results.json),
   [CE15 plan](./composition-ce15-plan.md#pr-49-second-review-repairs--2026-10-09).
 
 ### 2026-10-09 — PR #49 shared tint capacity
 
-- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head `2cd76eca`.
-- **Done:** Typed shared-capacity fallback uses the original bounded local tint cache; optional managed retention leaves allocator headroom.
-- **Results:** 79 focused tests, 1,920 exact preview comparisons and 16 production exports / 2,560 decoded frames pass. Eight frozen typography items / 1,309 frames match; original fixture and glyph performance assertions pass.
-- **Scope / next:** Focused PR follow-up; no full gate. Record the protected narration fix, then the natural PCM placement fix; push once after the final finding commit.
+- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head
+  `2cd76eca`.
+- **Done:** Typed shared-capacity fallback uses the original bounded local tint
+  cache; optional managed retention leaves allocator headroom.
+- **Results:** 79 focused tests, 1,920 exact preview comparisons and 16
+  production exports / 2,560 decoded frames pass. Eight frozen typography items
+  / 1,309 frames match; original fixture and glyph performance assertions pass.
+- **Scope / next:** Focused PR follow-up; no full gate. Record the protected
+  narration fix, then the natural PCM placement fix; push once after the final
+  finding commit.
 - **Records:** [second review evidence](./pr-49-second-review-fix-results.json),
   [CE15 plan](./composition-ce15-plan.md#pr-49-second-review-repairs--2026-10-09).
 
