@@ -9,12 +9,22 @@ export type FailureDiagnostic = {
 const MAX_TEXT = 1024;
 const MAX_CAUSES = 8;
 const sensitiveKey =
-  /password|passwd|secret|token|api[_-]?key|authorization|cookie|environment|env$/i;
+  /password|passwd|secret|token|api[_-]?key|authorization|cookie|environment|env$|^stack$/i;
 
 /** Public diagnostics retain causes, never stacks, credentials or environment objects. */
 export function sanitizeDiagnosticText(value: string): string {
   return value
     .slice(0, 8192)
+    .replace(
+      /Traceback \(most recent call last\):[\s\S]*/g,
+      (trace) =>
+        trace
+          .split(/\r?\n/)
+          .reverse()
+          .find((line) => /^[\w.]+(?:Error|Exception):/.test(line)) ??
+        "Subprocess failed",
+    )
+    .replace(/\r?\n[ \t]+at [^\r\n]*/g, "")
     .replace(/(https?:\/\/)[^\s/@]+:[^\s/@]+@/gi, "$1[redacted]@")
     .replace(/(bearer\s+)[\w.+/=-]+/gi, "$1[redacted]")
     .replace(

@@ -3,6 +3,7 @@ import {
   AnimationEngineError,
   AnimationFailureSchema,
   failureDiagnostic,
+  sanitizeDiagnosticText,
 } from "@still-shift/scene-contract";
 import { toCliFailure } from "../../tools/still-shift-cli/src/cli.ts";
 
@@ -41,6 +42,55 @@ describe("shared failure cause receipts", () => {
       '"environment":',
     ])
       expect(bytes).not.toContain(secret);
+  });
+
+  it("removes actual Chromium stack frames embedded in diagnostic messages", () => {
+    const error = new AnimationEngineError(
+      "RENDER_FAILED",
+      "page.evaluate: ReferenceError: renderer is unavailable\n    at eval (eval at evaluate (:311:30), <anonymous>:11:26)\n    at UtilityScript.evaluate (<anonymous>:313:16)",
+      {
+        stage: "bridge-capture",
+        path: "shots.contact",
+        stack: "Error\n    at privateFunction (/private/source.ts:1:2)",
+        diagnosticsJson: JSON.stringify({
+          message:
+            "Renderer failed\n    at UtilityScript.evaluate (<anonymous>:313:16)",
+          stack: "private nested stack",
+        }),
+      },
+    );
+    const failure = error.toFailure();
+    expect(failure.error.message).toBe(
+      "page.evaluate: ReferenceError: renderer is unavailable",
+    );
+    expect(failure.error.context?.path).toBe("shots.contact");
+    expect(
+      JSON.parse(failure.error.context!.diagnosticsJson as string),
+    ).toEqual({
+      message: "Renderer failed",
+    });
+    for (const stack of [
+      " at ",
+      "UtilityScript",
+      "anonymous",
+      "privateFunction",
+      '"stack"',
+    ])
+      expect(JSON.stringify(failure)).not.toContain(stack);
+  });
+
+  it("retains the terminal Python error without subprocess traceback frames", () => {
+    const message = [
+      "Command failed: artifact-lock-helper.py --identity 16524",
+      "Traceback (most recent call last):",
+      '  File "/private/source.py", line 94, in <module>',
+      "    identity = process_start_identity(int(sys.argv[2]))",
+      "               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "PermissionError: [Errno 1] Operation not permitted: 'ps'",
+    ].join("\n");
+    expect(sanitizeDiagnosticText(message)).toBe(
+      "Command failed: artifact-lock-helper.py --identity 16524\nPermissionError: [Errno 1] Operation not permitted: 'ps'",
+    );
   });
 
   it("keeps large diagnostic JSON parseable while redacting nested credentials", () => {

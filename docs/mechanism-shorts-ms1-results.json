@@ -240,6 +240,13 @@
         "/tmp/still-shift-ms1-root-build-10.log",
         "/tmp/still-shift-ms1-final-slice-lint.log"
       ]
+    },
+    {
+      "command": "actual embedded Chromium/Python stack sanitization and CLI failure contract",
+      "status": "passed",
+      "tests": 11,
+      "log": "/tmp/still-shift-ms1-embedded-stack-diagnostics-2.log",
+      "build": "/tmp/still-shift-ms1-root-build-12.log"
     }
   ],
   "renderEvidence": [
@@ -457,6 +464,14 @@
         "/tmp/still-shift-ms1-cli-render-findings-3.log"
       ],
       "rerun": "/tmp/still-shift-ms1-cli-render-findings-4.log"
+    },
+    {
+      "attempt": "first installed candidate from eeb162ad",
+      "archiveSha256": "sha256:057e26a5dfa1adf70c1d892150895b81e8b67a6e8a3dd12b8615f6539219f7c4",
+      "reason": "Actual browser/Python errors embed stack frames in message text; consumer save/render also meets macOS seatbelt prohibition on launching setuid ps, before any3D capture.",
+      "repair": "Remove stack frames/stack context while preserving terminal exception; rebuild archive. Consumer uses byte-identical ps copy with setuid removed, keeping original source-byte denial.",
+      "evidence": "/private/tmp/still-shift-ms1-installed-e01-eQbmEw",
+      "status": "replacement-verification-pending"
     }
   ],
   "portableDelivery": {

@@ -52,7 +52,8 @@ still hold before relying on them.
   Full176-fixture/36,061-frame baseline refresh changes only29 editorial frames
   for the reproduced mask fix. Compact render-check findings and stage telemetry
   pass actual40-frame CLI export,11 tests/build/lint. Installed-archive OS-isolated lifecycle and full
-  local gate remain before MS1 PR. Human continuous/listening review remains
+  local gate remain before MS1 PR. Embedded subprocess stack sanitization passes;
+  the first archive is superseded and consumer runtime setup is being repaired. Human continuous/listening review remains
   pending. MS1N implementation has not started; original checkout edits preserved.
   [Results](./mechanism-shorts-ms1-results.json),
   [repair evidence](./mechanism-shorts-ms1-repair-results.json).
@@ -168,6 +169,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Embedded subprocess diagnostic frames
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` (from `eeb162ad`).
+- **Done:** actual retained Chromium/Python messages revealed embedded stacks;
+  public diagnostics now omit frames and stack context, retaining terminal errors.
+- **Results:**11 focused diagnostic/CLI tests, integrated types and narrow lint pass.
+- **Rejected / do not repeat:** first archive remains superseded, not accepted.
+  OS-denied consumer save/render hit macOS setuid-ps restriction before capture;
+  byte-identical consumer ps with setuid removed is being verified without relaxing
+  original source-byte denial. Preserve setup/failure receipts.
+- **Open / next:** replacement archive installed lifecycle, full local gate and MS1 PR.
+- **Records:** [MS1 evidence](./mechanism-shorts-ms1-results.json).
 
 ### 2026-10-10 — Portable alias repair and fresh-session overlap proof
 
