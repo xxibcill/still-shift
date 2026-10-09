@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
+import { runEpisodeCli } from "./episode.ts";
 import { runSoundtrackCli } from "./soundtrack-cli.ts";
 import { prepareCommerceFile } from "../../../packages/animation-engine/src/commerce-preparation.ts";
 import { pathToFileURL } from "node:url";
@@ -59,6 +60,14 @@ const DEFAULT_IO: CliIo = {
 const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
+  pnpm still-shift episode discover|schema
+  pnpm still-shift episode inspect|validate|deps|summary --input <episode.json>
+  pnpm still-shift episode init-tape-hook --output-dir <fresh-dir> --font <font.ttf> [--font-license <OFL.txt>] [--audio <audio.wav>] [--captions <captions.json>]
+  pnpm still-shift episode patch --input <episode.json> --request <patch.json|->
+  pnpm still-shift episode prepare|compile|render --input <episode.json> --output-dir <fresh-dir>
+  pnpm still-shift episode preview --input <episode.json> --frame <integer> --output-dir <fresh-dir>
+  pnpm still-shift episode check --input <episode.json> [--prepared-dir <dir>] [--final-output <video.mp4>]
+  pnpm still-shift episode package --input <episode.json> --output-dir <fresh-dir>
   pnpm --silent still-shift animate --input <path> --output <path> [options]
   pnpm still-shift animate-scene --scene <prepared.json> --output <path> [--format landscape|vertical]
   pnpm still-shift soundtrack validate|inspect --project <project.json> [--json]
@@ -218,6 +227,7 @@ export const runCli = async (
   args: string[],
   io: CliIo = DEFAULT_IO,
 ): Promise<number> => {
+  if (args[0] === "episode") return runEpisodeCli(args.slice(1), io);
   if (args[0] === "soundtrack" && !args.includes("--help"))
     return runSoundtrackCli(args.slice(1), io);
   if (args.includes("--help") || args.length === 0) {

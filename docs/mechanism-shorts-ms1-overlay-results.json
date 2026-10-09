@@ -1,0 +1,706 @@
+{
+  "version": "mechanism-ms1-overlay-typography-verification-1",
+  "dateUtc": "2026-10-09T18:10:55.281340+00:00",
+  "worktree": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+  "scope": "Native complete-episode overlays, explicit semantic reading policy, actual media paint signatures, proven mixed-size typography mask repair, and portrait semantic anchor negative/control",
+  "ownedFiles": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/overlays.ts",
+      "sha256": "sha256:1d4ecf3b1c05b19833c4354978f44dd792d97c0594c1f35b35ac18f366c84751",
+      "bytes": 31703
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/composition/quality-policy.ts",
+      "sha256": "sha256:7b8838878848a9d5070900b40e2bb470717be4269b8175d694d266db0c1f948a",
+      "bytes": 9930
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/composition/quality-samples.ts",
+      "sha256": "sha256:bae8a49c0fd97f38ec6ca43363a28b1a0cd9a6e835248d877e3d199c4d6e3dc4",
+      "bytes": 21124
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/story-quality.ts",
+      "sha256": "sha256:41f04a882b50338988d477212c35b0ed5eaa5c7e83091736853d5a2ab5ac7592",
+      "bytes": 16099
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/typography-quality.ts",
+      "sha256": "sha256:d25a7a56393c3ea8217e2aba1313d159be691b6258995520332bc793ae6cc640",
+      "bytes": 29158
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/typography-renderer.ts",
+      "sha256": "sha256:da763c0c5be27e35feacd0575fb096159cffd3666305bbdfc726057d234b00a3",
+      "bytes": 38042
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/browser/mechanism-portrait-proof.ts",
+      "sha256": "sha256:3caa399eee9739ceb108079c7ec529893b1299c7f2fd1769e84e7b6b5ea36b76",
+      "bytes": 12458
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/browser/mechanism-typography-proof.ts",
+      "sha256": "sha256:c6e8b15dd56034fad52cb05235a4aaf6b599559b08cd5df757adb7f3250a96d5",
+      "bytes": 11846
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/helpers/mechanism-portrait-proof.ts",
+      "sha256": "sha256:7cebe5fd054f488e7b34c1a1324a12bfb8a675007433a860da86f11c90e24a23",
+      "bytes": 2318
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-overlays.test.ts",
+      "sha256": "sha256:01a676a47348bb6c918681e2f92d50091325172ca39a9f7a7b17123c82fe1211",
+      "bytes": 12622
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/composition-quality-reading-declarations.test.ts",
+      "sha256": "sha256:19df19b27f9c83cf5560250eabba3c5cca20416973eb632bd3b0f5e0e96ca071",
+      "bytes": 11167
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/composition-commerce-path.test.ts",
+      "sha256": "sha256:df0e95b8f4f99d6e4ff783691f6fa8f30fa3caed42f86c88e938ce84f4e5d782",
+      "bytes": 12225
+    }
+  ],
+  "publicApi": {
+    "compiler": "compileMechanismOverlays / compileMechanismComposition(source: MechanismOverlaySource, captures: readonly MechanismPlateCapture[], options?: MechanismOverlayOptions): Composition",
+    "source": "episode, scene, dependencyPaths, optional actual fontAxes ranges by dependency id, optional audioMetadata actual PCM sampleRate/sampleCount/channels",
+    "capture": "shotId, outputDirectory, sequenceManifestPath, sidecarPath, ordered frames:stringhash[], sidecar, sequenceSha256(manifest FILE hash), optional firstFrame/pattern",
+    "checker": "checkMechanismOverlays(episode, {shotId,sidecar}[], {textBounds?}): MechanismOverlayReport",
+    "identity": "sidecar sceneSha256 is canonical parsed-scene SHA; perplate SHA/sourceFrame/localOrdinal exact; anchor part matches declared physical part"
+  },
+  "behavior": [
+    "Every hard-cut shot is an ordinal-aligned native sequence layer with explicit identity transform. All plate children are in a single full-timeline native required-coverage group; viewport alpha threshold remains 254/255 on every root frame and shutter sample.",
+    "Native pinned-font labels and separate qualification/caption layers; authored dark panels; projected anchor leaders hide honestly for occluded/behind/clipped/hidden targets. Explicit offscreen indicators cannot count as visible target reading proof.",
+    "Explicit font axes need actual pinned fvar ranges supplied by preflight; ranges propagate to font asset.variable and authored instance axes to native text styles. Missing prepared ranges fail located.",
+    "Caption cue timings and complete narration metadata are preserved. Supplied PCM sample counts are used directly; no fabricated narration padding.",
+    "Native measured text bounds are required to establish layout acceptance. Missing bounds stay estimated. Checks cover every sidecar frame, overlap, offscreen, protected region, truthful anchor visibility, and consecutive30-frame holds.",
+    "Semantic CE12 reading declarations enforce simultaneous exact value/unit/qualification text with measured fully visible bounds, opacity/reveal, stable glyph pose, low speed, and no member overlap. Cuts reset intervals. Unannotated defaults remain unchanged.",
+    "Purposeful static reading can classify existing raw frozen codes as warnings only if the measured complete readable interval covers the raw run and all painted state is stationary. Raw code/range/measurement/severity are retained. Frozen pixels over changing media or moving paint remain errors.",
+    "Native video/sequence paint signature includes actual selected asset/source identity/frame pair rather than advancing sourceSeconds. Hold-frame and independent rendered pixel freeze errors remain intact.",
+    "Only proven line mask y extents changed: raster layout ascent/descent replaced by per-line ascent/descent for mixed-size runs. Thai shaping/count-fit were not changed."
+  ],
+  "maskProof": {
+    "negativeReport": {
+      "path": "/tmp/still-shift-ms1-mask-before-zero-feather/mask-report.json",
+      "sha256": "sha256:28d17b37f234f92325a63ed95fdb69b1108e8fddfc2e17ed96aa8a4036033a59",
+      "bytes": 20920
+    },
+    "positiveReport": {
+      "path": "/tmp/still-shift-ms1-mask-final-export/mask-report.json",
+      "sha256": "sha256:9cf7ffa76b96aaf4870bab0bb414e54048121ee5e39d0e4bc4aca1e54a2ba70a",
+      "bytes": 9369
+    },
+    "control": "Same pinned font/text/zero-offset poses, mask:none versus line/word masks, explicit animator feather0, base36 inline96; all sample frames0/15/30/45/60 plus reverse/random seeks",
+    "cases": [
+      {
+        "id": "latin-line",
+        "fontSha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+        "text": "Agyp pqy",
+        "beforeLostInkPixelsByFrame": [
+          {
+            "frame": 0,
+            "lostInkPixels": 3269,
+            "changedPixels": 3269
+          },
+          {
+            "frame": 15,
+            "lostInkPixels": 3269,
+            "changedPixels": 3269
+          },
+          {
+            "frame": 30,
+            "lostInkPixels": 3269,
+            "changedPixels": 3269
+          },
+          {
+            "frame": 45,
+            "lostInkPixels": 3269,
+            "changedPixels": 3269
+          },
+          {
+            "frame": 60,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          }
+        ],
+        "afterLostInkPixelsByFrame": [
+          {
+            "frame": 0,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 15,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 30,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 45,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 60,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          }
+        ],
+        "reverseStable": true
+      },
+      {
+        "id": "latin-word",
+        "fontSha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+        "text": "Agyp pqy",
+        "beforeLostInkPixelsByFrame": [
+          {
+            "frame": 0,
+            "lostInkPixels": 3269,
+            "changedPixels": 3269
+          },
+          {
+            "frame": 15,
+            "lostInkPixels": 3269,
+            "changedPixels": 3269
+          },
+          {
+            "frame": 30,
+            "lostInkPixels": 3269,
+            "changedPixels": 3269
+          },
+          {
+            "frame": 45,
+            "lostInkPixels": 3269,
+            "changedPixels": 3269
+          },
+          {
+            "frame": 60,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          }
+        ],
+        "afterLostInkPixelsByFrame": [
+          {
+            "frame": 0,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 15,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 30,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 45,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 60,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          }
+        ],
+        "reverseStable": true
+      },
+      {
+        "id": "thai-line",
+        "fontSha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+        "text": "น้ำ ผู้รู้ จุฬา",
+        "beforeLostInkPixelsByFrame": [
+          {
+            "frame": 0,
+            "lostInkPixels": 2295,
+            "changedPixels": 2295
+          },
+          {
+            "frame": 15,
+            "lostInkPixels": 2295,
+            "changedPixels": 2295
+          },
+          {
+            "frame": 30,
+            "lostInkPixels": 2295,
+            "changedPixels": 2295
+          },
+          {
+            "frame": 45,
+            "lostInkPixels": 2295,
+            "changedPixels": 2295
+          },
+          {
+            "frame": 60,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          }
+        ],
+        "afterLostInkPixelsByFrame": [
+          {
+            "frame": 0,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 15,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 30,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 45,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 60,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          }
+        ],
+        "reverseStable": true
+      },
+      {
+        "id": "thai-word",
+        "fontSha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+        "text": "น้ำ ผู้รู้ จุฬา",
+        "beforeLostInkPixelsByFrame": [
+          {
+            "frame": 0,
+            "lostInkPixels": 2295,
+            "changedPixels": 2295
+          },
+          {
+            "frame": 15,
+            "lostInkPixels": 2295,
+            "changedPixels": 2295
+          },
+          {
+            "frame": 30,
+            "lostInkPixels": 2295,
+            "changedPixels": 2295
+          },
+          {
+            "frame": 45,
+            "lostInkPixels": 2295,
+            "changedPixels": 2295
+          },
+          {
+            "frame": 60,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          }
+        ],
+        "afterLostInkPixelsByFrame": [
+          {
+            "frame": 0,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 15,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 30,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 45,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          },
+          {
+            "frame": 60,
+            "lostInkPixels": 0,
+            "changedPixels": 0
+          }
+        ],
+        "reverseStable": true
+      }
+    ],
+    "nativeExports": [
+      {
+        "id": "latin-line",
+        "frameCount": 61,
+        "outputSha256": "sha256:3d860c94d7ce24f1f4c29644b06d42110edaf3c28548ebe92eae8f04f2a488fa",
+        "repeatedSha256": "sha256:3d860c94d7ce24f1f4c29644b06d42110edaf3c28548ebe92eae8f04f2a488fa",
+        "decodedComparisons": [
+          {
+            "frame": 0,
+            "psnr": 46.37144170836198,
+            "maxChannelDelta": 65
+          },
+          {
+            "frame": 15,
+            "psnr": 48.09310765637703,
+            "maxChannelDelta": 38
+          },
+          {
+            "frame": 30,
+            "psnr": 48.09478230609549,
+            "maxChannelDelta": 38
+          },
+          {
+            "frame": 45,
+            "psnr": 48.09310765637703,
+            "maxChannelDelta": 38
+          },
+          {
+            "frame": 60,
+            "psnr": 48.09310765637703,
+            "maxChannelDelta": 38
+          }
+        ]
+      },
+      {
+        "id": "latin-word",
+        "frameCount": 61,
+        "outputSha256": "sha256:3d860c94d7ce24f1f4c29644b06d42110edaf3c28548ebe92eae8f04f2a488fa",
+        "repeatedSha256": "sha256:3d860c94d7ce24f1f4c29644b06d42110edaf3c28548ebe92eae8f04f2a488fa",
+        "decodedComparisons": [
+          {
+            "frame": 0,
+            "psnr": 46.37144170836198,
+            "maxChannelDelta": 65
+          },
+          {
+            "frame": 15,
+            "psnr": 48.09310765637703,
+            "maxChannelDelta": 38
+          },
+          {
+            "frame": 30,
+            "psnr": 48.09478230609549,
+            "maxChannelDelta": 38
+          },
+          {
+            "frame": 45,
+            "psnr": 48.09310765637703,
+            "maxChannelDelta": 38
+          },
+          {
+            "frame": 60,
+            "psnr": 48.09310765637703,
+            "maxChannelDelta": 38
+          }
+        ]
+      },
+      {
+        "id": "thai-line",
+        "frameCount": 61,
+        "outputSha256": "sha256:1bce3bbe703a9e64e16b5b45749d75601da945a81bef291ce6aead4a661b43af",
+        "repeatedSha256": "sha256:1bce3bbe703a9e64e16b5b45749d75601da945a81bef291ce6aead4a661b43af",
+        "decodedComparisons": [
+          {
+            "frame": 0,
+            "psnr": 46.77433451815567,
+            "maxChannelDelta": 62
+          },
+          {
+            "frame": 15,
+            "psnr": 48.335362013259925,
+            "maxChannelDelta": 28
+          },
+          {
+            "frame": 30,
+            "psnr": 48.335362013259925,
+            "maxChannelDelta": 28
+          },
+          {
+            "frame": 45,
+            "psnr": 48.335362013259925,
+            "maxChannelDelta": 28
+          },
+          {
+            "frame": 60,
+            "psnr": 48.335362013259925,
+            "maxChannelDelta": 28
+          }
+        ]
+      },
+      {
+        "id": "thai-word",
+        "frameCount": 61,
+        "outputSha256": "sha256:1bce3bbe703a9e64e16b5b45749d75601da945a81bef291ce6aead4a661b43af",
+        "repeatedSha256": "sha256:1bce3bbe703a9e64e16b5b45749d75601da945a81bef291ce6aead4a661b43af",
+        "decodedComparisons": [
+          {
+            "frame": 0,
+            "psnr": 46.77433451815567,
+            "maxChannelDelta": 62
+          },
+          {
+            "frame": 15,
+            "psnr": 48.335362013259925,
+            "maxChannelDelta": 28
+          },
+          {
+            "frame": 30,
+            "psnr": 48.335362013259925,
+            "maxChannelDelta": 28
+          },
+          {
+            "frame": 45,
+            "psnr": 48.335362013259925,
+            "maxChannelDelta": 28
+          },
+          {
+            "frame": 60,
+            "psnr": 48.335362013259925,
+            "maxChannelDelta": 28
+          }
+        ]
+      }
+    ],
+    "exportsCount": 8,
+    "exportFramesEach": 61,
+    "repeatedHashesExact": true,
+    "decodedMinPsnr": 46.37144170836198,
+    "decodedComparisonLimitPsnr": 35,
+    "observedFeatherDistinction": "Initial default feather report had larger losses4290 Latin/2589 Thai. After repair Latin428 pixels remain from intentional default feather falloff; true feather0 probe gives0 delta. Retained failed/incomplete control attempts in /tmp."
+  },
+  "portraitProof": {
+    "report": {
+      "path": "/tmp/still-shift-ms1-portrait-proof/portrait-report.json",
+      "sha256": "sha256:e3288e71559de7676614f713a02c34a8f71b5b9fc1dd4af3e8fcc98fc47ba685",
+      "bytes": 138265
+    },
+    "method": "Native baked annotation path vertices transformed by native evaluated screenMatrix; independent source cap point crop-map and nested commerce world matrix; actual native text bounds, all61 frames, reverse/random actual PNG pixel hashes, JSON reload/native-adapter equality",
+    "cases": [
+      {
+        "id": "lost-label-leader",
+        "frames": 61,
+        "maxEndpointErrorPixels": 2.3437142008433856e-13,
+        "allLabelOnscreen": false,
+        "anyLabelOnscreen": false,
+        "minLabelLeaderClearancePixels": 53.64207458496094,
+        "minProtectedRegionClearancePixels": 242.59098883725437,
+        "reverseStable": true,
+        "qualityDiagnostics": [
+          {
+            "code": "off-canvas",
+            "severity": "warning",
+            "nodes": ["feature"],
+            "node": "feature",
+            "path": "layers.4",
+            "frames": [0, 60],
+            "measured": 1,
+            "message": "Visible layer has no intersection with the canvas.",
+            "shot": "commerce-adapter"
+          },
+          {
+            "code": "outside-safe-area",
+            "severity": "warning",
+            "nodes": ["product-art"],
+            "node": "product-art",
+            "path": "layers.0",
+            "frames": [0, 60],
+            "measured": 1,
+            "message": "Layer leaves the 5.0% safe inset.",
+            "shot": "commerce-adapter"
+          }
+        ],
+        "ce12QualityPixelsMeasured": false
+      },
+      {
+        "id": "corrected",
+        "frames": 61,
+        "maxEndpointErrorPixels": 2.3437142008433856e-13,
+        "allLabelOnscreen": true,
+        "anyLabelOnscreen": true,
+        "minLabelLeaderClearancePixels": 53.64207458496088,
+        "minProtectedRegionClearancePixels": 251.1203324130946,
+        "reverseStable": true,
+        "qualityDiagnostics": [
+          {
+            "code": "outside-safe-area",
+            "severity": "warning",
+            "nodes": ["product-art"],
+            "node": "product-art",
+            "path": "layers.0",
+            "frames": [0, 60],
+            "measured": 1,
+            "message": "Layer leaves the 5.0% safe inset.",
+            "shot": "commerce-adapter"
+          }
+        ],
+        "ce12QualityPixelsMeasured": false
+      }
+    ],
+    "originalAssetSha256": "sha256:0c832682d129412b2fcd1b726e92275dc0dcbe12f1231d23c18efb3318b49e9c",
+    "semanticTarget": "product-art:cap originalsource[561,168.24], original image retained; transformed endpoint checks do not substitute label origin for physical target"
+  },
+  "baselineEvidence": {
+    "retainedBefore": {
+      "path": "/tmp/still-shift-ms1-typography-baseline-before.json",
+      "sha256": "sha256:25c2465f27c57121ef1623ee48477d9ee52757a06b0e7b20a8458b3e206b4a79",
+      "bytes": 1229659
+    },
+    "beforeTimings": {
+      "path": "/tmp/still-shift-ms1-typography-timings-before.json",
+      "sha256": "sha256:4ca50dce45c649fc1727cb7b4eb5ac27ad95126e51b4c68080266d3a677ab975",
+      "bytes": 40390
+    },
+    "originalHeaderMetricRestorationCheck": {
+      "status": "passed",
+      "items": 8,
+      "frames": 1309,
+      "log": "/tmp/still-shift-ms1-typography-baseline-original-check.log",
+      "method": "Temporarily restore original two renderer lines in try/finally; source repair restored afterward"
+    },
+    "correctedCheck": {
+      "status": "expected pixel differences",
+      "items": 8,
+      "frames": 1309,
+      "changedFixture": "typography/editorial",
+      "changedFrames": [
+        11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+        29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39
+      ],
+      "otherSevenFixtures": "exactmatch",
+      "log": "/tmp/still-shift-ms1-typography-baseline-final-check.log",
+      "mismatchImages": "/tmp/still-shift-ms1-typography-baseline-mismatches"
+    },
+    "partialWriteAttempt": {
+      "status": "blocked before writes by existing provenance gate",
+      "log": "/tmp/still-shift-ms1-typography-baseline-refresh.log",
+      "reason": "Stored chromium-software-1 oldargs/no machine versus current chromium-software-2/currentargs/AppleM5Pro15cores; full unfiltered --write required"
+    },
+    "storedPixelsAndTimingsChangedByAgent": false,
+    "changeReceipt": {
+      "path": "/tmp/still-shift-ms1-typography-baseline-change.json",
+      "sha256": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "remaining": "Parent owns full176-fixture provenance regeneration/check; compare retained old pixels and allow only intentional editorial29 changes. Do not weaken thresholds or bypass provenance."
+  },
+  "verification": {
+    "focusedUnits": {
+      "status": "passed",
+      "files": 8,
+      "log": "/tmp/still-shift-ms1-overlay-typography-final-unit.log",
+      "count": 186
+    },
+    "ownedEslint": {
+      "status": "passed",
+      "log": "/tmp/still-shift-ms1-overlay-typography-final-lint.log"
+    },
+    "ownedPrettier": {
+      "status": "passed",
+      "log": "/tmp/still-shift-ms1-overlay-typography-final-format.log"
+    },
+    "gitDiffCheck": {
+      "status": "passed",
+      "log": "/tmp/still-shift-ms1-overlay-typography-final-diff.log"
+    },
+    "globalTypes": {
+      "status": "failed neighboring owned test",
+      "log": "/tmp/still-shift-ms1-overlay-typography-final-types.log",
+      "finding": "tests/runtime/mechanism-bridge.test.ts:444 TS2589 excessively deep instantiation",
+      "owner": "inputs agent"
+    },
+    "boundaries": {
+      "status": "failed neighboring CLI dependency",
+      "log": "/tmp/still-shift-ms1-overlay-typography-final-boundaries.log",
+      "finding": "tools/still-shift-cli/src/episode.ts zod needs @still-shift/cli declared dependency",
+      "owner": "parent"
+    },
+    "existingTypographyBrowser": {
+      "status": "passed",
+      "output": "/tmp/still-shift-typography",
+      "centroidDriftPixels": 0.24687,
+      "backwardStable": true,
+      "handoff": true,
+      "fontVariations": true
+    },
+    "existingNativeEditorialAdapter": {
+      "status": "passed",
+      "variants": 6,
+      "frames": 906,
+      "maximumPixelDelta": 0,
+      "command": "node --import tsx tests/browser/composition-typography-adapter.ts --only typography/editorial --variant typography/editorial",
+      "nativeExports": "Not selected by --only; actual native export evidence is the independent mask proof (8 exports)."
+    }
+  },
+  "retainedFailedRuns": [
+    {
+      "step": "Tests-first missing new module/unknown reading policy",
+      "outcome": "expected failures before implementation"
+    },
+    {
+      "step": "Initial compiler returned validation wrapper instead of Composition",
+      "outcome": "corrected, tests rerun"
+    },
+    {
+      "step": "Initial declared reading animator fixture omitted pinned font",
+      "outcome": "fixture corrected"
+    },
+    {
+      "step": "Transient in-flight scene fixture unknown physical parts",
+      "outcome": "parent scene repair resolved; rerun passes"
+    },
+    {
+      "step": "Browser proof dynamic import / implicitany / deep callback serializable types / consistenttypeimports",
+      "outcome": "test types corrected, scoped lint passes"
+    },
+    {
+      "step": "tsx -e CJS clipper2 probe",
+      "outcome": "ESM TS file route used successfully"
+    },
+    {
+      "step": "Initial portrait root annotation/profile/motionModel/textRole contract",
+      "outcome": "fixture corrected using existing supported APIs"
+    },
+    {
+      "step": "Default feather versus node-only feather0 incomplete negative controls",
+      "outcome": "explicit animator feather0 provides valid matched before/after; earlier attempts retained"
+    },
+    {
+      "step": "First full native contact export sequence centered implicit anchor",
+      "outcome": "explicit top-left anchor/position proved identity placement; regression added"
+    },
+    {
+      "step": "First complete episode inactive per-shot required coverage at frame0",
+      "outcome": "all shot plates moved under full-timeline required group, no renderer/threshold change; parent native full rerun in progress"
+    },
+    {
+      "step": "Variable-axis style rejected without asset fvar metadata (184/185 pass)",
+      "outcome": "actual preflight fontAxes map added, missingprepnegative+actualNoto positive now8/8 overlay tests pass"
+    },
+    {
+      "step": "Partial editorial baseline write",
+      "outcome": "blocked existingprovenance, no baseline writes; full migration deferredparent"
+    },
+    {
+      "step": "Final global tsc/boundary gate",
+      "outcome": "neighboring files fail as recorded, parent notified"
+    }
+  ],
+  "limits": {
+    "humanVisualAcceptance": null,
+    "humanListeningAcceptance": null,
+    "fullE01NativeExportAndLint": "parent in progress",
+    "completeLocalGate": "parent in progress",
+    "fontGlyphCoverageVsShaping": "Font identity/cmap proof does not claim shaping correctness. Native mask proof uses actual pinned fonts; Thai mark behavior unchanged.",
+    "goldens": "No stored baseline refresh by this agent; full source/version/machine provenance migration remains required."
+  }
+}

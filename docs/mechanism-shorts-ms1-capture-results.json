@@ -7,14 +7,43 @@
     "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/assertions.ts",
     "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-geometry.test.ts",
     "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-capture.test.ts",
-    "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-assertions.test.ts"
+    "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-assertions.test.ts",
+    "tests/helpers/mechanism-bridge-preview.ts",
+    "tests/runtime/mechanism-bridge.test.ts"
   ],
   "finalFocusedTests": {
     "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH corepack pnpm exec vitest run tests/unit/mechanism-geometry.test.ts tests/unit/mechanism-assertions.test.ts tests/runtime/mechanism-capture.test.ts --maxWorkers=1 --no-file-parallelism",
     "files": 3,
     "passed": 24,
     "durationSeconds": 20.49,
-    "artifactRoot": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5"
+    "artifactRoot": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5",
+    "finalCombinedAfterSourceAlphaRepair": {
+      "command": "pnpm exec vitest run tests/unit/mechanism-geometry.test.ts tests/unit/mechanism-assertions.test.ts tests/runtime/mechanism-capture.test.ts tests/runtime/mechanism-bridge.test.ts",
+      "passed": 27,
+      "files": 4,
+      "durationSeconds": 14.86,
+      "geometry": 9,
+      "assertions": 8,
+      "capture": 8,
+      "bridge": 2,
+      "captureArtifactRoot": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-YF8D12",
+      "bridgeArtifactRoot": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-0fnq0Q"
+    },
+    "focusedLint": "passed",
+    "focusedPrettier": "passed",
+    "typeScript": "owned files clear after JSON serialization fix; final observed shared graph error remains parent-owned composition-lint.ts:88 undeclared moduleUrl",
+    "bridgeAfterBrowserPayloadTypeFix": {
+      "passed": 2,
+      "durationSeconds": 6.7,
+      "captureSeconds": 1.722275833,
+      "sampledNodeRssBytes": 338149376,
+      "canvas2dIndependentBlendMax": 1,
+      "webgl2IndependentBlendMax": 1,
+      "eachBackendTransferredPreviewExportMax": 0,
+      "freshAndRepeatedPreviewHashes": "exact",
+      "artifactRoot": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-2EYAwR",
+      "lint": "passed"
+    }
   },
   "proof": {
     "schemaVersion": "mechanism-plate-capture-1",
@@ -79,6 +108,36 @@
       "kind": "checker-typecheck",
       "outputExcerpt": "assertions.ts(115,20): TS2345 TravelKey easing optional type missing explicit undefined under exactOptionalPropertyTypes",
       "repair": "Aligned optional easing with request-input type; no owned-file TypeScript errors remain."
+    },
+    {
+      "stage": "compact bridge fixture bootstrap",
+      "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-gurpX8",
+      "result": "failed suite; 2 tests skipped; no 3D capture launched",
+      "cause": "required geometry dimensions bladeLength and bladeWidth missing",
+      "repair": "fixture dimension metadata supplied; rerun launched real capture"
+    },
+    {
+      "stage": "compact bridge native export oracle",
+      "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-nnzMYV",
+      "failurePath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-nnzMYV/failure.json",
+      "diagnosticPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-nnzMYV/export-diagnostic.json",
+      "result": "1 test passed, 1 failed; native preview independent sRGB blend already within 1",
+      "measuredMaxDifference": 16,
+      "cause": "test compared declared BT.709 PNG8 delivery bytes directly against sRGB preview bytes",
+      "repair": "independent declared transfer formula added, tolerance remains 1; max preview/export difference becomes 0"
+    },
+    {
+      "stage": "actual transparent source alpha audit",
+      "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-nnzMYV",
+      "observedPremultipliedColor": [118, 46, 20, 128],
+      "interiorColor": [236, 91, 40, 255],
+      "cause": "parent-owned browser renderer context premultipliedAlpha false with antialiased coverage caused RGB already multiplied by alpha in PNGs labeled straight",
+      "repair": "parent switched context premultipliedAlpha true; browser PNG encoding reconstructs actual straight RGB; constant-color edge assertion added; max edge error 1"
+    },
+    {
+      "stage": "shared TypeScript gate",
+      "result": "first scan 2 errors: bridge.test.ts:444 excessively deep Playwright inferred composition generic, composition-lint.ts:88 missing moduleUrl; next scan only composition-lint error",
+      "repair": "bridge input serialized JSON across browser boundary; other file parent-owned and in flight"
     }
   ],
   "expectedNegativeRuntimeArtifacts": [
@@ -300,5 +359,84 @@
       "travel-tick-2"
     ],
     "surfaceVisibility": "Midpoints lie inside solid tubes; label targets need a camera-facing surface/clearance offset."
-  }
+  },
+  "geometryRepair": {
+    "floor": {
+      "mesh": "studio-floor",
+      "sourceFootprint": [200, 200],
+      "canonicalTopY": -1.5,
+      "solidThickness": 0.1,
+      "tests": "measured bounds retained"
+    },
+    "blade": {
+      "mesh": "blade-curved",
+      "closed": true,
+      "indexedGroups": [
+        {
+          "surface": "top",
+          "material": "blade"
+        },
+        {
+          "surface": "underside",
+          "material": "edges"
+        },
+        {
+          "surface": "walls",
+          "material": "edges"
+        }
+      ],
+      "mapping": "explicit authored local group material IDs mapped to global material catalog indices; contiguous complete triangle ranges validated; no normals inference or overlapping backing"
+    },
+    "proof": {
+      "reportPath": "/tmp/still-shift-ms1-geometry-fixed-proof-1791568808012/proof-report.json",
+      "pngPath": "/tmp/still-shift-ms1-geometry-fixed-proof-1791568808012/000000.png",
+      "sourceFrame": 306,
+      "shotId": "V8-04",
+      "captureSeconds": 2.834462209,
+      "sampledNodeRssBytes": 703627264,
+      "visualObservations": [
+        "metal blade edge and underside; graduations restricted to top",
+        "visible floor horizon strip absent with current source lights/fog",
+        "true slot depth, bevels and solid front preserved",
+        "right slot crop matches original macro treatment"
+      ]
+    }
+  },
+  "alphaBridge": {
+    "firstPassedRun": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-jTgd8P/proof-report.json",
+    "combinedPassedRun": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-0fnq0Q/proof-report.json",
+    "size": [96, 96],
+    "sourceOrder": [0, 1, 2, 3, 4, 4, 2, 0, 3, 1, 0],
+    "previewOrder": [0, 4, 8, 2, 10, 3, 4, 0, 9, 1, 8, 5, 7, 6],
+    "actualSource": "constant emissive closed box with source rig controls evaluated independently; real Three MSAA PNG edge coverage",
+    "straightAlpha": {
+      "interiorColor": [236, 91, 40],
+      "halfCoveredEdge": [235, 92, 40, 128],
+      "maximumEdgeRgbDifference": 1,
+      "guard": 2,
+      "guardReason": "four-sample coverage and RGBA8 straight-alpha reconstruction quantization"
+    },
+    "canvas2d": {
+      "blendToleranceBytes": 1,
+      "maximumIndependentSrgbBlendError": 1,
+      "maximumIndependentTransferredPreviewExportError": 0,
+      "freshRepeatedReverseRandomPreviewHashes": "exact"
+    },
+    "webgl2": {
+      "blendToleranceBytes": 1,
+      "maximumIndependentSrgbBlendError": 1,
+      "maximumIndependentTransferredPreviewExportError": 0,
+      "freshRepeatedReverseRandomPreviewHashes": "exact"
+    },
+    "sourceCaptureRepeatedHashesAndState": "exact per source frame; compared sourceFrame, seed, camera, parts, rigs, anchors, assertions and protectedRegions; ordinal numbering intentionally differs",
+    "exportOracle": "independent sRGB to linear-light to BT.709 transfer, because PNG8 public delivery profile declares BT.709; one-byte tolerances retained",
+    "scope": "No promise of identical whole-frame pixels between different backends; each backend independently compared with its own fresh/reused preview and native export. No full E01 duplicate rendering.",
+    "finalAfterBrowserPayloadTypeFix": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-2EYAwR/proof-report.json"
+  },
+  "remainingRubric": [
+    "Fresh nine-shot current-profile composition and final native caption/label reading review remain parent-owned.",
+    "No full 696-frame continuous visual/motion or listening acceptance follows from these clean-plate probes.",
+    "Broad metal reflection/readability and authored simplifications should be reviewed against original source after source lights/fog repairs, not described as pixel-identical reconstruction.",
+    "Protected regions cover visible proof/physical anchor points (radius 24), not whole mesh silhouettes; whole extent protection deferred to MS2."
+  ]
 }

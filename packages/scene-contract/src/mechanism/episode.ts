@@ -58,7 +58,7 @@ export const MechanismDependencySchema = z.discriminatedUnion("type", [
   z
     .object({
       ...dependencyFields,
-      type: z.enum(["scene", "audio", "captions", "timing"]),
+      type: z.enum(["scene", "audio", "captions", "timing", "license"]),
     })
     .strict(),
 ]);
@@ -157,6 +157,20 @@ export const MechanismEpisodeSchema = z
   })
   .strict()
   .superRefine((episode, context) => {
+    for (const [index, dependency] of episode.dependencies.entries())
+      if (
+        dependency.type === "font" &&
+        dependency.license !== undefined &&
+        !episode.dependencies.some(
+          (item) => item.type === "license" && item.path === dependency.license,
+        )
+      )
+        mechanismIssue(
+          context,
+          "mechanism-font-license",
+          "Font license must name a declared hashed license dependency",
+          ["dependencies", index, "license"],
+        );
     checkUniqueIds(episode.dependencies, context, ["dependencies"]);
     checkUniqueIds(episode.shots, context, ["shots"]);
     checkUniqueIds(episode.captions, context, ["captions"]);

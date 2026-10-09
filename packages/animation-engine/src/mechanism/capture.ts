@@ -583,7 +583,10 @@ async function captureIdentity(
   environment: RenderEnvironment,
 ): Promise<Record<string, unknown>> {
   const toolchain = JSON.parse(
-    await readFile(join(defaultBrowserProjectRoot, "toolchain.json"), "utf8"),
+    await readFile(
+      fileURLToPath(new URL("../../../../toolchain.json", import.meta.url)),
+      "utf8",
+    ),
   ) as { node: string; chromiumVersion: string };
   if (
     process.versions.node !== toolchain.node ||

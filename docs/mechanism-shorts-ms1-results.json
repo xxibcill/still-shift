@@ -32,6 +32,13 @@
       "status": "implemented-focused-verified",
       "behavior": "Pinned software Three.js capture with manifest/sidecar/PNG identities, bounded requests, cancellation/failure retention and immutable validated cache. Independent checker reconstructs authored transforms, controls, contact faces, travel and stationary rivets rather than trusting copied assertion flags. Real nine-shot portrait probe and contact export performed; full E01 and final acceptance remain in flight.",
       "fullGate": "not-run-in-this-checkpoint"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "supported-episode-lifecycle-and-native-typography",
+      "status": "implemented-focused-verified-acceptance-in-progress",
+      "behavior": "Versioned bounded CLI discovery/schemas/inspect/deps/save/patch/prepare/compile/preview/render/check/package; actual source font identity/axes/license, immutable plates, independent final audio and media identities. Mixed-size line/word masks repaired after exact reproduced pixel-loss negatives. Explicit reading associations preserve raw faults and unannotated defaults. Native full-timeline plate group preserves required coverage. Full E01 exposes real caption-origin/painter-order faults; fixes and speech-specific policy still being verified.",
+      "fullGate": "not-run-in-this-checkpoint"
     }
   ],
   "verification": [
@@ -78,6 +85,38 @@
       "tests": 24,
       "seconds": 20.49,
       "details": "mechanism-shorts-ms1-capture-results.json"
+    },
+    {
+      "command": "pinnedNode22 CLI/package/audio/failure receipts sequenced group",
+      "status": "passed",
+      "tests": 25,
+      "files": 4,
+      "log": "/tmp/still-shift-ms1-api-fault-audio-final.log"
+    },
+    {
+      "command": "focused typography/reading/native overlay",
+      "status": "passed",
+      "tests": 186,
+      "details": "mechanism-shorts-ms1-overlay-results.json"
+    },
+    {
+      "command": "focused geometry/mechanics/capture/alpha bridge",
+      "status": "passed",
+      "tests": 27,
+      "details": "mechanism-shorts-ms1-capture-results.json"
+    },
+    {
+      "command": "pnpm build; pnpm check:boundaries",
+      "status": "passed",
+      "logs": [
+        "/tmp/still-shift-ms1-root-build-5.log",
+        "/tmp/still-shift-ms1-root-boundaries-2.log"
+      ]
+    },
+    {
+      "command": "pnpm schema:generate then schema:check; frozen offline dependencies",
+      "status": "passed",
+      "notes": "All seven mechanism schemas now drift-checked. CLI direct Zod4.1.5 added; only three importer lines change existing locked graph."
     }
   ],
   "renderEvidence": [
@@ -109,6 +148,21 @@
       "repeatNew3dRenders": 0,
       "output": "/tmp/still-shift-ms1-contact-proof-render-v2/episode.mp4",
       "check": "Mechanical pass; measured PULL hold72frames and no layout errors after repairs. CE12 unchanged evaluated-state contact hold errors retained; overall acceptance pending."
+    },
+    {
+      "kind": "full-e01-clean-capture-and-native-layout-probe",
+      "frames": 696,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "audioSourceSamples": 1113600,
+      "cleanCapture": "All696complete in nine first-party captures. Transparent edge renderer-source fix requires refreshed capture before final acceptance.",
+      "nativeOutput": "/tmp/still-shift-ms1-e01-v4-layout.mp4",
+      "nativeOutputSha256": "sha256:8f6edae00e84b4306a41857a51b323e142ed70c73c9dd56204c8f46c34bbc234",
+      "mechanics": "all696pass",
+      "audio": "AAC512 padding within1023; correlation0.99939898; early/mid/late lag0; active terminal tail retained",
+      "readableLabelHolds": [72, 71, 49, 69, 41, 41, 64],
+      "acceptance": "failed actual caption-origin/painter-order check and generic body-reading/static-pixel policy. Do not use this file as corrected acceptance evidence."
     }
   ],
   "failedRuns": [
@@ -154,6 +208,46 @@
       "reason": "Lint eagerly embedded all85preparedPNGbytes in page.evaluate and omitted preparedMedia; browser closed.",
       "repair": "Known-resource loopback streaming and preparedMedia supplied to existing bounded native frame LRU. No pixel check skipped.",
       "rerun": "Measured full85framecheck completed; purposeful contact-hold policy findings remain."
+    },
+    {
+      "command": "full E01 native export first attempt",
+      "reason": "Per-shot required coverage applied across entire timeline, including inactive V8-02 atframe0.",
+      "repair": "One full-timeline required native group owns hard-cut shot sequence children; coverage remains required."
+    },
+    {
+      "command": "native layout probe helper first and second attempts",
+      "reason": "Helper omitted required sidecarPath metadata, then used wrong renderComposition argument names.",
+      "repair": "Supply required typed descriptor fields and compositionPath/outputPath; full native file then exported."
+    },
+    {
+      "command": "alpha independent edge negative",
+      "reason": "Transparent MSAA PNG stored premultiplied RGB while declared straight alpha.",
+      "repair": "Use premultiplied context so canvas encoding restores straight alpha. Both native backend alpha oracles pass \u22641byte; source edge \u22641byte. Retained pre-fix artifacts."
+    },
+    {
+      "command": "alpha PNG8 export oracle first run",
+      "reason": "Oracle omitted declared sRGB\u2192BT709 delivery transfer.",
+      "repair": "Independent transfer oracle; both backend final PNG8 preview/export delta0 with tolerance1."
+    },
+    {
+      "command": "failure receipt test attempts1\u20133",
+      "reason": "New tests assumed nonexistent diagnostic property/rows instead of documented summary and SCENE_INVALID exit2.",
+      "repair": "Assert documented summary/fullreport and public exitcodes; four tests pass including discovered real top-level secret redaction regression."
+    },
+    {
+      "command": "independent MS1 diagnostic review",
+      "reason": "Raw CLI summary and package cause bypassed shared sanitization; summary recovery used unsupported --patch flag and full report replaced useful recovery.",
+      "repair": "Sanitize all failure summary/cause fields, preserve classified recovery with report access, use --request; 25sequenced checks pass."
+    },
+    {
+      "command": "integrated types/boundaries early runs",
+      "reason": "Missing optional preparedMedia spread/moduleURL binding, deep Playwright fixture generics, direct CLI Zod dependency omitted.",
+      "repair": "Exact optional spread, declared package module path, serialized testpayload, pinned directdependency; build/boundaries pass."
+    },
+    {
+      "command": "partial editorial baseline refresh",
+      "reason": "Existing software1 baseline has no machine metadata; pinned currentsoftware2 provenance forbids partialwrite.",
+      "repair": "No golden changed; full provenance migration and complete176itemcheck remain required."
     }
   ],
   "review": {
@@ -163,7 +257,8 @@
     "humanCreativeAcceptance": "not-reviewed"
   },
   "limits": [
-    "No MS1 acceptance or MS1N implementation complete.",
-    "Customer source media remains outside Git."
+    "MS1 full acceptance, isolated installed-package lifecycle, repair/resume proof and full gate remain in flight.",
+    "Customer source media remains outside Git.",
+    "Independent packaging review has found live-report closure/stale-final gaps; repairs in progress."
   ]
 }

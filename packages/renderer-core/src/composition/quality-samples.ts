@@ -51,6 +51,10 @@ export type CompositionQualitySample = {
   role?: "heading" | "label" | "qualification" | "body";
   signature: string;
   textClock?: number;
+  /** Glyph coverage clock excluding opaque color-only animators, for explicit reading declarations. */
+  readingClock?: number;
+  readingPose?: string;
+  fullyOnScreen?: boolean;
   scale: [number, number];
   homography?: Homography;
   velocityPoints?: number[];
@@ -235,6 +239,36 @@ export function compositionQualityFrame(
               indexed(object(layer.params.numeric).samples, state),
             ]
           : undefined;
+      const scopeAnimators =
+        scope === tree
+          ? (comp.textAnimators ?? [])
+          : (comp.precomps?.find((precomp) => precomp.id === scope.id)
+              ?.textAnimators ?? []);
+      const opaqueColorOnly = (animator: (typeof scopeAnimators)[number]) => {
+        const entries = [
+          ...Object.entries(animator.from),
+          ...Object.entries(animator.to ?? {}),
+        ];
+        return (
+          (!animator.mask || animator.mask === "none") &&
+          entries.length > 0 &&
+          entries.every(
+            ([key, value]) =>
+              ["color", "fill", "stroke"].includes(key) &&
+              typeof value === "string" &&
+              /^#[0-9a-f]{6}(?:ff)?$/i.test(value),
+          )
+        );
+      };
+      const readingClock =
+        layer.type === "text"
+          ? typographyClock(
+              layer,
+              scopeAnimators.filter((animator) => !opaqueColorOnly(animator)),
+              layer.corrections ?? [],
+              comp.signals ?? [],
+            )(state.time)
+          : undefined;
       const clock =
         layer.type === "text"
           ? typographyClock(
@@ -264,6 +298,17 @@ export function compositionQualityFrame(
         reveal: text?.reveal ?? state.reveal ?? 1,
         visible,
         onScreen,
+        fullyOnScreen:
+          !!bounds &&
+          !!clippedBounds &&
+          bounds.left >= 0 &&
+          bounds.top >= 0 &&
+          bounds.right <= comp.width &&
+          bounds.bottom <= comp.height &&
+          bounds.left === clippedBounds.left &&
+          bounds.right === clippedBounds.right &&
+          bounds.top === clippedBounds.top &&
+          bounds.bottom === clippedBounds.bottom,
         contributesPaint: onScreen,
         scale: homography
           ? (homographicScale(homography, [
@@ -292,6 +337,19 @@ export function compositionQualityFrame(
         ...(text?.text ? { text: text.text } : {}),
         ...(text?.role ? { role: text.role } : {}),
         ...(clock === undefined ? {} : { textClock: clock }),
+        ...(readingClock === undefined
+          ? {}
+          : {
+              readingClock,
+              readingPose: JSON.stringify([
+                state.masks,
+                effects,
+                state.state,
+                state.stateFrom,
+                state.stateMix,
+                state.reveal,
+              ]),
+            }),
         signature: JSON.stringify([
           id,
           matrix,
@@ -305,6 +363,9 @@ export function compositionQualityFrame(
           state.masks,
           effects,
           content,
+          ...(state.media?.pair
+            ? [[state.media.asset, state.media.sourceHash, state.media.pair]]
+            : []),
           clock,
           ...(state.depthMotion ? [state.depthMotion] : []),
           ...(state.imagePlane ? [state.imagePlane] : []),

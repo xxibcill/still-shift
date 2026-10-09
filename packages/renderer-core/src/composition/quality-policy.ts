@@ -28,6 +28,19 @@ export type MotionLintDiagnostic = PassageDiagnostic & {
   nodes: string[];
   measured: number;
   shot?: string;
+  readingPurposes?: { id: string; purpose: string }[];
+  classification?:
+    | "declared-reading-hold"
+    | "speech-following-caption"
+    | "declared-physical-proof-hold";
+  speechCaption?: {
+    cueId: string;
+    sourceSha256: string;
+    audioLayer: string;
+    wordsPerSecond: number;
+  };
+  proofPurposes?: { id: string; purpose: string; evidenceSha256: string }[];
+  rawSeverity?: "error" | "warning";
 };
 const nonnegative = z.number().finite().nonnegative();
 const positive = z.number().finite().positive();
@@ -39,6 +52,48 @@ const reading = z
     minimumSeconds: nonnegative.max(60),
   })
   .strict();
+export const CompositionReadingDeclarationSchema = z
+  .object({
+    id: z.string().min(1).max(200),
+    purpose: z.string().min(1).max(400),
+    start: frame,
+    end: frame,
+    members: z
+      .array(
+        z
+          .object({
+            layer: z.string().min(1).max(1024),
+            text: z.string().min(1).max(COMPOSITION_LIMITS.maxTextLength),
+            kind: z.enum(["value", "unit", "qualification"]),
+            locale: z.enum(["en", "th"]).optional(),
+          })
+          .strict(),
+      )
+      .min(1)
+      .max(16),
+  })
+  .strict();
+export type CompositionReadingDeclaration = z.infer<
+  typeof CompositionReadingDeclarationSchema
+>;
+export const CompositionSpeechCaptionSchema = z
+  .object({
+    id: z.string().min(1).max(200),
+    cueId: z.string().min(1).max(200),
+    purpose: z.string().min(1).max(400),
+    layer: z.string().min(1).max(1024),
+    text: z.string().min(1).max(COMPOSITION_LIMITS.maxTextLength),
+    start: frame,
+    end: frame,
+    sourceSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+    audioLayer: z.string().min(1).max(1024),
+    audioSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+    locale: z.enum(["en", "th"]).optional(),
+  })
+  .strict();
+export type CompositionSpeechCaption = z.infer<
+  typeof CompositionSpeechCaptionSchema
+>;
 export const CompositionQualityPolicySchema = z
   .object({
     maxFrozenFrames: frame.optional(),
@@ -70,6 +125,14 @@ export const CompositionQualityPolicySchema = z
         body: reading.optional(),
       })
       .strict()
+      .optional(),
+    readingDeclarations: z
+      .array(CompositionReadingDeclarationSchema)
+      .max(COMPOSITION_LIMITS.maxLayers)
+      .optional(),
+    speechCaptions: z
+      .array(CompositionSpeechCaptionSchema)
+      .max(COMPOSITION_LIMITS.maxLayers)
       .optional(),
     coverageLayers: z
       .array(z.string().min(1).max(1024))
@@ -199,6 +262,92 @@ export function resolveCompositionQualityPolicy(
       "Shots must cover the complete composition timeline",
       { path: `shots.${shots.length - 1}.end` },
     );
+  const declarationIds = new Set<string>();
+  for (const [index, declaration] of (
+    policy.readingDeclarations ?? []
+  ).entries()) {
+    const path = `readingDeclarations.${index}`;
+    if (declarationIds.has(declaration.id))
+      passageError(
+        "comp-lint-reading-id",
+        "Reading declarations must have unique IDs",
+        { path: path + ".id" },
+      );
+    declarationIds.add(declaration.id);
+    if (
+      declaration.end <= declaration.start ||
+      declaration.end > comp.frameCount
+    )
+      passageError(
+        "comp-lint-reading-range",
+        "Reading interval must be positive and stay inside the composition timeline",
+        { path: path + ".end" },
+      );
+    const members = new Set<string>();
+    for (const [memberIndex, member] of declaration.members.entries()) {
+      if (members.has(member.layer))
+        passageError(
+          "comp-lint-reading-member",
+          "A phrase cannot repeat a layer",
+          { path: path + `.members.${memberIndex}.layer` },
+        );
+      members.add(member.layer);
+    }
+    if (!declaration.members.some((member) => member.kind === "value"))
+      passageError(
+        "comp-lint-reading-value",
+        "A reading declaration requires an explicit value or whole phrase",
+        { path: path + ".members" },
+      );
+  }
+  const speechIds = new Set<string>();
+  for (const [index, cue] of (policy.speechCaptions ?? []).entries()) {
+    const path = `speechCaptions.${index}`;
+    const text = comp.layers.find((layer) => layer.id === cue.layer);
+    const audio = comp.layers.find((layer) => layer.id === cue.audioLayer);
+    const asset =
+      audio?.type === "audio"
+        ? comp.assets.find((asset) => asset.id === audio.asset)
+        : undefined;
+    if (
+      speechIds.has(cue.id) ||
+      cue.end <= cue.start ||
+      cue.end > comp.frameCount
+    )
+      passageError(
+        "comp-lint-speech-caption",
+        "Speech cue IDs and complete source intervals must be valid",
+        { path },
+      );
+    speechIds.add(cue.id);
+    if (
+      text?.type !== "text" ||
+      text.text !== cue.text ||
+      text.inPoint !== cue.start ||
+      text.outPoint !== cue.end
+    )
+      passageError(
+        "comp-lint-speech-caption",
+        "Speech captions require exact copy and unchanged source cue boundaries",
+        { path: path + ".layer" },
+      );
+    if (
+      audio?.type !== "audio" ||
+      audio.role !== "narration" ||
+      asset?.type !== "audio" ||
+      asset.sha256 !== cue.audioSha256 ||
+      (audio.inPoint ?? 0) > cue.start ||
+      (audio.outPoint ?? comp.frameCount) < cue.end ||
+      (audio.sourceEndSample ?? asset.sampleCount) -
+        (audio.sourceStartSample ?? 0) <
+        ((cue.end - (audio.inPoint ?? 0)) * asset.sampleRate) / comp.fps
+    )
+      passageError(
+        "comp-lint-speech-caption",
+        "Speech captions require pinned narration samples covering their complete cue",
+        { path: path + ".audioLayer" },
+      );
+  }
   return {
     ...policy,
     maxFrozenFrames: policy.maxFrozenFrames ?? 6,

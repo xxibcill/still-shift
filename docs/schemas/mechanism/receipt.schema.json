@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-command-result-1"
+    },
+    "command": {
+      "type": "string",
+      "enum": [
+        "discover",
+        "schema",
+        "inspect",
+        "validate",
+        "deps",
+        "save",
+        "patch",
+        "prepare",
+        "compile",
+        "preview",
+        "render",
+        "check",
+        "package",
+        "init-tape-hook",
+        "summary"
+      ]
+    },
+    "status": { "type": "string", "enum": ["passed", "failed", "cancelled"] },
+    "summary": {
+      "type": "object",
+      "propertyNames": { "type": "string", "minLength": 1, "maxLength": 128 },
+      "additionalProperties": {
+        "anyOf": [
+          { "type": "string", "maxLength": 2048 },
+          { "type": "number" },
+          { "type": "boolean" },
+          { "type": "null" }
+        ]
+      }
+    },
+    "items": {
+      "maxItems": 100,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "propertyNames": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "additionalProperties": {
+          "anyOf": [
+            { "type": "string", "maxLength": 2048 },
+            { "type": "number" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "artifacts": {
+      "maxItems": 100,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+          "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        },
+        "required": ["kind", "path"],
+        "additionalProperties": false
+      }
+    },
+    "pagination": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "returned": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "nextOffset": {
+          "anyOf": [
+            { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+            { "type": "null" }
+          ]
+        }
+      },
+      "required": ["offset", "returned", "total", "nextOffset"],
+      "additionalProperties": false
+    },
+    "truncated": { "type": "boolean" },
+    "nextAction": { "type": "string", "maxLength": 2048 }
+  },
+  "required": [
+    "schemaVersion",
+    "command",
+    "status",
+    "summary",
+    "items",
+    "artifacts",
+    "pagination",
+    "truncated",
+    "nextAction"
+  ],
+  "additionalProperties": false
+}

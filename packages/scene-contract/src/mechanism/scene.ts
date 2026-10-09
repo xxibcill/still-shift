@@ -186,6 +186,7 @@ export const MechanismLightSchema = z
       .default(1024),
     shadowBias: z.number().finite().min(-1).max(1).default(0),
     shadowNormalBias: z.number().finite().min(0).max(1).default(0),
+    shadowRadius: z.number().finite().min(0).max(10).default(1),
     angle: z
       .number()
       .finite()
@@ -207,6 +208,15 @@ export const MechanismRenderProfileSchema = z
     transparent: z.boolean().default(false),
     environment: z.literal("room").default("room"),
     environmentIntensity: z.number().finite().min(0).max(10).default(0.95),
+    fog: z
+      .object({
+        color: z.string().regex(/^#[a-fA-F0-9]{6}$/),
+        near: z.number().finite().min(0).max(10000),
+        far: z.number().finite().positive().max(10000),
+      })
+      .strict()
+      .refine((value) => value.far > value.near, "Fog far must exceed near")
+      .optional(),
   })
   .strict();
 

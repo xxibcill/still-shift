@@ -59,3 +59,10 @@ export * from "./composition-media.ts";
 export * from "./composition-media-audio.ts";
 
 export * from "./composition-audio-mix.ts";
+
+export * from "./mechanism/io.ts";
+export * from "./mechanism/tape-hook.ts";
+export * from "./mechanism/lifecycle.ts";
+export * from "./mechanism/capture.ts";
+export * from "./mechanism/overlays.ts";
+export * from "./mechanism/protocol.ts";

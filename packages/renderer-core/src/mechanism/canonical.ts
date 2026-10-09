@@ -19,6 +19,15 @@ export function canonicalMechanismJson(value: unknown): string {
       Object.getPrototypeOf(input) !== null
     )
       throw new TypeError("Mechanism canonical JSON requires plain objects");
+    if (
+      Array.isArray(input) &&
+      Array.from({ length: input.length }, (_, index) =>
+        Object.hasOwn(input, index),
+      ).some((present) => !present)
+    )
+      throw new TypeError(
+        "Mechanism canonical JSON cannot contain sparse arrays",
+      );
     ancestors.add(input);
     const encoded = Array.isArray(input)
       ? `[${input.map((item) => encode(item, depth + 1)).join(",")}]`

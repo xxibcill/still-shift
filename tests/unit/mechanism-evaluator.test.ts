@@ -259,6 +259,7 @@ describe("pure tape-hook frame evaluation", () => {
       canonicalMechanismJson({ b: [2, 1], a: { z: false, x: 0 } }),
     );
     expect(() => canonicalMechanismJson({ a: Infinity })).toThrow(/finite/);
+    expect(() => canonicalMechanismJson(new Array(2))).toThrow(/sparse/);
     const cycle: Record<string, unknown> = {};
     cycle.self = cycle;
     expect(() => canonicalMechanismJson(cycle)).toThrow(/cycles/);

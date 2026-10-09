@@ -7,6 +7,7 @@ import {
   DoubleSide,
   FrontSide,
   Float32BufferAttribute,
+  Fog,
   Group,
   HemisphereLight,
   Mesh,
@@ -41,7 +42,8 @@ export async function createMechanismPlateRenderer(
     antialias: true,
     alpha: scene.profile.transparent,
     preserveDrawingBuffer: true,
-    premultipliedAlpha: false,
+    // MSAA resolves store premultiplied coverage; canvas PNG encoding restores straight alpha.
+    premultipliedAlpha: true,
   });
   renderer.setPixelRatio(1);
   renderer.setSize(options.width, options.height);
@@ -63,6 +65,12 @@ export async function createMechanismPlateRenderer(
   const environment = pmrem.fromScene(room, 0.04);
   room.dispose();
   pmrem.dispose();
+  if (scene.profile.fog)
+    world.fog = new Fog(
+      scene.profile.fog.color,
+      scene.profile.fog.near,
+      scene.profile.fog.far,
+    );
   world.environment = environment.texture;
   world.environmentIntensity = scene.profile.environmentIntensity;
   world.add(new HemisphereLight("#e8f6ff", "#63716e", 1.15));
@@ -80,6 +88,7 @@ export async function createMechanismPlateRenderer(
     );
     light.shadow.bias = definition.shadowBias;
     light.shadow.normalBias = definition.shadowNormalBias;
+    light.shadow.radius = definition.shadowRadius;
     if (light instanceof SpotLight) {
       light.angle = definition.angle;
       light.penumbra = definition.penumbra;

@@ -48,10 +48,12 @@ still hold before relying on them.
   [PR #51](https://github.com/xxibcill/still-shift/pull/51) is open and unmerged.
   Shared contracts, pure rigs, solid geometry, strict font preflight, bounded
   first-party plate capture and independent mechanical checks are implemented.
-  Contact-shot native export completed in stages; measured label layout passes,
-  CE12 static proof-hold policy remains in flight. Nine-shot probe caught a
-  board-occluded datum label anchor. Complete E01/lifecycle/repair, isolated package
-  and full local gate before MS1 PR. MS1N has not started. Original edits preserved.
+  All696 E01 plates and one native MP4 completed in stages. Final inspection
+  caught caption painter-order/origin faults; fixes and speech/proof reading
+  semantics remain in flight. Audio alignment/tail and independent mechanics
+  pass. Complete corrected E01, report closure/stale-final fixes, cache/repair,
+  isolated package and full local gate before MS1 PR. MS1N implementation has not
+  started. Original checkout edits are preserved.
 
 - **MS0 audit complete (2026-10-09):** Codex on `codex/mechanism-ms0` from
   `main` `e6eb7b06`; separate milestone PR follows verification. Original E01
@@ -164,6 +166,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1 CLI lifecycle and native typography checkpoint
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`.
+- **Done:** supported versioned episode commands and schemas, revision-safe
+  edits, portable staging, font/license/axes preflight and independent decoded
+  audio checks; actual mixed-size mask and portrait anchor controls.
+- **Results:** 25 pinned API/audio/failure checks, 186 typography/overlay checks
+  and 27 geometry/capture/alpha checks pass. Types/boundaries/schema drift pass.
+  All 696 E01 plates and one native MP4 complete; audio alignment/tail pass.
+- **Rejected:** final-frame inspection found captions covered by plate order
+  and a wrong wrapbox origin. This export is not accepted. Static/speech reading
+  semantics, stale-final association and portable report closure remain in flight.
+- **Open / next:** corrected E01, cache/overlap/fresh-session and installed-package
+  acceptance, full baseline provenance migration and local gate before MS1 PR.
+- **Records:** [MS1 results](./mechanism-shorts-ms1-results.json),
+  [CLI guide](./mechanism-episode-cli.md), [API evidence](./mechanism-shorts-ms1-api-results.json),
+  [typography evidence](./mechanism-shorts-ms1-overlay-results.json).
 
 ### 2026-10-10 — MS1 bounded capture and independent mechanics
 

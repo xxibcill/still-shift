@@ -147,15 +147,17 @@ describe("reusable tape-hook geometry", () => {
         expect(mesh.bounds.min[axis]).toBe(Math.min(...values));
         expect(mesh.bounds.max[axis]).toBe(Math.max(...values));
       }
-      expect(mesh.groups).toEqual([
-        {
-          start: 0,
-          count: mesh.indices.length,
-          materialIndex: catalog.materials.findIndex(
-            (material) => material.id === mesh.materialId,
-          ),
-        },
-      ]);
+      let coveredIndices = 0;
+      for (const group of mesh.groups) {
+        expect(group.start).toBe(coveredIndices);
+        expect(group.count % 3).toBe(0);
+        expect(group.count).toBeGreaterThan(0);
+        expect(Number.isInteger(group.materialIndex)).toBe(true);
+        expect(group.materialIndex).toBeGreaterThanOrEqual(0);
+        expect(group.materialIndex).toBeLessThan(catalog.materials.length);
+        coveredIndices += group.count;
+      }
+      expect(coveredIndices).toBe(mesh.indices.length);
       expect(
         catalog.materials.some((material) => material.id === mesh.materialId),
       ).toBe(true);
@@ -212,6 +214,51 @@ describe("reusable tape-hook geometry", () => {
       6,
     );
     expect(new Set(positionalEdges(blade).values())).toEqual(new Set([2]));
+  });
+
+  it("assigns graduations only to explicit top triangles and metal to the underside and closed walls", () => {
+    const catalog = createTapeHookGeometry();
+    const blade = meshById(catalog.meshes, "blade-curved");
+    const topVertexCount = 81 * 25;
+    expect(blade.groups).toHaveLength(3);
+    const [top, underside, walls] = blade.groups;
+    const groupIndices = (group: IndexedMechanismMesh["groups"][number]) =>
+      blade.indices.slice(group.start, group.start + group.count);
+    expect(catalog.materials[top!.materialIndex]!.id).toBe("blade");
+    expect(catalog.materials[underside!.materialIndex]!.id).toBe("edges");
+    expect(catalog.materials[walls!.materialIndex]!.id).toBe("edges");
+    expect(top!.count).toBe(80 * 24 * 6);
+    expect(underside!.count).toBe(top!.count);
+    expect(walls!.count).toBe((80 + 24) * 2 * 6);
+    expect(groupIndices(top!).every((index) => index < topVertexCount)).toBe(
+      true,
+    );
+    expect(
+      groupIndices(underside!).every((index) => index >= topVertexCount),
+    ).toBe(true);
+    const topPositions = new Set(
+      groupIndices(top!).map((index) => vertex(blade, index).join(",")),
+    );
+    const undersidePositions = new Set(
+      groupIndices(underside!).map((index) => vertex(blade, index).join(",")),
+    );
+    for (
+      let triangle = walls!.start;
+      triangle < blade.indices.length;
+      triangle += 3
+    ) {
+      const points = blade.indices
+        .slice(triangle, triangle + 3)
+        .map((index) => vertex(blade, index).join(","));
+      expect(points.some((point) => topPositions.has(point))).toBe(true);
+      expect(points.some((point) => undersidePositions.has(point))).toBe(true);
+    }
+    expect(signedVolume(blade)).toBeGreaterThan(0);
+    expect(new Set(positionalEdges(blade).values())).toEqual(new Set([2]));
+    const floor = meshById(catalog.meshes, "studio-floor");
+    expect(floor.bounds.max[0] - floor.bounds.min[0]).toBeCloseTo(200, 5);
+    expect(floor.bounds.max[2] - floor.bounds.min[2]).toBeCloseTo(200, 5);
+    expect(floor.bounds.max[1]).toBeCloseTo(-1.5, 5);
   });
 
   it("keeps rivets mounted to blade and fits stems in slots across the entire allowed travel", () => {

@@ -76,6 +76,7 @@ type MeshSpecification = {
   id: string;
   partId: string;
   materialId: string;
+  groupMaterialIds?: readonly string[];
   geometry: BufferGeometry;
 };
 export const TAPE_HOOK_RIVET_MESH_IDS = [
@@ -123,13 +124,7 @@ export function createTapeHookGeometry(
     ...housingMeshes(),
     ...contactMeshes(),
     ...markerMeshes(model),
-  ].map((mesh) =>
-    serializeMesh(
-      mesh,
-      model.scale,
-      materials.findIndex((material) => material.id === mesh.materialId),
-    ),
-  );
+  ].map((mesh) => serializeMesh(mesh, model.scale, materials));
   return {
     schemaVersion: "mechanism-geometry-1",
     meshes,
@@ -336,6 +331,7 @@ function bladeMeshes(model: ModelDimensions): MeshSpecification[] {
       id: "blade-curved",
       partId: "blade",
       materialId: "blade",
+      groupMaterialIds: ["blade", "edges"],
       geometry: curvedBlade(model),
     },
     ...SLOT_CENTERS.flatMap((center, index) => rivetMeshes(center, index + 1)),
@@ -510,7 +506,7 @@ function contactMeshes(): MeshSpecification[] {
       "studio-floor",
       "floor",
       "floor",
-      [60, 60, 0.1],
+      [200, 200, 0.1],
       [0, 0, -1.55],
       0.01,
     ),
@@ -542,7 +538,9 @@ function curvedBlade(model: ModelDimensions): BufferGeometry {
   const rows = 24;
   const positions: number[] = [];
   const uvs: number[] = [];
-  const indices: number[] = [];
+  const topIndices: number[] = [];
+  const undersideIndices: number[] = [];
+  const wallIndices: number[] = [];
   const surfaceSize = (columns + 1) * (rows + 1);
   for (let side = 0; side < 2; side++) {
     for (let column = 0; column <= columns; column++) {
@@ -561,8 +559,8 @@ function curvedBlade(model: ModelDimensions): BufferGeometry {
     for (let row = 0; row < rows; row++) {
       const a = column * (rows + 1) + row;
       const b = a + rows + 1;
-      indices.push(a, b, a + 1, a + 1, b, b + 1);
-      indices.push(
+      topIndices.push(a, b, a + 1, a + 1, b, b + 1);
+      undersideIndices.push(
         a + surfaceSize,
         a + 1 + surfaceSize,
         b + surfaceSize,
@@ -584,12 +582,26 @@ function curvedBlade(model: ModelDimensions): BufferGeometry {
   for (let index = 0; index < boundary.length; index++) {
     const a = boundary[index]!;
     const b = boundary[(index + 1) % boundary.length]!;
-    indices.push(a, a + surfaceSize, b, b, a + surfaceSize, b + surfaceSize);
+    wallIndices.push(
+      a,
+      a + surfaceSize,
+      b,
+      b,
+      a + surfaceSize,
+      b + surfaceSize,
+    );
   }
   const geometry = new BufferGeometry();
   geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
   geometry.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
-  geometry.setIndex(indices);
+  geometry.setIndex([...topIndices, ...undersideIndices, ...wallIndices]);
+  geometry.addGroup(0, topIndices.length, 0);
+  geometry.addGroup(topIndices.length, undersideIndices.length, 1);
+  geometry.addGroup(
+    topIndices.length + undersideIndices.length,
+    wallIndices.length,
+    1,
+  );
   geometry.computeVertexNormals();
   return geometry;
 }
@@ -597,7 +609,7 @@ function curvedBlade(model: ModelDimensions): BufferGeometry {
 function serializeMesh(
   specification: MeshSpecification,
   scale: number,
-  materialIndex: number,
+  materials: readonly MechanismMaterial[],
 ): IndexedMechanismMesh {
   const original = specification.geometry;
   original.applyMatrix4(SOURCE_TO_Y_UP).scale(scale, scale, scale);
@@ -615,7 +627,7 @@ function serializeMesh(
     normals,
     uvs,
     indices,
-    groups: [{ start: 0, count: indices.length, materialIndex }],
+    groups: serializedMaterialGroups(specification, indexed, materials),
     bounds: {
       min: indexed.boundingBox!.min.toArray(),
       max: indexed.boundingBox!.max.toArray(),
@@ -624,4 +636,58 @@ function serializeMesh(
   original.dispose();
   indexed.dispose();
   return mesh;
+}
+
+/** Explicit authored group IDs map to the global reusable material catalog. */
+function serializedMaterialGroups(
+  specification: MeshSpecification,
+  geometry: BufferGeometry,
+  materials: readonly MechanismMaterial[],
+): IndexedMechanismMesh["groups"] {
+  const materialIndex = (id: string | undefined) => {
+    const index = materials.findIndex((material) => material.id === id);
+    if (index < 0)
+      throw new RangeError(`${specification.id}: unknown group material ${id}`);
+    return index;
+  };
+  const count = geometry.getIndex()!.count;
+  if (!specification.groupMaterialIds)
+    return [
+      {
+        start: 0,
+        count,
+        materialIndex: materialIndex(specification.materialId),
+      },
+    ];
+  let end = 0;
+  const groups = geometry.groups.map((group) => {
+    if (
+      !Number.isInteger(group.start) ||
+      !Number.isInteger(group.count) ||
+      group.start !== end ||
+      group.count <= 0 ||
+      group.count % 3 !== 0 ||
+      group.start + group.count > count ||
+      !Number.isInteger(group.materialIndex) ||
+      group.materialIndex === undefined ||
+      group.materialIndex < 0 ||
+      group.materialIndex >= specification.groupMaterialIds!.length
+    )
+      throw new RangeError(
+        `${specification.id}: invalid authored material group`,
+      );
+    end = group.start + group.count;
+    return {
+      start: group.start,
+      count: group.count,
+      materialIndex: materialIndex(
+        specification.groupMaterialIds![group.materialIndex],
+      ),
+    };
+  });
+  if (end !== count)
+    throw new RangeError(
+      `${specification.id}: material groups must cover every triangle`,
+    );
+  return groups;
 }
