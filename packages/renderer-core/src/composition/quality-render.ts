@@ -1,3 +1,4 @@
+import { resolveCompositionQualityPolicy } from "./quality-policy.ts";
 import type { Composition } from "@still-shift/scene-contract";
 import {
   analyzeCompositionQuality,
@@ -16,6 +17,10 @@ export async function analyzeRenderedCompositionQuality(
   options: { signal?: AbortSignal; onFrame?: (frame: number) => void } = {},
 ) {
   options.signal?.throwIfAborted();
+  const pixelChannelThreshold = resolveCompositionQualityPolicy(
+    comp,
+    policy,
+  ).pixelChannelThreshold;
   assertCompositionQualityCapacity(comp.frameCount * comp.layers.length);
   const counts: number[] = [];
   let previous: Uint8Array | undefined;
@@ -38,9 +43,7 @@ export async function analyzeRenderedCompositionQuality(
           0.114 * rgba[i * 4 + 2]!,
       );
     counts.push(
-      previous
-        ? measureFrameEnergy(previous, gray, policy.pixelChannelThreshold ?? 4)
-        : 0,
+      previous ? measureFrameEnergy(previous, gray, pixelChannelThreshold) : 0,
     );
     previous = gray;
     options.onFrame?.(frame);

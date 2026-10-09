@@ -108,6 +108,58 @@ directory, verifies it, then publishes it atomically. A moved package can run
 folder or previous cache. Use `save --input <episode.json> --output <same-project/new.json>`
 for another saved revision; use `package` to relocate dependencies across folders.
 
+## Portable semantic reading context
+
+Native `composition-1` review contracts can persist in `metadata.readingPolicy`.
+The shared quality resolver uses that saved policy in API, CLI and Lab analysis;
+explicit supplied policy settings override saved settings. Pixel measurement uses
+that same resolved threshold. `readingDeclarations` keep designated complete
+reading holds. `semanticAssociations` separately assess the complete presentation
+interval, including entrances and copy changes; a later readable hold cannot erase
+an earlier value shown without its declared unit or qualification.
+
+A quantity association explicitly names exact value/unit members and any required
+qualification. A phrase association names intact copy such as `Wi-Fi 6E` or
+`USB-C 30W`. Context is authored; the analyzer does not infer numerical meaning,
+units or factual truth from placement. For example, this is an illustrative review
+contract for three existing native text layers:
+
+```json
+{
+  "semanticProfile": "require-declared-context",
+  "semanticAssociations": [
+    {
+      "id": "duration-context",
+      "purpose": "Read the illustrative duration with its complete context",
+      "kind": "quantity",
+      "start": 0,
+      "end": 90,
+      "requiredKinds": ["qualification"],
+      "members": [
+        { "layer": "value", "text": "12", "kind": "value" },
+        { "layer": "unit", "text": "months", "kind": "unit" },
+        { "layer": "qual", "text": "Illustrative", "kind": "qualification" }
+      ]
+    }
+  ]
+}
+```
+
+Intervals use inclusive start/exclusive end. Diagnostics identify member paths and
+inclusive failing frame ranges. Exact visible copy changes are faults even when
+other frames remain readable. Whenever a value is readable, all declared context
+members must be exact and concurrently readable; zero measured readable-value
+frames cannot establish a pass. Normal fade entrances with later readable values
+remain possible. Motion stability and duration still belong to reading declarations.
+
+Reports always include `semantic.status`: legacy scenes without associations are
+`unassessed`; the strict profile requires declarations. Reports retain the normalized
+semantic policy/version, measured value-frame counts and fault intervals. This is
+assessment of declared copy and measured layer context. Factual truth and rendered
+glyph readability remain separate; masks, inline glyph opacity and contrast require
+encoded review. Use full selection, zero stagger, an all-text anchor and no mask for
+the inspected intact-phrase treatment; this does not establish finer Thai segmentation.
+
 ## Contracts, limits and interpretation
 
 [Generated schemas](./schemas/mechanism/episode.schema.json) are available for

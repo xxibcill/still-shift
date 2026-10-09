@@ -21,6 +21,10 @@ export const MOTION_LINT_CODES = [
   "coverage",
   "scale-pop",
   "opacity-pop",
+  "semantic-context-required",
+  "semantic-context-incomplete",
+  "semantic-copy-changed",
+  "semantic-member-reference",
 ] as const;
 export type MotionLintCode = (typeof MOTION_LINT_CODES)[number];
 export type MotionLintDiagnostic = PassageDiagnostic & {
@@ -52,27 +56,40 @@ const reading = z
     minimumSeconds: nonnegative.max(60),
   })
   .strict();
+export const CompositionReadingMemberSchema = z
+  .object({
+    layer: z.string().min(1).max(1024),
+    text: z.string().min(1).max(COMPOSITION_LIMITS.maxTextLength),
+    kind: z.enum(["value", "unit", "qualification"]),
+    locale: z.enum(["en", "th"]).optional(),
+  })
+  .strict();
 export const CompositionReadingDeclarationSchema = z
   .object({
     id: z.string().min(1).max(200),
     purpose: z.string().min(1).max(400),
     start: frame,
     end: frame,
-    members: z
-      .array(
-        z
-          .object({
-            layer: z.string().min(1).max(1024),
-            text: z.string().min(1).max(COMPOSITION_LIMITS.maxTextLength),
-            kind: z.enum(["value", "unit", "qualification"]),
-            locale: z.enum(["en", "th"]).optional(),
-          })
-          .strict(),
-      )
-      .min(1)
-      .max(16),
+    members: z.array(CompositionReadingMemberSchema).min(1).max(16),
   })
   .strict();
+export const CompositionSemanticAssociationSchema = z
+  .object({
+    id: z.string().min(1).max(200),
+    purpose: z.string().min(1).max(400),
+    kind: z.enum(["quantity", "phrase"]),
+    start: frame,
+    end: frame,
+    members: z.array(CompositionReadingMemberSchema).min(1).max(16),
+    requiredKinds: z
+      .array(z.enum(["unit", "qualification"]))
+      .max(2)
+      .optional(),
+  })
+  .strict();
+export type CompositionSemanticAssociation = z.infer<
+  typeof CompositionSemanticAssociationSchema
+>;
 export type CompositionReadingDeclaration = z.infer<
   typeof CompositionReadingDeclarationSchema
 >;
@@ -121,6 +138,11 @@ export type CompositionPhysicalProofHold = z.infer<
 >;
 export const CompositionQualityPolicySchema = z
   .object({
+    semanticProfile: z.enum(["legacy", "require-declared-context"]).optional(),
+    semanticAssociations: z
+      .array(CompositionSemanticAssociationSchema)
+      .max(COMPOSITION_LIMITS.maxLayers)
+      .optional(),
     maxFrozenFrames: frame.optional(),
     pixelChannelThreshold: nonnegative.int().max(255).optional(),
     pixelMinimumChanges: positive
@@ -194,7 +216,20 @@ export function resolveCompositionQualityPolicy(
   input: CompositionQualityPolicy,
 ) {
   const { pixelHashes, pixelChangedCounts, evaluation, ...settings } = input;
-  const policy = CompositionQualityPolicySchema.parse(settings);
+  const savedPolicy = comp.metadata?.readingPolicy;
+  if (
+    savedPolicy !== undefined &&
+    (!savedPolicy ||
+      typeof savedPolicy !== "object" ||
+      Array.isArray(savedPolicy))
+  )
+    passageError("comp-lint-policy", "Saved readingPolicy must be an object", {
+      path: "metadata.readingPolicy",
+    });
+  const policy = CompositionQualityPolicySchema.parse({
+    ...savedPolicy,
+    ...settings,
+  });
   if (
     pixelHashes &&
     (pixelHashes.length !== comp.frameCount ||
@@ -329,6 +364,50 @@ export function resolveCompositionQualityPolicy(
         { path: path + ".members" },
       );
   }
+  const associationIds = new Set<string>();
+  for (const [index, association] of (
+    policy.semanticAssociations ?? []
+  ).entries()) {
+    const path = `semanticAssociations.${index}`;
+    if (associationIds.has(association.id))
+      passageError("comp-lint-semantic-id", "Semantic IDs must be unique", {
+        path: path + ".id",
+      });
+    associationIds.add(association.id);
+    if (
+      association.end <= association.start ||
+      association.end > comp.frameCount
+    )
+      passageError(
+        "comp-lint-semantic-range",
+        "Semantic interval must be positive and stay inside the composition timeline",
+        { path: path + ".end" },
+      );
+    const memberIds = new Set<string>();
+    for (const [memberIndex, member] of association.members.entries()) {
+      if (memberIds.has(member.layer))
+        passageError(
+          "comp-lint-semantic-member",
+          "Members cannot repeat a layer",
+          {
+            path: path + `.members.${memberIndex}.layer`,
+          },
+        );
+      memberIds.add(member.layer);
+    }
+    const required = new Set([
+      "value",
+      ...(association.kind === "quantity" ? ["unit"] : []),
+      ...(association.requiredKinds ?? []),
+    ]);
+    for (const kind of required)
+      if (!association.members.some((member) => member.kind === kind))
+        passageError(
+          "comp-lint-semantic-member",
+          `Semantic association requires an explicit ${kind} member`,
+          { path: path + ".members" },
+        );
+  }
   const proofIds = new Set<string>();
   let proofFrames = 0;
   for (const [index, proof] of (policy.physicalProofHolds ?? []).entries()) {
@@ -423,6 +502,7 @@ export function resolveCompositionQualityPolicy(
   }
   return {
     ...policy,
+    semanticProfile: policy.semanticProfile ?? "legacy",
     maxFrozenFrames: policy.maxFrozenFrames ?? 6,
     pixelChannelThreshold: policy.pixelChannelThreshold ?? 4,
     pixelMinimumChanges: policy.pixelMinimumChanges ?? 200,
@@ -464,6 +544,10 @@ export function lintSeverity(
       "coverage",
       "scale-pop",
       "opacity-pop",
+      "semantic-context-required",
+      "semantic-context-incomplete",
+      "semantic-copy-changed",
+      "semantic-member-reference",
     ].includes(code)
       ? "error"
       : "warning")

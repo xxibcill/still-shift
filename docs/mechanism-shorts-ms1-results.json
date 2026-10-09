@@ -61,6 +61,13 @@
       "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
       "behavior": "Exact archive passes26 offline package checks. OS-denied consumer validates/reloads737-file delivery and exports both original and TRAVEL RANGE696-frame finals with independent mechanics/layout/audio QA, unchanged696 actual clean plates, zero new3D renders and current native/final identity closure. Consumer-only live-libproc process inspection exception is explicit; historical failed fresh capture and final QA remain retained.",
       "fullGate": "in-progress"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "persisted-complete-semantic-context",
+      "status": "implemented-focused-verified-encoded-packet-in-progress",
+      "behavior": "Explicit quantity/phrase associations assess entire presentation intervals independently of longest reading holds. Strict profile requires context; legacy unannotated scenes report unassessed. Missing/faint context, copy/unit changes and invalid references retain exact member/frame faults. Shared saved-policy resolution reaches CLI/Lab and pixel thresholds; normalized policy/version and measured value-frame counts are reported. No quantity inference or rendered-glyph/factual truth claim.",
+      "fullGate": "pending-rerun"
     }
   ],
   "verification": [
@@ -304,6 +311,22 @@
       "firstTestMillisecondsBefore": 5399,
       "firstTestMillisecondsAfter": 2729,
       "notes": "Only32-entry suffix recorder replaces per-getter Array.shift with circular buffer. All16 frozen complete output/getter hashes, counts/order, prefix/suffix assertions and5000ms timeout unchanged; production gradient implementation unchanged. Independent review confirms chronological suffix equivalence."
+    },
+    {
+      "command": "semantic policy + existing reading/speech/quality regressions; build/lint",
+      "status": "passed",
+      "tests": 118,
+      "files": 4,
+      "logs": [
+        "/tmp/still-shift-ms1-semantic-focused-4.log",
+        "/tmp/still-shift-ms1-semantic-build-4.log",
+        "/tmp/still-shift-ms1-semantic-lint-3.log"
+      ],
+      "failedAttempts": [
+        "/tmp/still-shift-ms1-semantic-build-1.log",
+        "/tmp/still-shift-ms1-semantic-focused-3.log"
+      ],
+      "notes": "Initial test type widened an optional evaluation field; then pixel fixture used4x4 below published16 minimum. Both test setup faults retained and corrected; assertions unchanged."
     }
   ],
   "renderEvidence": [
@@ -471,7 +494,7 @@
     "humanCreativeAcceptance": "not-reviewed"
   },
   "limits": [
-    "Full gate attempt1 stops at one existing metadata trace timeout; focused test instrumentation repair passes. Complete gate rerun and missing linked quantity/intact-phrase encoded evidence packet remain in progress. Installed archive and isolated E01 acceptance pass separately.",
+    "Complete gate rerun and linked quantity/intact-phrase encoded packet remain in progress. Semantic policy repair changes archive inputs, so ff82eae9 installed/E01 proof remains a retained predecessor; refresh final archive verification before PR.",
     "Customer source media remains outside Git; public redistribution is not established.",
     "Human continuous motion, listening and creative acceptance remain pending."
   ],

@@ -55,6 +55,8 @@ still hold before relying on them.
   stopped at an existing metadata trace timeout; focused circular suffix recorder
   repair passes all10 assertions with unchanged5s limit. Linked quantity/intact-phrase
   encoded evidence packet and complete gate rerun remain before MS1 PR/MS1N.
+  Semantic policy repair passes118 focused tests/types/lint; changed package inputs
+  require a refreshed archive and isolated proof after encoded verification.
   Full baseline refresh changes
   only29 editorial frames for the reproduced mask fix. Human continuous/listening
   review remains pending. Original checkout edits preserved.
@@ -169,6 +171,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Complete semantic presentation context
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` (from `7ffb44a1`).
+- **Done:** explicit quantity/phrase associations, strict declared-context profile,
+  legacy unassessed status and exact member/frame faults independent of later holds.
+  Saved readingPolicy now resolves through API/CLI/Lab and pixel measurement;
+  reports bind normalized semantic policy and separate glyph/factual review limits.
+- **Results:**118 focused policy/reading/speech/quality tests, build and lint pass.
+  Initial optional test typing and undersized pixel fixture failures are retained.
+- **Open / next:** encoded English/Thai quantity/intact-phrase packet, complete gate
+  rerun and refreshed archive/isolated E01 proof before MS1 PR. Prior archive proof
+  remains historical; no publication or human acceptance inferred.
+- **Records:** [CLI contracts](./mechanism-episode-cli.md),
+  [MS1 results](./mechanism-shorts-ms1-results.json).
 
 ### 2026-10-10 — Full-gate metadata trace timeout
 

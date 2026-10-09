@@ -1,3 +1,4 @@
+import { analyzeCompositionSemantics } from "./composition/semantic-quality.ts";
 import { classifyPhysicalProofHolds } from "./composition/physical-proof-quality.ts";
 import type { Composition } from "@still-shift/scene-contract";
 import { analyzeCompositionStillness } from "./story-continuous-quality.ts";
@@ -329,6 +330,8 @@ export function analyzeStoryQuality(
 
 export {
   CompositionQualityPolicySchema,
+  CompositionSemanticAssociationSchema,
+  CompositionReadingMemberSchema,
   MOTION_LINT_CODES,
   type CompositionQualityPolicy,
   type MotionLintDiagnostic,
@@ -342,12 +345,14 @@ export function analyzeCompositionQuality(
 ) {
   const resolved = resolveCompositionQualityPolicy(comp, policy);
   const frames = sampleCompositionQuality(comp, resolved.evaluation);
+  const semantic = analyzeCompositionSemantics(frames, comp.fps, resolved);
   const readingDeclarations = analyzeDeclaredCompositionReading(
     frames,
     comp.fps,
     resolved,
   ).windows;
   const diagnostics: MotionLintDiagnostic[] = [
+    ...semantic.diagnostics,
     ...analyzeCompositionStillness(
       frames.map((f) => f.signature),
       resolved,
@@ -476,6 +481,22 @@ export function analyzeCompositionQuality(
       textBounds: !!resolved.evaluation.textBounds,
     },
     diagnostics,
+    semantic: {
+      version: "composition-semantic-context-1" as const,
+      status: semantic.status,
+      profile: semantic.profile,
+      associations: semantic.associations,
+      policy: {
+        version: "composition-semantic-context-policy-1" as const,
+        profile: resolved.semanticProfile,
+        readingOpacity: resolved.readingOpacity,
+        readingReveal: resolved.readingReveal,
+        associations: resolved.semanticAssociations ?? [],
+      },
+      method: "declared-copy-and-measured-layer-context" as const,
+      factualTruth: "unassessed" as const,
+      renderedGlyphReadability: "requires-encoded-review" as const,
+    },
     ...(readingDeclarations.length ? { readingDeclarations } : {}),
     ...(physicalProofHolds.length ? { physicalProofHolds } : {}),
     ...(resolved.speechCaptions?.length
