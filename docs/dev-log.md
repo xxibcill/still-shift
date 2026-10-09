@@ -162,6 +162,20 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-10 — MS1 shared diagnostic checkpoint
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` with unmerged MS0 PR #51.
+- **Done:** shared bounded stage/path/next-action/cause receipts; retain error
+  codes, redact secrets/stacks/environment objects and preserve parseable JSON
+  diagnostics. Unknown CLI failures use classified recovery instead of blanket retry.
+- **Verification:** all 7 focused error/CLI tests pass; schema generation and
+  diagnostic formatting/lint pass. Initial test falsely matched the public phrase
+  “operating environment”; assertion corrected and complete focused group rerun.
+- **In flight / next:** shared mechanism contracts/evaluator, geometry and strict
+  font preparation are in parallel. Capture/contact-shot and full MS1 gate remain
+  pending; no later milestone or human review is complete.
+- **Records:** [MS1 results](./mechanism-shorts-ms1-results.json).
+
 ### 2026-10-09 — Start MS1 supported bridge after MS0 PR
 
 - **Agent / branch:** Codex on `codex/mechanism-ms1`, created from `main` and

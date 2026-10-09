@@ -37,6 +37,7 @@ import {
 } from "@still-shift/scene-contract";
 
 import { parseNamedArguments, requireArgument } from "./named-options.ts";
+import { failureDiagnostic } from "@still-shift/scene-contract";
 import { runCompositionCommand } from "./composition/commands.ts";
 import { runBatch } from "./batch.ts";
 import { parseOutputFormat } from "./format-option.ts";
@@ -188,6 +189,7 @@ export const toCliFailure = (
     };
   }
 
+  const diagnostic = failureDiagnostic(error);
   return {
     exitCode: 1,
     failure: {
@@ -195,10 +197,10 @@ export const toCliFailure = (
       error: {
         code: "RENDER_FAILED",
         message: "Unexpected animation command failure",
+        diagnostic,
         context: {
-          operation: "animate",
-          recovery:
-            "Retry the same request; if it fails again, report the command and stderr output.",
+          operation: diagnostic.stage,
+          recovery: diagnostic.nextAction,
         },
       },
     },

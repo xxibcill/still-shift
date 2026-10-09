@@ -11,10 +11,37 @@
     "pr": "https://github.com/xxibcill/still-shift/pull/51",
     "merged": false
   },
-  "checkpoints": [],
-  "verification": [],
+  "checkpoints": [
+    {
+      "date": "2026-10-10",
+      "slice": "shared-sanitized-failure-diagnostics",
+      "status": "implemented-focused-verified",
+      "behavior": "Optional bounded stage/path/nextAction/cause chain across engine and CLI. Existing error codes retained; unknown command causes choose classified recovery instead of blanket retry. Secrets/stacks/environment objects omitted; large diagnosticsJson remains parseable.",
+      "fullGate": "not-run-in-this-checkpoint"
+    }
+  ],
+  "verification": [
+    {
+      "command": "vitest run failure-diagnostics,cli-error,animation-error --maxWorkers=2",
+      "status": "passed",
+      "files": 3,
+      "tests": 7
+    },
+    {
+      "command": "schema:generate; prettier and eslint on diagnostic slice",
+      "status": "passed"
+    }
+  ],
   "renderEvidence": [],
-  "failedRuns": [],
+  "failedRuns": [
+    {
+      "command": "focused failure-diagnostics initial run",
+      "result": "1 of7 tests failed",
+      "reason": "Test matched public phrase operating environment instead of leaked environment object key.",
+      "repair": "Assert absent serialized environment property and secrets.",
+      "rerun": "all7pass"
+    }
+  ],
   "review": {
     "sampledVisual": "not-reviewed",
     "continuousMotion": "not-reviewed",
