@@ -162,6 +162,19 @@ export default comp({ id: "package-test", width: 320, height: 192, fps: 24, fram
     "composition.ts",
   ]);
   await writeFile(
+    resolve(project, "pixel-lint.mjs"),
+    `import assert from "node:assert/strict";
+import { lintCompositionFile } from "still-shift/engine";
+const report = await lintCompositionFile("composition.ts", {}, { pixels: true });
+assert.equal(report.backend, "canvas2d");
+assert.equal(typeof report.rendererVersion, "string");
+assert.ok(Array.isArray(report.diagnostics));
+console.log("Installed browser pixel lint completed");\n`,
+  );
+  await run("installed browser pixel-quality analysis", process.execPath, [
+    "pixel-lint.mjs",
+  ]);
+  await writeFile(
     resolve(project, "legacy.ts"),
     program.replace('"still-shift"', '"@still-shift/motion"'),
   );

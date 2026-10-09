@@ -53,7 +53,9 @@ still hold before relying on them.
   for the reproduced mask fix. Compact render-check findings and stage telemetry
   pass actual40-frame CLI export,11 tests/build/lint. Installed-archive OS-isolated lifecycle and full
   local gate remain before MS1 PR. Embedded subprocess stack sanitization passes;
-  the first archive is superseded and consumer runtime setup is being repaired. Human continuous/listening review remains
+  first archives are superseded. Consumer source/lock/save/reload and exact696
+  capture/final bytes pass; deployed final QA found a browser import helper fault,
+  now repaired and awaiting rebuilt-archive verification. Human continuous/listening review remains
   pending. MS1N implementation has not started; original checkout edits preserved.
   [Results](./mechanism-shorts-ms1-results.json),
   [repair evidence](./mechanism-shorts-ms1-repair-results.json).
@@ -169,6 +171,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Installed browser pixel-check bootstrap
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` (from `5554344f`).
+- **Done:** browser module-script bootstrap avoids TypeScript dynamic-import helpers
+  escaping the serialized callback. Installed package gate adds real pixel analysis.
+- **Results:** isolated consumer captures all696 plates and final MP4 exactly as v6,
+  but final QA failed on emitted helper; that candidate remains unaccepted. Source
+  CLI11 checks and corrected cancellation2 checks pass in stages, with types/lint.
+- **Rejected / do not repeat:** variable imports inside serialized browser callbacks;
+  cancellation fixture's implicit center anchor and misplaced correction fields.
+- **Open / next:** verify rebuilt archive with package gate, complete isolated
+  final QA/text-edit proof, then required full local gate and MS1 PR.
+- **Records:** [MS1 evidence](./mechanism-shorts-ms1-results.json).
 
 ### 2026-10-10 — Embedded subprocess diagnostic frames
 

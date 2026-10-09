@@ -247,6 +247,16 @@
       "tests": 11,
       "log": "/tmp/still-shift-ms1-embedded-stack-diagnostics-2.log",
       "build": "/tmp/still-shift-ms1-root-build-12.log"
+    },
+    {
+      "command": "browser module-script bootstrap, actualCLI layout failure and cancellation cleanup",
+      "status": "passed-in-stages",
+      "tests": 13,
+      "logs": [
+        "/tmp/still-shift-ms1-browser-bootstrap-checks-2.log",
+        "/tmp/still-shift-ms1-browser-bootstrap-checks-3.log"
+      ],
+      "notes": "CLI11pass in combined run; cancellation2pass after correcting its real full-coverage fixture. Combined attempts failed and remain retained. Integrated types/narrowlint pass; installed archive rerun pending."
     }
   ],
   "renderEvidence": [
@@ -472,6 +482,20 @@
       "repair": "Remove stack frames/stack context while preserving terminal exception; rebuild archive. Consumer uses byte-identical ps copy with setuid removed, keeping original source-byte denial.",
       "evidence": "/private/tmp/still-shift-ms1-installed-e01-eQbmEw",
       "status": "replacement-verification-pending"
+    },
+    {
+      "attempt": "installed archive5554344f fullE01 final check",
+      "archiveSha256": "sha256:e107a5bac04e457a145c2ebc20a32dc1ee6d95fa165199a8a1154e4beac15974",
+      "reason": "Emitted TypeScript rewrites variable import inside serialized page.evaluate callback to helper unavailable in browser.",
+      "measured": "All696 actual fresh plate hashes and exported final MP4 exactly match acceptedv6, but overall final-check command failed; not accepted.",
+      "repair": "Import renderer in an actual browser module script before evaluating lint callback; installed pixel-analysis regression added to package gate.",
+      "evidence": "/private/tmp/still-shift-ms1-installed-e01-final-H8M4Hf/failure-final-check.json"
+    },
+    {
+      "attempt": "browser bootstrap focused checks attempts1..2",
+      "reason": "Faster valid module loading exposed cancellation fixture coverage fault; first correction used fields outside declared transform object.",
+      "repair": "Keep required coverage and explicitly use transform anchor/position[0,0].",
+      "rerun": "/tmp/still-shift-ms1-browser-bootstrap-checks-3.log"
     }
   ],
   "portableDelivery": {

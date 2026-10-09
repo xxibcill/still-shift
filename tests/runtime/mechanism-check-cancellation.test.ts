@@ -48,6 +48,7 @@ it("interrupts a long native pixel check and removes its owned browser/server ca
           type: "solid",
           color: "#305c70",
           size: [320, 192],
+          transform: { anchor: [0, 0], position: [0, 0] },
           coverage: "required",
           inPoint: 0,
           outPoint: 10000,

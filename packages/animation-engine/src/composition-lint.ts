@@ -86,10 +86,15 @@ export async function lintCompositionFile(
     await page.goto(
       runtimeBrowserUrl(server.resolvedUrls!.local[0]!, "composition-compile"),
     );
+    const moduleUrl = `/@fs/${fileURLToPath(new URL("../../renderer-core/src/index.ts", import.meta.url))}`;
+    await page.addScriptTag({
+      type: "module",
+      content: `import * as renderer from ${JSON.stringify(moduleUrl)}; globalThis.__stillShiftLintRenderer = renderer;`,
+    });
+    options.signal?.throwIfAborted();
     const result = await page.evaluate(
       async ({
         json,
-        moduleUrl,
         preparedMedia,
         policyJson,
         backend,
@@ -97,7 +102,11 @@ export async function lintCompositionFile(
       }) => {
         const comp = JSON.parse(json) as Composition;
         const policy = JSON.parse(policyJson) as CompositionQualityPolicy;
-        const renderer = (await import(moduleUrl)) as typeof Renderer;
+        const renderer = (
+          globalThis as typeof globalThis & {
+            __stillShiftLintRenderer: typeof Renderer;
+          }
+        ).__stillShiftLintRenderer;
         let preview:
           | ReturnType<typeof renderer.createCompositionPreview>
           | undefined;
@@ -133,7 +142,6 @@ export async function lintCompositionFile(
       },
       {
         json: JSON.stringify(loaded.composition),
-        moduleUrl: `/@fs/${fileURLToPath(new URL("../../renderer-core/src/index.ts", import.meta.url))}`,
         preparedMedia: loaded.preparedMedia,
         policyJson: JSON.stringify(policy),
         backend,
