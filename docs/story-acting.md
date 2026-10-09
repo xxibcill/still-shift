@@ -350,7 +350,12 @@ A zero scale on an affine 2D mesh owner or its ancestor makes that mesh stage
 transparent, including rotated parent/child chains. Returning to a nonzero scale
 restores ordinary deformation and pin validation. Later scope effects still run;
 visible input generated before the mesh can deform in a valid external coordinate
-space. Small nonzero scales and reflections retain their normal behavior.
+space. Small nonzero scales and reflections retain their normal behavior. A puppet
+with no pixels at or above `alphaThreshold` renders empty, including tiny frames
+with authored pins. Silhouette membership and deformation checks resume when
+thresholded input recovers; parameter counts, distinct rest positions and region
+settings are still validated normally. A collapsed external coordinate reference
+retains its error behavior for a noncollapsed owner.
 
 For rectangular artwork, `distort.mesh-warp` offers tensor-product Bezier control
 grids with 2–8 rows and columns. Supply `columns`, `rows`, layer-local `origin` and

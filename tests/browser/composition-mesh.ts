@@ -13,6 +13,7 @@ import {
   checkMeshDiagnosticExports,
   checkCollapsedMeshExports,
   checkRotatedParentMeshExports,
+  checkMeshRepairExports,
 } from "../helpers/composition-mesh-export.ts";
 import type * as Offscreen from "../helpers/composition-mesh-offscreen.ts";
 import type * as Demo from "../helpers/composition-puppet-demo.ts";
@@ -20,6 +21,7 @@ import type * as Diagnostics from "../helpers/composition-mesh-diagnostic-refere
 import type * as Raster from "../helpers/composition-mesh-raster-reference.ts";
 import type * as Collapsed from "../helpers/composition-mesh-collapsed-reference.ts";
 import type * as Checks from "../helpers/composition-mesh-reference.ts";
+import type * as Scale from "../helpers/composition-mesh-scale-reference.ts";
 import type * as Stack from "../helpers/composition-mesh-stack-reference.ts";
 const root = resolve(import.meta.dirname, "../.."),
   scratch = await mkdtemp(join(tmpdir(), "ce14-mesh-"));
@@ -53,6 +55,10 @@ try {
   const offscreen = await page.evaluate(async () => {
     const path = "/tests/helpers/composition-mesh-offscreen.ts";
     return ((await import(path)) as typeof Offscreen).checkOffscreenMeshes();
+  });
+  const scale = await page.evaluate(async () => {
+    const path = "/tests/helpers/composition-mesh-scale-reference.ts";
+    return ((await import(path)) as typeof Scale).checkSmallScaleMeshes();
   });
   const stack = await page.evaluate(async () => {
     const path = "/tests/helpers/composition-mesh-stack-reference.ts";
@@ -89,6 +95,7 @@ try {
       raster,
       collapsed,
       stack,
+      scale,
       diagnostics,
       demo: demo.map(({ picture: _picture, ...proof }) => proof),
     }),
@@ -134,4 +141,14 @@ await writeFile(
 console.log(
   "Rotated parent mesh production exports passed:",
   join(scratch, "rotated-parent-exports.json"),
+);
+
+const repairExports = await checkMeshRepairExports(scratch);
+await writeFile(
+  join(scratch, "repair-exports.json"),
+  JSON.stringify(repairExports, null, 2),
+);
+console.log(
+  "Mesh review repair exports passed:",
+  join(scratch, "repair-exports.json"),
 );

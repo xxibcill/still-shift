@@ -434,3 +434,95 @@ export async function checkRotatedParentMeshExports(directory: string) {
   }
   return reports;
 }
+
+/** Independent ordinary-layer exports verify each review repair across worker/cache modes. */
+export async function checkMeshRepairExports(directory: string) {
+  const { stackedMeshComposition } = await import(
+    "./composition-mesh-stack-reference.ts"
+  );
+  const { smallScaleComposition } = await import(
+    "./composition-mesh-scale-reference.ts"
+  );
+  const reports = [];
+  for (const backend of ["canvas2d", "webgl2"] as const)
+    for (const repair of ["stack", "scale"] as const)
+      for (const kind of ["distort.mesh-warp", "distort.puppet"] as const) {
+        const comp =
+          repair === "stack"
+            ? stackedMeshComposition(
+                [
+                  kind,
+                  kind === "distort.mesh-warp"
+                    ? "distort.puppet"
+                    : "distort.mesh-warp",
+                ],
+                [32, -32],
+                kind === "distort.puppet",
+              )
+            : smallScaleComposition(kind, kind === "distort.puppet");
+        comp.background = "#000000";
+        const ordinary = structuredClone(comp);
+        delete ordinary.layers[0]!.effects;
+        const referencePath = join(
+          directory,
+          `repair-${repair}-${kind}-${backend}-ordinary.json`,
+        );
+        const referenceOutput = referencePath.replace(/\.json$/, ".mp4");
+        await writeFile(referencePath, JSON.stringify(ordinary));
+        const referenceResult = await renderComposition({
+          compositionPath: referencePath,
+          outputPath: referenceOutput,
+          backend,
+        });
+        const reference = await parallelOutputProof(
+          referenceOutput,
+          referenceResult.metrics,
+        );
+        const compositionPath = join(
+          directory,
+          `repair-${repair}-${kind}-${backend}.json`,
+        );
+        await writeFile(compositionPath, JSON.stringify(comp));
+        let baseline:
+          | Awaited<ReturnType<typeof parallelOutputProof>>
+          | undefined;
+        for (const [workers, cacheStatic] of [
+          [1, true],
+          [1, true],
+          [4, true],
+          [4, false],
+        ] as const) {
+          const outputPath = join(directory, `repair-${reports.length}.mp4`);
+          const result = await renderComposition({
+            compositionPath,
+            outputPath,
+            backend,
+            workers,
+            cacheStatic,
+          });
+          const proof = await parallelOutputProof(outputPath, result.metrics);
+          assert.deepEqual(
+            proof.decodedFrames,
+            reference.decodedFrames,
+            `${repair}/${kind}/${backend}: ordinary frame parity`,
+          );
+          if (baseline)
+            assert.deepEqual(
+              proof,
+              baseline,
+              `${repair}/${kind}/${backend}/${workers}/${cacheStatic}`,
+            );
+          else baseline = proof;
+          reports.push({ repair, kind, backend, workers, cacheStatic, proof });
+          console.log(
+            "Mesh review repair export:",
+            repair,
+            kind,
+            backend,
+            workers,
+            cacheStatic,
+          );
+        }
+      }
+  return reports;
+}

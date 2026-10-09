@@ -353,7 +353,52 @@ and three mesh stacks, intervening viewport clears and disabled trailing meshes;
 384 exact reverse/random seeks pass. Canvas 1.47.6 / WebGL 0.68.6 invalidate caches;
 the pinned request digest changes only with renderer identity.
 
-The separate small-nonzero-scale finding remains in flight. Complete affected
-mesh/export and native-effect catalogue verification will run on the final
-combined repair checkpoint. No full repository gate is rerun or claimed. Evidence:
+The separate small-nonzero-scale finding is repaired in the next slice below.
+Complete affected mesh/export and native-effect catalogue verification passes on
+the final combined repair checkpoint. No full repository gate is rerun or claimed. Evidence:
 [stack and scale repair results](./pr-50-stack-scale-fix-results.json).
+
+## PR #50 small nonzero mesh scale repair — 2026-10-09
+
+The [posted P2](https://github.com/xxibcill/still-shift/pull/50#discussion_r4227673636)
+reproduces an identity warp's false fold at scale `1e-6` and an empty-pin puppet's
+inverse failure at scale `1e-7`. Continuous deformation now validates local source
+and destination geometry using orientation and the existing relative collapse
+threshold. Absolute pixel-area handling remains in delivered raster compaction;
+Float32 delivery, snapping and exact identity sampling are unchanged. A mesh-only
+inverse retains existing arithmetic and accepts exact nonzero determinants below
+the shared inverse's cutoff. Shared transform semantics remain unchanged.
+
+Independent review identified two edge cases before final verification: local
+absolute-area checks could reject a one-pixel silhouette in a large external space,
+and pinned puppets could reject empty tiny raster input. Continuous checks use no
+absolute pixel floor; empty thresholded puppet input returns before pin insertion.
+Visible recovery restores silhouette membership and solver validation. Contract
+parameter validation and direct alpha-topology validation remain unchanged.
+Exactly collapsed external references retain prior type-specific errors, including
+rotated zero-factor provenance, separately from transparent collapsed owners.
+
+All 100 focused units, TypeScript, changed-file lint and package boundaries pass.
+Four newly added unit regressions fail on the preceding checkpoint. The new scale
+preview checks include pinned/zero-pin puppets, reflections, translated tiny scales,
+small/large external spaces and restored invalid-pin diagnostics. Final affected
+mesh/export and native-effect baseline evidence is recorded in
+[repair results](./pr-50-stack-scale-fix-results.json). Canvas 1.47.7 / WebGL 0.68.7
+invalidate caches; the pinned request digest follows those identities. These are
+scoped follow-up checks; no full repository gate is rerun or claimed.
+
+Final combined verification passes the complete affected mesh browser/export
+command and native-effects command. The stack repair retains all 128 ordinary
+pixel oracles / 384 seeks; scale/recovery adds 142 exact checks in 22 cases. All
+previous pixels, raster, offscreen, diagnostics, twelve ownership cases and both
+48-frame demos pass. Thirty-two additional real mesh exports compare every decoded
+frame with independent ordinary layers and preserve encoded bodies across repeats,
+one/four workers and cache on/off. Existing valid and invalid production proofs
+remain passing, including structured diagnostic cleanup.
+
+All seven native-effect catalogues match their frozen references; hardware
+comparisons retain the existing policy. Six native fixtures have byte-identical
+repeated 60-frame exports. All 216 visual-reference files and two unit snapshots
+are unchanged. Final source fingerprints, logs and artifacts are retained in the
+repair results. Two posted findings have two dedicated commits, followed by one
+final normal push; owner review/merge is next. GitHub Actions remain disabled.

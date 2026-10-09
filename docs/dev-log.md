@@ -43,12 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #50 stack/scale repairs in flight (2026-10-09):** both findings are posted
-  inline on `8fe1f832`. The stacked owner mesh repair passes 43 focused units,
-  128 exact ordinary-pixel oracles and 384 seeks, TypeScript, scoped lint and
-  boundaries. The small-nonzero-scale repair and final affected mesh/export and
-  native-effect checks remain. One finding per commit, then one final normal push.
-  [Repair evidence](./pr-50-stack-scale-fix-results.json).
+- **PR #50 stack/scale repairs verified (2026-10-09):** both findings posted on
+  `8fe1f832` are repaired on `codex/pr50-stack-scale-fixes`, one per commit. Owner
+  mesh stacks retain required intermediates; tiny nonzero scales and pinned empty
+  input preserve raster output and recovery validation. 100 focused units,
+  TypeScript/lint/boundaries/formatting, complete mesh/export and native-effect
+  checks pass. New oracles: 128 stack comparisons / 384 seeks, 142 scale checks
+  and 32 exports across repeat/worker/cache modes. Frozen references remain exact.
+  One final normal push delivers both commits; owner review/merge is next. No full
+  repository gate rerun or claimed. [Repair evidence](./pr-50-stack-scale-fix-results.json).
 
 - **PR #50 main conflicts resolved (2026-10-09):** integrate merged CE15 review
   fixes from `main` `43d57709` into reviewed CE14 head `2d49e192`. Both parents'
@@ -143,6 +146,22 @@ still hold before relying on them.
   owner review/merge. No work was scheduled.
 
 ## Entries
+
+### 2026-10-09 — PR #50 small nonzero mesh scale repair
+
+- **Agent / branch:** Codex on `codex/pr50-stack-scale-fixes`, after stack commit `06718215`.
+- **Done:** validate continuous deformation locally, accept nonzero mesh inverses,
+  render thresholded empty puppet input with pins and restore validation on recovery.
+  Preserve invalid collapsed-reference errors and existing raster delivery.
+- **Results:** 100 focused units and static checks pass; complete mesh/browser/export
+  and native-effect commands pass. 142 scale checks and 32 independent repair exports
+  retain exact frame/encoded proofs across repeat, one/four workers and cache modes.
+- **Review:** corrected empty pinned-input and collapsed-reference edge cases before
+  final suites. Existing baselines/thresholds remain unchanged; Actions are disabled.
+- **Delivery:** one commit for each finding, one final normal push to PR #50;
+  owner review/merge next. No full repository gate rerun or claimed.
+- **Records:** [repair evidence](./pr-50-stack-scale-fix-results.json),
+  [CE14 repair plan](./composition-ce14-plan.md#pr-50-small-nonzero-mesh-scale-repair--2026-10-09).
 
 ### 2026-10-09 — PR #50 stacked owner mesh repair
 

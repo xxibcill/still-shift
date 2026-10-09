@@ -152,3 +152,39 @@ it("keeps external mesh-space bounds for scope-generated input under a collapsed
     meshOutputBounds(input, effect, identity),
   );
 });
+
+it("encloses nonuniform deformation in tiny nonzero mesh spaces", () => {
+  const rest: Point[] = [
+    [0, 0],
+    [16, 0],
+    [8, 16],
+  ];
+  const targets: Point[] = [
+    [0, 0],
+    [20, 2],
+    [8, 16],
+  ];
+  const matrix: Matrix = [1e-7, 0, 0, 1e-7, 8, 8];
+  const bounds = meshOutputBounds(
+    projectBounds(input, matrix),
+    puppet(rest, targets),
+    matrix,
+  );
+  for (const point of [
+    [0, 0],
+    [16, 0],
+    [8, 16],
+    [8, 8],
+  ] as Point[])
+    contains(
+      bounds,
+      transformPoint(
+        matrix,
+        deformPuppetPoint(
+          point,
+          rest.map((value, i) => ({ rest: value, target: targets[i]! })),
+          [],
+        ),
+      ),
+    );
+});

@@ -1,5 +1,9 @@
 import { meshError } from "./diagnostics.ts";
-import type { Matrix, Point } from "../../node-transform.ts";
+import {
+  inverseMatrix,
+  type Matrix,
+  type Point,
+} from "../../node-transform.ts";
 export type PuppetPin = { rest: Point; target: Point };
 export type StarchRegion = { center: Point; radius: number; strength: number };
 export type OverlapRegion = { center: Point; radius: number; depth: number };
@@ -15,6 +19,22 @@ export function isCollapsedMeshPlacement(
     ) ??
       false)
   );
+}
+
+/** Mesh coordinates admit every nonzero placement, including subpixel scales. */
+export function inverseMeshPlacement(matrix: Matrix): Matrix {
+  const determinant = matrix[0] * matrix[3] - matrix[1] * matrix[2];
+  // Preserve the shared inverse's arithmetic on its existing supported range.
+  if (Math.abs(determinant) >= 1e-12) return inverseMatrix(matrix);
+  if (determinant === 0) throw Error("Cannot invert collapsed transform");
+  return [
+    matrix[3] / determinant,
+    -matrix[1] / determinant,
+    -matrix[2] / determinant,
+    matrix[0] / determinant,
+    (matrix[2] * matrix[5] - matrix[3] * matrix[4]) / determinant,
+    (matrix[1] * matrix[4] - matrix[0] * matrix[5]) / determinant,
+  ];
 }
 
 type RigidFit = { source: Point; target: Point; cosine: number; sine: number };
@@ -160,6 +180,7 @@ export function triangleFlips(
   rest: readonly Point[],
   moved: readonly Point[],
   indices: readonly number[],
+  minimumArea = 1e-12,
 ): number[] {
   if (
     rest.length !== moved.length ||
@@ -181,7 +202,7 @@ export function triangleFlips(
       !Number.isFinite(current) ||
       !Number.isFinite(original) ||
       original * current <= 0 ||
-      Math.abs(current) <= Math.max(1e-12, Math.abs(original) * 1e-8)
+      Math.abs(current) <= Math.max(minimumArea, Math.abs(original) * 1e-8)
     )
       flips.push(i / 3);
   }

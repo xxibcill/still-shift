@@ -1,10 +1,9 @@
 import {
-  inverseMatrix,
   transformPoint,
   type Matrix,
   type Point,
 } from "../../node-transform.ts";
-import { isCollapsedMeshPlacement } from "./geometry.ts";
+import { inverseMeshPlacement, isCollapsedMeshPlacement } from "./geometry.ts";
 import { projectBounds } from "../evaluate/geometry.ts";
 import type { Bounds } from "../evaluate/types.ts";
 import type { EvaluatedEffect } from "../evaluate/effects.ts";
@@ -59,7 +58,7 @@ export function meshOutputBounds(
       bottom: input.bottom + y,
     };
   }
-  const local = projectBounds(input, inverseMatrix(matrix));
+  const local = projectBounds(input, inverseMeshPlacement(matrix));
   let radius = 0;
   for (const point of rest)
     radius = Math.max(

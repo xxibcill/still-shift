@@ -1,6 +1,5 @@
 import { meshError } from "./diagnostics.ts";
 import {
-  inverseMatrix,
   transformPoint,
   type Matrix,
   type Point,
@@ -10,6 +9,7 @@ import { alphaMesh } from "./topology.ts";
 import {
   bezierMeshPoint,
   isCollapsedMeshPlacement,
+  inverseMeshPlacement,
   deformPuppetPoint,
   orderMeshTriangles,
   triangleFlips,
@@ -39,28 +39,28 @@ export function meshFrame(
 ): DeformedMesh {
   // Coordinate references can differ from the owner. A prior scope effect may
   // paint visible input in that external space even when owner artwork collapses.
+  if (ownerCollapsed && referenceCollapsed)
+    return { source: [], destination: [], indices: [] };
+  if (referenceCollapsed) {
+    if (effect === "distort.mesh-warp")
+      meshError(
+        "comp-mesh-flip",
+        "collapsed mesh coordinate reference",
+        "controls",
+      );
+    throw Error("Cannot invert collapsed transform");
+  }
+  // Tiny nonzero placement can erase the complete raster silhouette. There are
+  // no vertices or pin constraints to solve until visible input returns.
   if (
-    ownerCollapsed &&
-    (referenceCollapsed ||
-      (effect === "distort.puppet" &&
-        !pixels!.some(
-          (value, index) =>
-            index % 4 === 3 && value >= (params.alphaThreshold as number),
-        )))
+    effect === "distort.puppet" &&
+    !hasThresholdedAlpha(pixels!, params.alphaThreshold as number)
   )
     return { source: [], destination: [], indices: [] };
   const mesh =
     effect === "distort.mesh-warp"
       ? bezierFrame(params, matrix)
       : puppetFrame(params, width, height, pixels!, matrix);
-  // Validate the authored deformation before float/raster delivery can collapse faces.
-  const flips = triangleFlips(mesh.source, mesh.destination, mesh.indices);
-  if (flips.length)
-    meshError(
-      "comp-mesh-flip",
-      `${flips.length} flipped or collapsed triangles (first ${flips[0]}); reduce the pin/control deformation`,
-      effect === "distort.puppet" ? "pins" : "controls",
-    );
   for (const points of [mesh.source, mesh.destination])
     for (const point of points) {
       point[0] = Math.fround(point[0]);
@@ -82,6 +82,22 @@ export function meshFrame(
     }
   discardRasterDegenerates(mesh);
   return mesh;
+}
+function hasThresholdedAlpha(pixels: Uint8Array, threshold: number): boolean {
+  for (let i = 3; i < pixels.length; i += 4)
+    if (pixels[i]! >= threshold) return true;
+  return false;
+}
+/** Placement and pixel size must not turn a valid authored deformation into a fold. */
+function validateDeformation(mesh: DeformedMesh, effect: string) {
+  // Continuous geometry uses relative area; the absolute floor belongs to raster delivery.
+  const flips = triangleFlips(mesh.source, mesh.destination, mesh.indices, 0);
+  if (flips.length)
+    meshError(
+      "comp-mesh-flip",
+      `${flips.length} flipped or collapsed triangles (first ${flips[0]}); reduce the pin/control deformation`,
+      effect === "distort.puppet" ? "pins" : "controls",
+    );
 }
 /** Raster-only degeneracy is not an authored fold. Compact in stable draw order. */
 function discardRasterDegenerates(mesh: DeformedMesh): void {
@@ -106,8 +122,10 @@ function bezierFrame(params: EffectParameters, matrix: Matrix): DeformedMesh {
     origin = params.origin as Point,
     size = params.size as Point;
   const mesh: DeformedMesh = { source: [], destination: [], indices: [] };
-  const place = ([x, y]: Point) =>
-    transformPoint(matrix, [origin[0] + x * size[0], origin[1] + y * size[1]]);
+  const place = ([x, y]: Point): Point => [
+    origin[0] + x * size[0],
+    origin[1] + y * size[1],
+  ];
   for (let y = 0; y <= subdivisions; y++)
     for (let x = 0; x <= subdivisions; x++) {
       const uv: Point = [x / subdivisions, y / subdivisions];
@@ -124,6 +142,10 @@ function bezierFrame(params: EffectParameters, matrix: Matrix): DeformedMesh {
         d = c + 1;
       mesh.indices.push(a, b, d, a, d, c);
     }
+  validateDeformation(mesh, "distort.mesh-warp");
+  for (const points of [mesh.source, mesh.destination])
+    for (let i = 0; i < points.length; i++)
+      points[i] = transformPoint(matrix, points[i]!);
   return mesh;
 }
 function puppetFrame(
@@ -134,13 +156,15 @@ function puppetFrame(
   matrix: Matrix,
 ): DeformedMesh {
   const rest = points(params, "rest"),
-    targets = points(params, "pins"),
-    inverse = inverseMatrix(matrix);
+    targets = points(params, "pins");
   const topology = alphaMesh(pixels, width, height, {
     alphaThreshold: params.alphaThreshold as number,
     refinement: params.refinement as number,
     pins: rest.map((point) => transformPoint(matrix, point)),
   });
+  if (!topology.indices.length)
+    return { source: [], destination: [], indices: [] };
+  const inverse = inverseMeshPlacement(matrix);
   const local = topology.vertices.map((point) =>
     transformPoint(inverse, point),
   );
@@ -162,11 +186,15 @@ function puppetFrame(
       depth: points(params, "overlap")[i]![1],
     }),
   );
-  return {
-    source: topology.vertices,
-    destination: local.map((point) =>
-      transformPoint(matrix, deformPuppetPoint(point, pins, starch)),
-    ),
-    indices: orderMeshTriangles(local, topology.indices, overlap),
-  };
+  const destination = local.map((point) =>
+    deformPuppetPoint(point, pins, starch),
+  );
+  const indices = orderMeshTriangles(local, topology.indices, overlap);
+  validateDeformation(
+    { source: local, destination, indices },
+    "distort.puppet",
+  );
+  for (let i = 0; i < destination.length; i++)
+    destination[i] = transformPoint(matrix, destination[i]!);
+  return { source: topology.vertices, destination, indices };
 }
