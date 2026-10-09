@@ -43,6 +43,10 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #49 second review repairs (2026-10-09):** The shared-cache capacity finding is repaired and verified. Protected narration and natural PCM placement repairs are being recorded in their own commits; one normal push follows the final commit.
+  Focused follow-up checks only; no full repository gate run or claimed.
+  [Second review evidence](./pr-49-second-review-fix-results.json).
+
 - **PR #49 review repairs verified (2026-10-09):** both P2 findings posted
   inline at `efa42f42` are fixed, with one commit per finding and one final normal
   push to the PR branch. Cache fallback `7b0d546f` passes 101 focused units,
@@ -93,6 +97,15 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — PR #49 shared tint capacity
+
+- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head `2cd76eca`.
+- **Done:** Typed shared-capacity fallback uses the original bounded local tint cache; optional managed retention leaves allocator headroom.
+- **Results:** 79 focused tests, 1,920 exact preview comparisons and 16 production exports / 2,560 decoded frames pass. Eight frozen typography items / 1,309 frames match; original fixture and glyph performance assertions pass.
+- **Scope / next:** Focused PR follow-up; no full gate. Record the protected narration fix, then the natural PCM placement fix; push once after the final finding commit.
+- **Records:** [second review evidence](./pr-49-second-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-second-review-repairs--2026-10-09).
 
 ### 2026-10-09 — PR #49 fractional PCM preview
 

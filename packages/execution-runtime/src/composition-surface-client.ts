@@ -57,7 +57,12 @@ export function compositionSurfaceExchange(options: {
         return { kind: "hit", bytes, checksum };
       }
       const claim = (await response.json()) as CompositionSurfaceClaim;
-      if (claim.kind !== "lease" && claim.kind !== "uncached")
+      if (
+        (claim.kind !== "lease" && claim.kind !== "uncached") ||
+        (claim.kind === "uncached" &&
+          claim.reason !== undefined &&
+          (claim.reason !== "capacity" || identity.fallback !== "uncached"))
+      )
         throw Error("Composition surface response has an invalid lease");
       return claim;
     },

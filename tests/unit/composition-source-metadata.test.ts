@@ -10,9 +10,9 @@ const request = { kind: "unit", input: { text: "ไทย" }, width: 2, height: 
 const unexpected = () => {
   throw Error("A denied source must not reach painting or restoration");
 };
-function miss(source: CompositionSourceCache): unknown {
+function miss(source: CompositionSourceCache, requestValue = request): unknown {
   try {
-    source.read(request, unexpected, unexpected);
+    source.read(requestValue, unexpected, unexpected);
   } catch (error) {
     return error;
   }
@@ -180,4 +180,143 @@ it("keeps invalid tint sizes and oversized immutable sources fail-closed", () =>
   ).toThrow(/byte\/entry bound/);
   expect(paint).not.toHaveBeenCalled();
   source.dispose();
+});
+
+it("falls back locally after a typed shared-capacity denial without retrying claims or retaining negative source keys", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 8192 });
+  await withManagedMemory(memory, async () => {
+    const claim = vi.fn(async (identity: { fallback?: string }) => {
+      expect(identity.fallback).toBe("uncached");
+      return { kind: "uncached" as const, reason: "capacity" as const };
+    });
+    const source = new CompositionSourceCache({
+      scopeKey,
+      byteLimit: 1024,
+      exchange: {
+        claim,
+        async publish() {
+          unexpected();
+        },
+      },
+    });
+    const tint = { ...request, kind: "glyph-tint" };
+    await expect(source.prepare(miss(source, tint))).resolves.toBe(true);
+    expect(memory.statistics.current.metadata).toBe(768);
+    const canvas = { width: 2, height: 2 } as HTMLCanvasElement;
+    const paint = vi.fn(() => canvas);
+    memory.beginScratch();
+    expect(source.read(tint, paint, unexpected)).toBe(canvas);
+    expect(
+      source.read(
+        { ...tint, input: { text: "another color" } },
+        paint,
+        unexpected,
+      ),
+    ).toBe(canvas);
+    memory.endScratch();
+    expect(claim).toHaveBeenCalledOnce();
+    expect(paint).toHaveBeenCalledTimes(2);
+    const statistics = source.statistics;
+    expect(statistics.retainedCanvasBytes).toBe(0);
+    expect(statistics.sources).toEqual([
+      expect.objectContaining({ kind: "glyph-tint", uncachedPaints: 2 }),
+    ]);
+    source.dispose();
+    expect(canvas.width).toBe(2);
+    memory.dispose();
+    expect(memory.statistics.reservations).toBe(0);
+  });
+});
+
+it("keeps changed source identity and unrequested capacity denials fatal", async () => {
+  for (const [kind, response] of [
+    ["glyph-tint", { kind: "uncached" as const }],
+    ["glyph", { kind: "uncached" as const, reason: "capacity" as const }],
+  ] as const) {
+    const source = new CompositionSourceCache({
+      scopeKey,
+      byteLimit: 1024,
+      exchange: {
+        async claim() {
+          return response;
+        },
+        async publish() {
+          unexpected();
+        },
+      },
+    });
+    await expect(
+      source.prepare(miss(source, { ...request, kind })),
+    ).rejects.toThrow("changed identity");
+    source.dispose();
+  }
+});
+
+it("bounds optional managed tint retention before control owners fill while retaining immutable sources", async () => {
+  const memory = new ManagedMemory({
+    pixels: 64 * 1024,
+    metadata: 16 * 1024 ** 2,
+  });
+  const canvases: HTMLCanvasElement[] = [];
+  await withManagedMemory(memory, async () => {
+    const claim = vi.fn(async () => ({
+      kind: "lease" as const,
+      token: "native",
+      byteLength: 4,
+    }));
+    const source = new CompositionSourceCache({
+      scopeKey,
+      byteLimit: 128 * 1024 ** 2,
+      exchange: { claim, async publish() {} },
+    });
+    const paint = () => {
+      const canvas = memory.allocate(
+        "pixels",
+        4,
+        () =>
+          ({
+            width: 1,
+            height: 1,
+            getContext() {
+              return {
+                getImageData() {
+                  return { data: new Uint8ClampedArray([0, 0, 0, 255]) };
+                },
+              };
+            },
+          }) as unknown as HTMLCanvasElement,
+        true,
+      );
+      canvases.push(canvas);
+      return canvas;
+    };
+    const small = { kind: "glyph-tint", input: 0, width: 1, height: 1 };
+    for (let input = 0; input < 2048; input++) {
+      let pending: unknown;
+      try {
+        source.read({ ...small, input }, paint, unexpected);
+      } catch (error) {
+        pending = error;
+      }
+      expect(await source.prepare(pending)).toBe(true);
+    }
+    const local = { width: 1, height: 1 } as HTMLCanvasElement;
+    expect(
+      source.read({ ...small, input: 2048 }, () => local, unexpected),
+    ).toBe(local);
+    expect(claim).toHaveBeenCalledTimes(2048);
+    let pending: unknown;
+    try {
+      source.read({ ...small, kind: "glyph", input: 2048 }, paint, unexpected);
+    } catch (error) {
+      pending = error;
+    }
+    expect(await source.prepare(pending)).toBe(true);
+    expect(claim).toHaveBeenCalledTimes(2049);
+    source.dispose();
+    for (const canvas of canvases) memory.release(canvas);
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 0 });
+    expect(memory.statistics.reservations).toBe(0);
+    memory.dispose();
+  });
 });

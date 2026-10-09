@@ -30,11 +30,13 @@ export type CompositionSurfaceIdentity = {
   width: number;
   height: number;
   encoding: SurfaceEncoding;
+  /** Optional immutable sources may use their caller-owned local cache at capacity. */
+  fallback?: "uncached";
 };
 export type CompositionSurfaceClaim =
   | { kind: "lease"; token: string; byteLength: number }
   | { kind: "hit"; bytes: Uint8Array<ArrayBuffer>; checksum: string }
-  | { kind: "uncached" };
+  | { kind: "uncached"; reason?: "capacity" };
 export type CompositionSurfaceExchange = {
   claim(identity: CompositionSurfaceIdentity): Promise<CompositionSurfaceClaim>;
   publish(

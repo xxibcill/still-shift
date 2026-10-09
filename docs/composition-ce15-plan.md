@@ -2599,3 +2599,11 @@ full repository gate is run or claimed. The cache repair is `7b0d546f`; this aud
 repair is the second finding commit. Deliver both in one final normal push to
 `codex/composition-ce15`, then owner review/merge is next. The owner checkout is
 untouched, and GitHub Actions remain prohibited.
+
+## PR #49 second review repairs — 2026-10-09
+
+Three P2 findings are posted inline on `2cd76eca`; each repair has its own commit.
+Evidence is in [second review results](./pr-49-second-review-fix-results.json).
+These are scoped follow-ups; no full repository gate is run or claimed.
+
+The shared store returns a typed capacity denial only for opted-in glyph tints. Other identity, integrity, cancellation and lifecycle errors remain failures. A saturated page stops new shared tint claims and uses typography's original 16-color cache; managed optional retention stops at 2,048 entries within the unchanged 8,192-control allocator bound. Mandatory source, byte and 4,096-entry shared limits remain unchanged. The default global entry limit is exercised across four independent pages; byte pressure and the complete 256-frame entry fixture also pass public one/four/repeated-worker exports on both backends. All owners retire, and all encoded bodies and decoded frames match the uncached baselines. Frozen typography references and the original 1.5 glyph ratio assertion remain unchanged.

@@ -19,6 +19,7 @@ import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
 import {
   compositionSurfaceVisualMetadata,
   type CompositionSurfaceCacheOptions,
+  type CompositionSurfaceIdentity,
 } from "./surface-cache.ts";
 
 type SourceCounts = {
@@ -61,6 +62,7 @@ export class CompositionSourceCache {
   private peakPayloadBytes = 0;
   private closed = false;
   private preparing = false;
+  private sharedTintCapacityExceeded = false;
   constructor(private readonly options: CompositionSurfaceCacheOptions) {
     if (
       !/^sha256:[a-f0-9]{64}$/.test(options.scopeKey) ||
@@ -145,21 +147,21 @@ export class CompositionSourceCache {
     }
     if (
       this.state.entries.size >= 4096 ||
-      bytes * 2 + this.retainedBytes > this.options.byteLimit
+      bytes * 2 + this.retainedBytes > this.options.byteLimit ||
+      (request.kind === "glyph-tint" &&
+        (this.sharedTintCapacityExceeded ||
+          (renderMemory() !== undefined && this.state.entries.size >= 2048)))
     ) {
       signature.release();
       if (request.kind !== "glyph-tint")
         throw Error(
           "Composition preparation pixels exceed their local byte/entry bound",
         );
+      // Three retained owners per source leave headroom within the unchanged
+      // 8192 managed-control limit for native drawing and local tint canvases.
       // A changing tint can use typography's original bounded color cache. Its
       // caller owns this canvas; optional shared capacity never grows to hold it.
-      const counts = this.countsFor(request.kind);
-      const start = performance.now();
-      const canvas = paint();
-      counts.uncachedPaintMs += performance.now() - start;
-      counts.uncachedPaints++;
-      return canvas;
+      return this.paintUncached(request.kind, paint);
     }
     let pending: PendingSource | undefined;
     try {
@@ -191,6 +193,14 @@ export class CompositionSourceCache {
     }
     throw pending;
   };
+  private paintUncached(kind: string, paint: () => HTMLCanvasElement) {
+    const counts = this.countsFor(kind);
+    const start = performance.now();
+    const canvas = paint();
+    counts.uncachedPaintMs += performance.now() - start;
+    counts.uncachedPaints++;
+    return canvas;
+  }
   private countsFor(kind: string) {
     const existing = this.state.counts.get(kind);
     if (existing) return existing;
@@ -244,8 +254,8 @@ export class CompositionSourceCache {
       const bytes = request.width * request.height * 4;
       identity = await hashRenderMetadata(request.signature.value!);
       const key = identity.value!;
-      const body = allocateRenderMetadata(
-        416 + request.kind.length * 2,
+      const body = allocateRenderMetadata<CompositionSurfaceIdentity>(
+        448 + request.kind.length * 2,
         () => ({
           path: `source:${request.kind}:${key.slice(7)}`,
           key,
@@ -254,6 +264,7 @@ export class CompositionSourceCache {
           encoding: "rgba8-straight" as const,
         }),
       );
+      if (request.kind === "glyph-tint") body.fallback = "uncached";
       let claim: Awaited<
         ReturnType<CompositionSurfaceCacheOptions["exchange"]["claim"]>
       >;
@@ -263,6 +274,14 @@ export class CompositionSourceCache {
         releaseRenderMetadata(body);
       }
       this.assertOpen();
+      if (
+        claim.kind === "uncached" &&
+        claim.reason === "capacity" &&
+        request.kind === "glyph-tint"
+      ) {
+        this.sharedTintCapacityExceeded = true;
+        return true;
+      }
       const counts = this.countsFor(request.kind);
       let canvas: HTMLCanvasElement;
       if (claim.kind === "uncached")

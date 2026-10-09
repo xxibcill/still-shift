@@ -49,15 +49,48 @@ export function tintCapacityFixture(): Composition {
   };
 }
 
+/** Small glyphs reach the shared entry bound before either page-local byte bound. */
+export function tintEntryCapacityFixture(): Composition {
+  const composition = tintCapacityFixture();
+  composition.id = "tint-entry-capacity";
+  composition.width = 64;
+  composition.height = 32;
+  composition.frameCount = 256;
+  composition.layers = Array.from({ length: 20 }, (_, index) => ({
+    id: `caption-${index}`,
+    type: "text" as const,
+    text: String.fromCharCode(65 + index),
+    fontAsset: "body",
+    fontSize: 10,
+    color: {
+      keys: [
+        { frame: 0, value: "#ff0000" },
+        { frame: 255, value: "#0000ff" },
+      ],
+    },
+    transform: {
+      anchor: [0, 0],
+      position: [(index % 10) * 6, 10 + Math.floor(index / 10) * 12],
+    },
+  }));
+  return composition;
+}
+
 /** Exact forward/reverse pixels and actual managed native retirement under cache pressure. */
 export async function checkTintCapacity(options: {
   backend: "canvas2d" | "webgl2";
+  variant?: "bytes" | "entries";
+  workers?: number;
+  requireFallback?: boolean;
   baseUrl: string;
   worker: number;
   credential: string;
   scopeKey: string;
 }) {
-  const composition = tintCapacityFixture();
+  const composition =
+    options.variant === "entries"
+      ? tintEntryCapacityFixture()
+      : tintCapacityFixture();
   const assetUrl = (id: string) =>
     composition.assets.find((asset) => asset.id === id)!.path;
   const resources = await loadCompositionResources(composition, assetUrl);
@@ -110,7 +143,7 @@ export async function checkTintCapacity(options: {
         const forward = Array.from(
           { length: composition.frameCount },
           (_, frame) => frame,
-        );
+        ).filter((frame) => frame % (options.workers ?? 1) === options.worker);
         for (const frames of [forward, [...forward].reverse(), forward])
           for (const frame of frames) {
             memory.beginScratch();
@@ -136,7 +169,10 @@ export async function checkTintCapacity(options: {
           0,
         );
         releaseRenderMetadata(statistics);
-        if (retainedCanvasBytes > byteLimit || uncachedPaints === 0)
+        if (
+          retainedCanvasBytes > byteLimit ||
+          (options.requireFallback !== false && uncachedPaints === 0)
+        )
           throw Error(
             "Tint capacity fixture did not exercise bounded uncached painting",
           );
@@ -149,6 +185,7 @@ export async function checkTintCapacity(options: {
   }
   return {
     backend: options.backend,
+    variant: options.variant ?? "bytes",
     comparedFrames,
     retainedCanvasBytes,
     uncachedPaints,
