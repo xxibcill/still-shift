@@ -46,7 +46,8 @@ still hold before relying on them.
 - **MS1 bridge active (2026-10-09):** separate `codex/mechanism-ms1` branch from
   `main` `e6eb7b06` carries exact MS0 prerequisite `d55908fa`; MS0
   [PR #51](https://github.com/xxibcill/still-shift/pull/51) is open and unmerged.
-  Begin shared contracts, portable geometry and one-frame/contact-shot proof,
+  Shared contracts, pure rig evaluation, solid geometry and strict opt-in font
+  preflight are implemented and focused checks pass. Complete one-frame/contact-shot proof,
   then complete E01/lifecycle/repair acceptance before MS1 PR. No MS1 render or
   native MS1N implementation is complete. Original checkout edits are preserved.
 
@@ -161,6 +162,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1 shared scene, geometry and font slice
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`.
+- **Done:** Bounded versioned mesh/scene/episode/frame/sidecar contracts; immutable
+  prepared geometry and pure rig/camera evaluation; actual-font identity and exact
+  copy checks with optional strict/legacy behavior; reusable solid tape-hook model.
+- **Results:** 17 contract/evaluator, 6 geometry and 75 font/typography tests pass;
+  integrated TypeScript passes. Full milestone gate and E01 render remain pending.
+- **Rejected / do not repeat:** Source slot bevel intersects the stem at an endpoint;
+  illustrative slot margin is 0.115, with measured mesh clearance. Early failed
+  font/type/fixture and material-slot tests are retained in the records.
+- **Open / next:** First-party capture, portable lifecycle, native overlay proof,
+  final-file repair/cache evidence and human review.
+- **Records:** [MS1 results](./mechanism-shorts-ms1-results.json),
+  [font results](./mechanism-shorts-ms1-font-results.json).
 
 ### 2026-10-10 — MS1 shared diagnostic checkpoint
 

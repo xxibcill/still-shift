@@ -169,3 +169,7 @@ export {
   resizeRenderStorage,
   withManagedMemory,
 } from "./managed-memory-context.ts";
+
+export * from "./mechanism/index.ts";
+export * from "./font-identity.ts";
+export { collectFontTextRuns } from "./font-copy.ts";

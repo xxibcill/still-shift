@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "still-shift-ms1-font-validation-verification-1",
+  "date": "2026-10-10",
+  "timezone": "Asia/Bangkok",
+  "root": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+  "files": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/font-sfnt.ts",
+      "sha256": "e749f0a2b08f4e5a3aa5439474b045e3024d62b17091c45d5346d6f2836e0d50"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/font-cmap.ts",
+      "sha256": "f2bcb5a04c24bf30c8b639d88a1e0da0e336d7c27315c1e9f0d72cb9509cc284"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/font-identity.ts",
+      "sha256": "961b0c24606ee4a5ff5ac8dd6be6521bdb84ed11cb0d9c0a9fd5c47965707e76"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/font-copy.ts",
+      "sha256": "f411022024731588c3c79d4d84a5ef32ce94c6563c17e66d7f165d1b402c3f43"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/prepared-fonts.ts",
+      "sha256": "02db9eac03603383bdb159688fc718699d081804f4a00a43786a6a4b5fbeb8f4"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/composition/render/text.ts",
+      "sha256": "a0e9fc0ef131c1dc3c95873072f9c7c5b972ee850ea4b1f1818bc494832d6cb0"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/font-identity.test.ts",
+      "sha256": "34944b0d9b01e5e9eb2c18d006feaa6f65732745b7ba245a8f0fc6c447cc5dd7"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/prepared-fonts.test.ts",
+      "sha256": "556211d1215e6472e205223135124a4773bb0faf831bfa81cb09141ea339f388"
+    }
+  ],
+  "node": "22.23.1",
+  "pnpm": "10.29.3",
+  "passes": [
+    {
+      "check": "Focused unit suite",
+      "command": "pnpm exec vitest run tests/unit/font-identity.test.ts tests/unit/prepared-fonts.test.ts tests/unit/typography-layout.test.ts tests/unit/typography-contract.test.ts tests/unit/typography-events.test.ts tests/unit/composition-typography-adapter.test.ts --maxWorkers=2",
+      "tests": 75,
+      "files": 6,
+      "exitCode": 0
+    },
+    {
+      "check": "Focused imported dependency TypeScript check",
+      "command": "pnpm exec tsc --project /tmp/still-shift-font-ms1-types.json",
+      "config": "/tmp/still-shift-font-ms1-types.json",
+      "exitCode": 0
+    },
+    {
+      "check": "ESLint of eight owned files",
+      "exitCode": 0
+    },
+    {
+      "check": "Prettier check of eight owned files",
+      "exitCode": 0
+    },
+    {
+      "check": "pnpm check:boundaries",
+      "exitCode": 0
+    },
+    {
+      "check": "git diff --check of owned files",
+      "exitCode": 0
+    },
+    {
+      "check": "Node direct API real-font facts",
+      "exitCode": 0
+    }
+  ],
+  "failuresAndReruns": [
+    {
+      "stage": "Initial test-first unit run",
+      "failure": "Missing new font-identity.ts import, expected before implementation",
+      "closure": "Parser/API implemented; identity tests pass."
+    },
+    {
+      "stage": "First full pnpm build",
+      "failure": "Font parser helper control-flow narrowing and correction-event type omissions, plus in-flight mechanism test imports",
+      "closure": "Font type errors repaired; second full build contained only in-flight mechanism imports."
+    },
+    {
+      "stage": "Second full pnpm build",
+      "failure": "Missing mechanism/index.ts imports and associated callback typing from concurrently authored mechanism tests",
+      "closure": "Whole-worktree build needs parent rerun after concurrent modules complete; no full build pass claimed."
+    },
+    {
+      "stage": "Native correction-only loader unit test",
+      "failure": "Test backdrop omitted required solid size, rejected by CompositionSchema before loader",
+      "closure": "Corrected test fixture with explicit 1080x1920 size; all 75 focused tests pass."
+    },
+    {
+      "stage": "First isolated TypeScript config",
+      "failure": "Temp config resolved node/vitest globals types from /tmp",
+      "closure": "Explicit worktree typeRoots and node type entry; scoped TypeScript pass."
+    }
+  ],
+  "api": {
+    "module": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/font-identity.ts",
+    "functions": [
+      "readFontIdentity(bytes)",
+      "inspectFontText(identity,declaration,runs,options?)"
+    ],
+    "copyCollector": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/font-copy.ts",
+    "loaderOptions": "Optional third FontValidationOptions argument to loadPreparedFonts and loadCompositionFonts; unspecified means historical behavior, explicit legacy warnings retained, strict throws PassageError before native handles.",
+    "limits": {
+      "fontBytes": 33554432,
+      "tables": 128,
+      "nameRecords": 4096,
+      "nameBytes": 2048,
+      "cmapRecords": 64,
+      "cmapSegments": 32768,
+      "cmapGroups": 65536,
+      "axes": 64,
+      "textRuns": 65536,
+      "textValueCodeUnits": 16384,
+      "textCodepoints": 1000000
+    }
+  },
+  "boundary": "No root exports, schemas, docs, masks/count fitting/Thai shaping, commits or staging changed by this slice. No original-checkout writes. No browser rendering/platform-font resolution or creative review performed.",
+  "copyCoverage": "Plex actual SemiBold/600 covers seven E01 label roles; historical SS05 phrase missing 22 unique Thai code points; identical Noto positive passes; correction/case/generated decimal and malformed SFNT controls are tested."
+}
