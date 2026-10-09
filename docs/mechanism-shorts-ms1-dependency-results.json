@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "mechanism-supported-input-verification-1",
+  "recordedAt": "2026-10-09T18:45:23.273Z",
+  "worktree": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+  "ownedFiles": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/io.ts",
+      "sha256": "sha256:7fedf14c26b7fe923e330c88794b43b56fdf9fc756c5697f3a42355f63924695"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-dependencies.test.ts",
+      "sha256": "sha256:e8132149fa585b515b4b5dbaf40bda9a631f226f8254e60b0fef5e37faec7082"
+    }
+  ],
+  "scope": "Shared read-only supported-input dependency validation and runtime regressions only. No renderer/composition/source plate changes, no commits or staging.",
+  "implementation": {
+    "entryPoints": ["mechanismDependencyReport", "readMechanismEpisode"],
+    "sharedHelper": "readSupportedMechanismInputs -> inspectSupportedMechanismInputs",
+    "onePass": "Episode parsed once; dependency portable path resolved and bytes read/hash computed once per entry; supported scene/font/audio preparation retained and returned to loader; no report/load recursion.",
+    "scene": [
+      "Explicit mechanism-scene-1 version check with offending version and JSON source path",
+      "All actual MechanismSceneSchema issues preserved",
+      "Canonical geometry SHA validation",
+      "All independently resolvable label anchor and proofTarget references checked"
+    ],
+    "font": [
+      "Actual bounded SFNT identity parser and exact-copy cmap coverage",
+      "Authored cut identity, strict/legacy severity, qualifications/captions/graduation digits",
+      "Explicit variable-axis range validation; actual parsed font axes returned",
+      "Declared license reference remains schema-validated and license bytes/hash participate in all-dependency pass"
+    ],
+    "audio": [
+      "Actual read-only ffprobe capability check",
+      "Exactly one selected audio stream, 48 kHz PCM, 1 or 2 channels, 1/48000 time base, positive exact integer duration_ts",
+      "Actual sample clock metadata reused by loader",
+      "Probe timeout 15000 ms and max output 262144 bytes"
+    ],
+    "findings": "Retains all independent supported-input faults alongside every missing/hash finding. Matching-hash status now separates hashValid from capability valid. Loader error context retains complete findings as diagnosticsJson. Hash mismatch bytes are not parsed as trusted capability inputs.",
+    "readOnly": "No render, cache, write, mkdir or lock invocation in new dependency inspection helper. Runtime tests snapshot entire temporary project parent: relative file inventory, SHA, size and mtime before/after dry run and loader."
+  },
+  "checks": [
+    {
+      "kind": "focused-runtime",
+      "status": "pass",
+      "tests": 15,
+      "files": 3,
+      "command": "pnpm exec vitest run tests/runtime/mechanism-dependencies.test.ts tests/runtime/mechanism-project.test.ts tests/runtime/mechanism-failures.test.ts --maxWorkers=2 --no-file-parallelism",
+      "log": "/tmp/still-shift-ms1-deps-supported-final.log"
+    },
+    {
+      "kind": "global-types",
+      "status": "pass",
+      "command": "pnpm exec tsc --noEmit",
+      "log": "/tmp/still-shift-ms1-deps-supported-types-rerun.log"
+    },
+    {
+      "kind": "owned-eslint",
+      "status": "pass",
+      "log": "/tmp/still-shift-ms1-deps-supported-lint.log"
+    },
+    {
+      "kind": "owned-prettier",
+      "status": "pass",
+      "log": "/tmp/still-shift-ms1-deps-supported-format.log"
+    },
+    {
+      "kind": "diff-check",
+      "status": "pass",
+      "log": "/tmp/still-shift-ms1-deps-supported-diff.log"
+    }
+  ],
+  "meaningfulControls": [
+    "Actual matching-hash mechanism-scene-99 negative rejected by dry run and loader without writes",
+    "Five independent faults in one report: unsupported scene version, malformed actual font bytes, actual 44.1 kHz PCM WAV, license hash mismatch, missing timing",
+    "Actual Plex600 declared400 + Thai text: cut and coverage negative, explicit legacy control keeps warnings and valid true",
+    "Actual Noto Thai variable font + declared matching identity/explicit axes positive; wght901 range negative",
+    "Matching-hash scene with stale inner geometry digest plus missing label anchor and proofTarget reports all three",
+    "Supported exact 48 kHz mono PCM4800 sample positive; actual sample metadata and scene/font preparation reused; source inventory unchanged"
+  ],
+  "failedRuns": [
+    {
+      "log": "/tmp/still-shift-ms1-deps-supported-negative.log",
+      "status": "expected pre-repair reproduction failure",
+      "detail": "4 of 5 new tests failed because matching-hash unsupported inputs were ignored by dependency dry run."
+    },
+    {
+      "log": "/tmp/still-shift-ms1-deps-supported-rerun.log",
+      "status": "corrected test expectation",
+      "detail": "14 of 15 passed; test expected nonexistent font-glyph-coverage instead of actual font-coverage diagnostic. Corrected test only."
+    },
+    {
+      "log": "/tmp/still-shift-ms1-deps-supported-types.log",
+      "status": "neighbor in-flight type errors resolved by parent before final rerun",
+      "detail": "package.ts optional AbortSignal at505/511 and existing mechanism-overlays.test.ts optional cameraKeys at147; no owned IO/test type errors. Final global tsc passes."
+    }
+  ],
+  "limits": [
+    "No human visual/listening acceptance implied by supported-input checks.",
+    "Missing or hash-mismatched bytes retain those identity findings; capability diagnosis is intentionally skipped until the dependency identity is repaired.",
+    "Legal font-license acceptance is unchanged; validation checks declared license relation and hash availability, not legal interpretation.",
+    "Full milestone software/baseline/native export verification remains parent-owned."
+  ]
+}

@@ -34,8 +34,9 @@ pnpm still-shift episode check --input /tmp/e01-project/episode.json \
   --final-output /tmp/e01-render/episode.mp4
 ```
 
-`deps` lists all missing or mismatched inputs before render and makes no source or
-package changes. `preview` captures one requested source frame with its actual
+`deps` lists missing, mismatched and unsupported inputs before render and makes no
+source or package changes. Matching hashes still require a supported scene version
+and geometry, actual font cut/glyph/axis coverage and supported PCM audio. `preview` captures one requested source frame with its actual
 shot camera/control/visibility state. `prepare` and `compile` prepare every shot's
 plates and emit a native `composition-1`. `render` exports that composition and
 checks the final artifact. Choose fresh render/package/report destinations;

@@ -20,6 +20,7 @@ import {
   type MechanismScene,
 } from "@still-shift/scene-contract";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
+import { passageDiagnostics } from "../../../renderer-core/src/passage-diagnostics.ts";
 import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
 import {
   inspectFontText,
@@ -149,224 +150,364 @@ export async function resolveMechanismDependency(
     );
   return actual;
 }
-/** Read-only: no render/cache/source changes, and all findings remain available. */
-export async function mechanismDependencyReport(path: string) {
-  const sourcePath = resolve(path),
-    episode = parseMechanismEpisode(
-      await readMechanismJson(sourcePath),
-      sourcePath,
+type DependencyStatus = {
+  id: string;
+  path: string;
+  sha256: string;
+  hashValid: boolean;
+  valid: boolean;
+};
+type SupportedInputs = {
+  dependencies: DependencyStatus[];
+  findings: MechanismFinding[];
+  dependencyPaths: Record<string, string>;
+  scene?: MechanismScene;
+  fontDiagnostics: FontValidationDiagnostic[];
+  fontAxes: NonNullable<LoadedMechanismEpisode["fontAxes"]>;
+  audioMetadata?: NonNullable<LoadedMechanismEpisode["audioMetadata"]>;
+};
+function inputFindings(error: unknown, path: string): MechanismFinding[] {
+  if (error instanceof AnimationEngineError)
+    return [
+      {
+        code: String(
+          error.context?.diagnosticCode ?? "mechanism-dependency-unreadable",
+        ),
+        path: String(error.context?.path ?? path),
+        message: error.message,
+      },
+    ];
+  if (!(error instanceof Error) || error.name !== "PassageError")
+    return [
+      {
+        code: "mechanism-dependency-unreadable",
+        path,
+        message: "Cannot read dependency bytes",
+      },
+    ];
+  return passageDiagnostics(error).map((diagnostic) => ({
+    code: diagnostic.code,
+    path: diagnostic.path ?? path,
+    message: diagnostic.message,
+    ...(diagnostic.frame === undefined ? {} : { frame: diagnostic.frame }),
+  }));
+}
+function parseSceneBytes(bytes: Uint8Array, path: string) {
+  if (bytes.byteLength > 32 * 1024 * 1024)
+    failure("mechanism-source-budget", "Source exceeds 32 MiB", path);
+  let value: unknown;
+  try {
+    value = JSON.parse(Buffer.from(bytes).toString("utf8")) as unknown;
+  } catch (cause) {
+    failure(
+      "mechanism-source-unreadable",
+      "Cannot read valid mechanism JSON",
+      path,
+      cause,
     );
-  const findings: MechanismFinding[] = [],
-    dependencies: {
-      id: string;
-      path: string;
-      sha256: string;
-      valid: boolean;
-    }[] = [];
+  }
+  if (
+    value &&
+    typeof value === "object" &&
+    "schemaVersion" in value &&
+    value.schemaVersion !== "mechanism-scene-1"
+  )
+    return {
+      findings: [
+        {
+          code: "mechanism-scene-version",
+          path: `${path}#/schemaVersion`,
+          message: `Unsupported scene version ${String(value.schemaVersion).slice(0, 128)}; expected mechanism-scene-1`,
+        },
+      ],
+    };
+  const parsed = MechanismSceneSchema.safeParse(value);
+  if (!parsed.success)
+    return {
+      findings: parsed.error.issues.map((issue) => ({
+        code:
+          (issue as { params?: { diagnosticCode?: string } }).params
+            ?.diagnosticCode ?? "mechanism-scene-schema",
+        path: `${path}#/${issue.path.join("/")}`,
+        message: issue.message,
+      })),
+    };
+  const scene = parsed.data;
+  return {
+    scene,
+    findings:
+      mechanismContentHash(scene.geometry) === scene.geometrySha256
+        ? []
+        : [
+            {
+              code: "mechanism-geometry-hash",
+              path: `${path}#/geometrySha256`,
+              message: "Geometry hash does not match resolved mesh data",
+            },
+          ],
+  };
+}
+function sceneReferenceFindings(
+  episode: MechanismEpisode,
+  scene: MechanismScene,
+): MechanismFinding[] {
+  const anchors = new Set(scene.anchors.map((anchor) => anchor.id));
+  const findings: MechanismFinding[] = [];
+  for (const shot of episode.shots)
+    for (const label of shot.labels)
+      for (const property of ["anchor", "proofTarget"] as const)
+        if (label[property] && !anchors.has(label[property]!))
+          findings.push({
+            code: "mechanism-anchor-reference",
+            path: `shots.${shot.id}.labels.${label.id}.${property}`,
+            message: `Unknown anchor ${label[property]}`,
+          });
+  return findings;
+}
+function fontTextRuns(episode: MechanismEpisode, fontId: string) {
+  const runs = episode.shots.flatMap((shot) =>
+    shot.labels
+      .filter((label) => (label.font ?? episode.font) === fontId)
+      .flatMap((label) => [
+        {
+          text: label.text,
+          node: label.id,
+          path: `shots.${shot.id}.labels.${label.id}.text`,
+          frame: label.readingInterval.startFrame,
+        },
+        ...(label.qualification
+          ? [
+              {
+                text: label.qualification,
+                node: label.id,
+                path: `shots.${shot.id}.labels.${label.id}.qualification`,
+                frame: label.readingInterval.startFrame,
+              },
+            ]
+          : []),
+      ]),
+  );
+  if (fontId === episode.font)
+    runs.push(
+      ...episode.captions.map((caption) => ({
+        text: caption.text,
+        node: caption.id,
+        path: `captions.${caption.id}.text`,
+        frame: caption.startFrame,
+      })),
+      {
+        text: "0123456789",
+        node: "tape-graduations",
+        path: "scene.materials.tape-graduations",
+        frame: 0,
+      },
+    );
+  return runs;
+}
+async function readAudioCapability(
+  path: string,
+): Promise<NonNullable<LoadedMechanismEpisode["audioMetadata"]>> {
+  let value: {
+    streams: {
+      sample_rate?: string;
+      channels?: number;
+      duration_ts?: number;
+      time_base?: string;
+      codec_name?: string;
+    }[];
+  };
+  try {
+    const result = await runProcess(
+      "ffprobe",
+      [
+        "-v",
+        "error",
+        "-select_streams",
+        "a",
+        "-show_entries",
+        "stream=sample_rate,channels,duration_ts,time_base,codec_name",
+        "-of",
+        "json",
+        path,
+      ],
+      { signal: AbortSignal.timeout(15_000), maxBuffer: 256 * 1024 },
+    );
+    value = JSON.parse(result.stdout) as typeof value;
+  } catch (cause) {
+    failure(
+      "mechanism-audio-unreadable",
+      "Cannot inspect supplied audio capability",
+      path,
+      cause,
+    );
+  }
+  const stream = value.streams?.[0];
+  if (
+    value.streams?.length !== 1 ||
+    stream?.sample_rate !== "48000" ||
+    ![1, 2].includes(stream.channels ?? 0) ||
+    stream.time_base !== "1/48000" ||
+    !Number.isSafeInteger(stream.duration_ts) ||
+    stream.duration_ts! <= 0 ||
+    !stream.codec_name?.startsWith("pcm_")
+  )
+    failure(
+      "mechanism-audio-clock",
+      "MS1 requires a single supplied 48 kHz PCM narration/master with an exact sample clock",
+      path,
+    );
+  return {
+    sampleRate: 48000,
+    sampleCount: stream.duration_ts!,
+    channels: stream.channels as 1 | 2,
+  };
+}
+async function inspectSupportedDependency(
+  episode: MechanismEpisode,
+  dependency: MechanismEpisode["dependencies"][number],
+  path: string,
+  bytes: Uint8Array,
+  inputs: SupportedInputs,
+) {
+  if (dependency.type === "scene") {
+    const result = parseSceneBytes(bytes, path);
+    inputs.findings.push(...result.findings);
+    if (dependency.id === episode.scene && result.scene)
+      inputs.scene = result.scene;
+  }
+  if (dependency.type === "font") {
+    const identity = readFontIdentity(Uint8Array.from(bytes).buffer);
+    inputs.fontAxes[dependency.id] = identity.axes;
+    const diagnostics = inspectFontText(
+      identity,
+      { ...dependency, weight: dependency.weight ?? "600" },
+      fontTextRuns(episode, dependency.id),
+      { profile: dependency.profile },
+    );
+    inputs.fontDiagnostics.push(...diagnostics);
+    inputs.findings.push(
+      ...diagnostics
+        .filter((diagnostic) => diagnostic.severity === "error")
+        .map((diagnostic) => ({
+          ...diagnostic,
+          path: diagnostic.path ?? dependency.path,
+        })),
+    );
+  }
+  if (dependency.type === "audio") {
+    const metadata = await readAudioCapability(path);
+    if (dependency.id === episode.audio) inputs.audioMetadata = metadata;
+  }
+}
+/** Hash and supported-input checks share one read-only pass. Invalid identities are never parsed as trusted inputs. */
+async function inspectSupportedMechanismInputs(
+  sourcePath: string,
+  episode: MechanismEpisode,
+): Promise<SupportedInputs> {
+  const inputs: SupportedInputs = {
+    dependencies: [],
+    findings: [],
+    dependencyPaths: {},
+    fontDiagnostics: [],
+    fontAxes: {},
+  };
   for (const dependency of episode.dependencies) {
     try {
-      const actual = await resolveMechanismDependency(sourcePath, dependency);
-      const digest = mechanismHash(await readFile(actual));
-      const valid = digest === dependency.sha256;
-      dependencies.push({
+      const path = await resolveMechanismDependency(sourcePath, dependency);
+      const bytes = await readFile(path);
+      const digest = mechanismHash(bytes);
+      const hashValid = digest === dependency.sha256;
+      const status: DependencyStatus = {
         id: dependency.id,
         path: dependency.path,
         sha256: digest,
-        valid,
-      });
-      if (!valid)
-        findings.push({
+        hashValid,
+        valid: hashValid,
+      };
+      inputs.dependencies.push(status);
+      if (!hashValid) {
+        inputs.findings.push({
           code: "mechanism-dependency-hash",
           path: `dependencies.${dependency.id}.sha256`,
           message: `Expected ${dependency.sha256}, received ${digest}`,
         });
+        continue;
+      }
+      inputs.dependencyPaths[dependency.id] = path;
+      const before = inputs.findings.length;
+      try {
+        await inspectSupportedDependency(
+          episode,
+          dependency,
+          path,
+          bytes,
+          inputs,
+        );
+      } catch (error) {
+        inputs.findings.push(
+          ...inputFindings(error, `dependencies.${dependency.id}.path`),
+        );
+      }
+      status.valid = inputs.findings.length === before;
     } catch (error) {
-      const context =
-        error instanceof AnimationEngineError ? error.context : {};
-      findings.push({
-        code: String(context?.diagnosticCode ?? "mechanism-dependency-missing"),
-        path: dependency.path,
-        message:
-          error instanceof Error ? error.message : "Dependency unavailable",
-      });
+      inputs.findings.push(...inputFindings(error, dependency.path));
     }
   }
+  if (inputs.scene)
+    inputs.findings.push(...sceneReferenceFindings(episode, inputs.scene));
+  return inputs;
+}
+async function readSupportedMechanismInputs(path: string) {
+  const sourcePath = resolve(path);
+  const episode = parseMechanismEpisode(
+    await readMechanismJson(sourcePath),
+    sourcePath,
+  );
+  return {
+    sourcePath,
+    episode,
+    inputs: await inspectSupportedMechanismInputs(sourcePath, episode),
+  };
+}
+/** Read-only: no render/cache/source changes, and all independent findings remain available. */
+export async function mechanismDependencyReport(path: string) {
+  const { sourcePath, episode, inputs } =
+    await readSupportedMechanismInputs(path);
   return {
     schemaVersion: "mechanism-dependency-report-1" as const,
     sourcePath,
     projectHash: mechanismContentHash(episode),
-    valid: findings.length === 0,
-    dependencies,
-    findings,
+    valid: inputs.findings.length === 0,
+    dependencies: inputs.dependencies,
+    findings: inputs.findings,
+    fontDiagnostics: inputs.fontDiagnostics,
   };
 }
 export async function readMechanismEpisode(
   path: string,
 ): Promise<LoadedMechanismEpisode> {
-  const sourcePath = resolve(path),
-    episode = parseMechanismEpisode(
-      await readMechanismJson(sourcePath),
-      sourcePath,
-    );
-  const report = await mechanismDependencyReport(sourcePath);
-  if (!report.valid)
+  const { sourcePath, episode, inputs } =
+    await readSupportedMechanismInputs(path);
+  const first = inputs.findings[0];
+  if (first)
+    failure(first.code, first.message, first.path, undefined, {
+      diagnosticsJson: JSON.stringify(inputs.findings),
+    });
+  if (!inputs.scene)
     failure(
-      report.findings[0]!.code,
-      report.findings[0]!.message,
-      report.findings[0]!.path,
+      "mechanism-scene-unavailable",
+      "Supported scene input is unavailable",
+      episode.scene,
     );
-  const dependencyPaths: Record<string, string> = {};
-  for (const dependency of episode.dependencies)
-    dependencyPaths[dependency.id] = await resolveMechanismDependency(
-      sourcePath,
-      dependency,
-    );
-  const scenePath = dependencyPaths[episode.scene]!;
-  const parsed = MechanismSceneSchema.safeParse(
-    await readMechanismJson(scenePath),
-  );
-  if (!parsed.success)
-    failure(
-      "mechanism-scene-schema",
-      parsed.error.issues[0]?.message ?? "Invalid scene",
-      `${scenePath}#/${parsed.error.issues[0]?.path.join("/")}`,
-      parsed.error,
-      { diagnosticsJson: JSON.stringify(parsed.error.issues) },
-    );
-  const scene = parsed.data;
-  if (mechanismContentHash(scene.geometry) !== scene.geometrySha256)
-    failure(
-      "mechanism-geometry-hash",
-      "Geometry hash does not match resolved mesh data",
-      `${scenePath}#/geometrySha256`,
-    );
-  const anchors = new Set(scene.anchors.map((anchor) => anchor.id));
-  for (const shot of episode.shots)
-    for (const label of shot.labels)
-      if (!anchors.has(label.anchor))
-        failure(
-          "mechanism-anchor-reference",
-          `Unknown anchor ${label.anchor}`,
-          `shots.${shot.id}.labels.${label.id}.anchor`,
-        );
-  const fontDiagnostics: FontValidationDiagnostic[] = [];
-  const fontAxes: NonNullable<LoadedMechanismEpisode["fontAxes"]> = {};
-  for (const dependency of episode.dependencies.filter(
-    (item) => item.type === "font",
-  )) {
-    const bytes = await readFile(dependencyPaths[dependency.id]!);
-    const identity = readFontIdentity(
-      bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength),
-    );
-    fontAxes[dependency.id] = identity.axes;
-    const runs = episode.shots.flatMap((shot) =>
-      shot.labels
-        .filter((label) => (label.font ?? episode.font) === dependency.id)
-        .flatMap((label) => [
-          {
-            text: label.text,
-            node: label.id,
-            path: `shots.${shot.id}.labels.${label.id}.text`,
-            frame: label.readingInterval.startFrame,
-          },
-          ...(label.qualification
-            ? [
-                {
-                  text: label.qualification,
-                  node: label.id,
-                  path: `shots.${shot.id}.labels.${label.id}.qualification`,
-                  frame: label.readingInterval.startFrame,
-                },
-              ]
-            : []),
-        ]),
-    );
-    if (dependency.id === episode.font)
-      runs.push(
-        ...episode.captions.map((caption) => ({
-          text: caption.text,
-          node: caption.id,
-          path: `captions.${caption.id}.text`,
-          frame: caption.startFrame,
-        })),
-        {
-          text: "0123456789",
-          node: "tape-graduations",
-          path: "scene.materials.tape-graduations",
-          frame: 0,
-        },
-      );
-    fontDiagnostics.push(
-      ...inspectFontText(
-        identity,
-        { ...dependency, weight: dependency.weight ?? "600" },
-        runs,
-        { profile: dependency.profile ?? "strict" },
-      ),
-    );
-  }
-  const fontFailure = fontDiagnostics.find((item) => item.severity === "error");
-  if (fontFailure)
-    failure(
-      fontFailure.code,
-      fontFailure.message,
-      fontFailure.path ?? "font",
-      undefined,
-      { diagnosticsJson: JSON.stringify(fontDiagnostics) },
-    );
-  let audioMetadata: LoadedMechanismEpisode["audioMetadata"];
-  if (episode.audio) {
-    const audioPath = dependencyPaths[episode.audio]!;
-    const result = await runProcess("ffprobe", [
-      "-v",
-      "error",
-      "-select_streams",
-      "a",
-      "-show_entries",
-      "stream=sample_rate,channels,duration_ts,time_base,codec_name",
-      "-of",
-      "json",
-      audioPath,
-    ]);
-    const value = JSON.parse(result.stdout) as {
-      streams: {
-        sample_rate?: string;
-        channels?: number;
-        duration_ts?: number;
-        time_base?: string;
-        codec_name?: string;
-      }[];
-    };
-    const stream = value.streams[0];
-    if (
-      value.streams.length !== 1 ||
-      stream?.sample_rate !== "48000" ||
-      ![1, 2].includes(stream.channels ?? 0) ||
-      stream.time_base !== "1/48000" ||
-      !Number.isSafeInteger(stream.duration_ts) ||
-      stream.duration_ts! <= 0 ||
-      !stream.codec_name?.startsWith("pcm_")
-    )
-      failure(
-        "mechanism-audio-clock",
-        "MS1 requires a single supplied 48 kHz PCM narration/master with an exact sample clock",
-        audioPath,
-      );
-    audioMetadata = {
-      sampleRate: 48000,
-      sampleCount: stream.duration_ts!,
-      channels: stream.channels as 1 | 2,
-    };
-  }
   return {
     episode,
-    scene,
-    projectHash: mechanismContentHash(episode),
+    scene: inputs.scene,
     sourcePath,
-    dependencyPaths,
-    fontDiagnostics,
-    fontAxes,
-    ...(audioMetadata ? { audioMetadata } : {}),
+    projectHash: mechanismContentHash(episode),
+    dependencyPaths: inputs.dependencyPaths,
+    fontDiagnostics: inputs.fontDiagnostics,
+    fontAxes: inputs.fontAxes,
+    ...(inputs.audioMetadata ? { audioMetadata: inputs.audioMetadata } : {}),
   };
 }
 export async function writeMechanismJson(

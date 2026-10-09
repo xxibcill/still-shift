@@ -181,6 +181,13 @@
       "tests": 16,
       "log": "/private/tmp/mechanism-package-cancel-green.log",
       "typecheck": "/private/tmp/mechanism-package-cancel-types-rerun.log"
+    },
+    {
+      "command": "shared dependency supported-input dry-run/loader runtime controls, global types and narrow lint/format",
+      "status": "passed",
+      "tests": 15,
+      "details": "mechanism-shorts-ms1-dependency-results.json",
+      "notes": "Matching-hash scene99/font/audio/geometry/reference negatives first reproduced; independent findings and no project writes verified."
     }
   ],
   "renderEvidence": [
@@ -227,6 +234,33 @@
       "audio": "AAC512 padding within1023; correlation0.99939898; early/mid/late lag0; active terminal tail retained",
       "readableLabelHolds": [72, 71, 49, 69, 41, 41, 64],
       "acceptance": "failed actual caption-origin/painter-order check and generic body-reading/static-pixel policy. Do not use this file as corrected acceptance evidence."
+    },
+    {
+      "kind": "full-corrected-E01-v6",
+      "frames": 696,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "new3dRenders": 696,
+      "cacheHits": 0,
+      "output": "/tmp/still-shift-ms1-e01-render-v6/episode.mp4",
+      "sha256": "sha256:e0c369e69b76bc73ba81a59930d89ae432d91035c64a531a51e8699b53eb632d",
+      "softwareValid": true,
+      "overlayFindings": 0,
+      "qualityErrors": 0,
+      "retainedQualityWarnings": 50,
+      "readableLabelHolds": [72, 71, 76, 69, 41, 41, 64],
+      "audioCorrelation": 0.99939897716988,
+      "audioMaxLagSamples": 0,
+      "AACPaddingSamples": 512,
+      "tailPreserved": true,
+      "preparationWallSeconds": 143.246622167,
+      "nativeExportWallSeconds": 37.470625583,
+      "peakSampledExportTreeRssBytes": 3510878208,
+      "declaredWorkerPeakBytes": 5942553640,
+      "timingContext": "Some independent serial SS01 exports overlapped; no comparative performance claim.",
+      "samples": "/tmp/still-shift-ms1-e01-final-samples-v6/index.json",
+      "review": "Sampled final0/380/445 visually inspected: native caption/qualifier/leader visible, physicaldatum distinction retained. Continuous motion/listening remain pending human review."
     }
   ],
   "failedRuns": [

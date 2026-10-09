@@ -52,8 +52,8 @@ still hold before relying on them.
   caught caption painter-order/origin faults; fixes and source-bound speech/proof
   reading semantics pass focused checks. Full v5 capture hit duplicate proof
   metadata budget; compact root declarations retain per-shot evidence. Audio alignment/tail and independent mechanics
-  pass. Report closure/stale-final fixes pass13 focused checks. Complete corrected E01,
-  dependency capability dry-run, cancellation, cache/repair,
+  pass. Report closure/stale-final fixes pass13 focused checks. Corrected full E01 v6 software checks
+  and read-only actual dependency capability checks pass. Complete cache/repair,
   isolated package and full local gate before MS1 PR. MS1N implementation has not
   started. Original checkout edits are preserved.
 
@@ -168,6 +168,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Corrected full E01 and supported dependency dry run
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` after `df84c431`.
+- **Done:** dependency dry run and loader share a one-pass actual scene/font/audio
+  inspection; matching-hash unsupported inputs fail with located findings and no writes.
+- **Results:**15 dependency controls, global types and scoped lint/format pass.
+  Fresh v6 exports all696 frames at1080×1920/30fps; mechanics, all seven label
+  holds(72/71/76/69/41/41/64), measured bounds and final audio checks pass.
+  Final native copy is visible in decoded samples. Fifty craft warnings are retained.
+- **Open / next:** full baseline profile migration/local gate, scoped overlap repair,
+  label cache proof and isolated installed-package lifecycle. Human continuous
+  visual/listening review stays pending; no publication or creative acceptance claimed.
+- **Records:** [MS1 results](./mechanism-shorts-ms1-results.json),
+  [dependency evidence](./mechanism-shorts-ms1-dependency-results.json).
 
 ### 2026-10-10 — Native caption repair and portable result closure
 
