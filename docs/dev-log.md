@@ -180,7 +180,9 @@ still hold before relying on them.
 - **Results:** isolated consumer captures all696 plates and final MP4 exactly as v6,
   but final QA failed on emitted helper; that candidate remains unaccepted. Source
   CLI11 checks and corrected cancellation2 checks pass in stages, with types/lint.
-- **Rejected / do not repeat:** variable imports inside serialized browser callbacks;
+- **Rejected / do not repeat:** installed pixel regression must supply JSON to its
+  low-level API; TypeScript authoring remains covered separately. Variable imports
+  inside serialized browser callbacks;
   cancellation fixture's implicit center anchor and misplaced correction fields.
 - **Open / next:** verify rebuilt archive with package gate, complete isolated
   final QA/text-edit proof, then required full local gate and MS1 PR.

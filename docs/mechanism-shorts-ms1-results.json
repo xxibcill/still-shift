@@ -496,6 +496,13 @@
       "reason": "Faster valid module loading exposed cancellation fixture coverage fault; first correction used fields outside declared transform object.",
       "repair": "Keep required coverage and explicitly use transform anchor/position[0,0].",
       "rerun": "/tmp/still-shift-ms1-browser-bootstrap-checks-3.log"
+    },
+    {
+      "attempt": "installed package gate1 on a5710b8d",
+      "reason": "New pixel-analysis regression called low-level JSON API with TypeScript authoring source; valid JSON fixture required.",
+      "repair": "Use actual4frame composition JSON, keep TypeScript program checks separately.",
+      "log": "/tmp/still-shift-ms1-installed-package-gate-1.log",
+      "rerun": "pending"
     }
   ],
   "portableDelivery": {

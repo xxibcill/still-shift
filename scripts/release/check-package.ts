@@ -162,10 +162,33 @@ export default comp({ id: "package-test", width: 320, height: 192, fps: 24, fram
     "composition.ts",
   ]);
   await writeFile(
+    resolve(project, "pixel-lint.json"),
+    JSON.stringify({
+      schemaVersion: "composition-1",
+      id: "installed-pixel-lint",
+      width: 320,
+      height: 192,
+      fps: 24,
+      frameCount: 4,
+      background: "#fff4df",
+      assets: [],
+      layers: [
+        {
+          id: "card",
+          type: "solid",
+          color: "#305c70",
+          size: [100, 100],
+          inPoint: 0,
+          outPoint: 4,
+        },
+      ],
+    }),
+  );
+  await writeFile(
     resolve(project, "pixel-lint.mjs"),
     `import assert from "node:assert/strict";
 import { lintCompositionFile } from "still-shift/engine";
-const report = await lintCompositionFile("composition.ts", {}, { pixels: true });
+const report = await lintCompositionFile("pixel-lint.json", {}, { pixels: true });
 assert.equal(report.backend, "canvas2d");
 assert.equal(typeof report.rendererVersion, "string");
 assert.ok(Array.isArray(report.diagnostics));
