@@ -4,6 +4,7 @@ import { sha256Hex } from "../../packages/renderer-core/src/browser-checksum.ts"
 import { COMPOSITION_EVALUATOR_VERSION } from "../../packages/renderer-core/src/composition/evaluate/index.ts";
 import {
   compositionAudioWavHeader,
+  compositionPcmBoundary,
   compositionMediaMappingDocument,
   type Composition,
   type CompositionPreparedAudio,
@@ -54,7 +55,7 @@ class AudioHarness {
   }
 }
 afterEach(() => vi.unstubAllGlobals());
-async function fixture() {
+async function fixture(fps = 24, frameCount = 6) {
   const context = new AudioHarness();
   vi.stubGlobal(
     "AudioContext",
@@ -69,17 +70,26 @@ async function fixture() {
     id: "audio-preview",
     width: 64,
     height: 64,
-    fps: 24,
-    frameCount: 6,
+    fps,
+    frameCount,
     assets: [],
     layers: [],
   };
-  const bytes = new Uint8Array(12000 * 8 + 58);
-  bytes.set(compositionAudioWavHeader(12000));
+  const sampleCount = compositionPcmBoundary(frameCount, fps);
+  const bytes = new Uint8Array(sampleCount * 8 + 58);
+  bytes.set(compositionAudioWavHeader(sampleCount));
   const view = new DataView(bytes.buffer);
-  for (let sample = 0; sample < 12000; sample++) {
-    view.setFloat32(58 + sample * 8, sample === 11999 ? 0.0625 : 0.5, true);
-    view.setFloat32(62 + sample * 8, sample === 11999 ? -0.125 : -0.25, true);
+  for (let sample = 0; sample < sampleCount; sample++) {
+    view.setFloat32(
+      58 + sample * 8,
+      sample === sampleCount - 1 ? 0.0625 : 0.5,
+      true,
+    );
+    view.setFloat32(
+      62 + sample * 8,
+      sample === sampleCount - 1 ? -0.125 : -0.25,
+      true,
+    );
   }
   const audio: CompositionPreparedAudio = {
     schemaVersion: "composition-prepared-audio-1",
@@ -94,7 +104,7 @@ async function fixture() {
       )),
     sampleRate: 48000,
     channels: 2,
-    sampleCount: 12000,
+    sampleCount,
     resource: {
       id: "__audio:mix",
       byteLength: bytes.length,
@@ -105,7 +115,7 @@ async function fixture() {
       source: [],
       processed: [],
       mix: {
-        sampleCount: 12000,
+        sampleCount,
         peaks: [0.5],
         peakDbfs: 20 * Math.log10(0.5),
         samplesAboveFullScale: 0,
@@ -167,6 +177,7 @@ it("preserves every native PCM sample and schedules the complete remainder again
 it("rejects changed mapping, evaluator, PCM bytes, header and nonfinite samples before playback", async () => {
   for (const defect of [
     "mapping",
+    "clock",
     "evaluator",
     "checksum",
     "header",
@@ -174,6 +185,7 @@ it("rejects changed mapping, evaluator, PCM bytes, header and nonfinite samples 
   ] as const) {
     const f = await fixture();
     if (defect === "mapping") f.composition.name = "changed";
+    if (defect === "clock") f.composition.frameCount++;
     if (defect === "evaluator")
       f.audio.evaluatorVersion = "composition-evaluator-1";
     if (defect === "checksum") f.bytes[100] = f.bytes[100]! ^ 1;
@@ -284,3 +296,28 @@ it("uses the fixed BYOB page when the network provides a larger chunk", async ()
   player.dispose();
   expect(f.loader.pcmWorkingBytes).toBe(0);
 });
+
+it.each([7, 29, 59])(
+  "loads the complete rounded master at %i fps and schedules from the next PCM boundary",
+  async (fps) => {
+    const f = await fixture(fps, 5);
+    const sampleCount = compositionPcmBoundary(5, fps);
+    expect(Number.isInteger((5 * 48000) / fps)).toBe(false);
+    const player = await f.prepare();
+    expect(f.fetcher).toHaveBeenCalledOnce();
+    const buffer = f.context.buffers[0]!;
+    expect(buffer.length).toBe(sampleCount);
+    expect(buffer.getChannelData(0).at(-1)).toBe(0.0625);
+    expect(buffer.getChannelData(1).at(-1)).toBe(-0.125);
+    expect(f.loader.pcmWorkingBytes).toBe(sampleCount * 8);
+    expect(await player.play(1)).toBe(true);
+    const startSample = compositionPcmBoundary(1, fps);
+    expect(f.context.sources[0]!.start).toHaveBeenCalledWith(
+      10.04,
+      startSample / 48000,
+      (sampleCount - startSample) / 48000,
+    );
+    player.dispose();
+    expect(f.loader.pcmWorkingBytes).toBe(0);
+  },
+);

@@ -25,7 +25,7 @@ export default comp({ width: 640, height: 360, fps: 24, frames: 96 }, (c) => {
 });
 ```
 
-Use exactly one of `frames` or `seconds` for the composition duration. Allowed fps: 24, 25, 30, 50, 60. Composition frame counts are positive integers; animation durations are nonnegative integers, and `{ seconds: n }` durations use `Math.round(n * fps)`. Markers use composition frames. Author keys before the composition's last boundary.
+Use exactly one of `frames` or `seconds` for the composition duration. Allowed fps: integers from 1 through 60. Composition frame counts are positive integers; animation durations are nonnegative integers, and `{ seconds: n }` durations use `Math.round(n * fps)`. Markers use composition frames. Author keys before the composition's last boundary.
 
 - Delivered layers: solid, image, text, shape, group, null, precomp, adjustment and registered providers. Native shapes include cubic primitives/paths, four paints and all nine operators on Canvas/WebGL. Native camera layers and xyz planes are available in CE8; bounded ambient/point/spot lights are available in CE8-L and video/audio follow CE13. Use WebGL2 for true perspective; Canvas supports affine camera moves. Plain builder `shape.rect` retains its solid-layer output; native authoring uses a shape contents tree.
 - Layers added first are in front; later-added layers paint behind them. Put full-frame backdrop layers last, or use the composition background. For a delayed fade-in, start the layer at `.opacity(0)` (or gate visibility with `inPoint`); `.from(0)` sets the placed animation segment, rather than hiding an already-visible layer before that segment.

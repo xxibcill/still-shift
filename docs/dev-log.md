@@ -43,6 +43,34 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #49 second review repairs (2026-10-09):** All three findings posted on
+  `2cd76eca` are repaired and verified, with one commit per finding and one
+  final normal push to the PR branch. Owner review/merge is next; the owner
+  checkout is untouched.
+  Focused follow-up checks only; no full repository gate run or claimed.
+  [Second review evidence](./pr-49-second-review-fix-results.json).
+
+- **PR #49 review repairs verified (2026-10-09):** both P2 findings posted
+  inline at `efa42f42` are fixed, with one commit per finding and one final normal
+  push to the PR branch. Cache fallback `7b0d546f` passes 101 focused units,
+  384 exact preview comparisons, eight production exports / 512 decoded frames,
+  144 existing surface cases / 8,000 checks, eight typography fixtures and eight
+  frozen typography items / 1,309 frames. The PCM preview repair passes 48 focused
+  tests and real Lab Canvas/WebGL playback at 7, 29 and 59 fps with exact full
+  master/suffix PCM and final intervals. Build, scoped lint, formatting and package
+  boundaries pass. Owner review/merge is next. No full repository gate is run or
+  claimed; owner checkout remains untouched.
+  [Review repair evidence](./pr-49-review-fix-results.json).
+
+- **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
+  pinned local `pnpm check` in 13928.03 seconds. Production code `21817411` has a real
+  two-minute benchmark that reaches **3.408×** with identical encoded/frame/audio output.
+  All delivery formats, statistics, caching, bounded worker/result admission and
+  area requirements are implemented. The 48-case maximum-area matrix, final area
+  smoke checks, native/parallel cleanup and frozen baselines pass. PR review/merge
+  is the owner's next step; CE14 is the next authorized milestone on a separate branch.
+  [Completion evidence](./composition-ce15-completion-results.json).
+
 - **PR #48 third review repairs verified (2026-10-08):** both P2 findings
   posted inline on `1dae23c8` are fixed. Cache identity includes OS/architecture
   (`2fb40127`); audio traversal avoids unrelated visual layout while preserving
@@ -67,11 +95,1821 @@ still hold before relying on them.
   The approved CE5-X scope retains its audit stop/Q9 owner decisions; CE6-P
   remains owner-paused and deferred, with acceptance incomplete.
 
-- **Continuation:** the owner's separate CE15 checkout remains in progress;
-  continue CE15 → CE14. No owner decision blocks that order. GitHub Actions
+- **Continuation:** CE15 implementation and acceptance are complete; the owner's
+  separate checkout is preserved. CE14 follows on a new branch. GitHub Actions
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — PR #49 exact natural audio origins
+
+- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head
+  `2cd76eca`.
+- **Done:** Preserve complete natural PCM using exact accumulated placement
+  origins; retain authored property/remapping clocks and bump evaluator
+  compatibility to 57.
+- **Results:** 243 audio/media/evaluator/expression units, 24 actual mixer
+  tests, native media playback and 105 production format/rate exports pass. Four
+  new complete-PCM mixer regressions fail before repair and pass afterward; CE16
+  mixing laws remain byte-identical.
+- **Scope / next:** Focused PR follow-up; no full gate. All three finding
+  commits are ready for one final normal push; owner review/merge follows.
+- **Records:** [second review evidence](./pr-49-second-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-second-review-repairs--2026-10-09).
+
+### 2026-10-09 — PR #49 protected narration boundaries
+
+- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head
+  `2cd76eca`.
+- **Done:** Accumulate exact rational scope origins and round absolute narration
+  and inherited visibility bounds once on the PCM grid.
+- **Results:** All 33 focused narration/media tests pass; valid full masters at
+  7/29/59 fps fail before the fix and pass afterward. Real cropping, retiming
+  and one-sample overruns remain rejected.
+- **Scope / next:** Focused PR follow-up; no full gate. Record natural PCM
+  placement in the third finding commit, then push all three commits once.
+- **Records:** [second review evidence](./pr-49-second-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-second-review-repairs--2026-10-09).
+
+### 2026-10-09 — PR #49 shared tint capacity
+
+- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head
+  `2cd76eca`.
+- **Done:** Typed shared-capacity fallback uses the original bounded local tint
+  cache; optional managed retention leaves allocator headroom.
+- **Results:** 79 focused tests, 1,920 exact preview comparisons and 16
+  production exports / 2,560 decoded frames pass. Eight frozen typography items
+  / 1,309 frames match; original fixture and glyph performance assertions pass.
+- **Scope / next:** Focused PR follow-up; no full gate. Record the protected
+  narration fix, then the natural PCM placement fix; push once after the final
+  finding commit.
+- **Records:** [second review evidence](./pr-49-second-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-second-review-repairs--2026-10-09).
+
+### 2026-10-09 — PR #49 fractional PCM preview
+
+- **Agent / branch:** Codex on `codex/pr49-review-fixes`, after `7b0d546f`.
+- **Done:** validate Lab's master with the mixer/playback PCM boundary rule;
+  add 7/29/59 fps regressions, retaining native integrity and memory checks.
+- **Results:** three new cases fail before the repair; all 48 focused tests pass
+  after it. Six actual Canvas/WebGL Lab cases match full master and seek PCM bits,
+  distinct final samples, scheduled offsets/durations and complete final intervals.
+  Existing native media authoring/playback/export browser checks also pass.
+- **Correction:** two reference tests initially lacked worktree Python; explicit
+  preflighted `STILL_SHIFT_PYTHON` passes both with zero PCM sample delta.
+- **Scope / next:** build/lint/format/boundaries pass; no full gate. This is the
+  second finding commit; deliver both repairs in one final normal push, then owner review.
+- **Records:** [review repair evidence](./pr-49-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-review-repairs--2026-10-09).
+
+### 2026-10-09 — PR #49 bounded tint fallback
+
+- **Agent / branch:** Codex on `codex/pr49-review-fixes` from `efa42f42`.
+- **Done:** post both findings inline; fall back from full shared tint storage to
+  typography's original bounded color map, with explicit local native ownership.
+- **Results:** 101 focused units; 384 exact preview comparisons; eight exact
+  production exports / 512 frames; all 144 surface cases / 8,000 checks; eight
+  typography fixtures and 1,309 frozen frames pass. Glyph ratio 1.395806× ≤ 1.5.
+- **Scope:** focused follow-up verification, build/lint/boundaries; no full gate.
+- **Next:** fix fractional PCM preview validation in its own commit, then push once.
+- **Records:** [review repair evidence](./pr-49-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-review-repairs--2026-10-09).
+
+### 2026-10-09 — CE15 completed acceptance
+
+- **Agent / branch:** Codex on `codex/ce15-completion`; final gate `ae1a05bb`; production `21817411`.
+- **Results:** complete local `pnpm check` passes in 13928.03 seconds;
+  two-minute one/four-worker proof passes at **3.408×** with exact output.
+- **Done:** all CE15 implementation, review repairs and required final acceptance.
+- **Next:** PR #49 remains open; complete CE14 on a separate branch, with meaningful commits and pushes. No merge or scheduling.
+- **Records:** [completion evidence](./composition-ce15-completion-results.json),
+  [plan](./composition-ce15-plan.md).
+
+### 2026-10-09 — CE15 preview recovery test budget
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `6868dfea`.
+- **Done:** allow setup around the existing six-second missing-dependency recovery
+  assertion; its previous five-second outer test budget could cancel it early.
+- **Results:** all 17 preview integrations and changed-file lint pass. No
+  production code or recovery timing requirement changed.
+- **Next:** complete the full local gate, then continue CE14 on a new branch.
+- **Record:** [completion evidence](./composition-ce15-completion-results.json).
+
+### 2026-10-09 — CE15 native diagnostic browser regression
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `21817411`.
+- **Done:** assert original native diagnostics and actual retained bytes in the
+  browser helper; test depth initialization under a normal 128 KiB metadata quota.
+- **Results:** typecheck, helper lint and complete surface browser suite pass.
+  Production code is unchanged after the 3.408× exact-output speed proof.
+- **Next:** complete the required local gate, then CE14 on a separate branch.
+- **Record:** [completion evidence](./composition-ce15-completion-results.json).
+
+### 2026-10-09 — CE15 native driver text admission repair
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `b2d7a6a1`.
+- **Done:** charge actual native-returned renderer/log text and application Error
+  capacity, replacing impossible maximum-V8-string reservations.
+- **Results:** 44 focused tests, build/lint, vertical/general exports and 30 golden
+  comparisons, complete depth acceptance and all 176 frozen baseline items
+  (36,061 frames) pass. Independent review found no remaining concrete blocker.
+- **Rejected:** increasing worker quotas to accommodate theoretical 1–2 GiB
+  diagnostic strings; native production and application retention are distinct.
+- **Next:** final CE15 gate/commit/push, then a new CE14 branch, as requested.
+- **Record:** [completion evidence](./composition-ce15-completion-results.json).
+
+### 2026-10-09 — CE15 native Lab loader compatibility
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `54b8053c`.
+- **Done:** replace Node-incompatible parameter properties with explicit fields;
+  narrow allocator/context imports; correct two obsolete 13-fps rejection tests.
+- **Results:** actual bundled Vite config import, 71 focused tests, all 314
+  integrations, eight memory exports and expanded parallel/24 live failures pass.
+- **Preflight lesson:** import the bundled Lab configuration with native Node;
+  a TSX-only import hides the unsupported-syntax path. No loader workaround used.
+- **Open / next:** repeat speed acceptance and complete the required full local
+  gate on the repaired immutable checkpoint. No complete gate claimed yet.
+- **Record:** [completion evidence](./composition-ce15-completion-results.json).
+
+### 2026-10-09 — CE15 gate frame-rate assertion repair
+
+- **Scope:** update the old evaluator test for the accepted integer 1–60 fps range.
+- **Results:** 219 affected tests pass. Full gate attempt at `24378343` stopped
+  after 3,554 unit passes on this obsolete assertion; no complete gate claimed.
+- **Evidence:** final production code passed the 3.437× exact-output speed proof.
+  Only this test and records change; production/benchmark code remains unchanged.
+- **Next:** restart complete local `pnpm check` on the corrected checkpoint.
+- **Record:** [completion evidence](./composition-ce15-completion-results.json).
+
+### 2026-10-09 — CE15 maximum-area and speed acceptance; final reference repairs
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `adfb9592`.
+- **Done:** property-level reference caching, constant overwrite and implicit
+  dependency handling; memoized analysis and shared-track protection.
+- **Results:** 21 units and 72 dependency exports pass. The preceding format,
+  expanded parallel/24 live failures and legacy WebGL regressions pass. All 48
+  maximum-area cases and a 3.470× exact-output two-minute proof pass at `adfb9592`.
+- **Open / next:** repeat speed acceptance on this final code checkpoint and run
+  the complete pinned local `pnpm check`. No full gate is claimed yet.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [completion evidence](./composition-ce15-completion-results.json).
+
+### 2026-10-08 — CE15 area, frame-rate and result-transfer checkpoint
+
+- **Agent / branch:** Codex on `codex/ce15-completion`, following `18eae703`.
+- **Done:** bounded large-area scheduling/cache transport, integer1–60fps/PCM
+  boundaries, dependency-aware native prefixes and admitted chunked result RPC.
+- **Results:**311 focused tests and static checks pass;36 cache-dependency,
+  105 full format/rate and8 result-memory exports preserve exact worker output.
+  Four full-area Canvas cases pass. A48-case attempt passed36 before an interim
+  import edit interrupted it; an immutable complete rerun is still required.
+- **Rejected:** large ArrayBuffer fetch crashed Chromium; native Blob data-pipe
+  transport passes. Encoder frame cutoff lost fractional-rate audio; bounded
+  input EOF preserves every sample. No pixel/native thresholds were loosened.
+- **Next:** full-area matrix, isolated120-second speed proof, full local gate.
+- **Records:** [Completion evidence](./composition-ce15-completion-results.json).
+
+### 2026-10-08 — CE15 production worker memory lifecycle
+
+- **Done:** activate managed admission in real exports; partition worker capacity,
+  retain RPC result owners through acknowledgement and require complete retirement.
+  Report declared worker peaks separately from measured process RSS and Node allowance.
+- **Verified:** 21 focused tests, build/lint/boundaries, eight actual cached/uncached
+  one/four-worker Canvas/WebGL exports, 28 format cases and legacy WebGL regressions.
+- **Repair:** parallel acceptance reached browser-close and observed ECONNRESET
+  before the expected Playwright diagnostic. The test now requires the intended
+  browser's actual disconnected event and accepts either transport; all cleanup
+  and process-reaping assertions remain. The expanded rerun passes all format,
+  native/source/tint/root/prefix parity cases and all 24 live failures.
+- **Remaining:** complete metadata/Node admission, full-area scheduling and caches,
+  authentic speed acceptance and final local gate. No whole-memory or CE15 completion claim.
+- **Record:** [Completion evidence](./composition-ce15-completion-results.json).
+
+### 2026-10-08 — CE15 ordinary export statistics
+
+- **Done:** collect and publish composition statistics for ordinary exports, with
+  per-output-frame exclusive submission times, explicit cache state/hit semantics
+  and detailed worker snapshots. Parallel and ordinary exports share aggregation.
+- **Verification:** 12 focused tests, build/lint/boundaries, all 28 format cases
+  and legacy WebGL export regressions pass. Existing byte/pixel/audio oracles hold.
+  Installed current frozen-lockfile dependencies after old snapshot lacked clipper2-ts.
+- **Next:** production memory admission, complete caching/area coverage, speed proof
+  and final immutable local gate. This is focused evidence, not CE15 acceptance.
+- **Record:** [Completion evidence](./composition-ce15-completion-results.json).
+
+### 2026-10-08 — PR #49 merge-conflict resolution
+
+- **Agent / branch:** Codex; isolated `pr49-conflicts` worktree from `8faae4be`.
+- **Scope:** merge main `118927de` into PR #49 while preserving CE15 and reviewed upstream behavior.
+- **Done:** reconciled 14 conflict files, retained both test-command sets and histories;
+  combined reusable previews, rendered coverage, native bitmap upload, GPU instancing,
+  exact exposure bounds and managed lifetimes. Isolated export-test Vite caches;
+  asynchronous cinematic coverage now awaits shared preparation sources.
+- **Results:** 3,524 units; 102 focused tests; 144 surface cases / 8,000 frames;
+  complete WebGL, 38 alpha cases, 28 output exports and the parallel matrix pass.
+  Final cached-cinematic pixels/rejections and four public exports pass both backends.
+  Frozen subset 4 items / 792 frames and 336 affected default frames pass. No full
+  repository gate was run; frozen visuals/tolerances remain unchanged from main.
+- **Rejected:** stale optimizer imports, an invalidated borrowed clear-color array,
+  changed ordinary shader admission and a readonly test fixture were repaired. The
+  unchanged gradient-table timeout passes in the quiet final unit run; its limit stays intact.
+- **Open / next:** PR #49 remains open for the remaining CE15 milestone work.
+  CE15 acceptance remains pending; GitHub Actions stay disabled.
+- **Records:** [conflict-resolution results](./pr-49-conflict-resolution-results.json).
+
+### 2026-10-08 — CE15 Canvas parent and native image lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15`, after recovered `61d7b911`.
+- **Done:** hold actual Canvas parent and image backing through native consumers;
+  recover failed native identity, preserve known aliases and first cleanup/null error.
+- **Results:** build/lint/boundaries, 999 focused / 69 typography tests, six genuine
+  native probes, 144 audit cases / 8,000 frames and 64 prior-exact exports / 768
+  bodies/frames pass. Glyph 1.376068× meets unchanged 1.5; no final gate or speed proof.
+- **Repairs:** corrected an unverified draft rounding expectation to original 127;
+  retained sandbox startup and browser callback-shim failures. Prior tests unchanged.
+- **Next:** gradient/backend/retained-graph and broader admission, aggregate/area/speed
+  acceptance, full CE15 gate/PR, then CE14. GitHub push awaits explicit approval.
+- **Records:** [Canvas lifetime evidence](./composition-ce15-color-canvas-lifetime-results.json),
+  [plan](./composition-ce15-plan.md).
+
+### 2026-10-08 — CE15 GPU parent and child lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `f848b9a1`.
+- **Recovery:** fresh chat independently matched all 220 source fingerprints,
+  21 logs and audit/export result hashes after the old chat stopped.
+- **Done:** pre-hold actual GPU parent and independent entries/filter/uniform/curve
+  owners; attempt all child settlers before parent while preserving first null.
+- **Review:** repair failed native curve identity cleanup and the prior kernel
+  disposal ledger expectation; preserve known backing
+  and detach actual fresh backing. Prior native bodies and GPU units remain exact.
+- **Results:** build/lint/boundaries, 986 focused / 69 typography tests,
+  complete 144-case audit / 8,000 comparisons and 64 prior-exact exports / 768
+  bodies/frames pass. Glyph 1.319629×; full gate and speed remain pending.
+- **Next:** gradient/Canvas/backend and params/retained-graph lifetime, bootstrap/
+  Node/production/aggregate ownership and final gates, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [GPU lifetime evidence](./composition-ce15-color-gpu-lifetime-results.json).
+
+### 2026-10-08 — CE15 common metadata factory lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `c2473c23`.
+- **Done:** hold actual ownership/charge through factory/adoption/registry handoff;
+  protect known active/retiring aliases and preserve first failure during cleanup.
+- **Results:** build/lint/boundaries, 972 focused / 69 typography tests, 144-case audit /
+  8,000 comparisons, 96 RPC snapshots and 64 prior-exact exports / 768 bodies/frames
+  pass. Glyph 1.423015×; full gate and speed proof remain pending.
+- **Evidence:** 15 new regressions, all 957 prior tests and byte-exact ten old helper
+  tests pass. Private 48/3 passes; original-source RED 11/25 has its earlier hash caveat.
+- **Limits / next:** failed replaced registry intrinsics and unregistered foreign
+  aliases remain pending; implement callback parent and independent child holds,
+  params/retained-graph/bootstrap/Node ownership, production/aggregate/final gates.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [metadata evidence](./composition-ce15-metadata-factory-lifetime-results.json).
+
+### 2026-10-08 — CE15 fixed color-kernel metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `a93a020c`.
+- **Done:** pre-admit actual kernel products, scoped cache and independent shader/
+  state; reject stale invocation and preserve replacement during old-cache retirement.
+- **Results:** build/lint/boundaries, 957 focused / 69 typography tests,
+  complete 144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.392962×.
+- **Verification:** 23 new units / all 934 prior tests; ten original full
+  shader/constructor oracles and all ten embedded prior color oracles remain exact.
+- **Review:** repair retired cache/state publication and direct retiring-cache reuse;
+  retain build/lint/harness-read failures and repair them without changing oracles.
+  Keep original callback quota with admitted real filler and all prior thresholds.
+- **Next:** common metadata factory and native dependency holds, key-list/bootstrap/
+  Node ownership, production/aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [kernel evidence](./composition-ce15-color-kernel-metadata-results.json).
+
+### 2026-10-08 — CE15 allocation identity and registration failures
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `25b0e494`.
+- **Done:** hold producer handoff, retire fresh backing after identity/adoption
+  failure, roll back actual partial records and reject already-retired outputs.
+- **Results:** build/lint/boundaries, 934 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.395620×.
+- **Verification:** 22 new units, all 912 prior tests and 67 targeted checks; ten
+  genuine native cuts / 160 exact channels / 10240 protected prior Canvas channels,
+  held admission, original first null/Get sequence and detached actual backing pass.
+- **Review:** reject successful initializer's retired handle and skip recovery
+  after completed adoption; preserve all existing oracles and thresholds.
+- **Next:** kernel/ownKeys/control/Node preproducer ownership and unsupported
+  identity contracts, production/aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [allocation cleanup evidence](./composition-ce15-allocation-failure-results.json).
+
+### 2026-10-08 — CE15 common memory and native retirement
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `b2352574`.
+- **Done:** retain actual admission/ownership/records through cleanup and pending
+  native initialization; destroy once, clear actual refs and preserve first null.
+- **Results:** build/lint/boundaries, 912 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.415644×.
+- **Verification:** nineteen new tests; all 893 prior tests and unchanged late
+  registration protection pass. Preserve lint failure, deliberate three-case red
+  repro and 908/909 failure; deferred producer lifetime fixes the latter. Final 4 passes.
+- **Timing:** first glyph run 1.56× fails; unchanged-source retry meets 1.5 maximum.
+- **Next:** generic allocate/identity/adopt cleanup, kernel/ownKeys/common/Node
+  preproducer ownership, production/aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [retirement evidence](./composition-ce15-memory-retirement-results.json).
+
+### 2026-10-08 — CE15 selected Canvas color metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `8c3b694f`.
+- **Done:** own callback/partial source/reused pixel/gradient arrays and native image
+  backing through publication, then retire actual samples/image/control refs.
+- **Results:** build/lint/boundaries, 893 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.425039×.
+- **Verification:** twelve new tests / 23 original complete Canvas traces, 464
+  parameter and 18 input cuts, partial/gradient/image/quota/adoption/native/null/retry.
+- **Repaired:** private original oracle initialization; preserve original argument
+  order, native pixel/getter oracles and all thresholds. Focused attempt 1 passes.
+- **Next:** ownKeys capacity, kernel/registry/class/common/Node ownership,
+  production/aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [Canvas color evidence](./composition-ce15-color-canvas-metadata-results.json).
+
+### 2026-10-08 — CE15 selected GPU color metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `4328a6ac`.
+- **Done:** own callback and dynamically admitted original tuples/filter/uniform/
+  gradient spread, actual native input tuple and reused curve work/backing.
+- **Results:** build/lint/boundaries, 881 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.394345×.
+- **Verification:** ten new tests / 23 whole original GPU records, seven original
+  enumeration cases, 84 getter cuts, quota/adoption/native/cleanup/retry.
+- **Rejected / repaired:** actual extra descriptor reads and fixture declaration/
+  premature secondary injection/cache-disposal mock; all attempts retained.
+- **Next:** arbitrary ownKeys capacity, Canvas/kernel/store ownership, common/Node,
+  production/aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [GPU color evidence](./composition-ce15-color-gpu-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone color-pixel metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `a7aa2a22`.
+- **Done:** admit actual producer/slice/mapper/borrowed refs/intermediate and partial
+  RGBA; retain independent result and retire at GPU curve/Canvas pixel consumers.
+- **Results:** build/lint/boundaries, 871 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.414894×.
+- **Verification:** nine new tests / 92 original outputs/getter traces, 462 getter
+  cuts / 15 paths, math/quota/actual refs/lifetime/adoption/cleanup/retry/caller/
+  native consumers; all 854 prior plus eight original curve tests rerun.
+- **Rejected / repaired:** attempt 1 prior table-oracle timeout (870 pass), system
+  workload observed/cause unknown; buffer only SHA observer calls preserving exact
+  original hash input and timeout. Attempt 2 passes; original thresholds unchanged.
+- **Next:** outer color callback/store ownership, arbitrary methods/species/common/
+  Node, aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [color pixel evidence](./composition-ce15-color-pixel-metadata-results.json).
+
+### 2026-10-08 — CE15 actual gradient-table cache/key/view metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `d0b79911`.
+- **Done:** admit actual producer/tuple/key/Map/entry/view/backing, captured cache
+  retirement and insertion/eviction rollback preserving original native read order.
+- **Results:** build/lint/boundaries, 854 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.440780×.
+- **Verification:** ten new tests / 16 whole original table/getter hashes, quota/
+  actual refs/lifetime/getter-math/adoption/Map pre/post-mutation/eviction/cleanup/
+  retry/native JSON; all 844 prior including 46 full native color cases rerun.
+- **Rejected / repaired:** preparation brace; observer counter/typing and unused
+  failure/retry hash overhead. Attempt 4 passes; review adds post-mutation rollback,
+  expanded check passes attempt 6. Original data/timeouts/thresholds unchanged.
+- **Next:** color callback/store ownership, arbitrary borrowed factories/common/
+  Node, aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [gradient table evidence](./composition-ce15-gradient-table-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone gradient-uniform metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `7e5d176c`.
+- **Done:** admit actual producer/partial uniform record/three vectors and independent
+  result; retain shared vectors through GPU pass and retire on controls cleanup null.
+- **Results:** build/lint/boundaries, 844 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.304455×.
+- **Verification:** nine new tests / eight original uniform/getter tables/six floors,
+  four full native GPU upload/getter hashes, quota/actual refs/lifetime/getter-math/
+  adoption/cleanup/retry/caller; all 835 prior including 46 full native color cases.
+- **Rejected / repaired:** attempt 1 fixture proxy typing; attempt 2 hash input omits
+  original getter sequence (843 pass); fixed comparison only. Attempt 3 passes.
+- **Next:** gradient table/cache and color callback ownership, arbitrary borrowed
+  factories/common/Node, aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [gradient uniforms evidence](./composition-ce15-gradient-uniforms-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone gradient-control metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `66e7a22c`.
+- **Done:** admit actual producer/borrowed endpoints/partial controls and independent
+  result; retire at GPU uniform and Canvas publication consumers, or outside scope.
+- **Results:** build/lint/boundaries, 835 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.439883×.
+- **Verification:** nine new tests / eight original controls/uniform tables, 40 ranks,
+  46 full native traces/uploads/pixels, quota/actual refs/lifetime/getter-math/adoption/
+  cleanup/retry/caller; all 810 prior and 16 original color/gradient tests rerun.
+- **Rejected / repaired:** attempt 1 native fixture typing; isolated harness/endpoint
+  observer before tests. Attempt 2 JSON loses original negative zeros (828 pass);
+  four expected signs restored from original. Attempt 3 passes; formulas unchanged.
+- **Next:** gradient uniforms/tables/cache and color callback ownership, arbitrary
+  borrowed factories/common/Node, aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [gradient controls evidence](./composition-ce15-gradient-controls-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone native noise-color metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `5330322a`.
+- **Done:** admit actual map producer/receiver/handler/arguments and native length-
+  sized result before factories; retain actual result outside scope until consumer.
+- **Results:** build/lint/boundaries, 810 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.410120×.
+- **Verification:** eleven new tests / 22 original complete color/getter/has/sparse/
+  length rows, quota/actual refs/lifetime/getter-clamp/adoption/cleanup/retry/caller/
+  native coercion/admission hook/custom-map bound; all 799 prior tests rerun.
+- **Rejected / repaired:** test-only const lint in attempt 1; recursive Vitest proxy
+  observer in attempt 2 (809 pass). Boolean identity repair; attempt 3 passes.
+- **Next:** arbitrary map/species intermediate contracts, other effects/cache/class/
+  provider/graph/font/common/registry/ledger/Node, aggregate/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [noise color evidence](./composition-ce15-noise-color-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone noise-field metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `78f4c557`.
+- **Done:** admit actual producer and original octave plane closures before factories,
+  hold through scalar consumer, drop each plane after its octave and retire phase.
+- **Results:** build/lint/boundaries, 799 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.407681×.
+- **Verification:** eight new tests / 60 original field value/getter/math-count rows,
+  quota/default seed/actual producer-plane refs/all getter cuts/math/adoption/cleanup/
+  retry/caller; all 791 prior tests rerun unchanged. Second attempt passes.
+- **Rejected / repaired:** first attempt builds; lint rejects throw from finally.
+  First error now propagates after cleanup, retaining original math and plane behavior.
+- **Next:** color helper, other effects/cache/class/depth sampling/provider/graph/
+  font/common/registry/ledger/Node, aggregate memory/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [noise field evidence](./composition-ce15-noise-field-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone noise-uniform metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `2eec9562`.
+- **Done:** admit actual temporary producer/partial record-vectors and independent
+  uniform result; retain both vectors under captured ownership outside scope.
+- **Results:** build/lint/boundaries, 791 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.368082×.
+- **Verification:** eight new tests / six independent complete uniform/getter tables,
+  quota/actual partial vectors/producer/lifetime/all getter cuts/adoption/cleanup/
+  retry/caller; all 783 prior tests rerun. First attempt passes. Two prior tests
+  release new owned uniforms after unchanged frozen assertions.
+- **Next:** field/color helpers, other effects/cache/class/depth sampling/provider/
+  graph/font/common/registry/ledger/Node, aggregate memory/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [noise uniform evidence](./composition-ce15-noise-uniforms-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone noise-controls metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `998ed11c`.
+- **Done:** admit actual temporary producer/partial controls and independent result
+  before factories; retain captured allocator ownership outside scope until consumer.
+- **Results:** build/lint/boundaries, 783 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.470339×.
+- **Verification:** eight new tests / six complete original controls/uniform tables,
+  30 field values/exact getters/quota/actual partial refs/lifetime/adoption/cleanup/
+  retry/caller; all 775 prior tests rerun. First attempt passes. Two prior tests
+  release new owned controls and retain the same frozen expected values.
+- **Next:** uniform/field/color helpers, other effects/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, aggregate memory/speed/final gate,
+  then CE14. Production admission remains pending.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [noise controls evidence](./composition-ce15-noise-controls-metadata-results.json).
+
+### 2026-10-08 — CE15 actual noise Canvas callback metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `e40ac9e2`.
+- **Done:** admit actual controls/views/sample/RGB-color maps/octave plane/sampling/
+  native work before factories; clear original plane and pixel arrays/callbacks at
+  consumers, retain views through publication and retire both original backings.
+- **Results:** build/lint/boundaries, 775 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.458716×.
+- **Verification:** thirteen new tests / 38 complete original rows and 16 getter
+  sequences, quota/actual partial-consumer refs/math/map/field/sampling/native/
+  adoption/cleanup null/retry; all 762 prior tests rerun. First attempt passes.
+- **Next:** standalone noise helpers, color/transition/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, aggregate memory/speed/final gate,
+  then CE14. Selected premultiply repair does not complete common allocation cleanup.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [noise Canvas evidence](./composition-ce15-noise-canvas-metadata-results.json).
+
+### 2026-10-08 — CE15 actual noise GPU callback metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `b019c1de`.
+- **Done:** admit actual controls/three uniform records/seed-z vectors/full shader/
+  input/native refs before factories, retain through pass and clear actual refs.
+  Preserve amount/getter/key order and zero neutral paths; borrowed colors intact.
+- **Results:** build/lint/boundaries, 762 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.415045×.
+- **Verification:** nine new tests / 38 complete original control/uniform/field/
+  color/native rows and 16 callback getter sequences, quota/actual partial-consumer
+  refs/math/native/adoption/cleanup null/retry. All 748 prior plus five original
+  noise tests rerun; type failure retained, focused attempt 2 passes.
+- **Next:** noise Canvas/default helpers, color/transition/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, aggregate memory/speed/final gate,
+  then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [noise GPU evidence](./composition-ce15-noise-gpu-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone chromatic offset result
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `5827df1e`.
+- **Done:** admit actual 272-byte result before original getters/math/array factory;
+  keep owned outside scope and while another scope is active until consumer cleanup.
+  Caller-admitted routes add no result lease; original inactive values stay exact.
+- **Results:** build/lint/boundaries, 748 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.422721×.
+- **Verification:** seven new tests / five original values/positive-zero/getter
+  sequences, quota/actual reservation/captured allocator/lifetime/null/adoption/
+  cleanup/retry/caller. All 741 prior tests rerun; type failure retained, attempt 2
+  passes.
+- **Next:** noise/color/transition/cache/class/depth sampling, provider/graph/font/
+  common/registry/ledger/Node, aggregate memory/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [offset result evidence](./composition-ce15-stylize-offset-metadata-results.json).
+
+### 2026-10-08 — CE15 actual stylize Canvas callback metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `ea482f03`.
+- **Done:** admit actual offset/neutral/readback/view/sample/RGB/map/index/native
+  work before factories; retain through publication, clear actual pixel arrays and
+  callbacks. Both original stores retire even after first error; guarded native
+  detach cleanup still clears refs and preserves first null.
+- **Results:** build/lint/boundaries, 741 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.357456×.
+- **Verification:** twelve new tests / 16 original native traces/full pixels,
+  quotas/actual partial-consumer refs/math/getter/native/adoption/cleanup null/retry.
+  All 729 prior tests rerun. Earlier pass and type failure retained; attempt 3 passes.
+- **Next:** standalone offset, noise/color/transition/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, aggregate memory/speed/final gate,
+  then CE14. Selected premultiply guard does not complete common allocator cleanup.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [stylize Canvas evidence](./composition-ce15-stylize-canvas-metadata-results.json).
+
+### 2026-10-08 — CE15 actual stylize GPU callback metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `bb8a9dc7`.
+- **Done:** admit actual offset/predicate/uniform/dimension/shader/input tuple before
+  factories; retain through native pass, clear actual owned arrays/records/refs.
+  Original amount getter, zero vignette and neutral chromatic behavior stay exact.
+- **Results:** build/lint/boundaries, 729 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.410180×.
+- **Verification:** nine new tests / 16 original GPU/Canvas native traces/full
+  pixels, quota/actual refs/math/getter/partial uniform/native/adoption/cleanup null
+  and retry; all 720 prior tests rerun. Type failure retained; attempt 2 passes.
+- **Next:** stylize Canvas/default offset, noise/color/transition/cache/class/depth
+  sampling, provider/graph/font/common/registry/ledger/Node, aggregate memory/speed/
+  final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [stylize GPU evidence](./composition-ce15-stylize-gpu-metadata-results.json).
+
+### 2026-10-08 — CE15 actual late standalone warp point results
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `a5538ce3`.
+- **Done:** admit actual late outputs before original producers under mapping's
+  captured allocator, keep outside scope and independent of mapping cleanup; clear
+  actual outputs/empty controls. Original caller route adds no per-point lease.
+- **Results:** build/lint/boundaries, 720 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.369987×.
+- **Verification:** ten new tests / 105 original points/signed zeros/three undefined
+  points, quotas/captured owners/math/lifetime/null/adoption/retry/caller. Prior exact
+  assertions unchanged; type failure retained, focused attempt 2 passes. Glyph
+  1.57× displayed failure retained; affected unchanged-code repeat passes.
+- **Next:** stylize/noise/color/transition/cache/class/depth sampling, provider/graph/
+  font/common/registry/ledger/Node, aggregate memory/speed/final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [warp point evidence](./composition-ce15-warp-points-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone warp mapping result
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `628e5934`.
+- **Done:** pre-admit actual mapping/matrix/vector/uniform/shader/closure controls,
+  hold outside scope through consumers, clear actual partial/result roots and refs.
+  Caller-admitted route unchanged; later independent point results remain pending.
+- **Results:** build/lint/boundaries, 710 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.382429×.
+- **Verification:** nine new tests / 21 whole original mappings/getter sequences,
+  18 signed zeros, quotas/actual roots/partial/null/adoption/retry/lifetime/caller.
+  Interrupted harness and observer failure retained; focused attempt 3 passes.
+- **Next:** later warp point results, other effects/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [warp mapping evidence](./composition-ce15-warp-mapping-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone radial encoded view
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `dbe4e0c4`.
+- **Done:** admit actual returned view before original producer; retain actual view/
+  original backing outside scope until consumer cleanup. Capture partial view;
+  detach actual unadopted radial backing after pixel-adoption failure.
+- **Results:** build/lint/boundaries, 701 focused tests / 80 files, complete 144-case
+  audit / 8,000 comparisons, 96 RPC snapshots, native probes, original WebGL and 64
+  prior-exact exports / 768 bodies/frames pass. After owner browser workload ended,
+  69 source typography unit tests/providers/eight fixtures pass on unchanged code;
+  glyph 1.417742× meets unchanged 1.5. Prior failure remains retained.
+- **Verification:** ten new tests / 21 whole original encoded hashes/getter sequences,
+  quotas/actual refs/transfer/lifetime/null/adoption/all cleanup/retry/caller. Attempts
+  1/2 failures retained; focused attempt 3 and affected typography repeat pass.
+  Final milestone full gate remains pending.
+- **Next:** standalone warp mapping/point, other effects/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, full CE15/CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [radial encoded-view evidence](./composition-ce15-radial-bytes-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone radial control result
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `3ca8a09c`.
+- **Done:** pre-admit temporary tracker and actual result/factor store/view/vectors,
+  transfer refs to returned owner outside scope, retire actual partial or final
+  stores/vectors/record; caller-admitted GPU/Canvas growth adds no standalone lease.
+- **Results:** build/lint/boundaries, 691 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph fixture failed at a
+  displayed 1.52× versus 1.5; repeat pending after observed external owner browser
+  workload. This implementation checkpoint has incomplete browser acceptance.
+- **Verification:** eight new tests / 21 original full factor hashes/vectors/getter
+  sequences, quotas/actual owners/transfer/null/adoption/all cleanup/retry. Attempt 1
+  TypeScript cast failure retained; focused attempt 2 passes. Failed timing retained,
+  affected repeat and aggregate/final gates pending.
+- **Next:** standalone table/warp mapping, other effects/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [radial control evidence](./composition-ce15-radial-controls-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone radial point result
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `8da15083`.
+- **Done:** pre-admit actual point result, retain outside render scope through
+  explicit/scratch/allocator cleanup; clear actual adoption-failure/result arrays.
+  Preserve original borrowed control getters and caller route without extra leases.
+- **Results:** build/lint/boundaries, 683 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.413165×.
+- **Verification:** seven new tests / 105 original values/kinds/getter sequences,
+  two NaNs, quotas/owner/math/lifetime/null/adoption/retry/caller cleanup. Attempt 1
+  accepted. Aggregate integration and final full gate remain pending.
+- **Next:** standalone radial controls/table and warp mapping/other effects/cache/
+  class/depth sampling, provider/graph/font/common/registry/ledger/Node, CE15/CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [radial point evidence](./composition-ce15-radial-point-metadata-results.json).
+
+### 2026-10-08 — CE15 actual radial Canvas factor work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `11b39625`.
+- **Done:** pre-admit/grow actual factor/view/vector/controller/readback/premultiply/
+  point/sample/index/native work, capture partial views and each point consumer,
+  retire three backings and clear actual arrays/refs after publication or failure.
+- **Results:** build/lint/boundaries, 676 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.461759×.
+- **Verification:** nine new tests / seven full native/pixel oracles, quota/refs/
+  point consumers/partial/native/adoption/null/all cleanup/retry. Attempt 1 accepted.
+  Standalone results, aggregate integration and final full gate remain pending.
+- **Next:** standalone controls/point/table helpers/other effects/cache/class/depth
+  sampling, provider/graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [radial Canvas evidence](./composition-ce15-radial-canvas-metadata-results.json).
+
+### 2026-10-08 — CE15 actual radial GPU factor work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `a4f870f`.
+- **Done:** pre-admit header, grow by exact factor bytes before constructor, capture
+  partial factors/vectors/controller/table/shader/input/uniform/native refs, keep
+  through upload/pass then retire actual stores and clear refs despite cleanup failure.
+- **Results:** build/lint/boundaries, 667 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.247944×.
+- **Verification:** nine new tests / 21 whole factor/table hashes / 14 full native
+  traces, quotas/refs/partial/native/adoption/null/all cleanup/retry, 8192 controls.
+  Original NaN/type fixture failures retained; final attempt 3 accepted. Full-size
+  export/aggregate and full gate remain pending.
+- **Next:** radial Canvas/standalone helpers/other effects/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [radial GPU evidence](./composition-ce15-radial-gpu-metadata-results.json).
+
+### 2026-10-08 — CE15 actual warp Canvas mapping work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `a142f3c`.
+- **Done:** pre-admit actual mapping/view/sample/index/native controls, capture
+  unreturned premultiply view, keep each actual point through pixel consumption then
+  clear, visit both stores and clear actual arrays/records/refs after publication/failure.
+- **Results:** build/lint/boundaries, 658 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.390805×.
+- **Verification:** ten new tests / seven whole original Canvas traces/pixels,
+  quotas/refs/pixel cuts/four point consumers/partial/native/adoption/null/all
+  cleanup/retry. Initial unused fixture import retained; final attempt 2 accepted.
+  No full gate; standalone mapping/common/aggregate integration still pending.
+- **Next:** standalone mapping/helpers/other effects/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [warp Canvas evidence](./composition-ce15-warp-canvas-metadata-results.json).
+
+### 2026-10-08 — CE15 actual warp GPU mapping work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `dd1e1e4`.
+- **Done:** pre-admit actual matrices/vectors/keys/borrowed-point root, mapping/
+  uniform records, producers/closures/shader/input/native refs; keep through pass
+  then clear actual containers/refs, including partial affine uniform production.
+- **Results:** build/lint/boundaries, 648 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.382883×.
+- **Verification:** eight new tests / 21 full mapping tables / 18 signed zeros /
+  14 complete native traces, quota/refs/partial/native/adoption/null/cleanup/retry.
+  Initial fixture decimal lint failures retained; final attempt 3 accepted. No full gate.
+- **Next:** Canvas/standalone mapping/helpers/other effects/cache/class/depth
+  sampling, provider/graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [warp GPU evidence](./composition-ce15-warp-gpu-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone map-channel work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `2459e68`.
+- **Done:** pre-admit actual standalone controller/straight closure, retain through
+  original consumers, clear refs and retire temporary capacity; preserve original
+  alpha no-op and single borrowed alpha read. Canvas adds no per-pixel lease.
+- **Results:** build/lint/boundaries, 640 focused / 69 typography tests, full
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.408163×.
+- **Verification:** seven new tests / 40 full saved scalar/getter oracles, actual
+  ownership, quota/no-op, producer/adoption/null/secondary/successful cleanup/retry.
+  Initial lint/fixture failures retained; final attempt 4 accepted. No full gate.
+- **Next:** other helpers/effects/cache/class/depth sampling, provider/graph/font/
+  common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [channel evidence](./composition-ce15-map-channel-metadata-results.json).
+
+### 2026-10-08 — CE15 actual map-effect Canvas work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `762c41a`.
+- **Done:** pre-admit actual neutral/readback/premultiply/view/vector/channel/index/
+  native refs; capture unreturned producers, reuse per-pixel controls, visit four
+  backing retirements and clear actual arrays/refs after publication/failure.
+- **Results:** build/lint/boundaries, 633 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.500000×.
+- **Verification:** twelve new tests / 11 full original Canvas traces/pixels,
+  quotas, actual four stores/views, partial premultiply, channel/sampling/readback/
+  adoption/native/publication/null/secondary/all cleanup/retry. Transparent-pixel
+  test observer repaired, four-view expectation kept; attempt 2 accepted. Initial
+  1.52× glyph timing failure retained; affected rerun uses unchanged protocol. No full gate.
+- **Next:** standalone helpers/other effects/cache/class/depth sampling, provider/
+  graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [map Canvas evidence](./composition-ce15-map-canvas-metadata-results.json).
+
+### 2026-10-08 — CE15 actual map-effect GPU work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `501f75a`.
+- **Done:** pre-admit actual neutral/amount-map/uniform/shader/input/native refs;
+  keep through original consumer/early return, clear actual arrays/records and drop
+  callbacks/text/native refs after success/failure without changing borrowed inputs.
+- **Results:** build/lint/boundaries, 621 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.361355×.
+- **Verification:** eight new tests / 22 whole original GPU/Canvas native traces,
+  shader lengths/hashes/pixels, quota/neutral/actual refs/producer/layer/native/
+  adoption/null/secondary cleanup/retry. Initial extra segment assertion error
+  retained, attempt 2 accepted with consumed suffix/full frozen hashes; no full gate.
+- **Next:** map Canvas/helpers/other effects/cache/class/depth sampling, provider/
+  graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [map GPU evidence](./composition-ce15-map-gpu-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone transform results
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `3c50927`.
+- **Done:** admit actual outer/child tap arrays and working refs before factories;
+  transfer result out of temporary refs, hold through consumers, clear actual root/
+  vectors at release/scratch/allocator and retire partial producers/adoption/failure.
+- **Results:** build/lint/boundaries, 613 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.422481×.
+- **Verification:** nine new tests / 36 full original tables / 230 signed zeros,
+  actual root/child ownership, neutral/max/count quotas, producer/adoption/null/
+  secondary cleanup/retry and outside-scope/scratch/allocator lifetime. All prior
+  24 native GPU/Canvas traces pass. Getter fixture build failure retained; attempt 2
+  accepted; no full gate.
+- **Next:** other sampling/effect/cache/class/depth sampling, provider/graph/font/
+  common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [transform result evidence](./composition-ce15-transform-results-metadata-results.json).
+
+### 2026-10-08 — CE15 actual sampled-blur Canvas work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `0289f89`.
+- **Done:** pre-admit actual tap/readback/view/sample/sums/map/producer/native refs;
+  reuse sampling control, clear each pixel's actual temporary arrays after writes;
+  visit both backing retirements and drop actual refs after publication/failure.
+- **Results:** build/lint/boundaries, 604 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.434383×.
+- **Verification:** twelve new tests / 12 whole original Canvas traces/pixels,
+  actual refs/detachment, single work/two pixel admissions, quota/producer/readback/
+  sampling/normalization/map/adoption/native/publication/null/cleanup/retry. Prior
+  transform/GPU/default sampler/shadow oracles pass. Attempt 1 accepted; no full gate.
+- **Next:** standalone transforms/other sampling/effect/cache/class/depth sampling,
+  provider/graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [sampled Canvas evidence](./composition-ce15-sampled-canvas-metadata-results.json).
+
+### 2026-10-08 — CE15 actual sampled-blur GPU work
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `cc68e4e`.
+- **Done:** admit actual tap/shape/producer/shader/map/row/key/pair/group/uniform/
+  native refs before factories; keep through pass, clear actual partial/completed
+  arrays/records and drop text/function/native refs after success or first failure.
+- **Results:** build/lint/boundaries, 592 focused / 69 typography tests, complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.401351×.
+- **Verification:** nine new tests; 36 original full tables / 230 signed zeros and
+  24 whole native traces. Actual values/refs through consumers, pre-producer quotas,
+  partial math/slice/shader/null/adoption/native/cleanup/retry checked. Initial two
+  fixture failures retained; attempt 3 accepted. No full gate.
+- **Next:** sampled Canvas/standalone transforms/other sampling/effect/cache/class/
+  depth sampling, provider/graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [sampled GPU evidence](./composition-ce15-sampled-gpu-metadata-results.json).
+
+### 2026-10-08 — CE15 actual default sampler results
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `02ee590`.
+- **Done:** admit default sampling array/working controls before factories; shrink
+  actual result after original interpolation, retain through consumers and retire
+  partial/completed arrays after producer/adoption/shrink failure. Supplied outputs
+  keep original route without per-pixel leases; other caller admission pending.
+- **Results:** build/lint/boundaries, 583 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.361893×.
+- **Verification:** eight new tests / 80 original full outputs, pre-math quotas,
+  actual consumer closure/capacity, null/adoption/shrink/secondary cleanup/retry,
+  outside-scope lifetime, scratch/allocator cleanup and borrowed output/bytes.
+  Launcher omission retained as incomplete attempt 1; complete attempt 2 accepted.
+- **Next:** caller/transform/effect/cache/class/depth sampling factories, provider/
+  graph/font/common/registry/ledger/Node, full CE15, then CE14. No full gate yet.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [default sampler evidence](./composition-ce15-sampler-default-metadata-results.json).
+
+### 2026-10-08 — CE15 actual standalone shadow helper results
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `ddd0651`.
+- **Done:** admit actual composite work/result arrays and blur view/controllers
+  before factories; retain returned results through consumers, retire actual partial
+  outputs after failure and clear/detach on release. Canvas reuses existing controls.
+- **Results:** build/lint/boundaries, 575 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native probes, WebGL/providers
+  and 64 prior-exact exports / 768 bodies/frames pass. Glyph 1.395023×.
+- **Verification:** ten new tests, 32 composite / 16 blur original full outputs,
+  pre-producer quotas, partial producer/adoption null, secondary cleanup, retry,
+  actual outside-scope results, scratch/allocator retirement and borrowed data.
+  Initial lint failure retained, second attempt accepted. No full gate.
+- **Next:** default sampler/effect/cache/class/caller/sampling factories, provider/
+  graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [standalone shadow evidence](./composition-ce15-shadow-helpers-metadata-results.json).
+
+### 2026-10-08 — CE15 actual Canvas shadow working controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `7e22ec9`.
+- **Done:** pre-admit actual readback/view/vector/sample/blur-producer/per-pixel/
+  native refs; reuse pixel ref slots, capture unreturned blur outputs before loops,
+  visit five backing/kernel retirements and clear actual refs after consumers.
+- **Results:** build/lint/boundaries, 545 main + 20 sampler tests / 69 typography;
+  complete 144-case audit / 8,000 comparisons, 96 RPC snapshots, original native
+  probes, WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.434650× meets unchanged 1.5 maximum.
+- **Verification:** twelve new tests; two whole native traces / 32 original pixel
+  cases, actual refs/closure/consumer arrays, partial quota/readback/sampling/blur/
+  publication/null/retry and all backing cleanup. Five other sampler suites pass.
+  No full gate; standalone/default helper, cache/registry/factory admission pending.
+- **Next:** helpers/effect/cache/class/caller/sampling factories, provider/graph/font/
+  common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [Canvas shadow evidence](./composition-ce15-shadow-canvas-metadata-results.json).
+
+### 2026-10-08 — CE15 actual GPU shadow working controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `9459a4f`.
+- **Done:** pre-admit actual offset/shader/tuple/direction/input/uniform/view/native
+  refs, hold through consumers, clear controls and retire actual upload backing/
+  Gaussian result after passes; preserve primary failures and retry.
+- **Results:** build/lint/boundaries, 533 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.429870× meets unchanged 1.5 maximum.
+- **Verification:** eleven new tests; two whole original GPU traces, actual refs/
+  views/consumer arrays, quotas, each native producer/upload/pass null, retry and
+  first/secondary retirement errors. Prior Gaussian/Canvas traces rerun. No full gate.
+- **Next:** Canvas shadow/effect/cache/class/caller/sampling factories, provider/
+  graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [GPU shadow evidence](./composition-ce15-shadow-gpu-metadata-results.json).
+
+### 2026-10-08 — CE15 actual shadow Gaussian kernel containers
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `695a815`.
+- **Done:** pre-admit actual floating/shape/callback and returned weight/result
+  containers, preserve original Gaussian math, clear partial refs, hold actual
+  result through GPU/Canvas consumers then retire it in finally.
+- **Results:** build/lint/boundaries, 522 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.387597× meets unchanged 1.5 maximum.
+- **Verification:** ten new plus three original shadow tests; seven complete
+  original kernel results / four native GPU/Canvas traces; quotas, actual refs,
+  partial/factory/math/publication/null/retry and scope/scratch consumer retirement.
+  No full gate or threshold changes; other shadow/kernel/cache factories pending.
+- **Next:** shadow/effect/cache/class/caller/sampling factories, provider/graph/font/
+  common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [shadow kernel evidence](./composition-ce15-shadow-kernel-metadata-results.json).
+
+### 2026-10-08 — CE15 actual GPU/Canvas effect callback controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `6bbf7eb`.
+- **Done:** pre-admit actual callback controller/Set/Map/context/functions, COPY
+  input/dimension/fallback/snapshot arrays; hold through consumers, visit all native
+  retirement, preserve primary null, clean partial insertion and drop actual refs.
+- **Results:** build/lint/boundaries, 509 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.216981× meets unchanged 1.5 maximum.
+- **Verification:** thirteen new and eleven existing plugin tests; two whole
+  original GPU/Canvas native traces, pre-factory quota, actual refs/consumer arrays,
+  native/callback/publication/cleanup/null/retry, Set/Map insertion and 32-surface cap.
+  No full gate or threshold changes; global/kernel/error factories remain pending.
+- **Next:** kernel/cache/class/caller/sampling factories, provider/graph/font/common/
+  registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [effect control evidence](./composition-ce15-effect-controls-metadata-results.json).
+
+### 2026-10-08 — CE15 actual depth initialization and native controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `83e99b8`.
+- **Done:** pre-admit actual shader/tuple/grid/view work and retained native
+  program/VAO/buffer controls; visit all captured cleanup, preserve first null,
+  drop actual refs, retain across scratch/scope and avoid duplicate native deletes.
+- **Results:** build/lint/boundaries, 485 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.435714× meets unchanged 1.5 maximum.
+- **Verification:** seventeen new tests/two complete original initialization traces;
+  quotas, partial/native/CPU cleanup, null/retry, retained refs, scope/allocator-first
+  and independently retired buffers. Attempt 3 omitted text suite and is unaccepted;
+  final attempt 4 includes every prior suite. No full gate or threshold changes.
+- **Next:** class/caller factories, sampling query payload, effects/provider/graph/
+  font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [depth native evidence](./composition-ce15-depth-native-metadata-results.json).
+
+### 2026-10-08 — CE15 actual depth renderer and diagnostic text
+
+- **Agent / branch:** Codex on `codex/composition-ce15`; renderer base `7773c8b`,
+  owner documentation commit `633aba3` preserved.
+- **Done:** pre-admit actual extension/probe/RegExp/renderer DOMString and native
+  log/Error-message producers; retain actual propagated Error until allocator
+  cleanup, preserve original predicates/fallback messages/native order/null/retry.
+- **Results:** build/lint/boundaries, 468 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.416013× meets unchanged 1.5 maximum.
+- **Verification:** twelve new tests/two whole initialization traces, actual Error
+  ownership and scope-exit/null/retry. Depth fixture metadata admits pinned text
+  ceiling; original pixels/native sizes/source-root/PNG quotas unchanged. No full gate.
+- **Next:** class/caller/program/shader/native controls, sampling query payload,
+  effects/provider/graph/font/common/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [depth text evidence](./composition-ce15-depth-text-metadata-results.json).
+
+### 2026-10-08 — CE15 actual depth draw metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `6db615c`.
+- **Done:** pre-admit actual layer/motion/asset/state/view/flag/binding/placement/
+  function/input/uniform data, retain through consumers, clear/detach afterward;
+  preserve borrowed input, original native order and first-null/retry.
+- **Results:** build/lint/boundaries, 456 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.409524× meets unchanged 1.5 maximum.
+- **Verification:** ten new tests/three whole original prepared-program traces,
+  partial query/flag/binding/pass/restoration/release/null/retry, snapshot detachment
+  and unreturned-output cleanup. Type/lint failures retained. No full gate.
+- **Next:** class/caller, sampling query payload, depth program/shader/renderer text/
+  diagnostics, effects/provider/graph/font/common/registry/ledger/Node, CE15, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [depth draw evidence](./composition-ce15-depth-draw-metadata-results.json).
+
+### 2026-10-08 — CE15 actual depth uniform cache data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `e937529`.
+- **Done:** pre-admit actual location/entry Maps/header and native/name/entry/slot
+  references; retain through cache/scratch, clear on retirement; preserve original
+  native identity/query order/null hits and constructor/query/insert/null/retry.
+- **Results:** build/lint/boundaries, 446 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.425466× meets unchanged 1.5 maximum.
+- **Verification:** ten new tests/original six lookup sequence, pre-native quota,
+  scope-exit/allocator-first/foreign guard and earlier-header constructor cleanup.
+  Focused texture/MSAA quotas include actual new header; pixel checks unchanged.
+- **Next:** sampling query payload, class/caller, depth program/renderer text/draw,
+  effects/provider/graph/font/common/registry/ledger/Node, CE15 final gate, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [uniform evidence](./composition-ce15-depth-uniform-metadata-results.json).
+
+### 2026-10-08 — CE15 actual retained depth multisample controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `311c4cf`.
+- **Done:** pre-admit actual multisample record/native controls, retain through
+  scratch/reuse, clear actual native/dimension/allocator refs on resize/disposal;
+  preserve native order, MSAA pixels, source-first-null, partial/null/retry.
+- **Results:** build/lint/boundaries, 436 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.426357× meets unchanged 1.5 maximum.
+- **Verification:** eleven new tests/one whole original 20-call trace; record quota,
+  native partial/storage/status/resize/null/retry, scope-exit/allocator-first native
+  once-only release, early color retirement and foreign guard. No full gate.
+- **Next:** sampling query backing/Array.from payload, class/caller, depth program/
+  locations/renderer text/draw, effects/provider/graph/font/common/ledger/Node, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [multisample evidence](./composition-ce15-depth-multisample-metadata-results.json).
+
+### 2026-10-08 — CE15 actual depth texture cache data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `0b9fc54`.
+- **Done:** pre-admit actual texture cache Maps/state, template key/entry/slots/
+  native references; retain through original cache, clear on retirement; preserve
+  64-entry/128 MiB budgets, upload flags, LRU/native identity and original null/retry.
+- **Results:** build/lint/boundaries, 425 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.392188× meets unchanged 1.5 maximum.
+- **Verification:** fourteen new tests/one whole original 24-call trace; cache/
+  byte-budget eviction, partial insert/upload/null/retry, scope-exit/allocator-first
+  native once-only release and foreign guard. Two fixture type failures retained.
+- **Next:** class/caller factories, dedicated depth program/locations/renderer
+  text/multisample/draw state, effects/provider/graph/font/common/ledger/Node, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [depth texture evidence](./composition-ce15-depth-texture-metadata-results.json).
+
+### 2026-10-08 — CE15 actual PNG draw and coordinate data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `960a433`.
+- **Done:** pre-admit actual placement/input/uniform/vector data and retained
+  coordinate record/native/view; clear actual references after consumers/disposal,
+  preserve whole uploads, borrowed input, resize/reuse and original null/retry.
+- **Results:** build/lint/boundaries, 411 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.328205× meets unchanged 1.5 maximum.
+- **Verification:** eleven new tests/three whole original traces; real native
+  texture/backing once in both disposal orders, scope-exit detach, partial/null/
+  resize/retry, setup/pass cleanup and foreign guard. No full gate.
+- **Next:** class/caller factories, dedicated depth/controller/cache/state,
+  effects/provider/graph/font/common helper/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [PNG draw evidence](./composition-ce15-png-draw-metadata-results.json).
+
+### 2026-10-08 — CE15 actual PNG source cache data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `3a90483`.
+- **Done:** pre-admit actual source cache Maps/Set/header, tuple/JSON key text,
+  entry slots/edge/native refs; retain through original cache/consumers, clear on
+  retirement; preserve LRU/reject policy, borrowed input and original null/retry.
+- **Results:** build/lint/boundaries, 400 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.376184× meets unchanged 1.5 maximum.
+- **Verification:** sixteen new tests/two whole original traces; 1024-entry reject/
+  source byte/LRU eviction, border detachment, partial/null/retry, constructor and
+  actual device/allocator-first once-only release; foreign cache guard. No full gate.
+- **Next:** PNG draw/placement/coordinate controls, dedicated depth/controller/cache/
+  state, provider/graph/font/common helper/registry/ledger/Node, full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [PNG source evidence](./composition-ce15-png-source-metadata-results.json).
+
+### 2026-10-08 — CE15 actual depth mesh data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `cc42056`.
+- **Done:** pre-admit actual grid/set/triangle/view controls and returned records;
+  retain through original copies/native upload, clear refs, release partial backing
+  storage and preserve original null/retry and borrowed input data.
+- **Results:** build/lint/boundaries, 384 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.432392× meets unchanged 1.5 maximum.
+- **Verification:** nine new tests/four complete original buffer hashes; quota/
+  consumer/null/partial/retry/scratch/allocator. Typed-spy/scratch API repaired.
+  Second-pixel fixture metadata 8→4096 preserves original 200000-pixel failure.
+  Glyph 1.52× failure retained; only affected timing retried at unchanged threshold.
+- **Next:** dedicated depth program/controller/cache/state, PNG/controllers/plugins/
+  provider/graph/font/common helper/registry/ledger/Node, production/full CE15, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [mesh evidence](./composition-ce15-depth-grid-metadata-results.json).
+
+### 2026-10-08 — CE15 actual built-in effect data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `dd4ec7b`.
+- **Done:** pre-admit radial/particle/grain/sweep/directional/sine/glow arrays,
+  records/text/matrices/points/gradient/callback/native references; hold through
+  original consumers, clear owned data, preserve borrowed values and null/retry.
+- **Results:** build/lint/boundaries, 375 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.395534× meets unchanged 1.5 maximum.
+- **Verification:** thirteen new tests/fifteen whole original traces; producer/
+  matrix quotas/lifetimes/sine detachment/grain/glow/partial/null/retry. Strict
+  fixture type/double-spy failures retained; policies unchanged; no full gate.
+- **Next:** plugin/effect controllers/images/depth/provider/graph/font/checksum/
+  common helper/registry/ledger/Node, production/full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [built-in evidence](./composition-ce15-builtins-metadata-results.json).
+
+### 2026-10-08 — CE15 actual effect paint and replace data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `ebeb0f7`.
+- **Done:** pre-admit paint default shader, fresh input/uniform/upload-bound data
+  and native references; replace output/default controls; preserve original native
+  consumers, borrowed values, undefined defaults, arity and null cleanup/retry.
+- **Results:** build/lint/boundaries, 362 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.400636× meets unchanged 1.5 maximum.
+- **Verification:** eleven new tests/four whole original traces; quotas/lifetimes/
+  native partial/secondary/null/retry. Private test path omission repaired; first
+  attempt retained as incomplete. No acceptance policy changed; no full gate.
+- **Next:** caller effects/images/depth/controllers/provider/graph/font/common
+  helper/registry/ledger/Node, production/full CE15, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [effect-paint evidence](./composition-ce15-effect-paint-metadata-results.json).
+
+### 2026-10-08 — CE15 actual particle and region data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `6c2f611`.
+- **Done:** pre-admit actual seeded particle arrays/objects/setup and Canvas/
+  WebGL region/union/splice/list/native references; hold through original consumers,
+  clear and preserve original random/getter/draw/native/null cleanup behavior.
+- **Results:** build/lint/boundaries, 351 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.468647× meets unchanged 1.5 maximum.
+- **Verification:** thirteen new tests, six original geometry/Canvas traces and
+  three whole WebGL traces; quotas/getters/lifetimes/merge/null/retry/cleanup.
+  Unused test bindings repaired and failed attempt retained; no policy changes.
+- **Next:** caller CSS/effect data and remaining effects/image/depth/controller/
+  provider/graph/font/common helper/registry/ledger/Node, production/full CE15, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [particle evidence](./composition-ce15-particles-metadata-results.json).
+
+### 2026-10-08 — CE15 actual Gaussian fallback data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `6a9e0ce`.
+- **Done:** pre-admit actual fallback weight part/flat-map arrays, Float32 view,
+  generated shader/vectors/uniforms/inputs/native references; hold through original
+  consumers, clear and release every native intermediate, preserve original null.
+- **Results:** build/lint/boundaries, 338 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, original native probes,
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.430645× meets unchanged 1.5 maximum.
+- **Verification:** nine new tests; complete sigma 2/16 original traces and Float32
+  bytes, actual copy/view lifetimes, pre-producer quotas, partial/constructor/pass/
+  first-null/all-owner cleanup/retry and early/unmanaged behavior. No policy changes.
+- **Next:** remaining effects/image/depth/controller/provider/graph/font and common
+  helper/registry/ledger/Node admission, production/speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [fallback evidence](./composition-ce15-gaussian-fallback-metadata-results.json).
+
+### 2026-10-08 — CE15 actual managed box/shader caches
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `544abbf`.
+- **Done:** pre-admit actual managed cache Maps/slots, plan predecessors/views/
+  selected returned steps and specialized shader key/text/arrays. Retain original
+  cache data across scratch; clear at original device/preview or helper allocator
+  disposal and protect fill/late insert/null.
+- **Results:** build/lint/boundaries, 329 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, prior native traces/probes,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.418941× meets unchanged 1.5 maximum.
+- **Verification:** sixteen new tests; original 5768 steps through length 1500,
+  all 27 complete shader bodies, quota/lifetime/allocator/reuse/null/retry/cleanup.
+  Receiver/record types/tie fixture repaired; rejected allocator-only native cache
+  lifetime retained, original preview/device cleanup repaired and independently checked.
+- **Next:** common bootstrap/registry/ledger controls and remaining effect/image/
+  depth/controller/provider/graph/font/Node admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [cache evidence](./composition-ce15-box-cache-metadata-results.json).
+
+### 2026-10-08 — CE15 actual box-blur pass data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `c744384`.
+- **Done:** pre-admit actual box-blur geometry/vector/uniform/input/reference data;
+  hold through original consumers, clear afterward and visit every native owner
+  despite first failure, preserving original null and successful native/math order.
+- **Results:** build/lint/boundaries, 313 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, prior native frames/probes,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.419672× meets unchanged 1.5 maximum.
+- **Verification:** eight new regressions, two original full native-call hashes,
+  pre-producer quotas, lifetimes, getter/partial/pass/null/all-owner cleanup/retry.
+  Type/precision fixtures repaired; glyph timing 1.52× retained, affected rerun
+  passes unchanged 1.5× policy.
+- **Next:** global box-plan/sum-shader caches and remaining effect/image/depth/
+  controller/helper/runtime/Node controls, production/speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [box evidence](./composition-ce15-box-metadata-results.json).
+
+### 2026-10-08 — CE15 actual Gaussian kernel/rescale data
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `ae1cbf9`.
+- **Done:** pre-admit actual Gaussian kernel/length/scale arrays and rescale
+  vectors/uniforms/inputs/native reference lists; clear after original consumers,
+  retain original numerical/shader/native order and protect null/all-owner cleanup.
+- **Results:** build/lint/boundaries, 305 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, prior native frames/probes,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.433007× meets unchanged 1.5 maximum.
+- **Verification:** nine new and seven existing blur/box tests; original full
+  kernel hashes and rescale native trace, pre-producer quotas, actual lifetimes,
+  NaN/empty/unmanaged/null/secondary cleanup/retry pass without threshold changes.
+- **Next:** remaining box-plan/global shader/effect/image/depth/controller/helper/
+  runtime/Node controls, production/aggregate admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [blur evidence](./composition-ce15-blur-metadata-results.json).
+
+### 2026-10-08 — CE15 actual paint batch/input controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `201449e`.
+- **Done:** pre-admit actual filter/batch/geometry/shader/uniform/input data,
+  hold through original consumers, then clear generated references; preserve
+  original shader hashes, numeric/native ordering and borrowed parts/rectangles.
+- **Results:** build/lint/boundaries, 289 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, prior native frames/probes,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.430645× meets unchanged 1.5 maximum.
+- **Verification:** nine regressions cover original full shader hashes/15+1
+  batches, pre-factory denial, actual array lifetimes, numeric/blend/screen/empty
+  paths and original null/secondary cleanup/getter/output/retry behavior.
+- **Next:** remaining effect/other shader/cache/controller/helper/runtime/Node
+  controls, production/aggregate admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [paint evidence](./composition-ce15-paint-metadata-results.json).
+
+### 2026-10-08 — CE15 actual device shader/program controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `f02068d`.
+- **Done:** pre-admit actual device shader text/native controls/uniform Map/cache
+  and diagnostic Error lifetime; preserve original successful text/native/cache
+  behavior, clean incomplete actual handles and preserve original null/retry.
+- **Results:** build/lint/boundaries, 280 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, prior native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.446429× meets unchanged 1.5 maximum.
+- **Verification:** 13 regressions plus real four-frame/64-byte shader oracle,
+  two protected native compile failures, no denied log query, original cache reuse
+  and both disposal orders. Pixel fixtures permit 128KiB shader metadata; original
+  pixel/native-byte and explicit metadata-denial checks stay. Failed attempts kept.
+- **Next:** remaining paint/other shader/helper/runtime/Node controls, production/
+  aggregate admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [shader/program evidence](./composition-ce15-program-metadata-results.json).
+
+### 2026-10-08 — CE15 actual frame clip-intersection controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `fc7999a`.
+- **Done:** admit actual frame holder/Set and original clip boxes before getters/
+  math; retain through original consumers/scratch, then clear at frame reset or
+  final disposal. Borrowed aliases and original null/getter/native behavior stay.
+- **Results:** build/lint/boundaries, 267 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.430669× meets unchanged 1.5 maximum.
+- **Verification:** seven regressions cover pre-getter quota, aliases/order,
+  actual distinct boxes, empty/null rollback and scratch/frame/scope/allocator
+  lifetime; compile1 lint finding repaired and compile2 accepted.
+- **Next:** remaining shader/helper/runtime/Node controls, production/aggregate
+  admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [clip evidence](./composition-ce15-clip-metadata-results.json).
+
+### 2026-10-08 — CE15 actual cached screen-clear color controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `4f74360`.
+- **Done:** admit original working color arrays/result, retain actual cached color/
+  region across scratch, clear actual references at invalidation/disposal/failure;
+  preserve original native/numeric/predicate/callback order and wrapper names.
+- **Results:** build/lint/boundaries, 260 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.417886× meets unchanged 1.5 maximum.
+- **Verification:** exact original bytes/predicate, actual working/prior/cached
+  reference cleanup, quota/null retry, scratch/scope/allocator and failed native
+  callback lifetimes pass; original empty wrapper name asserted permanently.
+- **Next:** remaining device/shader/helper/runtime/Node controls, production/
+  aggregate admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [cached-color evidence](./composition-ce15-solid-metadata-results.json).
+
+### 2026-10-08 — CE15 original dirty-screen Set capacity
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `d4a41d9`.
+- **Done:** admit dirty Set capacity before original adds, reuse maximum live slots
+  through native resolution, preserve original order and correct partial Surface
+  rollback while removing actual failed references.
+- **Results:** build/lint/boundaries, 254 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.460133× meets unchanged 1.5 maximum.
+- **Repair:** first build caught missing local declaration; complete declaration/
+  cleanup and fifth late-registration regression precede passing compile2. Failed
+  attempt retained. Original null failures/native cleanup/retry and slot reuse pass.
+- **Next:** remaining device/shader/helper/runtime/Node controls, production/
+  aggregate admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [dirty-set evidence](./composition-ce15-dirty-metadata-results.json).
+
+### 2026-10-08 — CE15 GPU readback row views and swap tuples
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `c648f28`.
+- **Done:** admit actual original subarray views and native-handle tuple arrays
+  before producers, retain through original consumers, then clear references;
+  preserve native pixels/read/assignment/cleanup order and prior backing owners.
+- **Results:** build/lint/boundaries, 249 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.424242× meets unchanged 1.5 maximum.
+- **Verification:** protected quota precedes subarray/handle getters; exact top-down/
+  native bytes, pixel peak, null failures/retry and actual exchanged cleanup pass.
+- **Next:** remaining device/shader/helper/runtime/Node controls, production/
+  aggregate admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [view/swap evidence](./composition-ce15-device-views-metadata-results.json).
+
+### 2026-10-08 — CE15 original GPU pass temporaries
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `6edb907`.
+- **Done:** admit original pass input Set/sampler temporaries and actual uniform
+  tuples/outer arrays before production, retain through native GPU consumers,
+  then clear actual references while preserving borrowed inputs and native order.
+- **Results:** build/lint/boundaries, 243 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.384375× meets unchanged 1.5 maximum.
+- **Verification:** original getter executes once; actual Set/tuple arrays stay live
+  through native draw, then clear. Null getter/draw/scissor/completion checks pass.
+- **Next:** remaining device/shader/helper/runtime/Node controls, production/
+  aggregate admission, actual speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [pass evidence](./composition-ce15-pass-metadata-results.json).
+
+### 2026-10-08 — CE15 original GPU pool keys and arrays
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `6ccd94c`.
+- **Done:** admit original key template, canonical entry/array and maximum actual
+  live slots before producers; retain across scratch/native reuse, clear actual
+  key/list references at disposal. Original sixteen-surface/pixel-byte caps stay.
+- **Results:** build/lint/boundaries, 238 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.427885× meets unchanged 1.5 maximum.
+- **Verification:** protected slot denial precedes push and preserves owners/retry;
+  canonical key/list/capacity stays stable on reuse; scope/allocator cleanup passes.
+- **Next:** shader/program/dirty/solid/clip/pass/read/swap metadata, helper and
+  remaining runtime/Node controls, production/aggregate admission, speed/gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [pool evidence](./composition-ce15-pool-metadata-results.json).
+
+### 2026-10-08 — CE15 WebGL device and native surface controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `0b73555`.
+- **Done:** admit actual device containers/context-options/VAO and Surface/framebuffer
+  controls before producers; retain across scratch and native pool reuse and clear actual owners
+  after scope/allocator exit. Native cleanup visits all handles over null failures.
+- **Results:** build/lint/boundaries, 232 focused / 69 typography tests; complete
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.384365× meets unchanged 1.5 maximum.
+- **Review repair:** protect incomplete texture/framebuffer cleanup so secondary
+  destructor failure cannot hide original null or prevent framebuffer release;
+  tenth regression; first native audit then caught scratch-owned controls deleting
+  retained texture. Explicitly retain device/Surface controls, add eleventh scratch
+  regression and pass compile3/native2. Failed audit retained.
+- **Next:** dynamic pool/shader/dirty/solid/clip/pass/read/swap metadata, helper and
+  remaining runtime/Node controls, production/aggregate admission, speed/gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [device evidence](./composition-ce15-device-metadata-results.json).
+
+### 2026-10-08 — CE15 recording controller and method wrappers
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `3d94d35`.
+- **Done:** admit selected Proxy/handler/controller closures and each original fresh
+  method wrapper; retain capacity through disposal. Late controller failure unwinds
+  prior native save/path/bounds/groups/state while preserving original errors.
+- **Results:** build/lint/boundaries, 221 focused / 69 typography tests; final full
+  144-case audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots,
+  original WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.424679× meets unchanged 1.5 maximum.
+- **Repair:** first native snapshot fixture omitted its new failed-call wrapper
+  from prior-owner baseline; capture actual wrapper before baseline, then retain
+  original pixel-quota/native failure checks. Failed attempt retained.
+- **Next:** query/helper and remaining runtime/Node controls, production/aggregate
+  admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [controller evidence](./composition-ce15-recording-controls-metadata-results.json).
+
+### 2026-10-08 — CE15 method call-input admission
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `3158c32`.
+- **Done:** admit actual copied dense call arrays before Array.from and method-name
+  conversion, retain through original consumers, then clear and release in finally.
+- **Results:** build/lint/boundaries, 215 focused / 69 typography tests; full 144-case
+  audit / 8,000 comparisons, 96 RPC snapshots, native frames/snapshots, original
+  WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass. Glyph
+  1.413681× meets unchanged 1.5 maximum.
+- **Repair:** document local rest-parameter lint exception and remove unused fixture
+  import before final compile3. Original detached/nonconstructible/query/native
+  behavior and original null failures pass; earlier failed attempts retained.
+- **Next:** wrapper/Proxy/controller/helper/query-result and remaining runtime/Node
+  controls, production/aggregate admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [call-input evidence](./composition-ce15-call-arguments-metadata-results.json).
+
+### 2026-10-08 — CE15 recording command/mark/snapshot metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `082e38a`.
+- **Done:** admit actual command/mark/painted/snapshot controls and original clones,
+  retain through consumers, clear owned references and release captured native Canvas.
+- **Results:** build/lint/boundaries, 210 focused / 69 typography tests; native 3,072
+  exact RGBA bytes, two real snapshots, scope/allocator cleanup and one quota failure;
+  144 audit cases / 8,000 comparisons, 96 RPC snapshots, 22 moving/blurred and ten
+  stationary native frames, WebGL/providers and 64 prior-exact exports / 768 bodies/
+  frames pass. Glyph 1.416804× meets unchanged 1.5 maximum.
+- **Repair:** first run's updated result quota allowed production; restored the
+  intended one-byte denial before final checks. Original clone/native order stays.
+- **Next:** Proxy/rest-call/wrapper/controller/common helper and remaining runtime/
+  Node controls, production/aggregate admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [recording evidence](./composition-ce15-recording-metadata-results.json).
+
+### 2026-10-08 — CE15 recording-group result metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `ce72950`.
+- **Done:** admit original group arrays/rows/selected Sets/union/shadow data before
+  producers, retain through replay/upload and clear every actual result at disposal.
+- **Results:** build/lint/boundaries, 202 focused / 69 typography tests; 144 audit
+  cases / 8,000 comparisons, 96 RPC snapshots, 22 moving/blurred and ten stationary
+  native frames; WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.495784× meets unchanged 1.5; six meaningful group regressions pass.
+- **Repairs:** removed unused copied fixture type/counter after first lint failure;
+  shared shadow Set/bounds, original group/native order and null failures remain.
+- **Next:** recording commands/marks/arguments/clones/Proxy/snapshots and remaining
+  runtime/Node controls, production/aggregate admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [group evidence](./composition-ce15-groups-metadata-results.json).
+
+### 2026-10-08 — CE15 retained paint bounds and replay matrices
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `13482c9`.
+- **Done:** admit actual paint geometry/result rectangles, filter copies and replay
+  matrices before producers, retain through consumers and clear actual references.
+- **Results:** build/lint/boundaries, 196 focused / 69 typography tests; 144 audit
+  cases / 8,000 comparisons, 96 RPC snapshots, 22 moving/blurred and ten stationary
+  native frames; WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.486755× meets unchanged 1.5; eight new metadata/native-consumer tests pass.
+- **Review:** original text/filter/shadow/matrix/callbacks remain; affected checks
+  reran after actual unmanaged Set cleanup. Recording/group/clone controls pending.
+- **Next:** remaining recording/device/pool/shader/paint/provider/graph/font/helper/
+  ledger/Node controls, production/aggregate admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [paint-bound evidence](./composition-ce15-paint-bounds-metadata-results.json).
+
+### 2026-10-08 — CE15 path geometry metadata and recording setup cleanup
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `970ab69`.
+- **Done:** admit actual path state, original tuples/native matrix/point/bounds
+  consumers and release path/existing raster scratch after recording setup failure.
+- **Results:** build/lint/boundaries, 188 focused / 69 typography tests; 144 audit
+  cases / 8,000 comparisons, 96 RPC snapshots, 22 moving/blurred and ten stationary
+  native frames; WebGL/providers and 64 prior-exact exports / 768 bodies/frames pass.
+  Glyph 1.417476× meets unchanged 1.5. Seven path/cleanup regressions pass.
+- **Repairs:** first compile found closure narrowing and missing fixture transforms;
+  repaired before final checks. Original native math/callback/partial order remains.
+- **Next:** remaining recording/device/pool/shader/paint/provider/graph/font/helper/
+  ledger/Node controls, production/aggregate admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [path evidence](./composition-ce15-path-metadata-results.json).
+
+### 2026-10-08 — CE15 readback pending bounds and row metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `7ab58ce`.
+- **Done:** admit actual state, clamped/pending rectangles and temporary native row
+  views; retain through consumers, detach cached pixels after scope exit/disposal.
+- **Results:** build/lint/boundaries, 181 focused / 69 typography tests; 144 audit
+  cases / 8,000 comparisons, 96 RPC snapshots, 22 moving/blurred and ten stationary
+  native frames, original WebGL/providers and 64 prior-exact exports / 768 bodies/
+  frames pass. Glyph 1.455446× meets unchanged 1.5. First focused/native runs pass.
+- **Review:** preserve full/null update precedence, native row placement, pixel
+  quotas/cache policy; six new metadata admission/failure/lifetime cases pass.
+- **Next:** remaining recording/device/pool/shader/paint/provider/graph/font/helper/
+  ledger/Node controls, production/aggregate admission, speed/full CE15 gate/PR, CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [readback evidence](./composition-ce15-readback-metadata-results.json).
+
+### 2026-10-08 — CE15 framebuffer bounds/color/transform metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `3f27971`.
+- **Done:** admitted weak-map/rectangle controls, replacement/surface/final cleanup,
+  original color/transform arrays and temporary native read-view consumers.
+- **Results:** build/lint/boundaries, 175 focused / 69 typography tests; complete
+  144-case / 8,000-comparison audit, 22 moving/blurred and ten stationary native
+  frames, 96 actual RPC snapshots and original WebGL/provider checks pass. All 64
+  exports / 768 bodies/frames match prior output; glyph 1.421648× meets unchanged 1.5.
+- **Review:** preserve weak keys, native color/math/row placement and original null
+  failures; replaced entries do not accumulate, allocator-first cleanup passes.
+- **Next:** recording/device/pool/shader/paint/provider/graph/font/pixel-view/ledger/
+  Node metadata, production/aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [framebuffer metadata evidence](./composition-ce15-webgl-bounds-metadata-results.json).
+
+### 2026-10-08 — CE15 vector extent/region geometry ownership
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `90b1339`.
+- **Done:** concrete pre-admission of original extent/region/batching producers;
+  actual bounds-consumer lifetime, reference cleanup and frame scratch ownership.
+- **Results:** build/lint/boundaries, 169 focused / 69 typography tests; complete
+  144-case / 8,000-comparison audit, 22 moving/blurred and ten stationary native
+  frames, 96 actual RPC snapshots and original WebGL/provider checks pass. All 64
+  exports / 768 bodies/frames match prior output; glyph 1.443902× meets unchanged 1.5.
+- **Review:** audited original factory counts/merged indices/overlap slices; original
+  native math, region/draw operators and independent retained part bounds pass.
+- **Next:** recording/replay and other WebGL controls, provider/graph/font/ledger/
+  Node metadata, production/aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [geometry metadata evidence](./composition-ce15-vector-geometry-metadata-results.json).
+
+### 2026-10-08 — CE15 actual raster parts and paint-call metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `03184b5`.
+- **Done:** admitted actual part arrays/records and independent bounds before GPU
+  production; retained owners, original argument tuples and recording surface copies.
+- **Results:** build/lint/boundaries, 165 focused / 69 typography tests; complete
+  144-case / 8,000-comparison audit, 22 moving/blurred and ten stationary native
+  frames, 96 actual RPC snapshots and original WebGL/provider checks pass. All 64
+  exports / 768 bodies/frames match prior output; glyph 1.421648× meets unchanged 1.5.
+- **Review:** preserved native dimensions/offsets/pixels/order; container denial after
+  scratch creation and pre-GPU growth denial release actual surfaces/metadata.
+- **Next:** vector extent/region/recording, provider/graph/font/ledger/Node metadata,
+  production/aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [raster-part metadata evidence](./composition-ce15-vector-parts-metadata-results.json).
+
+### 2026-10-08 — CE15 vector-cache keys and controls
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `5e5f115`.
+- **Done:** original native vector ID/signature inputs/output owners; Map/Raster
+  admission, actual retained Map key, duplicate release and full error cleanup.
+- **Results:** build/lint/boundaries, 161 focused / 69 typography tests; complete
+  144-case / 8,000-comparison audit, 22 moving/blurred and ten stationary native
+  frames, 96 real RPC snapshots and original WebGL/provider checks pass. All 64
+  exports / 768 bodies/frames match prior output; glyph 1.405493× meets unchanged 1.5.
+- **Review:** repaired fixture transforms and moved byte accounting after Map
+  admission. Native cache policy, painting/order/overlap remain unchanged.
+- **Next:** vector geometry/parts/recording, provider/graph/font/ledger/Node metadata,
+  production/aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [vector key/control evidence](./composition-ce15-vector-key-metadata-results.json).
+
+### 2026-10-08 — CE15 WebGL damage metadata and actual clip lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `e2659ca`.
+- **Done:** pre-admitted original bounds/copies; retained header/layer/frame keys;
+  dirty-region ownership through actual clip consumption and reset/final cleanup.
+- **Results:** build/lint/boundaries, 152 focused / 69 typography tests; complete
+  144-case / 8,000-comparison audit, 22 moving/blurred and ten stationary native
+  frames, 96 real RPC snapshots and original WebGL/provider checks pass. All 64
+  exports / 768 bodies/frames match prior output; glyph 1.417335× meets unchanged 1.5.
+- **Review:** native map-spy typing and conservative definition-history test
+  assumption repaired; quota/null/borrowed geometry and consumer lifetime pass.
+- **Next:** vector/provider/graph/font/ledger/Node metadata, production/aggregate
+  admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [damage metadata evidence](./composition-ce15-damage-metadata-results.json).
+
+### 2026-10-08 — CE15 retained frame keys and cache control
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `22654d6`.
+- **Done:** original owned frame/comparison keys, retained replacement/invalidation,
+  192-byte cache control and actual preview/allocator disposal.
+- **Results:** build/lint/boundaries, 137 focused / 69 typography tests; complete
+  144-case / 8,000-comparison audit, 22 moving/blurred native frames, ten stationary
+  native frames and 96 real RPC snapshots pass. WebGL has four exact stationary
+  reuses; disposal leaves zero storage. All 64 exports / 768 bodies/frames match
+  prior output; glyph 1.483363× meets unchanged 1.5 maximum.
+- **Review:** repaired fixture transform opacity typing; retained first unchanged
+  glyph-timing failure and reran only that command in isolation before exports.
+- **Next:** damage/vector/provider/graph/font/ledger/Node metadata, production/
+  aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [frame-key metadata evidence](./composition-ce15-frame-key-metadata-results.json).
+
+### 2026-10-08 — CE15 WebGL definition/isolate metadata and LRU lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `32c8edb`.
+- **Done:** owned definition entries, original isolate IDs/signatures/Maps/entries,
+  retained keys and LRU copies through eviction; reusable flush and final close.
+- **Results:** build/lint/boundaries, 130 focused / 69 typography tests; complete
+  144-case / 8,000-frame audit, 22 native submission frames, 96 managed RPC snapshots
+  and original WebGL/provider/typography checks pass. All 64 exports / 768 bodies/
+  frames match prior output; glyph 1.429766× meets unchanged 1.5 maximum.
+- **Review:** preserved between-frame flush, repaired LRU-copy lifetime, exact types
+  and lint before final verification; intermediate and failed evidence retained.
+- **Next:** other frame/damage/vector/provider/graph/font/ledger/Node metadata,
+  production/aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [WebGL metadata evidence](./composition-ce15-webgl-key-metadata-results.json).
+
+### 2026-10-08 — CE15 native cache pixel checksum metadata
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `9d7cea9`.
+- **Done:** owned native digest/hex/result capacity through comparison or publish
+  acknowledgement, with borrowed input ownership and original operators preserved.
+- **Results:** build/lint/boundaries, 118 focused / 69 typography tests; complete
+  144-case / 8,000-frame audit, protected checksum/abort checks, 96 managed RPC
+  snapshots and original WebGL/provider/typography checks pass. All 64 exports /
+  768 bodies/frames match prior output; glyph 1.389886× meets unchanged 1.5 maximum.
+- **Review:** expanded intermediate capacity to 4 KiB; repaired unused fixture
+  snapshot accumulation with unchanged 8 KiB budget/errors, retaining the failed audit.
+- **Next:** other checksum/provider/WebGL/graph/font/ledger/Node metadata, production/
+  aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [checksum metadata evidence](./composition-ce15-checksum-metadata-results.json).
+
+### 2026-10-08 — CE15 independent-surface metadata and native RPC lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `c37f797`.
+- **Done:** owned original candidate keys/hashes, Maps/counters/entries, traversal
+  Sets/input arrays, seed controls/graph containers and independent snapshots.
+- **Results:** build/lint/boundaries, 114 focused / 69 typography tests; complete
+  144-case / 8,000-frame audit, 96 owned surface RPC snapshots and original WebGL/
+  provider/typography checks pass. All 64 exports / 768 bodies/frames match the
+  prior checkpoint; glyph 1.343124× meets unchanged 1.5 maximum.
+- **Next:** provider/WebGL/graph/font/checksum/ledger/Node metadata, production/
+  aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [surface metadata evidence](./composition-ce15-surface-metadata-results.json).
+
+### 2026-10-08 — CE15 retained root metadata and RPC lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `e121eef`.
+- **Done:** owned original root role/path/signature hashes and retained Map/counter/
+  operation/entry/pixel-envelope/snapshot capacity, with duplicate/error cleanup.
+- **Results:** build/lint/boundaries, 110 focused / 69 typography tests; complete
+  144-case / 8,000-frame audit, 96 owned root RPC snapshots and original WebGL/
+  provider/typography checks pass. All 64 exports / 768 bodies/frames match the
+  prior checkpoint; glyph 1.393665× meets unchanged 1.5 maximum.
+- **Next:** Surface/provider/graph/font/checksum/ledger/Node metadata, production/
+  aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [root metadata evidence](./composition-ce15-root-metadata-results.json).
+
+### 2026-10-08 — CE15 retained source metadata and RPC acknowledgement
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `741e976`.
+- **Done:** owned canonical keys/SHA/normalization, source Map/Set/request/entry/
+  counter/snapshot capacity and real RPC acknowledgement. Repaired preparation
+  phase cleanup when source state is disposed, preserving original null failures.
+- **Results:** build/lint/boundaries, 99 focused / 69 typography tests; complete
+  144-case / 8,000-frame audit, 96 managed RPC returns, original WebGL/provider/
+  typography checks and 64 exports / 768 prior-exact bodies/frames pass. Glyph
+  1.467095× meets unchanged 1.5 maximum.
+- **Next:** remaining cache/graph/font/checksum/ledger/Node metadata, actual
+  production/aggregate admission, speed/full CE15 gate/PR and all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [source metadata evidence](./composition-ce15-source-metadata-results.json).
+
+### 2026-10-08 — CE15 retained submission metadata and native RPC lifetime
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `35b905a`.
+- **Done:** admitted key/member/row/Map/stack/snapshot capacity; retained/duplicate
+  keys, construction/error cleanup and independent snapshot lifetime. Repaired
+  actual unreleased WebGL 300x150 measurement Canvas.
+- **Results:** build/lint/boundaries and 90 focused / 67 typography tests; complete
+  144-case / 8,000-frame audit, 22 new native frames with real RPC acknowledgement,
+  original WebGL/provider/typography checks and 64 public exports / 768 prior-exact
+  complete bodies/frames pass. Glyph 1.439058× meets unchanged 1.5 maximum.
+- **Next:** remaining metadata/ledger control/Node and actual production admission,
+  aggregate/area/workers, speed/full CE15 gate/PR and all CE14. No aggregate memory,
+  speed or full gate acceptance is claimed.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [submission metadata evidence](./composition-ce15-statistics-memory-results.json).
+
+### 2026-10-08 — CE15 owned metadata serialization foundation
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `08911d8`.
+- **Done:** pre-emission UTF16 output admission, admitted original shallow sorting,
+  native boxed coercion, retained text ownership and nested/error cleanup.
+- **Results:** build/lint/boundaries and 78 focused tests, including eight metadata
+  cases, pass. Native output, callback counts, quota denial and null errors pass.
+- **Limits / next:** ordinary records are covered; arbitrary Proxy traps/private VM
+  allocations are not. Cache/graph/font/Node integration and actual production
+  admission, aggregate/area/workers, speed/full CE15 gate/PR and all CE14 remain.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [metadata foundation evidence](./composition-ce15-metadata-foundation-results.json).
+
+### 2026-10-08 — CE15 native capture/upload ownership checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `6fa605e`.
+- **Done:** native raw/encoded admission, exact capture kernels and frame scratch
+  through complete upload acknowledgement; failed/late producer cleanup.
+- **Results:** build/lint/boundaries and 70 admission/frame-lifetime tests; all
+  144 audit cases / 8,000 exact frames, including 24 managed cases / 1,504 frames.
+  Six original-native capture/body oracles and twelve protected failure cases pass.
+  Complete original media/WebGL export commands and all 64 public exports / 768
+  prior-exact complete PNG bodies and decoded frames pass.
+- **Next:** Node and metadata admission; production allocator, aggregate/area/worker
+  proof, authentic two-minute speed, CE15 gate/PR and all CE14. Production scope is
+  still disabled; no full gate or speed acceptance claimed.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [capture admission evidence](./composition-ce15-capture-memory-results.json).
+
+### 2026-10-08 — CE15 verified asset/font/media ownership checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `9761d68`.
+- **Done:** verified body/Blob/image/font/bitmap admission, nested-load rollback,
+  late native completion cleanup, borrowed font preservation and temporary probe release.
+- **Results:** build/lint/boundaries, 64 admission / 86 affected / 67 typography tests;
+  144 audit cases / 8,000 exact frames, including 24 asset/font-managed cases / 1,504
+  frames. Native resource lifetimes and 15 protected failures pass. Original provider,
+  typography, media, illustrated and story commands pass; glyph 1.383989× ≤ 1.5×.
+  All 64 public exports / 768 complete bodies and frames match the prior checkpoint.
+- **Next:** capture/upload, Node and metadata admission; production allocator,
+  aggregate/area/worker proof, authentic two-minute speed, CE15 gate/PR and all CE14.
+  Production admission remains disabled; no full gate or speed acceptance claimed.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [resource admission evidence](./composition-ce15-resource-memory-results.json).
+
+### 2026-10-08 — CE15 GPU storage admission checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `ef1a9bd`.
+- **Done:** native texture/buffer/MSAA storage admission, explicit deletion/pool
+  ownership, byte/float readbacks and retained PNG coordinates; partial-failure cleanup.
+- **Results:** build/lint/boundaries, 54 admission/cache/exposure/depth and 119 focused
+  units; 144 audit cases / 8,000 exact frames, including 24 managed cases / 1,504
+  frames. Actual native byte/float/depth/PNG/pool/failure lifetime checks pass. Complete
+  original WebGL and 17 default depth timelines / 1,530 zero-delta frames pass.
+  All 64 public exports / 768 complete bodies and frames match the prior checkpoint.
+- **Next:** asset/font, capture/upload, Node and metadata admission; actual production
+  allocator, aggregate/area/worker proof, two-minute speed, CE15 gate/PR and all CE14.
+  Production allocator still disabled; no full gate or speed acceptance claimed.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [GPU admission evidence](./composition-ce15-gpu-memory-results.json).
+
+### 2026-10-08 — CE15 Canvas storage and bounded receive checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `4ee356e`.
+- **Done:** explicit Canvas/source/root/pool/exposure owners and native backing
+  destruction; failed-attempt cleanup; pre-admitted 64 KiB BYOB receive blocks.
+- **Results:** build/lint/boundaries, 37 admission/cache/exposure, 90 effect/pool and
+  67 typography tests; 132 audit cases / 7,248 exact frames, including 12 managed
+  cases / 752 frames. Native detach/pool/body/failure checks pass. All 64 public
+  exports / 768 complete bodies and frames match the prior accepted checkpoint.
+  Original provider/typography gates pass; glyph 1.291824× ≤ unchanged 1.5×.
+- **Next:** production allocator remains disabled until GPU/assets/capture/Node and
+  metadata admission are complete. Area/worker, two-minute speed, final CE15 gate/PR
+  and all CE14 remain pending. Full gate not run.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [Canvas admission evidence](./composition-ce15-canvas-memory-results.json).
 
 ### 2026-10-08 — PR #48 third review findings and scoped repairs
 
@@ -399,6 +2237,201 @@ still hold before relying on them.
   push. CE6-P remains separate and Actions stay disabled.
 - **Records:** [repair evidence](./pr-43-followup-fix-results.json) and
   [plan follow-up](./composition-engine-plan.md#pr-43-review-follow-up-2026-10-08).
+
+### 2026-10-07 — CE15 managed allocation foundation checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `bffaf8a`.
+- **Done:** pre-allocation pixel/metadata leases, explicit scratch/retained and
+  constructor ownership; backing aliases; native Canvas backing admission/release.
+- **Results:** build/lint/boundaries and nine ownership tests pass. Native browser
+  passes 1,024 exact channels, rejection before the setter and actual Canvas cleanup;
+  permanent surface audit remains 120 cases / 6,496 exact frames.
+- **Scope / next:** primitives are not yet wired into production rendering.
+  Complete actual allocation/metadata coverage and full area/worker matrix;
+  two-minute speed, final CE15 gates/PR and all CE14 remain pending. Full gate not run.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [memory foundation evidence](./composition-ce15-memory-foundation-results.json).
+
+### 2026-10-07 — CE15 runtime glyph tint and broader preparation checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `101fb91`.
+- **Done:** exact shared native tints before parent leases; real variable Thai
+  glyphs, corrections and both native/provider state-crossfade inputs.
+- **Results:** build/lint/boundaries, 100 focused / 67 typography tests;
+  120 audit cases / 6,496 exact frames and 64 public exports / 768 decoded frames
+  preserve complete bodies and actual once-global glyph/outline/tint painting.
+  Original provider/typography gates pass; glyph ratio 1.394895× ≤ unchanged 1.5×.
+- **Rejected:** partial authored motion and missing crossfade catalog entry did not
+  satisfy new fixture checks. Extend real motion/register cases; strict reruns pass.
+- **Next:** complete aggregate pixel/metadata limits, area/worker matrix, real
+  two-minute speed, final CE15 gates/PR and all CE14. Full gate not run.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [tint/source evidence](./composition-ce15-tint-results.json).
+
+### 2026-10-07 — CE15 complete FFmpeg command CPU checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `2422641`.
+- **Done:** complete FFmpeg child user/system CPU with truthful resolution; actual
+  export-owned timer/encoder process-group termination and reaping.
+- **Results:** build/lint/boundaries, 23 focused tests and 20 CLI tests pass;
+  56 original-baseline exports / 448 decoded frames and 24 protected live failures
+  preserve complete media/audio parity and verify actual timer/encoder exit.
+- **Rejected:** already-exited groups must accept ESRCH. Incorrect CLI runner and
+  sandbox listener failure are retained; proper local-browser CLI rerun passed.
+- **Next:** runtime tints/axes/corrections, aggregate pixel/metadata admission,
+  real two-minute speed, final CE15 gates/PR and all CE14. Full gate not run.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [CPU/lifecycle evidence](./composition-ce15-cpu-results.json).
+
+### 2026-10-07 — CE15 actual submission statistics checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `014c228`.
+- **Done:** measured graph/operation/native-content/cache-copy spans, exact batch
+  membership, nested exclusive phase/type totals and actual ms per output frame.
+  FFmpeg's existing transcode CPU scope is explicit; whole-process scope is pending.
+- **Results:** build/lint/boundaries, 57 focused tests and 104 audit cases / 5,408
+  exact frames; 32 prefix exports / 256 frames plus ten coverage/nested/original/
+  cached exports / 80 frames pass with exact measured manifest aggregation.
+- **Rejected:** a consumer does not have a preparation paint span; audit actual
+  global ownership instead of inventing consumer painting. Full audit rerun passed.
+- **Next:** whole FFmpeg process CPU, remaining tints/axes/corrections, complete
+  aggregate pixel/metadata limits, real two-minute speed, final CE15 gates/PR and CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [statistics evidence](./composition-ce15-statistics-results.json).
+
+### 2026-10-07 — CE15 closed native prefix checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `0bc813d`.
+- **Done:** exact root prefixes at whole original vector/solid batch boundaries;
+  full root preparation reuses prepared prefixes. Actual evaluated closure keys
+  guard providers, parents, changing backdrops and late visibility phases.
+- **Results:** 104 browser cases / 5,408 exact frames, including 48 prefix cases;
+  actual native painting is once global at eligible boundaries. Build/lint/boundaries,
+  53 focused tests and 32 production exports / 256 decoded frames pass.
+- **Next:** remaining tint/axis/correction audit, aggregate pixel/metadata limits,
+  per-layer statistics, real two-minute speed proof, whole parallel/final CE15 gate/PR,
+  then all CE14. Mixed native batches keep their existing grouping.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [prefix evidence](./composition-ce15-prefix-results.json).
+
+### 2026-10-07 — CE15 original-target root checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `cf1139a`.
+- **Done:** exact native root/coverage pixels, visibility phases, held typography
+  gates and actual root paint/restore/copy/fallback counters; native boundaries stay intact.
+- **Results:** 56 browser cases / 2,912 exact frames, 393,216 byte + 256 float pixels,
+  14 protected root cases; full parallel command passes 207 exports / 1,656 decoded
+  frames and 24 live failures. Build/lint/boundaries, 45 graph/readback and 67
+  typography tests plus original provider/typography fixtures pass.
+- **Rejected:** fixed outline endpoints advanced their clock and triggered seven
+  fallbacks; preserve strict count checks, fix actual gate semantics and rerun fully.
+- **Next:** closed prefixes/direct/tints, broader source audit, aggregate limits,
+  per-layer timing, actual two-minute speed proof, full CE15 gate/PR, then all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [root evidence](./composition-ce15-root-results.json).
+
+### 2026-10-07 — CE15 native preparation source checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `94fc857`.
+- **Done:** shared original native glyph/outline/coverage pixels, exact font/raster
+  identities, source ownership/timing counters and unpainted bounds discovery.
+- **Results:** 1,664 exact browser frame comparisons; 32 production exports / 256
+  decoded frames preserve complete PNG bodies; 11 protected source failures pass.
+  Build/lint/boundaries, 63 focused tests, provider placements and eight typography
+  fixtures pass; glyph timing remains inside its unchanged 1.5× policy.
+- **Rejected:** count audit exposed 51 redundant bounds-only glyph paints; production
+  now measures identical bounds without painting. Failed fixtures remain recorded.
+- **Next:** root/direct/prefix and tint audit, broader axis/correction coverage, complete
+  allocation/timing, actual two-minute speed proof, full CE15 gate/PR, then all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [preparation evidence](./composition-ce15-source-results.json).
+
+### 2026-10-07 — CE15 production parallel worker checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `8ae2aa7`.
+- **Done:** public/CLI worker/cache options, independent pinned browsers, immutable
+  export scope and one bounded absolute-order encoder pipe with actual work metrics.
+- **Results:** mandatory browser check passes in 181.14s: 111 successful exports,
+  eight native timing cases, 24 protected live failures and complete media/frame/audio
+  parity; 32 focused tests, build/lint/boundaries and old format/legacy exports pass.
+- **Rejected:** early-source guard wording mismatch was a test error; its original
+  production rejection is preserved. Sandbox/compile/probe attempts remain recorded.
+- **Next:** complete static/preparation paint audit, aggregate limits, per-layer timing,
+  actual two-minute speed proof, full CE15 gate/PR, then all CE14. No speed claim yet.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [parallel evidence](./composition-ce15-parallel-results.json).
+
+### 2026-10-07 — CE15 bounded ordered-pipe foundation
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `89c5744`.
+- **Done:** one-frame chunk ownership and streaming absolute-order delivery,
+  with one pending body per worker and original-error cancellation.
+- **Results:** 12 runtime cases plus build/lint/boundaries pass. Deferred destroy
+  errors in the first attempt are retained and repaired; no failed gate is called passed.
+- **Next:** production browser/store wiring and scope capture, total memory limits,
+  actual parallel parity/statistics/speed proof, full CE15 gate/PR, then CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [parallel evidence](./composition-ce15-parallel-results.json).
+
+### 2026-10-07 — CE15 independent surface integration
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `5b20c86`.
+- **Done:** asynchronous dependency preparation, native surface transfer and
+  authenticated disk-backed sharing through the opt-in preview cache.
+- **Results:** 24 cases / 1,248 exact frame comparisons across four pages; each
+  static independent surface paints once globally. Float storage and 12 protected
+  failures pass, plus build/lint/boundaries, 32 units and affected browser regressions.
+- **Scope:** direct compositing boundaries remain exact. Public export wiring,
+  built-in preparation paint audit and full static/aggregate acceptance are pending.
+- **Next:** bounded ordered workers and production scope capture/statistics;
+  complete cache/size/speed proof and final gate, CE15 PR, then all CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [surface evidence](./composition-ce15-surface-results.json).
+
+### 2026-10-07 — CE15 bounded surface-store foundation
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from pushed `62ec321`.
+- **Done:** export-owned immutable surface store, bounded file/chunk reservations,
+  verified raw byte/float32 data, producer leases and original-error cancellation.
+- **Results:** build/lint/boundaries and 10 runtime cases pass; four real renderer
+  processes share one prototype paint with exact bytes and overlapping work.
+- **Rejected:** added Canvas isolation changes pixels by up to two levels;
+  synchronous binary document XHR throws. Use asynchronous preparation.
+- **Next:** actual renderer integration, complete global static paint proof,
+  aggregate memory, parallel delivery/statistics and 120-second 3× proof; final gate,
+  CE15 PR and CE14. No full milestone acceptance is claimed.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [cache evidence](./composition-ce15-cache-results.json).
+
+### 2026-10-07 — CE15 explicit output profiles checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from `49e0543`.
+- **Done:** seven BT709 profiles, preserved native alpha, PCM companions,
+  source revalidation and protected completion publication; CLI format/transport.
+- **Results:** 44 production / 14 independent preview encodes, 18 dimension cases,
+  16 failure cases, 39 focused and 65 affected tests; legacy browser regressions pass.
+  All existing thresholds remain unchanged; no CE15 full gate has run.
+- **Rejected:** implicit precision expansion, tag-only reimport, scaled alpha and
+  explicit H264 CRF18; corrected source-alpha extraction and CRF16 pass.
+- **Next:** aggregate memory limits, global static cache, parallel workers,
+  statistics and actual 120-second 3× speed proof, then full gate/PR and CE14.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [format evidence](./composition-ce15-format-results.json).
+
+### 2026-10-07 — CE15 transparent renderer checkpoint
+
+- **Agent / branch:** Codex on `codex/composition-ce15` from CE13 `aedfc9e`.
+- **Done:** opt-in Canvas/WebGL alpha roots; exact full and incremental transparent
+  drawing-buffer reads; original opaque and offscreen paths retained.
+- **Results:** 38 actual alpha cases, 32,895 valid channel/alpha pairs and 256
+  zero-alpha pairs match independent PNG decoding exactly. Static checks, 19 units
+  and the complete original WebGL suite pass in the isolated pinned checkout.
+- **Retained diagnostics:** mathematical rounding failed actual PNG bytes;
+  normalized float32 matches every valid pair. Failed checks are recorded.
+- **Next:** all first Q4 formats together, then remaining formats, global caching,
+  bounded parallel export and final full gate. CE15 remains incomplete; CE14 follows.
+- **Records:** [plan](./composition-ce15-plan.md),
+  [results](./composition-ce15-results.json).
 
 ### 2026-10-07 — CE4d complete local gate and native-default closeout
 

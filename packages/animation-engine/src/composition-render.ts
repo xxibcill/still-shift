@@ -17,6 +17,7 @@ import {
   exportScene,
   type ExportMetrics,
   type ExportRequest,
+  COMPOSITION_OUTPUT_VERSION,
 } from "@still-shift/execution-runtime/export";
 import {
   readCompositionSource,
@@ -65,7 +66,7 @@ export type CompositionRenderResult = {
   metrics: ExportMetrics;
 };
 
-/** Export a composition to MP4 through the pinned export browser. */
+/** Export through the pinned browser; explicit profiles support editor and social delivery. */
 export async function renderComposition(request: {
   compositionPath: string;
   outputPath: string;
@@ -73,8 +74,23 @@ export async function renderComposition(request: {
   transport?: ExportRequest["transport"];
   backend?: CompositionBackend;
   cacheDirectory?: string;
+  format?: ExportRequest["format"];
+  workers?: ExportRequest["workers"];
+  cacheStatic?: boolean;
 }): Promise<CompositionRenderResult> {
   request.signal?.throwIfAborted();
+  if (
+    (request.workers !== undefined &&
+      (!Number.isInteger(request.workers) ||
+        request.workers < 1 ||
+        request.workers > 4)) ||
+    (request.cacheStatic !== undefined &&
+      typeof request.cacheStatic !== "boolean")
+  )
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      "Composition workers must be 1..4 and cacheStatic must be boolean",
+    );
   const loaded = await loadComposition(
     request.compositionPath,
     request.backend,
@@ -86,7 +102,7 @@ export async function renderComposition(request: {
     },
   );
   const { width, height } = loaded.scene.canvas;
-  if (width % 2 !== 0 || height % 2 !== 0)
+  if (request.format === undefined && (width % 2 !== 0 || height % 2 !== 0))
     throw new AnimationEngineError(
       "SCENE_INVALID",
       `MP4 export requires even width and height; received ${width} × ${height}`,
@@ -118,6 +134,14 @@ export async function renderComposition(request: {
       systemFontLayers: loaded.systemFontLayers,
       scene: loaded.scene,
       assetPaths: loaded.assetPaths,
+      ...(request.format
+        ? {
+            outputProfile: {
+              version: COMPOSITION_OUTPUT_VERSION,
+              format: request.format,
+            },
+          }
+        : {}),
     },
     null,
     2,
@@ -142,6 +166,33 @@ export async function renderComposition(request: {
     outputPath,
     sceneManifestContents: manifestBytes,
     transport: request.transport ?? "png_pipe",
+    ...(request.workers === undefined ? {} : { workers: request.workers }),
+    ...(request.cacheStatic === undefined
+      ? {}
+      : { cacheStatic: request.cacheStatic }),
+    ...(request.format ||
+    request.workers !== undefined ||
+    request.cacheStatic !== undefined
+      ? {
+          ...(request.format ? { format: request.format } : {}),
+          expectedSourceChecksum: loaded.sourceChecksum,
+          validateSources: async () => {
+            const verified = await readCompositionSource(
+              request.compositionPath,
+              {
+                signal: request.signal,
+                ...(request.cacheDirectory
+                  ? { cacheDirectory: request.cacheDirectory }
+                  : {}),
+              },
+            );
+            if (verified.sourceChecksum !== loaded.sourceChecksum)
+              throw Error(
+                "Composition source changed before output publication",
+              );
+          },
+        }
+      : {}),
     resultManifestContents: (metrics) => {
       result = {
         schemaVersion: "composition-result-1",

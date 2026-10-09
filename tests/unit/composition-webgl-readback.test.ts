@@ -1,6 +1,15 @@
+import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
+import {
+  allocateRenderPixels,
+  withManagedMemory,
+} from "../../packages/renderer-core/src/managed-memory-context.ts";
 import { describe, expect, it } from "vitest";
 import { WebglReadback } from "../../packages/renderer-core/src/composition/render/webgl-readback.ts";
 import type { Bounds } from "../../packages/renderer-core/src/composition/evaluate/types.ts";
+import {
+  unpremultiplyRgba,
+  unpremultiplyDrawingBufferRgba,
+} from "../../packages/renderer-core/src/composition/render/webgl-rgba.ts";
 const setup = (limit?: number) => {
   const framebuffer = new Uint8ClampedArray(4 * 3 * 4),
     regions: Bounds[] = [];
@@ -30,6 +39,31 @@ const setup = (limit?: number) => {
   return { cache, framebuffer, regions, reads: () => reads };
 };
 describe("incremental GPU readback", () => {
+  it("patches transparent native rows as straight alpha without another pixel buffer", () => {
+    const raw = new Uint8Array([1, 0, 0, 1, 64, 32, 16, 128]);
+    const cache = new WebglReadback(
+      1,
+      2,
+      () => new Uint8ClampedArray(8),
+      () => unpremultiplyDrawingBufferRgba(raw),
+      undefined,
+      "bottom-up",
+    );
+    cache.read();
+    cache.changed({ left: 0, top: 0, right: 1, bottom: 2 });
+    expect([...cache.read()]).toEqual([128, 64, 32, 128, 255, 0, 0, 1]);
+    const zero = new Uint8Array([18, 27, 34, 0]);
+    const cleared = unpremultiplyDrawingBufferRgba(zero);
+    expect(cleared.buffer).toBe(zero.buffer);
+    expect([...cleared]).toEqual([0, 0, 0, 0]);
+    const ties = new Uint8Array([7, 11, 15, 30]);
+    const captured = unpremultiplyDrawingBufferRgba(ties);
+    expect(captured.buffer).toBe(ties.buffer);
+    expect([...captured]).toEqual([59, 93, 127, 30]);
+    expect([...unpremultiplyRgba(new Uint8Array([7, 11, 15, 30]))]).toEqual([
+      60, 94, 128, 30,
+    ]);
+  });
   it("updates all regions written between reads and keeps returned arrays independent", () => {
     const { cache, framebuffer, regions, reads } = setup();
     framebuffer.fill(1);
@@ -90,4 +124,68 @@ describe("incremental GPU readback", () => {
     expect(cache.read()).toEqual(framebuffer);
     expect(reads()).toBe(2);
   });
+});
+
+it("retains only the native full read, detaches completed patches and returned scratch, then disposes the cache", async () => {
+  const memory = new ManagedMemory({ pixels: 64, metadata: 512 });
+  await withManagedMemory(memory, async () => {
+    let full: Uint8ClampedArray | undefined, patch: Uint8Array | undefined;
+    const cache = new WebglReadback(
+      2,
+      2,
+      () =>
+        (full = allocateRenderPixels(16, () =>
+          new Uint8ClampedArray(16).fill(11),
+        )),
+      () =>
+        (patch = allocateRenderPixels(
+          4,
+          () => new Uint8Array([22, 33, 44, 55]),
+        )),
+    );
+    memory.beginScratch();
+    const first = cache.read();
+    memory.endScratch();
+    expect(first.byteLength).toBe(0);
+    expect(full!.byteLength).toBe(16);
+    expect(memory.statistics.current.pixels).toBe(16);
+    memory.beginScratch();
+    cache.changed({ left: 1, top: 1, right: 2, bottom: 2 });
+    const next = cache.read();
+    expect([...next.slice(12)]).toEqual([22, 33, 44, 55]);
+    expect(patch!.byteLength).toBe(0);
+    memory.endScratch();
+    const previous = full!;
+    memory.beginScratch();
+    cache.changed();
+    cache.read();
+    expect(previous.byteLength).toBe(0);
+    memory.endScratch();
+    expect(memory.statistics.current.pixels).toBe(16);
+    cache.dispose();
+    expect(full!.byteLength).toBe(0);
+    expect(memory.statistics.current.pixels).toBe(0);
+    expect(memory.statistics.reservations).toBe(0);
+  });
+  memory.dispose();
+});
+it("fails capture admission without altering retained native pixels", async () => {
+  const memory = new ManagedMemory({ pixels: 16, metadata: 512 });
+  await withManagedMemory(memory, async () => {
+    const cache = new WebglReadback(
+      2,
+      2,
+      () => allocateRenderPixels(16, () => new Uint8ClampedArray(16).fill(7)),
+      () => {
+        throw Error("unexpected patch");
+      },
+    );
+    memory.beginScratch();
+    expect(() => cache.read()).toThrow("aggregate worker quota");
+    memory.endScratch();
+    expect(memory.statistics.current.pixels).toBe(16);
+    cache.dispose();
+    expect(memory.statistics.current.pixels).toBe(0);
+  });
+  memory.dispose();
 });

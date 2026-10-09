@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { WebglVisualKey } from "../../packages/renderer-core/src/composition/render/webgl-visual-key.ts";
 import { WebglIsolates } from "../../packages/renderer-core/src/composition/render/webgl-isolates.ts";
 import type {
@@ -6,6 +6,8 @@ import type {
   ProviderContent,
 } from "../../packages/renderer-core/src/composition/render/graph.ts";
 import type { WebglSurface } from "../../packages/renderer-core/src/composition/render/webgl-device.ts";
+import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
+import { withManagedMemory } from "../../packages/renderer-core/src/managed-memory-context.ts";
 
 const op = (layer: string): IsolateOp => ({
   kind: "isolate",
@@ -17,6 +19,187 @@ const op = (layer: string): IsolateOp => ({
   opacity: 1,
   blend: "normal",
   clips: [],
+});
+
+it("owns exact native visual key output and persistent definition identities across scratch", async () => {
+  const layer = { id: "layer", params: { value: "ไทย" } },
+    sources = [{ asset: "image" }];
+  const values = [
+    { layer, sources, position: [1, 2] },
+    { layer, sources, position: [3, 4] },
+  ];
+  const original = new WebglVisualKey();
+  const expected = values.map((value) => original.of(value));
+  const memory = new ManagedMemory({ pixels: 1, metadata: 8192 });
+  await withManagedMemory(memory, async () => {
+    const keys = new WebglVisualKey();
+    for (let i = 0; i < values.length; i++) {
+      memory.beginScratch();
+      const key = keys.metadata(values[i]);
+      expect(key.value).toBe(expected[i]);
+      key.retain();
+      memory.endScratch();
+      expect(key.value).toBe(expected[i]);
+      key.release();
+      expect(memory.statistics.current.metadata).toBe(336);
+      expect(memory.statistics.reservations).toBe(1);
+    }
+    keys.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
+    memory.dispose();
+  });
+});
+it("denies a new definition before consuming its original identity number", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 512 });
+  await withManagedMemory(memory, async () => {
+    const keys = new WebglVisualKey(),
+      layer = {};
+    const blocker = memory.reserve("metadata", 217);
+    expect(() => keys.of({ layer })).toThrow("metadata");
+    blocker.release();
+    expect(keys.of({ layer })).toBe('{"layer":0}');
+    keys.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
+    memory.dispose();
+  });
+});
+it("retains isolate key owners across frames and supports reusable flush before final close", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 8192 });
+  await withManagedMemory(memory, async () => {
+    const keys = new WebglVisualKey(),
+      removed: WebglSurface[] = [],
+      cache = new WebglIsolates(keys, (value) => removed.push(value));
+    const like = surface(),
+      first = surface(),
+      second = surface();
+    const layer = op("box");
+    memory.beginScratch();
+    expect(cache.render(layer, like, () => first)).toBe(first);
+    cache.release(first);
+    memory.endScratch();
+    const retained = memory.statistics.current.metadata;
+    expect(memory.statistics.reservations).toBe(5);
+    for (let n = 0; n < 3; n++) {
+      memory.beginScratch();
+      expect(
+        cache.render(layer, like, () => {
+          throw Error("Unchanged isolate repainted");
+        }),
+      ).toBe(first);
+      cache.release(first);
+      memory.endScratch();
+      expect(memory.statistics.current.metadata).toBe(retained);
+    }
+    cache.dispose();
+    expect(removed).toEqual([first]);
+    expect(memory.statistics.current.metadata).toBe(768);
+    memory.beginScratch();
+    expect(cache.render(layer, like, () => second)).toBe(second);
+    cache.release(second);
+    memory.endScratch();
+    cache.close();
+    expect(removed).toEqual([first, second]);
+    expect(memory.statistics.current.metadata).toBe(256);
+    keys.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
+    memory.dispose();
+  });
+});
+it("denies isolate entry metadata before its producer and restores empty Map capacity", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 1536 });
+  await withManagedMemory(memory, async () => {
+    const keys = new WebglVisualKey(),
+      cache = new WebglIsolates(keys, () => {
+        throw Error("No surface was produced");
+      });
+    let draws = 0;
+    expect(() =>
+      cache.render(op("box"), surface(), () => {
+        draws++;
+        return surface();
+      }),
+    ).toThrow("metadata");
+    expect(draws).toBe(0);
+    expect(memory.statistics.current.metadata).toBe(768);
+    expect(memory.statistics.reservations).toBe(2);
+    cache.close();
+    keys.dispose();
+    memory.dispose();
+  });
+});
+it("closes every isolate text/control owner while preserving a null discard failure", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 8192 });
+  await withManagedMemory(memory, async () => {
+    const keys = new WebglVisualKey();
+    let discards = 0;
+    const cache = new WebglIsolates(keys, () => {
+      discards++;
+      if (discards === 1) throw null;
+    });
+    const like = surface();
+    for (const id of ["first", "second"]) {
+      const value = cache.render(op(id), like, surface);
+      cache.release(value);
+    }
+    let reason: unknown = "not rejected";
+    try {
+      cache.close();
+    } catch (error) {
+      reason = error;
+    }
+    expect(reason).toBe(null);
+    expect(discards).toBe(2);
+    expect(memory.statistics.current.metadata).toBe(256);
+    expect(memory.statistics.reservations).toBe(1);
+    keys.dispose();
+    memory.dispose();
+  });
+});
+
+it("owns the original LRU tuple copy through its actual eviction consumer and drops its references afterward", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 8192 });
+  await withManagedMemory(memory, async () => {
+    const keys = new WebglVisualKey();
+    let lookup: unknown[] | undefined;
+    const captureLookup = (value: unknown[]) => {
+      lookup = value;
+    };
+    const originalFind = Array.prototype.find;
+    const find = vi.spyOn(Array.prototype, "find").mockImplementation(function (
+      this: unknown[],
+      ...args: Parameters<typeof originalFind>
+    ) {
+      if (memory.owns(this)) captureLookup(this);
+      return originalFind.apply(this, args);
+    });
+    let evictions = 0;
+    const cache = new WebglIsolates(
+      keys,
+      () => {
+        evictions++;
+        if (evictions === 1) {
+          expect(lookup).toBeDefined();
+          expect(memory.owns(lookup!)).toBe(true);
+          expect(lookup!.length).toBe(1);
+        }
+      },
+      256,
+    );
+    try {
+      const like = surface();
+      const first = cache.render(op("first"), like, surface);
+      cache.release(first);
+      const second = cache.render(op("second"), like, surface);
+      cache.release(second);
+      expect(lookup).toEqual([]);
+      expect(memory.owns(lookup!)).toBe(false);
+    } finally {
+      find.mockRestore();
+      cache.close();
+      keys.dispose();
+      memory.dispose();
+    }
+  });
 });
 const surface = (): WebglSurface => ({
   width: 8,

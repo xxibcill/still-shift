@@ -1,0 +1,396 @@
+{
+  "date": "2026-10-08",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/49",
+  "originalHead": "8faae4bec839f9c59dd1cef6f99f4eb665fa7acc",
+  "integratedMain": "118927deedd46f7812b176c8e64f291f4a6874bf",
+  "scope": "Conflict resolution only; CE15 milestone acceptance remains pending. Focused local verification, not a complete pnpm check.",
+  "status": "conflicts resolved; focused verification passed",
+  "conflictFiles": [
+    "docs/composition-engine-plan.md",
+    "docs/dev-log.md",
+    "package.json",
+    "packages/execution-runtime/src/export-worker.ts",
+    "packages/renderer-core/src/composition/adapters/commerce.ts",
+    "packages/renderer-core/src/composition/render/backend.ts",
+    "packages/renderer-core/src/composition/render/exposure.ts",
+    "packages/renderer-core/src/composition/render/renderer.ts",
+    "packages/renderer-core/src/composition/render/version.ts",
+    "packages/renderer-core/src/composition/render/webgl-bounds.ts",
+    "packages/renderer-core/src/composition/render/webgl-depth-image.ts",
+    "packages/renderer-core/src/composition/render/webgl-device.ts",
+    "packages/renderer-core/src/composition/render/webgl-paint.ts",
+    "packages/renderer-core/src/composition/render/webgl2.ts"
+  ],
+  "resolutions": [
+    "Retain CE15 surface/source/root caches, transparent output, parallel export and managed ownership while integrating main review fixes.",
+    "Preserve reusable family previews, selected-frame text preparation and once-per-preparation asynchronous coverage validation. Borrowed media/prepared text survive reusable backend disposal.",
+    "Combine managed shader lifetime with instanced rectangle vertex programs and distinct cache keys; retain clear-color uniform bytes before screen-pass cache retirement.",
+    "Retain exact background-byte eligibility in managed bounds and main exposure fusion; preflight local image planes at every shutter sample.",
+    "Normalize ImageBitmap uploads through owned temporary Canvas storage with success/failure cleanup.",
+    "Keep bitmap rounding, commerce source exposure and graph cleanup on failed clears.",
+    "Keep every mandatory command from both parents, including family timelines and all four CE15 browser suites; preserve both development histories and CE16/CE15 plan rows.",
+    "Isolate WebGL export test preview and Lab Vite optimizer caches.",
+    "Await source-cache rendezvous during asynchronous rendered cinematic coverage; preserve once-only coverage diagnostics across retries. Add cached/uncached exact-frame and invalid-coverage regressions for both backends."
+  ],
+  "versions": {
+    "canvas": "composition-canvas-1.46.1",
+    "webgl": "composition-webgl2-0.67.1",
+    "imagePlane": "composition-image-plane-0.4.1",
+    "legacyExport": "chromium-ffmpeg-0.6.11",
+    "compositionExport": "chromium-ffmpeg-0.7.1",
+    "parallelExport": "chromium-ffmpeg-0.8.1"
+  },
+  "preflight": {
+    "toolchain": "pnpm toolchain:check passed with pinned Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1",
+    "dependencies": "Independent offline frozen pnpm install and uv environment; no owner checkout caches shared.",
+    "actionsEnabled": false
+  },
+  "preservation": {
+    "ownerCheckout": "Uncommitted changes left untouched; merge performed in separate managed worktree.",
+    "frozenVisualsAndBenchmarks": "Byte-identical to integrated main; no tolerance or timing assertion changed.",
+    "fullGate": "Not run: scoped conflict repair; final CE15 milestone acceptance remains pending.",
+    "mandatoryCommands": "Verified union of both parent test command lists; no commands omitted.",
+    "developmentHistory": "Verified every heading from both parent logs remains present; entries sorted by date."
+  },
+  "attempts": [
+    {
+      "label": "unit",
+      "status": "failed and superseded by passing verification",
+      "note": "3516 pass, two failures: version-derived request identity and ordinary shader admission regression; repaired.",
+      "log": "/private/tmp/pr49-unit.log",
+      "sha256": "e3a4c40479d26fbcf343e3d372cd86afe69381171fe1647b6f10ab0064551a27"
+    },
+    {
+      "label": "unit-final",
+      "status": "failed and superseded by passing verification",
+      "note": "3523 pass, one unchanged gradient-table unit exceeded its existing 5000ms limit amid browser work.",
+      "log": "/private/tmp/pr49-unit-final.log",
+      "sha256": "fe1ddc950366c6660538183ff67ad3aaad7a62b06ca52eda8ad2ba5db199a764"
+    },
+    {
+      "label": "gradient-retry",
+      "status": "failed and superseded by passing verification",
+      "note": "One-worker retry still overlapped parallel-export workload and exceeded 5000ms. Final quiet full unit run passed unchanged.",
+      "log": "/private/tmp/pr49-gradient-retry.log",
+      "sha256": "7a4019513f2fdec6c03bd8ed85fcb782a368c88176e22323c52e168ac6543abd"
+    },
+    {
+      "label": "build-final",
+      "status": "failed and superseded by passing verification",
+      "note": "New regression tried to mutate readonly surface. Replaced with independent opaque/transparent cases.",
+      "log": "/private/tmp/pr49-build-final.log",
+      "sha256": "a76a3812ac7cd7197bb4711014e2f2b64760fe56f2de11fc21a4e0df0a00667b"
+    },
+    {
+      "label": "webgl-export",
+      "status": "failed and superseded by passing verification",
+      "note": "Vite dynamic import failed before comparison; isolated preview/Lab optimizer caches and retry passed.",
+      "log": "/private/tmp/pr49-webgl-export.log",
+      "sha256": "a21f8fcdbfe488984706d18364442aec123f4de66006a076d6362fe23042aa8a"
+    },
+    {
+      "label": "webgl",
+      "status": "failed and superseded by passing verification",
+      "note": "Broad GPU suite reached instanced oracle, then clearBytes input was emptied by screen cache retirement. Retained owned copy; 24 exact disjoint cases and 852 exposure cases now pass.",
+      "log": "/private/tmp/pr49-webgl.log",
+      "sha256": "8c299740528f282aac032c453aa718ac1cf3057c1ea89eee2e2dd575b2e88c68"
+    },
+    {
+      "label": "gpu-focused",
+      "status": "failed and superseded by passing verification",
+      "note": "Temporary runner used nonexistent exposure helper name after disjoint oracle passed; corrected entry points.",
+      "log": "/private/tmp/pr49-gpu-focused.log",
+      "sha256": "9f0302abe66fbcb970da1105d1a80c01775194a9ed92f06d39c181f5b80cd534"
+    },
+    {
+      "label": "cached-cinematic",
+      "status": "failed and repaired",
+      "note": "Reproduced PendingSource when cinematic coverage requested deferred source pixels.",
+      "log": "/private/tmp/pr49-cached-cinematic.log",
+      "sha256": "ad70c58ad48d6cb51261957ac9597ae14271b8468b61d455e9067649cc281552"
+    },
+    {
+      "label": "cached-cinematic-retry",
+      "status": "failed and repaired",
+      "note": "Fixed awaiting; temporary test exchange returned unsupported uncached immutable source. Corrected fixture to return a valid lease.",
+      "log": "/private/tmp/pr49-cached-cinematic-retry.log",
+      "sha256": "38b2472fea7f32bf474edf6f727f347ca75c3959322a6f1c91efe68892d07a73"
+    },
+    {
+      "label": "build-coverage",
+      "status": "failed and repaired",
+      "note": "Async callback returned a coverage report rather than void; fixed callback typing.",
+      "log": "/private/tmp/pr49-build-coverage.log",
+      "sha256": "829f883e6ca8775670cfa8889f65d730049e56bea7991a25aac1acb9fb9c754a"
+    },
+    {
+      "label": "surfaces-final",
+      "status": "failed and repaired",
+      "note": "New negative-case test inspected human-readable error text; replaced with the expected structured comp-camera-coverage diagnostic. Full affected suite rerun passed.",
+      "log": "/private/tmp/pr49-surfaces-final.log",
+      "sha256": "6af3957b1769706c4eb04926f03da2ed50f338326607f041761a47e805c1e5f4"
+    }
+  ],
+  "verification": [
+    {
+      "label": "focused",
+      "status": "passed",
+      "summary": "102 tests across 14 affected unit/runtime/integration files",
+      "log": "/private/tmp/pr49-focused.log",
+      "sha256": "c283596ab09497f44579eca0bb52bf905b737cde65d8cb1390196f6043d5d5a0"
+    },
+    {
+      "label": "preview-unit",
+      "status": "passed",
+      "summary": "11 tests including reused async media coverage",
+      "log": "/private/tmp/pr49-preview-unit.log",
+      "sha256": "c9fd46fe933708d3a4d0a9c3f0851e9f36b87eddee15542fb8752dd20940d9d5"
+    },
+    {
+      "label": "bitmap-unit",
+      "status": "passed",
+      "summary": "16 tests including bitmap native consumption/cleanup",
+      "log": "/private/tmp/pr49-bitmap-unit.log",
+      "sha256": "41b3234b89e2edd534e85e366df2214fcba8edbd4bdee0642773a3b3f349e936"
+    },
+    {
+      "label": "family",
+      "status": "passed",
+      "summary": "Both backend long family timelines, boundary seeks and independent repeats",
+      "log": "/private/tmp/pr49-family.log",
+      "sha256": "d5425026b6fe748db8ae283ee08ec9092ceb730b3f12a630729b67653c900fa8"
+    },
+    {
+      "label": "media",
+      "status": "passed",
+      "summary": "Native media preview, audio authoring and four production export cases",
+      "log": "/private/tmp/pr49-media.log",
+      "sha256": "95c7968b83c13ee4902419fb3a09d25148a3811f23bbb06d4c3fa2b4f22cd980"
+    },
+    {
+      "label": "webgl-export-retry",
+      "status": "passed",
+      "summary": "Four fixtures: CLI, repeat, raw/PNG, encoded preview, Lab and overwrite checks",
+      "log": "/private/tmp/pr49-webgl-export-retry.log",
+      "sha256": "05205a508d6c8d467c9856d3e1f9cfcec46ed4cd105e9b913ef75a21cb756611"
+    },
+    {
+      "label": "cinematic",
+      "status": "passed",
+      "summary": "Existing exact cinematic coverage and reveal acceptance helpers, both backends",
+      "log": "/private/tmp/pr49-cinematic.log",
+      "sha256": "339437ddae3b6c8be1a3c000dbd1413640fe535af22ecb5e7760d8a30989f814"
+    },
+    {
+      "label": "output",
+      "status": "passed",
+      "summary": "28 output-profile exports",
+      "log": "/private/tmp/pr49-output.log",
+      "sha256": "2fbee6c6796f71b7b4f4c7b36d36e065688ed75afa25fae397fe4d0aeb02afb6"
+    },
+    {
+      "label": "alpha",
+      "status": "passed",
+      "summary": "38 transparent output cases",
+      "log": "/private/tmp/pr49-alpha.log",
+      "sha256": "5c86d0639a53c55dadd6919361fa0a99da21e91994a73e69901481f86d546c77"
+    },
+    {
+      "label": "surfaces",
+      "status": "passed",
+      "summary": "144 cases / 8000 frame comparisons plus native storage, preparation, failure and managed-memory probes",
+      "log": "/private/tmp/pr49-surfaces.log",
+      "sha256": "4b06f5edb8e14043b47ead0660515e931727e7cd47b80b318b1f634d4c365b1c"
+    },
+    {
+      "label": "gpu-focused-retry",
+      "status": "passed",
+      "summary": "24 exact disjoint-paint cases and 201 fused / 462 bounded / 189 fractional exposure cases",
+      "log": "/private/tmp/pr49-gpu-focused-retry.log",
+      "sha256": "a98cfc1e8b47a5c8fc2accdcdfc1875fdf6102de6e6849208f72172574b05d77"
+    },
+    {
+      "label": "build-complete",
+      "status": "passed",
+      "summary": "Final TypeScript build",
+      "log": "/private/tmp/pr49-build-complete.log",
+      "sha256": "f4d0472e00ef160eb6c62a624e5ebdde053d75080ad6df10b57bde3989cb3fb2"
+    },
+    {
+      "label": "lint-final",
+      "status": "passed",
+      "summary": "Full TypeScript lint",
+      "log": "/private/tmp/pr49-lint-final.log",
+      "sha256": "ee527d9351d723fc9d8e48f70ad4cca9a38d6bef729f61744a357445cbadf5d2"
+    },
+    {
+      "label": "disjoint-lint",
+      "status": "passed",
+      "summary": "Final disjoint repair lint",
+      "log": "/private/tmp/pr49-disjoint-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "parallel",
+      "status": "passed",
+      "summary": "51 base exports, 8 native cases, 8 preparation cases, 16 tint cases, 16 root cases, 8 prefix cases, 24 protected failures; before final cinematic rendezvous repair.",
+      "log": "/private/tmp/pr49-parallel.log",
+      "sha256": "b17a41dc2798007fcb4a3fe4d7fcf79137ae525f6e18e76ef30fd20a0a554c15"
+    },
+    {
+      "label": "webgl-retry",
+      "status": "passed",
+      "summary": "Complete existing WebGL browser command passed after clear-color lifetime repair.",
+      "log": "/private/tmp/pr49-webgl-retry.log",
+      "sha256": "c1d8f648c808c2674152d7d7b2c591b6a870f38d307b4e32ad7be5b79679983b"
+    },
+    {
+      "label": "defaults",
+      "status": "passed",
+      "summary": "Affected threshold-push and alternate defaults: 336 native/frozen/reverse frame checks, zero delta.",
+      "log": "/private/tmp/pr49-defaults.log",
+      "sha256": "f3d2347658442f2a03e7068640bcda7cdd504cface57726b6042bca838d9e01c"
+    },
+    {
+      "label": "baselines",
+      "status": "passed",
+      "summary": "Four frozen baseline items / 792 frames pass; subset only.",
+      "log": "/private/tmp/pr49-baselines.log",
+      "sha256": "cbec3b024e69793dcf32e8809a76bf27f0dc4c990d6f387dbfc990470746a103"
+    },
+    {
+      "label": "build-coverage-final",
+      "status": "passed",
+      "summary": "TypeScript after final cinematic source-cache repair.",
+      "log": "/private/tmp/pr49-build-coverage-final.log",
+      "sha256": "f4d0472e00ef160eb6c62a624e5ebdde053d75080ad6df10b57bde3989cb3fb2"
+    },
+    {
+      "label": "coverage-lint",
+      "status": "passed",
+      "summary": "Lint for final renderer and new browser regressions.",
+      "log": "/private/tmp/pr49-coverage-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "surfaces-complete",
+      "status": "passed",
+      "summary": "Final 144-case / 8000-frame suite plus eight cached cinematic frame comparisons and both coverage rejections.",
+      "log": "/private/tmp/pr49-surfaces-complete.log",
+      "sha256": "c54b87caeb8ea4d1f8db33b703258f2084ad5cf88a4b36f8da4dc6372eba85ab"
+    },
+    {
+      "label": "unit-quiet",
+      "status": "passed",
+      "summary": "All 3524 tests / 325 files pass in 31.08 seconds; unchanged gradient timeout passes without concurrent browser workload.",
+      "log": "/private/tmp/pr49-unit-quiet.log",
+      "sha256": "3c192b3333f90d06c45198f3d73b477b940d5649ee25dc08a54f5d5a1b681aa7"
+    },
+    {
+      "label": "build-delivery",
+      "status": "passed",
+      "summary": "Final TypeScript build passed.",
+      "log": "/private/tmp/pr49-build-delivery.log",
+      "sha256": "f4d0472e00ef160eb6c62a624e5ebdde053d75080ad6df10b57bde3989cb3fb2"
+    },
+    {
+      "label": "final-helper-lint",
+      "status": "passed",
+      "summary": "Final persistent regression lint passed.",
+      "log": "/private/tmp/pr49-final-helper-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "cached-cinematic-final",
+      "status": "passed",
+      "summary": "Exact cached/native pixels and structured coverage rejection on both backends.",
+      "log": "/private/tmp/pr49-cached-cinematic-final.log",
+      "sha256": "e90e1036969589e4ed99a1dee69d391dbca2c223fb376025610fc417ae5bc094"
+    },
+    {
+      "label": "cinematic-export",
+      "status": "passed",
+      "summary": "Final-source public serial and two-worker cached export parity on both backends: four exports / 12 encoded and decoded frames.",
+      "log": "/private/tmp/pr49-cinematic-export.log",
+      "sha256": "27dd88f8197b242c103ef859369d4320e88fa089a38d595dd2fccadcc48f439a"
+    },
+    {
+      "label": "format",
+      "status": "passed",
+      "summary": "All conflict-resolution files passed Prettier check; final helper formatted again afterward.",
+      "log": "/private/tmp/pr49-format.log",
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    }
+  ],
+  "verificationSummary": {
+    "unitTests": 3524,
+    "unitFiles": 325,
+    "focusedRuntimeIntegrationTests": 102,
+    "sharedSurfaceCases": 144,
+    "sharedSurfaceFrameComparisons": 8000,
+    "cachedCinematicComparisons": 8,
+    "cachedCinematicRejections": 2,
+    "alphaCases": 38,
+    "outputProfileExports": 28,
+    "parallelMatrix": {
+      "exports": 51,
+      "nativeCases": 8,
+      "sourceCases": 8,
+      "tintCases": 16,
+      "rootCases": 16,
+      "prefixCases": 8,
+      "failures": 24
+    },
+    "finalCinematicPublicExports": 4,
+    "finalCinematicPublicFrames": 12,
+    "frozenBaselineSubset": {
+      "items": 4,
+      "frames": 792
+    },
+    "nativeDefaultSubsetFrames": 336,
+    "fullRepositoryGate": false,
+    "CE15MilestoneComplete": false
+  },
+  "productionAndTestDiffSha256": "0dca3b7c2e9834adc80ebbaf6d424faeb68a2ccdc9eef5755efc409f79044247",
+  "finalCinematicExportProof": {
+    "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/pr49-cinematic-export-A6g71g",
+    "reports": [
+      {
+        "backend": "canvas2d",
+        "frames": 3,
+        "status": "exact",
+        "workers": 2,
+        "proof": {
+          "encoded": [
+            "sha256:fa4edf27e6c24c597d74fc1ce3b929217d6d9e038150ee2ba8a7118c7e17617e",
+            "sha256:fa4edf27e6c24c597d74fc1ce3b929217d6d9e038150ee2ba8a7118c7e17617e",
+            "sha256:fa4edf27e6c24c597d74fc1ce3b929217d6d9e038150ee2ba8a7118c7e17617e"
+          ],
+          "decodedFrames": [
+            "sha256:eb3180208d955fca403801048ff4fa7cc4243c57127e82a8f40e9b4d238eed5b",
+            "sha256:eb3180208d955fca403801048ff4fa7cc4243c57127e82a8f40e9b4d238eed5b",
+            "sha256:eb3180208d955fca403801048ff4fa7cc4243c57127e82a8f40e9b4d238eed5b"
+          ]
+        }
+      },
+      {
+        "backend": "webgl2",
+        "frames": 3,
+        "status": "exact",
+        "workers": 2,
+        "proof": {
+          "encoded": [
+            "sha256:fa4edf27e6c24c597d74fc1ce3b929217d6d9e038150ee2ba8a7118c7e17617e",
+            "sha256:fa4edf27e6c24c597d74fc1ce3b929217d6d9e038150ee2ba8a7118c7e17617e",
+            "sha256:fa4edf27e6c24c597d74fc1ce3b929217d6d9e038150ee2ba8a7118c7e17617e"
+          ],
+          "decodedFrames": [
+            "sha256:eb3180208d955fca403801048ff4fa7cc4243c57127e82a8f40e9b4d238eed5b",
+            "sha256:eb3180208d955fca403801048ff4fa7cc4243c57127e82a8f40e9b4d238eed5b",
+            "sha256:eb3180208d955fca403801048ff4fa7cc4243c57127e82a8f40e9b4d238eed5b"
+          ]
+        }
+      }
+    ]
+  }
+}

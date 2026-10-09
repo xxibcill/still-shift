@@ -1,3 +1,7 @@
+import {
+  createRenderCanvas,
+  releaseRenderCanvas,
+} from "./managed-memory-context.ts";
 import type { TextStyle } from "../../scene-contract/src/typography.ts";
 import { loadTextStyleFont, type LoadedFont } from "./prepared-fonts.ts";
 import { shapeText, type ShapedLayout } from "./shaped-text.ts";
@@ -80,30 +84,36 @@ export async function loadTextAnimationFonts(
   fonts: Map<string, LoadedFont>,
 ) {
   if (!scene.typography) return;
-  const ctx = document.createElement("canvas").getContext("2d")!;
-  for (const node of scene.nodes) {
-    if (
-      node.type !== "text" ||
-      !scene.textAnimators?.some(
-        (a) => a.node === node.id && (a.from.axes || a.to?.axes),
+  const canvas = createRenderCanvas();
+  try {
+    const ctx = canvas.getContext("2d")!;
+    for (const node of scene.nodes) {
+      if (
+        node.type !== "text" ||
+        !scene.textAnimators?.some(
+          (a) => a.node === node.id && (a.from.axes || a.to?.axes),
+        )
       )
-    )
-      continue;
-    const layouts = [...typographyTextValues(scene, node)].map((text) =>
-      shapeText(ctx, node, text, fonts, scene.textStyles),
-    );
-    const variants = nodeAxisVariants(scene, node, layouts, fonts);
-    const styles = new Map<string, TextStyle>();
-    for (const deltas of variants.values())
-      for (const span of [undefined, ...(node.spans ?? [])]) {
-        const style = supportedAxisStyle(
-          resolvedTextStyle(node, scene.textStyles ?? {}, span?.style),
-          deltas,
-          fonts,
-        );
-        styles.set(styleFontKey(style), style);
-      }
-    for (const style of styles.values()) await loadTextStyleFont(style, fonts);
+        continue;
+      const layouts = [...typographyTextValues(scene, node)].map((text) =>
+        shapeText(ctx, node, text, fonts, scene.textStyles),
+      );
+      const variants = nodeAxisVariants(scene, node, layouts, fonts);
+      const styles = new Map<string, TextStyle>();
+      for (const deltas of variants.values())
+        for (const span of [undefined, ...(node.spans ?? [])]) {
+          const style = supportedAxisStyle(
+            resolvedTextStyle(node, scene.textStyles ?? {}, span?.style),
+            deltas,
+            fonts,
+          );
+          styles.set(styleFontKey(style), style);
+        }
+      for (const style of styles.values())
+        await loadTextStyleFont(style, fonts);
+    }
+  } finally {
+    releaseRenderCanvas(canvas);
   }
 }
 // An axis variant includes other runs for consistent shaping; only selected clusters are painted

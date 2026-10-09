@@ -1,4 +1,15 @@
 import {
+  allocateRenderStorageAsync,
+  readRenderResponsePixels,
+  releaseRenderPixels,
+  releaseRenderStorage,
+  renderMemory,
+} from "../../managed-memory-context.ts";
+import {
+  createRenderBlob,
+  releaseRenderBlob,
+} from "../../managed-resources.ts";
+import {
   CompositionPreparedMediaSchema,
   compositionMediaFrameId,
   resolveCompositionMediaLimits,
@@ -102,7 +113,7 @@ export function createCompositionMediaResources(
   };
   const forget = (id: string) => {
     const bitmap = resident.get(id)!;
-    bitmap.close();
+    releaseRenderStorage(bitmap, (value) => value.close());
     resident.delete(id);
     images.delete(id);
     const entry = entries.get(id)!;
@@ -125,35 +136,66 @@ export function createCompositionMediaResources(
       passageError("comp-media-checksum", "Prepared frame length differs", {
         path: entry.id,
       });
-    const bytes = new Uint8Array(entry.byteLength);
-    const reader = response.body.getReader();
+    const managed = renderMemory();
+    let bytes: Uint8Array<ArrayBuffer> | undefined = managed
+      ? undefined
+      : new Uint8Array(entry.byteLength);
+    const reader = managed ? undefined : response.body.getReader();
     const abortRead = () => {
-      void reader.cancel().catch(() => {});
+      void reader?.cancel().catch(() => {});
     };
     signal.addEventListener("abort", abortRead, { once: true });
-    let count = 0;
-    stats.encodedBytes = bytes.length;
-    stats.peakEncodedBytes = Math.max(
-      stats.peakEncodedBytes,
-      stats.encodedBytes,
-    );
     try {
-      for (;;) {
-        const part = await reader.read();
-        stale(run, signal);
-        if (part.done) break;
-        if (count + part.value.length > bytes.length)
-          passageError(
-            "comp-media-limit",
-            "Prepared frame response exceeds pinned bytes",
-            { path: entry.id },
+      let count = 0;
+      if (managed) {
+        try {
+          bytes = new Uint8Array(
+            await readRenderResponsePixels(response, entry.byteLength),
           );
-        bytes.set(part.value, count);
-        count += part.value.length;
+          count = bytes.length;
+        } catch (error) {
+          if (
+            error instanceof Error &&
+            /Managed response (?:exceeds|differs from) its exact body size/.test(
+              error.message,
+            )
+          )
+            passageError(
+              error.message.includes("exceeds")
+                ? "comp-media-limit"
+                : "comp-media-checksum",
+              error.message.includes("exceeds")
+                ? "Prepared frame response exceeds pinned bytes"
+                : "Prepared frame bytes differ from the captured manifest",
+              { path: entry.id },
+            );
+          throw error;
+        }
+      }
+      const pixels = bytes!;
+      stats.encodedBytes = pixels.length;
+      stats.peakEncodedBytes = Math.max(
+        stats.peakEncodedBytes,
+        stats.encodedBytes,
+      );
+      if (reader) {
+        for (;;) {
+          const part = await reader.read();
+          stale(run, signal);
+          if (part.done) break;
+          if (count + part.value.length > pixels.length)
+            passageError(
+              "comp-media-limit",
+              "Prepared frame response exceeds pinned bytes",
+              { path: entry.id },
+            );
+          pixels.set(part.value, count);
+          count += part.value.length;
+        }
       }
       if (
-        count !== bytes.length ||
-        `sha256:${await sha256Hex(bytes.buffer)}` !== entry.sha256
+        count !== pixels.length ||
+        `sha256:${await sha256Hex(pixels.buffer)}` !== entry.sha256
       )
         passageError(
           "comp-media-checksum",
@@ -163,31 +205,61 @@ export function createCompositionMediaResources(
       stale(run, signal);
       if (
         ![137, 80, 78, 71, 13, 10, 26, 10].every(
-          (value, index) => bytes[index] === value,
+          (value, index) => pixels[index] === value,
         ) ||
-        bytes[24] !== 8 ||
-        bytes[25] !== 6
+        pixels[24] !== 8 ||
+        pixels[25] !== 6
       )
         passageError(
           "comp-media-format",
           "Prepared frame must be canonical RGBA8 PNG",
           { path: entry.id },
         );
-      const bitmap = await createImageBitmap(
-        new Blob([bytes], { type: "image/png" }),
-        { premultiplyAlpha: "none", colorSpaceConversion: "none" },
-      );
-      try {
-        stale(run, signal);
-        if (bitmap.width !== entry.width || bitmap.height !== entry.height)
+      // Canonical captured PNG dimensions must fit the admitted bitmap before native decode.
+      if (managed) {
+        const header = new DataView(pixels.buffer);
+        if (
+          header.getUint32(16) !== entry.width ||
+          header.getUint32(20) !== entry.height
+        )
           passageError(
             "comp-media-provenance",
             "Decoded frame dimensions differ",
             { path: entry.id },
           );
-      } catch (error) {
-        bitmap.close();
-        throw error;
+      }
+      const blob = createRenderBlob(pixels, "image/png");
+      let bitmap: ImageBitmap;
+      try {
+        bitmap = await allocateRenderStorageAsync(
+          entry.width * entry.height * 4,
+          async () => {
+            const bitmap = await createImageBitmap(blob, {
+              premultiplyAlpha: "none",
+              colorSpaceConversion: "none",
+            });
+            try {
+              stale(run, signal);
+              if (
+                bitmap.width !== entry.width ||
+                bitmap.height !== entry.height
+              )
+                passageError(
+                  "comp-media-provenance",
+                  "Decoded frame dimensions differ",
+                  { path: entry.id },
+                );
+              return bitmap;
+            } catch (error) {
+              bitmap.close();
+              throw error;
+            }
+          },
+          (bitmap) => bitmap.close(),
+          true,
+        );
+      } finally {
+        releaseRenderBlob(blob);
       }
       resident.set(entry.id, bitmap);
       images.set(entry.id, bitmap);
@@ -200,11 +272,15 @@ export function createCompositionMediaResources(
       );
     } finally {
       signal.removeEventListener("abort", abortRead);
-      await reader.cancel().catch(() => {});
-      reader.releaseLock();
+      if (reader) {
+        await reader.cancel().catch(() => {});
+        reader.releaseLock();
+      }
+      releaseRenderPixels(bytes);
       stats.encodedBytes = 0;
     }
   }
+
   return {
     prepareFrame(frame, options = {}) {
       if (disposed)

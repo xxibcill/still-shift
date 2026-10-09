@@ -1,3 +1,8 @@
+import {
+  renderMembers,
+  type CompositionRenderStatistics,
+} from "./statistics.ts";
+import { renderBatches } from "./batches.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
 import type { FlatLighting } from "./flat-lighting.ts";
@@ -11,6 +16,7 @@ import type {
   TrackMatte,
 } from "@still-shift/scene-contract";
 import type { Matrix } from "../../node-transform.ts";
+import type { ManagedMetadataText } from "../../managed-metadata.ts";
 import type { Rgba } from "../evaluate/types.ts";
 import type {
   ClipRect,
@@ -39,20 +45,52 @@ export type VectorDraw = DrawOp & {
 /** A premultiplied RGBA render target owned by a backend. */
 export type Surface = { readonly width: number; readonly height: number };
 
+export type SurfaceEncoding =
+  | "rgba8-straight"
+  | "rgba8-premultiplied"
+  | "rgba32f-premultiplied";
+export type SurfacePixels = {
+  encoding: SurfaceEncoding;
+  bytes: Uint8Array<ArrayBuffer>;
+};
+
 /**
  * Drawing primitives a composition backend implements. The render graph and its
  * executor are shared, so the CE6 WebGL2 backend only has to provide these.
  */
 export interface RenderBackend<S extends Surface = Surface> {
   readonly version: string;
+  statistics?: CompositionRenderStatistics;
   applyLighting?(surface: S, lighting: FlatLighting): void;
   /** Optional retained-frame lifecycle; effects and exposure may request a full repaint. */
   beginFrame?(root: SurfaceNode): void;
   endFrame?(completed: boolean): void;
   /** Optional canonical pixel identity for retained backend content. */
   frameKey?(root: SurfaceNode): string;
+  /** An explicitly owned canonical key, retained only while its frame is cached. */
+  frameMetadataKey?(root: SurfaceNode): ManagedMetadataText;
   /** Cache an immutable isolate; the caller releases the returned surface normally. */
   renderIsolate?(op: IsolateOp, like: S, draw: () => S): S;
+  /** Retain an existing independent precomp/local surface without adding isolation. */
+  renderSurface?(node: SurfaceNode, draw: () => S): S;
+  /** Overwrite the original root target from exact retained pixels, without compositing. */
+  renderRoot?(
+    node: SurfaceNode,
+    target: S,
+    draw: () => void,
+    role: string,
+  ): void;
+  /** Restore a complete root prefix and return an original batch boundary. */
+  rootPrefix?(node: SurfaceNode, target: S, role: string): number;
+  rootPixels?: {
+    identity(target: S): { policy: string; encoding: SurfaceEncoding };
+    capture(target: S): SurfacePixels;
+    restore(target: S, pixels: SurfacePixels): void;
+    reset(): void;
+  };
+  surfaceEncoding?: SurfaceEncoding;
+  captureSurface?(surface: S): SurfacePixels;
+  restoreSurface?(width: number, height: number, pixels: SurfacePixels): S;
   /** A cleared, transparent surface, usually from a pool. */
   createSurface(width: number, height: number): S;
   releaseSurface(surface: S): void;
@@ -169,12 +207,25 @@ export function executeGraph<S extends Surface>(
   backend: RenderBackend<S>,
   graph: RenderGraph,
   target: S,
+  options: {
+    lifecycle?: boolean;
+    rootRole?: string;
+    statisticsPhase?: string;
+  } = {},
 ): void {
   const surface = (node: SurfaceNode, into?: S): S => {
+    if (!into && backend.renderSurface)
+      return backend.renderSurface(node, () => paintSurface(node));
+    return paintSurface(node, into);
+  };
+  const paintSurface = (node: SurfaceNode, into?: S): S => {
     const dst = into ?? backend.createSurface(node.width, node.height);
     try {
-      backend.clear(dst, node.background);
-      runOps(node.ops, dst);
+      const start = into
+        ? (backend.rootPrefix?.(node, dst, options.rootRole ?? "frame") ?? 0)
+        : 0;
+      if (start === 0) backend.clear(dst, node.background);
+      runOps(node.ops, dst, start);
       return dst;
     } catch (error) {
       if (!into) backend.releaseSurface(dst);
@@ -493,50 +544,28 @@ export function executeGraph<S extends Surface>(
       }
     }
   };
-  const batchable = (op: RenderOp): op is SolidDraw =>
-    op.kind === "draw" &&
-    op.content.type === "solid" &&
-    op.blend === "normal" &&
-    op.clips.length === 0 &&
-    !op.paintBlur;
-  const vector = (op: RenderOp): op is VectorDraw =>
-    op.kind === "draw" &&
-    op.content.type !== "image" &&
-    op.content.type !== "depth-image" &&
-    op.content.type !== "surface" &&
-    op.blend === "normal" &&
-    !op.clips.some((clip) => clip.projection);
-  const runOps = (ops: RenderOp[], dst: S) => {
-    for (let index = 0; index < ops.length; index++) {
-      const op = ops[index]!;
-      if (
-        graph.root.colorSpace !== "linear-srgb" &&
-        backend.drawVectors &&
-        vector(op)
-      ) {
-        const batch = [op];
-        while (index + 1 < ops.length) {
-          const next = ops[index + 1]!;
-          if (!vector(next)) break;
-          batch.push(next);
-          index++;
-        }
-        backend.drawVectors(dst, batch);
-      } else if (
-        graph.root.colorSpace !== "linear-srgb" &&
-        backend.fillRects &&
-        batchable(op)
-      ) {
-        const batch = [op];
-        while (index + 1 < ops.length) {
-          const next = ops[index + 1]!;
-          if (!batchable(next)) break;
-          batch.push(next);
-          index++;
-        }
-        if (batch.length > 1) backend.fillRects(dst, batch);
-        else run(op, dst);
-      } else run(op, dst);
+  const runOps = (ops: RenderOp[], dst: S, start = 0) => {
+    for (const batch of renderBatches(
+      backend,
+      ops,
+      graph.root.colorSpace,
+      start,
+    )) {
+      const paint = () => {
+        if (batch.kind === "vectors") backend.drawVectors!(dst, batch.ops);
+        else if (batch.kind === "solids") backend.fillRects!(dst, batch.ops);
+        else run(batch.ops[0], dst);
+      };
+      if (backend.statistics)
+        backend.statistics.measure(
+          {
+            stage:
+              batch.kind === "single" ? "operation" : batch.kind + "-batch",
+            members: renderMembers(batch.ops),
+          },
+          paint,
+        );
+      else paint();
     }
   };
   if (graph.spatial)
@@ -548,10 +577,32 @@ export function executeGraph<S extends Surface>(
     });
   let completed = false;
   try {
-    backend.beginFrame?.(graph.root);
-    surface(graph.root, target);
+    if (options.lifecycle !== false) backend.beginFrame?.(graph.root);
+    const draw = () => {
+      surface(graph.root, target);
+    };
+    const paint = () => {
+      if (backend.renderRoot)
+        backend.renderRoot(
+          graph.root,
+          target,
+          draw,
+          options.rootRole ?? "frame",
+        );
+      else draw();
+    };
+    if (backend.statistics)
+      backend.statistics.measure(
+        {
+          stage: "graph",
+          phase: options.statisticsPhase ?? "frame",
+          members: [],
+        },
+        paint,
+      );
+    else paint();
     completed = true;
   } finally {
-    backend.endFrame?.(completed);
+    if (options.lifecycle !== false) backend.endFrame?.(completed);
   }
 }

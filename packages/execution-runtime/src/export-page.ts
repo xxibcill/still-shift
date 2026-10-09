@@ -1,29 +1,91 @@
+import { allocateRenderMetadata } from "../../renderer-core/src/managed-metadata.ts";
 import { assertCompositionEffectVersions } from "@still-shift/renderer-core";
 import {
+  createRenderCanvas,
+  type ManagedMemory,
   createCompositionPreview,
+  createCompositionPreviewAsync,
   createWebGLPreview,
   createIllustratedPreview,
   loadCompositionResources,
   loadIllustratedImages,
   type CompositionScene,
+  type CompositionPreview,
 } from "@still-shift/renderer-core";
+import {
+  compositionFrameAssignment,
+  type CompositionFrameDistribution,
+} from "./composition-frame-assignment.ts";
+import { CompositionExportMemory } from "./composition-export-memory.ts";
+import { compositionSurfaceExchange } from "./composition-surface-client.ts";
 import type { ExportableScene } from "./export-worker.ts";
-import { assertNever, type FrameTransport } from "./transport.ts";
+import type { FrameTransport } from "./transport.ts";
+import {
+  captureFrame,
+  frameUploadBody,
+  withManagedFrame,
+} from "./composition-frame-capture.ts";
+
+import type { CompositionWorkerStatistics } from "./composition-export-statistics.ts";
 
 export type BrowserExportResult = {
+  compositionStatistics?: CompositionWorkerStatistics;
+  memory?: {
+    beforeAcknowledgement: ManagedMemory["statistics"];
+    afterAcknowledgement?: ManagedMemory["statistics"];
+  };
   frameRenderAverageMs: number;
   frameRenderP95Ms: number;
   frameUploadAverageMs: number;
   frameUploadP95Ms: number;
   gpuRenderer: string;
+  work?: {
+    worker: number;
+    frames: { index: number; renderMs: number; uploadMs: number }[];
+    sourceStatistics?: ReturnType<
+      NonNullable<CompositionPreview["sourceCacheStatistics"]>
+    >;
+    renderStatistics?: ReturnType<
+      NonNullable<CompositionPreview["renderStatistics"]>
+    >;
+    rootStatistics?: ReturnType<
+      NonNullable<CompositionPreview["rootCacheStatistics"]>
+    >;
+    cacheStatistics?: ReturnType<
+      NonNullable<CompositionPreview["surfaceCacheStatistics"]>
+    >;
+  };
+};
+
+export type BrowserFrameWork = {
+  worker: number;
+  workers: number;
+  credential: string;
+  distribution?: CompositionFrameDistribution;
+  concurrentWorkers?: number;
+  surfaceCache?: { scopeKey: string; byteLimit: number };
+};
+
+export type BrowserCompositionOutput = {
+  preserveAlpha: boolean;
+  canonicalCapture: boolean;
+  work?: BrowserFrameWork;
 };
 
 declare global {
   interface Window {
+    prepareStillShiftExportTransfer?: (
+      value: unknown,
+    ) => ReturnType<CompositionExportMemory["prepareTransfer"]>;
+    readStillShiftExportTransfer?: (
+      offset: number,
+    ) => ReturnType<CompositionExportMemory["readTransfer"]>;
+    acknowledgeStillShiftExport?: () => Promise<ManagedMemory["statistics"]>;
     runStillShiftExport?: (
       scene: ExportableScene,
       hasDepth: boolean,
       transport: FrameTransport,
+      output?: BrowserCompositionOutput,
     ) => Promise<BrowserExportResult>;
   }
 }
@@ -44,67 +106,26 @@ const summarizeTimings = (timings: number[]) => {
   };
 };
 
-const captureBlob = (
-  canvas: HTMLCanvasElement,
-  mimeType: string,
-  quality?: number,
-): Promise<Blob> =>
-  new Promise((accept, reject) => {
-    canvas.toBlob(
-      (blob) =>
-        blob
-          ? accept(blob)
-          : reject(new Error(`${mimeType} frame capture failed`)),
-      mimeType,
-      quality,
-    );
-  });
-
-const captureFrame = (
-  canvas: HTMLCanvasElement,
-  gl: WebGL2RenderingContext | null,
-  transport: FrameTransport,
-): Promise<ArrayBuffer | Blob> => {
-  switch (transport) {
-    case "raw_rgba": {
-      const pixels = new Uint8Array(canvas.width * canvas.height * 4);
-      if (gl)
-        gl.readPixels(
-          0,
-          0,
-          canvas.width,
-          canvas.height,
-          gl.RGBA,
-          gl.UNSIGNED_BYTE,
-          pixels,
-        );
-      else {
-        const rgba = canvas
-          .getContext("2d")!
-          .getImageData(0, 0, canvas.width, canvas.height).data;
-        const rowBytes = canvas.width * 4;
-        for (let y = 0; y < canvas.height; y++)
-          pixels.set(
-            rgba.subarray(y * rowBytes, (y + 1) * rowBytes),
-            (canvas.height - 1 - y) * rowBytes,
-          );
-      }
-      return Promise.resolve(pixels.buffer as ArrayBuffer);
-    }
-    case "png_pipe":
-      return captureBlob(canvas, "image/png");
-    case "jpeg_pipe":
-      return captureBlob(canvas, "image/jpeg", 0.95);
-    default:
-      return assertNever(transport);
-  }
-};
-
 const isComposition = (scene: ExportableScene): scene is CompositionScene =>
   "schemaVersion" in scene && scene.schemaVersion === "composition-scene-1";
 
-window.runStillShiftExport = async (scene, hasDepth, transport) => {
-  if (isComposition(scene)) return exportComposition(scene, transport);
+const exportMemory = new CompositionExportMemory();
+window.prepareStillShiftExportTransfer = (value) =>
+  exportMemory.prepareTransfer(value);
+window.readStillShiftExportTransfer = (offset) =>
+  exportMemory.readTransfer(offset);
+window.acknowledgeStillShiftExport = () => exportMemory.acknowledge();
+window.runStillShiftExport = async (scene, hasDepth, transport, output) => {
+  if (isComposition(scene)) {
+    const result = await exportMemory.run(
+      output?.work?.concurrentWorkers ?? output?.work?.workers ?? 1,
+      () => exportComposition(scene, transport, output),
+    );
+    result.value.memory = { beforeAcknowledgement: result.memory };
+    return result.value;
+  }
+  if (output)
+    throw Error("Composition output profiles require a composition scene");
   const illustrated = "recipe" in scene;
   const source = illustrated ? null : await loadImage("/_export/source");
   const depth =
@@ -157,29 +178,72 @@ window.runStillShiftExport = async (scene, hasDepth, transport) => {
 const exportComposition = async (
   scene: CompositionScene,
   transport: FrameTransport,
+  output?: BrowserCompositionOutput,
 ): Promise<BrowserExportResult> => {
+  const work = output?.work;
+  if (
+    work &&
+    (!Number.isInteger(work.workers) ||
+      work.workers < 1 ||
+      work.workers > 4 ||
+      work.workers > scene.timeline.frameCount ||
+      !Number.isInteger(work.worker) ||
+      work.worker < 0 ||
+      work.worker >= work.workers ||
+      (work.concurrentWorkers !== undefined &&
+        (!Number.isInteger(work.concurrentWorkers) ||
+          work.concurrentWorkers < 1 ||
+          work.concurrentWorkers > work.workers)))
+  )
+    throw Error("Composition browser frame assignment is invalid");
   assertCompositionEffectVersions(scene);
   const resources = await loadCompositionResources(
     scene.composition,
     (id) => `/_export/assets/${id}`,
     scene.preparedMedia ? { preparedMedia: scene.preparedMedia } : {},
   );
-  const canvas = document.createElement("canvas");
+  const canvas = createRenderCanvas();
   document.body.append(canvas);
-  const preview = createCompositionPreview(
-    canvas,
-    scene.composition,
-    resources,
-    { backend: scene.backend ?? "canvas2d" },
-  );
+  const preview = await (
+    output?.work?.surfaceCache
+      ? createCompositionPreviewAsync
+      : createCompositionPreview
+  )(canvas, scene.composition, resources, {
+    backend: scene.backend ?? "canvas2d",
+    collectStatistics: true,
+    ...(output ? { preserveAlpha: output.preserveAlpha } : {}),
+    ...(output?.work?.surfaceCache
+      ? {
+          surfaceCache: {
+            ...output.work.surfaceCache,
+            exchange: compositionSurfaceExchange({
+              worker: output.work.worker,
+              credential: output.work.credential,
+            }),
+          },
+        }
+      : {}),
+  });
   const gl = preview.backend === "webgl2" ? canvas.getContext("webgl2") : null;
   const info = gl?.getExtension("WEBGL_debug_renderer_info");
   const renderer = gl
     ? String(gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER))
     : "Canvas2D";
-  return renderFrames(
+  let cacheStatistics: NonNullable<
+    BrowserExportResult["work"]
+  >["cacheStatistics"];
+  let sourceStatistics: NonNullable<
+    BrowserExportResult["work"]
+  >["sourceStatistics"];
+  let renderStatistics: NonNullable<
+    BrowserExportResult["work"]
+  >["renderStatistics"];
+  let rootStatistics: NonNullable<
+    BrowserExportResult["work"]
+  >["rootStatistics"];
+  const result = await renderFrames(
     scene.timeline.frameCount,
-    resources.media
+    resources.media || output?.work?.surfaceCache
       ? async (frame) => {
           await preview.prepareFrame(frame);
           preview.renderFrame(frame);
@@ -187,12 +251,39 @@ const exportComposition = async (
       : (frame) => {
           preview.renderFrame(frame);
         },
-    () => preview.dispose(),
+    () => {
+      cacheStatistics = preview.surfaceCacheStatistics?.();
+      sourceStatistics = preview.sourceCacheStatistics?.();
+      rootStatistics = preview.rootCacheStatistics?.();
+      renderStatistics = preview.renderStatistics?.();
+      preview.dispose();
+    },
     canvas,
     gl,
     transport,
     `${renderer} ${preview.rendererVersion}`,
+    output?.canonicalCapture && transport === "raw_rgba"
+      ? () => Promise.resolve(preview.readPixels().buffer as ArrayBuffer)
+      : undefined,
+    output?.work,
   );
+  if (!renderStatistics)
+    throw Error("Composition export omitted submission statistics");
+  result.compositionStatistics = {
+    render: renderStatistics,
+    ...(cacheStatistics ? { surfaces: cacheStatistics } : {}),
+    ...(sourceStatistics ? { sources: sourceStatistics } : {}),
+    ...(rootStatistics ? { roots: rootStatistics } : {}),
+  };
+  if (result.work && cacheStatistics)
+    result.work.cacheStatistics = cacheStatistics;
+  if (result.work && sourceStatistics)
+    result.work.sourceStatistics = sourceStatistics;
+  if (result.work && renderStatistics)
+    result.work.renderStatistics = renderStatistics;
+  if (result.work && rootStatistics)
+    result.work.rootStatistics = rootStatistics;
+  return result;
 };
 
 const renderFrames = async (
@@ -203,27 +294,75 @@ const renderFrames = async (
   gl: WebGL2RenderingContext | null,
   transport: FrameTransport,
   gpuRenderer: string,
+  capture?: () => Promise<ArrayBuffer | Blob>,
+  work?: BrowserFrameWork,
 ): Promise<BrowserExportResult> => {
-  const timings: number[] = [];
-  const uploadTimings: number[] = [];
+  const assignment = compositionFrameAssignment(
+    frameCount,
+    work?.workers ?? 1,
+    work?.worker ?? 0,
+    work?.distribution,
+  );
+  const assignedFrames = Math.ceil(
+    (assignment.end - assignment.start) / assignment.step,
+  );
+  // Timing arrays, sort workspace and optional RPC rows remain owned until Node
+  // receives the result. Reserve their complete bounded capacity before rendering.
+  const records = allocateRenderMetadata(
+    512 + assignedFrames * (work ? 192 : 80),
+    () => ({
+      timings: [] as number[],
+      uploadTimings: [] as number[],
+      frames: [] as NonNullable<BrowserExportResult["work"]>["frames"],
+    }),
+    true,
+    (value) => {
+      value.timings.length = 0;
+      value.uploadTimings.length = 0;
+      value.frames.length = 0;
+    },
+  );
+  const { timings, uploadTimings, frames } = records;
   try {
-    for (let frameIndex = 0; frameIndex < frameCount; frameIndex += 1) {
-      const frameStart = performance.now();
-      const readiness = renderFrame(frameIndex);
-      if (readiness) await readiness;
-      const frameBytes = await captureFrame(canvas, gl, transport);
-      timings.push(performance.now() - frameStart);
-      const uploadStart = performance.now();
-      const response = await fetch("/_export/frame", {
-        method: "POST",
-        headers: { "x-frame-index": String(frameIndex) },
-        body: frameBytes,
+    for (
+      let frameIndex = assignment.start;
+      frameIndex < assignment.end;
+      frameIndex += assignment.step
+    ) {
+      await withManagedFrame(async () => {
+        const frameStart = performance.now();
+        const readiness = renderFrame(frameIndex);
+        if (readiness) await readiness;
+        const frameBytes = await (capture
+          ? capture()
+          : captureFrame(canvas, gl, transport));
+        timings.push(performance.now() - frameStart);
+        const uploadStart = performance.now();
+        const response = await fetch("/_export/frame", {
+          method: "POST",
+          headers: {
+            "x-frame-index": String(frameIndex),
+            ...(work
+              ? {
+                  "x-export-worker": String(work.worker),
+                  "x-export-credential": work.credential,
+                }
+              : {}),
+          },
+          body: await frameUploadBody(frameBytes),
+        });
+        if (!response.ok)
+          throw new Error(
+            `Frame ${frameIndex} upload failed: ${await response.text()}`,
+          );
+        uploadTimings.push(performance.now() - uploadStart);
+        if (work)
+          frames.push({
+            index: frameIndex,
+            renderMs: timings.at(-1)!,
+            uploadMs: uploadTimings.at(-1)!,
+          });
       });
-      if (!response.ok)
-        throw new Error(
-          `Frame ${frameIndex} upload failed: ${await response.text()}`,
-        );
-      uploadTimings.push(performance.now() - uploadStart);
     }
   } finally {
     dispose();
@@ -236,5 +375,6 @@ const renderFrames = async (
     frameUploadAverageMs: upload.averageMs,
     frameUploadP95Ms: upload.p95Ms,
     gpuRenderer,
+    ...(work ? { work: { worker: work.worker, frames } } : {}),
   };
 };

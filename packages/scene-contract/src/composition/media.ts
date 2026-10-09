@@ -143,7 +143,7 @@ export const compositionMediaFrameId = (asset: string, frame: number) =>
 
 /** Captured prepared frames are separate from editable source descriptors. */
 export const COMPOSITION_MEDIA_DECODER_VERSION =
-  "composition-media-decoder-1" as const;
+  "composition-media-decoder-2" as const;
 export const CompositionPreparedMediaFrameSchema = z
   .object({
     id: z.string().min(1).max(256),
@@ -173,3 +173,10 @@ export type CompositionPreparedMedia = z.infer<
 export type CompositionPreparedMediaFrame = z.infer<
   typeof CompositionPreparedMediaFrameSchema
 >;
+
+/** First PCM sample on or after a picture boundary. A complete master includes
+ * exactly the samples whose timestamps precede the exclusive composition end.
+ */
+export function compositionPcmBoundary(frame: number, fps: number): number {
+  return Math.ceil((frame * 48000) / fps);
+}

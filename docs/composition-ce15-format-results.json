@@ -1,0 +1,1919 @@
+{
+  "milestone": "CE15",
+  "checkpoint": "explicit output profiles and protected PNG/PCM delivery",
+  "status": "focused-acceptance-passed",
+  "date": "2026-10-07",
+  "branch": "codex/composition-ce15",
+  "base": "49e0543",
+  "fullGate": "not run; milestone in progress",
+  "versions": {
+    "outputProfile": "composition-output-1",
+    "profileExporter": "chromium-ffmpeg-0.7.0",
+    "legacyExporter": "chromium-ffmpeg-0.6.7",
+    "mediaDecoder": "composition-media-decoder-2"
+  },
+  "fingerprint": {
+    "algorithm": "SHA256 of sorted path + NUL + fileSHA256 + newline records",
+    "sha256": "3d430f99abea45df8fd862c0d49c5d01a71130e4a192ca7a69291cd65aed90bf",
+    "files": [
+      {
+        "path": "package.json",
+        "sha256": "1467b72e7832329effd9681047413734fbb7c61493c484eae4a7430bc9c56182"
+      },
+      {
+        "path": "packages/animation-engine/src/composition-media-cache.ts",
+        "sha256": "775ed15b60ab8369408371c7b7ae810b9e01ada267646e7885d30892161e0dff"
+      },
+      {
+        "path": "packages/animation-engine/src/composition-media-color.ts",
+        "sha256": "267e1d7ba035050c57e5a014e2f1cf50a98221a1d4ba61c2a6933539d59f01ea"
+      },
+      {
+        "path": "packages/animation-engine/src/composition-render.ts",
+        "sha256": "e477c6274e979e7f12d9c4f378bdee0538c59a8847ecad3886a735c731943f4d"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output-artifacts.ts",
+        "sha256": "672dc0896a01724024241e88380c493eeb06aca3607ee6dc960adb4d0798c3b1"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output-audio.ts",
+        "sha256": "12470c51a9b00978d41e0c185f8a30d1af011222e115483243c1e608c6840d50"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output-input.ts",
+        "sha256": "65f907522698ecb8027b4c46cf02ec6443c5149ea523b44409c686e9e65f0851"
+      },
+      {
+        "path": "packages/execution-runtime/src/composition-output.ts",
+        "sha256": "196a94cbc8c1f0bba3d91b3bf8dd9dfa1b51f7d5282ab93b3b5d7e5bec3b9f1e"
+      },
+      {
+        "path": "packages/execution-runtime/src/export-page.ts",
+        "sha256": "7844df2955dddcbc7b0007074539509b9b07fd64b8747143cb06ca2eb241989d"
+      },
+      {
+        "path": "packages/execution-runtime/src/export-worker.ts",
+        "sha256": "14f7ab033c5b0c1c4c543cf0b9038004b45b9e986fdb5c5385cf1d255735ac8d"
+      },
+      {
+        "path": "packages/scene-contract/src/composition/media.ts",
+        "sha256": "144820324928bfd128fc3785dfed08dfae32b9c247bba3003f2f7f5262002feb"
+      },
+      {
+        "path": "packages/scene-contract/src/composition/validate-media.ts",
+        "sha256": "2a34b98f8ab5f4a637366436456e371f0a45749f4a392c998a6b79c018ddedf1"
+      },
+      {
+        "path": "tests/browser/composition-output.ts",
+        "sha256": "f40e9480c7a689b7e7af7a023c571cefea04864e90b69676d4bcc7a39357acf8"
+      },
+      {
+        "path": "tests/helpers/composition-output-lifecycle.ts",
+        "sha256": "72ac91e812c09fcf6130435acb63222d6a2737054f5f4a425cf44e0a2191ee82"
+      },
+      {
+        "path": "tests/helpers/composition-output-preview.ts",
+        "sha256": "3b8127ee1cc4d6d86372fb4519ec92560e3f83d1165d6c1fe4e56bd107ef8de9"
+      },
+      {
+        "path": "tests/runtime/composition-output-artifacts.test.ts",
+        "sha256": "b604e4d2ae55497c1a534235faa30771f8baa3b645169948728a0a95b0de2668"
+      },
+      {
+        "path": "tests/unit/composition-media-color.test.ts",
+        "sha256": "e1cd32e61d57304a28a2a629126454c585d2e6efdfdaa809790555e33ffe2b49"
+      },
+      {
+        "path": "tests/unit/composition-media-resources.test.ts",
+        "sha256": "8d784615801c061f02f85608780b59c47032bd6b7d4f6cc9789b769d4aaee807"
+      },
+      {
+        "path": "tests/unit/composition-output-input.test.ts",
+        "sha256": "9516438b86fa637f075075e41f89066136a44eef87ca10b47caac33e3852af06"
+      },
+      {
+        "path": "tests/unit/composition-output-profile.test.ts",
+        "sha256": "9ba8ed83bba90403fd28724609c3c9ffd30222cf5aedd3d5532d7d31b72bb02f"
+      },
+      {
+        "path": "tools/still-shift-cli/src/composition/commands.ts",
+        "sha256": "01e88568472d242a2e9dd9bba3dfd2744db1ace8f1247ae6b1bc636ad42d4ed6"
+      }
+    ]
+  },
+  "verification": {
+    "focused": [
+      {
+        "label": "build",
+        "command": ["pnpm", "build"],
+        "exitCode": 0,
+        "log": "/private/tmp/ce15-format-focus-build-3.log"
+      },
+      {
+        "label": "lint",
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/execution-runtime/src/composition-output.ts",
+          "packages/execution-runtime/src/composition-output-input.ts",
+          "packages/execution-runtime/src/composition-output-artifacts.ts",
+          "packages/execution-runtime/src/export-worker.ts",
+          "packages/execution-runtime/src/export-page.ts",
+          "packages/animation-engine/src/composition-render.ts",
+          "tools/still-shift-cli/src/composition/commands.ts",
+          "tests/unit/composition-output-input.test.ts",
+          "packages/execution-runtime/src/composition-output-audio.ts",
+          "packages/animation-engine/src/composition-media-color.ts",
+          "packages/animation-engine/src/composition-media-cache.ts",
+          "tests/unit/composition-media-color.test.ts",
+          "packages/scene-contract/src/composition/validate-media.ts",
+          "packages/scene-contract/src/composition/media.ts",
+          "tests/unit/composition-media-resources.test.ts",
+          "tests/browser/composition-output.ts",
+          "tests/helpers/composition-output-preview.ts",
+          "tests/helpers/composition-output-lifecycle.ts",
+          "tests/runtime/composition-output-artifacts.test.ts",
+          "tests/unit/composition-output-profile.test.ts"
+        ],
+        "exitCode": 0,
+        "log": "/private/tmp/ce15-format-focus-lint-3.log"
+      },
+      {
+        "label": "units",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/composition-output-input.test.ts",
+          "tests/unit/composition-output-profile.test.ts",
+          "tests/unit/composition-media-color.test.ts",
+          "tests/unit/composition-media-resources.test.ts",
+          "tests/unit/composition-export.test.ts",
+          "tests/runtime/composition-output-artifacts.test.ts",
+          "tests/runtime/artifact-publication.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "exitCode": 0,
+        "log": "/private/tmp/ce15-format-focus-units-3.log"
+      }
+    ],
+    "unitRuntimeTests": 39,
+    "affectedMediaTests": 65,
+    "regressions": {
+      "status": "passed",
+      "seconds": 73.97064983297605,
+      "log": "/private/tmp/ce15-format-regressions-1.log",
+      "checks": [
+        {
+          "command": ["pnpm", "schema:check"],
+          "exitCode": 0,
+          "seconds": 1.2288209170801565
+        },
+        {
+          "command": ["pnpm", "check:boundaries"],
+          "exitCode": 0,
+          "seconds": 0.9461682919645682
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/integration/composition-media-audio.test.ts",
+            "tests/integration/composition-media-cache.test.ts",
+            "tests/integration/composition-media-probe.test.ts",
+            "tests/integration/composition-media-source.test.ts",
+            "tests/unit/composition-media-color.test.ts",
+            "tests/unit/composition-media-pts.test.ts",
+            "tests/unit/composition-media-resources.test.ts",
+            "tests/unit/composition-media.test.ts",
+            "tests/integration/composition-lint-cli.test.ts",
+            "--maxWorkers=2",
+            "--no-file-parallelism"
+          ],
+          "exitCode": 0,
+          "seconds": 9.487585333059542
+        },
+        {
+          "command": ["pnpm", "test:browser:composition-webgl-export"],
+          "exitCode": 0,
+          "seconds": 31.403264499967918
+        },
+        {
+          "command": ["pnpm", "test:browser:composition-media"],
+          "exitCode": 0,
+          "seconds": 30.90403887501452
+        }
+      ]
+    },
+    "mandatoryOutput": {
+      "command": ["pnpm", "test:browser:composition-output"],
+      "exitCode": 0,
+      "seconds": 47.76799658301752,
+      "log": "/private/tmp/ce15-format-acceptance-browser-3.log"
+    },
+    "productionSuccesses": 44,
+    "independentPreviewEncodes": 14,
+    "failedPublicationCases": 16,
+    "dimensionCases": 18,
+    "codecOddDimensionRejections": 4,
+    "pixelPolicy": "all authored alpha8 values exact; PNG native depth exact; opaque BT709 gray max4; independent preview encoded and decoded bytes exact; existing thresholds unchanged"
+  },
+  "acceptance": {
+    "status": "passed",
+    "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW",
+    "exports": 28,
+    "frameCount": 4,
+    "fps": 60,
+    "cases": [
+      {
+        "format": "prores4444",
+        "backend": "canvas2d",
+        "transport": "raw_rgba",
+        "checksum": "sha256:45ee3335ee950b5e5f464eac145bfd5843c81a7082a5793227098359557e9f81",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "yuva444p12le",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:439626eb57571d920929fa600e913ea6154d374ea34d0a420bd2d596be9e0d71"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "prores4444",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 12,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:45ee3335ee950b5e5f464eac145bfd5843c81a7082a5793227098359557e9f81"
+      },
+      {
+        "format": "png8",
+        "backend": "canvas2d",
+        "transport": "raw_rgba",
+        "checksum": "sha256:d44b261b4157600078a55343f16519eea923bc680338d97e66fb4631612b4e04",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "pngRgb": "native-depth exact",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "png8",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "gbr",
+            "range": "pc"
+          },
+          "sequence": {
+            "pattern": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-canvas2d-raw_rgba.%06d.png",
+            "manifestPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-canvas2d-raw_rgba.%06d.png.sequence.json",
+            "firstFrame": 0,
+            "frames": [
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef"
+            ],
+            "audioPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-canvas2d-raw_rgba.%06d.png.audio.wav",
+            "audioChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:1f3ade1cd9d3a3589f010cffde7df9f8c6bfa07b1388b65b48ed470c7e9504c6"
+      },
+      {
+        "format": "png16",
+        "backend": "canvas2d",
+        "transport": "raw_rgba",
+        "checksum": "sha256:c433f1cd2df0353067832a8a7d9c1981532df4393f75e6b3657c7e170b96cd69",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba64be",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "pngRgb": "native-depth exact",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "png16",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 16,
+          "encodedBitDepth": 16,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "gbr",
+            "range": "pc"
+          },
+          "sequence": {
+            "pattern": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-canvas2d-raw_rgba.%06d.png",
+            "manifestPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-canvas2d-raw_rgba.%06d.png.sequence.json",
+            "firstFrame": 0,
+            "frames": [
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8"
+            ],
+            "audioPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-canvas2d-raw_rgba.%06d.png.audio.wav",
+            "audioChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:b3aebb0ee7fdd5e066a59a5681182c475930e13921f725df6dac3ac3cad8dd91"
+      },
+      {
+        "format": "h264",
+        "backend": "canvas2d",
+        "transport": "raw_rgba",
+        "checksum": "sha256:48527141d94591f31914acfc20d45db2799c3885282194e9d8bfece1cd2458cf",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "aac"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "h264",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:48527141d94591f31914acfc20d45db2799c3885282194e9d8bfece1cd2458cf"
+      },
+      {
+        "format": "hevc10",
+        "backend": "canvas2d",
+        "transport": "raw_rgba",
+        "checksum": "sha256:8f8343e11be3848aea850c7da587d8eb1d56be61aa28ba3b40b18a95a0578c87",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "aac"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "hevc10",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 10,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:8f8343e11be3848aea850c7da587d8eb1d56be61aa28ba3b40b18a95a0578c87"
+      },
+      {
+        "format": "prores422hq",
+        "backend": "canvas2d",
+        "transport": "raw_rgba",
+        "checksum": "sha256:816f1f1e70edd8c404105271ae648b29a43d2cbff9950b0cc44843fbdd1b9f12",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:439626eb57571d920929fa600e913ea6154d374ea34d0a420bd2d596be9e0d71"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "prores422hq",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 10,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:816f1f1e70edd8c404105271ae648b29a43d2cbff9950b0cc44843fbdd1b9f12"
+      },
+      {
+        "format": "vp9alpha",
+        "backend": "canvas2d",
+        "transport": "raw_rgba",
+        "checksum": "sha256:1eab85b5c9f732c68fab5c7bca04ec1aa31da761047952d1457305b66d6395d6",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "yuva420p",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "opus",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:96297fe6c9bfb4bfe619f39ae7e8f6ea9635dafef326d89e2c3d15810e13182c"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "vp9alpha",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:1eab85b5c9f732c68fab5c7bca04ec1aa31da761047952d1457305b66d6395d6"
+      },
+      {
+        "format": "prores4444",
+        "backend": "canvas2d",
+        "transport": "png_pipe",
+        "checksum": "sha256:45ee3335ee950b5e5f464eac145bfd5843c81a7082a5793227098359557e9f81",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "yuva444p12le",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:439626eb57571d920929fa600e913ea6154d374ea34d0a420bd2d596be9e0d71"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "prores4444",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 12,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:45ee3335ee950b5e5f464eac145bfd5843c81a7082a5793227098359557e9f81"
+      },
+      {
+        "format": "png8",
+        "backend": "canvas2d",
+        "transport": "png_pipe",
+        "checksum": "sha256:d44b261b4157600078a55343f16519eea923bc680338d97e66fb4631612b4e04",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "pngRgb": "native-depth exact",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "png8",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "gbr",
+            "range": "pc"
+          },
+          "sequence": {
+            "pattern": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-canvas2d-png_pipe.%06d.png",
+            "manifestPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-canvas2d-png_pipe.%06d.png.sequence.json",
+            "firstFrame": 0,
+            "frames": [
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef"
+            ],
+            "audioPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-canvas2d-png_pipe.%06d.png.audio.wav",
+            "audioChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:1f3ade1cd9d3a3589f010cffde7df9f8c6bfa07b1388b65b48ed470c7e9504c6"
+      },
+      {
+        "format": "png16",
+        "backend": "canvas2d",
+        "transport": "png_pipe",
+        "checksum": "sha256:c433f1cd2df0353067832a8a7d9c1981532df4393f75e6b3657c7e170b96cd69",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba64be",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "pngRgb": "native-depth exact",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "png16",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 16,
+          "encodedBitDepth": 16,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "gbr",
+            "range": "pc"
+          },
+          "sequence": {
+            "pattern": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-canvas2d-png_pipe.%06d.png",
+            "manifestPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-canvas2d-png_pipe.%06d.png.sequence.json",
+            "firstFrame": 0,
+            "frames": [
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8"
+            ],
+            "audioPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-canvas2d-png_pipe.%06d.png.audio.wav",
+            "audioChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:b3aebb0ee7fdd5e066a59a5681182c475930e13921f725df6dac3ac3cad8dd91"
+      },
+      {
+        "format": "h264",
+        "backend": "canvas2d",
+        "transport": "png_pipe",
+        "checksum": "sha256:48527141d94591f31914acfc20d45db2799c3885282194e9d8bfece1cd2458cf",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "aac"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "h264",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:48527141d94591f31914acfc20d45db2799c3885282194e9d8bfece1cd2458cf"
+      },
+      {
+        "format": "hevc10",
+        "backend": "canvas2d",
+        "transport": "png_pipe",
+        "checksum": "sha256:8f8343e11be3848aea850c7da587d8eb1d56be61aa28ba3b40b18a95a0578c87",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "aac"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "hevc10",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 10,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:8f8343e11be3848aea850c7da587d8eb1d56be61aa28ba3b40b18a95a0578c87"
+      },
+      {
+        "format": "prores422hq",
+        "backend": "canvas2d",
+        "transport": "png_pipe",
+        "checksum": "sha256:816f1f1e70edd8c404105271ae648b29a43d2cbff9950b0cc44843fbdd1b9f12",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:439626eb57571d920929fa600e913ea6154d374ea34d0a420bd2d596be9e0d71"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "prores422hq",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 10,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:816f1f1e70edd8c404105271ae648b29a43d2cbff9950b0cc44843fbdd1b9f12"
+      },
+      {
+        "format": "vp9alpha",
+        "backend": "canvas2d",
+        "transport": "png_pipe",
+        "checksum": "sha256:1eab85b5c9f732c68fab5c7bca04ec1aa31da761047952d1457305b66d6395d6",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "yuva420p",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "opus",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:96297fe6c9bfb4bfe619f39ae7e8f6ea9635dafef326d89e2c3d15810e13182c"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "vp9alpha",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:1eab85b5c9f732c68fab5c7bca04ec1aa31da761047952d1457305b66d6395d6"
+      },
+      {
+        "format": "prores4444",
+        "backend": "webgl2",
+        "transport": "raw_rgba",
+        "checksum": "sha256:45ee3335ee950b5e5f464eac145bfd5843c81a7082a5793227098359557e9f81",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "yuva444p12le",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:439626eb57571d920929fa600e913ea6154d374ea34d0a420bd2d596be9e0d71"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "prores4444",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 12,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:45ee3335ee950b5e5f464eac145bfd5843c81a7082a5793227098359557e9f81"
+      },
+      {
+        "format": "png8",
+        "backend": "webgl2",
+        "transport": "raw_rgba",
+        "checksum": "sha256:d44b261b4157600078a55343f16519eea923bc680338d97e66fb4631612b4e04",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "pngRgb": "native-depth exact",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "png8",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "gbr",
+            "range": "pc"
+          },
+          "sequence": {
+            "pattern": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-webgl2-raw_rgba.%06d.png",
+            "manifestPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-webgl2-raw_rgba.%06d.png.sequence.json",
+            "firstFrame": 0,
+            "frames": [
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef"
+            ],
+            "audioPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-webgl2-raw_rgba.%06d.png.audio.wav",
+            "audioChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:1f3ade1cd9d3a3589f010cffde7df9f8c6bfa07b1388b65b48ed470c7e9504c6"
+      },
+      {
+        "format": "png16",
+        "backend": "webgl2",
+        "transport": "raw_rgba",
+        "checksum": "sha256:c433f1cd2df0353067832a8a7d9c1981532df4393f75e6b3657c7e170b96cd69",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba64be",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "pngRgb": "native-depth exact",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "png16",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 16,
+          "encodedBitDepth": 16,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "gbr",
+            "range": "pc"
+          },
+          "sequence": {
+            "pattern": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-webgl2-raw_rgba.%06d.png",
+            "manifestPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-webgl2-raw_rgba.%06d.png.sequence.json",
+            "firstFrame": 0,
+            "frames": [
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8"
+            ],
+            "audioPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-webgl2-raw_rgba.%06d.png.audio.wav",
+            "audioChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:b3aebb0ee7fdd5e066a59a5681182c475930e13921f725df6dac3ac3cad8dd91"
+      },
+      {
+        "format": "h264",
+        "backend": "webgl2",
+        "transport": "raw_rgba",
+        "checksum": "sha256:48527141d94591f31914acfc20d45db2799c3885282194e9d8bfece1cd2458cf",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "aac"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "h264",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:48527141d94591f31914acfc20d45db2799c3885282194e9d8bfece1cd2458cf"
+      },
+      {
+        "format": "hevc10",
+        "backend": "webgl2",
+        "transport": "raw_rgba",
+        "checksum": "sha256:8f8343e11be3848aea850c7da587d8eb1d56be61aa28ba3b40b18a95a0578c87",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "aac"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "hevc10",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 10,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:8f8343e11be3848aea850c7da587d8eb1d56be61aa28ba3b40b18a95a0578c87"
+      },
+      {
+        "format": "prores422hq",
+        "backend": "webgl2",
+        "transport": "raw_rgba",
+        "checksum": "sha256:816f1f1e70edd8c404105271ae648b29a43d2cbff9950b0cc44843fbdd1b9f12",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:439626eb57571d920929fa600e913ea6154d374ea34d0a420bd2d596be9e0d71"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "prores422hq",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 10,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:816f1f1e70edd8c404105271ae648b29a43d2cbff9950b0cc44843fbdd1b9f12"
+      },
+      {
+        "format": "vp9alpha",
+        "backend": "webgl2",
+        "transport": "raw_rgba",
+        "checksum": "sha256:1eab85b5c9f732c68fab5c7bca04ec1aa31da761047952d1457305b66d6395d6",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "yuva420p",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "opus",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:96297fe6c9bfb4bfe619f39ae7e8f6ea9635dafef326d89e2c3d15810e13182c"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "vp9alpha",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:1eab85b5c9f732c68fab5c7bca04ec1aa31da761047952d1457305b66d6395d6"
+      },
+      {
+        "format": "prores4444",
+        "backend": "webgl2",
+        "transport": "png_pipe",
+        "checksum": "sha256:45ee3335ee950b5e5f464eac145bfd5843c81a7082a5793227098359557e9f81",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "yuva444p12le",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:439626eb57571d920929fa600e913ea6154d374ea34d0a420bd2d596be9e0d71"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "prores4444",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 12,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:45ee3335ee950b5e5f464eac145bfd5843c81a7082a5793227098359557e9f81"
+      },
+      {
+        "format": "png8",
+        "backend": "webgl2",
+        "transport": "png_pipe",
+        "checksum": "sha256:d44b261b4157600078a55343f16519eea923bc680338d97e66fb4631612b4e04",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "pngRgb": "native-depth exact",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "png8",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "gbr",
+            "range": "pc"
+          },
+          "sequence": {
+            "pattern": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-webgl2-png_pipe.%06d.png",
+            "manifestPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-webgl2-png_pipe.%06d.png.sequence.json",
+            "firstFrame": 0,
+            "frames": [
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef",
+              "sha256:e42e26dd95c6bbf2d4075606c9b9e255db075da1c9f10a941da63121054493ef"
+            ],
+            "audioPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png8-webgl2-png_pipe.%06d.png.audio.wav",
+            "audioChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:1f3ade1cd9d3a3589f010cffde7df9f8c6bfa07b1388b65b48ed470c7e9504c6"
+      },
+      {
+        "format": "png16",
+        "backend": "webgl2",
+        "transport": "png_pipe",
+        "checksum": "sha256:c433f1cd2df0353067832a8a7d9c1981532df4393f75e6b3657c7e170b96cd69",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba64be",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "pngRgb": "native-depth exact",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "png16",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 16,
+          "encodedBitDepth": 16,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "gbr",
+            "range": "pc"
+          },
+          "sequence": {
+            "pattern": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-webgl2-png_pipe.%06d.png",
+            "manifestPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-webgl2-png_pipe.%06d.png.sequence.json",
+            "firstFrame": 0,
+            "frames": [
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8",
+              "sha256:da1c86b5ecea4f803ec5a956db976ebaefb93f618a165be0ec6c1c18f08485b8"
+            ],
+            "audioPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/composition-output-f5IPXW/png16-webgl2-png_pipe.%06d.png.audio.wav",
+            "audioChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:b3aebb0ee7fdd5e066a59a5681182c475930e13921f725df6dac3ac3cad8dd91"
+      },
+      {
+        "format": "h264",
+        "backend": "webgl2",
+        "transport": "png_pipe",
+        "checksum": "sha256:48527141d94591f31914acfc20d45db2799c3885282194e9d8bfece1cd2458cf",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "aac"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "h264",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:48527141d94591f31914acfc20d45db2799c3885282194e9d8bfece1cd2458cf"
+      },
+      {
+        "format": "hevc10",
+        "backend": "webgl2",
+        "transport": "png_pipe",
+        "checksum": "sha256:8f8343e11be3848aea850c7da587d8eb1d56be61aa28ba3b40b18a95a0578c87",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "aac"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "hevc10",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 10,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:8f8343e11be3848aea850c7da587d8eb1d56be61aa28ba3b40b18a95a0578c87"
+      },
+      {
+        "format": "prores422hq",
+        "backend": "webgl2",
+        "transport": "png_pipe",
+        "checksum": "sha256:816f1f1e70edd8c404105271ae648b29a43d2cbff9950b0cc44843fbdd1b9f12",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "rgba",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 9
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "pcm_f32le",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:439626eb57571d920929fa600e913ea6154d374ea34d0a420bd2d596be9e0d71"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "prores422hq",
+          "alpha": false,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 10,
+          "encodedBitDepth": 10,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:816f1f1e70edd8c404105271ae648b29a43d2cbff9950b0cc44843fbdd1b9f12"
+      },
+      {
+        "format": "vp9alpha",
+        "backend": "webgl2",
+        "transport": "png_pipe",
+        "checksum": "sha256:1eab85b5c9f732c68fab5c7bca04ec1aa31da761047952d1457305b66d6395d6",
+        "pixels": {
+          "frames": 4,
+          "nativePixelFormat": "yuva420p",
+          "alphaSamples": 16384,
+          "alpha": "exact at authored 8-bit values",
+          "bt709GraySamples": 0
+        },
+        "audio": {
+          "sourceChecksum": "sha256:42c43b7722bd445d9fb01804b2ab19ac3dfa91bbe02dcac9ee44b083a8f26322",
+          "sampleCount": 3200,
+          "sampleRate": 48000,
+          "channels": 2,
+          "codec": "opus",
+          "decodedSampleCount": 3200,
+          "decodedChecksum": "sha256:96297fe6c9bfb4bfe619f39ae7e8f6ea9635dafef326d89e2c3d15810e13182c"
+        },
+        "output": {
+          "version": "composition-output-1",
+          "format": "vp9alpha",
+          "alpha": true,
+          "renderSourceBitDepth": 8,
+          "encoderInputBitDepth": 8,
+          "encodedBitDepth": 8,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "bt709",
+            "matrix": "bt709",
+            "range": "tv"
+          }
+        },
+        "environment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "independentPreviewChecksum": "sha256:1eab85b5c9f732c68fab5c7bca04ec1aa31da761047952d1457305b66d6395d6"
+      }
+    ],
+    "cli": [
+      {
+        "format": "h264",
+        "backend": "webgl2",
+        "transport": "png_pipe",
+        "checksum": "sha256:48527141d94591f31914acfc20d45db2799c3885282194e9d8bfece1cd2458cf"
+      },
+      {
+        "format": "png16",
+        "backend": "webgl2",
+        "transport": "png_pipe",
+        "checksum": "sha256:c433f1cd2df0353067832a8a7d9c1981532df4393f75e6b3657c7e170b96cd69"
+      }
+    ],
+    "dimensions": [
+      {
+        "format": "prores4444",
+        "backend": "canvas2d",
+        "width": 17,
+        "height": 19,
+        "checksum": "sha256:9fecfd2c02b8b5f1b758f6491a8aa6680b95edb9db6781b23b13f15e6f3695b1"
+      },
+      {
+        "format": "png8",
+        "backend": "canvas2d",
+        "width": 17,
+        "height": 19,
+        "checksum": "sha256:d1be5b7a8f94a0dfa424dbbc821e0835e354fdb1a39d626e3f26718854023843"
+      },
+      {
+        "format": "png16",
+        "backend": "canvas2d",
+        "width": 17,
+        "height": 19,
+        "checksum": "sha256:134ba660dc3d4471fb25e27c124aaba8af89009907f7021f182b014043f96c10"
+      },
+      {
+        "format": "h264",
+        "backend": "canvas2d",
+        "width": 17,
+        "height": 19,
+        "rejected": "codec requires even dimensions"
+      },
+      {
+        "format": "hevc10",
+        "backend": "canvas2d",
+        "width": 17,
+        "height": 19,
+        "rejected": "codec requires even dimensions"
+      },
+      {
+        "format": "prores422hq",
+        "backend": "canvas2d",
+        "width": 17,
+        "height": 19,
+        "checksum": "sha256:269a7fab54bfeb38e1a3d8033df28e42ba5b2d6d8fe8b004afc40f8d3e0745cb"
+      },
+      {
+        "format": "vp9alpha",
+        "backend": "canvas2d",
+        "width": 17,
+        "height": 19,
+        "checksum": "sha256:25b2fed6dfd2400a8fc571a3c0b9f1ad0c197fe039cad8a506801717c633b1a4"
+      },
+      {
+        "format": "prores4444",
+        "backend": "webgl2",
+        "width": 17,
+        "height": 19,
+        "checksum": "sha256:9fecfd2c02b8b5f1b758f6491a8aa6680b95edb9db6781b23b13f15e6f3695b1"
+      },
+      {
+        "format": "png8",
+        "backend": "webgl2",
+        "width": 17,
+        "height": 19,
+        "checksum": "sha256:d1be5b7a8f94a0dfa424dbbc821e0835e354fdb1a39d626e3f26718854023843"
+      },
+      {
+        "format": "png16",
+        "backend": "webgl2",
+        "width": 17,
+        "height": 19,
+        "checksum": "sha256:134ba660dc3d4471fb25e27c124aaba8af89009907f7021f182b014043f96c10"
+      },
+      {
+        "format": "h264",
+        "backend": "webgl2",
+        "width": 17,
+        "height": 19,
+        "rejected": "codec requires even dimensions"
+      },
+      {
+        "format": "hevc10",
+        "backend": "webgl2",
+        "width": 17,
+        "height": 19,
+        "rejected": "codec requires even dimensions"
+      },
+      {
+        "format": "prores422hq",
+        "backend": "webgl2",
+        "width": 17,
+        "height": 19,
+        "checksum": "sha256:269a7fab54bfeb38e1a3d8033df28e42ba5b2d6d8fe8b004afc40f8d3e0745cb"
+      },
+      {
+        "format": "vp9alpha",
+        "backend": "webgl2",
+        "width": 17,
+        "height": 19,
+        "checksum": "sha256:25b2fed6dfd2400a8fc571a3c0b9f1ad0c197fe039cad8a506801717c633b1a4"
+      },
+      {
+        "format": "png8",
+        "backend": "canvas2d",
+        "width": 8192,
+        "height": 16,
+        "checksum": "sha256:c7f19d05ab492b242d89c49776eef9f2996ff360de9c094c5905ff156f34f25f"
+      },
+      {
+        "format": "png8",
+        "backend": "webgl2",
+        "width": 8192,
+        "height": 16,
+        "checksum": "sha256:c7f19d05ab492b242d89c49776eef9f2996ff360de9c094c5905ff156f34f25f"
+      },
+      {
+        "format": "png8",
+        "backend": "canvas2d",
+        "width": 16,
+        "height": 8192,
+        "checksum": "sha256:3e28fe1ceb80ddadad3b3249c5ff73c9d2585671e6a2d0c3176784620cd05a85"
+      },
+      {
+        "format": "png8",
+        "backend": "webgl2",
+        "width": 16,
+        "height": 8192,
+        "checksum": "sha256:3e28fe1ceb80ddadad3b3249c5ff73c9d2585671e6a2d0c3176784620cd05a85"
+      }
+    ],
+    "lifecycle": [
+      {
+        "format": "prores4444",
+        "failure": "cancel",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "prores4444",
+        "failure": "validation",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "png8",
+        "failure": "cancel",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "png8",
+        "failure": "validation",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "png16",
+        "failure": "cancel",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "png16",
+        "failure": "validation",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "h264",
+        "failure": "cancel",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "h264",
+        "failure": "validation",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "hevc10",
+        "failure": "cancel",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "hevc10",
+        "failure": "validation",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "prores422hq",
+        "failure": "cancel",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "prores422hq",
+        "failure": "validation",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "vp9alpha",
+        "failure": "cancel",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "format": "vp9alpha",
+        "failure": "validation",
+        "originalReason": true,
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "source": "json",
+        "mutation": "after encoding and validation",
+        "publication": "none",
+        "stageCleanup": true
+      },
+      {
+        "source": "image",
+        "mutation": "after encoding and validation",
+        "publication": "none",
+        "stageCleanup": true
+      }
+    ]
+  },
+  "review": {
+    "status": "passed for format slice",
+    "transport": "strict one pending upload; <=64KiB input chunks, <=128KiB converted output chunks, <=3 carry bytes; one persistent PNG decoder",
+    "publication": "exclusive hard links and inode-aware rollback; per-file transaction with sequence manifest last; not crash atomic as a bundle",
+    "sources": "loaded JSON identity checked before prep and after render; pinned source assets revalidated after callbacks immediately before publication",
+    "audio": "MOV PCM body exact; PNG companion full captured WAV exact; AAC 48k edit-list clock exact; Opus actual decoded sample count exact; all container bytes match independent full-audio preview encodes",
+    "precision": "renderer sources RGBA8; ProRes4444 codec input10 and verified native output12; HEVC/HQ10 and PNG16 receive an explicit16-bit transfer expansion, without adding source detail",
+    "sizes": "actual17x19 exports where supported and actual16x8192 /8192x16 PNG on both backends; do not claim every large area or worker combination has been tested"
+  },
+  "rejectedAttempts": [
+    {
+      "log": "/private/tmp/ce15-output-profile-diagnostic-1.log",
+      "reason": "implicit FFmpeg8-to16 expansion altered native alpha/precision and omitted color tags; replaced by explicit channel conversion and tagged filters"
+    },
+    {
+      "log": "/private/tmp/ce15-output-profile-diagnostic-2.log",
+      "reason": "direct VP9 color scaling shifted high alpha by one; source alpha is now split before RGB/YUV conversion"
+    },
+    {
+      "log": "/private/tmp/ce15-vp9-repeat-smoke-1.log",
+      "reason": "previous WebM random segment identifiers differed; bitexact muxing verified identical repeat bytes"
+    },
+    {
+      "log": "/private/tmp/ce15-sequence-reimport-smoke-1.log",
+      "reason": "original sequence guard accepted only sRGB; explicit BT709 cICP authority added"
+    },
+    {
+      "log": "/private/tmp/ce15-reimport-pixel-inspection.log",
+      "reason": "tagging alone did not apply the RGB inverse transfer; original samples are now converted"
+    },
+    {
+      "log": "/private/tmp/ce15-reimport-pixel-inspection-3.log",
+      "reason": "RGB precision conversion altered alpha; extract alpha from native source precision first"
+    },
+    {
+      "log": "/private/tmp/ce15-sequence-alpha-filter-diagnostic-2.log",
+      "reason": "RGBA64BE exploratory filter returned status null with no stderr; never adopted; signal not established"
+    },
+    {
+      "log": "/private/tmp/ce15-format-acceptance-browser-1.log",
+      "reason": "H264 CRF18 white endpoint delta5 exceeded unchanged delta4; explicit H264 CRF16 passes; legacy CRF18 unchanged"
+    },
+    {
+      "log": "/private/tmp/ce15-format-acceptance-build-1.log",
+      "reason": "new ImageLayer fixture needed sources array rather than asset field"
+    },
+    {
+      "source": "build output retained in tool transcript",
+      "reason": "independent preview fixture exceeded Playwright recursive type checking; serialize composition JSON for browser boundary"
+    }
+  ],
+  "logs": [
+    {
+      "path": "/private/tmp/ce15-format-acceptance-browser-3.log",
+      "sha256": "9b482c25375440376d9a75c8e39cc570a8545baae386e5b3217102c558af7803"
+    },
+    {
+      "path": "/private/tmp/ce15-format-regressions-1.log",
+      "sha256": "52ee631e129601d33f96082eec0fb9ad945da93d4aa190cb518eef794e19531a"
+    },
+    {
+      "path": "/private/tmp/ce15-format-focus-build-3.log",
+      "sha256": "e0f737e827798ac2adbc43c6addb813678110cad8bab08786b511df1e63ffa34"
+    },
+    {
+      "path": "/private/tmp/ce15-format-focus-lint-3.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/ce15-format-focus-units-3.log",
+      "sha256": "c67c670fb2a1c7ecd67bf27f37cb30c09c4b86c432baf760babbeab4012be2c8"
+    },
+    {
+      "path": "/private/tmp/ce15-output-quality-diagnostic-1.log",
+      "sha256": "52db1e301e61347699c45d5ed17f831fe916d4bd0e2da9507ee23a0f39bba297"
+    },
+    {
+      "path": "/private/tmp/ce15-sequence-alpha-filter-diagnostic-3.log",
+      "sha256": "c804f9e9e851d00a7f23f9bb84bf8a554f672fc923171c2c615c886b4907a75a"
+    }
+  ],
+  "pending": [
+    "aggregate pixel/worker memory limit and full area matrix",
+    "global static layer/precomp cache including preflight and late visibility",
+    "bounded independent parallel workers and complete boundary/lifecycle acceptance",
+    "per-layer statistics and actual 120-second \u22653\u00d7 one/four-worker end-to-end proof",
+    "final implementation review and immutable complete local pnpm check",
+    "CE15 PR creation/attachment; then complete CE14"
+  ]
+}

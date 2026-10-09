@@ -19,6 +19,7 @@ import {
 } from "../../../../scene-contract/src/motion-craft.ts";
 import {
   prepareTypography,
+  prepareTypographyColors,
   drawTypography,
   isSingleImageTypography,
   hasStableTypographyImage,
@@ -191,7 +192,12 @@ function typographyProvider(id: string): CanvasContentProvider {
       const prepared = prepareTypography(
         textScene(data, layer.sampleTimes),
         new Map(resources.fonts),
-        { softwareRaster: !!resources.softwareRaster },
+        {
+          softwareRaster: !!resources.softwareRaster,
+          ...(resources.sourceCanvas
+            ? { sourceCanvas: resources.sourceCanvas }
+            : {}),
+        },
       );
       const measured = [...preparedTextBounds(data.node, prepared).values()];
       const bounds = {
@@ -240,6 +246,20 @@ function typographyProvider(id: string): CanvasContentProvider {
           );
         },
         {
+          preparePixels(time, state, sourceTime) {
+            const frame = frameAt(time, sourceTime);
+            const sample =
+              data.samples[Math.min(frame, data.samples.length - 1)]!;
+            prepareTypographyColors(
+              {
+                ...paintNode(data.node, data.appearance, frame),
+                text: textAt(frame),
+              },
+              { ...sample, state: state ?? sample.state },
+              prepared,
+              sourceTime ?? frame,
+            );
+          },
           boundedCanvas: true,
           bounds,
           singleImage: isSingleImageTypography(data.node, prepared),

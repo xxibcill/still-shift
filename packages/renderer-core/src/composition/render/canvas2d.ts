@@ -1,3 +1,13 @@
+import {
+  createRenderCanvas,
+  readRenderImageData,
+  allocateRenderPixels,
+  retainRenderCanvas,
+  releaseRenderCanvas,
+  releaseRenderPixels,
+  renderMemory,
+} from "../../managed-memory-context.ts";
+import type { CompositionRenderStatistics } from "./statistics.ts";
 import { installCanvasLinear } from "./canvas-linear.ts";
 import { cssColor } from "./canvas-color.ts";
 import { drawShapes } from "./draw-shapes.ts";
@@ -109,6 +119,7 @@ const matrixScale = (m: Matrix) =>
   Math.sqrt(Math.abs(m[0] * m[3] - m[1] * m[2]));
 
 export type Canvas2dBackendOptions = {
+  statistics?: CompositionRenderStatistics;
   colorSpace?: "srgb" | "linear-srgb";
   images: CanvasImageResources;
   drawText: CanvasTextDrawer;
@@ -116,7 +127,7 @@ export type Canvas2dBackendOptions = {
     ctx: CanvasRenderingContext2D,
     content: ProviderContent,
   ) => void;
-  /** Defaults to `document.createElement("canvas")`. */
+  /** Defaults to `createRenderCanvas()`. */
   createCanvas?: (width: number, height: number) => HTMLCanvasElement;
   /** Surfaces kept per size between frames. */
   poolLimit?: number;
@@ -144,18 +155,32 @@ export type Canvas2dBackend = RenderBackend<CanvasSurface> & {
 export function createCanvas2dBackend(
   options: Canvas2dBackendOptions,
 ): Canvas2dBackend {
-  const make =
+  const owned = new Set<HTMLCanvasElement>();
+  const create =
     options.createCanvas ??
     ((width: number, height: number) => {
-      const canvas = document.createElement("canvas");
+      const canvas = createRenderCanvas();
       canvas.width = width;
       canvas.height = height;
       return canvas;
     });
+  const make = (width: number, height: number) => {
+    const canvas = create(width, height);
+    if (renderMemory()) {
+      retainRenderCanvas(canvas);
+      owned.add(canvas);
+    }
+    return canvas;
+  };
+  const discard = (canvas: HTMLCanvasElement) => {
+    releaseRenderCanvas(canvas);
+    owned.delete(canvas);
+  };
   const limit = options.poolLimit ?? 16;
   const pool = new Map<string, CanvasSurface[]>();
   let pooledBytes = 0;
-  const byteLimit = options.poolByteLimit ?? Infinity;
+  const byteLimit =
+    options.poolByteLimit ?? (renderMemory() ? 128 * 1024 * 1024 : Infinity);
   const rasters = new Map<string, HTMLCanvasElement>();
   let allocated = 0;
   let accumulation: Float32Array | undefined;
@@ -207,6 +232,77 @@ export function createCanvas2dBackend(
 
   const backend: Canvas2dBackend = {
     version: COMPOSITION_RENDERER_VERSION,
+    ...(options.statistics ? { statistics: options.statistics } : {}),
+    surfaceEncoding: "rgba8-straight",
+    rootPixels: {
+      identity: (target) => ({
+        policy: JSON.stringify([
+          target.ctx.getContextAttributes(),
+          target.rasterMode ?? "default",
+        ]),
+        encoding: "rgba8-straight",
+      }),
+      capture: (target) => backend.captureSurface!(target),
+      restore(target, pixels) {
+        if (
+          pixels.encoding !== "rgba8-straight" ||
+          pixels.bytes.byteLength !== target.width * target.height * 4
+        )
+          throw Error("Canvas root pixels differ from their target contract");
+        target.ctx.putImageData(
+          new ImageData(
+            new Uint8ClampedArray(
+              pixels.bytes.buffer,
+              pixels.bytes.byteOffset,
+              pixels.bytes.byteLength,
+            ),
+            target.width,
+            target.height,
+          ),
+          0,
+          0,
+        );
+      },
+      reset() {},
+    },
+    captureSurface(surface) {
+      return {
+        encoding: "rgba8-straight",
+        bytes: new Uint8Array(
+          readRenderImageData(
+            surface.ctx,
+            0,
+            0,
+            surface.width,
+            surface.height,
+          ).data.buffer,
+        ),
+      };
+    },
+    restoreSurface(width, height, pixels) {
+      if (
+        pixels.encoding !== "rgba8-straight" ||
+        pixels.bytes.byteLength !== width * height * 4
+      )
+        throw Error(
+          "Canvas retained surface storage differs from its contract",
+        );
+      const surface = backend.createSurface(width, height);
+      surface.ctx.putImageData(
+        new ImageData(
+          new Uint8ClampedArray(
+            pixels.bytes.buffer,
+            pixels.bytes.byteOffset,
+            pixels.bytes.byteLength,
+          ),
+          width,
+          height,
+        ),
+        0,
+        0,
+      );
+      return surface;
+    },
     get allocated() {
       return allocated;
     },
@@ -253,6 +349,7 @@ export function createCanvas2dBackend(
       const key = `${surface.width}x${surface.height}:${surface.rasterMode ?? "default"}`;
       const bytes = surface.width * surface.height * 4;
       if (bytes > byteLimit || (pool.get(key)?.length ?? 0) >= limit) {
+        discard(surface.canvas);
         allocated -= 1;
         return;
       }
@@ -262,6 +359,7 @@ export function createCanvas2dBackend(
         const evicted = oldest.shift()!;
         pooledBytes -= evicted.width * evicted.height * 4;
         evicted.canvas.width = evicted.canvas.height = 0;
+        discard(evicted.canvas);
         allocated -= 1;
         if (!oldest.length) pool.delete(oldestKey);
       }
@@ -607,7 +705,13 @@ export function createCanvas2dBackend(
       reset(dctx);
     },
     readPixels(surface) {
-      return surface.ctx.getImageData(0, 0, surface.width, surface.height).data;
+      return readRenderImageData(
+        surface.ctx,
+        0,
+        0,
+        surface.width,
+        surface.height,
+      ).data;
     },
     accumulateExposure(target, count, draw) {
       if (count === 1) {
@@ -615,22 +719,41 @@ export function createCanvas2dBackend(
         return;
       }
       const length = target.width * target.height * 4;
-      if (accumulation?.length !== length)
-        accumulation = new Float32Array(length);
-      else accumulation.fill(0);
+      if (accumulation?.length !== length) {
+        releaseRenderPixels(accumulation);
+        accumulation = allocateRenderPixels(
+          length * 4,
+          () => new Float32Array(length),
+          true,
+        );
+      } else accumulation.fill(0);
       let pixels: ImageData | undefined;
       for (let sample = 0; sample < count; sample++) {
         draw(sample);
-        pixels = target.ctx.getImageData(0, 0, target.width, target.height);
+        pixels = readRenderImageData(
+          target.ctx,
+          0,
+          0,
+          target.width,
+          target.height,
+        );
         for (let index = 0; index < length; index++)
           accumulation[index] = accumulation[index]! + pixels.data[index]!;
+        if (sample < count - 1) {
+          releaseRenderPixels(pixels.data);
+          pixels = undefined;
+        }
       }
       for (let index = 0; index < length; index++)
         pixels!.data[index] = Math.round(accumulation[index]! / count);
       target.ctx.putImageData(pixels!, 0, 0);
+      releaseRenderPixels(pixels!.data);
     },
     dispose() {
+      releaseRenderPixels(accumulation);
       accumulation = undefined;
+      for (const canvas of owned) releaseRenderCanvas(canvas);
+      owned.clear();
       pool.clear();
       pooledBytes = 0;
       rasters.clear();
@@ -699,7 +822,13 @@ export function createCanvas2dBackend(
 
   /** Matte value = CSS Masking luminance of the premultiplied colour. */
   function lumaToAlpha(matte: CanvasSurface, mode: TrackMatte["mode"]) {
-    const image = matte.ctx.getImageData(0, 0, matte.width, matte.height);
+    const image = readRenderImageData(
+      matte.ctx,
+      0,
+      0,
+      matte.width,
+      matte.height,
+    );
     const px = image.data;
     for (let i = 0; i < px.length; i += 4) {
       const luma =

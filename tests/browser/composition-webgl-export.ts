@@ -21,11 +21,13 @@ const directory = await mkdtemp(join(tmpdir(), "composition-webgl-export-"));
 const server = await createServer({
   root,
   configFile: false,
+  cacheDir: join(directory, "preview-vite"),
   logLevel: "error",
   server: { host: "127.0.0.1", port: 0 },
 });
 const lab = await createServer({
   configFile: resolve(root, "apps/lab/vite.config.ts"),
+  cacheDir: join(directory, "lab-vite"),
   logLevel: "error",
   server: { port: 0, strictPort: false, watch: null },
 });
@@ -114,6 +116,27 @@ try {
     const first = JSON.parse(output) as CompositionRenderResult;
     assert.equal(first.rendererVersion, COMPOSITION_WEBGL_RENDERER_VERSION);
     assert.match(first.metrics.gpuRenderer, /SwiftShader/);
+    const stats = first.metrics.compositionStatistics;
+    assert.ok(stats, "ordinary composition exports include statistics");
+    assert.equal(stats.frameCount, first.metrics.frameCount);
+    assert.equal(stats.cacheEnabled, false);
+    assert.equal(stats.cacheHits, 0);
+    const memory = first.metrics.compositionMemory;
+    assert.ok(memory);
+    assert.equal(memory.workers.length, 1);
+    assert.deepEqual(memory.workers[0]!.afterAcknowledgement?.current, {
+      pixels: 0,
+      metadata: 0,
+    });
+    assert.equal(memory.workers[0]!.afterAcknowledgement?.reservations, 0);
+    assert.ok(stats.byLayerType.length > 0);
+    assert.ok(
+      stats.byLayerType.every(
+        (row) =>
+          row.submissionWallMsPerOutputFrame ===
+          row.submissionWallMs / stats.frameCount,
+      ),
+    );
     const manifest = JSON.parse(
       await readFile(first.sceneManifestPath, "utf8"),
     );

@@ -1,3 +1,4 @@
+import { releaseRenderPixels } from "../../managed-memory-context.ts";
 import {
   linearBlendShader,
   linearShaderControls,
@@ -16,6 +17,10 @@ import { blurKernelLength } from "./webgl-blur-kernel.ts";
 import { WebglPaint } from "./webgl-paint.ts";
 import { WebglDamage } from "./webgl-damage.ts";
 import { WebglReadback } from "./webgl-readback.ts";
+import {
+  unpremultiplyRgba,
+  unpremultiplyDrawingBufferRgba,
+} from "./webgl-rgba.ts";
 import { WebglVisualKey, type PreparedContentKey } from "./webgl-visual-key.ts";
 import { WebglIsolates } from "./webgl-isolates.ts";
 import { WebglVectors } from "./webgl-vectors.ts";
@@ -40,7 +45,7 @@ import { blendShader } from "./webgl-blend.ts";
 import { FLAT_LIGHTING_SHADER, flatLightingUniforms } from "./flat-lighting.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.66.1" as const;
+  "composition-webgl2-0.67.1" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -68,6 +73,7 @@ export type Webgl2Backend = RenderBackend<WebglSurface> & {
 };
 
 export type Webgl2BackendOptions = Canvas2dBackendOptions & {
+  preserveAlpha?: boolean;
   nativeImageByteLimit?: number;
   boundedCanvas?: (content: ProviderContent | TextContent) => boolean;
   singleImage?: (content: ProviderContent | TextContent) => boolean;
@@ -83,13 +89,20 @@ export function createWebgl2Backend(
   canvas: HTMLCanvasElement,
   options: Webgl2BackendOptions,
 ): Webgl2Backend {
-  const device = new WebglDevice(canvas);
+  const preserveAlpha = options.preserveAlpha === true;
+  const device = new WebglDevice(canvas, preserveAlpha);
   const raster = createCanvas2dBackend({
     ...options,
     colorSpace: "srgb",
     poolByteLimit: 128 * 1024 * 1024,
   });
-  const target = device.surface(canvas.width, canvas.height, false, true, true);
+  const target = device.surface(
+    canvas.width,
+    canvas.height,
+    false,
+    !preserveAlpha,
+    true,
+  );
   const gl = device.gl;
   const bounds = new WebglBounds(target);
   const effects = new WebglEffects(device, raster, bounds);
@@ -109,15 +122,17 @@ export function createWebgl2Backend(
     target.width,
     target.height,
     () => readSurface(target),
-    (rect) =>
-      device.readRegion(
+    (rect) => {
+      const pixels = device.readRegion(
         target,
         rect.left,
         rect.top,
         rect.right - rect.left,
         rect.bottom - rect.top,
         "native",
-      ),
+      );
+      return target.opaque ? pixels : unpremultiplyDrawingBufferRgba(pixels);
+    },
     undefined,
     "bottom-up",
   );
@@ -136,6 +151,7 @@ export function createWebgl2Backend(
     options.singleImage,
     options.stableImages,
     options.boundedCanvas,
+    options.statistics,
   );
   const isolates = new WebglIsolates(keys, (surface) => {
     bounds.release(surface);
@@ -148,7 +164,12 @@ export function createWebgl2Backend(
     if (!transfer) {
       const table = device.surface(256, 256);
       try {
-        device.uploadBytes(table, linearTransferBytes());
+        const bytes = linearTransferBytes();
+        try {
+          device.uploadBytes(table, bytes);
+        } finally {
+          releaseRenderPixels(bytes);
+        }
         transfer = table;
       } catch (error) {
         device.release(table);
@@ -163,16 +184,8 @@ export function createWebgl2Backend(
     if (region) return region;
     const pixels = device.read(surface);
     if (surface.opaque) return new Uint8ClampedArray(pixels.buffer);
-    const result = new Uint8ClampedArray(pixels.length);
-    for (let i = 0; i < pixels.length; i += 4) {
-      const a = pixels[i + 3]!;
-      for (let channel = 0; channel < 3; channel++)
-        result[i + channel] = a
-          ? Math.round((pixels[i + channel]! * 255) / a)
-          : 0;
-      result[i + 3] = a;
-    }
-    return result;
+    if (surface.screen) return unpremultiplyDrawingBufferRgba(pixels);
+    return unpremultiplyRgba(pixels);
   }
 
   function replace(
@@ -416,7 +429,111 @@ export function createWebgl2Backend(
 
   const backend: Webgl2Backend = {
     version: COMPOSITION_WEBGL_RENDERER_VERSION,
+    ...(options.statistics ? { statistics: options.statistics } : {}),
+    surfaceEncoding: "rgba8-premultiplied",
+    rootPixels: {
+      identity: (target) => ({
+        policy: JSON.stringify([target.screen, target.opaque, target.floating]),
+        encoding: target.floating
+          ? "rgba32f-premultiplied"
+          : "rgba8-premultiplied",
+      }),
+      capture: (target) =>
+        target.floating
+          ? {
+              encoding: "rgba32f-premultiplied",
+              bytes: new Uint8Array(device.readFloats(target).buffer),
+            }
+          : { encoding: "rgba8-premultiplied", bytes: device.read(target) },
+      restore(target, pixels) {
+        const expected = target.floating
+          ? "rgba32f-premultiplied"
+          : "rgba8-premultiplied";
+        if (
+          pixels.encoding !== expected ||
+          pixels.bytes.byteLength !==
+            target.width * target.height * (target.floating ? 16 : 4)
+        )
+          throw Error("WebGL root pixels differ from their target contract");
+        damage.reset();
+        device.setFrameClip();
+        if (target.screen) {
+          const source = backend.restoreSurface!(
+            target.width,
+            target.height,
+            pixels,
+          );
+          const blended = gl.isEnabled(gl.BLEND);
+          try {
+            gl.disable(gl.BLEND);
+            device.pass(
+              "void main(){pixel=texelFetch(source,ivec2(gl_FragCoord.xy),0);}",
+              target,
+              [source],
+            );
+          } finally {
+            if (blended) gl.enable(gl.BLEND);
+            backend.releaseSurface(source);
+          }
+        } else if (target.floating)
+          device.uploadFloats(
+            target,
+            new Float32Array(
+              pixels.bytes.buffer,
+              pixels.bytes.byteOffset,
+              pixels.bytes.byteLength / 4,
+            ),
+          );
+        else device.uploadBytes(target, pixels.bytes);
+        bounds.full(target);
+      },
+      reset() {
+        damage.reset();
+        device.setFrameClip();
+      },
+    },
+    captureSurface(surface) {
+      if (surface.screen)
+        throw Error(
+          "Retained WebGL surfaces must be independent offscreen targets",
+        );
+      return surface.floating
+        ? {
+            encoding: "rgba32f-premultiplied",
+            bytes: new Uint8Array(device.readFloats(surface).buffer),
+          }
+        : { encoding: "rgba8-premultiplied", bytes: device.read(surface) };
+    },
+    restoreSurface(width, height, pixels) {
+      const floating = pixels.encoding === "rgba32f-premultiplied";
+      if (
+        !["rgba8-premultiplied", "rgba32f-premultiplied"].includes(
+          pixels.encoding,
+        ) ||
+        pixels.bytes.byteLength !== width * height * (floating ? 16 : 4)
+      )
+        throw Error("WebGL retained surface storage differs from its contract");
+      const surface = device.surface(width, height, floating);
+      try {
+        if (floating)
+          device.uploadFloats(
+            surface,
+            new Float32Array(
+              pixels.bytes.buffer,
+              pixels.bytes.byteOffset,
+              pixels.bytes.byteLength / 4,
+            ),
+          );
+        else device.uploadBytes(surface, pixels.bytes);
+        bounds.full(surface);
+        return surface;
+      } catch (error) {
+        device.release(surface);
+        throw error;
+      }
+    },
     frameKey: (root) => keys.of(root),
+    frameMetadataKey: (root) => keys.metadata(root),
     beginFrame(root) {
       const next = (root.colorSpace ?? options.colorSpace) === "linear-srgb";
       if (next !== linear) {
@@ -430,12 +547,13 @@ export function createWebgl2Backend(
     endFrame(completed) {
       renderingFrame = false;
       device.setFrameClip();
+      damage.finish();
       if (!completed) damage.reset();
     },
     renderIsolate: (op, like, draw) => isolates.render(op, like, draw),
     drawVectors: (dst, ops) => {
       if (!linear) {
-        bounds.include(dst, vectors.draw(dst, ops));
+        vectors.draw(dst, ops, (region) => bounds.include(dst, region));
         return;
       }
       for (const op of ops) {
@@ -1056,14 +1174,16 @@ export function createWebgl2Backend(
     present: () => device.present(target),
     dispose() {
       images.dispose();
-      damage.reset();
+      damage.dispose();
       readback.dispose();
-      isolates.dispose();
+      isolates.close();
       vectors.dispose();
       pngImages.dispose();
       depthImages.dispose();
       raster.dispose();
+      bounds.dispose();
       device.dispose();
+      keys.dispose();
     },
   };
   return backend;

@@ -156,3 +156,16 @@ export {
 } from "./composition/adapters/depth.ts";
 
 export * from "./soundtrack-edits.ts";
+export { ManagedMemory, type MemoryLimits } from "./managed-memory.ts";
+export {
+  allocateRenderPixels,
+  allocateRenderStorageAsync,
+  createRenderCanvas,
+  readRenderImageData,
+  readRenderResponsePixels,
+  releaseRenderPixels,
+  releaseRenderStorage,
+  renderMemory,
+  resizeRenderStorage,
+  withManagedMemory,
+} from "./managed-memory-context.ts";

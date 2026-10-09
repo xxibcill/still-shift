@@ -1,3 +1,4 @@
+import { compositionPcmBoundary } from "@still-shift/scene-contract";
 import { createHash, randomUUID } from "node:crypto";
 import {
   lstat,
@@ -316,7 +317,10 @@ export async function prepareCompositionAudio(
   if (!assets.length) return undefined;
   compileComposition(composition);
   const limits = resolveCompositionMediaLimits(composition.mediaLimits);
-  const sampleCount = (composition.frameCount * 48000) / composition.fps;
+  const sampleCount = compositionPcmBoundary(
+    composition.frameCount,
+    composition.fps,
+  );
   if (
     !Number.isSafeInteger(sampleCount) ||
     sampleCount > 172_800_000 ||

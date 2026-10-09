@@ -1,10 +1,18 @@
 # Still Shift — Phase 0 Implementation Plan
 
-**Status:** Ready for execution  
+**Status:** Archived historical experiment (2026-10-08); acceptance remains open
+
 **Scope:** Local, batchable photo-animation engine  
-**Target duration:** 10 working days  
+**Original target duration:** 10 working days
+
 **Primary consumer:** The existing explainer-video production workflow  
 **Related architecture:** `Still_Image_Animation_Architecture.md`
+
+The owner archived Phase 0 on 2026-10-08. This document preserves its historical
+specifications and acceptance requirements; dated extension notes below retain
+their original context. See the [archived roadmap](./docs/archive/roadmap-phase-0-2026-10-08.md)
+for the last recorded gates and the [active roadmap](./ROADMAP.md) for current
+priorities. Unmeasured gates remain unverified.
 
 **2026-09-25 illustrated-style extension:** Four optional flat 2D presets were
 added for a History Offstage style trial. They do not change the original three

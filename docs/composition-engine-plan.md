@@ -330,7 +330,7 @@ change them without a decision-log entry.
 | Alpha             | Premultiplied in all render surfaces.                                                                                                                                                                            |
 | Time              | Integer composition frames; layer time = `(compFrame − startFrame) / stretch`, as AE (`stretch: 2` plays at half speed; negative reverses), with time remap overriding. In point inclusive, out point exclusive. |
 | Keys              | Integer frames in **layer time**, as in AE. No fractional key frames.                                                                                                                                            |
-| Frame rates       | 24, 25, 30, 50 and 60 fps. A precomp with a different rate is sampled at the parent's time; a posterize-time effect or layer setting snaps to its own rate.                                                      |
+| Frame rates       | Integer rates from 1 through 60 fps (extended in CE15). A precomp with a different rate is sampled at the parent's time; a posterize-time effect or layer setting snaps to its own rate.                         |
 | Identifiers       | `^[a-zA-Z][\w-]*$`, at most 128 characters, unique within their scope; precomps have their own layer namespace. `comp` is reserved for composition properties.                                                   |
 
 ### Layer time and reverse playback
@@ -381,7 +381,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE12  | Motion linting                                 | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   | Codex                  | `codex/composition-ce13`            | `[x]`  | [evidence](./composition-ce13-results.json)                                        |
 | CE14  | Mesh warp and puppet pins                      | D      | CE6                        |                        |                                     | `[ ]`  |                                                                                    |
-| CE15  | Output formats, caching and parallel rendering | D      | CE3                        |                        |                                     | `[ ]`  |                                                                                    |
+| CE15  | Output formats, caching and parallel rendering | D      | CE3                        | Codex                  | `codex/composition-ce15`            | `[x]`  | [Completion evidence](./composition-ce15-completion-results.json)                  |
 | CE16  | Programmable soundtrack project and timeline   | D      | CE3; CE16-A                | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
 
 ### Phases and parallel work
@@ -691,7 +691,7 @@ type Composition = {
   id: string;
   width: number;
   height: number; // 16–8192
-  fps: 24 | 25 | 30 | 50 | 60;
+  fps: number; // integer 1–60 (CE15)
   frameCount: number; // integer ≥ 1
   background?: Color | null; // null = transparent
   colorSpace?: "srgb" | "linear-srgb"; // compositing space, CE6
@@ -5534,19 +5534,19 @@ targets), flip detection, pixel tests on both backends.
 
 **Outcome:** Output fits professional pipelines, and long compositions render quickly.
 
-- [ ] Transparent composition backgrounds carried through export.
-- [ ] First formats (Q4: both audiences, delivered together): ProRes 4444 with alpha
+- [x] Transparent composition backgrounds carried through export.
+- [x] First formats (Q4: both audiences, delivered together): ProRes 4444 with alpha
       and PNG sequence (8/16-bit) for editors; H.264 and HEVC 10-bit for social
       delivery. All tagged BT.709. Extend the ffprobe verification in
       `export-worker.ts` per format.
-- [ ] Then ProRes 422 HQ and WebM VP9 with alpha.
-- [ ] Frame rates up to 60 fps; arbitrary sizes within limits.
-- [ ] Per-layer and per-precomp caching: static subtrees render once per export and are
+- [x] Then ProRes 422 HQ and WebM VP9 with alpha.
+- [x] Frame rates up to 60 fps; arbitrary sizes within limits.
+- [x] Per-layer and per-precomp caching: static subtrees render once per export and are
       reused, keyed by content hash, backend version and evaluated state.
-- [ ] Parallel chunked export: split the frame range across N browser pages, encode
+- [x] Parallel chunked export: split the frame range across N browser pages, encode
       chunks and concatenate losslessly (or pipe in order); integrate with the existing
       transactional publication and cancellation.
-- [ ] Render statistics in the result manifest (ms/frame per layer type, cache hits).
+- [x] Render statistics in the result manifest (ms/frame per layer type, cache hits).
 
 **Acceptance:** A two-minute composition renders at least 3× faster with 4 workers than
 with 1, with identical output. Each new format passes ffprobe verification and a
@@ -5555,7 +5555,24 @@ decode-back pixel check.
 **Verification:** Format tests, alpha round-trip test, chunk-boundary parity test
 (frames on both sides of a boundary), cancellation during parallel export.
 
-**Completion record:** _to be filled in._
+**Completion record (2026-10-09):** CE15 is complete in PR #49. Final code
+checkpoint `ae1a05bb` passes the complete pinned local `pnpm check` in
+13928.03 seconds, including format/alpha/native-depth checks, parallel
+boundary/cancellation regressions and frozen baselines. Production checkpoint `21817411` has a
+120-second, 2,880-frame benchmark that measures **3.408×** end-to-end speedup
+(436.542 → 128.082 seconds) with identical complete encoded output, decoded
+frames and audio. The full 48-case 8192×8192 matrix passes at `adfb9592`; final
+maximum-area smoke checks also pass in the full gate.
+
+Static cache selection covers constant references, expression overrides and
+implicit dependencies; complete evaluated content keys authorize every reuse.
+Production browser storage and bounded Node result transfer stay admitted through
+acknowledgement/publication. Counters cover declared application allocations;
+native browser/driver/FFmpeg RSS is measured separately.
+
+[Completion evidence](./composition-ce15-completion-results.json),
+[delivery plan](./composition-ce15-plan.md),
+[format evidence](./composition-ce15-format-results.json).
 
 ---
 
@@ -5868,6 +5885,7 @@ A milestone is complete when **all** of the following hold:
 
 | Date       | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Reason                                                                                                                                                                                                                                          | Superseded by               |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| 2026-10-08 | CE15 extends composition frame rates to every integer from 1 through 60, including precomps. Existing rates and time sampling remain unchanged.                                                                                                                                                                                                                                                                                                                                                                                     | Completes CE15's frame-rate range and supports low-rate procedural/editor delivery. Legacy non-composition contracts keep their original rates.                                                                                                 |                             |
 | 2026-10-06 | Q9 partial approval: start CE5-X gap closure A2, A3, A8, B3 and B4 on `codex/composition-ce5x` from CE4c; preserve provider fallbacks and frozen baselines. The sequence position of the remaining CE5-X scope and A1 baseline regeneration remain open.                                                                                                                                                                                                                                                                            | Owner explicitly approved this task. Audit stop conditions apply; additional provider/contract scope is not inferred.                                                                                                                           |                             |
 | 2026-09-30 | Introduce one `composition-1` contract; existing families become compilers into it                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Removes per-family duplication; every later feature is built once                                                                                                                                                                               |                             |
 | 2026-09-30 | Keep Canvas 2D as the reference backend and add WebGL2 as the production backend behind one interface                                                                                                                                                                                                                                                                                                                                                                                                                               | Preserves parity with existing output while enabling GPU effects and performance                                                                                                                                                                |                             |

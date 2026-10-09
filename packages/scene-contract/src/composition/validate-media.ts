@@ -5,6 +5,7 @@ import type {
 } from "./composition.ts";
 import type { CompositionLayer } from "./layers.ts";
 import { resolveCompositionMediaLimits } from "./media.ts";
+import { CompositionPcmClock } from "./audio-clock.ts";
 import { isResolvedProperty, resolvePropertyPath } from "./resolve.ts";
 import type { IssueReporter } from "./primitives.ts";
 
@@ -61,13 +62,12 @@ export function checkMediaAssets(comp: Composition, fail: IssueReporter) {
     if (
       asset.type === "sequence" &&
       (!/^(?:[^%]*\/)?[^/%]*%0[1-9]\d?d[^/%]*\.png$/.test(asset.path) ||
-        asset.color.matrix !== "gbr" ||
-        asset.color.transfer !== "iec61966-2-1")
+        asset.color.matrix !== "gbr")
     )
       fail(
         "comp-media-sequence",
         [...path, "path"],
-        "Sequences require one numbered PNG pattern and sRGB full-range RGB metadata",
+        "Sequences require one numbered PNG pattern and full-range RGB metadata with a supported transfer",
       );
   });
 }
@@ -176,21 +176,20 @@ export function checkProtectedNarration(
   const walk = (
     scope: CompositionScope,
     route: string[],
-    origin: number,
+    origin: CompositionPcmClock,
     begin: number,
     end: number,
     altered: boolean,
     ancestors: Set<string>,
   ) => {
     const fps = scope.fps ?? comp.fps;
-    const samplesPerFrame = 48000 / fps;
     scope.layers.forEach((layer, index) => {
       const key = [...route, layer.id].join("/");
       const clockChanged =
         altered || changedClock(layer) || clockWriters.has(key + ".timeRemap");
       const visibility = (candidate: CompositionLayer) => [
-        origin + (candidate.inPoint ?? 0) * samplesPerFrame,
-        origin + (candidate.outPoint ?? scope.frameCount) * samplesPerFrame,
+        origin.place(candidate.inPoint ?? 0, fps).sample,
+        origin.place(candidate.outPoint ?? scope.frameCount, fps).sample,
       ];
       let [visibleBegin, visibleEnd] = visibility(layer);
       const parents = new Set<string>();
@@ -207,7 +206,8 @@ export function checkProtectedNarration(
       }
       const nextBegin = Math.max(begin, visibleBegin!);
       const nextEnd = Math.min(end, visibleEnd!);
-      const placement = origin + (layer.startFrame ?? 0) * samplesPerFrame;
+      const placementClock = origin.place(layer.startFrame ?? 0, fps);
+      const placement = placementClock.sample;
       const path: Path =
         scope === comp
           ? ["layers", index]
@@ -250,17 +250,27 @@ export function checkProtectedNarration(
       walk(
         nested,
         [...route, layer.id],
-        placement,
+        placementClock,
         Math.max(nextBegin, placement),
         Math.min(
           nextEnd,
-          placement + (nested.frameCount * 48000) / (nested.fps ?? comp.fps),
+          placementClock.place(nested.frameCount, nested.fps ?? comp.fps)
+            .sample,
         ),
         clockChanged,
         new Set([...ancestors, layer.comp]),
       );
     });
   };
-  walk(comp, [], 0, 0, comp.frameCount * (48000 / comp.fps), false, new Set());
+  const origin = new CompositionPcmClock();
+  walk(
+    comp,
+    [],
+    origin,
+    0,
+    origin.place(comp.frameCount, comp.fps).sample,
+    false,
+    new Set(),
+  );
   return voices;
 }

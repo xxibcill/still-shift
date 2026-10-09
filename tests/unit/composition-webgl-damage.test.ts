@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { WebglDamage } from "../../packages/renderer-core/src/composition/render/webgl-damage.ts";
 import { WebglVisualKey } from "../../packages/renderer-core/src/composition/render/webgl-visual-key.ts";
 import type {
@@ -7,6 +7,13 @@ import type {
   RenderOp,
   SurfaceNode,
 } from "../../packages/renderer-core/src/composition/render/graph.ts";
+import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
+import { withManagedMemory } from "../../packages/renderer-core/src/managed-memory-context.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+  type ManagedMetadataText,
+} from "../../packages/renderer-core/src/managed-metadata.ts";
 const layer = (id: string, x: number, y = 10): DrawOp => ({
   kind: "draw",
   layer: id,
@@ -200,5 +207,193 @@ describe("GPU framebuffer damage", () => {
       right: 100,
       bottom: 22,
     });
+  });
+});
+
+function provider(): DrawOp {
+  return {
+    ...layer("provider", 10),
+    content: {
+      type: "provider",
+      key: "test",
+      time: 0,
+      layer: {
+        id: "provider",
+        type: "provider",
+        provider: "test.bounds@1.0.0",
+        params: {},
+      },
+    },
+  };
+}
+it("retains only current damage-frame keys across scratch and releases the old comparison frame", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 65536 });
+  await withManagedMemory(memory, async () => {
+    const keys = new WebglVisualKey(),
+      damage = new WebglDamage(keys),
+      texts: ManagedMetadataText[] = [];
+    const serialize = keys.metadata.bind(keys);
+    vi.spyOn(keys, "metadata").mockImplementation((value) => {
+      const text = serialize(value);
+      texts.push(text);
+      return text;
+    });
+    let retained = 0;
+    for (let n = 0; n < 4; n++) {
+      memory.beginScratch();
+      expect(damage.next(root(layer("box", 10)))).toBe(
+        n === 0 ? undefined : null,
+      );
+      memory.endScratch();
+      if (!n) retained = memory.statistics.current.metadata;
+      expect(memory.statistics.current.metadata).toBe(retained);
+      expect(memory.statistics.reservations).toBe(5);
+      expect(texts.filter((text) => text.value !== undefined)).toEqual(
+        texts.slice(-2),
+      );
+    }
+    damage.reset();
+    expect(texts.every((text) => text.value === undefined)).toBe(true);
+    expect(memory.statistics.current.metadata).toBe(384);
+    damage.next(root(layer("box", 10)));
+    damage.dispose();
+    keys.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
+    expect(memory.statistics.reservations).toBe(0);
+    memory.dispose();
+  });
+});
+it("admits original bounds/copy capacity before native map or content-bound callbacks", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 512 });
+  await withManagedMemory(memory, async () => {
+    const keys = new WebglVisualKey(),
+      bounds = vi.fn(() => ({ left: 0, top: 0, right: 10, bottom: 10 })),
+      damage = new WebglDamage(keys, bounds);
+    const scene = root(provider()),
+      map = vi.spyOn(scene.ops, "map");
+    expect(() => damage.next(scene)).toThrow("metadata");
+    expect(map).not.toHaveBeenCalled();
+    expect(bounds).not.toHaveBeenCalled();
+    expect(memory.statistics.current.metadata).toBe(384);
+    damage.dispose();
+    keys.dispose();
+    memory.dispose();
+  });
+});
+it("holds the dirty region through its frame consumer and releases it on finish", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 65536 });
+  await withManagedMemory(memory, async () => {
+    const keys = new WebglVisualKey(),
+      damage = new WebglDamage(keys);
+    memory.beginScratch();
+    damage.next(root(layer("box", 10)));
+    memory.endScratch();
+    memory.beginScratch();
+    const dirty = damage.next(root(layer("box", 20)))!;
+    expect(dirty).toEqual({ left: 8, top: 8, right: 32, bottom: 22 });
+    expect(memory.owns(dirty)).toBe(true);
+    memory.endScratch();
+    expect(memory.owns(dirty)).toBe(true);
+    const bytes = memory.statistics.current.metadata;
+    damage.finish();
+    expect(memory.owns(dirty)).toBe(false);
+    expect(memory.statistics.current.metadata).toBe(bytes - 64);
+    damage.dispose();
+    keys.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
+    memory.dispose();
+  });
+});
+it("preserves a prior frame and a null callback error while dropping incomplete bounds/key copies", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 65536 });
+  await withManagedMemory(memory, async () => {
+    const keys = new WebglVisualKey();
+    let failure = false,
+      calls = 0;
+    const damage = new WebglDamage(keys, () => {
+      calls++;
+      if (failure) throw null;
+      return { left: 0, top: 0, right: 10, bottom: 10 };
+    });
+    const scene = root(provider());
+    damage.next(scene);
+    const bytes = memory.statistics.current.metadata;
+    failure = true;
+    let caught: unknown = "missing";
+    try {
+      damage.next(scene);
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBeNull();
+    expect(calls).toBe(2);
+    expect(memory.statistics.current.metadata).toBe(bytes);
+    failure = false;
+    expect(damage.next(scene)).toBeNull();
+    damage.dispose();
+    keys.dispose();
+    expect(memory.statistics.current.metadata).toBe(0);
+    memory.dispose();
+  });
+});
+it("keeps borrowed geometry owned by its caller and clears unsupported nested frame metadata", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 65536 });
+  await withManagedMemory(memory, async () => {
+    const box = allocateRenderMetadata(
+      64,
+      () => ({ left: 0, top: 0, right: 10, bottom: 10 }),
+      true,
+    );
+    const keys = new WebglVisualKey(),
+      damage = new WebglDamage(keys, () => box);
+    damage.next(root(isolate(provider(), layer("box", 30))));
+    expect(damage.next(root(isolate(provider(), layer("box", 40))))).toEqual({
+      left: 8,
+      top: 8,
+      right: 52,
+      bottom: 22,
+    });
+    expect(
+      damage.next(root({ ...isolate(provider()), blend: "multiply" })),
+    ).toBeUndefined();
+    expect(memory.owns(box)).toBe(true);
+    expect(box).toEqual({ left: 0, top: 0, right: 10, bottom: 10 });
+    // Only the caller's geometry and the two reusable controllers remain.
+    expect(memory.statistics.reservations).toBe(3);
+    damage.dispose();
+    keys.dispose();
+    expect(memory.statistics.current.metadata).toBe(64);
+    releaseRenderMetadata(box);
+    expect(memory.statistics.current.metadata).toBe(0);
+    memory.dispose();
+  });
+});
+it("releases partial native key serialization without invalidating a prior complete damage frame", async () => {
+  const memory = new ManagedMemory({ pixels: 1, metadata: 65536 });
+  await withManagedMemory(memory, async () => {
+    const keys = new WebglVisualKey(),
+      damage = new WebglDamage(keys),
+      scene = root(layer("box", 10));
+    damage.next(scene);
+    const bytes = memory.statistics.current.metadata;
+    const changed = root(layer("box", 20));
+    Object.defineProperty((changed.ops[0] as DrawOp).content, "toJSON", {
+      value: () => {
+        throw null;
+      },
+    });
+    let caught: unknown = "missing";
+    try {
+      damage.next(changed);
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBeNull();
+    expect(memory.statistics.current.metadata).toBe(bytes);
+    expect(damage.next(scene)).toBeNull();
+    memory.dispose();
+    damage.dispose();
+    keys.dispose();
+    expect(memory.statistics.reservations).toBe(0);
   });
 });

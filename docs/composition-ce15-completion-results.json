@@ -1,0 +1,523 @@
+{
+  "milestone": "CE15",
+  "status": "complete",
+  "base": "671caf2f4c34b58189a167b52fbbe2ddbea8e2e3",
+  "date": "2026-10-09",
+  "statistics": {
+    "status": "focused acceptance passed, including expanded parallel suite",
+    "unitTests": 12,
+    "static": ["build", "lint changed files", "check:boundaries"],
+    "browser": [
+      {
+        "command": "pnpm test:browser:composition-output",
+        "status": "passed",
+        "log": "/private/tmp/ce15-completion-statistics-output.log",
+        "formatBackendTransportCases": 28
+      },
+      {
+        "command": "pnpm test:browser:composition-webgl-export",
+        "status": "passed",
+        "log": "/private/tmp/ce15-completion-statistics-legacy.log",
+        "fixtures": [
+          "ce6/echo",
+          "ce6/generators",
+          "ce7/exposure",
+          "ce4a/providers"
+        ]
+      }
+    ],
+    "scope": "synchronous-submission-wall-time, not GPU completion time",
+    "parallelAttempt": {
+      "status": "failed",
+      "log": "/private/tmp/ce15-completion-statistics-parallel.log",
+      "failure": "forced browser disconnect reached Node as ECONNRESET aborted before Playwright closed diagnostic",
+      "repair": "accept transport reset only when the intended browser emitted disconnected; keep all cleanup assertions"
+    }
+  },
+  "remaining": [],
+  "productionMemory": {
+    "status": "production browser admission, bounded Node result transfer and complete 48-case area matrix passed",
+    "workerPolicy": "reserve512MiB for bounded Node result transfer/summary; partition remaining7.5GiB across concurrently active workers; large frames run contiguous groups",
+    "rpcLifetime": "browser result owners remain charged until Node acknowledges reception; then require zero reservations",
+    "unitTests": 3,
+    "focusedTestsIncludingCaptureAndStatistics": 21,
+    "nativeSmokeExports": 8,
+    "smokeLog": "/private/tmp/ce15-completion-memory-smoke.log",
+    "formatLog": "/private/tmp/ce15-completion-memory-output.log",
+    "legacyLog": "/private/tmp/ce15-completion-memory-legacy.log",
+    "applicationCoverage": "declared renderer storage and existing metadata owners plus frame result/RPC/summary capacities; native V8/browser/FFmpeg RSS measured separately, not an8GiB RSS guarantee",
+    "expandedParallel": {
+      "status": "passed",
+      "log": "/private/tmp/ce15-completion-memory-parallel.log",
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-parallel-dsrBVQ",
+      "primaryReports": 51,
+      "nativeCases": 8,
+      "sourceCases": 8,
+      "tintCases": 16,
+      "rootCases": 16,
+      "prefixCases": 8,
+      "liveFailures": 24
+    },
+    "logs": {
+      "/private/tmp/ce15-completion-memory-focused.log": "b29c1fe75513bce7440d94ef88f65923f1ca8e1570fc3a75dc75b575d5e0b905",
+      "/private/tmp/ce15-completion-memory-smoke.log": "1ad0965b1c32afa644d93f406ec5226397571492069ef58cc565503cb9ba6e4b",
+      "/private/tmp/ce15-completion-memory-output.log": "a49738e87cac289aec01c68e189ee1311840de8548a47959d9bd6771bf64bb31",
+      "/private/tmp/ce15-completion-memory-legacy.log": "095479f0f35e73439becfe0d69b5b7631848d6f35de48633881dff073ecbd35a",
+      "/private/tmp/ce15-completion-memory-parallel.log": "60bb4591e3525293e998c7e24f24aa8ef9f2cc03dc0ca543ea2692fb4f09caaa"
+    }
+  },
+  "completionCheckpoint": {
+    "status": "focused checks passed; area/speed/final gate pending",
+    "parent": "18eae703",
+    "changes": [
+      "full-area cache budgets and contiguous bounded worker groups",
+      "admitted Blob transport above128MiB;64KiB cache writes independent of socket chunk coalescing",
+      "integer1–60fps and exclusive-end PCM ceiling; encoder EOF drains all audio",
+      "dependency-aware native prefixes including constant keys and expression-only motion",
+      "admitted timing records and bounded browser-to-Node result transfer/manifest capacity"
+    ],
+    "focusedTests": 311,
+    "static": [
+      "build",
+      "schema:check",
+      "check:boundaries",
+      "changed-file eslint"
+    ],
+    "newBrowserProofs": [
+      {
+        "suite": "cache dependencies",
+        "exports": 36,
+        "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-cache-dependencies-NduPmd"
+      },
+      {
+        "suite": "fps/audio/all seven formats",
+        "exports": 105,
+        "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-fps-audio-wkegEs"
+      },
+      {
+        "suite": "Node/browser result memory",
+        "exports": 8,
+        "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-production-memory-Bt7hLK"
+      }
+    ],
+    "areaAttempts": {
+      "canvasQuick": {
+        "exports": 4,
+        "status": "passed",
+        "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-full-area-10ds76"
+      },
+      "fullMatrix": {
+        "passedBeforeFailure": 36,
+        "status": "interrupted by temporary export-page import error during subsequent edits; complete immutable rerun required"
+      }
+    },
+    "rejected": [
+      "256MiB raw ArrayBuffer fetch crashed Chromium after frame reception; Blob request data pipe passes",
+      "surface store received coalesced socket chunks above64KiB; bounded broker generator preserves original copy cap",
+      "encoder -frames:v truncated fractional-rate PCM at32768 of34286 samples; exact bounded input EOF preserves complete source"
+    ],
+    "logs": {
+      "/private/tmp/ce15-completion-focused-static.log": "2eb2bd93cc6b7bc0931ebfb438518e720580f43920c6c2c3a3953234bdb93704",
+      "/private/tmp/ce15-completion-focused-final.log": "ae790856c31efdd193324b6f46c8ed9c407150d8d9d2745a9feda18ce4730b4d",
+      "/private/tmp/ce15-driven-prefix-browser.log": "f2a8997836acd82d3cf6a0ac48025e034ae1cced59093bf0fed89f5e8f4cb90b",
+      "/private/tmp/ce15-fps-formats-complete.log": "9e634eff0c877cb35242b0939e7e4804d2361c4542d82a01d12d9aae9bae2f2f",
+      "/private/tmp/ce15-result-transfer-unit.log": "7734a6cc55a2a716ac7e0264c8c3a532b21acb930425f8299e36eb34ecedca35",
+      "/private/tmp/ce15-result-transfer-browser.log": "d5c54f96051caf80fb5760b30bed6b311f0c5d7fb9cb19fed226f1b7bd54343d",
+      "/private/tmp/ce15-area-full.log": "882dbd9ee8e14018772c7e1a18fbd96d0cbfdb99e0b6bf4b1f4961cd1cc8ada7",
+      "/private/tmp/ce15-area-quick-transport.log": "684395cc7f07c07d45930186b075f540a29ae8e0b1f6a6a81da52ec1deee3d53"
+    }
+  },
+  "acceptance": {
+    "area": {
+      "status": "passed",
+      "checkpoint": "adfb9592",
+      "exports": 48,
+      "dimensions": [8192, 8192],
+      "backends": ["canvas2d", "webgl2"],
+      "fps": [1, 24, 60],
+      "workers": [1, 2, 3, 4],
+      "cacheStatic": [false, true],
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-full-area-IyAUKF",
+      "peakConcurrentAdmittedWorkerBytes": 1611154210,
+      "peakSampledProcessTreeRssBytes": 7578714112
+    },
+    "speed": {
+      "status": "passed",
+      "checkpoint": "adfb9592",
+      "durationSeconds": 120,
+      "frames": 2880,
+      "fps": 24,
+      "oneWorkerMs": 455406.718042,
+      "fourWorkersMs": 131241.70675000007,
+      "speedup": 3.469984727564508,
+      "equality": [
+        "complete encoded file",
+        "all decoded RGBA frames",
+        "complete decoded PCM"
+      ],
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-51jG1R"
+    },
+    "finalGate": {
+      "name": "gate",
+      "command": "pnpm check",
+      "checkpoint": "ae1a05bb35fe287ea591cc8fb6ba705569f7d4e5",
+      "status": "passed",
+      "startedAt": "2026-10-09T02:30:31+0700",
+      "log": "/private/tmp/ce15-ae1a05bb-gate.log",
+      "exitCode": 0,
+      "elapsedSeconds": 13928.032605165965,
+      "finishedAt": "2026-10-09T06:22:39+0700",
+      "logSha256": "8c9811450a2374a2ea5b0daae2ab14b8011e105189024f4e6e8c7c36ead0a1d1",
+      "completedPackageCommands": [
+        "check",
+        "toolchain:check",
+        "schema:check",
+        "check:boundaries",
+        "format:check",
+        "lint",
+        "soundtrack:lint",
+        "build",
+        "test",
+        "test:unit",
+        "test:runtime",
+        "test:integration",
+        "test:depth",
+        "test:browser:soundtrack",
+        "test:browser:composition-media",
+        "test:browser:composition-alpha",
+        "test:browser:composition-output",
+        "test:browser:composition-surfaces",
+        "test:browser:composition-parallel",
+        "test:browser:composition-export-memory",
+        "test:browser:composition-cache-dependencies",
+        "test:browser:composition-fps-audio",
+        "test:browser:composition-area",
+        "test:browser:depth",
+        "test:browser:vertical-image",
+        "test:browser:export",
+        "test:golden",
+        "test:browser:cli",
+        "test:browser:batch",
+        "test:browser:illustrated",
+        "test:browser:illustrated:vertical",
+        "test:browser:cinematic",
+        "test:browser:cinematic:vertical",
+        "test:browser:threshold",
+        "test:browser:dolly",
+        "test:browser:lateral",
+        "test:browser:reveal",
+        "test:browser:story",
+        "test:browser:story:activity",
+        "test:browser:story:continuous",
+        "test:browser:passage:authoring",
+        "test:browser:lab-session",
+        "test:browser:composition-session",
+        "test:browser:commerce",
+        "test:browser:commerce-components",
+        "test:browser:commerce-effects",
+        "test:browser:commerce-spatial",
+        "test:browser:reusable-components",
+        "test:browser:reusable-package",
+        "test:browser:reusable-behavior-package",
+        "test:browser:reusable-timing-package",
+        "test:browser:typography",
+        "test:browser:typography:fixtures",
+        "test:browser:composition-evaluator",
+        "test:browser:composition-expressions",
+        "test:browser:composition-quality",
+        "test:browser:composition",
+        "test:browser:composition-webgl",
+        "test:browser:composition-camera",
+        "test:browser:composition-lighting",
+        "test:browser:composition-shapes",
+        "test:browser:composition-webgl-export",
+        "test:browser:composition-exposure",
+        "test:browser:composition-effects",
+        "test:browser:composition-story-adapter",
+        "test:browser:composition-native-passage",
+        "test:browser:composition-native-passage:webgl",
+        "test:browser:composition-passage",
+        "test:browser:composition-story-fixtures",
+        "test:browser:composition-commerce-adapter",
+        "test:browser:composition-cinematic-adapter",
+        "test:browser:composition-typography-adapter",
+        "test:browser:composition-provider-typography",
+        "test:browser:composition-program",
+        "test:browser:composition-inspector",
+        "test:browser:composition-builder",
+        "test:browser:composition-depth",
+        "test:browser:composition-legacy-adapter",
+        "test:browser:composition-family-timeline",
+        "test:browser:composition-family-defaults",
+        "test:browser:composition-baselines"
+      ]
+    },
+    "speedBeforeNativeLoaderRepair": {
+      "status": "passed",
+      "checkpoint": "24378343364dc61e094d4d6b62ab8ac5b2b8e065",
+      "durationSeconds": 120,
+      "frames": 2880,
+      "fps": 24,
+      "oneWorkerMs": 422877.176625,
+      "fourWorkersMs": 123037.778666,
+      "speedup": 3.4369701827350774,
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-vWH8VX",
+      "logSha256": "caf64f3cfa0503f1c81f0c2ff39a14049659c7a685b616ee9bc598e0a4a6b0fd"
+    },
+    "speedBeforeNativeTextRepair": {
+      "name": "speed",
+      "command": "pnpm benchmark:composition-speed",
+      "status": "passed",
+      "startedAt": "2026-10-09T01:02:08+0700",
+      "log": "/private/tmp/ce15-b2d7a6a1-speed.log",
+      "exitCode": 0,
+      "elapsedSeconds": 582.1183191250311,
+      "finishedAt": "2026-10-09T01:11:50+0700",
+      "checkpoint": "b2d7a6a1175c3d7ad89280e8e736aab0d1eb0348",
+      "speedup": 3.3050290505121662,
+      "oneWorkerMs": 440402.565833,
+      "fourWorkersMs": 133252.25258300005,
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-vryzYZ",
+      "equality": [
+        "complete encoded file",
+        "all decoded RGBA frames",
+        "complete decoded PCM"
+      ]
+    },
+    "finalSpeed": {
+      "status": "passed",
+      "checkpoint": "218174118650e739173cd1ded7a6a4c75a92610f",
+      "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-speed-FBasPw",
+      "speedup": 3.4082918819555004,
+      "durationSeconds": 120,
+      "frames": 2880,
+      "fps": 24,
+      "oneWorkerMs": 436541.83775,
+      "fourWorkersMs": 128082.29250000004,
+      "equality": [
+        "complete encoded file",
+        "all decoded RGBA frames",
+        "complete decoded PCM"
+      ],
+      "encodedSha256": "0c7f13f24ea32235af29034feb6ffeb3319100f7a60496ea3d753e94d5c85e5a",
+      "logSha256": "eb1d65a7d18357219c1e0a91ed900a225c0b374c6d52d13bd51f2dc795bfc254"
+    }
+  },
+  "referenceCheckpoint": {
+    "parent": "adfb9592",
+    "status": "focused checks passed",
+    "unitTests": 21,
+    "dependencyExports": 72,
+    "artifactDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-cache-dependencies-96LegH",
+    "changes": [
+      "property-level constant reference and expression override eligibility",
+      "implicit anchor/clock/camera dependencies and original value semantics",
+      "memoized property analysis and alias-safe whole-track overrides"
+    ],
+    "static": [
+      "build",
+      "changed-file eslint",
+      "earlier full formatting/lint preflight"
+    ],
+    "precedingRegressionChain": {
+      "formats": 28,
+      "parallel": {
+        "primaryReports": 51,
+        "nativeCases": 8,
+        "sourceCases": 8,
+        "tintCases": 16,
+        "rootCases": 16,
+        "prefixCases": 8,
+        "liveFailures": 24
+      },
+      "legacyWebglFixtures": 4
+    },
+    "logs": {
+      "/private/tmp/ce15-reference-final-unit.log": "b2d882c82ee8eaef4c8e4c973695cb0713ab1ad358189a896bedabe3537effe7",
+      "/private/tmp/ce15-reference-final-build.log": "a7b7f717ddde363a75de3369b8e1fb6be1b450099a8c470912751ab671998849",
+      "/private/tmp/ce15-reference-final-browser.log": "6a02e35ddc8fdabfebbd0e7db79d64b3770c04de51ac8347b2cd55bfd54dc5db",
+      "/private/tmp/ce15-final-output.log": "49f7132a489ef9a215f563425112a10db6bd969bd0e16d162ed574bfc3e57dfa",
+      "/private/tmp/ce15-final-parallel.log": "b49cb3f17136f35507f55bc9839935769a0c0dd643bee9ce08e0d4ae73ec9d21",
+      "/private/tmp/ce15-final-legacy.log": "095479f0f35e73439becfe0d69b5b7631848d6f35de48633881dff073ecbd35a",
+      "/private/tmp/ce15-adfb9592-area.log": "ba1f02860c14f22cd078be95f48cd6cb89eaaa20b291fee09a1fbe9a79606fa2",
+      "/private/tmp/ce15-adfb9592-speed.log": "5d061ea973fee66dd7658984e5b974f15e92f1148bbf30f9d7e3a2a17e9de4a8",
+      "/private/tmp/ce15-final-static.log": "52aec4dfd502596d28811f717cc635436afc4d9bfd7709a1ecc0f1c66eeee9db",
+      "/private/tmp/ce15-final-soundtrack-preflight.log": "d7687b7f3bdef78a0cd58be2ffd460b818aafa0e33d3ed89ce0981bf8ec05661"
+    }
+  },
+  "gateAttempts": [
+    {
+      "name": "gate",
+      "command": "pnpm check",
+      "status": "failed",
+      "startedAt": "2026-10-09T00:31:32+0700",
+      "log": "/private/tmp/ce15-24378343-gate.log",
+      "exitCode": 1,
+      "elapsedSeconds": 85.60022845806088,
+      "finishedAt": "2026-10-09T00:32:58+0700",
+      "failure": "one obsolete evaluator test still expected 17 fps rejection; production now correctly supports integer 1–60",
+      "repair": "test 61 fps range rejection and 17 fps success; 219 affected tests pass; production code unchanged"
+    },
+    {
+      "name": "gate",
+      "command": "pnpm check",
+      "checkpoint": "54b8053cdf4398315d24e5163be314e88028483d",
+      "status": "failed",
+      "startedAt": "2026-10-09T00:35:36+0700",
+      "log": "/private/tmp/ce15-54b8053c-gate.log",
+      "exitCode": 1,
+      "elapsedSeconds": 370.57669466594234,
+      "finishedAt": "2026-10-09T00:41:47+0700",
+      "failure": "five Lab suites could not load CE15 TypeScript parameter properties through native bundled Vite configuration; two integration assertions still rejected valid 13 fps",
+      "results": {
+        "unitTests": 3555,
+        "runtimeTests": 83,
+        "integrationPassed": 283,
+        "integrationFailed": 2,
+        "integrationSetupSkipped": 29
+      },
+      "repair": "explicit constructor fields and narrow allocator/context imports; 61-fps range rejection fixtures; real bundled config startup and all integrations pass"
+    },
+    {
+      "name": "gate",
+      "command": "pnpm check",
+      "status": "failed",
+      "startedAt": "2026-10-09T01:11:50+0700",
+      "log": "/private/tmp/ce15-b2d7a6a1-gate.log",
+      "exitCode": 1,
+      "elapsedSeconds": 1389.4984891669592,
+      "finishedAt": "2026-10-09T01:35:00+0700",
+      "checkpoint": "b2d7a6a1175c3d7ad89280e8e736aab0d1eb0348",
+      "failure": "legacy vertical-image depth initialization reserved 1 GiB for a short native renderer string, exceeding normal metadata admission",
+      "repair": "admit small native query holders, then actual returned text and application Error capacity; do not raise worker quotas",
+      "passedBeforeFailure": [
+        "3555 unit tests",
+        "83 runtime tests",
+        "314 integrations",
+        "depth Python",
+        "soundtrack/media/alpha",
+        "28 output exports",
+        "surfaces",
+        "expanded parallel and 24 failures",
+        "8 production memory exports",
+        "72 dependency-cache exports",
+        "105 frame-rate/audio exports",
+        "8 maximum-area exports",
+        "depth-motion browser"
+      ]
+    },
+    {
+      "name": "gate",
+      "command": "pnpm check",
+      "status": "failed",
+      "startedAt": "2026-10-09T02:04:29+0700",
+      "log": "/private/tmp/ce15-21817411-gate.log",
+      "exitCode": 1,
+      "elapsedSeconds": 604.5070616670419,
+      "finishedAt": "2026-10-09T02:14:34+0700",
+      "checkpoint": "218174118650e739173cd1ded7a6a4c75a92610f",
+      "failure": "surface browser helper still expected old maximum-V8-string diagnostic denial before native log query",
+      "repair": "test exact native diagnostic, actual retained capacity, cache reuse and handle cleanup; normal 128 KiB depth metadata test quota",
+      "productionChanged": false
+    },
+    {
+      "name": "gate",
+      "command": "pnpm check",
+      "checkpoint": "6868dfeadac19f51668568f3165493a4f5870a23",
+      "status": "failed",
+      "startedAt": "2026-10-09T02:18:50+0700",
+      "log": "/private/tmp/ce15-6868dfea-gate.log",
+      "exitCode": 1,
+      "elapsedSeconds": 414.1855980840046,
+      "finishedAt": "2026-10-09T02:25:44+0700",
+      "failure": "TypeScript preview missing-dependency recovery test hit outer five-second timeout, shorter than its six-second poll assertion",
+      "repair": "ten-second enclosing budget for four parameterized cases; preserve six-second recovery poll; all 17 preview integration tests pass",
+      "productionChanged": false
+    }
+  ],
+  "nativeLoaderCheckpoint": {
+    "parent": "54b8053c",
+    "status": "focused acceptance passed",
+    "changes": [
+      "explicit fields in CE15 Node stream/store/broker/ordered receiver and shared allocator constructors",
+      "narrow allocator/context imports for native Lab configuration loading",
+      "replace obsolete invalid13fps fixtures with61fps range diagnostics"
+    ],
+    "bundledViteConfigWithoutTsx": "passed",
+    "focusedTests": 71,
+    "integrationTests": 314,
+    "integrationFiles": 54,
+    "integrationSkipped": 0,
+    "productionMemoryExports": 8,
+    "parallel": {
+      "status": "passed",
+      "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce15-parallel-GXe3JS",
+      "exports": 51,
+      "nativeCases": 8,
+      "sourceCases": 8,
+      "tintCases": 16,
+      "rootCases": 16,
+      "prefixCases": 8,
+      "failures": 24
+    },
+    "review": "no concrete initialization or import-identity regression found",
+    "logs": {
+      "/private/tmp/ce15-native-loader-probe.log": "b4ed8d878ed2003a5ba272e2229188f953ddd0a4392e176a499ee5ff95f3d8d1",
+      "/private/tmp/ce15-native-loader-unit.log": "5125670c99233e38d825ee4263da424ccf97cbcfcf9e3e1fa08707d3f9e1d6f9",
+      "/private/tmp/ce15-native-loader-static.log": "33381326c96ec1130806b75128c1f5f11d662bef7a0d9cb46a68de6b37c14e5b",
+      "/private/tmp/ce15-native-loader-integration.log": "d11b9a2b09f812908ee205cd8626245937270f67f63ee506bbbebaf49df8866a",
+      "/private/tmp/ce15-native-loader-browser-memory.log": "ce8219ea20f44b51608c111d31b8da78796f779825d529b21e272c36bab70720",
+      "/private/tmp/ce15-native-loader-parallel.log": "a997632ac82a7e4f8c38ef9cf90fc634d8c3f37cbe5f3365f5e683028be0b7bc"
+    }
+  },
+  "nativeTextCheckpoint": {
+    "parent": "b2d7a6a1175c3d7ad89280e8e736aab0d1eb0348",
+    "status": "focused acceptance passed",
+    "scope": "native driver production is outside application admission; returned text is charged before application consumption/message construction",
+    "focusedTests": 44,
+    "passed": [
+      "build",
+      "changed-file lint",
+      "vertical-image: 1080x1920, 90 frames",
+      "export: 150 frames, transports, fallback, cleanup",
+      "golden: 30 comparisons, no baseline changes",
+      "complete composition depth acceptance",
+      "176 frozen baseline items / 36061 frames"
+    ],
+    "remaining": ["final complete local gate"],
+    "logs": {
+      "/private/tmp/ce15-native-text-unit.log": "46925969a8dd755335c01b9d2eb1e18246008a070f6ae30a392681f39fc3b00a",
+      "/private/tmp/ce15-native-text-static.log": "a7b7f717ddde363a75de3369b8e1fb6be1b450099a8c470912751ab671998849",
+      "/private/tmp/ce15-native-text-vertical.log": "b5e0ffd98f3ab41ff18f02619834cd04476dcda38708d683214726b5257401db",
+      "/private/tmp/ce15-native-text-export.log": "6c1ea6efb09a190c6e1fc1054b7cdb6f02c7e99e03d1f4bcef1fb5db264805eb",
+      "/private/tmp/ce15-native-text-golden.log": "9db239bc46b8d8bc93a50631b9eb1be7045cfe261512a8efca67842233721b91",
+      "/private/tmp/ce15-native-text-depth.log": "b742ef713fc9efbb0ae4770582f1bb432ac98cac344b680fb9a9fa25a3aff5f4",
+      "/private/tmp/ce15-native-text-baselines.log": "66f9d49607a22a23afcddd040c323227d48b053a3d0d95311a2b3478b3213ea3"
+    },
+    "codeCheckpoint": "7b889399",
+    "review": "No concrete correctness or standards blocker; native query, diagnostic and cleanup order preserved."
+  },
+  "nativeTextBrowserRepair": {
+    "status": "passed",
+    "productionChanged": false,
+    "checks": [
+      "typecheck",
+      "changed-helper lint",
+      "complete composition-surfaces browser suite"
+    ],
+    "logs": {
+      "/private/tmp/ce15-native-text-browser-static.log": "a7b7f717ddde363a75de3369b8e1fb6be1b450099a8c470912751ab671998849",
+      "/private/tmp/ce15-native-text-browser-surfaces.log": "2e83cd89b75eb96a650e451a1f0149d9d46a03c97752954bf31ebae5d992c158"
+    }
+  },
+  "previewHarnessRepair": {
+    "status": "passed",
+    "tests": 17,
+    "changed": "outer test timeout only",
+    "preserved": "6000 ms recovery assertion",
+    "log": "/private/tmp/ce15-preview-timeout-fixed.log",
+    "logSha256": "38c43f4145a4c50961eb2afe8632684bf4391013fa4f80b567ed06e3d4882e67"
+  },
+  "finalCodeCheckpoint": "ae1a05bb35fe287ea591cc8fb6ba705569f7d4e5",
+  "productionCheckpoint": "218174118650e739173cd1ded7a6a4c75a92610f"
+}

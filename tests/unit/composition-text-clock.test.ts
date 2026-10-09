@@ -13,6 +13,90 @@ const animation: TextAnimator = {
 };
 
 describe("prepared typography cache clock", () => {
+  it("holds an explicit constant outline after its start, including reverse seeks", () => {
+    const clock = typographyClock(
+      { id: "label" },
+      [
+        {
+          ...animation,
+          stagger: 0,
+          from: { strokeWidth: 1, stroke: "#113355" },
+          to: { stroke: "#113355", strokeWidth: 1 },
+        },
+      ],
+      [],
+    );
+    expect([0, 1, 2, 8.25, 80, 0, -2, -0.25].map(clock)).toEqual([
+      0, 0, 0, 0, 0, 0, -1, -0.25,
+    ]);
+  });
+  it("keeps a constant destination's later start gate distinct from its pre-roll", () => {
+    const clock = typographyClock(
+      { id: "label" },
+      [
+        {
+          ...animation,
+          start: 30,
+          end: 60,
+          from: { strokeWidth: 1 },
+          to: { strokeWidth: 1 },
+        },
+      ],
+      [],
+    );
+    expect([0, 29, 29.5, 30, 30.5, 31, 100, 0].map(clock)).toEqual([
+      29, 29, 29.5, 30, 30, 30, 30, 29,
+    ]);
+  });
+  it("keeps selector and layer-weight changes live with a constant pose", () => {
+    for (const extra of [
+      {
+        weight: [
+          { frame: 0, value: 0 },
+          { frame: 100, value: 1 },
+        ],
+      },
+      {
+        selector: {
+          start: 0,
+          end: 1,
+          offset: [
+            { frame: 0, value: 0 },
+            { frame: 100, value: 1 },
+          ],
+        },
+      },
+    ]) {
+      const clock = typographyClock(
+        { id: "label" },
+        [
+          {
+            ...animation,
+            ...extra,
+            from: { strokeWidth: 1 },
+            to: { strokeWidth: 1 },
+          },
+        ],
+        [],
+      );
+      expect([20.25, 80.5, 120].map(clock)).toEqual([20.25, 80.5, 101]);
+    }
+  });
+  it("keeps a reveal mask live even when its pose endpoints are identical", () => {
+    const clock = typographyClock(
+      { id: "label" },
+      [
+        {
+          ...animation,
+          mask: "word",
+          from: { strokeWidth: 1 },
+          to: { strokeWidth: 1 },
+        },
+      ],
+      [],
+    );
+    expect([2.5, 10.25, 20.5].map(clock)).toEqual([2.5, 10.25, 20.5]);
+  });
   it("keeps fractional times and backward seeks distinct until animation settles", () => {
     const clock = typographyClock({ id: "label" }, [animation], []);
     expect([0, 8.25, 8.75, 30.5, 31, 80, 8.25].map(clock)).toEqual([

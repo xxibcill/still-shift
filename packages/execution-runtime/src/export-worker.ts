@@ -1,4 +1,11 @@
-import { spawn } from "node:child_process";
+import { compositionPcmBoundary } from "@still-shift/scene-contract";
+import { CompositionResultBudget } from "./composition-result-budget.ts";
+import { compositionResultSize } from "./composition-result-size.ts";
+import {
+  spawnFfmpeg,
+  ffmpegProcessUsage,
+  type FfmpegProcessUsage,
+} from "./ffmpeg-process.ts";
 import { createReadStream } from "node:fs";
 import { mkdir, mkdtemp, rm, stat, writeFile } from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
@@ -6,20 +13,19 @@ import { availableParallelism, cpus, tmpdir } from "node:os";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { createHash, randomUUID } from "node:crypto";
+import type { Writable } from "node:stream";
 
-import { chromium, type Browser } from "playwright";
+import { chromium, type Browser, type Page } from "playwright";
 import { createServer, type Plugin, type ViteDevServer } from "vite";
 
 import type {
   CompositionScene,
   PreviewScene,
   IllustratedScene,
-  PassageDiagnostic,
 } from "@still-shift/renderer-core";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { COMPOSITION_EVALUATOR_VERSION } from "../../renderer-core/src/composition/evaluate/version.ts";
 import {
-  AnimationEngineError,
   CompositionPreparedAudioSchema,
   compositionMediaMappingDocument,
 } from "@still-shift/scene-contract";
@@ -29,16 +35,44 @@ import {
 } from "./composition-pcm.ts";
 import {
   defaultBrowserProjectRoot,
-  runtimeBrowserUrl,
   type BrowserRuntimeOptions,
 } from "./browser.ts";
 import { assertNever, type FrameTransport } from "./transport.ts";
 import { publishArtifacts } from "./artifact-publication.ts";
 import { runProcess } from "./subprocess.ts";
 import {
-  assertPinnedRenderEnvironment,
+  compositionOutputProfile,
+  compositionOutputArguments,
+  compositionOutputCodecArguments,
+  validateCompositionOutput,
+  type CompositionOutputFormat,
+} from "./composition-output.ts";
+import { compositionOutputInput } from "./composition-output-input.ts";
+import { prepareCompositionOutputArtifacts } from "./composition-output-artifacts.ts";
+import { verifyCompositionOutputAudio } from "./composition-output-audio.ts";
+import {
+  COMPOSITION_APPLICATION_MEMORY_LIMIT,
+  COMPOSITION_NODE_MEMORY_ALLOWANCE,
+  compositionExecutionPolicy,
+} from "./composition-export-memory.ts";
+import { summarizeCompositionStatistics } from "./composition-export-statistics.ts";
+import { CompositionSurfaceStore } from "./composition-surface-store.ts";
+import { CompositionSurfaceBroker } from "./composition-surface-broker.ts";
+import { CompositionOrderedFrames } from "./composition-ordered-frames.ts";
+import {
+  prepareExportBrowserWorker,
+  runExportBrowserWorker,
+  summarizeExportWorkers,
+  type ExportBrowserWorker,
+} from "./export-browser-worker.ts";
+import type { BrowserExportResult } from "./export-page.ts";
+export type { CompositionOutputFormat } from "./composition-output.ts";
+export {
+  COMPOSITION_OUTPUT_FORMATS,
+  COMPOSITION_OUTPUT_VERSION,
+} from "./composition-output.ts";
+import {
   launchRenderBrowser,
-  probeRenderEnvironment,
   type RenderBrowserProfile,
   type RenderEnvironment,
 } from "./render-browser.ts";
@@ -49,6 +83,8 @@ export type ExportableScene =
   | CompositionScene;
 
 const EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.6.11";
+const COMPOSITION_EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.7.1";
+const COMPOSITION_PARALLEL_EXPORT_WORKER_VERSION = "chromium-ffmpeg-0.8.1";
 
 export type ExportAudioInput = {
   path: string;
@@ -70,8 +106,21 @@ export type ExportRequest = {
   sceneManifestContents?: string;
   resultManifestContents?: (metrics: ExportMetrics) => string | Promise<string>;
   validateResult?: (metrics: ExportMetrics) => void | Promise<void>;
+  /** Recheck pinned source assets immediately before publication. */
+  validateSources?: () => Promise<void>;
+  /** Verification hook after a complete frame body, before advancing encoder order. */
+  verifyFrame?: (frame: number, worker: number) => void | Promise<void>;
+  /** Verification hook after pinned browser startup, before any export work. */
+  verifyWorker?: (page: Page, worker: number) => void | Promise<void>;
   encoder?: "libx264" | "h264_videotoolbox";
   transport?: FrameTransport;
+  /** Opt into a BT.709 composition delivery profile; omission retains legacy MP4. */
+  format?: CompositionOutputFormat;
+  /** Opt into independent pinned browsers with bounded absolute-order streaming. */
+  workers?: 1 | 2 | 3 | 4;
+  /** Retain existing independent surfaces globally; defaults true with explicit workers. */
+  cacheStatic?: boolean;
+  expectedSourceChecksum?: string;
   /**
    * Verification hook only. Export always requires the pinned profile; any other
    * value makes it fail with `export-renderer-mismatch` before rendering.
@@ -80,7 +129,10 @@ export type ExportRequest = {
 };
 
 export type ExportMetrics = {
-  version: typeof EXPORT_WORKER_VERSION;
+  version:
+    | typeof EXPORT_WORKER_VERSION
+    | typeof COMPOSITION_EXPORT_WORKER_VERSION
+    | typeof COMPOSITION_PARALLEL_EXPORT_WORKER_VERSION;
   sceneManifestPath: string;
   sceneChecksum: string;
   sourceChecksum: string;
@@ -94,6 +146,11 @@ export type ExportMetrics = {
   frameUploadAverageMs: number;
   frameUploadP95Ms: number;
   ffmpegCpuMs: number;
+  ffmpegCpuScope: "ffmpeg-transcode-user-plus-system";
+  ffmpegProcessUsage?: FfmpegProcessUsage & {
+    timingProcessId: number;
+    processGroupReaped: true;
+  };
   encodePathWallMs: number;
   validationWallMs: number;
   totalWallMs: number;
@@ -110,12 +167,76 @@ export type ExportMetrics = {
   ffmpegVersion: string;
   ffmpegCodec: string;
   frameTransport: FrameTransport;
+  compositionStatistics?: ReturnType<typeof summarizeCompositionStatistics>;
+  compositionMemory?: {
+    scope: "declared-worker-application-bytes";
+    applicationLimitBytes: number;
+    reservedNodeBudgetBytes: number;
+    sumOfWorkerPeakBytes: number;
+    peakConcurrentWorkerBytes: number;
+    concurrentWorkers: number;
+    workers: NonNullable<BrowserExportResult["memory"]>[];
+    nodeResults: CompositionResultBudget["statistics"];
+  };
+  work?: {
+    version: "composition-render-work-1";
+    workers: number;
+    chunkFrames: 1;
+    distribution: "round-robin" | "contiguous";
+    concurrentWorkers: number;
+    cacheStatic: boolean;
+    scopeKey: string;
+    orderedFrames: CompositionOrderedFrames["statistics"];
+    surfaceStore?: CompositionSurfaceStore["statistics"];
+    submissionStatistics: {
+      scope: "synchronous-submission-wall-time";
+      totalSubmissionWallMs: number;
+      byLayerType: {
+        phase: string;
+        type: string;
+        calls: number;
+        submissionWallMs: number;
+        submissionWallMsPerOutputFrame: number;
+      }[];
+    };
+    workersDetail: {
+      worker: number;
+      environment: RenderEnvironment;
+      rendererProcessIds: number[];
+      gpuProcessIds: number[];
+      result: NonNullable<BrowserExportResult["work"]>;
+    }[];
+  };
   audio?: {
     sourceChecksum: string;
     sampleCount: number;
     sampleRate: 48000;
     channels: 2;
-    codec: "aac";
+    codec: "aac" | "pcm_f32le" | "opus";
+    decodedSampleCount?: number;
+    decodedChecksum?: string;
+  };
+  output?: {
+    version: "composition-output-1";
+    format: CompositionOutputFormat;
+    alpha: boolean;
+    renderSourceBitDepth: 8;
+    encoderInputBitDepth: 8 | 10 | 16;
+    encodedBitDepth: 8 | 10 | 12 | 16;
+    color: {
+      primaries: "bt709";
+      transfer: "bt709";
+      matrix: "bt709" | "gbr";
+      range: "pc" | "tv";
+    };
+    sequence?: {
+      pattern: string;
+      manifestPath: string;
+      firstFrame: 0;
+      frames: string[];
+      audioPath?: string;
+      audioChecksum?: string;
+    };
   };
 };
 
@@ -290,14 +411,15 @@ const sampleProcessTreeRssBytes = async (
 
 const readBodyToEncoder = async (
   request: IncomingMessage,
-  encoder: ReturnType<typeof spawn>,
+  stdin: Writable,
   expectedBytes: number | null,
+  maxFrameBytes: number,
 ): Promise<void> => {
   const contentLength = Number(request.headers["content-length"]);
   if (
     !Number.isSafeInteger(contentLength) ||
     contentLength <= 0 ||
-    contentLength > 50_000_000 ||
+    contentLength > maxFrameBytes ||
     (expectedBytes !== null && contentLength !== expectedBytes)
   )
     throw new Error("Frame byte count differs from the transport contract");
@@ -307,11 +429,12 @@ const readBodyToEncoder = async (
     bytes += chunk.length;
     if (bytes > contentLength)
       throw new Error("Frame upload exceeded the expected byte count");
-    const stdin = encoder.stdin;
-    if (!stdin) throw new Error("FFmpeg input stream is unavailable");
-    await new Promise<void>((accept, reject) => {
-      stdin.write(chunk, (error) => (error ? reject(error) : accept()));
-    });
+    for (let offset = 0; offset < chunk.length; offset += 65536)
+      await new Promise<void>((accept, reject) => {
+        stdin.write(chunk.subarray(offset, offset + 65536), (error) =>
+          error ? reject(error) : accept(),
+        );
+      });
   }
   if (bytes !== contentLength)
     throw new Error("Frame upload ended before the expected byte count");
@@ -342,15 +465,35 @@ const sendAsset = async (
 
 const assetPlugin = (
   request: ExportRequest,
-  encoder: ReturnType<typeof spawn>,
+  encoderInput: Writable,
   expectedBytes: number | null,
-  frameState: { nextIndex: number; error: Error | null },
+  maxFrameBytes: number,
+  frameState: { nextIndex: number; pending: boolean; error: Error | null },
+  work?: {
+    frames: CompositionOrderedFrames;
+    credentials: string[];
+    cacheBroker(): CompositionSurfaceBroker | undefined;
+  },
 ): Plugin => ({
   name: "still-shift-export-assets",
   configureServer(server) {
     server.middlewares.use((incoming, response, next) => {
       const pathname = new URL(incoming.url ?? "/", "http://localhost")
         .pathname;
+      if (work && pathname.startsWith("/_export/surface/")) {
+        const broker = work.cacheBroker();
+        if (!broker) {
+          response.statusCode = 409;
+          response.end("Composition cache is not ready");
+          return;
+        }
+        void broker.respond(
+          pathname.slice("/_export/surface/".length),
+          incoming,
+          response,
+        );
+        return;
+      }
       if (pathname.startsWith("/_export/assets/")) {
         const id = pathname.slice("/_export/assets/".length);
         const assetPath = Object.hasOwn(request.assetPaths ?? {}, id)
@@ -392,20 +535,69 @@ const assetPlugin = (
         response.end("POST required");
         return;
       }
-      const index = Number(incoming.headers["x-frame-index"]);
-      if (frameState.error || index !== frameState.nextIndex) {
+      const indexHeader = incoming.headers["x-frame-index"];
+      const index =
+        typeof indexHeader === "string" && /^(0|[1-9]\d*)$/.test(indexHeader)
+          ? Number(indexHeader)
+          : NaN;
+      if (work) {
+        const workerHeader = incoming.headers["x-export-worker"];
+        const worker =
+          typeof workerHeader === "string" && /^(0|[1-3])$/.test(workerHeader)
+            ? Number(workerHeader)
+            : -1;
+        if (
+          worker < 0 ||
+          worker >= work.credentials.length ||
+          incoming.headers["x-export-credential"] !== work.credentials[worker]
+        ) {
+          response.statusCode = 403;
+          response.end("Unknown composition frame worker");
+          return;
+        }
+        void work.frames
+          .accept(worker, index, incoming)
+          .then(() => {
+            response.statusCode = 204;
+            response.end();
+          })
+          .catch((error: unknown) => {
+            frameState.error ??=
+              error instanceof Error ? error : Error(String(error));
+            if (!response.destroyed) {
+              response.statusCode = 500;
+              response.end(frameState.error.message);
+            }
+          });
+        return;
+      }
+      if (
+        frameState.error ||
+        frameState.pending ||
+        !Number.isSafeInteger(index) ||
+        index < 0 ||
+        index >= request.scene.timeline.frameCount ||
+        index !== frameState.nextIndex
+      ) {
         response.statusCode = 409;
         response.end("Frame order mismatch");
         return;
       }
-      void readBodyToEncoder(incoming, encoder, expectedBytes)
+      frameState.pending = true;
+      void readBodyToEncoder(
+        incoming,
+        encoderInput,
+        expectedBytes,
+        maxFrameBytes,
+      )
         .then(() => {
           frameState.nextIndex += 1;
+          frameState.pending = false;
           response.statusCode = 204;
           response.end();
         })
         .catch((error: unknown) => {
-          frameState.error =
+          frameState.error ??=
             error instanceof Error ? error : new Error(String(error));
           response.statusCode = 500;
           response.end(frameState.error.message);
@@ -483,12 +675,70 @@ export const exportScene = async (
   const projectRoot = request.runtime?.projectRoot ?? defaultBrowserProjectRoot;
   const start = performance.now();
   const { scene } = request;
+  const workOptions =
+    request.workers === undefined && request.cacheStatic === undefined
+      ? undefined
+      : {
+          workers: request.workers ?? 1,
+          cacheStatic: request.cacheStatic ?? true,
+        };
+  if (
+    workOptions &&
+    (!("composition" in scene) ||
+      !Number.isInteger(workOptions.workers) ||
+      workOptions.workers < 1 ||
+      workOptions.workers > 4 ||
+      workOptions.workers > scene.timeline.frameCount ||
+      typeof workOptions.cacheStatic !== "boolean")
+  )
+    throw Error(
+      "Composition workers/cache options have invalid bounds or scene type",
+    );
+  const executionPolicy =
+    "composition" in scene
+      ? compositionExecutionPolicy(
+          scene.canvas.width,
+          scene.canvas.height,
+          workOptions?.workers ?? 1,
+        )
+      : undefined;
+  const profile =
+    request.format === undefined
+      ? undefined
+      : compositionOutputProfile(request.format);
+  const transport = request.transport ?? "png_pipe";
+  if (profile) {
+    if (!("composition" in scene))
+      throw Error("Output formats require a composition scene");
+    if (request.encoder && request.encoder !== "libx264")
+      throw Error(
+        "Composition output profiles require their pinned software encoder",
+      );
+    validateCompositionOutput(
+      profile,
+      scene.canvas.width,
+      scene.canvas.height,
+      transport,
+    );
+  }
+  const capturedSourceChecksum =
+    profile || workOptions
+      ? await fileChecksum(request.sourcePath, request.signal)
+      : undefined;
+  if (
+    (profile || workOptions) &&
+    request.expectedSourceChecksum &&
+    capturedSourceChecksum !== request.expectedSourceChecksum
+  )
+    throw Error("Composition source changed before output preparation");
   const audioInput = request.audioInput;
   const nativeAudio =
     "composition" in scene &&
     scene.composition.assets.some((asset) => asset.type === "audio");
-  const expectedSamples =
-    (scene.timeline.frameCount * 48000) / scene.timeline.fps;
+  const expectedSamples = compositionPcmBoundary(
+    scene.timeline.frameCount,
+    scene.timeline.fps,
+  );
   if (nativeAudio && (!audioInput || !scene.preparedAudio))
     passageError(
       "comp-media-provenance",
@@ -561,7 +811,7 @@ export const exportScene = async (
   const sceneManifestPath = `${outputPath}.scene.json`;
   const resultPath = `${outputPath}.result.json`;
   const exportId = randomUUID();
-  const temporaryPath = resolve(
+  let temporaryPath = resolve(
     dirname(outputPath),
     `.${basename(outputPath)}.${exportId}.tmp.mp4`,
   );
@@ -591,21 +841,43 @@ export const exportScene = async (
   const ffmpegVersion = (
     await runProcess("ffmpeg", ["-version"], { signal: request.signal })
   ).stdout.split("\n")[0]!;
+  const outputArtifacts = profile
+    ? await prepareCompositionOutputArtifacts(
+        profile,
+        outputPath,
+        { ...scene.canvas, ...scene.timeline },
+        audioInput,
+        request.signal,
+      )
+    : undefined;
+  if (outputArtifacts) temporaryPath = outputArtifacts.temporaryPath;
   const encoderName = request.encoder ?? "libx264";
-  const transport = request.transport ?? "png_pipe";
-  const encoder = spawn(
-    "ffmpeg",
-    ffmpegArguments(scene, temporaryPath, encoderName, transport, audioInput),
-    {
-      stdio: ["pipe", "ignore", "pipe"],
-    },
+  const encoderProcess = spawnFfmpeg(
+    profile
+      ? compositionOutputArguments(profile, {
+          ...scene.canvas,
+          ...scene.timeline,
+          outputPath: temporaryPath,
+          ...(audioInput && profile.container !== "image2"
+            ? { audioPath: audioInput.path }
+            : {}),
+        })
+      : ffmpegArguments(
+          scene,
+          temporaryPath,
+          encoderName,
+          transport,
+          audioInput,
+        ),
+    workOptions !== undefined,
   );
+  const encoder = encoderProcess.child;
   // Write callbacks report pipe failures; consume the corresponding stream event
   // so cleanup preserves the original browser/encoder error instead of crashing.
   encoder.stdin?.on("error", () => undefined);
   let encoderError = "";
   encoder.stderr?.on("data", (chunk: Buffer) => {
-    encoderError += chunk.toString();
+    encoderError = (encoderError + chunk.toString()).slice(-65536);
   });
   const encoderClosed = new Promise<void>((accept, reject) => {
     encoder.on("error", reject);
@@ -619,18 +891,73 @@ export const exportScene = async (
     encoder.once("close", () => accept()),
   );
   encoderClosed.catch(() => undefined);
-  const frameState = { nextIndex: 0, error: null as Error | null };
+  const frameState = {
+    nextIndex: 0,
+    pending: false,
+    error: null as Error | null,
+  };
+  const outputInput = profile
+    ? compositionOutputInput(
+        profile,
+        transport,
+        scene.canvas.width * scene.canvas.height * 4,
+        scene.timeline.frameCount,
+        encoder.stdin!,
+        request.signal,
+      )
+    : undefined;
   const expectedBytes =
     transport === "raw_rgba"
       ? scene.canvas.width * scene.canvas.height * 4
       : null;
   let server: ViteDevServer | undefined;
   let browser: Browser | undefined;
+  const browsers: Browser[] = [];
+  let orderedFrames: CompositionOrderedFrames | undefined;
+  let surfaceStore: CompositionSurfaceStore | undefined;
+  let cacheBroker: CompositionSurfaceBroker | undefined;
+  let workFailure: { reason: unknown } | undefined;
+  let workMetrics: ExportMetrics["work"];
+  const resultBudget =
+    "schemaVersion" in scene && scene.schemaVersion === "composition-scene-1"
+      ? new CompositionResultBudget(scene.timeline.frameCount)
+      : undefined;
   let viteCacheDirectory: string | undefined;
   const abort = () => {
-    encoder.kill("SIGKILL");
+    encoderProcess.kill();
+    void outputInput?.dispose().catch(() => undefined);
     void browser?.close().catch(() => undefined);
+    for (const workerBrowser of browsers)
+      void workerBrowser.close().catch(() => undefined);
+    orderedFrames?.fail(
+      request.signal?.aborted
+        ? request.signal.reason
+        : Error("Composition export stopped"),
+    );
+    void surfaceStore
+      ?.dispose(
+        request.signal?.reason instanceof Error
+          ? request.signal.reason
+          : Error("Composition export stopped"),
+      )
+      .catch(() => undefined);
   };
+  const failWork = (reason: unknown) => {
+    if (!workFailure) workFailure = { reason };
+    orderedFrames?.fail(workFailure.reason);
+    encoderProcess.kill();
+    for (const workerBrowser of browsers)
+      void workerBrowser.close().catch(() => undefined);
+    void surfaceStore
+      ?.dispose(reason instanceof Error ? reason : Error(String(reason)))
+      .catch(() => undefined);
+  };
+  const assertWorkActive = () => {
+    if (workFailure) throw workFailure.reason;
+  };
+  encoderClosed.catch((reason: unknown) => {
+    if (workOptions) failWork(reason);
+  });
   request.signal?.addEventListener("abort", abort, { once: true });
   let encodePathStart = 0;
   let peakParentRssBytes = process.memoryUsage().rss;
@@ -662,12 +989,50 @@ export const exportScene = async (
     viteCacheDirectory = await mkdtemp(
       join(tmpdir(), "still-shift-export-vite-"),
     );
+    const maxFrameBytes = profile
+      ? scene.canvas.width * scene.canvas.height * 4 +
+        scene.canvas.height +
+        1048576
+      : 50_000_000;
+    const credentials = workOptions
+      ? Array.from({ length: workOptions.workers }, () => randomUUID())
+      : [];
+    if (workOptions)
+      orderedFrames = new CompositionOrderedFrames(
+        scene.timeline.frameCount,
+        workOptions.workers,
+        async (source, frame, worker) => {
+          await readBodyToEncoder(
+            source as IncomingMessage,
+            outputInput?.input ?? encoder.stdin!,
+            expectedBytes,
+            maxFrameBytes,
+          );
+          await request.verifyFrame?.(frame, worker);
+        },
+        executionPolicy!.distribution,
+      );
     server = await createServer({
       root: projectRoot,
       configFile: false,
       cacheDir: viteCacheDirectory,
       logLevel: "silent",
-      plugins: [assetPlugin(request, encoder, expectedBytes, frameState)],
+      plugins: [
+        assetPlugin(
+          request,
+          outputInput?.input ?? encoder.stdin!,
+          expectedBytes,
+          maxFrameBytes,
+          frameState,
+          orderedFrames
+            ? {
+                frames: orderedFrames,
+                credentials,
+                cacheBroker: () => cacheBroker,
+              }
+            : undefined,
+        ),
+      ],
       server: {
         host: "127.0.0.1",
         port: 0,
@@ -677,97 +1042,253 @@ export const exportScene = async (
     await server.listen();
     const baseUrl = server.resolvedUrls?.local[0];
     if (!baseUrl) throw new Error("Export browser server has no local URL");
+    assertWorkActive();
     request.signal?.throwIfAborted();
     const browserProfile = request.browserProfile ?? "pinned";
     browser = await launchRenderBrowser({ profile: browserProfile });
+    browsers.push(browser);
+    assertWorkActive();
     request.signal?.throwIfAborted();
-    const page = await browser.newPage({
-      viewport: { width: scene.canvas.width, height: scene.canvas.height },
-    });
-    const startupErrors: string[] = [];
-    page.on("pageerror", (error) => startupErrors.push(error.message));
-    page.on("console", (message) => {
-      if (message.type() === "error")
-        startupErrors.push(message.text().slice(0, 1024));
-    });
-    page.on("response", (response) => {
-      if (response.status() >= 400)
-        startupErrors.push(
-          `${response.status()} ${response.url().slice(0, 256)}`,
-        );
-    });
-    page.on("requestfailed", (failed) =>
-      startupErrors.push(
-        `${failed.url().slice(0, 256)}: ${failed.failure()?.errorText ?? "request failed"}`,
+    if (workOptions && workOptions.workers > 1) {
+      const launches = await Promise.allSettled(
+        Array.from({ length: workOptions.workers - 1 }, async () => {
+          const launched = await launchRenderBrowser({
+            profile: browserProfile,
+          });
+          browsers.push(launched);
+          return launched;
+        }),
+      );
+      const failed = launches.find((launch) => launch.status === "rejected");
+      if (failed?.status === "rejected") throw failed.reason;
+      assertWorkActive();
+      request.signal?.throwIfAborted();
+    }
+    const prepared = await Promise.allSettled(
+      browsers.map((workerBrowser) =>
+        prepareExportBrowserWorker(workerBrowser, {
+          baseUrl,
+          width: scene.canvas.width,
+          height: scene.canvas.height,
+          profile: browserProfile,
+          recordProcesses: workOptions !== undefined,
+        }),
       ),
     );
-    await page.goto(runtimeBrowserUrl(baseUrl, "export"));
-    try {
-      await page.waitForFunction(() => Boolean(window.runStillShiftExport));
-    } catch (cause) {
-      throw new Error(
-        `Export browser did not initialize${startupErrors.length ? `: ${startupErrors.join("; ")}` : ": no browser error reported"}`,
-        { cause },
+    const failedPreparation = prepared.find(
+      (worker) => worker.status === "rejected",
+    );
+    assertWorkActive();
+    if (failedPreparation?.status === "rejected")
+      throw failedPreparation.reason;
+    const workers: ExportBrowserWorker[] = prepared.map((worker) => {
+      if (worker.status !== "fulfilled")
+        throw Error("Export worker preparation failed");
+      return worker.value;
+    });
+    const renderEnvironment = workers[0]!.environment;
+    if (
+      workers.some(
+        (worker) =>
+          JSON.stringify(worker.environment) !==
+          JSON.stringify(renderEnvironment),
+      )
+    )
+      throw Error(
+        "Composition workers differ from the captured pinned render environment",
+      );
+    for (const [index, worker] of workers.entries())
+      await request.verifyWorker?.(worker.page, index);
+    assertWorkActive();
+    request.signal?.throwIfAborted();
+    const scopeKey = workOptions
+      ? contentChecksum(
+          JSON.stringify({
+            version: "composition-render-work-1",
+            scene,
+            sourceChecksum: capturedSourceChecksum,
+            environment: renderEnvironment,
+            format: profile?.format ?? "legacy-mp4",
+            transport,
+            preserveAlpha: profile?.alpha ?? false,
+          }),
+        )
+      : "";
+    if (workOptions?.cacheStatic) {
+      surfaceStore = await CompositionSurfaceStore.create(viteCacheDirectory, {
+        workers: workOptions.workers,
+        byteLimit: executionPolicy!.diskBytes,
+      });
+      cacheBroker = new CompositionSurfaceBroker(
+        surfaceStore,
+        credentials,
+        failWork,
       );
     }
-    const renderEnvironment = await probeRenderEnvironment(
-      page,
-      browserProfile,
-    );
-    assertPinnedRenderEnvironment(renderEnvironment);
+    request.signal?.throwIfAborted();
     encodePathStart = performance.now();
-    const outcome = await page.evaluate(
-      async ({ scene, hasDepth, transport }) => {
-        try {
+    let browserResult: BrowserExportResult;
+    let workerMemory: NonNullable<BrowserExportResult["memory"]>[] = [];
+    let compositionStatistics: ExportMetrics["compositionStatistics"];
+    if (workOptions) {
+      const rendererIds = workers.flatMap(
+        (worker) => worker.rendererProcessIds,
+      );
+      if (new Set(rendererIds).size !== rendererIds.length)
+        throw Error("Composition workers share an actual renderer process");
+      const runs: PromiseSettledResult<BrowserExportResult>[] = [];
+      for (
+        let offset = 0;
+        offset < workers.length;
+        offset += executionPolicy!.concurrentWorkers
+      ) {
+        assertWorkActive();
+        const batch = await Promise.allSettled(
+          workers
+            .slice(offset, offset + executionPolicy!.concurrentWorkers)
+            .map((worker, relative) => {
+              const index = offset + relative;
+              return runExportBrowserWorker(worker, {
+                resultBudget,
+                scene,
+                hasDepth: request.depthPath !== null,
+                transport,
+                output: {
+                  preserveAlpha: profile?.alpha ?? false,
+                  canonicalCapture: profile !== undefined,
+                  work: {
+                    worker: index,
+                    workers: workOptions.workers,
+                    concurrentWorkers: executionPolicy!.concurrentWorkers,
+                    distribution: executionPolicy!.distribution,
+                    credential: credentials[index]!,
+                    ...(workOptions.cacheStatic
+                      ? {
+                          surfaceCache: {
+                            scopeKey,
+                            byteLimit: executionPolicy!.cacheBytes,
+                          },
+                        }
+                      : {}),
+                  },
+                },
+              }).catch((reason: unknown) => {
+                failWork(
+                  orderedFrames?.hasFailed
+                    ? orderedFrames.failureReason
+                    : reason,
+                );
+                throw reason;
+              });
+            }),
+        );
+        runs.push(...batch);
+      }
+      assertWorkActive();
+      const results = runs.map((run) => {
+        if (run.status !== "fulfilled") throw run.reason;
+        return run.value;
+      });
+      orderedFrames!.finish();
+      frameState.nextIndex = orderedFrames!.statistics.deliveredFrames;
+      browserResult = summarizeExportWorkers(results);
+      workerMemory = results.map((result) => {
+        if (!result.memory?.afterAcknowledgement)
+          throw Error("Composition worker omitted memory retirement");
+        return result.memory;
+      });
+      compositionStatistics = summarizeCompositionStatistics(
+        results.map((result) => {
+          if (!result.compositionStatistics)
+            throw Error("Composition worker omitted statistics");
+          return result.compositionStatistics;
+        }),
+        scene.timeline.frameCount,
+      );
+      workMetrics = {
+        version: "composition-render-work-1",
+        workers: workOptions.workers,
+        chunkFrames: 1,
+        distribution: executionPolicy!.distribution,
+        concurrentWorkers: executionPolicy!.concurrentWorkers,
+        cacheStatic: workOptions.cacheStatic,
+        scopeKey,
+        orderedFrames: orderedFrames!.statistics,
+        ...(surfaceStore ? { surfaceStore: surfaceStore.statistics } : {}),
+        submissionStatistics: {
+          scope: "synchronous-submission-wall-time",
+          totalSubmissionWallMs: compositionStatistics.totalSubmissionWallMs,
+          byLayerType: compositionStatistics.byLayerType,
+        },
+        workersDetail: workers.map((worker, index) => {
+          const result = results[index]!.work;
+          if (!result || result.worker !== index)
+            throw Error("Composition worker result ownership differs");
           return {
-            ok: true as const,
-            value: await window.runStillShiftExport!(
-              scene,
-              hasDepth,
-              transport,
-            ),
+            worker: index,
+            environment: worker.environment,
+            rendererProcessIds: worker.rendererProcessIds,
+            gpuProcessIds: worker.gpuProcessIds,
+            result,
           };
-        } catch (error) {
-          // Playwright otherwise discards custom Error fields at the browser boundary.
-          const diagnostics = (error as { diagnostics?: PassageDiagnostic[] })
-            .diagnostics;
-          if (!diagnostics?.length) throw error;
-          return { ok: false as const, diagnostics };
-        }
-      },
-      // The deep composition type exceeds Playwright's serialisable-type check.
-      {
-        scene: scene as PreviewScene,
+        }),
+      };
+    } else {
+      browserResult = await runExportBrowserWorker(workers[0]!, {
+        resultBudget,
+        scene,
         hasDepth: request.depthPath !== null,
         transport,
-      },
-    );
-    if (!outcome.ok) {
-      const diagnostic = outcome.diagnostics[0]!;
-      throw new AnimationEngineError(
-        "RENDER_FAILED",
-        `${diagnostic.code}: ${diagnostic.message}`,
-        {
-          diagnostic: diagnostic.code,
-          ...(diagnostic.node ? { node: diagnostic.node } : {}),
-          ...(diagnostic.path ? { path: diagnostic.path } : {}),
-          ...(diagnostic.frame === undefined
-            ? {}
-            : { frame: diagnostic.frame }),
-          diagnostics: JSON.stringify(outcome.diagnostics),
-        },
-      );
+        ...(profile
+          ? { output: { preserveAlpha: profile.alpha, canonicalCapture: true } }
+          : {}),
+      });
     }
-    const browserResult = outcome.value;
     if (frameState.error) throw frameState.error;
     if (frameState.nextIndex !== scene.timeline.frameCount)
       throw new Error("Not all frames reached the encoder");
-    encoder.stdin?.end();
+    if (browserResult.memory) workerMemory = [browserResult.memory];
+    if (!compositionStatistics && browserResult.compositionStatistics)
+      compositionStatistics = summarizeCompositionStatistics(
+        [browserResult.compositionStatistics],
+        scene.timeline.frameCount,
+      );
+    const concurrentWorkers = executionPolicy?.concurrentWorkers ?? 1;
+    const workerPeaks = workerMemory.map(
+      (worker) =>
+        worker.beforeAcknowledgement.peak.pixels +
+        worker.beforeAcknowledgement.peak.metadata,
+    );
+    let peakConcurrentWorkerBytes = 0;
+    for (
+      let offset = 0;
+      offset < workerPeaks.length;
+      offset += concurrentWorkers
+    )
+      peakConcurrentWorkerBytes = Math.max(
+        peakConcurrentWorkerBytes,
+        workerPeaks
+          .slice(offset, offset + concurrentWorkers)
+          .reduce((sum, bytes) => sum + bytes, 0),
+      );
+    if (outputInput) await outputInput.finish();
+    else encoder.stdin?.end();
     await encoderClosed;
+    await encoderProcess.reap();
     await sampleMemory();
     const validationStart = performance.now();
-    await verifyOutput(temporaryPath, scene, request.signal);
-    if (audioInput) {
+    if (outputArtifacts) await outputArtifacts.verify();
+    else await verifyOutput(temporaryPath, scene, request.signal);
+    const profileAudio =
+      audioInput && profile && profile.container !== "image2"
+        ? await verifyCompositionOutputAudio(
+            temporaryPath,
+            audioInput,
+            profile,
+            request.signal,
+          )
+        : undefined;
+    if (audioInput && !profile) {
       const probe = await runProcess(
         "ffprobe",
         [
@@ -806,6 +1327,8 @@ export const exportScene = async (
         throw new Error(
           "FFprobe validation failed for muxed native audio clock",
         );
+    }
+    if (audioInput) {
       await verifyCompositionAudioPcm(
         audioInput.path,
         {
@@ -816,12 +1339,19 @@ export const exportScene = async (
       );
     }
     const validationWallMs = performance.now() - validationStart;
-    const outputBytes = (await stat(temporaryPath)).size;
-    const outputChecksum = await fileChecksum(temporaryPath, request.signal);
+    const summary = outputArtifacts
+      ? await outputArtifacts.summarize()
+      : {
+          outputBytes: (await stat(temporaryPath)).size,
+          outputChecksum: await fileChecksum(temporaryPath, request.signal),
+        };
+    const { outputBytes, outputChecksum } = summary;
     const sourceChecksum = await fileChecksum(
       request.sourcePath,
       request.signal,
     );
+    if ((profile || workOptions) && sourceChecksum !== capturedSourceChecksum)
+      throw Error("Composition source changed during output rendering");
     const depthChecksum = request.depthPath
       ? await fileChecksum(request.depthPath, request.signal)
       : null;
@@ -837,7 +1367,11 @@ export const exportScene = async (
     const sceneChecksum = contentChecksum(serializedScene);
     await writeFile(temporaryScenePath, serializedScene, { flag: "wx" });
     const metrics: ExportMetrics = {
-      version: EXPORT_WORKER_VERSION,
+      version: workOptions
+        ? COMPOSITION_PARALLEL_EXPORT_WORKER_VERSION
+        : profile
+          ? COMPOSITION_EXPORT_WORKER_VERSION
+          : EXPORT_WORKER_VERSION,
       sceneManifestPath,
       sceneChecksum,
       sourceChecksum,
@@ -851,6 +1385,16 @@ export const exportScene = async (
       frameUploadAverageMs: browserResult.frameUploadAverageMs,
       frameUploadP95Ms: browserResult.frameUploadP95Ms,
       ffmpegCpuMs: ffmpegCpuTimeMs(encoderError),
+      ffmpegCpuScope: "ffmpeg-transcode-user-plus-system",
+      ...(workOptions
+        ? {
+            ffmpegProcessUsage: {
+              ...ffmpegProcessUsage(encoderError),
+              timingProcessId: encoder.pid!,
+              processGroupReaped: true as const,
+            },
+          }
+        : {}),
       encodePathWallMs: performance.now() - encodePathStart,
       validationWallMs,
       totalWallMs: performance.now() - start,
@@ -865,8 +1409,33 @@ export const exportScene = async (
       gpuRenderer: browserResult.gpuRenderer,
       renderEnvironment,
       ffmpegVersion,
-      ffmpegCodec: codecArguments(encoderName).join(" "),
+      ffmpegCodec: (profile
+        ? compositionOutputCodecArguments(profile)
+        : codecArguments(encoderName)
+      ).join(" "),
       frameTransport: transport,
+      ...(workMetrics ? { work: workMetrics } : {}),
+      ...(compositionStatistics ? { compositionStatistics } : {}),
+      ...(workerMemory.length
+        ? {
+            compositionMemory: {
+              scope: "declared-worker-application-bytes" as const,
+              applicationLimitBytes: COMPOSITION_APPLICATION_MEMORY_LIMIT,
+              reservedNodeBudgetBytes: COMPOSITION_NODE_MEMORY_ALLOWANCE,
+              concurrentWorkers,
+              peakConcurrentWorkerBytes,
+              sumOfWorkerPeakBytes: workerMemory.reduce(
+                (sum, worker) =>
+                  sum +
+                  worker.beforeAcknowledgement.peak.pixels +
+                  worker.beforeAcknowledgement.peak.metadata,
+                0,
+              ),
+              workers: workerMemory,
+              nodeResults: resultBudget!.statistics,
+            },
+          }
+        : {}),
       ...(audioInput
         ? {
             audio: {
@@ -874,50 +1443,122 @@ export const exportScene = async (
               sampleCount: audioInput.sampleCount,
               sampleRate: 48000 as const,
               channels: 2 as const,
-              codec: "aac" as const,
+              codec:
+                profile?.audioCodec === "libopus"
+                  ? ("opus" as const)
+                  : (profile?.audioCodec ?? ("aac" as const)),
+              ...(profileAudio && "decodedSampleCount" in profileAudio
+                ? {
+                    decodedSampleCount: profileAudio.decodedSampleCount,
+                    decodedChecksum: profileAudio.decodedChecksum,
+                  }
+                : {}),
+            },
+          }
+        : {}),
+      ...(profile
+        ? {
+            output: {
+              version: profile.version,
+              format: profile.format,
+              alpha: profile.alpha,
+              renderSourceBitDepth: 8 as const,
+              encoderInputBitDepth: profile.bitDepth,
+              encodedBitDepth: profile.encodedBitDepth,
+              color: {
+                primaries: "bt709" as const,
+                transfer: "bt709" as const,
+                matrix:
+                  profile.matrix === "rgb"
+                    ? ("gbr" as const)
+                    : ("bt709" as const),
+                range: profile.range,
+              },
+              ...("sequence" in summary && summary.sequence
+                ? { sequence: summary.sequence }
+                : {}),
             },
           }
         : {}),
     };
     await request.validateResult?.(metrics);
     if (request.resultManifestContents) {
-      const contents = await request.resultManifestContents(metrics);
-      await writeFile(temporaryResultPath, contents, {
-        flag: "wx",
-        signal: request.signal,
-      });
+      const size = resultBudget ? compositionResultSize(metrics) : undefined;
+      // Pretty JSON whitespace and the public composition-result envelope.
+      const characters = size
+        ? size.characters + size.nodes * 132 + 65536
+        : undefined;
+      const textCapacity = characters
+        ? resultBudget!.reserveText(characters)
+        : undefined;
+      try {
+        if (metrics.compositionMemory)
+          metrics.compositionMemory.nodeResults = resultBudget!.statistics;
+        const contents = await request.resultManifestContents(metrics);
+        if (characters && contents.length > characters)
+          throw Error(
+            "Composition result manifest exceeds its admitted capacity",
+          );
+        await writeFile(temporaryResultPath, contents, {
+          flag: "wx",
+          signal: request.signal,
+        });
+      } finally {
+        textCapacity?.release();
+      }
     }
     clearInterval(memoryMonitor);
     await memorySample;
-    await browser.close();
+    await Promise.all(browsers.map((workerBrowser) => workerBrowser.close()));
     browser = undefined;
     await server.close();
     server = undefined;
     request.signal?.throwIfAborted();
+    if (profile || workOptions) {
+      await request.validateSources?.();
+      if (
+        (await fileChecksum(request.sourcePath, request.signal)) !==
+        capturedSourceChecksum
+      )
+        throw Error("Composition source changed before output publication");
+    }
+    const metadata = [
+      { staged: temporaryScenePath, destination: sceneManifestPath },
+      ...(request.resultManifestContents
+        ? [{ staged: temporaryResultPath, destination: resultPath }]
+        : []),
+    ];
     await publishArtifacts(
-      [
-        { staged: temporaryScenePath, destination: sceneManifestPath },
-        ...(request.resultManifestContents
-          ? [{ staged: temporaryResultPath, destination: resultPath }]
-          : []),
-        { staged: temporaryPath, destination: outputPath },
-      ],
+      outputArtifacts
+        ? outputArtifacts.publications(metadata)
+        : [...metadata, { staged: temporaryPath, destination: outputPath }],
       request.signal,
     );
     published = true;
     return metrics;
   } catch (error) {
-    encoder.kill("SIGKILL");
+    encoderProcess.kill();
     request.signal?.throwIfAborted();
+    assertWorkActive();
+    if (orderedFrames?.hasFailed) throw orderedFrames.failureReason;
     throw error;
   } finally {
+    resultBudget?.dispose();
     request.signal?.removeEventListener("abort", abort);
     clearInterval(memoryMonitor);
     // The writer must exit before removing files it might still create.
     await encoderReaped;
+    try {
+      await encoderProcess.reap();
+    } catch (error) {
+      process.stderr.write(`Export encoder reaping failed: ${String(error)}\n`);
+    }
     const cleanup = await Promise.allSettled([
       published ? null : memorySample,
-      published ? null : browser?.close(),
+      ...browsers.map((workerBrowser) => workerBrowser.close()),
+      surfaceStore?.dispose(),
+      outputInput?.dispose(),
+      outputArtifacts?.dispose(),
       (async () => {
         try {
           await server?.close();

@@ -158,3 +158,64 @@ describe("family window preparation", () => {
     }
   });
 });
+
+it("validates async coverage once across reused previews without disposing borrowed media", async () => {
+  const getImageData = vi.fn((_x, _y, width: number, height: number) => ({
+    data: new Uint8ClampedArray(width * height * 4),
+  }));
+  const canvas = () => mockCanvas({ getImageData });
+  vi.stubGlobal("document", { createElement: canvas });
+  const prepareFrame = vi.fn(async () => {}),
+    dispose = vi.fn();
+  const media = {
+    prepareFrame,
+    assertReady: vi.fn(),
+    dispose,
+  } as unknown as NonNullable<
+    Parameters<typeof prepareCompositionPreview>[1]["media"]
+  >;
+  const composition = CompositionSchema.parse({
+    schemaVersion: "composition-1",
+    id: "prepared-async",
+    width: 64,
+    height: 64,
+    fps: 30,
+    frameCount: 3,
+    background: "#ffffff",
+    assets: [],
+    layers: [
+      {
+        id: "cover",
+        type: "solid",
+        size: [64, 64],
+        color: "#ffffff",
+        transform: { position: [0, 0], anchor: [0, 0] },
+        coverage: "required",
+      },
+    ],
+  });
+  try {
+    const prepared = prepareCompositionPreview(
+      composition,
+      { images: new Map(), fonts: new Map(), media },
+      { coverageSeverity: "warning" },
+    );
+    expect(getImageData).not.toHaveBeenCalled();
+    for (let run = 0; run < 2; run++) {
+      const preview = prepared.create(canvas());
+      try {
+        await preview.prepareFrame(2);
+        expect(preview.renderFrame(2).diagnostics).toEqual([
+          expect.objectContaining({ code: "comp-camera-coverage", frame: 0 }),
+        ]);
+      } finally {
+        preview.dispose();
+      }
+      expect(getImageData).toHaveBeenCalledTimes(1);
+    }
+    expect(prepareFrame).toHaveBeenCalledTimes(5);
+    expect(dispose).not.toHaveBeenCalled();
+  } finally {
+    vi.unstubAllGlobals();
+  }
+});

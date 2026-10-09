@@ -1,3 +1,4 @@
+import { allocateRenderPixels } from "../../managed-memory-context.ts";
 import type { CompositionBlendMode } from "@still-shift/scene-contract";
 import { BLEND_FUNCTIONS, BLEND_MODES } from "./webgl-blend.ts";
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
@@ -25,7 +26,10 @@ export const encodeSrgb = (word: number) =>
   encode[Math.max(0, Math.min(65535, word))]!;
 /** A bounded transfer-control texture: encode R, decode low/high GB. */
 export function linearTransferBytes() {
-  const bytes = new Uint8Array(65536 * 4);
+  const bytes = allocateRenderPixels(
+    65536 * 4 * 1,
+    () => new Uint8Array(65536 * 4),
+  );
   for (let word = 0; word < 65536; word++) {
     bytes[word * 4] = encode[word]!;
     bytes[word * 4 + 3] = 255;
@@ -150,10 +154,10 @@ export function createLinearBlendKernel(
   mode: CompositionBlendMode,
   opacity = 1,
 ) {
-  const src = new Uint8ClampedArray(4),
-    s = new Uint32Array(4),
-    b = new Uint32Array(4),
-    words = new Uint32Array(4);
+  const src = allocateRenderPixels(4 * 1, () => new Uint8ClampedArray(4)),
+    s = allocateRenderPixels(4 * 4, () => new Uint32Array(4)),
+    b = allocateRenderPixels(4 * 4, () => new Uint32Array(4)),
+    words = allocateRenderPixels(4 * 4, () => new Uint32Array(4));
   const sourceColor: Color = [0, 0, 0],
     backdropColor: Color = [0, 0, 0];
   const scale = Math.round(clamp(opacity) * 255) + 1;
@@ -214,14 +218,14 @@ export function linearBlendPixel(
   mode: CompositionBlendMode,
   opacity = 1,
 ) {
-  const out = new Uint8ClampedArray(4);
+  const out = allocateRenderPixels(4 * 1, () => new Uint8ClampedArray(4));
   createLinearBlendKernel(mode, opacity)(source, 0, backdrop, 0, out, 0);
   return out;
 }
 export function createLinearLerpKernel() {
-  const s = new Uint32Array(4),
-    b = new Uint32Array(4),
-    words = new Uint32Array(4);
+  const s = allocateRenderPixels(4 * 4, () => new Uint32Array(4)),
+    b = allocateRenderPixels(4 * 4, () => new Uint32Array(4)),
+    words = allocateRenderPixels(4 * 4, () => new Uint32Array(4));
   return (
     source: ArrayLike<number>,
     sourceOffset: number,
@@ -243,7 +247,7 @@ export function linearLerpPixel(
   backdrop: ArrayLike<number>,
   coverage: number,
 ) {
-  const out = new Uint8ClampedArray(4);
+  const out = allocateRenderPixels(4 * 1, () => new Uint8ClampedArray(4));
   createLinearLerpKernel()(source, 0, backdrop, 0, coverage, out, 0);
   return out;
 }

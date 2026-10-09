@@ -1,3 +1,8 @@
+import {
+  createRenderCanvas,
+  releaseRenderCanvas,
+} from "../../managed-memory-context.ts";
+import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
 /**
  * The one module that shapes, measures and draws composition text. Every text
  * layout decision (shaping, advances, line breaks) is made here through the
@@ -15,9 +20,11 @@ import { loadPreparedFonts, type LoadedFont } from "../../prepared-fonts.ts";
 import { loadTextAnimationFonts } from "../../typography-axes.ts";
 import {
   drawTypography,
+  disposeTypography,
   isSingleImageTypography,
   hasStableTypographyImage,
   prepareTypography,
+  prepareTypographyColors,
   type PreparedTypography,
 } from "../../typography-renderer.ts";
 import { resolvedTextStyle, type TextNode } from "../../typography-style.ts";
@@ -50,9 +57,11 @@ export type TextProbe = { node: string; mode: "ink-only" | "container-only" };
 type TypographyScene = Parameters<typeof prepareTypography>[0];
 
 export type CompositionText = {
+  dispose(): void;
   /** Local bounds per text state, for `EvaluationOptions.textBounds`. */
   bounds: Record<string, Bounds[]>;
   draw: CanvasTextDrawer;
+  preparePixels(content: TextContent): void;
   contentKey(content: TextContent): string | undefined;
   contentBounds(content: TextContent): Bounds | undefined;
   singleImage(content: TextContent): boolean;
@@ -227,11 +236,13 @@ export async function loadCompositionFonts(
     },
     assetUrl,
   );
-  const frames = compositionTextFrames(
-    comp,
-    loaded,
-    document.createElement("canvas").getContext("2d")!,
-  );
+  const probeCanvas = createRenderCanvas();
+  let frames: CompositionTextFrames;
+  try {
+    frames = compositionTextFrames(comp, loaded, probeCanvas.getContext("2d")!);
+  } finally {
+    releaseRenderCanvas(probeCanvas);
+  }
   for (const [scope] of scopes(comp)) {
     const scene = typographyScene(
       comp,
@@ -267,8 +278,33 @@ function compositionTextFrames(
         }
       : {}),
   };
-  const { bounds } = prepareCompositionText(staticComp, fonts, context, {});
-  return collectCompositionTextFrames(comp, bounds);
+  // Frame discovery consumes shaped layout and measured bounds only. Its
+  // temporary raster headers preserve dimensions without painting glyphs.
+  const probes: HTMLCanvasElement[] = [];
+  const boundsOnly: CanvasPixelSource = ({ width, height }) => {
+    const canvas = createRenderCanvas();
+    probes.push(canvas);
+    canvas.width = width;
+    canvas.height = height;
+    return canvas;
+  };
+  try {
+    const measured = prepareCompositionText(
+      staticComp,
+      fonts,
+      context,
+      {},
+      undefined,
+      boundsOnly,
+    );
+    try {
+      return collectCompositionTextFrames(comp, measured.bounds);
+    } finally {
+      measured.dispose();
+    }
+  } finally {
+    for (const canvas of probes) releaseRenderCanvas(canvas);
+  }
 }
 
 function rectBounds(rect: {
@@ -310,13 +346,11 @@ export function prepareCompositionText(
   comp: Composition,
   fonts: Map<string, LoadedFont>,
   measureContext: CanvasRenderingContext2D,
-  frames: CompositionTextFrames = compositionTextFrames(
-    comp,
-    fonts,
-    measureContext,
-  ),
+  frames: CompositionTextFrames | undefined = undefined,
   textProbe?: TextProbe,
+  sourceCanvas?: CanvasPixelSource,
 ): CompositionText {
+  frames ??= compositionTextFrames(comp, fonts, measureContext);
   const entries = new Map<string, Entry>();
   const bounds: Record<string, Bounds[]> = {};
   for (const [scope, prefix] of scopes(comp)) {
@@ -334,6 +368,7 @@ export function prepareCompositionText(
     const prepared = typed.length
       ? prepareTypography(scene, fonts, {
           softwareRaster: requiresSoftwareFilters(comp),
+          ...(sourceCanvas ? { sourceCanvas } : {}),
           strokeCoverage: true,
           colorCoverage: true,
           sourceColorNodes: new Set(
@@ -458,8 +493,31 @@ export function prepareCompositionText(
     drawStoryText(ctx, node, text, content.reveal);
   };
   return {
+    dispose() {
+      const prepared = new Set<PreparedTypography>();
+      for (const entry of entries.values())
+        if (entry.kind === "typography") prepared.add(entry.prepared);
+      for (const value of prepared) disposeTypography(value);
+    },
     bounds,
     draw,
+    preparePixels(content) {
+      const entry = entries.get(content.key);
+      if (entry?.kind !== "typography") return;
+      const color = cssColor(content.color);
+      const node =
+        color === entry.node.color ? entry.node : { ...entry.node, color };
+      for (const state of new Set([
+        content.state,
+        ...(content.stateFrom === undefined ? [] : [content.stateFrom]),
+      ]))
+        prepareTypographyColors(
+          node,
+          { state, reveal: content.reveal },
+          entry.prepared,
+          content.time,
+        );
+    },
     singleImage(content) {
       const entry = entries.get(content.key);
       if (textProbe?.node === entry?.node.id) return false;

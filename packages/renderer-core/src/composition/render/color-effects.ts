@@ -1,5 +1,13 @@
+import type { ManagedMemory, MemoryLease } from "../../managed-memory.ts";
+import type { WebglSurface } from "./webgl-device.ts";
+import type { CanvasSurface } from "./canvas2d.ts";
+import {
+  allocateRenderPixels,
+  renderMemory,
+} from "../../managed-memory-context.ts";
 import {
   gradientControls,
+  type GradientControls,
   gradientRank,
   gradientUniforms,
   gradientColorTable,
@@ -10,14 +18,103 @@ import type { Rgba } from "../evaluate/types.ts";
 import type { RenderEffect } from "./graph.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 
+import {
+  allocateRenderMetadata,
+  allocateManagedRenderMetadata,
+  releaseRenderMetadata,
+} from "../../managed-metadata.ts";
 type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
+function colorGradientUniforms(params: Params) {
+  const controls = gradientControls(params);
+  let result: ReturnType<typeof gradientUniforms> | undefined,
+    failed = false,
+    failure: unknown;
+  try {
+    result = gradientUniforms(controls);
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      releaseRenderMetadata(controls);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the original producer/controls cleanup error. */
+    }
+    throw failure;
+  }
+  return result!;
+}
 const unit = (v: number) => Math.max(0, Math.min(1, v));
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 const n = (p: Params, key: string) => p[key] as number;
 const v = (p: Params, key: string) => p[key] as readonly number[];
-function hueSaturation(rgb: readonly number[], p: Params): number[] {
+type ColorPixelWork = {
+  rgb?: number[] | undefined;
+  output?: number[] | undefined;
+  unitOutput?: number[] | undefined;
+  hslKeys?: number[] | undefined;
+  hslOutput?: number[] | undefined;
+  colorOutput?: Rgba | undefined;
+  sliceMethod?: ((start?: number, end?: number) => number[]) | undefined;
+  sliceArgs?: number[] | undefined;
+  mapper?: ((value: number, index: number) => number) | undefined;
+  points?: readonly (readonly number[])[] | undefined;
+  black?: readonly number[] | undefined;
+  white?: readonly number[] | undefined;
+  start?: readonly number[] | undefined;
+  end?: readonly number[] | undefined;
+  first?: readonly number[] | undefined;
+  last?: readonly number[] | undefined;
+};
+type ColorPixelPhase = ColorPixelWork & {
+  managed: boolean;
+  producer?: (() => Rgba) | undefined;
+};
+function clearColorPixelWork(work: ColorPixelWork) {
+  if (work.rgb) work.rgb.length = 0;
+  if (work.output) work.output.length = 0;
+  if (work.unitOutput) work.unitOutput.length = 0;
+  if (work.hslKeys) work.hslKeys.length = 0;
+  if (work.hslOutput) work.hslOutput.length = 0;
+  if (work.colorOutput) (work.colorOutput as number[]).length = 0;
+  if (work.sliceArgs) work.sliceArgs.length = 0;
+  for (const key in work) delete work[key as keyof ColorPixelWork];
+}
+function clearColorPixelPhase(phase: ColorPixelPhase) {
+  clearColorPixelWork(phase);
+  for (const key in phase)
+    delete (phase as Partial<ColorPixelPhase>)[key as keyof ColorPixelPhase];
+}
+function colorPixelMapper(
+  work: ColorPixelWork | undefined,
+  mapper: (value: number, index: number) => number,
+) {
+  if (work) work.mapper = mapper;
+  return mapper;
+}
+function colorPixelSlice(pixel: Rgba, work: ColorPixelWork) {
+  const method = (work.sliceMethod = pixel.slice);
+  const args = (work.sliceArgs = [0, 3]);
+  return Reflect.apply(method, pixel, args) as number[];
+}
+
+function hueSaturation(
+  rgb: readonly number[],
+  p: Params,
+  work?: ColorPixelWork,
+): number[] {
   const maximum = Math.max(...rgb),
     minimum = Math.min(...rgb),
     chroma = maximum - minimum;
@@ -36,12 +133,19 @@ function hueSaturation(rgb: readonly number[], p: Params): number[] {
   const change = n(p, "lightness") / 100;
   light = unit(light + (change >= 0 ? 1 - light : light) * change);
   const outputChroma = (1 - Math.abs(2 * light - 1)) * saturation;
-  return [0, 4, 2].map(
-    (offset) =>
-      unit(Math.abs(((hue * 6 + offset) % 6) - 3) - 1) * outputChroma +
-      light -
-      outputChroma / 2,
+  const keys = [0, 4, 2];
+  if (work) work.hslKeys = keys;
+  const result = keys.map(
+    colorPixelMapper(
+      work,
+      (offset) =>
+        unit(Math.abs(((hue * 6 + offset) % 6) - 3) - 1) * outputChroma +
+        light -
+        outputChroma / 2,
+    ),
   );
+  if (work) work.hslOutput = result;
+  return result;
 }
 /** Recover stored premultiplied bytes, then round straight channels with explicit half-up ties.
  * Canvas readback uses platform unpremultiplication rounding at half-byte boundaries.
@@ -60,44 +164,104 @@ export function colorEffectPixel(
   p: Params,
   x: number,
   y: number,
+  work?: ColorPixelWork,
 ): Rgba {
-  const rgb = pixel.slice(0, 3);
+  if (work || !renderMemory())
+    return produceColorEffectPixel(id, pixel, p, x, y, work);
+  const phase = allocateRenderMetadata<ColorPixelPhase>(
+    4096,
+    () => ({ managed: true }),
+    false,
+    clearColorPixelPhase,
+  );
+  let result: Rgba | undefined,
+    failed = false,
+    failure: unknown;
+  try {
+    result = allocateRenderMetadata<Rgba>(
+      512,
+      (phase.producer = () =>
+        produceColorEffectPixel(id, pixel, p, x, y, phase)),
+      false,
+      (value) => {
+        (value as number[]).length = 0;
+      },
+    );
+    phase.colorOutput = undefined;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      releaseRenderMetadata(phase);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      if (result) releaseRenderMetadata(result);
+    } catch {
+      /* Preserve the first producer/admission/cleanup error. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+function produceColorEffectPixel(
+  id: string,
+  pixel: Rgba,
+  p: Params,
+  x: number,
+  y: number,
+  work?: ColorPixelWork,
+): Rgba {
+  const rgb = work ? colorPixelSlice(pixel, work) : pixel.slice(0, 3);
+  if (work) work.rgb = rgb;
   let output: number[];
   switch (id) {
     case "color.curves": {
       const points = p.curve as readonly (readonly number[])[];
-      output = rgb.map((value) => {
-        let mapped = points.at(-1)![1]!;
-        for (let i = 1; i < points.length; i++) {
-          const first = points[i - 1]!,
-            last = points[i]!;
-          if (value <= last[0]!) {
-            mapped = mix(
-              first[1]!,
-              last[1]!,
-              unit((value - first[0]!) / (last[0]! - first[0]!)),
-            );
-            break;
+      if (work) work.points = points;
+      output = rgb.map(
+        colorPixelMapper(work, (value) => {
+          let mapped = points.at(-1)![1]!;
+          for (let i = 1; i < points.length; i++) {
+            const first = points[i - 1]!,
+              last = points[i]!;
+            if (value <= last[0]!) {
+              mapped = mix(
+                first[1]!,
+                last[1]!,
+                unit((value - first[0]!) / (last[0]! - first[0]!)),
+              );
+              break;
+            }
           }
-        }
-        return mix(value, mapped, n(p, "amount"));
-      });
+          return mix(value, mapped, n(p, "amount"));
+        }),
+      );
       break;
     }
     case "color.levels": {
       const black = n(p, "inputBlack"),
         span = n(p, "inputWhite") - black;
-      output = rgb.map((value) =>
-        mix(
-          n(p, "outputBlack"),
-          n(p, "outputWhite"),
-          Math.pow(
-            Math.abs(span) < 1e-7
-              ? value >= black
-                ? 1
-                : 0
-              : unit((value - black) / span),
-            1 / n(p, "gamma"),
+      output = rgb.map(
+        colorPixelMapper(work, (value) =>
+          mix(
+            n(p, "outputBlack"),
+            n(p, "outputWhite"),
+            Math.pow(
+              Math.abs(span) < 1e-7
+                ? value >= black
+                  ? 1
+                  : 0
+                : unit((value - black) / span),
+              1 / n(p, "gamma"),
+            ),
           ),
         ),
       );
@@ -105,22 +269,28 @@ export function colorEffectPixel(
     }
     case "color.tint": {
       const luminance = rgb[0]! * 0.2126 + rgb[1]! * 0.7152 + rgb[2]! * 0.0722;
-      const black = v(p, "black"),
-        white = v(p, "white"),
-        strength = n(p, "amount") * mix(black[3]!, white[3]!, luminance);
-      output = rgb.map((value, c) =>
-        mix(value, mix(black[c]!, white[c]!, luminance), strength),
+      const black = v(p, "black");
+      if (work) work.black = black;
+      const white = v(p, "white");
+      if (work) work.white = white;
+      const strength = n(p, "amount") * mix(black[3]!, white[3]!, luminance);
+      output = rgb.map(
+        colorPixelMapper(work, (value, c) =>
+          mix(value, mix(black[c]!, white[c]!, luminance), strength),
+        ),
       );
       break;
     }
     case "color.hue-saturation":
-      output = hueSaturation(rgb, p);
+      output = hueSaturation(rgb, p, work);
       break;
     case "color.exposure":
-      output = rgb.map((value) =>
-        Math.pow(
-          unit(value * 2 ** n(p, "exposure") + n(p, "offset")),
-          1 / n(p, "gamma"),
+      output = rgb.map(
+        colorPixelMapper(work, (value) =>
+          Math.pow(
+            unit(value * 2 ** n(p, "exposure") + n(p, "offset")),
+            1 / n(p, "gamma"),
+          ),
         ),
       );
       break;
@@ -129,47 +299,757 @@ export function colorEffectPixel(
         factor =
           contrast >= 0 ? 1 / Math.max(0.001, 1 - contrast) : 1 + contrast;
       output = rgb.map(
-        (value) => (value - 0.5) * factor + 0.5 + n(p, "brightness"),
+        colorPixelMapper(
+          work,
+          (value) => (value - 0.5) * factor + 0.5 + n(p, "brightness"),
+        ),
       );
       break;
     }
     case "color.fill":
-      output = rgb.map((value, c) =>
-        mix(value, v(p, "color")[c]!, n(p, "amount") * v(p, "color")[3]!),
+      output = rgb.map(
+        colorPixelMapper(work, (value, c) =>
+          mix(value, v(p, "color")[c]!, n(p, "amount") * v(p, "color")[3]!),
+        ),
       );
       break;
     case "color.gradient-ramp": {
-      const start = v(p, "start"),
-        end = v(p, "end"),
-        dx = end[0]! - start[0]!,
+      const start = v(p, "start");
+      if (work) work.start = start;
+      const end = v(p, "end");
+      if (work) work.end = end;
+      const dx = end[0]! - start[0]!,
         dy = end[1]! - start[1]!,
         length = dx * dx + dy * dy;
       const t =
         length === 0
           ? 0
           : unit(((x - start[0]!) * dx + (y - start[1]!) * dy) / length);
-      const first = v(p, "startColor"),
-        last = v(p, "endColor"),
-        strength = n(p, "amount") * mix(first[3]!, last[3]!, t);
-      output = rgb.map((value, c) =>
-        mix(value, mix(first[c]!, last[c]!, t), strength),
+      const first = v(p, "startColor");
+      if (work) work.first = first;
+      const last = v(p, "endColor");
+      if (work) work.last = last;
+      const strength = n(p, "amount") * mix(first[3]!, last[3]!, t);
+      output = rgb.map(
+        colorPixelMapper(work, (value, c) =>
+          mix(value, mix(first[c]!, last[c]!, t), strength),
+        ),
       );
       break;
     }
     case "color.invert":
-      output = rgb.map((value) => mix(value, 1 - value, n(p, "amount")));
+      output = rgb.map(
+        colorPixelMapper(work, (value) =>
+          mix(value, 1 - value, n(p, "amount")),
+        ),
+      );
       break;
     case "color.posterize":
       output = rgb.map(
-        (value) =>
-          Math.floor(value * (n(p, "levels") - 1) + 0.5) / (n(p, "levels") - 1),
+        colorPixelMapper(
+          work,
+          (value) =>
+            Math.floor(value * (n(p, "levels") - 1) + 0.5) /
+            (n(p, "levels") - 1),
+        ),
       );
       break;
     default:
       throw Error(`comp-effect-unavailable: unknown color kernel ${id}`);
   }
-  return [...output.map(unit), pixel[3]] as Rgba;
+  if (work) work.output = output;
+  const result = [] as unknown as Rgba;
+  if (work) work.colorOutput = result;
+  const mapped = output.map(colorPixelMapper(work, unit));
+  if (work) work.unitOutput = mapped;
+  let index = 0;
+  for (const value of mapped) result[index++] = value;
+  result[index] = pixel[3];
+  return result;
 }
+type ColorGpuEntries = [string, Params[string]][];
+type ColorGpuUniforms = Record<string, number | readonly number[]>;
+type ColorGpuWork = {
+  managed: boolean;
+  memory?: ManagedMemory | undefined;
+  pixel: ColorPixelWork;
+  parentLease?: MemoryLease | undefined;
+  parentFinish?: (() => void) | undefined;
+  dependencies?: { lease: MemoryLease; finish: () => void }[] | undefined;
+  backing?: ArrayBuffer | undefined;
+  entryCount: number;
+  entryBytes: number;
+  entriesLease?: MemoryLease | undefined;
+  entriesProducer?: (() => ColorGpuEntries) | undefined;
+  handler?: ProxyHandler<Params> | undefined;
+  receiver?: Params | undefined;
+  enumerationKeys?: (string | symbol)[] | undefined;
+  descriptor?: PropertyDescriptor | undefined;
+  entries?: ColorGpuEntries | undefined;
+  filtered?: ColorGpuEntries | undefined;
+  filterCallback?: ((entry: [string, Params[string]]) => boolean) | undefined;
+  filterProducer?: (() => ColorGpuEntries) | undefined;
+  uniforms?: ColorGpuUniforms | undefined;
+  uniformsProducer?: (() => ColorGpuUniforms) | undefined;
+  combined?: ColorGpuUniforms | undefined;
+  combinedProducer?: (() => ColorGpuUniforms) | undefined;
+  gradient?: ReturnType<typeof gradientUniforms> | undefined;
+  output?: WebglSurface | undefined;
+  transfer?: WebglSurface | undefined;
+  inputs?: WebglSurface[] | undefined;
+  bytes?: Uint8Array<ArrayBuffer> | undefined;
+  pixelLease?: MemoryLease | undefined;
+  pixelProducer?: (() => Uint8Array<ArrayBuffer>) | undefined;
+  sourcePixel?: Rgba | undefined;
+  shader?: string | undefined;
+};
+function clearColorGpuEntries(entries: ColorGpuEntries) {
+  for (let i = 0; i < entries.length; i++) (entries[i] as unknown[]).length = 0;
+  entries.length = 0;
+}
+function clearColorGpuUniforms(uniforms: ColorGpuUniforms) {
+  for (const key in uniforms) delete uniforms[key];
+}
+function clearColorGpuWork(work: ColorGpuWork) {
+  let failed = false,
+    failure: unknown;
+  if (work.combined) {
+    try {
+      releaseRenderMetadata(work.combined);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    clearColorGpuUniforms(work.combined);
+  }
+  if (work.gradient) {
+    try {
+      releaseRenderMetadata(work.gradient);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (work.uniforms) {
+    try {
+      releaseRenderMetadata(work.uniforms);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    clearColorGpuUniforms(work.uniforms);
+  }
+  if (work.filtered) {
+    try {
+      releaseRenderMetadata(work.filtered);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    work.filtered.length = 0;
+  }
+  if (work.entries) {
+    try {
+      releaseRenderMetadata(work.entries);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    clearColorGpuEntries(work.entries);
+  }
+  clearColorPixelWork(work.pixel);
+  if (work.sourcePixel) (work.sourcePixel as number[]).length = 0;
+  if (work.inputs) work.inputs.length = 0;
+  try {
+    work.pixelLease?.release();
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      failure = error;
+    }
+  }
+  try {
+    if (
+      work.backing &&
+      work.memory &&
+      !work.memory.owns(work.backing) &&
+      work.backing.byteLength
+    )
+      (
+        work.backing as ArrayBuffer & {
+          transfer(bytes: number): ArrayBuffer;
+        }
+      ).transfer(0);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      failure = error;
+    }
+  }
+  if (work.dependencies) {
+    for (const dependency of work.dependencies) {
+      delete (dependency as Partial<typeof dependency>).lease;
+      delete (dependency as Partial<typeof dependency>).finish;
+    }
+    work.dependencies.length = 0;
+  }
+  if (work.enumerationKeys) work.enumerationKeys.length = 0;
+  if (work.descriptor)
+    for (const key in work.descriptor)
+      delete (work.descriptor as Record<string, unknown>)[key];
+  if (work.handler)
+    for (const key in work.handler)
+      delete (work.handler as Record<string, unknown>)[key];
+  for (const key in work)
+    delete (work as Partial<ColorGpuWork>)[key as keyof ColorGpuWork];
+  if (failed) throw failure;
+}
+// Eight admitted slots cover the parent-owned hold controls for the fixed
+// entries/filter/uniform/curve producers. Nested callbacks own separate parents.
+const colorGpuDependencyLimit = 8;
+function holdColorGpuDependency(work: ColorGpuWork, lease: MemoryLease) {
+  if (!work.parentLease?.active)
+    throw Error("Managed color GPU work owner was disposed");
+  const dependencies = work.dependencies!;
+  for (const dependency of dependencies) if (dependency.lease === lease) return;
+  if (dependencies.length >= colorGpuDependencyLimit)
+    throw Error("Managed color GPU dependency controls exceed their bound");
+  const finish = lease.deferRelease();
+  try {
+    dependencies.push({ lease, finish });
+  } catch (error) {
+    try {
+      finish();
+    } catch {
+      /* Preserve the first admitted control publication failure. */
+    }
+    throw error;
+  }
+}
+function allocateColorGpuMetadata<T extends object>(
+  work: ColorGpuWork,
+  bytes: number,
+  factory: () => T,
+  destroy: (value: T) => void,
+  admitted?: (lease: MemoryLease) => void,
+): T {
+  const memory = work.memory;
+  if (!memory) return factory();
+  if (!work.parentLease?.active)
+    throw Error("Managed color GPU work owner was disposed");
+  return allocateManagedRenderMetadata(
+    memory,
+    bytes,
+    factory,
+    false,
+    destroy,
+    (lease) => {
+      holdColorGpuDependency(work, lease);
+      admitted?.(lease);
+    },
+  );
+}
+function colorGpuWork(): ColorGpuWork {
+  const memory = renderMemory();
+  if (!memory)
+    return {
+      managed: false,
+      memory,
+      pixel: {},
+      entryCount: 0,
+      entryBytes: 512,
+    };
+  let parentLease: MemoryLease | undefined,
+    parentFinish: (() => void) | undefined;
+  try {
+    return allocateManagedRenderMetadata<ColorGpuWork>(
+      memory,
+      16384,
+      () => ({
+        managed: true,
+        memory,
+        pixel: {},
+        entryCount: 0,
+        entryBytes: 512,
+        parentLease,
+        parentFinish,
+        dependencies: [],
+      }),
+      false,
+      clearColorGpuWork,
+      (lease) => {
+        parentLease = lease;
+        parentFinish = lease.deferRelease();
+      },
+    );
+  } catch (error) {
+    try {
+      parentLease?.release();
+    } catch {
+      /* Preserve the first parent construction/adoption failure. */
+    }
+    try {
+      parentFinish?.();
+    } catch {
+      /* No returned work owner exists for the native body's finally. */
+    }
+    throw error;
+  }
+}
+function finishColorGpuWork(work: ColorGpuWork, failed: boolean) {
+  const parentFinish = work.parentFinish,
+    dependencies = work.dependencies;
+  let cleanupFailed = false,
+    failure: unknown;
+  try {
+    if (work.managed) releaseRenderMetadata(work);
+    else clearColorGpuWork(work);
+  } catch (error) {
+    cleanupFailed = true;
+    failure = error;
+  }
+  if (dependencies)
+    for (let index = dependencies.length - 1; index >= 0; index--) {
+      try {
+        dependencies[index]!.finish();
+      } catch (error) {
+        if (!cleanupFailed) {
+          cleanupFailed = true;
+          failure = error;
+        }
+      }
+    }
+  try {
+    parentFinish?.();
+  } catch (error) {
+    if (!cleanupFailed) {
+      cleanupFailed = true;
+      failure = error;
+    }
+  }
+  if (cleanupFailed && !failed) throw failure;
+}
+function colorGpuEntries(work: ColorGpuWork, params: Params): ColorGpuEntries {
+  if (!work.memory) return (work.entries = Object.entries(params));
+  if (!work.parentLease?.active)
+    throw Error("Managed color GPU work owner was disposed");
+  work.handler = {
+    ownKeys() {
+      return (work.enumerationKeys = Reflect.ownKeys(params));
+    },
+    getOwnPropertyDescriptor(_target, key) {
+      const descriptor = (work.descriptor = Reflect.getOwnPropertyDescriptor(
+        params,
+        key,
+      ));
+      // The facade has no properties: only enumerability affects Object.entries.
+      if (descriptor) descriptor.configurable = true;
+      return descriptor;
+    },
+    get(_target, key) {
+      work.entryCount++;
+      work.entryBytes += 256 + 2 * (typeof key === "string" ? key.length : 0);
+      work.entriesLease!.resize(work.entryBytes);
+      return Reflect.get(params, key, params);
+    },
+  };
+  work.receiver = new Proxy({}, work.handler);
+  return allocateColorGpuMetadata<ColorGpuEntries>(
+    work,
+    512,
+    (work.entriesProducer = () =>
+      (work.entries = Object.entries(work.receiver!))),
+    clearColorGpuEntries,
+    (lease) => {
+      work.entriesLease = lease;
+    },
+  );
+}
+function colorGpuUniforms(
+  work: ColorGpuWork,
+  params: Params,
+  definition: NonNullable<ReturnType<typeof compositionEffectDefinition>>,
+): ColorGpuUniforms {
+  const entries = colorGpuEntries(work, params);
+  const count = work.memory ? work.entryCount : entries.length;
+  const filtered = allocateColorGpuMetadata<ColorGpuEntries>(
+    work,
+    512 + 16 * count,
+    (work.filterProducer = () =>
+      (work.filtered = entries.filter(
+        (work.filterCallback = ([name]) =>
+          definition.properties[name]!.type !== "curve"),
+      ))),
+    (value) => {
+      value.length = 0;
+    },
+  );
+  return allocateColorGpuMetadata<ColorGpuUniforms>(
+    work,
+    512 + 256 * count,
+    (work.uniformsProducer = () =>
+      (work.uniforms = Object.fromEntries(filtered) as ColorGpuUniforms)),
+    clearColorGpuUniforms,
+  );
+}
+function colorGpuCombined(
+  work: ColorGpuWork,
+  params: Params,
+): ColorGpuUniforms {
+  const count = work.memory ? work.entryCount : work.entries!.length;
+  return allocateRenderMetadata<ColorGpuUniforms>(
+    1536 + 256 * count,
+    (work.combinedProducer = () => {
+      const result = (work.combined = { ...work.uniforms });
+      const gradient = (work.gradient = colorGradientUniforms(params));
+      for (const key in gradient) result[key] = gradient[key]!;
+      return result;
+    }),
+    false,
+    clearColorGpuUniforms,
+  );
+}
+function colorGpuCurveBacking(bytes: Uint8Array<ArrayBuffer>): ArrayBuffer {
+  return Object.getOwnPropertyDescriptor(
+    Object.getPrototypeOf(Uint8Array.prototype) as object,
+    "buffer",
+  )!.get!.call(bytes) as ArrayBuffer;
+}
+function destroyColorGpuCurveBacking(value: object) {
+  const backing = value as ArrayBuffer & {
+    transfer(bytes: number): ArrayBuffer;
+  };
+  try {
+    if (backing.byteLength) backing.transfer(0);
+  } catch (error) {
+    try {
+      const length = Object.getOwnPropertyDescriptor(
+        ArrayBuffer.prototype,
+        "byteLength",
+      )!.get!.call(backing) as number;
+      if (length)
+        (
+          ArrayBuffer.prototype as ArrayBuffer & {
+            transfer(bytes: number): ArrayBuffer;
+          }
+        ).transfer.call(backing, 0);
+    } catch {
+      /* Preserve the original native backing destructor error. */
+    }
+    throw error;
+  }
+}
+function colorGpuCurveBytes(work: ColorGpuWork): Uint8Array<ArrayBuffer> {
+  const memory = work.memory;
+  if (!memory)
+    return (work.bytes = allocateRenderPixels(
+      1024,
+      () => new Uint8Array(1024),
+    ));
+  if (!work.parentLease?.active)
+    throw Error("Managed color GPU work owner was disposed");
+  const lease = (work.pixelLease = memory.reserve("pixels", 1024));
+  let finish: (() => void) | undefined,
+    bytes: Uint8Array<ArrayBuffer> | undefined,
+    backing: ArrayBuffer | undefined,
+    adopted = false;
+  try {
+    finish = lease.deferRelease();
+    holdColorGpuDependency(work, lease);
+    work.pixelProducer = () => (work.bytes = new Uint8Array(1024));
+    bytes = work.pixelProducer();
+    backing = work.backing = bytes.buffer;
+    memory.adopt(backing, lease, destroyColorGpuCurveBacking);
+    adopted = true;
+    finish();
+    if (!lease.active || !work.parentLease.active)
+      throw Error("Managed color curve backing owner was disposed");
+    return bytes;
+  } catch (error) {
+    try {
+      if (!adopted) {
+        let owner = backing;
+        if (bytes) {
+          try {
+            owner = colorGpuCurveBacking(bytes);
+          } catch {
+            /* Opaque producer products require their captured identity contract. */
+          }
+        }
+        if (owner && !memory.owns(owner)) destroyColorGpuCurveBacking(owner);
+      }
+    } catch {
+      /* Preserve first factory/identity/adoption error, including null. */
+    }
+    try {
+      lease.release();
+    } catch {
+      /* Preserve first factory/adoption error. */
+    }
+    try {
+      finish?.();
+    } catch {
+      /* Callback dependency owns any still-pending adopted resource. */
+    }
+    throw error;
+  }
+}
+
+type ColorCanvasWork = {
+  managed: boolean;
+  memory?: ManagedMemory | undefined;
+  pixel: ColorPixelWork;
+  parentLease?: MemoryLease | undefined;
+  parentFinish?: (() => void) | undefined;
+  dependencies?: { lease: MemoryLease; finish: () => void }[] | undefined;
+  input?: CanvasSurface | undefined;
+  output?: CanvasSurface | undefined;
+  image?: ImageData | undefined;
+  imageProducer?: (() => ImageData) | undefined;
+  backing?: ArrayBuffer | undefined;
+  pixelLease?: MemoryLease | undefined;
+  gradient?: GradientControls | undefined;
+  table?: Uint8Array<ArrayBuffer> | undefined;
+  source?: Rgba | undefined;
+  gradientKeys?: number[] | undefined;
+  gradientMapper?: ((channel: number) => number) | undefined;
+  gradientMapped?: number[] | undefined;
+  gradientResult?: Rgba | undefined;
+};
+function clearColorCanvasSample(work: ColorCanvasWork) {
+  clearColorPixelWork(work.pixel);
+  if (work.source) (work.source as number[]).length = 0;
+  if (work.gradientKeys) work.gradientKeys.length = 0;
+  if (work.gradientMapped) work.gradientMapped.length = 0;
+  if (work.gradientResult) (work.gradientResult as number[]).length = 0;
+  work.source =
+    work.gradientKeys =
+    work.gradientMapped =
+    work.gradientResult =
+      undefined;
+  work.gradientMapper = undefined;
+}
+function clearColorCanvasWork(work: ColorCanvasWork) {
+  let failed = false,
+    failure: unknown;
+  try {
+    work.pixelLease?.release();
+  } catch (error) {
+    failed = true;
+    failure = error;
+  }
+  try {
+    if (work.gradient) releaseRenderMetadata(work.gradient);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      failure = error;
+    }
+  }
+  clearColorCanvasSample(work);
+  if (work.dependencies) {
+    for (const dependency of work.dependencies) {
+      delete (dependency as Partial<typeof dependency>).lease;
+      delete (dependency as Partial<typeof dependency>).finish;
+    }
+    work.dependencies.length = 0;
+  }
+  if (work.gradient)
+    for (const key in work.gradient)
+      delete (work.gradient as Partial<GradientControls>)[
+        key as keyof GradientControls
+      ];
+  for (const key in work)
+    delete (work as Partial<ColorCanvasWork>)[key as keyof ColorCanvasWork];
+  if (failed) throw failure;
+}
+// The actual finite hold list is part of the admitted Canvas parent.
+const colorCanvasDependencyLimit = 8;
+function holdColorCanvasDependency(work: ColorCanvasWork, lease: MemoryLease) {
+  if (!work.parentLease?.active)
+    throw Error("Managed color Canvas work owner was disposed");
+  const dependencies = work.dependencies!;
+  for (const dependency of dependencies) if (dependency.lease === lease) return;
+  if (dependencies.length >= colorCanvasDependencyLimit)
+    throw Error("Managed color Canvas dependency controls exceed their bound");
+  const finish = lease.deferRelease();
+  try {
+    dependencies.push({ lease, finish });
+  } catch (error) {
+    try {
+      finish();
+    } catch {
+      /* Preserve the first admitted control publication failure. */
+    }
+    throw error;
+  }
+}
+function colorCanvasWork(): ColorCanvasWork {
+  const memory = renderMemory();
+  if (!memory) return { managed: false, memory, pixel: {} };
+  let parentLease: MemoryLease | undefined,
+    parentFinish: (() => void) | undefined;
+  try {
+    return allocateManagedRenderMetadata<ColorCanvasWork>(
+      memory,
+      16384,
+      () => ({
+        managed: true,
+        memory,
+        pixel: {},
+        parentLease,
+        parentFinish,
+        dependencies: [],
+      }),
+      false,
+      clearColorCanvasWork,
+      (lease) => {
+        parentLease = lease;
+        parentFinish = lease.deferRelease();
+      },
+    );
+  } catch (error) {
+    try {
+      parentLease?.release();
+    } catch {
+      /* Preserve first parent construction/adoption failure. */
+    }
+    try {
+      parentFinish?.();
+    } catch {
+      /* A failed constructor leaves no native-body work owner to settle it. */
+    }
+    throw error;
+  }
+}
+function finishColorCanvasWork(work: ColorCanvasWork, failed: boolean) {
+  const parentFinish = work.parentFinish,
+    dependencies = work.dependencies;
+  let cleanupFailed = false,
+    failure: unknown;
+  try {
+    if (work.managed) releaseRenderMetadata(work);
+    else clearColorCanvasWork(work);
+  } catch (error) {
+    cleanupFailed = true;
+    failure = error;
+  }
+  if (dependencies)
+    for (let index = dependencies.length - 1; index >= 0; index--) {
+      try {
+        dependencies[index]!.finish();
+      } catch (error) {
+        if (!cleanupFailed) {
+          cleanupFailed = true;
+          failure = error;
+        }
+      }
+    }
+  try {
+    parentFinish?.();
+  } catch (error) {
+    if (!cleanupFailed) {
+      cleanupFailed = true;
+      failure = error;
+    }
+  }
+  if (cleanupFailed && !failed) throw failure;
+}
+/** Failure-only branded lookup avoids another original image.data/buffer Get. */
+function failedColorCanvasImageBacking(
+  image: ImageData,
+  data: Uint8ClampedArray | undefined,
+): ArrayBuffer | undefined {
+  const buffer = Object.getOwnPropertyDescriptor(
+    Object.getPrototypeOf(Uint8Array.prototype) as object,
+    "buffer",
+  )!.get!;
+  // A genuine native image carries its real view even if its original data Get
+  // was shadowed by a different known-owner view or an opaque product.
+  try {
+    const nativeData = Object.getOwnPropertyDescriptor(
+      ImageData.prototype,
+      "data",
+    )!.get!.call(image) as Uint8ClampedArray;
+    return buffer.call(nativeData) as ArrayBuffer;
+  } catch {
+    /* A captured genuine native view remains usable when image branding fails. */
+  }
+  if (data)
+    try {
+      return buffer.call(data) as ArrayBuffer;
+    } catch {
+      /* Unknown products require an explicit captured fresh backing contract. */
+    }
+  return undefined;
+}
+function colorCanvasImage(
+  work: ColorCanvasWork,
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+): ImageData {
+  const memory = work.memory;
+  if (!memory) return (work.image = context.getImageData(0, 0, width, height));
+  if (!work.parentLease?.active)
+    throw Error("Managed color Canvas work owner was disposed");
+  const lease = (work.pixelLease = memory.reserve(
+    "pixels",
+    Math.abs(width * height) * 4,
+  ));
+  let finish: (() => void) | undefined,
+    image: ImageData | undefined,
+    data: Uint8ClampedArray | undefined,
+    backing: ArrayBuffer | undefined,
+    adopted = false;
+  try {
+    finish = lease.deferRelease();
+    holdColorCanvasDependency(work, lease);
+    work.imageProducer = () =>
+      (work.image = context.getImageData(0, 0, width, height));
+    image = work.imageProducer();
+    data = image.data;
+    backing = work.backing = data.buffer as ArrayBuffer;
+    memory.adopt(backing, lease, destroyColorGpuCurveBacking);
+    adopted = true;
+    finish();
+    if (!lease.active || !work.parentLease.active)
+      throw Error("Managed color Canvas image owner was disposed");
+    return image;
+  } catch (error) {
+    try {
+      if (!adopted) {
+        const owner =
+          (image && failedColorCanvasImageBacking(image, data)) ?? backing;
+        if (owner && !memory.owns(owner)) destroyColorGpuCurveBacking(owner);
+      }
+    } catch {
+      /* First native factory/identity/adoption failure owns this path. */
+    }
+    try {
+      lease.release();
+    } catch {
+      /* Preserve the first reason, including null. */
+    }
+    try {
+      finish?.();
+    } catch {
+      /* The captured callback dependency settles any adopted pending owner. */
+    }
+    throw error;
+  }
+}
+
 const HSL = `
 vec3 adjustHsl(vec3 rgb) {
   float maximum=max(max(rgb.r,rgb.g),rgb.b),minimum=min(min(rgb.r,rgb.g),rgb.b),chroma=maximum-minimum;
@@ -202,7 +1082,7 @@ const fragments: Readonly<Record<string, string>> = {
   "color.posterize": `result=floor(rgb*(levels-1.0)+0.5)/(levels-1.0);`,
 };
 const kernels = new Map<string, Readonly<CompositionEffectPlugin>>();
-export function colorEffectKernel(
+function unmanagedColorEffectKernel(
   id: string,
 ): Readonly<CompositionEffectPlugin> | undefined {
   if (!Object.hasOwn(fragments, id)) return undefined;
@@ -228,75 +1108,643 @@ export function colorEffectKernel(
     id,
     definition,
     renderGpu(context, input, params) {
-      const output = context.createSurface(input.width, input.height);
-      const uniforms = Object.fromEntries(
-        Object.entries(params).filter(
-          ([name]) => definition.properties[name]!.type !== "curve",
-        ),
-      ) as Record<string, number | readonly number[]>;
-      if (id === "color.gradient-ramp") {
-        const transfer = context.createSurface(256, 256);
-        context.uploadBytes(transfer, gradientColorTable(params));
-        context.pass(shader, output, [input, transfer], {
-          ...uniforms,
-          ...gradientUniforms(gradientControls(params)),
-        });
-      } else if (id === "color.curves") {
-        // A 256-entry transfer is control data; all image pixels are transformed on the GPU.
-        const bytes = new Uint8Array(256 * 4);
-        for (let value = 0; value < 256; value++) {
-          const mapped = colorEffectPixel(
-            id,
-            [value / 255, value / 255, value / 255, 1],
-            params,
-            0,
-            0,
-          )[0];
-          bytes[value * 4] = Math.round(mapped * 255);
-          bytes[value * 4 + 3] = 255;
-        }
-        const transfer = context.createSurface(256, 1);
-        context.uploadBytes(transfer, bytes);
-        context.pass(shader, output, [input, transfer], uniforms);
-      } else context.pass(shader, output, [input], uniforms);
-      return output;
+      const work = colorGpuWork();
+      let failed = false;
+      try {
+        work.shader = shader;
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        const uniforms = colorGpuUniforms(work, params, definition);
+        if (id === "color.gradient-ramp") {
+          const transfer = (work.transfer = context.createSurface(256, 256));
+          context.uploadBytes(transfer, gradientColorTable(params));
+          const inputs = (work.inputs = [input, transfer]);
+          context.pass(shader, output, inputs, colorGpuCombined(work, params));
+        } else if (id === "color.curves") {
+          const bytes = colorGpuCurveBytes(work);
+          for (let value = 0; value < 256; value++) {
+            const result = colorEffectPixel(
+              id,
+              (work.sourcePixel = [value / 255, value / 255, value / 255, 1]),
+              params,
+              0,
+              0,
+              work.pixel,
+            );
+            try {
+              const mapped = result[0];
+              bytes[value * 4] = Math.round(mapped * 255);
+              bytes[value * 4 + 3] = 255;
+            } finally {
+              clearColorPixelWork(work.pixel);
+              (work.sourcePixel as number[]).length = 0;
+              work.sourcePixel = undefined;
+            }
+          }
+          const transfer = (work.transfer = context.createSurface(256, 1));
+          context.uploadBytes(transfer, bytes);
+          context.pass(
+            shader,
+            output,
+            (work.inputs = [input, transfer]),
+            uniforms,
+          );
+        } else context.pass(shader, output, (work.inputs = [input]), uniforms);
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishColorGpuWork(work, failed);
+      }
     },
     renderCanvas(context, input, params: RenderEffect["params"]) {
-      const output = context.createSurface(input.width, input.height);
-      const image = input.ctx.getImageData(0, 0, input.width, input.height);
-      const gradient =
-          id === "color.gradient-ramp" ? gradientControls(params) : undefined,
-        table = gradient ? gradientColorTable(params) : undefined;
-      for (let y = 0; y < input.height; y++)
-        for (let x = 0; x < input.width; x++) {
-          const i = (y * input.width + x) * 4;
-          const source: Rgba = [
-            colorEffectChannel(image.data[i]!, image.data[i + 3]!),
-            colorEffectChannel(image.data[i + 1]!, image.data[i + 3]!),
-            colorEffectChannel(image.data[i + 2]!, image.data[i + 3]!),
-            image.data[i + 3]! / 255,
-          ];
-          let result: Rgba;
-          if (gradient && table) {
-            const index = gradientRank(gradient, x + 0.5, y + 0.5) * 4,
-              strength = ((params.amount as number) * table[index + 3]!) / 255;
-            result = [0, 1, 2]
-              .map((c) =>
-                unit(
-                  source[c]! +
-                    (table[index + c]! / 255 - source[c]!) * strength,
-                ),
-              )
-              .concat(source[3]) as Rgba;
-          } else
-            result = colorEffectPixel(id, source, params, x + 0.5, y + 0.5);
-          for (let channel = 0; channel < 4; channel++)
-            image.data[i + channel] = Math.round(result[channel]! * 255);
-        }
-      output.ctx.putImageData(image, 0, 0);
-      return output;
+      const work = colorCanvasWork();
+      let failed = false;
+      try {
+        work.input = input;
+        const output = (work.output = context.createSurface(
+          input.width,
+          input.height,
+        ));
+        const image = colorCanvasImage(
+          work,
+          input.ctx,
+          input.width,
+          input.height,
+        );
+        const gradient = (work.gradient =
+          id === "color.gradient-ramp" ? gradientControls(params) : undefined);
+        const table = (work.table = gradient
+          ? gradientColorTable(params)
+          : undefined);
+        for (let y = 0; y < input.height; y++)
+          for (let x = 0; x < input.width; x++) {
+            const i = (y * input.width + x) * 4;
+            const source = (work.source = [] as unknown as Rgba);
+            source[0] = colorEffectChannel(image.data[i]!, image.data[i + 3]!);
+            source[1] = colorEffectChannel(
+              image.data[i + 1]!,
+              image.data[i + 3]!,
+            );
+            source[2] = colorEffectChannel(
+              image.data[i + 2]!,
+              image.data[i + 3]!,
+            );
+            source[3] = image.data[i + 3]! / 255;
+            try {
+              let result: Rgba;
+              if (gradient && table) {
+                const index = gradientRank(gradient, x + 0.5, y + 0.5) * 4,
+                  strength =
+                    ((params.amount as number) * table[index + 3]!) / 255;
+                const keys = (work.gradientKeys = [0, 1, 2]);
+                const mapped = (work.gradientMapped = keys.map(
+                  (work.gradientMapper = (c) =>
+                    unit(
+                      source[c]! +
+                        (table[index + c]! / 255 - source[c]!) * strength,
+                    )),
+                ));
+                result = work.gradientResult = mapped.concat(source[3]) as Rgba;
+              } else
+                result = colorEffectPixel(
+                  id,
+                  source,
+                  params,
+                  x + 0.5,
+                  y + 0.5,
+                  work.pixel,
+                );
+              for (let channel = 0; channel < 4; channel++)
+                image.data[i + channel] = Math.round(result[channel]! * 255);
+            } finally {
+              clearColorCanvasSample(work);
+            }
+          }
+        output.ctx.putImageData(image, 0, 0);
+        return output;
+      } catch (error) {
+        failed = true;
+        throw error;
+      } finally {
+        finishColorCanvasWork(work, failed);
+      }
     },
   } satisfies CompositionEffectPlugin);
   kernels.set(id, kernel);
   return kernel;
+}
+
+type ColorKernelDefinition = NonNullable<
+  ReturnType<typeof compositionEffectDefinition>
+>;
+type ColorKernelEntry = [string, ColorKernelDefinition["properties"][string]];
+type ColorKernelState = {
+  id?: string | undefined;
+  cache?: ColorKernelCache | undefined;
+  definition?: ColorKernelDefinition | undefined;
+  shader?: string | undefined;
+  kernel?: Readonly<CompositionEffectPlugin> | undefined;
+  lease?: MemoryLease | undefined;
+};
+type ColorKernelCache = {
+  memory?: ManagedMemory | undefined;
+  lease?: MemoryLease | undefined;
+  entries?: Map<string, ColorKernelState> | undefined;
+  retire?: ((state: ColorKernelState) => void) | undefined;
+  failed?: boolean | undefined;
+  failure?: unknown;
+};
+type ColorKernelPhase = {
+  memory?: ManagedMemory | undefined;
+  cache?: ColorKernelCache | undefined;
+  cacheEntries?: Map<string, ColorKernelState> | undefined;
+  newCache?: boolean | undefined;
+  state?: ColorKernelState | undefined;
+  definition?: ColorKernelDefinition | undefined;
+  entries?: ColorKernelEntry[] | undefined;
+  filtered?: ColorKernelEntry[] | undefined;
+  mapped?: string[] | undefined;
+  declarations?: string | undefined;
+  shader?: string | undefined;
+  candidate?: CompositionEffectPlugin | undefined;
+  filter?: ((entry: ColorKernelEntry) => boolean) | undefined;
+  mapper?: ((entry: ColorKernelEntry) => string) | undefined;
+  producer?: (() => Readonly<CompositionEffectPlugin>) | undefined;
+  gpu?: CompositionEffectPlugin["renderGpu"] | undefined;
+  canvas?: CompositionEffectPlugin["renderCanvas"] | undefined;
+  inserted?: string | undefined;
+  committed?: boolean | undefined;
+};
+const scopedColorKernels = new WeakMap<ManagedMemory, ColorKernelCache>();
+
+function clearColorKernelState(state: ColorKernelState) {
+  try {
+    if (state.id !== undefined && state.cache?.entries?.get(state.id) === state)
+      state.cache.entries.delete(state.id);
+  } finally {
+    for (const key in state) delete state[key as keyof ColorKernelState];
+  }
+}
+function holdColorKernelState(state: ColorKernelState): () => void {
+  const lease = state.lease;
+  if (
+    !lease?.active ||
+    !state.kernel ||
+    state.id === undefined ||
+    !state.definition ||
+    state.shader === undefined
+  )
+    throw Error("comp-effect-unavailable: managed color kernel is disposed");
+  return lease.deferRelease();
+}
+function finishColorKernelState(finish: () => void, failed: boolean) {
+  try {
+    finish();
+  } catch (error) {
+    if (!failed) throw error;
+  }
+}
+function clearColorKernelCache(cache: ColorKernelCache) {
+  if (cache.entries && cache.retire) cache.entries.forEach(cache.retire);
+  cache.entries?.clear();
+  if (cache.memory && scopedColorKernels.get(cache.memory) === cache)
+    scopedColorKernels.delete(cache.memory);
+  const failed = cache.failed,
+    failure = cache.failure;
+  for (const key in cache) delete cache[key as keyof ColorKernelCache];
+  if (failed) throw failure;
+}
+function rollbackColorKernelEntry(
+  entries: Map<string, ColorKernelState> | undefined,
+  key: string | undefined,
+  state: ColorKernelState | undefined,
+) {
+  if (key !== undefined && state && entries?.get(key) === state)
+    entries.delete(key);
+}
+function rollbackColorKernelCache(
+  memory: ManagedMemory | undefined,
+  cache: ColorKernelCache | undefined,
+) {
+  if (!cache) return;
+  let failed = false,
+    failure: unknown;
+  try {
+    if (memory && scopedColorKernels.get(memory) === cache)
+      scopedColorKernels.delete(memory);
+  } catch (error) {
+    failed = true;
+    failure = error;
+  }
+  try {
+    releaseRenderMetadata(cache);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      failure = error;
+    }
+  }
+  if (failed) throw failure;
+}
+function clearColorKernelPhase(phase: ColorKernelPhase) {
+  let failed = false,
+    failure: unknown;
+  if (!phase.committed) {
+    try {
+      rollbackColorKernelEntry(phase.cacheEntries, phase.inserted, phase.state);
+    } catch (error) {
+      failed = true;
+      failure = error;
+    }
+    try {
+      if (phase.state) releaseRenderMetadata(phase.state);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    try {
+      if (phase.newCache) rollbackColorKernelCache(phase.memory, phase.cache);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (phase.filtered) phase.filtered.length = 0;
+  if (phase.entries) {
+    for (const entry of phase.entries) (entry as unknown[]).length = 0;
+    phase.entries.length = 0;
+  }
+  if (phase.mapped) phase.mapped.length = 0;
+  for (const key in phase) delete phase[key as keyof ColorKernelPhase];
+  if (failed) throw failure;
+}
+function createManagedColorKernelCandidate(
+  state: ColorKernelState,
+): CompositionEffectPlugin {
+  return {
+    id: state.id!,
+    definition: state.definition!,
+    renderGpu(context, input, params) {
+      return renderManagedColorKernelGpu(state, context, input, params);
+    },
+    renderCanvas(context, input, params) {
+      return renderManagedColorKernelCanvas(state, context, input, params);
+    },
+  } satisfies CompositionEffectPlugin;
+}
+function produceManagedColorKernel(
+  id: string,
+  phase: ColorKernelPhase,
+): Readonly<CompositionEffectPlugin> {
+  const memory = phase.memory!;
+  let cache = scopedColorKernels.get(memory);
+  if (!cache?.lease?.active) {
+    phase.newCache = true;
+    let cacheLease: MemoryLease | undefined;
+    cache = allocateManagedRenderMetadata<ColorKernelCache>(
+      memory,
+      4096,
+      () => {
+        const owner: ColorKernelCache = {
+          memory,
+          lease: cacheLease,
+          entries: new Map(),
+          failed: false,
+        };
+        phase.cache = owner;
+        owner.retire = (state) => {
+          try {
+            releaseRenderMetadata(state);
+          } catch (error) {
+            if (!owner.failed) {
+              owner.failed = true;
+              owner.failure = error;
+            }
+          }
+        };
+        return owner;
+      },
+      true,
+      clearColorKernelCache,
+      (admitted) => {
+        cacheLease = admitted;
+      },
+    );
+    if (!cacheLease?.active)
+      throw Error(
+        "comp-effect-unavailable: managed color kernel cache is disposed",
+      );
+    scopedColorKernels.set(memory, cache);
+    if (!cacheLease.active)
+      throw Error(
+        "comp-effect-unavailable: managed color kernel cache is disposed",
+      );
+  }
+  phase.cache = cache;
+  const definition = (phase.definition = compositionEffectDefinition(id)!);
+  const entries = (phase.entries = Object.entries(definition.properties));
+  const filtered = (phase.filtered = entries.filter(
+    (phase.filter = ([, property]) => property.type !== "curve"),
+  ));
+  const mapped = (phase.mapped = filtered.map(
+    (phase.mapper = ([key, property]) =>
+      `uniform ${property.type === "scalar" ? "float" : property.type === "vec2" ? "vec2" : "vec4"} ${key};`),
+  ));
+  const declarations = (phase.declarations = mapped.join("\n"));
+  const shader =
+    (phase.shader = `${id === "color.gradient-ramp" ? GRADIENT_RANK_SHADER : ""}\n${declarations}\n${id === "color.hue-saturation" ? HSL : ""}\nvoid main(){
+    vec4 sourcePixel=texelFetch(source,ivec2(gl_FragCoord.xy),0);
+    vec4 stored=floor(sourcePixel*255.0+0.5);
+    vec3 rgb=stored.a>0.0?floor(stored.rgb*255.0/stored.a+0.5)/255.0:vec3(0.0), result;
+    ${fragments[id]}
+    vec3 outputRgbBytes=floor(clamp(result,0.0,1.0)*255.0+0.5)/255.0;
+    pixel=bytes(vec4(outputRgbBytes*sourcePixel.a,sourcePixel.a));
+  }`);
+  let lease: MemoryLease | undefined;
+  const state = allocateManagedRenderMetadata<ColorKernelState>(
+    memory,
+    8192,
+    () => {
+      const owner: ColorKernelState = { id, cache, definition, shader, lease };
+      phase.state = owner;
+      return owner;
+    },
+    true,
+    clearColorKernelState,
+    (admitted) => {
+      lease = admitted;
+    },
+  );
+  if (!lease?.active)
+    throw Error("comp-effect-unavailable: managed color kernel is disposed");
+  const candidate = (phase.candidate =
+    createManagedColorKernelCandidate(state));
+  state.kernel = candidate;
+  phase.gpu = candidate.renderGpu;
+  phase.canvas = candidate.renderCanvas;
+  const kernel = Object.freeze(candidate);
+  if (!state.lease?.active)
+    throw Error("comp-effect-unavailable: managed color kernel is disposed");
+  state.kernel = kernel;
+  const cacheEntries = (phase.cacheEntries = cache.entries!);
+  phase.inserted = id;
+  cacheEntries.set(id, state);
+  if (!state.lease?.active)
+    throw Error("comp-effect-unavailable: managed color kernel is disposed");
+  return kernel;
+}
+export function colorEffectKernel(
+  id: string,
+): Readonly<CompositionEffectPlugin> | undefined {
+  const memory = renderMemory();
+  if (!memory) return unmanagedColorEffectKernel(id);
+  if (!Object.hasOwn(fragments, id)) return undefined;
+  const existingCache = scopedColorKernels.get(memory);
+  const found = existingCache?.lease?.active
+    ? existingCache.entries?.get(id)
+    : undefined;
+  if (found?.lease?.active) return found.kernel;
+  let phase: ColorKernelPhase | undefined,
+    phaseLease: MemoryLease | undefined,
+    finish: (() => void) | undefined,
+    result: Readonly<CompositionEffectPlugin> | undefined,
+    cache: ColorKernelCache | undefined,
+    cacheEntries: Map<string, ColorKernelState> | undefined,
+    state: ColorKernelState | undefined,
+    inserted: string | undefined,
+    newCache = false,
+    failed = false,
+    failure: unknown;
+  try {
+    phase = allocateManagedRenderMetadata<ColorKernelPhase>(
+      memory,
+      32768,
+      () => (phase = { memory }),
+      false,
+      clearColorKernelPhase,
+      (lease) => {
+        phaseLease = lease;
+        finish = lease.deferRelease();
+      },
+    );
+    if (!phaseLease?.active)
+      throw Error(
+        "comp-effect-unavailable: managed color kernel construction is disposed",
+      );
+    phase.producer = () => produceManagedColorKernel(id, phase!);
+    result = phase.producer();
+    cache = phase.cache;
+    cacheEntries = phase.cacheEntries;
+    state = phase.state;
+    inserted = phase.inserted;
+    newCache = !!phase.newCache;
+    phase.committed = true;
+  } catch (error) {
+    failed = true;
+    failure = error;
+  } finally {
+    try {
+      phaseLease?.release();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+    try {
+      finish?.();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        failure = error;
+      }
+    }
+  }
+  if (failed) {
+    try {
+      rollbackColorKernelEntry(cacheEntries, inserted, state);
+    } catch {
+      /* Preserve the first producer/admission/cleanup failure. */
+    }
+    try {
+      if (state) releaseRenderMetadata(state);
+    } catch {
+      /* Preserve the first producer/admission/cleanup failure. */
+    }
+    try {
+      if (newCache) rollbackColorKernelCache(memory, cache);
+    } catch {
+      /* Preserve the first producer/admission/cleanup failure. */
+    }
+    throw failure;
+  }
+  return result!;
+}
+
+function renderManagedColorKernelGpu(
+  state: ColorKernelState,
+  context: Parameters<NonNullable<CompositionEffectPlugin["renderGpu"]>>[0],
+  input: WebglSurface,
+  params: RenderEffect["params"],
+): WebglSurface {
+  const finish = holdColorKernelState(state);
+  let invocationFailed = false;
+  try {
+    const id = state.id!,
+      definition = state.definition!,
+      shader = state.shader!;
+    const work = colorGpuWork();
+    let failed = false;
+    try {
+      work.shader = shader;
+      const output = (work.output = context.createSurface(
+        input.width,
+        input.height,
+      ));
+      const uniforms = colorGpuUniforms(work, params, definition);
+      if (id === "color.gradient-ramp") {
+        const transfer = (work.transfer = context.createSurface(256, 256));
+        context.uploadBytes(transfer, gradientColorTable(params));
+        const inputs = (work.inputs = [input, transfer]);
+        context.pass(shader, output, inputs, colorGpuCombined(work, params));
+      } else if (id === "color.curves") {
+        const bytes = colorGpuCurveBytes(work);
+        for (let value = 0; value < 256; value++) {
+          const result = colorEffectPixel(
+            id,
+            (work.sourcePixel = [value / 255, value / 255, value / 255, 1]),
+            params,
+            0,
+            0,
+            work.pixel,
+          );
+          try {
+            const mapped = result[0];
+            bytes[value * 4] = Math.round(mapped * 255);
+            bytes[value * 4 + 3] = 255;
+          } finally {
+            clearColorPixelWork(work.pixel);
+            (work.sourcePixel as number[]).length = 0;
+            work.sourcePixel = undefined;
+          }
+        }
+        const transfer = (work.transfer = context.createSurface(256, 1));
+        context.uploadBytes(transfer, bytes);
+        context.pass(
+          shader,
+          output,
+          (work.inputs = [input, transfer]),
+          uniforms,
+        );
+      } else context.pass(shader, output, (work.inputs = [input]), uniforms);
+      return output;
+    } catch (error) {
+      failed = true;
+      throw error;
+    } finally {
+      finishColorGpuWork(work, failed);
+    }
+  } catch (error) {
+    invocationFailed = true;
+    throw error;
+  } finally {
+    finishColorKernelState(finish, invocationFailed);
+  }
+}
+
+function renderManagedColorKernelCanvas(
+  state: ColorKernelState,
+  context: Parameters<NonNullable<CompositionEffectPlugin["renderCanvas"]>>[0],
+  input: CanvasSurface,
+  params: RenderEffect["params"],
+): CanvasSurface {
+  const finish = holdColorKernelState(state);
+  let invocationFailed = false;
+  try {
+    const id = state.id!;
+    const work = colorCanvasWork();
+    let failed = false;
+    try {
+      work.input = input;
+      const output = (work.output = context.createSurface(
+        input.width,
+        input.height,
+      ));
+      const image = colorCanvasImage(
+        work,
+        input.ctx,
+        input.width,
+        input.height,
+      );
+      const gradient = (work.gradient =
+        id === "color.gradient-ramp" ? gradientControls(params) : undefined);
+      const table = (work.table = gradient
+        ? gradientColorTable(params)
+        : undefined);
+      for (let y = 0; y < input.height; y++)
+        for (let x = 0; x < input.width; x++) {
+          const i = (y * input.width + x) * 4;
+          const source = (work.source = [] as unknown as Rgba);
+          source[0] = colorEffectChannel(image.data[i]!, image.data[i + 3]!);
+          source[1] = colorEffectChannel(
+            image.data[i + 1]!,
+            image.data[i + 3]!,
+          );
+          source[2] = colorEffectChannel(
+            image.data[i + 2]!,
+            image.data[i + 3]!,
+          );
+          source[3] = image.data[i + 3]! / 255;
+          try {
+            let result: Rgba;
+            if (gradient && table) {
+              const index = gradientRank(gradient, x + 0.5, y + 0.5) * 4,
+                strength =
+                  ((params.amount as number) * table[index + 3]!) / 255;
+              const keys = (work.gradientKeys = [0, 1, 2]);
+              const mapped = (work.gradientMapped = keys.map(
+                (work.gradientMapper = (c) =>
+                  unit(
+                    source[c]! +
+                      (table[index + c]! / 255 - source[c]!) * strength,
+                  )),
+              ));
+              result = work.gradientResult = mapped.concat(source[3]) as Rgba;
+            } else
+              result = colorEffectPixel(
+                id,
+                source,
+                params,
+                x + 0.5,
+                y + 0.5,
+                work.pixel,
+              );
+            for (let channel = 0; channel < 4; channel++)
+              image.data[i + channel] = Math.round(result[channel]! * 255);
+          } finally {
+            clearColorCanvasSample(work);
+          }
+        }
+      output.ctx.putImageData(image, 0, 0);
+      return output;
+    } catch (error) {
+      failed = true;
+      throw error;
+    } finally {
+      finishColorCanvasWork(work, failed);
+    }
+  } catch (error) {
+    invocationFailed = true;
+    throw error;
+  } finally {
+    finishColorKernelState(finish, invocationFailed);
+  }
 }

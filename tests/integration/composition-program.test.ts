@@ -107,10 +107,10 @@ it("loads JSON with native diagnostics and absolute asset paths", async () => {
       },
     ],
   });
-  await writeFile(input, JSON.stringify({ ...empty, fps: 13 }));
+  await writeFile(input, JSON.stringify({ ...empty, fps: 61 }));
   await expect(loadProgram(input)).rejects.toMatchObject({
     diagnostics: [
-      expect.objectContaining({ code: "comp-schema-union", path: "fps" }),
+      expect.objectContaining({ code: "comp-schema-range", path: "fps" }),
     ],
   });
 });

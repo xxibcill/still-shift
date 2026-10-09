@@ -22,8 +22,10 @@ inputs retain their camera recipes. Their visual vocabulary is frozen, and
 Still Shift aims to lower the cost of faceless YouTube videos by automatically mixing
 animated still images, moving text and graphics, and selected AI video clips. Still
 images may use several animation methods; depth-based parallax is only one of them.
-The current Phase 0 work tests a narrower still-image animation component. See
-[product positioning](./docs/product-positioning.md) for the owner-stated goal,
+The [active roadmap](./ROADMAP.md) prioritizes composition completion and a
+supported explanatory-video production proof. The original Phase 0 experiment is
+[archived](./docs/archive/roadmap-phase-0-2026-10-08.md), with its acceptance gates
+still open. See [product positioning](./docs/product-positioning.md) for the owner-stated goal,
 candidate approaches, relationship to existing tools, and measures of success.
 
 ## Story engine and authoring tools
@@ -254,7 +256,12 @@ result. The lab shows the source, depth texture, resolved parameters, frame scru
 and animated preview. It can build a corpus preview gallery once the required real
 images are supplied. See [`apps/lab/README.md`](./apps/lab/README.md).
 
-## Frozen corpus requirement
+## Historical Phase 0 frozen corpus requirement
+
+This requirement belongs to the archived Phase 0 experiment. Its unfinished gates
+remain unverified; reopening it requires an explicit scope decision and
+representative inputs. Current milestone fixtures and acceptance checks are
+tracked in their owning plans.
 
 [`benchmarks/corpus-manifest.json`](./benchmarks/corpus-manifest.json) is a valid v0.1
 manifest, but it is intentionally marked `incomplete`: the repository does not contain
@@ -273,6 +280,6 @@ provenance, rights, checksums, outstanding requirements, explicit review sign-of
 freeze metadata are complete. Do not begin renderer tuning against a substitute demo
 corpus.
 
-See [`ROADMAP.md`](./ROADMAP.md) and
+See the [archived Phase 0 roadmap](./docs/archive/roadmap-phase-0-2026-10-08.md) and
 [`Phase_0_Implementation_Plan.md`](./Phase_0_Implementation_Plan.md) for the exact scope
-and gates.
+and historical gates. See the [active roadmap](./ROADMAP.md) for current priorities.

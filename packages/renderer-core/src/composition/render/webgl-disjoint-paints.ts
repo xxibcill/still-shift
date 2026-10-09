@@ -1,3 +1,7 @@
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+} from "../../managed-metadata.ts";
 import type { Bounds } from "../evaluate/types.ts";
 import type { Canvas2dBackend, CanvasSurface } from "./canvas2d.ts";
 import type { WebglBounds } from "./webgl-bounds.ts";
@@ -75,7 +79,11 @@ export class WebglDisjointPaints {
       return false;
     const rect = visible.reduce(unionBounds),
       active = this.device.drawRegion(dst, rect)!;
-    const color = this.device.solidColor(dst, active);
+    const solid = this.device.solidColor(dst, active);
+    // Starting a screen pass retires the device's clear-color cache.
+    const color = solid
+      ? allocateRenderMetadata(64, () => [...solid])
+      : undefined;
     let atlas: CanvasSurface | undefined,
       source: WebglSurface | undefined,
       layout: WebglSurface | undefined;
@@ -130,6 +138,7 @@ export class WebglDisjointPaints {
       this.bounds.include(dst, rect);
       return true;
     } finally {
+      if (color) releaseRenderMetadata(color);
       if (backdrop) this.device.release(backdrop);
       if (layout) this.device.release(layout);
       if (source) this.device.release(source);

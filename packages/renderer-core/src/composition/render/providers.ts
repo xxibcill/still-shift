@@ -1,3 +1,4 @@
+import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
 import type {
   Composition,
   CompositionLayer,
@@ -10,6 +11,7 @@ import type { TextProbe } from "./text.ts";
 
 export type ProviderLayer = Extract<CompositionLayer, { type: "provider" }>;
 export type ProviderResources = {
+  sourceCanvas?: CanvasPixelSource;
   textProbe?: TextProbe;
   images: ReadonlyMap<string, CanvasImageSource>;
   /** Match prepared glyphs to the composition primitive-filter raster policy. */
@@ -24,6 +26,7 @@ type DrawProvider = (
   sourceTime?: number,
 ) => void;
 export type CanvasProviderDrawer = DrawProvider & {
+  preparePixels?: (time: number, state?: number, sourceTime?: number) => void;
   /** Equal keys promise identical local pixels, including every clock-dependent value. */
   visualKey?: (time: number, state?: number, sourceTime?: number) => string;
   /** Conservative local painted bounds across all states and clocks. */
@@ -39,7 +42,12 @@ export function preparedProvider(
   draw: DrawProvider,
   metadata: Pick<
     CanvasProviderDrawer,
-    "visualKey" | "bounds" | "singleImage" | "stableImages" | "boundedCanvas"
+    | "visualKey"
+    | "bounds"
+    | "singleImage"
+    | "stableImages"
+    | "boundedCanvas"
+    | "preparePixels"
   >,
 ): CanvasProviderDrawer {
   return Object.assign(draw, metadata);
@@ -122,6 +130,9 @@ export function prepareCompositionProviders(
       const key = `${index ? `${scope.id}/` : ""}${layer.id}`;
       // Limit the provider's resource view to its declared dependencies.
       const available: ProviderResources = {
+        ...(resources.sourceCanvas
+          ? { sourceCanvas: resources.sourceCanvas }
+          : {}),
         ...(resources.textProbe ? { textProbe: resources.textProbe } : {}),
         ...(resources.softwareRaster ? { softwareRaster: true } : {}),
         images: new Map(
@@ -145,6 +156,12 @@ export function prepareCompositionProviders(
     draw(ctx, content.time, content.state, content.sourceTime);
   };
   return Object.assign(draw, {
+    preparePixels(content: ProviderContent): void {
+      const prepare = drawers.get(content.key)?.preparePixels;
+      prepare?.(content.time, content.state, content.sourceTime);
+      if (content.stateFrom !== undefined)
+        prepare?.(content.time, content.stateFrom, content.sourceTime);
+    },
     boundedCanvas(content: ProviderContent): boolean {
       return drawers.get(content.key)?.boundedCanvas === true;
     },

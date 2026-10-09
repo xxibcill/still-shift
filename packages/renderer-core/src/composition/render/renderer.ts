@@ -1,3 +1,20 @@
+import {
+  createRenderBlob,
+  decodeRenderImage,
+  mapRenderResources,
+  prepareRenderResources,
+  readRenderAssetBody,
+  releaseRenderBlob,
+} from "../../managed-resources.ts";
+import { releaseRenderPixels } from "../../managed-memory-context.ts";
+import {
+  createRenderCanvas,
+  readRenderImageData,
+  releaseRenderCanvas,
+  renderMemory,
+} from "../../managed-memory-context.ts";
+import { CompositionRenderStatistics } from "./statistics.ts";
+import { compositionPrefixLayers } from "./prefix.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import { compositionEffectDefinition } from "@still-shift/scene-contract";
 import {
@@ -12,6 +29,10 @@ import {
   type CompositionPreparedAudio,
 } from "@still-shift/scene-contract";
 import { sha256Hex } from "../../browser-checksum.ts";
+import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
+import { CompositionSourceCache } from "./source-cache.ts";
+import { prepareGraphSources } from "./source-preparation.ts";
+import { CompositionRootCache } from "./root-cache.ts";
 import {
   PassageError,
   type PassageDiagnostic,
@@ -21,6 +42,8 @@ import type { Bounds } from "../evaluate/types.ts";
 import { createCanvas2dBackend, requiresSoftwareFilters } from "./canvas2d.ts";
 import {
   renderCompositionExposure,
+  createCompositionFrameCache,
+  releaseCompositionFrameCache,
   type CompositionFrameCache,
 } from "./exposure.ts";
 import {
@@ -29,6 +52,11 @@ import {
   type TextProbe,
 } from "./text.ts";
 import { COMPOSITION_RENDERER_VERSION } from "./version.ts";
+import {
+  CompositionSurfaceCache,
+  type CompositionSurfaceCacheOptions,
+} from "./surface-cache.ts";
+import { compositionRenderGraphs } from "./graphs.ts";
 import {
   prepareCompositionProviders,
   loadProviderFonts,
@@ -44,6 +72,7 @@ import {
   hasRequiredCompositionCoverage,
   createCompositionCoverageValidator,
   validateRequiredCompositionCoverage,
+  compositionRequiredCoverageGraphs,
 } from "./required-coverage.ts";
 import { validateStoryCompositionCoverage } from "../adapters/story-coverage.ts";
 import { cinematicRenderedCoverageRequirements } from "../adapters/cinematic-coverage.ts";
@@ -175,43 +204,42 @@ export async function loadCompositionResources(
     signal?: AbortSignal;
   } = {},
 ): Promise<CompositionResources> {
-  options.signal?.throwIfAborted();
-  if (
-    !options.preparedMedia &&
-    composition.assets.some(
-      (asset) => asset.type === "video" || asset.type === "sequence",
+  return prepareRenderResources(async () => {
+    options.signal?.throwIfAborted();
+    if (
+      !options.preparedMedia &&
+      composition.assets.some(
+        (asset) => asset.type === "video" || asset.type === "sequence",
+      )
     )
-  )
-    passageError(
-      "comp-media-not-ready",
-      "Capture native source frames before loading composition resources",
-      { path: "preparedMedia" },
-    );
-  const images = new Map<string, CanvasImageSource>();
-  const pngImages = new Set<string>();
-  await Promise.all(
-    composition.assets.map(async (asset) => {
+      passageError(
+        "comp-media-not-ready",
+        "Capture native source frames before loading composition resources",
+        { path: "preparedMedia" },
+      );
+    const images = new Map<string, CanvasImageSource>();
+    const pngImages = new Set<string>();
+    await mapRenderResources(composition.assets, async (asset) => {
       if (asset.type !== "image") return;
       const response = await fetch(assetUrl(asset.id), {
         signal: options.signal ?? null,
       });
       if (!response.ok) throw new Error(`Asset unavailable: ${asset.id}`);
-      const bytes = await response.arrayBuffer();
+      const bytes = await readRenderAssetBody(response);
       if (`sha256:${await sha256Hex(bytes)}` !== asset.sha256)
         throw new Error(`Asset checksum differs: ${asset.id}`);
-      const url = URL.createObjectURL(
-        new Blob([bytes], {
-          type:
-            response.headers.get("Content-Type") ?? "application/octet-stream",
-        }),
+      const blob = createRenderBlob(
+        bytes,
+        response.headers.get("Content-Type") ?? "application/octet-stream",
       );
-      const image = new Image();
-      image.src = url;
+      const url = URL.createObjectURL(blob);
+      let image: HTMLImageElement;
       try {
-        await image.decode();
+        image = await decodeRenderImage(url, asset.width, asset.height);
         options.signal?.throwIfAborted();
       } finally {
         URL.revokeObjectURL(url);
+        releaseRenderBlob(blob);
       }
       if (
         image.naturalWidth !== asset.width ||
@@ -226,31 +254,32 @@ export async function loadCompositionResources(
         )
       )
         pngImages.add(asset.id);
-    }),
-  );
-  const fonts = await loadCompositionFonts(composition, assetUrl);
-  options.signal?.throwIfAborted();
-  return {
-    images,
-    ...(options.preparedMedia
-      ? {
-          preparedMedia: options.preparedMedia,
-          media: createCompositionMediaResources(
-            composition,
-            options.preparedMedia,
-            assetUrl,
-            images,
-            pngImages,
-          ),
-        }
-      : {}),
-    pngImages,
-    fonts,
-    providerFonts: await loadProviderFonts(composition, fonts, [
-      ...BUILTIN_PROVIDERS,
-      ...(options.providers ?? []),
-    ]),
-  };
+      releaseRenderPixels(bytes);
+    });
+    const fonts = await loadCompositionFonts(composition, assetUrl);
+    options.signal?.throwIfAborted();
+    return {
+      images,
+      ...(options.preparedMedia
+        ? {
+            preparedMedia: options.preparedMedia,
+            media: createCompositionMediaResources(
+              composition,
+              options.preparedMedia,
+              assetUrl,
+              images,
+              pngImages,
+            ),
+          }
+        : {}),
+      pngImages,
+      fonts,
+      providerFonts: await loadProviderFonts(composition, fonts, [
+        ...BUILTIN_PROVIDERS,
+        ...(options.providers ?? []),
+      ]),
+    };
+  });
 }
 
 export type CompositionFrameReport = {
@@ -262,6 +291,8 @@ export type CompositionFrameReport = {
 };
 
 export type CompositionPreview = {
+  renderStatistics?: () => CompositionRenderStatistics["statistics"];
+  sourceCacheStatistics?: () => CompositionSourceCache["statistics"];
   readonly backend: CompositionBackend;
   readonly rendererVersion: string;
   readPixels(): Uint8ClampedArray;
@@ -269,6 +300,8 @@ export type CompositionPreview = {
   textBounds: Record<string, Bounds[]>;
   /** Still-only frames are ready synchronously; native media returns its loading promise. */
   prepareFrame(frame: number): Promise<void> | void;
+  surfaceCacheStatistics?(): CompositionSurfaceCache<Surface>["statistics"];
+  rootCacheStatistics?(): CompositionRootCache<Surface>["statistics"];
   renderFrame(frame: number): CompositionFrameReport;
   dispose(): void;
 };
@@ -280,6 +313,12 @@ type CompositionPreviewOptions = {
   coverageSeverity?: "error" | "warning";
   /** Exact integer frames owned by an independently bounded family timeline window. */
   validationFrames?: readonly number[];
+  /** Carry the authored background alpha; opaque preview remains the default. */
+  preserveAlpha?: boolean;
+  surfaceCache?: CompositionSurfaceCacheOptions;
+  sourceCanvas?: CanvasPixelSource;
+  prepareSourcePixels?: (prepare: () => void | Promise<void>) => Promise<void>;
+  collectStatistics?: boolean;
 };
 
 /** Prepared local content and coverage, reusable without retaining a backend's surfaces. */
@@ -316,8 +355,7 @@ export function prepareCompositionPreview(
 /**
  * Render with the selected backend (Canvas 2D by default). Preview and export
  * share the evaluator, graph, prepared content and exposure sampling.
- * The canvas is opaque: transparent backgrounds show black until alpha output
- * formats arrive (CE15).
+ * The default canvas is opaque. Alpha-capable exports opt into a transparent root.
  */
 export function createCompositionPreview(
   canvas: HTMLCanvasElement,
@@ -346,69 +384,130 @@ function prepareCompositionPreviewOnCanvas(
   canvas.height = composition.height;
   const kind = options.backend ?? "canvas2d";
   compositionRendererVersion(kind);
-  const measurementCanvas =
-    kind === "webgl2" ? document.createElement("canvas") : canvas;
+  const measurementCanvas = kind === "webgl2" ? createRenderCanvas() : canvas;
   const softwareRaster =
     kind === "canvas2d" && requiresSoftwareFilters(composition);
   const ctx = measurementCanvas.getContext("2d", {
-    alpha: false,
+    alpha: options.preserveAlpha === true,
     ...(softwareRaster ? { willReadFrequently: true } : {}),
   });
-  if (!ctx) throw new Error("Canvas 2D is unavailable");
+  if (!ctx) {
+    if (kind === "webgl2") releaseRenderCanvas(measurementCanvas);
+    throw new Error("Canvas 2D is unavailable");
+  }
   const readAssetPixels = (id: string) => {
     const asset = composition.assets.find((asset) => asset.id === id)!;
     if (asset.type !== "image")
       throw new Error(`Cover asset is not an image: ${id}`);
     const image = resources.images.get(id);
     if (!image) throw new Error(`Cover image was not loaded: ${id}`);
-    const probe = options.createCanvas
-      ? options.createCanvas(asset.width, asset.height)
-      : document.createElement("canvas");
-    probe.width = asset.width;
-    probe.height = asset.height;
-    const context = probe.getContext("2d", { willReadFrequently: true });
-    if (!context) throw new Error("Canvas 2D is unavailable");
+    const makeProbe = (width: number, height: number) => {
+      const probe = options.createCanvas
+        ? options.createCanvas(width, height)
+        : createRenderCanvas();
+      probe.width = width;
+      probe.height = height;
+      if (!probe.getContext("2d", { willReadFrequently: true }))
+        throw Error("Canvas 2D is unavailable");
+      return probe;
+    };
+    const paint = () => {
+      const probe = makeProbe(asset.width, asset.height);
+      probe.getContext("2d")!.drawImage(image, 0, 0);
+      return probe;
+    };
+    let source: HTMLCanvasElement;
+    if (options.sourceCanvas) {
+      // Only context policy is needed before rendezvous; the original full paint
+      // or restore allocates its own target after a producer/consumer is admitted.
+      const header = makeProbe(1, 1);
+      const policy = header.getContext("2d")!.getContextAttributes();
+      releaseRenderCanvas(header);
+      source = options.sourceCanvas(
+        {
+          kind: "coverage-asset",
+          input: [asset, policy],
+          width: asset.width,
+          height: asset.height,
+        },
+        paint,
+        (pixels) => {
+          const probe = makeProbe(asset.width, asset.height);
+          probe
+            .getContext("2d")!
+            .putImageData(
+              new ImageData(
+                new Uint8ClampedArray(
+                  pixels.buffer,
+                  pixels.byteOffset,
+                  pixels.byteLength,
+                ),
+                asset.width,
+                asset.height,
+              ),
+              0,
+              0,
+            );
+          return probe;
+        },
+      );
+    } else source = paint();
     try {
-      context.drawImage(image, 0, 0);
-      return context.getImageData(0, 0, probe.width, probe.height);
+      return readRenderImageData(
+        source.getContext("2d")!,
+        0,
+        0,
+        source.width,
+        source.height,
+      );
     } finally {
-      probe.width = probe.height = 0;
+      if (!options.sourceCanvas) releaseRenderCanvas(source);
     }
   };
-  validateStoryCompositionCoverage(
-    composition,
-    readAssetPixels,
-    options.validationFrames,
-  );
-  const text = prepareCompositionText(
-    composition,
-    resources.fonts,
-    ctx,
-    options.validationFrames
-      ? Object.fromEntries(
-          composition.layers.flatMap((layer) =>
-            layer.type === "text"
-              ? [
-                  [
-                    layer.id,
+  let text: ReturnType<typeof prepareCompositionText>;
+  try {
+    validateStoryCompositionCoverage(
+      composition,
+      readAssetPixels,
+      options.validationFrames,
+    );
+    text = prepareCompositionText(
+      composition,
+      resources.fonts,
+      ctx,
+      options.validationFrames
+        ? Object.fromEntries(
+            composition.layers.flatMap((layer) =>
+              layer.type === "text"
+                ? [
                     [
-                      ...new Set(
-                        (layer.sampleTimes ?? options.validationFrames!).map(
-                          Math.round,
+                      layer.id,
+                      [
+                        ...new Set(
+                          (layer.sampleTimes ?? options.validationFrames!).map(
+                            Math.round,
+                          ),
                         ),
-                      ),
+                      ],
                     ],
-                  ],
-                ]
-              : [],
-          ),
-        )
-      : undefined,
-    resources.textProbe,
-  );
+                  ]
+                : [],
+            ),
+          )
+        : undefined,
+      resources.textProbe,
+      options.sourceCanvas,
+    );
+  } finally {
+    if (kind === "webgl2") releaseRenderCanvas(measurementCanvas);
+  }
   const drawProvider = prepareCompositionProviders(
     composition,
-    { ...resources, softwareRaster: requiresSoftwareFilters(composition) },
+    {
+      ...resources,
+      softwareRaster: requiresSoftwareFilters(composition),
+      ...(options.sourceCanvas ? { sourceCanvas: options.sourceCanvas } : {}),
+    },
     [...BUILTIN_PROVIDERS, ...(options.providers ?? [])],
   );
   const backendOptions = {
@@ -445,9 +544,17 @@ function prepareCompositionPreviewOnCanvas(
   ): CompositionPreview {
     targetCanvas.width = composition.width;
     targetCanvas.height = composition.height;
+    const statistics = options.collectStatistics
+      ? new CompositionRenderStatistics()
+      : undefined;
+    const previewOptions = {
+      ...backendOptions,
+      ...(statistics ? { statistics } : {}),
+    };
     if (kind === "webgl2") {
       const backend = createWebgl2Backend(targetCanvas, {
-        ...backendOptions,
+        ...previewOptions,
+        preserveAlpha: options.preserveAlpha === true,
         boundedCanvas: (content) =>
           content.type === "text" || drawProvider.boundedCanvas(content),
         singleImage: (content) =>
@@ -470,11 +577,11 @@ function prepareCompositionPreviewOnCanvas(
       return preview(backend, backend.target, () => backend.present());
     }
     const targetContext = targetCanvas.getContext("2d", {
-      alpha: false,
+      alpha: options.preserveAlpha === true,
       ...(softwareRaster ? { willReadFrequently: true } : {}),
     });
-    if (!targetContext) throw new Error("Canvas 2D is unavailable");
-    const backend = createCanvas2dBackend(backendOptions);
+    if (!targetContext) throw Error("Canvas 2D is unavailable");
+    const backend = createCanvas2dBackend(previewOptions);
     return preview(
       backend,
       backend.wrap(targetCanvas, targetContext),
@@ -487,10 +594,33 @@ function prepareCompositionPreviewOnCanvas(
       present: () => void,
     ): CompositionPreview {
       // The GPU backend retains bounded readback bytes; graph reuse skips identical draws.
-      const cache: CompositionFrameCache | undefined =
-        kind === "webgl2" ? {} : undefined;
-      if (validateCoverage && !resources.media)
-        try {
+      let cache: CompositionFrameCache | undefined;
+      let preparedFrame: number | undefined;
+      let surfaceCache: CompositionSurfaceCache<S> | undefined;
+      let rootCache: CompositionRootCache<S> | undefined;
+      try {
+        if (kind === "webgl2") cache = createCompositionFrameCache();
+        if (options.surfaceCache) {
+          surfaceCache = new CompositionSurfaceCache(
+            backend,
+            options.surfaceCache,
+            (content) =>
+              content.type === "provider"
+                ? drawProvider.contentKey(content)
+                : text.contentKey(content),
+            composition.colorSpace ?? "srgb",
+          );
+          rootCache = new CompositionRootCache(
+            backend,
+            options.surfaceCache,
+            (content) =>
+              content.type === "provider"
+                ? drawProvider.contentKey(content)
+                : text.contentKey(content),
+            compositionPrefixLayers(composition),
+          );
+        }
+        if (validateCoverage && !resources.media && !surfaceCache) {
           validateRenderedCinematicCompositionCoverage(
             composition,
             readAssetPixels,
@@ -505,17 +635,35 @@ function prepareCompositionPreviewOnCanvas(
             requiredRootLayers,
             options.validationFrames,
           );
-        } catch (error) {
-          backend.dispose();
-          throw error;
         }
+      } catch (error) {
+        if (cache) releaseCompositionFrameCache(cache);
+        backend.dispose();
+        statistics?.dispose();
+        throw error;
+      }
       return {
         backend: kind,
         rendererVersion: backend.version,
         readPixels: () => backend.readPixels(target),
         textBounds: text.bounds,
+        ...(statistics
+          ? { renderStatistics: () => statistics.statistics }
+          : {}),
+        ...(surfaceCache
+          ? { surfaceCacheStatistics: () => surfaceCache.statistics }
+          : {}),
+        ...(rootCache
+          ? { rootCacheStatistics: () => rootCache.statistics }
+          : {}),
         prepareFrame(frame) {
-          if (!resources.media) return;
+          if (
+            !Number.isInteger(frame) ||
+            frame < 0 ||
+            frame >= composition.frameCount
+          )
+            throw Error("Frame index outside composition timeline");
+          if (!resources.media && !surfaceCache) return;
           if (!initialization)
             initialization = (async () => {
               const required = hasRequiredCompositionCoverage(
@@ -535,23 +683,64 @@ function prepareCompositionPreviewOnCanvas(
                 requiredRootLayers,
               );
               const prepare = async (at: number) => {
-                await resources.media!.prepareFrame(at, {
+                await resources.media?.prepareFrame(at, {
                   textBounds: text.bounds,
                   cull: false,
                 });
-                if (required && selected.has(at)) {
+                if (surfaceCache)
+                  for (const {
+                    graph,
+                    node,
+                  } of compositionRequiredCoverageGraphs(
+                    composition,
+                    at,
+                    {
+                      textBounds: text.bounds,
+                    },
+                    requiredRootLayers,
+                  )) {
+                    await options.prepareSourcePixels?.(() =>
+                      prepareGraphSources(
+                        graph,
+                        text.preparePixels,
+                        drawProvider.preparePixels,
+                      ),
+                    );
+                    await surfaceCache.prepare(graph);
+                    if (rootCache) {
+                      const target = backend.createSurface(
+                        graph.root.width,
+                        graph.root.height,
+                      );
+                      try {
+                        await rootCache.prepare(
+                          graph,
+                          target,
+                          "coverage:" + node,
+                        );
+                      } finally {
+                        backend.releaseSurface(target);
+                      }
+                    }
+                  }
+                if (required && selected.has(at) && !validated.has(at)) {
                   coverageDiagnostics.push(...validate(at));
                   validated.add(at);
                 }
               };
               try {
-                await validateRenderedCinematicCompositionCoverageAsync(
-                  composition,
-                  readAssetPixels,
-                  backend,
-                  prepare,
-                  { textBounds: text.bounds },
-                );
+                const validateCinematic = async () => {
+                  await validateRenderedCinematicCompositionCoverageAsync(
+                    composition,
+                    readAssetPixels,
+                    backend,
+                    prepare,
+                    { textBounds: text.bounds },
+                  );
+                };
+                if (options.prepareSourcePixels)
+                  await options.prepareSourcePixels(validateCinematic);
+                else await validateCinematic();
                 if (required)
                   for (const at of frames)
                     if (!validated.has(at)) await prepare(at);
@@ -559,11 +748,34 @@ function prepareCompositionPreviewOnCanvas(
                 backend.endFrame?.(false);
               }
             })();
-          return initialization.then(() =>
-            resources.media!.prepareFrame(frame, { textBounds: text.bounds }),
-          );
+          return initialization.then(async () => {
+            await resources.media?.prepareFrame(frame, {
+              textBounds: text.bounds,
+            });
+            if (surfaceCache)
+              for (const { graph } of compositionRenderGraphs(
+                composition,
+                frame,
+                { textBounds: text.bounds },
+              )) {
+                await options.prepareSourcePixels?.(() =>
+                  prepareGraphSources(
+                    graph,
+                    text.preparePixels,
+                    drawProvider.preparePixels,
+                  ),
+                );
+                await surfaceCache.prepare(graph);
+                await rootCache?.prepare(graph, target);
+              }
+            preparedFrame = frame;
+          });
         },
         renderFrame(frame) {
+          if (surfaceCache && preparedFrame !== frame)
+            throw Error(
+              "Prepare the absolute composition frame before using retained surfaces",
+            );
           resources.media?.assertReady(frame);
           if (
             !Number.isInteger(frame) ||
@@ -590,15 +802,70 @@ function prepareCompositionPreviewOnCanvas(
             : report;
         },
         dispose() {
-          if (cache) {
-            cache.root = undefined;
-            cache.key = undefined;
-          }
+          if (cache) releaseCompositionFrameCache(cache);
+          rootCache?.dispose();
+          surfaceCache?.dispose();
+          if (ownsMedia) text.dispose();
           backend.dispose();
+          statistics?.dispose();
           if (ownsMedia) resources.media?.dispose();
           targetCanvas.width = composition.width;
         },
       };
     }
+  }
+}
+
+/** Shares preparation pixels before constructing the ordinary synchronous preview. */
+export async function createCompositionPreviewAsync(
+  canvas: HTMLCanvasElement,
+  composition: Composition,
+  resources: CompositionResources,
+  options: NonNullable<Parameters<typeof createCompositionPreview>[3]> = {},
+): Promise<CompositionPreview> {
+  if (!options.surfaceCache)
+    return createCompositionPreview(canvas, composition, resources, options);
+  const sources = new CompositionSourceCache(options.surfaceCache);
+  const memory = renderMemory();
+  try {
+    for (;;) {
+      if (memory) memory.beginScratch();
+      try {
+        const preview = createCompositionPreview(
+          canvas,
+          composition,
+          resources,
+          {
+            ...options,
+            sourceCanvas: sources.read,
+            prepareSourcePixels: async (prepare) => {
+              for (;;) {
+                try {
+                  await prepare();
+                  return;
+                } catch (error) {
+                  if (!(await sources.prepare(error))) throw error;
+                }
+              }
+            },
+          },
+        );
+        memory?.commitScratch();
+        return {
+          ...preview,
+          sourceCacheStatistics: () => sources.statistics,
+          dispose() {
+            preview.dispose();
+            sources.dispose();
+          },
+        };
+      } catch (error) {
+        if (memory?.hasScratch) memory.endScratch();
+        if (!(await sources.prepare(error))) throw error;
+      }
+    }
+  } catch (error) {
+    sources.dispose();
+    throw error;
   }
 }

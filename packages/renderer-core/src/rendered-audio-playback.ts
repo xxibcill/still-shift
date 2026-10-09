@@ -1,3 +1,4 @@
+import { compositionPcmBoundary } from "@still-shift/scene-contract";
 /** Play a verified complete master without adding a second gain, pan or fade law. */
 export function scheduleRenderedAudio(
   context: BaseAudioContext,
@@ -5,8 +6,8 @@ export function scheduleRenderedAudio(
   options: { frame: number; frameCount: number; fps: number; when: number },
 ) {
   const { frame, frameCount, fps, when } = options;
-  const startSample = (frame * 48000) / fps;
-  const endSample = (frameCount * 48000) / fps;
+  const startSample = compositionPcmBoundary(frame, fps);
+  const endSample = compositionPcmBoundary(frameCount, fps);
   if (
     !Number.isInteger(frameCount) ||
     !Number.isInteger(fps) ||

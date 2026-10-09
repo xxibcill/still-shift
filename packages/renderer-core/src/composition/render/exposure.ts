@@ -6,6 +6,11 @@ import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
 import type { PassageDiagnostic } from "../../passage-diagnostics.ts";
 import { type RenderGraphOptions, type SurfaceNode } from "./graph.ts";
 import { executeGraph, type RenderBackend, type Surface } from "./backend.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+  type ManagedMetadataText,
+} from "../../managed-metadata.ts";
 
 /** Definitions are immutable shared references; only per-sample draw values differ. */
 function equal(a: unknown, b: unknown): boolean {
@@ -32,7 +37,32 @@ function equal(a: unknown, b: unknown): boolean {
 export type CompositionFrameCache = {
   root?: SurfaceNode | undefined;
   key?: string | undefined;
+  keyOwner?: ManagedMetadataText | undefined;
 };
+
+function clearFrameCache(cache: CompositionFrameCache): void {
+  const key = cache.keyOwner;
+  cache.root = undefined;
+  cache.key = undefined;
+  cache.keyOwner = undefined;
+  key?.release();
+}
+
+/** Admit the retained cache control before creation; graph ownership is separate. */
+export function createCompositionFrameCache(): CompositionFrameCache {
+  return allocateRenderMetadata<CompositionFrameCache>(
+    192,
+    () => ({}),
+    true,
+    clearFrameCache,
+  );
+}
+export function releaseCompositionFrameCache(
+  cache: CompositionFrameCache,
+): void {
+  clearFrameCache(cache);
+  releaseRenderMetadata(cache);
+}
 
 /** Average moving exposures; a proven identical graph needs only one draw. */
 export function renderCompositionExposure<S extends Surface>(
@@ -48,65 +78,83 @@ export function renderCompositionExposure<S extends Surface>(
     compositionRenderGraphs(comp, frame, options, sampleFrames);
   const candidates = graphs();
   const first = candidates.next().value!;
-  const firstKey = backend.frameKey?.(first.graph.root);
-  let stationary = true;
-  for (const candidate of candidates)
-    if (
-      firstKey === undefined
-        ? !equal(first.graph.root, candidate.graph.root)
-        : firstKey !== backend.frameKey!(candidate.graph.root)
-    ) {
-      stationary = false;
-      break;
-    }
-  // Check every GPU-only shutter sample before accumulation touches the retained frame.
-  const compiled = compileComposition(comp);
-  if (compiled.spatialScopes.size || compiled.imagePlanes)
-    for (const candidate of graphs())
-      if (candidate.graph.spatial)
-        requireSpatialCapabilities(candidate.graph.root, {
-          depthImage: !!backend.drawDepthImage,
-          lighting: !!backend.applyLighting,
-          projective: !!backend.project && !!backend.applyProjectiveClips,
-          validateSurface: backend.validateSpatialSurface,
-        });
-  if (stationary) {
-    const reused =
-      cache?.root !== undefined &&
-      (firstKey === undefined
-        ? equal(cache.root, first.graph.root)
-        : cache.key === firstKey);
-    if (!reused) {
-      // A failed draw can partially overwrite the previous framebuffer.
-      if (cache) {
-        cache.root = undefined;
-        cache.key = undefined;
+  const firstOwner = backend.frameMetadataKey?.(first.graph.root);
+  let retained = false;
+  try {
+    const firstKey = firstOwner
+      ? firstOwner.value
+      : backend.frameKey?.(first.graph.root);
+    let stationary = true;
+    for (const candidate of candidates) {
+      let changed: boolean;
+      if (firstKey === undefined)
+        changed = !equal(first.graph.root, candidate.graph.root);
+      else {
+        const candidateOwner = backend.frameMetadataKey?.(candidate.graph.root);
+        try {
+          changed =
+            firstKey !==
+            (candidateOwner
+              ? candidateOwner.value
+              : backend.frameKey!(candidate.graph.root));
+        } finally {
+          candidateOwner?.release();
+        }
       }
-      executeGraph(backend, first.graph, target);
+      if (changed) {
+        stationary = false;
+        break;
+      }
     }
-    if (cache) {
-      cache.root = first.graph.root;
-      cache.key = firstKey;
+    // All spatial shutter samples must pass before accumulation can touch the retained frame.
+    const compiled = compileComposition(comp);
+    if (compiled.spatialScopes.size || compiled.imagePlanes)
+      for (const candidate of graphs())
+        if (candidate.graph.spatial)
+          requireSpatialCapabilities(candidate.graph.root, {
+            depthImage: !!backend.drawDepthImage,
+            lighting: !!backend.applyLighting,
+            projective: !!backend.project && !!backend.applyProjectiveClips,
+            validateSurface: backend.validateSpatialSurface,
+          });
+    if (stationary) {
+      const reused =
+        cache?.root !== undefined &&
+        (firstKey === undefined
+          ? equal(cache.root, first.graph.root)
+          : cache.key === firstKey);
+      if (!reused) {
+        // A failed draw can partially overwrite the previous framebuffer.
+        if (cache) clearFrameCache(cache);
+        executeGraph(backend, first.graph, target);
+      }
+      if (cache) {
+        if (firstKey !== undefined) firstOwner?.retain();
+        clearFrameCache(cache);
+        cache.root = first.graph.root;
+        cache.key = firstKey;
+        cache.keyOwner = firstKey === undefined ? undefined : firstOwner;
+        retained = cache.keyOwner !== undefined;
+      }
+      return {
+        diagnostics: first.diagnostics,
+        culled: first.graph.culled,
+        samples: reused ? 0 : 1,
+      };
     }
-    return {
-      diagnostics: first.diagnostics,
-      culled: first.graph.culled,
-      samples: reused ? 0 : 1,
-    };
+    if (cache) clearFrameCache(cache);
+    const samples = sampleFrames.length;
+    const rendered = graphs();
+    const diagnostics: PassageDiagnostic[] = [];
+    const culled = new Set<string>();
+    backend.accumulateExposure(target, samples, (index) => {
+      const current = rendered.next().value!;
+      executeGraph(backend, current.graph, target);
+      if (index === 0) diagnostics.push(...current.diagnostics);
+      current.graph.culled.forEach((key) => culled.add(key));
+    });
+    return { diagnostics, culled: [...culled], samples };
+  } finally {
+    if (!retained) firstOwner?.release();
   }
-  if (cache) {
-    cache.root = undefined;
-    cache.key = undefined;
-  }
-  const samples = sampleFrames.length;
-  const rendered = graphs();
-  const diagnostics: PassageDiagnostic[] = [];
-  const culled = new Set<string>();
-  backend.accumulateExposure(target, samples, (index) => {
-    const current = rendered.next().value!;
-    executeGraph(backend, current.graph, target);
-    if (index === 0) diagnostics.push(...current.diagnostics);
-    current.graph.culled.forEach((key) => culled.add(key));
-  });
-  return { diagnostics, culled: [...culled], samples };
 }

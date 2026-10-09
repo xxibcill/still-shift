@@ -395,9 +395,10 @@ describe("pure composition property sampling", () => {
     ).toBe("comp-path-layer");
     expect(
       diagnostic(() =>
-        evaluateComp({ ...comp(), fps: 17 } as unknown as Composition, 0),
+        evaluateComp({ ...comp(), fps: 61 } as unknown as Composition, 0),
       )[0]!.code,
-    ).toBe("comp-schema-union");
+    ).toBe("comp-schema-range");
+    expect(() => evaluateComp({ ...comp(), fps: 17 }, 0)).not.toThrow();
     for (const time of [NaN, Infinity, 216001])
       expect(diagnostic(() => evaluateComp(comp(), time))[0]).toMatchObject({
         code: "comp-evaluation-time",

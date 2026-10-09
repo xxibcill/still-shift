@@ -1,7 +1,25 @@
 import type { TextAnimator, Signal } from "@still-shift/scene-contract";
 import type { TextNode } from "../../typography-style.ts";
 
-type Window = { start: number; end: number };
+type Window = { start: number; end: number; held?: number };
+
+function sameProperties(left: unknown, right: unknown): boolean {
+  if (left === right) return true;
+  if (
+    left === null ||
+    right === null ||
+    typeof left !== "object" ||
+    typeof right !== "object"
+  )
+    return false;
+  const a = left as Record<string, unknown>,
+    b = right as Record<string, unknown>;
+  const keys = Object.keys(a);
+  return (
+    keys.length === Object.keys(b).length &&
+    keys.every((key) => Object.hasOwn(b, key) && sameProperties(a[key], b[key]))
+  );
+}
 
 function curveWindows(keys: Signal["keys"]): Window[] {
   const windows: Window[] = [];
@@ -36,11 +54,20 @@ export function typographyClock(
   const referenced = new Set<string>();
   const windows: Window[] = [];
   for (const animator of local) {
+    const constant =
+      animator.to !== undefined &&
+      sameProperties(animator.from, animator.to) &&
+      (!animator.mask || animator.mask === "none");
     if (animator.signal) {
       referenced.add(animator.signal);
       if (animator.to)
         windows.push({ start: animator.start, end: animator.start });
-    } else windows.push({ start: animator.start, end: animator.end });
+    } else
+      windows.push(
+        constant
+          ? { start: animator.start, end: animator.start, held: animator.start }
+          : { start: animator.start, end: animator.end },
+      );
     if (animator.weight) curves.push(animator.weight);
     for (const selector of [animator.selector, ...(animator.selectors ?? [])])
       for (const value of [selector.start, selector.end, selector.offset]) {
@@ -63,25 +90,30 @@ export function typographyClock(
     if (decoration.reveal) curves.push(decoration.reveal);
   windows.push(...curves.flatMap(curveWindows));
   const padded = windows
-    .map(({ start, end }) => ({
+    .map(({ start, end, held }) => ({
       start: Math.floor(start) - 1,
       end: Math.ceil(end) + 1,
+      ...(held === undefined ? {} : { held }),
     }))
     .sort((a, b) => a.start - b.start);
   if (!padded.length) return () => 0;
   const active: Window[] = [];
   for (const window of padded) {
     const previous = active.at(-1);
-    if (previous && window.start <= previous.end)
+    if (previous && window.start <= previous.end) {
       previous.end = Math.max(previous.end, window.end);
-    else active.push({ ...window });
+      if (previous.held !== window.held) delete previous.held;
+    } else active.push({ ...window });
   }
   return (frame) => {
     let settled = active[0]!.start;
     for (const window of active) {
       if (frame < window.start) return settled;
-      if (frame <= window.end) return frame;
-      settled = window.end;
+      if (frame <= window.end)
+        return window.held !== undefined && frame >= window.held
+          ? window.held
+          : frame;
+      settled = window.held ?? window.end;
     }
     return settled;
   };

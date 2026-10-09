@@ -44,13 +44,7 @@ const frame = compFrame;
 const dimension = finite.int().min(L.minSize).max(L.maxSize);
 const assetPath = z.string().min(1).max(1024);
 
-export const CompositionFpsSchema = z.union([
-  z.literal(24),
-  z.literal(25),
-  z.literal(30),
-  z.literal(50),
-  z.literal(60),
-]);
+export const CompositionFpsSchema = finite.int().min(1).max(60);
 
 export const CompositionAssetSchema = z.discriminatedUnion("type", [
   z

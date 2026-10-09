@@ -11,7 +11,10 @@ import {
 import { join, relative } from "node:path";
 import { createServer } from "vite";
 import type { Browser } from "playwright";
-import type { Composition } from "@still-shift/scene-contract";
+import {
+  compositionPcmBoundary,
+  type Composition,
+} from "@still-shift/scene-contract";
 import {
   loadComposition,
   probeCompositionVideo,
@@ -728,8 +731,168 @@ export async function verifyNativeAudioAuthoring(
     assert.ok(webglSync.samples >= 24);
     assert.ok(webglSync.maxFrameDifference <= 1);
     assert.equal(webglSync.maxSourceFrameDifference, 0);
+    const fractionalBoundaries = [];
+    for (const fps of [7, 29, 59]) {
+      const frameCount = 5;
+      const samples = compositionPcmBoundary(frameCount, fps);
+      const sound = mediaFloat32Wave(samples, 2, (sample, channel) =>
+        sample === samples - 1
+          ? channel
+            ? -0.125
+            : 0.0625
+          : channel
+            ? -0.25
+            : 0.5,
+      );
+      const filename = `fractional-${fps}`;
+      await writeFile(join(fixtureDirectory, filename + ".wav"), sound.wav);
+      const fractional: Composition = {
+        schemaVersion: "composition-1",
+        id: filename,
+        width: 64,
+        height: 64,
+        fps,
+        frameCount,
+        background: "#223344",
+        assets: [
+          {
+            id: "sound",
+            type: "audio",
+            path: filename + ".wav",
+            sha256: checksum(sound.wav),
+            sampleCount: samples,
+            sampleRate: 48000,
+            channels: 2,
+          },
+        ],
+        layers: [{ id: "tone", type: "audio", asset: "sound", role: "sfx" }],
+      };
+      const fractionalInput = join(fixtureDirectory, filename + ".json");
+      await writeFile(fractionalInput, JSON.stringify(fractional));
+      const path = relative(fixtureRoot, fractionalInput);
+      await page.goto(
+        fixtureServer.resolvedUrls!.local[0]! +
+          "composition.html?scene=" +
+          encodeURIComponent(path),
+      );
+      await page.waitForFunction(
+        (path) => document.getElementById("status")?.dataset.ready === path,
+        path,
+      );
+      for (const backend of ["canvas2d", "webgl2"]) {
+        await page.locator("#backend").selectOption(backend);
+        await page.waitForFunction(
+          (backend) =>
+            document.getElementById("status")?.dataset.backend === backend &&
+            !document
+              .getElementById("inspector-edit")
+              ?.hasAttribute("disabled"),
+          backend,
+        );
+        const exact = await page.evaluate(
+          async ({ fps, frameCount, module }) => {
+            const buffer = (
+              window as unknown as AudioProofWindow
+            ).audioBuffers.at(-1)!;
+            const startSample = Math.ceil(48000 / fps);
+            const encode = async (sound: AudioBuffer) => {
+              const bytes = new Uint8Array(sound.length * 8),
+                view = new DataView(bytes.buffer);
+              for (let sample = 0; sample < sound.length; sample++)
+                for (let channel = 0; channel < 2; channel++)
+                  view.setFloat32(
+                    sample * 8 + channel * 4,
+                    sound.getChannelData(channel)[sample]!,
+                    true,
+                  );
+              return (
+                "sha256:" +
+                Array.from(
+                  new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+                  (byte) => byte.toString(16).padStart(2, "0"),
+                ).join("")
+              );
+            };
+            const offline = new OfflineAudioContext(
+              2,
+              buffer.length - startSample,
+              48000,
+            );
+            const playback = (await import(
+              /* @vite-ignore */ module
+            )) as typeof Playback;
+            playback.scheduleRenderedAudio(offline, buffer, {
+              frame: 1,
+              frameCount,
+              fps,
+              when: 0,
+            });
+            const rendered = await offline.startRendering();
+            return {
+              length: buffer.length,
+              master: await encode(buffer),
+              offline: await encode(rendered),
+              last: [
+                rendered.getChannelData(0).at(-1),
+                rendered.getChannelData(1).at(-1),
+              ],
+            };
+          },
+          {
+            fps,
+            frameCount,
+            module: `/@fs/${root}/packages/renderer-core/src/rendered-audio-playback.ts`,
+          },
+        );
+        assert.equal(exact.length, samples);
+        assert.equal(exact.master, checksum(sound.pcm));
+        const startSample = compositionPcmBoundary(1, fps);
+        assert.equal(
+          exact.offline,
+          checksum(sound.pcm.subarray(startSample * 8)),
+        );
+        assert.deepEqual(exact.last, [0.0625, -0.125]);
+        await page.locator("#frame").fill("1");
+        await page.locator("#frame").dispatchEvent("input");
+        await page.waitForFunction(() =>
+          document.getElementById("time")?.textContent?.includes("2 / 5"),
+        );
+        const priorStarts = await page.evaluate(
+          () => (window as unknown as AudioProofWindow).audioStarts.length,
+        );
+        await page.locator("#play").click();
+        await page.waitForFunction(
+          (count) =>
+            (window as unknown as AudioProofWindow).audioStarts.length > count,
+          priorStarts,
+        );
+        await page.waitForFunction(
+          () =>
+            document.getElementById("play")?.textContent === "Play" &&
+            document.getElementById("time")?.textContent?.includes("5 / 5"),
+        );
+        const scheduled = await page.evaluate(
+          () => (window as unknown as AudioProofWindow).audioStarts.at(-1)!,
+        );
+        assert.equal(scheduled.offset, startSample / 48000);
+        assert.equal(scheduled.duration, (samples - startSample) / 48000);
+        assert.ok(
+          scheduled.stopped! + 1 / 48000 >= scheduled.when + scheduled.duration,
+        );
+        fractionalBoundaries.push({
+          fps,
+          backend,
+          samples,
+          startSample,
+          master: exact.master,
+          offline: exact.offline,
+          last: exact.last,
+        });
+      }
+    }
     assert.deepEqual(errors, []);
     return {
+      fractionalBoundaries,
       sync,
       webglSync,
       sourcePixels,

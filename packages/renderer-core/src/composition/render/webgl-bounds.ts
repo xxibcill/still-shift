@@ -1,3 +1,12 @@
+import {
+  allocateRenderPixels,
+  releaseRenderPixels,
+} from "../../managed-memory-context.ts";
+import {
+  allocateRenderMetadata,
+  releaseRenderMetadata,
+  resizeRenderMetadata,
+} from "../../managed-metadata.ts";
 import type { Matrix } from "../../node-transform.ts";
 import type { Rgba } from "../evaluate/types.ts";
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
@@ -9,109 +18,223 @@ export type WebglRect = {
   bottom: number;
 };
 type Rect = WebglRect;
+type Entry = { rect: Rect | null | undefined };
+type BoundsState = {
+  bounds: WeakMap<WebglSurface, Entry> | undefined;
+  entries: Set<Entry>;
+  background: number | undefined;
+  exactBackground: number | undefined;
+};
 /** Conservative painted bounds allow readback to omit an unchanged clear color. */
 export class WebglBounds {
-  private readonly bounds = new WeakMap<WebglSurface, Rect | null>();
-  private background: number | undefined;
-  private exactBackground: number | undefined;
-  constructor(private readonly root: WebglSurface) {}
-  clear(surface: WebglSurface, color: Rgba | null) {
-    if (surface === this.root) {
-      const alpha = color?.[3] ?? 0;
-      const bytes = new Uint8Array([
-        ...(color ?? [0, 0, 0, 0])
-          .slice(0, 3)
-          .map((v) => Math.round(Math.max(0, Math.min(1, v * alpha)) * 255)),
-        255,
-      ]);
-      this.background = new Uint32Array(bytes.buffer)[0]!;
-      this.exactBackground = (color ?? [0, 0, 0, 0]).slice(0, 3).every((v) => {
-        const byte = v * alpha * 255;
-        return (
-          byte >= 0 && byte <= 255 && Math.abs(byte - Math.round(byte)) < 1e-6
-        );
-      })
-        ? this.background
-        : undefined;
-      this.bounds.set(surface, null);
-    } else
-      this.bounds.set(
-        surface,
-        color && color[3] > 0
-          ? { left: 0, top: 0, right: surface.width, bottom: surface.height }
-          : null,
+  private readonly state: BoundsState;
+  constructor(private readonly root: WebglSurface) {
+    this.state = allocateRenderMetadata<BoundsState>(
+      512,
+      () => ({
+        bounds: new WeakMap(),
+        entries: new Set(),
+        background: undefined,
+        exactBackground: undefined,
+      }),
+      false,
+      (value) => {
+        value.bounds = undefined;
+        value.background = undefined;
+        value.exactBackground = undefined;
+        for (const entry of value.entries) releaseRenderMetadata(entry);
+        value.entries.clear();
+      },
+    );
+  }
+  private write(surface: WebglSurface, factory: () => Rect | null) {
+    const map = this.state.bounds;
+    if (!map) throw Error("WebGL framebuffer bounds are disposed");
+    const prior = map.get(surface);
+    resizeRenderMetadata(
+      this.state,
+      512 + 80 * (this.state.entries.size + (prior ? 0 : 1)),
+    );
+    let failed = false,
+      entry: Entry | undefined,
+      committed = false;
+    try {
+      entry = allocateRenderMetadata<Entry>(
+        160,
+        () => ({ rect: factory() }),
+        true,
+        (value) => {
+          value.rect = undefined;
+        },
       );
+      map.set(surface, entry);
+      if (prior) this.state.entries.delete(prior);
+      this.state.entries.add(entry);
+      committed = true;
+      if (prior) releaseRenderMetadata(prior);
+    } catch (error) {
+      failed = true;
+      throw error;
+    } finally {
+      if (entry && !committed) releaseRenderMetadata(entry);
+      if (!failed)
+        resizeRenderMetadata(this.state, 512 + 80 * this.state.entries.size);
+      else
+        try {
+          resizeRenderMetadata(this.state, 512 + 80 * this.state.entries.size);
+        } catch {
+          /* Preserve the original bounds producer failure. */
+        }
+    }
+  }
+  dispose() {
+    const state = this.state;
+    state.bounds = undefined;
+    state.background = undefined;
+    state.exactBackground = undefined;
+    for (const entry of state.entries) releaseRenderMetadata(entry);
+    state.entries.clear();
+    releaseRenderMetadata(state);
+  }
+  clear(surface: WebglSurface, color: Rgba | null) {
+    this.write(surface, () => {
+      if (surface !== this.root)
+        return color && color[3] > 0
+          ? { left: 0, top: 0, right: surface.width, bottom: surface.height }
+          : null;
+      const temporary = allocateRenderMetadata(512, () => ({}));
+      try {
+        const alpha = color?.[3] ?? 0;
+        const bytes = allocateRenderPixels(
+          4,
+          () =>
+            new Uint8Array([
+              ...(color ?? [0, 0, 0, 0])
+                .slice(0, 3)
+                .map((v) =>
+                  Math.round(Math.max(0, Math.min(1, v * alpha)) * 255),
+                ),
+              surface.opaque ? 255 : Math.round(alpha * 255),
+            ]),
+        );
+        try {
+          this.state.background = new Uint32Array(bytes.buffer)[0]!;
+          const exact = (value: number) => {
+            const byte = value * 255;
+            return (
+              byte >= 0 &&
+              byte <= 255 &&
+              Math.abs(byte - Math.round(byte)) < 1e-6
+            );
+          };
+          this.state.exactBackground =
+            (color ?? [0, 0, 0, 0])
+              .slice(0, 3)
+              .every((value) => exact(value * alpha)) &&
+            (surface.opaque || exact(alpha))
+              ? this.state.background
+              : undefined;
+        } finally {
+          releaseRenderPixels(bytes);
+        }
+        return null;
+      } finally {
+        releaseRenderMetadata(temporary);
+      }
+    });
   }
   release(surface: WebglSurface) {
-    this.bounds.delete(surface);
+    const entry = this.state.bounds?.get(surface);
+    this.state.bounds?.delete(surface);
+    if (entry) {
+      this.state.entries.delete(entry);
+      releaseRenderMetadata(entry);
+      resizeRenderMetadata(this.state, 512 + 80 * this.state.entries.size);
+    }
   }
   full(surface: WebglSurface) {
-    this.bounds.set(surface, {
+    this.write(surface, () => ({
       left: 0,
       top: 0,
       right: surface.width,
       bottom: surface.height,
-    });
+    }));
   }
   snapshot(surface: WebglSurface) {
-    return this.bounds.get(surface) ?? null;
+    return this.state.bounds?.get(surface)?.rect ?? null;
   }
   region(surface: WebglSurface) {
-    return surface.opaque ? undefined : this.bounds.get(surface);
+    return surface.opaque ? undefined : this.state.bounds?.get(surface)?.rect;
   }
   blur(surface: WebglSurface, radius: number) {
     const rect = this.region(surface);
     if (rect === undefined) this.full(surface);
-    else if (rect)
-      this.include(surface, {
+    else if (rect) {
+      const expanded = allocateRenderMetadata(64, () => ({
         left: rect.left - radius,
         top: rect.top - radius,
         right: rect.right + radius,
         bottom: rect.bottom + radius,
-      });
+      }));
+      try {
+        this.include(surface, expanded);
+      } finally {
+        releaseRenderMetadata(expanded);
+      }
+    }
   }
+
   clearColor(surface: WebglSurface) {
-    return surface === this.root ? this.background : undefined;
+    return surface === this.root ? this.state.background : undefined;
   }
   /** Bytes known without relying on framebuffer clear quantization. */
   exactClearColor(surface: WebglSurface) {
-    return surface === this.root ? this.exactBackground : undefined;
+    return surface === this.root ? this.state.exactBackground : undefined;
   }
   include(surface: WebglSurface, rect: Rect | null) {
     if (!rect) return;
-    const prior = this.bounds.get(surface);
-    const next = {
+    const prior = this.state.bounds?.get(surface)?.rect;
+    const next = allocateRenderMetadata(64, () => ({
       left: Math.max(0, Math.floor(rect.left)),
       top: Math.max(0, Math.floor(rect.top)),
       right: Math.min(surface.width, Math.ceil(rect.right)),
       bottom: Math.min(surface.height, Math.ceil(rect.bottom)),
-    };
-    if (next.right <= next.left || next.bottom <= next.top) return;
-    this.bounds.set(
-      surface,
-      prior
-        ? {
-            left: Math.min(prior.left, next.left),
-            top: Math.min(prior.top, next.top),
-            right: Math.max(prior.right, next.right),
-            bottom: Math.max(prior.bottom, next.bottom),
-          }
-        : next,
-    );
+    }));
+    try {
+      if (next.right <= next.left || next.bottom <= next.top) return;
+      this.write(surface, () =>
+        prior
+          ? {
+              left: Math.min(prior.left, next.left),
+              top: Math.min(prior.top, next.top),
+              right: Math.max(prior.right, next.right),
+              bottom: Math.max(prior.bottom, next.bottom),
+            }
+          : next,
+      );
+    } finally {
+      releaseRenderMetadata(next);
+    }
   }
   draw(surface: WebglSurface, matrix: Matrix, width: number, height: number) {
-    this.transform(
-      surface,
-      { left: 0, top: 0, right: width, bottom: height },
-      matrix,
-    );
+    const rect = allocateRenderMetadata(64, () => ({
+      left: 0,
+      top: 0,
+      right: width,
+      bottom: height,
+    }));
+    try {
+      this.transform(surface, rect, matrix);
+    } finally {
+      releaseRenderMetadata(rect);
+    }
   }
   composite(source: WebglSurface, dst: WebglSurface, matrix: Matrix) {
     if (source.opaque) {
       this.draw(dst, matrix, source.width, source.height);
       return;
     }
-    if (!this.bounds.has(source)) {
+    if (!this.state.bounds?.has(source)) {
       this.full(dst);
       return;
     }
@@ -119,24 +242,47 @@ export class WebglBounds {
   }
   transform(surface: WebglSurface, rect: Rect | null, matrix: Matrix) {
     if (!rect) return;
-    const points = [
-      [rect.left, rect.top],
-      [rect.right, rect.top],
-      [rect.right, rect.bottom],
-      [rect.left, rect.bottom],
-    ].map(([x, y]) => [
-      matrix[0] * x! + matrix[2] * y! + matrix[4],
-      matrix[1] * x! + matrix[3] * y! + matrix[5],
-    ]);
-    this.include(surface, {
-      left: Math.min(...points.map((p) => p[0]!)) - 2,
-      top: Math.min(...points.map((p) => p[1]!)) - 2,
-      right: Math.max(...points.map((p) => p[0]!)) + 2,
-      bottom: Math.max(...points.map((p) => p[1]!)) + 2,
-    });
+    const temporary = allocateRenderMetadata<{
+      points: number[][] | undefined;
+    }>(
+      896,
+      () => ({ points: undefined }),
+      false,
+      (value) => {
+        if (value.points) {
+          for (const point of value.points) point.length = 0;
+          value.points.length = 0;
+        }
+        value.points = undefined;
+      },
+    );
+    try {
+      const points = (temporary.points = [
+        [rect.left, rect.top],
+        [rect.right, rect.top],
+        [rect.right, rect.bottom],
+        [rect.left, rect.bottom],
+      ].map(([x, y]) => [
+        matrix[0] * x! + matrix[2] * y! + matrix[4],
+        matrix[1] * x! + matrix[3] * y! + matrix[5],
+      ]));
+      this.include(surface, {
+        left: Math.min(...points.map((p) => p[0]!)) - 2,
+        top: Math.min(...points.map((p) => p[1]!)) - 2,
+        right: Math.max(...points.map((p) => p[0]!)) + 2,
+        bottom: Math.max(...points.map((p) => p[1]!)) + 2,
+      });
+    } finally {
+      releaseRenderMetadata(temporary);
+    }
   }
+
   read(device: WebglDevice, surface: WebglSurface) {
-    if (surface !== this.root || this.background === undefined)
+    if (
+      !surface.opaque ||
+      surface !== this.root ||
+      this.state.background === undefined
+    )
       return undefined;
     const rect = this.snapshot(surface);
     if (
@@ -145,24 +291,47 @@ export class WebglBounds {
         surface.width * surface.height * 0.75
     )
       return undefined;
-    const result = new Uint8ClampedArray(surface.width * surface.height * 4);
-    new Uint32Array(result.buffer).fill(this.background);
-    if (rect) {
-      const width = rect.right - rect.left,
-        height = rect.bottom - rect.top;
-      const pixels = device.readRegion(
-        surface,
-        rect.left,
-        rect.top,
-        width,
-        height,
-      );
-      for (let y = 0; y < height; y++)
-        result.set(
-          pixels.subarray(y * width * 4, (y + 1) * width * 4),
-          ((rect.top + y) * surface.width + rect.left) * 4,
+    const result = allocateRenderPixels(
+      surface.width * surface.height * 4,
+      () => new Uint8ClampedArray(surface.width * surface.height * 4),
+    );
+    try {
+      const fillView = allocateRenderMetadata(128, () => ({}));
+      try {
+        new Uint32Array(result.buffer).fill(this.state.background);
+      } finally {
+        releaseRenderMetadata(fillView);
+      }
+      if (rect) {
+        const width = rect.right - rect.left,
+          height = rect.bottom - rect.top;
+        const pixels = device.readRegion(
+          surface,
+          rect.left,
+          rect.top,
+          width,
+          height,
         );
+        try {
+          for (let y = 0; y < height; y++) {
+            const rowView = allocateRenderMetadata(128, () => ({}));
+            try {
+              result.set(
+                pixels.subarray(y * width * 4, (y + 1) * width * 4),
+                ((rect.top + y) * surface.width + rect.left) * 4,
+              );
+            } finally {
+              releaseRenderMetadata(rowView);
+            }
+          }
+        } finally {
+          releaseRenderPixels(pixels);
+        }
+      }
+      return result;
+    } catch (error) {
+      releaseRenderPixels(result);
+      throw error;
     }
-    return result;
   }
 }

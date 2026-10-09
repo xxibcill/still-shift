@@ -1,0 +1,413 @@
+{
+  "milestone": "CE15",
+  "status": "foundation-passed; renderer integration pending",
+  "date": "2026-10-07",
+  "base": "62ec321",
+  "checkpoint": "bounded export-owned immutable surface store",
+  "fingerprint": {
+    "algorithm": "SHA256 of sorted path + NUL + fileSHA256 + newline records",
+    "sha256": "929c6f4df7c0ee8dafee4db7b56e8e3e6040ffa04384fa82669c8131f885f2e2",
+    "files": [
+      {
+        "path": "packages/execution-runtime/src/composition-surface-store.ts",
+        "sha256": "102baa4ed5966bc6659a65d7bd14f2a56abac844b8ed1d13d2812cb657ce6440"
+      },
+      {
+        "path": "tests/runtime/composition-surface-store.test.ts",
+        "sha256": "fac1c46fa0020bdb46bc8a8b398e13fd276d708a88627fc914e02aa918389ffe"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": ["pnpm", "build"],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "packages/execution-runtime/src/composition-surface-store.ts",
+        "tests/runtime/composition-surface-store.test.ts"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": ["pnpm", "check:boundaries"],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/runtime/composition-surface-store.test.ts",
+        "--maxWorkers=2",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "runtimeTests": 10,
+  "log": "/private/tmp/ce15-cache-store-focus-3.log",
+  "implemented": {
+    "leases": "one producer per path/first state, all consumers await its complete immutable file",
+    "identity": "SHA256 state key plus storage dimensions/encoding; changed states are not confused with the retained first state",
+    "boundedStorage": "aggregate bytes/entries reserved before producer lease; <=64KiB owned upload chunks; counters name actual leases/hits/waits/disk bytes, not renderer paints",
+    "ownership": "private mkdtemp directory and numeric file names; logical cache paths never become filesystem destinations; publishers must own tokens",
+    "precision": "raw RGBA8 and raw float32 byte payloads stay exact; no color or alpha quantization in store",
+    "failure": "original upload/cancel error reaches waiters; dispose reaps active writers and removes only owned cache files; foreign parent files remain",
+    "renderIntegration": "not implemented; no claim of once-per-export composition painting or parallel export acceptance"
+  },
+  "diagnostics": {
+    "canvasTransfer": {
+      "sourcePairs": 65536,
+      "transfer": {
+        "differentBytes": 0,
+        "maximumDelta": 0
+      },
+      "composites": [
+        {
+          "background": "#000000",
+          "opacity": 1,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#000000",
+          "opacity": 0.73,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#000000",
+          "opacity": 0.125,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#ffffff",
+          "opacity": 1,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#ffffff",
+          "opacity": 0.73,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#ffffff",
+          "opacity": 0.125,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#cb6633",
+          "opacity": 1,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#cb6633",
+          "opacity": 0.73,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#cb6633",
+          "opacity": 0.125,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#0a80f3",
+          "opacity": 1,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#0a80f3",
+          "opacity": 0.73,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#0a80f3",
+          "opacity": 0.125,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#10151f80",
+          "opacity": 1,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#10151f80",
+          "opacity": 0.73,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#10151f80",
+          "opacity": 0.125,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        }
+      ],
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      }
+    },
+    "rejectedNewIsolation": {
+      "cases": 15,
+      "failedCases": 9,
+      "casesDetail": [
+        {
+          "background": "#000000",
+          "opacity": 1,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#000000",
+          "opacity": 0.73,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#000000",
+          "opacity": 0.125,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#ffffff",
+          "opacity": 1,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#ffffff",
+          "opacity": 0.73,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#ffffff",
+          "opacity": 0.125,
+          "differentBytes": 0,
+          "maximumDelta": 0
+        },
+        {
+          "background": "#cb6633",
+          "opacity": 1,
+          "differentBytes": 60,
+          "maximumDelta": 1
+        },
+        {
+          "background": "#cb6633",
+          "opacity": 0.73,
+          "differentBytes": 1240,
+          "maximumDelta": 1
+        },
+        {
+          "background": "#cb6633",
+          "opacity": 0.125,
+          "differentBytes": 2320,
+          "maximumDelta": 1
+        },
+        {
+          "background": "#0a80f3",
+          "opacity": 1,
+          "differentBytes": 41,
+          "maximumDelta": 1
+        },
+        {
+          "background": "#0a80f3",
+          "opacity": 0.73,
+          "differentBytes": 139,
+          "maximumDelta": 1
+        },
+        {
+          "background": "#0a80f3",
+          "opacity": 0.125,
+          "differentBytes": 1228,
+          "maximumDelta": 1
+        },
+        {
+          "background": "#10151f80",
+          "opacity": 1,
+          "differentBytes": 174,
+          "maximumDelta": 2
+        },
+        {
+          "background": "#10151f80",
+          "opacity": 0.73,
+          "differentBytes": 194,
+          "maximumDelta": 2
+        },
+        {
+          "background": "#10151f80",
+          "opacity": 0.125,
+          "differentBytes": 303,
+          "maximumDelta": 2
+        }
+      ],
+      "decision": "reject new direct-draw isolation; preserve existing Canvas compositing boundaries and unchanged pixel thresholds"
+    },
+    "rejectedSynchronousBinaryRequest": {
+      "log": "/private/tmp/ce15-cache-rendezvous-probe-1.log",
+      "error": "actual Chromium InvalidAccessError for synchronous document responseType arraybuffer",
+      "primarySource": "https://xhr.spec.whatwg.org/#the-responsetype-attribute",
+      "decision": "use asynchronous dependency preparation before synchronous rendering"
+    },
+    "asynchronousRendezvous": {
+      "status": "passed",
+      "paints": 1,
+      "hits": 3,
+      "byteLength": 262144,
+      "outcomes": [
+        {
+          "worker": 0,
+          "start": 1791373908771,
+          "cpuEnd": 1791373908816,
+          "end": 1791373908830,
+          "draws": 0,
+          "hash": "e689d846b6d4f5d817530e067536cca9c3cf5b21fcc38618cefd0997695951b3",
+          "workAlpha": 255
+        },
+        {
+          "worker": 1,
+          "start": 1791373908771,
+          "cpuEnd": 1791373908816,
+          "end": 1791373908830,
+          "draws": 0,
+          "hash": "e689d846b6d4f5d817530e067536cca9c3cf5b21fcc38618cefd0997695951b3",
+          "workAlpha": 255
+        },
+        {
+          "worker": 2,
+          "start": 1791373908771,
+          "cpuEnd": 1791373908816,
+          "end": 1791373908830,
+          "draws": 1,
+          "hash": "e689d846b6d4f5d817530e067536cca9c3cf5b21fcc38618cefd0997695951b3",
+          "workAlpha": 255
+        },
+        {
+          "worker": 3,
+          "start": 1791373908771,
+          "cpuEnd": 1791373908816,
+          "end": 1791373908830,
+          "draws": 0,
+          "hash": "e689d846b6d4f5d817530e067536cca9c3cf5b21fcc38618cefd0997695951b3",
+          "workAlpha": 255
+        }
+      ],
+      "overlapping": [
+        [0, 1],
+        [0, 2],
+        [0, 3],
+        [1, 2],
+        [1, 3],
+        [2, 3]
+      ],
+      "rendererProcesses": [
+        {
+          "type": "renderer",
+          "id": 56042,
+          "cpuTime": 0.040109
+        },
+        {
+          "type": "renderer",
+          "id": 56041,
+          "cpuTime": 0.041028
+        },
+        {
+          "type": "renderer",
+          "id": 56040,
+          "cpuTime": 0.041534
+        },
+        {
+          "type": "renderer",
+          "id": 56039,
+          "cpuTime": 0.059082
+        }
+      ],
+      "environments": [
+        {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        }
+      ]
+    },
+    "scope": "small real protocol/Canvas/concurrency diagnostics, not composition cache acceptance or speed proof"
+  },
+  "logs": [
+    {
+      "path": "/private/tmp/ce15-cache-store-focus-3.log",
+      "sha256": "a6dc96f75d678394b87793fef93e829e9131acd24d8f36121bf18a256697df3b"
+    },
+    {
+      "path": "/private/tmp/ce15-canvas-cache-transfer-probe-1.log",
+      "sha256": "91ca6bff93bd0a4136ba6784cc452570bd7b9e2abe646321a3c26237f03121e1"
+    },
+    {
+      "path": "/private/tmp/ce15-cache-rendezvous-probe-1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/ce15-cache-rendezvous-probe-2.log",
+      "sha256": "fd9e6480334a620db9574de21e1199c8a7471b3fa274e9193a4528a50e6c2329"
+    }
+  ],
+  "pending": [
+    "renderer asynchronous dependency preparation and exact isolate/precomp reuse",
+    "static direct-layer behavior without adding pixel-changing isolation boundaries",
+    "coverage/preflight/late-visibility/history/exposure source-paint counts globally across workers",
+    "stable complete content/state/backend/environment keys and full aggregate allocation bounds",
+    "bounded ordered parallel export with actual composition boundary/cancellation/failure acceptance",
+    "actual layer statistics and isolated120-second >=3x one/four-worker end-to-end proof",
+    "full immutable CE15 gate and PR; then CE14"
+  ],
+  "fullGate": "not run"
+}
