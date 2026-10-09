@@ -43,32 +43,27 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS1 bridge active (2026-10-10):** `codex/mechanism-ms1` carries exact MS0
-  prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
-  remains open/unmerged. Corrected full E01 passes all696-frame mechanics,
-  native layout/holds and actual audio checks. Portable737-file delivery relocates
-  and reloads; a macOS tmp-alias path fault is repaired. Fresh-session one-patch
+- **MS1 bridge verification (2026-10-10):** `codex/mechanism-ms1` carries exact
+  MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
+  is open/unmerged. Corrected E01 passes all696-frame mechanics, layout/holds and
+  decoded audio. Portable737-file delivery relocates/reloads; fresh-session
   overlap repair retains all696 plate hashes with zero additional3D renders.
-  Full176-fixture/36,061-frame baseline refresh changes only29 editorial frames
-  for the reproduced mask fix. Compact render-check findings and stage telemetry
-  pass actual40-frame CLI export,11 tests/build/lint. Installed-archive OS-isolated lifecycle and full
-  local gate remain before MS1 PR. Embedded subprocess stack sanitization passes;
-  first archives are superseded. Consumer source/lock/save/reload and exact696
-  capture/final bytes pass; deployed final QA found a browser import helper fault,
-  now repaired and awaiting rebuilt-archive verification. Human continuous/listening review remains
-  pending. MS1N implementation has not started; original checkout edits preserved.
+  Exact archive from `ff82eae9` passes26 offline installed-package checks and both
+  OS-denied consumer exports, including TRAVEL RANGE with69 readable frames and
+  unchanged clean plates. Earlier failed archives/final QA and explicit consumer
+  libproc process-inspection exception are retained. Full local `pnpm check` is
+  running; then MS1 PR and MS1N implementation. Full baseline refresh changes
+  only29 editorial frames for the reproduced mask fix. Human continuous/listening
+  review remains pending. Original checkout edits preserved.
   [Results](./mechanism-shorts-ms1-results.json),
-  [repair evidence](./mechanism-shorts-ms1-repair-results.json).
+  [installed consumer](./mechanism-shorts-ms1-installed-e01-results.json).
 
-- **MS0 audit complete (2026-10-09):** Codex on `codex/mechanism-ms0` from
-  `main` `e6eb7b06`; separate milestone PR follows verification. Original E01
-  inputs are recovered: 27 dependencies, all 25 ZIP manifest identities and 13
-  original-copy receipts match; actual Plex static cut/copy coverage passes.
-  Current composition source is unchanged from release, and five stored gate
-  artifacts match their recorded hashes. Rubric, protocol, boundaries and
-  provisional budgets are frozen. Exact historical Arial/GPU identities, public
-  customer-media redistribution and human review remain limited. Original local
-  edits are preserved. Next: MS1 contract/one-frame/contact-shot bridge proof.
+- **MS0 audit complete (2026-10-09):** `codex/mechanism-ms0` audit is committed
+  at `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51) is open.
+  Original E01 inputs:27 dependencies,25 ZIP identities and13 original-copy
+  receipts match; actual Plex static cut/copy coverage passes. Rubric, protocol,
+  boundaries and budgets are frozen. Historical Arial/GPU identities, public
+  customer-media redistribution and human review remain limited.
   [Results](./mechanism-shorts-ms0-results.json),
   [baseline protocol](./mechanism-shorts-ms0-baseline.md),
   [ordered plan](./mechanism-shorts-production-plan.md).
@@ -171,6 +166,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Installed archive and isolated final acceptance
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` (from `ff82eae9`).
+- **Done:** exact archive passes26 offline package checks; isolated production CLI
+  completes saved737-file E01 lifecycle and text-only TRAVEL RANGE revision.
+- **Results:** both696-frame finals pass mechanics/layout/audio; actual696 clean
+  plates retained,0 new3D renders/696 hits, text hold69/30. Independent closure audit
+  agrees. All originals remain unchanged and source bytes are OS-denied.
+- **Rejected / do not repeat:** system setuid ps cannot launch under Seatbelt;
+  explicit consumer-only live-libproc query exception remains recorded. Superseded
+  fresh-capture/final-QA and verifier failures remain separate staged attempts.
+- **Open / next:** required full local gate running, then MS1 PR and native MS1N.
+  Human continuous playback/listening still pending; no publication.
+- **Records:** [installed consumer](./mechanism-shorts-ms1-installed-e01-results.json),
+  [package checks](./mechanism-shorts-ms1-package-gate-results.json).
 
 ### 2026-10-10 — Installed browser pixel-check bootstrap
 

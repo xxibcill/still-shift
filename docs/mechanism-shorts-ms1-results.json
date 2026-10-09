@@ -53,6 +53,14 @@
       "status": "implemented-focused-verified",
       "behavior": "Resolve authored paths against lexical directories before canonicalization; actual macOS tmp aliases retain font/audio/plate closure. One fresh-session revision-aware position patch restores69 readable TRAVEL frames with all696 actual clean-plate hashes unchanged and zero new3D renders. Nested render checks expose located findings through compact CLI receipts. Monotonic whole-lifecycle stage telemetry added.",
       "fullGate": "pending"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "installed-archive-isolated-E01-and-text-only-proof",
+      "status": "implemented-installed-verified",
+      "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
+      "behavior": "Exact archive passes26 offline package checks. OS-denied consumer validates/reloads737-file delivery and exports both original and TRAVEL RANGE696-frame finals with independent mechanics/layout/audio QA, unchanged696 actual clean plates, zero new3D renders and current native/final identity closure. Consumer-only live-libproc process inspection exception is explicit; historical failed fresh capture and final QA remain retained.",
+      "fullGate": "in-progress"
     }
   ],
   "verification": [
@@ -257,6 +265,17 @@
         "/tmp/still-shift-ms1-browser-bootstrap-checks-3.log"
       ],
       "notes": "CLI11pass in combined run; cancellation2pass after correcting its real full-coverage fixture. Combined attempts failed and remain retained. Integrated types/narrowlint pass; installed archive rerun pending."
+    },
+    {
+      "command": "pnpm test:package (offline exact archive); isolated production CLI load/edit/save/reload/render/check",
+      "status": "passed",
+      "packageChecks": 26,
+      "archiveSha256": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
+      "details": [
+        "mechanism-shorts-ms1-package-gate-results.json",
+        "mechanism-shorts-ms1-installed-e01-results.json"
+      ],
+      "notes": "Separate staged attempts retained. Source-byte OS denial with explicit process-runtime exception. Human continuous playback/listening remains pending."
     }
   ],
   "renderEvidence": [
@@ -424,7 +443,7 @@
     "humanCreativeAcceptance": "not-reviewed"
   },
   "limits": [
-    "Clean installed-archive lifecycle and full local gate remain in flight.",
+    "Required full pnpm check is in progress on final code checkpoint ff82eae9; installed package and isolated E01 software acceptance pass separately.",
     "Customer source media remains outside Git; public redistribution is not established.",
     "Human continuous motion, listening and creative acceptance remain pending."
   ],

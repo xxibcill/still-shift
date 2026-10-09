@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "mechanism-ms1-installed-package-gate-1",
+  "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
+  "archive": "/tmp/still-shift-ms1-archive-ff82eae9.tgz",
+  "archiveSha256": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
+  "archiveBytes": 2917353,
+  "status": "passed",
+  "offlineChecks": 26,
+  "summedCheckSeconds": 68.79409958499998,
+  "conditionalOnlineDependencyAudit": "not-run-in-offline-mode",
+  "checks": [
+    {
+      "name": "install archive outside repository (pnpm offline)",
+      "seconds": 0.8637981659999987
+    },
+    {
+      "name": "installed command help",
+      "seconds": 1.4716682500000007
+    },
+    {
+      "name": "installed command version",
+      "seconds": 0.4380460839999996
+    },
+    {
+      "name": "consumer TypeScript declarations",
+      "seconds": 8.077418834
+    },
+    {
+      "name": "consumer bundler declarations",
+      "seconds": 7.278526540999999
+    },
+    {
+      "name": "TypeScript program validation",
+      "seconds": 1.1099277919999986
+    },
+    {
+      "name": "installed browser pixel-quality analysis",
+      "seconds": 1.2977565419999992
+    },
+    {
+      "name": "legacy motion import in installed program",
+      "seconds": 0.8113997920000001
+    },
+    {
+      "name": "JSON program validation",
+      "seconds": 0.4472435829999995
+    },
+    {
+      "name": "installed API imports",
+      "seconds": 0.43348679099999937
+    },
+    {
+      "name": "opt-in browser runtime setup",
+      "seconds": 0.666143167000002
+    },
+    {
+      "name": "opt-in depth runtime setup",
+      "seconds": 0.9792508339999986
+    },
+    {
+      "name": "installed depth worker command",
+      "seconds": 19.662683459
+    },
+    {
+      "name": "installed canvas2d export",
+      "seconds": 1.7444340000000012
+    },
+    {
+      "name": "canvas2d frame count",
+      "seconds": 0.01739449999999488
+    },
+    {
+      "name": "canvas2d source comparison",
+      "seconds": 2.734491833
+    },
+    {
+      "name": "installed webgl2 export",
+      "seconds": 1.8152599160000027
+    },
+    {
+      "name": "webgl2 frame count",
+      "seconds": 0.01711483300000691
+    },
+    {
+      "name": "webgl2 source comparison",
+      "seconds": 2.6645922500000014
+    },
+    {
+      "name": "installed preview page and seeking",
+      "seconds": 1.8813600000000006
+    },
+    {
+      "name": "opt-in soundtrack runtime setup",
+      "seconds": 0.8297618750000038
+    },
+    {
+      "name": "soundtrack fixture",
+      "seconds": 0.016134375000001457
+    },
+    {
+      "name": "installed soundtrack worker and API",
+      "seconds": 3.5901126670000014
+    },
+    {
+      "name": "installed soundtrack CLI",
+      "seconds": 0.46077983400000083
+    },
+    {
+      "name": "corresponding source dependencies",
+      "seconds": 0.7034682089999987
+    },
+    {
+      "name": "corresponding source rebuild",
+      "seconds": 8.781845457999996
+    }
+  ],
+  "fullReport": "/tmp/still-shift-ms1-installed-package-verification-final.json",
+  "log": "/tmp/still-shift-ms1-installed-package-gate-2.log",
+  "failedFirstRun": "/tmp/still-shift-ms1-installed-package-gate-1.log",
+  "isolatedE01Consumer": {
+    "status": "passed",
+    "evidence": "./mechanism-shorts-ms1-installed-e01-results.json",
+    "continuousMotion": "pending",
+    "listening": "pending"
+  },
+  "publication": "not-requested-not-performed"
+}
