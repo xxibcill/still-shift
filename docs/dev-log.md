@@ -43,19 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS1 bridge active (2026-10-09):** separate `codex/mechanism-ms1` branch from
-  `main` `e6eb7b06` carries exact MS0 prerequisite `d55908fa`; MS0
-  [PR #51](https://github.com/xxibcill/still-shift/pull/51) is open and unmerged.
-  Shared contracts, pure rigs, solid geometry, strict font preflight, bounded
-  first-party plate capture and independent mechanical checks are implemented.
-  All696 E01 plates and one native MP4 completed in stages. Final inspection
-  caught caption painter-order/origin faults; fixes and source-bound speech/proof
-  reading semantics pass focused checks. Full v5 capture hit duplicate proof
-  metadata budget; compact root declarations retain per-shot evidence. Audio alignment/tail and independent mechanics
-  pass. Report closure/stale-final fixes pass13 focused checks. Corrected full E01 v6 software checks
-  and read-only actual dependency capability checks pass. Complete cache/repair,
-  isolated package and full local gate before MS1 PR. MS1N implementation has not
-  started. Original checkout edits are preserved.
+- **MS1 bridge active (2026-10-10):** `codex/mechanism-ms1` carries exact MS0
+  prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
+  remains open/unmerged. Corrected full E01 passes all696-frame mechanics,
+  native layout/holds and actual audio checks. Portable737-file delivery relocates
+  and reloads; a macOS tmp-alias path fault is repaired. Fresh-session one-patch
+  overlap repair retains all696 plate hashes with zero additional3D renders.
+  Full176-fixture/36,061-frame baseline refresh changes only29 editorial frames
+  for the reproduced mask fix. Compact render-check findings and stage telemetry
+  pass actual40-frame CLI export,11 tests/build/lint. Installed-archive OS-isolated lifecycle and full
+  local gate remain before MS1 PR. Human continuous/listening review remains
+  pending. MS1N implementation has not started; original checkout edits preserved.
+  [Results](./mechanism-shorts-ms1-results.json),
+  [repair evidence](./mechanism-shorts-ms1-repair-results.json).
 
 - **MS0 audit complete (2026-10-09):** Codex on `codex/mechanism-ms0` from
   `main` `e6eb7b06`; separate milestone PR follows verification. Original E01
@@ -168,6 +168,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Portable alias repair and fresh-session overlap proof
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` (from `006c2bd9`).
+- **Done:** relocated737-file delivery preserves actual final/export/report closure;
+  resolve authored paths before canonicalization. Fresh agent uses compact source
+  handoff and supported CLI to diagnose/repair TRAVEL with one revision-aware patch.
+- **Results:** all696 plate hashes retained, zero new3D renders,69/30 readable
+  frames; mechanics/audio/final identities pass. Full baseline refresh retained
+  other175 fixtures exactly; lifecycle timing scopes are explicit.
+- **Rejected / do not repeat:** canonical-first tmp path resolution; initial
+  sandbox IPC denied startup. Failures/retries remain in linked evidence.
+- **Open / next:** verify compact render findings, commit/build archive, isolated
+  installed lifecycle and full gate before MS1 PR; human motion/listening pending.
+- **Records:** [MS1 results](./mechanism-shorts-ms1-results.json),
+  [fresh repair](./mechanism-shorts-ms1-repair-results.json).
 
 ### 2026-10-10 — Full baseline provenance migration after mask repair
 

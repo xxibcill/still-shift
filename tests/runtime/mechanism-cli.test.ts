@@ -1,3 +1,4 @@
+import { spawn } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
@@ -18,6 +19,29 @@ beforeAll(async () => {
 afterAll(async () => {
   await rm(directory, { recursive: true, force: true });
 });
+async function runProcess(args: string[]) {
+  const child = spawn(
+    process.execPath,
+    ["--import", "tsx", "tools/still-shift-cli/src/cli.ts", "episode", ...args],
+    { stdio: ["ignore", "pipe", "pipe"] },
+  );
+  let output = "",
+    error = "";
+  child.stdout.setEncoding("utf8");
+  child.stderr.setEncoding("utf8");
+  child.stdout.on("data", (chunk: string) => {
+    output += chunk;
+  });
+  child.stderr.on("data", (chunk: string) => {
+    error += chunk;
+  });
+  const code = await new Promise<number | null>((resolve, reject) => {
+    child.once("error", reject);
+    child.once("close", resolve);
+  });
+  const receipt = MechanismCommandReceiptSchema.parse(JSON.parse(output));
+  return { code, receipt, output, error };
+}
 async function run(args: string[]) {
   let output = "",
     error = "";
@@ -239,4 +263,65 @@ describe("episode CLI authoring protocol", () => {
     expect(result.receipt.summary.message).toContain("1..100");
     await expect(readFile(join(path, "episode.json"))).rejects.toThrow();
   });
+  it("exposes actual final layout failures in the compact render receipt", async () => {
+    const created = await createTapeHookProject({
+      outputDirectory: join(directory, "bad-layout"),
+      fontPath: resolve("assets/story-motion/fonts/plex-sans-semibold.ttf"),
+    });
+    const episode = JSON.parse(await readFile(created.path, "utf8"));
+    const shot = episode.shots[0];
+    delete shot.cameraKeys;
+    shot.endFrameExclusive = 40;
+    shot.controls = { slider: { travel: 0, contactMode: "free" } };
+    shot.labels = [
+      {
+        id: "offscreen-pull",
+        role: "PULL",
+        text: "PULL",
+        anchor: "hook.pullProof",
+        proofTarget: "hook.pullProof",
+        position: [400, 400],
+        readingInterval: { startFrame: 0, endFrameExclusive: 40 },
+        fontSize: 16,
+      },
+    ];
+    episode.output = { width: 160, height: 284, fps: 30, frameCount: 40 };
+    episode.shots = [shot];
+    episode.captions = [];
+    episode.events = [];
+    await writeFile(created.path, JSON.stringify(episode));
+    const output = join(directory, "bad-layout-render");
+    const rendered = await runProcess([
+      "render",
+      "--input",
+      created.path,
+      "--output-dir",
+      output,
+      "--cache-dir",
+      join(directory, "bad-layout-cache"),
+    ]);
+    expect(rendered.code, rendered.output + rendered.error).toBe(2);
+    expect(rendered.receipt.status).toBe("failed");
+    const complete = JSON.parse(
+      await readFile(join(output, "episode.result.json"), "utf8"),
+    );
+    expect(complete.check.checkedFrames).toBe(40);
+    expect(complete.check.overlayReport.findings.length).toBeGreaterThan(0);
+    for (const finding of complete.check.overlayReport.findings)
+      expect(rendered.receipt.items).toContainEqual(
+        expect.objectContaining({
+          code: finding.code,
+          path: finding.path,
+          kind: "overlayReport",
+        }),
+      );
+    expect(rendered.receipt.summary["check.overlayReport.layoutAccepted"]).toBe(
+      false,
+    );
+    expect(rendered.receipt.nextAction).toContain("current revision and hash");
+    expect(Buffer.byteLength(rendered.output)).toBeLessThanOrEqual(32769);
+    expect(
+      (await readFile(join(output, "episode.mp4"))).length,
+    ).toBeGreaterThan(0);
+  }, 180_000);
 });

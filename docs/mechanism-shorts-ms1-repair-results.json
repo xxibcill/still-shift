@@ -1,0 +1,451 @@
+{
+  "schemaVersion": "mechanism-fresh-session-repair-evidence-1",
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3"
+  },
+  "allowedInterface": "pnpm still-shift episode CLI; declared artifact JSON and actual artifact byte hashes",
+  "commands": [
+    {
+      "command": "source /Users/jjae/.nvm/nvm.sh && nvm use 22.23.1 >/dev/null && node --version && pnpm --version && pnpm still-shift episode inspect --input /tmp/still-shift-ms1-overlap-seed-v6/episode.json --report /tmp/still-shift-ms1-overlap-inspect.full.json > /tmp/still-shift-ms1-overlap-inspect.log",
+      "status": "failed",
+      "exitCode": 1,
+      "stage": "tsx IPC startup before command receipt",
+      "diagnostic": {
+        "code": "EPERM",
+        "syscall": "listen",
+        "address": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/tsx-501/15054.pipe"
+      },
+      "stdoutLog": "/tmp/still-shift-ms1-overlap-inspect.log",
+      "toolOutputChunk": "6f5c1d"
+    },
+    {
+      "command": "pnpm still-shift episode inspect --input /tmp/still-shift-ms1-overlap-seed-v6/episode.json --report /tmp/still-shift-ms1-overlap-inspect-2.full.json",
+      "status": "passed",
+      "exitCode": 0,
+      "sandboxMode": "require_escalated",
+      "log": "/tmp/still-shift-ms1-overlap-inspect-2.log",
+      "report": "/tmp/still-shift-ms1-overlap-inspect-2.full.json"
+    },
+    {
+      "command": "pnpm still-shift episode patch --input /tmp/still-shift-ms1-overlap-seed-v6/episode.json --request /tmp/still-shift-ms1-overlap-repair.patch.json --report /tmp/still-shift-ms1-overlap-repair.patch.full.json",
+      "status": "passed",
+      "exitCode": 0,
+      "log": "/tmp/still-shift-ms1-overlap-repair.patch.log"
+    },
+    {
+      "command": "pnpm still-shift episode summary --input /tmp/still-shift-ms1-overlap-seed-v6/episode.json --report /tmp/still-shift-ms1-overlap-repaired-source-summary.full.json",
+      "status": "passed",
+      "exitCode": 0,
+      "log": "/tmp/still-shift-ms1-overlap-repaired-source-summary.log"
+    },
+    {
+      "command": "pnpm still-shift episode render --input /tmp/still-shift-ms1-overlap-seed-v6/episode.json --output-dir /tmp/still-shift-ms1-overlap-repaired-render-v6 --cache-dir /tmp/still-shift-ms1-e01-cache-v6 --report /tmp/still-shift-ms1-overlap-repaired-render.full.json",
+      "status": "passed",
+      "exitCode": 0,
+      "log": "/tmp/still-shift-ms1-overlap-repaired-render.log",
+      "fullReport": "/tmp/still-shift-ms1-overlap-repaired-render.full.json",
+      "checks": "render performed current all-frame layout/mechanics and final media/audio checks; no duplicate check command"
+    },
+    {
+      "command": "python3 /tmp/still-shift-ms1-overlap-repair.verify.py",
+      "status": "passed",
+      "checks": "artifact receipts and actual SHA256 bytes only; no rendering or pixel recheck"
+    }
+  ],
+  "baseline": {
+    "result": "/tmp/still-shift-ms1-overlap-bad-render-v6/episode.result.json",
+    "status": "rendered",
+    "valid": false,
+    "projectHash": "sha256:cd80be812184e2e0f6e0a19cf7f9477c8fbd2445dbc25c0a6091b22da13b7499",
+    "blockingOverlayFindings": [
+      {
+        "code": "mechanism-label-protected-region",
+        "path": "shots.4.labels.0.position",
+        "message": "Active text overlaps a protected proof region",
+        "frames": [346, 414],
+        "measured": 2304,
+        "shot": "V8-05",
+        "label": "label-travel",
+        "other": "rivet.travelMarker",
+        "measurement": "measured"
+      },
+      {
+        "code": "mechanism-label-protected-region",
+        "path": "shots.4.labels.0.position",
+        "message": "Active text overlaps a protected proof region",
+        "frames": [349, 394],
+        "measured": 740.6195353409894,
+        "shot": "V8-05",
+        "label": "label-travel",
+        "other": "hook.slideProof",
+        "measurement": "measured"
+      },
+      {
+        "code": "mechanism-label-hold",
+        "path": "shots.4.labels.0.readingInterval",
+        "message": "Anchored label needs at least 30 consecutive fully readable output frames",
+        "frames": [346, 414],
+        "measured": 0,
+        "shot": "V8-05",
+        "label": "label-travel",
+        "measurement": "measured"
+      }
+    ],
+    "travelHold": {
+      "shot": "V8-05",
+      "label": "label-travel",
+      "longestReadableFrames": 0,
+      "requiredFrames": 30
+    }
+  },
+  "patch": {
+    "request": "/tmp/still-shift-ms1-overlap-repair.patch.json",
+    "receipt": "/tmp/still-shift-ms1-overlap-repair.patch.full.json",
+    "schemaVersion": "mechanism-patch-result-1",
+    "path": "/tmp/still-shift-ms1-overlap-seed-v6/episode.json",
+    "revision": 2,
+    "projectHash": "sha256:c46943dfe02eb48eb5abc75267ed102a64f40085c9dfb1f61edbda85a9251540",
+    "changedPaths": ["shots.V8-05.labels.label-travel.position"],
+    "affectedShots": ["V8-05"],
+    "cacheEffects": {
+      "geometry": "reuse",
+      "cleanPlates": "reuse",
+      "sidecars": "reuse",
+      "overlays": "invalidate-affected-shots",
+      "audio": "reuse"
+    }
+  },
+  "sourceAssociation": {
+    "sourcePath": "/tmp/still-shift-ms1-overlap-seed-v6/episode.json",
+    "revision": 2,
+    "projectHash": "sha256:c46943dfe02eb48eb5abc75267ed102a64f40085c9dfb1f61edbda85a9251540",
+    "patchSummaryPreparedCheckHashesEqual": true,
+    "compositionPath": "/tmp/still-shift-ms1-overlap-repaired-render-v6/prepared/composition-r2-c46943dfe02e.json",
+    "compositionRevision": 2,
+    "actualCompositionSha256": "sha256:f97068f6709d8ee7ec901322d1357e9331edbf9b4ee1e6126cc4aeaab405b39b",
+    "nativeSourceSha256": "sha256:f97068f6709d8ee7ec901322d1357e9331edbf9b4ee1e6126cc4aeaab405b39b",
+    "sceneSourceSha256": "sha256:f97068f6709d8ee7ec901322d1357e9331edbf9b4ee1e6126cc4aeaab405b39b",
+    "sceneSourcePath": "/tmp/still-shift-ms1-overlap-repaired-render-v6/prepared/composition-r2-c46943dfe02e.json",
+    "actualSceneSha256": "sha256:3899408764b7c877ecd1d68956933e44cefb5ccba52aaa5c3fbd0927f6b0e82f",
+    "nativeSceneSha256": "sha256:3899408764b7c877ecd1d68956933e44cefb5ccba52aaa5c3fbd0927f6b0e82f",
+    "actualFinalSha256": "sha256:e0c369e69b76bc73ba81a59930d89ae432d91035c64a531a51e8699b53eb632d",
+    "nativeFinalSha256": "sha256:e0c369e69b76bc73ba81a59930d89ae432d91035c64a531a51e8699b53eb632d",
+    "finalBytes": 3580117,
+    "nativeReceiptEqualsRenderResult": true,
+    "checksumsMatch": true
+  },
+  "correctedPlacement": [
+    {
+      "id": "mechanism-qualification-label-travel-522ae94dd21312fe",
+      "text": "Illustrative enlarged view",
+      "nativePosition": [670, 754.8],
+      "interval": {
+        "startFrame": 346,
+        "endFrameExclusive": 415
+      },
+      "measurement": "native measured text bounds translated by static layer position",
+      "measuredOutputTextBounds": [
+        {
+          "left": 487.8580183982849,
+          "top": 754.8,
+          "right": 853.0943126678467,
+          "bottom": 794.8006399993897
+        }
+      ]
+    },
+    {
+      "id": "mechanism-label-label-travel-522ae94dd21312fe",
+      "text": "TRAVEL",
+      "nativePosition": [670, 690],
+      "interval": {
+        "startFrame": 346,
+        "endFrameExclusive": 415
+      },
+      "measurement": "native measured text bounds translated by static layer position",
+      "measuredOutputTextBounds": [
+        {
+          "left": 582.2480152845383,
+          "top": 690,
+          "right": 757.4639892578125,
+          "bottom": 752.4
+        }
+      ]
+    }
+  ],
+  "plateIdentityProof": {
+    "baselineFrames": 696,
+    "correctedFrames": 696,
+    "sourceFramesContiguous0Through695": true,
+    "missing": [],
+    "extra": [],
+    "identityMismatches": [],
+    "actualByteMismatches": {
+      "bad": [],
+      "corrected": []
+    },
+    "canonicalDigestMethod": "sha256(json.dumps(rows sorted by sourceFrame, keys shotId/sourceFrame/sha256, separators comma/colon).encode())",
+    "canonicalDigests": {
+      "bad": "sha256:161aa2d3a99d7e577dd04d5347724fdb71afa6e03390e97524f73cfbd0807a9e",
+      "corrected": "sha256:161aa2d3a99d7e577dd04d5347724fdb71afa6e03390e97524f73cfbd0807a9e"
+    },
+    "cacheHits": 696,
+    "new3dRenders": 0,
+    "perShot": [
+      {
+        "shot": "V8-01",
+        "frames": 78,
+        "cacheHits": 78,
+        "new3dRenders": 0,
+        "identityMismatches": 0
+      },
+      {
+        "shot": "V8-02",
+        "frames": 85,
+        "cacheHits": 85,
+        "new3dRenders": 0,
+        "identityMismatches": 0
+      },
+      {
+        "shot": "V8-03",
+        "frames": 84,
+        "cacheHits": 84,
+        "new3dRenders": 0,
+        "identityMismatches": 0
+      },
+      {
+        "shot": "V8-04",
+        "frames": 89,
+        "cacheHits": 89,
+        "new3dRenders": 0,
+        "identityMismatches": 0
+      },
+      {
+        "shot": "V8-05",
+        "frames": 82,
+        "cacheHits": 82,
+        "new3dRenders": 0,
+        "identityMismatches": 0
+      },
+      {
+        "shot": "V8-06",
+        "frames": 54,
+        "cacheHits": 54,
+        "new3dRenders": 0,
+        "identityMismatches": 0
+      },
+      {
+        "shot": "V8-07",
+        "frames": 54,
+        "cacheHits": 54,
+        "new3dRenders": 0,
+        "identityMismatches": 0
+      },
+      {
+        "shot": "V8-08",
+        "frames": 77,
+        "cacheHits": 77,
+        "new3dRenders": 0,
+        "identityMismatches": 0
+      },
+      {
+        "shot": "V8-09",
+        "frames": 93,
+        "cacheHits": 93,
+        "new3dRenders": 0,
+        "identityMismatches": 0
+      }
+    ],
+    "sidecarManifestProof": [
+      {
+        "shot": "V8-01",
+        "sidecarUnchanged": true,
+        "actualSidecarMatches": true,
+        "sequenceManifestUnchanged": true,
+        "actualManifestMatches": true
+      },
+      {
+        "shot": "V8-02",
+        "sidecarUnchanged": true,
+        "actualSidecarMatches": true,
+        "sequenceManifestUnchanged": true,
+        "actualManifestMatches": true
+      },
+      {
+        "shot": "V8-03",
+        "sidecarUnchanged": true,
+        "actualSidecarMatches": true,
+        "sequenceManifestUnchanged": true,
+        "actualManifestMatches": true
+      },
+      {
+        "shot": "V8-04",
+        "sidecarUnchanged": true,
+        "actualSidecarMatches": true,
+        "sequenceManifestUnchanged": true,
+        "actualManifestMatches": true
+      },
+      {
+        "shot": "V8-05",
+        "sidecarUnchanged": true,
+        "actualSidecarMatches": true,
+        "sequenceManifestUnchanged": true,
+        "actualManifestMatches": true
+      },
+      {
+        "shot": "V8-06",
+        "sidecarUnchanged": true,
+        "actualSidecarMatches": true,
+        "sequenceManifestUnchanged": true,
+        "actualManifestMatches": true
+      },
+      {
+        "shot": "V8-07",
+        "sidecarUnchanged": true,
+        "actualSidecarMatches": true,
+        "sequenceManifestUnchanged": true,
+        "actualManifestMatches": true
+      },
+      {
+        "shot": "V8-08",
+        "sidecarUnchanged": true,
+        "actualSidecarMatches": true,
+        "sequenceManifestUnchanged": true,
+        "actualManifestMatches": true
+      },
+      {
+        "shot": "V8-09",
+        "sidecarUnchanged": true,
+        "actualSidecarMatches": true,
+        "sequenceManifestUnchanged": true,
+        "actualManifestMatches": true
+      }
+    ]
+  },
+  "finalCheck": {
+    "result": "/tmp/still-shift-ms1-overlap-repaired-render-v6/episode.result.json",
+    "status": "rendered",
+    "valid": true,
+    "checkedFrames": 696,
+    "layoutAccepted": true,
+    "overlayFindings": [],
+    "travelHold": {
+      "shot": "V8-05",
+      "label": "label-travel",
+      "longestReadableFrames": 69,
+      "requiredFrames": 30
+    },
+    "mechanicalValid": true,
+    "qualityStatus": "passed",
+    "qualityDiagnosticSeverityCounts": {
+      "warning": 50
+    },
+    "findingCount": 0,
+    "video": {
+      "codec_name": "h264",
+      "width": 1080,
+      "height": 1920,
+      "avg_frame_rate": "30/1",
+      "duration": "23.200000",
+      "nb_read_frames": "696"
+    },
+    "audio": {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2,
+      "duration": "23.200000"
+    },
+    "audioReport": {
+      "schemaVersion": "mechanism-final-audio-check-1",
+      "valid": true,
+      "sourceClock": {
+        "sampleRate": 48000,
+        "sampleCount": 1113600,
+        "channels": 2,
+        "authoredSampleCount": 1113600
+      },
+      "findings": [],
+      "decodedClock": {
+        "codec": "aac",
+        "sampleRate": 48000,
+        "channels": 2,
+        "sampleCount": 1114112,
+        "paddingSamples": 512,
+        "paddingAllowanceSamples": 1023,
+        "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+        "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+      },
+      "alignment": {
+        "correlation": 0.99939897716988,
+        "gain": 0.9936183770630255,
+        "normalizedError": 0.03514398619837603,
+        "sourceRms": 0.10424712835404523,
+        "decodedRms": 0.10358186248862733,
+        "windows": [
+          {
+            "correlation": 0.9991018377725046,
+            "gain": 0.9936525861183872,
+            "normalizedError": 0.04272250113796264,
+            "sourceRms": 0.22504104331982855,
+            "decodedRms": 0.22361261467752766,
+            "startSample": 303104,
+            "sampleCount": 8192,
+            "lagSamples": 0
+          },
+          {
+            "correlation": 0.9995994003443933,
+            "gain": 0.9970531013439682,
+            "normalizedError": 0.028416939841065598,
+            "sourceRms": 0.24601689142030655,
+            "decodedRms": 0.24529190457361894,
+            "startSample": 450560,
+            "sampleCount": 8192,
+            "lagSamples": 0
+          },
+          {
+            "correlation": 0.9997798489063653,
+            "gain": 0.9934986526875499,
+            "normalizedError": 0.021902217856538675,
+            "sourceRms": 0.1810039132730421,
+            "decodedRms": 0.17982714396794147,
+            "startSample": 1015808,
+            "sampleCount": 8192,
+            "lagSamples": 0
+          }
+        ],
+        "toleranceSamples": 64,
+        "maxLagSamples": 0
+      },
+      "tail": {
+        "correlation": 0.9996462325129299,
+        "gain": 0.9986940588084534,
+        "normalizedError": 0.026614215326493832,
+        "sourceRms": 0.0006902706585095873,
+        "decodedRms": 0.0006893692056233237,
+        "startSample": 1097728,
+        "sampleCount": 8192,
+        "lagSamples": 0,
+        "lastActiveSampleExclusive": 1105046,
+        "preserved": true
+      }
+    },
+    "humanReview": {
+      "continuousMotion": "pending-human-review",
+      "listening": "pending-human-review"
+    },
+    "timings": {
+      "scope": "monotonic-wall-clock-through-final-check",
+      "prepareWallSeconds": 8.131556791000001,
+      "exportWallSeconds": 132.310299375,
+      "checkWallSeconds": 127.79543987499999,
+      "throughCheckWallSeconds": 268.237563458
+    }
+  },
+  "passFail": {
+    "scopedPatch": true,
+    "unchangedPlateAndReceiptIntegrity": true,
+    "zeroAdditional3dFrames": true,
+    "currentFinalSoftwareCheck": true,
+    "overall": true
+  }
+}

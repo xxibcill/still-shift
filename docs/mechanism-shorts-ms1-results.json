@@ -46,6 +46,13 @@
       "status": "implemented-focused-verified-full-E01-rerun-pending",
       "behavior": "Actual decoded frame0 exposed plates painting above all native copy. Correct top-layer order and wrap origin restored; source-bound speech cues remain intact across cuts. Explicit stationary proof declarations retain raw lint measurements, protect moving/faint/lost copy, and require human review. Delivery copies/rebases verified scene/export/lifecycle/report closure and rejects stale/swapped finals.",
       "fullGate": "not-run-in-this-checkpoint"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "portable-alias-closure-and-fresh-session-overlap-repair",
+      "status": "implemented-focused-verified",
+      "behavior": "Resolve authored paths against lexical directories before canonicalization; actual macOS tmp aliases retain font/audio/plate closure. One fresh-session revision-aware position patch restores69 readable TRAVEL frames with all696 actual clean-plate hashes unchanged and zero new3D renders. Nested render checks expose located findings through compact CLI receipts. Monotonic whole-lifecycle stage telemetry added.",
+      "fullGate": "pending"
     }
   ],
   "verification": [
@@ -199,11 +206,40 @@
         "fixture": "typography/editorial",
         "frames": "11..39",
         "count": 29,
-        "reason": "Reproduced mixed-size word/line mask loss repair; all other176fixture pixels retained."
+        "reason": "Reproduced mixed-size word/line mask loss repair; other175fixtures and remaining editorial frames retain exact pixels."
       },
       "profileMigration": "chromium-software-1 legacy/no-machine to chromium-software-2 same fingerprint + AppleM5Pro15cores",
       "details": "mechanism-shorts-ms1-baseline-migration.json",
       "notes": "Original hashes/timings and29 changed encoded-state images retained; full check still pending."
+    },
+    {
+      "command": "fresh-agent supported CLI overlap diagnosis/patch/render/final-check/artifact audit",
+      "status": "passed-in-stages",
+      "frames": 696,
+      "new3dRenders": 0,
+      "cacheHits": 696,
+      "details": "mechanism-shorts-ms1-repair-results.json",
+      "notes": "Initial sandbox IPC EPERM and escalated retry retained; no implementation/history access; successful render includes actual final media/audio/check."
+    },
+    {
+      "command": "actual40-frame offscreen CLI export plus compact/full finding association",
+      "status": "passed",
+      "tests": 11,
+      "log": "/tmp/still-shift-ms1-cli-render-findings-4.log"
+    },
+    {
+      "command": "tmp-alias package closure regression",
+      "status": "passed",
+      "tests": 17,
+      "log": "/private/tmp/mechanism-package-alias-green-rerun.log"
+    },
+    {
+      "command": "integrated build and edited-file eslint after final slice",
+      "status": "passed",
+      "logs": [
+        "/tmp/still-shift-ms1-root-build-10.log",
+        "/tmp/still-shift-ms1-final-slice-lint.log"
+      ]
     }
   ],
   "renderEvidence": [
@@ -365,15 +401,15 @@
     }
   ],
   "review": {
-    "sampledVisual": "first-frame-and-nine-shot-probe-in-progress",
+    "sampledVisual": "All26 entry/mid/exit/cut-adjacent actual decoded frames inspected;0/380/445/500 full-size checked against solid/slot/curve/material/shadow/native-copy rubric.",
     "continuousMotion": "not-reviewed",
     "listening": "not-reviewed",
     "humanCreativeAcceptance": "not-reviewed"
   },
   "limits": [
-    "MS1 full acceptance, isolated installed-package lifecycle, repair/resume proof and full gate remain in flight.",
-    "Customer source media remains outside Git.",
-    "Independent packaging review has found live-report closure/stale-final gaps; repairs in progress."
+    "Clean installed-archive lifecycle and full local gate remain in flight.",
+    "Customer source media remains outside Git; public redistribution is not established.",
+    "Human continuous motion, listening and creative acceptance remain pending."
   ],
   "retainedFailures": [
     {
@@ -401,6 +437,35 @@
       "attempt": "cache/summary runtime2",
       "reason": "Vitest SSR lacks import.meta.resolve; package-resolved Three module/core/addon hashes now use createRequire without executing CommonJS.",
       "log": "/tmp/still-shift-ms1-cache-summary-runtime-2.log"
+    },
+    {
+      "attempt": "actual v6 portable package macOS tmp alias",
+      "reason": "Canonicalization before resolving authored paths incorrectly doubled private in the audio dependency.",
+      "repair": "Resolve against declared lexical path first, then canonicalize; regression17/17 and actual737-file delivery relocation pass.",
+      "evidence": [
+        "/tmp/.still-shift-ms1-e01-delivery-v6.package-attempt-2O2I3e/failure.json",
+        "/private/tmp/mechanism-package-alias-green-rerun.log"
+      ]
+    },
+    {
+      "attempt": "compact-render regression fixture attempts1..3",
+      "reason": "Vitest transformed browser-side dynamic import when invoking renderer in-process; next process-backed fixture assumed a nonexistent evaluatedFrameCount result field.",
+      "repair": "Invoke supported CLI in a child Node process and assert documented checkedFrames; actual40frame final findings agree with compact receipt.",
+      "logs": [
+        "/tmp/still-shift-ms1-cli-render-findings.log",
+        "/tmp/still-shift-ms1-cli-render-findings-2.log",
+        "/tmp/still-shift-ms1-cli-render-findings-3.log"
+      ],
+      "rerun": "/tmp/still-shift-ms1-cli-render-findings-4.log"
     }
-  ]
+  ],
+  "portableDelivery": {
+    "directory": "/tmp/still-shift-ms1-e01-delivery-v6-relocated",
+    "manifestFiles": 737,
+    "bytes": 535346887,
+    "manifestSha256": "sha256:80d22abd1f378d92277b054e44fc5549d708ace777f3e7a2f17ffec8262b418a",
+    "finalSha256": "sha256:e0c369e69b76bc73ba81a59930d89ae432d91035c64a531a51e8699b53eb632d",
+    "verification": "Actual CLI relocation/deps/validate/summary/save/reload and all declared hashes pass under application admission guard; OS-isolated installed-archive lifecycle pending.",
+    "evidence": "/tmp/still-shift-ms1-v6-package-handoff.md"
+  }
 }

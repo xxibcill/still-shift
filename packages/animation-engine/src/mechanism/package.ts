@@ -590,6 +590,7 @@ async function copyPrepared(
   signal?: AbortSignal,
 ) {
   signal?.throwIfAborted();
+  const declaredDirectory = resolve(source);
   source = await realpath(source);
   const receipt = (await readMechanismJson(
     join(source, "prepared.receipt.json"),
@@ -669,9 +670,13 @@ async function copyPrepared(
       attemptDirectory: "not-packaged",
     });
   }
-  const originalComposition = await containedSource(
-      source,
+  const declaredCompositionPath = resolve(
+      declaredDirectory,
       receipt.compositionPath,
+    ),
+    originalComposition = await containedSource(
+      source,
+      declaredCompositionPath,
     ),
     composition = CompositionSchema.parse(
       await readMechanismJson(originalComposition),
@@ -679,7 +684,10 @@ async function copyPrepared(
   for (const asset of composition.assets) {
     signal?.throwIfAborted();
     if (asset.type === "font" || asset.type === "audio") {
-      const actual = resolve(dirname(originalComposition), asset.path),
+      // Relative assets belong to the declared path; directory aliases can change its parent depth.
+      const actual = await realpath(
+          resolve(dirname(declaredCompositionPath), asset.path),
+        ),
         dependency = loaded.episode.dependencies.find(
           (item) =>
             item.type === asset.type &&
@@ -699,10 +707,10 @@ async function copyPrepared(
     }
     if (asset.type === "sequence") {
       const pattern = mappings.get(
-          resolve(dirname(originalComposition), asset.path),
+          resolve(dirname(declaredCompositionPath), asset.path),
         ),
         manifest = mappings.get(
-          resolve(dirname(originalComposition), asset.manifestPath),
+          resolve(dirname(declaredCompositionPath), asset.manifestPath),
         );
       if (!pattern || !manifest)
         fail(

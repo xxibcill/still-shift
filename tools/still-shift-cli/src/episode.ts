@@ -270,6 +270,16 @@ function resultView(
           summary[`cache.${effect}`] = disposition;
     }
   }
+  const checked =
+    command === "render" && isRecord(record.check)
+      ? resultView("check", record.check)
+      : undefined;
+  if (checked) {
+    for (const [key, value] of Object.entries(checked.summary))
+      summary[`check.${key}`] = value;
+    items.push(...(checked.items ?? []));
+    artifacts.push(...(checked.artifacts ?? []));
+  }
   const status =
     record.status === "cancelled"
       ? "cancelled"
@@ -277,6 +287,7 @@ function resultView(
           record.valid === false ||
           record.passed === false ||
           record.mechanicalValid === false ||
+          checked?.status === "failed" ||
           (isRecord(record.qualityReport) &&
             record.qualityReport.status === "failed") ||
           (isRecord(record.overlayReport) &&
@@ -284,7 +295,20 @@ function resultView(
             record.overlayReport.findings.length > 0)
         ? "failed"
         : "passed";
-  return { command, status, summary, items, artifacts, fullResult: result };
+  return {
+    command,
+    status,
+    summary,
+    items,
+    artifacts,
+    fullResult: result,
+    ...(command === "render" && status === "failed"
+      ? {
+          nextAction:
+            "Inspect located findings, apply a patch with the current revision and hash, then render to a fresh output directory.",
+        }
+      : {}),
+  };
 }
 async function readPatchRequest(path: string, io: EpisodeCliIo) {
   let bytes: string;

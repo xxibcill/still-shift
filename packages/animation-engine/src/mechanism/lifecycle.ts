@@ -247,6 +247,7 @@ export async function checkMechanismEpisode(
   } = {},
 ) {
   options.signal?.throwIfAborted();
+  const started = performance.now();
   const loaded = await readMechanismEpisode(path),
     prepared = prepareMechanismScene(loaded.scene),
     findings: MechanismFinding[] = [];
@@ -462,6 +463,7 @@ export async function checkMechanismEpisode(
   options.signal?.throwIfAborted();
   return {
     schemaVersion: "mechanism-check-result-1" as const,
+    wallSeconds: (performance.now() - started) / 1000,
     projectHash: loaded.projectHash,
     checkedFrames,
     findings,
@@ -486,12 +488,14 @@ export async function renderMechanismEpisode(
   path: string,
   options: MechanismPreparationOptions & { backend?: "canvas2d" | "webgl2" },
 ) {
+  const started = performance.now();
   const outputDirectory = resolve(options.outputDirectory);
   await mkdir(outputDirectory, { recursive: false });
   const prepared = await prepareMechanismEpisode(path, {
     ...options,
     outputDirectory: join(outputDirectory, "prepared"),
   });
+  const preparedAt = performance.now();
   const render = await renderComposition({
     compositionPath: prepared.compositionPath,
     outputPath: join(outputDirectory, "episode.mp4"),
@@ -501,6 +505,7 @@ export async function renderMechanismEpisode(
       ? { cacheDirectory: options.cacheDirectory }
       : {}),
   });
+  const renderedAt = performance.now();
   const check = await checkMechanismEpisode(path, {
       preparedDirectory: prepared.outputDirectory,
       finalOutput: render.outputPath,
@@ -510,6 +515,13 @@ export async function renderMechanismEpisode(
       schemaVersion: "mechanism-render-result-1" as const,
       status: "rendered",
       valid: check.valid,
+      timings: {
+        scope: "monotonic-wall-clock-through-final-check",
+        prepareWallSeconds: (preparedAt - started) / 1000,
+        exportWallSeconds: (renderedAt - preparedAt) / 1000,
+        checkWallSeconds: check.wallSeconds,
+        throughCheckWallSeconds: (performance.now() - started) / 1000,
+      },
       outputPath: render.outputPath,
       projectHash: prepared.projectHash,
       new3dRenders: prepared.new3dRenders,

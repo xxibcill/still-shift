@@ -4,11 +4,12 @@ import {
   mkdir,
   readFile,
   readdir,
+  realpath,
   rm,
   symlink,
   writeFile,
 } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
@@ -332,6 +333,35 @@ async function finalFixture(source: Awaited<ReturnType<typeof fixture>>) {
   };
 }
 describe("atomic portable mechanism package", () => {
+  it("resolves native dependencies before canonicalizing a prepared directory alias", async () => {
+    const source = await fixture(),
+      aliasParent = join(await realpath(source.root), "aliases"),
+      preparedAlias = join(aliasParent, "prepared"),
+      compositionPath = join(source.preparedDirectory, "composition.json"),
+      receiptPath = join(source.preparedDirectory, "prepared.receipt.json"),
+      composition = JSON.parse(await readFile(compositionPath, "utf8")),
+      receipt = JSON.parse(await readFile(receiptPath, "utf8"));
+    await mkdir(aliasParent);
+    await symlink(source.preparedDirectory, preparedAlias, "dir");
+    const font = composition.assets.find(
+      (asset: { type: string }) => asset.type === "font",
+    );
+    font.path = relative(
+      dirname(join(preparedAlias, "composition.json")),
+      await realpath(source.loaded.dependencyPaths["plex"]!),
+    );
+    receipt.compositionPath = "composition.json";
+    await writeMechanismJson(compositionPath, composition, { replace: true });
+    await writeMechanismJson(receiptPath, receipt, { replace: true });
+    const destination = join(source.root, "aliased-portable");
+    await packageMechanismEpisode(source.episodePath, {
+      outputDirectory: destination,
+      preparedDirectory: preparedAlias,
+    });
+    expect((await verifyMechanismPackageArtifacts(destination)).valid).toBe(
+      true,
+    );
+  });
   it.each(["pre-aborted", "during-copy", "before-publication"])(
     "retains %s cancellation without publication, releases the lock and supports a fresh retry",
     async (stage) => {
