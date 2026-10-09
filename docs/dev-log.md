@@ -45,19 +45,21 @@ still hold before relying on them.
 
 - **MS1 bridge verification (2026-10-10):** `codex/mechanism-ms1` carries exact
   MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
-  remains open/unmerged. Current `b4f0119d` archive passes26 offline package checks
-  and both OS-denied installed E01 exports, reusing all696 exact clean3D frames
-  with0 new3D renders. The separate24-case historical/hermetic typography packets
-  pass expected outcomes; E01 legacy semantic context remains unassessed. Full
-  `pnpm check` attempt3 passes3771 units,148 runtime,318 integrations,14 Python
-  tests and61 required groups, then stops at Canvas story-visibility timing1.351
-  against1.25 with exact pixels. Unchanged focused rerun passes1.144; cause remains
-  unproven. Complete story matrix plus14 remaining groups now run sequentially;
-  staged coverage will remain separate from the failed aggregate. Attempts1/2,
-  setup recoveries, consumer libproc exception and29 intentional mask-baseline
-  frame changes remain retained. Human playback/listening and MS1 PR are pending;
-  MS1N implementation waits for that PR. Original checkout edits are preserved.
-  [Results](./mechanism-shorts-ms1-results.json),
+  remains open/unmerged. The `b4f0119d` archive passes 26 offline package checks
+  and both OS-denied installed E01 exports, reusing all 696 exact clean 3D frames
+  with zero new 3D captures. Separate 24-case historical/hermetic typography
+  packets pass expected outcomes; E01 legacy semantic context remains unassessed.
+  Full `pnpm check` attempt 3 passes 3,771 units, 148 runtime, 318 integrations,
+  14 Python tests and 61 required groups, then stops at Canvas story-visibility
+  timing 1.351 against 1.25 with exact pixels. Unchanged focused rerun passes
+  1.144; cause remains unproven. Staged recovery now completes the whole strict
+  Story matrix (69 items/14,086 frames) and Commerce (127 items/28,200 frames plus
+  required repeated exports), covering 63 of 76 groups. The full cinematic matrix
+  is running; all remaining groups stay pending until actual successful exits.
+  Attempts 1–3, setup recoveries, consumer libproc exception and 29 intentional
+  mask-baseline frame changes remain retained. Human playback/listening and MS1
+  PR are pending; MS1N implementation waits for that PR. Original checkout edits
+  are preserved. [Results](./mechanism-shorts-ms1-results.json),
   [gate history](./mechanism-shorts-ms1-full-gate-results.json).
 
 - **MS0 audit complete (2026-10-09):** `codex/mechanism-ms0` audit is committed
@@ -168,6 +170,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1 strict Story and Commerce recovery checkpoint
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`; production/test inputs remain
+  `09ce824b`, with documentation-only follow-ups.
+- **Results:** unchanged strict Canvas Story matrix passes 69 items/14,086 frames;
+  story-visibility ratio is 0.997783 with exact pixels. Commerce passes 127
+  items/28,200 frames and all required repeat/relocation/preservation exports.
+  Sequential continuation establishes 63 of 76 required groups covered in stages.
+- **Open / next:** full cinematic matrix and 12 later groups are still pending.
+  Session `22389` remains active. Final exit and log digest are not yet available.
+  Failed aggregate attempts remain failed; no uninterrupted full pass is claimed.
+- **Records:** [gate history](./mechanism-shorts-ms1-full-gate-results.json).
 
 ### 2026-10-10 — Canvas timing failure retained; staged completion running
 

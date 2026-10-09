@@ -276,6 +276,26 @@
       "test:browser:composition-baselines"
     ],
     "log": "/tmp/still-shift-ms1-remaining-required-groups-1.log",
-    "notes": "The failed aggregate remains failed. Full story matrix and all14 downstream groups run sequentially without production/test changes. Only actual successful exits can close staged required-group coverage."
+    "notes": "The failed aggregate remains failed. Full story matrix and all14 downstream groups run sequentially without production/test changes. Only actual successful exits can close staged required-group coverage.",
+    "completedRequiredGroupsSoFar": 63,
+    "activeGroup": "test:browser:composition-cinematic-adapter",
+    "completedSuffixGroups": [
+      "test:browser:composition-story-fixtures",
+      "test:browser:composition-commerce-adapter"
+    ],
+    "completedSuffixEvidence": {
+      "story": {
+        "items": 69,
+        "frames": 14086,
+        "storyVisibilityRatio": 0.9977827035173619,
+        "maxPixelDelta": 0
+      },
+      "commerce": {
+        "items": 127,
+        "frames": 28200,
+        "requiredRepeatExports": "passed; final export followed by next required group header"
+      }
+    },
+    "progressEvidence": "Actual sequential next-group headers establish the first two suffix commands exited successfully. The remaining sequence/session22389 is still active; no final log digest or aggregate success is claimed."
   }
 }
