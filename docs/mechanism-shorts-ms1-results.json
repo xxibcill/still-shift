@@ -354,6 +354,17 @@
       "fullGate": "pending-rerun",
       "isolatedE01Evidence": "./mechanism-shorts-ms1-installed-e01-results.json",
       "notes": "Both actual installed exports reuse696 verified clean3D frames with0 new3D renders; native frame/audio caches are fresh. Exact archive/source/input/report closure and OS read denials pass; explicit live-libproc process-inspection exception and failed pre-render invocation retained. E01 semantic profile is legacy/unassessed; strict-context acceptance is separate."
+    },
+    {
+      "command": "Historical and hermetic encoded strict-context/font/reading packet; assertion-only settled exactness replay",
+      "status": "passed-expected-controls-and-negatives",
+      "casesPerRun": 24,
+      "encodedExportsPerRun": 24,
+      "encodedFramesPerRun": 2832,
+      "sampledNativeFramesPerRun": 158,
+      "sampledReducedFramesPerRun": 158,
+      "details": "./mechanism-shorts-ms1-semantic-typography-results.json",
+      "notes": "Complete English/Thai endpoint and opaque color-only controls pass overall quality and eligible holds; intact phrase holds pass with original full-composition entry/frozen faults retained. Actual count value44..119, changed unit60..119, partial-copy31..119 and local decoded Thai ink-loss negatives asserted. Glyph-opacity/factual truth/general readability remain explicit limits. No production or archive-input changes."
     }
   ],
   "renderEvidence": [

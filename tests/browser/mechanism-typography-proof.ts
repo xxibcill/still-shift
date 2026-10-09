@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { runMechanismSemanticTypographyProof } from "./mechanism-semantic-typography-proof.ts";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { renderComposition } from "../../packages/animation-engine/src/composition-render.ts";
@@ -351,3 +352,5 @@ try {
   await browser.close();
   await server.close();
 }
+
+await runMechanismSemanticTypographyProof();

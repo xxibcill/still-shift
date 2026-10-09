@@ -53,12 +53,12 @@ still hold before relying on them.
   frame/audio caches are fresh. Live-libproc process inspection is an explicit
   consumer exception; failed setup/initial invocation and predecessor proofs remain.
   E01's legacy semantic report is unassessed. Separate strict-context packet now
-  has24 cases: historical encoded run passes, hermetic rerun is active. Complete
+  has24 cases: historical and hermetic encoded runs pass expected outcomes. Complete
   quantity/color-only controls require overall quality passes; intact phrases retain
   eligible76-frame holds and their original full-report entry/frozen faults.
   Semantic display repair passes127 focused tests. Full `pnpm check` attempt1
   stopped at an existing gradient trace timeout; focused ring recorder repair
-  passes10 assertions without changing the5s limit. Final complete gate remains.
+  passes10 assertions without changing the5s limit. Final complete gate is next on the committed test checkpoint.
   Full baseline refresh changes only29 editorial frames for reproduced mask loss.
   Human continuous playback/listening remains pending; original checkout edits
   are preserved. MS1 PR and MS1N implementation wait for the final software gate.
@@ -173,6 +173,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Encoded semantic and reading packet completed
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`; production source remains
+  `b4f0119d`, with unchanged verified archive inputs.
+- **Done:** default hermetic typography proof is registered in the existing full
+  local gate; historical and hermetic24-case packets pass expected controls/negatives.
+- **Results:** each24 H264 exports/2832 frames,158 native and158 reduced samples;
+  actual count/partial-copy faults, complete endpoint holds, decoded Thai local
+  mark checks and removed-mark negative pass. Settled controls are pixel exact.
+- **Retained:** intact phrase full-report entry/frozen faults, glyph-opacity
+  readability boundary, seven earlier attempts and superseded Thai-overlap controls.
+  Final assertion-only tightening was CPU-replayed; no production pixels changed.
+- **Next:** required full `pnpm check` attempt2 on this committed checkpoint,
+  then MS1 PR before native3D implementation; continuous human review remains pending.
+- **Records:** [encoded evidence](./mechanism-shorts-ms1-semantic-typography-results.json),
+  [display-copy repair](./mechanism-shorts-ms1-semantic-display-results.json).
 
 ### 2026-10-10 — Current installed E01 acceptance refreshed
 
