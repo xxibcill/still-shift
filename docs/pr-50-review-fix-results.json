@@ -1,0 +1,160 @@
+{
+  "date": "2026-10-09",
+  "pr": 50,
+  "baseCheckpoint": "ccc26a2e04dc9116ffc494ec56797825017aa603",
+  "finding": {
+    "priority": "P2",
+    "title": "Include descendant mesh output in parent capture bounds",
+    "comment": "https://github.com/xxibcill/still-shift/pull/50#discussion_r4226805843"
+  },
+  "implementation": [
+    "Retain descendant mesh output and intermediate extents while walking to the capturing group.",
+    "Use affine Bezier control hulls and conservative rigid MLS/starch enclosures; keep uniform translations tight.",
+    "Apply ancestor effects only at group containers, preserving transform-only parent semantics.",
+    "Keep the existing 8192-axis and managed memory limits.",
+    "Advance Canvas to 1.47.3 and WebGL2 to 0.68.3; recompute the pinned request fingerprint."
+  ],
+  "regressions": {
+    "before": "New descendant browser oracle fails with comp-mesh-pin on the reviewed head.",
+    "repairReview": "New transform-only parent oracle fails with comp-mesh-budget before guarding intermediate non-group parents.",
+    "after": "All 32 new full-frame comparisons match the independent undeformed solid oracle: 2 backends × 2 directions × direct/nested groups × 2 mesh types × with/without an unrelated transform parent."
+  },
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "ffmpeg": "8.0.1",
+    "status": "passed",
+    "pythonImports": ["numpy", "PIL"],
+    "uv": "UV_NO_SYNC=1 UV_CACHE_DIR=/private/tmp/pr50-uv-cache",
+    "caches": "Vitest config/cache in /private/tmp; mesh and export Vite caches use fresh temporary directories. Native-effects optimizer/config directories belong to the separate CE14 checkout, distinct from the owner CE15 checkout."
+  },
+  "checks": {
+    "focusedUnits": {
+      "status": "passed",
+      "files": 12,
+      "tests": 84,
+      "command": "pnpm exec vitest run --config /private/tmp/pr50-vitest.config.mts tests/unit/composition-mesh-bounds.test.ts tests/unit/composition-effect-points.test.ts tests/unit/composition-mesh-contract.test.ts tests/unit/composition-mesh-geometry.test.ts tests/unit/composition-mesh-quality.test.ts tests/unit/composition-mesh-raster.test.ts tests/unit/composition-mesh-topology.test.ts tests/unit/composition-puppet-demo.test.ts tests/unit/batch-identity.test.ts tests/unit/composition-render-graph.test.ts tests/unit/composition-effect-inputs.test.ts tests/unit/composition-effects.test.ts --maxWorkers=2"
+    },
+    "types": {
+      "status": "passed",
+      "command": "pnpm build"
+    },
+    "lint": {
+      "status": "passed",
+      "command": "pnpm exec eslint <seven changed TypeScript files>"
+    },
+    "boundaries": {
+      "status": "passed",
+      "command": "pnpm check:boundaries"
+    },
+    "meshBrowser": {
+      "status": "passed",
+      "command": "pnpm test:browser:composition-mesh",
+      "pixelFrames": 16,
+      "memoryCases": 12,
+      "newOracleComparisons": 32,
+      "demos": [
+        {
+          "name": "composition",
+          "backend": "canvas2d",
+          "frames": 48,
+          "uniqueFrames": 47
+        },
+        {
+          "name": "composition",
+          "backend": "webgl2",
+          "frames": 48,
+          "uniqueFrames": 47
+        },
+        {
+          "name": "prop-follow",
+          "backend": "canvas2d",
+          "frames": 48,
+          "uniqueFrames": 47
+        },
+        {
+          "name": "prop-follow",
+          "backend": "webgl2",
+          "frames": 48,
+          "uniqueFrames": 47
+        }
+      ],
+      "exportArtifact": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce14-mesh-MbnOkD/exports.json",
+      "exportArtifactSha256": "2a218869224cb4eb30f71fecc4bb6a8d22944c92473c0e616b273e560af021b4",
+      "exports": 8,
+      "decodedFramesEach": 48,
+      "exportOutcome": "Encoded-body and every decoded-frame hash agree within each backend across repeat, one/four workers and cache on/off."
+    },
+    "nativeEffects": {
+      "status": "passed",
+      "command": "pnpm test:browser:composition-effects",
+      "catalogues": 7,
+      "baselineOutcome": "All existing native-effect and separate CE14 mesh catalogue hashes match; baseline files and thresholds unchanged.",
+      "exportOutcome": "Raw/PNG/independent-preview catalogue exports agree; six additional native-effect cases each produced two byte-identical 60-frame MP4s.",
+      "note": "The ordinary-transform-parent guard was added during this run; its affected paths were separately rerun in the complete mesh browser/export suite on the final implementation. Existing catalogue fixtures do not exercise that guarded ancestry."
+    },
+    "fullGate": {
+      "status": "not-run",
+      "reason": "Scoped PR review repair: focused graph, mesh, export and affected catalogue checks; historical full gate remains tied to f78a9e26."
+    },
+    "formatting": {
+      "status": "passed",
+      "command": "pnpm exec prettier --check <all ten changed files>"
+    },
+    "implementationReview": {
+      "status": "passed",
+      "result": "Standards and spec reviewers identified transform-only ancestry during the repair; the guard and red/green regression close it. No remaining actionable concern."
+    }
+  },
+  "failuresAndRepairs": [
+    "Initial toolchain check was blocked by the sandbox at the default uv cache; pinned check passed with explicit no-sync and a temporary cache.",
+    "The renderer-version change intentionally invalidated the pinned batch request fingerprint; updated from the exact fixed request and reran the test.",
+    "Implementation review found ordinary transform ancestors being treated as group effect containers; reproduced, guarded, and reran focused unit and complete mesh browser/export checks."
+  ],
+  "sourceSha256": {
+    "packages/renderer-core/src/composition/mesh/bounds.ts": "70d171cdc02b059cb69d798914e4bb43347f19492baca175c0de024eaf23c947",
+    "packages/renderer-core/src/composition/render/graph.ts": "17349beb7b406318dc091ebe5c045f3f8ecdbc56c37211e711fbf6fc54ff8a88",
+    "packages/renderer-core/src/composition/render/version.ts": "27de3862c1cb6ceacd6d7cda6d1aa613f434479097f9fb2f16f5b9c0cbe84d79",
+    "packages/renderer-core/src/composition/render/webgl2.ts": "8ec390f48e62e8f616fd2130ecc3147ebbfd892a5b26fffb3e6ee0d33e835be6",
+    "tests/helpers/composition-mesh-offscreen.ts": "ab93a0d1880581f1321a9233a5f12194afd67b838bceaa6c300c9c52e832db5b",
+    "tests/unit/composition-mesh-bounds.test.ts": "8beef06a5880551227f11b4e5bdf51b4352672a5a8eb905e769e9771549c9f57",
+    "tests/unit/batch-identity.test.ts": "82c428174df9b2fe56f56e2175507f5c19bca8e25d57f3484c840dfc6dd439dd"
+  },
+  "logs": {
+    "offscreen-red": {
+      "path": "/private/tmp/pr50-offscreen-red.log",
+      "sha256": "da5effd81549352d5f12de0f46fec9d85599a80351eb6d5ff161cca8a973024c"
+    },
+    "transform-parent-red": {
+      "path": "/private/tmp/pr50-transform-parent-red.log",
+      "sha256": "e00823e8b9eb4748f275851303845076b6c12edcd946e3c071d325d4de8a2713"
+    },
+    "units-final": {
+      "path": "/private/tmp/pr50-units-final.log",
+      "sha256": "c37aa1951c3ea9defcc6043f12620e935ecf61c0aae4c726bdf9101f38954623"
+    },
+    "build-final": {
+      "path": "/private/tmp/pr50-build-final.log",
+      "sha256": "a7b7f717ddde363a75de3369b8e1fb6be1b450099a8c470912751ab671998849"
+    },
+    "lint-final": {
+      "path": "/private/tmp/pr50-lint-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boundaries": {
+      "path": "/private/tmp/pr50-boundaries.log",
+      "sha256": "5c910c33392af699061309d6cedd4b1c9773841d34fd0a81402eebfe60700563"
+    },
+    "mesh-browser-final": {
+      "path": "/private/tmp/pr50-mesh-browser-final.log",
+      "sha256": "073ea9112b5fd407bdcb9d65afc93b3457751bb5be72323591021e1e225aac5e"
+    },
+    "native-effects": {
+      "path": "/private/tmp/pr50-effects-browser.log",
+      "sha256": "411d8b43552bf97cf330ca35d41f5bc7c472e68fe6995a405b41fbba0b9c25c9"
+    }
+  }
+}

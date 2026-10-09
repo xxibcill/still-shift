@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #50 review repair (2026-10-09):** the posted descendant-mesh capture
+  finding is fixed, including nested groups and transform-only ancestry. 84 focused
+  units, the complete mesh browser/export checks and all seven affected catalogues
+  pass. [Review results](./pr-50-review-fix-results.json) retain detailed evidence.
+  Delivery is one finding/one commit and one final push; owner review/merge is next.
+  No full repository gate is rerun or claimed for this scoped repair; no blocker
+  or owner decision remains.
+
 - **CE14 complete (2026-10-09):** `codex/composition-ce14` code checkpoint
   `f78a9e26` passes the complete local `pnpm check` in 14,375.23 seconds: all 82
   commands, 3,597 units, 83 runtime and 314 integration tests, every browser/export
@@ -88,6 +96,21 @@ still hold before relying on them.
   remain disabled; all verification was local. No work was scheduled or merged.
 
 ## Entries
+
+### 2026-10-09 — PR #50 descendant mesh capture repair
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, from `ccc26a2e`.
+- **Done:** posted the P2 inline; retain descendant mesh outputs/intermediates,
+  bound Bezier/puppet output and preserve ordinary transform-parent semantics.
+- **Results:** 84 focused units; 32 new cross-backend pixel comparisons; full mesh
+  pixels, ownership, demo seeks and eight repeated/parallel/cache exports pass.
+  TypeScript, changed-file lint and boundaries pass. All seven native-effects
+  catalogues and repeated exports pass. No full repository gate is run or claimed.
+- **Rejected:** applying ordinary ancestors' effects to children caused a false
+  capture-budget failure; a regression now proves these effects stay independent.
+- **Delivery:** one finding/one commit and final push; owner review/merge is next.
+- **Records:** [CE14 plan](./composition-ce14-plan.md),
+  [review evidence](./pr-50-review-fix-results.json).
 
 ### 2026-10-09 — CE14 complete acceptance
 

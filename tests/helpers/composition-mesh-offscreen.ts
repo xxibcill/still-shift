@@ -357,5 +357,121 @@ export function checkOffscreenMeshes() {
     if (outside.some((value, i) => value !== clipped[i]))
       throw Error(`Scope window altered offscreen source: ${backend}`);
   }
+  // A group's input includes the rendered mesh output of its descendants.
+  for (const backend of ["canvas2d", "webgl2"] as const)
+    for (const delta of [-32, 32])
+      for (const nested of [false, true])
+        for (const effect of ["distort.mesh-warp", "distort.puppet"]) {
+          const group: CompositionLayer = {
+            id: "outer",
+            type: "group",
+            size: [16, 32],
+            transform: { anchor: [0, 0] },
+            effects: [
+              {
+                id: "return",
+                effect: "distort.puppet",
+                params: {
+                  rest: [[8 + delta, 16]],
+                  pins: [[8, 16]],
+                  refinement: 0,
+                },
+              },
+            ],
+          };
+          const child: CompositionLayer = {
+            id: "child",
+            type: "solid",
+            color: "#aa5522",
+            size: [16, 16],
+            parent: nested ? "inner" : "outer",
+            transform: { anchor: [0, 0], position: [0, 8] },
+          };
+          const deform = {
+            id: "move",
+            effect,
+            params:
+              effect === "distort.mesh-warp"
+                ? {
+                    size: [16, 16],
+                    subdivisions: 1,
+                    controls: [
+                      [delta / 16, 0],
+                      [delta / 16 + 1, 0],
+                      [delta / 16, 1],
+                      [delta / 16 + 1, 1],
+                    ],
+                  }
+                : { rest: [[8, 8]], pins: [[8 + delta, 8]], refinement: 0 },
+          };
+          const inner: CompositionLayer = {
+            id: "inner",
+            type: "group",
+            size: [16, 16],
+            parent: "outer",
+            transform: { anchor: [0, 0], position: [0, 8] },
+            effects: [deform],
+          };
+          const unparented = { ...child };
+          delete unparented.parent;
+          const expected = render([unparented], backend);
+          const actual = render(
+            nested
+              ? [group, inner, { ...child, transform: { anchor: [0, 0] } }]
+              : [group, { ...child, effects: [deform] }],
+            backend,
+          );
+          if (actual.some((value, i) => value !== expected[i]))
+            throw Error(
+              `Descendant mesh capture differs: ${backend}/${delta}/${nested}/${effect}`,
+            );
+          // An ordinary transform parent's own effects do not process its children.
+          const carrier: CompositionLayer = {
+            id: "carrier",
+            type: "solid",
+            color: "#ffffff",
+            size: [16, 16],
+            enabled: false,
+            parent: child.parent!,
+            transform: { anchor: [0, 0] },
+            effects: [
+              {
+                id: "unrelated",
+                effect: "distort.puppet",
+                params: { rest: [[8, 8]], pins: [[10008, 8]] },
+              },
+            ],
+          };
+          const inherited = render(
+            nested
+              ? [
+                  group,
+                  inner,
+                  carrier,
+                  {
+                    ...child,
+                    parent: "carrier",
+                    transform: { anchor: [0, 0] },
+                  },
+                ]
+              : [
+                  group,
+                  carrier,
+                  { ...child, parent: "carrier", effects: [deform] },
+                ],
+            backend,
+          );
+          if (inherited.some((value, i) => value !== expected[i]))
+            throw Error(
+              `Transform parent altered mesh capture: ${backend}/${delta}/${nested}/${effect}`,
+            );
+          reports.push({
+            backend,
+            position: 0,
+            delta,
+            pixels: actual.filter((value, i) => i % 4 === 3 && value > 0)
+              .length,
+          });
+        }
   return reports;
 }

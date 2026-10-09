@@ -1,3 +1,4 @@
+import { isMeshEffect, meshOutputBounds } from "../mesh/bounds.ts";
 import type { CompiledShapes } from "../shapes/types.ts";
 import { DEPTH_IMAGE_SHADER_VERSION } from "./webgl-depth-image.ts";
 import type {
@@ -1465,22 +1466,45 @@ class GraphBuilder {
       if (!local) return;
       const matrix = multiplyMatrix(frame.matrix, source.screenMatrix);
       const projected = projectBounds(local, matrix);
-      const firstMesh = source.effects.findIndex(
-        (effect) =>
-          effect.enabled &&
-          (effect.effect === "distort.puppet" ||
-            effect.effect === "distort.mesh-warp"),
-      );
-      const input =
-        effectBounds(
-          projected,
-          firstMesh < 0 ? source.effects : source.effects.slice(0, firstMesh),
-        ) ?? projected;
       const margin = this.paintBlur(scope, source, frame) * 3;
-      bounds.left = Math.min(bounds.left, input.left - margin);
-      bounds.top = Math.min(bounds.top, input.top - margin);
-      bounds.right = Math.max(bounds.right, input.right + margin);
-      bounds.bottom = Math.max(bounds.bottom, input.bottom + margin);
+      let input: Bounds = {
+        left: projected.left - margin,
+        top: projected.top - margin,
+        right: projected.right + margin,
+        bottom: projected.bottom + margin,
+      };
+      const retain = () => {
+        bounds.left = Math.min(bounds.left, input.left);
+        bounds.top = Math.min(bounds.top, input.top);
+        bounds.right = Math.max(bounds.right, input.right);
+        bounds.bottom = Math.max(bounds.bottom, input.bottom);
+      };
+      retain();
+      // Descendants contribute their rendered output. Retain intermediate extents
+      // too, so their own nested surfaces do not clip before the owner deforms them.
+      for (
+        let current: EvaluatedLayer | undefined = source;
+        current;
+        current = current.layer.parent
+          ? scope.byId.get(current.layer.parent)
+          : undefined
+      ) {
+        if (current !== source && current.layer.type !== "group") continue;
+        for (const effect of current.effects) {
+          if (!effect.enabled) continue;
+          if (current === state && isMeshEffect(effect)) break;
+          const space = effect.space ? scope.byId.get(effect.space)! : current;
+          input = isMeshEffect(effect)
+            ? meshOutputBounds(
+                input,
+                effect,
+                multiplyMatrix(frame.matrix, space.screenMatrix),
+              )
+            : (effectBounds(input, [effect]) ?? input);
+          retain();
+        }
+        if (current === state) break;
+      }
     };
     if (state.layer.type === "group") {
       for (const child of scope.tree.layers) {

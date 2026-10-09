@@ -196,3 +196,28 @@ Exact commands, timings, artifact paths and hashes are retained in
 [PR #49](https://github.com/xxibcill/still-shift/pull/49); CE14 is delivered on its
 separate branch. No merge or scheduled work was performed. No CE14 acceptance work,
 blocker or owner decision remains.
+
+## PR #50 review repair — 2026-10-09
+
+The posted P2 finding showed that a group capture measured each descendant before
+its first mesh effect. Moving a child offscreen with a mesh therefore discarded
+its output before the parent puppet could bring it back; the equivalent ordinary
+translation worked. Capture bounds now retain descendant output and intermediate
+extents through nested group effect stacks. Bezier control hulls bound patches;
+rigid MLS and starch use conservative centroid/radius enclosures, with exact bounds
+for uniform translations. Only group ancestors process descendant pixels; ordinary
+transform parents' effects are excluded. Existing capture and memory caps remain.
+
+The original failure and an implementation-review transform-parent failure were
+reproduced before their repairs. All 32 new cross-backend full-frame oracles pass,
+covering both mesh types, both directions, direct/nested groups and unrelated
+transform parents. 84 focused unit/graph tests, types, lint and boundaries pass.
+The complete mesh browser suite passes its pixel, ownership, forward/reverse demo
+and eight production export checks. All seven native-effects catalogues and
+repeated exports pass; details are recorded in the
+[review results](./pr-50-review-fix-results.json).
+
+Renderer identities advance to Canvas 1.47.3 and WebGL2 0.68.3. This is a focused
+review repair, not another complete repository gate. The original milestone gate
+above remains evidence for its named checkpoint; no frozen baseline or pixel
+threshold is changed. One finding is delivered in one commit and one final push.
