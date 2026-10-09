@@ -58,8 +58,10 @@ still hold before relying on them.
   Semantic/display-copy repair passes127 focused tests, source types/lint and
   package build. Reproduced count endpoint false pass is fixed using shared
   renderer clocks and correction onset; mixed/partial copy remains explicit.
-  Encoded23-case historical/hermetic packet and refreshed archive/isolated proof
-  are in flight because production package inputs changed.
+  Historical23-case encoded packet passes; hermetic counterpart is finishing.
+  Exact `b4f0119d` archive passes26 offline installed-package checks including
+  saved strict policy and public reports. OS-denied consumer source/dependency
+  setup is verified; both fresh native exports are next.
   Full baseline refresh changes
   only29 editorial frames for the reproduced mask fix. Human continuous/listening
   review remains pending. Original checkout edits preserved.
@@ -174,6 +176,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Refresh the exact installed archive after semantic repair
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` from `b4f0119d`.
+- **Results:**26 offline installed-package checks pass;2,926,256-byte immutable
+  archive SHA `78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309`
+  matches gate rebuild byte-for-byte. Public types, persisted strict semantic policy,
+  both backends and corresponding-source rebuild pass.
+- **Open / next:** finish hermetic packet and current OS-denied E01/text-only exports,
+  then complete local software gate. Earlier `ff82eae9` proof remains a predecessor.
+- **Records:** [archive gate](./mechanism-shorts-ms1-package-gate-results.json),
+  [display repair](./mechanism-shorts-ms1-semantic-display-results.json).
 
 ### 2026-10-10 — Verify displayed semantic copy and public report closure
 

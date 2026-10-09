@@ -342,6 +342,16 @@
       "files": 4,
       "tests": 127,
       "log": "/tmp/still-shift-ms1-display-focused-4.log"
+    },
+    {
+      "command": "pnpm test:package with pinned offline store",
+      "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+      "status": "passed",
+      "checks": 26,
+      "archiveSha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+      "details": "./mechanism-shorts-ms1-package-gate-results.json",
+      "isolatedE01Refresh": "in-progress",
+      "fullGate": "pending-rerun"
     }
   ],
   "renderEvidence": [

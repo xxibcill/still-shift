@@ -1,127 +1,141 @@
 {
   "schemaVersion": "mechanism-ms1-installed-package-gate-1",
-  "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
-  "archive": "/tmp/still-shift-ms1-archive-ff82eae9.tgz",
-  "archiveSha256": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
-  "archiveBytes": 2917353,
+  "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+  "archive": "/private/tmp/still-shift-ms1-archive-b4f0119d.tgz",
+  "archiveSha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+  "archiveBytes": 2926256,
   "status": "passed",
   "offlineChecks": 26,
-  "summedCheckSeconds": 68.79409958499998,
+  "summedCheckSeconds": 67.28683537199998,
   "conditionalOnlineDependencyAudit": "not-run-in-offline-mode",
   "checks": [
     {
       "name": "install archive outside repository (pnpm offline)",
-      "seconds": 0.8637981659999987
+      "seconds": 0.9364815420000013
     },
     {
       "name": "installed command help",
-      "seconds": 1.4716682500000007
+      "seconds": 1.4336919170000002
     },
     {
       "name": "installed command version",
-      "seconds": 0.4380460839999996
+      "seconds": 0.4486412500000006
     },
     {
       "name": "consumer TypeScript declarations",
-      "seconds": 8.077418834
+      "seconds": 9.9303655
     },
     {
       "name": "consumer bundler declarations",
-      "seconds": 7.278526540999999
+      "seconds": 8.171576708
     },
     {
       "name": "TypeScript program validation",
-      "seconds": 1.1099277919999986
+      "seconds": 1.1045157499999987
     },
     {
       "name": "installed browser pixel-quality analysis",
-      "seconds": 1.2977565419999992
+      "seconds": 1.2527010829999998
     },
     {
       "name": "legacy motion import in installed program",
-      "seconds": 0.8113997920000001
+      "seconds": 0.719057667000001
     },
     {
       "name": "JSON program validation",
-      "seconds": 0.4472435829999995
+      "seconds": 0.4265050829999964
     },
     {
       "name": "installed API imports",
-      "seconds": 0.43348679099999937
+      "seconds": 0.4085901659999945
     },
     {
       "name": "opt-in browser runtime setup",
-      "seconds": 0.666143167000002
+      "seconds": 0.6376438330000019
     },
     {
       "name": "opt-in depth runtime setup",
-      "seconds": 0.9792508339999986
+      "seconds": 1.1535139160000034
     },
     {
       "name": "installed depth worker command",
-      "seconds": 19.662683459
+      "seconds": 16.809851458000004
     },
     {
       "name": "installed canvas2d export",
-      "seconds": 1.7444340000000012
+      "seconds": 1.6952476250000037
     },
     {
       "name": "canvas2d frame count",
-      "seconds": 0.01739449999999488
+      "seconds": 0.01587870899999689
     },
     {
       "name": "canvas2d source comparison",
-      "seconds": 2.734491833
+      "seconds": 2.355160624999997
     },
     {
       "name": "installed webgl2 export",
-      "seconds": 1.8152599160000027
+      "seconds": 1.7411801660000055
     },
     {
       "name": "webgl2 frame count",
-      "seconds": 0.01711483300000691
+      "seconds": 0.015984290999993392
     },
     {
       "name": "webgl2 source comparison",
-      "seconds": 2.6645922500000014
+      "seconds": 2.2946014580000047
     },
     {
       "name": "installed preview page and seeking",
-      "seconds": 1.8813600000000006
+      "seconds": 1.707119209000004
     },
     {
       "name": "opt-in soundtrack runtime setup",
-      "seconds": 0.8297618750000038
+      "seconds": 0.8415489159999997
     },
     {
       "name": "soundtrack fixture",
-      "seconds": 0.016134375000001457
+      "seconds": 0.016167957999998178
     },
     {
       "name": "installed soundtrack worker and API",
-      "seconds": 3.5901126670000014
+      "seconds": 3.7797285419999973
     },
     {
       "name": "installed soundtrack CLI",
-      "seconds": 0.46077983400000083
+      "seconds": 0.4393574579999986
     },
     {
       "name": "corresponding source dependencies",
-      "seconds": 0.7034682089999987
+      "seconds": 0.7251347499999974
     },
     {
       "name": "corresponding source rebuild",
-      "seconds": 8.781845457999996
+      "seconds": 8.226589791999999
     }
   ],
-  "fullReport": "/tmp/still-shift-ms1-installed-package-verification-final.json",
-  "log": "/tmp/still-shift-ms1-installed-package-gate-2.log",
+  "fullReport": "/private/tmp/still-shift-ms1-installed-package-verification-b4f0119d.json",
+  "log": "/tmp/still-shift-ms1-installed-package-gate-3.log",
   "failedFirstRun": "/tmp/still-shift-ms1-installed-package-gate-1.log",
   "isolatedE01Consumer": {
-    "status": "passed",
+    "status": "current-archive-refresh-pending",
+    "predecessorStatus": "passed",
     "evidence": "./mechanism-shorts-ms1-installed-e01-results.json",
     "continuousMotion": "pending",
     "listening": "pending"
   },
-  "publication": "not-requested-not-performed"
+  "publication": "not-requested-not-performed",
+  "fullReportSha256": "sha256:80fcf6452522f945da801c8d80e3d083113a55d7c2e6291cf6ade12d66008be9",
+  "previousVerifiedArchive": {
+    "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
+    "archive": "/tmp/still-shift-ms1-archive-ff82eae9.tgz",
+    "archiveSha256": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
+    "archiveBytes": 2917353,
+    "status": "passed",
+    "offlineChecks": 26,
+    "fullReport": "/tmp/still-shift-ms1-installed-package-verification-final.json",
+    "log": "/tmp/still-shift-ms1-installed-package-gate-2.log"
+  },
+  "currentRegression": "Actual installed browser lint reads the saved strict semantic profile; missing authored context reports failed/semantic-context-required. NodeNext/Bundler consumers import public CompositionLintReport and CompositionSemanticAssociation; public association schema parses through renderer entry.",
+  "immutableRebuildComparison": "Exact byte comparison with candidate b4f0119d archive passed after gate rebuild."
 }
