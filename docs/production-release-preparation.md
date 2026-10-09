@@ -118,19 +118,14 @@ acceptance.
 
 ## Missing production-proof records
 
-The active roadmap names a portable tape-hook E01 and further mechanism pilots,
-but these referenced documents are absent from this checkout and its available
-Git history:
-
-- `docs/mechanism-shorts-production-plan.md`
-- `docs/veymelo-lessons-for-still-shift.md`
-- `docs/veymelo-video-style-distillation.md`
-
-Restore the authoritative records and identify the production project's source
-folder before asserting those workflow gates pass. Their linked scope cannot be
-reconstructed as an approved plan from brief roadmap descriptions. Existing
-technical examples remain useful smoke tests; they do not establish the E01
-production proof or human visual/listening acceptance.
+The earlier preparation audit found the detailed mechanism and authoring records
+absent. MS0 on 2026-10-09 restores the [mechanism production plan](./mechanism-shorts-production-plan.md)
+and [feedback audit](./mechanism-shorts-feedback-coverage-audit-2026-10-07.md),
+locates original E01 sources and records their dependencies in the
+[MS0 results](./mechanism-shorts-ms0-results.json). This resolves mechanism source
+recovery; portable E01 implementation and human visual/listening acceptance remain
+separate work. Veymelo authoring-study files remain outside this milestone's scope.
+Existing technical examples do not establish the E01 production proof.
 
 ## Installation and operating procedure
 

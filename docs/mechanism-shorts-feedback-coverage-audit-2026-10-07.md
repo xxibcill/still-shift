@@ -5,8 +5,8 @@
 and acceptance verification remain pending.
 
 **Restored:** 2026-10-09 from the historical audit and its amendment diff. The
-source hashes below describe the original review inputs. Current restoration and
-document checks are recorded in [reconciliation evidence](./roadmap-reconciliation-results.json);
+source hashes below describe the original review inputs. Current source/input audit and
+document checks are recorded in [MS0 evidence](./mechanism-shorts-ms0-results.json);
 they do not establish runtime acceptance.
 
 The original audit mapped all 12 feature requests but found nine details requiring

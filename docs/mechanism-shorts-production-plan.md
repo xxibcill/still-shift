@@ -1,6 +1,6 @@
 # Mechanism Shorts production plan
 
-**Created:** 2026-10-07. **Status:** active; MS0 audit started 2026-10-09.
+**Created:** 2026-10-07. **Status:** active; MS0 audit complete, MS1 next (2026-10-09).
 **Updated:** 2026-10-08 — supported Three.js integration, then native 3D composition;
 all nine feedback audit amendments incorporated into planned tasks and acceptance.
 **Start:** after the current [composition engine plan](./composition-engine-plan.md)
@@ -12,8 +12,8 @@ amendment diffs and the final recorded gate correction. The core composition
 scope is now merged and `0.1.0` is published; see the [current baseline](../ROADMAP.md#current-baseline)
 and [release evidence](./npm-release-results.json). The completion-gate checklist
 below retains its planning-time context and records what MS0 must carry into its
-baseline audit. Mechanism implementation, original input resolution and human
-production acceptance remain pending. The recovered plan and coverage audit preserve prior decisions; the MS0 record
+baseline audit. MS0 has recovered and audited the original inputs. Bridge/native implementation
+and human production acceptance remain pending. The recovered plan and coverage audit preserve prior decisions; the MS0 record
 will bind new findings to the integrated source and original inputs.
 
 Build a reusable production system for explanatory Shorts about familiar objects.
@@ -50,16 +50,16 @@ composition completion gate remain prerequisites.
 
 Before starting MS0, record the completed composition baseline and verify:
 
-- [ ] All required milestones in the approved current-version scope meet that
+- [x] All required milestones in the approved current-version scope meet that
       plan's definition of done. The remaining main lane at planning time is
       **CE13 → CE15 → CE14**. Starting this plan must not interrupt or add work to it.
-- [ ] Reconcile CE16's delivered implementation and integration evidence with its
+- [x] Reconcile CE16's delivered implementation and integration evidence with its
       stale planned tracker entry. Reuse completed audio work; do not implement it
       again or infer full completion from a merge alone.
-- [ ] Record the integrated baseline commit, toolchain, renderer/evaluator versions,
+- [x] Record the integrated baseline commit, toolchain, renderer/evaluator versions,
       full-gate results and outstanding limitations. A focused regression pass is
       not a completed composition gate.
-- [ ] Carry forward deferred and unscheduled work explicitly. CE6-P and CE8-L-F
+- [x] Carry forward deferred and unscheduled work explicitly. CE6-P and CE8-L-F
       retain their deferrals. CE5-X/Q9, CE9-F1 and the future-feature backlog are
       outside the approved remaining main lane unless the owner schedules them.
       Do not silently count them as complete or insert them ahead of this plan.
@@ -155,10 +155,10 @@ Primary implementation references: [layer contract](../packages/scene-contract/s
 [components](./reusable-components.md), [media status](./composition-media.md),
 and [contribution rules](./composition-contributing.md).
 
-### Input gaps to resolve in MS0
+### Historical input gaps and MS0 resolution
 
-The archive contains videos, review images and original scene/capture/verification
-code. It omits original narration, cue/caption inputs and other dependencies used
+At planning time, the archive contained videos, review images and original
+scene/capture/verification code. It omitted original narration, cue/caption inputs and other dependencies used
 by that code. Its `episode.example.json` is explicitly a design fixture with
 placeholder references. It cannot be submitted to the current CLI or treated as
 an executable E01 package. Do not run the supplied host-specific server as the
@@ -176,6 +176,15 @@ Resolve the example's naming ambiguity before freezing mechanical truth:
 separately, and verify the intended explanation against the chosen physical design.
 The prototype's hook thickness `0.18` is an authored model value, not a measured
 manufacturing dimension.
+
+**Resolved in MS0 (2026-10-09):** the original E01 project supplies selected take-2
+narration, original final WAV mix, captions/transcription, cues, font and scene
+sources. Their hashes and nine-shot map are in the [input inventory](./mechanism-shorts-ms0-inputs.json).
+Outside measurement/pull selects `hook.innerFace`, `q=0`; inside measurement/push
+selects `hook.outerFace`, `q=h`. INSIDE/OUTSIDE describe hook faces in the historical
+labels, not measurement mode. Original Arial/GPU identity and human review limits
+remain explicit. The recovery instructions above are historical constraints, not
+remaining missing-audio/caption work.
 
 ## Requirement traceability
 
@@ -422,20 +431,20 @@ topic coverage and any authorized real production or publication run.
 
 ## Milestone tracker
 
-MS0 is active under the owner's implementation request on 2026-10-09. MS1N is the required native 3D stage after
+MS0 audit is complete under the owner's implementation request on 2026-10-09. MS1N is the required native 3D stage after
 MS1. MS4B remains conditional for explanation views and further native extensions,
 with its decision recorded after the pilot. Audit/code completion and product review remain separate evidence.
 
-| ID   | Deliverable                                              | Depends on                                    | Status            | Completion record     |
-| ---- | -------------------------------------------------------- | --------------------------------------------- | ----------------- | --------------------- |
-| MS0  | Completed-composition audit and E01 baseline             | Composition completion gate                   | In progress       | MS0 audit in progress |
-| MS1  | Supported bridge and portable E01                        | MS0                                           | `[ ]`             | Pending               |
-| MS1N | Native 3D composition using shared scene and assets      | MS1                                           | `[ ]`             | Pending               |
-| MS2  | Reusable packs, rigs, shots, labels and cue-driven edits | MS1N                                          | `[ ]`             | Pending               |
-| MS3  | Episode lifecycle and ten-episode pilot                  | MS2                                           | `[ ]`             | Pending               |
-| MS4A | Queue stress and recovery at 300 jobs                    | MS3                                           | `[ ]`             | Pending               |
-| MS4B | Required explanation views and native extensions         | MS3 and a recorded coverage need              | `[ ]` conditional | Pending               |
-| MS4C | Diverse 30-episode cohort and capacity decision          | MS4A; MS4B when required by selected episodes | `[ ]`             | Pending               |
+| ID   | Deliverable                                              | Depends on                                    | Status            | Completion record                                   |
+| ---- | -------------------------------------------------------- | --------------------------------------------- | ----------------- | --------------------------------------------------- |
+| MS0  | Completed-composition audit and E01 baseline             | Composition completion gate                   | `[x]`             | [MS0 evidence](./mechanism-shorts-ms0-results.json) |
+| MS1  | Supported bridge and portable E01                        | MS0                                           | `[ ]`             | Pending                                             |
+| MS1N | Native 3D composition using shared scene and assets      | MS1                                           | `[ ]`             | Pending                                             |
+| MS2  | Reusable packs, rigs, shots, labels and cue-driven edits | MS1N                                          | `[ ]`             | Pending                                             |
+| MS3  | Episode lifecycle and ten-episode pilot                  | MS2                                           | `[ ]`             | Pending                                             |
+| MS4A | Queue stress and recovery at 300 jobs                    | MS3                                           | `[ ]`             | Pending                                             |
+| MS4B | Required explanation views and native extensions         | MS3 and a recorded coverage need              | `[ ]` conditional | Pending                                             |
+| MS4C | Diverse 30-episode cohort and capacity decision          | MS4A; MS4B when required by selected episodes | `[ ]`             | Pending                                             |
 
 ### MS0 Baseline and dependency audit
 
@@ -447,24 +456,24 @@ supplies detailed current-code findings, estimates, compatibility and acceptance
 evidence for the additions below. These merge into the existing overlays, label
 holds, portable project and anchor work; they create no separate milestone lane.
 
-- [ ] Audit the final CE13/CE15/CE16 media, alpha, caching, worker and audio APIs.
+- [x] Audit the final CE13/CE15/CE16 media, alpha, caching, worker and audio APIs.
       Replace obsolete assumptions in this plan and identify existing equivalent
       features before adding code.
-- [ ] Recover E01 inputs; inventory hashes, licensing/provenance, fonts, original
+- [x] Recover E01 inputs; inventory hashes, licensing/provenance, fonts, original
       audio, captions/cues, scene parameters and dependency versions. Resolve the
       contact-state terminology and document model simplifications.
-- [ ] Extend that inventory with exact-copy font coverage and actual cut/axis
+- [x] Extend that inventory with exact-copy font coverage and actual cut/axis
       identity; hashes/loading alone are insufficient. Audit completed typography
       capabilities and identify valid routes for mask, count-fit, Thai and portrait
       probes before classifying any source-audited risk as a rendering defect.
-- [ ] Freeze a shot/label/event reference from the delivered v008 evidence. Record
+- [x] Freeze a shot/label/event reference from the delivered v008 evidence. Record
       its current creative-review limitations separately from technical results.
-- [ ] Define a visual rubric: recognizable object, solid side faces, real slots,
+- [x] Define a visual rubric: recognizable object, solid side faces, real slots,
       readable blade curvature, bevel highlights, material separation, contact
       shadow, visible causal contact, stable camera framing and readable captions.
-- [ ] Establish comparable baseline tasks and telemetry collection before claiming
+- [x] Establish comparable baseline tasks and telemetry collection before claiming
       token or labor savings. Record missing token telemetry as null.
-- [ ] Select the first package boundaries, resource budgets and proposed import
+- [x] Select the first package boundaries, resource budgets and proposed import
       subset. Estimate work by milestone after this audit; retain no deadline until
       based on implementation evidence.
 
@@ -473,6 +482,14 @@ composition checkpoint, reference frame/shot map, baseline measurement protocol,
 rubric and unresolved inputs. Verify supplied hashes without executing historical
 customer scripts as setup. Missing exact E01 inputs block its reconstruction claim,
 not unrelated contract or synthetic-fixture work.
+
+**MS0 audit record (2026-10-09):** [results](./mechanism-shorts-ms0-results.json),
+[input inventory](./mechanism-shorts-ms0-inputs.json),
+[API audit](./mechanism-shorts-ms0-api-audit.json),
+[typography audit](./mechanism-shorts-ms0-typography-audit.json) and
+[baseline protocol](./mechanism-shorts-ms0-baseline.md). Audit acceptance and documentation verification are complete; MS0 PR is next.
+Historical Arial/GPU identity, public media redistribution and human playback/
+listening acceptance remain explicitly limited; no MS1 completion is inferred.
 
 ### MS1 Supported bridge and portable E01
 
@@ -1017,6 +1034,5 @@ portable project.
 **Implementation order:** MS0 → MS1 bridge → MS1N native 3D → MS2 → MS3, then
 conditional explanation extensions and capacity stages under the tracker.
 
-**First action after the composition gate closes:** assign MS0, audit the completed
-composition APIs and resolve E01 inputs, then build MS1's one-contact-shot proof
-before the complete portable E01 and scoped label-repair demonstration.
+**Current next action (2026-10-09):** open the verified MS0 PR, then build MS1's shared-contract/one-frame and one-contact-shot proof
+before complete portable E01 and scoped label-repair acceptance.
