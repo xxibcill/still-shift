@@ -418,7 +418,7 @@ async function execute(
     const loaded = await readMechanismEpisode(input),
       summary = summarizeLoaded(loaded);
     const items =
-      command === "inspect"
+      command !== "validate"
         ? inspectItems(loaded, flags.get("shot"))
         : loaded.fontDiagnostics.map(row);
     return {
@@ -474,7 +474,7 @@ async function execute(
   if (command === "check")
     return resultView(
       command,
-      await checkMechanismEpisode(input, { ...prepared, ...final }),
+      await checkMechanismEpisode(input, { ...prepared, ...final, signal }),
     );
   if (command === "package")
     return resultView(
@@ -483,6 +483,7 @@ async function execute(
         outputDirectory: required(flags, "output-dir"),
         ...prepared,
         ...final,
+        signal,
       }),
     );
   const options = {
@@ -560,6 +561,7 @@ export async function runEpisodeCli(
       }
     }
     const result = await execute(command, flags, io, controller.signal);
+    controller.signal.throwIfAborted();
     const receipt = await createMechanismCommandReceipt(result, {
       ...options,
       ...([
@@ -574,6 +576,7 @@ export async function runEpisodeCli(
         ? { retainFullResult: true }
         : {}),
     });
+    controller.signal.throwIfAborted();
     io.stdout(`${JSON.stringify(receipt)}\n`);
     return receipt.status === "passed"
       ? 0

@@ -5,7 +5,10 @@ import {
   mechanismHash,
   mechanismContentHash,
 } from "../../packages/animation-engine/src/mechanism/io.ts";
-import { createTapeHookScene } from "../../packages/animation-engine/src/mechanism/tape-hook.ts";
+import {
+  createTapeHookScene,
+  createTapeHookShots,
+} from "../../packages/animation-engine/src/mechanism/tape-hook.ts";
 import {
   MechanismEpisodeSchema,
   type MechanismSidecar,
@@ -14,6 +17,10 @@ import { buildRenderGraph } from "../../packages/renderer-core/src/composition/r
 import { compositionRequiredCoverageGraphs } from "../../packages/renderer-core/src/composition/render/required-coverage.ts";
 import { compositionMediaFrameDependencies } from "../../packages/renderer-core/src/composition/render/graphs.ts";
 import { readFontIdentity } from "../../packages/renderer-core/src/font-identity.ts";
+import {
+  evaluateMechanismFrame,
+  prepareMechanismScene,
+} from "../../packages/renderer-core/src/mechanism/index.ts";
 import { evaluateComp } from "../../packages/renderer-core/src/composition/evaluate/index.ts";
 import {
   compileMechanismOverlays,
@@ -128,6 +135,65 @@ function fixture() {
 }
 
 describe("native mechanism overlays", () => {
+  it("compiles all696 physical proof samples within the unchanged metadata budget", () => {
+    const { loaded, captures } = fixture();
+    loaded.episode.output.frameCount = 696;
+    loaded.episode.shots = createTapeHookShots();
+    loaded.episode.captions = [];
+    const prepared = prepareMechanismScene(loaded.scene);
+    const complete = loaded.episode.shots.map((shot) => {
+      const frameCount = shot.endFrameExclusive - shot.startFrame;
+      const frames = Array.from({ length: frameCount }, (_, frame) => {
+        const state = evaluateMechanismFrame(prepared, {
+          frame: shot.startFrame + frame,
+          width: 1080,
+          height: 1920,
+          ...(shot.camera ? { camera: shot.camera } : {}),
+          ...(shot.cameraKeys ? { cameraKeys: shot.cameraKeys } : {}),
+          controls: shot.controls,
+          hiddenParts: shot.hiddenParts,
+        });
+        return {
+          ...captures[0]!.sidecar.frames[0]!,
+          frame,
+          sourceFrame: state.frame,
+          shotId: shot.id,
+          camera: state.camera,
+          parts: state.parts,
+          rigs: state.rigs,
+          assertions: state.assertions,
+          anchors: Object.values(state.anchors).map((anchor) => ({
+            ...anchor,
+            visibility:
+              anchor.projectionVisibility === "in-frame"
+                ? ("visible" as const)
+                : anchor.projectionVisibility,
+            visibilityMethod: "scene-raycast" as const,
+            projectionErrorPixels: 0,
+          })),
+        };
+      });
+      return {
+        ...captures[0]!,
+        shotId: shot.id,
+        frames: Array(frameCount).fill(hash) as string[],
+        sidecar: { ...captures[0]!.sidecar, frames, frameCount },
+      };
+    });
+    const comp = compileMechanismOverlays(loaded, complete);
+    expect(JSON.stringify(comp.metadata).length).toBeLessThanOrEqual(65536);
+    expect(comp.metadata?.physicalProofDeclarations).toHaveLength(9);
+    const rows = comp.layers.flatMap((layer) => {
+      const proof = layer.metadata?.physicalProof;
+      return proof &&
+        typeof proof === "object" &&
+        !Array.isArray(proof) &&
+        Array.isArray(proof.frames)
+        ? proof.frames
+        : [];
+    });
+    expect(rows).toHaveLength(696);
+  });
   it("aligns complete shot-local sequences with global time and stable legal IDs", () => {
     const { loaded, captures } = fixture();
     const comp = compileMechanismOverlays(loaded, captures);

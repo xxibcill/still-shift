@@ -309,7 +309,7 @@ export function createTapeHookShots(): MechanismShot[] {
   return purposes.map((purpose, index) => {
     const start = ranges[index]!,
       end = ranges[index + 1]!,
-      labelStart = index === 3 ? 284 : start + 10;
+      labelStart = start + 10;
     const labels: MechanismLabel[] = roles[index]
       ? [
           {

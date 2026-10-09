@@ -58,6 +58,22 @@ describe("episode CLI authoring protocol", () => {
     expect(result.output).not.toContain('"positions"');
     expect(result.output).not.toContain('"indices"');
   });
+  it("provides source-only fresh-session summary with current revision, shot ranges and label positions", async () => {
+    const before = await readFile(project, "utf8");
+    const result = await run(["summary", "--input", project]);
+    expect(result.code).toBe(0);
+    expect(result.receipt.summary.projectHash).toMatch(/^sha256:/);
+    expect(
+      result.receipt.items.filter((item) => item.kind === "shot"),
+    ).toHaveLength(9);
+    const travel = result.receipt.items.find(
+      (item) => item.kind === "label" && item.id === "label-travel",
+    );
+    expect(travel).toMatchObject({ shot: "V8-05", text: "TRAVEL" });
+    expect(travel?.position).toBeDefined();
+    expect(result.output).not.toContain('"indices"');
+    expect(await readFile(project, "utf8")).toBe(before);
+  });
   it("locates unsupported project versions and preserves the source", async () => {
     const path = join(directory, "unknown.json"),
       value = { schemaVersion: "mechanism-episode-99" };

@@ -39,6 +39,13 @@
       "status": "implemented-focused-verified-acceptance-in-progress",
       "behavior": "Versioned bounded CLI discovery/schemas/inspect/deps/save/patch/prepare/compile/preview/render/check/package; actual source font identity/axes/license, immutable plates, independent final audio and media identities. Mixed-size line/word masks repaired after exact reproduced pixel-loss negatives. Explicit reading associations preserve raw faults and unannotated defaults. Native full-timeline plate group preserves required coverage. Full E01 exposes real caption-origin/painter-order faults; fixes and speech-specific policy still being verified.",
       "fullGate": "not-run-in-this-checkpoint"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "native-caption-order-and-portable-result-closure",
+      "status": "implemented-focused-verified-full-E01-rerun-pending",
+      "behavior": "Actual decoded frame0 exposed plates painting above all native copy. Correct top-layer order and wrap origin restored; source-bound speech cues remain intact across cuts. Explicit stationary proof declarations retain raw lint measurements, protect moving/faint/lost copy, and require human review. Delivery copies/rebases verified scene/export/lifecycle/report closure and rejects stale/swapped finals.",
+      "fullGate": "not-run-in-this-checkpoint"
     }
   ],
   "verification": [
@@ -117,6 +124,63 @@
       "command": "pnpm schema:generate then schema:check; frozen offline dependencies",
       "status": "passed",
       "notes": "All seven mechanism schemas now drift-checked. CLI direct Zod4.1.5 added; only three importer lines change existing locked graph."
+    },
+    {
+      "command": "focused source-bound speech/proof/native-overlay/legacy quality plus tsc and narrow lint",
+      "status": "passed",
+      "tests": 113,
+      "log": "/tmp/still-shift-ms1-caption-proof-unit-final.log"
+    },
+    {
+      "command": "portable live-result closure and stale final/report/symlink negatives",
+      "status": "passed",
+      "tests": 13,
+      "log": "/private/tmp/mechanism-package-live-green-attempt2.log"
+    },
+    {
+      "command": "fresh source summary CLI and overlay tests",
+      "status": "passed",
+      "tests": 18,
+      "log": "/tmp/still-shift-ms1-cache-summary-runtime-2.log",
+      "notes": "Capture suite separately failed due Vitest import.meta.resolve adaptation; not a combined pass."
+    },
+    {
+      "command": "actual originalSS01 native cached/uncached repeated one/four workers bothbackends; exactcurrentencoder and realHTTP broker partition/closure/fault checks",
+      "status": "passed-in-stages",
+      "exports": 16,
+      "decodedFramesEach": 120,
+      "historicalMP4Exact": true,
+      "retainedTests": 28,
+      "encoderCases": 12,
+      "brokerCases": 16,
+      "details": "mechanism-shorts-ms1-transport-results.json",
+      "notes": "Temporary harness callback failure and passing rerun retained; unknown original rejected chunk type/size remains unavailable."
+    },
+    {
+      "command": "capture runtime identity/cancellation/immutable cache recheck",
+      "status": "passed",
+      "tests": 8,
+      "log": "/tmp/still-shift-ms1-cache-summary-runtime-3.log",
+      "notes": "Identity hashes actual Three module/core/RoomEnvironment/package bytes and refuses mid-capture source changes."
+    },
+    {
+      "command": "native all696 proof samples under unchanged metadata budget",
+      "status": "passed",
+      "tests": 9,
+      "log": "/tmp/still-shift-ms1-proof-metadata-budget.log"
+    },
+    {
+      "command": "active native pixel-check cancellation and pre-aborted input checks",
+      "status": "passed",
+      "tests": 2,
+      "log": "/tmp/still-shift-ms1-check-cancellation-1.log"
+    },
+    {
+      "command": "portable closure and staged cancellation checks",
+      "status": "passed",
+      "tests": 16,
+      "log": "/private/tmp/mechanism-package-cancel-green.log",
+      "typecheck": "/private/tmp/mechanism-package-cancel-types-rerun.log"
     }
   ],
   "renderEvidence": [
@@ -260,5 +324,33 @@
     "MS1 full acceptance, isolated installed-package lifecycle, repair/resume proof and full gate remain in flight.",
     "Customer source media remains outside Git.",
     "Independent packaging review has found live-report closure/stale-final gaps; repairs in progress."
+  ],
+  "retainedFailures": [
+    {
+      "attempt": "full E01 v4 native MP4",
+      "reason": "Actual painter-order failure hides captions/labels; caption origin offscreen. Mechanics/audio positive do not establish visual acceptance.",
+      "output": "/tmp/still-shift-ms1-e01-v4-layout.mp4",
+      "evidence": "/tmp/still-shift-ms1-e01-v4-layout-result.json"
+    },
+    {
+      "attempt": "full E01 v5 capture/compile",
+      "reason": "All696 plates complete. Full proof rows duplicated at root exceeded unchanged65,536byte metadata limit; compact root declarations now reference bounded per-shot evidence.",
+      "log": "/tmp/still-shift-ms1-e01-render-v5.log"
+    },
+    {
+      "attempt": "root build6",
+      "reason": "Optional locale metadata not valid JSON type; absent optional key now explicitly removed.",
+      "log": "/tmp/still-shift-ms1-root-build-6.log"
+    },
+    {
+      "attempt": "cache/summary runtime1 and build7",
+      "reason": "Added runtime identity test reused existing receipt variable; renamed.",
+      "log": "/tmp/still-shift-ms1-cache-summary-runtime-1.log"
+    },
+    {
+      "attempt": "cache/summary runtime2",
+      "reason": "Vitest SSR lacks import.meta.resolve; package-resolved Three module/core/addon hashes now use createRequire without executing CommonJS.",
+      "log": "/tmp/still-shift-ms1-cache-summary-runtime-2.log"
+    }
   ]
 }

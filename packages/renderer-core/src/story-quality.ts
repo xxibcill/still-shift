@@ -1,3 +1,4 @@
+import { classifyPhysicalProofHolds } from "./composition/physical-proof-quality.ts";
 import type { Composition } from "@still-shift/scene-contract";
 import { analyzeCompositionStillness } from "./story-continuous-quality.ts";
 import {
@@ -449,6 +450,11 @@ export function analyzeCompositionQuality(
         diagnostic.classification = "declared-reading-hold";
       }
     }
+  const physicalProofHolds = classifyPhysicalProofHolds(
+    frames,
+    resolved,
+    diagnostics,
+  );
   diagnostics.sort(
     (a, b) =>
       a.frames[0] - b.frames[0] ||
@@ -471,6 +477,7 @@ export function analyzeCompositionQuality(
     },
     diagnostics,
     ...(readingDeclarations.length ? { readingDeclarations } : {}),
+    ...(physicalProofHolds.length ? { physicalProofHolds } : {}),
     ...(resolved.speechCaptions?.length
       ? {
           speechCaptions: analyzeCompositionSpeechCaptions(

@@ -94,6 +94,31 @@ export const CompositionSpeechCaptionSchema = z
 export type CompositionSpeechCaption = z.infer<
   typeof CompositionSpeechCaptionSchema
 >;
+export const CompositionPhysicalProofHoldSchema = z
+  .object({
+    id: z.string().min(1).max(200),
+    purpose: z.string().min(1).max(400),
+    layer: z.string().min(1).max(1024),
+    start: frame,
+    end: frame,
+    evidenceSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+    frames: z
+      .array(
+        z
+          .object({
+            frame,
+            plateSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+            physicalSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+          })
+          .strict(),
+      )
+      .min(1)
+      .max(COMPOSITION_LIMITS.maxFrameCount),
+  })
+  .strict();
+export type CompositionPhysicalProofHold = z.infer<
+  typeof CompositionPhysicalProofHoldSchema
+>;
 export const CompositionQualityPolicySchema = z
   .object({
     maxFrozenFrames: frame.optional(),
@@ -129,6 +154,10 @@ export const CompositionQualityPolicySchema = z
     readingDeclarations: z
       .array(CompositionReadingDeclarationSchema)
       .max(COMPOSITION_LIMITS.maxLayers)
+      .optional(),
+    physicalProofHolds: z
+      .array(CompositionPhysicalProofHoldSchema)
+      .max(1000)
       .optional(),
     speechCaptions: z
       .array(CompositionSpeechCaptionSchema)
@@ -300,6 +329,44 @@ export function resolveCompositionQualityPolicy(
         { path: path + ".members" },
       );
   }
+  const proofIds = new Set<string>();
+  let proofFrames = 0;
+  for (const [index, proof] of (policy.physicalProofHolds ?? []).entries()) {
+    const path = `physicalProofHolds.${index}`;
+    const layer = comp.layers.find((layer) => layer.id === proof.layer);
+    const metadata = layer?.metadata?.physicalProof;
+    const captured =
+      metadata && typeof metadata === "object"
+        ? CompositionPhysicalProofHoldSchema.safeParse(metadata)
+        : undefined;
+    proofFrames += proof.frames.length;
+    if (
+      proofIds.has(proof.id) ||
+      proof.end <= proof.start ||
+      proof.end > comp.frameCount ||
+      proof.frames.length !== proof.end - proof.start ||
+      proof.frames.some((row, index) => row.frame !== proof.start + index) ||
+      proofFrames > comp.frameCount
+    )
+      passageError(
+        "comp-lint-proof-hold",
+        "Physical proof holds require unique IDs and bounded complete ordered samples",
+        { path },
+      );
+    proofIds.add(proof.id);
+    if (
+      layer?.type !== "sequence" ||
+      layer.inPoint !== proof.start ||
+      layer.outPoint !== proof.end ||
+      !captured?.success ||
+      JSON.stringify(captured.data) !== JSON.stringify(proof)
+    )
+      passageError(
+        "comp-lint-proof-hold",
+        "Physical proof declarations must match native capture evidence and its complete shot range",
+        { path: path + ".layer" },
+      );
+  }
   const speechIds = new Set<string>();
   for (const [index, cue] of (policy.speechCaptions ?? []).entries()) {
     const path = `speechCaptions.${index}`;
@@ -320,8 +387,14 @@ export function resolveCompositionQualityPolicy(
         { path },
       );
     speechIds.add(cue.id);
+    const sourceCue = CompositionSpeechCaptionSchema.safeParse(
+      text?.metadata?.speechCue,
+    );
     if (
       text?.type !== "text" ||
+      text.textRole !== "body" ||
+      !sourceCue.success ||
+      JSON.stringify(sourceCue.data) !== JSON.stringify(cue) ||
       text.text !== cue.text ||
       text.inPoint !== cue.start ||
       text.outPoint !== cue.end

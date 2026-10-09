@@ -1,8 +1,9 @@
 import { createHash } from "node:crypto";
+import { createRequire } from "node:module";
 import { mkdir, mkdtemp, readFile, readdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { setTimeout as delay } from "node:timers/promises";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { beforeAll, describe, expect, it } from "vitest";
 import {
@@ -160,6 +161,29 @@ describe("first-party mechanism plate capture", () => {
     expect(initial.cacheHits).toBe(0);
     expect(initial.environment.profile).toBe("chromium-software-2");
     expect(initial.environment.webglRenderer).toContain("SwiftShader");
+    const runtimeReceipt = JSON.parse(
+      await readFile(initial.receiptPath, "utf8"),
+    );
+    expect(runtimeReceipt.identity.threeRuntime.version).toBe("0.186.0");
+    const runtimeFiles = runtimeReceipt.identity.threeRuntime.sources as {
+      name: string;
+      sha256: string;
+    }[];
+    expect(runtimeFiles.map((item) => item.name)).toEqual([
+      "three.module.js",
+      "three.core.js",
+      "RoomEnvironment.js",
+      "package.json",
+    ]);
+    const modulePath = join(
+      dirname(createRequire(import.meta.url).resolve("three")),
+      "three.module.js",
+    );
+    expect(runtimeFiles[0]!.sha256).toBe(
+      `sha256:${createHash("sha256")
+        .update(await readFile(modulePath))
+        .digest("hex")}`,
+    );
     const png = await readFile(join(initial.outputDirectory, "000000.png"));
     expect(inspectCompositionPng(png)).toMatchObject({
       width: 160,

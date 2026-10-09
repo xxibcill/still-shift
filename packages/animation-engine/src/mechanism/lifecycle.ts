@@ -240,8 +240,13 @@ async function prepareMechanismEpisodeLocked(
 export const compileMechanismEpisode = prepareMechanismEpisode;
 export async function checkMechanismEpisode(
   path: string,
-  options: { preparedDirectory?: string; finalOutput?: string } = {},
+  options: {
+    preparedDirectory?: string;
+    finalOutput?: string;
+    signal?: AbortSignal;
+  } = {},
 ) {
+  options.signal?.throwIfAborted();
   const loaded = await readMechanismEpisode(path),
     prepared = prepareMechanismScene(loaded.scene),
     findings: MechanismFinding[] = [];
@@ -287,6 +292,7 @@ export async function checkMechanismEpisode(
       );
     const sidecars: { shotId: string; sidecar: MechanismSidecar }[] = [];
     for (const capture of receipt.captures) {
+      options.signal?.throwIfAborted();
       const sidecarPath = resolve(
           options.preparedDirectory,
           capture.sidecarPath,
@@ -333,7 +339,7 @@ export async function checkMechanismEpisode(
     qualityReport = await lintCompositionFile(
       preparedCompositionPath,
       {
-        ...mechanismOverlayQualityPolicy(loaded.episode),
+        ...mechanismOverlayQualityPolicy(loaded.episode, sidecars),
         shots: loaded.episode.shots.map((shot) => ({
           id: shot.id,
           start: shot.startFrame,
@@ -341,7 +347,12 @@ export async function checkMechanismEpisode(
         })),
         intentionalCuts: loaded.episode.shots.map((shot) => shot.startFrame),
       },
-      { pixels: true, backend: "canvas2d", collectTextBounds: true },
+      {
+        pixels: true,
+        backend: "canvas2d",
+        collectTextBounds: true,
+        ...(options.signal ? { signal: options.signal } : {}),
+      },
     );
     overlayReport = checkMechanismOverlays(
       loaded.episode,
@@ -385,16 +396,20 @@ export async function checkMechanismEpisode(
         message:
           "Selected final bytes and render evidence must match the current prepared composition; old revisions or swapped deliveries are not accepted",
       });
-    const probe = await runProcess("ffprobe", [
-      "-v",
-      "error",
-      "-count_frames",
-      "-show_streams",
-      "-show_format",
-      "-of",
-      "json",
-      resolve(options.finalOutput),
-    ]);
+    const probe = await runProcess(
+      "ffprobe",
+      [
+        "-v",
+        "error",
+        "-count_frames",
+        "-show_streams",
+        "-show_format",
+        "-of",
+        "json",
+        resolve(options.finalOutput),
+      ],
+      { signal: options.signal },
+    );
     finalProbe = JSON.parse(probe.stdout);
     const streams = (
         finalProbe as {
@@ -440,9 +455,11 @@ export async function checkMechanismEpisode(
       sourceChannels: loaded.audioMetadata.channels,
       frameCount: loaded.episode.output.frameCount,
       fps: loaded.episode.output.fps,
+      ...(options.signal ? { signal: options.signal } : {}),
     });
     findings.push(...audioReport.findings);
   }
+  options.signal?.throwIfAborted();
   return {
     schemaVersion: "mechanism-check-result-1" as const,
     projectHash: loaded.projectHash,
@@ -487,6 +504,7 @@ export async function renderMechanismEpisode(
   const check = await checkMechanismEpisode(path, {
       preparedDirectory: prepared.outputDirectory,
       finalOutput: render.outputPath,
+      ...(options.signal ? { signal: options.signal } : {}),
     }),
     result = {
       schemaVersion: "mechanism-render-result-1" as const,
@@ -500,6 +518,7 @@ export async function renderMechanismEpisode(
       render,
       check,
     };
+  options.signal?.throwIfAborted();
   await writeMechanismJson(
     join(outputDirectory, "episode.result.json"),
     result,
@@ -542,6 +561,7 @@ export async function renderMechanismEpisode(
     nextAction:
       "episode inspect --input <episode.json>; episode patch --input <episode.json> --request <revision-aware-patch.json>; episode render --input <episode.json> --output-dir <fresh-directory>",
   });
+  options.signal?.throwIfAborted();
   await writeMechanismJson(
     join(outputDirectory, "project.summary.json"),
     summary,

@@ -49,9 +49,11 @@ still hold before relying on them.
   Shared contracts, pure rigs, solid geometry, strict font preflight, bounded
   first-party plate capture and independent mechanical checks are implemented.
   All696 E01 plates and one native MP4 completed in stages. Final inspection
-  caught caption painter-order/origin faults; fixes and speech/proof reading
-  semantics remain in flight. Audio alignment/tail and independent mechanics
-  pass. Complete corrected E01, report closure/stale-final fixes, cache/repair,
+  caught caption painter-order/origin faults; fixes and source-bound speech/proof
+  reading semantics pass focused checks. Full v5 capture hit duplicate proof
+  metadata budget; compact root declarations retain per-shot evidence. Audio alignment/tail and independent mechanics
+  pass. Report closure/stale-final fixes pass13 focused checks. Complete corrected E01,
+  dependency capability dry-run, cancellation, cache/repair,
   isolated package and full local gate before MS1 PR. MS1N implementation has not
   started. Original checkout edits are preserved.
 
@@ -166,6 +168,26 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Native caption repair and portable result closure
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`, carrying MS0 PR#51.
+- **Done:** actual decoded frame0 revealed and repaired overlay painter order and
+  caption wrap origin. Supplied cue timing stays intact; explicit speech/proof
+  declarations retain raw reading/static measurements and human-review requirements.
+  Portable delivery verifies and rebases selected final/export/scene/lifecycle and
+  nested report identities; old revisions and swapped finals fail.
+- **Results:**113 policy/overlay/legacy tests, global types and scoped lint pass;
+  16 package closure/negative/cancellation tests and2 pixel-check cancellation
+  tests pass. Exact historical SS01 has16 byte-identical exports plus28 retained
+  tests,12 encoder cases and16 actual HTTP cases. Fresh v5 captured696 plates but compile
+  stopped at the existing metadata budget; compact root references fix duplication.
+- **Rejected / next:** no visual acceptance of the hidden-caption v4 MP4. Preserve
+  failed builds/capture tests, finish runtime identity/dependency dry-run/cancellation,
+  then corrected full E01, scoped repair, isolated delivery and full local gate.
+- **Records:** [MS1 results](./mechanism-shorts-ms1-results.json),
+  [episode interface](./mechanism-episode-cli.md),
+  [SS01 transport evidence](./mechanism-shorts-ms1-transport-results.json).
 
 ### 2026-10-10 — MS1 CLI lifecycle and native typography checkpoint
 

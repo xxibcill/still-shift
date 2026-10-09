@@ -94,9 +94,14 @@ pnpm still-shift episode package --input /tmp/e01-project/episode.json \
 
 The package enumerates copied source/dependencies, font/license, native
 composition, sequence manifests, clean plates, sidecars, receipts and optional
-final output with byte hashes. Paths are rebased to the package; unchanged PNG and
+final output with byte hashes. A final-output package requires its current prepared
+source and the exporter’s adjacent `.result.json` and `.scene.json` receipts. It
+rejects old revisions and swapped final bytes. Paths are rebased to the package; unchanged PNG and
 sidecar byte identities survive relocation. Only declared artifacts are copied;
-caches and failed attempts stay outside the delivery. Packaging stages a fresh
+caches and failed attempts stay outside the delivery. Rewritten JSON checksums are
+refreshed; `packageRelocation` retains the original source and scene hashes. Scene
+cache paths without delivered files are omitted explicitly, while their hashes
+remain provenance. Packaging stages a fresh
 directory, verifies it, then publishes it atomically. A moved package can run
 `deps`, `validate`, `save`, `patch`, `render` and `check` without the original source
 folder or previous cache. Use `save --input <episode.json> --output <same-project/new.json>`

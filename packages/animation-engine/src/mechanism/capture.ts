@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
+import { createRequire } from "node:module";
 import { constants } from "node:fs";
 import {
   copyFile,
@@ -398,7 +399,11 @@ export async function captureMechanismPlates(
         wallSeconds: elapsed(started),
       },
     });
-    if (identity.browserModuleSha256 !== digest(await readFile(browserModule)))
+    if (
+      identity.browserModuleSha256 !== digest(await readFile(browserModule)) ||
+      canonicalMechanismHash(identity.threeRuntime) !==
+        canonicalMechanismHash(await threeRuntimeIdentity())
+    )
       throw new Error(
         "Renderer source changed during capture; rerun against one fixed source identity",
       );
@@ -484,6 +489,9 @@ function captureFailure(
   signal?: AbortSignal,
 ): AnimationEngineError {
   const cancelled = signal?.aborted;
+  const diagnosticCode = cancelled
+    ? "mechanism-capture-cancelled"
+    : "mechanism-capture-failed";
   const actualCause = cancelled
     ? Object.assign(new Error("Capture cancelled", { cause }), {
         code: "ABORT_ERR",
@@ -499,9 +507,8 @@ function captureFailure(
       ? "Mechanism plate capture was cancelled"
       : "Mechanism plate capture failed",
     {
-      diagnostic: cancelled
-        ? "mechanism-capture-cancelled"
-        : "mechanism-capture-failed",
+      diagnosticCode,
+      diagnostic: diagnosticCode,
       stage: context.stage,
       path: context.path,
       nextAction:
@@ -576,6 +583,28 @@ async function captureServer(directory: string): Promise<ViteDevServer> {
     },
   });
 }
+async function threeRuntimeIdentity() {
+  const runtimeRequire = createRequire(import.meta.url);
+  const module = join(
+    dirname(runtimeRequire.resolve("three")),
+    "three.module.js",
+  );
+  const core = join(dirname(module), "three.core.js");
+  const room = runtimeRequire.resolve(
+    "three/addons/environments/RoomEnvironment.js",
+  );
+  const packagePath = join(dirname(module), "../package.json");
+  const metadata = JSON.parse(await readFile(packagePath, "utf8")) as {
+    version: string;
+  };
+  const sources = await Promise.all(
+    [module, core, room, packagePath].map(async (path) => ({
+      name: basename(path),
+      sha256: digest(await readFile(path)),
+    })),
+  );
+  return { version: metadata.version, sources };
+}
 async function captureIdentity(
   input: CaptureInput,
   fontSha256: string,
@@ -607,6 +636,7 @@ async function captureIdentity(
     fontWeight: input.font.weight,
     fontFamily: input.font.family,
     browserModuleSha256: digest(await readFile(browserModule)),
+    threeRuntime: await threeRuntimeIdentity(),
     rendererVersion: MECHANISM_BRIDGE_RENDERER_VERSION,
     evaluatorVersion: input.frames[0]!.version,
     browserProfile: RENDER_BROWSER_PROFILE,

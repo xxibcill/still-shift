@@ -32,8 +32,10 @@ export async function lintCompositionFile(
     pixels?: boolean;
     backend?: CompositionBackend;
     collectTextBounds?: boolean;
+    signal?: AbortSignal;
   } = {},
 ) {
+  options.signal?.throwIfAborted();
   const backend = options.backend ?? "canvas2d";
   const loaded = await loadComposition(input, backend).catch(
     (error: unknown) => {
@@ -47,6 +49,7 @@ export async function lintCompositionFile(
       throw error;
     },
   );
+  options.signal?.throwIfAborted();
   if (!options.pixels)
     return {
       ...analyzeCompositionQuality(loaded.composition, policy),
@@ -56,7 +59,12 @@ export async function lintCompositionFile(
   const cacheDir = await mkdtemp(join(tmpdir(), "composition-lint-vite-"));
   let server: ViteDevServer | undefined;
   let browser: Browser | undefined;
+  const abort = () => {
+    void browser?.close().catch(() => {});
+  };
+  options.signal?.addEventListener("abort", abort, { once: true });
   try {
+    options.signal?.throwIfAborted();
     server = await createServer({
       root,
       cacheDir,
@@ -69,8 +77,11 @@ export async function lintCompositionFile(
         fs: { allow: [root, defaultBrowserProjectRoot] },
       },
     });
+    options.signal?.throwIfAborted();
     await server.listen();
+    options.signal?.throwIfAborted();
     browser = await launchRenderBrowser();
+    options.signal?.throwIfAborted();
     const page = await browser.newPage();
     await page.goto(
       runtimeBrowserUrl(server.resolvedUrls!.local[0]!, "composition-compile"),
@@ -129,13 +140,18 @@ export async function lintCompositionFile(
         collectTextBounds: options.collectTextBounds ?? false,
       },
     );
+    options.signal?.throwIfAborted();
     if (!result.ok) throw new PassageError(result.diagnostics);
     return {
       ...result.report,
       validationDiagnostics: loaded.warnings,
       ...(result.textBounds ? { textBounds: result.textBounds } : {}),
     };
+  } catch (error) {
+    options.signal?.throwIfAborted();
+    throw error;
   } finally {
+    options.signal?.removeEventListener("abort", abort);
     try {
       await browser?.close();
     } finally {

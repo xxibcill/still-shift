@@ -18,7 +18,10 @@ import {
 import { canonicalMechanismJson } from "../../../renderer-core/src/mechanism/index.ts";
 import type { FontAxes } from "../../../scene-contract/src/typography.ts";
 import type { Bounds } from "../../../renderer-core/src/composition/evaluate/types.ts";
-import type { CompositionQualityPolicy } from "../../../renderer-core/src/composition/quality-policy.ts";
+import type {
+  CompositionQualityPolicy,
+  CompositionSpeechCaption,
+} from "../../../renderer-core/src/composition/quality-policy.ts";
 
 export type MechanismPlateCapture = {
   shotId: string;
@@ -442,10 +445,17 @@ function captionOrigin(episode: MechanismEpisode): [number, number] {
 function captionSize(episode: MechanismEpisode) {
   return Math.max(24, Math.min(48, episode.output.width * 0.044));
 }
+function speechCueMetadata(cue: CompositionSpeechCaption) {
+  const { locale, ...values } = cue;
+  return { ...values, ...(locale ? { locale } : {}) };
+}
 function captionLayer(
   episode: MechanismEpisode,
   caption: MechanismEpisode["captions"][number],
 ): CompositionLayer {
+  const speechCue = mechanismOverlayQualityPolicy(episode).speechCaptions?.find(
+    (cue) => cue.cueId === caption.id,
+  );
   return {
     id: mechanismOverlayLayerId("caption", caption.id),
     type: "text",
@@ -462,7 +472,10 @@ function captionLayer(
     transform: { anchor: [0, 0], position: captionOrigin(episode) },
     size: [episode.output.width * 0.84, episode.output.height * 0.1],
     textBox: { locale: "en", maxLines: 3, lineHeight: 1.2 },
-    metadata: { mechanismCaption: caption.id },
+    metadata: {
+      mechanismCaption: caption.id,
+      ...(speechCue ? { speechCue: speechCueMetadata(speechCue) } : {}),
+    },
   };
 }
 /** Exact integer ordinal mapping preserves deterministic random seeks across every shot. */
@@ -541,6 +554,10 @@ export function compileMechanismOverlays(
         range: "pc",
       },
     });
+    const proof = physicalProofHold(episode, {
+      shotId: shot.id,
+      sidecar: capture.sidecar,
+    });
     plates.push({
       id,
       type: "sequence",
@@ -555,7 +572,11 @@ export function compileMechanismOverlays(
       sourceOutFrame: capture.frames.length,
       frameBlending: "hold",
       transform: { anchor: [0, 0], position: [0, 0] },
-      metadata: { mechanismShot: shot.id, sidecarPath: capture.sidecarPath },
+      metadata: {
+        mechanismShot: shot.id,
+        sidecarPath: capture.sidecarPath,
+        ...(proof ? { physicalProof: proof } : {}),
+      },
     });
     for (const label of shot.labels) {
       overlays.push(
@@ -620,6 +641,8 @@ export function compileMechanismOverlays(
       sourceEndSample: audio.sampleCount,
     });
   }
+  const { physicalProofHolds = [], ...readingPolicy } =
+    mechanismOverlayQualityPolicy(episode, captures);
   const validation = validateComposition({
     schemaVersion: "composition-1",
     id: mechanismOverlayLayerId("plate", episode.id),
@@ -647,7 +670,16 @@ export function compileMechanismOverlays(
       mechanismEpisode: episode.id,
       revision: episode.revision,
       overlayVersion: "mechanism-overlays-1",
-      readingPolicy: mechanismOverlayQualityPolicy(episode),
+      readingPolicy,
+      physicalProofDeclarations: physicalProofHolds.map(
+        ({ id, layer, start, end, evidenceSha256 }) => ({
+          id,
+          layer,
+          start,
+          end,
+          evidenceSha256,
+        }),
+      ),
     },
   });
   if (!validation.ok) throw new PassageError(validation.diagnostics);
@@ -655,8 +687,42 @@ export function compileMechanismOverlays(
 }
 export const compileMechanismComposition = compileMechanismOverlays;
 
+function physicalProofHold(episode: MechanismEpisode, capture: SidecarInput) {
+  const shot = episode.shots.find((shot) => shot.id === capture.shotId);
+  if (
+    !shot ||
+    capture.sidecar.frames.some(
+      (frame) =>
+        !Object.keys(frame.parts).length || !Object.keys(frame.rigs).length,
+    )
+  )
+    return undefined;
+  const hash = (value: unknown) =>
+    "sha256:" +
+    createHash("sha256").update(canonicalMechanismJson(value)).digest("hex");
+  return {
+    id: shot.id,
+    purpose: shot.purpose,
+    layer: mechanismOverlayLayerId("plate", shot.id),
+    start: shot.startFrame,
+    end: shot.endFrameExclusive,
+    evidenceSha256: hash(capture.sidecar),
+    frames: capture.sidecar.frames.map((frame) => ({
+      frame: frame.sourceFrame,
+      plateSha256: frame.plateSha256,
+      physicalSha256: hash({
+        scene: capture.sidecar.sceneSha256,
+        geometry: capture.sidecar.geometrySha256,
+        camera: frame.camera,
+        parts: frame.parts,
+        rigs: frame.rigs,
+      }),
+    })),
+  };
+}
 export function mechanismOverlayQualityPolicy(
   episode: MechanismEpisode,
+  sidecars: readonly SidecarInput[] = [],
 ): CompositionQualityPolicy {
   return {
     shots: episode.shots.map((shot) => ({
@@ -664,7 +730,9 @@ export function mechanismOverlayQualityPolicy(
       start: shot.startFrame,
       end: shot.endFrameExclusive,
     })),
-    ...(episode.audio && episode.captions.length
+    ...(episode.audio &&
+    episode.captions.length &&
+    episode.dependencies.some((dependency) => dependency.type === "captions")
       ? {
           speechCaptions: episode.captions.map((cue) => ({
             id: cue.id,
@@ -684,6 +752,10 @@ export function mechanismOverlayQualityPolicy(
           })),
         }
       : {}),
+    physicalProofHolds: sidecars.flatMap((capture) => {
+      const proof = physicalProofHold(episode, capture);
+      return proof ? [proof] : [];
+    }),
     readingDeclarations: episode.shots.flatMap((shot) =>
       shot.labels.map((label) => ({
         id: label.id,
