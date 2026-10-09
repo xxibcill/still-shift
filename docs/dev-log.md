@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **Mechanism milestones activated (2026-10-09):** owner requested MS0 → MS1 →
+  MS1N → MS2 → MS3, a branch/PR for each and frequent commits. Codex is auditing
+  inputs and completed APIs on `codex/mechanism-ms0` from `main` `e6eb7b06` in an
+  isolated worktree. Original checkout edits are preserved; E01 source project
+  was located and exact identities are being verified. No bridge/native code or
+  product review is complete. [Plan](./mechanism-shorts-production-plan.md).
+
 - **Development/release branches established (2026-10-09):** `production` and
   annotated `v0.1.0` are pushed at `db28a938`, containing the source for the
   published release. `main` remains the default development branch and receives
@@ -141,6 +148,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-09 — Activate ordered mechanism implementation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms0`, based on `main` `e6eb7b06`.
+- **Scope:** owner-authorized MS0 audit, then MS1 → MS1N → MS2 → MS3; one branch
+  and PR for each milestone. Active goal created; isolated worktree preserves
+  unrelated original edits. Restore only the required mechanism/typography plans.
+- **Progress:** three parallel read-only audits cover original E01 inputs, current
+  composition APIs and typography/probe routes. Customer source project is found.
+- **Verification / next:** locked dependencies installed offline; record actual
+  source/input hashes, current closure evidence and baseline protocol before MS0 PR.
+- **Records:** [production plan](./mechanism-shorts-production-plan.md),
+  [feedback coverage](./mechanism-shorts-feedback-coverage-audit-2026-10-07.md).
 
 ### 2026-10-09 — Adopt release branches and contribution rules
 
