@@ -1,6 +1,6 @@
 {
   "milestone": "CE14",
-  "status": "awaiting-full-gate",
+  "status": "complete",
   "date": "2026-10-09",
   "base": "efa42f42e57958133dfcd268e2c7f68861c32319",
   "pointCollections": {
@@ -34,10 +34,7 @@
       }
     ]
   },
-  "remaining": [
-    "complete final local pnpm check including frozen baselines",
-    "record completion evidence and push"
-  ],
+  "remaining": [],
   "geometry": {
     "status": "focused-passed",
     "tests": 58,
@@ -1267,7 +1264,133 @@
     }
   },
   "fullGate": {
-    "status": "pending",
-    "command": "pnpm check"
-  }
+    "milestone": "CE14",
+    "checkpoint": "f78a9e267b0a0d3a1ad1fb5bf213439f12cc0eb3",
+    "command": "pnpm check",
+    "status": "passed",
+    "startedAt": "2026-10-09T07:49:40+0700",
+    "log": "/private/tmp/ce14-f78a9e26-gate.log",
+    "exitCode": 0,
+    "elapsedSeconds": 14375.233823459013,
+    "finishedAt": "2026-10-09T11:49:16+0700",
+    "logSha256": "d66ada96369773a5dc604fe9e270c119a517434e617f11b2183c51b09caa09c7",
+    "packageCommandCount": 82,
+    "packageCommands": [
+      "check",
+      "toolchain:check",
+      "schema:check",
+      "check:boundaries",
+      "format:check",
+      "lint",
+      "soundtrack:lint",
+      "build",
+      "test",
+      "test:unit",
+      "test:runtime",
+      "test:integration",
+      "test:depth",
+      "test:browser:soundtrack",
+      "test:browser:composition-media",
+      "test:browser:composition-alpha",
+      "test:browser:composition-output",
+      "test:browser:composition-surfaces",
+      "test:browser:composition-parallel",
+      "test:browser:composition-export-memory",
+      "test:browser:composition-cache-dependencies",
+      "test:browser:composition-fps-audio",
+      "test:browser:composition-area",
+      "test:browser:depth",
+      "test:browser:vertical-image",
+      "test:browser:export",
+      "test:golden",
+      "test:browser:cli",
+      "test:browser:batch",
+      "test:browser:illustrated",
+      "test:browser:illustrated:vertical",
+      "test:browser:cinematic",
+      "test:browser:cinematic:vertical",
+      "test:browser:threshold",
+      "test:browser:dolly",
+      "test:browser:lateral",
+      "test:browser:reveal",
+      "test:browser:story",
+      "test:browser:story:activity",
+      "test:browser:story:continuous",
+      "test:browser:passage:authoring",
+      "test:browser:lab-session",
+      "test:browser:composition-session",
+      "test:browser:commerce",
+      "test:browser:commerce-components",
+      "test:browser:commerce-effects",
+      "test:browser:commerce-spatial",
+      "test:browser:reusable-components",
+      "test:browser:reusable-package",
+      "test:browser:reusable-behavior-package",
+      "test:browser:reusable-timing-package",
+      "test:browser:typography",
+      "test:browser:typography:fixtures",
+      "test:browser:composition-evaluator",
+      "test:browser:composition-expressions",
+      "test:browser:composition-quality",
+      "test:browser:composition",
+      "test:browser:composition-webgl",
+      "test:browser:composition-camera",
+      "test:browser:composition-lighting",
+      "test:browser:composition-shapes",
+      "test:browser:composition-webgl-export",
+      "test:browser:composition-exposure",
+      "test:browser:composition-effects",
+      "test:browser:composition-mesh",
+      "test:browser:composition-story-adapter",
+      "test:browser:composition-native-passage",
+      "test:browser:composition-native-passage:webgl",
+      "test:browser:composition-passage",
+      "test:browser:composition-story-fixtures",
+      "test:browser:composition-commerce-adapter",
+      "test:browser:composition-cinematic-adapter",
+      "test:browser:composition-typography-adapter",
+      "test:browser:composition-provider-typography",
+      "test:browser:composition-program",
+      "test:browser:composition-inspector",
+      "test:browser:composition-builder",
+      "test:browser:composition-depth",
+      "test:browser:composition-legacy-adapter",
+      "test:browser:composition-family-timeline",
+      "test:browser:composition-family-defaults",
+      "test:browser:composition-baselines"
+    ],
+    "tests": {
+      "unit": {
+        "tests": 3597,
+        "files": 338
+      },
+      "runtime": {
+        "tests": 83,
+        "files": 13
+      },
+      "integration": {
+        "tests": 314,
+        "files": 54
+      }
+    },
+    "frozenBaselines": {
+      "status": "passed",
+      "items": 176,
+      "frames": 36061,
+      "elapsedSeconds": 346.96,
+      "referencesChanged": false
+    },
+    "meshProductionExports": {
+      "status": "passed",
+      "cases": 8,
+      "framesEach": 48,
+      "backends": ["canvas2d", "webgl2"],
+      "encodedBodiesIdenticalWithinBackend": true,
+      "allDecodedFramesIdenticalWithinBackend": true,
+      "artifact": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce14-mesh-Z77BKN/exports.json",
+      "sha256": "8bcf33ec0d6b4bf4ca2c70aa006689d77798089b027172a382c0d26e83f87411"
+    },
+    "scopeNote": "Complete unmodified pnpm check on the clean final code checkpoint. Existing owner-deferred CE6-P WebGL timing scope remains deferred; no pixel thresholds, frozen baselines or required suites were skipped or relaxed."
+  },
+  "codeCheckpoint": "f78a9e267b0a0d3a1ad1fb5bf213439f12cc0eb3"
 }

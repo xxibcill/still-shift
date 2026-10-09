@@ -43,12 +43,12 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE14 acceptance pending (2026-10-09):** implementation and both review axes
-  are complete on `codex/composition-ce14`. Offscreen/clip/effect-coordinate and
-  hidden-descendant review repairs pass independent browser oracles. Both 48-frame
-  demos, 12 ownership cases, eight production export permutations, all native
-  effects and 3,597 units pass. The required final full `pnpm check` is next;
-  no blocker or owner decision is pending. [CE14 plan](./composition-ce14-plan.md).
+- **CE14 complete (2026-10-09):** `codex/composition-ce14` code checkpoint
+  `f78a9e26` passes the complete local `pnpm check` in 14,375.23 seconds: all 82
+  commands, 3,597 units, 83 runtime and 314 integration tests, every browser/export
+  check, and 176 frozen items / 36,061 frames. Both 48-frame demos, twelve ownership
+  cases and eight production exports pass. No CE14 blocker or owner decision remains;
+  branch review/merge is the owner's next step. [CE14 plan](./composition-ce14-plan.md).
 
 - **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
   pinned local `pnpm check` in 13928.03 seconds. Production code `21817411` has a real
@@ -56,7 +56,7 @@ still hold before relying on them.
   All delivery formats, statistics, caching, bounded worker/result admission and
   area requirements are implemented. The 48-case maximum-area matrix, final area
   smoke checks, native/parallel cleanup and frozen baselines pass. PR review/merge
-  is the owner's next step; CE14 is the next authorized milestone on a separate branch.
+  is the owner's next step; CE14 is also complete on its separate branch.
   [Completion evidence](./composition-ce15-completion-results.json).
 
 - **PR #48 third review repairs verified (2026-10-08):** both P2 findings
@@ -83,11 +83,24 @@ still hold before relying on them.
   The approved CE5-X scope retains its audit stop/Q9 owner decisions; CE6-P
   remains owner-paused and deferred, with acceptance incomplete.
 
-- **Continuation:** CE15 implementation and acceptance are complete; the owner's
-  separate checkout is preserved. CE14 is active on its separate branch. GitHub Actions
-  remain disabled; all verification is local.
+- **Continuation:** the requested CE15 and CE14 implementation, acceptance and branch
+  delivery are complete. The owner's separate checkout is preserved. GitHub Actions
+  remain disabled; all verification was local. No work was scheduled or merged.
 
 ## Entries
+
+### 2026-10-09 — CE14 complete acceptance
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, code `f78a9e26`.
+- **Done:** final complete local gate passes all 82 commands in 14,375.23 seconds;
+  3,597 unit / 83 runtime / 314 integration tests and every required browser/export
+  check pass. All 176 frozen items / 36,061 frames match; references are unchanged.
+- **Results:** full-gate mesh pixels, offscreen/ownership oracles, both 48-frame
+  pin-driven demos and eight repeated/parallel/cache export permutations pass.
+- **Open / next:** CE14 acceptance complete; owner review/merge only. CE15 remains
+  complete in PR #49. No scheduling, merge or owner-checkout edits.
+- **Records:** [CE14 plan](./composition-ce14-plan.md),
+  [final evidence](./composition-ce14-results.json).
 
 ### 2026-10-09 — CE14 review repairs and focused acceptance
 

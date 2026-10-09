@@ -380,7 +380,7 @@ sign and for time remap. It does not change the layer's composition-time visibil
 | CE11  | Lab composition inspector and graph editor     | C      | CE3, CE10                  | Codex                  | `codex/composition-ce11`            | `[x]`  | [evidence](./composition-ce11-results.json)                                        |
 | CE12  | Motion linting                                 | C      | CE2                        | Codex                  | `codex/composition-ce12`            | `[x]`  | [CE12 completion record](#ce12-completion-record-2026-10-05)                       |
 | CE13  | Video, image-sequence and audio layers         | D      | CE3, CE7                   | Codex                  | `codex/composition-ce13`            | `[x]`  | [evidence](./composition-ce13-results.json)                                        |
-| CE14  | Mesh warp and puppet pins                      | D      | CE6                        | Codex                  | `codex/composition-ce14`            | `[~]`  | [Plan](./composition-ce14-plan.md)                                                 |
+| CE14  | Mesh warp and puppet pins                      | D      | CE6                        | Codex                  | `codex/composition-ce14`            | `[x]`  | [Plan](./composition-ce14-plan.md)                                                 |
 | CE15  | Output formats, caching and parallel rendering | D      | CE3                        | Codex                  | `codex/composition-ce15`            | `[x]`  | [Completion evidence](./composition-ce15-completion-results.json)                  |
 | CE16  | Programmable soundtrack project and timeline   | D      | CE3; CE16-A                | Codex                  | `codex/composition-ce16`            | `[x]`  | [CE16 scope and gates](#ce16--programmable-soundtrack-project-and-timeline)        |
 
@@ -5526,13 +5526,18 @@ pin ranges.
 **Verification:** Solver unit tests (rigid motion is preserved, pinned points hit their
 targets), flip detection, pixel tests on both backends.
 
-**Implementation ready for final acceptance (2026-10-09):** native mesh effects,
-deterministic alpha topology/rigid MLS, both backends, pin-only acting, expressions
-and constrained drivers are implemented and reviewed. Focused checks pass 3,597
-units, both complete demos, pixel/ownership oracles and repeated production exports.
-The required full local gate is pending. [CE14 plan](./composition-ce14-plan.md).
-
-**Completion record:** _to be filled in._
+**Completion record (2026-10-09):** CE14 is complete on `codex/composition-ce14`.
+Final code `f78a9e26` passes the complete local `pnpm check` in 14,375.23 seconds:
+all 82 commands, 3,597 unit / 83 runtime / 314 integration tests, every required
+browser/export/default check, and all 176 frozen items / 36,061 frames. Native
+Bezier and alpha-outline rigid MLS meshes support animated/expression/constraint-
+driven pins, starch and overlap regions on both renderers. Both complete 48-frame
+acting demos have no triangle flips; eight production export permutations preserve
+encoded bodies and all decoded frames within each backend. Offscreen, inherited
+clip, scope-coordinate and ownership review repairs pass independent oracles.
+Original frozen baselines and pixel thresholds are unchanged. Existing CE6-P timing
+work remains owner-deferred. [Plan](./composition-ce14-plan.md) and
+[complete evidence](./composition-ce14-results.json).
 
 ---
 

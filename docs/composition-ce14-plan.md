@@ -1,6 +1,6 @@
 # CE14 — Mesh warp and puppet pins
 
-Active implementation on `codex/composition-ce14`, based on completed CE15
+Completed on 2026-10-09 on `codex/composition-ce14`, based on completed CE15
 `efa42f42`. The owner requested full implementation, verification, documentation,
 and frequent meaningful commits and pushes. No merge or scheduling is requested.
 The owner's separate checkout remains untouched; GitHub Actions are prohibited.
@@ -173,10 +173,26 @@ every original CE6/frozen baseline. The final retry passes all seven catalogues,
 existing native-effect pixels/seeks and repeated exports. The toolchain, browser,
 Python imports and isolated optimizer/config caches pass preflight.
 
-## Remaining acceptance
+## Completion record — 2026-10-09
 
-Run the required full local `pnpm check` on the final committed code checkpoint,
-including the frozen baselines; record final evidence and push. Focused evidence
-above is not a complete repository gate. Expected cost is approximately four
-hours, based on CE15's 13,928-second full gate. No code changes are planned during
-that run unless a failing check demonstrates a necessary repair.
+CE14 is complete. The complete local `pnpm check` passed on clean final code
+`f78a9e267b0a0d3a1ad1fb5bf213439f12cc0eb3` in **14,375.23 seconds** (3h 59m 35s),
+from 07:49:40 to 11:49:16 +07:00. All 82 package commands completed with exit 0:
+3,597 unit tests / 338 files, 83 runtime tests / 13 files, 314 integration tests /
+54 files, Python/depth checks and every required browser/export/default suite.
+All **176 frozen items / 36,061 frames** match in 346.96 seconds. Original frozen
+references and pixel thresholds are unchanged; the separately recorded CE14 mesh
+catalogue also passes. Existing owner-deferred CE6-P WebGL timing remains deferred.
+
+The full gate reverified both complete 48-frame demos without triangle flips,
+all mesh pixel/offscreen/ownership oracles and eight production export permutations.
+Encoded bodies and all decoded frames match within each backend across repeated
+runs, one/four workers and cache on/off. No production repair or gate restart was
+needed after the final checkpoint. Only completion documentation follows it.
+
+Gate log SHA-256: `d66ada96369773a5dc604fe9e270c119a517434e617f11b2183c51b09caa09c7`.
+Exact commands, timings, artifact paths and hashes are retained in
+[CE14 results](./composition-ce14-results.json). CE15 remains complete in
+[PR #49](https://github.com/xxibcill/still-shift/pull/49); CE14 is delivered on its
+separate branch. No merge or scheduled work was performed. No CE14 acceptance work,
+blocker or owner decision remains.
