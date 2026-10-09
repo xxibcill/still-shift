@@ -363,7 +363,10 @@ Canvas affine reference with the same sampling and overlap rules.
 For affine 2D mesh layers, the renderer retains the complete transformed source
 when it crosses the viewport edge, then clips the delivered result. Invisible,
 out-of-range and zero-opacity descendants do not enlarge a group's capture.
-The union of complete input and viewport is limited to 8192 pixels per axis and
+Intermediate owner mesh outputs remain available to later meshes in the same
+stack, including when they cross the viewport. Final output clips normally.
+The union of complete input, required intermediate output and viewport is limited
+to 8192 pixels per axis and
 participates in normal managed pixel admission; extremely distant artwork can
 therefore produce a mesh-budget diagnostic.
 

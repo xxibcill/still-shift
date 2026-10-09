@@ -20,6 +20,7 @@ import type * as Diagnostics from "../helpers/composition-mesh-diagnostic-refere
 import type * as Raster from "../helpers/composition-mesh-raster-reference.ts";
 import type * as Collapsed from "../helpers/composition-mesh-collapsed-reference.ts";
 import type * as Checks from "../helpers/composition-mesh-reference.ts";
+import type * as Stack from "../helpers/composition-mesh-stack-reference.ts";
 const root = resolve(import.meta.dirname, "../.."),
   scratch = await mkdtemp(join(tmpdir(), "ce14-mesh-"));
 const server = await createServer({
@@ -53,6 +54,10 @@ try {
     const path = "/tests/helpers/composition-mesh-offscreen.ts";
     return ((await import(path)) as typeof Offscreen).checkOffscreenMeshes();
   });
+  const stack = await page.evaluate(async () => {
+    const path = "/tests/helpers/composition-mesh-stack-reference.ts";
+    return ((await import(path)) as typeof Stack).checkStackedMeshes();
+  });
   const diagnostics = await page.evaluate(async () => {
     const path = "/tests/helpers/composition-mesh-diagnostic-reference.ts";
     return ((await import(path)) as typeof Diagnostics).checkMeshDiagnostics();
@@ -83,6 +88,7 @@ try {
       offscreen,
       raster,
       collapsed,
+      stack,
       diagnostics,
       demo: demo.map(({ picture: _picture, ...proof }) => proof),
     }),

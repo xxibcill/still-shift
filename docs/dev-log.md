@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #50 stack/scale repairs in flight (2026-10-09):** both findings are posted
+  inline on `8fe1f832`. The stacked owner mesh repair passes 43 focused units,
+  128 exact ordinary-pixel oracles and 384 seeks, TypeScript, scoped lint and
+  boundaries. The small-nonzero-scale repair and final affected mesh/export and
+  native-effect checks remain. One finding per commit, then one final normal push.
+  [Repair evidence](./pr-50-stack-scale-fix-results.json).
+
 - **PR #50 main conflicts resolved (2026-10-09):** integrate merged CE15 review
   fixes from `main` `43d57709` into reviewed CE14 head `2d49e192`. Both parents'
   production changes remain exact; all 74 test commands retain their order.
@@ -136,6 +143,19 @@ still hold before relying on them.
   owner review/merge. No work was scheduled.
 
 ## Entries
+
+### 2026-10-09 — PR #50 stacked owner mesh repair
+
+- **Agent / branch:** Codex on `codex/pr50-stack-scale-fixes`, from `8fe1f832`.
+- **Done:** post both review findings inline; retain intermediate owner mesh output
+  until its last enabled mesh, with existing final clipping and capture limits.
+- **Results:** 43 focused units, 128 exact pixel oracles / 384 seeks, TypeScript,
+  changed-file lint and boundaries pass. Canvas/WebGL identities invalidate caches.
+- **Open / next:** fix small nonzero scales in its own commit; run final affected
+  mesh/export and native-effect checks, then push both commits once. No full gate
+  rerun or claimed; GitHub Actions remain disabled.
+- **Records:** [repair evidence](./pr-50-stack-scale-fix-results.json),
+  [CE14 repair plan](./composition-ce14-plan.md#pr-50-stacked-owner-mesh-repair--2026-10-09).
 
 ### 2026-10-09 — PR #50 main conflict resolution
 

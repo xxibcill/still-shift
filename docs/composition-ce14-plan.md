@@ -336,3 +336,24 @@ or claimed; the historical CE14 gate remains tied to its named checkpoint. Deliv
 one normal merge commit to the existing PR #50 branch for owner review/merge.
 GitHub Actions remain disabled. Detailed logs, artifacts and input fingerprints:
 [main-conflict evidence](./pr-50-main-conflict-results.json).
+
+## PR #50 stacked owner mesh repair — 2026-10-09
+
+The [posted P2](https://github.com/xxibcill/still-shift/pull/50#discussion_r4227673177)
+reproduces owner stacks that move artwork offscreen and return it: warp delivers
+transparent output and puppet rejects its clipped rest pin. Capture bounds now
+retain each owner intermediate mesh until the last enabled mesh. Final output
+still clips normally; disabled trailing meshes do not expand capture. Existing
+8192-pixel capture and managed memory limits remain.
+
+Three new units fail before repair. All 43 focused units, TypeScript, scoped lint
+and package boundaries pass after repair. 128 independent ordinary-art pixel
+comparisons cover both backends, direct/group owners, both directions, mixed two
+and three mesh stacks, intervening viewport clears and disabled trailing meshes;
+384 exact reverse/random seeks pass. Canvas 1.47.6 / WebGL 0.68.6 invalidate caches;
+the pinned request digest changes only with renderer identity.
+
+The separate small-nonzero-scale finding remains in flight. Complete affected
+mesh/export and native-effect catalogue verification will run on the final
+combined repair checkpoint. No full repository gate is rerun or claimed. Evidence:
+[stack and scale repair results](./pr-50-stack-scale-fix-results.json).

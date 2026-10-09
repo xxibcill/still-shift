@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-09",
+  "pr": "https://github.com/xxibcill/still-shift/pull/50",
+  "reviewedHead": "8fe1f832d19b074cc87ee3c4bc886ebac3b13e10",
+  "scope": "Focused repairs; one finding per commit and one final normal push; no full repository gate rerun or claimed.",
+  "comments": {
+    "stack": "https://github.com/xxibcill/still-shift/pull/50#discussion_r4227673177",
+    "scale": "https://github.com/xxibcill/still-shift/pull/50#discussion_r4227673636"
+  },
+  "stack": {
+    "status": "verified for checkpoint commit",
+    "behavior": "Retain owner intermediate mesh outputs until its last enabled mesh; preserve final clipping, scope viewport windows and existing capture/memory limits.",
+    "unitTests": 43,
+    "unitFiles": 5,
+    "previewCases": 128,
+    "exactOrdinaryPixelComparisons": 128,
+    "reverseRandomSeeks": 384,
+    "static": ["TypeScript", "changed-file ESLint", "package boundaries"],
+    "rendererVersions": {
+      "canvas": "1.47.6",
+      "webgl": "0.68.6"
+    },
+    "before": "Three new unit regressions fail on reviewed code; independent review probe showed empty warp output and puppet outside-alpha error on both backends.",
+    "testCorrections": "Assert the structured budget error message instead of its code in Error.message; recompute pinned request digest for intentional renderer identity changes.",
+    "pending": "Complete affected mesh/export and native-effect catalogue checks on final combined repair checkpoint.",
+    "logs": {
+      "before": {
+        "path": "/private/tmp/pr50-stack-before.log",
+        "sha256": "6adad3ecff718eafb21f692c02f87be7a24b10072a01ae7eff6db44eebda1246"
+      },
+      "units": {
+        "path": "/private/tmp/pr50-stack-units.log",
+        "sha256": "c86d72a3fdd54b6e352b4e48c17d46b1b2f8557f966810c7881dac49159e19fe"
+      },
+      "preview": {
+        "path": "/private/tmp/pr50-stack-preview.log",
+        "sha256": "bfe4bb69f85c8cc520c79484a0c3f10369c4d4e69e210c0a897e2105ff2bea62"
+      },
+      "build": {
+        "path": "/private/tmp/pr50-stack-build.log",
+        "sha256": "796b317daaf969ade7881e972510eddb447bec8ed8c06a99fa6c6d3d993f4d92"
+      },
+      "lint": {
+        "path": "/private/tmp/pr50-stack-lint.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  }
+}

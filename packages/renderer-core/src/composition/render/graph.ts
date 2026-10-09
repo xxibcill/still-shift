@@ -1514,6 +1514,9 @@ class GraphBuilder {
       right: frame.viewport.width,
       bottom: frame.viewport.height,
     };
+    const lastMesh = state.effects.findLast(
+      (effect) => effect.enabled && isMeshEffect(effect),
+    );
     const include = (source: EvaluatedLayer) => {
       const local = localBounds(this.comp, scope.def, source, this.options);
       if (!local) return;
@@ -1545,7 +1548,9 @@ class GraphBuilder {
         if (current !== source && current.layer.type !== "group") continue;
         for (const effect of current.effects) {
           if (!effect.enabled) continue;
-          if (current === state && isMeshEffect(effect)) break;
+          // Final owner output clips normally; earlier meshes must survive until
+          // the last mesh can return their offscreen output to the viewport.
+          if (current === state && effect === lastMesh) break;
           const space = effect.space ? scope.byId.get(effect.space)! : current;
           input = isMeshEffect(effect)
             ? meshOutputBounds(
