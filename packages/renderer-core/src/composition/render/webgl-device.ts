@@ -32,6 +32,18 @@ void main() {
   uv = p;
   gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
 }`;
+const MESH_VERTEX = `#version 300 es
+precision highp float;
+precision highp int;
+uniform sampler2D backdrop;
+uniform vec2 destinationSize;
+out vec2 uv;
+void main() {
+  int width=textureSize(backdrop,0).x;
+  vec4 vertex=texelFetch(backdrop,ivec2(gl_VertexID%width,gl_VertexID/width),0);
+  uv=vertex.zw;
+  gl_Position=vec4(vertex.xy/destinationSize*2.0-1.0,0.0,1.0);
+}`;
 const RECTANGLES_VERTEX = `#version 300 es
 precision highp float;
 precision highp int;
@@ -884,13 +896,21 @@ export class WebglDevice {
     blended = false,
     clip?: Bounds | null,
     rectangles?: number,
+    meshVertices?: number,
   ) {
+    if (
+      meshVertices !== undefined &&
+      (target?.screen || rectangles !== undefined)
+    )
+      throw Error(
+        "comp-webgl-mesh: textured meshes require an offscreen triangle target",
+      );
     if (target?.screen) clip = this.screenRegion(clip);
     if (clip === null) return;
     if (target?.screen) this.dropSolid();
     const gl = this.gl;
     const workingBytes =
-      rectangles === undefined
+      rectangles === undefined && meshVertices === undefined
         ? 4096 + 12 * body.length
         : 6144 + 14 * body.length;
     const phase = allocateRenderMetadata<ProgramLifetime>(
@@ -930,7 +950,12 @@ export class WebglDevice {
         body =
           body.replace("void main()", "void shade()") +
           "\nvoid main() { shade(); pixel.a = 1.0; }";
-      const programKey = rectangles === undefined ? body : `rectangles:${body}`;
+      const programKey =
+        meshVertices !== undefined
+          ? `mesh:${body}`
+          : rectangles === undefined
+            ? body
+            : `rectangles:${body}`;
       phase.body = programKey;
       let program = this.programs.get(programKey);
       if (!program) {
@@ -950,7 +975,11 @@ export class WebglDevice {
           return shader;
         };
         const vertexSource =
-          rectangles === undefined ? VERTEX : RECTANGLES_VERTEX;
+          meshVertices !== undefined
+            ? MESH_VERTEX
+            : rectangles === undefined
+              ? VERTEX
+              : RECTANGLES_VERTEX;
         const vertex = compile(
           gl.VERTEX_SHADER,
           (phase.vertexText = target?.screen
@@ -1081,7 +1110,9 @@ export class WebglDevice {
           );
         }
         try {
-          if (rectangles === undefined) gl.drawArrays(gl.TRIANGLES, 0, 3);
+          if (meshVertices !== undefined)
+            gl.drawArrays(gl.TRIANGLES, 0, meshVertices);
+          else if (rectangles === undefined) gl.drawArrays(gl.TRIANGLES, 0, 3);
           else gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, rectangles);
         } finally {
           if (clip) gl.disable(gl.SCISSOR_TEST);
@@ -1152,6 +1183,45 @@ export class WebglDevice {
       [first.framebuffer, second.framebuffer] = framebuffers;
     } finally {
       releaseRenderMetadata(temporary);
+    }
+  }
+
+  replaceRegion(
+    source: WebglSurface,
+    target: WebglSurface,
+    left: number,
+    top: number,
+  ) {
+    if (source.screen || target.screen || source === target)
+      throw Error("Region replacement needs separate offscreen surfaces");
+    const gl = this.gl;
+    const read = gl.getParameter(
+      gl.READ_FRAMEBUFFER_BINDING,
+    ) as WebGLFramebuffer | null;
+    const draw = gl.getParameter(
+      gl.DRAW_FRAMEBUFFER_BINDING,
+    ) as WebGLFramebuffer | null;
+    const scissored = gl.isEnabled(gl.SCISSOR_TEST);
+    try {
+      if (scissored) gl.disable(gl.SCISSOR_TEST);
+      gl.bindFramebuffer(gl.READ_FRAMEBUFFER, source.framebuffer);
+      gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, target.framebuffer);
+      gl.blitFramebuffer(
+        0,
+        0,
+        source.width,
+        source.height,
+        left,
+        top,
+        left + source.width,
+        top + source.height,
+        gl.COLOR_BUFFER_BIT,
+        gl.NEAREST,
+      );
+    } finally {
+      if (scissored) gl.enable(gl.SCISSOR_TEST);
+      gl.bindFramebuffer(gl.READ_FRAMEBUFFER, read);
+      gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, draw);
     }
   }
 

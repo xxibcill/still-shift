@@ -1,0 +1,486 @@
+{
+  "date": "2026-10-09",
+  "pullRequest": 50,
+  "reviewedHead": "3002f0d1cf9e331ad2c280d2167c3025738d3280",
+  "branch": "codex/pr50-collapsed-mesh-fix",
+  "scope": "One posted P2 finding; focused PR repair verification, no complete repository gate claimed",
+  "finding": {
+    "comment": "https://github.com/xxibcill/still-shift/pull/50#discussion_r4227184424",
+    "status": "fixed-focused-verified",
+    "problem": "Identity meshes abort valid zero-scale owner frames instead of rendering the ordinary transparent result.",
+    "originalProbe": {
+      "path": "/private/tmp/pr50-ce14-completeness-ocmccou3/standards-probe-results.json",
+      "sha256": "f70bf2f88a9ba8bf51091930fe6a07d76c23491bb456b6ba56684f6a503753b2"
+    },
+    "originalFailures": [
+      {
+        "backend": "canvas2d",
+        "name": "zero scale identity",
+        "effect": "distort.puppet",
+        "scale": [0, 0],
+        "referenceAlpha": 0,
+        "error": "Error: Cannot invert collapsed transform",
+        "diagnostics": [
+          {
+            "code": "invalid-scene",
+            "severity": "error",
+            "message": "Cannot invert collapsed transform"
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "name": "zero scale identity",
+        "effect": "distort.mesh-warp",
+        "scale": [0, 0],
+        "referenceAlpha": 0,
+        "error": "PassageError: comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+        "diagnostics": [
+          {
+            "code": "comp-mesh-flip",
+            "severity": "error",
+            "message": "comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+            "path": "layers.0.effects.0.params.controls",
+            "node": "art",
+            "frame": 0
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "name": "zero scale identity",
+        "effect": "distort.puppet",
+        "scale": [0, 1],
+        "referenceAlpha": 0,
+        "error": "Error: Cannot invert collapsed transform",
+        "diagnostics": [
+          {
+            "code": "invalid-scene",
+            "severity": "error",
+            "message": "Cannot invert collapsed transform"
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "name": "zero scale identity",
+        "effect": "distort.mesh-warp",
+        "scale": [0, 1],
+        "referenceAlpha": 0,
+        "error": "PassageError: comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+        "diagnostics": [
+          {
+            "code": "comp-mesh-flip",
+            "severity": "error",
+            "message": "comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+            "path": "layers.0.effects.0.params.controls",
+            "node": "art",
+            "frame": 0
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "name": "zero scale identity",
+        "effect": "distort.puppet",
+        "scale": [1, 0],
+        "referenceAlpha": 0,
+        "error": "Error: Cannot invert collapsed transform",
+        "diagnostics": [
+          {
+            "code": "invalid-scene",
+            "severity": "error",
+            "message": "Cannot invert collapsed transform"
+          }
+        ]
+      },
+      {
+        "backend": "canvas2d",
+        "name": "zero scale identity",
+        "effect": "distort.mesh-warp",
+        "scale": [1, 0],
+        "referenceAlpha": 0,
+        "error": "PassageError: comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+        "diagnostics": [
+          {
+            "code": "comp-mesh-flip",
+            "severity": "error",
+            "message": "comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+            "path": "layers.0.effects.0.params.controls",
+            "node": "art",
+            "frame": 0
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "name": "zero scale identity",
+        "effect": "distort.puppet",
+        "scale": [0, 0],
+        "referenceAlpha": 0,
+        "error": "Error: Cannot invert collapsed transform",
+        "diagnostics": [
+          {
+            "code": "invalid-scene",
+            "severity": "error",
+            "message": "Cannot invert collapsed transform"
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "name": "zero scale identity",
+        "effect": "distort.mesh-warp",
+        "scale": [0, 0],
+        "referenceAlpha": 0,
+        "error": "PassageError: comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+        "diagnostics": [
+          {
+            "code": "comp-mesh-flip",
+            "severity": "error",
+            "message": "comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+            "path": "layers.0.effects.0.params.controls",
+            "node": "art",
+            "frame": 0
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "name": "zero scale identity",
+        "effect": "distort.puppet",
+        "scale": [0, 1],
+        "referenceAlpha": 0,
+        "error": "Error: Cannot invert collapsed transform",
+        "diagnostics": [
+          {
+            "code": "invalid-scene",
+            "severity": "error",
+            "message": "Cannot invert collapsed transform"
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "name": "zero scale identity",
+        "effect": "distort.mesh-warp",
+        "scale": [0, 1],
+        "referenceAlpha": 0,
+        "error": "PassageError: comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+        "diagnostics": [
+          {
+            "code": "comp-mesh-flip",
+            "severity": "error",
+            "message": "comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+            "path": "layers.0.effects.0.params.controls",
+            "node": "art",
+            "frame": 0
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "name": "zero scale identity",
+        "effect": "distort.puppet",
+        "scale": [1, 0],
+        "referenceAlpha": 0,
+        "error": "Error: Cannot invert collapsed transform",
+        "diagnostics": [
+          {
+            "code": "invalid-scene",
+            "severity": "error",
+            "message": "Cannot invert collapsed transform"
+          }
+        ]
+      },
+      {
+        "backend": "webgl2",
+        "name": "zero scale identity",
+        "effect": "distort.mesh-warp",
+        "scale": [1, 0],
+        "referenceAlpha": 0,
+        "error": "PassageError: comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+        "diagnostics": [
+          {
+            "code": "comp-mesh-flip",
+            "severity": "error",
+            "message": "comp-mesh-flip: 32 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+            "path": "layers.0.effects.0.params.controls",
+            "node": "art",
+            "frame": 0
+          }
+        ]
+      }
+    ],
+    "initialUnitRegressions": {
+      "log": {
+        "path": "/private/tmp/pr50-collapsed-mesh-units-before.log",
+        "sha256": "3a5826db325b75b105e77faf21993bf6e2ee3ca61fac4289565848b49d8fe5b2"
+      },
+      "failed": 3,
+      "passed": 7
+    },
+    "repair": "Separate owner/reference collapse flags retain exact zero-rank factors through parent/camera/capture transform chains. Collapsed mesh stages return empty before inversion/fold validation; bounds retain conservative input without inversion.",
+    "preservedBehavior": [
+      "Returning to nonzero scale restores deformation and pin checks",
+      "Valid external coordinate spaces preserve input generated by earlier scope effects",
+      "Later scope effects still run",
+      "Small nonzero scales, reflections and genuine deformation rejection keep existing rules"
+    ],
+    "roundoffRegression": {
+      "parentRotationDegrees": 37,
+      "parentScale": [0, 1],
+      "childRotationDegrees": 29,
+      "roundedProductDeterminant": 2.7755575615628914e-17,
+      "classification": "Collapsed original factor; no epsilon threshold added"
+    },
+    "rendererVersions": [
+      "composition-canvas-1.47.5",
+      "composition-webgl2-0.68.5"
+    ],
+    "requestIdentityDigest": "sha256:dc4b191d8082643ece0904d11a6b82e757311843efe7e24c831ad6b3574fe518"
+  },
+  "preflight": {
+    "log": {
+      "path": "/private/tmp/pr50-collapsed-mesh-preflight.log",
+      "sha256": "6d3fd7946c348befa8f7b07e08f673f1027fa017b9562cc413565ead0898e306"
+    },
+    "status": "passed",
+    "expected": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "uv": "0.7.12",
+      "playwright": "1.62.1",
+      "chromiumRevision": "1234",
+      "chromiumVersion": "151.0.7922.34",
+      "ffmpeg": "8.0.1"
+    },
+    "pythonImports": "Python imports verified",
+    "pythonEnvironment": "/Users/jjae/Documents/playground/still-shift/.venv/bin/python",
+    "pythonReadOnly": true,
+    "environment": {
+      "profile": "chromium-software-2",
+      "browserVersion": "151.0.7922.34",
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "caches": "private per-worktree node_modules/.vite and .vite-temp; browser suites private mkdtemp caches"
+  },
+  "focusedVerification": {
+    "units": {
+      "status": "passed",
+      "tests": 126,
+      "files": 16,
+      "log": {
+        "path": "/private/tmp/pr50-collapsed-mesh-units-provenance.log",
+        "sha256": "a4e4706bc02240c187bd541347528056a171205339b61dd9dbb79efc2316af3e"
+      },
+      "command": "pnpm exec vitest run <16 affected mesh/graph/effect/cache-identity files> --maxWorkers=2 --no-file-parallelism",
+      "filesRun": [
+        "tests/unit/composition-mesh-diagnostics.test.ts",
+        "tests/unit/composition-mesh-frame.test.ts",
+        "tests/unit/composition-mesh-topology.test.ts",
+        "tests/unit/composition-puppet-demo.test.ts",
+        "tests/unit/composition-effect-contract.test.ts",
+        "tests/unit/composition-mesh-bounds.test.ts",
+        "tests/unit/composition-effect-points.test.ts",
+        "tests/unit/composition-mesh-contract.test.ts",
+        "tests/unit/composition-render-graph.test.ts",
+        "tests/unit/composition-effect-inputs.test.ts",
+        "tests/unit/composition-effect-controls-metadata.test.ts",
+        "tests/unit/composition-effect-plugins.test.ts",
+        "tests/unit/composition-mesh-geometry.test.ts",
+        "tests/unit/composition-mesh-quality.test.ts",
+        "tests/unit/batch-identity.test.ts",
+        "tests/unit/composition-mesh-raster.test.ts"
+      ]
+    },
+    "static": {
+      "status": "passed",
+      "commands": [
+        "pnpm build",
+        "pnpm check:boundaries",
+        "pnpm exec eslint <13 changed TypeScript files>",
+        "pnpm exec prettier --check <17 changed TypeScript/documentation files>"
+      ],
+      "output": "tsc --noEmit exited 0; Package dependency boundaries pass.; changed-file eslint exited 0. Successful tool output retained in chat; first failed attempt recorded below.",
+      "formatLog": {
+        "path": "/private/tmp/pr50-collapsed-mesh-format-final.log",
+        "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+      }
+    },
+    "meshBrowser": {
+      "status": "passed",
+      "command": "pnpm test:browser:composition-mesh",
+      "log": {
+        "path": "/private/tmp/pr50-collapsed-mesh-browser-provenance.log",
+        "sha256": "3f9fa46ea9b327f3dcf3177f8db3a20b42fd0a7defc10589e34ba20a6c859fed"
+      },
+      "crossBackendPixelReports": 16,
+      "existingPolicy": "raw RGBA <=2, alpha and premultiplied <=1",
+      "offscreenComparisons": 46,
+      "existingExactIdentityFrames": 18,
+      "collapsedCases": 76,
+      "collapsedFrames": 88,
+      "collapsedMaxRgbaDelta": 0,
+      "exactReverseRandomCollapsedSeeks": 20,
+      "collapseCoverage": "Both backends and mesh types; owner/null-parent/group collapse on either/both axes; rotation, external space, prior/later generators, animated recovery and rotated collapsed descendant inside nonuniform visible puppet group",
+      "previewDiagnosticCases": 12,
+      "ownershipCases": 12,
+      "ownershipFinalAccounting": "All current pixel/metadata bytes and reservation counts zero",
+      "demoReports": [
+        {
+          "name": "composition",
+          "backend": "canvas2d",
+          "frames": 48,
+          "uniqueFrames": 47
+        },
+        {
+          "name": "composition",
+          "backend": "webgl2",
+          "frames": 48,
+          "uniqueFrames": 47
+        },
+        {
+          "name": "prop-follow",
+          "backend": "canvas2d",
+          "frames": 48,
+          "uniqueFrames": 47
+        },
+        {
+          "name": "prop-follow",
+          "backend": "webgl2",
+          "frames": 48,
+          "uniqueFrames": 47
+        }
+      ],
+      "demoSeeks": "Exact forward/reverse/random seek preserved"
+    },
+    "productionExports": {
+      "status": "passed",
+      "existing48FramePermutations": 8,
+      "existingProofUnchangedFromPriorAcceptedRepair": true,
+      "priorArtifact": {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce14-mesh-VDXvPT/exports.json",
+        "sha256": "6c4ad36a8c021e276de75ad053e09bdc62e4b17c924428dc7f5f3f67c6aaa4d0"
+      },
+      "existingExports": {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce14-mesh-lB03nZ/exports.json",
+        "sha256": "c0f55e16e7f6461e22eb3f874a183d5022dd041e7db8c93815b2045e52488606"
+      },
+      "failedDiagnosticPermutations": 8,
+      "diagnosticExports": {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce14-mesh-lB03nZ/diagnostic-exports.json",
+        "sha256": "f8a8ed6fd52384730658f012d058cd14143793e364357e059f9222717cf3fdba"
+      },
+      "directCollapseFourFramePermutations": 16,
+      "directCollapseOrdinaryReferenceExports": 2,
+      "directCollapseExports": {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce14-mesh-lB03nZ/collapsed-exports.json",
+        "sha256": "e1a7f779deaf8f315a38aa28d9db95920583fbb39a5d445cf022dc1d1d932670"
+      },
+      "rotatedParentFourFramePermutations": 8,
+      "rotatedParentOrdinaryReferenceExports": 2,
+      "rotatedParentExports": {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce14-mesh-lB03nZ/rotated-parent-exports.json",
+        "sha256": "7667bdfd9d4f71043d981e94883ada151057448d8673e9b1ad0ed4128b09b6c3"
+      },
+      "oracle": "Every decoded frame equals an independently exported ordinary layer; frames1/2 equal separately constructed opaque-black RGBA hashes; frames0/3 are visible. Encoded bodies and decoded frames match within each backend/mesh kind across repeat, one/four workers and cache variants."
+    },
+    "nativeEffects": {
+      "status": "passed",
+      "command": "pnpm test:browser:composition-effects",
+      "log": {
+        "path": "/private/tmp/pr50-collapsed-mesh-native-effects-provenance.log",
+        "sha256": "c666004a98ecacf800a3bae91cf7d34962da3b173e198d56cb3f5aaa932a7e4f"
+      },
+      "catalogues": 7,
+      "catalogueReports": 21,
+      "hardwareComparisons": 42,
+      "hardwarePolicy": "Existing perceptual hardware policy unchanged",
+      "baseline": "Exact frozen references unchanged",
+      "repeatedNativeFixtures": 6,
+      "framesPerExport": 60,
+      "proof": {
+        "path": "/Users/jjae/.codex/worktrees/pr50-collapsed-mesh-fix/still-shift/benchmarks/results/composition-ce6-completion/native-acceptance.json",
+        "sha256": "703e3387ee4181f82aefd1f775e7a2f47203610e628b8ccc452fcb51ee0e45d8"
+      }
+    }
+  },
+  "independentReview": {
+    "production": "No further actionable issue after transform-provenance review",
+    "oracleAndCache": "Original factor collapse, both cache identities and rotated-parent/group/export oracles independently reviewed",
+    "standards": "Original checks and thresholds preserved; no Actions edits"
+  },
+  "unchangedVisualReferences": {
+    "trackedFiles": 216,
+    "aggregateSha256": "bd98f2fbcb878ca11233c8d8a72465293f4cd3b8b5dedf57d15aa74ad3448da6",
+    "encoding": "Sorted repository path UTF-8 + NUL + SHA256 digest bytes for each tracked tests/visual file",
+    "comparedWith": "3002f0d1cf9e331ad2c280d2167c3025738d3280",
+    "fullFrozenSuiteRerun": false
+  },
+  "failedAttempts": [
+    {
+      "log": {
+        "path": "/private/tmp/pr50-collapsed-mesh-units-after.log",
+        "sha256": "f881ff2a5dec92f67c1b155e2cd2cf465f7317d7cb32f4a027a350c871b8917c"
+      },
+      "reason": "The new external-space test incorrectly required empty geometry rather than empty raster output. It now compares actual zero output; restored exact identity and generated-input oracles remain."
+    },
+    {
+      "log": {
+        "path": "/private/tmp/pr50-collapsed-mesh-static.log",
+        "sha256": "c8d3b67d201baeffc676d789245760eeafb13a60ece465d08afbb0f07b775031"
+      },
+      "reason": "The new helper annotated readPixels output as Uint8Array instead of its actual Uint8ClampedArray return type. Corrected only the erased declaration; final TypeScript passes."
+    }
+  ],
+  "rejectedApproaches": [
+    "Skipping the entire owner would suppress later scope generators",
+    "Checking only the multiplied determinant misses exact zero-scale factors after floating-point matrix products; original factors now preserve collapse without erasing small nonzero scales"
+  ],
+  "supersededIntermediateChecks": {
+    "meshBrowser": {
+      "path": "/private/tmp/pr50-collapsed-mesh-browser.log",
+      "sha256": "7b66084215c99d0fb9f73a820eb0d0e6839ecefc1e47714f1aca70b258f6ae63"
+    },
+    "nativeEffects": {
+      "path": "/private/tmp/pr50-collapsed-mesh-native-effects.log",
+      "sha256": "c666004a98ecacf800a3bae91cf7d34962da3b173e198d56cb3f5aaa932a7e4f"
+    },
+    "reason": "Passed before the original-transform provenance refinement; final commands above rerun against the final production source."
+  },
+  "milestoneAcceptance": {
+    "checkpoint": "f78a9e267b0a0d3a1ad1fb5bf213439f12cc0eb3",
+    "record": "docs/composition-ce14-results.json",
+    "fullGateRerunForThisRepair": false,
+    "policy": "Scoped follow-up fixes use affected checks; historical full gate applies only to its named checkpoint."
+  },
+  "verifiedSourceSha256": {
+    "packages/renderer-core/src/composition/mesh/bounds.ts": "b6d403e14658364c5cc66ce05796b38eb6c0b7c9fb9776cf53b8740b86a00e11",
+    "packages/renderer-core/src/composition/mesh/diagnostics.ts": "c154a2b7940b7321b836f9640caec54e85336d0df124d161868998dfbcc4654c",
+    "packages/renderer-core/src/composition/mesh/frame.ts": "b9767ad7984be5fd4aa33df7c13a849320b1b0d8abce37b4ba298a70265a3b78",
+    "packages/renderer-core/src/composition/mesh/geometry.ts": "b7eff9834ad8646772b302d484dccceb027cb93497302fb78a835ba919d283d3",
+    "packages/renderer-core/src/composition/mesh/raster.ts": "7479b267efdcdc5045dd2bbc3c85d0f86efaea15fd14bbb677f4b6e046bb6704",
+    "packages/renderer-core/src/composition/mesh/topology.ts": "a8d8100cc5a78c07dbdad78857265cf216e4512c9c37652bd9f2331a4ba16552",
+    "packages/renderer-core/src/composition/render/graph.ts": "c71dc10a35889837d6d77d75c439efb9ede0881384a832b04467492557546b6d",
+    "packages/renderer-core/src/composition/render/mesh-effects.ts": "d920a03b98b2e3da82eb6cb2c77c6bc4ac81a5cdc82e994811a38635f30e2930",
+    "packages/renderer-core/src/composition/render/version.ts": "d63584026f36e5956b8de17454a65cf6fe17475dcdb3563f907263c22e4d10df",
+    "packages/renderer-core/src/composition/render/webgl2.ts": "40d1ec6b3ee6d3e231ce573153f32a07d9c7676b5ebac6492a3ae667eba6b021",
+    "tests/browser/composition-mesh.ts": "2db23d161b863bd4a9965587c8b373bfbfd04c69664213df7089294906c885f5",
+    "tests/helpers/composition-mesh-collapsed-reference.ts": "80978786afa1a8f24a05cc757dabdd7be4d6d4c79a8970b7cb448c2c241add5a",
+    "tests/helpers/composition-mesh-diagnostic-reference.ts": "bc86ee5d1d712339c354f0da52526f285d73aedfb67211b9e15fa3e4a6578a8b",
+    "tests/helpers/composition-mesh-export.ts": "cf17e36897fa2cbc19a6441db0cae44c595e634b34687d11f0043355575b2328",
+    "tests/helpers/composition-mesh-memory-reference.ts": "acd3676223fb738b77edd23e53577f6eb1d080920c1dcaacd326c782f7a250ab",
+    "tests/helpers/composition-mesh-offscreen.ts": "ab93a0d1880581f1321a9233a5f12194afd67b838bceaa6c300c9c52e832db5b",
+    "tests/helpers/composition-mesh-raster-reference.ts": "96cc045524090b32d478c13583a8a13ddfbcd905c213bc1fdf7219d5d685b61a",
+    "tests/helpers/composition-mesh-reference.ts": "5038849c372dbbe1e401f577d74137d8bccba920bae88c9567e5b3a5f7ecab74",
+    "tests/unit/batch-identity.test.ts": "228bdbf70eb4b9bd4b8c6a4ecaacb05f8a99fdafc1486491b1e52b2d93c3c131",
+    "tests/unit/composition-mesh-bounds.test.ts": "9d72b719cef35ef8279aef866d32f3981e329571bd3265bfbce5044c335a77d7",
+    "tests/unit/composition-mesh-frame.test.ts": "2bb8bb5c662f0e1fbef6996925cfc1cabe77f3db307925eb7228a9d95e6b5f83"
+  },
+  "delivery": "One finding, one dedicated commit prepared after final focused verification, then one normal push to codex/composition-ce14. No merge."
+}

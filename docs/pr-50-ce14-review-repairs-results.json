@@ -1,0 +1,449 @@
+{
+  "date": "2026-10-09",
+  "pullRequest": 50,
+  "base": "958e623a6804254eef9ea8988cfce6b2e32c4d00",
+  "branch": "codex/pr50-ce14-repairs",
+  "scope": "Focused follow-up repairs; no complete repository gate claimed",
+  "findings": [
+    {
+      "comment": "https://github.com/xxibcill/still-shift/pull/50#discussion_r4226871398",
+      "status": "fixed-focused-verified",
+      "units": 44,
+      "unitFiles": 9,
+      "unitLog": "/private/tmp/pr50-rounding-units.log",
+      "unitLogSha256": "15ea566077cb6843f422aaf691c75262b4b93eb8900cd65a7aebec7ee9e8c9ea",
+      "independentPixelFrames": 18,
+      "identityMaxRgbaDelta": 0,
+      "exactReverseSeek": true,
+      "checks": [
+        "pinned toolchain",
+        "tsc --noEmit",
+        "changed-file eslint",
+        "package boundaries"
+      ],
+      "genuineFoldRejection": "passed",
+      "rendererVersions": [
+        "composition-canvas-1.47.4",
+        "composition-webgl2-0.68.4"
+      ],
+      "initialRegressions": "2 failed on original code",
+      "rejectedExperiment": "Compaction alone retained seven-byte small-grid sampling drift; exact identity texture coordinates repaired it.",
+      "commit": "d67e2b0947ddeb83817cf9ff8bb1a3c766148a84"
+    },
+    {
+      "comment": "https://github.com/xxibcill/still-shift/pull/50#discussion_r4226871400",
+      "status": "fixed-focused-verified",
+      "initialRegressions": "2 failed on original code with invalid-scene instead of mesh codes",
+      "diagnosticCodes": "All mesh origin failures use PassageError; renderer attaches authored effect field path, full instance node and root frame",
+      "cacheIdentity": "Symbol-keyed diagnostic metadata stays out of both visual cache keys; frame 0/2 keys match",
+      "previewCases": [
+        {
+          "backend": "canvas2d",
+          "nested": false,
+          "diagnostic": {
+            "code": "comp-mesh-pin",
+            "severity": "error",
+            "message": "comp-mesh-pin: rest pin is outside the alpha silhouette",
+            "path": "layers.0.effects.0.params.rest.0",
+            "node": "art",
+            "frame": 2
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "nested": false,
+          "diagnostic": {
+            "code": "comp-mesh-flip",
+            "severity": "error",
+            "message": "comp-mesh-flip: 1152 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+            "path": "layers.0.effects.0.params.controls",
+            "node": "art",
+            "frame": 2
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "nested": false,
+          "diagnostic": {
+            "code": "comp-mesh-solver",
+            "severity": "error",
+            "message": "comp-mesh-solver: collapsed rigid fit; separate the pin targets",
+            "path": "layers.0.effects.0.params.pins",
+            "node": "art",
+            "frame": 2
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "nested": true,
+          "diagnostic": {
+            "code": "comp-mesh-pin",
+            "severity": "error",
+            "message": "comp-mesh-pin: rest pin is outside the alpha silhouette",
+            "path": "precomps.0.layers.0.effects.0.params.rest.0",
+            "node": "host/art",
+            "frame": 2
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "nested": true,
+          "diagnostic": {
+            "code": "comp-mesh-flip",
+            "severity": "error",
+            "message": "comp-mesh-flip: 1152 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+            "path": "precomps.0.layers.0.effects.0.params.controls",
+            "node": "host/art",
+            "frame": 2
+          }
+        },
+        {
+          "backend": "canvas2d",
+          "nested": true,
+          "diagnostic": {
+            "code": "comp-mesh-solver",
+            "severity": "error",
+            "message": "comp-mesh-solver: collapsed rigid fit; separate the pin targets",
+            "path": "precomps.0.layers.0.effects.0.params.pins",
+            "node": "host/art",
+            "frame": 2
+          }
+        },
+        {
+          "backend": "webgl2",
+          "nested": false,
+          "diagnostic": {
+            "code": "comp-mesh-pin",
+            "severity": "error",
+            "message": "comp-mesh-pin: rest pin is outside the alpha silhouette",
+            "path": "layers.0.effects.0.params.rest.0",
+            "node": "art",
+            "frame": 2
+          }
+        },
+        {
+          "backend": "webgl2",
+          "nested": false,
+          "diagnostic": {
+            "code": "comp-mesh-flip",
+            "severity": "error",
+            "message": "comp-mesh-flip: 1152 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+            "path": "layers.0.effects.0.params.controls",
+            "node": "art",
+            "frame": 2
+          }
+        },
+        {
+          "backend": "webgl2",
+          "nested": false,
+          "diagnostic": {
+            "code": "comp-mesh-solver",
+            "severity": "error",
+            "message": "comp-mesh-solver: collapsed rigid fit; separate the pin targets",
+            "path": "layers.0.effects.0.params.pins",
+            "node": "art",
+            "frame": 2
+          }
+        },
+        {
+          "backend": "webgl2",
+          "nested": true,
+          "diagnostic": {
+            "code": "comp-mesh-pin",
+            "severity": "error",
+            "message": "comp-mesh-pin: rest pin is outside the alpha silhouette",
+            "path": "precomps.0.layers.0.effects.0.params.rest.0",
+            "node": "host/art",
+            "frame": 2
+          }
+        },
+        {
+          "backend": "webgl2",
+          "nested": true,
+          "diagnostic": {
+            "code": "comp-mesh-flip",
+            "severity": "error",
+            "message": "comp-mesh-flip: 1152 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+            "path": "precomps.0.layers.0.effects.0.params.controls",
+            "node": "host/art",
+            "frame": 2
+          }
+        },
+        {
+          "backend": "webgl2",
+          "nested": true,
+          "diagnostic": {
+            "code": "comp-mesh-solver",
+            "severity": "error",
+            "message": "comp-mesh-solver: collapsed rigid fit; separate the pin targets",
+            "path": "precomps.0.layers.0.effects.0.params.pins",
+            "node": "host/art",
+            "frame": 2
+          }
+        }
+      ],
+      "productionExportCases": [
+        {
+          "backend": "canvas2d",
+          "workers": 1,
+          "kind": "pin",
+          "diagnostics": [
+            {
+              "code": "comp-mesh-pin",
+              "severity": "error",
+              "message": "comp-mesh-pin: rest pin is outside the alpha silhouette",
+              "path": "layers.0.effects.0.params.rest.0",
+              "node": "art",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "workers": 1,
+          "kind": "flip",
+          "diagnostics": [
+            {
+              "code": "comp-mesh-flip",
+              "severity": "error",
+              "message": "comp-mesh-flip: 1152 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+              "path": "layers.0.effects.0.params.controls",
+              "node": "art",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "workers": 4,
+          "kind": "pin",
+          "diagnostics": [
+            {
+              "code": "comp-mesh-pin",
+              "severity": "error",
+              "message": "comp-mesh-pin: rest pin is outside the alpha silhouette",
+              "path": "layers.0.effects.0.params.rest.0",
+              "node": "art",
+              "frame": 2
+            }
+          ]
+        },
+        {
+          "backend": "canvas2d",
+          "workers": 4,
+          "kind": "flip",
+          "diagnostics": [
+            {
+              "code": "comp-mesh-flip",
+              "severity": "error",
+              "message": "comp-mesh-flip: 1152 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+              "path": "layers.0.effects.0.params.controls",
+              "node": "art",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "workers": 1,
+          "kind": "pin",
+          "diagnostics": [
+            {
+              "code": "comp-mesh-pin",
+              "severity": "error",
+              "message": "comp-mesh-pin: rest pin is outside the alpha silhouette",
+              "path": "layers.0.effects.0.params.rest.0",
+              "node": "art",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "workers": 1,
+          "kind": "flip",
+          "diagnostics": [
+            {
+              "code": "comp-mesh-flip",
+              "severity": "error",
+              "message": "comp-mesh-flip: 1152 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+              "path": "layers.0.effects.0.params.controls",
+              "node": "art",
+              "frame": 0
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "workers": 4,
+          "kind": "pin",
+          "diagnostics": [
+            {
+              "code": "comp-mesh-pin",
+              "severity": "error",
+              "message": "comp-mesh-pin: rest pin is outside the alpha silhouette",
+              "path": "layers.0.effects.0.params.rest.0",
+              "node": "art",
+              "frame": 2
+            }
+          ]
+        },
+        {
+          "backend": "webgl2",
+          "workers": 4,
+          "kind": "flip",
+          "diagnostics": [
+            {
+              "code": "comp-mesh-flip",
+              "severity": "error",
+              "message": "comp-mesh-flip: 1152 flipped or collapsed triangles (first 0); reduce the pin/control deformation",
+              "path": "layers.0.effects.0.params.controls",
+              "node": "art",
+              "frame": 1
+            }
+          ]
+        }
+      ],
+      "failedExportCleanup": "No video, scene manifest or result manifest remains for any of the eight cases",
+      "rejectedFixture": "Initial three-frame fixture requested four workers and correctly failed option validation. Four frames exercise valid one/four-worker mesh failures. No production export-worker change was needed."
+    }
+  ],
+  "remaining": [],
+  "status": "fixed-focused-verified",
+  "verification": {
+    "scope": "Focused PR repair checks; the full milestone pnpm check was not rerun or claimed",
+    "pinnedToolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "playwright": "1.62.1",
+      "chromium": 1234,
+      "ffmpeg": "8.0.1"
+    },
+    "unitTests": 112,
+    "unitFiles": 15,
+    "units": [
+      {
+        "log": "/private/tmp/pr50-final-units.log",
+        "sha256": "88dbc519c61bf9f033ae07ed32fdb97de2bf6b080ec710362887996598630529",
+        "tests": 81
+      },
+      {
+        "log": "/private/tmp/pr50-final-plugin-units.log",
+        "sha256": "935b0441ce663d301bdb69ff114fbb23d66dacf72e1e8ceb4278b2de6eba6a61",
+        "tests": 31
+      }
+    ],
+    "staticChecks": {
+      "status": "passed",
+      "checks": ["pnpm build", "changed-file eslint", "pnpm check:boundaries"],
+      "log": "/private/tmp/pr50-final-static-checks.log",
+      "sha256": "c34f5788320baf3eba1fef444196e021e4f7059df03928928bcebc752090def6"
+    },
+    "meshBrowser": {
+      "status": "passed",
+      "command": "pnpm test:browser:composition-mesh",
+      "log": "/private/tmp/pr50-final-mesh-browser-success.log",
+      "sha256": "0639cb621529888dfff3ca751d403ae900072caa5f0e43092b618257ffd1d534",
+      "pixelComparisons": 16,
+      "pixelMaxRgbaDelta": 2,
+      "offscreenComparisons": 46,
+      "rasterIdentityComparisons": 18,
+      "rasterIdentityMaxRgbaDelta": 0,
+      "previewDiagnosticCases": 12,
+      "ownershipCases": 12,
+      "finalOwnedBytes": 0,
+      "finalReservations": 0,
+      "demos": [
+        {
+          "name": "composition",
+          "backend": "canvas2d",
+          "frames": 48,
+          "uniqueFrames": 47
+        },
+        {
+          "name": "composition",
+          "backend": "webgl2",
+          "frames": 48,
+          "uniqueFrames": 47
+        },
+        {
+          "name": "prop-follow",
+          "backend": "canvas2d",
+          "frames": 48,
+          "uniqueFrames": 47
+        },
+        {
+          "name": "prop-follow",
+          "backend": "webgl2",
+          "frames": 48,
+          "uniqueFrames": 47
+        }
+      ],
+      "demoSeeks": "byte exact forward, reverse and random"
+    },
+    "meshExports": {
+      "status": "passed",
+      "validPermutations": 8,
+      "decodedFramesPerExport": 48,
+      "comparison": "Identical encoded body and every decoded frame within backend across repeat, one/four workers and cache on/off",
+      "artifact": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce14-mesh-VDXvPT/exports.json",
+      "sha256": "6c4ad36a8c021e276de75ad053e09bdc62e4b17c924428dc7f5f3f67c6aaa4d0",
+      "failedDiagnosticPermutations": 8,
+      "diagnosticArtifact": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce14-mesh-VDXvPT/diagnostic-exports.json",
+      "diagnosticSha256": "a1ad9343e445f30e5ec6198bd5e7fbaa38254b3275a686211c62bdcfe729c356"
+    },
+    "nativeEffects": {
+      "status": "passed",
+      "command": "pnpm test:browser:composition-effects",
+      "log": "/private/tmp/pr50-final-native-effects.log",
+      "sha256": "6f04d8d403af87bdff6c3804528cbdba584b75630d50381a3cac6da3a92d1f75",
+      "catalogues": 7,
+      "baseline": "exact frozen references unchanged",
+      "catalogueReports": 21,
+      "hardwareComparisons": 42,
+      "hardwarePolicy": "unchanged perceptual hardware policy",
+      "repeatedNativeExports": 6,
+      "nativeFramesPerExport": 60,
+      "proof": "benchmarks/results/composition-ce6-completion/native-acceptance.json",
+      "proofSha256": "703e3387ee4181f82aefd1f775e7a2f47203610e628b8ccc452fcb51ee0e45d8"
+    }
+  },
+  "failedAttempts": [
+    {
+      "log": "/private/tmp/pr50-final-mesh-browser.log",
+      "sha256": "a7cce3f17c24a9ab02a48cf04d225a372d8af281a9268369d6e8a86c0eb3dab4",
+      "reason": "New diagnostic fixture requested four workers for three frames; earlier mesh checks and eight valid exports passed, but the combined command did not pass."
+    },
+    {
+      "log": "/private/tmp/pr50-final-mesh-browser-retry.log",
+      "sha256": "56dc47944aa7c61ca8e99545a582e803dc085d270bd2bedaabb2d3f80d6e2a54",
+      "reason": "New diagnostic fixture requested four workers for three frames; earlier mesh checks and eight valid exports passed, but the combined command did not pass."
+    },
+    {
+      "log": "/private/tmp/pr50-final-mesh-browser-passed.log",
+      "sha256": "c1b72f765a2a1a744790d06c630612328eda160646689e48c8b0c8fbb79b92e1",
+      "reason": "New diagnostic fixture requested four workers for three frames; earlier mesh checks and eight valid exports passed, but the combined command did not pass."
+    }
+  ],
+  "verifiedSourceSha256": {
+    "packages/renderer-core/src/composition/mesh/contours.ts": "b5ba33be47de65ced6958efbedfc7bc00184fc11add89da72e8ecff89d33e749",
+    "packages/renderer-core/src/composition/mesh/diagnostics.ts": "c154a2b7940b7321b836f9640caec54e85336d0df124d161868998dfbcc4654c",
+    "packages/renderer-core/src/composition/mesh/frame.ts": "c448de01a9a9710648ee29e4fd6e80fb9bf422f8192e2b4bdf3cb4d13d86b7fc",
+    "packages/renderer-core/src/composition/mesh/geometry.ts": "3a8275487c0213d978994b43709677c8cc68ee208fce43017e21927b0eb38253",
+    "packages/renderer-core/src/composition/mesh/raster.ts": "7479b267efdcdc5045dd2bbc3c85d0f86efaea15fd14bbb677f4b6e046bb6704",
+    "packages/renderer-core/src/composition/mesh/topology.ts": "a8d8100cc5a78c07dbdad78857265cf216e4512c9c37652bd9f2331a4ba16552",
+    "packages/renderer-core/src/composition/render/effect-plugins.ts": "a02610b04f2315885951a5fa6928f7177a1fe163ea6dfc33b315ffeee9c29c44",
+    "packages/renderer-core/src/composition/render/graph.ts": "f1a515c592fc2db840acf7ca171eec5ab8a9018bc93ee7a59bf06106b2c54b38",
+    "packages/renderer-core/src/composition/render/version.ts": "15cfb756d1017c870310295b9fd54462ebf84a06af9c75249b2b7b77835984e5",
+    "packages/renderer-core/src/composition/render/webgl2.ts": "2212969b093b85e70d377c5806354b1eaf38288a7d3f1dfa1e89f735d981c2bc",
+    "tests/browser/composition-mesh.ts": "3701f114358f11075111d102b285bea531b132f2ba9acd02bbf02c52485e0103",
+    "tests/helpers/composition-mesh-diagnostic-reference.ts": "bc86ee5d1d712339c354f0da52526f285d73aedfb67211b9e15fa3e4a6578a8b",
+    "tests/helpers/composition-mesh-export.ts": "19cfee94f3d99654b021b8f7a5f827b04d6934b137665f07fbdc9925fd7bdc36",
+    "tests/helpers/composition-mesh-raster-reference.ts": "96cc045524090b32d478c13583a8a13ddfbcd905c213bc1fdf7219d5d685b61a",
+    "tests/unit/batch-identity.test.ts": "4755819f8e815d849f50ed56321a0c50100d9a58fac11d7af48ac76809e427ba",
+    "tests/unit/composition-mesh-diagnostics.test.ts": "f7a51278cd3282a7443dbdcef9b1c4feafb983e1cf057ff76f1b93a9a7e4e8b9",
+    "tests/unit/composition-mesh-frame.test.ts": "58f47a1e9fbf1c20a5440a61bbe527617519efa4a9552f3b2714cdca09db5924"
+  },
+  "delivery": "Two findings, one commit each; both commits are prepared before one normal push to codex/composition-ce14"
+}

@@ -172,7 +172,12 @@ export function compileExpressions(
       continue;
     }
     const type = target.resolved.type;
-    if (type === "discrete" || type === "path" || type === "curve") {
+    if (
+      type === "discrete" ||
+      type === "path" ||
+      type === "curve" ||
+      type === "points"
+    ) {
       report(
         "comp-expression-type",
         entry.origin,

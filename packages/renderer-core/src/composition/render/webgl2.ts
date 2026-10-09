@@ -45,7 +45,7 @@ import { blendShader } from "./webgl-blend.ts";
 import { FLAT_LIGHTING_SHADER, flatLightingUniforms } from "./flat-lighting.ts";
 
 export const COMPOSITION_WEBGL_RENDERER_VERSION =
-  "composition-webgl2-0.67.1" as const;
+  "composition-webgl2-0.68.7" as const;
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const COPY =
   "uniform float opacity; void main() { pixel = floor(floor(texture(source, uv) * 255.0 + 0.5) * (floor(opacity * 255.0 + 0.5) + 1.0) / 256.0) / 255.0; }";
@@ -625,6 +625,10 @@ export function createWebgl2Backend(
       if (isolates.release(surface)) return;
       bounds.release(surface);
       device.release(surface);
+    },
+    replaceRegion(source, target, left, top) {
+      bounds.full(target);
+      device.replaceRegion(source, target, left, top);
     },
     clear: (surface, color) => {
       bounds.clear(surface, color);

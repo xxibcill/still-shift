@@ -62,7 +62,7 @@ export function sampleEffects(
       params: Object.fromEntries(
         Object.entries(definition.properties).map(([name, property]) => [
           name,
-          property.type === "curve"
+          property.type === "curve" || property.type === "points"
             ? effectCurve(effect.params?.[name], keyTime, fps, property.default)
             : property.type === "color"
               ? color(effect.params?.[name] ?? property.default, keyTime, fps)
@@ -88,6 +88,13 @@ export function clampEffects(effects: EvaluatedEffect[]) {
           (point) => point.map(unit) as Point,
         );
         effect.params[name] = points;
+      } else if (property.type === "points") {
+        effect.params[name] = (effect.params[name] as Point[]).map(
+          (point) =>
+            point.map((value) =>
+              Math.max(property.min, Math.min(property.max, value)),
+            ) as Point,
+        );
       } else if (property.type === "color")
         effect.params[name] = (effect.params[name] as Rgba).map(unit) as Rgba;
       else if (property.type === "vec2")

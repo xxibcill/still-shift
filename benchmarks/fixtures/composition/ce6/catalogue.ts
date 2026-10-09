@@ -70,6 +70,17 @@ export function ce6EffectCases(
     "blur.gaussian": { radius: 4 },
     "blur.directional": { length: 8, angle: 25, samples: 8 },
     "blur.primitive": { radius: 2 },
+    "distort.mesh-warp": {
+      size: [width, height],
+      subdivisions: 12,
+      controls: [
+        [0, 0],
+        [1, 0.03],
+        [0, 1],
+        [1, 1],
+      ],
+    },
+    "distort.puppet": { rest: [], pins: [], refinement: 1 },
     "distort.transform": {
       offset: [1.5, -0.5],
       scale: [0.98, 1.02],
@@ -168,6 +179,7 @@ export const CE6_NATIVE_FIXTURES = [
   "catalogue-stylize-light",
   "catalogue-transition",
   "catalogue-history-linear",
+  "catalogue-mesh",
 ] as const;
 
 /** Each catalogue cell is a native isolated group with independently moving paints. */
@@ -176,7 +188,12 @@ export function ce6NativeFixtures(): [string, Composition][] {
     families = [
       Object.keys(cases).filter((id) => id.startsWith("color.")),
       Object.keys(cases).filter((id) => id.startsWith("blur.")),
-      Object.keys(cases).filter((id) => id.startsWith("distort.")),
+      Object.keys(cases).filter(
+        (id) =>
+          id.startsWith("distort.") &&
+          id !== "distort.mesh-warp" &&
+          id !== "distort.puppet",
+      ),
       Object.keys(cases).filter(
         (id) =>
           id.startsWith("stylize.") ||
@@ -185,6 +202,7 @@ export function ce6NativeFixtures(): [string, Composition][] {
       ),
       Object.keys(cases).filter((id) => id.startsWith("transition.")),
       ["time.echo", "distort.displacement-map", "transition.gradient-wipe"],
+      ["distort.mesh-warp", "distort.puppet"],
     ];
   return families.map((effects, family) => {
     const doc: Composition = {

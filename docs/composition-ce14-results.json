@@ -1,0 +1,1396 @@
+{
+  "milestone": "CE14",
+  "status": "complete",
+  "date": "2026-10-09",
+  "base": "efa42f42e57958133dfcd268e2c7f68861c32319",
+  "pointCollections": {
+    "tests": 177,
+    "testFiles": 7,
+    "checks": [
+      {
+        "command": "pnpm exec vitest run tests/unit/composition-effect-points.test.ts tests/unit/composition-effect-curves.test.ts tests/unit/composition-effect-contract.test.ts tests/unit/composition-warp-effects.test.ts tests/unit/composition-bake.test.ts tests/unit/composition-keys.test.ts tests/unit/composition-expressions.test.ts --maxWorkers=4",
+        "status": "passed",
+        "logSha256": "6bad700ea8ac4dcc3c23c86771448bd76ba2f364b061a46b110b7ed090fd97d6"
+      },
+      {
+        "command": "pnpm exec tsc --noEmit",
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "command": "pnpm exec eslint <changed TypeScript files>",
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "command": "pnpm schema:check",
+        "status": "passed",
+        "logSha256": "fd0421a6b710ec75b9107d02b9ce77186844691d6d769187139d3bc9b65f5606"
+      },
+      {
+        "command": "pnpm check:boundaries",
+        "status": "passed",
+        "logSha256": "5c910c33392af699061309d6cedd4b1c9773841d34fd0a81402eebfe60700563"
+      }
+    ]
+  },
+  "remaining": [],
+  "geometry": {
+    "status": "focused-passed",
+    "tests": 58,
+    "testFiles": 6,
+    "gridDimensions": 49,
+    "checks": {
+      "regressions": {
+        "status": "passed",
+        "logSha256": "da317c352ee0f67f23127fd6cdd8f5adbeb1bee303341fedf0ff1b1a4ef0f6ff"
+      },
+      "types": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lint": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "schema-check": {
+        "status": "passed",
+        "logSha256": "fd0421a6b710ec75b9107d02b9ce77186844691d6d769187139d3bc9b65f5606"
+      },
+      "boundaries": {
+        "status": "passed",
+        "logSha256": "5c910c33392af699061309d6cedd4b1c9773841d34fd0a81402eebfe60700563"
+      }
+    },
+    "rendering": "focused-passed"
+  },
+  "topology": {
+    "status": "focused-passed",
+    "tests": 29,
+    "testFiles": 3,
+    "exhaustiveBinaryMasks": 512,
+    "triangulator": {
+      "package": "earcut",
+      "version": "3.0.2",
+      "license": "ISC",
+      "notice": "docs/licenses/earcut-3.0.2.txt"
+    },
+    "limits": {
+      "contourEdges": 65536,
+      "outlineVertices": 8192,
+      "meshVertices": 32768,
+      "triangles": 65536
+    },
+    "checks": {
+      "tests": {
+        "status": "passed",
+        "logSha256": "4b220602ebca87f8a07635825bf709bbe9362b38972efa1e8ff83b02bda9fb7b"
+      },
+      "types": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lint": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "boundaries": {
+        "status": "passed",
+        "logSha256": "5c910c33392af699061309d6cedd4b1c9773841d34fd0a81402eebfe60700563"
+      }
+    }
+  },
+  "rendering": {
+    "status": "focused-passed",
+    "unitTests": 44,
+    "pixelMaxDelta": {
+      "bezier": 0,
+      "puppet": 1
+    },
+    "destinationGridPixels": 0.0625,
+    "memoryCases": 6,
+    "checks": {
+      "units": {
+        "status": "passed",
+        "logSha256": "31bd8ecae63f938a07837e9d8d63d12f7fffc3727cd9dad8e153c65e7b92dffb"
+      },
+      "types": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lint": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "schema": {
+        "status": "passed",
+        "logSha256": "fd0421a6b710ec75b9107d02b9ce77186844691d6d769187139d3bc9b65f5606"
+      },
+      "boundaries": {
+        "status": "passed",
+        "logSha256": "5c910c33392af699061309d6cedd4b1c9773841d34fd0a81402eebfe60700563"
+      },
+      "mesh-browser": {
+        "status": "passed",
+        "logSha256": "d11054982b5329e536a1575bc88e5fde2ab30df8aeb548bc233c02b088316959"
+      },
+      "existing-effects-browser": {
+        "status": "passed",
+        "logSha256": "fa98e1aeff1cfa5ffbf745e3906034f4665bbba9dd3f5cc90cb80eb6e984334e"
+      }
+    }
+  },
+  "demo": {
+    "status": "focused-passed",
+    "compositions": 2,
+    "framesEach": 48,
+    "backends": ["canvas2d", "webgl2"],
+    "flippedTriangles": 0,
+    "uniqueFrames": 47,
+    "unitTests": 14,
+    "exportCases": 8,
+    "exportProofSha256": "92dc56f2b9a5346f5fe2c9ca808458d9d1e4a972ba7289d6909b333ca45fd147",
+    "exports": [
+      {
+        "backend": "canvas2d",
+        "workers": 1,
+        "cacheStatic": true,
+        "proof": {
+          "encoded": [
+            "sha256:23dd80d3578f3d293b53750b33e87aed979a3a70419490cf7253e18185134860"
+          ],
+          "decodedFrames": [
+            "sha256:faa93b49ea54007c17335a7cb2105578d39d9b1e23f0b90dd83fbb64d9045c2e",
+            "sha256:20888e3e79f77e0609a0f97c920aef98572f80718c311dd07044d9795f6854d2",
+            "sha256:00c1b42fea47b0eb082e8e31a0d0b55be9076d51fb5c3385f46b37bcc15fa17a",
+            "sha256:c136855e18bc3f9e0bb8343b9e43d1af7eb404bc7c2615993272094c0123c3a4",
+            "sha256:1c805d5232b6fe878f393685966e0b8964f82770e7f03dc5daf0258b66639dbd",
+            "sha256:9bc80c5356a923cb23a981db2c91b00c3cc56d11f553a91786bfd4a7cd34e21d",
+            "sha256:6f0075735e3e61bd6062d3f9257ba794a112456232be0700729021b5f98b39c4",
+            "sha256:b43b5ef1ce5a4c4ef74455e708cfe828b37058dce55dda12923ed21f3cf67552",
+            "sha256:219259d40b4e1544e0cd3a1a9ea731ef875737537c031e7f18e2810948609170",
+            "sha256:108bc6cae389e2adeeafbb154b7957e904e15493f68df3eb851b2e5b6e0a401a",
+            "sha256:f0dfc6404350f72d8e8cba9962c783595f05c2dec55519c753df17a028818acc",
+            "sha256:bec5bb7bf3fc3531b260966a2691257de06343c8e287f90c1d3c8f9dac8b1a69",
+            "sha256:07f615126325e8e84088646a4c421b8a1b6cb69c2b2b6e37290f8d71da60e896",
+            "sha256:f60db744caf2aa2e200d2fd64a3558a142242bfb71cdb94fa7945b63c2a26d16",
+            "sha256:d8a7b423756070e20029b833383f118073ab0a1003d4995b6c68a459a1df638c",
+            "sha256:3a185fb17584c6c24efd52f1aa8714cedea076f24b79e6d92914e5f3ea0a19e1",
+            "sha256:f98f0939c4305d8dd9106b129a3cdb5aeb7c05d77dd2b49dccf312880e2201e0",
+            "sha256:1d8945601301af3d793424dc50e719eec51880e614915ec084f4b24aeef04d1c",
+            "sha256:efa5a349eb25978ae5a176a28c8e7747eb2940cf9d7562526e4cdc04ec6641f9",
+            "sha256:bafa00b124715b8f5bed5114ab473e213b0e11a8a38b8bec42c496bf9528815c",
+            "sha256:72c3d1aea962b54b6111e4e1ae861265cbf230b33bd706f2e1ea858a70b64cca",
+            "sha256:d627895ad89d4c255133b4e40bd9edfc99f107cfcaf6305e5964c8c7cb7c1958",
+            "sha256:4bc37e04f44999bf98cb82b7c1ced13d26ed4e054885ff60296df816de0d7230",
+            "sha256:fc66052b9b7c41b626bb6dc85ca1aaa62dc1fc8506c849837a5fcd8c2d571fa9",
+            "sha256:4e355a4774c0733bde7618bffdbc5d83f97f99ec894881bac817755456cd4f27",
+            "sha256:9e5703fa4a87780862074c9f3ea799f5b70e3ac69d62c068fe6f1ab183b267c8",
+            "sha256:3443d8c1ebb5abe93beaa422e9297037a24e8c48b915953e7373d775966155ea",
+            "sha256:2427de01feba4af5486bf094756194dc505ac280b905440385f708d9a4e73863",
+            "sha256:4b1a54ffccbae665ee5f67fe0162f8513e1a84961d2af5ddc48f0a963562ed0b",
+            "sha256:026ea8ef0579eaa99d594aef650e7d41543a71fae6946b55e780d7878236c3d7",
+            "sha256:b54597b49ef2f5a3a0ae5eeaf00d58bd7115e685913927e7d0035eb9063e3660",
+            "sha256:06f7e895cd8cca19f148e7af028d7c8697e76864ac470cf73aee19e4aea22e93",
+            "sha256:1f5254b297922aa13408bc5b0492040e87c7013cbe8d5e0893a683365dbd9c17",
+            "sha256:102224589586e7840fde23e6cbf97fbfc2f21e9374cd0da378f0c833d0983632",
+            "sha256:7db085766a242759ad39a948b78fb6eb983f39f3d18409596924648599098c89",
+            "sha256:51923d0e038f60739dba6ad068456907b218b4ca2153f83d7d3b6618cbb2217d",
+            "sha256:00ea29e7031ac4c4b99ccb7b35878f3ac406fb992e310814a3221bdadaf881de",
+            "sha256:444ff7ff1987f2dbcbdf05f40ea9058c03a2e033e0c3355db3a6e47cbdcd8b37",
+            "sha256:f8be661b4dc22ba618bfcaf024895018390d96ea1dffe26e0d9b652e3d9be18d",
+            "sha256:a04aea9457c0b34e0bb159696dc5fb75091f6a30d3b5966301e8ec0b6a6230da",
+            "sha256:9484fd73176e703cbf2a2fe8a24ccb1dc0e96ff4be2440c991b206f996bfb1a7",
+            "sha256:a54e698f4d3a949ffec4c2c3c3dc41721063e84c6c4a15a1fc8f912b04169ab2",
+            "sha256:f5c808abfc5907bb11e9310934ea52cc388ce1fe4a8e4d9a816de32027247822",
+            "sha256:d1bfb1ae71504dcb9248cf183014e8c0f83461e256597ef0ed5a92ada3fe3979",
+            "sha256:002744de0cffbf9131ba3a7c8592bd6443b19184374095fc3eba4471120b9977",
+            "sha256:dc2dd009171266395e66dd12fbac8e91d437329fc91bea39b885259ac9d73ac4",
+            "sha256:3e8bbfeeb369e3b53aeb41668d90e71942d50d15f3c730ece1eb5dfe6142ced7",
+            "sha256:c231315d7cb5badceb68238a855169cc3fd1040f0e5d37ec419dcc4e3597402d"
+          ]
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "workers": 1,
+        "cacheStatic": true,
+        "proof": {
+          "encoded": [
+            "sha256:23dd80d3578f3d293b53750b33e87aed979a3a70419490cf7253e18185134860"
+          ],
+          "decodedFrames": [
+            "sha256:faa93b49ea54007c17335a7cb2105578d39d9b1e23f0b90dd83fbb64d9045c2e",
+            "sha256:20888e3e79f77e0609a0f97c920aef98572f80718c311dd07044d9795f6854d2",
+            "sha256:00c1b42fea47b0eb082e8e31a0d0b55be9076d51fb5c3385f46b37bcc15fa17a",
+            "sha256:c136855e18bc3f9e0bb8343b9e43d1af7eb404bc7c2615993272094c0123c3a4",
+            "sha256:1c805d5232b6fe878f393685966e0b8964f82770e7f03dc5daf0258b66639dbd",
+            "sha256:9bc80c5356a923cb23a981db2c91b00c3cc56d11f553a91786bfd4a7cd34e21d",
+            "sha256:6f0075735e3e61bd6062d3f9257ba794a112456232be0700729021b5f98b39c4",
+            "sha256:b43b5ef1ce5a4c4ef74455e708cfe828b37058dce55dda12923ed21f3cf67552",
+            "sha256:219259d40b4e1544e0cd3a1a9ea731ef875737537c031e7f18e2810948609170",
+            "sha256:108bc6cae389e2adeeafbb154b7957e904e15493f68df3eb851b2e5b6e0a401a",
+            "sha256:f0dfc6404350f72d8e8cba9962c783595f05c2dec55519c753df17a028818acc",
+            "sha256:bec5bb7bf3fc3531b260966a2691257de06343c8e287f90c1d3c8f9dac8b1a69",
+            "sha256:07f615126325e8e84088646a4c421b8a1b6cb69c2b2b6e37290f8d71da60e896",
+            "sha256:f60db744caf2aa2e200d2fd64a3558a142242bfb71cdb94fa7945b63c2a26d16",
+            "sha256:d8a7b423756070e20029b833383f118073ab0a1003d4995b6c68a459a1df638c",
+            "sha256:3a185fb17584c6c24efd52f1aa8714cedea076f24b79e6d92914e5f3ea0a19e1",
+            "sha256:f98f0939c4305d8dd9106b129a3cdb5aeb7c05d77dd2b49dccf312880e2201e0",
+            "sha256:1d8945601301af3d793424dc50e719eec51880e614915ec084f4b24aeef04d1c",
+            "sha256:efa5a349eb25978ae5a176a28c8e7747eb2940cf9d7562526e4cdc04ec6641f9",
+            "sha256:bafa00b124715b8f5bed5114ab473e213b0e11a8a38b8bec42c496bf9528815c",
+            "sha256:72c3d1aea962b54b6111e4e1ae861265cbf230b33bd706f2e1ea858a70b64cca",
+            "sha256:d627895ad89d4c255133b4e40bd9edfc99f107cfcaf6305e5964c8c7cb7c1958",
+            "sha256:4bc37e04f44999bf98cb82b7c1ced13d26ed4e054885ff60296df816de0d7230",
+            "sha256:fc66052b9b7c41b626bb6dc85ca1aaa62dc1fc8506c849837a5fcd8c2d571fa9",
+            "sha256:4e355a4774c0733bde7618bffdbc5d83f97f99ec894881bac817755456cd4f27",
+            "sha256:9e5703fa4a87780862074c9f3ea799f5b70e3ac69d62c068fe6f1ab183b267c8",
+            "sha256:3443d8c1ebb5abe93beaa422e9297037a24e8c48b915953e7373d775966155ea",
+            "sha256:2427de01feba4af5486bf094756194dc505ac280b905440385f708d9a4e73863",
+            "sha256:4b1a54ffccbae665ee5f67fe0162f8513e1a84961d2af5ddc48f0a963562ed0b",
+            "sha256:026ea8ef0579eaa99d594aef650e7d41543a71fae6946b55e780d7878236c3d7",
+            "sha256:b54597b49ef2f5a3a0ae5eeaf00d58bd7115e685913927e7d0035eb9063e3660",
+            "sha256:06f7e895cd8cca19f148e7af028d7c8697e76864ac470cf73aee19e4aea22e93",
+            "sha256:1f5254b297922aa13408bc5b0492040e87c7013cbe8d5e0893a683365dbd9c17",
+            "sha256:102224589586e7840fde23e6cbf97fbfc2f21e9374cd0da378f0c833d0983632",
+            "sha256:7db085766a242759ad39a948b78fb6eb983f39f3d18409596924648599098c89",
+            "sha256:51923d0e038f60739dba6ad068456907b218b4ca2153f83d7d3b6618cbb2217d",
+            "sha256:00ea29e7031ac4c4b99ccb7b35878f3ac406fb992e310814a3221bdadaf881de",
+            "sha256:444ff7ff1987f2dbcbdf05f40ea9058c03a2e033e0c3355db3a6e47cbdcd8b37",
+            "sha256:f8be661b4dc22ba618bfcaf024895018390d96ea1dffe26e0d9b652e3d9be18d",
+            "sha256:a04aea9457c0b34e0bb159696dc5fb75091f6a30d3b5966301e8ec0b6a6230da",
+            "sha256:9484fd73176e703cbf2a2fe8a24ccb1dc0e96ff4be2440c991b206f996bfb1a7",
+            "sha256:a54e698f4d3a949ffec4c2c3c3dc41721063e84c6c4a15a1fc8f912b04169ab2",
+            "sha256:f5c808abfc5907bb11e9310934ea52cc388ce1fe4a8e4d9a816de32027247822",
+            "sha256:d1bfb1ae71504dcb9248cf183014e8c0f83461e256597ef0ed5a92ada3fe3979",
+            "sha256:002744de0cffbf9131ba3a7c8592bd6443b19184374095fc3eba4471120b9977",
+            "sha256:dc2dd009171266395e66dd12fbac8e91d437329fc91bea39b885259ac9d73ac4",
+            "sha256:3e8bbfeeb369e3b53aeb41668d90e71942d50d15f3c730ece1eb5dfe6142ced7",
+            "sha256:c231315d7cb5badceb68238a855169cc3fd1040f0e5d37ec419dcc4e3597402d"
+          ]
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "workers": 4,
+        "cacheStatic": true,
+        "proof": {
+          "encoded": [
+            "sha256:23dd80d3578f3d293b53750b33e87aed979a3a70419490cf7253e18185134860"
+          ],
+          "decodedFrames": [
+            "sha256:faa93b49ea54007c17335a7cb2105578d39d9b1e23f0b90dd83fbb64d9045c2e",
+            "sha256:20888e3e79f77e0609a0f97c920aef98572f80718c311dd07044d9795f6854d2",
+            "sha256:00c1b42fea47b0eb082e8e31a0d0b55be9076d51fb5c3385f46b37bcc15fa17a",
+            "sha256:c136855e18bc3f9e0bb8343b9e43d1af7eb404bc7c2615993272094c0123c3a4",
+            "sha256:1c805d5232b6fe878f393685966e0b8964f82770e7f03dc5daf0258b66639dbd",
+            "sha256:9bc80c5356a923cb23a981db2c91b00c3cc56d11f553a91786bfd4a7cd34e21d",
+            "sha256:6f0075735e3e61bd6062d3f9257ba794a112456232be0700729021b5f98b39c4",
+            "sha256:b43b5ef1ce5a4c4ef74455e708cfe828b37058dce55dda12923ed21f3cf67552",
+            "sha256:219259d40b4e1544e0cd3a1a9ea731ef875737537c031e7f18e2810948609170",
+            "sha256:108bc6cae389e2adeeafbb154b7957e904e15493f68df3eb851b2e5b6e0a401a",
+            "sha256:f0dfc6404350f72d8e8cba9962c783595f05c2dec55519c753df17a028818acc",
+            "sha256:bec5bb7bf3fc3531b260966a2691257de06343c8e287f90c1d3c8f9dac8b1a69",
+            "sha256:07f615126325e8e84088646a4c421b8a1b6cb69c2b2b6e37290f8d71da60e896",
+            "sha256:f60db744caf2aa2e200d2fd64a3558a142242bfb71cdb94fa7945b63c2a26d16",
+            "sha256:d8a7b423756070e20029b833383f118073ab0a1003d4995b6c68a459a1df638c",
+            "sha256:3a185fb17584c6c24efd52f1aa8714cedea076f24b79e6d92914e5f3ea0a19e1",
+            "sha256:f98f0939c4305d8dd9106b129a3cdb5aeb7c05d77dd2b49dccf312880e2201e0",
+            "sha256:1d8945601301af3d793424dc50e719eec51880e614915ec084f4b24aeef04d1c",
+            "sha256:efa5a349eb25978ae5a176a28c8e7747eb2940cf9d7562526e4cdc04ec6641f9",
+            "sha256:bafa00b124715b8f5bed5114ab473e213b0e11a8a38b8bec42c496bf9528815c",
+            "sha256:72c3d1aea962b54b6111e4e1ae861265cbf230b33bd706f2e1ea858a70b64cca",
+            "sha256:d627895ad89d4c255133b4e40bd9edfc99f107cfcaf6305e5964c8c7cb7c1958",
+            "sha256:4bc37e04f44999bf98cb82b7c1ced13d26ed4e054885ff60296df816de0d7230",
+            "sha256:fc66052b9b7c41b626bb6dc85ca1aaa62dc1fc8506c849837a5fcd8c2d571fa9",
+            "sha256:4e355a4774c0733bde7618bffdbc5d83f97f99ec894881bac817755456cd4f27",
+            "sha256:9e5703fa4a87780862074c9f3ea799f5b70e3ac69d62c068fe6f1ab183b267c8",
+            "sha256:3443d8c1ebb5abe93beaa422e9297037a24e8c48b915953e7373d775966155ea",
+            "sha256:2427de01feba4af5486bf094756194dc505ac280b905440385f708d9a4e73863",
+            "sha256:4b1a54ffccbae665ee5f67fe0162f8513e1a84961d2af5ddc48f0a963562ed0b",
+            "sha256:026ea8ef0579eaa99d594aef650e7d41543a71fae6946b55e780d7878236c3d7",
+            "sha256:b54597b49ef2f5a3a0ae5eeaf00d58bd7115e685913927e7d0035eb9063e3660",
+            "sha256:06f7e895cd8cca19f148e7af028d7c8697e76864ac470cf73aee19e4aea22e93",
+            "sha256:1f5254b297922aa13408bc5b0492040e87c7013cbe8d5e0893a683365dbd9c17",
+            "sha256:102224589586e7840fde23e6cbf97fbfc2f21e9374cd0da378f0c833d0983632",
+            "sha256:7db085766a242759ad39a948b78fb6eb983f39f3d18409596924648599098c89",
+            "sha256:51923d0e038f60739dba6ad068456907b218b4ca2153f83d7d3b6618cbb2217d",
+            "sha256:00ea29e7031ac4c4b99ccb7b35878f3ac406fb992e310814a3221bdadaf881de",
+            "sha256:444ff7ff1987f2dbcbdf05f40ea9058c03a2e033e0c3355db3a6e47cbdcd8b37",
+            "sha256:f8be661b4dc22ba618bfcaf024895018390d96ea1dffe26e0d9b652e3d9be18d",
+            "sha256:a04aea9457c0b34e0bb159696dc5fb75091f6a30d3b5966301e8ec0b6a6230da",
+            "sha256:9484fd73176e703cbf2a2fe8a24ccb1dc0e96ff4be2440c991b206f996bfb1a7",
+            "sha256:a54e698f4d3a949ffec4c2c3c3dc41721063e84c6c4a15a1fc8f912b04169ab2",
+            "sha256:f5c808abfc5907bb11e9310934ea52cc388ce1fe4a8e4d9a816de32027247822",
+            "sha256:d1bfb1ae71504dcb9248cf183014e8c0f83461e256597ef0ed5a92ada3fe3979",
+            "sha256:002744de0cffbf9131ba3a7c8592bd6443b19184374095fc3eba4471120b9977",
+            "sha256:dc2dd009171266395e66dd12fbac8e91d437329fc91bea39b885259ac9d73ac4",
+            "sha256:3e8bbfeeb369e3b53aeb41668d90e71942d50d15f3c730ece1eb5dfe6142ced7",
+            "sha256:c231315d7cb5badceb68238a855169cc3fd1040f0e5d37ec419dcc4e3597402d"
+          ]
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "workers": 4,
+        "cacheStatic": false,
+        "proof": {
+          "encoded": [
+            "sha256:23dd80d3578f3d293b53750b33e87aed979a3a70419490cf7253e18185134860"
+          ],
+          "decodedFrames": [
+            "sha256:faa93b49ea54007c17335a7cb2105578d39d9b1e23f0b90dd83fbb64d9045c2e",
+            "sha256:20888e3e79f77e0609a0f97c920aef98572f80718c311dd07044d9795f6854d2",
+            "sha256:00c1b42fea47b0eb082e8e31a0d0b55be9076d51fb5c3385f46b37bcc15fa17a",
+            "sha256:c136855e18bc3f9e0bb8343b9e43d1af7eb404bc7c2615993272094c0123c3a4",
+            "sha256:1c805d5232b6fe878f393685966e0b8964f82770e7f03dc5daf0258b66639dbd",
+            "sha256:9bc80c5356a923cb23a981db2c91b00c3cc56d11f553a91786bfd4a7cd34e21d",
+            "sha256:6f0075735e3e61bd6062d3f9257ba794a112456232be0700729021b5f98b39c4",
+            "sha256:b43b5ef1ce5a4c4ef74455e708cfe828b37058dce55dda12923ed21f3cf67552",
+            "sha256:219259d40b4e1544e0cd3a1a9ea731ef875737537c031e7f18e2810948609170",
+            "sha256:108bc6cae389e2adeeafbb154b7957e904e15493f68df3eb851b2e5b6e0a401a",
+            "sha256:f0dfc6404350f72d8e8cba9962c783595f05c2dec55519c753df17a028818acc",
+            "sha256:bec5bb7bf3fc3531b260966a2691257de06343c8e287f90c1d3c8f9dac8b1a69",
+            "sha256:07f615126325e8e84088646a4c421b8a1b6cb69c2b2b6e37290f8d71da60e896",
+            "sha256:f60db744caf2aa2e200d2fd64a3558a142242bfb71cdb94fa7945b63c2a26d16",
+            "sha256:d8a7b423756070e20029b833383f118073ab0a1003d4995b6c68a459a1df638c",
+            "sha256:3a185fb17584c6c24efd52f1aa8714cedea076f24b79e6d92914e5f3ea0a19e1",
+            "sha256:f98f0939c4305d8dd9106b129a3cdb5aeb7c05d77dd2b49dccf312880e2201e0",
+            "sha256:1d8945601301af3d793424dc50e719eec51880e614915ec084f4b24aeef04d1c",
+            "sha256:efa5a349eb25978ae5a176a28c8e7747eb2940cf9d7562526e4cdc04ec6641f9",
+            "sha256:bafa00b124715b8f5bed5114ab473e213b0e11a8a38b8bec42c496bf9528815c",
+            "sha256:72c3d1aea962b54b6111e4e1ae861265cbf230b33bd706f2e1ea858a70b64cca",
+            "sha256:d627895ad89d4c255133b4e40bd9edfc99f107cfcaf6305e5964c8c7cb7c1958",
+            "sha256:4bc37e04f44999bf98cb82b7c1ced13d26ed4e054885ff60296df816de0d7230",
+            "sha256:fc66052b9b7c41b626bb6dc85ca1aaa62dc1fc8506c849837a5fcd8c2d571fa9",
+            "sha256:4e355a4774c0733bde7618bffdbc5d83f97f99ec894881bac817755456cd4f27",
+            "sha256:9e5703fa4a87780862074c9f3ea799f5b70e3ac69d62c068fe6f1ab183b267c8",
+            "sha256:3443d8c1ebb5abe93beaa422e9297037a24e8c48b915953e7373d775966155ea",
+            "sha256:2427de01feba4af5486bf094756194dc505ac280b905440385f708d9a4e73863",
+            "sha256:4b1a54ffccbae665ee5f67fe0162f8513e1a84961d2af5ddc48f0a963562ed0b",
+            "sha256:026ea8ef0579eaa99d594aef650e7d41543a71fae6946b55e780d7878236c3d7",
+            "sha256:b54597b49ef2f5a3a0ae5eeaf00d58bd7115e685913927e7d0035eb9063e3660",
+            "sha256:06f7e895cd8cca19f148e7af028d7c8697e76864ac470cf73aee19e4aea22e93",
+            "sha256:1f5254b297922aa13408bc5b0492040e87c7013cbe8d5e0893a683365dbd9c17",
+            "sha256:102224589586e7840fde23e6cbf97fbfc2f21e9374cd0da378f0c833d0983632",
+            "sha256:7db085766a242759ad39a948b78fb6eb983f39f3d18409596924648599098c89",
+            "sha256:51923d0e038f60739dba6ad068456907b218b4ca2153f83d7d3b6618cbb2217d",
+            "sha256:00ea29e7031ac4c4b99ccb7b35878f3ac406fb992e310814a3221bdadaf881de",
+            "sha256:444ff7ff1987f2dbcbdf05f40ea9058c03a2e033e0c3355db3a6e47cbdcd8b37",
+            "sha256:f8be661b4dc22ba618bfcaf024895018390d96ea1dffe26e0d9b652e3d9be18d",
+            "sha256:a04aea9457c0b34e0bb159696dc5fb75091f6a30d3b5966301e8ec0b6a6230da",
+            "sha256:9484fd73176e703cbf2a2fe8a24ccb1dc0e96ff4be2440c991b206f996bfb1a7",
+            "sha256:a54e698f4d3a949ffec4c2c3c3dc41721063e84c6c4a15a1fc8f912b04169ab2",
+            "sha256:f5c808abfc5907bb11e9310934ea52cc388ce1fe4a8e4d9a816de32027247822",
+            "sha256:d1bfb1ae71504dcb9248cf183014e8c0f83461e256597ef0ed5a92ada3fe3979",
+            "sha256:002744de0cffbf9131ba3a7c8592bd6443b19184374095fc3eba4471120b9977",
+            "sha256:dc2dd009171266395e66dd12fbac8e91d437329fc91bea39b885259ac9d73ac4",
+            "sha256:3e8bbfeeb369e3b53aeb41668d90e71942d50d15f3c730ece1eb5dfe6142ced7",
+            "sha256:c231315d7cb5badceb68238a855169cc3fd1040f0e5d37ec419dcc4e3597402d"
+          ]
+        }
+      },
+      {
+        "backend": "webgl2",
+        "workers": 1,
+        "cacheStatic": true,
+        "proof": {
+          "encoded": [
+            "sha256:8aa6717591c54d5c822cbf0157cb137f00fcec36927103b0b5dc105cd609858c"
+          ],
+          "decodedFrames": [
+            "sha256:005c4915afb147b1f44e1dd2a74aaa038e25a011a568b54ecc61e1bd136ca1fb",
+            "sha256:427e6db8404436bd34320909e30b44c0dbf1c9229d16fb79b98322a86ec1235f",
+            "sha256:d68a2fd20bb1bffb7c432d6bdcf3b453af7300c6413e3de5563025c0c8de66cc",
+            "sha256:90d10e4f6d9eacae5dcc6cbe99bd1f1fb48be55f0c5eaa8d29cac9eb726bc93e",
+            "sha256:94bfa7de3ece3c36661fc38e50e8f9e832a26fe5949648ef01fe457f15111a40",
+            "sha256:900c4becf350a6e80857417291bca081ca4204c869794406a579604474e7a9f7",
+            "sha256:38aedac7770563f3b22a1ab7837d7607a9c389dedc3871496632b47793e0a804",
+            "sha256:908e40faa7fc8ccf0b208f1c9b4195bb2dfd316ccf1b490c81935f92bc1660bb",
+            "sha256:7ddf48bcf2a2f5d9c6dcfe40b4ab827f0606fece17eb6302130511c353e79165",
+            "sha256:2491e87656d84045b3eb1e53b39616bd93f3833aaed0e0727e85068aa5ce80dd",
+            "sha256:9dd2d066e9083188bc3f5e2fe928f52d49625488e4e2d6dca6c45726d2efd537",
+            "sha256:5940451d55e9207d6715533194fe1efbb1bc8ffb4e1dbdcc0016d998bf0d813d",
+            "sha256:72841c5e7ee0a1ad1d96786f89c0feef155bc296188073252f7977e5d81b9504",
+            "sha256:2196b8bf1ef4409c2b05fa88408f87145d86ed5514e66b5d326d8cc3a7c6f6a9",
+            "sha256:6f5342b73a224cea8c5d13f914af036d4d38107af1b7ed97397f77c25d513231",
+            "sha256:a3b84f68768ada0db56ead1bca6ea77e6d137aaca2a68ee6f0404252d8067c5b",
+            "sha256:5f400f4337e3ba24f8ebf9925d23735eef6d47c1c7cbd8f4d10445c0bde0c324",
+            "sha256:4247cd02f440183ff6477f2386cea9ff972211291bffc05b576f62531b4af7a9",
+            "sha256:b9b659a1c48ddce56170a7f15f7639f3794c715984ce024acc4af25fcf78c6c1",
+            "sha256:3c56eb04f3ba7bc88a4f816d460a6ae39720c0de6784b68b3d0335668de6815b",
+            "sha256:57edf1b853bbe052f7a322a93c7ecb081443e52cab2821668d057c64a17b6f13",
+            "sha256:29700ac0f9ff3aaf29e81dbc268bb0bea8002d82296aed9ce3e82b96ef98d6c8",
+            "sha256:5a685512a569e0a9c4637fd8c260d9969159f9e920150b02a8cc8f99a287ae0a",
+            "sha256:e82231db65193b71c894ee1096d45067d337501c4dd873678d8bb48fd53290d3",
+            "sha256:b2e7e17ab72249cb061e71e55b3c6ae60feae225b23b0d93dadc78d68bda8bc6",
+            "sha256:191af295e7c893585a5bcd9a0d04b14f118549710738f5b02e101654c855e596",
+            "sha256:a1488b9d5b438a621bfd4c36ac502f2ff06410a1343a20e0d5268f1f58318860",
+            "sha256:41baa2b455c20c3b8fdd0a2ae417d3365cec354cdf7bcfbae93f7c9ef88d8870",
+            "sha256:abcf8760eddf477ad81e0b8e976decc3b9e35f1222f8974d27d344a12ee8114a",
+            "sha256:c471c9d87abff0a074dd15befd218129dd657134260d97e5265c06e9db61bbad",
+            "sha256:2530f2fe4a8b1d6ef53712fd60716f95df225625270d69e094aa1c66f839b2cb",
+            "sha256:9b7ddfe9920bed7a0bd8443e6e6ce778fa228550da12a629e62b1f1594a7184a",
+            "sha256:39dac9a60845376e7de4084c89739b39f15e06e2a32f9d0093bba251355202c9",
+            "sha256:e24e286ab5385ae058bdca112fe49e4403cba58e1f2a1dd25b83ed6a01e8072c",
+            "sha256:e5ede8175a8ffce44b4ead7ca169d4a9c405e849148f2591e77184350883b687",
+            "sha256:9616e4131bc0e4b49e714de677d811c0da6531933c199e9666208e2980fc7054",
+            "sha256:0c37f910f2b6838c16ef8f998111a078308a32b7ccf9a40cbd006b6ad773f2cd",
+            "sha256:be853d2c5f6af9f696dcdda3f499b50361493d3ee589b7eb0a5d9172e1d1057b",
+            "sha256:b9cd37d4a2714f31a1927ebb7e91c7562740e9b4704bad0d5e707892294c36f6",
+            "sha256:17223c8dedbb23c76416466f76e6dc0ff484a5fbbb18262f404bd66826b2b810",
+            "sha256:41f0cc6db8d1e03e9a3e7c07f91e60cb8437aac6bc96943b35d4abe87bf97e03",
+            "sha256:ec041a13e00cf848908804228fdc471d3feaa14d6de16c3b45de337b22db917e",
+            "sha256:00d04489b193a6a7ff98870b5959656adda4f687e4bc45b5219e56c9e7b600ce",
+            "sha256:4d744d6d9c059b6f928eadd2ec62b07333d51ce9284a610e4d24ee5102593d6c",
+            "sha256:24e2d7f1c7a7f3d08f28c0565247b3c2f29f44b2df91da4dfa60a83704d33b4c",
+            "sha256:b36e03da36ad19b943f114fe1164cc309adbd6c31251ff9d2b503d85f544a497",
+            "sha256:70bbfc3d179bef882cea41d2c1f680c591bc49f6ab67df5ad06d11e7a47eb958",
+            "sha256:32593a417b473d15d7ea50b2791dc94b6a20c2783e66f5950a2ddb916398d826"
+          ]
+        }
+      },
+      {
+        "backend": "webgl2",
+        "workers": 1,
+        "cacheStatic": true,
+        "proof": {
+          "encoded": [
+            "sha256:8aa6717591c54d5c822cbf0157cb137f00fcec36927103b0b5dc105cd609858c"
+          ],
+          "decodedFrames": [
+            "sha256:005c4915afb147b1f44e1dd2a74aaa038e25a011a568b54ecc61e1bd136ca1fb",
+            "sha256:427e6db8404436bd34320909e30b44c0dbf1c9229d16fb79b98322a86ec1235f",
+            "sha256:d68a2fd20bb1bffb7c432d6bdcf3b453af7300c6413e3de5563025c0c8de66cc",
+            "sha256:90d10e4f6d9eacae5dcc6cbe99bd1f1fb48be55f0c5eaa8d29cac9eb726bc93e",
+            "sha256:94bfa7de3ece3c36661fc38e50e8f9e832a26fe5949648ef01fe457f15111a40",
+            "sha256:900c4becf350a6e80857417291bca081ca4204c869794406a579604474e7a9f7",
+            "sha256:38aedac7770563f3b22a1ab7837d7607a9c389dedc3871496632b47793e0a804",
+            "sha256:908e40faa7fc8ccf0b208f1c9b4195bb2dfd316ccf1b490c81935f92bc1660bb",
+            "sha256:7ddf48bcf2a2f5d9c6dcfe40b4ab827f0606fece17eb6302130511c353e79165",
+            "sha256:2491e87656d84045b3eb1e53b39616bd93f3833aaed0e0727e85068aa5ce80dd",
+            "sha256:9dd2d066e9083188bc3f5e2fe928f52d49625488e4e2d6dca6c45726d2efd537",
+            "sha256:5940451d55e9207d6715533194fe1efbb1bc8ffb4e1dbdcc0016d998bf0d813d",
+            "sha256:72841c5e7ee0a1ad1d96786f89c0feef155bc296188073252f7977e5d81b9504",
+            "sha256:2196b8bf1ef4409c2b05fa88408f87145d86ed5514e66b5d326d8cc3a7c6f6a9",
+            "sha256:6f5342b73a224cea8c5d13f914af036d4d38107af1b7ed97397f77c25d513231",
+            "sha256:a3b84f68768ada0db56ead1bca6ea77e6d137aaca2a68ee6f0404252d8067c5b",
+            "sha256:5f400f4337e3ba24f8ebf9925d23735eef6d47c1c7cbd8f4d10445c0bde0c324",
+            "sha256:4247cd02f440183ff6477f2386cea9ff972211291bffc05b576f62531b4af7a9",
+            "sha256:b9b659a1c48ddce56170a7f15f7639f3794c715984ce024acc4af25fcf78c6c1",
+            "sha256:3c56eb04f3ba7bc88a4f816d460a6ae39720c0de6784b68b3d0335668de6815b",
+            "sha256:57edf1b853bbe052f7a322a93c7ecb081443e52cab2821668d057c64a17b6f13",
+            "sha256:29700ac0f9ff3aaf29e81dbc268bb0bea8002d82296aed9ce3e82b96ef98d6c8",
+            "sha256:5a685512a569e0a9c4637fd8c260d9969159f9e920150b02a8cc8f99a287ae0a",
+            "sha256:e82231db65193b71c894ee1096d45067d337501c4dd873678d8bb48fd53290d3",
+            "sha256:b2e7e17ab72249cb061e71e55b3c6ae60feae225b23b0d93dadc78d68bda8bc6",
+            "sha256:191af295e7c893585a5bcd9a0d04b14f118549710738f5b02e101654c855e596",
+            "sha256:a1488b9d5b438a621bfd4c36ac502f2ff06410a1343a20e0d5268f1f58318860",
+            "sha256:41baa2b455c20c3b8fdd0a2ae417d3365cec354cdf7bcfbae93f7c9ef88d8870",
+            "sha256:abcf8760eddf477ad81e0b8e976decc3b9e35f1222f8974d27d344a12ee8114a",
+            "sha256:c471c9d87abff0a074dd15befd218129dd657134260d97e5265c06e9db61bbad",
+            "sha256:2530f2fe4a8b1d6ef53712fd60716f95df225625270d69e094aa1c66f839b2cb",
+            "sha256:9b7ddfe9920bed7a0bd8443e6e6ce778fa228550da12a629e62b1f1594a7184a",
+            "sha256:39dac9a60845376e7de4084c89739b39f15e06e2a32f9d0093bba251355202c9",
+            "sha256:e24e286ab5385ae058bdca112fe49e4403cba58e1f2a1dd25b83ed6a01e8072c",
+            "sha256:e5ede8175a8ffce44b4ead7ca169d4a9c405e849148f2591e77184350883b687",
+            "sha256:9616e4131bc0e4b49e714de677d811c0da6531933c199e9666208e2980fc7054",
+            "sha256:0c37f910f2b6838c16ef8f998111a078308a32b7ccf9a40cbd006b6ad773f2cd",
+            "sha256:be853d2c5f6af9f696dcdda3f499b50361493d3ee589b7eb0a5d9172e1d1057b",
+            "sha256:b9cd37d4a2714f31a1927ebb7e91c7562740e9b4704bad0d5e707892294c36f6",
+            "sha256:17223c8dedbb23c76416466f76e6dc0ff484a5fbbb18262f404bd66826b2b810",
+            "sha256:41f0cc6db8d1e03e9a3e7c07f91e60cb8437aac6bc96943b35d4abe87bf97e03",
+            "sha256:ec041a13e00cf848908804228fdc471d3feaa14d6de16c3b45de337b22db917e",
+            "sha256:00d04489b193a6a7ff98870b5959656adda4f687e4bc45b5219e56c9e7b600ce",
+            "sha256:4d744d6d9c059b6f928eadd2ec62b07333d51ce9284a610e4d24ee5102593d6c",
+            "sha256:24e2d7f1c7a7f3d08f28c0565247b3c2f29f44b2df91da4dfa60a83704d33b4c",
+            "sha256:b36e03da36ad19b943f114fe1164cc309adbd6c31251ff9d2b503d85f544a497",
+            "sha256:70bbfc3d179bef882cea41d2c1f680c591bc49f6ab67df5ad06d11e7a47eb958",
+            "sha256:32593a417b473d15d7ea50b2791dc94b6a20c2783e66f5950a2ddb916398d826"
+          ]
+        }
+      },
+      {
+        "backend": "webgl2",
+        "workers": 4,
+        "cacheStatic": true,
+        "proof": {
+          "encoded": [
+            "sha256:8aa6717591c54d5c822cbf0157cb137f00fcec36927103b0b5dc105cd609858c"
+          ],
+          "decodedFrames": [
+            "sha256:005c4915afb147b1f44e1dd2a74aaa038e25a011a568b54ecc61e1bd136ca1fb",
+            "sha256:427e6db8404436bd34320909e30b44c0dbf1c9229d16fb79b98322a86ec1235f",
+            "sha256:d68a2fd20bb1bffb7c432d6bdcf3b453af7300c6413e3de5563025c0c8de66cc",
+            "sha256:90d10e4f6d9eacae5dcc6cbe99bd1f1fb48be55f0c5eaa8d29cac9eb726bc93e",
+            "sha256:94bfa7de3ece3c36661fc38e50e8f9e832a26fe5949648ef01fe457f15111a40",
+            "sha256:900c4becf350a6e80857417291bca081ca4204c869794406a579604474e7a9f7",
+            "sha256:38aedac7770563f3b22a1ab7837d7607a9c389dedc3871496632b47793e0a804",
+            "sha256:908e40faa7fc8ccf0b208f1c9b4195bb2dfd316ccf1b490c81935f92bc1660bb",
+            "sha256:7ddf48bcf2a2f5d9c6dcfe40b4ab827f0606fece17eb6302130511c353e79165",
+            "sha256:2491e87656d84045b3eb1e53b39616bd93f3833aaed0e0727e85068aa5ce80dd",
+            "sha256:9dd2d066e9083188bc3f5e2fe928f52d49625488e4e2d6dca6c45726d2efd537",
+            "sha256:5940451d55e9207d6715533194fe1efbb1bc8ffb4e1dbdcc0016d998bf0d813d",
+            "sha256:72841c5e7ee0a1ad1d96786f89c0feef155bc296188073252f7977e5d81b9504",
+            "sha256:2196b8bf1ef4409c2b05fa88408f87145d86ed5514e66b5d326d8cc3a7c6f6a9",
+            "sha256:6f5342b73a224cea8c5d13f914af036d4d38107af1b7ed97397f77c25d513231",
+            "sha256:a3b84f68768ada0db56ead1bca6ea77e6d137aaca2a68ee6f0404252d8067c5b",
+            "sha256:5f400f4337e3ba24f8ebf9925d23735eef6d47c1c7cbd8f4d10445c0bde0c324",
+            "sha256:4247cd02f440183ff6477f2386cea9ff972211291bffc05b576f62531b4af7a9",
+            "sha256:b9b659a1c48ddce56170a7f15f7639f3794c715984ce024acc4af25fcf78c6c1",
+            "sha256:3c56eb04f3ba7bc88a4f816d460a6ae39720c0de6784b68b3d0335668de6815b",
+            "sha256:57edf1b853bbe052f7a322a93c7ecb081443e52cab2821668d057c64a17b6f13",
+            "sha256:29700ac0f9ff3aaf29e81dbc268bb0bea8002d82296aed9ce3e82b96ef98d6c8",
+            "sha256:5a685512a569e0a9c4637fd8c260d9969159f9e920150b02a8cc8f99a287ae0a",
+            "sha256:e82231db65193b71c894ee1096d45067d337501c4dd873678d8bb48fd53290d3",
+            "sha256:b2e7e17ab72249cb061e71e55b3c6ae60feae225b23b0d93dadc78d68bda8bc6",
+            "sha256:191af295e7c893585a5bcd9a0d04b14f118549710738f5b02e101654c855e596",
+            "sha256:a1488b9d5b438a621bfd4c36ac502f2ff06410a1343a20e0d5268f1f58318860",
+            "sha256:41baa2b455c20c3b8fdd0a2ae417d3365cec354cdf7bcfbae93f7c9ef88d8870",
+            "sha256:abcf8760eddf477ad81e0b8e976decc3b9e35f1222f8974d27d344a12ee8114a",
+            "sha256:c471c9d87abff0a074dd15befd218129dd657134260d97e5265c06e9db61bbad",
+            "sha256:2530f2fe4a8b1d6ef53712fd60716f95df225625270d69e094aa1c66f839b2cb",
+            "sha256:9b7ddfe9920bed7a0bd8443e6e6ce778fa228550da12a629e62b1f1594a7184a",
+            "sha256:39dac9a60845376e7de4084c89739b39f15e06e2a32f9d0093bba251355202c9",
+            "sha256:e24e286ab5385ae058bdca112fe49e4403cba58e1f2a1dd25b83ed6a01e8072c",
+            "sha256:e5ede8175a8ffce44b4ead7ca169d4a9c405e849148f2591e77184350883b687",
+            "sha256:9616e4131bc0e4b49e714de677d811c0da6531933c199e9666208e2980fc7054",
+            "sha256:0c37f910f2b6838c16ef8f998111a078308a32b7ccf9a40cbd006b6ad773f2cd",
+            "sha256:be853d2c5f6af9f696dcdda3f499b50361493d3ee589b7eb0a5d9172e1d1057b",
+            "sha256:b9cd37d4a2714f31a1927ebb7e91c7562740e9b4704bad0d5e707892294c36f6",
+            "sha256:17223c8dedbb23c76416466f76e6dc0ff484a5fbbb18262f404bd66826b2b810",
+            "sha256:41f0cc6db8d1e03e9a3e7c07f91e60cb8437aac6bc96943b35d4abe87bf97e03",
+            "sha256:ec041a13e00cf848908804228fdc471d3feaa14d6de16c3b45de337b22db917e",
+            "sha256:00d04489b193a6a7ff98870b5959656adda4f687e4bc45b5219e56c9e7b600ce",
+            "sha256:4d744d6d9c059b6f928eadd2ec62b07333d51ce9284a610e4d24ee5102593d6c",
+            "sha256:24e2d7f1c7a7f3d08f28c0565247b3c2f29f44b2df91da4dfa60a83704d33b4c",
+            "sha256:b36e03da36ad19b943f114fe1164cc309adbd6c31251ff9d2b503d85f544a497",
+            "sha256:70bbfc3d179bef882cea41d2c1f680c591bc49f6ab67df5ad06d11e7a47eb958",
+            "sha256:32593a417b473d15d7ea50b2791dc94b6a20c2783e66f5950a2ddb916398d826"
+          ]
+        }
+      },
+      {
+        "backend": "webgl2",
+        "workers": 4,
+        "cacheStatic": false,
+        "proof": {
+          "encoded": [
+            "sha256:8aa6717591c54d5c822cbf0157cb137f00fcec36927103b0b5dc105cd609858c"
+          ],
+          "decodedFrames": [
+            "sha256:005c4915afb147b1f44e1dd2a74aaa038e25a011a568b54ecc61e1bd136ca1fb",
+            "sha256:427e6db8404436bd34320909e30b44c0dbf1c9229d16fb79b98322a86ec1235f",
+            "sha256:d68a2fd20bb1bffb7c432d6bdcf3b453af7300c6413e3de5563025c0c8de66cc",
+            "sha256:90d10e4f6d9eacae5dcc6cbe99bd1f1fb48be55f0c5eaa8d29cac9eb726bc93e",
+            "sha256:94bfa7de3ece3c36661fc38e50e8f9e832a26fe5949648ef01fe457f15111a40",
+            "sha256:900c4becf350a6e80857417291bca081ca4204c869794406a579604474e7a9f7",
+            "sha256:38aedac7770563f3b22a1ab7837d7607a9c389dedc3871496632b47793e0a804",
+            "sha256:908e40faa7fc8ccf0b208f1c9b4195bb2dfd316ccf1b490c81935f92bc1660bb",
+            "sha256:7ddf48bcf2a2f5d9c6dcfe40b4ab827f0606fece17eb6302130511c353e79165",
+            "sha256:2491e87656d84045b3eb1e53b39616bd93f3833aaed0e0727e85068aa5ce80dd",
+            "sha256:9dd2d066e9083188bc3f5e2fe928f52d49625488e4e2d6dca6c45726d2efd537",
+            "sha256:5940451d55e9207d6715533194fe1efbb1bc8ffb4e1dbdcc0016d998bf0d813d",
+            "sha256:72841c5e7ee0a1ad1d96786f89c0feef155bc296188073252f7977e5d81b9504",
+            "sha256:2196b8bf1ef4409c2b05fa88408f87145d86ed5514e66b5d326d8cc3a7c6f6a9",
+            "sha256:6f5342b73a224cea8c5d13f914af036d4d38107af1b7ed97397f77c25d513231",
+            "sha256:a3b84f68768ada0db56ead1bca6ea77e6d137aaca2a68ee6f0404252d8067c5b",
+            "sha256:5f400f4337e3ba24f8ebf9925d23735eef6d47c1c7cbd8f4d10445c0bde0c324",
+            "sha256:4247cd02f440183ff6477f2386cea9ff972211291bffc05b576f62531b4af7a9",
+            "sha256:b9b659a1c48ddce56170a7f15f7639f3794c715984ce024acc4af25fcf78c6c1",
+            "sha256:3c56eb04f3ba7bc88a4f816d460a6ae39720c0de6784b68b3d0335668de6815b",
+            "sha256:57edf1b853bbe052f7a322a93c7ecb081443e52cab2821668d057c64a17b6f13",
+            "sha256:29700ac0f9ff3aaf29e81dbc268bb0bea8002d82296aed9ce3e82b96ef98d6c8",
+            "sha256:5a685512a569e0a9c4637fd8c260d9969159f9e920150b02a8cc8f99a287ae0a",
+            "sha256:e82231db65193b71c894ee1096d45067d337501c4dd873678d8bb48fd53290d3",
+            "sha256:b2e7e17ab72249cb061e71e55b3c6ae60feae225b23b0d93dadc78d68bda8bc6",
+            "sha256:191af295e7c893585a5bcd9a0d04b14f118549710738f5b02e101654c855e596",
+            "sha256:a1488b9d5b438a621bfd4c36ac502f2ff06410a1343a20e0d5268f1f58318860",
+            "sha256:41baa2b455c20c3b8fdd0a2ae417d3365cec354cdf7bcfbae93f7c9ef88d8870",
+            "sha256:abcf8760eddf477ad81e0b8e976decc3b9e35f1222f8974d27d344a12ee8114a",
+            "sha256:c471c9d87abff0a074dd15befd218129dd657134260d97e5265c06e9db61bbad",
+            "sha256:2530f2fe4a8b1d6ef53712fd60716f95df225625270d69e094aa1c66f839b2cb",
+            "sha256:9b7ddfe9920bed7a0bd8443e6e6ce778fa228550da12a629e62b1f1594a7184a",
+            "sha256:39dac9a60845376e7de4084c89739b39f15e06e2a32f9d0093bba251355202c9",
+            "sha256:e24e286ab5385ae058bdca112fe49e4403cba58e1f2a1dd25b83ed6a01e8072c",
+            "sha256:e5ede8175a8ffce44b4ead7ca169d4a9c405e849148f2591e77184350883b687",
+            "sha256:9616e4131bc0e4b49e714de677d811c0da6531933c199e9666208e2980fc7054",
+            "sha256:0c37f910f2b6838c16ef8f998111a078308a32b7ccf9a40cbd006b6ad773f2cd",
+            "sha256:be853d2c5f6af9f696dcdda3f499b50361493d3ee589b7eb0a5d9172e1d1057b",
+            "sha256:b9cd37d4a2714f31a1927ebb7e91c7562740e9b4704bad0d5e707892294c36f6",
+            "sha256:17223c8dedbb23c76416466f76e6dc0ff484a5fbbb18262f404bd66826b2b810",
+            "sha256:41f0cc6db8d1e03e9a3e7c07f91e60cb8437aac6bc96943b35d4abe87bf97e03",
+            "sha256:ec041a13e00cf848908804228fdc471d3feaa14d6de16c3b45de337b22db917e",
+            "sha256:00d04489b193a6a7ff98870b5959656adda4f687e4bc45b5219e56c9e7b600ce",
+            "sha256:4d744d6d9c059b6f928eadd2ec62b07333d51ce9284a610e4d24ee5102593d6c",
+            "sha256:24e2d7f1c7a7f3d08f28c0565247b3c2f29f44b2df91da4dfa60a83704d33b4c",
+            "sha256:b36e03da36ad19b943f114fe1164cc309adbd6c31251ff9d2b503d85f544a497",
+            "sha256:70bbfc3d179bef882cea41d2c1f680c591bc49f6ab67df5ad06d11e7a47eb958",
+            "sha256:32593a417b473d15d7ea50b2791dc94b6a20c2783e66f5950a2ddb916398d826"
+          ]
+        }
+      }
+    ],
+    "checks": {
+      "topology-and-demo-units": {
+        "status": "passed",
+        "logSha256": "7839f68d821f1ce62d5c451b764ab984e39bfffd42229af744f582e914892c12"
+      },
+      "quality-units": {
+        "status": "passed",
+        "logSha256": "d9721a990107b5a689f22ac87eff3013920e28b026bd131a088af9044ba344a6"
+      },
+      "types": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lint": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "browser-and-exports": {
+        "status": "passed",
+        "logSha256": "8217a21032f68ddecfe4092cc828b664f55b3189865bf05d22a79ff75a9cb707"
+      }
+    }
+  },
+  "finalFocused": {
+    "status": "passed",
+    "rendererVersions": {
+      "canvas2d": "composition-canvas-1.47.2",
+      "webgl2": "composition-webgl2-0.68.2"
+    },
+    "unitTests": 3597,
+    "unitFiles": 338,
+    "meshPixels": {
+      "subpixelBits": 4,
+      "reports": [
+        {
+          "id": "bezier",
+          "frame": 0,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        },
+        {
+          "id": "bezier",
+          "frame": 1,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        },
+        {
+          "id": "bezier-8x8-animated",
+          "frame": 0,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 2
+        },
+        {
+          "id": "bezier-8x8-animated",
+          "frame": 1,
+          "maxDelta": 2,
+          "alphaDelta": 1,
+          "premultipliedDelta": 1,
+          "different": 6
+        },
+        {
+          "id": "bezier-reflected",
+          "frame": 0,
+          "maxDelta": 2,
+          "alphaDelta": 1,
+          "premultipliedDelta": 1,
+          "different": 5
+        },
+        {
+          "id": "bezier-reflected",
+          "frame": 1,
+          "maxDelta": 2,
+          "alphaDelta": 1,
+          "premultipliedDelta": 1,
+          "different": 5
+        },
+        {
+          "id": "puppet",
+          "frame": 0,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet",
+          "frame": 1,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet-quarter-turn",
+          "frame": 0,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet-quarter-turn",
+          "frame": 1,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet-starch",
+          "frame": 0,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet-starch",
+          "frame": 1,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet-overlap-1",
+          "frame": 0,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        },
+        {
+          "id": "puppet-overlap-1",
+          "frame": 1,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        },
+        {
+          "id": "puppet-overlap--1",
+          "frame": 0,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        },
+        {
+          "id": "puppet-overlap--1",
+          "frame": 1,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        }
+      ]
+    },
+    "managedMemory": [
+      {
+        "backend": "canvas2d",
+        "mode": "success",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 261920,
+            "metadata": 47734784
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "mode": "metadata",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 1048576
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 196384,
+            "metadata": 8192
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "mode": "pixels",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 229376,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 196384,
+            "metadata": 47734784
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "mode": "draw-failure",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 261920,
+            "metadata": 47734784
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "mode": "window-success",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 339744,
+            "metadata": 47931392
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "mode": "window-failure",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 266016,
+            "metadata": 32768
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "success",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 212768,
+            "metadata": 47784738
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "metadata",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 1048576
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 212768,
+            "metadata": 40658
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "pixels",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 229376,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 212768,
+            "metadata": 47766368
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "draw-failure",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 212768,
+            "metadata": 47784738
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "window-success",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 317728,
+            "metadata": 47998896
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "window-failure",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 317728,
+            "metadata": 83398
+          },
+          "reservations": 0
+        }
+      }
+    ],
+    "offscreen": [
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 12,
+        "pixels": 256
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": -12,
+        "pixels": 0
+      },
+      {
+        "backend": "canvas2d",
+        "position": -20,
+        "delta": 0,
+        "pixels": 0
+      },
+      {
+        "backend": "canvas2d",
+        "position": -20,
+        "delta": 12,
+        "pixels": 128
+      },
+      {
+        "backend": "canvas2d",
+        "position": -20,
+        "delta": -12,
+        "pixels": 0
+      },
+      {
+        "backend": "canvas2d",
+        "position": 24,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "canvas2d",
+        "position": 24,
+        "delta": 12,
+        "pixels": 0
+      },
+      {
+        "backend": "canvas2d",
+        "position": 24,
+        "delta": -12,
+        "pixels": 256
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 12,
+        "pixels": 256
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": -12,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": -20,
+        "delta": 0,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": -20,
+        "delta": 12,
+        "pixels": 128
+      },
+      {
+        "backend": "webgl2",
+        "position": -20,
+        "delta": -12,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": 24,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "webgl2",
+        "position": 24,
+        "delta": 12,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": 24,
+        "delta": -12,
+        "pixels": 256
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 1018
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 1018
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 0
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 1018
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 1018
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 0
+      }
+    ],
+    "review": {
+      "spec": "offscreen capture, inherited clips, viewport effects and visibility repaired; no further concrete findings",
+      "standards": "zero-opacity descendants excluded; no remaining concrete findings"
+    },
+    "checks": {
+      "fast": {
+        "status": "passed",
+        "logSha256": "888c4507bfff73384bf3125b52526411d86756571d53dc649dbf80da75194520"
+      },
+      "mesh-browser": {
+        "status": "passed",
+        "logSha256": "2e9532781cd052dc23ceb5d96202a9477ffc1911dfb76dfd885a057af13437ac"
+      },
+      "native-effects-browser": {
+        "status": "passed",
+        "logSha256": "411d8b43552bf97cf330ca35d41f5bc7c472e68fe6995a405b41fbba0b9c25c9"
+      },
+      "final-types": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final-lint": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "toolchain-preflight": {
+        "status": "passed",
+        "logSha256": "0e4835e45f1f76d3af9b8c09abefab85e8b3ab9c66a8aa740ee6855d9bb8d940"
+      },
+      "python-preflight": {
+        "status": "passed",
+        "logSha256": "7f0853bc19021f9022b2c0e5c9ecaef5ee9d95b2d8ac3b6700cdf8bce03e841f"
+      },
+      "soundtrack-preflight": {
+        "status": "passed",
+        "logSha256": "d7687b7f3bdef78a0cd58be2ffd460b818aafa0e33d3ed89ce0981bf8ec05661"
+      },
+      "cache-preflight": {
+        "status": "passed",
+        "logSha256": "0723ee01c5f7c8a8909d8361661628aa3ebb320bd05b22dd84df91e9715f6cb7"
+      }
+    }
+  },
+  "fullGate": {
+    "milestone": "CE14",
+    "checkpoint": "f78a9e267b0a0d3a1ad1fb5bf213439f12cc0eb3",
+    "command": "pnpm check",
+    "status": "passed",
+    "startedAt": "2026-10-09T07:49:40+0700",
+    "log": "/private/tmp/ce14-f78a9e26-gate.log",
+    "exitCode": 0,
+    "elapsedSeconds": 14375.233823459013,
+    "finishedAt": "2026-10-09T11:49:16+0700",
+    "logSha256": "d66ada96369773a5dc604fe9e270c119a517434e617f11b2183c51b09caa09c7",
+    "packageCommandCount": 82,
+    "packageCommands": [
+      "check",
+      "toolchain:check",
+      "schema:check",
+      "check:boundaries",
+      "format:check",
+      "lint",
+      "soundtrack:lint",
+      "build",
+      "test",
+      "test:unit",
+      "test:runtime",
+      "test:integration",
+      "test:depth",
+      "test:browser:soundtrack",
+      "test:browser:composition-media",
+      "test:browser:composition-alpha",
+      "test:browser:composition-output",
+      "test:browser:composition-surfaces",
+      "test:browser:composition-parallel",
+      "test:browser:composition-export-memory",
+      "test:browser:composition-cache-dependencies",
+      "test:browser:composition-fps-audio",
+      "test:browser:composition-area",
+      "test:browser:depth",
+      "test:browser:vertical-image",
+      "test:browser:export",
+      "test:golden",
+      "test:browser:cli",
+      "test:browser:batch",
+      "test:browser:illustrated",
+      "test:browser:illustrated:vertical",
+      "test:browser:cinematic",
+      "test:browser:cinematic:vertical",
+      "test:browser:threshold",
+      "test:browser:dolly",
+      "test:browser:lateral",
+      "test:browser:reveal",
+      "test:browser:story",
+      "test:browser:story:activity",
+      "test:browser:story:continuous",
+      "test:browser:passage:authoring",
+      "test:browser:lab-session",
+      "test:browser:composition-session",
+      "test:browser:commerce",
+      "test:browser:commerce-components",
+      "test:browser:commerce-effects",
+      "test:browser:commerce-spatial",
+      "test:browser:reusable-components",
+      "test:browser:reusable-package",
+      "test:browser:reusable-behavior-package",
+      "test:browser:reusable-timing-package",
+      "test:browser:typography",
+      "test:browser:typography:fixtures",
+      "test:browser:composition-evaluator",
+      "test:browser:composition-expressions",
+      "test:browser:composition-quality",
+      "test:browser:composition",
+      "test:browser:composition-webgl",
+      "test:browser:composition-camera",
+      "test:browser:composition-lighting",
+      "test:browser:composition-shapes",
+      "test:browser:composition-webgl-export",
+      "test:browser:composition-exposure",
+      "test:browser:composition-effects",
+      "test:browser:composition-mesh",
+      "test:browser:composition-story-adapter",
+      "test:browser:composition-native-passage",
+      "test:browser:composition-native-passage:webgl",
+      "test:browser:composition-passage",
+      "test:browser:composition-story-fixtures",
+      "test:browser:composition-commerce-adapter",
+      "test:browser:composition-cinematic-adapter",
+      "test:browser:composition-typography-adapter",
+      "test:browser:composition-provider-typography",
+      "test:browser:composition-program",
+      "test:browser:composition-inspector",
+      "test:browser:composition-builder",
+      "test:browser:composition-depth",
+      "test:browser:composition-legacy-adapter",
+      "test:browser:composition-family-timeline",
+      "test:browser:composition-family-defaults",
+      "test:browser:composition-baselines"
+    ],
+    "tests": {
+      "unit": {
+        "tests": 3597,
+        "files": 338
+      },
+      "runtime": {
+        "tests": 83,
+        "files": 13
+      },
+      "integration": {
+        "tests": 314,
+        "files": 54
+      }
+    },
+    "frozenBaselines": {
+      "status": "passed",
+      "items": 176,
+      "frames": 36061,
+      "elapsedSeconds": 346.96,
+      "referencesChanged": false
+    },
+    "meshProductionExports": {
+      "status": "passed",
+      "cases": 8,
+      "framesEach": 48,
+      "backends": ["canvas2d", "webgl2"],
+      "encodedBodiesIdenticalWithinBackend": true,
+      "allDecodedFramesIdenticalWithinBackend": true,
+      "artifact": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/ce14-mesh-Z77BKN/exports.json",
+      "sha256": "8bcf33ec0d6b4bf4ca2c70aa006689d77798089b027172a382c0d26e83f87411"
+    },
+    "scopeNote": "Complete unmodified pnpm check on the clean final code checkpoint. Existing owner-deferred CE6-P WebGL timing scope remains deferred; no pixel thresholds, frozen baselines or required suites were skipped or relaxed."
+  },
+  "codeCheckpoint": "f78a9e267b0a0d3a1ad1fb5bf213439f12cc0eb3"
+}

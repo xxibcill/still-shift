@@ -18,6 +18,7 @@ import type { EvaluatedEffect } from "../evaluate/effects.ts";
 import type { CanvasSurface } from "./canvas2d.ts";
 
 export type CanvasEffectContext = {
+  readonly placement?: RenderEffect["placement"];
   readonly layers?: ReadonlyMap<string, CanvasSurface>;
   createSurface(width: number, height: number): CanvasSurface;
   releaseSurface(surface: CanvasSurface): void;

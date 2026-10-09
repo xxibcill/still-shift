@@ -795,151 +795,165 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 
 ## Generated effect registry
 
-| Effect                         | Property         | Type   | Default         | Range                                        |
-| ------------------------------ | ---------------- | ------ | --------------- | -------------------------------------------- |
-| `color.curves`                 | `curve`          | curve  | `[[0,0],[1,1]]` | 2–16 ordered points; x/y 0–1; endpoint x 0/1 |
-| `color.curves`                 | `amount`         | scalar | `1`             | 0–1                                          |
-| `color.levels`                 | `inputBlack`     | scalar | `0`             | 0–1                                          |
-| `color.levels`                 | `inputWhite`     | scalar | `1`             | 0–1                                          |
-| `color.levels`                 | `gamma`          | scalar | `1`             | 0.05–10                                      |
-| `color.levels`                 | `outputBlack`    | scalar | `0`             | 0–1                                          |
-| `color.levels`                 | `outputWhite`    | scalar | `1`             | 0–1                                          |
-| `color.tint`                   | `black`          | color  | `#000000`       | colour                                       |
-| `color.tint`                   | `white`          | color  | `#ffffff`       | colour                                       |
-| `color.tint`                   | `amount`         | scalar | `1`             | 0–1                                          |
-| `color.hue-saturation`         | `hue`            | scalar | `0`             | -36000–36000                                 |
-| `color.hue-saturation`         | `saturation`     | scalar | `0`             | -100–100                                     |
-| `color.hue-saturation`         | `lightness`      | scalar | `0`             | -100–100                                     |
-| `color.exposure`               | `exposure`       | scalar | `0`             | -20–20                                       |
-| `color.exposure`               | `offset`         | scalar | `0`             | -1–1                                         |
-| `color.exposure`               | `gamma`          | scalar | `1`             | 0.05–10                                      |
-| `color.brightness-contrast`    | `brightness`     | scalar | `0`             | -1–1                                         |
-| `color.brightness-contrast`    | `contrast`       | scalar | `0`             | -1–1                                         |
-| `color.fill`                   | `color`          | color  | `#ffffff`       | colour                                       |
-| `color.fill`                   | `amount`         | scalar | `1`             | 0–1                                          |
-| `color.gradient-ramp`          | `start`          | vec2   | `[0,0]`         | -1000000–1000000 per axis                    |
-| `color.gradient-ramp`          | `end`            | vec2   | `[100,0]`       | -1000000–1000000 per axis                    |
-| `color.gradient-ramp`          | `startColor`     | color  | `#000000`       | colour                                       |
-| `color.gradient-ramp`          | `endColor`       | color  | `#ffffff`       | colour                                       |
-| `color.gradient-ramp`          | `amount`         | scalar | `1`             | 0–1                                          |
-| `color.invert`                 | `amount`         | scalar | `1`             | 0–1                                          |
-| `color.posterize`              | `levels`         | scalar | `8`             | 2–256 (integer)                              |
-| `transition.linear-wipe`       | `progress`       | scalar | `0`             | 0–1                                          |
-| `transition.linear-wipe`       | `softness`       | scalar | `0`             | 0–1                                          |
-| `transition.linear-wipe`       | `angle`          | scalar | `0`             | -36000–36000                                 |
-| `transition.radial-wipe`       | `progress`       | scalar | `0`             | 0–1                                          |
-| `transition.radial-wipe`       | `softness`       | scalar | `0`             | 0–1                                          |
-| `transition.radial-wipe`       | `angle`          | scalar | `0`             | -36000–36000                                 |
-| `transition.radial-wipe`       | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
-| `transition.venetian-blinds`   | `progress`       | scalar | `0`             | 0–1                                          |
-| `transition.venetian-blinds`   | `softness`       | scalar | `0`             | 0–1                                          |
-| `transition.venetian-blinds`   | `angle`          | scalar | `0`             | -36000–36000                                 |
-| `transition.venetian-blinds`   | `width`          | scalar | `16`            | 1–8192                                       |
-| `transition.block-dissolve`    | `progress`       | scalar | `0`             | 0–1                                          |
-| `transition.block-dissolve`    | `softness`       | scalar | `0`             | 0–1                                          |
-| `transition.block-dissolve`    | `width`          | scalar | `16`            | 1–8192                                       |
-| `transition.block-dissolve`    | `height`         | scalar | `16`            | 1–8192                                       |
-| `transition.block-dissolve`    | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
-| `blur.radial`                  | `angle`          | scalar | `0`             | -180–180                                     |
-| `blur.radial`                  | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
-| `blur.radial`                  | `samples`        | scalar | `16`            | 2–64 (integer)                               |
-| `blur.zoom`                    | `amount`         | scalar | `0`             | -1–1                                         |
-| `blur.zoom`                    | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
-| `blur.zoom`                    | `samples`        | scalar | `16`            | 2–64 (integer)                               |
-| `blur.lens`                    | `radius`         | scalar | `0`             | 0–1000                                       |
-| `blur.lens`                    | `samples`        | scalar | `16`            | 2–64 (integer)                               |
-| `distort.transform`            | `offset`         | vec2   | `[0,0]`         | -1000000–1000000 per axis                    |
-| `distort.transform`            | `anchor`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
-| `distort.transform`            | `scale`          | vec2   | `[1,1]`         | -10–10 per axis                              |
-| `distort.transform`            | `rotation`       | scalar | `0`             | -36000–36000                                 |
-| `distort.corner-pin`           | `topLeft`        | vec2   | `[0,0]`         | -10–10 per axis                              |
-| `distort.corner-pin`           | `topRight`       | vec2   | `[1,0]`         | -10–10 per axis                              |
-| `distort.corner-pin`           | `bottomRight`    | vec2   | `[1,1]`         | -10–10 per axis                              |
-| `distort.corner-pin`           | `bottomLeft`     | vec2   | `[0,1]`         | -10–10 per axis                              |
-| `stylize.fractal-noise`        | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
-| `stylize.fractal-noise`        | `scale`          | scalar | `64`            | 1–10000                                      |
-| `stylize.fractal-noise`        | `octaves`        | scalar | `4`             | 1–8 (integer)                                |
-| `stylize.fractal-noise`        | `evolution`      | scalar | `0`             | -216000–216000                               |
-| `stylize.fractal-noise`        | `amount`         | scalar | `1`             | 0–1                                          |
-| `stylize.fractal-noise`        | `contrast`       | scalar | `1`             | 0.1–8                                        |
-| `stylize.fractal-noise`        | `brightness`     | scalar | `0`             | -1–1                                         |
-| `stylize.fractal-noise`        | `dark`           | color  | `#000000`       | colour                                       |
-| `stylize.fractal-noise`        | `light`          | color  | `#ffffff`       | colour                                       |
-| `distort.turbulent`            | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
-| `distort.turbulent`            | `scale`          | scalar | `64`            | 1–10000                                      |
-| `distort.turbulent`            | `octaves`        | scalar | `4`             | 1–8 (integer)                                |
-| `distort.turbulent`            | `evolution`      | scalar | `0`             | -216000–216000                               |
-| `distort.turbulent`            | `amount`         | scalar | `0`             | -1000–1000                                   |
-| `stylize.vignette`             | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
-| `stylize.vignette`             | `radius`         | vec2   | `[100,100]`     | 0.01–10000 per axis                          |
-| `stylize.vignette`             | `softness`       | scalar | `0.5`           | 0.001–1                                      |
-| `stylize.vignette`             | `amount`         | scalar | `0.5`           | 0–1                                          |
-| `stylize.vignette`             | `color`          | color  | `#000000`       | colour                                       |
-| `stylize.chromatic-aberration` | `offset`         | vec2   | `[0,0]`         | -1000–1000 per axis                          |
-| `stylize.chromatic-aberration` | `amount`         | scalar | `1`             | 0–1                                          |
-| `distort.bulge`                | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
-| `distort.bulge`                | `radius`         | vec2   | `[100,100]`     | 0.0625–10000 per axis                        |
-| `distort.bulge`                | `amount`         | scalar | `0`             | -1–1                                         |
-| `distort.ripple`               | `center`         | vec2   | `[0.5,0.5]`     | 0–1 per axis                                 |
-| `distort.ripple`               | `amplitude`      | scalar | `0`             | -1000–1000                                   |
-| `distort.ripple`               | `wavelength`     | scalar | `64`            | 1–100000                                     |
-| `distort.ripple`               | `phase`          | scalar | `0`             | -36000–36000                                 |
-| `distort.ripple`               | `decay`          | scalar | `0`             | 0–1                                          |
-| `light.drop-shadow`            | `offset`         | vec2   | `[6,6]`         | -1000–1000 per axis                          |
-| `light.drop-shadow`            | `blur`           | scalar | `8`             | 0–128                                        |
-| `light.drop-shadow`            | `opacity`        | scalar | `1`             | 0–1                                          |
-| `light.drop-shadow`            | `color`          | color  | `#000000`       | colour                                       |
-| `light.inner-shadow`           | `offset`         | vec2   | `[6,6]`         | -1000–1000 per axis                          |
-| `light.inner-shadow`           | `blur`           | scalar | `8`             | 0–128                                        |
-| `light.inner-shadow`           | `opacity`        | scalar | `1`             | 0–1                                          |
-| `light.inner-shadow`           | `color`          | color  | `#000000`       | colour                                       |
-| `distort.displacement-map`     | `amount`         | vec2   | `[0,0]`         | -1000–1000 per axis                          |
-| `distort.displacement-map`     | `channelX`       | scalar | `0`             | 0–4 (integer)                                |
-| `distort.displacement-map`     | `channelY`       | scalar | `1`             | 0–4 (integer)                                |
-| `distort.displacement-map`     | `midpoint`       | scalar | `0.5`           | 0–1                                          |
-| `transition.gradient-wipe`     | `progress`       | scalar | `0`             | 0–1                                          |
-| `transition.gradient-wipe`     | `softness`       | scalar | `0`             | 0–1                                          |
-| `transition.gradient-wipe`     | `channel`        | scalar | `4`             | 0–4 (integer)                                |
-| `transition.gradient-wipe`     | `invert`         | scalar | `0`             | 0–1 (integer)                                |
-| `blur.primitive`               | `radius`         | scalar | `0`             | 0–1000                                       |
-| `time.echo`                    | `spacing`        | scalar | `1`             | 1–120                                        |
-| `time.echo`                    | `count`          | scalar | `3`             | 1–8 (integer)                                |
-| `time.echo`                    | `decay`          | scalar | `0.5`           | 0–1                                          |
-| `time.echo`                    | `skipUnchanged`  | scalar | `0`             | 0–1 (integer)                                |
-| `time.echo`                    | `sourceRevision` | scalar | `0`             | 0–1000000 (integer)                          |
-| `light.sweep`                  | `width`          | scalar | `100`           | 0–1000000                                    |
-| `light.sweep`                  | `height`         | scalar | `100`           | 0–1000000                                    |
-| `light.sweep`                  | `left`           | scalar | `0`             | 0–1                                          |
-| `light.sweep`                  | `top`            | scalar | `0`             | 0–1                                          |
-| `light.sweep`                  | `regionWidth`    | scalar | `1`             | 0.001–1                                      |
-| `light.sweep`                  | `regionHeight`   | scalar | `1`             | 0.001–1                                      |
-| `light.sweep`                  | `band`           | scalar | `0.1`           | 0.001–1                                      |
-| `light.sweep`                  | `progress`       | scalar | `0`             | 0–1                                          |
-| `light.sweep`                  | `strength`       | scalar | `0.5`           | 0–1                                          |
-| `light.radial`                 | `x`              | scalar | `0`             | -1000000–1000000                             |
-| `light.radial`                 | `y`              | scalar | `0`             | -1000000–1000000                             |
-| `light.radial`                 | `radius`         | scalar | `100`           | 0.01–10000                                   |
-| `light.radial`                 | `strength`       | scalar | `1`             | 0–1                                          |
-| `light.radial`                 | `color`          | color  | `#ffffff`       | colour                                       |
-| `particles.rise`               | `count`          | scalar | `20`            | 1–100 (integer)                              |
-| `particles.rise`               | `radius`         | scalar | `2`             | 0.01–100                                     |
-| `particles.rise`               | `opacity`        | scalar | `0.5`           | 0–1                                          |
-| `particles.rise`               | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
-| `particles.rise`               | `progress`       | scalar | `0`             | 0–1000                                       |
-| `particles.rise`               | `color`          | color  | `#ffffff`       | colour                                       |
-| `stylize.grain`                | `amount`         | scalar | `0`             | 0–1                                          |
-| `stylize.grain`                | `seed`           | scalar | `1`             | 0–2147483647 (integer)                       |
-| `stylize.grain`                | `evolution`      | scalar | `0`             | -216000–216000                               |
-| `blur.gaussian`                | `radius`         | scalar | `0`             | 0–1000                                       |
-| `blur.directional`             | `length`         | scalar | `0`             | 0–1000                                       |
-| `blur.directional`             | `angle`          | scalar | `0`             | -36000–36000                                 |
-| `blur.directional`             | `samples`        | scalar | `8`             | 2–64 (integer)                               |
-| `light.glow`                   | `radius`         | scalar | `0`             | 0–1000                                       |
-| `light.glow`                   | `intensity`      | scalar | `1`             | 0–1                                          |
-| `light.glow`                   | `threshold`      | scalar | `0`             | 0–1                                          |
-| `distort.sine`                 | `amount`         | scalar | `0`             | -1000–1000                                   |
-| `distort.sine`                 | `wavelength`     | scalar | `100`           | 1–100000                                     |
-| `distort.sine`                 | `phase`          | scalar | `0`             | -1000000–1000000                             |
+| Effect                         | Property         | Type   | Default                     | Range                                        |
+| ------------------------------ | ---------------- | ------ | --------------------------- | -------------------------------------------- |
+| `color.curves`                 | `curve`          | curve  | `[[0,0],[1,1]]`             | 2–16 ordered points; x/y 0–1; endpoint x 0/1 |
+| `color.curves`                 | `amount`         | scalar | `1`                         | 0–1                                          |
+| `color.levels`                 | `inputBlack`     | scalar | `0`                         | 0–1                                          |
+| `color.levels`                 | `inputWhite`     | scalar | `1`                         | 0–1                                          |
+| `color.levels`                 | `gamma`          | scalar | `1`                         | 0.05–10                                      |
+| `color.levels`                 | `outputBlack`    | scalar | `0`                         | 0–1                                          |
+| `color.levels`                 | `outputWhite`    | scalar | `1`                         | 0–1                                          |
+| `color.tint`                   | `black`          | color  | `#000000`                   | colour                                       |
+| `color.tint`                   | `white`          | color  | `#ffffff`                   | colour                                       |
+| `color.tint`                   | `amount`         | scalar | `1`                         | 0–1                                          |
+| `color.hue-saturation`         | `hue`            | scalar | `0`                         | -36000–36000                                 |
+| `color.hue-saturation`         | `saturation`     | scalar | `0`                         | -100–100                                     |
+| `color.hue-saturation`         | `lightness`      | scalar | `0`                         | -100–100                                     |
+| `color.exposure`               | `exposure`       | scalar | `0`                         | -20–20                                       |
+| `color.exposure`               | `offset`         | scalar | `0`                         | -1–1                                         |
+| `color.exposure`               | `gamma`          | scalar | `1`                         | 0.05–10                                      |
+| `color.brightness-contrast`    | `brightness`     | scalar | `0`                         | -1–1                                         |
+| `color.brightness-contrast`    | `contrast`       | scalar | `0`                         | -1–1                                         |
+| `color.fill`                   | `color`          | color  | `#ffffff`                   | colour                                       |
+| `color.fill`                   | `amount`         | scalar | `1`                         | 0–1                                          |
+| `color.gradient-ramp`          | `start`          | vec2   | `[0,0]`                     | -1000000–1000000 per axis                    |
+| `color.gradient-ramp`          | `end`            | vec2   | `[100,0]`                   | -1000000–1000000 per axis                    |
+| `color.gradient-ramp`          | `startColor`     | color  | `#000000`                   | colour                                       |
+| `color.gradient-ramp`          | `endColor`       | color  | `#ffffff`                   | colour                                       |
+| `color.gradient-ramp`          | `amount`         | scalar | `1`                         | 0–1                                          |
+| `color.invert`                 | `amount`         | scalar | `1`                         | 0–1                                          |
+| `color.posterize`              | `levels`         | scalar | `8`                         | 2–256 (integer)                              |
+| `transition.linear-wipe`       | `progress`       | scalar | `0`                         | 0–1                                          |
+| `transition.linear-wipe`       | `softness`       | scalar | `0`                         | 0–1                                          |
+| `transition.linear-wipe`       | `angle`          | scalar | `0`                         | -36000–36000                                 |
+| `transition.radial-wipe`       | `progress`       | scalar | `0`                         | 0–1                                          |
+| `transition.radial-wipe`       | `softness`       | scalar | `0`                         | 0–1                                          |
+| `transition.radial-wipe`       | `angle`          | scalar | `0`                         | -36000–36000                                 |
+| `transition.radial-wipe`       | `center`         | vec2   | `[0.5,0.5]`                 | 0–1 per axis                                 |
+| `transition.venetian-blinds`   | `progress`       | scalar | `0`                         | 0–1                                          |
+| `transition.venetian-blinds`   | `softness`       | scalar | `0`                         | 0–1                                          |
+| `transition.venetian-blinds`   | `angle`          | scalar | `0`                         | -36000–36000                                 |
+| `transition.venetian-blinds`   | `width`          | scalar | `16`                        | 1–8192                                       |
+| `transition.block-dissolve`    | `progress`       | scalar | `0`                         | 0–1                                          |
+| `transition.block-dissolve`    | `softness`       | scalar | `0`                         | 0–1                                          |
+| `transition.block-dissolve`    | `width`          | scalar | `16`                        | 1–8192                                       |
+| `transition.block-dissolve`    | `height`         | scalar | `16`                        | 1–8192                                       |
+| `transition.block-dissolve`    | `seed`           | scalar | `1`                         | 0–2147483647 (integer)                       |
+| `blur.radial`                  | `angle`          | scalar | `0`                         | -180–180                                     |
+| `blur.radial`                  | `center`         | vec2   | `[0.5,0.5]`                 | 0–1 per axis                                 |
+| `blur.radial`                  | `samples`        | scalar | `16`                        | 2–64 (integer)                               |
+| `blur.zoom`                    | `amount`         | scalar | `0`                         | -1–1                                         |
+| `blur.zoom`                    | `center`         | vec2   | `[0.5,0.5]`                 | 0–1 per axis                                 |
+| `blur.zoom`                    | `samples`        | scalar | `16`                        | 2–64 (integer)                               |
+| `blur.lens`                    | `radius`         | scalar | `0`                         | 0–1000                                       |
+| `blur.lens`                    | `samples`        | scalar | `16`                        | 2–64 (integer)                               |
+| `distort.transform`            | `offset`         | vec2   | `[0,0]`                     | -1000000–1000000 per axis                    |
+| `distort.transform`            | `anchor`         | vec2   | `[0.5,0.5]`                 | 0–1 per axis                                 |
+| `distort.transform`            | `scale`          | vec2   | `[1,1]`                     | -10–10 per axis                              |
+| `distort.transform`            | `rotation`       | scalar | `0`                         | -36000–36000                                 |
+| `distort.corner-pin`           | `topLeft`        | vec2   | `[0,0]`                     | -10–10 per axis                              |
+| `distort.corner-pin`           | `topRight`       | vec2   | `[1,0]`                     | -10–10 per axis                              |
+| `distort.corner-pin`           | `bottomRight`    | vec2   | `[1,1]`                     | -10–10 per axis                              |
+| `distort.corner-pin`           | `bottomLeft`     | vec2   | `[0,1]`                     | -10–10 per axis                              |
+| `distort.mesh-warp`            | `columns`        | scalar | `2`                         | 2–8 (integer)                                |
+| `distort.mesh-warp`            | `rows`           | scalar | `2`                         | 2–8 (integer)                                |
+| `distort.mesh-warp`            | `subdivisions`   | scalar | `24`                        | 1–64 (integer)                               |
+| `distort.mesh-warp`            | `origin`         | vec2   | `[0,0]`                     | -1000000–1000000 per axis                    |
+| `distort.mesh-warp`            | `size`           | vec2   | `[100,100]`                 | 1–8192 per axis                              |
+| `distort.mesh-warp`            | `controls`       | points | `[[0,0],[1,0],[0,1],[1,1]]` | 4–64 points; -10–10 per axis                 |
+| `distort.puppet`               | `rest`           | points | `[]`                        | 0–32 points; -1000000–1000000 per axis       |
+| `distort.puppet`               | `pins`           | points | `[]`                        | 0–32 points; -1000000–1000000 per axis       |
+| `distort.puppet`               | `starchCenters`  | points | `[]`                        | 0–8 points; -1000000–1000000 per axis        |
+| `distort.puppet`               | `starch`         | points | `[]`                        | 0–8 points; 0–1000000 per axis               |
+| `distort.puppet`               | `overlapCenters` | points | `[]`                        | 0–8 points; -1000000–1000000 per axis        |
+| `distort.puppet`               | `overlap`        | points | `[]`                        | 0–8 points; -1000000–1000000 per axis        |
+| `distort.puppet`               | `alphaThreshold` | scalar | `1`                         | 1–255 (integer)                              |
+| `distort.puppet`               | `refinement`     | scalar | `2`                         | 0–3 (integer)                                |
+| `stylize.fractal-noise`        | `seed`           | scalar | `1`                         | 0–2147483647 (integer)                       |
+| `stylize.fractal-noise`        | `scale`          | scalar | `64`                        | 1–10000                                      |
+| `stylize.fractal-noise`        | `octaves`        | scalar | `4`                         | 1–8 (integer)                                |
+| `stylize.fractal-noise`        | `evolution`      | scalar | `0`                         | -216000–216000                               |
+| `stylize.fractal-noise`        | `amount`         | scalar | `1`                         | 0–1                                          |
+| `stylize.fractal-noise`        | `contrast`       | scalar | `1`                         | 0.1–8                                        |
+| `stylize.fractal-noise`        | `brightness`     | scalar | `0`                         | -1–1                                         |
+| `stylize.fractal-noise`        | `dark`           | color  | `#000000`                   | colour                                       |
+| `stylize.fractal-noise`        | `light`          | color  | `#ffffff`                   | colour                                       |
+| `distort.turbulent`            | `seed`           | scalar | `1`                         | 0–2147483647 (integer)                       |
+| `distort.turbulent`            | `scale`          | scalar | `64`                        | 1–10000                                      |
+| `distort.turbulent`            | `octaves`        | scalar | `4`                         | 1–8 (integer)                                |
+| `distort.turbulent`            | `evolution`      | scalar | `0`                         | -216000–216000                               |
+| `distort.turbulent`            | `amount`         | scalar | `0`                         | -1000–1000                                   |
+| `stylize.vignette`             | `center`         | vec2   | `[0.5,0.5]`                 | 0–1 per axis                                 |
+| `stylize.vignette`             | `radius`         | vec2   | `[100,100]`                 | 0.01–10000 per axis                          |
+| `stylize.vignette`             | `softness`       | scalar | `0.5`                       | 0.001–1                                      |
+| `stylize.vignette`             | `amount`         | scalar | `0.5`                       | 0–1                                          |
+| `stylize.vignette`             | `color`          | color  | `#000000`                   | colour                                       |
+| `stylize.chromatic-aberration` | `offset`         | vec2   | `[0,0]`                     | -1000–1000 per axis                          |
+| `stylize.chromatic-aberration` | `amount`         | scalar | `1`                         | 0–1                                          |
+| `distort.bulge`                | `center`         | vec2   | `[0.5,0.5]`                 | 0–1 per axis                                 |
+| `distort.bulge`                | `radius`         | vec2   | `[100,100]`                 | 0.0625–10000 per axis                        |
+| `distort.bulge`                | `amount`         | scalar | `0`                         | -1–1                                         |
+| `distort.ripple`               | `center`         | vec2   | `[0.5,0.5]`                 | 0–1 per axis                                 |
+| `distort.ripple`               | `amplitude`      | scalar | `0`                         | -1000–1000                                   |
+| `distort.ripple`               | `wavelength`     | scalar | `64`                        | 1–100000                                     |
+| `distort.ripple`               | `phase`          | scalar | `0`                         | -36000–36000                                 |
+| `distort.ripple`               | `decay`          | scalar | `0`                         | 0–1                                          |
+| `light.drop-shadow`            | `offset`         | vec2   | `[6,6]`                     | -1000–1000 per axis                          |
+| `light.drop-shadow`            | `blur`           | scalar | `8`                         | 0–128                                        |
+| `light.drop-shadow`            | `opacity`        | scalar | `1`                         | 0–1                                          |
+| `light.drop-shadow`            | `color`          | color  | `#000000`                   | colour                                       |
+| `light.inner-shadow`           | `offset`         | vec2   | `[6,6]`                     | -1000–1000 per axis                          |
+| `light.inner-shadow`           | `blur`           | scalar | `8`                         | 0–128                                        |
+| `light.inner-shadow`           | `opacity`        | scalar | `1`                         | 0–1                                          |
+| `light.inner-shadow`           | `color`          | color  | `#000000`                   | colour                                       |
+| `distort.displacement-map`     | `amount`         | vec2   | `[0,0]`                     | -1000–1000 per axis                          |
+| `distort.displacement-map`     | `channelX`       | scalar | `0`                         | 0–4 (integer)                                |
+| `distort.displacement-map`     | `channelY`       | scalar | `1`                         | 0–4 (integer)                                |
+| `distort.displacement-map`     | `midpoint`       | scalar | `0.5`                       | 0–1                                          |
+| `transition.gradient-wipe`     | `progress`       | scalar | `0`                         | 0–1                                          |
+| `transition.gradient-wipe`     | `softness`       | scalar | `0`                         | 0–1                                          |
+| `transition.gradient-wipe`     | `channel`        | scalar | `4`                         | 0–4 (integer)                                |
+| `transition.gradient-wipe`     | `invert`         | scalar | `0`                         | 0–1 (integer)                                |
+| `blur.primitive`               | `radius`         | scalar | `0`                         | 0–1000                                       |
+| `time.echo`                    | `spacing`        | scalar | `1`                         | 1–120                                        |
+| `time.echo`                    | `count`          | scalar | `3`                         | 1–8 (integer)                                |
+| `time.echo`                    | `decay`          | scalar | `0.5`                       | 0–1                                          |
+| `time.echo`                    | `skipUnchanged`  | scalar | `0`                         | 0–1 (integer)                                |
+| `time.echo`                    | `sourceRevision` | scalar | `0`                         | 0–1000000 (integer)                          |
+| `light.sweep`                  | `width`          | scalar | `100`                       | 0–1000000                                    |
+| `light.sweep`                  | `height`         | scalar | `100`                       | 0–1000000                                    |
+| `light.sweep`                  | `left`           | scalar | `0`                         | 0–1                                          |
+| `light.sweep`                  | `top`            | scalar | `0`                         | 0–1                                          |
+| `light.sweep`                  | `regionWidth`    | scalar | `1`                         | 0.001–1                                      |
+| `light.sweep`                  | `regionHeight`   | scalar | `1`                         | 0.001–1                                      |
+| `light.sweep`                  | `band`           | scalar | `0.1`                       | 0.001–1                                      |
+| `light.sweep`                  | `progress`       | scalar | `0`                         | 0–1                                          |
+| `light.sweep`                  | `strength`       | scalar | `0.5`                       | 0–1                                          |
+| `light.radial`                 | `x`              | scalar | `0`                         | -1000000–1000000                             |
+| `light.radial`                 | `y`              | scalar | `0`                         | -1000000–1000000                             |
+| `light.radial`                 | `radius`         | scalar | `100`                       | 0.01–10000                                   |
+| `light.radial`                 | `strength`       | scalar | `1`                         | 0–1                                          |
+| `light.radial`                 | `color`          | color  | `#ffffff`                   | colour                                       |
+| `particles.rise`               | `count`          | scalar | `20`                        | 1–100 (integer)                              |
+| `particles.rise`               | `radius`         | scalar | `2`                         | 0.01–100                                     |
+| `particles.rise`               | `opacity`        | scalar | `0.5`                       | 0–1                                          |
+| `particles.rise`               | `seed`           | scalar | `1`                         | 0–2147483647 (integer)                       |
+| `particles.rise`               | `progress`       | scalar | `0`                         | 0–1000                                       |
+| `particles.rise`               | `color`          | color  | `#ffffff`                   | colour                                       |
+| `stylize.grain`                | `amount`         | scalar | `0`                         | 0–1                                          |
+| `stylize.grain`                | `seed`           | scalar | `1`                         | 0–2147483647 (integer)                       |
+| `stylize.grain`                | `evolution`      | scalar | `0`                         | -216000–216000                               |
+| `blur.gaussian`                | `radius`         | scalar | `0`                         | 0–1000                                       |
+| `blur.directional`             | `length`         | scalar | `0`                         | 0–1000                                       |
+| `blur.directional`             | `angle`          | scalar | `0`                         | -36000–36000                                 |
+| `blur.directional`             | `samples`        | scalar | `8`                         | 2–64 (integer)                               |
+| `light.glow`                   | `radius`         | scalar | `0`                         | 0–1000                                       |
+| `light.glow`                   | `intensity`      | scalar | `1`                         | 0–1                                          |
+| `light.glow`                   | `threshold`      | scalar | `0`                         | 0–1                                          |
+| `distort.sine`                 | `amount`         | scalar | `0`                         | -1000–1000                                   |
+| `distort.sine`                 | `wavelength`     | scalar | `100`                       | 1–100000                                     |
+| `distort.sine`                 | `phase`          | scalar | `0`                         | -1000000–1000000                             |
 
 Blend modes: `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`, `color-dodge`, `color-burn`, `hard-light`, `soft-light`, `difference`, `exclusion`, `hue`, `saturation`, `color`, `luminosity`, `add`.
 

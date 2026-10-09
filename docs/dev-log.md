@@ -43,10 +43,55 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #50 stack/scale repairs verified (2026-10-09):** both findings posted on
+  `8fe1f832` are repaired on `codex/pr50-stack-scale-fixes`, one per commit. Owner
+  mesh stacks retain required intermediates; tiny nonzero scales and pinned empty
+  input preserve raster output and recovery validation. 100 focused units,
+  TypeScript/lint/boundaries/formatting, complete mesh/export and native-effect
+  checks pass. New oracles: 128 stack comparisons / 384 seeks, 142 scale checks
+  and 32 exports across repeat/worker/cache modes. Frozen references remain exact.
+  One final normal push delivers both commits; owner review/merge is next. No full
+  repository gate rerun or claimed. [Repair evidence](./pr-50-stack-scale-fix-results.json).
+
+- **PR #50 main conflicts resolved (2026-10-09):** integrate merged CE15 review
+  fixes from `main` `43d57709` into reviewed CE14 head `2d49e192`. Both parents'
+  production changes remain exact; all 74 test commands retain their order.
+  Build/boundaries, 333 unit / 12 runtime / 24 mixer tests and complete mesh,
+  tint-capacity and native media/audio browser/export checks pass. All 216 visual
+  references and both unit snapshots remain exact. Normal PR branch delivery;
+  owner review/merge is next. No full repository gate rerun or claimed.
+  [Conflict evidence](./pr-50-main-conflict-results.json).
+
+- **PR #50 collapsed owner repair verified (2026-10-09):** the single posted P2
+  finding on `3002f0d1` is fixed on `codex/pr50-collapsed-mesh-fix`. Exact zero-scale
+  provenance survives rotated parent/child chains; collapse/recovery preserves
+  effect order and external coordinate spaces. 126 focused units, 88 byte-exact
+  frame comparisons, 24 new exports and the complete mesh/native-effects commands
+  pass. Existing references and thresholds are unchanged. One finding per commit,
+  with one final normal push; owner review/merge is next. No full repository gate
+  is run or claimed. [Repair evidence](./pr-50-collapsed-mesh-fix-results.json).
+
+- **PR #50 completeness review repairs verified (2026-10-09):** both posted P2
+  findings are fixed on `codex/pr50-ce14-repairs` from `958e623a`. Raster-only
+  degeneracy preserves valid deformation; structured diagnostics retain code,
+  node, frame and exact authored field path through preview and production export.
+  112 focused units, complete mesh/export checks and all seven native-effects
+  catalogues pass. Existing references and thresholds are unchanged. One finding
+  per commit, with a single final push; owner review/merge is next. No full
+  repository gate is run or claimed.
+  [Repair evidence](./pr-50-ce14-review-repairs-results.json).
+
+- **CE14 complete (2026-10-09):** `codex/composition-ce14` code checkpoint
+  `f78a9e26` passes the complete local `pnpm check` in 14,375.23 seconds: all 82
+  commands, 3,597 units, 83 runtime and 314 integration tests, every browser/export
+  check, and 176 frozen items / 36,061 frames. Both 48-frame demos, twelve ownership
+  cases and eight production exports pass. No CE14 blocker or owner decision remains;
+  branch review/merge is the owner's next step. [CE14 plan](./composition-ce14-plan.md).
+
 - **PR #49 second review repairs (2026-10-09):** All three findings posted on
   `2cd76eca` are repaired and verified, with one commit per finding and one
-  final normal push to the PR branch. Owner review/merge is next; the owner
-  checkout is untouched.
+  final normal push to the PR branch. PR #49 merged into `main` at
+  `43d57709` on 2026-10-09; its fixes are integrated in PR #50.
   Focused follow-up checks only; no full repository gate run or claimed.
   [Second review evidence](./pr-49-second-review-fix-results.json).
 
@@ -58,8 +103,8 @@ still hold before relying on them.
   frozen typography items / 1,309 frames. The PCM preview repair passes 48 focused
   tests and real Lab Canvas/WebGL playback at 7, 29 and 59 fps with exact full
   master/suffix PCM and final intervals. Build, scoped lint, formatting and package
-  boundaries pass. Owner review/merge is next. No full repository gate is run or
-  claimed; owner checkout remains untouched.
+  boundaries pass. PR #49 is merged into `main`. No full repository gate was
+  run or claimed for these scoped repairs; owner checkout remains untouched.
   [Review repair evidence](./pr-49-review-fix-results.json).
 
 - **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
@@ -67,8 +112,8 @@ still hold before relying on them.
   two-minute benchmark that reaches **3.408×** with identical encoded/frame/audio output.
   All delivery formats, statistics, caching, bounded worker/result admission and
   area requirements are implemented. The 48-case maximum-area matrix, final area
-  smoke checks, native/parallel cleanup and frozen baselines pass. PR review/merge
-  is the owner's next step; CE14 is the next authorized milestone on a separate branch.
+  smoke checks, native/parallel cleanup and frozen baselines pass. PR #49 merged
+  into `main` at `43d57709`; CE14 is complete and awaits PR #50 review/merge.
   [Completion evidence](./composition-ce15-completion-results.json).
 
 - **PR #48 third review repairs verified (2026-10-08):** both P2 findings
@@ -95,11 +140,199 @@ still hold before relying on them.
   The approved CE5-X scope retains its audit stop/Q9 owner decisions; CE6-P
   remains owner-paused and deferred, with acceptance incomplete.
 
-- **Continuation:** CE15 implementation and acceptance are complete; the owner's
-  separate checkout is preserved. CE14 follows on a new branch. GitHub Actions
-  remain disabled; all verification is local.
+- **Continuation:** the requested CE15 and CE14 implementation, acceptance and branch
+  delivery are complete. The owner's separate checkout is preserved. GitHub Actions
+  remain disabled; all verification was local. PR #49 is merged; PR #50 awaits
+  owner review/merge. No work was scheduled.
 
 ## Entries
+
+### 2026-10-09 — PR #50 small nonzero mesh scale repair
+
+- **Agent / branch:** Codex on `codex/pr50-stack-scale-fixes`, after stack commit `06718215`.
+- **Done:** validate continuous deformation locally, accept nonzero mesh inverses,
+  render thresholded empty puppet input with pins and restore validation on recovery.
+  Preserve invalid collapsed-reference errors and existing raster delivery.
+- **Results:** 100 focused units and static checks pass; complete mesh/browser/export
+  and native-effect commands pass. 142 scale checks and 32 independent repair exports
+  retain exact frame/encoded proofs across repeat, one/four workers and cache modes.
+- **Review:** corrected empty pinned-input and collapsed-reference edge cases before
+  final suites. Existing baselines/thresholds remain unchanged; Actions are disabled.
+- **Delivery:** one commit for each finding, one final normal push to PR #50;
+  owner review/merge next. No full repository gate rerun or claimed.
+- **Records:** [repair evidence](./pr-50-stack-scale-fix-results.json),
+  [CE14 repair plan](./composition-ce14-plan.md#pr-50-small-nonzero-mesh-scale-repair--2026-10-09).
+
+### 2026-10-09 — PR #50 stacked owner mesh repair
+
+- **Agent / branch:** Codex on `codex/pr50-stack-scale-fixes`, from `8fe1f832`.
+- **Done:** post both review findings inline; retain intermediate owner mesh output
+  until its last enabled mesh, with existing final clipping and capture limits.
+- **Results:** 43 focused units, 128 exact pixel oracles / 384 seeks, TypeScript,
+  changed-file lint and boundaries pass. Canvas/WebGL identities invalidate caches.
+- **Open / next:** fix small nonzero scales in its own commit; run final affected
+  mesh/export and native-effect checks, then push both commits once. No full gate
+  rerun or claimed; GitHub Actions remain disabled.
+- **Records:** [repair evidence](./pr-50-stack-scale-fix-results.json),
+  [CE14 repair plan](./composition-ce14-plan.md#pr-50-stacked-owner-mesh-repair--2026-10-09).
+
+### 2026-10-09 — PR #50 main conflict resolution
+
+- **Agent / branch:** Codex on `codex/pr50-main-conflicts`, from `2d49e192`.
+- **Done:** integrate `main` `43d57709`; combine mesh/tint test registrations and
+  preserve both development-log histories. All reviewed production code remains exact.
+- **Results:** 369 focused tests, build/boundaries and formatting pass; complete mesh,
+  tint-capacity and native media/audio checks pass. Tint: 1,920 preview comparisons,
+  16 exports / 2,560 frames. Six fractional PCM playback cases retain exact samples.
+- **References:** 216 visual files and two snapshots remain byte-identical.
+- **Delivery:** one merge commit for the existing PR #50 branch; owner review/merge next.
+  No full repository gate rerun or claimed; Actions remain disabled.
+- **Records:** [CE14 plan](./composition-ce14-plan.md#pr-50-main-conflict-resolution--2026-10-09),
+  [focused evidence](./pr-50-main-conflict-results.json).
+
+### 2026-10-09 — PR #50 collapsed mesh owner repair
+
+- **Agent / branch:** Codex on `codex/pr50-collapsed-mesh-fix` from `3002f0d1`.
+- **Done:** the posted zero-scale owner finding is fixed, including rotated ancestry
+  and descendant bounds; renderer/cache identities advance to Canvas 1.47.5 / WebGL 0.68.5.
+- **Results:** 126 focused units; 88 exact frames, 24 new exports, all existing mesh
+  checks and seven native-effect catalogues with repeated exports pass. Types,
+  boundaries and changed-file lint pass; original visual references are unchanged.
+- **Rejected:** skipping the owner suppresses later generators; multiplied-matrix
+  determinants lose original zero factors through rounding. Retain factor provenance.
+- **Open / next:** one finding, one commit and one final normal push to PR #50;
+  owner review/merge next. No full repository gate rerun or claimed.
+- **Records:** [plan](./composition-ce14-plan.md#pr-50-collapsed-owner-repair--2026-10-09),
+  [evidence](./pr-50-collapsed-mesh-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/50#discussion_r4227184424).
+
+### 2026-10-09 — PR #50 structured mesh diagnostic repair
+
+- **Agent / branch:** Codex on `codex/pr50-ce14-repairs`, after `d67e2b09`.
+- **Done:** structured mesh errors retain code, instance node, root frame and
+  authored parameter path in both backends; location stays out of visual caches.
+- **Results:** 112 focused units; complete mesh browser checks, eight valid and
+  eight failed production exports; all seven native-effects catalogues and six
+  repeated native exports pass. Types, changed-file lint and boundaries pass.
+- **Rejected:** a three-frame diagnostic fixture with four workers tested option
+  validation; four frames now verify the intended mesh errors and output cleanup.
+- **Delivery:** two findings, one commit each and one final push; owner review/merge
+  is next. Existing references/thresholds stay frozen; no full gate is claimed.
+- **Records:** [CE14 plan](./composition-ce14-plan.md),
+  [repair evidence](./pr-50-ce14-review-repairs-results.json).
+
+### 2026-10-09 — PR #50 raster degeneracy repair
+
+- **Agent / branch:** Codex on `codex/pr50-ce14-repairs`, from `958e623a`.
+- **Done:** posted both findings inline; validate real deformation before raster
+  rounding, omit raster-only degenerate faces and preserve exact identity sampling.
+- **Results:** 44 focused units and 18 exact cross-backend pixel comparisons;
+  reverse seeks, pinned toolchain, TypeScript, changed-file lint and boundaries pass.
+- **Rejected:** initial compaction retained seven-byte small-mesh sampling drift;
+  identity coordinate delivery fixes it while retaining the exact independent oracle.
+- **Open / next:** structured diagnostics, final affected browser/export/catalogue
+  checks and a single final push; no full repository gate is claimed.
+- **Records:** [CE14 plan](./composition-ce14-plan.md),
+  [repair evidence](./pr-50-ce14-review-repairs-results.json).
+
+### 2026-10-09 — PR #50 descendant mesh capture repair
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, from `ccc26a2e`.
+- **Done:** posted the P2 inline; retain descendant mesh outputs/intermediates,
+  bound Bezier/puppet output and preserve ordinary transform-parent semantics.
+- **Results:** 84 focused units; 32 new cross-backend pixel comparisons; full mesh
+  pixels, ownership, demo seeks and eight repeated/parallel/cache exports pass.
+  TypeScript, changed-file lint and boundaries pass. All seven native-effects
+  catalogues and repeated exports pass. No full repository gate is run or claimed.
+- **Rejected:** applying ordinary ancestors' effects to children caused a false
+  capture-budget failure; a regression now proves these effects stay independent.
+- **Delivery:** one finding/one commit and final push; owner review/merge is next.
+- **Records:** [CE14 plan](./composition-ce14-plan.md),
+  [review evidence](./pr-50-review-fix-results.json).
+
+### 2026-10-09 — CE14 complete acceptance
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, code `f78a9e26`.
+- **Done:** final complete local gate passes all 82 commands in 14,375.23 seconds;
+  3,597 unit / 83 runtime / 314 integration tests and every required browser/export
+  check pass. All 176 frozen items / 36,061 frames match; references are unchanged.
+- **Results:** full-gate mesh pixels, offscreen/ownership oracles, both 48-frame
+  pin-driven demos and eight repeated/parallel/cache export permutations pass.
+- **Open / next:** CE14 acceptance complete; owner review/merge only. CE15 remains
+  complete in PR #49. No scheduling, merge or owner-checkout edits.
+- **Records:** [CE14 plan](./composition-ce14-plan.md),
+  [final evidence](./composition-ce14-results.json).
+
+### 2026-10-09 — CE14 review repairs and focused acceptance
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, after `90f9490e`.
+- **Done:** complete offscreen mesh captures, correct inherited clips and visibility,
+  original viewport processing for scope effects, alpha-preserving region replacement.
+- **Results:** 3,597 units and fast checks pass; expanded mesh pixels, twelve zero-owner
+  memory cases, independent clipping/effect-input oracles, eight production exports
+  and native effects pass. Separate new mesh baseline preserves existing hashes.
+- **Review:** both axes complete; all concrete findings repaired. Pinned toolchain,
+  browser/Python imports and isolated caches verified.
+- **Next:** final committed-code `pnpm check` (approximately four hours), including
+  frozen baselines. No complete gate is claimed yet.
+- **Records:** [CE14 plan](./composition-ce14-plan.md), [focused evidence](./composition-ce14-results.json).
+
+### 2026-10-09 — CE14 pin-only acting and deterministic exports
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, after `5ddf4403`.
+- **Done:** original arm/house assets, pin-only demo, constrained prop-follow example,
+  story-acting guidance and eight bounded topology quality passes.
+- **Results:** both 48-frame demos pass both backends with no delivered triangle
+  flips; reverse seeks and eight production repeat/worker/cache exports match.
+  Fourteen focused units and TypeScript/lint pass; rendered gesture inspected.
+- **Rejected:** continuous unsnapped rendering failed parity and retained thin-face
+  flips; improve the triangulation without weakening either acceptance threshold.
+- **Next:** broaden pixels/failures, implementation review and final local gate.
+- **Records:** [CE14 plan](./composition-ce14-plan.md), [demo](../examples/composition/12-puppet-acting/README.md).
+
+### 2026-10-09 — CE14 native mesh rendering
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, after `db7a9c52`.
+- **Done:** Canvas affine reference and WebGL2 textured meshes, bounded geometry,
+  readbacks/control textures, deterministic overlap and post-quantization flip guards.
+- **Results:** 44 focused units, static checks, mesh pixel/seek checks, six zero-owner
+  memory cases and existing effects/browser repeated exports pass.
+- **Rejected:** unsnapped CPU vertices disagree with the pinned four-bit raster
+  grid; shared 1/16-pixel delivery removes edge disagreements without wider tolerances.
+- **Next:** pin-only acting demo, constraint/expression integration and final acceptance.
+- **Records:** [CE14 plan](./composition-ce14-plan.md), [results](./composition-ce14-results.json).
+
+### 2026-10-09 — CE14 alpha-outline topology
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, after `cfc89aed`.
+- **Done:** exact alpha-cell contours, holes/islands, pinned ISC Earcut dependency,
+  pin insertion and fixed conforming refinement with explicit geometry limits.
+- **Results:** 29 focused tests pass, including all 512 binary 3×3 masks checked
+  against independent coverage/area; TypeScript, lint and boundaries pass.
+- **Next:** Canvas/WebGL mesh rendering, memory admission, visual and export proof.
+- **Records:** [CE14 plan](./composition-ce14-plan.md), [licence](./licenses/earcut-3.0.2.txt).
+
+### 2026-10-09 — CE14 deterministic mesh geometry
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, after `c66defee`.
+- **Done:** native Bezier/puppet contracts, rigid MLS, starch-region geometry,
+  stable overlap sorting and triangle flip/collapse detection.
+- **Results:** 58 focused tests, TypeScript, lint, schema and boundaries pass.
+  All 49 rectangular control-grid dimensions are exercised.
+- **Next:** alpha topology and both textured-mesh backends; visual/export and
+  complete milestone acceptance remain pending.
+- **Records:** [CE14 plan](./composition-ce14-plan.md), [evidence](./composition-ce14-results.json).
+
+### 2026-10-09 — CE14 animated point controls
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, from completed CE15 `efa42f42`.
+- **Done:** bounded animated point collections with indexed expressions, baking,
+  builder paths and Lab key tracks; existing color-curve semantics are preserved.
+- **Results:** 177 focused authoring tests, TypeScript, changed-file lint, schema
+  freshness and package boundaries pass.
+- **Next:** deterministic rigid MLS, alpha-outline meshes, Bezier controls,
+  starch/overlap and both renderers. Full milestone acceptance remains pending.
+- **Records:** [CE14 plan](./composition-ce14-plan.md).
 
 ### 2026-10-09 — PR #49 exact natural audio origins
 

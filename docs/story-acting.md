@@ -258,3 +258,129 @@ gesture duration, hand tracking through pose changes and blends, moving-hand
 transfers, releases, random seeking, ownership conflicts and dependency cycles.
 The example is also rendered through the normal MP4 pipeline and inspected at
 gesture, handover and walking boundaries.
+
+## Native composition puppet acting
+
+Native `composition-1` image layers can deform one still asset with
+`distort.puppet`. This is independent of the existing story-passage pose library:
+use poses for large silhouette changes and puppet pins for continuous bends,
+squashes and gestures within an asset. The [arm and house demo](../examples/composition/12-puppet-acting/README.md)
+contains complete compositions and original static artwork.
+
+Add an effect with equal-length `rest` and `pins` arrays. Coordinates are pixels
+in the layer's local coordinate system, before its transform. Each rest pin must
+lie within the thresholded alpha silhouette; do not place it in a transparent
+hole. Rest positions define material points, so keep them fixed while animating
+target pins. Arrays support whole-list keyframes, individual point vector keys,
+and separate x/y keys. Keep the number of points constant across keys.
+
+```json
+{
+  "id": "puppet",
+  "effect": "distort.puppet",
+  "params": {
+    "rest": [
+      [24, 100],
+      [60, 60]
+    ],
+    "pins": [
+      [24, 100],
+      {
+        "keys": [
+          { "frame": 0, "value": [60, 60] },
+          { "frame": 24, "value": [70, 45] }
+        ]
+      }
+    ],
+    "refinement": 2,
+    "starchCenters": [[40, 25]],
+    "starch": [[20, 1]],
+    "overlapCenters": [[60, 60]],
+    "overlap": [[24, 1]]
+  }
+}
+```
+
+There are at most 32 pins and eight regions of each kind. `starch` entries are
+`[radius, strength]`: strength is 0–1, full stiffness applies inside half the
+radius and falls smoothly to zero at the edge. Later regions blend after earlier
+ones; exact pin targets take priority. `overlap` entries are `[radius, depth]`:
+the last region containing a source triangle's centroid assigns its draw depth.
+Higher depths draw later; equal depths retain original triangle order. This is
+local draw ordering, not collision detection, and it does not permit mesh folds.
+
+A pin path such as `actor.effects[puppet].pins[p5].y` accepts a scalar expression
+or motion driver; `actor.effects[puppet].pins[p5]` accepts a vector expression.
+Expressions read keyed, driven and expression values before constraints. For a
+hand attached to a constrained prop, constrain a null helper and use drivers to
+copy its solved x/y coordinates to the pin. The [prop-follow example](../examples/composition/12-puppet-acting/prop-follow.json)
+shows this together with an elbow expression. Subtract the actor's position only
+when helper/actor axes and scale match, as in this example; otherwise author the
+helper in the puppet's local coordinate system.
+
+The solver is deterministic rigid moving least squares with authored serial
+reduction order. Zero pins preserve the image; one pin translates it; coincident
+rest pins and degenerate fits are rejected. Earcut 3.0.2 triangulates exact
+thresholded alpha-cell contours, preserving holes and disconnected islands, under
+its [ISC licence](./licenses/earcut-3.0.2.txt). Eight fixed serial edge-quality
+passes improve thin triangles without moving outline or pin vertices, after pin
+insertion and each of 0–3 conforming midpoint refinements. `alphaThreshold` is an
+integer byte, 1–255 (default 1). Topology follows the current input alpha, so use a
+stable source silhouette and avoid preceding animated alpha-changing effects when
+material topology must stay fixed.
+
+The limits are 65,536 boundary edges, 8,192 simplified outline vertices, 32,768
+mesh vertices and 65,536 triangles. Rendering admits its geometry and pixel
+workspace before allocation. Excessive complexity or raster work produces
+`comp-mesh-budget`; a rest pin outside the silhouette produces `comp-mesh-pin`.
+A deformation that flips or collapses triangles produces `comp-mesh-flip`: reduce
+motion, adjust rest pins, add support pins or revise the source silhouette.
+Mesh failures expose structured diagnostics in preview and production exports,
+including the stable code, node, frame and authored parameter path. For example,
+an invalid rest pin points to `layers.0.effects.0.params.rest.0`; nested artwork
+uses its `precomps` definition path and full instance node name. Pin-target solver
+failures point to `pins`, and invalid Bezier deformation points to `controls`.
+The pinned renderer delivers vertices on a 1/16-pixel grid (at most 1/32 pixel
+rounding per axis). The flip guard validates continuous deformation before raster
+rounding; faces that collapse or reverse solely during raster delivery are omitted
+in stable draw order. Identity meshes retain exact pixel-center sampling. Solver
+target positions remain exact. Always sweep the full authored range before export.
+
+A zero scale on an affine 2D mesh owner or its ancestor makes that mesh stage
+transparent, including rotated parent/child chains. Returning to a nonzero scale
+restores ordinary deformation and pin validation. Later scope effects still run;
+visible input generated before the mesh can deform in a valid external coordinate
+space. Small nonzero scales and reflections retain their normal behavior. A puppet
+with no pixels at or above `alphaThreshold` renders empty, including tiny frames
+with authored pins. Silhouette membership and deformation checks resume when
+thresholded input recovers; parameter counts, distinct rest positions and region
+settings are still validated normally. A collapsed external coordinate reference
+retains its error behavior for a noncollapsed owner.
+
+For rectangular artwork, `distort.mesh-warp` offers tensor-product Bezier control
+grids with 2–8 rows and columns. Supply `columns`, `rows`, layer-local `origin` and
+`size`, and row-major normalized `controls` (exactly `rows * columns` points).
+The default 2×2 grid is `[[0,0],[1,0],[0,1],[1,1]]`. Animate controls just like pins,
+including paths through `controls[p63]`; `subdivisions` sets fixed tessellation
+from 1–64 (default 24). Both effects use native WebGL2 textured triangles and a
+Canvas affine reference with the same sampling and overlap rules.
+
+For affine 2D mesh layers, the renderer retains the complete transformed source
+when it crosses the viewport edge, then clips the delivered result. Invisible,
+out-of-range and zero-opacity descendants do not enlarge a group's capture.
+Intermediate owner mesh outputs remain available to later meshes in the same
+stack, including when they cross the viewport. Final output clips normally.
+The union of complete input, required intermediate output and viewport is limited
+to 8192 pixels per axis and
+participates in normal managed pixel admission; extremely distant artwork can
+therefore produce a mesh-budget diagnostic.
+
+Effects with layer-space coordinates use the translated capture coordinates.
+Scope-space effects keep the original composition viewport and authored stack
+order: the engine crops that window (including referenced effect inputs), applies
+the effect at the original dimensions and replaces the window, including any
+transparent output. Pixels outside the original viewport remain unchanged by a
+scope-space effect; a later puppet deformation can move those untreated pixels
+onscreen. This preserves established viewport-based vignette, grain and wipe
+behavior rather than inventing an infinite extension of those effects. Masks,
+mattes, opacity and inherited clipping keep their normal stages.

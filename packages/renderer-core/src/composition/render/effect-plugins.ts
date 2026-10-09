@@ -1,7 +1,15 @@
+import {
+  locateMeshError,
+  MESH_DIAGNOSTIC_LOCATION,
+} from "../mesh/diagnostics.ts";
+import { meshEffectKernel } from "./mesh-effects.ts";
+import { drawTexturedMesh } from "./webgl-mesh.ts";
+import { releaseRenderPixels } from "../../managed-memory-context.ts";
 import { renderMemory } from "../../managed-memory-context.ts";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
+  resizeRenderMetadata,
 } from "../../managed-metadata.ts";
 import { mapEffectKernel } from "./map-effects.ts";
 import { shadowEffectKernel } from "./shadow-effects.ts";
@@ -24,6 +32,14 @@ import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 
 type Parameters = RenderEffect["params"];
 export type GpuEffectContext = {
+  readonly placement?: RenderEffect["placement"];
+  /** Owned readbacks are released when this callback completes. */
+  readBytes(input: WebglSurface): Uint8Array<ArrayBuffer>;
+  mesh(
+    output: WebglSurface,
+    input: WebglSurface,
+    vertices: Float32Array<ArrayBuffer>,
+  ): void;
   readonly layers: ReadonlyMap<string, WebglSurface>;
   createSurface(width: number, height: number): WebglSurface;
   releaseSurface(surface: WebglSurface): void;
@@ -86,6 +102,7 @@ export const compositionEffectPlugin = (id: string) =>
   transitionEffectKernel(id) ??
   sampledBlurKernel(id) ??
   warpEffectKernel(id) ??
+  meshEffectKernel(id) ??
   noiseEffectKernel(id) ??
   stylizeEffectKernel(id) ??
   radialDistortionKernel(id) ??
@@ -94,6 +111,7 @@ export const compositionEffectPlugin = (id: string) =>
 
 type EffectControl<S extends { width: number; height: number }> = {
   managed: boolean;
+  readbacks?: Set<Uint8Array<ArrayBuffer>> | undefined;
   surfaces?: EffectSurfaces<S> | undefined;
   inputs?: Map<string, S> | undefined;
   context?: GpuEffectContext | CanvasEffectContext | undefined;
@@ -107,6 +125,8 @@ function clearEffectControl<S extends { width: number; height: number }>(
 ) {
   phase.surfaces?.clearReferences();
   phase.inputs?.clear();
+  phase.readbacks?.clear();
+  phase.readbacks = undefined;
   if (phase.copy) phase.copy.length = 0;
   if (phase.slots) phase.slots.length = 0;
   if (phase.context) {
@@ -137,11 +157,24 @@ function finishEffectControl<S extends { width: number; height: number }>(
 ) {
   let failed = false,
     first: unknown;
+  for (const pixels of phase.readbacks ?? []) {
+    try {
+      releaseRenderPixels(pixels);
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        first = error;
+      }
+    }
+  }
+  phase.readbacks?.clear();
   try {
     phase.surfaces?.dispose();
   } catch (error) {
-    failed = true;
-    first = error;
+    if (!failed) {
+      failed = true;
+      first = error;
+    }
   }
   try {
     if (phase.managed) releaseRenderMetadata(phase);
@@ -316,6 +349,29 @@ export function renderGpuEffect(
     }
     const context: GpuEffectContext = (phase.context = {
       layers: inputs,
+      placement: effect.placement,
+      readBytes(source) {
+        surfaces.require(source);
+        if (!phase.readbacks) {
+          if (phase.managed) resizeRenderMetadata(phase, 16384);
+          phase.readbacks = new Set();
+        }
+        if (phase.readbacks.size >= 8)
+          throw Error("comp-effect-surface: readback budget exceeded");
+        const pixels = device.read(source);
+        try {
+          phase.readbacks.add(pixels);
+          return pixels;
+        } catch (error) {
+          releaseRenderPixels(pixels);
+          throw error;
+        }
+      },
+      mesh(output, input, vertices) {
+        surfaces.require(output);
+        surfaces.require(input);
+        drawTexturedMesh(device, output, input, vertices);
+      },
       createSurface: surfaces.create,
       releaseSurface: surfaces.remove,
       uploadBytes(surface, bytes) {
@@ -352,7 +408,7 @@ export function renderGpuEffect(
     return true;
   } catch (error) {
     failed = true;
-    throw error;
+    throw locateMeshError(error, effect[MESH_DIAGNOSTIC_LOCATION]);
   } finally {
     finishEffectControl(phase, failed);
   }
@@ -399,6 +455,7 @@ export function renderCanvasEffect(
     const output = (phase.output = plugin.renderCanvas(
       (phase.context = {
         layers: inputs,
+        placement: effect.placement,
         createSurface: surfaces.create,
         releaseSurface: surfaces.remove,
         clear(surface, background) {
@@ -419,7 +476,7 @@ export function renderCanvasEffect(
     return true;
   } catch (error) {
     failed = true;
-    throw error;
+    throw locateMeshError(error, effect[MESH_DIAGNOSTIC_LOCATION]);
   } finally {
     finishEffectControl(phase, failed);
   }

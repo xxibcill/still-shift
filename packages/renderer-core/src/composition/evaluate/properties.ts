@@ -1,6 +1,6 @@
 import {
   locateShapeProperty,
-  effectCurvePointIndex,
+  effectPointIndex,
   type PropertyPathSegment,
 } from "@still-shift/scene-contract";
 import type { EvaluatedLayer, PropertyValue } from "./types.ts";
@@ -48,7 +48,7 @@ function container(state: EvaluatedLayer, segments: PropertyPathSegment[]) {
     const params = state.effects.find((e) => e.id === head!.index)!.params;
     if (next!.index !== undefined) {
       const points = params[next!.name] as number[][];
-      const index = effectCurvePointIndex(next!.index)!;
+      const index = effectPointIndex(next!.index)!;
       return component
         ? {
             object: points[index]!,
