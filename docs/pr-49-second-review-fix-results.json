@@ -2001,7 +2001,93 @@
           },
           "passedVariants": ["baseline", "one", "four", "repeat"]
         }
-      }
+      },
+      "commit": "b1a0037330f83fcf55a88ca51cfb7f0a2b4a0fd9"
+    },
+    "2": {
+      "date": "2026-10-09",
+      "scope": "PR #49 protected narration validation repair",
+      "toolchain": {
+        "node": "22.23.1",
+        "pnpm": "10.29.3"
+      },
+      "files": [
+        "packages/scene-contract/src/composition/audio-clock.ts",
+        "packages/scene-contract/src/composition/index.ts",
+        "packages/scene-contract/src/composition/validate-media.ts",
+        "tests/unit/composition-narration-clock.test.ts"
+      ],
+      "redThenGreen": {
+        "method": "Invoke actual original CompositionSchema from pinned review snapshot and actual repaired CompositionSchema from managed repair worktree on the same full narration document.",
+        "command": "/private/tmp/pr30-node22/bin/node --import /Users/jjae/.codex/worktrees/pr49-review-repairs/still-shift/node_modules/tsx/dist/loader.mjs /private/tmp/pr49-narration-validation-repro.mjs",
+        "cases": [
+          {
+            "fps": 7,
+            "frameCount": 5,
+            "sampleCount": 34286,
+            "before": "comp-media-narration-range",
+            "after": "accepted"
+          },
+          {
+            "fps": 29,
+            "frameCount": 5,
+            "sampleCount": 8276,
+            "before": "comp-media-narration-range",
+            "after": "accepted"
+          },
+          {
+            "fps": 59,
+            "frameCount": 5,
+            "sampleCount": 4068,
+            "before": "comp-media-narration-range",
+            "after": "accepted"
+          }
+        ]
+      },
+      "focusedUnitCommand": "/private/tmp/pr30-node22/bin/node node_modules/vitest/vitest.mjs run tests/unit/composition-narration-clock.test.ts tests/unit/composition-media.test.ts --maxWorkers=2 --no-file-parallelism",
+      "focusedUnits": {
+        "files": 2,
+        "tests": 33,
+        "passed": 33,
+        "durationSeconds": 1.2
+      },
+      "coverage": [
+        "Complete narration intervals and one-sample overruns at 1,7,24,25,29,30,50,59,60 fps",
+        "Explicit authorized trims",
+        "Layer and inherited group bounds; disabled voice cannot bypass crop checks",
+        "Nested 29/59/7 fps origins round once to exact placement sample 9326",
+        "Inherited altered source clocks remain rejected",
+        "Negative placements remain rejected",
+        "Signed ceiling and immutable exact rational origins",
+        "Fractions below Q16 and floating-point integer precision remain visible"
+      ],
+      "scopedEslint": "passed",
+      "scopedPrettier": "passed",
+      "diffWhitespaceCheck": "passed",
+      "nativeNode22HelperImport": {
+        "combined29and59FpsSample": 2469,
+        "passed": true
+      },
+      "initialFixtureRepair": "Two new group fixtures initially omitted mandatory size. Original15 media tests and16 other newtests passed; fixtures corrected and all33 tests passed.",
+      "fullRepositoryGate": "not run; scoped review repair policy",
+      "sourceFingerprints": [
+        {
+          "path": "packages/scene-contract/src/composition/audio-clock.ts",
+          "sha256": "2fdc9a7ad29edb3980937dde3e4d0696c3c07dee768a3d6fb639d2620c01e793"
+        },
+        {
+          "path": "packages/scene-contract/src/composition/index.ts",
+          "sha256": "e36023ce4c9cd9742542059a19d4fb82914140c6c77f18282620a00ee1ecb01f"
+        },
+        {
+          "path": "packages/scene-contract/src/composition/validate-media.ts",
+          "sha256": "afefafa35ed989f0dc053bb44a42fb677df03cd74e60d4e88ed0d548ea085c08"
+        },
+        {
+          "path": "tests/unit/composition-narration-clock.test.ts",
+          "sha256": "521e46f137b426b5a6efd65a0d00ab329ec57e084f28453ff1f9792c1727493e"
+        }
+      ]
     }
   },
   "delivery": {

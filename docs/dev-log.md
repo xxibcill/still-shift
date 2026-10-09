@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #49 second review repairs (2026-10-09):** The shared-cache capacity finding is repaired and verified. Protected narration and natural PCM placement repairs are being recorded in their own commits; one normal push follows the final commit.
+- **PR #49 second review repairs (2026-10-09):** Shared tint capacity and protected narration validation are repaired. Natural PCM placement is the remaining finding commit; verification is complete and one normal push follows that commit.
   Focused follow-up checks only; no full repository gate run or claimed.
   [Second review evidence](./pr-49-second-review-fix-results.json).
 
@@ -97,6 +97,15 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — PR #49 protected narration boundaries
+
+- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head `2cd76eca`.
+- **Done:** Accumulate exact rational scope origins and round absolute narration and inherited visibility bounds once on the PCM grid.
+- **Results:** All 33 focused narration/media tests pass; valid full masters at 7/29/59 fps fail before the fix and pass afterward. Real cropping, retiming and one-sample overruns remain rejected.
+- **Scope / next:** Focused PR follow-up; no full gate. Record natural PCM placement in the third finding commit, then push all three commits once.
+- **Records:** [second review evidence](./pr-49-second-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-second-review-repairs--2026-10-09).
 
 ### 2026-10-09 — PR #49 shared tint capacity
 
