@@ -61,7 +61,7 @@ function workspace(effect: string, width: number, height: number): Work {
         Math.min(width * height * 4, 65536) * 96 +
         Math.min(width * height * 4, 8192) * 1024 +
         32768 * 384 +
-        65536 * 128;
+        65536 * 384;
   return allocateRenderMetadata<Work>(
     bytes,
     () => ({ memory: renderMemory() }),

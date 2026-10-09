@@ -1,3 +1,4 @@
+import { improveMeshTriangles } from "./quality.ts";
 import earcut, { deviation } from "earcut";
 import type { Point } from "../../node-transform.ts";
 import { contourArea, containsPoint, traceAlphaContours } from "./contours.ts";
@@ -47,7 +48,11 @@ export function alphaMesh(
   triangulateContours(mesh);
   for (const point of options.pins ?? [])
     mesh.pinVertices.push(insertPin(mesh, point));
-  for (let pass = 0; pass < refinement; pass++) refine(mesh);
+  improveMeshTriangles(mesh.vertices, mesh.indices);
+  for (let pass = 0; pass < refinement; pass++) {
+    refine(mesh);
+    improveMeshTriangles(mesh.vertices, mesh.indices);
+  }
   return mesh;
 }
 function triangulateContours(mesh: MeshTopology) {

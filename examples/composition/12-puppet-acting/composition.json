@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "puppet-acting",
+  "width": 320,
+  "height": 192,
+  "fps": 24,
+  "frameCount": 48,
+  "background": "#fff4df",
+  "assets": [
+    {
+      "id": "actor",
+      "type": "image",
+      "path": "actor.svg",
+      "width": 128,
+      "height": 160,
+      "sha256": "sha256:48cae42cc7c7664bc5e969848f9523c96bebf923b206afed871998a5aade4122"
+    },
+    {
+      "id": "house",
+      "type": "image",
+      "path": "house.svg",
+      "width": 128,
+      "height": 160,
+      "sha256": "sha256:ec64880a8ad704318a75c3c84b774a5c222c4371b56650edd6e1925ac36d67ed"
+    }
+  ],
+  "layers": [
+    {
+      "id": "actor",
+      "type": "image",
+      "sources": [
+        {
+          "asset": "actor"
+        }
+      ],
+      "size": [128, 160],
+      "fit": "stretch",
+      "transform": {
+        "anchor": [0, 0],
+        "position": [16, 20]
+      },
+      "effects": [
+        {
+          "id": "puppet",
+          "effect": "distort.puppet",
+          "params": {
+            "rest": [
+              [42, 140],
+              [63, 140],
+              [51, 88],
+              [64, 62],
+              [91, 65],
+              [114, 77],
+              [52, 30]
+            ],
+            "pins": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": [
+                    [42, 140],
+                    [63, 140],
+                    [51, 88],
+                    [64, 62],
+                    [91, 65],
+                    [114, 77],
+                    [52, 30]
+                  ],
+                  "easing": "linear"
+                },
+                {
+                  "frame": 23,
+                  "value": [
+                    [42, 140],
+                    [63, 140],
+                    [51, 88],
+                    [64, 62],
+                    [90, 59],
+                    [115, 61],
+                    [52, 30]
+                  ],
+                  "easing": "linear"
+                },
+                {
+                  "frame": 47,
+                  "value": [
+                    [42, 140],
+                    [63, 140],
+                    [51, 88],
+                    [64, 62],
+                    [91, 65],
+                    [114, 77],
+                    [52, 30]
+                  ]
+                }
+              ]
+            },
+            "refinement": 1,
+            "starchCenters": [[52, 30]],
+            "starch": [[22, 1]]
+          }
+        }
+      ]
+    },
+    {
+      "id": "house",
+      "type": "image",
+      "sources": [
+        {
+          "asset": "house"
+        }
+      ],
+      "size": [128, 160],
+      "fit": "stretch",
+      "transform": {
+        "anchor": [0, 0],
+        "position": [172, 20]
+      },
+      "effects": [
+        {
+          "id": "puppet",
+          "effect": "distort.puppet",
+          "params": {
+            "rest": [
+              [64, 15],
+              [16, 52],
+              [112, 52],
+              [24, 140],
+              [104, 140],
+              [64, 140]
+            ],
+            "pins": {
+              "keys": [
+                {
+                  "frame": 0,
+                  "value": [
+                    [64, 15],
+                    [16, 52],
+                    [112, 52],
+                    [24, 140],
+                    [104, 140],
+                    [64, 140]
+                  ],
+                  "easing": "linear"
+                },
+                {
+                  "frame": 23,
+                  "value": [
+                    [64, 30],
+                    [14, 63],
+                    [114, 63],
+                    [24, 140],
+                    [104, 140],
+                    [64, 140]
+                  ],
+                  "easing": "linear"
+                },
+                {
+                  "frame": 47,
+                  "value": [
+                    [64, 15],
+                    [16, 52],
+                    [112, 52],
+                    [24, 140],
+                    [104, 140],
+                    [64, 140]
+                  ]
+                }
+              ]
+            },
+            "refinement": 1,
+            "starchCenters": [],
+            "starch": []
+          }
+        }
+      ]
+    }
+  ]
+}

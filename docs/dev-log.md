@@ -46,8 +46,9 @@ still hold before relying on them.
 - **CE14 in progress (2026-10-09):** new `codex/composition-ce14` branch starts
   from completed, pushed CE15 `efa42f42`. Animated controls, mesh contracts and deterministic
   geometry, alpha topology and both textured mesh backends are implemented; focused
-  pixels, memory cleanup, existing effects and static checks pass. Demo and final
-  acceptance remain in flight. No blocker or owner
+  pixels, memory cleanup, existing effects and static checks pass. Both 48-frame
+  demos and eight deterministic production exports pass; broader pixel coverage,
+  review and final acceptance remain in flight. No blocker or owner
   decision is pending. [CE14 plan](./composition-ce14-plan.md).
 
 - **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
@@ -88,6 +89,19 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE14 pin-only acting and deterministic exports
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, after `5ddf4403`.
+- **Done:** original arm/house assets, pin-only demo, constrained prop-follow example,
+  story-acting guidance and eight bounded topology quality passes.
+- **Results:** both 48-frame demos pass both backends with no delivered triangle
+  flips; reverse seeks and eight production repeat/worker/cache exports match.
+  Fourteen focused units and TypeScript/lint pass; rendered gesture inspected.
+- **Rejected:** continuous unsnapped rendering failed parity and retained thin-face
+  flips; improve the triangulation without weakening either acceptance threshold.
+- **Next:** broaden pixels/failures, implementation review and final local gate.
+- **Records:** [CE14 plan](./composition-ce14-plan.md), [demo](../examples/composition/12-puppet-acting/README.md).
 
 ### 2026-10-09 — CE14 native mesh rendering
 

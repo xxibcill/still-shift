@@ -112,12 +112,35 @@ including six repeated, byte-identical 60-frame production exports. The new mesh
 browser check is in the required local test chain. This remains focused evidence;
 the authored demo, production mesh export and full milestone gate are pending.
 
+### 2026-10-09 — Pin-only acting and production export
+
+Original static SVG artwork and two native compositions demonstrate an arm bend,
+house squash and a hand following a prop. The acceptance composition animates
+only pins; the second example uses an attach-constrained null helper, scalar
+drivers reading its solved position, and an elbow expression. Expressions cannot
+read post-constraint values; the driver bridge is tested over all 48 frames and
+expression baking retains every pin value. Story-acting documents the distinction.
+
+The first demo probe exposed skinny Earcut triangles that flipped under tiny
+movements. Keeping continuous geometry only did not fix the actual mesh flip and
+also failed the strict cross-backend pixel test; that experiment was rejected.
+Eight fixed, serial quality-improving edge passes after pin insertion and each
+refinement repair triangulation quality without moving any vertex, changing the
+boundary, or relaxing flip/pixel checks. Workspace admission includes the edge
+map and touched-face set. Independent regressions preserve area and boundaries,
+reject concave swaps, retain equal-quality diagonals and prove deterministic output.
+
+Every frame of both 48-frame demos passes both renderers' delivered-geometry flip
+guard; reverse seeks match and 47 frames are distinct. The rendered gesture was
+visually inspected. Eight production exports (repeat, one/four workers, cache on/off,
+each backend) have identical encoded bodies and all 48 decoded frames within each
+backend. Art checksums are pinned. 14 focused topology/quality/demo units, TypeScript
+and changed-file lint pass. Renderer identities advance to Canvas 1.47.1 and WebGL
+0.68.1 for the topology change; final acceptance will reverify these identities.
+
 ## Remaining acceptance
 
-1. Extend mesh rendering coverage to the authored demo, transforms and CE15
-   cache/dependency behavior.
-2. Add the native arm/house demo, expression/constraint example and story-acting
-   documentation; test the complete authored pin ranges for triangle flips.
-3. Run focused solver, authoring, browser, export and baseline checks; review the
-   complete implementation before the required final local gate.
-4. Complete `pnpm check` on the final code checkpoint, record evidence and push.
+1. Expand mesh pixel tests across grid sizes, animated controls, transforms,
+   starch/overlap and failure diagnostics; review the full implementation.
+2. Run affected regressions and frozen baselines, then the required full local
+   `pnpm check` on the final code checkpoint; record final evidence and push.
