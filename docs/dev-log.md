@@ -43,13 +43,12 @@ still hold before relying on them.
 
 ## Current state
 
-- **CE14 in progress (2026-10-09):** new `codex/composition-ce14` branch starts
-  from completed, pushed CE15 `efa42f42`. Animated controls, mesh contracts and deterministic
-  geometry, alpha topology and both textured mesh backends are implemented; focused
-  pixels, memory cleanup, existing effects and static checks pass. Both 48-frame
-  demos and eight deterministic production exports pass; broader pixel coverage,
-  review and final acceptance remain in flight. No blocker or owner
-  decision is pending. [CE14 plan](./composition-ce14-plan.md).
+- **CE14 acceptance pending (2026-10-09):** implementation and both review axes
+  are complete on `codex/composition-ce14`. Offscreen/clip/effect-coordinate and
+  hidden-descendant review repairs pass independent browser oracles. Both 48-frame
+  demos, 12 ownership cases, eight production export permutations, all native
+  effects and 3,597 units pass. The required final full `pnpm check` is next;
+  no blocker or owner decision is pending. [CE14 plan](./composition-ce14-plan.md).
 
 - **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
   pinned local `pnpm check` in 13928.03 seconds. Production code `21817411` has a real
@@ -89,6 +88,20 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE14 review repairs and focused acceptance
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, after `90f9490e`.
+- **Done:** complete offscreen mesh captures, correct inherited clips and visibility,
+  original viewport processing for scope effects, alpha-preserving region replacement.
+- **Results:** 3,597 units and fast checks pass; expanded mesh pixels, twelve zero-owner
+  memory cases, independent clipping/effect-input oracles, eight production exports
+  and native effects pass. Separate new mesh baseline preserves existing hashes.
+- **Review:** both axes complete; all concrete findings repaired. Pinned toolchain,
+  browser/Python imports and isolated caches verified.
+- **Next:** final committed-code `pnpm check` (approximately four hours), including
+  frozen baselines. No complete gate is claimed yet.
+- **Records:** [CE14 plan](./composition-ce14-plan.md), [focused evidence](./composition-ce14-results.json).
 
 ### 2026-10-09 — CE14 pin-only acting and deterministic exports
 

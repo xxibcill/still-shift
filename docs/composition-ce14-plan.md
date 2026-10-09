@@ -138,9 +138,45 @@ backend. Art checksums are pinned. 14 focused topology/quality/demo units, TypeS
 and changed-file lint pass. Renderer identities advance to Canvas 1.47.1 and WebGL
 0.68.1 for the topology change; final acceptance will reverify these identities.
 
+### 2026-10-09 — Review repairs and final focused acceptance
+
+The two-axis implementation review found an offscreen-silhouette defect and its
+coordinate/visibility interactions. Bounded captures now retain the complete
+transformed input plus the viewport. Inherited clips apply after restoring the
+original coordinates; invisible, out-of-range, matte-only and zero-opacity group
+descendants do not enlarge captures. Scope effects retain an explicit original
+viewport window, including referenced inputs; native region replacement preserves
+transparent output. Offscreen pixels remain untreated by scope effects until a
+later mesh moves them into view. This compatibility rule is documented in the
+story-acting guide. Layer-space effects receive translated placement normally.
+
+The final focused browser check covers sixteen cross-backend pixel frames:
+2×2 and animated 8×8 controls, reflection, quarter-turn puppet placement, starch,
+and both visible overlap orders. Raw RGBA difference is at most two bytes, alpha
+and premultiplied difference at most one; the overlap cases match exactly.
+Independent offscreen oracles compare deformation against ordinary image motion,
+including fully offscreen source recovery, opacity, inherited collapsed-precomp
+clips, hidden descendants, viewport vignette/grain/wipes, referenced inputs and
+transparent region replacement. Twelve real managed success/denial/draw-failure
+cases leave zero pixel/metadata owners and preserve the original failure.
+Both 48-frame demos, reverse seeks and all eight production export permutations
+pass again on Canvas 1.47.2 / WebGL 0.68.2. Spec review has no further concrete
+finding; Standards' final zero-opacity finding is fixed and covered by the oracle.
+
+`pnpm check:fast` passes all 3,597 units in 338 files plus schema, boundaries,
+formatting, lint and TypeScript. The first run exposed the intentional renderer
+identity change and missing new built-in catalogue cases; the identity expectation
+was recomputed from the pinned request and a separate mesh catalogue was added.
+The native-effects catalogue initially stopped only because the new case had no
+baseline; all original frame hashes matched. A separate CE14 hash record preserves
+every original CE6/frozen baseline. The final retry passes all seven catalogues,
+existing native-effect pixels/seeks and repeated exports. The toolchain, browser,
+Python imports and isolated optimizer/config caches pass preflight.
+
 ## Remaining acceptance
 
-1. Expand mesh pixel tests across grid sizes, animated controls, transforms,
-   starch/overlap and failure diagnostics; review the full implementation.
-2. Run affected regressions and frozen baselines, then the required full local
-   `pnpm check` on the final code checkpoint; record final evidence and push.
+Run the required full local `pnpm check` on the final committed code checkpoint,
+including the frozen baselines; record final evidence and push. Focused evidence
+above is not a complete repository gate. Expected cost is approximately four
+hours, based on CE15's 13,928-second full gate. No code changes are planned during
+that run unless a failing check demonstrates a necessary repair.

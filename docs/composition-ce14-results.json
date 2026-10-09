@@ -1,6 +1,6 @@
 {
   "milestone": "CE14",
-  "status": "in-progress",
+  "status": "awaiting-full-gate",
   "date": "2026-10-09",
   "base": "efa42f42e57958133dfcd268e2c7f68861c32319",
   "pointCollections": {
@@ -35,9 +35,8 @@
     ]
   },
   "remaining": [
-    "broader pixel and failure coverage",
-    "implementation review",
-    "frozen baselines and full local pnpm check"
+    "complete final local pnpm check including frozen baselines",
+    "record completion evidence and push"
   ],
   "geometry": {
     "status": "focused-passed",
@@ -658,5 +657,617 @@
         "logSha256": "8217a21032f68ddecfe4092cc828b664f55b3189865bf05d22a79ff75a9cb707"
       }
     }
+  },
+  "finalFocused": {
+    "status": "passed",
+    "rendererVersions": {
+      "canvas2d": "composition-canvas-1.47.2",
+      "webgl2": "composition-webgl2-0.68.2"
+    },
+    "unitTests": 3597,
+    "unitFiles": 338,
+    "meshPixels": {
+      "subpixelBits": 4,
+      "reports": [
+        {
+          "id": "bezier",
+          "frame": 0,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        },
+        {
+          "id": "bezier",
+          "frame": 1,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        },
+        {
+          "id": "bezier-8x8-animated",
+          "frame": 0,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 2
+        },
+        {
+          "id": "bezier-8x8-animated",
+          "frame": 1,
+          "maxDelta": 2,
+          "alphaDelta": 1,
+          "premultipliedDelta": 1,
+          "different": 6
+        },
+        {
+          "id": "bezier-reflected",
+          "frame": 0,
+          "maxDelta": 2,
+          "alphaDelta": 1,
+          "premultipliedDelta": 1,
+          "different": 5
+        },
+        {
+          "id": "bezier-reflected",
+          "frame": 1,
+          "maxDelta": 2,
+          "alphaDelta": 1,
+          "premultipliedDelta": 1,
+          "different": 5
+        },
+        {
+          "id": "puppet",
+          "frame": 0,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet",
+          "frame": 1,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet-quarter-turn",
+          "frame": 0,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet-quarter-turn",
+          "frame": 1,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet-starch",
+          "frame": 0,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet-starch",
+          "frame": 1,
+          "maxDelta": 1,
+          "alphaDelta": 1,
+          "premultipliedDelta": 0,
+          "different": 3
+        },
+        {
+          "id": "puppet-overlap-1",
+          "frame": 0,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        },
+        {
+          "id": "puppet-overlap-1",
+          "frame": 1,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        },
+        {
+          "id": "puppet-overlap--1",
+          "frame": 0,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        },
+        {
+          "id": "puppet-overlap--1",
+          "frame": 1,
+          "maxDelta": 0,
+          "alphaDelta": 0,
+          "premultipliedDelta": 0,
+          "different": 0
+        }
+      ]
+    },
+    "managedMemory": [
+      {
+        "backend": "canvas2d",
+        "mode": "success",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 261920,
+            "metadata": 47734784
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "mode": "metadata",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 1048576
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 196384,
+            "metadata": 8192
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "mode": "pixels",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 229376,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 196384,
+            "metadata": 47734784
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "mode": "draw-failure",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 261920,
+            "metadata": 47734784
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "mode": "window-success",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 339744,
+            "metadata": 47931392
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "canvas2d",
+        "mode": "window-failure",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 266016,
+            "metadata": 32768
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "success",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 212768,
+            "metadata": 47784738
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "metadata",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 1048576
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 212768,
+            "metadata": 40658
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "pixels",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 229376,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 212768,
+            "metadata": 47766368
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "draw-failure",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 212768,
+            "metadata": 47784738
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "window-success",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 317728,
+            "metadata": 47998896
+          },
+          "reservations": 0
+        }
+      },
+      {
+        "backend": "webgl2",
+        "mode": "window-failure",
+        "statistics": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 16777216,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 317728,
+            "metadata": 83398
+          },
+          "reservations": 0
+        }
+      }
+    ],
+    "offscreen": [
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 12,
+        "pixels": 256
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": -12,
+        "pixels": 0
+      },
+      {
+        "backend": "canvas2d",
+        "position": -20,
+        "delta": 0,
+        "pixels": 0
+      },
+      {
+        "backend": "canvas2d",
+        "position": -20,
+        "delta": 12,
+        "pixels": 128
+      },
+      {
+        "backend": "canvas2d",
+        "position": -20,
+        "delta": -12,
+        "pixels": 0
+      },
+      {
+        "backend": "canvas2d",
+        "position": 24,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "canvas2d",
+        "position": 24,
+        "delta": 12,
+        "pixels": 0
+      },
+      {
+        "backend": "canvas2d",
+        "position": 24,
+        "delta": -12,
+        "pixels": 256
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 12,
+        "pixels": 256
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": -12,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": -20,
+        "delta": 0,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": -20,
+        "delta": 12,
+        "pixels": 128
+      },
+      {
+        "backend": "webgl2",
+        "position": -20,
+        "delta": -12,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": 24,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "webgl2",
+        "position": 24,
+        "delta": 12,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": 24,
+        "delta": -12,
+        "pixels": 256
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 1018
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 1018
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 0
+      },
+      {
+        "backend": "canvas2d",
+        "position": -8,
+        "delta": 0,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 128
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 1018
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 1018
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 0
+      },
+      {
+        "backend": "webgl2",
+        "position": -8,
+        "delta": 0,
+        "pixels": 0
+      }
+    ],
+    "review": {
+      "spec": "offscreen capture, inherited clips, viewport effects and visibility repaired; no further concrete findings",
+      "standards": "zero-opacity descendants excluded; no remaining concrete findings"
+    },
+    "checks": {
+      "fast": {
+        "status": "passed",
+        "logSha256": "888c4507bfff73384bf3125b52526411d86756571d53dc649dbf80da75194520"
+      },
+      "mesh-browser": {
+        "status": "passed",
+        "logSha256": "2e9532781cd052dc23ceb5d96202a9477ffc1911dfb76dfd885a057af13437ac"
+      },
+      "native-effects-browser": {
+        "status": "passed",
+        "logSha256": "411d8b43552bf97cf330ca35d41f5bc7c472e68fe6995a405b41fbba0b9c25c9"
+      },
+      "final-types": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final-lint": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "toolchain-preflight": {
+        "status": "passed",
+        "logSha256": "0e4835e45f1f76d3af9b8c09abefab85e8b3ab9c66a8aa740ee6855d9bb8d940"
+      },
+      "python-preflight": {
+        "status": "passed",
+        "logSha256": "7f0853bc19021f9022b2c0e5c9ecaef5ee9d95b2d8ac3b6700cdf8bce03e841f"
+      },
+      "soundtrack-preflight": {
+        "status": "passed",
+        "logSha256": "d7687b7f3bdef78a0cd58be2ffd460b818aafa0e33d3ed89ce0981bf8ec05661"
+      },
+      "cache-preflight": {
+        "status": "passed",
+        "logSha256": "0723ee01c5f7c8a8909d8361661628aa3ebb320bd05b22dd84df91e9715f6cb7"
+      }
+    }
+  },
+  "fullGate": {
+    "status": "pending",
+    "command": "pnpm check"
   }
 }

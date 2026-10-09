@@ -346,3 +346,20 @@ The default 2×2 grid is `[[0,0],[1,0],[0,1],[1,1]]`. Animate controls just like
 including paths through `controls[p63]`; `subdivisions` sets fixed tessellation
 from 1–64 (default 24). Both effects use native WebGL2 textured triangles and a
 Canvas affine reference with the same sampling and overlap rules.
+
+For affine 2D mesh layers, the renderer retains the complete transformed source
+when it crosses the viewport edge, then clips the delivered result. Invisible,
+out-of-range and zero-opacity descendants do not enlarge a group's capture.
+The union of complete input and viewport is limited to 8192 pixels per axis and
+participates in normal managed pixel admission; extremely distant artwork can
+therefore produce a mesh-budget diagnostic.
+
+Effects with layer-space coordinates use the translated capture coordinates.
+Scope-space effects keep the original composition viewport and authored stack
+order: the engine crops that window (including referenced effect inputs), applies
+the effect at the original dimensions and replaces the window, including any
+transparent output. Pixels outside the original viewport remain unchanged by a
+scope-space effect; a later puppet deformation can move those untreated pixels
+onscreen. This preserves established viewport-based vignette, grain and wipe
+behavior rather than inventing an infinite extension of those effects. Masks,
+mattes, opacity and inherited clipping keep their normal stages.

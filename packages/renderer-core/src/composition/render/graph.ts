@@ -11,6 +11,7 @@ import {
 import type { SampledCompositionMedia } from "../evaluate/media.ts";
 import {
   primitiveBlurEffect,
+  effectBounds,
   type EvaluatedEffect,
 } from "../evaluate/effects.ts";
 import { evaluateComp } from "../evaluate/evaluate.ts";
@@ -31,7 +32,7 @@ import type {
   EvaluationOptions,
 } from "../evaluate/types.ts";
 import { cameraMatrix } from "../evaluate/camera.ts";
-import { projectBounds } from "../evaluate/geometry.ts";
+import { localBounds, projectBounds } from "../evaluate/geometry.ts";
 import { projectedMaskGeometry, type ProjectedMask } from "./projected-mask.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import {
@@ -51,7 +52,14 @@ import {
 import { spatialStackOrder } from "./spatial-order.ts";
 import { prepareFlatLighting, type FlatLighting } from "./flat-lighting.ts";
 
+export type EffectWindow = {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+};
 export type RenderEffect = EvaluatedEffect & {
+  window?: EffectWindow;
   placement?: { matrix: Matrix; transforms: Matrix[] };
   /** Input slots rendered independently at this scope and clock. */
   layerInputs?: Readonly<Record<string, RenderOp[]>>;
@@ -292,6 +300,7 @@ export type RenderGraphOptions = EvaluationOptions & {
 };
 
 type Frame = {
+  effectWindow?: EffectWindow | undefined;
   matrix: Matrix;
   transforms: Matrix[];
   opacity: number;
@@ -1309,6 +1318,7 @@ class GraphBuilder {
       viewport: { width: raster.width, height: raster.height },
       cull: false,
       localCapture: { inverse, origin: raster.origin },
+      effectWindow: undefined,
     };
     const effects: RenderEffect[] = (options.raw ? [] : state.effects)
       .filter(
@@ -1442,6 +1452,83 @@ class GraphBuilder {
     ];
   }
 
+  /** Keep the complete input silhouette, even when its owner crosses the viewport. */
+  private meshCaptureBounds(scope: Scope, state: EvaluatedLayer, frame: Frame) {
+    const bounds: Bounds = {
+      left: 0,
+      top: 0,
+      right: frame.viewport.width,
+      bottom: frame.viewport.height,
+    };
+    const include = (source: EvaluatedLayer) => {
+      const local = localBounds(this.comp, scope.def, source, this.options);
+      if (!local) return;
+      const matrix = multiplyMatrix(frame.matrix, source.screenMatrix);
+      const projected = projectBounds(local, matrix);
+      const firstMesh = source.effects.findIndex(
+        (effect) =>
+          effect.enabled &&
+          (effect.effect === "distort.puppet" ||
+            effect.effect === "distort.mesh-warp"),
+      );
+      const input =
+        effectBounds(
+          projected,
+          firstMesh < 0 ? source.effects : source.effects.slice(0, firstMesh),
+        ) ?? projected;
+      const margin = this.paintBlur(scope, source, frame) * 3;
+      bounds.left = Math.min(bounds.left, input.left - margin);
+      bounds.top = Math.min(bounds.top, input.top - margin);
+      bounds.right = Math.max(bounds.right, input.right + margin);
+      bounds.bottom = Math.max(bounds.bottom, input.bottom + margin);
+    };
+    if (state.layer.type === "group") {
+      for (const child of scope.tree.layers) {
+        const visible = frame.sourceGroup
+          ? this.sourceVisible(scope, child, frame.sourceGroup)
+          : child.visible;
+        if (
+          !visible ||
+          child.opacity <= 0 ||
+          scope.matteSources.has(child.id) ||
+          (frame.coverageLayers &&
+            !frame.captureSource &&
+            !frame.coverageLayers.has(child.id))
+        )
+          continue;
+        if (
+          !child.drawable &&
+          !scope.containers.has(child.id) &&
+          !frame.sourceGroup
+        )
+          continue;
+        let parent = child.layer.parent;
+        while (parent) {
+          if (parent === state.id) {
+            include(child);
+            break;
+          }
+          parent = scope.byId.get(parent)?.layer.parent;
+        }
+      }
+    } else include(state);
+    const left = Math.floor(bounds.left),
+      top = Math.floor(bounds.top);
+    const width = Math.ceil(bounds.right) - left,
+      height = Math.ceil(bounds.bottom) - top;
+    if (
+      ![left, top, width, height].every(Number.isSafeInteger) ||
+      width > 8192 ||
+      height > 8192
+    )
+      passageError(
+        "comp-mesh-budget",
+        "Complete mesh input and viewport exceed 8192 pixels per axis",
+        { node: frame.prefix + state.id },
+      );
+    return { origin: [left, top] as [number, number], width, height };
+  }
+
   layerOps(
     scope: Scope,
     state: EvaluatedLayer,
@@ -1451,6 +1538,7 @@ class GraphBuilder {
       seen?: Set<string>;
       cull?: boolean;
       raw?: boolean;
+      meshCapture?: boolean;
     } = {},
   ): RenderOp[] {
     const key = frame.prefix + state.id,
@@ -1483,6 +1571,86 @@ class GraphBuilder {
         blend,
         paintBlur,
       );
+    if (
+      !options.raw &&
+      !options.meshCapture &&
+      layer.type !== "adjustment" &&
+      state.effects.some(
+        (effect) =>
+          effect.enabled &&
+          (effect.effect === "distort.puppet" ||
+            effect.effect === "distort.mesh-warp"),
+      )
+    ) {
+      const capture = this.meshCaptureBounds(scope, state, frame);
+      if (
+        capture.origin[0] !== 0 ||
+        capture.origin[1] !== 0 ||
+        capture.width !== frame.viewport.width ||
+        capture.height !== frame.viewport.height
+      ) {
+        const shift: Matrix = [
+          1,
+          0,
+          0,
+          1,
+          -capture.origin[0],
+          -capture.origin[1],
+        ];
+        const ops = this.layerOps(
+          scope,
+          state,
+          {
+            ...frame,
+            matrix: multiplyMatrix(shift, frame.matrix),
+            clips: [],
+            effectWindow: {
+              left: (frame.effectWindow?.left ?? 0) - capture.origin[0],
+              top: (frame.effectWindow?.top ?? 0) - capture.origin[1],
+              width: frame.effectWindow?.width ?? frame.viewport.width,
+              height: frame.effectWindow?.height ?? frame.viewport.height,
+            },
+            transforms: [shift, ...frame.transforms],
+            viewport: { width: capture.width, height: capture.height },
+            background: null,
+            cull: false,
+          },
+          { ...options, blend: "normal", meshCapture: true },
+        );
+        const restore: Matrix = [
+          1,
+          0,
+          0,
+          1,
+          capture.origin[0],
+          capture.origin[1],
+        ];
+        return [
+          {
+            kind: "draw",
+            layer: key,
+            content: {
+              type: "surface",
+              surface: {
+                id: key + ":mesh-capture",
+                width: capture.width,
+                height: capture.height,
+                background: null,
+                ...(this.comp.colorSpace
+                  ? { colorSpace: this.comp.colorSpace }
+                  : {}),
+                ops,
+              },
+            },
+            matrix: restore,
+            transforms: [restore],
+            opacity: 1,
+            blend,
+            clips: frame.clips,
+          },
+        ];
+      }
+    }
     const clips = this.groupClips(scope, state, frame);
     const masks = options.raw ? [] : this.masks(state, matrix, transforms);
     if (
@@ -1535,7 +1703,9 @@ class GraphBuilder {
           seen,
         );
         if (!compositionEffectDefinition(effect.effect)!.usesLayerSpace)
-          return effect;
+          return frame.effectWindow
+            ? { ...effect, window: frame.effectWindow }
+            : effect;
         if (
           layer.type === "group" &&
           state.projection &&
@@ -1648,6 +1818,7 @@ class GraphBuilder {
             opacity: isolated ? state.opacity : opacity,
             clips: isolated ? [] : clips,
             viewport: frame.viewport,
+            ...(frame.effectWindow ? { effectWindow: frame.effectWindow } : {}),
             prefix: `${key}/`,
             background: frame.background,
             ...(frame.captureSource

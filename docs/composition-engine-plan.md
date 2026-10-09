@@ -5508,15 +5508,15 @@ with one final normal push; no full repository gate is run or claimed.
 **Outcome:** Still artwork bends, squashes and gestures without new poses, which is the
 core acting tool for a still-image engine.
 
-- [ ] Bezier mesh warp effect (grid of animatable control points, 2×2 to 8×8).
-- [ ] Puppet: triangulate the layer's alpha outline (document the triangulation library
+- [x] Bezier mesh warp effect (grid of animatable control points, 2×2 to 8×8).
+- [x] Puppet: triangulate the layer's alpha outline (document the triangulation library
       and licence), place pins (Animatable positions), solve deformation with an
       as-rigid-as-possible or moving-least-squares rigid solver. Choose one, record the
       decision, and keep it deterministic (fixed iterations, no parallel reduction).
-- [ ] Starch regions (stiffer areas) and overlap order (which parts draw in front).
-- [ ] Pins can be driven by constraints and expressions (for example a hand pin
+- [x] Starch regions (stiffer areas) and overlap order (which parts draw in front).
+- [x] Pins can be driven by constraints and expressions (for example a hand pin
       attached to a prop), integrating with [character actions](./story-acting.md).
-- [ ] WebGL2 rendering of textured meshes; Canvas 2D reference renders triangle-by-
+- [x] WebGL2 rendering of textured meshes; Canvas 2D reference renders triangle-by-
       triangle with affine texture mapping.
 
 **Acceptance:** A demo bends a character arm and squashes a house using pins only;
@@ -5526,9 +5526,11 @@ pin ranges.
 **Verification:** Solver unit tests (rigid motion is preserved, pinned points hit their
 targets), flip detection, pixel tests on both backends.
 
-**Implementation in progress (2026-10-09):** animated point collections are the first
-checkpoint on a separate branch after completed CE15. Solver, rendering and all
-acceptance evidence remain pending. [CE14 plan](./composition-ce14-plan.md).
+**Implementation ready for final acceptance (2026-10-09):** native mesh effects,
+deterministic alpha topology/rigid MLS, both backends, pin-only acting, expressions
+and constrained drivers are implemented and reviewed. Focused checks pass 3,597
+units, both complete demos, pixel/ownership oracles and repeated production exports.
+The required full local gate is pending. [CE14 plan](./composition-ce14-plan.md).
 
 **Completion record:** _to be filled in._
 

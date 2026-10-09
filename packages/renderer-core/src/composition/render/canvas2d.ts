@@ -368,6 +368,11 @@ export function createCanvas2dBackend(
       pool.set(key, list);
       pooledBytes += bytes;
     },
+    replaceRegion(source, target, left, top) {
+      reset(target.ctx);
+      target.ctx.clearRect(left, top, source.width, source.height);
+      target.ctx.drawImage(source.canvas, left, top);
+    },
     clear(surface, background) {
       const ctx = surface.ctx;
       reset(ctx);

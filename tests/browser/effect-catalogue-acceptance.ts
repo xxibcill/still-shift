@@ -220,19 +220,41 @@ export async function runEffectCatalogueAcceptance(
         });
       }
     }
-    if (writing)
+    if (writing) {
       await writeFile(
         baselinePath,
         await format(
           JSON.stringify({
             version: "composition-effect-catalogue-baseline-1",
             environment,
-            items,
+            items: Object.fromEntries(
+              Object.entries(items).filter(([id]) => id !== "catalogue-mesh"),
+            ),
           }),
           { parser: "json" },
         ),
       );
-    else {
+      await writeFile(
+        join(
+          baselineDirectory,
+          `${environment.platform}-${environment.arch}-mesh-1.json`,
+        ),
+        await format(
+          JSON.stringify({
+            version: "composition-mesh-catalogue-baseline-1",
+            environment,
+            effectVersions: Object.fromEntries(
+              ["distort.mesh-warp", "distort.puppet"].map((id) => [
+                id,
+                compositionEffectDefinition(id)!.version,
+              ]),
+            ),
+            items: { "catalogue-mesh": items["catalogue-mesh"] },
+          }),
+          { parser: "json" },
+        ),
+      );
+    } else {
       const stored = JSON.parse(await readFile(baselinePath, "utf8"));
       assert.equal(
         stored.environment.rasterFingerprint,
@@ -285,6 +307,36 @@ export async function runEffectCatalogueAcceptance(
       );
       const expected = structuredClone(stored.items);
       expected[corrected.fixture].canvas2d = corrected.canvas2d;
+      const mesh = JSON.parse(
+        await readFile(
+          join(
+            baselineDirectory,
+            `${environment.platform}-${environment.arch}-mesh-1.json`,
+          ),
+          "utf8",
+        ),
+      );
+      assert.equal(mesh.version, "composition-mesh-catalogue-baseline-1");
+      assert.equal(
+        mesh.environment.rasterFingerprint,
+        environment.rasterFingerprint,
+      );
+      assert.deepEqual(Object.keys(mesh.items), ["catalogue-mesh"]);
+      assert.deepEqual(
+        mesh.effectVersions,
+        Object.fromEntries(
+          ["distort.mesh-warp", "distort.puppet"].map((id) => [
+            id,
+            compositionEffectDefinition(id)!.version,
+          ]),
+        ),
+      );
+      assert.equal(
+        Object.hasOwn(expected, "catalogue-mesh"),
+        false,
+        "Keep the original CE6 catalogue frozen",
+      );
+      expected["catalogue-mesh"] = mesh.items["catalogue-mesh"];
       assert.deepEqual(items, expected, "CE6 full-frame hashes");
     }
     const hardware = await shapeHardwarePreview(root, fixtures);

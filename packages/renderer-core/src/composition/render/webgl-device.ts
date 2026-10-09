@@ -1186,6 +1186,45 @@ export class WebglDevice {
     }
   }
 
+  replaceRegion(
+    source: WebglSurface,
+    target: WebglSurface,
+    left: number,
+    top: number,
+  ) {
+    if (source.screen || target.screen || source === target)
+      throw Error("Region replacement needs separate offscreen surfaces");
+    const gl = this.gl;
+    const read = gl.getParameter(
+      gl.READ_FRAMEBUFFER_BINDING,
+    ) as WebGLFramebuffer | null;
+    const draw = gl.getParameter(
+      gl.DRAW_FRAMEBUFFER_BINDING,
+    ) as WebGLFramebuffer | null;
+    const scissored = gl.isEnabled(gl.SCISSOR_TEST);
+    try {
+      if (scissored) gl.disable(gl.SCISSOR_TEST);
+      gl.bindFramebuffer(gl.READ_FRAMEBUFFER, source.framebuffer);
+      gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, target.framebuffer);
+      gl.blitFramebuffer(
+        0,
+        0,
+        source.width,
+        source.height,
+        left,
+        top,
+        left + source.width,
+        top + source.height,
+        gl.COLOR_BUFFER_BIT,
+        gl.NEAREST,
+      );
+    } finally {
+      if (scissored) gl.enable(gl.SCISSOR_TEST);
+      gl.bindFramebuffer(gl.READ_FRAMEBUFFER, read);
+      gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, draw);
+    }
+  }
+
   copyRegion(surface: WebglSurface, rect: Bounds) {
     const width = rect.right - rect.left,
       height = rect.bottom - rect.top;

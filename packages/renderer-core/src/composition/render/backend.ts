@@ -1,3 +1,4 @@
+import { applyWindowEffect } from "./effect-window.ts";
 import {
   renderMembers,
   type CompositionRenderStatistics,
@@ -94,6 +95,8 @@ export interface RenderBackend<S extends Surface = Surface> {
   /** A cleared, transparent surface, usually from a pool. */
   createSurface(width: number, height: number): S;
   releaseSurface(surface: S): void;
+  /** Replace a rectangular region, including transparent pixels. */
+  replaceRegion?(source: S, target: S, left: number, top: number): void;
   /** Clear to transparent, then fill with `background` when given. */
   clear(surface: S, background: Rgba | null): void;
   /** Optional batch for consecutive normal solid fills without clips. */
@@ -243,7 +246,7 @@ export function executeGraph<S extends Surface>(
     }
   };
   const effectStack = (target: S, effects: RenderEffect[]): void => {
-    if (!effects.some((effect) => effect.layerInputs)) {
+    if (!effects.some((effect) => effect.layerInputs || effect.window)) {
       backend.applyEffects(target, effects);
       return;
     }
@@ -252,7 +255,8 @@ export function executeGraph<S extends Surface>(
       try {
         for (const [slot, ops] of Object.entries(effect.layerInputs ?? {}))
           inputs.set(slot, isolated(ops, target));
-        backend.applyEffects(target, [effect], inputs);
+        if (effect.window) applyWindowEffect(backend, target, effect, inputs);
+        else backend.applyEffects(target, [effect], inputs);
       } finally {
         for (const source of inputs.values()) backend.releaseSurface(source);
       }

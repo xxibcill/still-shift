@@ -42,11 +42,36 @@ export async function checkMeshMemory() {
     ],
   };
   for (const backend of ["canvas2d", "webgl2"] as const)
-    for (const mode of ["success", "metadata", "draw-failure"] as const) {
+    for (const mode of [
+      "success",
+      "metadata",
+      "pixels",
+      "draw-failure",
+      "window-success",
+      "window-failure",
+    ] as const) {
       const memory = new ManagedMemory({
-        pixels: 16 * 1024 * 1024,
+        pixels: mode === "pixels" ? 224 * 1024 : 16 * 1024 * 1024,
         metadata: mode === "metadata" ? 1024 * 1024 : 64 * 1024 * 1024,
       });
+      const fixture = structuredClone(comp);
+      if (mode.startsWith("window")) {
+        fixture.layers[0]!.transform!.position = [-8, 8];
+        fixture.layers[0]!.effects!.unshift({
+          id: "vignette",
+          effect: "stylize.vignette",
+          params: { amount: 0.5 },
+        });
+      }
+      if (mode === "pixels") {
+        const params = fixture.layers[0]!.effects![0]!.params!;
+        params.refinement = 3;
+        params.rest = Array.from({ length: 32 }, (_, i) => [
+          4 + (i % 8) * 5,
+          4 + Math.floor(i / 8) * 12,
+        ]);
+        params.pins = structuredClone(params.rest);
+      }
       const marker = new Error("mesh draw failure");
       let reason: unknown,
         intercepted = false;
@@ -56,7 +81,7 @@ export async function checkMeshMemory() {
           memory.beginScratch();
           const preview = createCompositionPreview(
             canvas,
-            comp,
+            fixture,
             { images: new Map(), fonts: new Map() },
             { backend, preserveAlpha: true },
           );
@@ -65,8 +90,14 @@ export async function checkMeshMemory() {
           const gl =
             backend === "webgl2" ? canvas.getContext("webgl2")! : undefined;
           const nativeDraw = gl?.drawArrays;
-          if (mode === "draw-failure") {
-            if (gl)
+          const nativeBlit = gl?.blitFramebuffer;
+          if (mode === "draw-failure" || mode === "window-failure") {
+            if (gl && mode === "window-failure")
+              gl.blitFramebuffer = function () {
+                intercepted = true;
+                throw marker;
+              };
+            else if (gl)
               gl.drawArrays = function (primitive, first, count) {
                 if (count > 3) {
                   intercepted = true;
@@ -92,18 +123,26 @@ export async function checkMeshMemory() {
           } finally {
             CanvasRenderingContext2D.prototype.putImageData = nativePut;
             if (gl && nativeDraw) gl.drawArrays = nativeDraw;
+            if (gl && nativeBlit) gl.blitFramebuffer = nativeBlit;
             preview.dispose();
           }
         });
-        if (mode === "success" && reason !== undefined) throw reason;
         if (
-          mode === "metadata" &&
+          (mode === "success" || mode === "window-success") &&
+          reason !== undefined
+        )
+          throw reason;
+        if (
+          (mode === "metadata" || mode === "pixels") &&
           !/aggregate worker quota/.test(String(reason))
         )
           throw Error(
-            "Mesh metadata admission did not fail before geometry allocation",
+            `Mesh ${backend}/${mode} admission did not fail as expected: ${String(reason)}; ${JSON.stringify(memory.statistics)}`,
           );
-        if (mode === "draw-failure" && (!intercepted || reason !== marker))
+        if (
+          (mode === "draw-failure" || mode === "window-failure") &&
+          (!intercepted || reason !== marker)
+        )
           throw Error("Mesh draw failure lost its original error");
         const statistics = memory.statistics;
         if (

@@ -9,6 +9,7 @@ import {
 } from "@still-shift/execution-runtime";
 import type * as MemoryChecks from "../helpers/composition-mesh-memory-reference.ts";
 import { checkMeshExports } from "../helpers/composition-mesh-export.ts";
+import type * as Offscreen from "../helpers/composition-mesh-offscreen.ts";
 import type * as Demo from "../helpers/composition-puppet-demo.ts";
 import type * as Checks from "../helpers/composition-mesh-reference.ts";
 const root = resolve(import.meta.dirname, "../.."),
@@ -31,6 +32,10 @@ try {
     const path = "/tests/helpers/composition-mesh-reference.ts";
     const checks = (await import(path)) as typeof Checks;
     return checks.checkMeshRendering();
+  });
+  const offscreen = await page.evaluate(async () => {
+    const path = "/tests/helpers/composition-mesh-offscreen.ts";
+    return ((await import(path)) as typeof Offscreen).checkOffscreenMeshes();
   });
   const memory = await page.evaluate(async () => {
     const path = "/tests/helpers/composition-mesh-memory-reference.ts";
@@ -55,6 +60,7 @@ try {
       scope: "focused mesh pixels, seeks and ownership",
       result,
       memory,
+      offscreen,
       demo: demo.map(({ picture: _picture, ...proof }) => proof),
     }),
   );
