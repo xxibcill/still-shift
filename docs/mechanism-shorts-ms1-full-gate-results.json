@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "mechanism-ms1-full-gate-results-1",
+  "status": "final-complete-rerun-pending",
+  "codeCheckpoint": "4d289b3f02bd3889aa13cb29b3103db68f81b431",
+  "productionArchiveSource": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": "failed-at-unit",
+      "log": "/tmp/still-shift-ms1-full-check-1.log",
+      "logSha256": "sha256:02a35e78c942a0b33848804f5c90037e8f6f15dee41a281195d29ccf7a7d3406",
+      "completed": [
+        "toolchain",
+        "schema",
+        "boundaries",
+        "format",
+        "lint",
+        "build"
+      ],
+      "unitPassed": 3748,
+      "unitFailed": 1,
+      "reason": "Unchanged gradient metadata trace exceeded original5000ms limit. Test-only circular suffix recorder repair subsequently passes10 unchanged output/count/order assertions.",
+      "downstream": "not-run-after-unit-stop"
+    },
+    {
+      "attempt": 2,
+      "status": "failed-at-integration",
+      "codeCheckpoint": "4d289b3f02bd3889aa13cb29b3103db68f81b431",
+      "log": "/tmp/still-shift-ms1-full-check-2.log",
+      "logSha256": "sha256:9a9d714beeb830f9469af9713c4422b75465c6f142135ede6520c27679c18b59",
+      "completed": [
+        "toolchain",
+        "schema",
+        "boundaries",
+        "format",
+        "lint",
+        "build",
+        "unit",
+        "runtime"
+      ],
+      "unit": {
+        "files": 357,
+        "passed": 3771,
+        "seconds": 34.38
+      },
+      "runtime": {
+        "files": 22,
+        "passed": 148,
+        "seconds": 59.05
+      },
+      "integration": {
+        "files": 54,
+        "filesPassed": 48,
+        "filesFailed": 6,
+        "testsPassed": 278,
+        "testsFailed": 40,
+        "seconds": 277.26
+      },
+      "failures": [
+        {
+          "count": 36,
+          "reason": "Reused worktree lacked separately installed hash-locked soundtrack runtime."
+        },
+        {
+          "count": 2,
+          "reason": "Gate invocation selected bare pinned Python without NumPy for existing CE13 reference helpers."
+        },
+        {
+          "count": 2,
+          "reason": "Unchanged depth protocol test sequential Python calls exceeded5000ms; isolated pass does not establish prior timing cause."
+        }
+      ],
+      "downstream": "depth-Python/browser/frozen-baseline groups not run after integration stop"
+    }
+  ],
+  "recovery": {
+    "soundtrackSetup": {
+      "command": "UV_OFFLINE=1 pnpm soundtrack:setup",
+      "status": "passed",
+      "log": "/tmp/still-shift-ms1-soundtrack-setup-offline.log",
+      "logSha256": "sha256:708253f7d2689032b21154bcef607aae559627b690902501aa68e28ebd94bc34",
+      "python": "3.12.11",
+      "dependencies": {
+        "dawdreamer": "0.9.0",
+        "numpy": "2.3.3",
+        "scipy": "1.16.2"
+      },
+      "requirements": "scripts/soundtrack/requirements.txt",
+      "requirementsSha256": "sha256:206fbb90ea1c7e27fa37ad5dd37f0d090e31a60c885e8c517de4c7fc3897d0c3"
+    },
+    "selectedPython": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/.venv/bin/python",
+    "projectDependencies": {
+      "numpy": "2.5.3",
+      "opencv-python-headless": "5.0.0.93",
+      "pillow": "12.3.0"
+    },
+    "selectedSoundtrackPython": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/composition-ce16/runtime/bin/python",
+    "audioIntegration": {
+      "files": 5,
+      "passed": 77,
+      "seconds": 70.76,
+      "log": "/tmp/still-shift-ms1-integration-setup-rerun-1.log",
+      "logSha256": "sha256:50ce8c0523ef46196b5425b7d6b7b4db7221626b13e66b0bfee4597082c9db0d"
+    },
+    "depthProtocol": {
+      "passed": 5,
+      "testMilliseconds": 958,
+      "originalTimeoutMilliseconds": 5000,
+      "log": "/tmp/still-shift-ms1-depth-worker-focused-2.log",
+      "logSha256": "sha256:0cba01c7d1d4573fdf817be95ee44b29c92858b9aea49a67535f4d13d7d2b123",
+      "initialPermissionFailure": "/tmp/still-shift-ms1-depth-worker-focused-1.log",
+      "diagnostic": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms1-depth-startup-tnNtu9/result.json",
+      "diagnosticSha256": "sha256:3324e6b0c1317a4bdd466ad7f06e206f35a22a4590b406c184b1ee80b2ddd5c6",
+      "limits": "Warmed105..123ms worker observations localize import overhead but do not reproduce or prove the earlier4..5s variance."
+    },
+    "sourceAndTestChanges": "none; environment setup only; all verification assertions and limits retained"
+  },
+  "finalCompleteRun": {
+    "attempt": 3,
+    "status": "pending",
+    "log": "/tmp/still-shift-ms1-full-check-3.log"
+  },
+  "humanReview": "continuous visual/listening pending",
+  "publication": "not-requested"
+}

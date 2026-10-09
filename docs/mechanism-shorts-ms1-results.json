@@ -365,6 +365,25 @@
       "sampledReducedFramesPerRun": 158,
       "details": "./mechanism-shorts-ms1-semantic-typography-results.json",
       "notes": "Complete English/Thai endpoint and opaque color-only controls pass overall quality and eligible holds; intact phrase holds pass with original full-composition entry/frozen faults retained. Actual count value44..119, changed unit60..119, partial-copy31..119 and local decoded Thai ink-loss negatives asserted. Glyph-opacity/factual truth/general readability remain explicit limits. No production or archive-input changes."
+    },
+    {
+      "command": "pnpm check attempt2",
+      "status": "failed-at-integration",
+      "codeCheckpoint": "4d289b3f02bd3889aa13cb29b3103db68f81b431",
+      "unitPassed": 3771,
+      "runtimePassed": 148,
+      "integrationPassed": 278,
+      "integrationFailed": 40,
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "notes": "36 missing soundtrack runtime,2 bare-Python NumPy setup failures and2 unchanged depth timeouts; remaining Python/browser/baseline gates not run."
+    },
+    {
+      "command": "Offline pinned soundtrack setup; unchanged focused setup-affected audio/depth integrations",
+      "status": "passed-in-stages",
+      "audioTests": 77,
+      "depthTests": 5,
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "notes": "Project Python and isolated soundtrack environment corrected; no source/test or timeout changes. Original depth timing cause remains unproven; complete gate attempt3 is next."
     }
   ],
   "renderEvidence": [

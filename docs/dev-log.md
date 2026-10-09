@@ -58,7 +58,7 @@ still hold before relying on them.
   eligible76-frame holds and their original full-report entry/frozen faults.
   Semantic display repair passes127 focused tests. Full `pnpm check` attempt1
   stopped at an existing gradient trace timeout; focused ring recorder repair
-  passes10 assertions without changing the5s limit. Final complete gate is next on the committed test checkpoint.
+  passes10 assertions without changing the5s limit. Attempt2 then passes3771 units/148 runtime checks but stops at40 integration failures: missing soundtrack runtime36, bare-Python NumPy2 and unchanged depth timeouts2. Offline setup plus unchanged77 audio/5 depth reruns pass; attempt3 is next.
   Full baseline refresh changes only29 editorial frames for reproduced mask loss.
   Human continuous playback/listening remains pending; original checkout edits
   are preserved. MS1 PR and MS1N implementation wait for the final software gate.
@@ -173,6 +173,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Full gate setup failures retained and recovered
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`, code checkpoint `4d289b3f`.
+- **Results:** full attempt2 passes3771 units and148 runtime checks, then278
+  integrations pass/40 fail. Downstream Python/browser/baselines were not run.
+- **Causes:**36 missing worktree soundtrack runtime;2 bare-Python NumPy errors;
+  2 unchanged depth timeouts with timing cause unproven.
+- **Recovery:** offline hash-locked soundtrack setup and project Python selection;
+  77 affected audio and5 depth checks pass unchanged, retaining the5000ms limit.
+  No source/test/archive-input changes; permission-only first focused attempt retained.
+- **Next:** required complete gate attempt3 before MS1 PR/MS1N; earlier failed
+  attempts remain evidence, with human continuous review still pending.
+- **Records:** [full gate and setup](./mechanism-shorts-ms1-full-gate-results.json).
 
 ### 2026-10-10 — Encoded semantic and reading packet completed
 
