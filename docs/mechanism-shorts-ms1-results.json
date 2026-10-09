@@ -188,6 +188,22 @@
       "tests": 15,
       "details": "mechanism-shorts-ms1-dependency-results.json",
       "notes": "Matching-hash scene99/font/audio/geometry/reference negatives first reproduced; independent findings and no project writes verified."
+    },
+    {
+      "command": "full unfiltered composition:baselines --write with old/new pixel comparison",
+      "status": "passed",
+      "items": 176,
+      "frames": 36061,
+      "seconds": 300.7,
+      "pixelChanges": {
+        "fixture": "typography/editorial",
+        "frames": "11..39",
+        "count": 29,
+        "reason": "Reproduced mixed-size word/line mask loss repair; all other176fixture pixels retained."
+      },
+      "profileMigration": "chromium-software-1 legacy/no-machine to chromium-software-2 same fingerprint + AppleM5Pro15cores",
+      "details": "mechanism-shorts-ms1-baseline-migration.json",
+      "notes": "Original hashes/timings and29 changed encoded-state images retained; full check still pending."
     }
   ],
   "renderEvidence": [

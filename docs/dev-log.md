@@ -169,6 +169,20 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-10 — Full baseline provenance migration after mask repair
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` after `80375635`.
+- **Done:** regenerated all176 baseline fixtures without filters because the stored
+  software1 profile lacked machine provenance. The raster fingerprint is unchanged.
+- **Results:**36,061 frames in300.7s. Only typography/editorial frames11–39 changed,
+  matching the reproduced mixed-size mask repair; all other pixels remain exact.
+  Original baseline/timings and changed frames are retained. No thresholds changed.
+- **Open / next:** full local check, scoped repair/cache proof and isolated delivery;
+  full-check baseline comparison has not yet run. Native v6 sampled rubric passes;
+  continuous human review remains separate.
+- **Records:** [baseline migration](./mechanism-shorts-ms1-baseline-migration.json),
+  [MS1 results](./mechanism-shorts-ms1-results.json).
+
 ### 2026-10-10 — Corrected full E01 and supported dependency dry run
 
 - **Agent / branch:** Codex on `codex/mechanism-ms1` after `df84c431`.
