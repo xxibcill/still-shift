@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-09",
+  "pullRequest": 50,
+  "base": "958e623a6804254eef9ea8988cfce6b2e32c4d00",
+  "branch": "codex/pr50-ce14-repairs",
+  "scope": "Focused follow-up repairs; no complete repository gate claimed",
+  "findings": [
+    {
+      "comment": "https://github.com/xxibcill/still-shift/pull/50#discussion_r4226871398",
+      "status": "fixed-focused-verified",
+      "units": 44,
+      "unitFiles": 9,
+      "unitLog": "/private/tmp/pr50-rounding-units.log",
+      "unitLogSha256": "15ea566077cb6843f422aaf691c75262b4b93eb8900cd65a7aebec7ee9e8c9ea",
+      "independentPixelFrames": 18,
+      "identityMaxRgbaDelta": 0,
+      "exactReverseSeek": true,
+      "checks": [
+        "pinned toolchain",
+        "tsc --noEmit",
+        "changed-file eslint",
+        "package boundaries"
+      ],
+      "genuineFoldRejection": "passed",
+      "rendererVersions": [
+        "composition-canvas-1.47.4",
+        "composition-webgl2-0.68.4"
+      ],
+      "initialRegressions": "2 failed on original code",
+      "rejectedExperiment": "Compaction alone retained seven-byte small-grid sampling drift; exact identity texture coordinates repaired it."
+    },
+    {
+      "comment": "https://github.com/xxibcill/still-shift/pull/50#discussion_r4226871400",
+      "status": "pending"
+    }
+  ],
+  "remaining": [
+    "structured diagnostics",
+    "combined mesh browser/export gate",
+    "native-effects catalogues",
+    "one final push"
+  ]
+}

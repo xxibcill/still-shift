@@ -221,3 +221,27 @@ Renderer identities advance to Canvas 1.47.3 and WebGL2 0.68.3. This is a focuse
 review repair, not another complete repository gate. The original milestone gate
 above remains evidence for its named checkpoint; no frozen baseline or pixel
 threshold is changed. One finding is delivered in one commit and one final push.
+
+## PR #50 completeness review repairs — 2026-10-09
+
+The independent completeness review posted two P2 findings on `958e623a`:
+[raster degeneracy](https://github.com/xxibcill/still-shift/pull/50#discussion_r4226871398)
+and [structured diagnostics](https://github.com/xxibcill/still-shift/pull/50#discussion_r4226871400).
+The prior descendant-capture repair remains included.
+
+The raster repair checks continuous deformation before Float32/1⁄16-pixel delivery,
+then compacts raster-only degenerate faces in original draw order. Genuine folds
+and collapses still reject. Identity source coordinates follow delivered vertices
+so small grids and edge pins sample exact original pixel centers. No solver,
+triangulation, pixel threshold or existing baseline is relaxed. Canvas 1.47.4 /
+WebGL 0.68.4 invalidate render caches. The pinned request digest changes only
+with these renderer identities.
+
+Two newly added regressions fail on the prior code; all 44 affected unit tests
+now pass. Eighteen independent ordinary-image comparisons (small animated scales,
+near-edge pins and 1°/2°/12° rotations) are byte exact on both backends, with exact
+reverse seeks. Pinned toolchain, TypeScript, changed-file lint and boundaries pass.
+The first pixel probe exposed seven-byte identity sampling drift; matching identity
+source coordinates fixed it, without changing the oracle. Structured diagnostics
+and final combined browser/export/catalogue verification remain pending.
+Detailed evidence: [completeness-review repairs](./pr-50-ce14-review-repairs-results.json).

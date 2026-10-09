@@ -11,6 +11,7 @@ import type * as MemoryChecks from "../helpers/composition-mesh-memory-reference
 import { checkMeshExports } from "../helpers/composition-mesh-export.ts";
 import type * as Offscreen from "../helpers/composition-mesh-offscreen.ts";
 import type * as Demo from "../helpers/composition-puppet-demo.ts";
+import type * as Raster from "../helpers/composition-mesh-raster-reference.ts";
 import type * as Checks from "../helpers/composition-mesh-reference.ts";
 const root = resolve(import.meta.dirname, "../.."),
   scratch = await mkdtemp(join(tmpdir(), "ce14-mesh-"));
@@ -32,6 +33,10 @@ try {
     const path = "/tests/helpers/composition-mesh-reference.ts";
     const checks = (await import(path)) as typeof Checks;
     return checks.checkMeshRendering();
+  });
+  const raster = await page.evaluate(async () => {
+    const path = "/tests/helpers/composition-mesh-raster-reference.ts";
+    return ((await import(path)) as typeof Raster).checkMeshRasterDegeneracy();
   });
   const offscreen = await page.evaluate(async () => {
     const path = "/tests/helpers/composition-mesh-offscreen.ts";
@@ -61,6 +66,7 @@ try {
       result,
       memory,
       offscreen,
+      raster,
       demo: demo.map(({ picture: _picture, ...proof }) => proof),
     }),
   );

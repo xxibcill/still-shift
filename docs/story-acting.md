@@ -336,8 +336,10 @@ workspace before allocation. Excessive complexity or raster work produces
 A deformation that flips or collapses triangles produces `comp-mesh-flip`: reduce
 motion, adjust rest pins, add support pins or revise the source silhouette.
 The pinned renderer delivers vertices on a 1/16-pixel grid (at most 1/32 pixel
-rounding per axis); the flip guard checks that final geometry too. Solver target
-positions remain exact. Always sweep the full authored range before export.
+rounding per axis). The flip guard validates continuous deformation before raster
+rounding; faces that collapse or reverse solely during raster delivery are omitted
+in stable draw order. Identity meshes retain exact pixel-center sampling. Solver
+target positions remain exact. Always sweep the full authored range before export.
 
 For rectangular artwork, `distort.mesh-warp` offers tensor-product Bezier control
 grids with 2–8 rows and columns. Supply `columns`, `rows`, layer-local `origin` and

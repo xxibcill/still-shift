@@ -37,22 +37,48 @@ export function meshFrame(
     effect === "distort.mesh-warp"
       ? bezierFrame(params, matrix)
       : puppetFrame(params, width, height, pixels!, matrix);
-  for (const points of [mesh.source, mesh.destination])
-    for (const point of points) {
-      point[0] = Math.fround(point[0]);
-      point[1] = Math.fround(point[1]);
-    }
-  // Match the pinned renderer's 4-bit raster grid before either backend samples.
-  for (const point of mesh.destination) {
-    point[0] = Math.round(point[0] * 16) / 16;
-    point[1] = Math.round(point[1] * 16) / 16;
-  }
+  // Validate the authored deformation before float/raster delivery can collapse faces.
   const flips = triangleFlips(mesh.source, mesh.destination, mesh.indices);
   if (flips.length)
     throw Error(
       `comp-mesh-flip: ${flips.length} flipped or collapsed triangles (first ${flips[0]}); reduce the pin/control deformation`,
     );
+  for (const points of [mesh.source, mesh.destination])
+    for (const point of points) {
+      point[0] = Math.fround(point[0]);
+      point[1] = Math.fround(point[1]);
+    }
+  const unchanged = mesh.source.every((point, i) =>
+    point.every((value, axis) => value === mesh.destination[i]![axis]),
+  );
+  // Match the pinned renderer's 4-bit raster grid before either backend samples.
+  for (const point of mesh.destination) {
+    point[0] = Math.round(point[0] * 16) / 16;
+    point[1] = Math.round(point[1] * 16) / 16;
+  }
+  // An identity mesh must still sample the original pixel centers after rounding.
+  if (unchanged)
+    for (let i = 0; i < mesh.source.length; i++) {
+      mesh.source[i]![0] = mesh.destination[i]![0];
+      mesh.source[i]![1] = mesh.destination[i]![1];
+    }
+  discardRasterDegenerates(mesh);
   return mesh;
+}
+/** Raster-only degeneracy is not an authored fold. Compact in stable draw order. */
+function discardRasterDegenerates(mesh: DeformedMesh): void {
+  const rejected = triangleFlips(mesh.source, mesh.destination, mesh.indices);
+  let next = 0,
+    kept = 0;
+  for (let offset = 0; offset < mesh.indices.length; offset += 3) {
+    if (rejected[next] === offset / 3) {
+      next++;
+      continue;
+    }
+    for (let corner = 0; corner < 3; corner++)
+      mesh.indices[kept++] = mesh.indices[offset + corner]!;
+  }
+  mesh.indices.length = kept;
 }
 function bezierFrame(params: EffectParameters, matrix: Matrix): DeformedMesh {
   const subdivisions = params.subdivisions as number,
