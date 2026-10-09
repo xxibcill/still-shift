@@ -118,11 +118,13 @@
   "log": "/tmp/still-shift-ms1-installed-package-gate-3.log",
   "failedFirstRun": "/tmp/still-shift-ms1-installed-package-gate-1.log",
   "isolatedE01Consumer": {
-    "status": "current-archive-refresh-pending",
+    "status": "current-archive-refresh-passed",
     "predecessorStatus": "passed",
     "evidence": "./mechanism-shorts-ms1-installed-e01-results.json",
     "continuousMotion": "pending",
-    "listening": "pending"
+    "listening": "pending",
+    "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+    "proofSha256": "sha256:6c7baf0e0483451a2a3db58ac2bdd49f4dd602e197d2cec614dceca5abc58ee9"
   },
   "publication": "not-requested-not-performed",
   "fullReportSha256": "sha256:80fcf6452522f945da801c8d80e3d083113a55d7c2e6291cf6ade12d66008be9",

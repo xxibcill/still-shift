@@ -350,8 +350,10 @@
       "checks": 26,
       "archiveSha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
       "details": "./mechanism-shorts-ms1-package-gate-results.json",
-      "isolatedE01Refresh": "in-progress",
-      "fullGate": "pending-rerun"
+      "isolatedE01Refresh": "passed",
+      "fullGate": "pending-rerun",
+      "isolatedE01Evidence": "./mechanism-shorts-ms1-installed-e01-results.json",
+      "notes": "Both actual installed exports reuse696 verified clean3D frames with0 new3D renders; native frame/audio caches are fresh. Exact archive/source/input/report closure and OS read denials pass; explicit live-libproc process-inspection exception and failed pre-render invocation retained. E01 semantic profile is legacy/unassessed; strict-context acceptance is separate."
     }
   ],
   "renderEvidence": [

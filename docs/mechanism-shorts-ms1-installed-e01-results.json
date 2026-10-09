@@ -1,895 +1,1333 @@
 {
-  "schemaVersion": "ms1-installed-e01-proof-1",
-  "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
+  "schemaVersion": "ms1-installed-e01-results-2",
+  "date": "2026-10-10",
+  "status": "installed-baseline-and-text-only-lifecycle-software-passed",
+  "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
   "archive": {
-    "path": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/still-shift-ms1-archive-ff82eae9.tgz",
-    "sha256": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
-    "bytes": 2917353
-  },
-  "consumerRoot": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
-  "runtime": {
-    "node": "22.23.1",
-    "pnpm": "10.29.3",
-    "python": "3.12.11",
-    "installation": "offline,ignore-scripts,freshuniquearchivefilename",
-    "processInspectionException": {
-      "runtimeException": "consumer-only exact ps lstart query from live Darwin libproc; package/helper unchanged",
-      "runtimeSha256": "3d22691e95eec4b709e219c314485862df5db0aeef6efca56e657fa0d31856e4",
-      "mode": "755",
-      "results": [
-        {
-          "pid": 55430,
-          "normalLstart": "Sat Oct 10 02:44:04 2026",
-          "sandboxLstart": "Sat Oct 10 02:44:04 2026",
-          "helperIdentity": "Sat Oct 10 02:44:04 2026"
-        },
-        {
-          "pid": 56035,
-          "normalLstart": "Sat Oct 10 02:44:06 2026",
-          "sandboxLstart": "Sat Oct 10 02:44:06 2026",
-          "helperIdentity": "Sat Oct 10 02:44:06 2026"
-        }
-      ],
-      "deadPid": 56035,
-      "nonexistentPid": 2147483647,
-      "unsupportedArgumentsRejected": true,
-      "PATH": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/bin:/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/node_modules/.bin:/Users/jjae/.nvm/versions/node/v22.23.1/bin:/Users/jjae/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
-    }
-  },
-  "isolation": {
-    "profilePath": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/consumer.sb",
-    "profileSha256": "sha256:661a3ed7279306f7d3ca8c1d8c1d93b363cb3cfe19946599ec43e1e787b64ef0",
-    "actualOSDenial": true,
-    "originalRootsUnavailableToSourceByteReads": 7,
-    "negativeReadControls": [
-      {
-        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/package.json",
-        "unsandboxedFileExists": true,
-        "bytes": 18627,
-        "sandboxRead": "EPERM-or-EACCES"
-      },
-      {
-        "path": "/Users/jjae/Documents/playground/still-shift/package.json",
-        "unsandboxedFileExists": true,
-        "bytes": 18213,
-        "sandboxRead": "EPERM-or-EACCES"
-      },
-      {
-        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/QA Report.md",
-        "unsandboxedFileExists": true,
-        "bytes": 2476,
-        "sandboxRead": "EPERM-or-EACCES"
-      },
-      {
-        "path": "/tmp/still-shift-ms1-e01-proof-v6/episode.json",
-        "unsandboxedFileExists": true,
-        "bytes": 22454,
-        "sandboxRead": "EPERM-or-EACCES"
-      },
-      {
-        "path": "/private/tmp/still-shift-ms1-e01-proof-v6/episode.json",
-        "unsandboxedFileExists": true,
-        "bytes": 22454,
-        "sandboxRead": "EPERM-or-EACCES"
-      },
-      {
-        "path": "/tmp/still-shift-ms1-e01-render-v6/episode.mp4",
-        "unsandboxedFileExists": true,
-        "bytes": 3580117,
-        "sandboxRead": "EPERM-or-EACCES"
-      },
-      {
-        "path": "/private/tmp/still-shift-ms1-e01-render-v6/episode.mp4",
-        "unsandboxedFileExists": true,
-        "bytes": 3580117,
-        "sandboxRead": "EPERM-or-EACCES"
-      },
-      {
-        "path": "/private/tmp/still-shift-ms1-e01-cache-v6/3454c1460972524de9e1179d3083dd681bc50e6852bffc2e07fa8daf8eb48435/41397a65-d646-4fa2-b8a4-01d492a5f297/000003.png",
-        "unsandboxedFileExists": true,
-        "bytes": 380289,
-        "sandboxRead": "EPERM-or-EACCES"
-      },
-      {
-        "path": "/private/tmp/still-shift-ms1-e01-delivery-v6-relocated/episode.json",
-        "unsandboxedFileExists": true,
-        "bytes": 22454,
-        "sandboxRead": "EPERM-or-EACCES"
-      }
-    ],
-    "originalsPreserved": true,
-    "noOriginalRenamesOrDeletes": true
-  },
-  "package": {
-    "manifestSha256": "sha256:80d22abd1f378d92277b054e44fc5549d708ace777f3e7a2f17ffec8262b418a",
-    "manifestFiles": 737,
-    "declaredBytes": 535346887,
+    "path": "/private/tmp/still-shift-ms1-archive-b4f0119d.tgz",
+    "installedCopy": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/still-shift-ms1-archive-b4f0119d.tgz",
+    "sha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+    "bytes": 2926256,
     "postExportsUnchanged": true,
-    "loadedProjectHash": "sha256:13d106940123a17baa755722bd4bb34161d3f28ece6b21d3a9f400fd563f38c2",
-    "sourceLifecycle": ["deps", "validate", "summary", "save", "reload"],
-    "nativeAndNestedReceiptClosureVerified": true,
-    "declaredPreparedReferencesIndependentlyChecked": 723
+    "buildMetadata": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/archive-identity.json",
+    "buildMetadataStatusIsHistoricalSetupSnapshot": true
   },
-  "cache": {
-    "currentAudit": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/cache-revalidation.json",
-    "all696ActualPlateHashesEqualV6": true,
-    "sidecarAndSequenceHashesVerified": 18,
-    "copiedPriorCacheFilesUnchanged": 1432,
-    "currentBrowserModuleSha256": "sha256:02cd741edf58e90e1ebb6d28df7bf6602b331dc8bde6a34d8798ba87604230eb",
-    "historicalDeliveredV6CaptureIdentityIsSeparate": true,
-    "fresh696CaptureFromPriorFailedFinalQAAttemptIsRetained": "/private/tmp/still-shift-ms1-installed-e01-final-H8M4Hf",
-    "scope": "immutableclean3Dplates,revalidatedbrowser+Three+request+environment; native composition frame/audio caches may addentries"
-  },
-  "baseline": {
-    "directory": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/baseline-render",
-    "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
-    "archiveHash": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
-    "projectHash": "sha256:13d106940123a17baa755722bd4bb34161d3f28ece6b21d3a9f400fd563f38c2",
-    "status": "rendered",
-    "softwareValid": true,
-    "plateHashesCompared": 696,
-    "allActualPlateHashesEqualV6": true,
-    "mismatches": [],
-    "new3dRenders": 0,
-    "cacheHits": 696,
-    "sourceSha256": "sha256:d9faaee22bd4584164928956d121cf8651b18d3e176af0cee501bd1e0888295b",
-    "sceneSha256": "sha256:b7972f876025bbc0d6a6794aa8c1d1432f9dc0867ecb460fe9740b5fcad84ea9",
-    "outputSha256": "sha256:e0c369e69b76bc73ba81a59930d89ae432d91035c64a531a51e8699b53eb632d",
-    "outputBytes": 3580117,
-    "frameCount": 696,
-    "width": 1080,
-    "height": 1920,
-    "fps": 30,
-    "durationMs": 23200,
-    "qualityStatus": "passed",
-    "overlayFindings": [],
-    "audio": {
-      "schemaVersion": "mechanism-final-audio-check-1",
-      "valid": true,
-      "sourceClock": {
-        "sampleRate": 48000,
-        "sampleCount": 1113600,
-        "channels": 2,
-        "authoredSampleCount": 1113600
-      },
-      "findings": [],
-      "decodedClock": {
-        "codec": "aac",
-        "sampleRate": 48000,
-        "channels": 2,
-        "sampleCount": 1114112,
-        "paddingSamples": 512,
-        "paddingAllowanceSamples": 1023,
-        "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
-        "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
-      },
-      "alignment": {
-        "correlation": 0.99939897716988,
-        "gain": 0.9936183770630255,
-        "normalizedError": 0.03514398619837603,
-        "sourceRms": 0.10424712835404523,
-        "decodedRms": 0.10358186248862733,
-        "windows": [
-          {
-            "correlation": 0.9991018377725046,
-            "gain": 0.9936525861183872,
-            "normalizedError": 0.04272250113796264,
-            "sourceRms": 0.22504104331982855,
-            "decodedRms": 0.22361261467752766,
-            "startSample": 303104,
-            "sampleCount": 8192,
-            "lagSamples": 0
-          },
-          {
-            "correlation": 0.9995994003443933,
-            "gain": 0.9970531013439682,
-            "normalizedError": 0.028416939841065598,
-            "sourceRms": 0.24601689142030655,
-            "decodedRms": 0.24529190457361894,
-            "startSample": 450560,
-            "sampleCount": 8192,
-            "lagSamples": 0
-          },
-          {
-            "correlation": 0.9997798489063653,
-            "gain": 0.9934986526875499,
-            "normalizedError": 0.021902217856538675,
-            "sourceRms": 0.1810039132730421,
-            "decodedRms": 0.17982714396794147,
-            "startSample": 1015808,
-            "sampleCount": 8192,
-            "lagSamples": 0
-          }
-        ],
-        "toleranceSamples": 64,
-        "maxLagSamples": 0
-      },
-      "tail": {
-        "correlation": 0.9996462325129299,
-        "gain": 0.9986940588084534,
-        "normalizedError": 0.026614215326493832,
-        "sourceRms": 0.0006902706585095873,
-        "decodedRms": 0.0006893692056233237,
-        "startSample": 1097728,
-        "sampleCount": 8192,
-        "lagSamples": 0,
-        "lastActiveSampleExclusive": 1105046,
-        "preserved": true
-      }
+  "consumerRoot": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2",
+  "currentArchiveRefresh": {
+    "schemaVersion": "ms1-installed-e01-results-refresh-1",
+    "date": "2026-10-10",
+    "status": "installed-baseline-and-text-only-lifecycle-software-passed",
+    "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+    "archive": {
+      "path": "/private/tmp/still-shift-ms1-archive-b4f0119d.tgz",
+      "installedCopy": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/still-shift-ms1-archive-b4f0119d.tgz",
+      "sha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+      "bytes": 2926256,
+      "postExportsUnchanged": true,
+      "buildMetadata": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/archive-identity.json",
+      "buildMetadataStatusIsHistoricalSetupSnapshot": true
     },
-    "finalProbe": {
-      "streams": [
-        {
-          "index": 0,
-          "codec_name": "h264",
-          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
-          "profile": "High",
-          "codec_type": "video",
-          "codec_tag_string": "avc1",
-          "codec_tag": "0x31637661",
-          "width": 1080,
-          "height": 1920,
-          "coded_width": 1088,
-          "coded_height": 1920,
-          "has_b_frames": 2,
-          "pix_fmt": "yuv420p",
-          "level": 40,
-          "color_range": "tv",
-          "color_space": "bt709",
-          "color_transfer": "bt709",
-          "color_primaries": "bt709",
-          "chroma_location": "left",
-          "field_order": "progressive",
-          "refs": 4,
-          "is_avc": "true",
-          "nal_length_size": "4",
-          "id": "0x1",
-          "r_frame_rate": "30/1",
-          "avg_frame_rate": "30/1",
-          "time_base": "1/15360",
-          "start_pts": 0,
-          "start_time": "0.000000",
-          "duration_ts": 356352,
-          "duration": "23.200000",
-          "bit_rate": "1033468",
-          "bits_per_raw_sample": "8",
-          "nb_frames": "696",
-          "nb_read_frames": "696",
-          "extradata_size": 49,
-          "disposition": {
-            "default": 1,
-            "dub": 0,
-            "original": 0,
-            "comment": 0,
-            "lyrics": 0,
-            "karaoke": 0,
-            "forced": 0,
-            "hearing_impaired": 0,
-            "visual_impaired": 0,
-            "clean_effects": 0,
-            "attached_pic": 0,
-            "timed_thumbnails": 0,
-            "non_diegetic": 0,
-            "captions": 0,
-            "descriptions": 0,
-            "metadata": 0,
-            "dependent": 0,
-            "still_image": 0,
-            "multilayer": 0
-          },
-          "tags": {
-            "language": "und",
-            "handler_name": "VideoHandler",
-            "vendor_id": "[0][0][0][0]",
-            "encoder": "Lavc62.11.100 libx264"
-          }
-        },
-        {
-          "index": 1,
-          "codec_name": "aac",
-          "codec_long_name": "AAC (Advanced Audio Coding)",
-          "profile": "LC",
-          "codec_type": "audio",
-          "codec_tag_string": "mp4a",
-          "codec_tag": "0x6134706d",
-          "sample_fmt": "fltp",
-          "sample_rate": "48000",
-          "channels": 2,
-          "channel_layout": "stereo",
-          "bits_per_sample": 0,
-          "initial_padding": 0,
-          "id": "0x2",
-          "r_frame_rate": "0/0",
-          "avg_frame_rate": "0/0",
-          "time_base": "1/48000",
-          "start_pts": 0,
-          "start_time": "0.000000",
-          "duration_ts": 1113600,
-          "duration": "23.200000",
-          "bit_rate": "191623",
-          "nb_frames": "1089",
-          "nb_read_frames": "1088",
-          "extradata_size": 5,
-          "disposition": {
-            "default": 1,
-            "dub": 0,
-            "original": 0,
-            "comment": 0,
-            "lyrics": 0,
-            "karaoke": 0,
-            "forced": 0,
-            "hearing_impaired": 0,
-            "visual_impaired": 0,
-            "clean_effects": 0,
-            "attached_pic": 0,
-            "timed_thumbnails": 0,
-            "non_diegetic": 0,
-            "captions": 0,
-            "descriptions": 0,
-            "metadata": 0,
-            "dependent": 0,
-            "still_image": 0,
-            "multilayer": 0
-          },
-          "tags": {
-            "language": "und",
-            "handler_name": "SoundHandler",
-            "vendor_id": "[0][0][0][0]"
-          }
-        }
-      ],
-      "format": {
-        "filename": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/baseline-render/episode.mp4",
-        "nb_streams": 2,
-        "nb_programs": 0,
-        "nb_stream_groups": 0,
-        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
-        "format_long_name": "QuickTime / MOV",
-        "start_time": "0.000000",
-        "duration": "23.200000",
-        "size": "3580117",
-        "bit_rate": "1234523",
-        "probe_score": 100,
-        "tags": {
-          "major_brand": "isom",
-          "minor_version": "512",
-          "compatible_brands": "isomiso2avc1mp41",
-          "encoder": "Lavf62.3.100"
-        }
-      }
+    "consumerRoot": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2",
+    "proof": {
+      "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/installed-e01-proof.json",
+      "sha256": "sha256:6c7baf0e0483451a2a3db58ac2bdd49f4dd602e197d2cec614dceca5abc58ee9",
+      "bytes": 69826
     },
-    "overlayHolds": [
-      {
-        "shot": "V8-02",
-        "label": "label-pull",
-        "longestReadableFrames": 72,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-03",
-        "label": "label-push",
-        "longestReadableFrames": 71,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-04",
-        "label": "label-thickness",
-        "longestReadableFrames": 76,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-05",
-        "label": "label-travel",
-        "longestReadableFrames": 69,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-06",
-        "label": "label-inside",
-        "longestReadableFrames": 41,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-07",
-        "label": "label-outside",
-        "longestReadableFrames": 41,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-08",
-        "label": "label-slides",
-        "longestReadableFrames": 64,
-        "requiredFrames": 30
-      }
+    "lifecycle": [
+      "deps",
+      "validate",
+      "summary",
+      "save",
+      "validate saved source + installed readMechanismEpisode reload",
+      "patch TRAVEL RANGE",
+      "render baseline + embedded final QA",
+      "render TRAVEL RANGE + embedded final QA"
     ],
-    "timings": {
-      "scope": "monotonic-wall-clock-through-final-check",
-      "prepareWallSeconds": 6.691354916,
-      "exportWallSeconds": 128.31023950000002,
-      "checkWallSeconds": 156.06187470899997,
-      "throughCheckWallSeconds": 291.063946291
+    "isolation": {
+      "originalRoots": 7,
+      "originalAliasNegativeReads": 9,
+      "historicalConsumerNegativeReads": 2,
+      "actualOSDenial": true,
+      "profileSha256": "sha256:bb9b7bd8f4067148f9f341e853cbcac2e28115040f3f0b807664cc584a17bb87",
+      "runtimeProcessException": "Explicit consumer-only exact ps lstart query backed by live Darwin libproc; same shim bytes and two distinct live starttimes validated. This is not unchanged-system-ps proof. Installed package and artifact-lock helper remain archive byte-identical."
     },
-    "findingsCount": 50,
-    "findingClasses": {
-      "declared-physical-proof-hold": 10,
-      "outside-safe-area": 29,
-      "speech-following-caption": 11
+    "inputs": {
+      "manifestFiles": 737,
+      "declaredBytes": 535346887,
+      "allDeclaredHashesUnchanged": true,
+      "installedArchiveFiles": 1672,
+      "committedSourceFiles": 625
     },
-    "humanReview": {
-      "continuousMotion": "pending",
-      "listening": "pending"
+    "captures": {
+      "copiedCleanCaptureFiles": 723,
+      "copiedNativeFrameAudioCaches": 0,
+      "finalCacheFiles": 2139,
+      "exactActualPNGComparisonCountPerExport": 696,
+      "actualPlatesEqualV6": true,
+      "sidecarsSequencesVerified": 18,
+      "currentRequestBrowserThreeEnvironmentIdentitiesVerified": 9,
+      "currentBrowserModuleSha256": "sha256:02cd741edf58e90e1ebb6d28df7bf6602b331dc8bde6a34d8798ba87604230eb",
+      "fresh3DInThisRefresh": false
     },
-    "captureEnvironment": {
-      "profile": "chromium-software-2",
-      "browserVersion": "151.0.7922.34",
-      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
-      "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
-      "platform": "darwin",
-      "arch": "arm64"
-    }
-  },
-  "travel": {
-    "directory": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/travel-render",
-    "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
-    "archiveHash": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
-    "projectHash": "sha256:0e49adb5a265c5093794d17fde23e25b4ac49a8157f7e07364cb2f512714dee0",
-    "status": "rendered",
-    "softwareValid": true,
-    "plateHashesCompared": 696,
-    "allActualPlateHashesEqualV6": true,
-    "mismatches": [],
-    "new3dRenders": 0,
-    "cacheHits": 696,
-    "sourceSha256": "sha256:5f75bfeaef41a9f0d7322c07d19a1129e6d9ba4cda87ebf9e4028b9748b640ca",
-    "sceneSha256": "sha256:1f09d9cb9116f09f56c879821bc7d01bdcc4903104d2408a5157220175aeb9fa",
-    "outputSha256": "sha256:f52ff20d72e17fa567b0add1b1ce6eeca9d3e5b366fcfdcbfcc169d15858cda3",
-    "outputBytes": 3581912,
-    "frameCount": 696,
-    "width": 1080,
-    "height": 1920,
-    "fps": 30,
-    "durationMs": 23200,
-    "qualityStatus": "passed",
-    "overlayFindings": [],
-    "audio": {
-      "schemaVersion": "mechanism-final-audio-check-1",
-      "valid": true,
-      "sourceClock": {
-        "sampleRate": 48000,
-        "sampleCount": 1113600,
-        "channels": 2,
-        "authoredSampleCount": 1113600
-      },
-      "findings": [],
-      "decodedClock": {
-        "codec": "aac",
-        "sampleRate": 48000,
-        "channels": 2,
-        "sampleCount": 1114112,
-        "paddingSamples": 512,
-        "paddingAllowanceSamples": 1023,
-        "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
-        "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
-      },
-      "alignment": {
-        "correlation": 0.99939897716988,
-        "gain": 0.9936183770630255,
-        "normalizedError": 0.03514398619837603,
-        "sourceRms": 0.10424712835404523,
-        "decodedRms": 0.10358186248862733,
-        "windows": [
-          {
-            "correlation": 0.9991018377725046,
-            "gain": 0.9936525861183872,
-            "normalizedError": 0.04272250113796264,
-            "sourceRms": 0.22504104331982855,
-            "decodedRms": 0.22361261467752766,
-            "startSample": 303104,
-            "sampleCount": 8192,
-            "lagSamples": 0
-          },
-          {
-            "correlation": 0.9995994003443933,
-            "gain": 0.9970531013439682,
-            "normalizedError": 0.028416939841065598,
-            "sourceRms": 0.24601689142030655,
-            "decodedRms": 0.24529190457361894,
-            "startSample": 450560,
-            "sampleCount": 8192,
-            "lagSamples": 0
-          },
-          {
-            "correlation": 0.9997798489063653,
-            "gain": 0.9934986526875499,
-            "normalizedError": 0.021902217856538675,
-            "sourceRms": 0.1810039132730421,
-            "decodedRms": 0.17982714396794147,
-            "startSample": 1015808,
-            "sampleCount": 8192,
-            "lagSamples": 0
-          }
-        ],
-        "toleranceSamples": 64,
-        "maxLagSamples": 0
-      },
-      "tail": {
-        "correlation": 0.9996462325129299,
-        "gain": 0.9986940588084534,
-        "normalizedError": 0.026614215326493832,
-        "sourceRms": 0.0006902706585095873,
-        "decodedRms": 0.0006893692056233237,
-        "startSample": 1097728,
-        "sampleCount": 8192,
-        "lagSamples": 0,
-        "lastActiveSampleExclusive": 1105046,
-        "preserved": true
-      }
-    },
-    "finalProbe": {
-      "streams": [
-        {
-          "index": 0,
-          "codec_name": "h264",
-          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
-          "profile": "High",
-          "codec_type": "video",
-          "codec_tag_string": "avc1",
-          "codec_tag": "0x31637661",
-          "width": 1080,
-          "height": 1920,
-          "coded_width": 1088,
-          "coded_height": 1920,
-          "has_b_frames": 2,
-          "pix_fmt": "yuv420p",
-          "level": 40,
-          "color_range": "tv",
-          "color_space": "bt709",
-          "color_transfer": "bt709",
-          "color_primaries": "bt709",
-          "chroma_location": "left",
-          "field_order": "progressive",
-          "refs": 4,
-          "is_avc": "true",
-          "nal_length_size": "4",
-          "id": "0x1",
-          "r_frame_rate": "30/1",
-          "avg_frame_rate": "30/1",
-          "time_base": "1/15360",
-          "start_pts": 0,
-          "start_time": "0.000000",
-          "duration_ts": 356352,
-          "duration": "23.200000",
-          "bit_rate": "1034087",
-          "bits_per_raw_sample": "8",
-          "nb_frames": "696",
-          "nb_read_frames": "696",
-          "extradata_size": 49,
-          "disposition": {
-            "default": 1,
-            "dub": 0,
-            "original": 0,
-            "comment": 0,
-            "lyrics": 0,
-            "karaoke": 0,
-            "forced": 0,
-            "hearing_impaired": 0,
-            "visual_impaired": 0,
-            "clean_effects": 0,
-            "attached_pic": 0,
-            "timed_thumbnails": 0,
-            "non_diegetic": 0,
-            "captions": 0,
-            "descriptions": 0,
-            "metadata": 0,
-            "dependent": 0,
-            "still_image": 0,
-            "multilayer": 0
-          },
-          "tags": {
-            "language": "und",
-            "handler_name": "VideoHandler",
-            "vendor_id": "[0][0][0][0]",
-            "encoder": "Lavc62.11.100 libx264"
-          }
-        },
-        {
-          "index": 1,
-          "codec_name": "aac",
-          "codec_long_name": "AAC (Advanced Audio Coding)",
-          "profile": "LC",
-          "codec_type": "audio",
-          "codec_tag_string": "mp4a",
-          "codec_tag": "0x6134706d",
-          "sample_fmt": "fltp",
-          "sample_rate": "48000",
-          "channels": 2,
-          "channel_layout": "stereo",
-          "bits_per_sample": 0,
-          "initial_padding": 0,
-          "id": "0x2",
-          "r_frame_rate": "0/0",
-          "avg_frame_rate": "0/0",
-          "time_base": "1/48000",
-          "start_pts": 0,
-          "start_time": "0.000000",
-          "duration_ts": 1113600,
-          "duration": "23.200000",
-          "bit_rate": "191623",
-          "nb_frames": "1089",
-          "nb_read_frames": "1088",
-          "extradata_size": 5,
-          "disposition": {
-            "default": 1,
-            "dub": 0,
-            "original": 0,
-            "comment": 0,
-            "lyrics": 0,
-            "karaoke": 0,
-            "forced": 0,
-            "hearing_impaired": 0,
-            "visual_impaired": 0,
-            "clean_effects": 0,
-            "attached_pic": 0,
-            "timed_thumbnails": 0,
-            "non_diegetic": 0,
-            "captions": 0,
-            "descriptions": 0,
-            "metadata": 0,
-            "dependent": 0,
-            "still_image": 0,
-            "multilayer": 0
-          },
-          "tags": {
-            "language": "und",
-            "handler_name": "SoundHandler",
-            "vendor_id": "[0][0][0][0]"
-          }
-        }
-      ],
-      "format": {
-        "filename": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/travel-render/episode.mp4",
-        "nb_streams": 2,
-        "nb_programs": 0,
-        "nb_stream_groups": 0,
-        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
-        "format_long_name": "QuickTime / MOV",
-        "start_time": "0.000000",
-        "duration": "23.200000",
-        "size": "3581912",
-        "bit_rate": "1235142",
-        "probe_score": 100,
-        "tags": {
-          "major_brand": "isom",
-          "minor_version": "512",
-          "compatible_brands": "isomiso2avc1mp41",
-          "encoder": "Lavf62.3.100"
-        }
-      }
-    },
-    "overlayHolds": [
-      {
-        "shot": "V8-02",
-        "label": "label-pull",
-        "longestReadableFrames": 72,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-03",
-        "label": "label-push",
-        "longestReadableFrames": 71,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-04",
-        "label": "label-thickness",
-        "longestReadableFrames": 76,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-05",
-        "label": "label-travel",
-        "longestReadableFrames": 69,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-06",
-        "label": "label-inside",
-        "longestReadableFrames": 41,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-07",
-        "label": "label-outside",
-        "longestReadableFrames": 41,
-        "requiredFrames": 30
-      },
-      {
-        "shot": "V8-08",
-        "label": "label-slides",
-        "longestReadableFrames": 64,
-        "requiredFrames": 30
-      }
-    ],
-    "timings": {
-      "scope": "monotonic-wall-clock-through-final-check",
-      "prepareWallSeconds": 11.425247208,
-      "exportWallSeconds": 133.088234292,
-      "checkWallSeconds": 116.60239895800001,
-      "throughCheckWallSeconds": 261.116066708
-    },
-    "findingsCount": 50,
-    "findingClasses": {
-      "declared-physical-proof-hold": 10,
-      "outside-safe-area": 29,
-      "speech-following-caption": 11
-    },
-    "humanReview": {
-      "continuousMotion": "pending",
-      "listening": "pending"
-    },
-    "captureEnvironment": {
-      "profile": "chromium-software-2",
-      "browserVersion": "151.0.7922.34",
-      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
-      "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
-      "platform": "darwin",
-      "arch": "arm64"
-    }
-  },
-  "textPatch": {
-    "currentArchivePatchReplayByteIdenticalToPreservedRevision1": true,
-    "patchReceipt": {
-      "schemaVersion": "mechanism-patch-result-1",
-      "path": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/project/travel-patch-replay.json",
-      "revision": 1,
-      "projectHash": "sha256:0e49adb5a265c5093794d17fde23e25b4ac49a8157f7e07364cb2f512714dee0",
-      "changedPaths": ["shots.V8-05.labels.label-travel.text"],
-      "affectedShots": ["V8-05"],
-      "cacheEffects": {
-        "geometry": "reuse",
-        "cleanPlates": "reuse",
-        "sidecars": "reuse",
-        "overlays": "invalidate-affected-shots",
-        "audio": "reuse"
-      }
-    },
-    "baselinePreserved": true,
-    "renderingInputPreserved": true
-  },
-  "finalEncodedFrameInspection": {
-    "frame": 380,
-    "baseline": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/baseline-frame-380.png",
-    "baselineSha256": "sha256:33d30abbcbb4170363eb30a8b6111ad4b247b500467872ab9ac55e5956626dba",
-    "travel": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/travel-frame-380.png",
-    "travelSha256": "sha256:bbbbd7506166cb2eb37eee84f43e40db2b3f6e54a91bbf2d93fe086ba7d660da",
-    "inspection": "TRAVEL RANGE and qualification fit clearly at unchanged position; actual encoded frames viewed",
-    "scope": "one static encoded frame inspection plus full integrated measured layout checks; human continuous playback/listening pending"
-  },
-  "rusage": {
     "baseline": {
-      "scope": "macOS /usr/bin/time -l command rusage labels; not aggregate child/GPU/whole-system peak memory and not a benchmark",
-      "realSeconds": 291.78,
-      "userSeconds": 291.74,
-      "sysSeconds": 39.55,
-      "maximumResidentSetSizeBytes": 2889056256,
-      "peakMemoryFootprintBytes": 777361264
+      "projectHash": "sha256:13d106940123a17baa755722bd4bb34161d3f28ece6b21d3a9f400fd563f38c2",
+      "sourceSha256": "sha256:dc4ad8957896df9480ab270cfa3eadc94f77231fd9c8cd15f664fba1460355e2",
+      "sceneSha256": "sha256:8c4ca47d2758b5d68d3ddc5432abae266e33bbc3cfe0925e93487bd9f8a5e37d",
+      "finalSha256": "sha256:e0c369e69b76bc73ba81a59930d89ae432d91035c64a531a51e8699b53eb632d",
+      "bytes": 3580117,
+      "cacheHits": 696,
+      "new3dRenders": 0,
+      "timings": {
+        "scope": "monotonic-wall-clock-through-final-check",
+        "prepareWallSeconds": 7.552176083,
+        "exportWallSeconds": 118.88326570800001,
+        "checkWallSeconds": 112.663036667,
+        "throughCheckWallSeconds": 239.09867670800003
+      },
+      "rusage": {
+        "scope": "macOS /usr/bin/time -l command rusage labels; not aggregate child/GPU/whole-system peak memory and not a benchmark",
+        "realSeconds": 239.77,
+        "userSeconds": 256.94,
+        "sysSeconds": 25.38,
+        "maximumResidentSetSizeBytes": 5449170944,
+        "peakMemoryFootprintBytes": 795563120,
+        "rawLog": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/baseline-render-rerun-stderr.log"
+      },
+      "fullReport": {
+        "owner": "project.summary.json",
+        "declaredPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-qRQjA7/report.json",
+        "retainedPath": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/baseline-project-summary-json-full-report-0.json",
+        "sha256": "sha256:3b214a261b648aefec76cb120749f8af1f1bcd3f4e7c7b3136a00e37bf559c1d",
+        "bytes": 305388
+      }
     },
     "travel": {
-      "scope": "macOS /usr/bin/time -l command rusage labels; not aggregate child/GPU/whole-system peak memory and not a benchmark",
-      "realSeconds": 262.13,
-      "userSeconds": 269.69,
-      "sysSeconds": 31.58,
-      "maximumResidentSetSizeBytes": 6894157824,
-      "peakMemoryFootprintBytes": 574581648
-    }
+      "projectHash": "sha256:0e49adb5a265c5093794d17fde23e25b4ac49a8157f7e07364cb2f512714dee0",
+      "sourceSha256": "sha256:006030538d48a142125493d228ce4b4991b2ad17f466552b931dc122296fe5ed",
+      "sceneSha256": "sha256:ac03152b13a7f9a539c7257b34dec12163f609ee44e391fa76481e22f663b9aa",
+      "finalSha256": "sha256:f52ff20d72e17fa567b0add1b1ce6eeca9d3e5b366fcfdcbfcc169d15858cda3",
+      "bytes": 3581912,
+      "cacheHits": 696,
+      "new3dRenders": 0,
+      "timings": {
+        "scope": "monotonic-wall-clock-through-final-check",
+        "prepareWallSeconds": 6.631527458,
+        "exportWallSeconds": 113.473978209,
+        "checkWallSeconds": 114.35861304199999,
+        "throughCheckWallSeconds": 234.464365292
+      },
+      "rusage": {
+        "scope": "macOS /usr/bin/time -l command rusage labels; not aggregate child/GPU/whole-system peak memory and not a benchmark",
+        "realSeconds": 235.1,
+        "userSeconds": 254.1,
+        "sysSeconds": 26.62,
+        "maximumResidentSetSizeBytes": 4062281728,
+        "peakMemoryFootprintBytes": 778704992,
+        "rawLog": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/travel-render-stderr.log"
+      },
+      "fullReport": {
+        "owner": "project.summary.json",
+        "declaredPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-FXVffE/report.json",
+        "retainedPath": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/travel-project-summary-json-full-report-0.json",
+        "sha256": "sha256:376aa31cb8212372acf695d17517e717ceee3750731f98d28e45c37bb7ce2474",
+        "bytes": 304852
+      }
+    },
+    "final": {
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "frameCount": 696,
+      "durationSeconds": 23.2,
+      "nativeAndNestedAndPreparedAndSummaryReportClosure": true,
+      "preparedReferencesCheckedPerExport": 723,
+      "currentSourceAssetsCheckedPerExport": 11,
+      "quality": "passed",
+      "retainedFindings": {
+        "declared-physical-proof-hold": 10,
+        "outside-safe-area": 29,
+        "speech-following-caption": 11
+      },
+      "overlayFindings": 0,
+      "travelReadableFrames": 69,
+      "travelRequiredFrames": 30,
+      "audio": {
+        "valid": true,
+        "sampleRate": 48000,
+        "channels": 2,
+        "authoredSampleCount": 1113600,
+        "decodedSampleCount": 1114112,
+        "paddingSamples": 512,
+        "paddingAllowanceSamples": 1023,
+        "alignmentMaxLagSamples": 0,
+        "alignmentCorrelation": 0.99939897716988,
+        "tailPreserved": true
+      },
+      "semantic": {
+        "version": "composition-semantic-context-1",
+        "status": "unassessed",
+        "profile": "legacy",
+        "associations": [],
+        "policy": {
+          "version": "composition-semantic-context-policy-1",
+          "profile": "legacy",
+          "readingOpacity": 0.9,
+          "readingReveal": 0.95,
+          "associations": []
+        },
+        "method": "declared-copy-and-measured-layer-context",
+        "factualTruth": "unassessed",
+        "renderedGlyphReadability": "requires-encoded-review"
+      }
+    },
+    "staticEncodedInspection": {
+      "frame": 380,
+      "baseline": {
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/baseline-frame-380.png",
+        "sha256": "sha256:33d30abbcbb4170363eb30a8b6111ad4b247b500467872ab9ac55e5956626dba",
+        "bytes": 249243
+      },
+      "travel": {
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/travel-frame-380.png",
+        "sha256": "sha256:bbbbd7506166cb2eb37eee84f43e40db2b3f6e54a91bbf2d93fe086ba7d660da",
+        "bytes": 259065
+      },
+      "inspection": "Actual decoded baseline reads TRAVEL; text-only export reads TRAVEL RANGE. Both show Illustrative enlarged view, visible leader and travel bracket, with the same supplied caption. No fictional numerical quantity was added.",
+      "scope": "One actual encoded frame inspected; no continuous motion or listening acceptance inferred."
+    },
+    "retainedInitialInvocationFailure": {
+      "stage": "process identity before capture/export/final QA",
+      "capturedPlates": 0,
+      "nativeExportCompleted": false,
+      "finalQAExecuted": false,
+      "cause": "Consumer PATH and STILL_SHIFT_PYTHON omitted; source-denied systemps was reached",
+      "fullReport": {
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/baseline-initial-failed-full-report.json",
+        "sha256": "sha256:a808c3e6c21bbc4fe746e2270c48e1f7d1b371c23056d66a42ddb76b154905cb",
+        "bytes": 764
+      },
+      "logs": [
+        "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/baseline-render.log",
+        "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/baseline-render-stderr.log"
+      ],
+      "acceptedRerun": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/baseline-render-rerun",
+      "acceptedRerunThroughCheckSeconds": 239.09867670800003
+    },
+    "historicalSuccessfulPredecessor": {
+      "consumer": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
+      "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
+      "archive": {
+        "path": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/still-shift-ms1-archive-ff82eae9.tgz",
+        "sha256": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
+        "bytes": 2917353
+      },
+      "proof": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/historical-successful-proof.json",
+      "originalProof": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/installed-e01-proof.json",
+      "outputsEqualCurrentActualBytes": true,
+      "copiedCacheScopeInPredecessorWas1432FilesAndIsNotThisRefresh": true
+    },
+    "retainedFailures": {
+      "newSetupRecord": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/setup-failures.json",
+      "historicalRecordsPreserved": true,
+      "fullRecords": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/installed-e01-proof.json"
+    },
+    "humanAcceptance": {
+      "continuousMotion": "pending",
+      "listening": "pending"
+    },
+    "publication": "none",
+    "repositoryEdits": "none",
+    "docsIntegration": "Current verified installed-archive refresh; predecessor records and all failed attempts preserved below. Root owns main results/dev-log/package-gate updates.",
+    "runtime": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "installation": "offline, ignore-scripts, frozen-lockfile, exact immutable local tarball; no dependency scripts or network fetch",
+      "processInspectionException": {
+        "runtimeException": "consumer-only exact ps lstart query from live Darwin libproc; package/helper unchanged",
+        "runtimeSha256": "3d22691e95eec4b709e219c314485862df5db0aeef6efca56e657fa0d31856e4",
+        "mode": "755",
+        "results": [
+          {
+            "pid": 35539,
+            "normalLstart": "Sat Oct 10 03:50:57 2026",
+            "sandboxLstart": "Sat Oct 10 03:50:57 2026",
+            "helperIdentity": "Sat Oct 10 03:50:57 2026"
+          },
+          {
+            "pid": 36734,
+            "normalLstart": "Sat Oct 10 03:50:58 2026",
+            "sandboxLstart": "Sat Oct 10 03:50:58 2026",
+            "helperIdentity": "Sat Oct 10 03:50:58 2026"
+          }
+        ],
+        "deadPid": 36734,
+        "nonexistentPid": 2147483647,
+        "unsupportedArgumentsRejected": true,
+        "PATH": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/bin:/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/node_modules/.bin:/Users/jjae/.nvm/versions/node/v22.23.1/bin:/Users/jjae/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
+      },
+      "processInspectionScope": "Explicit consumer-only exact ps lstart query backed by live Darwin libproc; same shim bytes and two distinct live starttimes validated. This is not unchanged-system-ps proof. Installed package and artifact-lock helper remain archive byte-identical.",
+      "exactEnvironment": {
+        "PATH": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/bin:/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/node_modules/.bin:/Users/jjae/.nvm/versions/node/v22.23.1/bin:/Users/jjae/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "STILL_SHIFT_PYTHON": "/Users/jjae/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/bin/python3",
+        "scope": "Exact unchanged consumer-only libproc ps exception, installed package/helper unchanged"
+      }
+    },
+    "currentRetainedFailures": [
+      {
+        "attempt": "nested OS sandbox launch from managed tool sandbox",
+        "outcome": "sandbox_apply Operation not permitted; no denied reads could execute",
+        "evidence": "denial-proof.log",
+        "rerun": "denial-proof-rerun.log",
+        "resolution": "Authorized sandbox-exec launch outside tool sandbox passes all11 denial controls"
+      },
+      {
+        "attempt": "consumer lock adaptation verifier",
+        "outcome": "Expected6 old tarball name references but historical lock actually has5; stopped before writing new lock",
+        "evidence": "Tool transcript; no stderr log from this Python invocation",
+        "resolution": "Exact5-reference adaptation passes in install-preparation.log"
+      },
+      {
+        "attempt": "first offline frozen-lock install inside tool sandbox",
+        "outcome": "pnpm silently selected empty /private/tmp/.pnpm-store/v10 and reported missing clipper2-ts; no network download",
+        "evidence": "install.log",
+        "rerun": "install-rerun.log",
+        "resolution": "Explicit existing /Users/jjae/Library/pnpm/store/v10 under authorized execution passes offline,ignore-scripts,frozen-lockfile"
+      },
+      {
+        "attempt": "initial baseline invocation after GPU release",
+        "stage": "process identity before capture/export",
+        "outcome": "consumer PATH and STILL_SHIFT_PYTHON omitted; helper reached source-denied systemps,0 capture/export/finalQA completed",
+        "evidence": [
+          "baseline-render.log",
+          "baseline-render-stderr.log",
+          "baseline-initial-failed-full-report.json"
+        ],
+        "resolution": "Rerun in fresh baseline-render-rerun with verified libproc shim and pinnedPython environment"
+      }
+    ],
+    "lifecycleFullReports": [
+      {
+        "stage": "deps",
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/deps-full-report.json",
+        "sha256": "sha256:de5c115db6e583d9feebac2ffe646e40c313a5d29a42dce5a106e5fe9b0b7b52",
+        "bytes": 1386
+      },
+      {
+        "stage": "validate",
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/validate-full-report.json",
+        "sha256": "sha256:802e9a4dd198bf5dee742ee3ce83daf54b49cb5603eac142e8241a3bb659e27b",
+        "bytes": 571
+      },
+      {
+        "stage": "summary",
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/summary-full-report.json",
+        "sha256": "sha256:68bc8ab9b695d2845cf2c15dcc23ddbae7590c4430c377c3cde3b239a7d6f7d4",
+        "bytes": 6762
+      },
+      {
+        "stage": "save",
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/save-full-report.json",
+        "sha256": "sha256:b23a51430683ca809a75b5e867215b1e43c6c2686e4055d81fe0b61a40193be7",
+        "bytes": 260
+      },
+      {
+        "stage": "reload",
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/reload-full-report.json",
+        "sha256": "sha256:2e3e74bd06c4a24f94cdfd60e2a3a2c3bb0f2d4da8cdae852257d153b4818d93",
+        "bytes": 578
+      },
+      {
+        "stage": "travel-base-save",
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/travel-base-save-full-report.json",
+        "sha256": "sha256:43ea8b14799a8833251527d8f1ba425b36d906388e15653551de3c0e324adfe2",
+        "bytes": 263
+      },
+      {
+        "stage": "travel-patch",
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/travel-patch-full-report.json",
+        "sha256": "sha256:0ebe9f138c7c7d0028146afdc0b12ac12493c5b0e9e527073b502e8e26c1ef98",
+        "bytes": 539
+      },
+      {
+        "stage": "travel-reload",
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/travel-reload-full-report.json",
+        "sha256": "sha256:9a24cd0892c1f9b80f6791698a6444f9527e3486ff180c8e0b75ac024b751df6",
+        "bytes": 581
+      }
+    ],
+    "nativeAndPreparedAndSummaryReportClosure": [
+      {
+        "nativeAndNestedReceiptClosureVerified": true,
+        "preparedReceiptClosureVerified": true,
+        "projectSummaryClosureVerified": true,
+        "cliCompleteReportClosureVerified": true,
+        "embeddedFinalChecksVerified": true,
+        "archive": {
+          "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+          "sha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+          "bytes": 2926256
+        },
+        "projectHash": "sha256:13d106940123a17baa755722bd4bb34161d3f28ece6b21d3a9f400fd563f38c2",
+        "preparedSourceSha256": "sha256:dc4ad8957896df9480ab270cfa3eadc94f77231fd9c8cd15f664fba1460355e2",
+        "nativeSceneSha256": "sha256:8c4ca47d2758b5d68d3ddc5432abae266e33bbc3cfe0925e93487bd9f8a5e37d",
+        "finalOutputSha256": "sha256:e0c369e69b76bc73ba81a59930d89ae432d91035c64a531a51e8699b53eb632d",
+        "retainedReports": [
+          {
+            "owner": "project.summary.json",
+            "declaredPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-qRQjA7/report.json",
+            "retainedPath": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/baseline-project-summary-json-full-report-0.json",
+            "sha256": "sha256:3b214a261b648aefec76cb120749f8af1f1bcd3f4e7c7b3136a00e37bf559c1d",
+            "bytes": 305388
+          },
+          {
+            "owner": "baseline-render-cli-receipt.json",
+            "declaredPath": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/baseline-render-report.json",
+            "retainedPath": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/baseline-baseline-render-cli-receipt-json-full-report-1.json",
+            "sha256": "sha256:3b214a261b648aefec76cb120749f8af1f1bcd3f4e7c7b3136a00e37bf559c1d",
+            "bytes": 305388
+          }
+        ],
+        "allCriticalRuntimePathsInsideConsumer": true
+      },
+      {
+        "nativeAndNestedReceiptClosureVerified": true,
+        "preparedReceiptClosureVerified": true,
+        "projectSummaryClosureVerified": true,
+        "cliCompleteReportClosureVerified": true,
+        "embeddedFinalChecksVerified": true,
+        "archive": {
+          "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+          "sha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+          "bytes": 2926256
+        },
+        "projectHash": "sha256:0e49adb5a265c5093794d17fde23e25b4ac49a8157f7e07364cb2f512714dee0",
+        "preparedSourceSha256": "sha256:006030538d48a142125493d228ce4b4991b2ad17f466552b931dc122296fe5ed",
+        "nativeSceneSha256": "sha256:ac03152b13a7f9a539c7257b34dec12163f609ee44e391fa76481e22f663b9aa",
+        "finalOutputSha256": "sha256:f52ff20d72e17fa567b0add1b1ce6eeca9d3e5b366fcfdcbfcc169d15858cda3",
+        "retainedReports": [
+          {
+            "owner": "project.summary.json",
+            "declaredPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-FXVffE/report.json",
+            "retainedPath": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/travel-project-summary-json-full-report-0.json",
+            "sha256": "sha256:376aa31cb8212372acf695d17517e717ceee3750731f98d28e45c37bb7ce2474",
+            "bytes": 304852
+          },
+          {
+            "owner": "travel-render-cli-receipt.json",
+            "declaredPath": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/travel-render-report.json",
+            "retainedPath": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/travel-travel-render-cli-receipt-json-full-report-1.json",
+            "sha256": "sha256:376aa31cb8212372acf695d17517e717ceee3750731f98d28e45c37bb7ce2474",
+            "bytes": 304852
+          }
+        ],
+        "allCriticalRuntimePathsInsideConsumer": true
+      }
+    ],
+    "sourceComparisonScope": "Exact Git blob comparison outside runtime consumer sandbox; production consumer uses installed JavaScript and source roots remain denied",
+    "semanticScope": "E01 legacy profile is unassessed with zero associations; overall software quality passed. Strict semantic acceptance is the separate historical/hermetic authored-context fixture packet, not inferred from E01.",
+    "evidenceExecutionRepositoryEdits": "No repository edits during installed consumer verification; this results-document integration follows the completed proof"
   },
-  "retainedReports": [
-    {
-      "owner": "baseline-render/project.summary.json",
-      "kind": "full-report",
-      "declaredPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-zGi4Qw/report.json",
-      "retainedPath": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/baseline-retained-full-report-0.json",
-      "sha256": "sha256:e56702e35df9bf8d76e3bc0b8f05a97a95f2ed72a45a2c7c502166cd74c61552",
-      "bytes": 304212
+  "predecessorEvidenceRole": "Preserved complete ff82eae9 results document; its source/archive/runtime/cache/timing/report identities are historical predecessor evidence and are not the current b4f0119d refresh.",
+  "predecessorEvidence": {
+    "schemaVersion": "ms1-installed-e01-proof-1",
+    "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
+    "archive": {
+      "path": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/still-shift-ms1-archive-ff82eae9.tgz",
+      "sha256": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
+      "bytes": 2917353
     },
-    {
-      "owner": "travel-render/project.summary.json",
-      "kind": "full-report",
-      "declaredPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-VgGSMG/report.json",
-      "retainedPath": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/travel-retained-full-report-0.json",
-      "sha256": "sha256:3b8a6e43053e8a024b231b33a694493279bce029da81a49d3bae66f42a2ab8e9",
-      "bytes": 303985
-    }
-  ],
-  "retainedFailures": [
-    {
-      "attempt": "initial archive eeb162ad",
-      "consumer": "/private/tmp/still-shift-ms1-installed-e01-eQbmEw",
-      "archiveSha256": "sha256:057e26a5dfa1adf70c1d892150895b81e8b67a6e8a3dd12b8615f6539219f7c4",
-      "stage": "save and attempted render before capture",
-      "outcome": "failed /bin/ps launch under Seatbelt,0 captured plates; embedded diagnostic stack exposed and source corrected",
-      "evidence": [
-        "fresh-render.log",
-        "fresh-render-stderr.log",
-        "sandbox-ps-permissive-control.log",
-        "sandbox-python-ps.log",
-        "sandbox-helper-parent-cwd-control.log"
-      ]
+    "consumerRoot": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
+    "runtime": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "installation": "offline,ignore-scripts,freshuniquearchivefilename",
+      "processInspectionException": {
+        "runtimeException": "consumer-only exact ps lstart query from live Darwin libproc; package/helper unchanged",
+        "runtimeSha256": "3d22691e95eec4b709e219c314485862df5db0aeef6efca56e657fa0d31856e4",
+        "mode": "755",
+        "results": [
+          {
+            "pid": 55430,
+            "normalLstart": "Sat Oct 10 02:44:04 2026",
+            "sandboxLstart": "Sat Oct 10 02:44:04 2026",
+            "helperIdentity": "Sat Oct 10 02:44:04 2026"
+          },
+          {
+            "pid": 56035,
+            "normalLstart": "Sat Oct 10 02:44:06 2026",
+            "sandboxLstart": "Sat Oct 10 02:44:06 2026",
+            "helperIdentity": "Sat Oct 10 02:44:06 2026"
+          }
+        ],
+        "deadPid": 56035,
+        "nonexistentPid": 2147483647,
+        "unsupportedArgumentsRejected": true,
+        "PATH": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/bin:/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/node_modules/.bin:/Users/jjae/.nvm/versions/node/v22.23.1/bin:/Users/jjae/.local/share/uv/python/cpython-3.12.11-macos-aarch64-none/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
+      }
     },
-    {
-      "attempt": "byte-identical chmod0755 /bin/ps compatibility attempt",
-      "consumer": "/private/tmp/still-shift-ms1-installed-e01-eQbmEw",
-      "outcome": "copied system ps SIGKILL137 and code-signature trust failure; not accepted",
-      "evidence": [
-        "process-runtime-proof.log",
-        "copied-ps-unsandboxed-control.log",
-        "copied-ps-codesign.log"
-      ]
+    "isolation": {
+      "profilePath": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/consumer.sb",
+      "profileSha256": "sha256:661a3ed7279306f7d3ca8c1d8c1d93b363cb3cfe19946599ec43e1e787b64ef0",
+      "actualOSDenial": true,
+      "originalRootsUnavailableToSourceByteReads": 7,
+      "negativeReadControls": [
+        {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/package.json",
+          "unsandboxedFileExists": true,
+          "bytes": 18627,
+          "sandboxRead": "EPERM-or-EACCES"
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/package.json",
+          "unsandboxedFileExists": true,
+          "bytes": 18213,
+          "sandboxRead": "EPERM-or-EACCES"
+        },
+        {
+          "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/QA Report.md",
+          "unsandboxedFileExists": true,
+          "bytes": 2476,
+          "sandboxRead": "EPERM-or-EACCES"
+        },
+        {
+          "path": "/tmp/still-shift-ms1-e01-proof-v6/episode.json",
+          "unsandboxedFileExists": true,
+          "bytes": 22454,
+          "sandboxRead": "EPERM-or-EACCES"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1-e01-proof-v6/episode.json",
+          "unsandboxedFileExists": true,
+          "bytes": 22454,
+          "sandboxRead": "EPERM-or-EACCES"
+        },
+        {
+          "path": "/tmp/still-shift-ms1-e01-render-v6/episode.mp4",
+          "unsandboxedFileExists": true,
+          "bytes": 3580117,
+          "sandboxRead": "EPERM-or-EACCES"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1-e01-render-v6/episode.mp4",
+          "unsandboxedFileExists": true,
+          "bytes": 3580117,
+          "sandboxRead": "EPERM-or-EACCES"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1-e01-cache-v6/3454c1460972524de9e1179d3083dd681bc50e6852bffc2e07fa8daf8eb48435/41397a65-d646-4fa2-b8a4-01d492a5f297/000003.png",
+          "unsandboxedFileExists": true,
+          "bytes": 380289,
+          "sandboxRead": "EPERM-or-EACCES"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1-e01-delivery-v6-relocated/episode.json",
+          "unsandboxedFileExists": true,
+          "bytes": 22454,
+          "sandboxRead": "EPERM-or-EACCES"
+        }
+      ],
+      "originalsPreserved": true,
+      "noOriginalRenamesOrDeletes": true
     },
-    {
-      "attempt": "archive5554344f",
-      "consumer": "/private/tmp/still-shift-ms1-installed-e01-final-H8M4Hf",
-      "archiveSha256": "sha256:e107a5bac04e457a145c2ebc20a32dc1ee6d95fa165199a8a1154e4beac15974",
-      "stage": "full fresh696 capture and successful native MP4 export,then final pixel QA",
-      "outcome": "failed final QA ReferenceError __rewriteRelativeImportExtension; not full acceptance; all696 actual fresh PNGs verified equalv6 and native outpute0c369... retained",
-      "evidence": [
-        "fresh-render.log",
-        "fresh-render-stderr.log",
-        "fresh-actual-plate-proof.log",
-        "fresh-native-export-receipt-proof.log",
-        "failure-final-check.json",
-        "failure-retention.log"
-      ]
+    "package": {
+      "manifestSha256": "sha256:80d22abd1f378d92277b054e44fc5549d708ace777f3e7a2f17ffec8262b418a",
+      "manifestFiles": 737,
+      "declaredBytes": 535346887,
+      "postExportsUnchanged": true,
+      "loadedProjectHash": "sha256:13d106940123a17baa755722bd4bb34161d3f28ece6b21d3a9f400fd563f38c2",
+      "sourceLifecycle": ["deps", "validate", "summary", "save", "reload"],
+      "nativeAndNestedReceiptClosureVerified": true,
+      "declaredPreparedReferencesIndependentlyChecked": 723
     },
-    {
-      "attempt": "refreshed consumer setup",
-      "consumer": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
-      "outcome": "initial install PATH omitted pnpm; exact pnpm10.29.3 entry point rerun under Node22 succeeded",
-      "evidence": ["install.log", "install-rerun.log"]
+    "cache": {
+      "currentAudit": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/cache-revalidation.json",
+      "all696ActualPlateHashesEqualV6": true,
+      "sidecarAndSequenceHashesVerified": 18,
+      "copiedPriorCacheFilesUnchanged": 1432,
+      "currentBrowserModuleSha256": "sha256:02cd741edf58e90e1ebb6d28df7bf6602b331dc8bde6a34d8798ba87604230eb",
+      "historicalDeliveredV6CaptureIdentityIsSeparate": true,
+      "fresh696CaptureFromPriorFailedFinalQAAttemptIsRetained": "/private/tmp/still-shift-ms1-installed-e01-final-H8M4Hf",
+      "scope": "immutableclean3Dplates,revalidatedbrowser+Three+request+environment; native composition frame/audio caches may addentries"
     },
-    {
-      "attempt": "refreshed consumer verifier setup",
-      "consumer": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
-      "outcome": "prior audit was initially copied to /private/tmp instead of consumer; local verifier missing-file failure corrected before audit or render",
-      "evidence": ["setup-failures.json"]
+    "baseline": {
+      "directory": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/baseline-render",
+      "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
+      "archiveHash": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
+      "projectHash": "sha256:13d106940123a17baa755722bd4bb34161d3f28ece6b21d3a9f400fd563f38c2",
+      "status": "rendered",
+      "softwareValid": true,
+      "plateHashesCompared": 696,
+      "allActualPlateHashesEqualV6": true,
+      "mismatches": [],
+      "new3dRenders": 0,
+      "cacheHits": 696,
+      "sourceSha256": "sha256:d9faaee22bd4584164928956d121cf8651b18d3e176af0cee501bd1e0888295b",
+      "sceneSha256": "sha256:b7972f876025bbc0d6a6794aa8c1d1432f9dc0867ecb460fe9740b5fcad84ea9",
+      "outputSha256": "sha256:e0c369e69b76bc73ba81a59930d89ae432d91035c64a531a51e8699b53eb632d",
+      "outputBytes": 3580117,
+      "frameCount": 696,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationMs": 23200,
+      "qualityStatus": "passed",
+      "overlayFindings": [],
+      "audio": {
+        "schemaVersion": "mechanism-final-audio-check-1",
+        "valid": true,
+        "sourceClock": {
+          "sampleRate": 48000,
+          "sampleCount": 1113600,
+          "channels": 2,
+          "authoredSampleCount": 1113600
+        },
+        "findings": [],
+        "decodedClock": {
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 2,
+          "sampleCount": 1114112,
+          "paddingSamples": 512,
+          "paddingAllowanceSamples": 1023,
+          "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+          "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+        },
+        "alignment": {
+          "correlation": 0.99939897716988,
+          "gain": 0.9936183770630255,
+          "normalizedError": 0.03514398619837603,
+          "sourceRms": 0.10424712835404523,
+          "decodedRms": 0.10358186248862733,
+          "windows": [
+            {
+              "correlation": 0.9991018377725046,
+              "gain": 0.9936525861183872,
+              "normalizedError": 0.04272250113796264,
+              "sourceRms": 0.22504104331982855,
+              "decodedRms": 0.22361261467752766,
+              "startSample": 303104,
+              "sampleCount": 8192,
+              "lagSamples": 0
+            },
+            {
+              "correlation": 0.9995994003443933,
+              "gain": 0.9970531013439682,
+              "normalizedError": 0.028416939841065598,
+              "sourceRms": 0.24601689142030655,
+              "decodedRms": 0.24529190457361894,
+              "startSample": 450560,
+              "sampleCount": 8192,
+              "lagSamples": 0
+            },
+            {
+              "correlation": 0.9997798489063653,
+              "gain": 0.9934986526875499,
+              "normalizedError": 0.021902217856538675,
+              "sourceRms": 0.1810039132730421,
+              "decodedRms": 0.17982714396794147,
+              "startSample": 1015808,
+              "sampleCount": 8192,
+              "lagSamples": 0
+            }
+          ],
+          "toleranceSamples": 64,
+          "maxLagSamples": 0
+        },
+        "tail": {
+          "correlation": 0.9996462325129299,
+          "gain": 0.9986940588084534,
+          "normalizedError": 0.026614215326493832,
+          "sourceRms": 0.0006902706585095873,
+          "decodedRms": 0.0006893692056233237,
+          "startSample": 1097728,
+          "sampleCount": 8192,
+          "lagSamples": 0,
+          "lastActiveSampleExclusive": 1105046,
+          "preserved": true
+        }
+      },
+      "finalProbe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 1080,
+            "height": 1920,
+            "coded_width": 1088,
+            "coded_height": 1920,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "bt709",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 356352,
+            "duration": "23.200000",
+            "bit_rate": "1033468",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "696",
+            "nb_read_frames": "696",
+            "extradata_size": 49,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc62.11.100 libx264"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "codec_tag": "0x6134706d",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "initial_padding": 0,
+            "id": "0x2",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 1113600,
+            "duration": "23.200000",
+            "bit_rate": "191623",
+            "nb_frames": "1089",
+            "nb_read_frames": "1088",
+            "extradata_size": 5,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "SoundHandler",
+              "vendor_id": "[0][0][0][0]"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/baseline-render/episode.mp4",
+          "nb_streams": 2,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "23.200000",
+          "size": "3580117",
+          "bit_rate": "1234523",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.3.100"
+          }
+        }
+      },
+      "overlayHolds": [
+        {
+          "shot": "V8-02",
+          "label": "label-pull",
+          "longestReadableFrames": 72,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-03",
+          "label": "label-push",
+          "longestReadableFrames": 71,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-04",
+          "label": "label-thickness",
+          "longestReadableFrames": 76,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-05",
+          "label": "label-travel",
+          "longestReadableFrames": 69,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-06",
+          "label": "label-inside",
+          "longestReadableFrames": 41,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-07",
+          "label": "label-outside",
+          "longestReadableFrames": 41,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-08",
+          "label": "label-slides",
+          "longestReadableFrames": 64,
+          "requiredFrames": 30
+        }
+      ],
+      "timings": {
+        "scope": "monotonic-wall-clock-through-final-check",
+        "prepareWallSeconds": 6.691354916,
+        "exportWallSeconds": 128.31023950000002,
+        "checkWallSeconds": 156.06187470899997,
+        "throughCheckWallSeconds": 291.063946291
+      },
+      "findingsCount": 50,
+      "findingClasses": {
+        "declared-physical-proof-hold": 10,
+        "outside-safe-area": 29,
+        "speech-following-caption": 11
+      },
+      "humanReview": {
+        "continuousMotion": "pending",
+        "listening": "pending"
+      },
+      "captureEnvironment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      }
     },
-    {
-      "attempt": "refreshed CLI save invocation",
-      "consumer": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
-      "outcome": "replacement guards incorrectly supplied for nonexistent save destination; failed save/reload retained; new-file save without guards and reload passed",
-      "evidence": [
-        "save.log",
-        "reload.log",
-        "save-failed-full-report-0.json",
-        "reload-failed-full-report-0.json",
-        "save-rerun.log",
-        "reload-rerun.log",
-        "lock-save-proof.json"
-      ]
+    "travel": {
+      "directory": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/travel-render",
+      "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
+      "archiveHash": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
+      "projectHash": "sha256:0e49adb5a265c5093794d17fde23e25b4ac49a8157f7e07364cb2f512714dee0",
+      "status": "rendered",
+      "softwareValid": true,
+      "plateHashesCompared": 696,
+      "allActualPlateHashesEqualV6": true,
+      "mismatches": [],
+      "new3dRenders": 0,
+      "cacheHits": 696,
+      "sourceSha256": "sha256:5f75bfeaef41a9f0d7322c07d19a1129e6d9ba4cda87ebf9e4028b9748b640ca",
+      "sceneSha256": "sha256:1f09d9cb9116f09f56c879821bc7d01bdcc4903104d2408a5157220175aeb9fa",
+      "outputSha256": "sha256:f52ff20d72e17fa567b0add1b1ce6eeca9d3e5b366fcfdcbfcc169d15858cda3",
+      "outputBytes": 3581912,
+      "frameCount": 696,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationMs": 23200,
+      "qualityStatus": "passed",
+      "overlayFindings": [],
+      "audio": {
+        "schemaVersion": "mechanism-final-audio-check-1",
+        "valid": true,
+        "sourceClock": {
+          "sampleRate": 48000,
+          "sampleCount": 1113600,
+          "channels": 2,
+          "authoredSampleCount": 1113600
+        },
+        "findings": [],
+        "decodedClock": {
+          "codec": "aac",
+          "sampleRate": 48000,
+          "channels": 2,
+          "sampleCount": 1114112,
+          "paddingSamples": 512,
+          "paddingAllowanceSamples": 1023,
+          "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+          "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+        },
+        "alignment": {
+          "correlation": 0.99939897716988,
+          "gain": 0.9936183770630255,
+          "normalizedError": 0.03514398619837603,
+          "sourceRms": 0.10424712835404523,
+          "decodedRms": 0.10358186248862733,
+          "windows": [
+            {
+              "correlation": 0.9991018377725046,
+              "gain": 0.9936525861183872,
+              "normalizedError": 0.04272250113796264,
+              "sourceRms": 0.22504104331982855,
+              "decodedRms": 0.22361261467752766,
+              "startSample": 303104,
+              "sampleCount": 8192,
+              "lagSamples": 0
+            },
+            {
+              "correlation": 0.9995994003443933,
+              "gain": 0.9970531013439682,
+              "normalizedError": 0.028416939841065598,
+              "sourceRms": 0.24601689142030655,
+              "decodedRms": 0.24529190457361894,
+              "startSample": 450560,
+              "sampleCount": 8192,
+              "lagSamples": 0
+            },
+            {
+              "correlation": 0.9997798489063653,
+              "gain": 0.9934986526875499,
+              "normalizedError": 0.021902217856538675,
+              "sourceRms": 0.1810039132730421,
+              "decodedRms": 0.17982714396794147,
+              "startSample": 1015808,
+              "sampleCount": 8192,
+              "lagSamples": 0
+            }
+          ],
+          "toleranceSamples": 64,
+          "maxLagSamples": 0
+        },
+        "tail": {
+          "correlation": 0.9996462325129299,
+          "gain": 0.9986940588084534,
+          "normalizedError": 0.026614215326493832,
+          "sourceRms": 0.0006902706585095873,
+          "decodedRms": 0.0006893692056233237,
+          "startSample": 1097728,
+          "sampleCount": 8192,
+          "lagSamples": 0,
+          "lastActiveSampleExclusive": 1105046,
+          "preserved": true
+        }
+      },
+      "finalProbe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 1080,
+            "height": 1920,
+            "coded_width": 1088,
+            "coded_height": 1920,
+            "has_b_frames": 2,
+            "pix_fmt": "yuv420p",
+            "level": 40,
+            "color_range": "tv",
+            "color_space": "bt709",
+            "color_transfer": "bt709",
+            "color_primaries": "bt709",
+            "chroma_location": "left",
+            "field_order": "progressive",
+            "refs": 4,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "30/1",
+            "avg_frame_rate": "30/1",
+            "time_base": "1/15360",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 356352,
+            "duration": "23.200000",
+            "bit_rate": "1034087",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "696",
+            "nb_read_frames": "696",
+            "extradata_size": 49,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc62.11.100 libx264"
+            }
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_long_name": "AAC (Advanced Audio Coding)",
+            "profile": "LC",
+            "codec_type": "audio",
+            "codec_tag_string": "mp4a",
+            "codec_tag": "0x6134706d",
+            "sample_fmt": "fltp",
+            "sample_rate": "48000",
+            "channels": 2,
+            "channel_layout": "stereo",
+            "bits_per_sample": 0,
+            "initial_padding": 0,
+            "id": "0x2",
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 1113600,
+            "duration": "23.200000",
+            "bit_rate": "191623",
+            "nb_frames": "1089",
+            "nb_read_frames": "1088",
+            "extradata_size": 5,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "SoundHandler",
+              "vendor_id": "[0][0][0][0]"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/travel-render/episode.mp4",
+          "nb_streams": 2,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "23.200000",
+          "size": "3581912",
+          "bit_rate": "1235142",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf62.3.100"
+          }
+        }
+      },
+      "overlayHolds": [
+        {
+          "shot": "V8-02",
+          "label": "label-pull",
+          "longestReadableFrames": 72,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-03",
+          "label": "label-push",
+          "longestReadableFrames": 71,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-04",
+          "label": "label-thickness",
+          "longestReadableFrames": 76,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-05",
+          "label": "label-travel",
+          "longestReadableFrames": 69,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-06",
+          "label": "label-inside",
+          "longestReadableFrames": 41,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-07",
+          "label": "label-outside",
+          "longestReadableFrames": 41,
+          "requiredFrames": 30
+        },
+        {
+          "shot": "V8-08",
+          "label": "label-slides",
+          "longestReadableFrames": 64,
+          "requiredFrames": 30
+        }
+      ],
+      "timings": {
+        "scope": "monotonic-wall-clock-through-final-check",
+        "prepareWallSeconds": 11.425247208,
+        "exportWallSeconds": 133.088234292,
+        "checkWallSeconds": 116.60239895800001,
+        "throughCheckWallSeconds": 261.116066708
+      },
+      "findingsCount": 50,
+      "findingClasses": {
+        "declared-physical-proof-hold": 10,
+        "outside-safe-area": 29,
+        "speech-following-caption": 11
+      },
+      "humanReview": {
+        "continuousMotion": "pending",
+        "listening": "pending"
+      },
+      "captureEnvironment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      }
     },
-    {
-      "attempt": "refreshed local proof helper",
-      "consumer": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
-      "outcome": "initial proof expected failure save.json rather than failure receipt in save.log; corrected proof copied and SHA-verified the retained reports",
-      "evidence": ["lock-save-proof.json"]
+    "textPatch": {
+      "currentArchivePatchReplayByteIdenticalToPreservedRevision1": true,
+      "patchReceipt": {
+        "schemaVersion": "mechanism-patch-result-1",
+        "path": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/project/travel-patch-replay.json",
+        "revision": 1,
+        "projectHash": "sha256:0e49adb5a265c5093794d17fde23e25b4ac49a8157f7e07364cb2f512714dee0",
+        "changedPaths": ["shots.V8-05.labels.label-travel.text"],
+        "affectedShots": ["V8-05"],
+        "cacheEffects": {
+          "geometry": "reuse",
+          "cleanPlates": "reuse",
+          "sidecars": "reuse",
+          "overlays": "invalidate-affected-shots",
+          "audio": "reuse"
+        }
+      },
+      "baselinePreserved": true,
+      "renderingInputPreserved": true
     },
-    {
-      "attempt": "all-cache file count verifier after baseline",
-      "consumer": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
-      "outcome": "overly strict total-file-count assertion failed because exports add native frame/audio entries; no original-cache byte mismatch, all1432 copied files unchanged",
-      "evidence": ["post-baseline-all-cache-comparison.json"]
-    }
-  ],
+    "finalEncodedFrameInspection": {
+      "frame": 380,
+      "baseline": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/baseline-frame-380.png",
+      "baselineSha256": "sha256:33d30abbcbb4170363eb30a8b6111ad4b247b500467872ab9ac55e5956626dba",
+      "travel": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/travel-frame-380.png",
+      "travelSha256": "sha256:bbbbd7506166cb2eb37eee84f43e40db2b3f6e54a91bbf2d93fe086ba7d660da",
+      "inspection": "TRAVEL RANGE and qualification fit clearly at unchanged position; actual encoded frames viewed",
+      "scope": "one static encoded frame inspection plus full integrated measured layout checks; human continuous playback/listening pending"
+    },
+    "rusage": {
+      "baseline": {
+        "scope": "macOS /usr/bin/time -l command rusage labels; not aggregate child/GPU/whole-system peak memory and not a benchmark",
+        "realSeconds": 291.78,
+        "userSeconds": 291.74,
+        "sysSeconds": 39.55,
+        "maximumResidentSetSizeBytes": 2889056256,
+        "peakMemoryFootprintBytes": 777361264
+      },
+      "travel": {
+        "scope": "macOS /usr/bin/time -l command rusage labels; not aggregate child/GPU/whole-system peak memory and not a benchmark",
+        "realSeconds": 262.13,
+        "userSeconds": 269.69,
+        "sysSeconds": 31.58,
+        "maximumResidentSetSizeBytes": 6894157824,
+        "peakMemoryFootprintBytes": 574581648
+      }
+    },
+    "retainedReports": [
+      {
+        "owner": "baseline-render/project.summary.json",
+        "kind": "full-report",
+        "declaredPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-zGi4Qw/report.json",
+        "retainedPath": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/baseline-retained-full-report-0.json",
+        "sha256": "sha256:e56702e35df9bf8d76e3bc0b8f05a97a95f2ed72a45a2c7c502166cd74c61552",
+        "bytes": 304212
+      },
+      {
+        "owner": "travel-render/project.summary.json",
+        "kind": "full-report",
+        "declaredPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-VgGSMG/report.json",
+        "retainedPath": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/travel-retained-full-report-0.json",
+        "sha256": "sha256:3b8a6e43053e8a024b231b33a694493279bce029da81a49d3bae66f42a2ab8e9",
+        "bytes": 303985
+      }
+    ],
+    "retainedFailures": [
+      {
+        "attempt": "initial archive eeb162ad",
+        "consumer": "/private/tmp/still-shift-ms1-installed-e01-eQbmEw",
+        "archiveSha256": "sha256:057e26a5dfa1adf70c1d892150895b81e8b67a6e8a3dd12b8615f6539219f7c4",
+        "stage": "save and attempted render before capture",
+        "outcome": "failed /bin/ps launch under Seatbelt,0 captured plates; embedded diagnostic stack exposed and source corrected",
+        "evidence": [
+          "fresh-render.log",
+          "fresh-render-stderr.log",
+          "sandbox-ps-permissive-control.log",
+          "sandbox-python-ps.log",
+          "sandbox-helper-parent-cwd-control.log"
+        ]
+      },
+      {
+        "attempt": "byte-identical chmod0755 /bin/ps compatibility attempt",
+        "consumer": "/private/tmp/still-shift-ms1-installed-e01-eQbmEw",
+        "outcome": "copied system ps SIGKILL137 and code-signature trust failure; not accepted",
+        "evidence": [
+          "process-runtime-proof.log",
+          "copied-ps-unsandboxed-control.log",
+          "copied-ps-codesign.log"
+        ]
+      },
+      {
+        "attempt": "archive5554344f",
+        "consumer": "/private/tmp/still-shift-ms1-installed-e01-final-H8M4Hf",
+        "archiveSha256": "sha256:e107a5bac04e457a145c2ebc20a32dc1ee6d95fa165199a8a1154e4beac15974",
+        "stage": "full fresh696 capture and successful native MP4 export,then final pixel QA",
+        "outcome": "failed final QA ReferenceError __rewriteRelativeImportExtension; not full acceptance; all696 actual fresh PNGs verified equalv6 and native outpute0c369... retained",
+        "evidence": [
+          "fresh-render.log",
+          "fresh-render-stderr.log",
+          "fresh-actual-plate-proof.log",
+          "fresh-native-export-receipt-proof.log",
+          "failure-final-check.json",
+          "failure-retention.log"
+        ]
+      },
+      {
+        "attempt": "refreshed consumer setup",
+        "consumer": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
+        "outcome": "initial install PATH omitted pnpm; exact pnpm10.29.3 entry point rerun under Node22 succeeded",
+        "evidence": ["install.log", "install-rerun.log"]
+      },
+      {
+        "attempt": "refreshed consumer verifier setup",
+        "consumer": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
+        "outcome": "prior audit was initially copied to /private/tmp instead of consumer; local verifier missing-file failure corrected before audit or render",
+        "evidence": ["setup-failures.json"]
+      },
+      {
+        "attempt": "refreshed CLI save invocation",
+        "consumer": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
+        "outcome": "replacement guards incorrectly supplied for nonexistent save destination; failed save/reload retained; new-file save without guards and reload passed",
+        "evidence": [
+          "save.log",
+          "reload.log",
+          "save-failed-full-report-0.json",
+          "reload-failed-full-report-0.json",
+          "save-rerun.log",
+          "reload-rerun.log",
+          "lock-save-proof.json"
+        ]
+      },
+      {
+        "attempt": "refreshed local proof helper",
+        "consumer": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
+        "outcome": "initial proof expected failure save.json rather than failure receipt in save.log; corrected proof copied and SHA-verified the retained reports",
+        "evidence": ["lock-save-proof.json"]
+      },
+      {
+        "attempt": "all-cache file count verifier after baseline",
+        "consumer": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw",
+        "outcome": "overly strict total-file-count assertion failed because exports add native frame/audio entries; no original-cache byte mismatch, all1432 copied files unchanged",
+        "evidence": ["post-baseline-all-cache-comparison.json"]
+      }
+    ],
+    "humanAcceptance": {
+      "continuousMotion": "pending",
+      "listening": "pending"
+    },
+    "publication": "none",
+    "repositoryEdits": "none during installed consumer proof",
+    "retainedFullProof": {
+      "path": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/installed-e01-proof.json",
+      "sha256": "sha256:20ab415cafee9bf00030b8fd0840a4792b99d6d693da1adf3a009266d1747868",
+      "bytes": 48861
+    },
+    "independentAudit": "Separate consumer audit verified actual source/scene/output associations, cache byte identities, final report closure and warning classes; no correction required."
+  },
   "humanAcceptance": {
     "continuousMotion": "pending",
     "listening": "pending"
   },
   "publication": "none",
-  "repositoryEdits": "none during installed consumer proof",
-  "retainedFullProof": {
-    "path": "/private/tmp/still-shift-ms1-installed-e01-ff82-88in_oiw/installed-e01-proof.json",
-    "sha256": "sha256:20ab415cafee9bf00030b8fd0840a4792b99d6d693da1adf3a009266d1747868",
-    "bytes": 48861
-  },
-  "independentAudit": "Separate consumer audit verified actual source/scene/output associations, cache byte identities, final report closure and warning classes; no correction required."
+  "acceptanceScope": "Installed software checks passed. E01 legacy semantic/factual status remains unassessed; strict authored-context fixture acceptance is separate. Continuous audiovisual and listening acceptance remain pending."
 }

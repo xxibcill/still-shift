@@ -45,26 +45,23 @@ still hold before relying on them.
 
 - **MS1 bridge verification (2026-10-10):** `codex/mechanism-ms1` carries exact
   MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
-  is open/unmerged. Corrected E01 passes all696-frame mechanics, layout/holds and
-  decoded audio. Portable737-file delivery relocates/reloads; fresh-session
-  overlap repair retains all696 plate hashes with zero additional3D renders.
-  Exact archive from `ff82eae9` passes26 offline installed-package checks and both
-  OS-denied consumer exports, including TRAVEL RANGE with69 readable frames and
-  unchanged clean plates. Earlier failed archives/final QA and explicit consumer
-  libproc process-inspection exception are retained. Full local `pnpm check` is
-  stopped at an existing metadata trace timeout; focused circular suffix recorder
-  repair passes all10 assertions with unchanged5s limit. Linked quantity/intact-phrase
-  encoded evidence packet and complete gate rerun remain before MS1 PR/MS1N.
-  Semantic/display-copy repair passes127 focused tests, source types/lint and
-  package build. Reproduced count endpoint false pass is fixed using shared
-  renderer clocks and correction onset; mixed/partial copy remains explicit.
-  Historical23-case encoded packet passes; hermetic counterpart is finishing.
-  Exact `b4f0119d` archive passes26 offline installed-package checks including
-  saved strict policy and public reports. OS-denied consumer source/dependency
-  setup is verified; both fresh native exports are next.
-  Full baseline refresh changes
-  only29 editorial frames for the reproduced mask fix. Human continuous/listening
-  review remains pending. Original checkout edits preserved.
+  is open/unmerged. Current `b4f0119d` archive passes26 offline package checks and
+  both OS-denied consumer E01 exports. Baseline and TRAVEL RANGE reproduce exact
+  accepted video bytes, reuse all696 clean3D frames with0 new renders, and pass
+  mechanics/layout/audio/report closure. All1672 installed files,625 committed
+  sources,737 delivery files and723 copied captures remain unchanged; native
+  frame/audio caches are fresh. Live-libproc process inspection is an explicit
+  consumer exception; failed setup/initial invocation and predecessor proofs remain.
+  E01's legacy semantic report is unassessed. Separate strict-context packet now
+  has24 cases: historical encoded run passes, hermetic rerun is active. Complete
+  quantity/color-only controls require overall quality passes; intact phrases retain
+  eligible76-frame holds and their original full-report entry/frozen faults.
+  Semantic display repair passes127 focused tests. Full `pnpm check` attempt1
+  stopped at an existing gradient trace timeout; focused ring recorder repair
+  passes10 assertions without changing the5s limit. Final complete gate remains.
+  Full baseline refresh changes only29 editorial frames for reproduced mask loss.
+  Human continuous playback/listening remains pending; original checkout edits
+  are preserved. MS1 PR and MS1N implementation wait for the final software gate.
   [Results](./mechanism-shorts-ms1-results.json),
   [installed consumer](./mechanism-shorts-ms1-installed-e01-results.json).
 
@@ -176,6 +173,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Current installed E01 acceptance refreshed
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`; production source `b4f0119d`.
+- **Done:** exact current archive passes26 offline installed checks and both isolated
+  E01 exports, including the revision-aware TRAVEL RANGE edit and fresh native caches.
+- **Results:** both696-frame outputs match predecessor hashes;0 new3D renders,
+  69-frame TRAVEL hold, all mechanics and decoded audio checks pass. Archive and
+  all declared delivery/capture/source bytes remain exact.
+- **Retained:** first current invocation omitted PATH/Python and failed before
+  capture/export/final QA; corrected baseline239.10s and text edit234.46s passed.
+  Live-libproc exception, older failed archives and predecessor proof remain explicit.
+- **Next:** finish24-case encoded typography packet and required full local gate;
+  human continuous playback/listening remains pending.
+- **Records:** [installed evidence](./mechanism-shorts-ms1-installed-e01-results.json),
+  [package gate](./mechanism-shorts-ms1-package-gate-results.json).
 
 ### 2026-10-10 — Refresh the exact installed archive after semantic repair
 
