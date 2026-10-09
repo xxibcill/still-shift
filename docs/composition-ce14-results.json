@@ -35,7 +35,6 @@
     ]
   },
   "remaining": [
-    "Canvas and WebGL rendering",
     "pin-only arm and house demo",
     "constraint/expression and story-acting integration",
     "focused browser/export/flip acceptance",
@@ -68,7 +67,7 @@
         "logSha256": "5c910c33392af699061309d6cedd4b1c9773841d34fd0a81402eebfe60700563"
       }
     },
-    "rendering": "pending"
+    "rendering": "focused-passed"
   },
   "topology": {
     "status": "focused-passed",
@@ -103,6 +102,46 @@
       "boundaries": {
         "status": "passed",
         "logSha256": "5c910c33392af699061309d6cedd4b1c9773841d34fd0a81402eebfe60700563"
+      }
+    }
+  },
+  "rendering": {
+    "status": "focused-passed",
+    "unitTests": 44,
+    "pixelMaxDelta": {
+      "bezier": 0,
+      "puppet": 1
+    },
+    "destinationGridPixels": 0.0625,
+    "memoryCases": 6,
+    "checks": {
+      "units": {
+        "status": "passed",
+        "logSha256": "31bd8ecae63f938a07837e9d8d63d12f7fffc3727cd9dad8e153c65e7b92dffb"
+      },
+      "types": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "lint": {
+        "status": "passed",
+        "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "schema": {
+        "status": "passed",
+        "logSha256": "fd0421a6b710ec75b9107d02b9ce77186844691d6d769187139d3bc9b65f5606"
+      },
+      "boundaries": {
+        "status": "passed",
+        "logSha256": "5c910c33392af699061309d6cedd4b1c9773841d34fd0a81402eebfe60700563"
+      },
+      "mesh-browser": {
+        "status": "passed",
+        "logSha256": "d11054982b5329e536a1575bc88e5fde2ab30df8aeb548bc233c02b088316959"
+      },
+      "existing-effects-browser": {
+        "status": "passed",
+        "logSha256": "fa98e1aeff1cfa5ffbf745e3906034f4665bbba9dd3f5cc90cb80eb6e984334e"
       }
     }
   }

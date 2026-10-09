@@ -45,8 +45,9 @@ still hold before relying on them.
 
 - **CE14 in progress (2026-10-09):** new `codex/composition-ce14` branch starts
   from completed, pushed CE15 `efa42f42`. Animated controls, mesh contracts and deterministic
-  geometry and alpha topology are implemented; focused tests and static checks
-  pass. Both backends, demo and final acceptance remain in flight. No blocker or owner
+  geometry, alpha topology and both textured mesh backends are implemented; focused
+  pixels, memory cleanup, existing effects and static checks pass. Demo and final
+  acceptance remain in flight. No blocker or owner
   decision is pending. [CE14 plan](./composition-ce14-plan.md).
 
 - **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
@@ -87,6 +88,18 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — CE14 native mesh rendering
+
+- **Agent / branch:** Codex on `codex/composition-ce14`, after `db7a9c52`.
+- **Done:** Canvas affine reference and WebGL2 textured meshes, bounded geometry,
+  readbacks/control textures, deterministic overlap and post-quantization flip guards.
+- **Results:** 44 focused units, static checks, mesh pixel/seek checks, six zero-owner
+  memory cases and existing effects/browser repeated exports pass.
+- **Rejected:** unsnapped CPU vertices disagree with the pinned four-bit raster
+  grid; shared 1/16-pixel delivery removes edge disagreements without wider tolerances.
+- **Next:** pin-only acting demo, constraint/expression integration and final acceptance.
+- **Records:** [CE14 plan](./composition-ce14-plan.md), [results](./composition-ce14-results.json).
 
 ### 2026-10-09 — CE14 alpha-outline topology
 

@@ -89,10 +89,33 @@ one of the 512 binary 3×3 masks checked against independent pixel coverage and
 area. TypeScript, changed-file lint and package boundaries pass. Pixel rendering,
 production export and complete milestone acceptance remain pending.
 
+### 2026-10-09 — Canvas and WebGL textured meshes
+
+Both backends now consume the same bounded geometry and ordered triangles. WebGL2
+fetches packed vertices from an admitted floating-point texture; the Canvas
+reference performs triangle-by-triangle affine, bilinear premultiplied texture
+sampling with half-open edges and ordered source-over compositing. Geometry,
+control textures, readbacks and raster buffers participate in managed ownership.
+
+The pinned Chromium software renderer reports four subpixel bits. An initial
+unsnapped reference differed at triangle edges (raw channel differences up to
+136); both backends now receive destination vertices rounded to the same 1/16
+pixel grid (at most 1/32 pixel per axis). Flip detection runs after this delivery
+quantization. Solver pin targets remain exact. Pixel tolerances were not relaxed:
+Bezier matches exactly; puppet differs by at most one raw/alpha byte and zero
+premultiplied bytes. Reverse seeks match exactly. Six real success, metadata-denial
+and injected-draw-failure cases leave zero managed pixel/metadata owners.
+
+44 focused units, TypeScript, changed-file lint, schema freshness and package
+boundaries pass. The existing native effects browser regression also passes,
+including six repeated, byte-identical 60-frame production exports. The new mesh
+browser check is in the required local test chain. This remains focused evidence;
+the authored demo, production mesh export and full milestone gate are pending.
+
 ## Remaining acceptance
 
-1. Implement starch, overlap and Canvas/WebGL textured mesh rendering with bounded
-   allocations and cleanup; preserve CE15 cache/dependency behavior.
+1. Extend mesh rendering coverage to the authored demo, transforms and CE15
+   cache/dependency behavior.
 2. Add the native arm/house demo, expression/constraint example and story-acting
    documentation; test the complete authored pin ranges for triangle flips.
 3. Run focused solver, authoring, browser, export and baseline checks; review the
