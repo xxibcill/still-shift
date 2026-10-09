@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #50 main conflicts resolved (2026-10-09):** integrate merged CE15 review
+  fixes from `main` `43d57709` into reviewed CE14 head `2d49e192`. Both parents'
+  production changes remain exact; all 74 test commands retain their order.
+  Build/boundaries, 333 unit / 12 runtime / 24 mixer tests and complete mesh,
+  tint-capacity and native media/audio browser/export checks pass. All 216 visual
+  references and both unit snapshots remain exact. Normal PR branch delivery;
+  owner review/merge is next. No full repository gate rerun or claimed.
+  [Conflict evidence](./pr-50-main-conflict-results.json).
+
 - **PR #50 collapsed owner repair verified (2026-10-09):** the single posted P2
   finding on `3002f0d1` is fixed on `codex/pr50-collapsed-mesh-fix`. Exact zero-scale
   provenance survives rotated parent/child chains; collapse/recovery preserves
@@ -69,13 +78,32 @@ still hold before relying on them.
   cases and eight production exports pass. No CE14 blocker or owner decision remains;
   branch review/merge is the owner's next step. [CE14 plan](./composition-ce14-plan.md).
 
+- **PR #49 second review repairs (2026-10-09):** All three findings posted on
+  `2cd76eca` are repaired and verified, with one commit per finding and one
+  final normal push to the PR branch. PR #49 merged into `main` at
+  `43d57709` on 2026-10-09; its fixes are integrated in PR #50.
+  Focused follow-up checks only; no full repository gate run or claimed.
+  [Second review evidence](./pr-49-second-review-fix-results.json).
+
+- **PR #49 review repairs verified (2026-10-09):** both P2 findings posted
+  inline at `efa42f42` are fixed, with one commit per finding and one final normal
+  push to the PR branch. Cache fallback `7b0d546f` passes 101 focused units,
+  384 exact preview comparisons, eight production exports / 512 decoded frames,
+  144 existing surface cases / 8,000 checks, eight typography fixtures and eight
+  frozen typography items / 1,309 frames. The PCM preview repair passes 48 focused
+  tests and real Lab Canvas/WebGL playback at 7, 29 and 59 fps with exact full
+  master/suffix PCM and final intervals. Build, scoped lint, formatting and package
+  boundaries pass. PR #49 is merged into `main`. No full repository gate was
+  run or claimed for these scoped repairs; owner checkout remains untouched.
+  [Review repair evidence](./pr-49-review-fix-results.json).
+
 - **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
   pinned local `pnpm check` in 13928.03 seconds. Production code `21817411` has a real
   two-minute benchmark that reaches **3.408×** with identical encoded/frame/audio output.
   All delivery formats, statistics, caching, bounded worker/result admission and
   area requirements are implemented. The 48-case maximum-area matrix, final area
-  smoke checks, native/parallel cleanup and frozen baselines pass. PR review/merge
-  is the owner's next step; CE14 is also complete on its separate branch.
+  smoke checks, native/parallel cleanup and frozen baselines pass. PR #49 merged
+  into `main` at `43d57709`; CE14 is complete and awaits PR #50 review/merge.
   [Completion evidence](./composition-ce15-completion-results.json).
 
 - **PR #48 third review repairs verified (2026-10-08):** both P2 findings
@@ -104,9 +132,24 @@ still hold before relying on them.
 
 - **Continuation:** the requested CE15 and CE14 implementation, acceptance and branch
   delivery are complete. The owner's separate checkout is preserved. GitHub Actions
-  remain disabled; all verification was local. No work was scheduled or merged.
+  remain disabled; all verification was local. PR #49 is merged; PR #50 awaits
+  owner review/merge. No work was scheduled.
 
 ## Entries
+
+### 2026-10-09 — PR #50 main conflict resolution
+
+- **Agent / branch:** Codex on `codex/pr50-main-conflicts`, from `2d49e192`.
+- **Done:** integrate `main` `43d57709`; combine mesh/tint test registrations and
+  preserve both development-log histories. All reviewed production code remains exact.
+- **Results:** 369 focused tests, build/boundaries and formatting pass; complete mesh,
+  tint-capacity and native media/audio checks pass. Tint: 1,920 preview comparisons,
+  16 exports / 2,560 frames. Six fractional PCM playback cases retain exact samples.
+- **References:** 216 visual files and two snapshots remain byte-identical.
+- **Delivery:** one merge commit for the existing PR #50 branch; owner review/merge next.
+  No full repository gate rerun or claimed; Actions remain disabled.
+- **Records:** [CE14 plan](./composition-ce14-plan.md#pr-50-main-conflict-resolution--2026-10-09),
+  [focused evidence](./pr-50-main-conflict-results.json).
 
 ### 2026-10-09 — PR #50 collapsed mesh owner repair
 
@@ -251,6 +294,80 @@ still hold before relying on them.
 - **Next:** deterministic rigid MLS, alpha-outline meshes, Bezier controls,
   starch/overlap and both renderers. Full milestone acceptance remains pending.
 - **Records:** [CE14 plan](./composition-ce14-plan.md).
+
+### 2026-10-09 — PR #49 exact natural audio origins
+
+- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head
+  `2cd76eca`.
+- **Done:** Preserve complete natural PCM using exact accumulated placement
+  origins; retain authored property/remapping clocks and bump evaluator
+  compatibility to 57.
+- **Results:** 243 audio/media/evaluator/expression units, 24 actual mixer
+  tests, native media playback and 105 production format/rate exports pass. Four
+  new complete-PCM mixer regressions fail before repair and pass afterward; CE16
+  mixing laws remain byte-identical.
+- **Scope / next:** Focused PR follow-up; no full gate. All three finding
+  commits are ready for one final normal push; owner review/merge follows.
+- **Records:** [second review evidence](./pr-49-second-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-second-review-repairs--2026-10-09).
+
+### 2026-10-09 — PR #49 protected narration boundaries
+
+- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head
+  `2cd76eca`.
+- **Done:** Accumulate exact rational scope origins and round absolute narration
+  and inherited visibility bounds once on the PCM grid.
+- **Results:** All 33 focused narration/media tests pass; valid full masters at
+  7/29/59 fps fail before the fix and pass afterward. Real cropping, retiming
+  and one-sample overruns remain rejected.
+- **Scope / next:** Focused PR follow-up; no full gate. Record natural PCM
+  placement in the third finding commit, then push all three commits once.
+- **Records:** [second review evidence](./pr-49-second-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-second-review-repairs--2026-10-09).
+
+### 2026-10-09 — PR #49 shared tint capacity
+
+- **Agent / branch:** Codex on `codex/pr49-review-repairs`, review head
+  `2cd76eca`.
+- **Done:** Typed shared-capacity fallback uses the original bounded local tint
+  cache; optional managed retention leaves allocator headroom.
+- **Results:** 79 focused tests, 1,920 exact preview comparisons and 16
+  production exports / 2,560 decoded frames pass. Eight frozen typography items
+  / 1,309 frames match; original fixture and glyph performance assertions pass.
+- **Scope / next:** Focused PR follow-up; no full gate. Record the protected
+  narration fix, then the natural PCM placement fix; push once after the final
+  finding commit.
+- **Records:** [second review evidence](./pr-49-second-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-second-review-repairs--2026-10-09).
+
+### 2026-10-09 — PR #49 fractional PCM preview
+
+- **Agent / branch:** Codex on `codex/pr49-review-fixes`, after `7b0d546f`.
+- **Done:** validate Lab's master with the mixer/playback PCM boundary rule;
+  add 7/29/59 fps regressions, retaining native integrity and memory checks.
+- **Results:** three new cases fail before the repair; all 48 focused tests pass
+  after it. Six actual Canvas/WebGL Lab cases match full master and seek PCM bits,
+  distinct final samples, scheduled offsets/durations and complete final intervals.
+  Existing native media authoring/playback/export browser checks also pass.
+- **Correction:** two reference tests initially lacked worktree Python; explicit
+  preflighted `STILL_SHIFT_PYTHON` passes both with zero PCM sample delta.
+- **Scope / next:** build/lint/format/boundaries pass; no full gate. This is the
+  second finding commit; deliver both repairs in one final normal push, then owner review.
+- **Records:** [review repair evidence](./pr-49-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-review-repairs--2026-10-09).
+
+### 2026-10-09 — PR #49 bounded tint fallback
+
+- **Agent / branch:** Codex on `codex/pr49-review-fixes` from `efa42f42`.
+- **Done:** post both findings inline; fall back from full shared tint storage to
+  typography's original bounded color map, with explicit local native ownership.
+- **Results:** 101 focused units; 384 exact preview comparisons; eight exact
+  production exports / 512 frames; all 144 surface cases / 8,000 checks; eight
+  typography fixtures and 1,309 frozen frames pass. Glyph ratio 1.395806× ≤ 1.5.
+- **Scope:** focused follow-up verification, build/lint/boundaries; no full gate.
+- **Next:** fix fractional PCM preview validation in its own commit, then push once.
+- **Records:** [review repair evidence](./pr-49-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-review-repairs--2026-10-09).
 
 ### 2026-10-09 — CE15 completed acceptance
 

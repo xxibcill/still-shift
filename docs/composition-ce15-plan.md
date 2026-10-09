@@ -2565,3 +2565,81 @@ All CE15 requirements and final acceptance are complete. PR #49 contains the
 implementation and [checkpoint-specific evidence](./composition-ce15-completion-results.json).
 GitHub Actions remain disabled. CE14 follows this checkpoint on a separate branch under the expanded goal.
 CE5-X/Q9, CE6-P and separate owner work remain outside scope. No PR is merged.
+
+## PR #49 review repairs — 2026-10-09
+
+Both P2 findings are posted inline on `efa42f42`. The first repair keeps shared
+source limits fixed and routes excess glyph tints through the original 16-slot
+local color map. Local canvases retire on eviction/disposal; shared canvases keep
+cache ownership. Fallback count and submission time are explicit in statistics.
+
+The 64-frame failure at frame 19 now passes 384 exact forward/reverse/repeated
+preview comparisons and eight production exports / 512 completely decoded frames
+across both backends and one/four/repeated workers. All 144 existing surface cases /
+8,000 frame checks, 101 focused units, eight typography fixtures and all eight frozen
+typography items / 1,309 frames pass. Glyph ratio is 1.395806× under the unchanged 1.5×
+assertion. Build, scoped lint and package boundaries pass. Test broker/decoder
+corrections and complete local evidence are in [review repair results](./pr-49-review-fix-results.json).
+
+The second repair uses the mixer's `compositionPcmBoundary` rule in Lab's
+prepared-master validation. The three new valid-master unit cases at 7, 29 and
+59 fps fail before the repair and pass afterward. All 48 focused loader/fps,
+preview and mixer tests pass; the explicit preflighted Python environment fixes
+two initially missing worktree interpreter references, with zero PCM sample delta.
+
+The existing native media browser suite passes, including six real Lab cases
+across Canvas and WebGL at those frame rates. Complete master and offline seek
+suffix PCM hashes match the source through the distinct final samples. Actual
+playback starts at the exact frame-one PCM boundary and retains the complete final
+interval. Existing editing, source-watch and byte-identical draft-export checks
+remain green. Build, scoped lint, formatting and package boundaries pass.
+
+These are scoped PR follow-ups under the repository verification policy; no new
+full repository gate is run or claimed. The cache repair is `7b0d546f`; this audio
+repair is the second finding commit. Deliver both in one final normal push to
+`codex/composition-ce15`, then owner review/merge is next. The owner checkout is
+untouched, and GitHub Actions remain prohibited.
+
+## PR #49 second review repairs — 2026-10-09
+
+Three P2 findings are posted inline on `2cd76eca`; each repair has its own
+commit. Evidence is in [second review
+results](./pr-49-second-review-fix-results.json). These are scoped follow-ups;
+no full repository gate is run or claimed.
+
+The shared store returns a typed capacity denial only for opted-in glyph tints.
+Other identity, integrity, cancellation and lifecycle errors remain failures. A
+saturated page stops new shared tint claims and uses typography's original
+16-color cache; managed optional retention stops at 2,048 entries within the
+unchanged 8,192-control allocator bound. Mandatory source, byte and 4,096-entry
+shared limits remain unchanged. The default global entry limit is exercised
+across four independent pages; byte pressure and the complete 256-frame entry
+fixture also pass public one/four/repeated-worker exports on both backends. All
+owners retire, and all encoded bodies and decoded frames match the uncached
+baselines. Frozen typography references and the original 1.5 glyph ratio
+assertion remain unchanged.
+
+Protected narration validation now uses exact rational origins and an absolute
+ceiling for scope, layer and inherited group windows. Nested placements round
+their sum once, preserving the last valid PCM sample without accepting real
+cropping. All 33 focused tests pass, including full-master and one-sample
+overrun checks at nine rates, altered/disabled voice checks, mixed-rate ancestry
+and signed precision cases. The original schema reproduces the rejection of full
+7/29/59 fps masters; the repaired schema accepts the same complete documents.
+
+Natural audio now subtracts its once-rounded absolute PCM onset from the
+original output sample. Mixed-rate nested origins remain exact; source trimming
+and inherited visibility use the same clock. Explicit retiming and property
+reads retain their existing Q16 path. Bounded memoization avoids repeated
+rational work, and evaluator version 57 invalidates prepared audio built with
+the former origin. All 243 affected units and all 24 actual mixer tests pass.
+Four new complete-PCM tests fail on the review head and preserve every source
+bit after repair. Native media/Lab playback and all 105 format/rate/worker
+exports pass with exact encoded, decoded-frame and complete-audio parity.
+Existing CE16 linear and equal-power laws remain byte-identical. Independent
+review finds no remaining actionable problem; build, scoped lint, formatting and
+package boundaries pass.
+
+Deliver all three findings in one final normal push to `codex/composition-ce15`.
+Owner review/merge is next; the owner checkout remains untouched and GitHub
+Actions remain prohibited.

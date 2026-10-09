@@ -58,6 +58,8 @@ it("reports cache restores and local reuse without inventing paints as hits", ()
               reuses: 7,
               paintAndReadbackMs: 2,
               restoreMs: 1,
+              uncachedPaints: 0,
+              uncachedPaintMs: 0,
             },
           ],
         },

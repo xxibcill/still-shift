@@ -701,3 +701,90 @@ it("preserves every independently placed nested narration sample including its f
   expect(pair(actual.pcm, 37039)).toEqual([0.25, -0.125]);
   expect(pair(actual.pcm, 37040)).toEqual([0, 0]);
 });
+
+it.each([7, 29, 59])(
+  "preserves every original narration sample placed at a fractional picture boundary at %i fps",
+  async (fps) => {
+    const samples = 32;
+    const original = await source(
+      `fractional-placed-${fps}`,
+      samples,
+      2,
+      (n, c) => (n === 0 ? 1 : (n + 1) / (c ? 128 : 64)),
+    );
+    const comp = document(original.asset, fps);
+    comp.layers = [
+      {
+        id: "sound",
+        type: "audio",
+        asset: original.asset.id,
+        role: "narration",
+        startFrame: 1,
+        inPoint: 1,
+      },
+    ];
+    const actual = await render(comp, `fractional-placed-${fps}`);
+    const first = Math.ceil(48000 / fps);
+    expect(actual.pcm.subarray(first * 8, (first + samples) * 8)).toEqual(
+      original.raw,
+    );
+    expect(pair(actual.pcm, first - 1)).toEqual([0, 0]);
+    expect(pair(actual.pcm, first + samples)).toEqual([0, 0]);
+  },
+);
+
+it("preserves complete PCM after combining three different-rate placements", async () => {
+  const original = await source(
+    "fractional-nested",
+    32,
+    2,
+    (n, c) => (n + 1) / (c ? 128 : 64),
+  );
+  const comp = document(original.asset, 29);
+  comp.frameCount = 10;
+  comp.layers = [
+    { id: "outer", type: "precomp", comp: "middle", startFrame: 1, inPoint: 1 },
+  ];
+  comp.precomps = [
+    {
+      id: "middle",
+      width: 64,
+      height: 48,
+      frameCount: 10,
+      fps: 31,
+      layers: [
+        {
+          id: "inner",
+          type: "precomp",
+          comp: "spoken",
+          startFrame: 1,
+          inPoint: 1,
+        },
+      ],
+    },
+    {
+      id: "spoken",
+      width: 64,
+      height: 48,
+      frameCount: 2,
+      fps: 7,
+      layers: [
+        {
+          id: "sound",
+          type: "audio",
+          asset: original.asset.id,
+          role: "narration",
+          startFrame: 1,
+          inPoint: 1,
+        },
+      ],
+    },
+  ];
+  const actual = await render(comp, "fractional-nested");
+  const first = 10061;
+  expect(actual.pcm.subarray(first * 8, (first + 32) * 8)).toEqual(
+    original.raw,
+  );
+  expect(pair(actual.pcm, first - 1)).toEqual([0, 0]);
+  expect(pair(actual.pcm, first + 32)).toEqual([0, 0]);
+});

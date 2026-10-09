@@ -194,6 +194,52 @@ describe("export-owned canonical surface store", () => {
     ).rejects.toThrow("contract");
     expect(store.statistics.leasesGranted).toBe(2);
   });
+  it.each(["entries", "bytes"] as const)(
+    "returns typed %s saturation only for an explicitly optional claim",
+    async (limit) => {
+      await store.dispose();
+      store = await CompositionSurfaceStore.create(directory, {
+        workers: 4,
+        byteLimit: limit === "bytes" ? 1024 : 4096,
+        entryLimit: limit === "entries" ? 1 : 4,
+      });
+      await store.claim(0, identity);
+      const optional = {
+        ...identity,
+        path: "source:glyph-tint:second",
+        fallback: "uncached" as const,
+      };
+      await expect(store.claim(1, optional)).resolves.toEqual({
+        kind: "uncached",
+        reason: "capacity",
+      });
+      await expect(
+        store.claim(1, { ...identity, path: optional.path }),
+      ).rejects.toThrow("export budget");
+      await expect(store.claim(1, { ...optional, width: 0 })).rejects.toThrow(
+        "contract",
+      );
+      await expect(store.claim(4, optional)).rejects.toThrow("Unknown");
+      await expect(
+        store.claim(1, {
+          ...optional,
+          fallback: "invalid",
+        } as unknown as CompositionSurfaceIdentity),
+      ).rejects.toThrow("contract");
+      expect(store.statistics.leasesGranted).toBe(1);
+      expect(store.statistics.reservedDiskBytes).toBe(1024);
+      await expect(
+        store.claim(1, {
+          ...identity,
+          key: hash("changed source"),
+          fallback: "uncached",
+        }),
+      ).resolves.toEqual({ kind: "uncached" });
+      const reason = Error("cancelled after saturation");
+      await store.dispose(reason);
+      await expect(store.claim(1, optional)).rejects.toBe(reason);
+    },
+  );
   it("cancels active publication and pending consumers with the original reason, then removes only owned files", async () => {
     await writeFile(join(directory, "foreign-output"), "another job");
     const producer = await store.claim(0, identity);

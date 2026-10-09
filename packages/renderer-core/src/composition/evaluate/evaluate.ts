@@ -83,7 +83,7 @@ import { projectSpatialScope } from "./spatial-scope.ts";
 import { sampleLight, validateLight } from "./lighting.ts";
 import { compositionSampleIndex } from "./sample-clock.ts";
 import { naturalMediaSeconds, sampledCompositionMedia } from "./media.ts";
-import { audioVisibilitySample } from "./media-clock.ts";
+import { audioVisibilitySample, NaturalAudioClock } from "./media-clock.ts";
 import {
   layerContentTime,
   loopedPrecompTime,
@@ -135,6 +135,7 @@ type Context = {
   scope: CompositionScope;
   time: number;
   visibilitySample?: number;
+  naturalAudio?: { sample: number; clock: NaturalAudioClock };
   fps: number;
   route: string[];
   states: Map<string, EvaluatedLayer>;
@@ -229,6 +230,25 @@ function audioScopes(compiled: CompiledComposition) {
   audioScopeCache.set(compiled, scopes);
   return scopes;
 }
+const naturalAudioClocks = new WeakMap<
+  CompiledComposition,
+  Map<string, NaturalAudioClock>
+>();
+function naturalAudioClock(
+  compiled: CompiledComposition,
+  route: string,
+  create: () => NaturalAudioClock,
+): NaturalAudioClock {
+  let clocks = naturalAudioClocks.get(compiled);
+  if (!clocks) naturalAudioClocks.set(compiled, (clocks = new Map()));
+  let clock = clocks.get(route);
+  if (!clock) {
+    if (clocks.size >= 1024) clocks.delete(clocks.keys().next().value!);
+    clocks.set(route, (clock = create()));
+  }
+  return clock;
+}
+
 const copy = (value: PropertyValue | Numeric): Numeric =>
   Array.isArray(value) ? [...(value as number[])] : (value as Numeric);
 
@@ -266,6 +286,7 @@ function context(
   fps: number,
   route: string[] = [],
   audioClock = false,
+  naturalAudio?: Context["naturalAudio"],
 ): Context {
   let soloLayers = compiled.solo.get(scope);
   if (soloLayers === undefined)
@@ -281,6 +302,7 @@ function context(
   return {
     scope,
     time,
+    ...(naturalAudio ? { naturalAudio } : {}),
     ...(audioClock
       ? { visibilitySample: audioVisibilitySample(time, fps) }
       : {}),
@@ -301,6 +323,10 @@ function context(
 }
 
 function scopeTimeWithin(ctx: Context, begin: number, end: number): boolean {
+  if (ctx.naturalAudio) {
+    const { sample, clock } = ctx.naturalAudio;
+    return sample >= clock.sampleAt(begin) && sample < clock.sampleAt(end);
+  }
   if (ctx.visibilitySample === undefined)
     return ctx.time >= begin && ctx.time < end;
   const samplesPerFrame = 48000 / ctx.fps;
@@ -489,6 +515,7 @@ class Evaluation {
       steps: 0,
     },
     audioClock = false,
+    audioSample?: number,
   ) {
     this.compiled = compiled;
     this.time = time;
@@ -502,6 +529,16 @@ class Evaluation {
       compiled.comp.fps,
       [],
       audioClock,
+      audioSample === undefined
+        ? undefined
+        : {
+            sample: audioSample,
+            clock: naturalAudioClock(
+              compiled,
+              "",
+              () => new NaturalAudioClock(compiled.comp.fps),
+            ),
+          },
     );
   }
 
@@ -616,6 +653,32 @@ class Evaluation {
     return evaluation;
   }
 
+  private naturalAudioLayer(ctx: Context, layer: CompositionLayer): boolean {
+    if (
+      !ctx.naturalAudio ||
+      (layer.stretch ?? 1) !== 1 ||
+      layer.holdFrame !== undefined ||
+      layer.posterizeFps !== undefined ||
+      layer.sampleTimes !== undefined ||
+      ((layer.type === "audio" || layer.type === "precomp") &&
+        layer.timeRemap !== undefined) ||
+      (layer.type === "precomp" && layer.loop !== undefined)
+    )
+      return false;
+    const key = this.bindings(ctx, layer.id);
+    return (
+      !this.compiled.drivers
+        .get(key)
+        ?.some((binding) => binding.path.segments[0]?.name === "timeRemap") &&
+      !this.compiled.periodic
+        .get(key)
+        ?.some((binding) => binding.path.segments[0]?.name === "timeRemap") &&
+      !this.compiled.expressions
+        .get(key)
+        ?.some((binding) => binding.segments[0]?.name === "timeRemap")
+    );
+  }
+
   private *child(ctx: Context, host: CompositionLayer): Task<Context> {
     const cached = ctx.children.get(host.id);
     if (cached) return cached;
@@ -649,6 +712,17 @@ class Evaluation {
       scope.fps ?? this.compiled.comp.fps,
       route,
       this.audioClock,
+      this.naturalAudioLayer(ctx, host)
+        ? {
+            sample: ctx.naturalAudio!.sample,
+            clock: naturalAudioClock(this.compiled, route.join("/"), () =>
+              ctx.naturalAudio!.clock.place(
+                host.startFrame ?? 0,
+                scope.fps ?? this.compiled.comp.fps,
+              ),
+            ),
+          }
+        : undefined,
     );
     ctx.children.set(host.id, next);
     return next;
@@ -1782,6 +1856,11 @@ class Evaluation {
       state.time,
       ctx.fps,
     );
+    if (this.naturalAudioLayer(ctx, layer)) {
+      const { sample, clock } = ctx.naturalAudio!;
+      media.clipSample = sample - clock.sampleAt(layer.startFrame ?? 0);
+      media.sourceSample = (layer.sourceStartSample ?? 0) + media.clipSample;
+    }
     return {
       key: this.bindings(ctx, layer.id),
       layer,
@@ -1913,6 +1992,7 @@ function session(
   time: number,
   options: EvaluationOptions,
   audioClock = false,
+  audioSample?: number,
 ) {
   if (
     [time, ...Object.values(options.scopeTimes ?? {})].some(
@@ -1932,6 +2012,7 @@ function session(
     options,
     undefined,
     audioClock,
+    audioSample,
   );
 }
 
@@ -1953,7 +2034,13 @@ export function evaluateCompositionAudio(
       "Audio output sample must be a nonnegative safe integer",
       { path: "sample" },
     );
-  return session(comp, (sample * comp.fps) / 48000, options, true).audio();
+  return session(
+    comp,
+    (sample * comp.fps) / 48000,
+    options,
+    true,
+    sample,
+  ).audio();
 }
 
 /**

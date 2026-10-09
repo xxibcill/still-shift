@@ -9,6 +9,7 @@ export type CompositionSurfaceIdentity = {
   width: number;
   height: number;
   encoding: "rgba8-straight" | "rgba8-premultiplied" | "rgba32f-premultiplied";
+  fallback?: "uncached";
 };
 
 type SurfaceFile = Readonly<{
@@ -114,7 +115,9 @@ export class CompositionSurfaceStore {
     worker: number,
     identity: CompositionSurfaceIdentity,
   ): Promise<
-    Lease | { kind: "hit"; file: SurfaceFile } | { kind: "uncached" }
+    | Lease
+    | { kind: "hit"; file: SurfaceFile }
+    | { kind: "uncached"; reason?: "capacity" }
   > {
     this.assertOpen();
     this.assertWorker(worker);
@@ -125,6 +128,7 @@ export class CompositionSurfaceStore {
       identity.path.length < 1 ||
       identity.path.length > 256 ||
       !checksumPattern.test(identity.key) ||
+      (identity.fallback !== undefined && identity.fallback !== "uncached") ||
       ![
         "rgba8-straight",
         "rgba8-premultiplied",
@@ -168,8 +172,11 @@ export class CompositionSurfaceStore {
     if (
       this.entries.size >= this.entryLimit ||
       this.reservedBytes + byteLength > this.byteLimit
-    )
+    ) {
+      if (identity.fallback === "uncached")
+        return { kind: "uncached", reason: "capacity" };
       throw Error("Composition static surface cache exceeds its export budget");
+    }
     let resolve!: Entry["resolve"], reject!: Entry["reject"];
     const ready = new Promise<SurfaceFile>((accept, fail) => {
       resolve = accept;

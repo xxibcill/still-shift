@@ -311,3 +311,28 @@ both are corrected. Independent review caught the rounded-product provenance
 case before delivery, and final checks rerun after that production change.
 One finding is delivered in one commit followed by one final normal push. Detailed
 logs, artifacts and source fingerprints: [collapsed-mesh repair evidence](./pr-50-collapsed-mesh-fix-results.json).
+
+## PR #50 main conflict resolution — 2026-10-09
+
+Merge `main` `43d57709` into the reviewed CE14 head `2d49e192` after PR #49
+merged. Resolve `package.json` by retaining both the mesh and tint-capacity
+browser commands, with all 74 test-chain commands present once and both parents'
+ordering preserved. Resolve `docs/dev-log.md` by preserving both histories and
+updating CE15's merged state. All twelve incoming CE15 and thirty-four CE14
+production files remain byte-identical to their reviewed parents; the shared
+evaluator identity is already 57 on both branches.
+
+Focused checks pass: pinned toolchain/Chromium/Python/module preflight, TypeScript,
+package boundaries, 333 unit / 12 runtime / 24 audio-mixer tests and formatting.
+The complete mesh browser/export command passes its prior pixel, collapse,
+rotated-parent, ownership, diagnostic and repeat/worker/cache oracles. The complete
+tint-capacity command passes 1,920 exact preview comparisons and sixteen exports /
+2,560 decoded frames. The native media command passes four exports and actual Lab
+media/audio authoring, including six exact fractional PCM cases at 7/29/59 fps.
+All 216 tracked visual files and two unit snapshots remain exact.
+
+This is focused conflict-resolution verification. No full milestone gate is rerun
+or claimed; the historical CE14 gate remains tied to its named checkpoint. Deliver
+one normal merge commit to the existing PR #50 branch for owner review/merge.
+GitHub Actions remain disabled. Detailed logs, artifacts and input fingerprints:
+[main-conflict evidence](./pr-50-main-conflict-results.json).

@@ -1,3 +1,4 @@
+import { CompositionPcmClock } from "@still-shift/scene-contract";
 import { passageError } from "../../passage-diagnostics.ts";
 
 /** Media-only quantization: Q32 source frames / Q16 PCM samples, never CE0 clocks. */
@@ -25,4 +26,31 @@ export function audioVisibilitySample(frame: number, fps: number): number {
   return Math.abs(sample) * 65536 <= Number.MAX_SAFE_INTEGER
     ? mediaSamplePosition(sample, 16)
     : sample;
+}
+
+/** Cache authored scope boundaries without changing property or remapped clocks. */
+export class NaturalAudioClock {
+  private readonly origin: CompositionPcmClock;
+  private readonly fps: number;
+  private readonly boundaries = new Map<number, number>();
+
+  constructor(fps: number, origin = new CompositionPcmClock()) {
+    this.fps = fps;
+    this.origin = origin;
+  }
+
+  place(frame: number, fps: number): NaturalAudioClock {
+    return new NaturalAudioClock(fps, this.origin.place(frame, this.fps));
+  }
+
+  sampleAt(frame: number): number {
+    let sample = this.boundaries.get(frame);
+    if (sample === undefined) {
+      sample = this.origin.place(frame, this.fps).sample;
+      if (this.boundaries.size >= 128)
+        this.boundaries.delete(this.boundaries.keys().next().value!);
+      this.boundaries.set(frame, sample);
+    }
+    return sample;
+  }
 }

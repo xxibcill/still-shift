@@ -1,0 +1,259 @@
+{
+  "date": "2026-10-09",
+  "pr": "https://github.com/xxibcill/still-shift/pull/49",
+  "reviewedHead": "efa42f42e57958133dfcd268e2c7f68861c32319",
+  "reviewId": 5465933687,
+  "branch": "codex/pr49-review-fixes",
+  "deliveryPolicy": "Each finding posted inline before repair; one commit per finding; one normal push after the final commit.",
+  "toolchain": "Node 22.23.1 / pnpm 10.29.3 / Python 3.12.11 / Playwright 1.62.1 / Chromium 151.0.7922.34 (revision 1234) / FFmpeg 8.0.1.",
+  "isolation": "Restored managed review worktree at the exact PR head, independent offline-installed pnpm dependencies and Vite caches. Owner checkout is untouched.",
+  "verificationScope": "Focused PR follow-up regressions; no full pnpm check or new milestone gate run or claimed.",
+  "githubActions": "Prohibited; no workflows added or enabled.",
+  "findings": [
+    {
+      "id": "tint-cache-capacity",
+      "priority": "P2",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/49#discussion_r4226806097",
+      "status": "fixed and verified; first finding commit",
+      "before": "Visible 1024x512, 64-frame, 300px native text red-to-blue animation completes uncached but cached rendering fails at frame 19 after retaining 123948400 bytes.",
+      "repair": "Shared tint admission falls back to the original painter when the byte or entry limit is reached. Typography keeps its original 16-slot color map and public map type, tracks locally owned canvases internally, and retires them on eviction/disposal. Shared sources remain owned by the source cache. Counters expose uncached paint count and submission time.",
+      "units": {
+        "uniqueTests": 101,
+        "runs": [
+          {
+            "tests": 48,
+            "files": 6
+          },
+          {
+            "tests": 63,
+            "files": 7
+          }
+        ],
+        "scope": "Source metadata/preparation, export statistics, family preparation, managed allocation/retirement, typography events/contract/layout and composition typography adapter."
+      },
+      "newBrowserRegression": {
+        "command": "pnpm test:browser:composition-tint-capacity",
+        "status": "passed",
+        "previewComparisons": 384,
+        "previews": [
+          {
+            "backend": "canvas2d",
+            "comparedFrames": 192,
+            "retainedCanvasBytes": 123948400,
+            "uncachedPaints": 116,
+            "memory": {
+              "scope": "declared-application-owned-bytes",
+              "limits": {
+                "pixels": 536870912,
+                "metadata": 16777216
+              },
+              "current": {
+                "pixels": 0,
+                "metadata": 0
+              },
+              "peak": {
+                "pixels": 298235176,
+                "metadata": 237714
+              },
+              "reservations": 0
+            }
+          },
+          {
+            "backend": "webgl2",
+            "comparedFrames": 192,
+            "retainedCanvasBytes": 123948400,
+            "uncachedPaints": 116,
+            "memory": {
+              "scope": "declared-application-owned-bytes",
+              "limits": {
+                "pixels": 536870912,
+                "metadata": 16777216
+              },
+              "current": {
+                "pixels": 0,
+                "metadata": 0
+              },
+              "peak": {
+                "pixels": 307500328,
+                "metadata": 255006
+              },
+              "reservations": 0
+            }
+          }
+        ],
+        "exports": 8,
+        "decodedFrames": 512,
+        "proof": "Complete encoded checksums and every decoded pixel match the uncached reference across one/four/repeated workers on Canvas and WebGL. Both managed preview scopes and every export acknowledge zero bytes/reservations.",
+        "log": "/private/tmp/pr49-tint-capacity-final.log",
+        "completeReport": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/pr49-tint-capacity-S1x9Qa/results.json"
+      },
+      "existingSurfaceRegression": {
+        "command": "pnpm test:browser:composition-surfaces",
+        "status": "passed",
+        "cases": 144,
+        "frameChecks": 8000,
+        "scope": "Four-page static/native/root/prefix ownership, exact seeks, checksums, metadata, native resource failures and cleanup.",
+        "log": "/private/tmp/pr49-surfaces.log"
+      },
+      "existingTypography": {
+        "command": "pnpm test:browser:typography:fixtures",
+        "status": "passed",
+        "fixtures": 8,
+        "glyphPerformanceRatio": 1.3958060275250874,
+        "unchangedLimit": 1.5,
+        "log": "/private/tmp/pr49-typography-fixtures.log"
+      },
+      "frozenBaselines": {
+        "command": "pnpm test:browser:composition-baselines --family typography",
+        "status": "passed",
+        "items": 8,
+        "frames": 1309,
+        "regenerated": false,
+        "log": "/private/tmp/pr49-typography-baselines.log"
+      },
+      "staticChecks": {
+        "build": "passed",
+        "changedFileEslint": "passed",
+        "packageBoundaries": "passed",
+        "diffCheck": "passed"
+      },
+      "testHarnessCorrections": [
+        "Initial typed statistics fixture needed the two new zero-valued counters; the new test broker endpoint was corrected before browser acceptance.",
+        "The existing small-fixture decoder buffers at most 16 MiB; the new large-frame regression now hashes complete decoded frames through a bounded stream. Earlier diagnostic logs are retained separately."
+      ],
+      "commit": "7b0d546f"
+    },
+    {
+      "id": "preview-pcm-boundary",
+      "priority": "P2",
+      "inlineComment": "https://github.com/xxibcill/still-shift/pull/49#discussion_r4226806101",
+      "status": "fixed and verified; second finding commit",
+      "before": "Five frames at 29 fps produce 8276 samples; Lab compares against 8275.862068965518 and rejects the prepared master before fetching it.",
+      "repair": "Lab validates prepared audio sampleCount with compositionPcmBoundary, the same ceiling rule used by the mixer and playback scheduler. Mapping, evaluator, checksum, WAV-header, finite-sample and memory validations remain enforced.",
+      "redRegression": {
+        "command": "Focused composition-audio-preview unit tests before the loader repair",
+        "status": "three new valid-master cases fail; six existing cases pass",
+        "fps": [7, 29, 59],
+        "error": "Native audio preview clock or evaluator differs",
+        "log": "/private/tmp/pr49-audio-preview-before.log"
+      },
+      "focusedTests": {
+        "status": "passed",
+        "tests": 48,
+        "files": 4,
+        "scope": "Nine Lab loader tests, two fractional-fps contract tests, 17 preview integration tests and 20 mixer integration tests. Native PCM laws match Python with zero sample delta.",
+        "command": "pnpm exec vitest run tests/unit/composition-audio-preview.test.ts tests/unit/composition-fps-audio.test.ts tests/integration/composition-preview.test.ts tests/integration/composition-audio-mix.test.ts --maxWorkers=2 --no-file-parallelism --configLoader runner",
+        "python": "STILL_SHIFT_PYTHON explicitly uses the preflighted project Python 3.12.11 environment.",
+        "log": "/private/tmp/pr49-audio-preview-after.log"
+      },
+      "nativeBrowser": {
+        "command": "pnpm test:browser:composition-media",
+        "status": "passed",
+        "fractionalBoundaries": [
+          {
+            "fps": 7,
+            "backend": "canvas2d",
+            "samples": 34286,
+            "startSample": 6858,
+            "master": "sha256:09daf286c6729864e0077bdd28758f940803ed47470f3e7e2603127438ff4dcb",
+            "offline": "sha256:f3cb1bc90771ed9aa886fb0de706362b826b8b7fce9a71b9f9facb79a7cfffb2",
+            "last": [0.0625, -0.125]
+          },
+          {
+            "fps": 7,
+            "backend": "webgl2",
+            "samples": 34286,
+            "startSample": 6858,
+            "master": "sha256:09daf286c6729864e0077bdd28758f940803ed47470f3e7e2603127438ff4dcb",
+            "offline": "sha256:f3cb1bc90771ed9aa886fb0de706362b826b8b7fce9a71b9f9facb79a7cfffb2",
+            "last": [0.0625, -0.125]
+          },
+          {
+            "fps": 29,
+            "backend": "canvas2d",
+            "samples": 8276,
+            "startSample": 1656,
+            "master": "sha256:0d98fe67b27c0c1298f5a9303de1f78b63211eea90af868f4612cddd933173c0",
+            "offline": "sha256:e7d64a853753309f467f3a7c974558f3722852f723427029bc9944c3cfce808f",
+            "last": [0.0625, -0.125]
+          },
+          {
+            "fps": 29,
+            "backend": "webgl2",
+            "samples": 8276,
+            "startSample": 1656,
+            "master": "sha256:0d98fe67b27c0c1298f5a9303de1f78b63211eea90af868f4612cddd933173c0",
+            "offline": "sha256:e7d64a853753309f467f3a7c974558f3722852f723427029bc9944c3cfce808f",
+            "last": [0.0625, -0.125]
+          },
+          {
+            "fps": 59,
+            "backend": "canvas2d",
+            "samples": 4068,
+            "startSample": 814,
+            "master": "sha256:91980558b7c8ce42852ac6fe80478bec578fbb60dd84e3028a3f6d632f193392",
+            "offline": "sha256:7aac0cd3232bae8e40d3f115413300ec74a2b589ed005ed4aecb73c6a52bd77a",
+            "last": [0.0625, -0.125]
+          },
+          {
+            "fps": 59,
+            "backend": "webgl2",
+            "samples": 4068,
+            "startSample": 814,
+            "master": "sha256:91980558b7c8ce42852ac6fe80478bec578fbb60dd84e3028a3f6d632f193392",
+            "offline": "sha256:7aac0cd3232bae8e40d3f115413300ec74a2b589ed005ed4aecb73c6a52bd77a",
+            "last": [0.0625, -0.125]
+          }
+        ],
+        "proof": "Six real Lab Canvas/WebGL cases preserve every stereo master PCM bit, exact offline suffix through distinct final samples, actual frame-one playback offset/duration and the complete final audio interval. Existing native media previews/exports, authoring undo/redo/save, source watching and byte-identical draft audio export also pass.",
+        "existingAudioAuthoring": {
+          "sync": {
+            "samples": 240,
+            "maxFrameDifference": 1,
+            "maxSourceFrameDifference": 0
+          },
+          "webglSync": {
+            "samples": 238,
+            "maxFrameDifference": 1,
+            "maxSourceFrameDifference": 0
+          },
+          "sourcePixels": [
+            {
+              "backend": "webgl2",
+              "exactReverseSeeks": 48
+            },
+            {
+              "backend": "canvas2d",
+              "exactReverseSeeks": 48
+            }
+          ],
+          "combinedMedia": "24 frame-numbered FFV1 frames at12fps; reverse remap; animated still and lower third; matching stereo PCM",
+          "savedRevision": 3,
+          "sampleCount": 96000,
+          "rate": 48000,
+          "channels": 2,
+          "master": "all PCM sample bits exact",
+          "offlineSeek": "frame 6 through distinct last samples exact",
+          "playback": "audio clock; full final interval; seek/pause exact",
+          "gainPanEdit": "waveform changes; undo/redo exact; saved master bits exact",
+          "draftExport": "byte-identical",
+          "fixtureWaveforms": "source/processed/mix",
+          "registeredMaster": "WAV with exact captured checksum",
+          "originalAudioNotServed": true,
+          "sourceWatch": "changed source stops sound and preserves valid pixels; restored source reloads"
+        },
+        "log": "/private/tmp/pr49-media-browser.log",
+        "completeReport": "/private/tmp/pr49-media-browser-results.json"
+      },
+      "staticChecks": {
+        "build": "passed",
+        "changedFileEslint": "passed",
+        "packageBoundaries": "passed",
+        "prettier": "passed",
+        "diffCheck": "passed"
+      },
+      "environmentCorrection": "The first combined focused run passed 46 tests but two Python-reference comparisons could not find a worktree .venv. The explicit preflighted STILL_SHIFT_PYTHON environment rerun passes all 48; this was environment configuration, not a production change."
+    }
+  ],
+  "delivery": "Both findings were posted inline before fixes. Cache repair is commit 7b0d546f; the audio repair is the second finding commit containing this record. The final normal push delivers both to codex/composition-ce15. No merge is performed."
+}
