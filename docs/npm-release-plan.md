@@ -110,12 +110,13 @@ define the working policy.
 - Start urgent fixes from `production`, verify and release the patch, and merge
   the fix back into `main` before the next regular release.
 
-For initial setup, commit the prepared release based on `bd0197cd`, preserving
-unrelated local work separately, then create `production` and the annotated
-`v0.1.0` tag at that committed checkpoint. Its source corresponds to the already
+The initial release checkpoint is `db28a938`, based on `bd0197cd`. `production`
+and the annotated `v0.1.0` tag are pushed at that commit; `main` remains the
+default development branch. Unrelated local research is preserved separately.
+The committed source corresponds to the already
 published `0.1.0` archive, whose SHA-256 is
 `48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c`.
-All 591 corresponding-source files in that archive match the prepared checkout
+All 591 corresponding-source files in that archive match the committed tag
 byte for byte. Documentation and branch setup do not rebuild the archive.
 Any rebuilt archive needs its own package verification and checksum record.
 
@@ -127,6 +128,9 @@ Retain both logs under `benchmarks/results/release-branches-20261009/`, alongsid
 the archive source-comparison record. The earlier full staged release gate and
 26 installed-package checks remain valid for the unchanged published archive;
 this Git/documentation setup does not claim a new full `release:check` run.
+[Setup results](./release-branch-setup-results.json) retain the commit, refs,
+source comparison and fresh gate evidence. `main` receives the completion record
+afterward; `production` and the version tag remain at the release checkpoint.
 
 This follows Git's documented
 [stable/development branch workflow](https://git-scm.com/book/en/v2/Git-Branching-Branching-Workflows)

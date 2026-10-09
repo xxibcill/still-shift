@@ -43,14 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
-- **Development/release branch policy adopted (2026-10-09):** owner requested
-  implementation. Keep `main` as the default development branch; `production`
-  holds approved releases, starting with the published `0.1.0` source. Feature PRs
-  target `main`; release promotions and hotfixes target `production`, and hotfixes
-  return to `main`. Source comparison confirms all 591 packaged source files match
-  the prepared checkout. Checkpoint commit, Git refs and push are in flight.
+- **Development/release branches established (2026-10-09):** `production` and
+  annotated `v0.1.0` are pushed at `db28a938`, containing the source for the
+  published release. `main` remains the default development branch and receives
+  the documentation completion record afterward. Feature PRs target `main`;
+  release promotions and hotfixes target `production`, and hotfixes return to
+  `main`. All 591 packaged source files match the committed tag. Fresh
+  `pnpm check:fast` passes all 3,664 units; Actions remain disabled. Unrelated
+  research files and their local log entries remain uncommitted.
   [Contribution guide](../CONTRIBUTING.md), [agent rules](../AGENTS.md),
-  [release flow](./npm-release-plan.md#development-and-release-branches).
+  [release flow](./npm-release-plan.md#development-and-release-branches),
+  [setup results](./release-branch-setup-results.json).
 
 - **npm release published and verified (2026-10-09):** one public
   `still-shift@0.1.0` archive is built from the public root manifest and six
@@ -68,7 +71,8 @@ still hold before relying on them.
   catalog authorship; it is included under GPL-3.0-only. The owner published
   `0.1.0`; the public registry tags it `latest`. Its downloaded archive is byte-for-byte
   identical to the tested candidate, with matching registry integrity. The release
-  source checkpoint and version-tag setup are in flight under the adopted branch policy.
+  source is committed at `db28a938`, preserved by `production` and annotated
+  `v0.1.0`. [Git setup results](./release-branch-setup-results.json).
   [npm release plan](./npm-release-plan.md), [results](./npm-release-results.json).
 
 - **Earlier private-local production preparation (2026-10-09):** candidate
@@ -127,8 +131,8 @@ still hold before relying on them.
   target. Technical verification is complete; catalog authorship is confirmed,
   and the owner published the tested `0.1.0` archive. Earlier placeholder and empty
   staged-list observations remain historical evidence. The branch policy is
-  adopted; checkpointing the prepared release and publishing its Git refs are
-  in flight. Manual publication and registry verification records are in the npm release plan.
+  implemented; the committed release, `production` and annotated `v0.1.0` are
+  pushed. Manual publication and registry verification records are in the npm release plan.
   Separate real-project visual/listening acceptance is not
   established by software tests. This session verified the owner's npm publication;
   branch setup performs no npm publication, activation or scheduled work.
@@ -140,19 +144,21 @@ still hold before relying on them.
 
 ### 2026-10-09 — Adopt release branches and contribution rules
 
-- **Agent / branch:** Codex on `main`, starting from `bd0197cd`.
-- **Scope / done:** owner adopts `main` for development and `production` for
-  releases. Add CONTRIBUTING.md, rewrite AGENTS.md and connect composition/README
-  guidance; retain local checks, fixed tags and hotfix propagation.
+- **Agent / branch:** Codex on `main`, release checkpoint `db28a938`.
+- **Done:** commit the prepared release and contribution policy; push `main`,
+  `production` and annotated `v0.1.0`. Add CONTRIBUTING.md, rewrite AGENTS.md and
+  connect composition/README guidance; retain local checks and hotfix propagation.
 - **Evidence:** all 591 archive source files match the prepared checkout; the
   published archive retains SHA-256 `48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c`.
 - **Verification:** fresh `pnpm check:fast` passes all 3,664 units and software
   checks outside the sandbox; retain the first run's two sandbox-blocked `ps`
-  failures. Guide links, formatting and whitespace pass; no archive rebuild.
-- **Open / next:** commit the verified source, create
-  `production`/`v0.1.0`, and push while retaining `main` as the default branch.
+  failures. All 591 source files match the committed tag; remote refs, default
+  `main`, disabled Actions, guide links, formatting and whitespace are verified.
+- **Limits / next:** no archive rebuild, new npm publication or new full release
+  matrix. Unrelated research stays local; future features target `main`.
 - **Records:** [contribution guide](../CONTRIBUTING.md),
-  [release flow](./npm-release-plan.md#development-and-release-branches).
+  [release flow](./npm-release-plan.md#development-and-release-branches),
+  [setup results](./release-branch-setup-results.json).
 
 ### 2026-10-09 — Verify published npm release
 

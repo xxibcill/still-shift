@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-09",
+  "status": "complete",
+  "verifiedAt": "2026-10-09T15:45:56.263758+00:00",
+  "repository": "https://github.com/xxibcill/still-shift",
+  "baseCommit": "bd0197cdcbef7ef78f84d41d55c3dad508c34b7f",
+  "releaseVersion": "0.1.0",
+  "releaseCommit": "db28a938eeef63bee5626590359ed3e0b1293355",
+  "branches": {
+    "development": "main",
+    "production": "production",
+    "default": "main"
+  },
+  "versionTag": {
+    "name": "v0.1.0",
+    "type": "annotated",
+    "object": "31f14c45a4b0305823d9eff72b82329d1d474ee7",
+    "commit": "db28a938eeef63bee5626590359ed3e0b1293355"
+  },
+  "remoteRefsAtBootstrap": {
+    "refs/heads/main": "db28a938eeef63bee5626590359ed3e0b1293355",
+    "refs/heads/production": "db28a938eeef63bee5626590359ed3e0b1293355",
+    "refs/tags/v0.1.0": "31f14c45a4b0305823d9eff72b82329d1d474ee7",
+    "refs/tags/v0.1.0^{}": "db28a938eeef63bee5626590359ed3e0b1293355"
+  },
+  "remoteVerification": {
+    "pushedAtomically": true,
+    "defaultBranch": "main",
+    "actionsEnabled": false,
+    "settingsChanged": false
+  },
+  "sourceComparison": {
+    "archive": "dist/releases/still-shift-0.1.0.tgz",
+    "archiveSha256": "48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c",
+    "status": "passed",
+    "comparedFiles": 591,
+    "mismatches": [],
+    "sourceManifestSha256": "7a8c10f94defc3a223fa47035ddae424aee7828530be74e51ca11fc26c8d555a",
+    "method": "Compare every package/source file byte-for-byte with both the prepared index and the committed v0.1.0 Git blob."
+  },
+  "verification": [
+    {
+      "command": "pnpm check:fast",
+      "environment": "sandboxed",
+      "exitCode": 1,
+      "passedUnits": 3662,
+      "failedUnits": 2,
+      "reason": "Sandbox denied read-only ps process-identity checks in composition-media-cache-cleanup.test.ts. Schema, boundaries, formatting, lint and build passed.",
+      "log": "benchmarks/results/release-branches-20261009/check-fast.log",
+      "logSha256": "b563f691acfbc414b788f65ed3d6730ef2e44136473483129f23d50163c16e43"
+    },
+    {
+      "command": "pnpm check:fast",
+      "environment": "outside sandbox; Node 22.23.1 / pnpm 10.29.3",
+      "exitCode": 0,
+      "passedFiles": 346,
+      "passedUnits": 3664,
+      "sourceChangedForRerun": false,
+      "log": "benchmarks/results/release-branches-20261009/check-fast-unsandboxed.log",
+      "logSha256": "179ebd13a2d1b408cd7884bb001e7f4ae6a6a647b17b050a26b327c02d99937f"
+    },
+    {
+      "command": "pnpm exec prettier --check AGENTS.md CONTRIBUTING.md README.md docs/composition-contributing.md docs/npm-release-plan.md docs/npm-release-results.json docs/release-branch-setup-results.json docs/dev-log.md; git diff --check",
+      "status": "passed"
+    },
+    {
+      "check": "Contributor and agent guide local links resolve",
+      "status": "passed"
+    }
+  ],
+  "existingReleaseEvidence": {
+    "record": "docs/npm-release-results.json",
+    "fullSoftwareGate": "passed-in-stages",
+    "installedPackageChecks": 26,
+    "archiveUnchanged": true,
+    "newFullReleaseGateRun": false
+  },
+  "preservedLocalWork": [
+    "docs/animated-drawings-application-study.md",
+    "docs/codebase-health-results.json",
+    "Their Current state and Entries sections in docs/dev-log.md"
+  ],
+  "limits": [
+    "No new npm publication or archive rebuild.",
+    "Separate real-project visual/listening acceptance remains pending.",
+    "main receives the documentation completion record after the release bootstrap; production and v0.1.0 remain at the release commit."
+  ]
+}

@@ -2,7 +2,18 @@
   "date": "2026-10-09",
   "status": "published-and-verified",
   "baseCommit": "bd0197cdcbef7ef78f84d41d55c3dad508c34b7f",
-  "workingTree": "Uncommitted release preparation on main; final archive hash identifies the exact distribution.",
+  "workingTree": "Published release source is committed at db28a938 and preserved by production and v0.1.0; unrelated local research remains uncommitted. Final archive hash identifies the exact distribution.",
+  "gitCheckpoint": {
+    "commit": "db28a938eeef63bee5626590359ed3e0b1293355",
+    "tag": "v0.1.0",
+    "productionBranch": "production",
+    "developmentBranch": "main",
+    "sourceComparison": {
+      "status": "passed",
+      "filesCompared": 591
+    },
+    "setupResults": "docs/release-branch-setup-results.json"
+  },
   "distribution": {
     "name": "still-shift",
     "version": "0.1.0",
