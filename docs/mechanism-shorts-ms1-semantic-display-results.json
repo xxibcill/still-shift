@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "mechanism-ms1-semantic-display-results-1",
+  "date": "2026-10-10",
+  "status": "focused-verified-encoded-and-isolated-proof-pending",
+  "reproducedGap": "The prior complete-context sampler retained authored count endpoint 12 while encoded frame90 displayed24. Attempt3 encoded evidence is retained without a rendered-count-copy acceptance claim.",
+  "changes": [
+    "Use the existing renderer display resolver at layer-local source time for pinned native count/cut/settled text and supported rich typography providers.",
+    "Share indexed provider source-frame selection with its actual drawer; preserve story provider sampled-copy and commerce/rich explicit-state behavior.",
+    "Exact held blend endpoints remain readable; distinct mixed or partial candidates cannot establish intact declared copy. Active staggered roll remains conservative even when global easing briefly reaches its endpoint.",
+    "Share correction replacement onset with renderer preparation; persistent positive replacement artwork remains partial evidence, including span fragments.",
+    "Publish semantic schema/report types through public renderer/engine barrels and explicitly type lint results. Wait for browser module namespace readiness with timeout and preserved cancellation.",
+    "Extend installed browser lint regression with persisted strict semantic profile and public schema/type imports."
+  ],
+  "focused": {
+    "files": 4,
+    "tests": 127,
+    "status": "passed",
+    "log": "/tmp/still-shift-ms1-display-focused-4.log"
+  },
+  "checks": [
+    {
+      "command": "pnpm build",
+      "status": "passed",
+      "log": "/tmp/still-shift-ms1-display-build-2.log"
+    },
+    {
+      "command": "pnpm lint",
+      "status": "passed",
+      "log": "/tmp/still-shift-ms1-display-lint-2.log"
+    },
+    {
+      "command": "pnpm build:package",
+      "status": "passed",
+      "log": "/tmp/still-shift-ms1-display-package-build-1.log"
+    }
+  ],
+  "retainedFailures": [
+    {
+      "log": "/tmp/still-shift-ms1-display-focused-1.log",
+      "reason": "Three count fixtures omitted required tabular figures; source count validation rejected them."
+    },
+    {
+      "log": "/tmp/still-shift-ms1-display-build-1.log",
+      "reason": "Optional type fields and nonserialized provider fixture params failed TypeScript; focused127 runtime tests had passed separately."
+    },
+    {
+      "log": "/tmp/still-shift-ms1-semantic-package-types-2.log",
+      "reason": "Inferred public engine return declarations referenced internal renderer report paths."
+    },
+    {
+      "log": "/tmp/still-shift-ms1-semantic-package-types-3.log",
+      "reason": "Public renderer barrel omitted the new named report type."
+    },
+    {
+      "log": "/tmp/still-shift-ms1-semantic-package-types-4.log",
+      "reason": "Named public report rendererVersion was narrower than actual engine result."
+    }
+  ],
+  "earlierTypeRepairPass": "/tmp/still-shift-ms1-semantic-package-types-5.log",
+  "limits": {
+    "partialCopies": "Candidate strings or correction fragments do not claim a complete shaped phrase.",
+    "factualTruth": "unassessed",
+    "renderedGlyphReadability": "requires-encoded-review",
+    "humanContinuousReview": "pending",
+    "listening": "pending"
+  },
+  "next": [
+    "Complete actual historical and hermetic encoded packet.",
+    "Refresh immutable installed archive and OS-denied E01 proof.",
+    "Rerun complete local pnpm check; retain prior timeout/focused recorder repair."
+  ]
+}

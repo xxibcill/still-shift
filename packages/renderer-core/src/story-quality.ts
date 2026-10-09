@@ -334,9 +334,15 @@ export {
   CompositionReadingMemberSchema,
   MOTION_LINT_CODES,
   type CompositionQualityPolicy,
+  type CompositionSemanticAssociation,
   type MotionLintDiagnostic,
   type MotionLintCode,
 } from "./composition/quality-policy.ts";
+
+export type {
+  SemanticAssociationAssessment,
+  SemanticViolationInterval,
+} from "./composition/semantic-quality.ts";
 
 /** Advisory composition craft report. Evaluation, contracts and rendered output never depend on lint. */
 export function analyzeCompositionQuality(
@@ -511,3 +517,7 @@ export function analyzeCompositionQuality(
     limitations,
   };
 }
+
+export type CompositionQualityReport = ReturnType<
+  typeof analyzeCompositionQuality
+>;

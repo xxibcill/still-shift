@@ -32,6 +32,7 @@ import {
   retypedClusters,
   reserveCountWidth,
   resolveDisplayedText,
+  correctionReplacementStart,
   transitionSlideLimit,
 } from "./typography-transition.ts";
 import { drawTextDecorations } from "./typography-decorations.ts";
@@ -449,7 +450,7 @@ export function prepareTypography(
       entries.push({
         node: replacement,
         raster,
-        start: event.start + Math.floor(event.duration / 2),
+        start: correctionReplacementStart(event),
         end: event.end,
         x: box.x,
         y:

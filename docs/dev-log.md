@@ -55,8 +55,11 @@ still hold before relying on them.
   stopped at an existing metadata trace timeout; focused circular suffix recorder
   repair passes all10 assertions with unchanged5s limit. Linked quantity/intact-phrase
   encoded evidence packet and complete gate rerun remain before MS1 PR/MS1N.
-  Semantic policy repair passes118 focused tests/types/lint; changed package inputs
-  require a refreshed archive and isolated proof after encoded verification.
+  Semantic/display-copy repair passes127 focused tests, source types/lint and
+  package build. Reproduced count endpoint false pass is fixed using shared
+  renderer clocks and correction onset; mixed/partial copy remains explicit.
+  Encoded23-case historical/hermetic packet and refreshed archive/isolated proof
+  are in flight because production package inputs changed.
   Full baseline refresh changes
   only29 editorial frames for the reproduced mask fix. Human continuous/listening
   review remains pending. Original checkout edits preserved.
@@ -171,6 +174,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Verify displayed semantic copy and public report closure
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1` from `87419214`.
+- **Done:** shared actual displayed count/state/source clock, partial-transition
+  and persistent correction evidence; public schema/report exports; bounded browser
+  namespace readiness; installed saved strict-profile regression.
+- **Results:**127 focused quality tests, source types/lint and package build pass.
+  Earlier count-fixture tabular validation, fixture typings and package declaration
+  failures remain retained as separate attempts.
+- **Open / next:**23-case actual historical and hermetic encoded packet, new exact
+  archive/OS-denied E01 proof, complete local gate, then MS1 PR and MS1N.
+- **Records:** [display repair](./mechanism-shorts-ms1-semantic-display-results.json),
+  [milestone evidence](./mechanism-shorts-ms1-results.json).
 
 ### 2026-10-10 — Complete semantic presentation context
 

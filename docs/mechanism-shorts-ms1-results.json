@@ -68,6 +68,14 @@
       "status": "implemented-focused-verified-encoded-packet-in-progress",
       "behavior": "Explicit quantity/phrase associations assess entire presentation intervals independently of longest reading holds. Strict profile requires context; legacy unannotated scenes report unassessed. Missing/faint context, copy/unit changes and invalid references retain exact member/frame faults. Shared saved-policy resolution reaches CLI/Lab and pixel thresholds; normalized policy/version and measured value-frame counts are reported. No quantity inference or rendered-glyph/factual truth claim.",
       "fullGate": "pending-rerun"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "actual-displayed-copy-and-public-report-closure",
+      "status": "implemented-focused-verified-encoded-packet-in-progress",
+      "behavior": "Reproduced count endpoint false pass repaired with existing display/source-clock and correction-onset resolvers. Actual held blend endpoints are readable; mixed/partial and persistent correction artwork cannot establish intact declared context. Public schemas/report types and persisted strict installed pixel lint regression are included. No rendered pixel change or glyph/factual acceptance inferred.",
+      "record": "./mechanism-shorts-ms1-semantic-display-results.json",
+      "fullGate": "pending-rerun"
     }
   ],
   "verification": [
@@ -327,6 +335,13 @@
         "/tmp/still-shift-ms1-semantic-focused-3.log"
       ],
       "notes": "Initial test type widened an optional evaluation field; then pixel fixture used4x4 below published16 minimum. Both test setup faults retained and corrected; assertions unchanged."
+    },
+    {
+      "command": "focused display semantic/reading/speech/general quality",
+      "status": "passed",
+      "files": 4,
+      "tests": 127,
+      "log": "/tmp/still-shift-ms1-display-focused-4.log"
     }
   ],
   "renderEvidence": [

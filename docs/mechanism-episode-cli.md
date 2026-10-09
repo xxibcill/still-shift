@@ -155,7 +155,10 @@ remain possible. Motion stability and duration still belong to reading declarati
 Reports always include `semantic.status`: legacy scenes without associations are
 `unassessed`; the strict profile requires declarations. Reports retain the normalized
 semantic policy/version, measured value-frame counts and fault intervals. This is
-assessment of declared copy and measured layer context. Factual truth and rendered
+assessment of displayed logical copy and measured layer context. Counts use the
+renderer's local clock and formatting. Distinct mixed/partial transitions and
+positive correction artwork cannot certify an intact declared phrase; a span
+replacement remains fragment evidence after its animation. Factual truth and rendered
 glyph readability remain separate; masks, inline glyph opacity and contrast require
 encoded review. Use full selection, zero stagger, an all-text anchor and no mask for
 the inspected intact-phrase treatment; this does not establish finer Thai segmentation.

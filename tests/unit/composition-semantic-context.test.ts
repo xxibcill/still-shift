@@ -1,3 +1,4 @@
+import { compositionQualityFrame } from "../../packages/renderer-core/src/composition/quality-samples.ts";
 import { analyzeRenderedCompositionQuality } from "../../packages/renderer-core/src/composition/quality-render.ts";
 import type { CompositionPreview } from "../../packages/renderer-core/src/composition/render/index.ts";
 import { describe, expect, it } from "vitest";
@@ -356,4 +357,282 @@ it("measures pixels with the saved policy threshold and honors an explicit overr
   expect(
     override.diagnostics.some((finding) => finding.code === "frozen-pixels"),
   ).toBe(false);
+});
+
+describe("semantic copy follows displayed typography", () => {
+  function countingFixture() {
+    const data = fixture();
+    const value = data.comp.layers[0]!;
+    if (value.type !== "text") throw new Error("Expected text value");
+    value.fontAsset = "plex";
+    value.style = "numeric";
+    data.comp.textStyles = {
+      numeric: { fontAsset: "plex", figures: "tabular" },
+    };
+    data.comp.assets = [
+      {
+        id: "plex",
+        type: "font",
+        path: "font.ttf",
+        sha256: "sha256:" + "a".repeat(64),
+        weight: "600",
+      },
+    ];
+    value.states = ["12", "24"];
+    value.transition = {
+      kind: "count",
+      window: { start: 0, end: 60 },
+      easing: "linear",
+    };
+    data.policy.evaluation.textBounds.value = Array(2).fill({
+      left: 0,
+      right: 100,
+      top: 0,
+      bottom: 48,
+    });
+    return { ...data, value };
+  }
+  it("rejects an original endpoint declaration when the displayed count changes and stays changed", () => {
+    const { comp, policy } = countingFixture();
+    const report = analyzeCompositionQuality(comp, policy);
+    expect(report.semantic.status).toBe("failed");
+    expect(semanticFindings(report)).toContainEqual(
+      expect.objectContaining({
+        code: "semantic-copy-changed",
+        path: "semanticAssociations.0.members.0.text",
+        frames: [3, 89],
+        measured: 87,
+      }),
+    );
+    for (const [frame, text] of [
+      [0, "12"],
+      [30, "18"],
+      [60, "24"],
+      [89, "24"],
+    ] as const)
+      expect(
+        compositionQualityFrame(comp, frame, policy.evaluation).layers.get(
+          "value",
+        )?.text,
+      ).toBe(text);
+  });
+  it("uses fractional local time through stretch and keeps seek order deterministic", () => {
+    const { comp, policy, value } = countingFixture();
+    value.stretch = 2;
+    const frames = [61.2, 30.4, 0, 120, 60];
+    const copies = frames.map(
+      (frame) =>
+        compositionQualityFrame(comp, frame, policy.evaluation).layers.get(
+          "value",
+        )?.text,
+    );
+    expect(copies).toEqual(["18", "15", "12", "24", "18"]);
+    expect(
+      [...frames]
+        .reverse()
+        .map(
+          (frame) =>
+            compositionQualityFrame(comp, frame, policy.evaluation).layers.get(
+              "value",
+            )?.text,
+        )
+        .reverse(),
+    ).toEqual(copies);
+  });
+  it("retains full from copy at transition start but cannot certify a partial retype", () => {
+    const { comp, policy, value } = countingFixture();
+    value.transition!.kind = "retype";
+    expect(
+      compositionQualityFrame(comp, 0, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("12");
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value"),
+    ).toMatchObject({ textCopies: ["12", "24"] });
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBeUndefined();
+    expect(
+      compositionQualityFrame(comp, 60, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("24");
+    const report = analyzeCompositionQuality(comp, policy);
+    expect(semanticFindings(report)).toContainEqual(
+      expect.objectContaining({
+        code: "semantic-copy-changed",
+        frames: [1, 89],
+      }),
+    );
+  });
+  it("does not call a staggered roll intact when its global easing briefly reaches the endpoint", () => {
+    const { comp, policy, value } = countingFixture();
+    value.transition = {
+      kind: "roll",
+      window: { start: 0, end: 10 },
+      stagger: 1,
+      easing: { overshoot: 1 },
+    };
+    const sample = compositionQualityFrame(
+      comp,
+      5,
+      policy.evaluation,
+    ).layers.get("value");
+    expect(sample?.text).toBeUndefined();
+    expect(sample?.textCopies).toEqual(["12", "24"]);
+    expect(
+      compositionQualityFrame(comp, 10, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("24");
+  });
+  it("selects actual source at held blend endpoints and requires intact copy between them", () => {
+    const { comp, policy, value } = countingFixture();
+    delete value.transition;
+    value.state = 1;
+    value.stateFrom = 0;
+    value.stateMix = 0;
+    expect(analyzeCompositionQuality(comp, policy).semantic.status).toBe(
+      "passed",
+    );
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("12");
+    value.stateMix = 1;
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("24");
+    value.stateMix = 0.5;
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value"),
+    ).toMatchObject({ textCopies: ["12", "24"] });
+    value.states![1] = "12";
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("12");
+  });
+  it("uses the actual pinned style font and preserves the system text path", () => {
+    const { comp, policy, value } = countingFixture();
+    value.fontAsset = undefined;
+    value.style = "typed";
+    comp.textStyles = { typed: { fontAsset: "plex", figures: "tabular" } };
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("18");
+    comp.textStyles.typed!.fontAsset = "unresolved";
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("12");
+  });
+  it("resolves rich provider transitions using baked source time instead of sample ordinal", () => {
+    const { comp, policy, value } = countingFixture();
+    comp.layers[0] = {
+      id: "value",
+      type: "provider",
+      provider: "component.typography@1.1.0",
+      assets: ["plex"],
+      bounds: [0, 0, 100, 48],
+      transform: { position: [140, 60] },
+      sampleTimes: [0, 30, 60],
+      params: {
+        node: JSON.parse(JSON.stringify({ ...value, type: "text" })),
+        frameCount: 90,
+        samples: [
+          { state: 0, reveal: 1 },
+          { state: 0, reveal: 1 },
+          { state: 0, reveal: 1 },
+        ],
+      },
+    };
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("18");
+    expect(
+      compositionQualityFrame(comp, 60, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("24");
+    expect(analyzeCompositionQuality(comp, policy).semantic.status).toBe(
+      "failed",
+    );
+  });
+  it("honors component state overrides while story text draws its baked sample copy", () => {
+    const { comp, policy, value } = countingFixture();
+    delete value.transition;
+    const provider = {
+      id: "value",
+      type: "provider" as const,
+      provider: "component.typography@1.1.0",
+      assets: ["plex"],
+      bounds: [0, 0, 100, 48] as [number, number, number, number],
+      transform: { position: [140, 60] as [number, number] },
+      state: 1,
+      stateFrom: 0,
+      stateMix: 1,
+      params: {
+        node: JSON.parse(JSON.stringify({ ...value, type: "text" })),
+        frameCount: 90,
+        samples: [{ state: 0, reveal: 1 }],
+      },
+    };
+    comp.layers[0] = provider;
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("24");
+    provider.stateMix = 0.5;
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value"),
+    ).toMatchObject({ textCopies: ["12", "24"] });
+    provider.provider = "story.text@1.0.0";
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("12");
+  });
+});
+
+describe("semantic correction artwork", () => {
+  it("retains correction artwork after its animation and never calls a span replacement the whole phrase", () => {
+    const { comp, policy } = fixture();
+    const value = comp.layers[0]!;
+    if (value.type !== "text") throw new Error("Expected text");
+    value.fontAsset = "plex";
+    comp.assets = [
+      {
+        id: "plex",
+        type: "font",
+        path: "font.ttf",
+        sha256: "sha256:" + "a".repeat(64),
+        weight: "600",
+      },
+    ];
+    value.corrections = [{ start: 10, end: 30, replacement: "24" }];
+    expect(
+      compositionQualityFrame(comp, 20, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("12");
+    for (const frame of [21, 30, 89]) {
+      const sample = compositionQualityFrame(
+        comp,
+        frame,
+        policy.evaluation,
+      ).layers.get("value");
+      expect(sample?.text).toBeUndefined();
+      expect(sample?.textCopies).toEqual(["12", "24"]);
+    }
+    expect(
+      semanticFindings(analyzeCompositionQuality(comp, policy)),
+    ).toContainEqual(
+      expect.objectContaining({
+        code: "semantic-copy-changed",
+        frames: [21, 89],
+        measured: 69,
+      }),
+    );
+  });
 });

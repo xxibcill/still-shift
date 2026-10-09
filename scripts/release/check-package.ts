@@ -121,6 +121,10 @@ try {
     metadata.version,
   );
   const program = `import { comp, solid } from "still-shift";
+import type { CompositionLintReport } from "still-shift/engine";
+import type { CompositionSemanticAssociation } from "still-shift/renderer";
+export const declaredContext: CompositionSemanticAssociation = { id: "amount", purpose: "Read the amount with units", kind: "quantity", start: 0, end: 4, members: [{ layer: "value", text: "12", kind: "value" }, { layer: "unit", text: "mm", kind: "unit" }] };
+export function semanticStatus(report: CompositionLintReport) { return report.semantic.status; }
 export default comp({ id: "package-test", width: 320, height: 192, fps: 24, frames: 4, background: "#fff4df" }, (scene) => {
   scene.add(solid("card", { color: "#305c70", size: [100, 100] }));
 });\n`;
@@ -166,6 +170,9 @@ export default comp({ id: "package-test", width: 320, height: 192, fps: 24, fram
     JSON.stringify({
       schemaVersion: "composition-1",
       id: "installed-pixel-lint",
+      metadata: {
+        readingPolicy: { semanticProfile: "require-declared-context" },
+      },
       width: 320,
       height: 192,
       fps: 24,
@@ -188,10 +195,15 @@ export default comp({ id: "package-test", width: 320, height: 192, fps: 24, fram
     resolve(project, "pixel-lint.mjs"),
     `import assert from "node:assert/strict";
 import { lintCompositionFile } from "still-shift/engine";
+import { CompositionSemanticAssociationSchema } from "still-shift/renderer";
+CompositionSemanticAssociationSchema.parse({ id: "amount", purpose: "Read the amount with units", kind: "quantity", start: 0, end: 4, members: [{ layer: "value", text: "12", kind: "value" }, { layer: "unit", text: "mm", kind: "unit" }] });
 const report = await lintCompositionFile("pixel-lint.json", {}, { pixels: true });
 assert.equal(report.backend, "canvas2d");
 assert.equal(typeof report.rendererVersion, "string");
 assert.ok(Array.isArray(report.diagnostics));
+assert.equal(report.semantic.profile, "require-declared-context");
+assert.equal(report.semantic.status, "failed");
+assert.ok(report.diagnostics.some(({ code }) => code === "semantic-context-required"));
 console.log("Installed browser pixel lint completed");\n`,
   );
   await run("installed browser pixel-quality analysis", process.execPath, [

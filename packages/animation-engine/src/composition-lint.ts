@@ -15,6 +15,7 @@ import {
   type PassageDiagnostic,
   type CompositionQualityPolicy,
   type CompositionBackend,
+  type CompositionQualityReport,
 } from "@still-shift/renderer-core";
 import type * as Renderer from "@still-shift/renderer-core";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
@@ -25,6 +26,15 @@ import {
 } from "@still-shift/execution-runtime/browser";
 import { loadComposition } from "./composition-render.ts";
 
+export type CompositionLintReport = CompositionQualityReport & {
+  validationDiagnostics: PassageDiagnostic[];
+  backend?: CompositionBackend;
+  rendererVersion?: string;
+  textBounds?: NonNullable<
+    NonNullable<CompositionQualityPolicy["evaluation"]>["textBounds"]
+  >;
+};
+
 export async function lintCompositionFile(
   input: string,
   policy: CompositionQualityPolicy = {},
@@ -34,7 +44,7 @@ export async function lintCompositionFile(
     collectTextBounds?: boolean;
     signal?: AbortSignal;
   } = {},
-) {
+): Promise<CompositionLintReport> {
   options.signal?.throwIfAborted();
   const backend = options.backend ?? "canvas2d";
   const loaded = await loadComposition(input, backend).catch(
@@ -91,6 +101,19 @@ export async function lintCompositionFile(
       type: "module",
       content: `import * as renderer from ${JSON.stringify(moduleUrl)}; globalThis.__stillShiftLintRenderer = renderer;`,
     });
+    options.signal?.throwIfAborted();
+    await page.waitForFunction(
+      () =>
+        Boolean(
+          (
+            globalThis as typeof globalThis & {
+              __stillShiftLintRenderer?: typeof Renderer;
+            }
+          ).__stillShiftLintRenderer,
+        ),
+      undefined,
+      { timeout: 30_000 },
+    );
     options.signal?.throwIfAborted();
     const result = await page.evaluate(
       async ({

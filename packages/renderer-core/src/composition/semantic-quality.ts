@@ -54,7 +54,7 @@ function readable(
   return (
     sample.opacity >= policy.readingOpacity &&
     sample.reveal >= policy.readingReveal &&
-    (sample.state.stateMix ?? 1) >= 0.95 &&
+    typeof sample.text === "string" &&
     bounds.left === clipped.left &&
     bounds.right === clipped.right &&
     bounds.top === clipped.top &&
@@ -157,7 +157,9 @@ export function analyzeCompositionSemantics(
       const sample = firstSamples.get(member.layer);
       if (
         sample &&
-        (sample.state.layer.type === "text" || typeof sample.text === "string")
+        (sample.state.layer.type === "text" ||
+          typeof sample.text === "string" ||
+          sample.textCopies !== undefined)
       )
         continue;
       invalidReferences.add(member.layer);
