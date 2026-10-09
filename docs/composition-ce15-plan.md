@@ -2581,6 +2581,21 @@ typography items / 1,309 frames pass. Glyph ratio is 1.395806× under the unchan
 assertion. Build, scoped lint and package boundaries pass. Test broker/decoder
 corrections and complete local evidence are in [review repair results](./pr-49-review-fix-results.json).
 
-The fractional PCM Lab preview repair remains pending. These are scoped PR
-follow-ups under the repository verification policy; no new full repository gate
-is run or claimed. One commit per finding and one final push are authorized.
+The second repair uses the mixer's `compositionPcmBoundary` rule in Lab's
+prepared-master validation. The three new valid-master unit cases at 7, 29 and
+59 fps fail before the repair and pass afterward. All 48 focused loader/fps,
+preview and mixer tests pass; the explicit preflighted Python environment fixes
+two initially missing worktree interpreter references, with zero PCM sample delta.
+
+The existing native media browser suite passes, including six real Lab cases
+across Canvas and WebGL at those frame rates. Complete master and offline seek
+suffix PCM hashes match the source through the distinct final samples. Actual
+playback starts at the exact frame-one PCM boundary and retains the complete final
+interval. Existing editing, source-watch and byte-identical draft-export checks
+remain green. Build, scoped lint, formatting and package boundaries pass.
+
+These are scoped PR follow-ups under the repository verification policy; no new
+full repository gate is run or claimed. The cache repair is `7b0d546f`; this audio
+repair is the second finding commit. Deliver both in one final normal push to
+`codex/composition-ce15`, then owner review/merge is next. The owner checkout is
+untouched, and GitHub Actions remain prohibited.

@@ -1,6 +1,7 @@
 import {
   CompositionPreparedAudioSchema,
   compositionAudioWavHeader,
+  compositionPcmBoundary,
   compositionMediaMappingDocument,
   resolveCompositionMediaLimits,
   type Composition,
@@ -35,7 +36,7 @@ export class CompositionAudioPreviewLoader {
     const audio = CompositionPreparedAudioSchema.parse(input);
     if (
       audio.sampleCount !==
-        (composition.frameCount * 48000) / composition.fps ||
+        compositionPcmBoundary(composition.frameCount, composition.fps) ||
       audio.evaluatorVersion !== COMPOSITION_EVALUATOR_VERSION
     )
       throw new Error("Native audio preview clock or evaluator differs");

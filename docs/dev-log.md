@@ -43,14 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #49 review repairs in progress (2026-10-09):** both P2 findings are
-  posted inline at `efa42f42`. The cache-capacity fix passes 101 focused units,
-  384 new exact preview comparisons, eight production exports / 512 decoded
-  frames, all 144 existing surface cases / 8,000 frame checks, eight typography
-  fixtures and eight frozen typography items / 1,309 frames. Shared tint capacity
-  stays bounded; local 16-slot eviction and native retirement are verified.
-  The fractional-PCM Lab preview fix is next. One commit per finding and one
-  final push are authorized. No full repository gate is run or claimed.
+- **PR #49 review repairs verified (2026-10-09):** both P2 findings posted
+  inline at `efa42f42` are fixed, with one commit per finding and one final normal
+  push to the PR branch. Cache fallback `7b0d546f` passes 101 focused units,
+  384 exact preview comparisons, eight production exports / 512 decoded frames,
+  144 existing surface cases / 8,000 checks, eight typography fixtures and eight
+  frozen typography items / 1,309 frames. The PCM preview repair passes 48 focused
+  tests and real Lab Canvas/WebGL playback at 7, 29 and 59 fps with exact full
+  master/suffix PCM and final intervals. Build, scoped lint, formatting and package
+  boundaries pass. Owner review/merge is next. No full repository gate is run or
+  claimed; owner checkout remains untouched.
   [Review repair evidence](./pr-49-review-fix-results.json).
 
 - **CE15 complete (2026-10-09):** PR #49 checkpoint `ae1a05bb` passes the complete
@@ -91,6 +93,22 @@ still hold before relying on them.
   remain disabled; all verification is local.
 
 ## Entries
+
+### 2026-10-09 — PR #49 fractional PCM preview
+
+- **Agent / branch:** Codex on `codex/pr49-review-fixes`, after `7b0d546f`.
+- **Done:** validate Lab's master with the mixer/playback PCM boundary rule;
+  add 7/29/59 fps regressions, retaining native integrity and memory checks.
+- **Results:** three new cases fail before the repair; all 48 focused tests pass
+  after it. Six actual Canvas/WebGL Lab cases match full master and seek PCM bits,
+  distinct final samples, scheduled offsets/durations and complete final intervals.
+  Existing native media authoring/playback/export browser checks also pass.
+- **Correction:** two reference tests initially lacked worktree Python; explicit
+  preflighted `STILL_SHIFT_PYTHON` passes both with zero PCM sample delta.
+- **Scope / next:** build/lint/format/boundaries pass; no full gate. This is the
+  second finding commit; deliver both repairs in one final normal push, then owner review.
+- **Records:** [review repair evidence](./pr-49-review-fix-results.json),
+  [CE15 plan](./composition-ce15-plan.md#pr-49-review-repairs--2026-10-09).
 
 ### 2026-10-09 — PR #49 bounded tint fallback
 
