@@ -16,7 +16,7 @@ async function fixturePreview(padding = 1) {
   const fixtures = resolve("benchmarks/fixtures/composition");
   const directory = await mkdtemp(join(fixtures, "capture-lifetime-"));
   const cache = await mkdtemp(join(tmpdir(), "fixture-capture-cache-"));
-  vi.stubEnv("STILL_SHIFT_COMPOSITION_MEDIA_CACHE", cache);
+  vi.stubEnv("STILL_SHIFT_COMPOSITION_MEDIA_CACHE", join(cache, "media"));
   const png = mediaRgbaPng(
     8,
     8,
@@ -166,7 +166,7 @@ it("keeps registered native captures through additional prepares and releases on
     const captures: { capture: string; assets: Record<string, string> }[] = [];
     for (let index = 0; index < 6; index++) {
       const response = await preview.prepare();
-      expect(response.status).toBe(200);
+      expect(response.status, await response.clone().text()).toBe(200);
       captures.push(await response.json());
     }
     for (const capture of captures) {
@@ -194,7 +194,7 @@ it("bounds live and pending fixture captures without evicting an existing owner"
     const captures: { capture: string; assets: Record<string, string> }[] = [];
     for (let index = 0; index < 64; index++) {
       const response = await preview.prepare();
-      expect(response.status).toBe(200);
+      expect(response.status, await response.clone().text()).toBe(200);
       captures.push(await response.json());
     }
     expect((await preview.prepare()).status).toBe(409);
@@ -289,7 +289,7 @@ it.each([10, 99])(
     const preview = await fixturePreview(padding);
     try {
       const response = await preview.prepare();
-      expect(response.status).toBe(200);
+      expect(response.status, await response.clone().text()).toBe(200);
       const capture = (await response.json()) as {
         capture: string;
         assets: Record<string, string>;
