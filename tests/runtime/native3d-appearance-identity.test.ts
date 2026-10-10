@@ -66,9 +66,13 @@ async function helperWithDescriptors(directory: string, descriptors: string) {
       root,
       "packages/scene-contract/src/index.ts",
     ),
-    "@still-shift/renderer-core": join(
+    "../../renderer-core/src/mechanism/canonical.ts": join(
       root,
-      "packages/renderer-core/src/index.ts",
+      "packages/renderer-core/src/mechanism/canonical.ts",
+    ),
+    "../../renderer-core/src/passage-diagnostics.ts": join(
+      root,
+      "packages/renderer-core/src/passage-diagnostics.ts",
     ),
     "../../renderer-core/src/native3d/appearance-modules.ts": replacement,
   };
