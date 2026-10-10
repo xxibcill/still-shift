@@ -1,0 +1,497 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": { "type": "string", "const": "mechanism-evaluator-2" },
+    "frame": { "type": "number", "minimum": 0, "maximum": 108000 },
+    "seed": { "type": "integer", "minimum": 0, "maximum": 2147483647 },
+    "camera": {
+      "type": "object",
+      "properties": {
+        "position": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+          ]
+        },
+        "target": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+          ]
+        },
+        "up": {
+          "default": [0, 1, 0],
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+          ]
+        },
+        "fovDegrees": { "type": "number", "minimum": 1, "maximum": 179 },
+        "near": { "type": "number", "minimum": 0.001, "maximum": 1000000 },
+        "far": { "type": "number", "minimum": 0.002, "maximum": 10000000 }
+      },
+      "required": ["position", "target", "up", "fovDegrees", "near", "far"],
+      "additionalProperties": false
+    },
+    "parts": {
+      "propertyNames": {
+        "type": "string",
+        "maxLength": 128,
+        "pattern": "^[A-Za-z][\\w.-]*$"
+      },
+      "maxProperties": 128,
+      "type": "object",
+      "properties": {},
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "parent": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "localMatrix": {
+            "readOnly": true,
+            "type": "array",
+            "prefixItems": [
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" }
+            ]
+          },
+          "worldMatrix": {
+            "readOnly": true,
+            "type": "array",
+            "prefixItems": [
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" },
+              { "type": "number" }
+            ]
+          },
+          "visible": { "type": "boolean" }
+        },
+        "required": ["id", "localMatrix", "worldMatrix", "visible"],
+        "additionalProperties": false
+      }
+    },
+    "rigs": {
+      "propertyNames": {
+        "type": "string",
+        "maxLength": 128,
+        "pattern": "^[A-Za-z][\\w.-]*$"
+      },
+      "maxProperties": 8,
+      "type": "object",
+      "properties": {},
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "type": { "type": "string", "const": "slider" },
+              "position": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "required": ["id", "type", "position"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "type": { "type": "string", "const": "hinge" },
+              "angleRadians": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "required": ["id", "type", "angleRadians"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "type": { "type": "string", "const": "spring-return" },
+              "targetRig": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "value": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              "phase": {
+                "type": "string",
+                "enum": ["held", "returning", "contact", "rest"]
+              }
+            },
+            "required": ["id", "type", "targetRig", "value", "phase"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "type": { "type": "string", "const": "ratchet" },
+              "position": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              "toothIndex": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4095
+              },
+              "phase": {
+                "type": "string",
+                "enum": ["advancing", "seated", "released"]
+              },
+              "pawlDeflection": { "type": "number", "minimum": 0, "maximum": 1 }
+            },
+            "required": [
+              "id",
+              "type",
+              "position",
+              "toothIndex",
+              "phase",
+              "pawlDeflection"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "shapeStates": {
+      "propertyNames": {
+        "type": "string",
+        "maxLength": 128,
+        "pattern": "^[A-Za-z][\\w.-]*$"
+      },
+      "maxProperties": 4,
+      "type": "object",
+      "properties": {},
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "shape": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "mesh": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "ownerPart": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "topologySha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "stateKey": { "type": "string", "minLength": 1, "maxLength": 1024 },
+          "positions": {
+            "minItems": 9,
+            "maxItems": 12288,
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": -1000000,
+              "maximum": 1000000
+            }
+          },
+          "normals": {
+            "minItems": 9,
+            "maxItems": 12288,
+            "type": "array",
+            "items": { "type": "number", "minimum": -1, "maximum": 1 }
+          },
+          "bounds": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "max": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              }
+            },
+            "required": ["min", "max"],
+            "additionalProperties": false
+          },
+          "landmarks": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^(root|tip|seat-a|seat-b|coil-a|coil-b)$"
+            },
+            "additionalProperties": {
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            }
+          }
+        },
+        "required": [
+          "shape",
+          "mesh",
+          "ownerPart",
+          "topologySha256",
+          "stateKey",
+          "positions",
+          "normals",
+          "bounds",
+          "landmarks"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "anchors": {
+      "propertyNames": {
+        "type": "string",
+        "maxLength": 128,
+        "pattern": "^[A-Za-z][\\w.-]*$"
+      },
+      "maxProperties": 64,
+      "type": "object",
+      "properties": {},
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "anchor": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": { "type": "string", "const": "part-local" },
+                  "part": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  "position": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      }
+                    ]
+                  }
+                },
+                "required": ["kind", "part", "position"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": { "type": "string", "const": "shape-landmark" },
+                  "shape": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  "landmark": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  }
+                },
+                "required": ["kind", "shape", "landmark"],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "part": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "world": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+              { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+              { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+            ]
+          },
+          "pixel": {
+            "anyOf": [
+              {
+                "type": "array",
+                "prefixItems": [{ "type": "number" }, { "type": "number" }]
+              },
+              { "type": "null" }
+            ]
+          },
+          "depth": { "type": "number" },
+          "projectionVisibility": {
+            "type": "string",
+            "enum": [
+              "in-frame",
+              "outside-frame",
+              "behind-camera",
+              "clipped",
+              "hidden-part"
+            ]
+          }
+        },
+        "required": [
+          "anchor",
+          "source",
+          "part",
+          "world",
+          "pixel",
+          "depth",
+          "projectionVisibility"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "relationships": {
+      "propertyNames": {
+        "type": "string",
+        "maxLength": 128,
+        "pattern": "^[A-Za-z][\\w.-]*$"
+      },
+      "maxProperties": 128,
+      "type": "object",
+      "properties": {},
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["coincident", "signed-gap", "fixed-offset", "engagement"]
+          },
+          "measured": {
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": -1000000,
+              "maximum": 1000000
+            }
+          },
+          "residual": { "type": "number", "minimum": 0, "maximum": 10000000 },
+          "tolerance": { "type": "number", "minimum": 0, "maximum": 0.001 }
+        },
+        "required": ["id", "type", "measured", "residual", "tolerance"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "version",
+    "frame",
+    "seed",
+    "camera",
+    "parts",
+    "rigs",
+    "shapeStates",
+    "anchors",
+    "relationships"
+  ],
+  "additionalProperties": false
+}

@@ -2,7 +2,7 @@
   "schemaVersion": "mechanism-shorts-ms2-results-1",
   "milestone": "MS2",
   "date": "2026-10-11",
-  "status": "in-progress-native-v2-integration",
+  "status": "in-progress-native-v2-and-tape-pack-candidate",
   "branch": "codex/mechanism-ms2",
   "baseMain": "3fab0162c51ca3b29fcefc2ecdbda0e475f985c9",
   "nativePrerequisite": {
@@ -4157,11 +4157,1731 @@
           "sha256": "sha256:7af8245961ae7ba6567f092a9219c0a56da335389885c52ac67fc49f0daa593f"
         }
       ]
+    },
+    {
+      "id": "native2-lab-runtime-after-commit-1",
+      "status": "passed-required-runtime-tier-on-clean-lab-commit",
+      "sourceCheckpoint": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59",
+      "sourceState": "clean-committed-native2-lab-source-before-tape-pack-edits",
+      "actualRootSession": 31818,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-runtime-after-lab-inputs-1.json",
+        "bytes": 412907,
+        "sha256": "sha256:cd14e17c4ec78ad5bd24025582466fff1f8b3a7980b7a595bfa3f961c8b5f747",
+        "files": 2420,
+        "inputBytes": 118393643,
+        "sourceCommit": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-runtime-after-lab-1.log",
+          "bytes": 37375,
+          "sha256": "sha256:cbd1c56c38007d1554331f1baad1a12a51fd1f85b1413c686d33c7b2c886f4ae"
+        }
+      ],
+      "terminalObservedAtUTC": "2026-10-10 22:59:42 UTC",
+      "qualification": "Actual complete pnpm check:runtime aggregate exited0 on clean commit446b5f9f before pack edits: toolchain, runtime177/27, integration321/56, depth and three Lab smoke groups. Input verification unchanged. This closes the prior export/Lab runtime deferral on that committed source; later pack changes require their own refreshed checks. Staged verification, no uninterrupted full MS2 pass.",
+      "runtimeTests": 177,
+      "runtimeFiles": 27,
+      "integrationTests": 321,
+      "integrationFiles": 56
+    },
+    {
+      "id": "tape-pack-build-1",
+      "status": "failed-eight-typescript-diagnostics",
+      "sourceCheckpoint": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59",
+      "sourceState": "working-first-tape-pack-candidate-and-metadata-slice",
+      "actualRootSession": 30095,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-tape-pack-inputs-1.json",
+        "bytes": 413421,
+        "sha256": "sha256:a9a6faa212a6b17b934b88099a59181fa1f32c3f9234f303375374e1f3db4b09",
+        "files": 2423,
+        "inputBytes": 118428165,
+        "sourceCommit": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-format-1.log",
+          "bytes": 337,
+          "sha256": "sha256:cd8246a0856c67c18b6382b4631c7d1f5c9bbea1b42bffa4881d19df1a4acebb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-schema-1.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-identity-1.log",
+          "bytes": 260,
+          "sha256": "sha256:571c28553c63e6c5e1467692fe9d39cd5c958fe77209832a819e33c0856bb071"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-build-1.log",
+          "bytes": 1462,
+          "sha256": "sha256:72e2cb34df638c8005973a939c0f014c93d283fb51bc410277fda0a68b3a53ee"
+        }
+      ],
+      "qualification": "Actual schema and appearance generation succeeded, then build failed with five wrong nested relative imports, two missing-anchor narrowing errors and the unresolved error-base name. Focused test was not reached. Fixed import depth and never-return narrowing; no contract/tolerance relaxation.",
+      "diagnostics": 8
+    },
+    {
+      "id": "tape-pack-focused-2",
+      "status": "passed-build-and-focused-tape-original-geometry",
+      "sourceCheckpoint": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59",
+      "sourceState": "working-first-tape-pack-candidate-and-metadata-slice",
+      "actualRootSession": 21299,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-tape-pack-inputs-2.json",
+        "bytes": 413421,
+        "sha256": "sha256:62ac3d1051ad0f8bb489c9dd3254ad6dc3ee22e52e120ea3d26cc7211153eeac",
+        "files": 2423,
+        "inputBytes": 118428212,
+        "sourceCommit": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-format-2.log",
+          "bytes": 63,
+          "sha256": "sha256:aa1882795f2bf0a32cf8a4ad4fec6fcc39eea7faf3aac6e58e8b8fe45c1c7c61"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-build-2.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-unit-2.log",
+          "bytes": 1076,
+          "sha256": "sha256:55ea0589b156fe00f7a22437e819a28ea7d4cdfbe8f6145888985c7a90303b44"
+        }
+      ],
+      "qualification": "Actual focused15/2 passes: six new metadata/tape invariants and nine original geometry cases. No actual browser/export acceptance on this earlier source.",
+      "tests": 15,
+      "files": 2
+    },
+    {
+      "id": "tape-pack-build-3",
+      "status": "failed-public-loader-signature",
+      "sourceCheckpoint": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59",
+      "sourceState": "working-first-tape-pack-candidate-and-metadata-slice",
+      "actualRootSession": 22166,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-tape-pack-inputs-3.json",
+        "bytes": 413744,
+        "sha256": "sha256:eab41e4e53c0f5722f1699855daf8e42d25711d116bcc76a56d09f0cf627b002",
+        "files": 2425,
+        "inputBytes": 118440679,
+        "sourceCommit": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-format-3.log",
+          "bytes": 121,
+          "sha256": "sha256:02a18f53a4606c6ce8779e1344c601f7d190fcc15714a5de2815dea286981c4e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-build-3.log",
+          "bytes": 321,
+          "sha256": "sha256:1b57ac0b4b32657a121e7039273ad03db14bf054a2c0ef8f222f105ddb2b1ef0"
+        }
+      ],
+      "qualification": "Actual build rejected an object argument where public loadComposition requires the backend string. Browser1 never reached; no browser1 log."
+    },
+    {
+      "id": "tape-pack-guarded-build-4",
+      "status": "failed-guard-before-edit-and-repeated-build-diagnostic",
+      "sourceCheckpoint": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59",
+      "sourceState": "working-first-tape-pack-candidate-and-metadata-slice",
+      "actualRootSession": 35646,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-tape-pack-inputs-4.json",
+        "bytes": 413744,
+        "sha256": "sha256:eab41e4e53c0f5722f1699855daf8e42d25711d116bcc76a56d09f0cf627b002",
+        "files": 2425,
+        "inputBytes": 118440679,
+        "sourceCommit": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-format-4.log",
+          "bytes": 54,
+          "sha256": "sha256:2eac5fe0c9bb9f093fdf73f56f8d7d4ed248f55821926bec69d89d129ed1674f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-build-4.log",
+          "bytes": 321,
+          "sha256": "sha256:1b57ac0b4b32657a121e7039273ad03db14bf054a2c0ef8f222f105ddb2b1ef0"
+        }
+      ],
+      "qualification": "The guarded replacement expected an unformatted one-line loader call and failed before writes. A separate later shell line still ran formatting/inventory/build and reproduced the same one TS error; browser2 not reached. Input4 equals input3. Subsequent repair used a separate successful guarded edit. Future dependent heredoc stages use set -e; failed guard is not successful source repair."
+    },
+    {
+      "id": "tape-pack-browser-3",
+      "status": "failed-missing-pinned-texture-font",
+      "sourceCheckpoint": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59",
+      "sourceState": "working-first-tape-pack-candidate-and-metadata-slice",
+      "actualRootSession": 66925,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-tape-pack-inputs-5.json",
+        "bytes": 413744,
+        "sha256": "sha256:8d2376ccbbf0d8b978541a061839453daabb49cab76ad09cdf0221a62b6c6189",
+        "files": 2425,
+        "inputBytes": 118440651,
+        "sourceCommit": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-format-5.log",
+          "bytes": 54,
+          "sha256": "sha256:8a2be94187802a543bd0398e2f69ff2b03554a58a9697cb6d919d3942f6864b3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-build-5.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-browser-3.log",
+          "bytes": 1697,
+          "sha256": "sha256:16ab4ecb1cb3d9680fc061baeeacf067d4158eb22f2fbc9643a6b8fcdd5e3927"
+        }
+      ],
+      "qualification": "Normal native admission correctly rejected assets.0.textureFont before preview. Kept graduations and added the actual pinned font dependency to composition and metadata.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-4AMJbA/dimension-0.composition.json",
+          "bytes": 1809,
+          "sha256": "sha256:075bb59073dd273ec8042ff49975133352228cc9b22a94adab927b1d57cc41f7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-4AMJbA/dimension-0.json",
+          "bytes": 5815114,
+          "sha256": "sha256:7e0c48d116cc3928f38103450b1b16a9b470ec40f0e8f61288940dfd8e83929a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-4AMJbA/failure.json",
+          "bytes": 1231,
+          "sha256": "sha256:5a926d0d70d3dc2e8a23e49ce8985e99cb3d14bc43a6a946e04611b211e73d55"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-4AMJbA/metadata.json",
+          "bytes": 27566,
+          "sha256": "sha256:a6e3fb46a6473a75d0d105d25a6f8b7d5c2d8e58a3a85c7c678ac42679cd0fb7"
+        }
+      ],
+      "completedDimensionRecords": 0,
+      "actualRetainedPNGs": 0,
+      "actualRetainedMP4s": 0
+    },
+    {
+      "id": "tape-pack-browser-4",
+      "status": "failed-font-browser-route",
+      "sourceCheckpoint": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59",
+      "sourceState": "working-first-tape-pack-candidate-and-metadata-slice",
+      "actualRootSession": 2944,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-tape-pack-inputs-6.json",
+        "bytes": 413744,
+        "sha256": "sha256:5086c01ad0f466e36aa366d7c0593a6a09b0a682821a48b2771550a9f5ed07fa",
+        "files": 2425,
+        "inputBytes": 118441748,
+        "sourceCommit": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-format-6.log",
+          "bytes": 250,
+          "sha256": "sha256:71c7ec6f152cde7fbe8b0eaf55ae4b323ae2ea6901514192de56a8f09e19d9a7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-schema-6.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-build-6.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-browser-4.log",
+          "bytes": 1226,
+          "sha256": "sha256:9f231bf23a0804ba5630dc00ea26495e2d8e6e4c41d1898e19665a2ab7d4c22b"
+        }
+      ],
+      "qualification": "Build and schema passed; custom font route was unavailable in browser. No completed preview. Repaired the fixture to use Vite static font bytes, still verified by SHA and decoded by the real loader.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-z3WW2j/dimension-0.composition.json",
+          "bytes": 2151,
+          "sha256": "sha256:6135f62076c1c1e66949875d13b7fab0b21d466036e16c5b687884e415f5c301"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-z3WW2j/dimension-0.json",
+          "bytes": 5815114,
+          "sha256": "sha256:3f6f8ad3ada9f827ad96cdc079163d7b54844e2c0e3b3e5c7c1014138981f2ae"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-z3WW2j/failure.json",
+          "bytes": 1585,
+          "sha256": "sha256:922780a35a6bb50ee382afb388fb6cae64c9ce6c8e6a76b84ba4c5bba26909b5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-z3WW2j/metadata.json",
+          "bytes": 27715,
+          "sha256": "sha256:c06bdecba0d9c36bf12b98b5919670c3b2698cd5956b1c596d12eee5514a45c0"
+        }
+      ],
+      "completedDimensionRecords": 0,
+      "actualRetainedPNGs": 0,
+      "actualRetainedMP4s": 0
+    },
+    {
+      "id": "tape-pack-browser-5",
+      "status": "failed-fixture-local-start-clock",
+      "sourceCheckpoint": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59",
+      "sourceState": "working-first-tape-pack-candidate-and-metadata-slice",
+      "actualRootSession": 23876,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-tape-pack-inputs-7.json",
+        "bytes": 413744,
+        "sha256": "sha256:5e9d0853ebcac0667b4b75b524c164d382a19b8892f1eb5462e06e3642b5d883",
+        "files": 2425,
+        "inputBytes": 118441664,
+        "sourceCommit": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-format-7.log",
+          "bytes": 104,
+          "sha256": "sha256:bc03c874dcd56de827f391c0b12016cdc11fa15763a60fe539f3784deff0322d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-build-7.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-browser-5.log",
+          "bytes": 741,
+          "sha256": "sha256:4bc5555d96f73d6f1cd46a8e7698165f38d4aa109f74539d5b8ba220e28c3214"
+        }
+      ],
+      "qualification": "Build and actual font decode succeeded. Two retained preview PNGs preceded the travel assertion failure: inPoint limits visibility but does not set startFrame. Added explicit local start3/6; kept exact observed/reference driver proof and local-clock check.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-RuAWjJ/dimension-0-preview-0.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-RuAWjJ/dimension-0-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-RuAWjJ/dimension-0-preview-1.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-RuAWjJ/dimension-0-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-RuAWjJ/dimension-0.composition.json",
+          "bytes": 2151,
+          "sha256": "sha256:6135f62076c1c1e66949875d13b7fab0b21d466036e16c5b687884e415f5c301"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-RuAWjJ/dimension-0.json",
+          "bytes": 5815114,
+          "sha256": "sha256:3f6f8ad3ada9f827ad96cdc079163d7b54844e2c0e3b3e5c7c1014138981f2ae"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-RuAWjJ/failure.json",
+          "bytes": 369,
+          "sha256": "sha256:e285aa8944bbc71f4a5985e7ad34f74fe77c9807b79d7ce9422b0e87412262e6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-RuAWjJ/metadata.json",
+          "bytes": 27715,
+          "sha256": "sha256:c06bdecba0d9c36bf12b98b5919670c3b2698cd5956b1c596d12eee5514a45c0"
+        }
+      ],
+      "completedDimensionRecords": 0,
+      "actualRetainedPNGs": 2,
+      "actualRetainedMP4s": 0
+    },
+    {
+      "id": "tape-pack-browser-6",
+      "status": "failed-default-independent-replay-quota",
+      "sourceCheckpoint": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59",
+      "sourceState": "working-first-tape-pack-candidate-and-metadata-slice",
+      "actualRootSession": 27249,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-tape-pack-inputs-8.json",
+        "bytes": 413744,
+        "sha256": "sha256:20720e814d0fa487b34ecfff026a999d5004c080a74f623dc75097a458a78573",
+        "files": 2425,
+        "inputBytes": 118441714,
+        "sourceCommit": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-format-8.log",
+          "bytes": 54,
+          "sha256": "sha256:2eac5fe0c9bb9f093fdf73f56f8d7d4ed248f55821926bec69d89d129ed1674f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-browser-6.log",
+          "bytes": 1562,
+          "sha256": "sha256:3d2d34b50dab08a0f59c53523580b7dab0229d6f72ae77967266b9edc23a2f57"
+        }
+      ],
+      "qualification": "Nine previews and one normal final MP4 were produced; separate standalone replay then rejected its default16MiB metadata quota. Tape checker mesh scratch alone is21,972,864B. The normal renderer uses its established128MiB worker metadata partition. Repaired only the independent fixture caller to use that existing bounded partition and assert zero remaining reservations; default verifier quota and production limits unchanged.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-a.mp4",
+          "bytes": 8570,
+          "sha256": "sha256:a730088ee5898538680227aa20923a43147bfdb665da87b40b845fe124e806c9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-a.mp4.native-observations.000.ndjson",
+          "bytes": 89495,
+          "sha256": "sha256:272184dc062df1a2a0192d1a6fc75252b2b8b1b83789acd2cb6e5461e5e09314"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-a.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:a51798c6791ac51f83183012278018ca5d2c9469fedc6eb86fc4b36af29488fb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-a.mp4.result.json",
+          "bytes": 8421,
+          "sha256": "sha256:1ebf22bfc8f2b58dc8f87ceb91a54d2b36962de64c7b19e46706bb252436824c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-a.mp4.scene.json",
+          "bytes": 8257716,
+          "sha256": "sha256:7d8c81c805309df602b963e3230bdfcab1981eac7a0107a5a5e546f7d05f428b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-0.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-1.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-2.png",
+          "bytes": 23746,
+          "sha256": "sha256:06d33bf85abc0a5c0c8dc63a9c559ca2470fa2e185406a2413fdd74f1283f0b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:904ae6c34b5d1810978740d8992dd83e84d1e84c3005b54113a3d4da2700b22e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-3.png",
+          "bytes": 23355,
+          "sha256": "sha256:c0c93a3c8f26967cf9561eef004d1b7c126950cf3c7a14841ef532def618d67b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0ba7680c610d8c3efa0df401474d1837f6528b8c977d83150480f3d6af3dc873"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-4.png",
+          "bytes": 23220,
+          "sha256": "sha256:63dd5d3d8fd485ca4c3e569950a71510629927228a6d390a0f25d2a8d89e0d16"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:50890b6ceee80ca47b97f4789da368681035b06233f654531bfb637f238cfd83"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-5.png",
+          "bytes": 20442,
+          "sha256": "sha256:33283e47b43123edbf0e37993a370ae71b8da6cfcb6021ebb4d9374d0baedb02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:8ffc124f438ac55b9e6f45e04647d705fca30f097527584880cd97023aa6de9d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-6.png",
+          "bytes": 20442,
+          "sha256": "sha256:33283e47b43123edbf0e37993a370ae71b8da6cfcb6021ebb4d9374d0baedb02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:8ffc124f438ac55b9e6f45e04647d705fca30f097527584880cd97023aa6de9d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-7.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-8.png",
+          "bytes": 23355,
+          "sha256": "sha256:c0c93a3c8f26967cf9561eef004d1b7c126950cf3c7a14841ef532def618d67b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0ba7680c610d8c3efa0df401474d1837f6528b8c977d83150480f3d6af3dc873"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0.composition.json",
+          "bytes": 2197,
+          "sha256": "sha256:eeb1b4c75fe96cdf245ff1b6901e753a4eedc8c2b00382ef56842acf8f120afb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0.json",
+          "bytes": 5815114,
+          "sha256": "sha256:3f6f8ad3ada9f827ad96cdc079163d7b54844e2c0e3b3e5c7c1014138981f2ae"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/failure.json",
+          "bytes": 1306,
+          "sha256": "sha256:41f9e7e2a413fb37a7dd17619a6948c5fbbfaa0e04b4dd586fa1d36547aefde9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/metadata.json",
+          "bytes": 27715,
+          "sha256": "sha256:c06bdecba0d9c36bf12b98b5919670c3b2698cd5956b1c596d12eee5514a45c0"
+        }
+      ],
+      "completedDimensionRecords": 0,
+      "actualRetainedPNGs": 9,
+      "actualRetainedMP4s": 1
+    },
+    {
+      "id": "tape-pack-browser-7",
+      "status": "passed-actual-two-dimension-tape-previews-and-four-normal-final-exports",
+      "sourceCheckpoint": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59",
+      "sourceState": "working-first-tape-pack-candidate-and-metadata-slice",
+      "actualRootSession": 74963,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-tape-pack-inputs-9.json",
+        "bytes": 413744,
+        "sha256": "sha256:deb7aff7da0ca45d4447e62c053c3e5226c32f2dfd44ec4d27600989077a9332",
+        "files": 2425,
+        "inputBytes": 118442527,
+        "sourceCommit": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-format-9.log",
+          "bytes": 54,
+          "sha256": "sha256:8a2be94187802a543bd0398e2f69ff2b03554a58a9697cb6d919d3942f6864b3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-build-9.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-browser-7.log",
+          "bytes": 296,
+          "sha256": "sha256:b30f13bf68191ef201758c314628e22cd97beb40809a1e566fca47e2b1a5b47a"
+        }
+      ],
+      "qualification": "Actual aggregate exited0 and held inputs unchanged. Two illustrative dimensions, each nine captures including exact repeated0/4 seeks and explicit local travel clock, strict actual GPU frame2 validation, nine frame/proof final exports twice, independent retained-row replay and byte-identical repeated movies. All independent checker reservations released. Candidate0 supported: camera recipes, installed pack and full family/authoring acceptance remain.",
+      "terminalObservedAtUTC": "2026-10-10 23:21:45 UTC",
+      "dimensions": 2,
+      "previewCaptures": 18,
+      "finalExports": 4,
+      "finalFramesPerExport": 9,
+      "finalPassesPerExport": 9,
+      "independentReplayMetadataPeakBytes": [
+        31434552, 31434552, 31431096, 31431096
+      ],
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-a.mp4",
+          "bytes": 8570,
+          "sha256": "sha256:a730088ee5898538680227aa20923a43147bfdb665da87b40b845fe124e806c9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-a.mp4.native-observations.000.ndjson",
+          "bytes": 89495,
+          "sha256": "sha256:272184dc062df1a2a0192d1a6fc75252b2b8b1b83789acd2cb6e5461e5e09314"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-a.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:a51798c6791ac51f83183012278018ca5d2c9469fedc6eb86fc4b36af29488fb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-a.mp4.result.json",
+          "bytes": 8427,
+          "sha256": "sha256:2c80f3a44caaad6f4e8e89ff07eae42a52ac7aaf873264df12faf409fc9d0b28"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-a.mp4.scene.json",
+          "bytes": 8257716,
+          "sha256": "sha256:0d22abb35dbecbd7f000f3cdea0632e570e432deefe6feff3c60dbcd24ed01e9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-b.mp4",
+          "bytes": 8570,
+          "sha256": "sha256:a730088ee5898538680227aa20923a43147bfdb665da87b40b845fe124e806c9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-b.mp4.native-observations.000.ndjson",
+          "bytes": 89495,
+          "sha256": "sha256:272184dc062df1a2a0192d1a6fc75252b2b8b1b83789acd2cb6e5461e5e09314"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-b.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:9bbcfbceb2ac87fea580f540429293474d5d74f8411bf8002afe7cd9764d98d0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-b.mp4.result.json",
+          "bytes": 8380,
+          "sha256": "sha256:2cd906abdf42d8848ef1676e2515bf7c8a600eaf121471cc575abe0c8310d5ef"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-b.mp4.scene.json",
+          "bytes": 8257716,
+          "sha256": "sha256:0d22abb35dbecbd7f000f3cdea0632e570e432deefe6feff3c60dbcd24ed01e9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-0.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-1.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-2.png",
+          "bytes": 23746,
+          "sha256": "sha256:06d33bf85abc0a5c0c8dc63a9c559ca2470fa2e185406a2413fdd74f1283f0b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:904ae6c34b5d1810978740d8992dd83e84d1e84c3005b54113a3d4da2700b22e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-3.png",
+          "bytes": 23355,
+          "sha256": "sha256:c0c93a3c8f26967cf9561eef004d1b7c126950cf3c7a14841ef532def618d67b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0ba7680c610d8c3efa0df401474d1837f6528b8c977d83150480f3d6af3dc873"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-4.png",
+          "bytes": 23220,
+          "sha256": "sha256:63dd5d3d8fd485ca4c3e569950a71510629927228a6d390a0f25d2a8d89e0d16"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:50890b6ceee80ca47b97f4789da368681035b06233f654531bfb637f238cfd83"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-5.png",
+          "bytes": 20442,
+          "sha256": "sha256:33283e47b43123edbf0e37993a370ae71b8da6cfcb6021ebb4d9374d0baedb02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:8ffc124f438ac55b9e6f45e04647d705fca30f097527584880cd97023aa6de9d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-6.png",
+          "bytes": 20442,
+          "sha256": "sha256:33283e47b43123edbf0e37993a370ae71b8da6cfcb6021ebb4d9374d0baedb02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:8ffc124f438ac55b9e6f45e04647d705fca30f097527584880cd97023aa6de9d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-7.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-8.png",
+          "bytes": 23355,
+          "sha256": "sha256:c0c93a3c8f26967cf9561eef004d1b7c126950cf3c7a14841ef532def618d67b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0ba7680c610d8c3efa0df401474d1837f6528b8c977d83150480f3d6af3dc873"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0.composition.json",
+          "bytes": 2197,
+          "sha256": "sha256:eeb1b4c75fe96cdf245ff1b6901e753a4eedc8c2b00382ef56842acf8f120afb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-0.json",
+          "bytes": 5815114,
+          "sha256": "sha256:3f6f8ad3ada9f827ad96cdc079163d7b54844e2c0e3b3e5c7c1014138981f2ae"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-a.mp4",
+          "bytes": 8321,
+          "sha256": "sha256:2ce8f1e1e2deddacc9f9e874b4626f785a8708096f12e6de9749319e57f9b596"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-a.mp4.native-observations.000.ndjson",
+          "bytes": 89397,
+          "sha256": "sha256:59c42e5dd66ad0e7b2a9d8262b195d0cf1ffcaf2aa96fab2078fe9259506a607"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-a.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:777b7ccc952d6141d3bc49ff1fe9d9ceff45c2f4d819307161157d30ccf07194"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-a.mp4.result.json",
+          "bytes": 8430,
+          "sha256": "sha256:76268e22ee44b0a7776719bb59f3e81ed2853f7a6389cfd1865e58314136b053"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-a.mp4.scene.json",
+          "bytes": 8256106,
+          "sha256": "sha256:b6e2be393f481707ff9eae4bfb2a3704c159d3be0d5a68eb03dc8ecf8c6852f1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-b.mp4",
+          "bytes": 8321,
+          "sha256": "sha256:2ce8f1e1e2deddacc9f9e874b4626f785a8708096f12e6de9749319e57f9b596"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-b.mp4.native-observations.000.ndjson",
+          "bytes": 89397,
+          "sha256": "sha256:59c42e5dd66ad0e7b2a9d8262b195d0cf1ffcaf2aa96fab2078fe9259506a607"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-b.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:a044bc16ae482187a909d23820bef4b49fd5d5302badbd42fa0a9585f4aa2031"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-b.mp4.result.json",
+          "bytes": 8362,
+          "sha256": "sha256:050082b2e59209d80f33b94c83fed177ba6498b6badf62e756e3cf4ec918dbf6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-b.mp4.scene.json",
+          "bytes": 8256106,
+          "sha256": "sha256:b6e2be393f481707ff9eae4bfb2a3704c159d3be0d5a68eb03dc8ecf8c6852f1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-0.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-1.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-2.png",
+          "bytes": 22805,
+          "sha256": "sha256:3f170ce67c31b09c683a70756f0ddf57e944af69e9ce46d1e1cdd76904cee5b8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3ff28d91aae71d825c903f65c42308056bf1dddd8d7da246567d8945701c6865"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-3.png",
+          "bytes": 22528,
+          "sha256": "sha256:7bec537ba25319c344cfecc3899b04bb3b39cda80a9a85d1307fed76b109b103"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cbb5353c9afe98fd75405272bc9bfdcb7777fe85f8fd0bfc1fdeb012dadf123e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-4.png",
+          "bytes": 22453,
+          "sha256": "sha256:d59a4c51e2aec108896e6a455f5957722c98b562957a66b9bc7f6830f41a8ea1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:a319373c871cfabefd6eb7694b90d089d403e092d16c120a36dbd7a5a8cf3889"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-5.png",
+          "bytes": 19150,
+          "sha256": "sha256:93910a12304365baa8816cb15c4b7b70fc865e7a27e5c21bc2e637c4afb2af12"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:983f35eabfe9a014450f503be05d9246be37f7462e279164c1786408e78786ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-6.png",
+          "bytes": 19150,
+          "sha256": "sha256:93910a12304365baa8816cb15c4b7b70fc865e7a27e5c21bc2e637c4afb2af12"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:983f35eabfe9a014450f503be05d9246be37f7462e279164c1786408e78786ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-7.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-8.png",
+          "bytes": 22528,
+          "sha256": "sha256:7bec537ba25319c344cfecc3899b04bb3b39cda80a9a85d1307fed76b109b103"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cbb5353c9afe98fd75405272bc9bfdcb7777fe85f8fd0bfc1fdeb012dadf123e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1.composition.json",
+          "bytes": 2197,
+          "sha256": "sha256:068b7ae15ad56e561f36b0cbdb0c9572d885acd7ed3b3c858439cbfc5a500de8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1.json",
+          "bytes": 5814944,
+          "sha256": "sha256:d60e3b9a366c60df112e424fde9cb6481b92c0ede84e7c8130da5e5d911364de"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/metadata.json",
+          "bytes": 27715,
+          "sha256": "sha256:c06bdecba0d9c36bf12b98b5919670c3b2698cd5956b1c596d12eee5514a45c0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/run.json",
+          "bytes": 646836,
+          "sha256": "sha256:7eda263a9a8eed6fb1a3e934b69fdcf08a322a888d57dbffa5d9c8893166bd0a"
+        }
+      ]
+    },
+    {
+      "id": "tape-pack-regression-gate-1",
+      "status": "passed-refreshed-fast-and-six-maintained-native-regression-groups",
+      "sourceCheckpoint": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59",
+      "sourceState": "working-first-tape-pack-candidate-and-metadata-slice",
+      "actualRootSession": 25106,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-tape-pack-inputs-9.json",
+        "bytes": 413744,
+        "sha256": "sha256:deb7aff7da0ca45d4447e62c053c3e5226c32f2dfd44ec4d27600989077a9332",
+        "files": 2425,
+        "inputBytes": 118442527,
+        "sourceCommit": "446b5f9f2e868c49ab35c0e6aca0bca3e4bdfb59"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-fast-1.log",
+          "bytes": 32376,
+          "sha256": "sha256:f88559cf7f8dc15de38bb808afe61bdd2e478a568bed990082d821a07c4d48a8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-native-browser-1.log",
+          "bytes": 1218,
+          "sha256": "sha256:1b8f071a88b2346ff09e139579bfdebc44397e86a72e42e64bbd196c33e70f3d"
+        }
+      ],
+      "qualification": "Actual sequential check:fast and all six maintained native browser groups exited0; held inputs9 unchanged. Includes current schema/identity/boundaries/global formatting/lint/TypeScript/unit gate and maintained GPU/streams/frames/composition/final export/Lab checks. Pack-specific browser7 is an earlier separate actual pass on the same held source. This is staged completion, not full MS2 or installed-package acceptance.",
+      "terminalObservedAtUTC": "2026-10-10 23:25:14 UTC",
+      "unitTests": 4066,
+      "unitFiles": 398,
+      "unitSeconds": 43.16,
+      "maintainedNativeBrowserGroups": 6,
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/bent-a-repeat.png",
+          "bytes": 10623,
+          "sha256": "sha256:06de084b4d47f2b67cdb960d126a12ec04a9ed34e4129fccb9d0b5f4070e6b50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/bent-a-repeat.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:51a1acf005e0143d7b7b01cf069123a061fc9ef6302d44231838af178311d135"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/bent-a.png",
+          "bytes": 10623,
+          "sha256": "sha256:06de084b4d47f2b67cdb960d126a12ec04a9ed34e4129fccb9d0b5f4070e6b50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/bent-a.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:51a1acf005e0143d7b7b01cf069123a061fc9ef6302d44231838af178311d135"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/rest-a-reverse.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/rest-a-reverse.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/rest-a.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/rest-a.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/rest-b.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/rest-b.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:a3713fd624626a56abe9518e89ca38fd644960902eb75652df8b22f7b2877309"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-H7SKMK/source.json",
+          "bytes": 101879,
+          "sha256": "sha256:211f7db34f8020a96d8af8b7655f6a5843a66e8fd85d993e3900eb08cc5b042e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/allowed-hidden.png",
+          "bytes": 1953,
+          "sha256": "sha256:5675e57cad9d4adaf3b2740f318deb63e948a810f5d2ef8fdb5b63d1feebb162"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/allowed-hidden.receipt.json",
+          "bytes": 3101,
+          "sha256": "sha256:649a137c2112d312a5c09310aac277d7a54c259d3aafcc9e1471b1aa40d36ef9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/allowed-hidden.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:10985f60a4114b86e01287b907f57d3e1cf406a4be573e9af59e73cb89c74184"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/allowed-outside.png",
+          "bytes": 1953,
+          "sha256": "sha256:5675e57cad9d4adaf3b2740f318deb63e948a810f5d2ef8fdb5b63d1feebb162"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/allowed-outside.receipt.json",
+          "bytes": 3101,
+          "sha256": "sha256:d8c359d7e25f3a7bbd14da5142d3257a65f6566811f2cb006f91446246e2d836"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/allowed-outside.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:10985f60a4114b86e01287b907f57d3e1cf406a4be573e9af59e73cb89c74184"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/bent-b-repeat.png",
+          "bytes": 10623,
+          "sha256": "sha256:06de084b4d47f2b67cdb960d126a12ec04a9ed34e4129fccb9d0b5f4070e6b50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/bent-b-repeat.receipt.json",
+          "bytes": 8206,
+          "sha256": "sha256:f97b898fa8429ff67549ab15ce7c04a6b72badbba02fb16ccc06904e216b02dc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/bent-b-repeat.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:51a1acf005e0143d7b7b01cf069123a061fc9ef6302d44231838af178311d135"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/bent-b.png",
+          "bytes": 10623,
+          "sha256": "sha256:06de084b4d47f2b67cdb960d126a12ec04a9ed34e4129fccb9d0b5f4070e6b50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/bent-b.receipt.json",
+          "bytes": 8206,
+          "sha256": "sha256:f97b898fa8429ff67549ab15ce7c04a6b72badbba02fb16ccc06904e216b02dc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/bent-b.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:51a1acf005e0143d7b7b01cf069123a061fc9ef6302d44231838af178311d135"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/rest-a-reverse.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/rest-a-reverse.receipt.json",
+          "bytes": 8041,
+          "sha256": "sha256:f9a8b8cb47ee12579e4f4f4314d0172021668394443ac44fea242aed21525fea"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/rest-a-reverse.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/rest-a.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/rest-a.receipt.json",
+          "bytes": 8041,
+          "sha256": "sha256:f9a8b8cb47ee12579e4f4f4314d0172021668394443ac44fea242aed21525fea"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/rest-a.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:a5f78e4c79c0392e3566591ff2d7b1261d7962595def1d995b7a43436b23ffc6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-x9waJc/source.json",
+          "bytes": 103050,
+          "sha256": "sha256:720ef4e89db95d9b5669d0f556fd87f1db75c3a53f4d3aeef61209353c400b0c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/allowed-hidden.png",
+          "bytes": 1953,
+          "sha256": "sha256:5675e57cad9d4adaf3b2740f318deb63e948a810f5d2ef8fdb5b63d1feebb162"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/allowed-hidden.receipt.json",
+          "bytes": 9903,
+          "sha256": "sha256:f6d59f4b5e7c08f77e11d07cabbb8acc8acb44971cbd5082ef39e223bf8f61ea"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/allowed-hidden.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:10985f60a4114b86e01287b907f57d3e1cf406a4be573e9af59e73cb89c74184"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/allowed-outside.png",
+          "bytes": 1953,
+          "sha256": "sha256:5675e57cad9d4adaf3b2740f318deb63e948a810f5d2ef8fdb5b63d1feebb162"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/allowed-outside.receipt.json",
+          "bytes": 9407,
+          "sha256": "sha256:29e9946c43d01562023401ba2317f62a6619e3b9b42dee696295ecf153907f45"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/allowed-outside.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:10985f60a4114b86e01287b907f57d3e1cf406a4be573e9af59e73cb89c74184"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/appearance-code-identity.json",
+          "bytes": 75037,
+          "sha256": "sha256:287788616d07034e92ad15f032b3bf7213285da7a18b666d050c590b7e517bef"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/bent-b.png",
+          "bytes": 11648,
+          "sha256": "sha256:c76016175bff3ace4a8f0d01ce5921d640485baa9a89af803e65bc2e8124accc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/bent-b.receipt.json",
+          "bytes": 15868,
+          "sha256": "sha256:66207e835386dd2949a219384a90ef3e99693c81997256c34b2066cbee93f3d6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/bent-b.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:a3a5ae5799c95ec8c04cf69dae732f9fe0b429f2089e78ce46be45fe13960392"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/packet.contract-example.json",
+          "bytes": 145480,
+          "sha256": "sha256:404db268d4f235dd78494f7999b0aa0313327ee747c5b60896edb62cc0e28808"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/queued-a.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/queued-a.receipt.json",
+          "bytes": 15590,
+          "sha256": "sha256:3d1354021aedb17fcdc2a6a1d9e2186ead465c6f2bdfc6da1593364a1a01938d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/queued-a.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/queued-b.png",
+          "bytes": 11648,
+          "sha256": "sha256:c76016175bff3ace4a8f0d01ce5921d640485baa9a89af803e65bc2e8124accc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/queued-b.receipt.json",
+          "bytes": 15868,
+          "sha256": "sha256:66207e835386dd2949a219384a90ef3e99693c81997256c34b2066cbee93f3d6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/queued-b.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:a3a5ae5799c95ec8c04cf69dae732f9fe0b429f2089e78ce46be45fe13960392"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/rest-a-before-stale.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/rest-a-before-stale.receipt.json",
+          "bytes": 15590,
+          "sha256": "sha256:3d1354021aedb17fcdc2a6a1d9e2186ead465c6f2bdfc6da1593364a1a01938d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/rest-a-before-stale.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/rest-a.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/rest-a.receipt.json",
+          "bytes": 15590,
+          "sha256": "sha256:3d1354021aedb17fcdc2a6a1d9e2186ead465c6f2bdfc6da1593364a1a01938d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/rest-a.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/run.json",
+          "bytes": 6282,
+          "sha256": "sha256:2734b43f1a2f0ccf20733007b31667c336ad185153f963ee01dfdc34e7bd443b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/sealed-a-with-later-cpu-b.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/sealed-a-with-later-cpu-b.receipt.json",
+          "bytes": 15590,
+          "sha256": "sha256:3d1354021aedb17fcdc2a6a1d9e2186ead465c6f2bdfc6da1593364a1a01938d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/sealed-a-with-later-cpu-b.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-3jEQE5/source.json",
+          "bytes": 102515,
+          "sha256": "sha256:b73155b23ec051008855631337938c2c23c18788c56f118cd6a676c3025f6b75"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/0-frame-0.json",
+          "bytes": 76671,
+          "sha256": "sha256:62790ee342646d464c0aecc414f4c96501beb8966c5a06c5be4372752466d71f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/0-frame-0.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/0-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/1-frame-3.json",
+          "bytes": 76390,
+          "sha256": "sha256:7d348dce87ae38e5e343a382c55e5c769edd7afd7c22f0d06b81db8bd90823cc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/1-frame-3.png",
+          "bytes": 11751,
+          "sha256": "sha256:4c9409f39a3d35bce41bae96e317dbc950559bf7a77203206532c8e4b03fa7ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/1-frame-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d80448ba9418a1f4de79656fc8f812168a81838462a5da03480cedc1876b3747"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/2-frame-0.json",
+          "bytes": 76671,
+          "sha256": "sha256:62790ee342646d464c0aecc414f4c96501beb8966c5a06c5be4372752466d71f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/2-frame-0.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/2-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/3-frame-4.json",
+          "bytes": 30474,
+          "sha256": "sha256:11495de81f1d593a0c5682e7aad305e0081c78410922114409d42aca46132680"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/3-frame-4.png",
+          "bytes": 5084,
+          "sha256": "sha256:229e4bdf0bd04a988c1469aa6d94edec779ce57586b3bc8f6b3a079b3cb64f1c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/3-frame-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/composition.json",
+          "bytes": 2657,
+          "sha256": "sha256:9d301e87395ed9c56356637f3c8ff3a4bf48026e175774254a5ba1ea2a1d6592"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/default-preview.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-0.json",
+          "bytes": 89627,
+          "sha256": "sha256:2d72e6608a9042f449adfdffb59542db87f1928f6e379607eb4925e74d850800"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-1.json",
+          "bytes": 89507,
+          "sha256": "sha256:933a2f71f4dd7d93216029cf120f078544109b622e140921036d53a832de58d5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3057ce618159d91a6d5321f0ca22d6f70dbb9aa0b817b9497d18d22ac89843d2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-2.json",
+          "bytes": 89395,
+          "sha256": "sha256:43806fa6339b656ca71bcc8a7cb914f08637cf3c9ba38ea7dc77fbf77352f3b7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:62512c6e87ded0509ff6fb8847465d524b2229c3bffbb6cb0366448f0602a096"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-3.json",
+          "bytes": 89368,
+          "sha256": "sha256:aa5d6d260c06d4954e9635996a3ed206eb2bb49d78a4fb4b65bf3415758ce467"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d80448ba9418a1f4de79656fc8f812168a81838462a5da03480cedc1876b3747"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-4.json",
+          "bytes": 33608,
+          "sha256": "sha256:483e5c4b3b6a125c2b8c0d9fe93249af95db5b982b9964c3ea5fee5aa1cce125"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-5.json",
+          "bytes": 33608,
+          "sha256": "sha256:f2ba78ce5a5772fb1add0e8fef8d717d70730876d8f9d35ea2d9a53abd5efb24"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-frame-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-preview.rgba",
+          "bytes": 1382400,
+          "sha256": "sha256:5402ee0f108a5a76f0aed8055461779206fdc1f2a445c278cf141e91773fb0c3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-preview.rgba.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:f9fc9cd0c4be35e0328c55e12b31c2aada8fe2b32d4c06e0fa8d312e4ebfc2ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-preview.rgba.native-observations.json",
+          "bytes": 87359,
+          "sha256": "sha256:515ae5efc29653b43a87dc206e7057a7b225c7ecff9c5288515ae8e2d8cdf0f4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/journal-run.json",
+          "bytes": 5085,
+          "sha256": "sha256:c8a4c6b04eebef2c9ed6438ce50955feaa5c108b794fc7a0de84d24e2590226c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/mechanism.json",
+          "bytes": 102515,
+          "sha256": "sha256:b73155b23ec051008855631337938c2c23c18788c56f118cd6a676c3025f6b75"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/run.json",
+          "bytes": 90682,
+          "sha256": "sha256:baa3dce0f2c61a9c4566c71acff4c392cd23df11a41c5df9420f266d67283ca7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-QyNe41/solid.json",
+          "bytes": 3011,
+          "sha256": "sha256:96bb059ce42e5a23ae57d21c7e04bd8613a13ccd5478348e3a95b189013bc6fc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/composition.json",
+          "bytes": 2657,
+          "sha256": "sha256:9d301e87395ed9c56356637f3c8ff3a4bf48026e175774254a5ba1ea2a1d6592"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-0.json",
+          "bytes": 36295,
+          "sha256": "sha256:10c6dff5ebc96c843885a1f686de4689ad0c64811fc49d8a847c84dda391a854"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-1.json",
+          "bytes": 36244,
+          "sha256": "sha256:f63a0dd39f6bfa0c3277b4482db730b52810b1a20ca9c465d3c26f0ed4bb1870"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3057ce618159d91a6d5321f0ca22d6f70dbb9aa0b817b9497d18d22ac89843d2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-2.json",
+          "bytes": 36166,
+          "sha256": "sha256:5ec9c25585f6cd4c95412ed3fe3add314bef1d1d05549c46230e0109fe8bea72"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:62512c6e87ded0509ff6fb8847465d524b2229c3bffbb6cb0366448f0602a096"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-3.json",
+          "bytes": 36154,
+          "sha256": "sha256:807a7c7f484881b44becdb6f196fa43e76801fd4471097d7dd0c9f83b5d5936c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d80448ba9418a1f4de79656fc8f812168a81838462a5da03480cedc1876b3747"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-4.json",
+          "bytes": 13179,
+          "sha256": "sha256:b35f37e29b75a626f218dcc47f87210d9055485224d4f8047cbcc731df8b437b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-5.json",
+          "bytes": 13179,
+          "sha256": "sha256:1aa17ede8bcfb2eefa0e131e7a9430b27fd49b2ebb789321702ce23038b5c96b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/http-frame-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/instrumented.mp4",
+          "bytes": 4023,
+          "sha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/instrumented.mp4.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:f9fc9cd0c4be35e0328c55e12b31c2aada8fe2b32d4c06e0fa8d312e4ebfc2ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/instrumented.mp4.native-observations.json",
+          "bytes": 87355,
+          "sha256": "sha256:a5de6ce1fc1cd4b5ad82dcf12306ef91f95238b1a3dff2a9722fe317aa684d3c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/instrumented.mp4.scene.json",
+          "bytes": 242729,
+          "sha256": "sha256:36d9ab68478cd243fd21902376123b98fe44813fda8d81595c903ddc8c25b9f1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/mechanism.json",
+          "bytes": 102515,
+          "sha256": "sha256:b73155b23ec051008855631337938c2c23c18788c56f118cd6a676c3025f6b75"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/normal2-a.mp4",
+          "bytes": 4023,
+          "sha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/normal2-a.mp4.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:f9fc9cd0c4be35e0328c55e12b31c2aada8fe2b32d4c06e0fa8d312e4ebfc2ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/normal2-a.mp4.native-observations.json",
+          "bytes": 87352,
+          "sha256": "sha256:6d7821145641fad8cc78f1a3d02264edb6c4ce2c65d106b771755a07bc45e173"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/normal2-a.mp4.result.json",
+          "bytes": 9262,
+          "sha256": "sha256:d17a651d10908958568fb8d2ba39b1db7fd149c0cfff2de4eb2e88f717a72feb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/normal2-a.mp4.scene.json",
+          "bytes": 243120,
+          "sha256": "sha256:84c35c1468707bef541de4a394ea39c0ed9aab365c42bbd3710ebcc1b66e2f75"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/normal2-b.mp4",
+          "bytes": 4023,
+          "sha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/normal2-b.mp4.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:f9fc9cd0c4be35e0328c55e12b31c2aada8fe2b32d4c06e0fa8d312e4ebfc2ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/normal2-b.mp4.native-observations.json",
+          "bytes": 87352,
+          "sha256": "sha256:995775fb85a4171dbbdfba525ee387b629d0cc9a7db84ca9baef65612a7930e5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/normal2-b.mp4.result.json",
+          "bytes": 9271,
+          "sha256": "sha256:fe1d09598cee54b9a52a51e0494e958389a0aaf59546c1109ebf05fd2aaf0027"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/normal2-b.mp4.scene.json",
+          "bytes": 243120,
+          "sha256": "sha256:84c35c1468707bef541de4a394ea39c0ed9aab365c42bbd3710ebcc1b66e2f75"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/run.json",
+          "bytes": 43890,
+          "sha256": "sha256:a7ce2603ba36417abc9dd89958812cf129bd43290e77caa5e7cec333bc24ddf7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/solid.json",
+          "bytes": 3011,
+          "sha256": "sha256:96bb059ce42e5a23ae57d21c7e04bd8613a13ccd5478348e3a95b189013bc6fc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/unused.json",
+          "bytes": 744,
+          "sha256": "sha256:6e51a2636d4961c25bbd3d2693969d000c675bf8b277a2cf629bd1ebded76de9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/unused2.mp4",
+          "bytes": 1576,
+          "sha256": "sha256:e9a57ef76dd9e9e0fe0adaecbb64edae088cefc0c4e92a2cb50ff37caaad2ef7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/unused2.mp4.native-observations.000.ndjson",
+          "bytes": 367,
+          "sha256": "sha256:8c91e52472778501f9b7de83694cff03a96489a8ad4d0dd4f0a3b4f5b5e795b3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/unused2.mp4.native-observations.json",
+          "bytes": 87343,
+          "sha256": "sha256:6ec2d0efbd8790ef0d2b6007600868c85f4db6c282ee8f52962fccb20176a258"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/unused2.mp4.result.json",
+          "bytes": 6909,
+          "sha256": "sha256:361cb2193ebe1bfdfc6bfa0141fc1ba637b16b03e71384d4f484c3d9dfe0dde7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-D8FdW6/unused2.mp4.scene.json",
+          "bytes": 241215,
+          "sha256": "sha256:1ca6f4037675a19d0167810d2f74614926f1e6ee8ca48a5336a8d89d91cbc100"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/camera.png",
+          "bytes": 8790,
+          "sha256": "sha256:29ab63a102d450bd37aa30e01673e3249b0f563d8d5c5deb0bbdb3a0f3a5d821"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/composition.json",
+          "bytes": 3536,
+          "sha256": "sha256:715ce21485d8fcf760650540612989ebbc1c29547429f015e70bf9dd550ecc50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/final-ui.png",
+          "bytes": 340388,
+          "sha256": "sha256:1e7a26d0fce9781fa7a1b7f8c7cb449fa50e3e7cf9d8d45370b2b7443678995e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/initial.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/material.png",
+          "bytes": 9035,
+          "sha256": "sha256:61c9324826629f3670bf531b7f2c5b715e9df3fb2fceda563251be8951bc7299"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/mechanism.json",
+          "bytes": 102515,
+          "sha256": "sha256:b73155b23ec051008855631337938c2c23c18788c56f118cd6a676c3025f6b75"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/part.png",
+          "bytes": 8846,
+          "sha256": "sha256:6f36a41f92e6a9c8071ea16150f7c8b391dc58ec0c4072b19628b58c7ad5c94e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/rapid-latest.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/reloaded.png",
+          "bytes": 9035,
+          "sha256": "sha256:61c9324826629f3670bf531b7f2c5b715e9df3fb2fceda563251be8951bc7299"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/run.json",
+          "bytes": 26385,
+          "sha256": "sha256:f50e3d17cb5e5cf941f8fac7ca709b4b40a6d84ef78dd75cdbe26b5598b927e1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/saved.png",
+          "bytes": 9035,
+          "sha256": "sha256:61c9324826629f3670bf531b7f2c5b715e9df3fb2fceda563251be8951bc7299"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/saved2.mp4",
+          "bytes": 3587,
+          "sha256": "sha256:d46cd1c7b9d4f428f70dc3efc28a54df35bb17bd036bda147caf33de1de82364"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/saved2.mp4.native-observations.000.ndjson",
+          "bytes": 172744,
+          "sha256": "sha256:6c6279f16c38569e5ca85c8845e49b62731a82b0d676ada3c4cf1d14a451e035"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/saved2.mp4.native-observations.json",
+          "bytes": 90124,
+          "sha256": "sha256:869834d9abc330a7cbfdd135941f4516063dfab94433f6f534d7af3275f37d46"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/saved2.mp4.result.json",
+          "bytes": 9232,
+          "sha256": "sha256:6d05478c0345d87a8d530bdbbb1d55ecaca34261d4d2f9db76ccc0e16b5dd884"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/saved2.mp4.scene.json",
+          "bytes": 244177,
+          "sha256": "sha256:6f6300f119ae94673a9335d3ec3c4b1684992fd0bb7f37f6acd37b1c497d5761"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-0.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-1.png",
+          "bytes": 11129,
+          "sha256": "sha256:3e2a4b0a0397aa9c6918c6c40d24fee6ce7a19313b6bc78c00320cc62923c4a6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-10.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-11.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-12.png",
+          "bytes": 11751,
+          "sha256": "sha256:4c9409f39a3d35bce41bae96e317dbc950559bf7a77203206532c8e4b03fa7ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-2.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-3.png",
+          "bytes": 11751,
+          "sha256": "sha256:4c9409f39a3d35bce41bae96e317dbc950559bf7a77203206532c8e4b03fa7ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-4.png",
+          "bytes": 5084,
+          "sha256": "sha256:229e4bdf0bd04a988c1469aa6d94edec779ce57586b3bc8f6b3a079b3cb64f1c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-5.png",
+          "bytes": 5084,
+          "sha256": "sha256:229e4bdf0bd04a988c1469aa6d94edec779ce57586b3bc8f6b3a079b3cb64f1c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-6.png",
+          "bytes": 11751,
+          "sha256": "sha256:4c9409f39a3d35bce41bae96e317dbc950559bf7a77203206532c8e4b03fa7ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-7.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-8.png",
+          "bytes": 11129,
+          "sha256": "sha256:3e2a4b0a0397aa9c6918c6c40d24fee6ce7a19313b6bc78c00320cc62923c4a6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/seek-9.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-8daSTc/solid.json",
+          "bytes": 3011,
+          "sha256": "sha256:96bb059ce42e5a23ae57d21c7e04bd8613a13ccd5478348e3a95b189013bc6fc"
+        }
+      ]
     }
   ],
   "implementation": {
     "firstSlice": "Completed standalone reusable rig/teaching-shape contracts. All 11 focused negatives/admission checks and fresh complete fast3 gate (3928 units/383 files) pass; earlier closure and optional-type failures retained.",
-    "runtimeSupport": "normal-native2-async-lab-preview-inspector-and-authenticated-final-export-verified-full-preflight-and-reusable-packs-pending",
+    "runtimeSupport": "normal-native2-lab-and-final-export-verified-tape-candidate-full-preflight-and-family-authoring-pending",
     "supportedPacks": [],
     "pilotSupportedEpisodes": 0,
     "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required.",
@@ -4370,10 +6090,58 @@
         "originalCancellation": "passed"
       },
       "remaining": "Generic Source2 Lab/software path only. Full GPU/PMREM/world clone/expected metadata preflight, three supported product packs, glTF/GLB/PBR import, camera/label/cue/typography/300-board and all full MS2/installed checks remain. Expanded authoring and family acceptance must be exercised on actual packs. Human visual/listening acceptance remains separate; packs/pilot0 and no MS2 PR/MS3."
+    },
+    "fourteenthSlice": {
+      "status": "implemented-and-verified-first-tape-pack-candidate-not-yet-supported-family",
+      "interfaces": [
+        "Strict bounded32KiB mechanism-pack-1 document and metadata receipt declare version/hash, parts/hierarchy/neutral transforms/pivots, aggregate mesh count/bounds metadata, anchors/rigs/material slots, parameter ranges, factual variant/detail, targets, neutral/diagnostic views, thumbnail recipe and explicit pinned texture font compatibility; no mesh/texture payload fields.",
+        "Public inspectTapeHookPack/createTapeHookPack/evaluateTapeHookPackFrame reuse original tape mesh generator; metadata is recursively frozen and hash-bound. Strict optional expected revision/detail/variant rejects stale references.",
+        "Source2 tape uses a reusable mount and slider referenced to model, travel derived from authored hook thickness, all six rivet meshes owned by blade, co-moving board/wall/datum, fixed attachments and explicit expected pull/push contact checks.",
+        "Two dimensions, moved/nonuniformly transformed reference, forward/reverse/fractional seek samples, style-only unchanged mesh identity, and located seeded wrong travel/rivet/contact/revision rejection.",
+        "Actual standard prepared native2 preview and normal final export use the pinned graduation font. Strict independent observed frame validation and bounded independent stream replay, repeated output bytes and memory release verified."
+      ],
+      "verification": {
+        "unitTests": 4066,
+        "unitFiles": 398,
+        "newTapeUnitTests": 6,
+        "originalGeometryFocusedTests": 9,
+        "dimensions": 2,
+        "previewCaptures": 18,
+        "normalFinalExports": 4,
+        "eachExportFrames": 9,
+        "eachExportPasses": 9,
+        "independentReplayLimitBytes": 134217728,
+        "independentReplayPeakBytes": [31434552, 31434552, 31431096, 31431096],
+        "maintainedNativeBrowserGroups": 6,
+        "priorCleanCommitRuntimeTests": 177,
+        "priorCleanCommitIntegrationTests": 321
+      },
+      "actualVisualInspection": {
+        "status": "engineering-observation-not-human-acceptance",
+        "images": [
+          {
+            "path": "/private/tmp/still-shift-ms2-tape-pack-37cVHt/dimension-1-preview-0.png",
+            "bytes": 40812,
+            "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-0.png",
+            "bytes": 42553,
+            "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-tape-pack-QppvDF/dimension-0-preview-5.png",
+            "bytes": 20442,
+            "sha256": "sha256:33283e47b43123edbf0e37993a370ae71b8da6cfcb6021ebb4d9374d0baedb02"
+          }
+        ],
+        "findings": "Default outside pull view shows blade-attached rivets/hook/board contact. Existing camera clips the larger housing and push wall obscures the decisive hook face. Six adaptive camera recipes and decisive-surface entry/mid/exit checks must resolve this before family support."
+      },
+      "remaining": "First candidate only: six target declarations and a thumbnail recipe are not executed camera/thumbnail acceptance. Shared bounded primitive library, cable tie/clothespeg, glTF/GLB/PBR importer, complete metadata shape/rig cross-reference admission, whole-world/expected preflight, adaptive cameras/labels/narration cues/scoped typography, 300-topic board and full milestone/installed gate remain. No MS2 PR/MS3 and supportedPacks/pilot0. Pure frame checks do not infer GPU, continuous-motion, collision or human visual/listening acceptance."
     }
   },
   "limits": [
-    "Normal native2 IO/graph/async Lab preview/physical inspection/shared journal and authenticated final movie export with real HTTP before-pixel proof are verified on generic fixtures. Whole-world and expected allocation preflight, all three product/import/camera/label/cue/typography/board and full milestone/installed checks remain required.",
+    "Normal native2 Lab and authenticated final export are verified; the first tape candidate now has actual two-dimension previews and repeated exports. Whole-world/expected preflight, complete family/import/camera/label/cue/typography/board and full milestone/installed checks remain. Default replay16MiB guard remains; actual tape independent checker uses the existing128MiB exporter partition with recorded peak and release.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

@@ -1595,6 +1595,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/mechanism/pack-document.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/pack-document.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/mechanism/packs.ts",
     url: new URL(
       "../../../scene-contract/src/mechanism/packs.ts",

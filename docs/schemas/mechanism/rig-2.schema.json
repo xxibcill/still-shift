@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "type": { "type": "string", "const": "slider" },
+        "movingPart": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "referencePart": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "axis": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+          ]
+        },
+        "range": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+          ]
+        },
+        "neutral": { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+      },
+      "required": [
+        "id",
+        "type",
+        "movingPart",
+        "referencePart",
+        "axis",
+        "range",
+        "neutral"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "type": { "type": "string", "const": "hinge" },
+        "movingPart": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "referencePart": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "axis": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+          ]
+        },
+        "pivot": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+          ]
+        },
+        "angleRange": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+          ]
+        },
+        "neutralAngle": {
+          "type": "number",
+          "minimum": -1000000,
+          "maximum": 1000000
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "movingPart",
+        "referencePart",
+        "axis",
+        "pivot",
+        "angleRange",
+        "neutralAngle"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "type": { "type": "string", "const": "spring-return" },
+        "targetRig": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "restValue": {
+          "type": "number",
+          "minimum": -1000000,
+          "maximum": 1000000
+        },
+        "returnFrames": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 108000
+        },
+        "easing": { "type": "string", "enum": ["linear", "smoothstep"] }
+      },
+      "required": [
+        "id",
+        "type",
+        "targetRig",
+        "restValue",
+        "returnFrames",
+        "easing"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "type": { "type": "string", "const": "ratchet" },
+        "movingPart": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "referencePart": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "axis": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+          ]
+        },
+        "range": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+          ]
+        },
+        "pitch": { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 },
+        "toothCount": { "type": "integer", "minimum": 2, "maximum": 4096 },
+        "neutralTooth": { "type": "integer", "minimum": 0, "maximum": 4095 },
+        "pawlShape": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "pawlTipAnchor": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "toothDatumAnchor": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "movingPart",
+        "referencePart",
+        "axis",
+        "range",
+        "pitch",
+        "toothCount",
+        "neutralTooth",
+        "pawlShape",
+        "pawlTipAnchor",
+        "toothDatumAnchor"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

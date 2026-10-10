@@ -9,6 +9,11 @@ import {
   MechanismEpisodeSchema,
   MechanismFrameResultSchema,
   MechanismSidecarSchema,
+  MechanismPackDocumentSchema,
+  MechanismSceneV2Schema,
+  MechanismFrameResultV2Schema,
+  MechanismRigV2Schema,
+  MechanismTeachingShapeSchema,
 } from "@still-shift/scene-contract";
 import {
   MechanismPatchRequestSchema,
@@ -23,6 +28,11 @@ const schemas = {
   sidecar: MechanismSidecarSchema,
   patch: MechanismPatchRequestSchema,
   receipt: MechanismCommandReceiptSchema,
+  pack: MechanismPackDocumentSchema,
+  "scene-2": MechanismSceneV2Schema,
+  "frame-2": MechanismFrameResultV2Schema,
+  "rig-2": MechanismRigV2Schema,
+  "teaching-shape": MechanismTeachingShapeSchema,
 };
 const stale: string[] = [];
 for (const [kind, schema] of Object.entries(schemas)) {

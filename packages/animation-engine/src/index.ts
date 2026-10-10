@@ -86,3 +86,5 @@ export * from "./mechanism/native-preview.ts";
 export * from "./mechanism/native-package.ts";
 
 export * from "./mechanism/native-overlays.ts";
+
+export * from "./mechanism/tape-hook-pack.ts";

@@ -45,17 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** isolated `codex/mechanism-ms2` carries
   `main` and exact native prerequisite [PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Thirteen slices now include native2 Lab playback/physical inspection, awaited
-  preview completion and normal authenticated final export. Refreshed fast gate
-  passes 4,060 units / 397 files, six maintained native groups, shared session,
-  original14/integration5/cancellation; separate original Lab UI also passes.
-  Actual Source2 UI20 records cover13 seek repeats, rapid seeks, camera/part/PBR
-  edits, Save/reload, all-frame rendered QA, playback and saved final6/36 export.
-  Failed types and invalid timing/overlap test fixtures are retained explicitly.
-  Next: full world/expected allocation preflight, three packs/import/cameras/
-  labels/cues/scoped typography/board and full milestone/installed gate. Packs/
-  pilot0; generic software does not infer human visual/listening acceptance.
-  No MS2 PR/MS3 yet. [MS2 results](./mechanism-shorts-ms2-results.json),
+  Fourteen slices include a versioned tape-hook candidate plus native2 Lab and
+  authenticated final export. Tape2 dimensions pass18 preview captures and four
+  normal9/9 final exports, exact repeated seeks/movies and independent replay
+  with zero retained reservations. Refreshed fast 4,066/398 and six maintained
+  native browser groups pass. The clean prior Lab commit also passes complete
+  runtime177/27, integration321/56, depth and Lab smoke; later pack checks are staged.
+  All failed types, font routes, invalid authored clock and16MiB replay guard
+  retained. Default camera clips larger housing and push wall hides hook face.
+  Next: bounded primitives/other packs/import, full preflight, six actual camera
+  recipes, labels/cues/scoped typography/300-board and full milestone/installed
+  gate. Tape remains candidate; supported packs/pilot0. No MS2 PR/MS3 yet.
+  Human visual/listening review remains separate. [MS2 results](./mechanism-shorts-ms2-results.json),
+  [pack API](./mechanism-pack-api.md),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -214,6 +216,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit first reusable tape-hook candidate
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `446b5f9f`.
+- **Done:** Strict bounded pack metadata and public tape factory reuse original
+  mesh generation. Source2 mount/reference travel derives from hook thickness;
+  blade-owned rivets and moving-reference contact invariants are checked.
+- **Results:** Two dimensions,18 actual previews, four repeated9/9 final MP4s,
+  independent GPU/frame proof and stream replay pass with all memory released.
+  Refreshed fast 4,066/398 plus six native groups pass. Prior clean Lab source
+  passes complete runtime177/27 + integration321/56 + depth/three Lab smoke groups.
+- **Retained:** Eight initial type errors, loader/failed replacement guard,
+  missing font/unavailable route, missing local start and standalone16MiB replay
+  rejection. Fixed fixture uses existing128MiB worker quota; no limits relaxed.
+- **Next:** Actual images reveal large-housing crop/push-face occlusion. Camera
+  recipes and all remaining MS2 family/authoring/import/full/installed acceptance
+  precede its PR/MS3. Candidate only; supported packs/pilot0, human review separate.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [pack API](./mechanism-pack-api.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 ### 2026-10-11 — Commit native2 Lab playback and physical controls
 
