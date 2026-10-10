@@ -721,7 +721,14 @@
     "installedE01": "./mechanism-shorts-ms1-installed-e01-results.json",
     "semanticProfileE01": "legacy-unassessed",
     "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",
-    "pr": "pending-creation",
+    "pr": {
+      "url": "https://github.com/xxibcill/still-shift/pull/52",
+      "number": 52,
+      "base": "main",
+      "head": "codex/mechanism-ms1",
+      "stateAtCreation": "open-unmerged",
+      "creationCommit": "b8887c4507a0be78ea4c49869bf4adae02d45093"
+    },
     "historicalCheckpoints": "Earlier in-progress/pending fields describe their dated checkpoint. Current completion is here; they are not retroactively converted into uninterrupted passes."
   }
 }

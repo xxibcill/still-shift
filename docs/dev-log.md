@@ -55,7 +55,8 @@ still hold before relying on them.
   exports, each reusing all plates with 0 new 3D captures. Fresh 24-case typography
   controls/negatives pass; E01 remains legacy/semantically unassessed. Consumer
   libproc exception, customer-media redistribution and human review limits remain.
-  MS1 PR is next; native implementation waits for that PR/interface freeze.
+  [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52) is open against
+  `main`; native branch/interface freeze is next.
   Original checkout edits are preserved. [Completion](./mechanism-shorts-ms1-completion.md),
   [results](./mechanism-shorts-ms1-results.json), [gate history](./mechanism-shorts-ms1-full-gate-results.json).
 
@@ -167,6 +168,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1 PR opened; native milestone next
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`.
+- **Done:** [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52) opens
+  against `main` from completion checkpoint `b8887c45`; prerequisite MS0 PR #51
+  remains open/unmerged. All 76 required groups are verified in stages, with all
+  failed aggregate runs and human acceptance limits retained.
+- **Checks:** final documentation format/diff checks and 31 completion evidence
+  links pass; production/tests remain unchanged from `09ce824b`. Actions disabled.
+- **Next:** start separate `codex/mechanism-ms1n` from fresh `main`, carry the exact
+  MS1 prerequisite, commit the native design freeze, then implement native 3D.
+- **Records:** [completion](./mechanism-shorts-ms1-completion.md),
+  [results](./mechanism-shorts-ms1-results.json).
 
 ### 2026-10-10 — MS1 required software verification completed in stages
 

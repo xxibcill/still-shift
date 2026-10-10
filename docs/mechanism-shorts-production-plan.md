@@ -1043,7 +1043,7 @@ portable project.
 **Implementation order:** MS0 → MS1 bridge → MS1N native 3D → MS2 → MS3, then
 conditional explanation extensions and capacity stages under the tracker.
 
-**Current next action (2026-10-10):** open the MS1 PR targeting `main`, then create
+**Current next action (2026-10-10):** [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52) is open targeting `main`; create
 `codex/mechanism-ms1n` from fresh `main` carrying the exact MS1 prerequisite and
 commit the native interface freeze before implementation. Human MS1 playback and
 listening acceptance remain separate from this software-complete checkpoint.
