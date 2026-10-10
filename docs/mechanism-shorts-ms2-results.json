@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "mechanism-shorts-ms2-results-1",
+  "milestone": "MS2",
+  "date": "2026-10-11",
+  "status": "in-progress-scene-contracts",
+  "branch": "codex/mechanism-ms2",
+  "baseMain": "3fab0162c51ca3b29fcefc2ecdbda0e475f985c9",
+  "nativePrerequisite": {
+    "commit": "bf30a2533c516bec0dcbfa3fd2c1c676babf477f",
+    "pr": "https://github.com/xxibcill/still-shift/pull/56",
+    "status": "open-unmerged"
+  },
+  "prerequisiteMerge": "c09e76e43c7990f09c87091ce5c8cf005fa12432",
+  "verification": [
+    {
+      "id": "prerequisite-fast-1",
+      "version": "ms2-prerequisite-fast-receipt-1",
+      "status": "passed",
+      "sourceCommit": "c09e76e43c7990f09c87091ce5c8cf005fa12432",
+      "actualRootSession": 49518,
+      "actualExitCode": 0,
+      "terminalObservedAtUTC": "2026-10-10T16:54:22Z",
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "unitTests": 3917,
+      "unitFiles": 381,
+      "unitReportedSeconds": 44.49,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-prerequisite-fast-1.log",
+        "bytes": 31313,
+        "sha256": "sha256:c9e458b9a571f3fb757b1dae3b5f5446d8bed6bde06afcec1addf3ca2ea0a6c1"
+      },
+      "qualification": "Actual fast gate on committed current-main/native prerequisite merge. No MS2 implementation, full gate, new archive/export or human acceptance is claimed."
+    },
+    {
+      "id": "contract-focused-1",
+      "status": "passed",
+      "sourceCheckpoint": "c09e76e43c7990f09c87091ce5c8cf005fa12432",
+      "sourceState": "working-first-contract-slice",
+      "actualRootSession": 59030,
+      "actualExitCode": 0,
+      "tests": 11,
+      "files": 2,
+      "reportedSeconds": 0.576,
+      "command": "pnpm exec vitest run tests/unit/mechanism-v2-rig-contract.test.ts tests/unit/mechanism-v2-shape-contract.test.ts --maxWorkers=2",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-contract-focused-1.log",
+        "bytes": 383,
+        "sha256": "sha256:545802447c72a8ff713f07de564e6e3b0b0551d1f77664129ad9ebca877e936e"
+      },
+      "scope": "Standalone declaration admission and located negatives. No scene2 evaluator, dynamic draw, reusable pack, full export or milestone support is claimed."
+    },
+    {
+      "id": "contract-fast-1",
+      "status": "failed-generated-native-closure",
+      "actualRootSession": 5975,
+      "actualExitCode": 1,
+      "sourceCheckpoint": "c09e76e43c7990f09c87091ce5c8cf005fa12432",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-contract-inputs-1.json",
+        "bytes": 399550,
+        "sha256": "sha256:c766788848afb699e29544aa66e44844f7e0013d18e51e4143871345f36bf020"
+      },
+      "command": "pnpm check:fast",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-contract-fast-1.log",
+        "bytes": 1252,
+        "sha256": "sha256:7473fd270d5217d36218349ab5ebb996ff8aaf4b70a2baa57b524879ae1fd080"
+      },
+      "failure": "schema:check/native3d:identity:check reports stale source closure after the new public contract exports.",
+      "laterStagesReached": false,
+      "unitTestsRun": 0,
+      "scope": "Retained failed first slice fast run. Focused11 passed separately; later fast/unit/build checks were not reached."
+    },
+    {
+      "id": "contract-identity-generate-1",
+      "status": "passed",
+      "actualRootSession": 80112,
+      "actualExitCode": 0,
+      "command": "pnpm native3d:identity:generate",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-contract-identity-generate-1.log",
+        "bytes": 260,
+        "sha256": "sha256:72eed76222e796ae3eca9d5df6dbbbfb39f12ead676e7cee46301cf02e071314"
+      },
+      "firstPartyModules": 334,
+      "externalRuntimeModules": 79,
+      "change": "Generated appearance-modules.ts adds only the new rigs.ts and teaching-shapes.ts references. Historical native appearances/archives retain their original identities."
+    },
+    {
+      "id": "contract-fast-2",
+      "status": "failed-typescript-optional-property",
+      "actualRootSession": 44901,
+      "actualExitCode": 2,
+      "terminalObservedAtUTC": "2026-10-10T17:07:29Z",
+      "sourceCheckpoint": "c09e76e43c7990f09c87091ce5c8cf005fa12432",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-contract-inputs-2.json",
+        "bytes": 399550,
+        "sha256": "sha256:4c9d76a3778cf0d82b510ed59f0910ab8a5dac8996abe7773a2cc65aa31e25f4"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm check:fast",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-contract-fast-2.log",
+        "bytes": 3616,
+        "sha256": "sha256:2d3630e44f9e7be685de3a7e85c20cf84a6c4845c792ca523bbf6e477bbf40db"
+      },
+      "passedStages": ["schema", "boundaries", "format", "lint"],
+      "failure": "Build rejects scalar writer helper value?: number under exactOptionalPropertyTypes; Zod declares value?: number | undefined.",
+      "unitTestsRun": 0,
+      "repair": "Admit undefined in the optional helper annotation; no runtime behavior, assertion or acceptance limit changes."
+    },
+    {
+      "id": "contract-fast-3",
+      "status": "passed",
+      "actualRootSession": 40015,
+      "actualExitCode": 0,
+      "terminalObservedAtUTC": "2026-10-10T17:16:28Z",
+      "sourceCheckpoint": "c09e76e43c7990f09c87091ce5c8cf005fa12432",
+      "sourceState": "working-first-contract-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-contract-inputs-3.json",
+        "bytes": 399550,
+        "sha256": "sha256:769cfe557a7e63c75d9f6d0de809cc7eb481b96e45ed65112109f48aa54bcbfc"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "unitTests": 3928,
+      "unitFiles": 383,
+      "unitReportedSeconds": 40.78,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-contract-fast-3.log",
+        "bytes": 31108,
+        "sha256": "sha256:3eaba8cd1862383e5c621c86b87895e3e3ca27a288d64bf0a36a4b672affc69b"
+      },
+      "scope": "Actual schema, boundaries, format, lint, TypeScript build and all units pass on unchanged first-slice inputs. Earlier fast1 and fast2 failures retained. Standalone contracts only; no runtime, pack, export or human acceptance."
+    }
+  ],
+  "implementation": {
+    "firstSlice": "Completed standalone reusable rig/teaching-shape contracts. All 11 focused negatives/admission checks and fresh complete fast3 gate (3928 units/383 files) pass; earlier closure and optional-type failures retained.",
+    "runtimeSupport": "not-implemented",
+    "supportedPacks": [],
+    "pilotSupportedEpisodes": 0
+  },
+  "limits": [
+    "No scene2/frame2/evaluator, dynamic GPU observations, pack/import/camera/label/cue or expanded typography support is claimed by standalone contracts.",
+    "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
+    "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
+  ]
+}

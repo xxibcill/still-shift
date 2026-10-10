@@ -43,16 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS2 started (2026-10-10):** `codex/mechanism-ms2` starts from current
+- **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` starts from current
   `main` `3fab0162` and carries exact native prerequisite `bf30a253` from
   [PR #56](https://github.com/xxibcill/still-shift/pull/56). The prerequisite merge
-  preserves the published0.1.1 records and both development histories; two
-  documentation conflicts retain the current owner-authorized milestone scope.
-  Merged-source fast verification is next, followed by versioned reusable
-  contracts/rigs, three packs, import/camera/label/cue authoring and scoped
-  typography reproductions. MS2 implementation/support and MS3 pilot remain
-  unverified; no new release, milestone PR merge or human acceptance is claimed.
-  [Owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+  preserves published 0.1.1 records and both development histories. The completed
+  standalone rig/teaching-shape contracts pass 11 focused checks and a fresh fast
+  gate (3,928 units / 383 files). Earlier stale generated closure and optional-type
+  build failures are retained with their repairs. Scene2/frame2 and pure evaluation
+  are next; dynamic observations, three packs, import/camera/label/cue, scoped
+  typography and the full milestone gate remain required. Pilot support remains
+  zero; MS3 has not started. [MS2 results](./mechanism-shorts-ms2-results.json),
+  [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -210,6 +211,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit the reusable rig and teaching-shape contracts
+
+- **Branch / source:** `codex/mechanism-ms2`, prerequisite merge `c09e76e4`.
+- **Done:** bounded slider, hinge, return and ratchet declarations/controls; closed
+  pawl/spring declarations, fixed changing-buffer caps and located negatives.
+- **Results:** 11 focused checks and fresh `check:fast` pass (3,928 tests / 383
+  files, 40.78s units). Selected inputs remain unchanged across the gate.
+- **Failures / repairs:** fast1 stops at stale generated source membership; normal
+  regeneration adds two references. Fast2 passes through lint, then build rejects
+  optional typing; the helper annotation is repaired. Both actual failures remain.
+- **Next / limits:** scene2/frame2 ownership and references, then pure evaluation.
+  Reusable packs, dynamic draws, pilot and milestone completion remain unverified.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 ### 2026-10-10 — Open native PR and begin the separate MS2 branch
 
