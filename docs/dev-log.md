@@ -43,33 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS1N implementation (2026-10-10):** `codex/mechanism-ms1n` carries exact
-  MS1 `13b62b84` ([PR #52](https://github.com/xxibcill/still-shift/pull/52) open).
-  Held342 full3 passes two actual 696-frame exports/current QA and nine accepted-body
-  parity checks; bridge4 preserves all 696 original PNG bytes. Hardware state agrees;
-  cross-driver pixels and human appearance remain separately limited. Preview5
-  passes 8 variants/5 negatives/restore at83; earlier timeout cause is unproven.
-  Historical source `81a8e344` package2 passes all26 checks; archive `f41679b1` (3,150,449B)
-  and all1,804 source/runtime members pass audit2. OS-denied installed consumer2
-  now passes all18 stages, two696-frame exports/current actual checks and both
-  moved16-file packages. Saved first-shot +1FOV changes78 actual cameras/body
-  hashes; the other618 stay exact. Independent render audit2 confirms closure;
-  its raw-versus-normalized auditor1 error and consumer1/triage1 failures stay retained.
-  Docs-only `1949ae2f` inventory11 preserves all2,327 inputs/117,498,320B from81.
-  Root's ordinary fullgate1 exits1 after all3,915 units pass and runtime169/170;
-  only one of77 groups completes, and75 suffix groups/benchmark/176 baselines are
-  not reached. Early route dispatch outside the bridge catch caused raw cancellation.
-  Initial two-file focused2/fast12 evidence stays separate. Expanded four-file
-  public route/direct-native writer/private helper/tests repair passes pinnedNode22
-  focused3 all30 tests/2 files and fast13 all3,915 units/381 files. Working inventory2
-  binds2,328 inputs/117,501,326B; source is uncommitted after1949. Historical
-  inventory11 and initial inventory1 do not represent these expanded bytes.
-  Reviewed repair commit/new archive/current affected installed checks, full77/176
-  and milestone/MS1N PR remain pending.
-  Parent RSS/managed memory are
-  separate; fresh installed tree RSS is unavailable. Encoded readability, human
-  continuous playback/listening and customer redistribution remain separate.
-  [Design](./mechanism-shorts-ms1n-design.md),
+- **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
+  inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
+  prefix and an interruption without terminal/EOF receipts; the exact58-group
+  continuation plus benchmark actually exit0. All77 groups and unchanged176
+  frozen items/36,061 frames pass. Earlier failed runs and fixes remain retained.
+  Source223/archive5 passes27 npm checks; current audit6 matches all1,807 members.
+  Installed consumer6/companion4 pass their scoped checks, adding two diagnostic
+  frames and preserving original source342/source81 full-length render identities.
+  Human playback/listening, encoded glyph and material/hardware appearance remain
+  pending; the cross-driver pixel diagnostic fails. Native PR is next, then MS2;
+  no merge/publication or customer-media redistribution is claimed.
+  [Completion](./mechanism-shorts-ms1n-completion.md),
   [results](./mechanism-shorts-ms1n-results.json).
 
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
@@ -197,6 +182,237 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Native software gate completes in recorded stages
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, held `a38754ae`.
+- **Results:** qualified19-group interrupted prefix plus58 actual suffix exits
+  complete all77 required groups; unchanged176 baselines/36,061 frames and actual
+  benchmark pass. Exact source/log receipts and read/hash audit are retained.
+- **Done / next:** seven native requirements have scoped software evidence.
+  Commit final records/open the native PR, then create the separate MS2 branch.
+- **Limits:** all failed/interrupted attempts remain; human review and failed
+  cross-driver appearance remain separate. No merge or publication.
+- **Records:** [Native completion](./mechanism-shorts-ms1n-completion.md),
+  [results](./mechanism-shorts-ms1n-results.json), [plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-10 — Native gate continuation reaches63 staged groups
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, held `a38754ae`.
+- **Results:**44 suffix groups have actual exit0 and unchanged-source/complete-log
+  receipts; the retained original19-group prefix makes63 of77 complete in stages.
+- **Open / next:** cinematic adapter remains live. Finish14 suffix groups,
+  176 baselines/36,061 frames and actual benchmark before the native PR and MS2.
+- **Records:** [Native results](./mechanism-shorts-ms1n-results.json) bind the
+  immutable progress snapshot. Original interruption and earlier failures remain;
+  human playback/listening and cross-driver appearance are still unassessed.
+
+### 2026-10-10 — Resume the interrupted MS1N software gate
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, held at `a38754ae`.
+- **Done:** Saved the independently qualified full6 interruption receipt:19
+  completed groups, CLI unproven,57 later groups and benchmark not started.
+- **Results:** The reviewed exact58-group suffix and benchmark launched at
+  12:59:25Z; CLI and batch have actual exit0 receipts on unchanged inputs.
+- **Open / next:** Finish the serial suffix,176 baselines/36,061 frames and
+  benchmark; then commit evidence/open the native PR before MS2. Human review
+  and the retained cross-driver pixel failure remain separate.
+- **Records:** [Native results](./mechanism-shorts-ms1n-results.json); older
+  failed and interrupted runs remain retained. No merge or publication.
+
+### 2026-10-10 — Full gate6 interrupted; qualified prefix retained
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, held `a38754ae` / inventory15.
+- **Evidence:**19 groups complete by matched next headers in the required sequential
+  chain. CLI started with completion unproven;57 later groups, benchmark and176
+  baselines were not started. Original logs remain literal retained snapshots.
+- **Limits:** no terminal exit, EOF, closed log totals or collector source-after
+  exists. A separate reviewer read confirms all2,329 selected inputs unchanged.
+- **Next:** exact58-group suffix from CLI plus benchmark is planned, not launched.
+  Earlier failed aggregates remain; no uninterrupted pass, staged completion,
+  milestone/PR or human acceptance is claimed. Original prepare500 cause is unproven.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Test cache ownership repair committed; full gate6 running
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, test-only `a38754ae`.
+- **Results:** focused7 passes11.65s; fast16 passes3,915 units/381 files43.40s.
+  Inventory15 exactly matches verified working bytes:2,329 inputs/117,503,155B.
+- **Repair / limits:**108 fixture bytes separate media/Vite caches and retain
+  response diagnostics; seven cases/limits/budgets stay unchanged. PrivateCJS
+  diagnostic failure and two diagnostic passes remain; original500 cause is unproven.
+- **Provenance / next:** audit6 matches unchanged archive5 to Gita387. Actual
+  package5/consumer6 stay source223; no rebuild/rerender/relabeling. Ordinary
+  full6 (root48011) is running;77/176,milestone/PR/human acceptance remain pending.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Full gate5 retains capture-prepare integration failure
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`; full5 binds held `893569c0`.
+- **Results:**3,915 units/381 files and177 runtime/27 files pass. Integration has
+  320 pass/1 fail across55 passing/1 failed suites (321 tests/56 suites total).
+- **Symptom / coverage:** capture fixture prepare returns500 where200 is expected.
+  Two of77 groups complete;74 later groups, benchmark and176 baselines are unrun.
+- **Open / next:** cause remains unproven; root is tracing read-only before any
+  scoped diagnostic. Source/inventory remain held. Prior failed attempts, current
+  archive/installed passes and historical producer identities stay retained;
+  milestone/PR and human acceptance remain pending.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Fixture repair committed; unchanged archive qualified
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, test-only commit `893569c0`.
+- **Results:** focused4 pass; fast15 passes3,915 units/381 files43.53s and preludes.
+  Inventory14 binds2,329 inputs/117,503,047B, exact verified working bytes.
+- **Provenance:** only172 runtime-test bytes change. Audit5 matches the unchanged
+  archive5 to Git893 across670 source/1,137 emitted members. Actual package5 and
+  consumer6 execution remain source223; no rebuild/rerender/re-sign is claimed.
+  Independent read/hash review supports current2/historical2×696 scopes.
+- **Open / next:** fullgate4 failure stays retained; ordinary full5 is running on
+  source893/inventory14 (root81176) after global format. Actual77/176,
+  milestone/PR and human acceptance remain pending.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Full gate4 retains runtime fixture-map failure
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`; full4 binds source `223b21cc`.
+- **Results:** all3,915 units pass. Runtime175 pass/2 fail across27 files82.94s;
+  ordinary Node/config test passes. One of77 groups completes;75 later groups,
+  benchmark and176 baselines are not reached.
+- **Cause / next:** appearance-identity fixture helper at76 expects the removed
+  renderer barrel import; both negatives stop before product assertions. Root
+  repairs only172 test bytes; four focused runtime tests pass2.46s. Fast15 is
+  running; commit/source audit/full5 remain pending. Current archive/installed
+  executions and historical producer identities are preserved.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Current affected installed proof passes
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, source `223b21cc`/archive1ae8.
+- **Results:** companion4 exits0 with all ten stages and empty stderr: installed
+  pre-abort/retry, saved-camera refresh, real two-frame export/final QA,
+  nonoverwrite, current final writer/move and both historical696 verifier closures.
+- **Provenance:** six source inputs remain exact. Current execution adds only two
+  diagnostic frames; historical source81 baseline/edited696 producer identities
+  and all prior failure/method records remain preserved.
+- **Open / next:** ordinary fullgate4 is running on source223/inventory13 (root63814);
+  all77/176, milestone/PR and human acceptance await actual completion.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Current installed setup and source phase verified
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, source `223b21cc`/archive1ae8.
+- **Results:** escalated setup6 and separate process-identity runtime6 pass. All ten
+  sourcephase6 stages pass: OS denial/1,807 installed members/fresh installed-js3689,
+  six CLI source operations and original342 portable closure. Stderr is empty.
+- **Provenance:** historical source81 packages copy exact2×17 files. Archive3→5
+  has0 added/removed,4 modified/1,803 unchanged; all930 renderer members and415
+  mapped appearance inputs match. Byte-copy/audit and current execution stay separate.
+- **Open / next:** affected companion4 is running; full77/176 has not started.
+  Historical producer identities/failures persist; no new696/all18/shader-parity
+  or human acceptance claim. Milestone/PR remains pending.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Installed setup permission failure retained; fresh setup prepared
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, source `223b21cc`/archive1ae8.
+- **Retained:** actual setup5 exits1: default executor denies pnpm external-store
+  project-registration symlink (EPERM). Zero consumer/API/runtime/render checks
+  complete; result and install logs are retained. No product failure or automatic
+  approval rejection is claimed.
+- **Open / next:** fresh setup6 private identifiers/denials are prepared for an
+  escalated executor with the same archive/source. Actual setup/affected installed
+  refresh and full77/176 remain pending; milestone/PR/human acceptance stay open.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Current repair archive verified after retained offline failure
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, source `223b21cc`.
+- **Results:** normal npm package5 exits0 with27 maintained checks. Archive1ae8
+  is3,151,107B; audit4 passes1,807 members:670 source exact Git223/worktree/dist
+  and1,137 emitted bytes exact current dist. Inventory13 inputs remain unchanged.
+- **Retained:** offline attempt4 fails with zero checks; package5 is a distinct
+  method rerun without the offline-store override. Source06 archive3/consumer4
+  and earlier source81/342 executions keep their original identities.
+- **Open / next:** consumer5 setup and actual affected installed refresh, then
+  full77/176. Milestone/PR/human acceptance remain pending; no new696 claim.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Sink emission exact; offline package attempt retained
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, committed repair `223b21cc`.
+- **Results:** actual package4 emission matches source06 sink JavaScript exactly:
+  23,445 bytes. Type-alias declarations and pure-helper import emission differ
+  as declared; fast14 tsc --noEmit is not the source of this byte comparison.
+- **Retained:** offline package4 exits1 before any completed check: missing
+  TypeScript5.9.2 metadata. Archive1ae8 (3,151,107B), both reports and failurelog
+  are copied before fresh normal npm package5; prior142 rows remain exact.
+- **Open / next:** package5 is running without the offline-store override, then
+  current installed refresh/full77/176. Archive3/consumer4 remain source06;
+  milestone/PR and human acceptance stay pending.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Node22 Lab loader repair committed after focused and fast checks
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`; root committed three files at `223b21cc`.
+- **Repair:** erasable sink constructor with options-first field order and two pure
+  appearance-helper imports; renderer/schema/assets are unchanged.
+- **Results:** working1 focused30/6 files passes65.09s. Final working2 ordinary-loader
+  focused1 passes0.942s; fast14 passes all3,915 units/381 files48.71s and preludes.
+  Inventory13 binds2,329 inputs/117,502,875B, exact final working2;2,326 prior inputs stay exact.
+- **Retained:** fullgate3 failure and intermediate renderer-import strip-syntax
+  failure remain. Source06 archive3/installed and source81/342 execution identities
+  are preserved; historical results are not renamed as changed-source execution.
+- **Open / next:** archive4/emitted sink-byte comparison, affected
+  installed refresh and full77/176. Fast14 uses tsc --noEmit; no emitted-byte pass
+  is claimed. Milestone/PR and human acceptance remain pending.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Full gate3 stops at Lab config; erasable syntax repair pending
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`; failed run binds source06.
+- **Results:** units 3,915 and runtime 176 pass. Integration passes 51 suites/292
+  tests; five Lab-config suites fail and 29 tests skip. Two of 77 groups complete;
+  benchmark and 176 baselines are not reached.
+- **Cause / repair:** isolated Vite config loading reproduces Node22 strip-only
+  rejection of the sink constructor parameter property at line326. Root owns the
+  erasable-syntax repair; current changed-source verification is pending.
+- **Retained / next:** all failed aggregates and passed package/installed evidence
+  keep their source identities. Milestone/PR and human acceptance remain pending.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Current archive and consumer source phase verified
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, source `06f60e3b`.
+- **Results:** package3 exits 0 with 27 checks; archive366 is 3,151,083 bytes.
+  Audit3 passes 1,807 members (670 source / 1,137 emitted). Its bounded delta is
+  4 modified, 3 added, 0 removed; renderer/declaration/appearance bytes stay exact.
+- **Retained:** the retainer count error and consumer3 offline metadata failure.
+  Cache warming and fresh setup4 pass; stale launcher fields remain qualified.
+- **Current scope:** runtimeproof4 passes separately; consumer4 sources passes ten
+  denial/identity/CLI/original342 portable-closure stages, without all-18/new-render claims.
+- **Affected refresh:** companion3 exits 0 with ten stages, two actual diagnostic
+  frames, current final-package/move and both original source81 696-frame closures.
+  Companion1/2 return/path failures and separate product results remain retained.
+- **Open / next:** fullgate2 uv PATH failure is retained; fullgate3 is running.
+  MS1N milestone/PR and human acceptance
+  remain pending. Historical large renders retain their original execution identities.
+  Historical source81/342 executions retain their identities.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Cancellation boundary repair committed; affected archive refresh running
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, repair commit `06f60e3b`.
+- **Done:** inventory12 binds2,328 inputs/117,501,326B, exact verified working2
+  bytes. Pinned focused30/fast3,915 association remains distinct from initial runs.
+- **Impact:**2,324 prior inputs,415 appearance files/six E01 source inputs and
+  successful writer bodies stay exact. Historical source342/source81 execution
+  identities are preserved; this packaging-only delta needs no new696 GPU run.
+- **Open / next:** package3 is running. New archive/audit/current installed abort
+  checks, tiny2-frame actual save/package/move and copied historical696 package
+  closures await actual results, then full77/176. Old archivef416/consumer2 stay
+  verified source81 evidence. Fullgate1 remains failed; milestone/PR/human pending.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
 
 ### 2026-10-10 — Expanded public package cancellation repair passes focused and fast gates
 

@@ -91,6 +91,11 @@ original E01 inputs and records current APIs, fonts, reference timing, rubric,
 measurement protocol and remaining limits. Implementation and artifact-specific
 human visual/listening acceptance remain separate.
 
+MS0 and MS1 have open PRs; [MS1N software verification](./docs/mechanism-shorts-ms1n-completion.md)
+now completes in recorded stages, including all77 local groups and unchanged176
+baselines/36,061 frames. Human playback/listening and appearance remain pending.
+Open the native milestone PR before starting MS2; keep the branch/PR sequence.
+
 | Stage | Product proof                                                                       | Detailed scope                                                                                                  |
 | ----- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | MS0   | Audit integrated composition baseline and original E01 inputs.                      | [Audit evidence](./docs/mechanism-shorts-ms0-baseline.md)                                                       |

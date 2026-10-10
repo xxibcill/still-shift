@@ -612,30 +612,30 @@ native integration reuses its scene and asset contracts.
 **Depends on:** accepted MS1 bridge and portable E01. Implement this stage before
 MS2 generalized packs/rigs and MS3's ten-episode pilot.
 
-- [ ] Audit the bridge contracts and define the supported native subset: bounded
+- [x] Audit the bridge contracts and define the supported native subset: bounded
       primitives and/or indexed meshes, normals, material slots, rigid hierarchy,
       units, pivots, transforms, asset hashes and topology/resource limits. Use a
       documented import subset where needed; reject unsupported data explicitly.
-- [ ] Extend `composition-1`, pure evaluation, the shared graph and WebGL2 together.
+- [x] Extend `composition-1`, pure evaluation, the shared graph and WebGL2 together.
       Reuse camera and rig evaluation across bridge/native paths. Define how a
       projected label stays screen-pinned and how an authored 3D graphic shares
       mesh depth; never infer those roles from draw order alone.
-- [ ] Specify opaque depth testing, alpha/cutout and the supported transparency
+- [x] Specify opaque depth testing, alpha/cutout and the supported transparency
       subset, camera clipping, normal transforms, color/alpha and motion-blur clocks.
       Verify only declared mixed-layer combinations; unsupported backends and
       transparency cases fail with located diagnostics rather than flattened output.
-- [ ] Reuse the established bridge material/profile subset needed by the native
+- [x] Reuse the established bridge material/profile subset needed by the native
       proof, with explicit capability and appearance checks. Map overlap with solid
       geometry and CE8-L-F in the owning plan. A bridge reflection or shadow does
       not establish full native shading acceptance or complete CE8-L-F.
-- [ ] Expose native mesh authoring, camera/material controls and inspection through
+- [x] Expose native mesh authoring, camera/material controls and inspection through
       the builder, CLI and Lab. Preserve saved projects, assets, narration, fonts,
       cache identity, scoped edits and clean-location delivery.
-- [ ] Deliver a native version of the E01 mechanism proof plus an independent mixed
+- [x] Deliver a native version of the E01 mechanism proof plus an independent mixed
       mesh/graphic occlusion fixture. Record the supported bridge/native comparison
       policy before implementation. Compare geometry, clocks, anchors and material
       appearance independently; retain differences and unsupported features.
-- [ ] Profile representative native scenes under the supported software renderer
+- [x] Profile representative native scenes under the supported software renderer
       before broad expansion. Record actual timings, memory, source edits and cache
       invalidation; preserve all existing composition baselines.
 
@@ -662,6 +662,16 @@ bridge/native scene identity, portable native E01 and occlusion fixtures, comman
 final renders, parity and mechanical reports, performance measurements, located
 limitations and review status. General CAD, simulation, flexible-body physics and
 arbitrary sectioning are separate work.
+
+**Software completion (2026-10-10):** all seven implementation requirements
+are mapped in the [completion record](./mechanism-shorts-ms1n-completion.md).
+All77 local groups, unchanged176 baselines/36,061 frames and actual benchmark
+complete in recorded stages at `a38754ae`; package/installed refresh and original
+render identities are retained in [results](./mechanism-shorts-ms1n-results.json).
+The original full6 interruption and earlier failures remain recorded. Continuous
+human playback/listening, encoded glyph and material/hardware appearance, legacy
+semantic assessment and owner readiness remain pending. This does not close
+CE6-P or CE8-L-F.
 
 ### MS2 Reusable mechanism families and authoring
 

@@ -2765,7 +2765,7 @@
   },
   "nativeSolidGeometryFollowup": {
     "milestone": "MS1N",
-    "status": "implemented-final-software-verification-pending",
+    "status": "software-complete-in-stages-human-review-pending",
     "scope": "Additive bounded native-solid follow-up to completed CE8 camera record; original CE8 status/slices/fullGateAttempts/fullVerification/versions/delivery remain historical and unchanged.",
     "source": "./mechanism-shorts-ms1n-results.json",
     "design": "./mechanism-shorts-ms1n-design.md",
@@ -2795,7 +2795,11 @@
             "jsonPointer": "/implementationEvidence/nativePackageConfinementRepair"
           }
         ],
-        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+        "status": "implemented-scoped-software-verified-human-review-separate",
+        "softwareVerification": {
+          "file": "./mechanism-shorts-ms1n-results.json",
+          "jsonPointer": "/implementationEvidence/fullLocalGateAnd176Baselines"
+        }
       },
       {
         "id": "MS1N-2",
@@ -2821,7 +2825,11 @@
             "jsonPointer": "/implementationEvidence/bridgeFactoring/currentFull696"
           }
         ],
-        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+        "status": "implemented-scoped-software-verified-human-review-separate",
+        "softwareVerification": {
+          "file": "./mechanism-shorts-ms1n-results.json",
+          "jsonPointer": "/implementationEvidence/fullLocalGateAnd176Baselines"
+        }
       },
       {
         "id": "MS1N-3",
@@ -2847,7 +2855,11 @@
             "jsonPointer": "/implementationEvidence/currentNativePreviewProof"
           }
         ],
-        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+        "status": "implemented-scoped-software-verified-human-review-separate",
+        "softwareVerification": {
+          "file": "./mechanism-shorts-ms1n-results.json",
+          "jsonPointer": "/implementationEvidence/fullLocalGateAnd176Baselines"
+        }
       },
       {
         "id": "MS1N-4",
@@ -2873,7 +2885,11 @@
             "jsonPointer": "/implementationEvidence/nativeHardwarePreview"
           }
         ],
-        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+        "status": "implemented-scoped-software-verified-human-review-separate",
+        "softwareVerification": {
+          "file": "./mechanism-shorts-ms1n-results.json",
+          "jsonPointer": "/implementationEvidence/fullLocalGateAnd176Baselines"
+        }
       },
       {
         "id": "MS1N-5",
@@ -2907,7 +2923,11 @@
             "jsonPointer": "/implementationEvidence/portableInstalledExecution"
           }
         ],
-        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+        "status": "implemented-scoped-software-verified-human-review-separate",
+        "softwareVerification": {
+          "file": "./mechanism-shorts-ms1n-results.json",
+          "jsonPointer": "/implementationEvidence/fullLocalGateAnd176Baselines"
+        }
       },
       {
         "id": "MS1N-6",
@@ -2933,7 +2953,11 @@
             "jsonPointer": "/implementationEvidence/bridgeNativeAppearanceComparison"
           }
         ],
-        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+        "status": "implemented-scoped-software-verified-human-review-separate",
+        "softwareVerification": {
+          "file": "./mechanism-shorts-ms1n-results.json",
+          "jsonPointer": "/implementationEvidence/fullLocalGateAnd176Baselines"
+        }
       },
       {
         "id": "MS1N-7",
@@ -2944,7 +2968,7 @@
           "line": 638,
           "text": "Profile representative native scenes under the supported software renderer before broad expansion. Record actual timings, memory, source edits and cache invalidation; preserve all existing composition baselines."
         },
-        "preciseScope": "Actual first/repeat native E01 software exports retain wrapper preparation/export/check/through-check timings, worker render/readback/upload p95, actual FFmpeg CPU, sampled parent/process-tree RSS and separately declared managed allocation. First wrapper timings are 19.503732167 / 235.771898625 / 326.075090791 / 581.351109375 seconds; exporter frame render average 279.779597701 ms and p95 343.699999928 ms. First sampled process-tree RSS is 2,394,439,680 bytes, versus declared one-worker peak 561,521,298 bytes under the 8 GiB application admission; these scopes must not be conflated. Static source/effective identity changes and saved label versus physical-state differences are retained. Final baseline/benchmark/memory gates remain required; no realtime, broad throughput, causal speedup or deferred CE6-P claim follows.",
+        "preciseScope": "Actual first/repeat native E01 software exports retain wrapper preparation/export/check/through-check timings, worker render/readback/upload p95, actual FFmpeg CPU, sampled parent/process-tree RSS and separately declared managed allocation. First wrapper timings are 19.503732167 / 235.771898625 / 326.075090791 / 581.351109375 seconds; exporter frame render average 279.779597701 ms and p95 343.699999928 ms. First sampled process-tree RSS is 2,394,439,680 bytes, versus declared one-worker peak 561,521,298 bytes under the 8 GiB application admission; these scopes must not be conflated. Static source/effective identity changes and saved label versus physical-state differences are retained. Final unchanged baseline and ordinary benchmark gates pass in recorded stages at helda387; historical native memory/render measurements retain source342 identity; no realtime, broad throughput, causal speedup or deferred CE6-P claim follows.",
         "evidence": [
           {
             "file": "./mechanism-shorts-ms1n-results.json",
@@ -2963,7 +2987,11 @@
             "jsonPointer": "/implementationEvidence/fullLocalGateAnd176Baselines"
           }
         ],
-        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+        "status": "implemented-scoped-software-verified-human-review-separate",
+        "softwareVerification": {
+          "file": "./mechanism-shorts-ms1n-results.json",
+          "jsonPointer": "/implementationEvidence/fullLocalGateAnd176Baselines"
+        }
       }
     ],
     "humanAcceptance": {
@@ -2984,14 +3012,57 @@
     ],
     "updated": "2026-10-10",
     "finalVerification": {
-      "status": "pending",
+      "status": "software-complete-in-stages-human-review-pending",
       "record": "./mechanism-shorts-ms1n-results.json",
       "requiredClosure": [
         "Exact final source and verified archive with all maintained clean installed-package checks.",
         "Actual isolated installed native lifecycle, saved edit, final package and moved closure under retained original-source byte denials.",
         "All 77 required local groups, unchanged 176 baselines / 36,061 frames, original pixel/timing limits and benchmark/memory acceptance."
       ],
-      "provenance": "Retain failed attempts, source/appearance identities and precise measured scopes. Record staged completion as staged; do not infer an uninterrupted full gate or human acceptance from earlier focused proofs."
+      "provenance": "Retain failed attempts, source/appearance identities and precise measured scopes. Record staged completion as staged; do not infer an uninterrupted full gate or human acceptance from earlier focused proofs.",
+      "sourceCommit": "a38754aef7562c1b3431e2aca3dab09f77d4a3b2",
+      "finishedAt": "2026-10-10T16:44:12.748Z",
+      "retainedPrefixGroups": 19,
+      "actualSuffixGroupExits": 58,
+      "completedRequiredGroups": 77,
+      "baseline": {
+        "items": 176,
+        "frames": 36061,
+        "reportedSeconds": 280.91
+      },
+      "benchmark": {
+        "line": 11,
+        "text": "   \u00b7 deterministic end-to-end request  1,274.12  0.7073  1.7485  0.7849  0.7859  1.0880  1.3560  1.7485  \u00b10.91%      638",
+        "hz": 1274.12,
+        "samples": 638,
+        "statistics": [
+          1274.12, 0.7073, 1.7485, 0.7849, 0.7859, 1.088, 1.356, 1.7485
+        ]
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms1n-required-suffix-1/run.json",
+        "bytes": 268557,
+        "sha256": "sha256:82809d336ce1463312f295d44713c16bc1b20e5aed84efbaff93e3b0d7036421"
+      },
+      "readAudit": {
+        "path": "/private/tmp/mechanism-ms1n-required-suffix-final-audit-1.json",
+        "bytes": 79676,
+        "sha256": "sha256:ee7eab505de02bc2e7fd57e4ccf66964aa44c5641ad32708ef186a1edd4c9616"
+      },
+      "sourceInventory": {
+        "path": "/private/tmp/still-shift-ms1n-required-suffix-1/source-before.json",
+        "bytes": 397183,
+        "sha256": "sha256:356728403bd5b8cf38579c80ae7afd7833bfffed61955caeeeeb704388f7086c"
+      },
+      "sourceAfter": {
+        "path": "/private/tmp/still-shift-ms1n-required-suffix-1/source-after.json",
+        "bytes": 397183,
+        "sha256": "sha256:356728403bd5b8cf38579c80ae7afd7833bfffed61955caeeeeb704388f7086c"
+      },
+      "ordinaryCheckAllPassed": false,
+      "uninterrupted": false,
+      "qualification": "All77 required groups complete in stages: original qualified19-group prefix plus58 actual suffix exit0 receipts; ordinary benchmark has actual positive samples and exit0. Original full6 remains interrupted, earlier failures remain retained, and human acceptance is pending.",
+      "packageAndInstalledRecord": "./mechanism-shorts-ms1n-results.json#/implementationEvidence/currentArchiveInstalledRefresh"
     }
   }
 }

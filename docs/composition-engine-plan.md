@@ -4314,7 +4314,7 @@ stays separate and GitHub Actions disabled.
 
 ### MS1N bounded native solid geometry follow-up (2026-10-10)
 
-**Status: implemented; final software verification pending.** The bounded native
+**Status: software complete in recorded stages; human acceptance pending.** The bounded native
 solid route extends the shared composition graph with hash-pinned indexed meshes
 and explicit world graphics in a common depth pass. It reuses the mechanism/solid
 camera and rigid-rig evaluator and shared Three world factory. This follows CE8's
@@ -4330,13 +4330,13 @@ and independent depth proofs, material comparison, timings and managed-memory
 scopes are recorded in the [MS1N results](./mechanism-shorts-ms1n-results.json)
 and [frozen design](./mechanism-shorts-ms1n-design.md). The seven exact production
 requirements are cross-referenced by the additive native-solid follow-up in
-[CE8 results](./composition-ce8-results.json) and remain pending final software
+[CE8 results](./composition-ce8-results.json), with final staged software
 closure in the [production plan](./mechanism-shorts-production-plan.md#ms1n-native-3d-composition).
 
-Final closure requires the exact archive and clean installed-package checks,
-isolated installed lifecycle and moved final package, all 77 required local groups,
-unchanged 176 baselines / 36,061 frames, and the original pixel/timing and
-benchmark/memory policy. Retain earlier failures and state whether verification
+Final software evidence binds the verified archive/clean installed-package checks,
+isolated installed lifecycle/moved package, all77 required groups, unchanged176
+baselines/36,061 frames and actual benchmark. These complete in recorded stages
+at helda387; the original interruption and earlier failures remain retained. Retain earlier failures and state whether verification
 was uninterrupted or completed in recorded stages. Continuous human
 playback/listening, encoded glyph and material appearance, hardware appearance
 and owner acceptance remain separate. Cross-driver pixel comparisons are
