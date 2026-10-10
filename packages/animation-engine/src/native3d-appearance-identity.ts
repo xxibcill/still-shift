@@ -26,12 +26,44 @@ import {
 const digest = (bytes: Uint8Array): string =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
+/** Resolve from the actual importing renderer, including its installed .js rewrite. */
+function nativeAppearanceRuntimeContext() {
+  const descriptors = native3DAppearanceModules.filter(
+    ({ name }) => name === "renderer-core/src/native3d/appearance-modules.ts",
+  );
+  if (descriptors.length !== 1)
+    passageError(
+      "comp-native3d-source",
+      "Native appearance closure requires exactly one renderer descriptor",
+      { path: "native3d.appearanceCode.modules" },
+    );
+  const url = descriptors[0]!.url;
+  return { url, requireRuntime: createRequire(url) };
+}
+
+/** Node's ordinary importer ancestry, excluding NODE_PATH and global libraries. */
+function nativeAppearancePackageDirectories(packageName: string): string[] {
+  const { url, requireRuntime } = nativeAppearanceRuntimeContext();
+  const ancestors = new Set<string>();
+  for (
+    let directory = dirname(fileURLToPath(url));
+    ;
+    directory = dirname(directory)
+  ) {
+    if (basename(directory) !== "node_modules")
+      ancestors.add(join(directory, "node_modules"));
+    if (dirname(directory) === directory) break;
+  }
+  return (requireRuntime.resolve.paths(packageName) ?? []).filter((directory) =>
+    ancestors.has(resolve(directory)),
+  );
+}
+
 async function nativeAppearancePackageRoot(
   packageName: string,
   expectedVersion: string,
 ): Promise<string> {
-  const requireRuntime = createRequire(import.meta.url);
-  for (const directory of requireRuntime.resolve.paths(packageName) ?? []) {
+  for (const directory of nativeAppearancePackageDirectories(packageName)) {
     const candidate = join(directory, packageName, "package.json");
     let bytes: Buffer;
     try {
@@ -118,6 +150,7 @@ async function nativeAppearanceExternalIdentities() {
 
 /** Read a complete browser rendering closure using path-independent logical names. */
 export async function loadNativeAppearanceCodeIdentity(): Promise<NativeAppearanceCodeIdentity> {
+  const { requireRuntime } = nativeAppearanceRuntimeContext();
   const pathsByFormat = native3DAppearanceModules.map(({ url }) =>
     fileURLToPath(url),
   );
@@ -146,7 +179,9 @@ export async function loadNativeAppearanceCodeIdentity(): Promise<NativeAppearan
   );
   modules.push(...(await nativeAppearanceExternalIdentities()));
   modules.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-  const requireRuntime = createRequire(import.meta.url);
+  // Validate Three in the same renderer-owned ancestry before its public entry
+  // resolution, so a global/NODE_PATH package cannot establish appearance.
+  await nativeAppearancePackageRoot("three", "0.186.0");
   const module = join(
     dirname(requireRuntime.resolve("three")),
     "three.module.js",

@@ -55,9 +55,13 @@ still hold before relying on them.
   exists but its external harness failed on an unconsumed generator. That harness
   is repaired; source-publication, historical descriptor self-hash and native raw
   row-order fixes now pass actual focused regressions and fresh fast3/3,861 units.
+  Bare-Node full bridge attempt stopped before rendering on a dependency lookup
+  masked by pnpm's injected path. Renderer-owned resolution now passes17 focused
+  checks; associated saved-preparation render admission passes actual camera40
+  export and non-overwrite controls. Fresh fast4 passes all3,861 units.
   Earlier failures remain retained. Full E01/edit proof, full696 fresh bridge,
-  installed execution, complete local gate/176 baselines and human acceptance
-  remain pending. [Design](./mechanism-shorts-ms1n-design.md),
+  hardware/installed execution, complete local gate/176 baselines and human
+  acceptance remain pending. [Design](./mechanism-shorts-ms1n-design.md),
   [results](./mechanism-shorts-ms1n-results.json).
 
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
@@ -185,6 +189,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1N bare runtime and saved render repairs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, after `ae76e3a1`.
+- **Done:** resolve pinned appearance dependencies from their actual renderer
+  context without injected/global paths; render an associated saved preparation.
+- **Results:** bare identity17, actual saved-render/source-publication3 and fresh
+  fast4/3,861 pass. Existing final/unrelated/file/symlink roots retain their bytes.
+- **Retained:** full bridge1 failed before rendering; three new identity fixtures
+  failed before fixture import/ESM repairs. No failed run is counted as a pass.
+- **Open / next:** fresh full bridge696 and native preview/edit/full-export proofs,
+  actual hardware and installed package, all77 groups/176 unchanged baselines.
+- **Records:** [native results](./mechanism-shorts-ms1n-results.json).
 
 ### 2026-10-10 — MS1N publication and provenance repairs
 

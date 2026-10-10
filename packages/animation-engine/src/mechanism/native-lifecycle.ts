@@ -4,6 +4,7 @@ import {
   mkdtemp,
   open,
   readFile,
+  readdir,
   realpath,
   mkdir,
   stat,
@@ -1118,6 +1119,69 @@ export async function checkNativeMechanismEpisode(
     },
   };
 }
+async function admitNativeRenderDirectory(
+  loaded: LoadedMechanismEpisode,
+  outputDirectory: string,
+  selection: MechanismRouteSelection,
+  signal?: AbortSignal,
+): Promise<MechanismRouteSelection> {
+  signal?.throwIfAborted();
+  try {
+    await mkdir(outputDirectory, { recursive: false });
+    return selection;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+  }
+  const reject = () =>
+    fail(
+      "Native render output must be fresh or contain only its associated preparation",
+      outputDirectory,
+      "mechanism-output-exists",
+    );
+  if (!(await lstat(outputDirectory)).isDirectory()) reject();
+  const entries = await readdir(outputDirectory, { withFileTypes: true });
+  if (
+    entries.length !== 1 ||
+    entries[0]!.name !== "prepared" ||
+    !entries[0]!.isDirectory()
+  )
+    reject();
+  const preparedDirectory = join(outputDirectory, "prepared"),
+    receiptPath = join(preparedDirectory, "prepared.receipt.json");
+  if (!(await lstat(preparedDirectory)).isDirectory()) reject();
+  if (!(await lstat(receiptPath)).isFile()) reject();
+  const receipt = NativePreparedMechanismEpisodeSchema.parse(
+    await readMechanismJson(receiptPath),
+  );
+  const recorded = followPreparedMechanismRoute(
+    loaded.episode,
+    receipt.routeSelection,
+    selection.effectiveRoute,
+  );
+  if (
+    receipt.projectHash !== loaded.projectHash ||
+    mechanismContentHash(nativeMechanismExecution(loaded, recorded)) !==
+      mechanismContentHash({
+        episodeSha256: receipt.episodeSha256,
+        geometrySha256: receipt.geometrySha256,
+        rigSha256: receipt.rigSha256,
+        routeSelection: receipt.routeSelection,
+      }) ||
+    hashNativeAppearanceCodeIdentity(receipt.appearanceCodeIdentity) !==
+      receipt.appearanceCodeSha256
+  )
+    reject();
+  const compositionPath = resolve(preparedDirectory, receipt.compositionPath);
+  if (
+    !(await lstat(compositionPath)).isFile() ||
+    (await realpath(dirname(compositionPath))) !==
+      (await realpath(preparedDirectory))
+  )
+    reject();
+  signal?.throwIfAborted();
+  return recorded;
+}
+
 export async function renderNativeMechanismEpisode(
   loaded: LoadedMechanismEpisode,
   options: {
@@ -1131,18 +1195,23 @@ export async function renderNativeMechanismEpisode(
   mechanismRouteBackend(selection, options.backend);
   const started = performance.now(),
     outputDirectory = resolve(options.outputDirectory);
-  await mkdir(outputDirectory, { recursive: false });
+  const routeSelection = await admitNativeRenderDirectory(
+    loaded,
+    outputDirectory,
+    selection,
+    options.signal,
+  );
   const prepared = await prepareNativeMechanismEpisode(
     loaded,
     { ...options, outputDirectory: join(outputDirectory, "prepared") },
-    selection,
+    routeSelection,
   );
   const preparedAt = performance.now();
   const render = await renderComposition({
     compositionPath: prepared.compositionPath,
     outputPath: join(outputDirectory, "episode.mp4"),
     backend: "webgl2",
-    nativeMechanism: nativeMechanismExecution(loaded, selection),
+    nativeMechanism: nativeMechanismExecution(loaded, routeSelection),
     validateNativeSourceEdges: () =>
       assertNativeMechanismSourceEdges(loaded, options.signal),
     ...(options.signal ? { signal: options.signal } : {}),
@@ -1161,7 +1230,7 @@ export async function renderNativeMechanismEpisode(
     status: "rendered" as const,
     valid: check.valid,
     projectHash: loaded.projectHash,
-    routeSelection: selection,
+    routeSelection,
     outputPath: render.outputPath,
     timings: {
       scope: "monotonic-wall-clock-through-final-check",
@@ -1192,8 +1261,8 @@ export async function renderNativeMechanismEpisode(
       preparedReceipt: prepared.receiptPath,
       outputPath: render.outputPath,
       resultPath,
-      route: selection.effectiveRoute,
-      routeOrigin: selection.selectionOrigin,
+      route: routeSelection.effectiveRoute,
+      routeOrigin: routeSelection.selectionOrigin,
       backend: prepared.backend,
       profile: prepared.profile,
       actualExecutionVerified: check.actualExecutionVerified,
