@@ -1432,6 +1432,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/mechanism/frame-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/frame-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/mechanism/frame.ts",
     url: new URL(
       "../../../scene-contract/src/mechanism/frame.ts",
@@ -1453,6 +1460,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/mechanism/packs.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/packs.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/mechanism/primitives.ts",
     url: new URL(
       "../../../scene-contract/src/mechanism/primitives.ts",
@@ -1463,6 +1477,20 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/mechanism/rigs.ts",
     url: new URL(
       "../../../scene-contract/src/mechanism/rigs.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/mechanism/scene-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/scene-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/mechanism/scene-validation-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/scene-validation-v2.ts",
       import.meta.url,
     ),
   },

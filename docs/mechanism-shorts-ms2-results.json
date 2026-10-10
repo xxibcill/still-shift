@@ -2,7 +2,7 @@
   "schemaVersion": "mechanism-shorts-ms2-results-1",
   "milestone": "MS2",
   "date": "2026-10-11",
-  "status": "in-progress-scene-contracts",
+  "status": "in-progress-rig-evaluation",
   "branch": "codex/mechanism-ms2",
   "baseMain": "3fab0162c51ca3b29fcefc2ecdbda0e475f985c9",
   "nativePrerequisite": {
@@ -138,13 +138,120 @@
         "sha256": "sha256:3eaba8cd1862383e5c621c86b87895e3e3ca27a288d64bf0a36a4b672affc69b"
       },
       "scope": "Actual schema, boundaries, format, lint, TypeScript build and all units pass on unchanged first-slice inputs. Earlier fast1 and fast2 failures retained. Standalone contracts only; no runtime, pack, export or human acceptance."
+    },
+    {
+      "id": "scene-contract-identity-generate-1",
+      "status": "passed",
+      "actualRootSession": 96704,
+      "actualExitCode": 0,
+      "command": "pnpm native3d:identity:generate",
+      "firstPartyModules": 338,
+      "externalRuntimeModules": 79,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-scene-contract-identity-generate-1.log",
+        "bytes": 260,
+        "sha256": "sha256:9182224367102e056275abb1bc36502715798c6a1df24f44e7c5d11d5c1d2141"
+      },
+      "scope": "Normal module-membership regeneration adds four new value modules; prior producer appearance identities remain historical."
+    },
+    {
+      "id": "scene-contract-focused-1",
+      "status": "passed",
+      "actualRootSession": 6322,
+      "actualExitCode": 0,
+      "sourceCheckpoint": "a6c400eb2cef3a20d45601b8989c59c2212f081c",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-scene-contract-inputs-1.json",
+        "bytes": 400572,
+        "sha256": "sha256:70c500f9ac40eba4db2d085c7c9712a45f04e084c853eedddb55f744ab3c4fd0"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm exec vitest run tests/unit/mechanism-v2-scene-contract.test.ts tests/unit/mechanism-v2-frame-contract.test.ts --maxWorkers=2",
+      "tests": 12,
+      "files": 2,
+      "reportedSeconds": 0.615,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-scene-contract-focused-1.log",
+        "bytes": 387,
+        "sha256": "sha256:b75fafed5f8fa8dec9f364db481f2aad4fb5c000b8ed2a49bbc83e2795d2806d"
+      },
+      "scope": "Contract-only reference/ownership/cycle/landmark/global-centerline admission and frame negatives. Declaration fixtures do not prove prepared generator topology or observed rendering."
+    },
+    {
+      "id": "scene-contract-build-1",
+      "status": "passed",
+      "actualRootSession": 10948,
+      "actualExitCode": 0,
+      "sourceCheckpoint": "a6c400eb2cef3a20d45601b8989c59c2212f081c",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-scene-contract-inputs-1.json",
+        "bytes": 400572,
+        "sha256": "sha256:70c500f9ac40eba4db2d085c7c9712a45f04e084c853eedddb55f744ab3c4fd0"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm build",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-scene-contract-build-1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "scope": "Actual pinned TypeScript build on working scene/frame contract slice; full fast next."
+    },
+    {
+      "id": "scene-contract-fast-1",
+      "status": "failed-formatting",
+      "actualRootSession": 67461,
+      "actualExitCode": 1,
+      "command": "pnpm check:fast",
+      "sourceCheckpoint": "a6c400eb2cef3a20d45601b8989c59c2212f081c",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-scene-contract-inputs-1.json",
+        "bytes": 400572,
+        "sha256": "sha256:70c500f9ac40eba4db2d085c7c9712a45f04e084c853eedddb55f744ab3c4fd0"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-scene-contract-fast-1.log",
+        "bytes": 1435,
+        "sha256": "sha256:56e4dd6500f866ee3b733210435f9cea9beea5de8d43d0e633a82f2c309164b0"
+      },
+      "passedStages": ["schema", "boundaries"],
+      "failure": "Global formatter reports scene-validation-v2.ts; lint/build/units are not reached in this fast run.",
+      "unitTestsRun": 0,
+      "scope": "Focused12 and build passed separately before this failed aggregate. Formatter repair and fresh fast rerun required."
+    },
+    {
+      "id": "scene-contract-fast-2",
+      "status": "passed",
+      "actualRootSession": 75584,
+      "actualExitCode": 0,
+      "sourceCheckpoint": "a6c400eb2cef3a20d45601b8989c59c2212f081c",
+      "sourceState": "working-scene-frame-contract-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-scene-contract-inputs-2.json",
+        "bytes": 400572,
+        "sha256": "sha256:2ced0644dce53ba71196ebf66292159cfe77426c95645763cd6487009e0ecabb"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "unitTests": 3940,
+      "unitFiles": 385,
+      "unitReportedSeconds": 46.99,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-scene-contract-fast-2.log",
+        "bytes": 31608,
+        "sha256": "sha256:1cff775245bbe984d1e0579956dbebdd0eb2f890d1bb7ae2f11a6272108fb133"
+      },
+      "scope": "Actual complete fast gate on unchanged working inputs after formatter repair. Earlier failed fast1 and independent focused12/build pass retained. Scene/frame declarations only; no evaluator/native draw/pack/export acceptance."
     }
   ],
   "implementation": {
     "firstSlice": "Completed standalone reusable rig/teaching-shape contracts. All 11 focused negatives/admission checks and fresh complete fast3 gate (3928 units/383 files) pass; earlier closure and optional-type failures retained.",
     "runtimeSupport": "not-implemented",
     "supportedPacks": [],
-    "pilotSupportedEpisodes": 0
+    "pilotSupportedEpisodes": 0,
+    "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required."
   },
   "limits": [
     "No scene2/frame2/evaluator, dynamic GPU observations, pack/import/camera/label/cue or expanded typography support is claimed by standalone contracts.",

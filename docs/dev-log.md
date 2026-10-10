@@ -49,8 +49,9 @@ still hold before relying on them.
   preserves published 0.1.1 records and both development histories. The completed
   standalone rig/teaching-shape contracts pass 11 focused checks and a fresh fast
   gate (3,928 units / 383 files). Earlier stale generated closure and optional-type
-  build failures are retained with their repairs. Scene2/frame2 and pure evaluation
-  are next; dynamic observations, three packs, import/camera/label/cue, scoped
+  build failures are retained with their repairs. Scene2/frame2 declarations pass
+  12 focused checks, build and fresh fast2 (3,940 units / 385 files), after a retained
+  formatter failure. Deterministic pure rig/shape evaluation is next; dynamic observations, three packs, import/camera/label/cue, scoped
   typography and the full milestone gate remain required. Pilot support remains
   zero; MS3 has not started. [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
@@ -211,6 +212,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit scene2 and frame2 contracts
+
+- **Branch / source:** `codex/mechanism-ms2`, first contract slice `a6c400eb`.
+- **Done:** explicit scene2/frame2, part/reference cycles, writer/shape ownership,
+  generated landmark references, aggregate geometry limits and pack references.
+- **Results:** 12 focused negatives/admission checks, build and full fast2 pass
+  (3,940 tests / 385 files, 46.99s units). Held source inputs remain unchanged.
+- **Failure / repair:** fast1 passes schema/boundaries, then fails formatting in
+  the scene validator. Formatter repair and actual rerun are retained separately.
+- **Next / limits:** deterministic full-track rig and closed-shape evaluation;
+  native dynamic observations, three packs and remaining MS2 requirements follow.
+  No rendering, pilot support or milestone completion is claimed by contracts.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — Commit the reusable rig and teaching-shape contracts
 
